@@ -22,7 +22,7 @@ class TrendTable extends Component {
                     pagination={false}
                 />
             </div>
-        )
+        );
     }
 }
 

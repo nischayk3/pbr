@@ -1,3 +1,3 @@
-import Uploader from './components/Uploader'
+import Uploader from './components/Uploader';
 
-export default Uploader
+export default Uploader;

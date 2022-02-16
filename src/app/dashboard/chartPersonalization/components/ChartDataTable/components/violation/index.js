@@ -1,4 +1,4 @@
-import ViolationTable from './components/violation'
+import ViolationTable from './components/violation';
 
 
 export default ViolationTable;

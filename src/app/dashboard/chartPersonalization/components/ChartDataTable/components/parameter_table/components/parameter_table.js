@@ -22,7 +22,7 @@ class ParameterTable extends Component {
                     pagination={false}
                 />
             </div>
-        )
+        );
     }
 }
 

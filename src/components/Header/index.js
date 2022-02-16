@@ -10,35 +10,35 @@ import './style.scss';
 const { Header } = Layout;
 const { Search } = Input;
 const HeaderBar = () => {
-	const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-	const toggleCollapsed = () => {
-		dispatch(toggleMenu());
-	};
+    const toggleCollapsed = () => {
+        dispatch(toggleMenu());
+    };
 
-	return (
-		<Header id='header'>
-			<div id='hamburger' className='inline'>
-				<div className='header-logo'>
-					<img src={mareanaLogo} height='40' alt='menu' />
-					<span></span>
-					<img src={cpvLogo} alt='cpv' />
-				</div>
+    return (
+        <Header id='header'>
+            <div id='hamburger' className='inline'>
+                <div className='header-logo'>
+                    <img src={mareanaLogo} height='40' alt='menu' />
+                    <span></span>
+                    <img src={cpvLogo} alt='cpv' />
+                </div>
 
-				{/* <Button onClick={toggleCollapsed}>
+                {/* <Button onClick={toggleCollapsed}>
 					<img src={hamburgerIcon} alt='menu' />
 				</Button> */}
-			</div>
-			<div className='inline' id='search-header'>
-				{/* <Search
+            </div>
+            <div className='inline' id='search-header'>
+                {/* <Search
           className="search-secondary"
           placeholder="Search here..."
           onSearch={(value) => console.log(value)}
           enterButton
         /> */}
-			</div>
-		</Header>
-	);
+            </div>
+        </Header>
+    );
 };
 
 export default HeaderBar;

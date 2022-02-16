@@ -22,7 +22,7 @@ class ViolationTable extends Component {
                     pagination={false}
                 />
             </div>
-        )
+        );
     }
 }
 

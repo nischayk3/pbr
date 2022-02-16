@@ -4,9 +4,9 @@ import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 
 const createRootReducer = (history) =>
-	combineReducers({
-		router: connectRouter(history),
-		commonReducer,
-		chartDataReducer,
-	});
+    combineReducers({
+        router: connectRouter(history),
+        commonReducer,
+        chartDataReducer,
+    });
 export default createRootReducer;

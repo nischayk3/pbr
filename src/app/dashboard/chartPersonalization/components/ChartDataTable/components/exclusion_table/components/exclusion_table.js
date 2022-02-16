@@ -22,7 +22,7 @@ class ExclusionTable extends Component {
                     pagination={false}
                 />
             </div>
-        )
+        );
     }
 }
 

@@ -10,17 +10,17 @@ class DateFilter extends Component {
         this.state = {
             loading: false,
             visible: this.props.visible,
-          };
+        };
 
     }
 
     render() {
-        console.log('hello',this.state.visible)
+        console.log('hello',this.state.visible);
         return (
             <div>
               xexs
             </div>
-        )
+        );
     }
 }
 

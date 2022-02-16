@@ -14,4 +14,4 @@ export {
     SET_THEME,
     SET_NAVIGATION_DATA,
     TOGGLE_MENU
-}
+};

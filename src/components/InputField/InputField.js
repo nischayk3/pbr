@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { Input } from 'antd';
 import './InputFieldStyle.scss';
 
@@ -10,7 +10,7 @@ const InputField = (props) => {
             <Input placeholder={props.placeholder} value={props.value} onChange={props.onChangeInput} />
 
         </div>
-    )
-}
+    );
+};
 
-export default InputField
+export default InputField;

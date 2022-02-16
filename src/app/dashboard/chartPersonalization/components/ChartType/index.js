@@ -1,3 +1,3 @@
-import ChartType from '../ChartType/component/chartType'
+import ChartType from '../ChartType/component/chartType';
 
 export default ChartType;

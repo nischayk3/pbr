@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 import { Select } from 'antd';
-import './SelectFieldStyle.scss'
+import './SelectFieldStyle.scss';
 
 
 const SelectField = (props) => {
@@ -22,7 +22,7 @@ const SelectField = (props) => {
                 ))} */}
             </Select>
         </div>
-    )
-}
+    );
+};
 
-export default SelectField
+export default SelectField;

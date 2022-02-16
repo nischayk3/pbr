@@ -19,7 +19,7 @@ class Auth {
         else {
             this.authentacation = true;
         }
-        callback()
+        callback();
     }
     logOut(callback) {
         this.authentacation = false;
@@ -28,7 +28,7 @@ class Auth {
         localStorage.removeItem('userrefreshtoken');
         localStorage.clear();
 
-        callback()
+        callback();
     }
 
     isAuthentication() {

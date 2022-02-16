@@ -7,10 +7,10 @@ export const CHANGE_COLOR_OPTION = 'CHANGE_COLOR_OPTION';
 export const CHANGE_THEME = 'CHANGE_THEME';
 
 
-export const FETCH_POST = "FETCH_POST";
-export const SEND_POST = "SEND_POST";
+export const FETCH_POST = 'FETCH_POST';
+export const SEND_POST = 'SEND_POST';
 
-export const GET_FILTER_DATA = "GET_FILTER_DATA";
-export const SEND_FILTER_DATA = "SEND_FILTER_DATA";
+export const GET_FILTER_DATA = 'GET_FILTER_DATA';
+export const SEND_FILTER_DATA = 'SEND_FILTER_DATA';
 
-export const GET_CHART_DATA = "GET_CHART_DATA";
+export const GET_CHART_DATA = 'GET_CHART_DATA';

@@ -10,7 +10,9 @@
 		"cy:run": "cypress run --browser chrome",
 		"test": "start-server-and-test start:instrument http://localhost:3004 cy:run",
 		"cypress": "npx cypress open",
-		"build-theme": "lessc -clean-css=\"--s1 --advanced --compatibility=ie8\" ./src/assets/styles/less/main.less ./src/assets/styles/css/doNotModify/custom-theme.css --js"
+		"build-theme": "lessc -clean-css=\"--s1 --advanced --compatibility=ie8\" ./src/assets/styles/less/main.less ./src/assets/styles/css/doNotModify/custom-theme.css --js",
+		"lint": "eslint src/**/*.js",
+		"lint-fix": "eslint src/**/*.js --fix"
 	},
 	"dependencies": {
 		"@testing-library/jest-dom": "^4.2.4",
@@ -61,6 +63,8 @@
 		"babel-plugin-transform-class-properties": "^6.24.1",
 		"cypress": "^5.0.0",
 		"cypress-localstorage-commands": "^1.2.1",
+		"eslint": "^8.9.0",
+		"eslint-plugin-react": "^7.28.0",
 		"start-server-and-test": "^1.11.3"
 	}
 }

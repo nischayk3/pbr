@@ -1,4 +1,4 @@
-import ShiftTable from './components/shift_table'
+import ShiftTable from './components/shift_table';
 
 
 export default ShiftTable;

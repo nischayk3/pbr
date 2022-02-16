@@ -22,7 +22,7 @@ class ShiftTable extends Component {
                     pagination={false}
                 />
             </div>
-        )
+        );
     }
 }
 
