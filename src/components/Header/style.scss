@@ -1,0 +1,27 @@
+#header {
+	background-color: #fff;
+	padding: 13px;
+	height: 58px;
+	line-height: 58px;
+	margin-left: -58px;
+	button {
+		border: none;
+	}
+	#hamburger {
+		line-height: normal;
+		vertical-align: top;
+	}
+
+	#search-header {
+		margin-left: 30px;
+	}
+}
+
+.header-logo {
+	span {
+		margin: 0 8px;
+		border-right: 2px solid #486bc9;
+		border-left: 1px solid #fff;
+		padding: 6px 0;
+	}
+}

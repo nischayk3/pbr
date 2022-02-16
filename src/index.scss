@@ -1,0 +1,39 @@
+@import './assets/styles/css/doNotModify/custom-theme.css';
+@import './assets/styles/sass/variables';
+
+body {
+	margin: 0;
+	font-family: 'Montserrat', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.inline {
+	display: inline-block !important;
+}
+
+.search-secondary.ant-input-search {
+	border: 2px solid var(--secondary-color);
+	border-radius: 10px;
+	width: 291px;
+}
+
+.search-secondary .ant-input-group-addon button {
+	background-color: var(--secondary-color);
+	font-size: 16px;
+}
+
+.search-secondary.ant-input-search-enter-button input {
+	border-radius: 10px;
+}
+.search-secondary.ant-input-search-enter-button input:focus,
+.search-secondary.ant-input-search-enter-button input:hover {
+	border-color: transparent !important;
+}
+
+.ant-layout-sider {
+	margin-top: 58px;
+}
+#logo-small {
+	display: none;
+}
