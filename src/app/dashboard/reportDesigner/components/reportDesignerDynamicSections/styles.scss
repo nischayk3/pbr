@@ -1,0 +1,62 @@
+.reportDesigner-dynamicSections {
+  max-height: 595px;
+  overflow-y: auto;
+
+  h6.dynamicSections-noteHeadline {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+    margin: 10px;
+  }
+  .dynamicSections-ul
+  { margin: 10px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 16px;  
+    color: #BFBFBF;
+    margin-top: 20px;
+  }
+ .input-section
+ {
+   width: 150px;
+   align-items: center;
+   justify-content: center;
+   margin-bottom: 10px;
+   color: black;
+   background-color:#f2fbff ;
+   border: none;
+ }
+  .dynamicSections-container {
+    margin-top: 30px;
+    overflow-y: scroll;
+
+    table.dynamicSections-table {
+      border: 1px solid rgba(241, 247, 255, 0.73);
+      text-align: center;
+      margin-bottom: 30px;
+
+      thead.dynamicSections-thead {
+        th {
+          background-color: rgba(241, 247, 255, 0.73);
+          color: #000000;
+          font-weight: 600;
+          border: 1px solid rgba(241, 247, 255, 0.73);
+          padding: 5px 10px;
+        }
+      }
+
+      tbody.dynamicSections-tbody {
+        td {
+          border: 1px solid #f2fbff;
+          background-color: #ffffff;
+          color: #121212;
+          padding: 5px 10px;
+        }
+      }
+    }
+  }
+}

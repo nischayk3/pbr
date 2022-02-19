@@ -52,6 +52,13 @@ const MENU = [
         title: 'Audit Trail Report',
         linkTo: '/dashboard/audit_trail_report',
     },
+    {
+        key: 'report_designer',
+        icon: <img src={AppsIcon} alt='Home' className='anticon' />,
+        title: 'Report Designer',
+        linkTo: '/dashboard/report_designer',
+    },
+    
 ];
 
 const LogoutIcon = <img src={LogOutIcon} alt='Logout' className='anticon' />;

@@ -4,7 +4,7 @@ import {
     API_PLOT_URL,
     BMS_APP_PYTHON_SERVICE,
 } from '../../constants/apiBaseUrl';
-import { AjaxService } from '../../utils/AjaxService';
+import Service from '../../services/AjaxService';
 
 export const fetchPost = (_queryParam, dataTableConfig) => {
     return fetch(API_RESULTSET_URL + '/returnData', {
@@ -39,7 +39,7 @@ export const fetchPost = (_queryParam, dataTableConfig) => {
 };
 
 export const unApprovedReturnData = (request) => {
-    return AjaxService.post(API_PLOT_URL + 'unapproved_plot', request).then(
+    return Service.post(API_PLOT_URL + 'unapproved_plot', request).then(
         (response) => {
             return response.data;
         },
@@ -50,7 +50,7 @@ export const unApprovedReturnData = (request) => {
 };
 
 export const deviationsPlotReturnData = (request) => {
-    return AjaxService.post(API_PLOT_URL + 'deviations_plot', request).then(
+    return Service.post(API_PLOT_URL + 'deviations_plot', request).then(
         (response) => {
             return response.data;
         },
@@ -61,7 +61,7 @@ export const deviationsPlotReturnData = (request) => {
 };
 
 export const excursionPlotReturnData = (request) => {
-    return AjaxService.post(API_PLOT_URL + 'excursion_plot', request).then(
+    return Service.post(API_PLOT_URL + 'excursion_plot', request).then(
         (response) => {
             return response.data;
         },
@@ -72,7 +72,7 @@ export const excursionPlotReturnData = (request) => {
 };
 
 export const excursionTableReturnData = (request) => {
-    return AjaxService.post(API_PLOT_URL + 'excursiontable', request).then(
+    return Service.post(API_PLOT_URL + 'excursiontable', request).then(
         (response) => {
             return response.data;
         },
@@ -83,7 +83,7 @@ export const excursionTableReturnData = (request) => {
 };
 
 export const rulesViolation = (request) => {
-    return AjaxService.post(API_PLOT_URL + 'rules-violation', request).then(
+    return Service.post(API_PLOT_URL + 'rules-violation', request).then(
         (response) => {
             return response.data;
         },
