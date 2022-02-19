@@ -1,19 +1,23 @@
-
-import { API_RESULTSET_URL, API_CPV_URL, API_PLOT_URL ,BMS_APP_PYTHON_SERVICE} from '../constants/apiBaseUrl';
-import { AjaxService } from '../utilities/AjaxService';
+import {
+    API_RESULTSET_URL,
+    API_CPV_URL,
+    API_PLOT_URL,
+    BMS_APP_PYTHON_SERVICE,
+} from '../../constants/apiBaseUrl';
+import { AjaxService } from '../../utils/AjaxService';
 
 export const fetchPost = (_queryParam, dataTableConfig) => {
     return fetch(API_RESULTSET_URL + '/returnData', {
-    //platform-services //prismmicro-resultset
+        //platform-services //prismmicro-resultset
         method: 'POST',
         headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(_queryParam)
+        body: JSON.stringify(_queryParam),
     })
-        .then(res => res.json())
-        .then(posts => {
+        .then((res) => res.json())
+        .then((posts) => {
             let dataTable = { ...dataTableConfig };
             if (posts.data && posts.config) {
                 posts.filters = _queryParam.filters;
@@ -21,89 +25,69 @@ export const fetchPost = (_queryParam, dataTableConfig) => {
                     ...dataTableConfig,
                     header: {
                         ...dataTableConfig.header,
-                        config: [...posts.config]
+                        config: [...posts.config],
                     },
                     body: {
                         ...dataTableConfig.body,
-                        ...posts.data
+                        ...posts.data,
                     },
-                    filters: [...posts.filters]
+                    filters: [...posts.filters],
                 };
             }
             return dataTable;
         });
 };
 
-export const unApprovedReturnData = request => {
-    return AjaxService.post(
-        API_PLOT_URL + 'unapproved_plot',
-        request
-    ).then(
-        response => {
-
+export const unApprovedReturnData = (request) => {
+    return AjaxService.post(API_PLOT_URL + 'unapproved_plot', request).then(
+        (response) => {
             return response.data;
         },
-        error => {
+        (error) => {
             return error.response.data;
         }
     );
 };
 
-export const deviationsPlotReturnData = request => {
-    return AjaxService.post(
-        API_PLOT_URL + 'deviations_plot',
-        request
-    ).then(
-        response => {
-
+export const deviationsPlotReturnData = (request) => {
+    return AjaxService.post(API_PLOT_URL + 'deviations_plot', request).then(
+        (response) => {
             return response.data;
         },
-        error => {
+        (error) => {
             return error.response.data;
         }
     );
 };
 
-export const excursionPlotReturnData = request => {
-    return AjaxService.post(
-        API_PLOT_URL + 'excursion_plot',
-        request
-    ).then(
-        response => {
-
+export const excursionPlotReturnData = (request) => {
+    return AjaxService.post(API_PLOT_URL + 'excursion_plot', request).then(
+        (response) => {
             return response.data;
         },
-        error => {
+        (error) => {
             return error.response.data;
         }
     );
 };
 
-export const excursionTableReturnData = request => {
-    return AjaxService.post(
-        API_PLOT_URL + 'excursiontable',
-        request
-    ).then(
-        response => {
-
+export const excursionTableReturnData = (request) => {
+    return AjaxService.post(API_PLOT_URL + 'excursiontable', request).then(
+        (response) => {
             return response.data;
         },
-        error => {
+        (error) => {
             return error.response.data;
         }
     );
 };
 
-export const rulesViolation = request => {
-    return AjaxService.post(
-        API_PLOT_URL + 'rules-violation',
-        request
-    ).then(
-        response => {
-
+export const rulesViolation = (request) => {
+    return AjaxService.post(API_PLOT_URL + 'rules-violation', request).then(
+        (response) => {
             return response.data;
         },
-        error => {
+        (error) => {
             return error.response.data;
         }
     );
@@ -114,27 +98,21 @@ export const returnData = (_queryParam, dataTableConfig) => {
         method: 'POST',
         headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(_queryParam)
+        body: JSON.stringify(_queryParam),
     })
-        .then(res => res.json())
-        .then(posts => {
+        .then((res) => res.json())
+        .then((posts) => {
             return posts;
         });
 };
 
-export const uploaddatafile = _queryParam => {
+export const uploaddatafile = (_queryParam) => {
     return fetch(API_CPV_URL + '/uploaddatafile', {
         method: 'POST',
-        body: _queryParam
+        body: _queryParam,
     })
-        .then(res => res.json())
-        .then(fields => fields);
+        .then((res) => res.json())
+        .then((fields) => fields);
 };
-
-
-
-
-
-

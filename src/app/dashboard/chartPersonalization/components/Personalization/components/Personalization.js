@@ -14,7 +14,7 @@ class Personalization extends Component {
         const { Panel } = Collapse;
         return (
             <div>
-                <Card style={{ width: 350, height: 825 }}>
+                <Card style={{ height: 825 }}>
                     <Collapse defaultActiveKey={['1']} ghost>
                         <Panel header='Alerts' key='1'>
                             <div className='alerts-input'>
@@ -40,12 +40,12 @@ class Personalization extends Component {
                         </Panel>
                         <Panel header='Customization' key='3'></Panel>
 
-                        <panel header='Panel Options' key='4'></panel>
-                        <panel header='Panel Links' key='5'></panel>
-                        <panel header='Repeat Options' key='6'></panel>
-                        <panel header='Display' key='7'></panel>
-                        <panel header='Legend' key='8'></panel>
-                        <panel header='Axis' key='9'></panel>
+                        <Panel header='Panel Options' key='4'></Panel>
+                        <Panel header='Panel Links' key='5'></Panel>
+                        <Panel header='Repeat Options' key='6'></Panel>
+                        <Panel header='Display' key='7'></Panel>
+                        <Panel header='Legend' key='8'></Panel>
+                        <Panel header='Axis' key='9'></Panel>
 
                         <Panel header='Control Limits' key='10'>
                             <p>Text</p>

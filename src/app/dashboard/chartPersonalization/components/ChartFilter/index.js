@@ -1,4 +1,4 @@
-import ChartFilter from './components/ChartFilter';
+import ChartFilter from './components/ChartFilter'
 
 
 export default ChartFilter;
