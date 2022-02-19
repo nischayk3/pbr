@@ -1,3 +1,3 @@
-import ChartDetails from './components/ChartDetails';
+import ChartDetails from "./components/ChartDetails";
 
-export default ChartDetails;
+export default ChartDetails

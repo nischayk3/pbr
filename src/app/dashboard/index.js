@@ -18,6 +18,7 @@ import Auth from '../../utils/auth';
 const Home = lazy(() => import('./home'));
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
 const ChartPersonalization = lazy(() => import('./chartPersonalization'));
+const SystemErrorReport = lazy(() => import('./systemErrorReport'));
 
 const { Content } = Layout;
 
@@ -54,6 +55,12 @@ const Dashboard = () => {
                                     path={`${match.url}/chart_personalization`}
                                 >
                                     <ChartPersonalization />
+                                </Route>
+                                <Route
+                                    key='system_error_report'
+                                    path={`${match.url}/system_error_report`}
+                                >
+                                    <SystemErrorReport />
                                 </Route>
                                 <Route key='redirect'>
                                     <Redirect to={`${match.url}/dashboard`} />

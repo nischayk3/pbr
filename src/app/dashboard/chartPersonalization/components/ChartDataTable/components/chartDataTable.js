@@ -18,7 +18,7 @@ class ChartDataTable extends Component {
         return (
             <div>
                 <div>
-                    <Card bordered={false} style={{ width: 500, height: 285 }}>
+                    <Card bordered={false} style={{ height: 285 }}>
                         <Tabs defaultActiveKey='1'>
                             <TabPane tab='Exclusion' key='1'>
                                 <ExclusionTable />

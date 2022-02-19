@@ -20,7 +20,7 @@ class ChartType extends Component {
             toastOpen: false,
             toastMessage: '',
             toastVariant: '',
-            selectedChartType: '',
+            selectedChartType: this.props.chartObj.chart_type,
             selectedXAxis: '',
             selectedYAxis: '',
         };
@@ -31,7 +31,7 @@ class ChartType extends Component {
     }
 
     getChartTypeHandler = () => {
-        let req = { user_id: localStorage.getItem('user') };
+        let req = { user_id: JSON.parse(localStorage.getItem('username')) };
         getChartType(req).then((res) => {
             console.log('res', res);
             if (res.statuscode === 200) {
@@ -84,32 +84,20 @@ class ChartType extends Component {
     };
 
     render() {
-        const { isScatter, toastOpen, toastMessage, toastVariant, chartTypeList } =
-			this.state;
+        const {
+            isScatter,
+            toastOpen,
+            toastMessage,
+            toastVariant,
+            chartTypeList,
+        } = this.state;
         return (
             <div>
-                {/* <Snackbar
-                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    open={toastOpen}
-                    autoHideDuration={8000}
-                    onClose={evt => {
-                        this.handleClose()
-                    }}
-                    style={{ zIndex: 3333 }}
-                >
-                    <NotificationMessage
-                        variant={toastVariant}
-                        message={toastMessage}
-                        onClose={() => {
-                            this.setState({ toastOpen: false })
-                        }}
-                    />
-                </Snackbar> */}
-                <Card title='Chart' style={{ width: 450 }}>
+                <Card title='Chart'>
                     <div>
                         <div>
                             <Text level={5} style={{ marginRight: '8%' }}>
-								Chart Type
+                                Chart Type
                             </Text>
                         </div>
                         <div>
@@ -120,7 +108,7 @@ class ChartType extends Component {
                             >
                                 {chartTypeList.map((item, i) => {
                                     return (
-                                        <Option key={i} value={item.chart_name}>
+                                        <Option value={item.chart_name}>
                                             {item.chart_name}
                                         </Option>
                                     );
@@ -139,13 +127,15 @@ class ChartType extends Component {
                                 disabled
                             />
                             <div>
-                                {' '}
                                 <Input
                                     value={this.state.selectedYAxis}
                                     style={{ width: 150 }}
                                     disabled
                                 />{' '}
-                                <WarningTwoTone style={{ marginLeft: 10 }} twoToneColor='red' />
+                                <WarningTwoTone
+                                    style={{ marginLeft: 10 }}
+                                    twoToneColor='red'
+                                />
                             </div>
                         </div>
                     ) : (

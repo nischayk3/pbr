@@ -1,33 +1,40 @@
-import { API_RESULTSET_URL } from '../constants/apiBaseUrl';
+import { API_RESULTSET_URL } from '../../constants/apiBaseUrl';
 
 export const saveRecord = (queryParam) => {
-    return fetch(API_RESULTSET_URL + '/saveRecord', { //platform-services //prismmicro-resultset
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(queryParam)
-    })
-        .then(res => res.json())
-        .then(fields => { return fields; });
-};
-
-export const getData = (queryParam) => {
-    return fetch(API_RESULTSET_URL + '/returnData', {
+    return fetch(API_RESULTSET_URL + '/saveRecord', {
+        //platform-services //prismmicro-resultset
         method: 'POST',
         headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(queryParam)
-    }, {
-        mode: 'no-cors'
+        body: JSON.stringify(queryParam),
     })
-        .then(res => {
+        .then((res) => res.json())
+        .then((fields) => {
+            return fields;
+        });
+};
+
+export const getData = (queryParam) => {
+    return fetch(
+        API_RESULTSET_URL + '/returnData',
+        {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(queryParam),
+        },
+        {
+            mode: 'no-cors',
+        }
+    )
+        .then((res) => {
             return res.json();
         })
-        .then(posts => {
+        .then((posts) => {
             if (posts.error) {
                 throw posts.message;
             }
@@ -36,20 +43,24 @@ export const getData = (queryParam) => {
 };
 
 export const loadFilter = (queryParam) => {
-    return fetch(API_RESULTSET_URL + '/loadFilter', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
+    return fetch(
+        API_RESULTSET_URL + '/loadFilter',
+        {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(queryParam),
         },
-        body: JSON.stringify(queryParam)
-    }, {
-        mode: 'no-cors'
-    })
-        .then(res => {
+        {
+            mode: 'no-cors',
+        }
+    )
+        .then((res) => {
             return res.json();
         })
-        .then(posts => {
+        .then((posts) => {
             if (posts.error) {
                 throw posts.message;
             }
@@ -61,16 +72,14 @@ export const downloadData = (_queryParam) => {
     return fetch(API_RESULTSET_URL + '/returnExcel', {
         method: 'POST',
         headers: {
-            'accept': 'application/json',
-            'Content-Type': 'application/json'
+            accept: 'application/json',
+            'Content-Type': 'application/json',
         },
         responseType: 'blob',
-        body: JSON.stringify(_queryParam)
+        body: JSON.stringify(_queryParam),
     })
-        .then(response => response.json()).then(
-            (posts) => {
-                return posts;
-            }
-        );
+        .then((response) => response.json())
+        .then((posts) => {
+            return posts;
+        });
 };
-
