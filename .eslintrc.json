@@ -1,38 +1,39 @@
-// {
-//     "env": {
-//         "browser": true
-//     },
-//     "settings": {
-//         "react":{
-//             "version":"autoDetect"
-//         }
-//     },
-//     "extends":  "eslint:recommended",
-//     "parserOptions": {
-//         "ecmaFeatures": {
-//             "jsx": true
-//         },
-//         "ecmaVersion": "latest",
-//         "sourceType": "module"
-//     },
-  
-//     "rules": {
-//         "indent": [
-//             "error",
-//             4
-//         ],
-//         "linebreak-style": [
-//             "error",
-//             "unix"
-//         ],
-//         "quotes": [
-//             "error",
-//             "single"
-//         ],
-//         "semi": [
-//             "error",
-//             "always"
-//         ]    
+{
+    "env": {      
+        "browser": true
+    },
+    "settings": {
+        "react":{
+            "version":"autoDetect"
+        }
+    },
+    "extends":  "eslint:recommended",
+    // "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+                    },
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    }, 
+    "rules": {
+        "no-unused-vars": "off",
+        "indent": [
+            "warn",
+            4
+        ],
+        "linebreak-style": [
+            "warn",
+            "unix"
+        ],
+        "quotes": [
+            "warn",
+            "single"
+        ],
+        "semi": [
+            "warn",
+            "always"
+        ]    
                  
-//     }
-// }
+    }
+}

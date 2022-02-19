@@ -165,28 +165,28 @@ export const adHocFilesParameterTree = (request) => {
 
 export const materialsParameterTree = request => {
     return Service.get(
-      BMS_APP_PYTHON_SERVICE + '/parameter-tree',
-      request,
+        BMS_APP_PYTHON_SERVICE + '/parameter-tree',
+        request,
     ).then(
-      response => {
-        return response.data
-      },
-      error => {
-        return error.response.data
-      },
-    )
-  }
+        response => {
+            return response.data;
+        },
+        error => {
+            return error.response.data;
+        },
+    );
+};
 
-  export const deleteAdHocFile = _queryParam => {
+export const deleteAdHocFile = _queryParam => {
     return Service.del(
-      BMS_APP_PYTHON_SERVICE + '/adhoc-files',
-      _queryParam
+        BMS_APP_PYTHON_SERVICE + '/adhoc-files',
+        _queryParam
     ).then(
-      response => {
-        return response.data
-      },
-      error => {
-        return error.response.data
-      },
-    )
-  }
+        response => {
+            return response.data;
+        },
+        error => {
+            return error.response.data;
+        },
+    );
+};

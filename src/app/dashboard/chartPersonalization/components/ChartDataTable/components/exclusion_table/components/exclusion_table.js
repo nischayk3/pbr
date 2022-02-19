@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
-import { Table,} from 'antd';
-import 'antd/dist/antd.css';
+import { Table } from 'antd';
+
 import './exclusion.scss';
 
 class ExclusionTable extends Component {
     constructor(props) {
         super(props);
-
     }
 
     render() {
-
         return (
             <div>
                 <Table
-                    size="small"
-                    className="exclusion_table"
+                    size='small'
+                    className='exclusion_table'
                     columns={[]}
                     dataSource={[]}
                     bordered

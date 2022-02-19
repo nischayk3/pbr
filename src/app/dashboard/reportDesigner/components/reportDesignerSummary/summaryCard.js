@@ -1,7 +1,7 @@
-import React from 'react'
-import { Card } from 'antd'
-import './style.scss'
-import TableSummary from './summaryTable'
+import React from 'react';
+import { Card } from 'antd';
+import './style.scss';
+import TableSummary from './summaryTable';
 
 function Summary() {
     return (
@@ -23,7 +23,7 @@ function Summary() {
 
         </div>
 
-    )
+    );
 }
 
-export default Summary
+export default Summary;

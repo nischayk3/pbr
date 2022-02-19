@@ -7,6 +7,7 @@ import configureStore, { history } from './duck/store';
 import App from './app';
 import * as serviceWorker from './serviceWorker';
 import './index.scss';
+import 'antd/dist/antd.min.css';
 
 ReactDOM.render(
     <>

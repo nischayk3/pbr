@@ -190,8 +190,8 @@ class FailureReport extends Component {
                             : b.fieldName === null ||
                               b.fieldName === undefined ||
                               b.fieldName === ''
-                            ? 1
-                            : a.fieldName.toString().localeCompare(b.fieldName);
+                                ? 1
+                                : a.fieldName.toString().localeCompare(b.fieldName);
                     },
                 };
                 columns.push(obj);

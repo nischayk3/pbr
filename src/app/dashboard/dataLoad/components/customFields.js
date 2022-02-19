@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import './style.scss';
 import {
     Transfer,
@@ -6,11 +6,11 @@ import {
     Input,
     Checkbox,
     Typography
-} from 'antd'
+} from 'antd';
 import { withRouter } from 'react-router-dom';
 
 
-const { Text } = Typography
+const { Text } = Typography;
 class CustomField extends Component {
 
     constructor(props) {
@@ -22,7 +22,7 @@ class CustomField extends Component {
 
             screenChange: this.props.screenChange,
             addColumn: false
-        }
+        };
     }
     filterOption = (inputValue, option) => option.description.indexOf(inputValue) > -1;
 
@@ -99,7 +99,7 @@ class CustomField extends Component {
                                                     label="Screen Name"
                                                     margin="dense"
                                                     variant="filled"
-                                                    style={{ paddingRight: "2px", width: "200px" }}
+                                                    style={{ paddingRight: '2px', width: '200px' }}
                                                 />
                                             </div>
                                             <div item xs={3}>
@@ -108,7 +108,7 @@ class CustomField extends Component {
                                                     label="Status"
                                                     margin="dense"
                                                     variant="filled"
-                                                    style={{ paddingRight: "2px", width: "200px", marginLeft: '100px' }}
+                                                    style={{ paddingRight: '2px', width: '200px', marginLeft: '100px' }}
                                                 />
                                             </div>
                                         </div>
@@ -120,7 +120,7 @@ class CustomField extends Component {
                                                     label="Screen Name"
                                                     margin="dense"
                                                     variant="filled"
-                                                    style={{ paddingRight: "2px", width: "200px" }}
+                                                    style={{ paddingRight: '2px', width: '200px' }}
                                                 />
                                             </div>
                                             <div item xs={3}>
@@ -129,7 +129,7 @@ class CustomField extends Component {
                                                     label="Status"
                                                     margin="dense"
                                                     variant="filled"
-                                                    style={{ paddingRight: "2px", width: "200px", marginLeft: '100px' }}
+                                                    style={{ paddingRight: '2px', width: '200px', marginLeft: '100px' }}
                                                 />
                                             </div>
                                         </div>
@@ -141,7 +141,7 @@ class CustomField extends Component {
                                                     label="Screen Name"
                                                     margin="dense"
                                                     variant="filled"
-                                                    style={{ paddingRight: "2px", width: "200px" }}
+                                                    style={{ paddingRight: '2px', width: '200px' }}
                                                 />
                                             </div>
                                             <div item xs={3}>
@@ -150,7 +150,7 @@ class CustomField extends Component {
                                                     label="Status"
                                                     margin="dense"
                                                     variant="filled"
-                                                    style={{ paddingRight: "2px", width: "200px", marginLeft: '100px' }}
+                                                    style={{ paddingRight: '2px', width: '200px', marginLeft: '100px' }}
                                                 />
                                             </div>
                                         </div>
@@ -162,7 +162,7 @@ class CustomField extends Component {
                                                     label="Screen Name"
                                                     margin="dense"
                                                     variant="filled"
-                                                    style={{ paddingRight: "2px", width: "200px" }}
+                                                    style={{ paddingRight: '2px', width: '200px' }}
                                                 />
                                             </div>
                                             <div item xs={3}>
@@ -171,16 +171,16 @@ class CustomField extends Component {
                                                     label="Status"
                                                     margin="dense"
                                                     variant="filled"
-                                                    style={{ paddingRight: "2px", width: "200px", marginLeft: '100px' }}
+                                                    style={{ paddingRight: '2px', width: '200px', marginLeft: '100px' }}
                                                 />
                                             </div>
                                         </div>
-                                            <Text variant="h6" style={{ marginTop: '30px' }}>Make Appropriate Selections</Text>
-                                            <Checkbox />
-                                                    <Checkbox />
+                                        <Text variant="h6" style={{ marginTop: '30px' }}>Make Appropriate Selections</Text>
+                                        <Checkbox />
+                                        <Checkbox />
                                                 
                                         <br />
-                                      <Checkbox />
+                                        <Checkbox />
                                         <div item xs={12} container spacing={2}>
 
                                             <div item xs={3}>
@@ -190,7 +190,7 @@ class CustomField extends Component {
                                                     fullWidth
                                                     margin="dense"
                                                     variant="filled"
-                                                    style={{ paddingRight: "2px", width: "350px" }}
+                                                    style={{ paddingRight: '2px', width: '350px' }}
                                                 />
                                             </div>
                                         </div>
@@ -203,7 +203,7 @@ class CustomField extends Component {
                                                     fullWidth
                                                     margin="dense"
                                                     variant="filled"
-                                                    style={{ paddingRight: "2px", width: "350px" }}
+                                                    style={{ paddingRight: '2px', width: '350px' }}
                                                 />
                                             </div>
                                         </div>
@@ -215,9 +215,9 @@ class CustomField extends Component {
             </div>
 
 
-        )
-    };
-};
+        );
+    }
+}
 export default withRouter(CustomField);
 
 

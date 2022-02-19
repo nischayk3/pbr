@@ -1,47 +1,47 @@
-import React, { useState } from 'react'
-import { Table, Input, Popconfirm, Form } from 'antd'
-import { PlusSquareTwoTone, DeleteTwoTone } from "@ant-design/icons";
+import React, { useState } from 'react';
+import { Table, Input, Popconfirm, Form } from 'antd';
+import { PlusSquareTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
 
 
 function TableSummary() {
-    const [key, setKey] = useState('')
-    const [value, setValue] = useState('')
-    const [sectionName, setSectionName] = useState('')
+    const [key, setKey] = useState('');
+    const [value, setValue] = useState('');
+    const [sectionName, setSectionName] = useState('');
     const [data, setData] = useState([
         {
             keys: '',
             values: ''
         }
-    ])
+    ]);
 
     const addNewRecord = () => {
         
         let obj = {
             keys: '',
             values: ''
-        }
-        console.log(data)
+        };
+        console.log(data);
         let component = [...data,obj];
         // component.push(obj)
         // let data=[...data]
         // data.push(obj)
-        console.log('component',component)
+        console.log('component',component);
 
-        setData(component)
+        setData(component);
         
-        console.log('after',data)
+        console.log('after',data);
 
-    }
+    };
 
     const  handleDelete = (key) => {
         const dataSource = [...data];
-        setData(dataSource.filter((item) => item.key !== key))  
-      };
+        setData(dataSource.filter((item) => item.key !== key));  
+    };
 
     const [columns, setColumns] = useState([
         {
-            title: "",
+            title: '',
             render: (item, value, index) => 
                 (<> 
                     <PlusSquareTwoTone onClick={() => addNewRecord()} />
@@ -49,8 +49,8 @@ function TableSummary() {
             ,
         },
         {
-            title: "Key",
-            key: "keys",
+            title: 'Key',
+            key: 'keys',
             render: (item) => (
                 <>
                     <Input  type="text" onChange={(e) => setKey(e.target.value)}/>
@@ -58,8 +58,8 @@ function TableSummary() {
             ),
         },
         {
-            title: "Value",
-            key: "value",
+            title: 'Value',
+            key: 'value',
             render: (item) => (
                 <>
                     <Input  type="text"  onChange={(e) => setValue(e.target.value)}/>
@@ -67,8 +67,8 @@ function TableSummary() {
             ),
         },
         {
-            title: "Action",
-            key: "action",
+            title: 'Action',
+            key: 'action',
             width: '5px',
             render: (item) => (
                 <>
@@ -81,7 +81,7 @@ function TableSummary() {
 
         },
 
-    ])
+    ]);
  
 
     return (
@@ -89,12 +89,12 @@ function TableSummary() {
             <button onClick={()=>addNewRecord()}>add</button>
             <center> <Input placeholder="Section" value={sectionName} onChange={(e) => setSectionName(e.target.value)} className="summary-input" /></center>
             <Table className="summary-table"
-             columns={columns} 
-             dataSource={data}
-              pagination={false}
-               size="small" />
+                columns={columns} 
+                dataSource={data}
+                pagination={false}
+                size="small" />
         </div>
-    )
+    );
 }
 
-export default TableSummary
+export default TableSummary;
