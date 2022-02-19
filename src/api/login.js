@@ -1,8 +1,8 @@
 import { API_AUTHENTICATION_URL } from '../constants/apiBaseUrl';
-import { AjaxService } from '../utils/AjaxService';
+import  Service from '../services/AjaxService';
 
 export const userLogin = (_queryParam) => {
-    return AjaxService.post(
+    return Service.post(
         API_AUTHENTICATION_URL + '/signin',
         JSON.stringify(_queryParam)
     ).then(
@@ -14,7 +14,7 @@ export const userLogin = (_queryParam) => {
 };
 
 export const userRefresh = (_queryParam) => {
-    return AjaxService.post(
+    return Service.post(
         API_AUTHENTICATION_URL + '/signin/refresh',
         {},
         {
@@ -31,7 +31,7 @@ export const userRefresh = (_queryParam) => {
 };
 
 export const userLogout = (_queryParam) => {
-    return AjaxService.post(
+    return Service.post(
         API_AUTHENTICATION_URL + '/signout',
         JSON.stringify(_queryParam)
     ).then(

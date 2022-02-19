@@ -6,11 +6,11 @@ import {
     BMS_APP_PYTHON_SERVICE,
     BMS_APP_PYTHON_SERVICE_DNS,
 } from '../../constants/apiBaseUrl';
-import { AjaxService } from '../../utils/AjaxService';
+import Service from '../../services/AjaxService';
 
 /*To get the list of tables*/
 export const returnData = (request) => {
-    return AjaxService.post(API_RESULTSET_URL + '/returnData', request).then(
+    return Service.post(API_RESULTSET_URL + '/returnData', request).then(
         (response) => {
             return response.data;
         },
@@ -21,7 +21,7 @@ export const returnData = (request) => {
 };
 
 export const CustmReturnData = (request) => {
-    return AjaxService.post(API_PLOT_URL + 'apqrreport', request).then(
+    return Service.post(API_PLOT_URL + 'apqrreport', request).then(
         (response) => {
             return response.data;
         },
@@ -31,7 +31,7 @@ export const CustmReturnData = (request) => {
     );
 };
 export const dataQualityReturnData = (request) => {
-    return AjaxService.post(API_PLOT_URL + 'data_quality_report', request).then(
+    return Service.post(API_PLOT_URL + 'data_quality_report', request).then(
         (response) => {
             return response.data;
         },
@@ -41,7 +41,7 @@ export const dataQualityReturnData = (request) => {
     );
 };
 export const ipcConfigSaveRecord = (request) => {
-    return AjaxService.post(GRAFANA_DASHBOARD + 'config_dashboard', request).then(
+    return Service.post(GRAFANA_DASHBOARD + 'config_dashboard', request).then(
         (response) => {
             return response.data;
         },
@@ -52,7 +52,7 @@ export const ipcConfigSaveRecord = (request) => {
 };
 
 export const loadFilter = (request) => {
-    return AjaxService.post(API_RESULTSET_URL + '/loadFilter', request).then(
+    return Service.post(API_RESULTSET_URL + '/loadFilter', request).then(
         (response) => {
             return response;
         },
@@ -62,7 +62,7 @@ export const loadFilter = (request) => {
     );
 };
 export const auditDataChange = (request) => {
-    return AjaxService.post(
+    return Service.post(
         BMS_APP_PYTHON_SERVICE + '/audit-data-change',
         request
     ).then(
@@ -76,7 +76,7 @@ export const auditDataChange = (request) => {
 };
 
 export const exportAuditData = (request) => {
-    return AjaxService.gett(
+    return Service.gett(
         BMS_APP_PYTHON_SERVICE + '/audit-information',
         request
     ).then(
@@ -90,7 +90,7 @@ export const exportAuditData = (request) => {
 };
 
 export const getMoleculeData = (request) => {
-    return AjaxService.get(BMS_APP_PYTHON_SERVICE + '/molecules', request).then(
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/molecules', request).then(
         (response) => {
             return response.data;
         },
@@ -101,7 +101,7 @@ export const getMoleculeData = (request) => {
 };
 
 export const getChartType = (request) => {
-    return AjaxService.get(BMS_APP_PYTHON_SERVICE + '/chartTypes', request).then(
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/chartTypes', request).then(
         (response) => {
             return response.data;
         },
