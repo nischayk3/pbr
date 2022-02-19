@@ -19,7 +19,7 @@ const Home = lazy(() => import('./home'));
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
 const ChartPersonalization = lazy(() => import('./chartPersonalization'));
 const SystemErrorReport = lazy(() => import('./systemErrorReport'));
-const ViewCreation = lazy(() => import('./viewCreation'))
+const ViewCreation = lazy(() => import('./viewCreation'));
 
 const { Content } = Layout;
 
