@@ -1,3 +1,3 @@
-import ViewCreationPublishing from './components/ViewCreation'
+import ViewCreationPublishing from './components/ViewCreation';
 
-export default ViewCreationPublishing
+export default ViewCreationPublishing;

@@ -13,6 +13,7 @@ import SuspenseWrapper from '../../components/SuspenseWrapper';
 import BreadCrumbWrapper from '../../components/BreadCrumbWrapper';
 import './dashboard.scss';
 import Auth from '../../utils/auth';
+import Uploader from './dataLoad/index';
 
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
@@ -21,6 +22,9 @@ const ChartPersonalization = lazy(() => import('./chartPersonalization'));
 const SystemErrorReport = lazy(() => import('./systemErrorReport'));
 const ViewCreation = lazy(() => import('./viewCreation'));
 
+const DataLoad = lazy(() => import('./dataLoad'));
+const ReportDesigner = lazy(() => import('./reportDesigner'));
+const AuditTrial = lazy(() => import('./auditTrial'));
 const { Content } = Layout;
 
 const Dashboard = () => {
@@ -68,6 +72,24 @@ const Dashboard = () => {
                                     path={`${match.url}/system_error_report`}
                                 >
                                     <SystemErrorReport />
+                                </Route>
+                                <Route
+                                    key='data_load'
+                                    path={`${match.url}/data_load`}
+                                >
+                                    <DataLoad />
+                                </Route>
+                                <Route
+                                    key='report_designer'
+                                    path={`${match.url}/report_designer`}
+                                >
+                                    <ReportDesigner />
+                                </Route>
+                                <Route
+                                    key='audit_trail_report'
+                                    path={`${match.url}/audit_trail_report`}
+                                >
+                                    <AuditTrial />
                                 </Route>
                                 <Route key='redirect'>
                                     <Redirect to={`${match.url}/dashboard`} />

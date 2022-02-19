@@ -1,41 +1,49 @@
 import axios from 'axios';
 
-export const AjaxService = {
-    get: (url, params, headers) => {
-        return axios({
-            method: 'GET',
-            url: url,
-            headers: headers || { 'content-type': 'application/json' },
-            params: params || {}
-        });
-    },
-    post: (url, data, headers) => {
-        return axios({
-            method: 'POST',
-            url: url,
-            headers: headers || { 'content-type': 'application/json' },
-            data: data
-        });
-    },
-    delete: (url, headers) => {
-        return axios({
-            method: 'DELETE',
-            url: url,
-            headers: headers || { 'content-type': 'application/json' }
-        });
-    },
-    put: (url, data, headers) => {
-        return axios({
-            method: 'PUT',
-            url: url,
-            headers: headers || { 'content-type': 'application/json' },
-            data: data
-        });
+
+class Service 
+{
+    constructor() 
+    {
+        let service = axios.create();
+        this.service = service;
     }
-    // patch: () => {
 
-    // },
-    // options: () => {
+  get = (url, params, headers) => {
+      return this.service({
+          method: 'GET',
+          url: url,
+          headers: headers || { 'content-type': 'application/json' },
+          params: params || {}
+      });
+  }
 
-    // }
-};
+  post = (url, data, headers) => {
+      return this.service({
+          method: 'POST',
+          url: url,
+          headers: headers || { 'content-type': 'application/json' },
+          data: data
+      });
+  }
+
+  del = (url, data,headers) => {
+      return this.service({
+          method: 'DELETE',
+          url: url,
+          headers: headers || { 'content-type': 'application/json' },
+          data: data
+      });
+  }
+
+  put = (url, data, headers) => {
+      return this.service({
+          method: 'PUT',
+          url: url,
+          headers: headers || { 'content-type': 'application/json' },
+          data: data
+      });
+  }
+}
+
+export default new Service;

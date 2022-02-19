@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
-import { Table,} from 'antd';
-import 'antd/dist/antd.css';
+import { Table } from 'antd';
+
 import './violation.scss';
 
 class ViolationTable extends Component {
     constructor(props) {
         super(props);
-
     }
 
     render() {
-
         return (
             <div>
                 <Table
-                    size="small"
-                    className="violation_table"
+                    size='small'
+                    className='violation_table'
                     columns={[]}
                     dataSource={[]}
                     bordered

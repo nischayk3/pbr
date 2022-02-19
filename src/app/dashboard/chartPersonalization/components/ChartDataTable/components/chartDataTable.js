@@ -5,7 +5,7 @@ import ShiftTable from './shift_table';
 import TrendTable from './trend_table';
 import ViolationTable from './violation';
 import ParameterTable from './parameter_table';
-import 'antd/dist/antd.css';
+
 import './chartTableStyles.scss';
 
 class ChartDataTable extends Component {

@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-indent */
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -191,8 +193,8 @@ class Uploader extends Component {
         const nextState = {};
         if (
             info.file.type !==
-				'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' &&
-			info.file.type !== 'application/vnd.ms-excel'
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' &&
+            info.file.type !== 'application/vnd.ms-excel'
         ) {
             // message.error(`${info.file.name} is not excel or csv file`);
             this.setState({
@@ -323,7 +325,10 @@ class Uploader extends Component {
                     },
 
                     () => {
-                        console.log('nextStepDisabled', this.state.nextStepDisabled);
+                        console.log(
+                            'nextStepDisabled',
+                            this.state.nextStepDisabled
+                        );
                     }
                 );
                 this.props.showNotification('success', response.message);
@@ -569,12 +574,12 @@ class Uploader extends Component {
         });
     };
 
-    handleClose = () => {
-        this.setState({ toastOpen: false });
-        if (this.props.hasOwnProperty('changePage')) {
-            this.props.changePage();
-        }
-    };
+    // handleClose = () => {
+    //     this.setState({ toastOpen: false });
+    //     if (this.props.hasOwnProperty('changePage')) {
+    //         this.props.changePage();
+    //     }
+    // };
 
     duplicatRecordPopup = () => {
         this.setState({
@@ -772,30 +777,40 @@ class Uploader extends Component {
                                     current={this.state.currentStep}
                                 >
                                     {steps.map((item) => (
-                                        <Step key={item.title} title={item.title} />
+                                        <Step
+                                            key={item.title}
+                                            title={item.title}
+                                        />
                                     ))}
                                 </Steps>
                                 <div className='steps-content'>
-                                    {steps[this.state.currentStep].content == 'First-content' && (
+                                    {steps[this.state.currentStep].content ==
+                                        'First-content' && (
                                         <div className='step-content'>
                                             <p className='step-head-1'>
                                                 {' '}
-												The data load wizard will allow you to select template,
-												validate and load into the system. Please select a
-												template to proceed
+                                                The data load wizard will allow
+                                                you to select template, validate
+                                                and load into the system. Please
+                                                select a template to proceed
                                             </p>
                                             <p className='step-head-2'>
-												Download relevant template format
+                                                Download relevant template
+                                                format
                                             </p>
                                             <div className='temp_link'>
                                                 <div className='temp_block'>
                                                     <p className='temp_label'>
                                                         <span>
                                                             <DoubleRightOutlined
-                                                                style={{ fontSize: '20px', fontWeight: 800 }}
+                                                                style={{
+                                                                    fontSize:
+                                                                        '20px',
+                                                                    fontWeight: 800,
+                                                                }}
                                                             />
                                                         </span>
-														Parameters
+                                                        Parameters
                                                     </p>
                                                     <Button className='temp_btn'>
                                                         {' '}
@@ -803,7 +818,7 @@ class Uploader extends Component {
                                                             href={require('../../../../assets/xlsx/data_template.xlsx')}
                                                             download='data_template.xlsx'
                                                         >
-															Download
+                                                            Download
                                                         </a>
                                                     </Button>
                                                 </div>
@@ -811,95 +826,114 @@ class Uploader extends Component {
                                         </div>
                                     )}
                                     {steps[this.state.currentStep].content ==
-										'Second-content' && (
+                                        'Second-content' && (
                                         <div className='step-content'>
                                             <p className='step-head-1'>
-												Please select the filled out template in the section
-												below to upload, only excel and csv formats.{' '}
+                                                Please select the filled out
+                                                template in the section below to
+                                                upload, only excel and csv
+                                                formats.{' '}
                                             </p>
                                             <p className='step-head-1'>
-												Ensure cells formats are correct e.g. "012" will get
-												loaded as 12 if cell type is numerical. Only one sheet
-												can be uploaded at a time
+                                                Ensure cells formats are correct
+                                                e.g. "012" will get loaded as 12
+                                                if cell type is numerical. Only
+                                                one sheet can be uploaded at a
+                                                time
                                             </p>
-                                            {onChangeStatus && onChangeStatus === 400 && (
-                                                <Alert
-                                                    message={onChangeRes}
-                                                    description='Can you please check and try again.'
-                                                    type='error'
-                                                    showIcon
-                                                    closable
-                                                />
-                                            )}
-                                            {onChangeStatus && onChangeStatus === 401 && (
-                                                <Alert
-                                                    message={onChangeRes}
-                                                    type='error'
-                                                    description='User not aurhtorised for site, Can you please check and try again.'
-                                                    showIcon
-                                                    closable
-                                                />
-                                            )}
-                                            {onChangeStatus && onChangeStatus === 200 && (
-                                                <Alert
-                                                    message={onChangeRes}
-                                                    description='Please click on Next for Digital Signature'
-                                                    type='success'
-                                                    showIcon
-                                                />
-                                            )}
-                                            {onChangeStatus && onChangeStatus === 201 && (
-                                                <Alert
-                                                    message={onChangeRes}
-                                                    description='Please click on Next for Digital Signature'
-                                                    type='success'
-                                                    showIcon
-                                                />
-                                            )}
-                                            {approvedDataStatus && approvedDataStatus === 200 && (
-                                                <Alert
-                                                    message={approvedDataRes}
-                                                    description='Please click on Next for Digital Signature'
-                                                    type='success'
-                                                    showIcon
-                                                />
-                                            )}
-                                            {approvedDataStatus && approvedDataStatus === 206 && (
-                                                <Alert
-                                                    message={approvedDataRes}
-                                                    description='Please click on Next for Digital Signature'
-                                                    type='success'
-                                                    showIcon
-                                                />
-                                            )}
+                                            {onChangeStatus &&
+                                                onChangeStatus === 400 && (
+                                                    <Alert
+                                                        message={onChangeRes}
+                                                        description='Can you please check and try again.'
+                                                        type='error'
+                                                        showIcon
+                                                        closable
+                                                    />
+                                                )}
+                                            {onChangeStatus &&
+                                                onChangeStatus === 401 && (
+                                                    <Alert
+                                                        message={onChangeRes}
+                                                        type='error'
+                                                        description='User not aurhtorised for site, Can you please check and try again.'
+                                                        showIcon
+                                                        closable
+                                                    />
+                                                )}
+                                            {onChangeStatus &&
+                                                onChangeStatus === 200 && (
+                                                    <Alert
+                                                        message={onChangeRes}
+                                                        description='Please click on Next for Digital Signature'
+                                                        type='success'
+                                                        showIcon
+                                                    />
+                                                )}
+                                            {onChangeStatus &&
+                                                onChangeStatus === 201 && (
+                                                    <Alert
+                                                        message={onChangeRes}
+                                                        description='Please click on Next for Digital Signature'
+                                                        type='success'
+                                                        showIcon
+                                                    />
+                                                )}
+                                            {approvedDataStatus &&
+                                                approvedDataStatus === 200 && (
+                                                    <Alert
+                                                        message={
+                                                            approvedDataRes
+                                                        }
+                                                        description='Please click on Next for Digital Signature'
+                                                        type='success'
+                                                        showIcon
+                                                    />
+                                                )}
+                                            {approvedDataStatus &&
+                                                approvedDataStatus === 206 && (
+                                                    <Alert
+                                                        message={
+                                                            approvedDataRes
+                                                        }
+                                                        description='Please click on Next for Digital Signature'
+                                                        type='success'
+                                                        showIcon
+                                                    />
+                                                )}
                                             {/* {onChangeStatus && onChangeStatus === 300 && (
                           <Alert message={` Duplicate records found !!`} description="Please click on Next to Validation & Review." type="error" showIcon />
                         )} */}
 
-                                            {onChangeStatus && onChangeStatus === 300 && (
-                                                <Alert
-                                                    message={`${duplicateRecords} Duplicate Record found !!`}
-                                                    type='error'
-                                                    description='Do you want to continue or cancel? '
-                                                    showIcon
-                                                    action={
-                                                        <Space direction='horizontal'>
-                                                            <Button
-                                                                type='primary'
-                                                                onClick={() => this.approveDataFile()}
-                                                            >
-																Continue
-                                                            </Button>
-                                                            <Button
-                                                                type='ghost'
-                                                                onClick={() => this.cancelAlert()}
-                                                            >
-																Cancel
-                                                            </Button>
-                                                        </Space>
-                                                    }
-                                                />
-                                            )}
+                                            {onChangeStatus &&
+                                                onChangeStatus === 300 && (
+                                                    <Alert
+                                                        message={`${duplicateRecords} Duplicate Record found !!`}
+                                                        type='error'
+                                                        description='Do you want to continue or cancel? '
+                                                        showIcon
+                                                        action={
+                                                            <Space direction='horizontal'>
+                                                                <Button
+                                                                    type='primary'
+                                                                    onClick={() =>
+                                                                        this.approveDataFile()
+                                                                    }
+                                                                >
+                                                                    Continue
+                                                                </Button>
+                                                                <Button
+                                                                    type='ghost'
+                                                                    onClick={() =>
+                                                                        this.cancelAlert()
+                                                                    }
+                                                                >
+                                                                    Cancel
+                                                                </Button>
+                                                            </Space>
+                                                        }
+                                                    />
+                                                )}
 
                                             <div className='plan-sections download-template'>
                                                 <div className='fileuploader-input'>
@@ -908,18 +942,28 @@ class Uploader extends Component {
                                 cloud_upload
                               </i> */}
                                                         <h5 className='fileuploader-input-caption'>
-                                                            <span>Upload your file here</span>
+                                                            <span>
+                                                                Upload your file
+                                                                here
+                                                            </span>
                                                         </h5>
                                                         <p>in EXCEL or CSV.</p>
                                                         <Upload
                                                             {...uploadFileProps}
                                                             maxCount={1}
-                                                            fileList={this.state.selectedFileList}
-                                                            customRequest={dummyRequest}
-                                                            onChange={this.onChange}
+                                                            fileList={
+                                                                this.state
+                                                                    .selectedFileList
+                                                            }
+                                                            customRequest={
+                                                                dummyRequest
+                                                            }
+                                                            onChange={
+                                                                this.onChange
+                                                            }
                                                         >
                                                             <Button className='upload_button'>
-																Choose File
+                                                                Choose File
                                                             </Button>
                                                         </Upload>
                                                     </div>
@@ -927,138 +971,176 @@ class Uploader extends Component {
                                             </div>
                                         </div>
                                     )}
-                                    {steps[this.state.currentStep].content == 'third-content' && (
+                                    {steps[this.state.currentStep].content ==
+                                        'third-content' && (
                                         <div>
                                             <div className='step-content'>
-                                                {approvedDataStatus && approvedDataStatus === 200 && (
-                                                    <Alert
-                                                        message={approvedDataRes}
-                                                        type='success'
-                                                        description='Please provide a Digital Signature to further process or cancel. '
-                                                        showIcon
-                                                        action={
-                                                            <Space direction='horizontal'>
-                                                                <Button
-                                                                    type='primary'
-                                                                    onClick={() =>
-                                                                        this.showDigitalSignaturePopup()
-                                                                    }
-                                                                >
-																	Digital Signature
-                                                                </Button>
-                                                                <Button
-                                                                    type='ghost'
-                                                                    onClick={() => this.showCancelModel()}
-                                                                >
-																	Cancel
-                                                                </Button>
-                                                            </Space>
-                                                        }
-                                                    />
-                                                )}
-                                                {approvedDataStatus && approvedDataStatus === 206 && (
-                                                    <Alert
-                                                        message={approvedDataRes}
-                                                        type='success'
-                                                        description='Please provide a Digital Signature to further process or cancel. '
-                                                        showIcon
-                                                        action={
-                                                            <Space direction='horizontal'>
-                                                                <Button
-                                                                    type='primary'
-                                                                    onClick={() =>
-                                                                        this.showDigitalSignaturePopup()
-                                                                    }
-                                                                >
-																	Digital Signature
-                                                                </Button>
-                                                                <Button
-                                                                    type='ghost'
-                                                                    onClick={() => this.showCancelModel()}
-                                                                >
-																	Cancel
-                                                                </Button>
-                                                            </Space>
-                                                        }
-                                                    />
-                                                )}
-                                                {onChangeStatus && onChangeStatus === 201 && (
-                                                    <Alert
-                                                        message={onChangeRes}
-                                                        type='success'
-                                                        description='Please provide a Digital Signature to further process or cancel. '
-                                                        showIcon
-                                                        action={
-                                                            <Space direction='horizontal'>
-                                                                <Button
-                                                                    type='primary'
-                                                                    onClick={() =>
-                                                                        this.showDigitalSignaturePopup()
-                                                                    }
-                                                                >
-																	Digital Signature
-                                                                </Button>
-                                                                <Button
-                                                                    type='ghost'
-                                                                    onClick={() => this.showCancelModel()}
-                                                                >
-																	Cancel
-                                                                </Button>
-                                                            </Space>
-                                                        }
-                                                    />
-                                                )}
+                                                {approvedDataStatus &&
+                                                    approvedDataStatus ===
+                                                        200 && (
+                                                        <Alert
+                                                            message={
+                                                                approvedDataRes
+                                                            }
+                                                            type='success'
+                                                            description='Please provide a Digital Signature to further process or cancel. '
+                                                            showIcon
+                                                            action={
+                                                                <Space direction='horizontal'>
+                                                                    <Button
+                                                                        type='primary'
+                                                                        onClick={() =>
+                                                                            this.showDigitalSignaturePopup()
+                                                                        }
+                                                                    >
+                                                                        Digital
+                                                                        Signature
+                                                                    </Button>
+                                                                    <Button
+                                                                        type='ghost'
+                                                                        onClick={() =>
+                                                                            this.showCancelModel()
+                                                                        }
+                                                                    >
+                                                                        Cancel
+                                                                    </Button>
+                                                                </Space>
+                                                            }
+                                                        />
+                                                    )}
+                                                {approvedDataStatus &&
+                                                    approvedDataStatus ===
+                                                        206 && (
+                                                        <Alert
+                                                            message={
+                                                                approvedDataRes
+                                                            }
+                                                            type='success'
+                                                            description='Please provide a Digital Signature to further process or cancel. '
+                                                            showIcon
+                                                            action={
+                                                                <Space direction='horizontal'>
+                                                                    <Button
+                                                                        type='primary'
+                                                                        onClick={() =>
+                                                                            this.showDigitalSignaturePopup()
+                                                                        }
+                                                                    >
+                                                                        Digital
+                                                                        Signature
+                                                                    </Button>
+                                                                    <Button
+                                                                        type='ghost'
+                                                                        onClick={() =>
+                                                                            this.showCancelModel()
+                                                                        }
+                                                                    >
+                                                                        Cancel
+                                                                    </Button>
+                                                                </Space>
+                                                            }
+                                                        />
+                                                    )}
+                                                {onChangeStatus &&
+                                                    onChangeStatus === 201 && (
+                                                        <Alert
+                                                            message={
+                                                                onChangeRes
+                                                            }
+                                                            type='success'
+                                                            description='Please provide a Digital Signature to further process or cancel. '
+                                                            showIcon
+                                                            action={
+                                                                <Space direction='horizontal'>
+                                                                    <Button
+                                                                        type='primary'
+                                                                        onClick={() =>
+                                                                            this.showDigitalSignaturePopup()
+                                                                        }
+                                                                    >
+                                                                        Digital
+                                                                        Signature
+                                                                    </Button>
+                                                                    <Button
+                                                                        type='ghost'
+                                                                        onClick={() =>
+                                                                            this.showCancelModel()
+                                                                        }
+                                                                    >
+                                                                        Cancel
+                                                                    </Button>
+                                                                </Space>
+                                                            }
+                                                        />
+                                                    )}
 
-                                                {onChangeStatus && onChangeStatus === 200 && (
-                                                    <Alert
-                                                        message={onChangeRes}
-                                                        type='success'
-                                                        description='Please provide a Digital Signature to further process or cancel. '
-                                                        showIcon
-                                                        action={
-                                                            <Space direction='horizontal'>
-                                                                <Button
-                                                                    type='primary'
-                                                                    onClick={() =>
-                                                                        this.showDigitalSignaturePopup1()
-                                                                    }
-                                                                >
-																	Digital Signature
-                                                                </Button>
-                                                                <Button
-                                                                    type='ghost'
-                                                                    onClick={() => this.showCancelModel()}
-                                                                >
-																	Cancel
-                                                                </Button>
-                                                            </Space>
-                                                        }
-                                                    />
-                                                )}
+                                                {onChangeStatus &&
+                                                    onChangeStatus === 200 && (
+                                                        <Alert
+                                                            message={
+                                                                onChangeRes
+                                                            }
+                                                            type='success'
+                                                            description='Please provide a Digital Signature to further process or cancel. '
+                                                            showIcon
+                                                            action={
+                                                                <Space direction='horizontal'>
+                                                                    <Button
+                                                                        type='primary'
+                                                                        onClick={() =>
+                                                                            this.showDigitalSignaturePopup1()
+                                                                        }
+                                                                    >
+                                                                        Digital
+                                                                        Signature
+                                                                    </Button>
+                                                                    <Button
+                                                                        type='ghost'
+                                                                        onClick={() =>
+                                                                            this.showCancelModel()
+                                                                        }
+                                                                    >
+                                                                        Cancel
+                                                                    </Button>
+                                                                </Space>
+                                                            }
+                                                        />
+                                                    )}
 
-                                                {cancelFileStatus && cancelFileStatus === 200 && (
-                                                    <Alert
-                                                        message={cancelFileRes}
-                                                        type='success'
-                                                        description='Please click on Next'
-                                                        showIcon
-                                                        closable
-                                                    />
-                                                )}
+                                                {cancelFileStatus &&
+                                                    cancelFileStatus ===
+                                                        200 && (
+                                                        <Alert
+                                                            message={
+                                                                cancelFileRes
+                                                            }
+                                                            type='success'
+                                                            description='Please click on Next'
+                                                            showIcon
+                                                            closable
+                                                        />
+                                                    )}
 
-                                                {updateApproveSatus && updateApproveSatus === 200 && (
-                                                    <Alert
-                                                        message={primaryFileRes}
-                                                        type='success'
-                                                        description='Please click on Next'
-                                                        showIcon
-                                                        closable
-                                                    />
-                                                )}
+                                                {updateApproveSatus &&
+                                                    updateApproveSatus ===
+                                                        200 && (
+                                                        <Alert
+                                                            message={
+                                                                primaryFileRes
+                                                            }
+                                                            type='success'
+                                                            description='Please click on Next'
+                                                            showIcon
+                                                            closable
+                                                        />
+                                                    )}
                                                 <Modal
                                                     className='modal_digitalSignature'
                                                     title='Digital Signature'
-                                                    visible={this.state.isModalVisible}
+                                                    visible={
+                                                        this.state
+                                                            .isModalVisible
+                                                    }
                                                     footer={null}
                                                     onCancel={(e) => {
                                                         e.stopPropagation();
@@ -1071,8 +1153,13 @@ class Uploader extends Component {
                                                             <Input
                                                                 placeholder='Username'
                                                                 value={username}
-                                                                onChange={(value) =>
-                                                                    this.onChangeField(value, 'username')
+                                                                onChange={(
+                                                                    value
+                                                                ) =>
+                                                                    this.onChangeField(
+                                                                        value,
+                                                                        'username'
+                                                                    )
                                                                 }
                                                             />
                                                         </div>
@@ -1083,8 +1170,13 @@ class Uploader extends Component {
                                                                 autocomplete='new-password'
                                                                 type='password'
                                                                 value={password}
-                                                                onChange={(value) =>
-                                                                    this.onChangeField(value, 'password')
+                                                                onChange={(
+                                                                    value
+                                                                ) =>
+                                                                    this.onChangeField(
+                                                                        value,
+                                                                        'password'
+                                                                    )
                                                                 }
                                                             />
                                                         </div>
@@ -1092,36 +1184,66 @@ class Uploader extends Component {
                                                             <p>Reason</p>
                                                             <Select
                                                                 placeholder='Select a reason'
-                                                                value={signatureReason}
-                                                                onChange={(value) =>
-                                                                    this.onChangeSelect(value, 'reason')
+                                                                value={
+                                                                    signatureReason
                                                                 }
-                                                                style={{ width: '100%', margin: '0px' }}
+                                                                onChange={(
+                                                                    value
+                                                                ) =>
+                                                                    this.onChangeSelect(
+                                                                        value,
+                                                                        'reason'
+                                                                    )
+                                                                }
+                                                                style={{
+                                                                    width: '100%',
+                                                                    margin: '0px',
+                                                                }}
                                                             >
-                                                                {reasonList.map((item) => (
-                                                                    <Select.Option key={item} value={item}>
-                                                                        {item}
-                                                                    </Select.Option>
-                                                                ))}
+                                                                {reasonList.map(
+                                                                    (item) => (
+                                                                        <Select.Option
+                                                                            key={
+                                                                                item
+                                                                            }
+                                                                            value={
+                                                                                item
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                item
+                                                                            }
+                                                                        </Select.Option>
+                                                                    )
+                                                                )}
                                                             </Select>
                                                         </div>
                                                     </div>
                                                     <div className='signature-modal'>
                                                         <Button
                                                             type='primary'
-                                                            onClick={() => this.updateFileApproveData()}
+                                                            onClick={() =>
+                                                                this.updateFileApproveData()
+                                                            }
                                                         >
-															Ok
+                                                            Ok
                                                         </Button>
-                                                        <Button onClick={() => this.closeModel()}>
-															Cancel
+                                                        <Button
+                                                            onClick={() =>
+                                                                this.closeModel()
+                                                            }
+                                                        >
+                                                            Cancel
                                                         </Button>
                                                     </div>
                                                 </Modal>
                                                 <Modal
                                                     className='modal_digitalSignature'
                                                     title='Digital Signature'
-                                                    visible={this.state.isModalVisibleSignature}
+                                                    visible={
+                                                        this.state
+                                                            .isModalVisibleSignature
+                                                    }
                                                     footer={null}
                                                     onCancel={(e) => {
                                                         e.stopPropagation();
@@ -1134,8 +1256,13 @@ class Uploader extends Component {
                                                             <Input
                                                                 placeholder='Username'
                                                                 value={username}
-                                                                onChange={(value) =>
-                                                                    this.onChangeField(value, 'username')
+                                                                onChange={(
+                                                                    value
+                                                                ) =>
+                                                                    this.onChangeField(
+                                                                        value,
+                                                                        'username'
+                                                                    )
                                                                 }
                                                             />
                                                         </div>
@@ -1146,8 +1273,13 @@ class Uploader extends Component {
                                                                 autocomplete='new-password'
                                                                 type='password'
                                                                 value={password}
-                                                                onChange={(value) =>
-                                                                    this.onChangeField(value, 'password')
+                                                                onChange={(
+                                                                    value
+                                                                ) =>
+                                                                    this.onChangeField(
+                                                                        value,
+                                                                        'password'
+                                                                    )
                                                                 }
                                                             />
                                                         </div>
@@ -1155,36 +1287,66 @@ class Uploader extends Component {
                                                             <p>Reason</p>
                                                             <Select
                                                                 placeholder='Select a reason'
-                                                                value={signatureReason}
-                                                                onChange={(value) =>
-                                                                    this.onChangeSelect(value, 'reason')
+                                                                value={
+                                                                    signatureReason
                                                                 }
-                                                                style={{ width: '100%', margin: '0px' }}
+                                                                onChange={(
+                                                                    value
+                                                                ) =>
+                                                                    this.onChangeSelect(
+                                                                        value,
+                                                                        'reason'
+                                                                    )
+                                                                }
+                                                                style={{
+                                                                    width: '100%',
+                                                                    margin: '0px',
+                                                                }}
                                                             >
-                                                                {reasonList.map((item) => (
-                                                                    <Select.Option key={item} value={item}>
-                                                                        {item}
-                                                                    </Select.Option>
-                                                                ))}
+                                                                {reasonList.map(
+                                                                    (item) => (
+                                                                        <Select.Option
+                                                                            key={
+                                                                                item
+                                                                            }
+                                                                            value={
+                                                                                item
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                item
+                                                                            }
+                                                                        </Select.Option>
+                                                                    )
+                                                                )}
                                                             </Select>
                                                         </div>
                                                     </div>
                                                     <div className='signature-modal'>
                                                         <Button
                                                             type='primary'
-                                                            onClick={() => this.approveDataFile()}
+                                                            onClick={() =>
+                                                                this.approveDataFile()
+                                                            }
                                                         >
-															Ok
+                                                            Ok
                                                         </Button>
-                                                        <Button onClick={() => this.closeModel()}>
-															Cancel
+                                                        <Button
+                                                            onClick={() =>
+                                                                this.closeModel()
+                                                            }
+                                                        >
+                                                            Cancel
                                                         </Button>
                                                     </div>
                                                 </Modal>
                                                 <Modal
                                                     className='modal_digitalSignature'
                                                     title='Do you want to cancel?'
-                                                    visible={this.state.isModalCancelVisible}
+                                                    visible={
+                                                        this.state
+                                                            .isModalCancelVisible
+                                                    }
                                                     footer={null}
                                                     onCancel={(e) => {
                                                         e.stopPropagation();
@@ -1196,17 +1358,38 @@ class Uploader extends Component {
                                                             <p>Reason</p>
                                                             <Select
                                                                 placeholder='Select a reason'
-                                                                value={cancelReason}
-                                                                onChange={(value) =>
-                                                                    this.onChangeSelect(value, 'reason_cancel')
+                                                                value={
+                                                                    cancelReason
                                                                 }
-                                                                style={{ width: '100%', margin: '0px' }}
+                                                                onChange={(
+                                                                    value
+                                                                ) =>
+                                                                    this.onChangeSelect(
+                                                                        value,
+                                                                        'reason_cancel'
+                                                                    )
+                                                                }
+                                                                style={{
+                                                                    width: '100%',
+                                                                    margin: '0px',
+                                                                }}
                                                             >
-                                                                {reasonListCancel.map((item) => (
-                                                                    <Select.Option key={item} value={item}>
-                                                                        {item}
-                                                                    </Select.Option>
-                                                                ))}
+                                                                {reasonListCancel.map(
+                                                                    (item) => (
+                                                                        <Select.Option
+                                                                            key={
+                                                                                item
+                                                                            }
+                                                                            value={
+                                                                                item
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                item
+                                                                            }
+                                                                        </Select.Option>
+                                                                    )
+                                                                )}
                                                             </Select>
                                                         </div>
                                                         {/* <div>
@@ -1222,12 +1405,18 @@ class Uploader extends Component {
                                                     <div className='signature-modal'>
                                                         <Button
                                                             type='primary'
-                                                            onClick={() => this.cancelFileUploadService()}
+                                                            onClick={() =>
+                                                                this.cancelFileUploadService()
+                                                            }
                                                         >
-															Ok
+                                                            Ok
                                                         </Button>
-                                                        <Button onClick={() => this.closeModelCancel()}>
-															Cancel
+                                                        <Button
+                                                            onClick={() =>
+                                                                this.closeModelCancel()
+                                                            }
+                                                        >
+                                                            Cancel
                                                         </Button>
                                                     </div>
                                                 </Modal>
@@ -1236,7 +1425,7 @@ class Uploader extends Component {
                                     )}
 
                                     {steps[this.state.currentStep].content ==
-										'fourth-content' && (
+                                        'fourth-content' && (
                                         <div>
                                             <div className='step-content'>
                                                 <Alert
@@ -1251,13 +1440,16 @@ class Uploader extends Component {
                                                                     this.showDigitalSignaturePopup2()
                                                                 }
                                                             >
-																Digital Signature
+                                                                Digital
+                                                                Signature
                                                             </Button>
                                                             <Button
                                                                 type='ghost'
-                                                                onClick={() => this.showCancelModel()}
+                                                                onClick={() =>
+                                                                    this.showCancelModel()
+                                                                }
                                                             >
-																Cancel
+                                                                Cancel
                                                             </Button>
                                                         </Space>
                                                     }
@@ -1265,7 +1457,10 @@ class Uploader extends Component {
                                                 <Modal
                                                     className='modal_digitalSignature'
                                                     title='Digital Signature'
-                                                    visible={this.state.isModalVisibleSignature1}
+                                                    visible={
+                                                        this.state
+                                                            .isModalVisibleSignature1
+                                                    }
                                                     footer={null}
                                                     onCancel={(e) => {
                                                         e.stopPropagation();
@@ -1278,8 +1473,13 @@ class Uploader extends Component {
                                                             <Input
                                                                 placeholder='Username'
                                                                 value={username}
-                                                                onChange={(value) =>
-                                                                    this.onChangeField(value, 'username')
+                                                                onChange={(
+                                                                    value
+                                                                ) =>
+                                                                    this.onChangeField(
+                                                                        value,
+                                                                        'username'
+                                                                    )
                                                                 }
                                                             />
                                                         </div>
@@ -1290,8 +1490,13 @@ class Uploader extends Component {
                                                                 autocomplete='new-password'
                                                                 type='password'
                                                                 value={password}
-                                                                onChange={(value) =>
-                                                                    this.onChangeField(value, 'password')
+                                                                onChange={(
+                                                                    value
+                                                                ) =>
+                                                                    this.onChangeField(
+                                                                        value,
+                                                                        'password'
+                                                                    )
                                                                 }
                                                             />
                                                         </div>
@@ -1299,36 +1504,66 @@ class Uploader extends Component {
                                                             <p>Reason</p>
                                                             <Select
                                                                 placeholder='Select a reason'
-                                                                value={signatureReason1}
-                                                                onChange={(value) =>
-                                                                    this.onChangeSelect(value, 'reason1')
+                                                                value={
+                                                                    signatureReason1
                                                                 }
-                                                                style={{ width: '100%', margin: '0px' }}
+                                                                onChange={(
+                                                                    value
+                                                                ) =>
+                                                                    this.onChangeSelect(
+                                                                        value,
+                                                                        'reason1'
+                                                                    )
+                                                                }
+                                                                style={{
+                                                                    width: '100%',
+                                                                    margin: '0px',
+                                                                }}
                                                             >
-                                                                {reasonList.map((item) => (
-                                                                    <Select.Option key={item} value={item}>
-                                                                        {item}
-                                                                    </Select.Option>
-                                                                ))}
+                                                                {reasonList.map(
+                                                                    (item) => (
+                                                                        <Select.Option
+                                                                            key={
+                                                                                item
+                                                                            }
+                                                                            value={
+                                                                                item
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                item
+                                                                            }
+                                                                        </Select.Option>
+                                                                    )
+                                                                )}
                                                             </Select>
                                                         </div>
                                                     </div>
                                                     <div className='signature-modal'>
                                                         <Button
                                                             type='primary'
-                                                            onClick={() => this.finalFileUploadData()}
+                                                            onClick={() =>
+                                                                this.finalFileUploadData()
+                                                            }
                                                         >
-															Ok
+                                                            Ok
                                                         </Button>
-                                                        <Button onClick={() => this.closeModelSignature1()}>
-															Cancel
+                                                        <Button
+                                                            onClick={() =>
+                                                                this.closeModelSignature1()
+                                                            }
+                                                        >
+                                                            Cancel
                                                         </Button>
                                                     </div>
                                                 </Modal>
                                                 <Modal
                                                     className='modal_digitalSignature'
                                                     title='Do you want to cancel?'
-                                                    visible={this.state.isModalCancelVisible}
+                                                    visible={
+                                                        this.state
+                                                            .isModalCancelVisible
+                                                    }
                                                     footer={null}
                                                     onCancel={(e) => {
                                                         e.stopPropagation();
@@ -1340,17 +1575,38 @@ class Uploader extends Component {
                                                             <p>Reason</p>
                                                             <Select
                                                                 placeholder='Select a reason'
-                                                                value={cancelReason}
-                                                                onChange={(value) =>
-                                                                    this.onChangeSelect(value, 'reason_cancel')
+                                                                value={
+                                                                    cancelReason
                                                                 }
-                                                                style={{ width: '100%', margin: '0px' }}
+                                                                onChange={(
+                                                                    value
+                                                                ) =>
+                                                                    this.onChangeSelect(
+                                                                        value,
+                                                                        'reason_cancel'
+                                                                    )
+                                                                }
+                                                                style={{
+                                                                    width: '100%',
+                                                                    margin: '0px',
+                                                                }}
                                                             >
-                                                                {reasonListCancel.map((item) => (
-                                                                    <Select.Option key={item} value={item}>
-                                                                        {item}
-                                                                    </Select.Option>
-                                                                ))}
+                                                                {reasonListCancel.map(
+                                                                    (item) => (
+                                                                        <Select.Option
+                                                                            key={
+                                                                                item
+                                                                            }
+                                                                            value={
+                                                                                item
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                item
+                                                                            }
+                                                                        </Select.Option>
+                                                                    )
+                                                                )}
                                                             </Select>
                                                         </div>
                                                         {/* <div>
@@ -1366,12 +1622,18 @@ class Uploader extends Component {
                                                     <div className='signature-modal'>
                                                         <Button
                                                             type='primary'
-                                                            onClick={() => this.cancelFileUploadService()}
+                                                            onClick={() =>
+                                                                this.cancelFileUploadService()
+                                                            }
                                                         >
-															Ok
+                                                            Ok
                                                         </Button>
-                                                        <Button onClick={() => this.closeModelCancel()}>
-															Cancel
+                                                        <Button
+                                                            onClick={() =>
+                                                                this.closeModelCancel()
+                                                            }
+                                                        >
+                                                            Cancel
                                                         </Button>
                                                     </div>
                                                 </Modal>
@@ -1379,14 +1641,15 @@ class Uploader extends Component {
                                         </div>
                                     )}
 
-                                    {steps[this.state.currentStep].content == 'fifth-content' && (
+                                    {steps[this.state.currentStep].content ==
+                                        'fifth-content' && (
                                         <div>
                                             <div className='step-content'>
                                                 <Result
                                                     status='success'
                                                     title='The file is succesfully uploaded !!!'
                                                 />
-												,
+                                                ,
                                             </div>
                                         </div>
                                     )}
@@ -1394,7 +1657,10 @@ class Uploader extends Component {
                                 <div className='steps-action'>
                                     {this.state.currentStep > 0 && (
                                         <Button
-                                            style={{ margin: '0 8px', float: 'left' }}
+                                            style={{
+                                                margin: '0 8px',
+                                                float: 'left',
+                                            }}
                                             type='primary'
                                             onClick={() => this.prevStep()}
                                         >
@@ -1402,21 +1668,35 @@ class Uploader extends Component {
                                         </Button>
                                     )}
 
-                                    {this.state.currentStep < steps.length - 1 && (
+                                    {this.state.currentStep <
+                                        steps.length - 1 && (
                                         <Button
-                                            disabled={this.state.nextStepDisabled}
-                                            style={{ margin: '0 8px', float: 'right' }}
+                                            disabled={
+                                                this.state.nextStepDisabled
+                                            }
+                                            style={{
+                                                margin: '0 8px',
+                                                float: 'right',
+                                            }}
                                             type='primary'
-                                            onClick={(e) => this.nextStep(e, this.state.currentStep)}
+                                            onClick={(e) =>
+                                                this.nextStep(
+                                                    e,
+                                                    this.state.currentStep
+                                                )
+                                            }
                                         >
-											Next <ArrowRightOutlined />
+                                            Next <ArrowRightOutlined />
                                         </Button>
                                     )}
                                     <Button
-                                        style={{ margin: '0 8px', float: 'right' }}
+                                        style={{
+                                            margin: '0 8px',
+                                            float: 'right',
+                                        }}
                                         onClick={() => this.clearData()}
                                     >
-										Cancel
+                                        Cancel
                                     </Button>
                                     {/* {this.state.currentStep === steps.length - 1 && (
                     <Button

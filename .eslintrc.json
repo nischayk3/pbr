@@ -1,7 +1,5 @@
 {
-    "env": {
-        "node": true,
-        "commonjs": true,
+    "env": {      
         "browser": true
     },
     "settings": {
@@ -10,28 +8,30 @@
         }
     },
     "extends":  "eslint:recommended",
+    // "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
                     },
-        "ecmaVersion": 2015,
+        "ecmaVersion": 6,
         "sourceType": "module"
-    },   "parser": "babel-eslint",
+    }, 
     "rules": {
+        "no-unused-vars": "off",
         "indent": [
-            "error",
+            "warn",
             4
         ],
         "linebreak-style": [
-            "error",
+            "warn",
             "unix"
         ],
         "quotes": [
-            "error",
+            "warn",
             "single"
         ],
         "semi": [
-            "error",
+            "warn",
             "always"
         ]    
                  

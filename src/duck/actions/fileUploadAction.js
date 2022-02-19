@@ -1,10 +1,10 @@
-import { AjaxService } from '../../utils/AjaxService';
+import Service from '../../services/AjaxService';
 import {
     API_PLOT_URL,
     BMS_APP_PYTHON_SERVICE,
 } from '../../constants/apiBaseUrl';
 export const uploadFile = (_queryParam) => {
-    return AjaxService.post(
+    return Service.post(
         'http://192.168.1.49:8084/fileUploadToFTP',
         _queryParam,
         {
@@ -17,7 +17,7 @@ export const uploadFile = (_queryParam) => {
 };
 
 export const uploadFileExl = (_queryParam) => {
-    return AjaxService.post(API_PLOT_URL + 'bulkupload', _queryParam, {
+    return Service.post(API_PLOT_URL + 'bulkupload', _queryParam, {
         'Content-Type': 'multipart/form-data',
         Accept: '*/*',
     }).then((posts) => {
@@ -26,7 +26,7 @@ export const uploadFileExl = (_queryParam) => {
 };
 
 export const uploadFileApi = (_queryParam) => {
-    return AjaxService.post(
+    return Service.post(
         BMS_APP_PYTHON_SERVICE + '/upload-file',
         _queryParam,
         {
@@ -44,7 +44,7 @@ export const uploadFileApi = (_queryParam) => {
 };
 
 export const cancelFileUpload = (request) => {
-    return AjaxService.post(
+    return Service.post(
         BMS_APP_PYTHON_SERVICE + '/cancel-file-upload',
         request
     ).then(
@@ -58,7 +58,7 @@ export const cancelFileUpload = (request) => {
 };
 
 export const approvedData = (request) => {
-    return AjaxService.post(
+    return Service.post(
         BMS_APP_PYTHON_SERVICE + '/approve-data',
         request
     ).then(
@@ -72,7 +72,7 @@ export const approvedData = (request) => {
 };
 
 export const updateApprovedData = (request) => {
-    return AjaxService.post(
+    return Service.post(
         BMS_APP_PYTHON_SERVICE + '/update-approved-data',
         request
     ).then(
@@ -86,7 +86,7 @@ export const updateApprovedData = (request) => {
 };
 
 export const finalFileUpload = (request) => {
-    return AjaxService.post(
+    return Service.post(
         BMS_APP_PYTHON_SERVICE + '/final-upload',
         request
     ).then(
@@ -100,7 +100,7 @@ export const finalFileUpload = (request) => {
 };
 
 export const validateFileData = (request) => {
-    return AjaxService.post(
+    return Service.post(
         BMS_APP_PYTHON_SERVICE + '/validatedata',
         request
     ).then(
@@ -114,7 +114,7 @@ export const validateFileData = (request) => {
 };
 
 export const dataLoadUpload = (_queryParam) => {
-    return AjaxService.post(
+    return Service.post(
         BMS_APP_PYTHON_SERVICE + '/dataload-upload',
         _queryParam,
         {
@@ -132,7 +132,7 @@ export const dataLoadUpload = (_queryParam) => {
 };
 
 export const adHocFileUpload = (_queryParam) => {
-    return AjaxService.post(
+    return Service.post(
         BMS_APP_PYTHON_SERVICE + '/adhoc-files',
         _queryParam,
         {
@@ -150,7 +150,7 @@ export const adHocFileUpload = (_queryParam) => {
 };
 
 export const adHocFilesParameterTree = (request) => {
-    return AjaxService.get(
+    return Service.get(
         BMS_APP_PYTHON_SERVICE + '/adhoc-files/parameter-tree',
         request
     ).then(
@@ -164,29 +164,29 @@ export const adHocFilesParameterTree = (request) => {
 };
 
 export const materialsParameterTree = request => {
-    return AjaxService.get(
-      BMS_APP_PYTHON_SERVICE + '/parameter-tree',
-      request,
+    return Service.get(
+        BMS_APP_PYTHON_SERVICE + '/parameter-tree',
+        request,
     ).then(
-      response => {
-        return response.data
-      },
-      error => {
-        return error.response.data
-      },
-    )
-  }
+        response => {
+            return response.data;
+        },
+        error => {
+            return error.response.data;
+        },
+    );
+};
 
-  export const deleteAdHocFile = _queryParam => {
-    return AjaxService.delete(
-      BMS_APP_PYTHON_SERVICE + '/adhoc-files',
-      _queryParam
+export const deleteAdHocFile = _queryParam => {
+    return Service.del(
+        BMS_APP_PYTHON_SERVICE + '/adhoc-files',
+        _queryParam
     ).then(
-      response => {
-        return response.data
-      },
-      error => {
-        return error.response.data
-      },
-    )
-  }
+        response => {
+            return response.data;
+        },
+        error => {
+            return error.response.data;
+        },
+    );
+};
