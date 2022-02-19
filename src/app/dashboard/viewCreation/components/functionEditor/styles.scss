@@ -1,0 +1,13 @@
+.functionEditor-container {
+  .functionEditor-FormBlock {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1.5fr;
+  }
+  .MathEditor-FormBlock {
+    grid-template-columns: 1.5fr 1fr;
+    margin-top: 30px;
+  }
+
+  .ant-col.ant-form-item-control {
+    width: 164px;
+  }
+}

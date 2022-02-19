@@ -1,0 +1,89 @@
+.materials-wrapper {
+  .materials-accordion {
+    border: none;
+    background-color: transparent;
+
+    .parameter-tag {
+      white-space: initial;
+      width: 80px;
+    }
+
+    .ant-collapse-header {
+      font-family: 'Maven Pro', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #262626;
+      background-color: transparent !important;
+      padding: 10px 20px 10px 0px !important;
+      display: flex;
+      align-items: center;
+
+      .ant-collapse-arrow {
+        right: 0px !important;
+        color: #bfbfbf !important;
+      }
+    }
+  }
+
+  .materials-panel {
+    border-bottom: 1px solid #cacaca;
+
+    .ant-collapse-content {
+      border-top: none;
+      border-top: 1px solid #cacaca;
+
+      .ant-collapse-content-box {
+        padding: 0px 0px 10px !important;
+        overflow: hidden !important;
+        max-height: none !important;
+        background-color: transparent !important;
+      }
+    }
+  }
+}
+
+.ant-collapse-item.viewCreation-materialsPanel {
+  .ant-collapse-content {
+    .ant-collapse-content-box {
+      &:first-of-type {
+        overflow-y: scroll;
+        max-height: 500px;
+        background-color: #ffffff;
+      }
+    }
+  }
+
+  .loadSpinner-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+  }
+}
+
+span.material-addIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  span.anticon.anticon-plus-square {
+    font-size: 18px;
+    color: #093185;
+  }
+}
+
+.borderless-table {
+  filter: none;
+
+  .ant-table .ant-table-thead > tr > th {
+    background-color: transparent;
+    padding: 5px;
+    border-bottom: none;
+  }
+  .ant-table-tbody > tr > td {
+    background-color: transparent;
+    padding: 5px;
+    border-bottom: none;
+  }
+}

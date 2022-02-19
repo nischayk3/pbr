@@ -19,6 +19,7 @@ const Home = lazy(() => import('./home'));
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
 const ChartPersonalization = lazy(() => import('./chartPersonalization'));
 const SystemErrorReport = lazy(() => import('./systemErrorReport'));
+const ViewCreation = lazy(() => import('./viewCreation'))
 
 const { Content } = Layout;
 
@@ -49,6 +50,12 @@ const Dashboard = () => {
                                     path={`${match.url}/manual_data_upload`}
                                 >
                                     <ManualDataUpload />
+                                </Route>
+                                <Route
+                                    key='view_creation'
+                                    path={`${match.url}/view_creation`}
+                                >
+                                    <ViewCreation />
                                 </Route>
                                 <Route
                                     key='chart_personalization'
