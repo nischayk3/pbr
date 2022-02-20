@@ -1,6 +1,8 @@
-import React, { useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useCallback, useEffect } from 'react';
+
 import { notification } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { hideNotification } from '../../duck/actions/commonActions';
 
 const DEFAULT_PLACEMENT = 'topRight';

@@ -1,3 +1,62 @@
 .ant-layout-content {
     padding: 15px;
 }
+
+.ant-card-head {
+    min-height: 40px !important;
+    height: 40px !important;
+    border-bottom: 1px solid #d9d9d9 !important;
+    .ant-card-head-title {
+        font-family: 'Titillium Web', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 22px;
+        padding: 9px 0;
+    }
+}
+
+.ant-card-body {
+    padding: 14px !important;
+}
+
+.sub-header {
+    padding: 10px 20px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .sub-header-title {
+        font-family: 'Roboto', sans-serif;
+        font-size: 20px;
+        color: #000000;
+        border-bottom: none;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        margin: 0;
+    }
+    .sub-header-btns {
+    }
+}
+
+.custom-primary-btn {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #262626;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    border-radius: 4px;
+    border: 1px solid #093185;
+    background: #fff;
+}
+
+.custom-primary-btn:focus,
+.custom-primary-btn:hover {
+    color: #fff;
+    border-color: #093185;
+    background: #093185;
+}

@@ -1,7 +1,8 @@
 import React from 'react';
+
 import './styles.scss';
-import { Form, Input, Select, Table, Tag, Checkbox } from 'antd';
 import { CheckCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import { Checkbox, Form, Input, Select, Table, Tag } from 'antd';
 
 const { Option } = Select;
 

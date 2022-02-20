@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './styles.scss';
 
-import { Form, Input, Space, Table, Tag } from 'antd';
 import {
     CheckCircleOutlined,
     CheckOutlined,
     CloseOutlined,
 } from '@ant-design/icons';
+import { Form, Input, Space, Table, Tag } from 'antd';
 
 // const columns = [
 //   {

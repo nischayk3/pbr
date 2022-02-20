@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import {
     ArrowLeftOutlined,
     CloudUploadOutlined,
@@ -7,12 +8,13 @@ import {
     SaveOutlined,
     ShareAltOutlined,
 } from '@ant-design/icons';
-import ViewSummary from './viewSummary/ViewSummary';
-import FunctionEditor from './functionEditor/FunctionEditor';
-import { Button, Form, Collapse, Space, Tag } from 'antd';
-import ParameterLookup from './parameterLookup/ParameterLookup';
-import Materials from './materials/Materials';
+import { Button, Collapse, Form, Space, Tag } from 'antd';
+
 import FileUpload from './fileUpload/FileUpload';
+import FunctionEditor from './functionEditor/FunctionEditor';
+import Materials from './materials/Materials';
+import ParameterLookup from './parameterLookup/ParameterLookup';
+import ViewSummary from './viewSummary/ViewSummary';
 import './styles.scss';
 
 const { Panel } = Collapse;

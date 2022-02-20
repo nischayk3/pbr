@@ -35,7 +35,7 @@ const Login = () => {
             dispatch(showLoader());
             const response = await userLogin(values);
             Auth.login({ ...response, username: values.username });
-            history.push('/dashboard/home');
+            history.push('/dashboard/view_creation');
             dispatch(hideLoader());
         } catch (err) {
             dispatch(hideLoader());
@@ -46,8 +46,14 @@ const Login = () => {
     return (
         <div className='page-login bg-img'>
             <div className='page-login-header'>
-                <span className='brand-name'>Continuous Process Verification</span>
-                <a href='https://www.mareana.com' target='_blank' rel="noreferrer">
+                <span className='brand-name'>
+                    Continuous Process Verification
+                </span>
+                <a
+                    href='https://www.mareana.com'
+                    target='_blank'
+                    rel='noreferrer'
+                >
                     <img src={Icon} alt={'logo'} className='logo' />
                 </a>
             </div>
@@ -70,7 +76,8 @@ const Login = () => {
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please enter your username!',
+                                            message:
+                                                'Please enter your username!',
                                         },
                                     ]}
                                 >
@@ -83,7 +90,8 @@ const Login = () => {
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please enter your password!',
+                                            message:
+                                                'Please enter your password!',
                                         },
                                     ]}
                                 >
@@ -91,10 +99,14 @@ const Login = () => {
                                 </Form.Item>
 
                                 <Form.Item
-                                    //  {...tailLayout}
+                                //  {...tailLayout}
                                 >
-                                    <Button type='primary' htmlType='submit' id='login-btn'>
-										Submit
+                                    <Button
+                                        type='primary'
+                                        htmlType='submit'
+                                        id='login-btn'
+                                    >
+                                        Submit
                                     </Button>
                                 </Form.Item>
                             </Form>

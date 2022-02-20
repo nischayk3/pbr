@@ -43,7 +43,7 @@ const Dashboard = () => {
                 <Layout>
                     <HeaderBar />
                     <Content>
-                        <BreadCrumbWrapper />
+                        {/* <BreadCrumbWrapper /> */}
                         <SuspenseWrapper>
                             <Switch>
                                 <Route key='home' path={`${match.url}/home`}>

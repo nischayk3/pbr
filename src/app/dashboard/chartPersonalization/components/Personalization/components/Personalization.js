@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+
 import { Card, Collapse } from 'antd';
+
 import InputField from '../../../../../../components/InputField/InputField';
 import SelectField from '../../../../../../components/SelectField/SelectField';
 import './Personalization.scss';

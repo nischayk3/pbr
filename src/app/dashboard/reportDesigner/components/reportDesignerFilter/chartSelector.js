@@ -1,12 +1,13 @@
 import React from 'react';
+
 import {
     Card,
+    Checkbox,
+    DatePicker,
+    Input,
     Select,
     Table,
     Typography,
-    DatePicker,
-    Checkbox,
-    Input,
 } from 'antd';
 import './styles.scss';
 

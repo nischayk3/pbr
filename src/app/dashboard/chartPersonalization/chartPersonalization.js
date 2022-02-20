@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
-import ChartView from './components/ChartView/index';
-import ChartFilter from './components/ChartFilter/index';
+
 import ChartDataTable from './components/ChartDataTable/index';
-import ChartType from './components/ChartType/index';
 import ChartDetails from './components/ChartDetails';
+import ChartFilter from './components/ChartFilter/index';
+import ChartType from './components/ChartType/index';
+import ChartView from './components/ChartView/index';
 import './ChartStyle.scss';
 import Personalization from './components/Personalization/components/Personalization';
+
 import {
     ArrowLeftOutlined,
+    CheckCircleTwoTone,
     FileDoneOutlined,
+    InfoCircleTwoTone,
     Loading3QuartersOutlined,
+    PlusOutlined,
     SaveOutlined,
     ShareAltOutlined,
-    PlusOutlined,
-    CheckCircleTwoTone,
-    InfoCircleTwoTone,
 } from '@ant-design/icons';
-import { Button, Modal, Input, Typography } from 'antd';
+import { Button, Input, Modal, Typography } from 'antd';
+
 import chartObj from './get_chart.json';
 
 const { Text } = Typography;
@@ -120,51 +123,55 @@ function ChartPersonalization() {
 
     return (
         <div className='chart-wrapper'>
-            <div className='viewCreation-block'>
-                <h1 className='reportDesigner-headline'>
+            <div className='sub-header'>
+                <h1 className='sub-header-title'>
                     <ArrowLeftOutlined /> Chart Personalization
                 </h1>
-                <div className='viewCreation-btns'>
+                <div className='sub-header-btns'>
                     <Button
-                        type='text'
-                        className='viewCreation-loadBtn'
+                        className='custom-primary-btn  '
                         onClick={() => {
                             setVisible(true);
                             setIsNew(true);
                         }}
+                        type='primary'
                     >
                         <PlusOutlined /> New
                     </Button>
                     <Button
-                        className='viewCreation-loadBtn'
+                        className='custom-primary-btn  '
                         onClick={() => {
                             setVisible(true);
                             setIsNew(true);
                         }}
+                        type='primary'
                     >
                         <Loading3QuartersOutlined /> Load
                     </Button>
                     <Button
-                        className='viewCreation-saveBtn'
+                        className='custom-primary-btn'
                         onClick={() => {
                             setVisible(true);
                             setIsNew(true);
                         }}
+                        type='primary'
                     >
                         <SaveOutlined /> Save
                     </Button>
                     <Button
-                        className='viewCreation-saveAsBtn'
+                        className='custom-primary-btn'
                         onClick={handleSaveAs}
+                        type='primary'
                     >
                         <FileDoneOutlined /> Save As
                     </Button>
                     <Button
-                        className='viewCreation-shareBtn'
+                        className='custom-primary-btn'
                         onClick={() => {
                             setVisible(true);
                             setIsNew(true);
                         }}
+                        type='primary'
                     >
                         <ShareAltOutlined /> Share
                     </Button>
@@ -267,7 +274,6 @@ function ChartPersonalization() {
                                 <Button
                                     style={{ width: '80px' }}
                                     className='loadButtons'
-                                    style={{ width: '80px' }}
                                     onClick={() => {
                                         setVisible(true);
                                         setIsSave(true);
@@ -297,11 +303,11 @@ function ChartPersonalization() {
                                 save or discard them ?
                             </p>
                             <div className='loadButton'>
-                                <Button className='viewCreation-loadBtn'>
+                                <Button className='custom-primary-btn  '>
                                     Save As
                                 </Button>
                                 <Button
-                                    className='viewCreation-loadBtn'
+                                    className='custom-primary-btn  '
                                     onClick={() => {
                                         setVisible(true);
                                         setIsSave(true);
@@ -311,7 +317,7 @@ function ChartPersonalization() {
                                     Save
                                 </Button>
                                 <Button
-                                    className='viewCreation-loadBtn'
+                                    className='custom-primary-btn  '
                                     onClick={() => {
                                         setVisible(true);
                                         setIsSave(true);
@@ -327,10 +333,10 @@ function ChartPersonalization() {
                         <div>
                             <p>Are you sure you want to discard changes ?</p>
                             <div className='discardButton'>
-                                <Button className='viewCreation-loadBtn'>
+                                <Button className='custom-primary-btn  '>
                                     Ok
                                 </Button>
-                                <Button className='viewCreation-loadBtn'>
+                                <Button className='custom-primary-btn  '>
                                     Cancel
                                 </Button>
                             </div>

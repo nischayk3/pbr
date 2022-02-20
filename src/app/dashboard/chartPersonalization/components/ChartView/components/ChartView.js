@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { Card, Select, Tag, Divider } from 'antd';
-import InputField from '../../../../../../components/InputField/InputField';
+
 import { WarningOutlined } from '@ant-design/icons';
+import { Card, Divider, Select, Tag } from 'antd';
+
+import InputField from '../../../../../../components/InputField/InputField';
 import SelectField from '../../../../../../components/SelectField/SelectField';
+
 import './ChartViewStyles.scss';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 function ChartView(props) {
     console.log('chart props', props, props.chartObj.view_id);
@@ -103,5 +107,9 @@ function ChartView(props) {
         </div>
     );
 }
+
+ChartView.propTypes = {
+    chartObj: PropTypes.object.isRequired,
+};
 
 export default ChartView;

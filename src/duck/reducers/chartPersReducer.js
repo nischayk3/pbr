@@ -6,9 +6,9 @@ const initState = {
 
 export default (state = initState, action) => {
     switch (action.type) {
-    case types.SELECTED_SITE:
-        return { ...state, ...action.payload };
-    default:
-        return state;
+        case types.SELECTED_SITE:
+            return { ...state, ...action.payload };
+        default:
+            return state;
     }
 };
