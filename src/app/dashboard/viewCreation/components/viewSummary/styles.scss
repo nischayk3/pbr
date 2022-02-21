@@ -14,6 +14,13 @@
 
 .viewSummary-table.viewSummary-tablewidth {
   width: 1000px;
+  span.ant-tag.ant-tag-magenta.parameter-tag {
+        white-space: initial;
+     }
+    
+      span.statusIcon-summary {
+       font-size: 20px;
+      }
 }
 
 .viewSummary-table {
