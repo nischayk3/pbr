@@ -1,64 +1,71 @@
 .viewSummary-container {
-  padding: 15px 25px 30px;
+    padding: 15px 25px 30px;
 
-  .viewSummary-FormBlock {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 0.5fr 1fr;
-    grid-gap: 14px 24px;
-  }
+    .viewSummary-FormBlock {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 0.5fr 1fr;
+        grid-gap: 14px 24px;
+    }
 
-  .viewSummary-TableBlock {
-    margin-top: 30px;
-  }
+    .viewSummary-TableBlock {
+        margin-top: 30px;
+    }
 }
 
 .viewSummary-table.viewSummary-tablewidth {
-  width: 1000px;
+    width: 950px;
+    span.ant-tag.ant-tag-magenta.parameter-tag {
+        white-space: initial;
+    }
+
+    span.statusIcon-summary {
+        font-size: 20px;
+    }
 }
 
 .viewSummary-table {
-  table {
-    box-shadow: 1px 1px 14px #0000001a;
-  }
+    table {
+        box-shadow: 1px 1px 14px #0000001a;
+    }
 
-  .ant-table-row:nth-child(even) {
-    background-color: transparent;
-  }
+    .ant-table-row:nth-child(even) {
+        background-color: transparent;
+    }
 
-  .ant-table .ant-table-thead > tr > th {
-    font-family: 'Roboto', sans-serif;
-    color: #262626 !important;
-    font-weight: 500;
-    font-size: 14px;
-    background-color: #f2fbff;
-    padding: 12px;
-  }
+    .ant-table .ant-table-thead > tr > th {
+        font-family: 'Roboto', sans-serif;
+        color: #262626 !important;
+        font-weight: 500;
+        font-size: 14px;
+        background-color: #f2fbff;
+        padding: 12px;
+    }
 
-  .ant-table-tbody > tr > td {
-    font-family: 'Roboto', sans-serif;
-    color: #262626;
-    font-weight: 400;
-    font-size: 14px;
-    border: none;
-    border-bottom: 1px solid #d9d9d9;
-    padding: 12px;
-  }
+    .ant-table-tbody > tr > td {
+        font-family: 'Roboto', sans-serif;
+        color: #262626;
+        font-weight: 400;
+        font-size: 14px;
+        border: none;
+        border-bottom: 1px solid #d9d9d9;
+        padding: 12px;
+    }
 }
 
 span.batchChecked,
 span.statusChecked {
-  color: #00a811;
-  font-size: 16px;
-  .anticon-check-circle {
+    color: #00a811;
     font-size: 16px;
-  }
+    .anticon-check-circle {
+        font-size: 16px;
+    }
 }
 span.batchClosed,
 span.statusClosed {
-  color: #db0000;
-  font-size: 16px;
+    color: #db0000;
+    font-size: 16px;
 }
 
 .ant-space.ant-space-horizontal.ant-space-align-center.deleteTableAction {
-  color: #db0000;
+    color: #db0000;
 }

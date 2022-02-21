@@ -25,7 +25,7 @@ function ParameterLookup(props) {
 
     const onSelectMoleculeHandler = () => {
         let req = { user_id: localStorage.getItem('username') };
-        getMoleculeData(req).then(res => {
+        getMoleculeData(req).then((res) => {
             if (res.statuscode === 200) {
                 setMoleculeList(res.data);
             }
@@ -38,10 +38,10 @@ function ParameterLookup(props) {
         });
     };
 
-    const onChangeMoleculeHandler = value => {
+    const onChangeMoleculeHandler = (value) => {
         setMoleculeId(value);
         let req = { moleculeId: value, detailedCoverage: true };
-        materialsParameterTree(req).then(res => {
+        materialsParameterTree(req).then((res) => {
             {
                 res.map((item, index) => {
                     setDataLoadingState(false);
@@ -67,22 +67,20 @@ function ParameterLookup(props) {
         if (!value) {
             setFilterdData(null);
         } else {
-            const filterdDataArr = materialsList.filter(o =>
-                Object.keys(o).some(k =>
-                    String(o[k])
-                        .toLowerCase()
-                        .includes(value.toLowerCase()),
-                ),
+            const filterdDataArr = materialsList.filter((o) =>
+                Object.keys(o).some((k) =>
+                    String(o[k]).toLowerCase().includes(value.toLowerCase())
+                )
             );
             setFilterdData(filterdDataArr);
         }
     }
     console.log('parentBatches', parentBatches);
     return (
-        <div className="parameterLookup-FormBlock">
-            <Form.Item label="Molecule" name="molecule">
+        <div className='parameterLookup-FormBlock'>
+            <Form.Item label='Molecule' name='molecule'>
                 <Select
-                    placeholder="Select"
+                    placeholder='Select'
                     onClick={onSelectMoleculeHandler}
                     onChange={onChangeMoleculeHandler}
                 >
@@ -95,15 +93,17 @@ function ParameterLookup(props) {
                     })}
                 </Select>
             </Form.Item>
-            <Form.Item label="Filters" name="filters">
+            <Form.Item label='Filters' name='filters'>
                 <Select
                     showSearch
-                    optionFilterProp="children"
+                    optionFilterProp='children'
                     onChange={onChange}
                     filterOption={(input, option) =>
-                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        option.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
                     }
-                    placeholder="Filter Materials"
+                    placeholder='Filter Materials'
                     allowClear={true}
                 >
                     {materialsList.map((item, index) => {

@@ -5,6 +5,8 @@ import {
     CloudUploadOutlined,
     FileDoneOutlined,
     Loading3QuartersOutlined,
+    CheckCircleOutlined,
+    CloseCircleOutlined,
     SaveOutlined,
     ShareAltOutlined,
 } from '@ant-design/icons';
@@ -65,12 +67,17 @@ function ViewCreation() {
             dataIndex: 'status',
             width: 100,
             fixed: 'left',
-            render: (record) => (
+            render: (text, record, index) => (
                 <>
-                    <span className='material-addIcon'>
-                        {console.log('record', record)}
-                        {/* {record.coverage_metric_percent === '100%' ? 'Yes' : 'No'} */}
-                    </span>
+                    {record.coverage_metric_percent === '38.64 %' ? (
+                        <span className='statusIcon-summary'>
+                            <CheckCircleOutlined />
+                        </span>
+                    ) : (
+                        <span className='statusIcon-summary'>
+                            <CloseCircleOutlined />
+                        </span>
+                    )}
                 </>
             ),
         },
