@@ -187,15 +187,36 @@ function ViewSummary(props) {
         setParentBatches,
         viewSummaryColumns,
         setViewSummaryColumns,
+        newBatchData,
+        setNewBatchData
     } = props;
 
     const onChangeColumnsHandler = () => {
         let columns = [];
-        parentBatches.map((item, index) => {
+        // parentBatches.map((item, index) => {
+        //     let obj = {
+        //         title: `Batch ${++index}`,
+        //         key: index,
+        //         dataIndex: item,
+        //         width: 100,
+        //         render: value =>
+        //             value ? (
+        //                 <span className="batchChecked">
+        //                     <CheckOutlined />
+        //                 </span>
+        //             ) : (
+        //                 <span className="batchClosed">
+        //                     <CloseOutlined />
+        //                 </span>
+        //             ),
+        //     };
+        //     columns.push(obj);
+        // });
+        Object.entries(newBatchData).map(([key, value], index) => {
             let obj = {
                 title: `Batch ${++index}`,
                 key: index,
-                dataIndex: item,
+                dataIndex: key,
                 width: 100,
                 render: value =>
                     value ? (
@@ -210,16 +231,18 @@ function ViewSummary(props) {
             };
             columns.push(obj);
         });
+
         let data = [...viewSummaryColumns, ...columns];
         setViewSummaryColumns(data);
     };
 
     useEffect(() => {
         onChangeColumnsHandler();
-    }, [parentBatches]);
+    }, [newBatchData]);
 
     console.log('viewSummaryColumns', viewSummaryColumns);
     console.log('viewSummaryTable', viewSummaryTable);
+    console.log('newBatchData', newBatchData);
     return (
         <div className="viewSummary-container">
             <div className="viewSummary-FormBlock">
