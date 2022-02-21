@@ -70,7 +70,7 @@ function ViewCreation() {
             fixed: 'left',
             render: (text, record, index) => (
                 <>
-                    {record.coverage_metric_percent === '38.64 %' ? (
+                    {record.coverage_metric_percent === '100 %' ? (
                         <span className='statusIcon-summary'>
                             <CheckCircleOutlined />
                         </span>

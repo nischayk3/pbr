@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import "./styles.scss";
+import React, { useEffect, useState } from 'react';
+import './styles.scss';
 
 import {
-  CheckCircleOutlined,
-  CheckOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
-import { Form, Input, Space, Table, Tag } from "antd";
+    CheckCircleOutlined,
+    CheckOutlined,
+    CloseOutlined,
+} from '@ant-design/icons';
+import { Form, Input, Space, Table, Tag } from 'antd';
 
 // const columns = [
 //   {
@@ -136,8 +136,8 @@ import { Form, Input, Space, Table, Tag } from "antd";
 //   },
 // ]
 
-const onClickTag = (item) => {
-  // console.log('item', item)
+const onClickTag = item => {
+    // console.log('item', item)
 };
 
 // const dataSource = [
@@ -180,75 +180,75 @@ const onClickTag = (item) => {
 // ]
 
 function ViewSummary(props) {
-  const {
-    viewSummaryTable,
-    setViewSummaryTable,
-    parentBatches,
-    setParentBatches,
-    viewSummaryColumns,
-    setViewSummaryColumns,
-  } = props;
+    const {
+        viewSummaryTable,
+        setViewSummaryTable,
+        parentBatches,
+        setParentBatches,
+        viewSummaryColumns,
+        setViewSummaryColumns,
+    } = props;
 
-  const onChangeColumnsHandler = () => {
-    let columns = [];
-    parentBatches.map((item, index) => {
-      let obj = {
-        title: `Batch ${++index}`,
-        key: index,
-        dataIndex: item,
-        width: 100,
-        render: (value) =>
-          value ? (
-            <span className="batchChecked">
-              <CheckOutlined />
-            </span>
-          ) : (
-            <span className="batchClosed">
-              <CloseOutlined />
-            </span>
-          ),
-      };
-      columns.push(obj);
-    });
-    let data = [...viewSummaryColumns, ...columns];
-    setViewSummaryColumns(data);
-  };
+    const onChangeColumnsHandler = () => {
+        let columns = [];
+        parentBatches.map((item, index) => {
+            let obj = {
+                title: `Batch ${++index}`,
+                key: index,
+                dataIndex: item,
+                width: 100,
+                render: value =>
+                    value ? (
+                        <span className="batchChecked">
+                            <CheckOutlined />
+                        </span>
+                    ) : (
+                        <span className="batchClosed">
+                            <CloseOutlined />
+                        </span>
+                    ),
+            };
+            columns.push(obj);
+        });
+        let data = [...viewSummaryColumns, ...columns];
+        setViewSummaryColumns(data);
+    };
 
-  useEffect(() => {
-    onChangeColumnsHandler();
-  }, [parentBatches]);
+    useEffect(() => {
+        onChangeColumnsHandler();
+    }, [parentBatches]);
 
-  console.log("viewSummaryColumns", viewSummaryColumns);
-  console.log("viewSummaryTable", viewSummaryTable);
-  return (
-    <div className="viewSummary-container">
-      <div className="viewSummary-FormBlock">
-        <Form.Item label="View ID" name="viewID">
-          <Input placeholder="Enter View ID" disabled />
-        </Form.Item>
-        <Form.Item label="Name" name="name">
-          <Input placeholder="Enter Name" />
-        </Form.Item>
-        <Form.Item label="Status" name="status">
-          <Input placeholder="Status" disabled />
-        </Form.Item>
-        <Form.Item label="Version" name="version">
-          <Input placeholder="Version" disabled />
-        </Form.Item>
-      </div>
+    console.log('viewSummaryColumns', viewSummaryColumns);
+    console.log('viewSummaryTable', viewSummaryTable);
+    return (
+        <div className="viewSummary-container">
+            <div className="viewSummary-FormBlock">
+                <Form.Item label="View ID" name="viewID">
+                    <Input placeholder="Enter View ID" disabled />
+                </Form.Item>
+                <Form.Item label="Name" name="name">
+                    <Input placeholder="Enter Name" />
+                </Form.Item>
+                <Form.Item label="Status" name="status">
+                    <Input placeholder="Status" disabled />
+                </Form.Item>
+                <Form.Item label="Version" name="version">
+                    <Input placeholder="Version" disabled />
+                </Form.Item>
+            </div>
 
-      <div className="viewSummary-TableBlock">
-        <Table
-          className="viewSummary-table viewSummary-tablewidth"
-          pagination={false}
-          columns={viewSummaryColumns}
-          dataSource={viewSummaryTable}
-          scroll={{ x: 900 }}
-          rowKey={(record) => record.param}
-        />
-      </div>
-    </div>
-  );
+            <div className="viewSummary-TableBlock">
+                <Table
+                    className="viewSummary-table viewSummary-tablewidth"
+                    pagination={false}
+                    columns={viewSummaryColumns}
+                    dataSource={viewSummaryTable}
+                    scroll={{ x: 900 }}
+                    rowKey={record => record.param}
+                />
+            </div>
+        </div>
+    );
 }
 
 export default ViewSummary;
