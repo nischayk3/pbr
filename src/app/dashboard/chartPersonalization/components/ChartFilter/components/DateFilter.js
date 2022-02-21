@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Table } from 'antd';
 
-import { Modal, Button } from 'antd';
+import { Card, Table, Button, Modal } from 'antd';
 
 class DateFilter extends Component {
     constructor(props) {

@@ -1,10 +1,14 @@
-import React, { Component, useState } from 'react';
-import Plot from 'react-plotly.js';
-import { Card } from 'antd';
-import InputField from '../../../../../../components/InputField/InputField';
-import './ChartDetailsStyle.scss';
+import React, { useState } from 'react';
 import { WarningTwoTone } from '@ant-design/icons';
+import { Card } from 'antd';
+
+import './ChartDetailsStyle.scss';
+
+import PropTypes from 'prop-types';
+import Plot from 'react-plotly.js';
 import { connect } from 'react-redux';
+
+import InputField from '../../../../../../components/InputField/InputField';
 
 function ChartDetails(props) {
     const [trace1, setTrace1] = useState({
@@ -25,7 +29,7 @@ function ChartDetails(props) {
         text: ['B-a', 'B-b', 'B-c', 'B-d', 'B-e'],
         marker: { size: 12 },
     });
-    const [chart_name, setChart_Name] = useState(props.chartName);
+    //const [chart_name, setChart_Name] = useState(props.chartName);
 
     return (
         <div>
@@ -108,6 +112,10 @@ function ChartDetails(props) {
         </div>
     );
 }
+
+ChartDetails.propTypes = {
+    chartObj: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = (state) => {
     return {

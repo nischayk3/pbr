@@ -1,7 +1,8 @@
-import commonReducer from './commonReducer';
-import chartDataReducer from './chartDataReducer';
-import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
+import { combineReducers } from 'redux';
+
+import chartDataReducer from './chartDataReducer';
+import commonReducer from './commonReducer';
 
 const createRootReducer = (history) =>
     combineReducers({

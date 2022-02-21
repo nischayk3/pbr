@@ -1,10 +1,12 @@
 import React from 'react';
-import { Layout, Button, Input } from 'antd';
+
+import { Button, Input, Layout } from 'antd';
 import { useDispatch } from 'react-redux';
-import { toggleMenu } from '../../duck/actions/commonActions';
+
+import cpvLogo from '../../assets/cpv-logo.png';
 import hamburgerIcon from '../../assets/icons/hamburger.svg';
 import mareanaLogo from '../../assets/mareana_logo.png';
-import cpvLogo from '../../assets/cpv-logo.png';
+import { toggleMenu } from '../../duck/actions/commonActions';
 import './style.scss';
 
 const { Header } = Layout;

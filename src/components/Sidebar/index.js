@@ -10,12 +10,12 @@ import './style.scss';
 // import { userLogout } from '../../api/login';
 
 const MENU = [
-    {
-        key: 'home',
-        icon: <img src={AppsIcon} alt='Home' className='anticon' />,
-        title: 'Home',
-        linkTo: '/dashboard/home',
-    },
+    // {
+    //     key: 'home',
+    //     icon: <img src={AppsIcon} alt='Home' className='anticon' />,
+    //     title: 'Home',
+    //     linkTo: '/dashboard/home',
+    // },
     {
         key: 'view_creation',
         icon: <img src={AppsIcon} alt='Home' className='anticon' />,
@@ -58,7 +58,6 @@ const MENU = [
         title: 'Report Designer',
         linkTo: '/dashboard/report_designer',
     },
-    
 ];
 
 const LogoutIcon = <img src={LogOutIcon} alt='Logout' className='anticon' />;
@@ -69,7 +68,9 @@ const Sidebar = () => {
     const [selectedKey, setSelectedKey] = useState('');
     const location = useLocation();
     const history = useHistory();
-    const collapsed = useSelector((state) => state.commonReducer.isMenuCollapsed);
+    const collapsed = useSelector(
+        (state) => state.commonReducer.isMenuCollapsed
+    );
     const theme = useSelector((state) => state.commonReducer.theme);
 
     const Logout = async () => {
@@ -86,8 +87,8 @@ const Sidebar = () => {
         const key = MENU.filter((item) => {
             return screen.length > 2
                 ? screen[2]
-                    .toLowerCase()
-                    .includes(item.title.replace(/\s/g, '').toLowerCase())
+                      .toLowerCase()
+                      .includes(item.title.replace(/\s/g, '').toLowerCase())
                 : false;
         })[0]?.['key'];
         if (key) {
@@ -104,12 +105,20 @@ const Sidebar = () => {
                 <div id='logo-small'></div>
                 <Menu selectedKeys={[selectedKey]} mode='inline' theme={theme}>
                     {MENU.map((item) => (
-                        <Menu.Item key={item.key} icon={item.icon} id={item.key}>
+                        <Menu.Item
+                            key={item.key}
+                            icon={item.icon}
+                            id={item.key}
+                        >
                             <Link to={item.linkTo}>{item.title}</Link>
                         </Menu.Item>
                     ))}
-                    <Menu.Item key={MENU.length + 1} icon={LogoutIcon} onClick={Logout}>
-						Logout
+                    <Menu.Item
+                        key={MENU.length + 1}
+                        icon={LogoutIcon}
+                        onClick={Logout}
+                    >
+                        Logout
                     </Menu.Item>
                 </Menu>
             </div>

@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import {
-    Form, Select,
-} from 'antd';
-import { Button } from 'antd';
+
 import {
     ArrowLeftOutlined,
+    CloudUploadOutlined,
     FileDoneOutlined,
     Loading3QuartersOutlined,
-    SaveOutlined,
-    CloudUploadOutlined
+    SaveOutlined
 } from '@ant-design/icons';
+import {
+    Form, Select,
+    Button } from 'antd';
+
 import ChartSelector from './reportDesignerFilter/chartSelector';
 import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
 import './stylesNew.scss';

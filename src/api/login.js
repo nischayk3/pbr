@@ -1,5 +1,5 @@
 import { API_AUTHENTICATION_URL } from '../constants/apiBaseUrl';
-import  Service from '../services/AjaxService';
+import Service from '../services/AjaxService';
 
 export const userLogin = (_queryParam) => {
     return Service.post(

@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+
 import Spinner from './Loading/Spinner';
 
 const SuspenseWrapper = ({ children }) => {

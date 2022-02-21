@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
-import { Card, Checkbox, Input, DatePicker, Typography } from 'antd';
-import SelectField from '../../../../../../components/SelectField/SelectField';
-import { Modal, Button } from 'antd';
 
+import {
+    Card,
+    Checkbox,
+    DatePicker,
+    Input,
+    Typography,
+    Button,
+    Modal,
+} from 'antd';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { sendSelectedSite } from '../../../../../../duck/actions/chartPersonalizationAction';
+
 import InputField from '../../../../../../components/InputField/InputField';
+import SelectField from '../../../../../../components/SelectField/SelectField';
+import { sendSelectedSite } from '../../../../../../duck/actions/chartPersonalizationAction';
 
 const { Text } = Typography;
 const { Search } = Input;
@@ -103,7 +111,7 @@ function ChartFilter(props) {
                 width={700}
                 onCancel={handleCancel}
                 footer={[
-                    <p style={{ float: 'left' }}>
+                    <p key='1' style={{ float: 'left' }}>
                         Last 5 minutes United States EST
                     </p>,
                     <Button key='back'>UTC-05:00</Button>,

@@ -1,11 +1,11 @@
 import {
-    TOGGLE_MENU,
-    SHOW_LOADING,
     HIDE_LOADING,
-    SHOW_NOTIFICATION,
     HIDE_NOTIFICATION,
+    SET_NAVIGATION_DATA,
     SET_THEME,
-    SET_NAVIGATION_DATA
+    SHOW_LOADING,
+    SHOW_NOTIFICATION,
+    TOGGLE_MENU
 } from '../types/types';
 
 export const toggleMenu = () => (dispatch) => {

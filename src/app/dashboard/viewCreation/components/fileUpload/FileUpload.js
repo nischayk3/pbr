@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from 'react';
+
 import './styles.scss';
-import {
-    Collapse,
-    Table,
-    Tag,
-    Upload,
-    Button,
-    Modal,
-    message,
-    Popconfirm,
-} from 'antd';
 import {
     DeleteOutlined,
     DownloadOutlined,
@@ -18,8 +9,19 @@ import {
     UploadOutlined,
 } from '@ant-design/icons';
 import {
-    adHocFilesParameterTree,
+    Button,
+    Collapse,
+    Modal,
+    Popconfirm,
+    Table,
+    Tag,
+    Upload,
+    message,
+} from 'antd';
+
+import {
     adHocFileUpload,
+    adHocFilesParameterTree,
     deleteAdHocFile,
 } from '../../../../../duck/actions/fileUploadAction';
 const { Panel } = Collapse;

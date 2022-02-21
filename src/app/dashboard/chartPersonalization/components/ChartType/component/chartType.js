@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { Card, Select, Typography, Input, TimePicker } from 'antd';
+
+import { WarningTwoTone } from '@ant-design/icons';
+import { Card, Select, Typography, Input } from 'antd';
 
 import './styles.scss';
-import { WarningTwoTone } from '@ant-design/icons';
-import { getChartType } from '../../../../../../duck/actions/auditTrialAction';
 
-import { getChartData } from '../../../../../../duck/actions/chartDataAction';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
+import { getChartType } from '../../../../../../duck/actions/auditTrialAction';
+import { getChartData } from '../../../../../../duck/actions/chartDataAction';
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -30,7 +33,7 @@ class ChartType extends Component {
         this.getChartTypeHandler();
     }
 
-    getChartTypeHandler = () => {
+    getChartTypeHandler() {
         let req = { user_id: JSON.parse(localStorage.getItem('username')) };
         getChartType(req).then((res) => {
             console.log('res', res);
@@ -45,13 +48,13 @@ class ChartType extends Component {
                 });
             }
         });
-    };
+    }
 
-    handleClose = () => {
+    handleClose() {
         this.setState({ toastOpen: false });
-    };
+    }
 
-    selectChartType = (value) => {
+    selectChartType(value) {
         const { chartTypeList } = this.state;
 
         let selectedChart = chartTypeList.filter(function (el) {
@@ -81,16 +84,10 @@ class ChartType extends Component {
                 isScatter: false,
             });
         }
-    };
+    }
 
     render() {
-        const {
-            isScatter,
-            toastOpen,
-            toastMessage,
-            toastVariant,
-            chartTypeList,
-        } = this.state;
+        const { isScatter, chartTypeList } = this.state;
         return (
             <div>
                 <Card title='Chart'>
@@ -108,7 +105,7 @@ class ChartType extends Component {
                             >
                                 {chartTypeList.map((item, i) => {
                                     return (
-                                        <Option value={item.chart_name}>
+                                        <Option key={i} value={item.chart_name}>
                                             {item.chart_name}
                                         </Option>
                                     );
@@ -154,6 +151,11 @@ class ChartType extends Component {
         );
     }
 }
+
+ChartType.propTypes = {
+    chartObj: PropTypes.object.isRequired,
+    getChartData: PropTypes.object.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {

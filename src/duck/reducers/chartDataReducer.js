@@ -4,14 +4,11 @@ const initialState = {
     chartName: {},
 };
 
-export default function (state = initialState, action) {
+export default (state = initialState, action) => {
     switch (action.type) {
-    case types.GET_CHART_DATA:
-        return {
-            ...state,
-            chartName: action.payload,
-        };
-    default:
-        return state;
+        case types.GET_CHART_DATA:
+            return { ...state, chartName: action.payload };
+        default:
+            return state;
     }
-}
+};

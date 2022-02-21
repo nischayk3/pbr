@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Table, Input, Popconfirm, Form } from 'antd';
-import { PlusSquareTwoTone, DeleteTwoTone } from '@ant-design/icons';
+
+import { DeleteTwoTone, PlusSquareTwoTone } from '@ant-design/icons';
+import { Form, Input, Popconfirm, Table } from 'antd';
 
 
 

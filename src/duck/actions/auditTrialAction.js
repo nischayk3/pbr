@@ -1,10 +1,10 @@
 import {
-    API_RESULTSET_URL,
     API_PLOT_URL,
-    GRAFANA_DASHBOARD,
-    BMS_APP_PYTHON_SERVICE_IP,
+    API_RESULTSET_URL,
     BMS_APP_PYTHON_SERVICE,
     BMS_APP_PYTHON_SERVICE_DNS,
+    BMS_APP_PYTHON_SERVICE_IP,
+    GRAFANA_DASHBOARD,
 } from '../../constants/apiBaseUrl';
 import Service from '../../services/AjaxService';
 

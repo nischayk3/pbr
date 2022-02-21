@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Card, Table, Tabs } from 'antd';
+
+import { Card, Tabs } from 'antd';
+
 import ExclusionTable from './exclusion_table';
+import ParameterTable from './parameter_table';
 import ShiftTable from './shift_table';
 import TrendTable from './trend_table';
 import ViolationTable from './violation';
-import ParameterTable from './parameter_table';
 
 import './chartTableStyles.scss';
 
