@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
     ArrowLeftOutlined,
     CloudUploadOutlined,
     FileDoneOutlined,
     Loading3QuartersOutlined,
-    CheckCircleOutlined,
-    CloseCircleOutlined,
     SaveOutlined,
     ShareAltOutlined,
+    CheckCircleOutlined,
+    CloseCircleOutlined,
 } from '@ant-design/icons';
 import { Button, Collapse, Form, Space, Tag } from 'antd';
 
@@ -23,6 +23,7 @@ const { Panel } = Collapse;
 
 function ViewCreation() {
     const [moleculeList, setMoleculeList] = useState([]);
+    const [functionEditorRecord, setFunctionEditorRecord] = useState([]);
     const [moleculeId, setMoleculeId] = useState();
     const [materialsList, setMaterialsList] = useState([]);
     const [filterdData, setFilterdData] = useState(null);
@@ -82,9 +83,43 @@ function ViewCreation() {
             ),
         },
     ]);
+    const [functionEditorColumns, setFunctionEditorColumns] = useState([
+        {
+            title: 'Parameter',
+            key: 'param',
+            dataIndex: 'param',
+            width: 100,
+            fixed: 'left',
+            render: (param, record, index) => (
+                <Tag color='magenta' className='parameter-tag'>
+                    {param}
+                </Tag>
+            ),
+        },
+        {
+            title: 'Primary',
+            key: 'primary',
+            dataIndex: 'primary',
+            width: 150,
+            fixed: 'left',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            dataIndex: 'action',
+            width: 100,
+            fixed: 'right',
+            render: (text, record, index) => (
+                <>
+                    <Space size='middle'>Lock</Space>
+                </>
+            ),
+        },
+    ]);
 
     const functionPassHandler = (record, index) => {
         console.log('row data', record, index);
+        setFunctionEditorRecord((prevState) => [...prevState, record]);
     };
 
     const [form] = Form.useForm();
@@ -245,7 +280,20 @@ function ViewCreation() {
                                     <h4 className='viewCreation-blockHeader'>
                                         Function Editor
                                     </h4>
-                                    <FunctionEditor />
+                                    <FunctionEditor
+                                        parentBatches={parentBatches}
+                                        setParentBatches={setParentBatches}
+                                        functionEditorColumns={
+                                            functionEditorColumns
+                                        }
+                                        setFunctionEditorColumns={
+                                            setFunctionEditorColumns
+                                        }
+                                        functionEditorRecord={
+                                            functionEditorRecord
+                                        }
+                                        //setFunctionEditorRecord={setFunctionEditorRecord}
+                                    />
                                 </div>
                             )}
                         </div>

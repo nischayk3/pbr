@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import './style.scss';
 import { API_CPV_URL } from '../../../../constants/apiBaseUrl';
 import { dataLoadUpload } from '../../../../duck/actions/fileUploadAction';

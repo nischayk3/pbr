@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './styles.scss';
 import { CheckCircleOutlined, CloseOutlined } from '@ant-design/icons';
@@ -13,154 +13,7 @@ const Editorcolumns = [
         dataIndex: 'batch',
     },
 ];
-const columns = [
-    {
-        title: 'Batch',
-        key: 'batch',
-        dataIndex: 'batch',
-    },
-    {
-        title: '1',
-        key: 'parameter',
-        dataIndex: 'parameter',
-        render: parameter => (
-            <>
-                {parameter === 'yes' ? (
-                    <span className="batchChecked">
-                        <Checkbox checked={true} />
-                    </span>
-                ) : (
-                    <span className="batchClosed">
-                        <CloseOutlined />
-                    </span>
-                )}
-            </>
-        ),
-    },
-    {
-        title: '2',
-        key: 'aggregation',
-        dataIndex: 'aggregation',
-        render: aggregation => (
-            <>
-                {aggregation === 'yes' ? (
-                    <span className="batchChecked">
-                        <Checkbox />
-                    </span>
-                ) : (
-                    <span className="batchClosed">
-                        <CloseOutlined />
-                    </span>
-                )}
-            </>
-        ),
-    },
-    {
-        title: '3',
-        key: 'batch1',
-        dataIndex: 'batch1',
-        render: batch1 => (
-            <>
-                {batch1 === 'yes' ? (
-                    <span className="batchChecked">
-                        <Checkbox checked={true} />
-                    </span>
-                ) : (
-                    <span className="batchClosed">
-                        <CloseOutlined />
-                    </span>
-                )}
-            </>
-        ),
-    },
-    {
-        title: '4',
-        key: 'batch2',
-        dataIndex: 'batch2',
-        render: batch2 => (
-            <>
-                {batch2 === 'yes' ? (
-                    <span className="batchChecked">
-                        <Checkbox />
-                    </span>
-                ) : (
-                    <span className="batchClosed">
-                        <CloseOutlined />
-                    </span>
-                )}
-            </>
-        ),
-    },
-    {
-        title: '5',
-        key: 'batch3',
-        dataIndex: 'batch3',
-        render: batch3 => (
-            <>
-                {batch3 === 'yes' ? (
-                    <span className="batchChecked">
-                        <Checkbox />
-                    </span>
-                ) : (
-                    <span className="batchClosed">
-                        <CloseOutlined />
-                    </span>
-                )}
-            </>
-        ),
-    },
-    {
-        title: '6',
-        key: 'batch4',
-        dataIndex: 'batch4',
-        render: batch4 => (
-            <>
-                {batch4 === 'yes' ? (
-                    <span className="batchChecked">
-                        <Checkbox />
-                    </span>
-                ) : (
-                    <span className="batchClosed">
-                        <CloseOutlined />
-                    </span>
-                )}
-            </>
-        ),
-    },
-];
 
-const dataSource = [
-    {
-        key: '1',
-        batch: 'C1',
-        parameter: 'yes',
-        aggregation: 'yes',
-        batch1: 'yes',
-        batch2: 'yes',
-        batch3: 'yes',
-        batch4: 'no',
-    },
-    {
-        key: '2',
-        batch: 'C2',
-        parameter: 'yes',
-        aggregation: 'no',
-        batch1: 'yes',
-        batch2: 'yes',
-        batch3: 'yes',
-        batch4: 'no',
-    },
-    {
-        key: '3',
-        batch: 'C2',
-        parameter: 'yes',
-        aggregation: 'no',
-        batch1: 'yes',
-        batch2: 'yes',
-        batch3: 'yes',
-        batch4: 'no',
-    },
-];
 
 function FunctionEditor(props) {
     const {
@@ -174,9 +27,65 @@ function FunctionEditor(props) {
         setDataLoadingState,
         viewSummaryTable,
         setViewSummaryTable,
-        viewSummaryColumns,
-        setViewSummaryColumns,
+        parentBatches,
+        setParentBatches,
+        functionEditorColumns,
+        setFunctionEditorColumns,
+        functionEditorRecord,
+        setFunctionEditorRecord
+
+
     } = props;
+
+    const [checkboxChecked, setCheckboxChecked] = useState(false);
+
+
+
+    const columnsHandler = () => {
+        let columns = [];
+        parentBatches.map((item, index) => {
+            let obj = {
+                title: `B${++index}`,
+                key: index,
+                dataIndex: item,
+                width: 100,
+                render: value =>{
+                    console.log('value',value);
+                    return (
+                        value ? (
+                            <span className="batchChecked">
+                                <Checkbox
+                                    checked={checkboxChecked}
+                                    onChange={onChange}
+                                />
+                            </span>
+                        ) : (
+                            <span className="batchClosed">
+                                <CloseOutlined />
+                            </span>
+                        )
+                    );
+                }
+                    
+            };
+            columns.push(obj);
+        });
+        let data = [...functionEditorColumns, ...columns];
+        setFunctionEditorColumns(data);
+    };
+
+    const onChange = e => {
+        console.log('checked = ', e.target.checked);
+        setCheckboxChecked(e.target.checked);
+    };
+
+    useEffect(() => {
+        columnsHandler();
+    }, [parentBatches]);
+
+    console.log('functionEditorColumns', functionEditorColumns);
+    console.log('functionEditorRecord', functionEditorRecord);
+    console.log('checkedrecord', checkboxChecked);
 
     return (
         <div className="viewSummary-container functionEditor-container">
@@ -225,9 +134,11 @@ function FunctionEditor(props) {
                 <div>
                     <Table
                         className="viewSummary-table MathEditor-table"
-                        columns={columns}
-                        dataSource={dataSource}
+                        columns={functionEditorColumns}
+                        dataSource={functionEditorRecord}
+                        scroll={{ x: 900 }}
                         pagination={false}
+                        rowKey={record => record.param}
                     />
                 </div>
             </div>
