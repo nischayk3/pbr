@@ -28,8 +28,8 @@ function Materials(props) {
             title: 'Parameter',
             key: 'param',
             dataIndex: 'param',
-            render: param => (
-                <Tag color="magenta" className="parameter-tag">
+            render: (param) => (
+                <Tag color='magenta' className='parameter-tag'>
                     {param}
                 </Tag>
             ),
@@ -51,7 +51,7 @@ function Materials(props) {
             render: (text, record, index) => (
                 <>
                     <span
-                        className="material-addIcon"
+                        className='material-addIcon'
                         onClick={() => {
                             parameterPassHandler(record, index);
                         }}
@@ -80,30 +80,30 @@ function Materials(props) {
 
     console.log('viewSummaryTable', viewSummaryTable);
     return (
-        <div className="materials-wrapper">
+        <div className='materials-wrapper'>
             <Collapse
                 accordion
-                className="materials-accordion"
-                expandIconPosition="right"
+                className='materials-accordion'
+                expandIconPosition='right'
             >
                 {!dataLoadingState ? (
-                    <div className="loadSpinner-block">
+                    <div className='loadSpinner-block'>
                         <Spin />
                     </div>
                 ) : filterdData != null ? (
                     filterdData.map((item, index) => {
                         return (
                             <Panel
-                                className="materials-panel"
+                                className='materials-panel'
                                 header={item.product}
                                 key={index}
                             >
                                 <Table
-                                    className="viewSummary-table materialsList-table borderless-table"
+                                    className='viewSummary-table materialsList-table borderless-table'
                                     pagination={false}
                                     columns={columns}
                                     dataSource={item.parameters}
-                                    rowKey={record => record.param}
+                                    rowKey={(record) => record.param}
                                 />
                             </Panel>
                         );
@@ -112,16 +112,16 @@ function Materials(props) {
                     materialsList.map((item, index) => {
                         return (
                             <Panel
-                                className="materials-panel"
+                                className='materials-panel'
                                 header={item.product}
                                 key={index}
                             >
                                 <Table
-                                    className="viewSummary-table materialsList-table borderless-table"
+                                    className='viewSummary-table materialsList-table borderless-table'
                                     pagination={false}
                                     columns={columns}
                                     dataSource={item.parameters}
-                                    rowKey={record => record.param}
+                                    rowKey={(record) => record.param}
                                 />
                             </Panel>
                         );
