@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
     ArrowLeftOutlined,
@@ -7,6 +7,9 @@ import {
     Loading3QuartersOutlined,
     SaveOutlined,
     ShareAltOutlined,
+    CheckCircleOutlined,
+    CloseCircleOutlined
+
 } from '@ant-design/icons';
 import { Button, Collapse, Form, Space, Tag } from 'antd';
 
@@ -21,6 +24,7 @@ const { Panel } = Collapse;
 
 function ViewCreation() {
     const [moleculeList, setMoleculeList] = useState([]);
+    const [functionEditorRecord, setFunctionEditorRecord] = useState([]);
     const [moleculeId, setMoleculeId] = useState();
     const [materialsList, setMaterialsList] = useState([]);
     const [filterdData, setFilterdData] = useState(null);
@@ -65,19 +69,65 @@ function ViewCreation() {
             dataIndex: 'status',
             width: 100,
             fixed: 'left',
-            render: (record) => (
+            render: (text, record, index) => (
                 <>
-                    <span className='material-addIcon'>
-                        {console.log('record', record)}
-                        {/* {record.coverage_metric_percent === '100%' ? 'Yes' : 'No'} */}
-                    </span>
+                    {record.coverage_metric_percent === '38.64 %' ? (
+                        <span className="statusIcon-summary" >
+                            <CheckCircleOutlined />
+                        </span>
+                    ) : (
+                        <span className="statusIcon-summary" >
+                            <CloseCircleOutlined />
+                        </span >
+                    )}
+                </>
+            ),
+        },
+    ]);
+    const [functionEditorColumns, setFunctionEditorColumns] = useState([
+        {
+            title: 'Parameter',
+            key: 'param',
+            dataIndex: 'param',
+            width: 100,
+            fixed: 'left',
+            render: (param, record, index) => (
+                <Tag
+                    color='magenta'
+                    className='parameter-tag'
+                >
+                    {param}
+                </Tag>
+            ),
+        },
+        {
+            title: 'Primary',
+            key: 'primary',
+            dataIndex: 'primary',
+            width: 150,
+            fixed: 'left',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            dataIndex: 'action',
+            width: 100,
+            fixed: 'right',
+            render: (text, record, index) => (
+                <>
+                    <Space size='middle' >
+                        Lock
+                    </Space>
                 </>
             ),
         },
     ]);
 
+
     const functionPassHandler = (record, index) => {
         console.log('row data', record, index);
+        setFunctionEditorRecord((prevState)=>[...prevState,record]);
+
     };
 
     const [form] = Form.useForm();
@@ -86,6 +136,7 @@ function ViewCreation() {
         // console.log('changedValues', changedValues)
         // console.log('values', values)
     };
+
 
     return (
         <div className='reportDesigner-container viewCreation-container'>
@@ -238,7 +289,15 @@ function ViewCreation() {
                                     <h4 className='viewCreation-blockHeader'>
                                         Function Editor
                                     </h4>
-                                    <FunctionEditor />
+                                    <FunctionEditor
+                                        parentBatches={parentBatches}
+                                        setParentBatches={setParentBatches}
+                                        functionEditorColumns={functionEditorColumns}
+                                        setFunctionEditorColumns={setFunctionEditorColumns}
+                                        functionEditorRecord={functionEditorRecord}
+                                    //setFunctionEditorRecord={setFunctionEditorRecord}
+
+                                    />
                                 </div>
                             )}
                         </div>
