@@ -26,14 +26,10 @@ export const uploadFileExl = (_queryParam) => {
 };
 
 export const uploadFileApi = (_queryParam) => {
-    return Service.post(
-        BMS_APP_PYTHON_SERVICE + '/upload-file',
-        _queryParam,
-        {
-            'Content-Type': 'multipart/form-data',
-            Accept: '*/*',
-        }
-    ).then(
+    return Service.post(BMS_APP_PYTHON_SERVICE + '/upload-file', _queryParam, {
+        'Content-Type': 'multipart/form-data',
+        Accept: '*/*',
+    }).then(
         (response) => {
             return response.data;
         },
@@ -58,10 +54,7 @@ export const cancelFileUpload = (request) => {
 };
 
 export const approvedData = (request) => {
-    return Service.post(
-        BMS_APP_PYTHON_SERVICE + '/approve-data',
-        request
-    ).then(
+    return Service.post(BMS_APP_PYTHON_SERVICE + '/approve-data', request).then(
         (response) => {
             return response.data;
         },
@@ -86,10 +79,7 @@ export const updateApprovedData = (request) => {
 };
 
 export const finalFileUpload = (request) => {
-    return Service.post(
-        BMS_APP_PYTHON_SERVICE + '/final-upload',
-        request
-    ).then(
+    return Service.post(BMS_APP_PYTHON_SERVICE + '/final-upload', request).then(
         (response) => {
             return response.data;
         },
@@ -100,10 +90,7 @@ export const finalFileUpload = (request) => {
 };
 
 export const validateFileData = (request) => {
-    return Service.post(
-        BMS_APP_PYTHON_SERVICE + '/validatedata',
-        request
-    ).then(
+    return Service.post(BMS_APP_PYTHON_SERVICE + '/validatedata', request).then(
         (response) => {
             return response.data;
         },
@@ -132,14 +119,10 @@ export const dataLoadUpload = (_queryParam) => {
 };
 
 export const adHocFileUpload = (_queryParam) => {
-    return Service.post(
-        BMS_APP_PYTHON_SERVICE + '/adhoc-files',
-        _queryParam,
-        {
-            'Content-Type': 'multipart/form-data',
-            Accept: '*/*',
-        }
-    ).then(
+    return Service.post(BMS_APP_PYTHON_SERVICE + '/adhoc-files', _queryParam, {
+        'Content-Type': 'multipart/form-data',
+        Accept: '*/*',
+    }).then(
         (response) => {
             return response.data;
         },
@@ -163,31 +146,31 @@ export const adHocFilesParameterTree = (request) => {
     );
 };
 
-export const materialsParameterTree = request => {
+export const materialsParameterTree = (request) => {
     return Service.get(
         BMS_APP_PYTHON_SERVICE + '/parameter-tree',
-        request,
+        request
     ).then(
-        response => {
+        (response) => {
             return response.data;
         },
-        error => {
+        (error) => {
             return error.response.data;
-        },
+        }
     );
 };
 
-export const deleteAdHocFile = _queryParam => {
+export const deleteAdHocFile = (_queryParam) => {
     return Service.del(
         BMS_APP_PYTHON_SERVICE + '/adhoc-files',
         _queryParam
     ).then(
-        response => {
+        (response) => {
             return response.data;
         },
-        error => {
+        (error) => {
             return error.response.data;
-        },
+        }
     );
 };
 

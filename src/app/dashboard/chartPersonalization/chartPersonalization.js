@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useSelector } from 'react-redux';
 import ChartDataTable from './components/ChartDataTable/index';
 import ChartDetails from './components/ChartDetails';
 import ChartFilter from './components/ChartFilter/index';
@@ -21,6 +21,7 @@ import {
 import { Button, Input, Modal, Typography } from 'antd';
 
 import chartObj from './get_chart.json';
+import ViewTable from '../../../components/ViewTable';
 
 const { Text } = Typography;
 
@@ -39,6 +40,9 @@ function ChartPersonalization() {
     const [showCustomization, setShowCustomization] = useState(false);
     const [loading, setLoading] = useState(false);
     const [chartObjData, setChartObjData] = useState(chartObj);
+
+    const filterData = useSelector((state) => state.chartPersReducer);
+    console.log('filter dataaa', filterData);
 
     function handleOk() {
         setLoading(true);
@@ -66,6 +70,7 @@ function ChartPersonalization() {
 
     function handleTitleChange() {
         // const { isShare, isSave, isNew, isSaveAs, isLoad, isDiscard } = this.state
+        console.log('isloaddddd', isLoad);
         if (isDiscard)
             return (
                 <span>
@@ -116,10 +121,15 @@ function ChartPersonalization() {
 
     const handleSaveAs = () => {
         const chartData = chartObj;
-        chartData.data_filter.site = 'Site 1';
+
+        chartData.data_filter.site = filterData.site;
+        chartData.data_filter.unapproved_data = filterData.unApprovedData;
+        chartData.data_filter.date_range = filterData.dateRange;
 
         console.log('chartData', chartData);
     };
+
+    console.log('isLoadddddd', isLoad);
 
     return (
         <div className='chart-wrapper'>
@@ -127,6 +137,7 @@ function ChartPersonalization() {
                 <h1 className='sub-header-title'>
                     <ArrowLeftOutlined /> Chart Personalization
                 </h1>
+
                 <div className='sub-header-btns'>
                     <Button
                         className='custom-primary-btn  '
@@ -143,6 +154,7 @@ function ChartPersonalization() {
                         onClick={() => {
                             setVisible(true);
                             setIsNew(true);
+                            setIsLoad(true);
                         }}
                         type='primary'
                     >
@@ -218,7 +230,46 @@ function ChartPersonalization() {
                     centered={true}
                     footer={null}
                 >
-                    {isSave && (
+                    {isLoad && (
+                        <div>
+                            <p>
+                                You Have made some changes <br /> Do you want to
+                                save or discard them ?
+                            </p>
+                            <ViewTable />
+                            <div className='loadButton'>
+                                <Button
+                                    className='loadButtons'
+                                    style={{ width: '80px' }}
+                                >
+                                    Save As
+                                </Button>
+                                <Button
+                                    style={{ width: '80px' }}
+                                    className='loadButtons'
+                                    onClick={() => {
+                                        setVisible(false);
+                                        setIsSave(true);
+                                        setIsLoad(false);
+                                    }}
+                                >
+                                    Save
+                                </Button>
+                                <Button
+                                    style={{ width: '80px' }}
+                                    className='loadButtons'
+                                    onClick={() => {
+                                        setVisible(false);
+                                        setIsSave(true);
+                                        setIsLoad(false);
+                                    }}
+                                >
+                                    Discard
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                    {/* {isSave && (
                         <div>
                             <center>
                                 <CheckCircleTwoTone
@@ -260,10 +311,12 @@ function ChartPersonalization() {
                     )}
                     {isLoad && (
                         <div>
+                            <ViewTable />
                             <p>
                                 You Have made some changes <br /> Do you want to
                                 save or discard them ?
                             </p>
+
                             <div className='loadButton'>
                                 <Button
                                     className='loadButtons'
@@ -341,7 +394,7 @@ function ChartPersonalization() {
                                 </Button>
                             </div>
                         </div>
-                    )}
+                    )} */}
                 </Modal>
             </div>
         </div>
