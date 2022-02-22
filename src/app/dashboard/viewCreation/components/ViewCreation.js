@@ -31,6 +31,7 @@ function ViewCreation() {
     const [functionEditorViewState, setFunctionEditorViewState] =
         useState(false);
     const [parentBatches, setParentBatches] = useState([]);
+    const [newBatchData, setNewBatchData] = useState([]);
     const [viewSummaryTable, setViewSummaryTable] = useState([]);
     const [viewSummaryColumns, setViewSummaryColumns] = useState([
         {
@@ -240,6 +241,16 @@ function ViewCreation() {
                                                     setFunctionEditorViewState={
                                                         setFunctionEditorViewState
                                                     }
+                                                    parentBatches={
+                                                        parentBatches
+                                                    }
+                                                    setParentBatches={
+                                                        setParentBatches
+                                                    }
+                                                    newBatchData={newBatchData}
+                                                    setNewBatchData={
+                                                        setNewBatchData
+                                                    }
                                                 />
                                             </Panel>
                                             <Panel
@@ -272,6 +283,8 @@ function ViewCreation() {
                                         setViewSummaryColumns={
                                             setViewSummaryColumns
                                         }
+                                        newBatchData={newBatchData}
+                                        setNewBatchData={setNewBatchData}
                                     />
                                 </div>
                             )}
@@ -292,7 +305,11 @@ function ViewCreation() {
                                         functionEditorRecord={
                                             functionEditorRecord
                                         }
-                                        //setFunctionEditorRecord={setFunctionEditorRecord}
+                                        setFunctionEditorRecord={
+                                            setFunctionEditorRecord
+                                        }
+                                        newBatchData={newBatchData}
+                                        setNewBatchData={setNewBatchData}
                                     />
                                 </div>
                             )}

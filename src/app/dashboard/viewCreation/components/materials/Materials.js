@@ -21,6 +21,10 @@ function Materials(props) {
         setViewSummaryColumns,
         functionEditorViewState,
         setFunctionEditorViewState,
+        parentBatches,
+        setParentBatches,
+        newBatchData,
+        setNewBatchData
     } = props;
 
     const columns = [
@@ -66,14 +70,27 @@ function Materials(props) {
     const parameterPassHandler = (record, index) => {
         let rowData = {};
         let batchData = {};
-        record.coverage_list.map((item, index) => {
-            let item_key = item;
-            batchData[item_key] = item_key;
+        let newBatchData={};
+        // record.coverage_list.map((item, index) => {
+        //     let item_key = item;
+        //     batchData[`B${++index}`] = item_key;
+        // });
+        
+        parentBatches.map((el,index) => {
+            if(record.coverage_list.includes(el)){
+                batchData[`B${++index}`] = true;
+                newBatchData[`B${index}`] = true;
+            }else{
+                batchData[`B${++index}`] = false;
+                newBatchData[`B${index}`] = false;
+            }
         });
+      
         rowData = Object.assign(record, batchData);
-        delete rowData['coverage_list'];
+        //delete rowData['coverage_list'];
         let data = [...viewSummaryTable];
         data.push(rowData);
+        setNewBatchData(newBatchData);
         setViewSummaryTable([...data]);
         setFunctionEditorViewState(true);
     };

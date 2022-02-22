@@ -32,7 +32,9 @@ function FunctionEditor(props) {
         functionEditorColumns,
         setFunctionEditorColumns,
         functionEditorRecord,
-        setFunctionEditorRecord
+        setFunctionEditorRecord,
+        newBatchData,
+        setNewBatchData
 
 
     } = props;
@@ -43,34 +45,53 @@ function FunctionEditor(props) {
 
     const columnsHandler = () => {
         let columns = [];
-        parentBatches.map((item, index) => {
+        //parentBatches.map((item, index) => {
+        //     let obj = {
+        //         title: `B${++index}`,
+        //         key: index,
+        //         dataIndex: item,
+        //         width: 100,
+        //         render: value =>{
+        //             return (
+        //                 value ? (
+        //                     <span className="batchChecked">
+        //                         <Checkbox
+        //                             checked={checkboxChecked}
+        //                             onChange={onChange}
+        //                         />
+        //                     </span>
+        //                 ) : (
+        //                     <span className="batchClosed">
+        //                         <CloseOutlined />
+        //                     </span>
+        //                 )
+        //             );
+        //         }
+
+        //     };
+        //     columns.push(obj);
+        // });
+        Object.entries(newBatchData).forEach(([key, value], index) => {
             let obj = {
                 title: `B${++index}`,
                 key: index,
-                dataIndex: item,
+                dataIndex: key,
                 width: 100,
-                render: value =>{
-                    console.log('value',value);
-                    return (
-                        value ? (
-                            <span className="batchChecked">
-                                <Checkbox
-                                    checked={checkboxChecked}
-                                    onChange={onChange}
-                                />
-                            </span>
-                        ) : (
-                            <span className="batchClosed">
-                                <CloseOutlined />
-                            </span>
-                        )
-                    );
-                }
-                    
+                render: value =>
+                    value ? (
+                        <Checkbox
+                            checked={checkboxChecked}
+                            onChange={onChange}
+                        />
+                    ) : (
+                        <span className="batchClosed">
+                            <CloseOutlined />
+                        </span>
+                    ),
             };
             columns.push(obj);
         });
-        let data = [...functionEditorColumns, ...columns];
+        let data = [...functionEditorColumns,...columns];
         setFunctionEditorColumns(data);
     };
 
@@ -81,7 +102,7 @@ function FunctionEditor(props) {
 
     useEffect(() => {
         columnsHandler();
-    }, [parentBatches]);
+    }, [newBatchData]);
 
     console.log('functionEditorColumns', functionEditorColumns);
     console.log('functionEditorRecord', functionEditorRecord);
