@@ -1,3 +1,4 @@
+/* eslint-env browser, node */
 import { routerMiddleware } from 'connected-react-router';
 import { createHashHistory } from 'history';
 import { applyMiddleware, compose, createStore } from 'redux';
