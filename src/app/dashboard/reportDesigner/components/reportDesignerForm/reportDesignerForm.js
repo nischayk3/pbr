@@ -41,7 +41,7 @@ const columns = [
 ];
 function ReportDesignerForm(props) {
       
-    const { viewId, setViewId,  viewList, setViewList, status, setStatus } = props;
+    const { viewId, setViewId,  viewList, setViewList, status, setStatus, isLoad, reportName, setReportName } = props;
 
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -63,6 +63,7 @@ function ReportDesignerForm(props) {
     
     
     console.log('viewList',viewList);
+    console.log('isLoad',isLoad);
 
 
     return (
@@ -73,19 +74,20 @@ function ReportDesignerForm(props) {
                 <Text className="filter-text">View</Text>
                 <Text className="filter-text">Status</Text>
                 <Input className="filter-button" value="123456" disabled />
-                <Input className="filter-button" value="123456" disabled />
+                <Input className="filter-button" value={reportName} disabled={isLoad} onChange={(e)=>setReportName(e.target.value)}  />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
                     <Select className="filter-button" defaultValue={viewId} onChange={(e, value) => {
                         return setViewId(value);
                     }}
                     value={viewId}
+                    disabled={isLoad}
                     >
                         {/* <Option value="{item.view_disp_id}">hello</Option> */}
 
                     </Select>
                     <Button style={{width:'40px'}} onClick={() => setVisible(true)}><BuildTwoTone style={{marginRight:'5px'}} twoToneColor="#093185"  /></Button>
                 </div>
-                <Input className="filter-button" value={status} disabled />
+                <Input className="filter-button" value={status} disabled={isLoad} />
             </div>
             <Modal
                 title={<span>Select View  <Input.Search

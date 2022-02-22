@@ -14,3 +14,14 @@ export const getViews = (request) => {
         }
     );
 };
+
+export const getCharts = (request) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/chart-list/' + request).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};

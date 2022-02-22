@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import {
     ArrowLeftOutlined,
-    BuildTwoTone
+    BuildTwoTone,
 } from '@ant-design/icons';
 import {
-    Form, Select,
-    Button, Modal, Table} from 'antd';
+    Form,
+    Select,
+    Button,
+    Modal,
+    Table,
+} from 'antd';
 import ChartSelector from './reportDesignerFilter/chartSelector';
 import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
 import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections'
 import './stylesNew.scss';
 import example_json from './example.json'
-import { getViews } from '../../../../services/reportDesignerServices';
+import { getViews, getCharts } from '../../../../services/reportDesignerServices';
 
 
 const columns = [
@@ -38,31 +42,40 @@ const columns = [
 ];
 
 function ReportDesignerNew() {
-    useEffect(()=>
-    {
-        getViewsList();
-    },[] 
-    );
+
     const { Option } = Select;
     const [loading, setLoading] = useState(false);
     const [isLoad, setIsLoad] = useState(false);
+    const [reportName, setReportName] = useState('');
     const [isNew, setIsNew] = useState(false);
     const [visible, setVisible] = useState(false);
     const [popvisible, setPopVisible] = useState(false);
     const [filterTable, setFilterTable] = useState(null);
     const [viewId, setViewId] = useState('');
-    const [ status, setStatus ] = useState('')
+    const [viewVersion, setViewVersion] = useState('');
+    const [ chartList, setChartList ] = useState([]);
+    const [ status, setStatus ] = useState('');
     const [viewList, setViewList] = useState('');
     const [chartId, setChartId] = useState([]);
     const [ formData, setFormData ] = useState({});
+    const [ mainJson, setMainJson] = useState({
+        view:viewId,
+        chartIdList:[],
+        reportName:reportName
+    });
     const [form] = Form.useForm();
+
+    useEffect(()=>
+    {
+        getViewsList();
+    },[] 
+    );
 
     const handleValuesChange = (changedValues, values) => 
     {
-        setFormData(JSON.stringify(values));
+        setFormData(convertToJson(values));
     };
     
-
     const getViewsList = () =>
     {
         let req={};
@@ -71,6 +84,51 @@ function ReportDesignerNew() {
             console.log(res);
             setViewList(res['Data']);
         });
+    };
+   
+    const getChartsList = () =>
+    {
+        let req=viewId;
+        getCharts(req).then((res)=>
+        {
+            console.log(res);
+            setChartList(res['Data']);
+        });
+    };
+
+
+    
+    const convertToJson = (jay) =>
+    { 
+        let arr={};
+        let section_arr=[];
+
+        jay=jay['response'];
+        jay.map((item,index)=>{
+            let obj={};
+            obj['heading']=item.sectionName;
+            if(index==0)
+                obj['numbered']=true;
+            else
+                obj['numbered']=false;
+            let content_arr=[];
+            content_arr=item.dymamic_rows.map((i)=>
+            {
+                let objj={};
+                objj[i.keyName]=i.value;
+
+                return objj;
+            });
+            obj['content']=[Object.assign({}, ...content_arr)];
+
+            if(index==0)
+                arr['titlepage']=obj;
+            else
+                section_arr.push(obj);
+        });
+        arr['sections'] = section_arr;
+
+        return arr;
     };
 
     const search = (value) => 
@@ -86,7 +144,7 @@ function ReportDesignerNew() {
     };
 
 
-    console.log('example_json',example_json);
+    console.log('example_json',formData);
     return (
         <div className="reportDesigner-container">
             <div className="reportDesigner-block">
@@ -94,17 +152,36 @@ function ReportDesignerNew() {
                     <ArrowLeftOutlined /> Report Designer
                 </h1>
                 <div className="reportDesigner-btns">
+                    
+                    <Button
+                        className="reportDesigner-saveBtn"
+                        onClick={()=>{ setIsNew(true); setIsLoad(false); }}                   
+                    >
+                        New
+                    </Button>
                     <Button
                         className="reportDesigner-loadBtn"
-                        onClick={()=>setVisible(true)}
+                        onClick={()=> {setVisible(true); setIsNew(false); setIsLoad(true);}}
                     >
                         Load
                     </Button>
                     <Button
-                        className="reportDesigner-saveBtn"
-                        
+                        className="reportDesigner-loadBtn"
+                        onClick={()=>setVisible(true)}
                     >
-                        New
+                        Save
+                    </Button>
+                    <Button
+                        className="reportDesigner-loadBtn"
+                        onClick={()=>setVisible(true)}
+                    >
+                        Save As
+                    </Button>
+                    <Button
+                        className="reportDesigner-loadBtn"
+                        onClick={()=>setVisible(true)}
+                    >
+                        Test
                     </Button>
                     <Button
                         className="reportDesigner-shareBtn"
@@ -124,8 +201,15 @@ function ReportDesignerNew() {
                 setViewList={setViewList}
                 setStatus={setStatus}
                 status={status}
+                isLoad={isLoad}
+                setIsLoad={setIsLoad}
+                reportName={reportName}
+                setReportName={setReportName}
+                isNew={isNew}
+                setIsNew={setIsNew}
             />
-            { isLoad ?
+
+            { isLoad || isNew ?
                 <div className="reportDesigner-grid-tables">
                     <ChartSelector 
                         chartId={chartId}
