@@ -173,3 +173,17 @@ export const deleteAdHocFile = (_queryParam) => {
         }
     );
 };
+
+export const downloadAdhocFile = request => {
+    return Service.get(
+        BMS_APP_PYTHON_SERVICE + '/download_file',
+        request,
+    ).then(
+        response => {
+            return response.data;
+        },
+        error => {
+            return error.response.data;
+        },
+    );
+};
