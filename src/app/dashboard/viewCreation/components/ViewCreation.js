@@ -8,8 +8,7 @@ import {
     SaveOutlined,
     ShareAltOutlined,
     CheckCircleOutlined,
-    CloseCircleOutlined
-
+    CloseCircleOutlined,
 } from '@ant-design/icons';
 import { Button, Collapse, Form, Space, Tag } from 'antd';
 
@@ -72,14 +71,14 @@ function ViewCreation() {
             fixed: 'left',
             render: (text, record, index) => (
                 <>
-                    {record.coverage_metric_percent === '38.64 %' ? (
-                        <span className="statusIcon-summary" >
+                    {record.coverage_metric_percent === '100 %' ? (
+                        <span className='statusIcon-summary'>
                             <CheckCircleOutlined />
                         </span>
                     ) : (
-                        <span className="statusIcon-summary" >
+                        <span className='statusIcon-summary'>
                             <CloseCircleOutlined />
-                        </span >
+                        </span>
                     )}
                 </>
             ),
@@ -93,10 +92,7 @@ function ViewCreation() {
             width: 100,
             fixed: 'left',
             render: (param, record, index) => (
-                <Tag
-                    color='magenta'
-                    className='parameter-tag'
-                >
+                <Tag color='magenta' className='parameter-tag'>
                     {param}
                 </Tag>
             ),
@@ -116,19 +112,15 @@ function ViewCreation() {
             fixed: 'right',
             render: (text, record, index) => (
                 <>
-                    <Space size='middle' >
-                        Lock
-                    </Space>
+                    <Space size='middle'>Lock</Space>
                 </>
             ),
         },
     ]);
 
-
     const functionPassHandler = (record, index) => {
         console.log('row data', record, index);
         setFunctionEditorRecord((prevState) => [...prevState, record]);
-
     };
 
     const [form] = Form.useForm();
@@ -137,7 +129,6 @@ function ViewCreation() {
         // console.log('changedValues', changedValues)
         // console.log('values', values)
     };
-
 
     return (
         <div className='reportDesigner-container viewCreation-container'>
@@ -250,10 +241,16 @@ function ViewCreation() {
                                                     setFunctionEditorViewState={
                                                         setFunctionEditorViewState
                                                     }
-                                                    parentBatches={parentBatches}
-                                                    setParentBatches={setParentBatches}
+                                                    parentBatches={
+                                                        parentBatches
+                                                    }
+                                                    setParentBatches={
+                                                        setParentBatches
+                                                    }
                                                     newBatchData={newBatchData}
-                                                    setNewBatchData={setNewBatchData}
+                                                    setNewBatchData={
+                                                        setNewBatchData
+                                                    }
                                                 />
                                             </Panel>
                                             <Panel
@@ -299,13 +296,20 @@ function ViewCreation() {
                                     <FunctionEditor
                                         parentBatches={parentBatches}
                                         setParentBatches={setParentBatches}
-                                        functionEditorColumns={functionEditorColumns}
-                                        setFunctionEditorColumns={setFunctionEditorColumns}
-                                        functionEditorRecord={functionEditorRecord}
-                                        setFunctionEditorRecord={setFunctionEditorRecord}
+                                        functionEditorColumns={
+                                            functionEditorColumns
+                                        }
+                                        setFunctionEditorColumns={
+                                            setFunctionEditorColumns
+                                        }
+                                        functionEditorRecord={
+                                            functionEditorRecord
+                                        }
+                                        setFunctionEditorRecord={
+                                            setFunctionEditorRecord
+                                        }
                                         newBatchData={newBatchData}
                                         setNewBatchData={setNewBatchData}
-
                                     />
                                 </div>
                             )}

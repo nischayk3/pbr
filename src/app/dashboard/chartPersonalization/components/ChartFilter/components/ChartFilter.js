@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
     Card,
@@ -9,25 +9,50 @@ import {
     Button,
     Modal,
 } from 'antd';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import InputField from '../../../../../../components/InputField/InputField';
 import SelectField from '../../../../../../components/SelectField/SelectField';
-import { sendSelectedSite } from '../../../../../../duck/actions/chartPersonalizationAction';
+import { getSiteId } from '../../../../../../services/chartPersonalizationService';
+import { showNotification } from '../../../../../../duck/actions/commonActions';
+import {
+    sendDateRange,
+    sendSelectedSite,
+    sendUnApprovedData,
+} from '../../../../../../duck/actions/chartPersonalizationAction';
 
 const { Text } = Typography;
 const { Search } = Input;
 
-function ChartFilter(props) {
+function ChartFilter() {
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [siteList, setSiteList] = useState(['Site 1', 'Site 2']);
+    const [siteList, setSiteList] = useState([]);
     const [selectedSite, setSelectedSite] = useState([]);
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [selectedDateRange, setSelectedDateRange] = useState('');
 
-    //const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        getSiteIdHandler();
+    }, []);
+
+    const getSiteIdHandler = () => {
+        let reqSite = { view_id: 'V1' };
+        getSiteId(reqSite).then((res) => {
+            if (res.Status === 200) {
+                setSiteList(res.Data[0]);
+            } else if (res.Status === 400) {
+                dispatch(
+                    showNotification('error', 'Site Error - ' + res.Message)
+                );
+            } else if (res === 'Internal Server Error') {
+                dispatch(showNotification('error', 'Site Error - ' + res));
+            }
+        });
+    };
 
     const showModal = () => {
         setVisible(true);
@@ -43,14 +68,16 @@ function ChartFilter(props) {
     const handleCancel = () => {
         setVisible(false);
     };
-    const onChange = () => {
-        console.log('onChnage');
+    const onChangeCheckbox = (e) => {
+        console.log(`checked = ${e.target.checked}`);
+        const isChecked = e.target.checked;
+        dispatch(sendUnApprovedData(isChecked));
     };
 
     const handleSelectChange = (value) => {
         if (value !== null) {
             setSelectedSite(value);
-            //   dispatch(sendSelectedSite(value))
+            dispatch(sendSelectedSite(value));
         }
     };
     const onChangeStart = (date, dateString) => {
@@ -69,6 +96,7 @@ function ChartFilter(props) {
     const onClickTimeRange = () => {
         setSelectedDateRange(`${startTime} / ${endTime}`);
         console.log('setSelectedDateRange', `${startTime} / ${endTime}`);
+        dispatch(sendDateRange(`${startTime} / ${endTime}`));
         setVisible(false);
     };
     return (
@@ -99,7 +127,9 @@ function ChartFilter(props) {
                         />
                     </div>
                     <div style={{ padding: '4px 0' }}>
-                        <Checkbox onChange={onChange}>Unapproved data</Checkbox>
+                        <Checkbox onChange={onChangeCheckbox}>
+                            Unapproved data
+                        </Checkbox>
                     </div>
                 </div>
             </Card>

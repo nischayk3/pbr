@@ -9,7 +9,8 @@
         }
     },
     "extends": [
-        "eslint:recommended", "plugin:react/recommended","plugin:import/errors", "plugin:import/warnings"
+        "eslint:recommended"
+        //  "plugin:react/recommended", 
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -23,19 +24,19 @@
     "rules": {
         "no-unused-vars": "off",
         "indent": [
-            "warn",
+            "off",
             4
         ],
         "linebreak-style": [
-            "warn",
+            "off",
             "unix"
         ],
         "quotes": [
-            "warn",
+            "off",
             "single"
         ],
         "semi": [
-            "warn",
+            "off",
             "always"
         ]
         // "no-const-assign":"error",
@@ -46,7 +47,7 @@
         // "no-duplicate-imports":"error",
         // "no-empty-pattern":"error",
         // "no-irregular-whitespace":"error",
-        // "no-console":"warn",
+        // "no-console":"off",
         // "import/order": [
         //     "error",
         //     {
