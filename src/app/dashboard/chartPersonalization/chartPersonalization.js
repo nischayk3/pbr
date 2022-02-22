@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ChartDataTable from './components/ChartDataTable/index';
 import ChartDetails from './components/ChartDetails';
@@ -22,6 +22,7 @@ import { Button, Input, Modal, Typography } from 'antd';
 
 import chartObj from './get_chart.json';
 import ViewTable from '../../../components/ViewTable';
+import { getViewTable } from '../../../services/commonService';
 
 const { Text } = Typography;
 
@@ -40,9 +41,15 @@ function ChartPersonalization() {
     const [showCustomization, setShowCustomization] = useState(false);
     const [loading, setLoading] = useState(false);
     const [chartObjData, setChartObjData] = useState(chartObj);
+    const [viewTableData, setviewTableData] = useState([]);
+    const [isModal, setisModal] = useState(true);
 
     const filterData = useSelector((state) => state.chartPersReducer);
     console.log('filter dataaa', filterData);
+
+    useEffect(() => {
+        getViewTableData();
+    }, []);
 
     function handleOk() {
         setLoading(true);
@@ -69,8 +76,6 @@ function ChartPersonalization() {
     }
 
     function handleTitleChange() {
-        // const { isShare, isSave, isNew, isSaveAs, isLoad, isDiscard } = this.state
-        console.log('isloaddddd', isLoad);
         if (isDiscard)
             return (
                 <span>
@@ -111,8 +116,6 @@ function ChartPersonalization() {
     }
 
     function callbackViewType(param) {
-        console.log('param', param);
-
         setShowChart(true);
         setShowChartType(true);
         setShowFilter(true);
@@ -129,7 +132,29 @@ function ChartPersonalization() {
         console.log('chartData', chartData);
     };
 
-    console.log('isLoadddddd', isLoad);
+    const handleCloseViewModal = () => {
+        setisModal(false);
+    };
+    /* eslint-disable-no-undeaf  */
+    const getViewTableData = () => {
+        let reqView = { vew_status: 'APRD' };
+        getViewTable(reqView).then((res) => {
+            if (res) {
+                setviewTableData(res.Data);
+            }
+            // else if (
+            //     res.data.status - code === 400 ||
+            //     res.data.status - code === 401
+            // ) {
+            //     dispatch(
+            //         showNotification(
+            //             'error',
+            //             'Chart Type Error - ' + res.data.message
+            //         )
+            //     );
+            // }
+        });
+    };
 
     return (
         <div className='chart-wrapper'>
@@ -220,6 +245,11 @@ function ChartPersonalization() {
                     </div>
                 )}
             </div>
+            <ViewTable
+                isModal={isModal}
+                data={viewTableData}
+                handleCloseModal={handleCloseViewModal}
+            />
             <div className='modalPopup'>
                 <Modal
                     visible={visible}
@@ -236,7 +266,7 @@ function ChartPersonalization() {
                                 You Have made some changes <br /> Do you want to
                                 save or discard them ?
                             </p>
-                            <ViewTable />
+
                             <div className='loadButton'>
                                 <Button
                                     className='loadButtons'

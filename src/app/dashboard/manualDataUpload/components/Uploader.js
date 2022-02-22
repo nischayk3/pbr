@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-indent */
+/* eslint-disable no-class-assign */
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
