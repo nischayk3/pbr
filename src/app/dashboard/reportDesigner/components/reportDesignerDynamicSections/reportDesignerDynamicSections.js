@@ -7,21 +7,14 @@ import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerD
 function ReportDesignerDynamicSections(props) {
    
     const {formData}=props;
-
-    const datd= {
-        sections:[{
-            sectionName:'hello',
-            dymamic_rows:[{keyName:'hi',value:'hi'}]
-        }]
-    };
-   
     console.log('form dyn section',formData);
+
     return (
         <div className="reportDesigner-dynamicSections bg-white">
             <h6 className="dynamicSections-noteHeadline">Note</h6>
             <ul className="dynamicSections-ul">
                 <li>
-          To Create multiple sections, Please click on Add Multiple Sections
+                To Create multiple sections, Please click on Add Multiple Sections
                 </li>
                 <li style={{marginTop:'10px'}}>To Create multiple rows, Please click on plus icon in the row</li>
             </ul>
@@ -29,14 +22,17 @@ function ReportDesignerDynamicSections(props) {
             <div className="dynamicSections-container">
                 <div className="dynamicSections-section">
                     <div className="dynamicSections-block">
-                        <Form.List name="sections">
-                            {(datd, { add, remove }) => (
+                        <Form.List name={["response"]}>
+                            {(fields, { add, remove }) => (
+                                
                                 <>
-                                    {datd.map(({ key, name, ...restField }) => (
-                                        <div>
-                    
+                                {console.log('fileds',fields)}
+                                    {fields.map(({ key, name, ...restField }) => (
+                                        
+                                        <div> 
+                                            {/* {console.log('fill',key, name, ...restField )} */}
                                             <Form.Item {...restField} name={[name, 'sectionName']}>
-                                                <center> <Input placeholder="Section" className="input-section"  /></center>
+                                                <Input placeholder="Section" style={{marginLeft:'300px'}} className="input-section"  />
                                             </Form.Item>
                     
                                             <Space
@@ -67,7 +63,7 @@ function ReportDesignerDynamicSections(props) {
                                     ))}
                                     <Form.Item>
                                         <p>
-                                            <PlusSquareTwoTone style={{fontSize:'16px',marginLeft:'10px'}} onClick={() => add()}/> Add Multiple Sections
+                                            <PlusSquareTwoTone style={{fontSize:'16px',marginLeft:'10px'}} onClick={() => add()} /> Add Multiple Sections
                                         </p> 
                       
                                     </Form.Item>

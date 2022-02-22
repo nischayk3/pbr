@@ -1,111 +1,61 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 import {
     Card,
-    Checkbox,
-    DatePicker,
-    Input,
     Select,
-    Table,
     Typography,
+    Form,
+    Space,
+    Popconfirm
 } from 'antd';
+import { PlusSquareTwoTone, DeleteTwoTone } from '@ant-design/icons';
 import './styles.scss';
 
 const { Option } = Select;
 const { Text } = Typography;
 
-const columns = [
-    {
-        title: 'Multi Select',
-        dataIndex: 'multi',
-        render: (item) => (
-            <>
-                {item === 'yes' ? (
-                    <Checkbox checked={true} />
-                ) : (
-                    <Checkbox checked={false} />
-                )}
-            </>
-        ),
-    },
-    {
-        title: 'Chart ID',
-        dataIndex: 'chart_id',
-        key: 'age',
-    },
-    {
-        title: 'ID Name',
-        dataIndex: 'id_name',
-        key: 'address',
-    },
-];
-
-const data = [
-    {
-        key: '1',
-        multi: 'yes',
-        chart_id: 'Exclusion/Shift/Trend',
-        id_name: '',
-    },
-    {
-        key: '1',
-        multi: 'no',
-        chart_id: 'Rule Violation',
-        id_name: '',
-    },
-    {
-        key: '1',
-        multi: 'yes',
-        chart_id: 'Parameters',
-        id_name: '',
-    },
-    {
-        key: '1',
-        multi: 'no',
-        chart_id: 'Exclusions',
-        id_name: '',
-    },
-];
 
 function ChartSelector() {
+    const [form] = Form.useForm();
+    const [data, setData] = useState({})
+
+    const handleValuesChange = (changedValues, values) => {
+        setData(values)
+    };
+
+    console.log(data)
     return (
         <div>
-            <Card className = "chartid-main">
-                <p className = "chartid-text">Chart ID</p>
-                <Select className = "chartid-select" defaultValue="ChartId 1">
-                    <Option>chartid1</Option>
-                </Select>
-                <Table
-                    className = "chartid-table"
-                    columns={columns}
-                    dataSource={data}
-                    pagination={false}
-                />
-            </Card>
-            <Card className = "site-main">
-                <div className = "site-filter">
-                    <Text>Site</Text>
-                    <Text>Date Range</Text>
-                    <Select className = "site-select" defaultValue="Site 1">
-                        <Option>Site 1</Option>
-                        <Option>Site 2</Option>
-                    </Select>
-                    <DatePicker />
-                    <div>
-                        <Text>Unapproved Data</Text> <Checkbox className = "site-checkbox" />
-                    </div>
-                </div>
-            </Card>
-            <Card className = "schedule-main">
-                <div className = "schedule-filter">
-                    <Text>Report ID</Text>
-                    <Text>Schedule</Text>
-                    <Input value="12345" />
-                    <Select className = "site-select" defaultValue="Site 1">
-                        <Option>Site 1</Option>
-                        <Option>Site 2</Option>
-                    </Select>
-                </div>
+            <Card className="chartid-main" title="Chart">
+                <Form name="dynamic_form_nest_item" autoComplete="off" form={form} onValuesChange={handleValuesChange}>
+                    <Form.List name="chart_id">
+                        {(fields, { add, remove }) => (
+                            <>
+                                {fields.map(({ key, name, ...restField }) => (
+                                    <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'chart']}
+                                        >
+                                            <Select placeholder="Select Chart">
+                                                <Option value="1">1</Option>
+                                                <Option value="2">2</Option>
+                                            </Select>
+                                        </Form.Item>
+                                        <Popconfirm title="Are you Sure you want to delete?" onConfirm={() => remove(name)}>
+                                            <DeleteTwoTone twoToneColor="red" />
+                                        </Popconfirm>
+                                        <PlusSquareTwoTone style={{ marginLeft: '200px' }} onClick={() => add()} twoToneColor="#093185" />
+                                        <b><u style={{ marginLeft: '10px' }} onClick={() => add()} >Add New Chart</u> </b>
+                                    </Space>
+                                ))}
+                                <Form.Item>
+                                    <PlusSquareTwoTone onClick={() => add()} twoToneColor="#093185" />
+                                    <b><u style={{ marginLeft: '10px' }} onClick={() => add()}>Add New Chart</u> </b>
+                                </Form.Item>
+                            </>
+                        )}
+                    </Form.List>
+                </Form>
             </Card>
         </div>
     );

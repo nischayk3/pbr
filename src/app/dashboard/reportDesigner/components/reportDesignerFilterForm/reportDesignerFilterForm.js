@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { DatePicker, Form, Select } from 'antd';
-
 import './styles.scss';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 

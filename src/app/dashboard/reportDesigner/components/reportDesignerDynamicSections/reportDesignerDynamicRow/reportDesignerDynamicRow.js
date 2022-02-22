@@ -10,14 +10,16 @@ import './styles.scss';
 function ReportDesignerDynamicRow(props) {
     const { fieldKey } = props;
 
+    console.log(fieldKey)
+
     return (
-        <Form.List name={[fieldKey, 'dymamic-rows']}>
+        <Form.List name={[fieldKey, 'dymamic_rows']}>
             {(rows, { add, remove }) => (
                 <>
-                    {rows.map(({ key, name, ...restField1 }) => (
-                        <tr
-                            className="dynamicSections-spaceRows"
-                            key={key}   >        
+                    {rows.map(({ key, name, ...restField1 }) => (            
+                        <tr 
+                         className="dynamicSections-spaceRows"
+                            key={key} >    
                             <td>
                                 <Form.Item {...restField1} name={[name, 'keyName']}>
                                     <Input placeholder="Enter key" />
