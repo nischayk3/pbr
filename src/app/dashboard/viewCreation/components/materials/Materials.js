@@ -24,7 +24,7 @@ function Materials(props) {
         parentBatches,
         setParentBatches,
         newBatchData,
-        setNewBatchData
+        setNewBatchData,
     } = props;
 
     const columns = [
@@ -70,22 +70,35 @@ function Materials(props) {
     const parameterPassHandler = (record, index) => {
         let rowData = {};
         let batchData = {};
-        let newBatchData={};
+        let newBatchData = [];
         // record.coverage_list.map((item, index) => {
         //     let item_key = item;
         //     batchData[`B${++index}`] = item_key;
         // });
-        
-        parentBatches.map((el,index) => {
-            if(record.coverage_list.includes(el)){
+
+        parentBatches.map((el, index) => {
+            if (record.coverage_list.includes(el)) {
                 batchData[`B${++index}`] = true;
                 newBatchData[`B${index}`] = true;
-            }else{
+            } else {
                 batchData[`B${++index}`] = false;
                 newBatchData[`B${index}`] = false;
             }
         });
-      
+
+        // const result = Object.values(record);
+        // console.log('result', result);
+
+        // const indexDuplicate = result.findIndex((x) => x == record.param);
+        // if (indexDuplicate === -1) {
+        //     console.log('push');
+        //     alert('Yes');
+        // } else {
+        //     console.log('push');
+        //     alert('No');
+        //     console.log('object already exists');
+        // }
+
         rowData = Object.assign(record, batchData);
         //delete rowData['coverage_list'];
         let data = [...viewSummaryTable];
@@ -96,6 +109,7 @@ function Materials(props) {
     };
 
     console.log('viewSummaryTable', viewSummaryTable);
+    console.log('newBatchData', newBatchData);
     return (
         <div className='materials-wrapper'>
             <Collapse

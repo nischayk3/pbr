@@ -83,7 +83,12 @@ function FileUpload() {
             <span className='fileUpload-delete'>
                 <Popconfirm
                     placement='right'
-                    title='Are you sure to delete this file?'
+                    title={
+                        <div className='fileUpload-deletePopover'>
+                            <h4>Are you sure to delete this file?</h4>
+                            <p>This action is not reversible</p>
+                        </div>
+                    }
                     onConfirm={() => confirm(File_id)}
                     okText='Yes'
                     cancelText='No'
