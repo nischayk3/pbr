@@ -10,12 +10,7 @@ import Personalization from './components/Personalization/components/Personaliza
 
 import {
   ArrowLeftOutlined,
-  CheckCircleTwoTone,
-  FileDoneOutlined,
   InfoCircleTwoTone,
-  Loading3QuartersOutlined,
-  PlusOutlined,
-  SaveOutlined,
   ShareAltOutlined,
 } from '@ant-design/icons';
 import { Button, Modal } from 'antd';
@@ -24,12 +19,14 @@ import chartObj from './get_chart.json';
 import ViewTable from '../../../components/ViewTable';
 import { getViewTable } from '../../../services/commonService';
 import ChartLanding from './components/ChartLanding/components/ChartLanding';
+import LoadModal from '../../../components/LoadModal';
 
 function ChartPersonalization() {
   const [chartDetails, setChartdetails] = useState([]);
   const [visible, setVisible] = useState(false);
   const [isShare, setIsShare] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
+  const [isView, setIsView] = useState(false);
   const [isNew, setIsNew] = useState(false);
   const [isSave, setIsSave] = useState(false);
   const [isSaveAs, setIsSaveAs] = useState(false);
@@ -136,11 +133,16 @@ function ChartPersonalization() {
   const handleCloseViewModal = () => {
     setisModal(false);
     setIsLoad(false);
+    setIsView(false);
   };
   function callbackIsLoad(param) {
     console.log('param', param);
-    setIsLoad(true);
+    setIsView(true);
   }
+
+  const openLoadModal = () => {
+    setIsView(true);
+  };
   /* eslint-disable-no-undeaf  */
   const getViewTableData = () => {
     let reqView = { vew_status: 'APRD' };
@@ -236,51 +238,47 @@ function ChartPersonalization() {
           </Button>
         </div>
       </div>
-      {isNew ? (
-        <div className='chart-block'>
-          <div className='chart-left-panel'>
-            <div style={{ marginBottom: '10px' }}>
-              <ChartView
-                callbackViewType={callbackViewType}
-                callbackViewTable={callbackIsLoad}
-                chartObj={chartObjData}
-                isNew={isNew}
-              />
-            </div>
-            {/* {showFilter && ( */}
+
+      <div className='chart-block'>
+        <div className='chart-left-panel'>
+          <div style={{ marginBottom: '10px' }}>
+            <ChartView
+              callbackViewType={callbackViewType}
+              callbackViewTable={callbackIsLoad}
+              chartObj={chartObjData}
+              isNew={isNew}
+            />
+          </div>
+          {showFilter && (
             <div style={{ marginBottom: '10px' }}>
               <ChartFilter chartObj={chartObjData} />
             </div>
-            {/* )} */}
-            {/* {showChartType && ( */}
+          )}
+          {showChartType && (
             <div>
               <ChartType chartObj={chartObjData} />
             </div>
-            {/* )} */}
-          </div>
-          {/* {showChart && ( */}
+          )}
+        </div>
+        {showChart && (
           <div className='chart-center-panel'>
             <ChartDetails chartObj={chartObjData} />
             <ChartDataTable />
           </div>
-          {/* )} */}
-          {/* {showCustomization && ( */}
+        )}
+        {showCustomization && (
           <div className='chart-right-panel'>
             <Personalization />
           </div>
-          {/* )} */}
-        </div>
-      ) : (
-        <div className='chart-block-landing'>
-          <ChartLanding />
-        </div>
-      )}
+        )}
+      </div>
 
       <ViewTable
-        isModal={isLoad}
+        isModal={isView}
         data={viewTableData}
         handleCloseModal={handleCloseViewModal}
       />
+      <LoadModal isModal={isLoad} callbackLoadModal={openLoadModal} />
       <div className='modalPopup'>
         <Modal
           visible={visible}
