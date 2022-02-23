@@ -227,3 +227,25 @@ a.deleteTableAction {
         }
     }
 }
+
+.scrollbar,
+.ant-table-content {
+    &:hover {
+        &::-webkit-scrollbar-thumb {
+            background-color: #b6b6b6;
+        }
+    }
+
+    &::-webkit-scrollbar {
+        visibility: hidden;
+        width: 5px;
+        height: 7px;
+        border-radius: 60px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #b6b6b6;
+        transition: 0.5s ease;
+        border-radius: 60px;
+    }
+}

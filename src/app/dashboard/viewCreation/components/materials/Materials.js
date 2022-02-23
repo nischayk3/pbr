@@ -101,7 +101,7 @@ function Materials(props) {
             setViewSummaryTable([...data]);
             setFunctionEditorViewState(true);
         } else {
-            message.error('Function already exists');
+            // message.error('Function already exists');
         }
     };
 
