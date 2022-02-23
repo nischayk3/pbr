@@ -239,7 +239,7 @@ function ViewSummary(props) {
     };
 
     useEffect(() => {
-        onChangeColumnsHandler();
+    onChangeColumnsHandler();
     }, [newBatchData]);
 
     console.log('viewSummaryColumns', viewSummaryColumns);
