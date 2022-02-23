@@ -25,11 +25,11 @@
         "no-unused-vars": "off",
         "indent": [
             "off",
-            4
+            2
         ],
         "linebreak-style": [
             "off",
-            "unix"
+            "windows"
         ],
         "quotes": [
             "off",
