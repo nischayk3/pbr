@@ -1,0 +1,67 @@
+{
+    "view_disp_id": "V1",
+    "chart_int_ids": [
+        "C1-BELAC_ANALY-4",
+        "C1-BELAC_ANALY-1"
+    ],
+    "rep_name": "First Report",
+    "rep_status": "APRD",
+    "layout_info": {
+        "titlepage": {
+            "heading": "CPV ",
+            "numbered": true,
+            "content": [
+                {
+                    "id": {
+                        "value": "1",
+                        "editable": true
+                    },
+                    "site": {
+                        "value": "1255",
+                        "editable": true
+                    },
+                    "product": {
+                        "value": "Bela",
+                        "editable": true
+                    }
+                }
+            ]
+        },
+        "sections": [
+            {
+                "heading": "Summary",
+                "numbered": false,
+                "content": [
+                    {
+                        "title": {
+                            "value": "first_report",
+                            "editable": true
+                        },
+                        "desc": {
+                            "value": "omen",
+                            "editable": true
+                        },
+                        "valid": {
+                            "value": "yes"
+                        }
+                    }
+                ]
+            },
+            {
+                "heading": "Chart",
+                "numbered": false,
+                "content": [
+                    {
+                        "type": {
+                            "value": "scatter"
+                        },
+                        "legends": {
+                            "value": "true",
+                            "editable": true
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
