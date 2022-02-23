@@ -11,12 +11,16 @@ const LoadModal = (props) => {
     props.callbackLoadModal();
   };
 
+  const handleOk = () => {
+    props.handleCloseModal();
+    // dispatch(sendViewId(selectedViewId));
+  };
+
   return (
     <Modal
       title='Load'
       visible={props.isModal}
       onCancel={props.handleCloseModal}
-      centered={true}
       footer={[
         <Button
           onClick={props.handleCloseModal}
@@ -26,7 +30,7 @@ const LoadModal = (props) => {
           Cancel
         </Button>,
         <Button
-          onClick={handleClose}
+          onClick={handleOk}
           className='custom-secondary-btn'
           key='link'
           type='primary'
