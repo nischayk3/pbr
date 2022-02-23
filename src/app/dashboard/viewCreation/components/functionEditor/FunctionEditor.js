@@ -141,7 +141,7 @@ const FunctionEditor = (props) => {
                     <Input placeholder='Enter ID'/>
                 </Form.Item>
                 <Form.Item label='Function Name' name='functionName'>
-                    <Input placeholder='Enter Function Name' defaultValue="ARSENIC" />
+                    <Input placeholder='Enter Function Name' />
                 </Form.Item>
                 <Form.Item label='Aggregation' name='aggregation'>
                     <Select placeholder='Select Aggregation'>
