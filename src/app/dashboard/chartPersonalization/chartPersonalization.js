@@ -10,7 +10,6 @@ import Personalization from './components/Personalization/components/Personaliza
 
 import {
   ArrowLeftOutlined,
-  CheckCircleTwoTone,
   FileDoneOutlined,
   InfoCircleTwoTone,
   Loading3QuartersOutlined,

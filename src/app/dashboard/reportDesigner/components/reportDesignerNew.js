@@ -19,7 +19,8 @@ import './stylesNew.scss';
 import example_json from './example.json'
 import { getViews, getCharts, saveReportDesign } from '../../../../services/reportDesignerServices';
 import SaveModal  from '../../../../components/SaveModal/saveModal'
-
+import { useDispatch, useSelector } from 'react-redux';
+import { sendReportId } from '../../../../duck/actions/reportDesignerAction';
 
 //Columns For The view Selection modal
 const columns = [
@@ -68,6 +69,11 @@ function ReportDesignerNew() {
   const [formData, setFormData] = useState({});
   // const [mainJson, setMainJson] = useState({});
   const [form] = Form.useForm();
+
+  const dispatch = useDispatch();
+
+  const savedData = useSelector((state) => state.reportDesignerReducer);
+  console.log('redux save',savedData)
 
   const mapViewList = viewList.length > 0 ? viewList : []
 
@@ -182,7 +188,10 @@ function ReportDesignerNew() {
     obj['rep_disp_id'] = reportId;
     obj['layout_info'] = formData;
 
-    saveReportDesign(obj).then((res) => {
+    let req={}
+    req['data']=obj
+
+    saveReportDesign(req).then((res) => {
       if (res && res['msg'] && res['msg'] == 'success') {
         setReportId(res['rep_disp_id'])
         setStatus(res['rep_stauts'])
@@ -192,6 +201,7 @@ function ReportDesignerNew() {
         message.error('Not Saved')
  
     })
+    dispatch(sendReportId(req))
   }
 
   // unloading the json into component readable form 
@@ -292,7 +302,7 @@ function ReportDesignerNew() {
                 </Button>
                 <Button
                   className="reportDesigner-loadBtn"
-                // onClick={() => setVisible(true)}
+                onClick={() => dispatch(sendReportId({}))}
                 >
                   Save As
                 </Button>
@@ -378,6 +388,7 @@ function ReportDesignerNew() {
           setViewVersion(split_view_id[1])
           setViewIdVersion(view_value);
           getChartsList(view_value);
+          
         }}
           value={viewId}
         >
