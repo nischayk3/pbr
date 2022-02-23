@@ -34,10 +34,11 @@ const FunctionEditor = (props) => {
         setFunctionEditorRecord,
         newBatchData,
         setNewBatchData,
+        functionName,
+        setFunctionName
     } = props;
 
-    const [checkboxChecked, setCheckboxChecked] = useState(true);
-    const [data, setData] = useState([]);
+
 
     const columnsHandler = () => {
         let columns = [];
@@ -131,6 +132,7 @@ const FunctionEditor = (props) => {
         columnsHandler();
     });
 
+
     console.log('functionEditorColumns', functionEditorColumns);
     console.log('functionEditorRecord', functionEditorRecord);
 
@@ -145,11 +147,11 @@ const FunctionEditor = (props) => {
                 </Form.Item>
                 <Form.Item label='Aggregation' name='aggregation'>
                     <Select placeholder='Select Aggregation'>
-                        <Option value='1'>Min</Option>
-                        <Option value='2'>Mean</Option>
-                        <Option value='3'>Max</Option>
-                        <Option value='4'>First</Option>
-                        <Option value='5'>last</Option>
+                        <Option value='Min'>Min</Option>
+                        <Option value='Mean'>Mean</Option>
+                        <Option value='Max'>Max</Option>
+                        <Option value='First'>First</Option>
+                        <Option value='last'>last</Option>
                     </Select>
                 </Form.Item>
                 <Form.Item label='Parameter' name='parameter'>
@@ -168,12 +170,12 @@ const FunctionEditor = (props) => {
                 </Form.Item>
                 <Form.Item label='Function' name='function'>
                     <Select placeholder='Select Function'>
-                        <Option value='1'>round</Option>
-                        <Option value='2'>sin</Option>
-                        <Option value='3'>cos</Option>
-                        <Option value='4'>ln</Option>
-                        <Option value='5'>exp</Option>
-                        <Option value='6'>log</Option>
+                        <Option value='round'>round</Option>
+                        <Option value='sin'>sin</Option>
+                        <Option value='cos'>cos</Option>
+                        <Option value='ln'>ln</Option>
+                        <Option value='exp'>exp</Option>
+                        <Option value='log'>log</Option>
                     </Select>
                 </Form.Item>
             </div>

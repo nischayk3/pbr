@@ -70,9 +70,11 @@ function ViewCreation() {
     const [visible, setVisible] = useState(false);
     const [popvisible, setPopVisible] = useState(false);
     const [isLoad, setIsLoad] = useState(false);
+    const [obj, setObj] = useState();
     const [functionEditorViewState, setFunctionEditorViewState] =
         useState(false);
     const [parentBatches, setParentBatches] = useState([]);
+    const [functionName, setFunctionName] = useState("");
     const [newBatchData, setNewBatchData] = useState([]);
     const [viewSummaryTable, setViewSummaryTable] = useState([]);
     const [viewSummaryColumns, setViewSummaryColumns] = useState([
@@ -147,10 +149,19 @@ function ViewCreation() {
         {
             title: 'Primary',
             key: 'primary',
-            dataIndex: 'primary',
+            dataIndex: 'param',
             width: 150,
             fixed: 'left',
-            render: () => <Radio />,
+            render: (text,record,index) => {
+              return (
+                <input type="radio" id={text} name="a" value={text}/>
+              )
+                    
+                
+                  
+                
+                
+            }
         },
         // {
         //     title: 'Action',
@@ -178,13 +189,15 @@ function ViewCreation() {
     const functionPassHandler = (record, index) => {
         // console.log('row data', record, index);
         setFunctionEditorRecord((prevState) => [...prevState, record]);
+        setFunctionName(record.param);
     };
 
     const [form] = Form.useForm();
 
     const handleValuesChange = (changedValues, values) => {
         // console.log('changedValues', changedValues)
-        // console.log('values', values)
+        //console.log('values', JSON.stringify(values));
+    
     };
 
     console.log('record', functionEditorRecord);
@@ -395,6 +408,8 @@ function ViewCreation() {
                                         newBatchData={newBatchData}
                                         setNewBatchData={setNewBatchData}
                                         viewSummaryTable={viewSummaryTable}
+                                        functionName={functionName}
+                                        setFunctionName={setFunctionName}
                                     />
                                 </div>
                             )}
