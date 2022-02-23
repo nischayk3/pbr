@@ -189,6 +189,7 @@ function ViewSummary(props) {
         setViewSummaryColumns,
         newBatchData,
         setNewBatchData,
+        functionEditorViewState,
     } = props;
 
     const onChangeColumnsHandler = () => {
@@ -239,7 +240,7 @@ function ViewSummary(props) {
     };
 
     useEffect(() => {
-    onChangeColumnsHandler();
+        onChangeColumnsHandler();
     }, [newBatchData]);
 
     return (
@@ -259,16 +260,18 @@ function ViewSummary(props) {
                 </Form.Item>
             </div>
 
-            <div className='viewSummary-TableBlock'>
-                <Table
-                    className='viewSummary-table viewSummary-tablewidth'
-                    pagination={false}
-                    columns={viewSummaryColumns}
-                    dataSource={viewSummaryTable}
-                    scroll={{ x: 900 }}
-                    rowKey={(record) => record.param}
-                />
-            </div>
+            {functionEditorViewState && (
+                <div className='viewSummary-TableBlock'>
+                    <Table
+                        className='viewSummary-table viewSummary-tablewidth'
+                        pagination={false}
+                        columns={viewSummaryColumns}
+                        dataSource={viewSummaryTable}
+                        scroll={{ x: 900 }}
+                        rowKey={(record) => record.param}
+                    />
+                </div>
+            )}
         </div>
     );
 }
