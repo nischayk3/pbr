@@ -71,13 +71,14 @@ function Materials(props) {
         console.log('record materials', record, index);
         let rowData = {};
         let batchData = {};
-        let newBatchData = [];
+        let newBatchData = {};
         // record.coverage_list.map((item, index) => {
         //     let item_key = item;
         //     batchData[`B${++index}`] = item_key;
         // });
 
         parentBatches.map((el, index) => {
+            console.log(el, record.coverage_list.includes(el));
             if (record.coverage_list.includes(el)) {
                 batchData[`B${++index}`] = true;
                 newBatchData[`B${index}`] = true;

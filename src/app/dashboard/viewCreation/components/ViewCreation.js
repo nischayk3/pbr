@@ -116,7 +116,7 @@ function ViewCreation() {
             key: 'action',
             dataIndex: 'action',
             width: 100,
-            fixed: 'right',
+            fixed: 'left',
             render: (text, record, index) => (
                 <>
                     <Space size='middle'>Lock</Space>
@@ -323,7 +323,7 @@ function ViewCreation() {
                                     />
                                 </div>
                             )}
-                            {functionEditorViewState && (
+                            {functionEditorViewState &&(
                                 <div className='viewCreation-functionEditor bg-white'>
                                     <h4 className='viewCreation-blockHeader'>
                                         Function Editor
@@ -345,6 +345,7 @@ function ViewCreation() {
                                         }
                                         newBatchData={newBatchData}
                                         setNewBatchData={setNewBatchData}
+                                        viewSummaryTable={viewSummaryTable}
                                     />
                                 </div>
                             )}
