@@ -96,7 +96,7 @@ const FunctionEditor = (props) => {
             };
             columns.push(obj);
         });
-        if (functionEditorColumns.length === 3) {
+        if (functionEditorColumns.length === 2) {
             let data = [...functionEditorColumns, ...columns];
             setFunctionEditorColumns(data);
         }
@@ -106,11 +106,14 @@ const FunctionEditor = (props) => {
         console.log(props);
         console.log('checked = ', e.target.checked, key, value);
         console.log(rowIndex);
-        // let filteredRecord = [...functionEditorRecord];
-        // filteredRecord[rowIndex]={...filteredRecord[rowIndex]}
-        // filteredRecord[rowIndex][key] = e.target.checked;
-        // console.log(filteredRecord);
-        // setFunctionEditorRecord(filteredRecord)
+        let filteredRecord = [...functionEditorRecord];
+        filteredRecord[rowIndex]={...filteredRecord[rowIndex]}
+        filteredRecord[rowIndex][key] = e.target.checked;
+        console.log(filteredRecord);
+        //setFunctionEditorRecord(filteredRecord)
+
+
+
     };
 
     const onChangeParameterHandler = (value) => {
@@ -135,10 +138,10 @@ const FunctionEditor = (props) => {
         <div className='viewSummary-container functionEditor-container'>
             <div className='viewSummary-FormBlock functionEditor-FormBlock'>
                 <Form.Item label='ID' name='id'>
-                    <Input placeholder='Enter ID' />
+                    <Input placeholder='Enter ID'/>
                 </Form.Item>
                 <Form.Item label='Function Name' name='functionName'>
-                    <Input placeholder='Enter Function Name' />
+                    <Input placeholder='Enter Function Name' defaultValue="ARSENIC" />
                 </Form.Item>
                 <Form.Item label='Aggregation' name='aggregation'>
                     <Select placeholder='Select Aggregation'>
