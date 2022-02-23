@@ -45,7 +45,7 @@ function ViewCreation() {
                 <Popconfirm
                     title='Sure to delete?'
                     className='deleteTableAction'
-                    onConfirm={() => handleRowDelete(index)}
+                    onConfirm={() => handleRowDelete(record.param)}
                 >
                     <a>Delete</a>
                 </Popconfirm>
@@ -125,10 +125,14 @@ function ViewCreation() {
         },
     ]);
 
-    const handleRowDelete = (index) => {
-        // const dataSource = [...viewSummaryTable];
-        // setViewSummaryTable(dataSource.filter((item) => item.param !== index));
+    const handleRowDelete = (param) => {
+        const updatedSummaryTable = viewSummaryTable.filter(
+            (item) => item.param !== param
+        );
+        setViewSummaryTable(updatedSummaryTable);
     };
+
+    console.log('viewSummaryTable', viewSummaryTable);
 
     const functionPassHandler = (record, index) => {
         // console.log('row data', record, index);
@@ -320,10 +324,13 @@ function ViewCreation() {
                                         }
                                         newBatchData={newBatchData}
                                         setNewBatchData={setNewBatchData}
+                                        functionEditorViewState={
+                                            functionEditorViewState
+                                        }
                                     />
                                 </div>
                             )}
-                            {functionEditorViewState &&(
+                            {functionEditorViewState && (
                                 <div className='viewCreation-functionEditor bg-white'>
                                     <h4 className='viewCreation-blockHeader'>
                                         Function Editor
