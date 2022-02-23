@@ -10,7 +10,9 @@ import {
     CheckCircleOutlined,
     CloseCircleOutlined,
 } from '@ant-design/icons';
-import { Button, Collapse, Form, Space, Tag } from 'antd';
+import { Button, Collapse, Form, Popconfirm, Space, Tag } from 'antd';
+import StatusWrong from '../../../../assets/statusWrong.svg';
+import StatusCorrect from '../../../../assets/statusCorrect.svg';
 
 import FileUpload from './fileUpload/FileUpload';
 import FunctionEditor from './functionEditor/FunctionEditor';
@@ -39,10 +41,14 @@ function ViewCreation() {
             key: 'action',
             width: 100,
             fixed: 'left',
-            render: (text, record) => (
-                <Space size='middle' className='deleteTableAction'>
-                    Delete
-                </Space>
+            render: (text, record, index) => (
+                <Popconfirm
+                    title='Sure to delete?'
+                    className='deleteTableAction'
+                    onConfirm={() => handleRowDelete(index)}
+                >
+                    <a>Delete</a>
+                </Popconfirm>
             ),
         },
         {
@@ -71,13 +77,14 @@ function ViewCreation() {
             fixed: 'left',
             render: (text, record, index) => (
                 <>
-                    {record.coverage_metric_percent === '100 %' ? (
+                    {record.coverage_metric_percent === '100 %' ||
+                    record.coverage_metric_percent === '100%' ? (
                         <span className='statusIcon-summary'>
-                            <CheckCircleOutlined />
+                            <img src={StatusCorrect} />
                         </span>
                     ) : (
                         <span className='statusIcon-summary'>
-                            <CloseCircleOutlined />
+                            <img src={StatusWrong} />
                         </span>
                     )}
                 </>
@@ -109,7 +116,7 @@ function ViewCreation() {
             key: 'action',
             dataIndex: 'action',
             width: 100,
-            fixed: 'right',
+            fixed: 'left',
             render: (text, record, index) => (
                 <>
                     <Space size='middle'>Lock</Space>
@@ -118,8 +125,13 @@ function ViewCreation() {
         },
     ]);
 
+    const handleRowDelete = (index) => {
+        // const dataSource = [...viewSummaryTable];
+        // setViewSummaryTable(dataSource.filter((item) => item.param !== index));
+    };
+
     const functionPassHandler = (record, index) => {
-        console.log('row data', record, index);
+        // console.log('row data', record, index);
         setFunctionEditorRecord((prevState) => [...prevState, record]);
     };
 
@@ -134,7 +146,7 @@ function ViewCreation() {
         <div className='reportDesigner-container viewCreation-container'>
             <div className='viewCreation-block'>
                 <h1 className='reportDesigner-headline'>
-                    <ArrowLeftOutlined /> View
+                    <ArrowLeftOutlined /> Create View
                 </h1>
                 <div className='viewCreation-btns'>
                     <Button type='text' className='viewCreation-clearBtn'>
@@ -258,7 +270,30 @@ function ViewCreation() {
                                                 header='Files'
                                                 key='2'
                                             >
-                                                <FileUpload />
+                                                <FileUpload
+                                                    viewSummaryTable={
+                                                        viewSummaryTable
+                                                    }
+                                                    setViewSummaryTable={
+                                                        setViewSummaryTable
+                                                    }
+                                                    parentBatches={
+                                                        parentBatches
+                                                    }
+                                                    setParentBatches={
+                                                        setParentBatches
+                                                    }
+                                                    newBatchData={newBatchData}
+                                                    setNewBatchData={
+                                                        setNewBatchData
+                                                    }
+                                                    functionEditorViewState={
+                                                        functionEditorViewState
+                                                    }
+                                                    setFunctionEditorViewState={
+                                                        setFunctionEditorViewState
+                                                    }
+                                                />
                                             </Panel>
                                         </>
                                     )}
@@ -288,7 +323,7 @@ function ViewCreation() {
                                     />
                                 </div>
                             )}
-                            {functionEditorViewState && (
+                            {functionEditorViewState &&(
                                 <div className='viewCreation-functionEditor bg-white'>
                                     <h4 className='viewCreation-blockHeader'>
                                         Function Editor
@@ -310,6 +345,7 @@ function ViewCreation() {
                                         }
                                         newBatchData={newBatchData}
                                         setNewBatchData={setNewBatchData}
+                                        viewSummaryTable={viewSummaryTable}
                                     />
                                 </div>
                             )}

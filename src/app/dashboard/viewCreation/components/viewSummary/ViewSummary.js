@@ -136,7 +136,7 @@ import { Form, Input, Space, Table, Tag } from 'antd';
 //   },
 // ]
 
-const onClickTag = item => {
+const onClickTag = (item) => {
     // console.log('item', item)
 };
 
@@ -188,7 +188,7 @@ function ViewSummary(props) {
         viewSummaryColumns,
         setViewSummaryColumns,
         newBatchData,
-        setNewBatchData
+        setNewBatchData,
     } = props;
 
     const onChangeColumnsHandler = () => {
@@ -218,13 +218,13 @@ function ViewSummary(props) {
                 key: index,
                 dataIndex: key,
                 width: 100,
-                render: value =>
+                render: (value) =>
                     value ? (
-                        <span className="batchChecked">
+                        <span className='batchChecked'>
                             <CheckOutlined />
                         </span>
                     ) : (
-                        <span className="batchClosed">
+                        <span className='batchClosed'>
                             <CloseOutlined />
                         </span>
                     ),
@@ -232,42 +232,41 @@ function ViewSummary(props) {
             columns.push(obj);
         });
 
-        let data = [...viewSummaryColumns, ...columns];
-        setViewSummaryColumns(data);
+        if (viewSummaryColumns.length === 3) {
+            let data = [...viewSummaryColumns, ...columns];
+            setViewSummaryColumns(data);
+        }
     };
 
     useEffect(() => {
-        onChangeColumnsHandler();
+    onChangeColumnsHandler();
     }, [newBatchData]);
 
-    console.log('viewSummaryColumns', viewSummaryColumns);
-    console.log('viewSummaryTable', viewSummaryTable);
-    console.log('newBatchData', newBatchData);
     return (
-        <div className="viewSummary-container">
-            <div className="viewSummary-FormBlock">
-                <Form.Item label="View ID" name="viewID">
-                    <Input placeholder="Enter View ID" disabled />
+        <div className='viewSummary-container'>
+            <div className='viewSummary-FormBlock'>
+                <Form.Item label='View ID' name='viewID'>
+                    <Input placeholder='Enter View ID' disabled />
                 </Form.Item>
-                <Form.Item label="Name" name="name">
-                    <Input placeholder="Enter Name" />
+                <Form.Item label='Name' name='name'>
+                    <Input placeholder='Enter Name' />
                 </Form.Item>
-                <Form.Item label="Status" name="status">
-                    <Input placeholder="Status" disabled />
+                <Form.Item label='Status' name='status'>
+                    <Input placeholder='Status' disabled />
                 </Form.Item>
-                <Form.Item label="Version" name="version">
-                    <Input placeholder="Version" disabled />
+                <Form.Item label='Version' name='version'>
+                    <Input placeholder='Version' disabled />
                 </Form.Item>
             </div>
 
-            <div className="viewSummary-TableBlock">
+            <div className='viewSummary-TableBlock'>
                 <Table
-                    className="viewSummary-table viewSummary-tablewidth"
+                    className='viewSummary-table viewSummary-tablewidth'
                     pagination={false}
                     columns={viewSummaryColumns}
                     dataSource={viewSummaryTable}
                     scroll={{ x: 900 }}
-                    rowKey={record => record.param}
+                    rowKey={(record) => record.param}
                 />
             </div>
         </div>

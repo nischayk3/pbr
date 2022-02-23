@@ -17,10 +17,15 @@
     width: 950px;
     span.ant-tag.ant-tag-magenta.parameter-tag {
         white-space: initial;
+        cursor: pointer;
     }
 
     span.statusIcon-summary {
         font-size: 20px;
+
+        img {
+            width: 20px;
+        }
     }
 }
 

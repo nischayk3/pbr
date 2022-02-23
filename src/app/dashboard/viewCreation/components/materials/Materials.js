@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import './styles.scss';
 import { PlusSquareOutlined } from '@ant-design/icons';
-import { Button, Collapse, Spin, Table, Tag } from 'antd';
+import { Button, Collapse, message, Spin, Table, Tag } from 'antd';
 const { Panel } = Collapse;
 
 function Materials(props) {
@@ -24,7 +24,7 @@ function Materials(props) {
         parentBatches,
         setParentBatches,
         newBatchData,
-        setNewBatchData
+        setNewBatchData,
     } = props;
 
     const columns = [
@@ -68,34 +68,43 @@ function Materials(props) {
     ];
 
     const parameterPassHandler = (record, index) => {
+        console.log('record materials', record, index);
         let rowData = {};
         let batchData = {};
-        let newBatchData={};
+        let newBatchData = {};
         // record.coverage_list.map((item, index) => {
         //     let item_key = item;
         //     batchData[`B${++index}`] = item_key;
         // });
-        
-        parentBatches.map((el,index) => {
-            if(record.coverage_list.includes(el)){
+
+        parentBatches.map((el, index) => {
+            console.log(el, record.coverage_list.includes(el));
+            if (record.coverage_list.includes(el)) {
                 batchData[`B${++index}`] = true;
                 newBatchData[`B${index}`] = true;
-            }else{
+            } else {
                 batchData[`B${++index}`] = false;
                 newBatchData[`B${index}`] = false;
             }
         });
-      
-        rowData = Object.assign(record, batchData);
-        //delete rowData['coverage_list'];
-        let data = [...viewSummaryTable];
-        data.push(rowData);
-        setNewBatchData(newBatchData);
-        setViewSummaryTable([...data]);
-        setFunctionEditorViewState(true);
+
+        //check for duplicate records
+        const indexDuplicate = viewSummaryTable.findIndex(
+            (x) => x.param == record.param
+        );
+        if (indexDuplicate === -1) {
+            rowData = Object.assign(record, batchData);
+            //delete rowData['coverage_list'];
+            let data = [...viewSummaryTable];
+            data.push(rowData);
+            setNewBatchData(newBatchData);
+            setViewSummaryTable([...data]);
+            setFunctionEditorViewState(true);
+        } else {
+            message.error('Function already exists');
+        }
     };
 
-    console.log('viewSummaryTable', viewSummaryTable);
     return (
         <div className='materials-wrapper'>
             <Collapse
