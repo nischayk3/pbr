@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { Input, Button } from 'antd';
+
+import { SearchOutlined } from '@ant-design/icons';
 import PopupIcon from '../../assets/popup_open.png';
 import './InputViewStyle.scss';
 
@@ -15,8 +17,11 @@ const InputView = (props) => {
           onChange={props.onChangeInput}
           disabled={props.disabled}
           onClick={props.onChangeClick}
+          prefix={
+            <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
+          }
         />
-        <Button onClick={props.onClickPopup}>
+        <Button className='popup-btn' onClick={props.onClickPopup}>
           <img src={PopupIcon} />
         </Button>
       </div>
