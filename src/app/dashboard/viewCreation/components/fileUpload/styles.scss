@@ -5,7 +5,9 @@
 
     span.fileUpload-download {
         margin-right: 10px;
-        color: #093185;
+        a {
+            color: #093185;
+        }
     }
     span.fileUpload-delete {
         color: #fa541c;

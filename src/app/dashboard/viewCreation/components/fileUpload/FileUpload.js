@@ -28,48 +28,104 @@ import {
 const { Panel } = Collapse;
 const { Dragger } = Upload;
 
-const columns = [
-    {
-        title: 'Parameter',
-        key: 'parameter_name',
-        dataIndex: 'parameter_name',
-        render: (parameter_name) => (
-            <Tag color='magenta' className='parameter-tag'>
-                {parameter_name}
-            </Tag>
-        ),
-    },
-    {
-        title: 'Batch',
-        key: 'coverage',
-        dataIndex: 'coverage',
-    },
-    {
-        title: 'Coverage',
-        key: 'batch',
-        dataIndex: 'batch',
-    },
-    {
-        title: 'Add',
-        key: 'add',
-        dataIndex: 'add',
-        render: () => (
-            <>
-                <span className='material-addIcon'>
-                    <PlusSquareOutlined />
-                </span>
-            </>
-        ),
-    },
-];
+function FileUpload(props) {
+    const {
+        viewSummaryTable,
+        setViewSummaryTable,
+        parentBatches,
+        setParentBatches,
+        newBatchData,
+        setNewBatchData,
+        functionEditorViewState,
+        setFunctionEditorViewState,
+    } = props;
 
-function FileUpload() {
     const [uploadModalVisible, setUploadModalVisible] = useState(false);
     const [uploadBtnDisabled, setUploadBtnDisabled] = useState(true);
     const [selectedAdHocFileList, setSelectedAdHocFileList] = useState([]);
     const [selectedFileId, setSelectedFileId] = useState();
     const [filesListTree, setFilesListTree] = useState([]);
 
+    const columns = [
+        {
+            title: 'Parameter',
+            key: 'parameter_name',
+            dataIndex: 'parameter_name',
+            render: (parameter_name) => (
+                <Tag color='magenta' className='parameter-tag'>
+                    {parameter_name}
+                </Tag>
+            ),
+        },
+        {
+            title: 'Batch',
+            key: 'coverage',
+            dataIndex: 'coverage',
+        },
+        {
+            title: 'Coverage',
+            key: 'batch',
+            dataIndex: 'batch',
+        },
+        {
+            title: 'Add',
+            key: 'add',
+            dataIndex: 'add',
+            render: (text, record, index) => (
+                <>
+                    <span
+                        className='material-addIcon'
+                        onClick={() => {
+                            parameterPassHandler(record, index);
+                        }}
+                    >
+                        <PlusSquareOutlined />
+                    </span>
+                </>
+            ),
+        },
+    ];
+
+    const parameterPassHandler = (record, index) => {
+        console.log('record file', record, index);
+        let rowData = {};
+        let batchData = {};
+        let newBatchData = [];
+        // record.coverage_list.map((item, index) => {
+        //     let item_key = item;
+        //     batchData[`B${++index}`] = item_key;
+        // });
+
+        parentBatches.map((el, index) => {
+            if (record.batchs.includes(el)) {
+                batchData[`B${++index}`] = true;
+                newBatchData[`B${index}`] = true;
+            } else {
+                batchData[`B${++index}`] = false;
+                newBatchData[`B${index}`] = false;
+            }
+        });
+
+        //check for duplicate records
+        const indexDuplicate = viewSummaryTable.findIndex(
+            (x) => x.param == record.parameter_name
+        );
+        if (indexDuplicate === -1) {
+            rowData = Object.assign(record, batchData);
+            //delete rowData['coverage_list'];
+            let data = [...viewSummaryTable];
+            data.push(rowData);
+            setNewBatchData(newBatchData);
+            setViewSummaryTable([...data]);
+            setFunctionEditorViewState(true);
+        } else {
+            message.error('Function already exists');
+        }
+    };
+
+    console.log('parentBatches', parentBatches);
+    console.log('newBatchData', newBatchData);
+    console.log('viewSummaryTable', viewSummaryTable);
     const genExtra = (File_id) => (
         <div
             className='fileUpload-panelHeader'
@@ -78,7 +134,15 @@ function FileUpload() {
             }}
         >
             <span className='fileUpload-download'>
-                <DownloadOutlined onClick={() => downloadFile(File_id)} />
+                <a
+                    href={
+                        'https://bms-cpvdev.mareana.com/services/v1/download_file?file_id=' +
+                        `${File_id}`
+                    }
+                >
+                    <DownloadOutlined />
+                </a>
+                {/* <DownloadOutlined onClick={() => downloadFile(File_id)} /> */}
             </span>
             <span className='fileUpload-delete'>
                 <Popconfirm
@@ -105,7 +169,6 @@ function FileUpload() {
             userid: localStorage.getItem('username'),
         };
         deleteAdHocFile(req).then((res) => {
-            console.log('res', res);
             if (res.data.statuscode === 202) {
                 message.success('adhoc-file deleted successfully');
                 const updatedFileList = filesListTree.filter(
@@ -128,14 +191,6 @@ function FileUpload() {
         });
     }
 
-    const downloadFile = (File_id) => {
-        let req = {
-            file_id: File_id,
-        };
-        downloadAdhocFile(req).then((res) => {
-            console.log(res);
-        });
-    };
     const handleCancelUpload = () => {
         setUploadModalVisible(false);
     };
@@ -222,7 +277,6 @@ function FileUpload() {
             }
         });
     };
-    console.log('filesListTree', filesListTree);
     return (
         <div className='materials-wrapper fileUpload-wrapper'>
             <div className='materials-uploadDownloadFiles'>
