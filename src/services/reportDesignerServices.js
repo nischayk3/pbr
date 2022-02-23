@@ -25,3 +25,14 @@ export const getCharts = (request) => {
         }
     );
 };
+
+export const saveReportDesign = (request) => {
+    return Service.post(BMS_APP_PYTHON_SERVICE + '/put_report_data' , request).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};

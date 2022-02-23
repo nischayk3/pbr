@@ -4,58 +4,64 @@ import {
     Select,
     Typography,
     Form,
-    Space,
-    Popconfirm
 } from 'antd';
-import { PlusSquareTwoTone, DeleteTwoTone } from '@ant-design/icons';
+// import { AreaChartOutlined } from '@ant-design/icons';
+// import { getCharts } from '../../../../../services/reportDesignerServices';
 import './styles.scss';
+
 
 const { Option } = Select;
 const { Text } = Typography;
 
 
-function ChartSelector() {
-    const [form] = Form.useForm();
-    const [data, setData] = useState({})
+function ChartSelector(props) {
 
-    const handleValuesChange = (changedValues, values) => {
-        setData(values)
+    // const [form] = Form.useForm();
+    // const [data, setData] = useState({})
+    
+    const { setSelectedChartList, selectedChartList, chartList} = props
+    const chartsList =  chartList.length > 0 ? chartList : ['No charts for selected View']
+
+
+    // useEffect(() => {
+    //     if(viewId)
+    //     getChartsList(viewId,viewVersion)
+    // }, [])
+
+    // const handleValuesChange = (changedValues, values) => {
+    //     setData(values)
+    // };
+
+    const handleChange = selectedItems => {
+        setSelectedChartList(selectedItems);
     };
 
-    console.log(data)
+    // const getChartsList = (id,version) => {
+    //     let req = `${id}-${version}`;
+    //     getCharts(req).then((res) => {
+    //         setChartList(res['data']);
+    //     });
+    // };
+
     return (
         <div>
             <Card className="chartid-main" title="Chart">
-                <Form name="dynamic_form_nest_item" autoComplete="off" form={form} onValuesChange={handleValuesChange}>
-                    <Form.List name="chart_id">
-                        {(fields, { add, remove }) => (
-                            <>
-                                {fields.map(({ key, name, ...restField }) => (
-                                    <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                                        <Form.Item
-                                            {...restField}
-                                            name={[name, 'chart']}
-                                        >
-                                            <Select placeholder="Select Chart">
-                                                <Option value="1">1</Option>
-                                                <Option value="2">2</Option>
-                                            </Select>
-                                        </Form.Item>
-                                        <Popconfirm title="Are you Sure you want to delete?" onConfirm={() => remove(name)}>
-                                            <DeleteTwoTone twoToneColor="red" />
-                                        </Popconfirm>
-                                        <PlusSquareTwoTone style={{ marginLeft: '200px' }} onClick={() => add()} twoToneColor="#093185" />
-                                        <b><u style={{ marginLeft: '10px' }} onClick={() => add()} >Add New Chart</u> </b>
-                                    </Space>
-                                ))}
-                                <Form.Item>
-                                    <PlusSquareTwoTone onClick={() => add()} twoToneColor="#093185" />
-                                    <b><u style={{ marginLeft: '10px' }} onClick={() => add()}>Add New Chart</u> </b>
-                                </Form.Item>
-                            </>
-                        )}
-                    </Form.List>
-                </Form>
+                <Text>Chart ID</Text> <br/><br/>
+                <Select
+                    mode="multiple"
+                    placeholder="Select Multiple Charts"
+                    value={selectedChartList}
+                    onChange={handleChange}
+                    style={{ width: '100%' }}
+                >
+                    {chartsList.length > 0  ? chartsList.map(item => (
+                        <Option value={item}>
+                            {item}
+                        </Option>
+                    )):<Option >
+                    
+                </Option> }
+                </Select>
             </Card>
         </div>
     );

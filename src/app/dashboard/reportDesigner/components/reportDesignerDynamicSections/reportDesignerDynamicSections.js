@@ -1,13 +1,12 @@
 import React from 'react';
-import { Form, Input, Space } from 'antd';
-import { MinusCircleOutlined, PlusSquareTwoTone } from '@ant-design/icons';
+import { Form, Input, Space,Popconfirm } from 'antd';
+import { PlusSquareTwoTone, DeleteTwoTone } from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
 
 function ReportDesignerDynamicSections(props) {
    
     const {formData}=props;
-    console.log('form dyn section',formData);
 
     return (
         <div className="reportDesigner-dynamicSections bg-white">
@@ -26,13 +25,13 @@ function ReportDesignerDynamicSections(props) {
                             {(fields, { add, remove }) => (
                                 
                                 <>
-                                {console.log('fileds',fields)}
+                                {/* {console.log('fileds',fields)} */}
                                     {fields.map(({ key, name, ...restField }) => (
                                         
                                         <div> 
                                             {/* {console.log('fill',key, name, ...restField )} */}
                                             <Form.Item {...restField} name={[name, 'sectionName']}>
-                                                <Input placeholder="Section" style={{marginLeft:'300px'}} className="input-section"  />
+                                                <Input placeholder="Section" style={{marginLeft:'400px'}} className="input-section"  />
                                             </Form.Item>
                     
                                             <Space
@@ -48,7 +47,8 @@ function ReportDesignerDynamicSections(props) {
                                                             <th>Key</th>
                                                             <th>Value</th>
                                                             <th>Action</th>
-                                                            <th></th>                          
+                                                            <th></th> 
+                                                            <th></th>                            
                                                         </tr>
                                                     </thead>
                                                     <tbody className="dynamicSections-tbody">
@@ -56,14 +56,15 @@ function ReportDesignerDynamicSections(props) {
                                                         <ReportDesignerDynamicRow fieldKey={name} />
                                                     </tbody>
                                                 </table>
-
-                                                <MinusCircleOutlined onClick={() => remove(name)} />
+                                                <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)}>
+                                    <DeleteTwoTone />
+                                </Popconfirm>
                                             </Space>
                                         </div>
                                     ))}
                                     <Form.Item>
                                         <p>
-                                            <PlusSquareTwoTone style={{fontSize:'16px',marginLeft:'10px'}} onClick={() => add()} /> Add Multiple Sections
+                                            <PlusSquareTwoTone style={{fontSize:'16px',marginLeft:'10px'}} onClick={() => add()} /> <u>Add Multiple Sections</u>
                                         </p> 
                       
                                     </Form.Item>
