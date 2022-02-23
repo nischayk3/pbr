@@ -23,6 +23,7 @@ import { Button, Modal } from 'antd';
 import chartObj from './get_chart.json';
 import ViewTable from '../../../components/ViewTable';
 import { getViewTable } from '../../../services/commonService';
+import ChartLanding from './components/ChartLanding/components/ChartLanding';
 
 function ChartPersonalization() {
   const [chartDetails, setChartdetails] = useState([]);
@@ -136,6 +137,10 @@ function ChartPersonalization() {
     setisModal(false);
     setIsLoad(false);
   };
+  function callbackIsLoad(param) {
+    console.log('param', param);
+    setIsLoad(true);
+  }
   /* eslint-disable-no-undeaf  */
   const getViewTableData = () => {
     let reqView = { vew_status: 'APRD' };
@@ -184,12 +189,12 @@ function ChartPersonalization() {
           <Button
             className='custom-primary-btn  '
             onClick={() => {
-              setVisible(true);
+              // setVisible(true);
               setIsNew(true);
             }}
             type='primary'
           >
-            <PlusOutlined /> New
+            New
           </Button>
           <Button
             className='custom-primary-btn  '
@@ -200,7 +205,7 @@ function ChartPersonalization() {
             }}
             type='primary'
           >
-            <Loading3QuartersOutlined /> Load
+            Load
           </Button>
           <Button
             className='custom-primary-btn'
@@ -210,14 +215,14 @@ function ChartPersonalization() {
             }}
             type='primary'
           >
-            <SaveOutlined /> Save
+            Save
           </Button>
           <Button
             className='custom-primary-btn'
             onClick={handleSaveAs}
             type='primary'
           >
-            <FileDoneOutlined /> Save As
+            Save As
           </Button>
           <Button
             className='custom-primary-btn'
@@ -227,41 +232,50 @@ function ChartPersonalization() {
             }}
             type='primary'
           >
-            <ShareAltOutlined /> Share
+            Share
           </Button>
         </div>
       </div>
-      <div className='chart-block'>
-        <div className='chart-left-panel'>
-          <div style={{ marginBottom: '10px' }}>
-            <ChartView
-              callbackViewType={callbackViewType}
-              chartObj={chartObjData}
-            />
-          </div>
-          {showFilter && (
+      {isNew ? (
+        <div className='chart-block'>
+          <div className='chart-left-panel'>
+            <div style={{ marginBottom: '10px' }}>
+              <ChartView
+                callbackViewType={callbackViewType}
+                callbackViewTable={callbackIsLoad}
+                chartObj={chartObjData}
+                isNew={isNew}
+              />
+            </div>
+            {/* {showFilter && ( */}
             <div style={{ marginBottom: '10px' }}>
               <ChartFilter chartObj={chartObjData} />
             </div>
-          )}
-          {showChartType && (
+            {/* )} */}
+            {/* {showChartType && ( */}
             <div>
               <ChartType chartObj={chartObjData} />
             </div>
-          )}
-        </div>
-        {showChart && (
+            {/* )} */}
+          </div>
+          {/* {showChart && ( */}
           <div className='chart-center-panel'>
             <ChartDetails chartObj={chartObjData} />
             <ChartDataTable />
           </div>
-        )}
-        {showCustomization && (
+          {/* )} */}
+          {/* {showCustomization && ( */}
           <div className='chart-right-panel'>
             <Personalization />
           </div>
-        )}
-      </div>
+          {/* )} */}
+        </div>
+      ) : (
+        <div className='chart-block-landing'>
+          <ChartLanding />
+        </div>
+      )}
+
       <ViewTable
         isModal={isLoad}
         data={viewTableData}
