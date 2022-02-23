@@ -1,111 +1,67 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 import {
     Card,
-    Checkbox,
-    DatePicker,
-    Input,
     Select,
-    Table,
     Typography,
+    Form,
 } from 'antd';
+// import { AreaChartOutlined } from '@ant-design/icons';
+// import { getCharts } from '../../../../../services/reportDesignerServices';
 import './styles.scss';
+
 
 const { Option } = Select;
 const { Text } = Typography;
 
-const columns = [
-    {
-        title: 'Multi Select',
-        dataIndex: 'multi',
-        render: (item) => (
-            <>
-                {item === 'yes' ? (
-                    <Checkbox checked={true} />
-                ) : (
-                    <Checkbox checked={false} />
-                )}
-            </>
-        ),
-    },
-    {
-        title: 'Chart ID',
-        dataIndex: 'chart_id',
-        key: 'age',
-    },
-    {
-        title: 'ID Name',
-        dataIndex: 'id_name',
-        key: 'address',
-    },
-];
 
-const data = [
-    {
-        key: '1',
-        multi: 'yes',
-        chart_id: 'Exclusion/Shift/Trend',
-        id_name: '',
-    },
-    {
-        key: '1',
-        multi: 'no',
-        chart_id: 'Rule Violation',
-        id_name: '',
-    },
-    {
-        key: '1',
-        multi: 'yes',
-        chart_id: 'Parameters',
-        id_name: '',
-    },
-    {
-        key: '1',
-        multi: 'no',
-        chart_id: 'Exclusions',
-        id_name: '',
-    },
-];
+function ChartSelector(props) {
 
-function ChartSelector() {
+    // const [form] = Form.useForm();
+    // const [data, setData] = useState({})
+    
+    const { setSelectedChartList, selectedChartList, chartList} = props
+    const chartsList =  chartList.length > 0 ? chartList : ['No charts for selected View']
+
+
+    // useEffect(() => {
+    //     if(viewId)
+    //     getChartsList(viewId,viewVersion)
+    // }, [])
+
+    // const handleValuesChange = (changedValues, values) => {
+    //     setData(values)
+    // };
+
+    const handleChange = selectedItems => {
+        setSelectedChartList(selectedItems);
+    };
+
+    // const getChartsList = (id,version) => {
+    //     let req = `${id}-${version}`;
+    //     getCharts(req).then((res) => {
+    //         setChartList(res['data']);
+    //     });
+    // };
+
     return (
         <div>
-            <Card className = "chartid-main">
-                <p className = "chartid-text">Chart ID</p>
-                <Select className = "chartid-select" defaultValue="ChartId 1">
-                    <Option>chartid1</Option>
+            <Card className="chartid-main" title="Chart">
+                <Text>Chart ID</Text> <br/><br/>
+                <Select
+                    mode="multiple"
+                    placeholder="Select Multiple Charts"
+                    value={selectedChartList}
+                    onChange={handleChange}
+                    style={{ width: '100%' }}
+                >
+                    {chartsList.length > 0  ? chartsList.map(item => (
+                        <Option value={item}>
+                            {item}
+                        </Option>
+                    )):<Option >
+                    
+                </Option> }
                 </Select>
-                <Table
-                    className = "chartid-table"
-                    columns={columns}
-                    dataSource={data}
-                    pagination={false}
-                />
-            </Card>
-            <Card className = "site-main">
-                <div className = "site-filter">
-                    <Text>Site</Text>
-                    <Text>Date Range</Text>
-                    <Select className = "site-select" defaultValue="Site 1">
-                        <Option>Site 1</Option>
-                        <Option>Site 2</Option>
-                    </Select>
-                    <DatePicker />
-                    <div>
-                        <Text>Unapproved Data</Text> <Checkbox className = "site-checkbox" />
-                    </div>
-                </div>
-            </Card>
-            <Card className = "schedule-main">
-                <div className = "schedule-filter">
-                    <Text>Report ID</Text>
-                    <Text>Schedule</Text>
-                    <Input value="12345" />
-                    <Select className = "site-select" defaultValue="Site 1">
-                        <Option>Site 1</Option>
-                        <Option>Site 2</Option>
-                    </Select>
-                </div>
             </Card>
         </div>
     );

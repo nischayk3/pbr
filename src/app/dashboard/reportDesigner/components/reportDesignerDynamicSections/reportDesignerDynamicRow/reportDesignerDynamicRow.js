@@ -1,8 +1,9 @@
-import React from 'react';
-import { Form, Input, Popconfirm} from 'antd';
+import React, { useState } from 'react';
+import { Button, Form, Input, Popconfirm, Switch } from 'antd';
 import {
     PlusOutlined,
     UnlockOutlined,
+    LockOutlined,
     DeleteTwoTone
 } from '@ant-design/icons';
 import './styles.scss';
@@ -10,23 +11,90 @@ import './styles.scss';
 function ReportDesignerDynamicRow(props) {
     const { fieldKey } = props;
 
+    const isEditableHandler = (prev, current,name,fieldKey) => 
+    {
+        // console.log(prev,current,name,fieldKey)
+        let res=prev['response']
+        let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
+        let dynamic_rows_row=dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
+        let value=dynamic_rows_row[name] ? dynamic_rows_row[name] : []
+
+        let res_curr=current['response']
+        let dynamic_rows_curr= res_curr[fieldKey] ? res[fieldKey] : []
+        let dynamic_rows_row_curr=dynamic_rows_curr['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
+        let value_curr=dynamic_rows_row_curr[name] ? dynamic_rows_row[name] : []
+        // console.log(value_curr ? value_curr : false,value_curr)
+       return value_curr ? value_curr : false
+        
+    }
+
     return (
-        <Form.List name={[fieldKey, 'dymamic-rows']}>
+        <Form.List name={[fieldKey, 'dymamic_rows']}>
             {(rows, { add, remove }) => (
                 <>
                     {rows.map(({ key, name, ...restField1 }) => (
                         <tr
                             className="dynamicSections-spaceRows"
-                            key={key}   >        
+                            key={key} >
                             <td>
-                                <Form.Item {...restField1} name={[name, 'keyName']}>
-                                    <Input placeholder="Enter key" />
+                            <Form.Item
+                                    {...restField1}
+                                    shouldUpdate={(prevValues, currentValues) => isEditableHandler(prevValues, currentValues,name,fieldKey) 
+                                    }
+                                >
+                                    {({ getFieldValue }) =>
+                                    {
+                                        let res=getFieldValue('response')
+                                        let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
+                                        let dynamic_rows_row=dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
+                                        let value=dynamic_rows_row[name] ? dynamic_rows_row[name] : []
+
+                                        // console.log(value)
+
+                                       return value['editable'] === true ?  (
+                                            <Form.Item name={[name, 'keyName']} >
+                                                <Input placeholder="Enter Key" name={[name, 'keyName']} disabled/>
+                                            </Form.Item>
+                                        ) : (
+                                            <Form.Item  name={[name, 'keyName']} >
+                                                <Input  placeholder="Enter Key" bordered={true}/>
+                                            </Form.Item>
+                                        )
+}}
                                 </Form.Item>
+                                {/* <Form.Item {...restField1} name={[name, 'keyName']}>
+                                    <Input placeholder="Enter key" />
+                                </Form.Item> */}
                             </td>
                             <td>
-                                <Form.Item {...restField1} name={[name, 'value']}>
-                                    <Input placeholder="Enter Value" />
+                                <Form.Item
+                                    {...restField1}
+                                    shouldUpdate={(prevValues, currentValues) => isEditableHandler(prevValues, currentValues,name,fieldKey) 
+                                    }
+                                >
+                                    {({ getFieldValue }) =>
+                                    {
+                                        let res=getFieldValue('response')
+                                        let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
+                                        let dynamic_rows_row=dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
+                                        let value=dynamic_rows_row[name] ? dynamic_rows_row[name] : []
+
+                                        // console.log(value)
+
+                                       return value['editable'] === true ?  (
+                                            <Form.Item name={[name, 'value']} >
+                                                <Input placeholder="Enter Value" name={[name, 'value']} disabled/>
+                                            </Form.Item>
+                                        ) : (
+                                            <Form.Item  name={[name, 'value']} >
+                                                <Input placeholder="Enter Value" bordered={true}  />
+                                            </Form.Item>
+                                        )
+}}
                                 </Form.Item>
+                                {/* <Form.Item {...restField1} name={[name, 'value']}>
+                                    <Input placeholder="Enter Value" />
+                                </Form.Item> */}
                             </td>
                             <td>
                                 <Popconfirm title="Are you Sure you want to delete?" onConfirm={() => remove(name)}>
@@ -34,7 +102,32 @@ function ReportDesignerDynamicRow(props) {
                                 </Popconfirm>
                             </td>
                             <td>
-                                <UnlockOutlined />
+                                <Form.Item {...restField1} name={[name, 'editable']} valuePropName="checked" defaultChecked>
+                                    <Switch defaultChecked={false} />
+                                </Form.Item>
+                            </td>
+                            <td>
+                            <Form.Item
+                                    {...restField1}
+                                    shouldUpdate={(prevValues, currentValues) => isEditableHandler(prevValues, currentValues,name,fieldKey) 
+                                    }
+                                >
+                                    {({ getFieldValue }) =>
+                                    {
+                                        let res=getFieldValue('response')
+                                        let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
+                                        let dynamic_rows_row=dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
+                                        let value=dynamic_rows_row[name] ? dynamic_rows_row[name] : []
+
+                                        // console.log(value)
+
+                                       return value['editable'] === true ?  (
+                                            <LockOutlined/>
+                                        ) : (
+                                            <UnlockOutlined/>
+                                        )
+}}
+                                </Form.Item>
                             </td>
                         </tr>
                     ))}
