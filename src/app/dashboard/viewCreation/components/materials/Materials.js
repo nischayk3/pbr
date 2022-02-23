@@ -68,16 +68,20 @@ function Materials(props) {
     ];
 
     const parameterPassHandler = (record, index) => {
+      console.log("coveragelist",record.coverage_list.length,record.coverage_list)
+      console.log("pb",parentBatches.length)
         let rowData = {};
         let batchData = {};
-        let newBatchData = [];
+        let newBatchData = {};
         // record.coverage_list.map((item, index) => {
         //     let item_key = item;
         //     batchData[`B${++index}`] = item_key;
         // });
 
-        parentBatches.map((el, index) => {
-            if (record.coverage_list.includes(el)) {
+        
+        parentBatches.map((el,index) => {
+          console.log(el,record.coverage_list.includes(el))
+            if(record.coverage_list.includes(el)){
                 batchData[`B${++index}`] = true;
                 newBatchData[`B${index}`] = true;
             } else {
