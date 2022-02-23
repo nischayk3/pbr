@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
 import { WarningOutlined } from '@ant-design/icons';
-import { Card, Divider, Select, Tag } from 'antd';
+import { Button, Card, Divider, Select, Tag, Input } from 'antd';
 
 import InputField from '../../../../../../components/InputField/InputField';
 import SelectField from '../../../../../../components/SelectField/SelectField';
-
+import PopupIcon from '../../../../../../assets/popup_open.png';
 import './ChartViewStyles.scss';
-import classNames from 'classnames';
+
 import PropTypes from 'prop-types';
 
 import { useSelector } from 'react-redux';
 
 function ChartView(props) {
-  console.log('chart props', props, props.chartObj.view_id);
+  console.log('chart props', props);
   const selectedView = useSelector(
     (state) => state.chartPersReducer.selectedView
   );
@@ -25,6 +25,7 @@ function ChartView(props) {
   const [viewName, setViewName] = useState('');
   const [viewStatus, setViewStatus] = useState('');
   const [viewVersion, setViewVersion] = useState('');
+  const [isLoad, setIsLoad] = useState(true);
 
   useEffect(() => {
     if (selectedView) {
@@ -35,6 +36,13 @@ function ChartView(props) {
       setViewVersion(selectedView.view_version);
 
       props.callbackViewType(selectedView.view_disp_id);
+
+      if (!props.isNew) {
+        setViewId('');
+        setViewName('');
+        setViewStatus('');
+        setViewVersion('');
+      }
     }
   }, [selectedView]);
 
@@ -50,11 +58,16 @@ function ChartView(props) {
     }
   };
 
+  const handleClickLoad = (e) => {
+    console.log('eeeee', e);
+    props.callbackIsload();
+  };
+
   return (
     <div>
       <Card title='View' style={{ width: showParam ? 'inherit' : 250 }}>
         <div>
-          <div
+          {/* <div
             className={classNames({
               'chartview-select': showParam,
             })}
@@ -65,10 +78,22 @@ function ChartView(props) {
               selectList={viewTypeList}
               selectedValue={selectedViewType}
             />
-          </div>
+          </div> */}
           {showParam && (
             <div className='chartview-input'>
-              <InputField label='View ID' value={viewId} disabled />
+              <div className='input_field'>
+                <p>View ID</p>
+                <Input
+                  placeholder='View ID'
+                  value={viewId}
+                  disabled={true}
+                  style={{ width: '81%' }}
+                />
+                <Button onClick={props.callbackViewTable}>
+                  <img src={PopupIcon} />
+                </Button>
+              </div>
+
               <InputField label='View Name' value={viewName} disabled />
               <InputField label='Status' value={viewStatus} disabled />
               <InputField label='Version' value={viewVersion} disabled />
