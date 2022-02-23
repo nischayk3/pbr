@@ -100,34 +100,36 @@ function ChartFilter() {
   return (
     <div>
       <Card title='Filters'>
-        <div>
-          <div className='grid-2-columns'>
-            <SelectField
-              label='Site'
-              onChangeSelect={(e) => handleSelectChange(e)}
-              selectList={siteList}
-              selectedValue={selectedSite}
-            />
-            {/* <DatePicker
-                            style={{ height: '35px', marginTop: '20px' }}
-                            onClick={() => showModal()}
-                            disabled
-                        /> */}
-            <InputField
-              label='Date Range'
-              placeholder='Select Date Range'
-              onChangeClick={(e) => handleDateClick(e)}
-              value={
-                selectedDateRange
-                // ? selectedDateRange
-                // : props.chartObj.data_filter.date_range
-              }
-            />
-          </div>
+        <div className='grid-1-columns'>
+          <SelectField
+            label='Site'
+            onChangeSelect={(e) => handleSelectChange(e)}
+            selectList={siteList}
+            selectedValue={selectedSite}
+          />
+
+          <InputField
+            label='Date Range'
+            placeholder='Select Date Range'
+            onChangeClick={(e) => handleDateClick(e)}
+            value={
+              selectedDateRange
+              // ? selectedDateRange
+              // : props.chartObj.data_filter.date_range
+            }
+          />
           <div style={{ padding: '4px 0' }}>
             <Checkbox onChange={onChangeCheckbox}>Unapproved data</Checkbox>
           </div>
         </div>
+        <Button
+          type='primary'
+          className='custom-secondary-btn'
+          // onClick={createChart}
+          style={{ marginTop: '22px', float: 'right' }}
+        >
+          Apply
+        </Button>
       </Card>
 
       <Modal

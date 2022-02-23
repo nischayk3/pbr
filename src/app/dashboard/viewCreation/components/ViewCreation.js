@@ -9,9 +9,21 @@ import {
     ShareAltOutlined,
     CheckCircleOutlined,
     CloseCircleOutlined,
-    BuildTwoTone
+    BuildTwoTone,
 } from '@ant-design/icons';
-import { Button, Collapse, Form, Popconfirm, Space, Tag,Modal,Select,Input,Table,Radio } from 'antd';
+import {
+    Button,
+    Collapse,
+    Form,
+    Popconfirm,
+    Space,
+    Tag,
+    Modal,
+    Select,
+    Input,
+    Table,
+    Radio,
+} from 'antd';
 import StatusWrong from '../../../../assets/statusWrong.svg';
 import StatusCorrect from '../../../../assets/statusCorrect.svg';
 
@@ -26,26 +38,26 @@ const { Panel } = Collapse;
 
 const columns = [
     {
-      title: 'Product Num',
-      dataIndex: 'product_num',
-      key: 'name',
+        title: 'Product Num',
+        dataIndex: 'product_num',
+        key: 'name',
     },
     {
-      title: 'View',
-      dataIndex: 'view',
-      key: 'view_disp_id',
+        title: 'View',
+        dataIndex: 'view',
+        key: 'view_disp_id',
     },
     {
-      title: 'View Name',
-      dataIndex: 'view_name',
-      key: 'view_name',
+        title: 'View Name',
+        dataIndex: 'view_name',
+        key: 'view_name',
     },
     {
-      title: 'Created By',
-      dataIndex: 'created_by',
-      key: 'created_by',
+        title: 'Created By',
+        dataIndex: 'created_by',
+        key: 'created_by',
     },
-  ];
+];
 
 function ViewCreation() {
     const [moleculeList, setMoleculeList] = useState([]);
@@ -73,7 +85,7 @@ function ViewCreation() {
                 <Popconfirm
                     title='Sure to delete?'
                     className='deleteTableAction'
-                    onConfirm={() => handleRowDelete(index)}
+                    onConfirm={() => handleRowDelete(record.param)}
                 >
                     <a>Delete</a>
                 </Popconfirm>
@@ -106,7 +118,7 @@ function ViewCreation() {
             render: (text, record, index) => (
                 <>
                     {record.coverage_metric_percent === '100 %' ||
-                        record.coverage_metric_percent === '100%' ? (
+                    record.coverage_metric_percent === '100%' ? (
                         <span className='statusIcon-summary'>
                             <img src={StatusCorrect} />
                         </span>
@@ -138,11 +150,7 @@ function ViewCreation() {
             dataIndex: 'primary',
             width: 150,
             fixed: 'left',
-            render:()=>(
-                <Radio/>
-            )
-                
-            
+            render: () => <Radio />,
         },
         // {
         //     title: 'Action',
@@ -158,10 +166,14 @@ function ViewCreation() {
         // },
     ]);
 
-    const handleRowDelete = (index) => {
-        // const dataSource = [...viewSummaryTable];
-        // setViewSummaryTable(dataSource.filter((item) => item.param !== index));
+    const handleRowDelete = (param) => {
+        // const updatedSummaryTable = viewSummaryTable.filter(
+        //     (item) => item.param !== param
+        // );
+        // setViewSummaryTable(updatedSummaryTable);
     };
+
+    console.log('viewSummaryTable', viewSummaryTable);
 
     const functionPassHandler = (record, index) => {
         // console.log('row data', record, index);
@@ -175,8 +187,7 @@ function ViewCreation() {
         // console.log('values', values)
     };
 
-
-    console.log("record", functionEditorRecord);
+    console.log('record', functionEditorRecord);
     return (
         <div className='reportDesigner-container viewCreation-container'>
             <div className='viewCreation-block'>
@@ -355,6 +366,9 @@ function ViewCreation() {
                                         }
                                         newBatchData={newBatchData}
                                         setNewBatchData={setNewBatchData}
+                                        functionEditorViewState={
+                                            functionEditorViewState
+                                        }
                                     />
                                 </div>
                             )}
@@ -390,7 +404,7 @@ function ViewCreation() {
             </Form>
             <div>
                 <Modal
-                    title="Select View"
+                    title='Select View'
                     visible={visible}
                     onOk={() => {
                         setVisible(false);
@@ -400,47 +414,54 @@ function ViewCreation() {
                     width={500}
                     style={{ marginRight: '800px' }}
                 >
-                    <Select className="filter-button" style={{width:"140px"}}>
+                    <Select
+                        className='filter-button'
+                        style={{ width: '140px' }}
+                    >
                         <Option value='1'>V1</Option>
                         <Option value='2'>V2</Option>
                         <Option value='3'>V3</Option>
-
-
                     </Select>
-                    <Button onClick={() => setPopVisible(true)}><BuildTwoTone twoToneColor="#093185" /></Button>
+                    <Button onClick={() => setPopVisible(true)}>
+                        <BuildTwoTone twoToneColor='#093185' />
+                    </Button>
                 </Modal>
                 <Modal
-        title="Select View"
-        visible={popvisible}
-        onOk={() => setPopVisible(false)}
-        onCancel={() => setPopVisible(false)}
-        width={600}
-        title={<span>Select View  <Input.Search
-          className='table-search'
-          placeholder='Search by...'
-          enterButton
-          //onSearch={search}
-          style={{ marginBottom: '40px' }}
-        /></span>}
-        centered
-        // bodyStyle={{height: 400}}
-        width={500}
-      >
-        <Table
-          dataSource={[]}
-          columns={columns}
-          onRow={record => ({
-            onClick: e => {
-              console.log(record);
-            }
-          })}
-          //loading={loading}
-          scroll={{ y: 200 }}
-          size='small'
-          pagination={false}
-        />
-      </Modal>
-
+                    title='Select View'
+                    visible={popvisible}
+                    onOk={() => setPopVisible(false)}
+                    onCancel={() => setPopVisible(false)}
+                    width={600}
+                    title={
+                        <span>
+                            Select View{' '}
+                            <Input.Search
+                                className='table-search'
+                                placeholder='Search by...'
+                                enterButton
+                                //onSearch={search}
+                                style={{ marginBottom: '40px' }}
+                            />
+                        </span>
+                    }
+                    centered
+                    // bodyStyle={{height: 400}}
+                    width={500}
+                >
+                    <Table
+                        dataSource={[]}
+                        columns={columns}
+                        onRow={(record) => ({
+                            onClick: (e) => {
+                                console.log(record);
+                            },
+                        })}
+                        //loading={loading}
+                        scroll={{ y: 200 }}
+                        size='small'
+                        pagination={false}
+                    />
+                </Modal>
             </div>
         </div>
     );

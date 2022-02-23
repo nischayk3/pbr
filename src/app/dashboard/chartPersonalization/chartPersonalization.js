@@ -10,12 +10,7 @@ import Personalization from './components/Personalization/components/Personaliza
 
 import {
   ArrowLeftOutlined,
-  CheckCircleTwoTone,
-  FileDoneOutlined,
   InfoCircleTwoTone,
-  Loading3QuartersOutlined,
-  PlusOutlined,
-  SaveOutlined,
   ShareAltOutlined,
 } from '@ant-design/icons';
 import { Button, Modal } from 'antd';
@@ -23,12 +18,15 @@ import { Button, Modal } from 'antd';
 import chartObj from './get_chart.json';
 import ViewTable from '../../../components/ViewTable';
 import { getViewTable } from '../../../services/commonService';
+import ChartLanding from './components/ChartLanding/components/ChartLanding';
+import LoadModal from '../../../components/LoadModal';
 
 function ChartPersonalization() {
   const [chartDetails, setChartdetails] = useState([]);
   const [visible, setVisible] = useState(false);
   const [isShare, setIsShare] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
+  const [isView, setIsView] = useState(false);
   const [isNew, setIsNew] = useState(false);
   const [isSave, setIsSave] = useState(false);
   const [isSaveAs, setIsSaveAs] = useState(false);
@@ -135,6 +133,15 @@ function ChartPersonalization() {
   const handleCloseViewModal = () => {
     setisModal(false);
     setIsLoad(false);
+    setIsView(false);
+  };
+  function callbackIsLoad(param) {
+    console.log('param', param);
+    setIsView(true);
+  }
+
+  const openLoadModal = () => {
+    setIsView(true);
   };
   /* eslint-disable-no-undeaf  */
   const getViewTableData = () => {
@@ -184,12 +191,12 @@ function ChartPersonalization() {
           <Button
             className='custom-primary-btn  '
             onClick={() => {
-              setVisible(true);
+              // setVisible(true);
               setIsNew(true);
             }}
             type='primary'
           >
-            <PlusOutlined /> New
+            New
           </Button>
           <Button
             className='custom-primary-btn  '
@@ -200,7 +207,7 @@ function ChartPersonalization() {
             }}
             type='primary'
           >
-            <Loading3QuartersOutlined /> Load
+            Load
           </Button>
           <Button
             className='custom-primary-btn'
@@ -210,14 +217,14 @@ function ChartPersonalization() {
             }}
             type='primary'
           >
-            <SaveOutlined /> Save
+            Save
           </Button>
           <Button
             className='custom-primary-btn'
             onClick={handleSaveAs}
             type='primary'
           >
-            <FileDoneOutlined /> Save As
+            Save As
           </Button>
           <Button
             className='custom-primary-btn'
@@ -227,16 +234,19 @@ function ChartPersonalization() {
             }}
             type='primary'
           >
-            <ShareAltOutlined /> Share
+            Share
           </Button>
         </div>
       </div>
+
       <div className='chart-block'>
         <div className='chart-left-panel'>
           <div style={{ marginBottom: '10px' }}>
             <ChartView
               callbackViewType={callbackViewType}
+              callbackViewTable={callbackIsLoad}
               chartObj={chartObjData}
+              isNew={isNew}
             />
           </div>
           {showFilter && (
@@ -262,11 +272,13 @@ function ChartPersonalization() {
           </div>
         )}
       </div>
+
       <ViewTable
-        isModal={isLoad}
+        isModal={isView}
         data={viewTableData}
         handleCloseModal={handleCloseViewModal}
       />
+      <LoadModal isModal={isLoad} callbackLoadModal={openLoadModal} />
       <div className='modalPopup'>
         <Modal
           visible={visible}

@@ -18,8 +18,6 @@ import InputField from '../../../../../../components/InputField/InputField';
 
 console.log('chartTypeJson', chartTypeJson);
 
-const { Text } = Typography;
-
 const ChartType = (props) => {
   const [isScatter, setisScattetruer] = useState(true);
   const [chartTypeList, setchartTypeList] = useState(
@@ -101,11 +99,19 @@ const ChartType = (props) => {
     // plot_bgcolor: 'rgb(230, 230, 230)',
     // xlabel: selectedXAxis,
     // ylabel: selectedYAxis,
-    title: selectedTitle,
+    title: {
+      text: selectedTitle,
+    },
     xaxis: {
+      title: {
+        text: selectedXAxis,
+      },
       range: [0.75, 5.25],
     },
     yaxis: {
+      title: {
+        text: selectedYAxis,
+      },
       range: [0, 8],
     },
 

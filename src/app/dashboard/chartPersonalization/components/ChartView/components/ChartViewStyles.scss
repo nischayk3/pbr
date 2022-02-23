@@ -5,6 +5,14 @@
   grid-gap: 10px 20px;
 }
 
+.chartview-input-landing {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 10px 20px;
+  background-color: #fff;
+  padding: 20px;
+}
+
 .chartview-select {
   margin-bottom: 10px;
 }

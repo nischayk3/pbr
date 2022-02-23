@@ -89,14 +89,17 @@ function ChartDetails(props) {
       <Card
         title={
           <span>
-            Scatter Plot{' '}
-            <WarningTwoTone style={{ marginLeft: 125 }} twoToneColor='red' />{' '}
+            Scatter Plot
+            <WarningTwoTone
+              style={{ marginLeft: 125 }}
+              twoToneColor='red'
+            />{' '}
             <span style={{ color: 'grey', fontSize: '14px' }}>
               Data unavailable for Y-Axis: Pressure
-            </span>{' '}
+            </span>
           </span>
         }
-        style={{ height: '320px' }}
+        // style={{ height: '320px' }}
       >
         {Object.keys(chartPlotData).length > 0 ? (
           <ScatterPlot
