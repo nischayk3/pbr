@@ -242,9 +242,6 @@ function ViewSummary(props) {
         onChangeColumnsHandler();
     }, [newBatchData]);
 
-    console.log('viewSummaryColumns', viewSummaryColumns);
-    console.log('viewSummaryTable', viewSummaryTable);
-    console.log('newBatchData', newBatchData);
     return (
         <div className='viewSummary-container'>
             <div className='viewSummary-FormBlock'>

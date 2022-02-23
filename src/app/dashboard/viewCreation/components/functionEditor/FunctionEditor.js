@@ -14,7 +14,6 @@ const Editorcolumns = [
     },
 ];
 
-
 function FunctionEditor(props) {
     const {
         moleculeId,
@@ -34,14 +33,10 @@ function FunctionEditor(props) {
         functionEditorRecord,
         setFunctionEditorRecord,
         newBatchData,
-        setNewBatchData
-
-
+        setNewBatchData,
     } = props;
 
     const [checkboxChecked, setCheckboxChecked] = useState(false);
-
-
 
     const columnsHandler = () => {
         let columns = [];
@@ -77,26 +72,26 @@ function FunctionEditor(props) {
                 key: index,
                 dataIndex: key,
                 width: 100,
-                render: value =>
+                render: (value) =>
                     value ? (
                         <Checkbox
                             checked={checkboxChecked}
                             onChange={onChange}
                         />
                     ) : (
-                        <span className="batchClosed">
+                        <span className='batchClosed'>
                             <CloseOutlined />
                         </span>
                     ),
             };
             columns.push(obj);
         });
-        let data = [...functionEditorColumns,...columns];
+        let data = [...functionEditorColumns, ...columns];
         setFunctionEditorColumns(data);
     };
 
-    const onChange = e => {
-        console.log('checked = ', e.target.checked);
+    const onChange = (e) => {
+        // console.log('checked = ', e.target.checked);
         setCheckboxChecked(e.target.checked);
     };
 
@@ -104,49 +99,45 @@ function FunctionEditor(props) {
         columnsHandler();
     }, [newBatchData]);
 
-    console.log('functionEditorColumns', functionEditorColumns);
-    console.log('functionEditorRecord', functionEditorRecord);
-    console.log('checkedrecord', checkboxChecked);
-
     return (
-        <div className="viewSummary-container functionEditor-container">
-            <div className="viewSummary-FormBlock functionEditor-FormBlock">
-                <Form.Item label="ID" name="id">
-                    <Input placeholder="Enter ID" />
+        <div className='viewSummary-container functionEditor-container'>
+            <div className='viewSummary-FormBlock functionEditor-FormBlock'>
+                <Form.Item label='ID' name='id'>
+                    <Input placeholder='Enter ID' />
                 </Form.Item>
-                <Form.Item label="Function Name" name="functionName">
-                    <Input placeholder="Enter Function Name" />
+                <Form.Item label='Function Name' name='functionName'>
+                    <Input placeholder='Enter Function Name' />
                 </Form.Item>
-                <Form.Item label="Aggregation" name="aggregation">
-                    <Select placeholder="Select Aggregation">
-                        <Option value="1">Min</Option>
-                        <Option value="2">Mean</Option>
-                        <Option value="3">Max</Option>
-                        <Option value="3">First</Option>
-                        <Option value="5">last</Option>
+                <Form.Item label='Aggregation' name='aggregation'>
+                    <Select placeholder='Select Aggregation'>
+                        <Option value='1'>Min</Option>
+                        <Option value='2'>Mean</Option>
+                        <Option value='3'>Max</Option>
+                        <Option value='3'>First</Option>
+                        <Option value='5'>last</Option>
                     </Select>
                 </Form.Item>
-                <Form.Item label="Parameter" name="parameter">
-                    <Select placeholder="Select Parameter">
-                        <Option value="1">1</Option>
-                        <Option value="2">2</Option>
+                <Form.Item label='Parameter' name='parameter'>
+                    <Select placeholder='Select Parameter'>
+                        <Option value='1'>1</Option>
+                        <Option value='2'>2</Option>
                     </Select>
                 </Form.Item>
-                <Form.Item label="Function" name="function">
-                    <Select placeholder="Select Function">
-                        <Option value="1">round</Option>
-                        <Option value="2">sin</Option>
-                        <Option value="3">cos</Option>
-                        <Option value="4">ln</Option>
-                        <Option value="5">exp</Option>
-                        <Option value="6">log</Option>
+                <Form.Item label='Function' name='function'>
+                    <Select placeholder='Select Function'>
+                        <Option value='1'>round</Option>
+                        <Option value='2'>sin</Option>
+                        <Option value='3'>cos</Option>
+                        <Option value='4'>ln</Option>
+                        <Option value='5'>exp</Option>
+                        <Option value='6'>log</Option>
                     </Select>
                 </Form.Item>
             </div>
-            <div className="viewSummary-FormBlock MathEditor-FormBlock">
+            <div className='viewSummary-FormBlock MathEditor-FormBlock'>
                 <div>
                     <Table
-                        className="viewSummary-table functionBatch-table"
+                        className='viewSummary-table functionBatch-table'
                         columns={Editorcolumns}
                         dataSource={[]}
                         pagination={false}
@@ -154,12 +145,12 @@ function FunctionEditor(props) {
                 </div>
                 <div>
                     <Table
-                        className="viewSummary-table MathEditor-table"
+                        className='viewSummary-table MathEditor-table'
                         columns={functionEditorColumns}
                         dataSource={functionEditorRecord}
                         scroll={{ x: 900 }}
                         pagination={false}
-                        rowKey={record => record.param}
+                        rowKey={(record) => record.param}
                     />
                 </div>
             </div>

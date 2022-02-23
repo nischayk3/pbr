@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import './styles.scss';
 import { PlusSquareOutlined } from '@ant-design/icons';
-import { Button, Collapse, Spin, Table, Tag } from 'antd';
+import { Button, Collapse, message, Spin, Table, Tag } from 'antd';
 const { Panel } = Collapse;
 
 function Materials(props) {
@@ -68,6 +68,7 @@ function Materials(props) {
     ];
 
     const parameterPassHandler = (record, index) => {
+        console.log('record materials', record, index);
         let rowData = {};
         let batchData = {};
         let newBatchData = [];
@@ -86,30 +87,23 @@ function Materials(props) {
             }
         });
 
-        // const result = Object.values(record);
-        // console.log('result', result);
-
-        // const indexDuplicate = result.findIndex((x) => x == record.param);
-        // if (indexDuplicate === -1) {
-        //     console.log('push');
-        //     alert('Yes');
-        // } else {
-        //     console.log('push');
-        //     alert('No');
-        //     console.log('object already exists');
-        // }
-
-        rowData = Object.assign(record, batchData);
-        //delete rowData['coverage_list'];
-        let data = [...viewSummaryTable];
-        data.push(rowData);
-        setNewBatchData(newBatchData);
-        setViewSummaryTable([...data]);
-        setFunctionEditorViewState(true);
+        //check for duplicate records
+        const indexDuplicate = viewSummaryTable.findIndex(
+            (x) => x.param == record.param
+        );
+        if (indexDuplicate === -1) {
+            rowData = Object.assign(record, batchData);
+            //delete rowData['coverage_list'];
+            let data = [...viewSummaryTable];
+            data.push(rowData);
+            setNewBatchData(newBatchData);
+            setViewSummaryTable([...data]);
+            setFunctionEditorViewState(true);
+        } else {
+            message.error('Function already exists');
+        }
     };
 
-    console.log('viewSummaryTable', viewSummaryTable);
-    console.log('newBatchData', newBatchData);
     return (
         <div className='materials-wrapper'>
             <Collapse
