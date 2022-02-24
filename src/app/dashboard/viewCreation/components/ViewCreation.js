@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
     ArrowLeftOutlined,
@@ -23,6 +23,8 @@ import {
     Input,
     Table,
     Radio,
+    Tooltip,
+    message,
 } from 'antd';
 import StatusWrong from '../../../../assets/statusWrong.svg';
 import StatusCorrect from '../../../../assets/statusCorrect.svg';
@@ -75,6 +77,7 @@ function ViewCreation() {
     const [parentBatches, setParentBatches] = useState([]);
     const [newBatchData, setNewBatchData] = useState([]);
     const [viewSummaryTable, setViewSummaryTable] = useState([]);
+    const tableData = useRef();
     const [viewSummaryColumns, setViewSummaryColumns] = useState([
         {
             title: 'Action',
@@ -98,15 +101,17 @@ function ViewCreation() {
             width: 150,
             fixed: 'left',
             render: (param, record, index) => (
-                <Tag
-                    color='magenta'
-                    className='parameter-tag'
-                    onClick={() => {
-                        functionPassHandler(record, index);
-                    }}
-                >
-                    {param}
-                </Tag>
+                <Tooltip title={param}>
+                    <Tag
+                        color='magenta'
+                        className='parameter-tag'
+                        onClick={() => {
+                            functionPassHandler(record, index);
+                        }}
+                    >
+                        {param}
+                    </Tag>
+                </Tooltip>
             ),
         },
         {
@@ -166,14 +171,16 @@ function ViewCreation() {
         // },
     ]);
 
-    const handleRowDelete = (param) => {
-        // const updatedSummaryTable = viewSummaryTable.filter(
-        //     (item) => item.param !== param
-        // );
-        // setViewSummaryTable(updatedSummaryTable);
-    };
+    //for not emptying state on rendering this component
+    tableData.current = viewSummaryTable;
 
-    console.log('viewSummaryTable', viewSummaryTable);
+    const handleRowDelete = (param) => {
+        const updatedSummaryTable = tableData.current.filter(
+            (item) => item.param !== param
+        );
+        setViewSummaryTable(updatedSummaryTable);
+        message.success('Function deleted successfully');
+    };
 
     const functionPassHandler = (record, index) => {
         // console.log('row data', record, index);
@@ -187,6 +194,10 @@ function ViewCreation() {
         // console.log('values', values)
     };
 
+    useEffect(() => {
+        form.setFieldsValue({ functionName: 'ARSENIC' });
+    }, []);
+
     console.log('record', functionEditorRecord);
     return (
         <div className='reportDesigner-container viewCreation-container'>
@@ -195,24 +206,22 @@ function ViewCreation() {
                     <ArrowLeftOutlined /> Create View
                 </h1>
                 <div className='viewCreation-btns'>
-                    <Button type='text' className='viewCreation-clearBtn'>
-                        Clear
+                    <Button type='text' className='viewCreation-newBtn'>
+                        New
                     </Button>
-                    <Button className='viewCreation-loadBtn' onClick={() => { setVisible(true); setIsNew(false); }}>
-                         Load
+                    <Button
+                        className='viewCreation-loadBtn'
+                        onClick={() => {
+                            setVisible(true);
+                            setIsNew(false);
+                        }}
+                    >
+                        Load
                     </Button>
-                    <Button className='viewCreation-saveBtn'>
-                         Save
-                    </Button>
-                    <Button className='viewCreation-saveAsBtn'>
-                         Save As
-                    </Button>
-                    <Button className='viewCreation-shareBtn'>
-                         Share
-                    </Button>
-                    <Button className='viewCreation-publishBtn'>
-                         Publish
-                    </Button>
+                    <Button className='viewCreation-saveBtn'>Save</Button>
+                    <Button className='viewCreation-saveAsBtn'>Save As</Button>
+                    <Button className='viewCreation-shareBtn'>Share</Button>
+                    <Button className='viewCreation-publishBtn'>Publish</Button>
                 </div>
             </div>
 

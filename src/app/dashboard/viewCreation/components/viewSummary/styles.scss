@@ -16,8 +16,13 @@
 .viewSummary-table.viewSummary-tablewidth {
     width: 950px;
     span.ant-tag.ant-tag-magenta.parameter-tag {
-        white-space: initial;
         cursor: pointer;
+        width: 120px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        margin: 0px;
     }
 
     span.statusIcon-summary {
@@ -25,6 +30,26 @@
 
         img {
             width: 20px;
+        }
+    }
+}
+
+.ant-table-wrapper.viewSummary-table.viewSummary-tablewidth {
+    .ant-table .ant-table-thead > tr > th {
+        padding: 10px;
+    }
+
+    .ant-table-tbody > tr > td {
+        padding: 10px;
+    }
+
+    tbody.ant-table-tbody {
+        tr {
+            &:nth-child(even) {
+                td {
+                    background-color: #f9f9f9;
+                }
+            }
         }
     }
 }
@@ -44,7 +69,7 @@
         font-weight: 500;
         font-size: 14px;
         background-color: #f2fbff;
-        padding: 12px;
+        padding: 10px;
     }
 
     .ant-table-tbody > tr > td {
@@ -54,7 +79,7 @@
         font-size: 14px;
         border: none;
         border-bottom: 1px solid #d9d9d9;
-        padding: 12px;
+        padding: 10px 5px;
     }
 }
 
