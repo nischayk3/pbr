@@ -26,6 +26,17 @@ export const getCharts = (request) => {
     );
 };
 
+export const getReports = (request) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/reports' , request).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
 export const saveReportDesign = (request) => {
     return Service.post(BMS_APP_PYTHON_SERVICE + '/put_report_data' , request).then(
         (response) => {

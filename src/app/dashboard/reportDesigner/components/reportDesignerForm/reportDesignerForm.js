@@ -64,11 +64,11 @@ function ReportDesignerForm(props) {
         <div className="reportDesigner-grid bg-white" >
             <div className="reportDesigner-block-left bg-white" >
                 <Text className="filter-text" > Report ID  </Text>
-                <Text className="filter-text" >Report Name</Text>
+                <Text className="filter-text" >Report Name *</Text>
                 <Text className="filter-text">View</Text>
                 <Text className="filter-text">Status</Text>
                 <Input className="filter-button" value={reportId} disabled />
-                <Input className="filter-button" value={reportName} disabled={isLoad} onChange={(e) => setReportName(e.target.value)} />
+                <Input className="filter-button"  value={reportName} disabled={isLoad} onChange={(e) => setReportName(e.target.value)} required={true} />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
                     <Select className="filter-button" defaultValue={viewIdVersion} onChange={(e, value) => {
                     let view_value=value.value

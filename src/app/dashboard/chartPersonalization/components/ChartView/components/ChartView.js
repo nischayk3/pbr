@@ -36,31 +36,29 @@ function ChartView(props) {
       setViewVersion(selectedView.view_version);
 
       props.callbackViewType(selectedView.view_disp_id);
-
-      if (!props.isNew) {
-        setViewId('');
-        setViewName('');
-        setViewStatus('');
-        setViewVersion('');
-      }
     }
   }, [selectedView]);
 
-  const handleSelectChange = (value) => {
-    if (value !== null) {
-      setSelectedViewType(value);
-      setShowParam(true);
-      setViewId(props.chartObj.view_id);
-      setViewName(props.chartObj.view_name);
-      setViewStatus(props.chartObj.chart_status);
-      setViewVersion(props.chartObj.chart_version);
-      props.callbackViewType(value);
-    }
-  };
+  // const handleSelectChange = (value) => {
+  //   if (value !== null) {
+  //     setSelectedViewType(value);
+  //     setShowParam(true);
+  //     setViewId(props.chartObj.view_id);
+  //     setViewName(props.chartObj.view_name);
+  //     setViewStatus(props.chartObj.chart_status);
+  //     setViewVersion(props.chartObj.chart_version);
+  //     props.callbackViewType(value);
+  //   }
+  // };
 
-  const handleClickLoad = (e) => {
-    console.log('eeeee', e);
-    props.callbackIsload();
+  // const handleClickLoad = (e) => {
+  //   console.log('eeeee', e);
+  //   props.callbackIsload();
+  // };
+
+  const callbackView = () => {
+    setShowParam(true);
+    props.callbackViewTable();
   };
 
   return (
@@ -87,9 +85,9 @@ function ChartView(props) {
                   placeholder='View ID'
                   value={viewId}
                   disabled={true}
-                  style={{ width: '81%' }}
+                  style={{ width: '60%' }}
                 />
-                <Button onClick={props.callbackViewTable}>
+                <Button onClick={callbackView}>
                   <img src={PopupIcon} />
                 </Button>
               </div>

@@ -10,34 +10,35 @@ import {
   Modal,
   Table,
   Input,
-  message
+  message,
+  Spin
 } from 'antd';
 import ChartSelector from './reportDesignerFilter/chartSelector';
 import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
 import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections'
 import './stylesNew.scss';
 import example_json from './example.json'
-import { getViews, getCharts, saveReportDesign } from '../../../../services/reportDesignerServices';
-import SaveModal  from '../../../../components/SaveModal/saveModal'
+import { getViews, getCharts, saveReportDesign, getReports } from '../../../../services/reportDesignerServices';
+import SaveModal from '../../../../components/SaveModal/saveModal'
 import { useDispatch, useSelector } from 'react-redux';
 import { sendReportId } from '../../../../duck/actions/reportDesignerAction';
 
 //Columns For The view Selection modal
 const columns = [
   {
-    title: 'Product Num',
-    dataIndex: 'product_num',
-    key: 'name',
+    title: 'Report ID',
+    dataIndex: 'rep_disp_id',
+    key: 'rep_disp_id',
   },
   {
-    title: 'View',
-    dataIndex: 'view',
-    key: 'view_disp_id',
+    title: 'Report Name',
+    dataIndex: 'rep_name',
+    key: 'rep_name',
   },
   {
-    title: 'View Name',
-    dataIndex: 'view_name',
-    key: 'view_name',
+    title: 'Report Status',
+    dataIndex: 'rep_status',
+    key: 'rep_status',
   },
   {
     title: 'Created By',
@@ -66,6 +67,8 @@ function ReportDesignerNew() {
   const [viewList, setViewList] = useState('');
   // const [chartId, setChartId] = useState([]);
   const [chartList, setChartList] = useState([]);
+  const [reportList, setReportList] = useState([]);
+  const [reportData, setReportData] = useState([]);
   const [formData, setFormData] = useState({});
   // const [mainJson, setMainJson] = useState({});
   const [form] = Form.useForm();
@@ -73,28 +76,35 @@ function ReportDesignerNew() {
   const dispatch = useDispatch();
 
   const savedData = useSelector((state) => state.reportDesignerReducer);
-  console.log('redux save',savedData)
 
   const mapViewList = viewList.length > 0 ? viewList : []
 
+  const mapReportList = reportList.length > 0 ? reportList : []
+
   useEffect(() => {
     getViewsList();
+    getReportList();
   }, []
   );
 
-  const OnNewClick = () =>
-  {
+  const OnNewClick = () => {
     setIsNew(true);
     setIsLoad(false);
-    setFormData({}) 
+    setFormData({})
     setSelectedChartList([])
     setReportName('')
     setViewVersion('')
     setReportId('')
     setViewId('')
     setViewIdVersion('')
-    setStatus('NEW')
+    setStatus('DRFT')
     setChartList([])
+  }
+
+  const okClick = () => {
+    setVisible(false);
+    setIsLoad(true);
+    // unLoadJson(reportData);
   }
 
   // Get form values
@@ -110,6 +120,22 @@ function ReportDesignerNew() {
     });
   };
 
+  const getReportList = () => {
+    let req = { rep_status: 'all' };
+    getReports(req).then((res) => {
+      setReportList(res['Data']);
+    });
+  };
+
+  const getReportData = (rep_id, rep_status) => {
+    message.success(`${rep_id} selected`)
+    let req = { rep_status: rep_status ? rep_status : 'all' };
+    if (rep_id)
+      req['rep_disp_id'] = rep_id
+    getReports(req).then((res) => {
+      setReportData(res['Data']);
+    });
+  };
 
 
   //   Get charts based on viewId-version
@@ -124,7 +150,7 @@ function ReportDesignerNew() {
         setChartList([]);
 
       if (typeof res['data'] === 'string') {
-        message.error(`Chart ${res['data']}`)
+        // message.error(`Chart ${res['data']}`)
       }
 
     });
@@ -167,7 +193,7 @@ function ReportDesignerNew() {
 
   // searching values in table
   const search = (value) => {
-    const tableData = viewList;
+    const tableData = reportList;
     const filterTable = tableData.filter((o) =>
       Object.keys(o).some((k) =>
         String(o[k]).toLowerCase().includes(value.toLowerCase())
@@ -188,20 +214,25 @@ function ReportDesignerNew() {
     obj['rep_disp_id'] = reportId;
     obj['layout_info'] = formData;
 
-    let req={}
-    req['data']=obj
+    let req = {}
+    req['data'] = obj
 
-    saveReportDesign(req).then((res) => {
-      if (res && res['msg'] && res['msg'] == 'success') {
-        setReportId(res['rep_disp_id'])
-        setStatus(res['rep_stauts'])
-        setIsSave(true)
-      }
-      else
-        message.error('Not Saved')
- 
-    })
-    dispatch(sendReportId(req))
+    if (reportName.length > 0) {
+      saveReportDesign(req).then((res) => {
+        if (res && res['msg'] && res['msg'] == 'success') {
+          setReportId(res['rep_disp_id'])
+          setStatus(res['rep_stauts'])
+          setIsSave(true)
+        }
+        else
+          message.error('Not Saved')
+
+      })
+      dispatch(sendReportId(req))
+    }
+    else {
+      message.error('Report Name Is Required')
+    }
   }
 
   // unloading the json into component readable form 
@@ -225,50 +256,79 @@ function ReportDesignerNew() {
 
   const unLoadJson = (jay) => {
 
-    let view = jay['view_disp_id'] ? jay['view_disp_id'] : ''
-    let ReportName = jay['rep_name'] ? jay['rep_name'] : ''
-    let chartList = jay['chart_int_ids'].length > 0 ? jay['chart_int_ids'] : []
-    let status = jay['rep_status'] ? jay['rep_status'] : ''
-    let view_version = jay['view_version'] ? jay['view_version'] : ''
+    jay = jay[0]
+    console.log('unload', jay)
 
-    setViewId(view)
-    setViewIdVersion(view+'-'+view_version)
-    setReportName(ReportName)
-    setSelectedChartList(chartList)
+    let status = jay['rep_status'] ? jay['rep_status'] : ''
     setStatus(status)
 
-    let res = []
-    let layout_info = jay['layout_info'] ? jay['layout_info'] : {}
-    let title_page = layout_info['titlepage'] ? layout_info['titlepage'] : {}
+    let ReportName = jay['rep_name'] ? jay['rep_name'] : ''
+    setReportName(ReportName)
 
-    let title_section = title_page['heading'] ? title_page['heading'] : {}
-    let title_rows = title_page['content'] ? convertContent(title_page['content']) : {}
-    let title_obj = {}
-    title_obj['sectionName'] = title_section ? title_section : ''
-    title_obj['dymamic_rows'] = title_rows ? title_rows : ''
+    jay = jay['layout_info']
 
-    res.push(title_obj)
+    if (jay['layout_info']) {
+      let view = jay['view_disp_id'] ? jay['view_disp_id'] : ''
+      setViewId(view)
 
-    let section_area = layout_info['sections'] ? layout_info['sections'] : ''
+      let chartList = jay['chart_int_ids'].length > 0 ? jay['chart_int_ids'] : []
+      setSelectedChartList(chartList)
 
-    if (section_area) {
-      section_area.map((item) => {
-        let section_obj = {}
-        section_obj['sectionName'] = item['heading'] ? item['heading'] : ''
-        section_obj['dymamic_rows'] = item['content'] ? convertContent(item['content']) : ''
-        res.push(section_obj)
-      })
-      let form_res = {}
-      form_res['response'] = res
-      setFormData(form_res)
+      // let status = jay['rep_status'] ? jay['rep_status'] : ''
+      let view_version = jay['view_version'] ? jay['view_version'] : ''
+      getChartsList(view + '-' + view_version)
+      setViewIdVersion(view + '-' + view_version)
+      let res = []
+      let layout_info = jay['layout_info'] ? jay['layout_info'] : {}
+      let title_page = layout_info['titlepage'] ? layout_info['titlepage'] : {}
+
+      let title_section = title_page['heading'] ? title_page['heading'] : {}
+      let title_rows = title_page['content'] ? convertContent(title_page['content']) : {}
+      let title_obj = {}
+      title_obj['sectionName'] = title_section ? title_section : ''
+      title_obj['dymamic_rows'] = title_rows ? title_rows : ''
+
+      res.push(title_obj)
+
+      let section_area = layout_info['sections'] ? layout_info['sections'] : ''
+
+      if (section_area) {
+        section_area.map((item) => {
+          let section_obj = {}
+          section_obj['sectionName'] = item['heading'] ? item['heading'] : ''
+          section_obj['dymamic_rows'] = item['content'] ? convertContent(item['content']) : ''
+          res.push(section_obj)
+        })
+        let form_res = {}
+        form_res['response'] = res
+        setFormData(form_res)
+      }
+      else {
+        setFormData({})
+      }
     }
     else {
       setFormData({})
+      setViewId('')
+      setSelectedChartList([])
+      setViewIdVersion('')
+      setChartList([])
     }
+
+  }
+
+  const updateInitialValues=()=>
+  {
+    if(formData['response'])
+    {
+      return formData
+    }
+    else
+    return {}
   }
 
 
-
+  console.log(loading, isLoad, isNew, formData)
   return (
     <div className="reportDesigner-container">
       <div className="reportDesigner-block">
@@ -276,14 +336,14 @@ function ReportDesignerNew() {
           <ArrowLeftOutlined /> Report Designer
         </h1>
         <div className="reportDesigner-btns">
-       { isLoad ? <></> : (
-          <Button
-            className="reportDesigner-saveBtn"
-            onClick={() => OnNewClick()}
-          >
-       
-            New
-          </Button>)}
+          {isLoad ? <></> : (
+            <Button
+              className="reportDesigner-saveBtn"
+              onClick={() => OnNewClick()}
+            >
+
+              New
+            </Button>)}
           <Button
             className="reportDesigner-loadBtn"
             onClick={() => { setVisible(true); setIsNew(false); }}
@@ -302,7 +362,7 @@ function ReportDesignerNew() {
                 </Button>
                 <Button
                   className="reportDesigner-loadBtn"
-                onClick={() => dispatch(sendReportId({}))}
+                  onClick={() => dispatch(sendReportId({}))}
                 >
                   Save As
                 </Button>
@@ -346,7 +406,7 @@ function ReportDesignerNew() {
         mapViewList={mapViewList}
       />
 
-      {isLoad || isNew ?
+      {(isLoad || isNew) && loading == false ?
         <div className="reportDesigner-grid-tables">
           <ChartSelector
             // chartId={chartId}
@@ -362,39 +422,41 @@ function ReportDesignerNew() {
             name="report-generator-form"
             form={form}
             onValuesChange={handleValuesChange}
-            initialValues={formData ? formData : {}}
+            initialValues={updateInitialValues()}
           >
             <ReportDesignerDynamicSections formData={formData} />
           </Form>
 
         </div> : <></>}
-
       <Modal
         title="Select View"
         visible={visible}
         onOk={() => {
+
           setVisible(false);
           setIsLoad(true);
-          unLoadJson(example_json);
+          unLoadJson(reportData);
         }}
         onCancel={() => setVisible(false)}
         width={500}
         style={{ marginRight: '800px' }}
       >
-        <Select className="filter-button" defaultValue={viewId} onChange={(e, value) => {
+        <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
           let view_value = value.value ? value.value : ''
-          let split_view_id = view_value ? view_value.split('-') : []
-          setViewId(split_view_id[0]);
-          setViewVersion(split_view_id[1])
-          setViewIdVersion(view_value);
-          getChartsList(view_value);
-          
-        }}
-          value={viewId}
-        >
-          {mapViewList.map((item) =>
+          // let split_view_id = view_value ? view_value.split('-') : []
+          setReportId(view_value)
+          getReportData(view_value)
+          // setViewId(split_view_id[0]);
+          // setViewVersion(split_view_id[1])
+          // setViewIdVersion(view_value);
+          // getChartsList(view_value);
 
-            <Option value={item.view}>{item.view}</Option>
+        }}
+          value={reportId}
+        >
+          {mapReportList.map((item) =>
+
+            <Option value={item.rep_disp_id}>{item.rep_disp_id}</Option>
           )}
 
         </Select>
@@ -418,17 +480,18 @@ function ReportDesignerNew() {
         width={500}
       >
         <Table
-          dataSource={filterTable === null ? viewList : filterTable}
+          dataSource={filterTable === null ? reportList : filterTable}
           columns={columns}
           onRow={record => ({
             onClick: e => {
-              setViewId(record.view_disp_id);
-              setStatus(record.view_status);
-              setViewVersion(record.view_version);
-              getChartsList(record.view)
+              // setViewId(record.view_disp_id);
+              // setStatus(record.view_status);
+              // setViewVersion(record.view_version);
+              // getChartsList(record.view)
+              setReportId(record.rep_disp_id)
+              getReportData(record.rep_disp_id, record.rep_status)
             }
           })}
-          loading={loading}
           scroll={{ y: 200 }}
           size='small'
           pagination={false}
