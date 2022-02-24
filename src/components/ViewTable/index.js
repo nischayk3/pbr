@@ -1,61 +1,70 @@
 import { Modal, Button, Table, Input } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { sendViewId } from '../../duck/actions/chartPersonalizationAction';
+import { sendView } from '../../duck/actions/chartPersonalizationAction';
+import { SearchOutlined } from '@ant-design/icons';
 import './style.scss';
 
 const ViewTable = (props) => {
   console.log('props view table', props);
   const [selectedKeys, setselectedKeys] = useState([]);
   const [selectedViewId, setselectedViewId] = useState('');
-  const [filterData, setfilterData] = useState([]);
+
+  const [filterData, setfilterData] = useState(null);
 
   const dispatch = useDispatch();
 
   const columns = [
     {
-      title: 'Product Number',
+      title: 'Product No',
       dataIndex: 'product_num',
       key: 'product_num',
+      width: '200px',
     },
     {
       title: 'View ',
       dataIndex: 'view_disp_id',
       key: 'view',
+      width: '200px',
     },
     {
       title: 'View Name',
       dataIndex: 'view_name',
       key: 'view_name',
+      width: '100px',
     },
     {
       title: 'Created By',
       dataIndex: 'created_by',
       key: 'created_by',
+      width: '150px',
     },
   ];
   const data = props.data;
 
   const handleOk = () => {
     props.handleCloseModal();
-    dispatch(sendViewId(selectedViewId));
+    dispatch(sendView(selectedViewId));
   };
 
   const searchTable = (value) => {
-    const filterTable = data.filter((o) =>
+    const tableData = data;
+    const filterData = tableData.filter((o) =>
       Object.keys(o).some((k) =>
         String(o[k]).toLowerCase().includes(value.toLowerCase())
       )
     );
-    setfilterData({ filterData });
+
+    setfilterData(filterData);
   };
 
   return (
     <Modal
       visible={props.isModal}
       title='View Table'
-      width={600}
+      // width={600}
       // mask={true}
+      closable={false}
       onCancel={props.handleCloseModal}
       centered={true}
       footer={[
@@ -78,15 +87,18 @@ const ViewTable = (props) => {
     >
       <div className='modal-search-bar'>
         <Input.Search
-          className='table-search'
+          className='modal-table-search'
           placeholder='Search by...'
           enterButton
           onSearch={searchTable}
+          allowClear
+          prefix={
+            <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
+          }
         />
       </div>
       <div className='custom-table-antd'>
         <Table
-          size='small'
           columns={columns}
           rowSelection={() => ({
             onChange: (selectedRowKeys, selectedRows) => {
@@ -107,17 +119,18 @@ const ViewTable = (props) => {
               const selectedRowKeys = [...selectedKeys];
               if (selectedRowKeys.indexOf(record.key) >= 0) {
                 selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1);
-                dispatch(sendViewId(record.view_disp_id));
+                dispatch(sendView(record.view_disp_id));
               } else {
                 selectedRowKeys.push(record.key);
-                dispatch(sendViewId(record.view_disp_id));
+                dispatch(sendView(record.view_disp_id));
               }
               console.log('selectedRowKeys111', selectedRowKeys);
               setselectedKeys({ selectedRowKeys });
             },
           })}
           dataSource={filterData === null ? data : filterData}
-          pagination={{ pageSizeOptions: ['5', '10', '15'] }}
+          size='small'
+          pagination={true}
         />
       </div>
     </Modal>
