@@ -24,7 +24,8 @@ function ParameterLookup(props) {
     } = props;
 
     const onSelectMoleculeHandler = () => {
-        let req = { user_id: localStorage.getItem('username') };
+        // let req = { user_id: localStorage.getItem('username') };
+        let req = { user_id: 'demo' };
         getMoleculeData(req).then((res) => {
             if (res.statuscode === 200) {
                 setMoleculeList(res.data);
@@ -41,6 +42,7 @@ function ParameterLookup(props) {
     useEffect(() => {
         onSelectMoleculeHandler();
     }, []);
+    console.log('moleculeList', moleculeList);
 
     const onChangeMoleculeHandler = (value) => {
         setMoleculeId(value);

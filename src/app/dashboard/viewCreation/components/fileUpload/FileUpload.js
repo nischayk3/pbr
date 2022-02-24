@@ -17,6 +17,7 @@ import {
     Tag,
     Upload,
     message,
+    Tooltip,
 } from 'antd';
 
 import {
@@ -49,26 +50,28 @@ function FileUpload(props) {
     const columns = [
         {
             title: 'Parameter',
-            key: 'parameter_name',
-            dataIndex: 'parameter_name',
-            render: (parameter_name) => (
-                <Tag color='magenta' className='parameter-tag'>
-                    {parameter_name}
-                </Tag>
+            key: 'param',
+            dataIndex: 'param',
+            render: (param) => (
+                <Tooltip title={param}>
+                    <Tag color='magenta' className='parameter-tag'>
+                        {param}
+                    </Tag>
+                </Tooltip>
             ),
         },
         {
             title: 'Batch',
-            key: 'coverage',
-            dataIndex: 'coverage',
+            key: 'coverage_metric_percent',
+            dataIndex: 'coverage_metric_percent',
         },
         {
             title: 'Coverage',
-            key: 'batch',
-            dataIndex: 'batch',
+            key: 'coverage_metric',
+            dataIndex: 'coverage_metric',
         },
         {
-            title: 'Add',
+            title: '',
             key: 'add',
             dataIndex: 'add',
             render: (text, record, index) => (
@@ -97,7 +100,7 @@ function FileUpload(props) {
         // });
 
         parentBatches.map((el, index) => {
-            if (record.batchs.includes(el)) {
+            if (record.coverage_list.includes(el)) {
                 batchData[`B${++index}`] = true;
                 newBatchData[`B${index}`] = true;
             } else {
@@ -108,7 +111,7 @@ function FileUpload(props) {
 
         //check for duplicate records
         const indexDuplicate = viewSummaryTable.findIndex(
-            (x) => x.param == record.parameter_name
+            (x) => x.param == record.param
         );
         if (indexDuplicate === -1) {
             rowData = Object.assign(record, batchData);
@@ -119,13 +122,12 @@ function FileUpload(props) {
             setViewSummaryTable([...data]);
             setFunctionEditorViewState(true);
         } else {
-            // message.error('Function already exists');
+            message.error('Function already exists');
         }
     };
 
-    console.log('parentBatches', parentBatches);
-    console.log('newBatchData', newBatchData);
-    console.log('viewSummaryTable', viewSummaryTable);
+    console.log('selectedAdHocFileList', selectedAdHocFileList);
+    console.log('filesListTree', filesListTree);
     const genExtra = (File_id) => (
         <div
             className='fileUpload-panelHeader'
@@ -166,7 +168,8 @@ function FileUpload(props) {
     function confirm(File_id) {
         let req = {
             fileid: parseInt(File_id),
-            userid: localStorage.getItem('username'),
+            // userid: localStorage.getItem('username'),
+            userid: 'demo',
         };
         deleteAdHocFile(req).then((res) => {
             if (res.data.statuscode === 202) {
@@ -206,7 +209,7 @@ function FileUpload(props) {
     };
 
     const adHocFileUploadprops = {
-        multiple: true,
+        multiple: false,
         progress: {
             strokeColor: {
                 '0%': '#52C41A',

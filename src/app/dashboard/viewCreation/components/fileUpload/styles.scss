@@ -130,7 +130,11 @@
 
 .fileUpload-accordion {
     .parameter-tag {
-        white-space: initial;
-        width: 80px;
+        width: 70px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        margin: 0px;
     }
 }
