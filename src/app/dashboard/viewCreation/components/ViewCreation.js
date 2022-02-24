@@ -35,7 +35,10 @@ import Materials from './materials/Materials';
 import ParameterLookup from './parameterLookup/ParameterLookup';
 import ViewSummary from './viewSummary/ViewSummary';
 import './styles.scss';
-import { getViews } from '../../../../services/viewCreationPublishing';
+import {
+    getViewConfig,
+    getViews,
+} from '../../../../services/viewCreationPublishing';
 
 const { Panel } = Collapse;
 
@@ -228,6 +231,16 @@ function ViewCreation() {
 
     const newButtonHandler = () => {
         setMoleculeList([]);
+    };
+
+    const onOkHandler = () => {
+        setVisible(false);
+        setIsLoad(true);
+        let req = { view_disp_id: 'V5' };
+        getViewConfig(req).then((res) => {
+            console.log('res', res.material_id);
+            setMoleculeId(res.material_id);
+        });
     };
 
     useEffect(() => {
@@ -425,6 +438,7 @@ function ViewCreation() {
                                         viewDisplayId={viewDisplayId}
                                         viewStatus={viewStatus}
                                         viewVersion={viewVersion}
+                                        formViewSummary={form}
                                     />
                                 </div>
                             )}
@@ -463,8 +477,7 @@ function ViewCreation() {
                     title='Select View'
                     visible={visible}
                     onOk={() => {
-                        setVisible(false);
-                        setIsLoad(true);
+                        onOkHandler();
                     }}
                     onCancel={() => setVisible(false)}
                     width={500}
