@@ -37,7 +37,7 @@ pipeline {
            }
           stage("Build Docker Image") {
             steps {
-                sh 'docker build -t  $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest -f Dockerfile.dev .'
+                sh 'docker build -t  $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest  .'
                 }
               }
           stage("Push Docker Image to Docker Registry") {

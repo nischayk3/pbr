@@ -11,6 +11,7 @@ import './ChartViewStyles.scss';
 import PropTypes from 'prop-types';
 
 import { useSelector } from 'react-redux';
+import InputView from '../../../../../../components/InputView/InputView';
 
 function ChartView(props) {
   console.log('chart props', props);
@@ -79,22 +80,41 @@ function ChartView(props) {
           </div> */}
           {showParam && (
             <div className='chartview-input'>
-              <div className='input_field'>
+              {/* <div className='input_field'>
                 <p>View ID</p>
                 <Input
-                  placeholder='View ID'
+                  placeholder='Enter View ID'
                   value={viewId}
-                  disabled={true}
                   style={{ width: '60%' }}
                 />
                 <Button onClick={callbackView}>
                   <img src={PopupIcon} />
                 </Button>
-              </div>
+              </div> */}
+              <InputView
+                label='Enter View ID'
+                value={viewId}
+                placeholder='Enter View Id'
+                onClickPopup={callbackView}
+              />
 
-              <InputField label='View Name' value={viewName} disabled />
-              <InputField label='Status' value={viewStatus} disabled />
-              <InputField label='Version' value={viewVersion} disabled />
+              <InputField
+                placeholder='Enter View Name'
+                label='View Name'
+                value={viewName}
+                disabled
+              />
+              <InputField
+                placeholder='Status'
+                label='Status'
+                value={viewStatus}
+                disabled
+              />
+              <InputField
+                placeholder='Enter Version '
+                label='Version'
+                value={viewVersion}
+              />
             </div>
           )}
         </div>
