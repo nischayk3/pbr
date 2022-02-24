@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 
 import './styles.scss';
 import { CheckCircleOutlined, CloseOutlined } from '@ant-design/icons';
-import { Checkbox, Form, Input, Select, Table, Tag } from 'antd';
+import { Checkbox, Form, Input, Select, Table, Tag, Card } from 'antd';
 
 const { Option } = Select;
 
@@ -35,11 +35,14 @@ const FunctionEditor = (props) => {
         newBatchData,
         setNewBatchData,
         functionName,
-        setFunctionName
+        setFunctionName,
+        form
     } = props;
 
 
-
+const[mathFunction,setMathFunction]=useState();
+const[data,setData]=useState([]);
+const functionData = useRef();
     const columnsHandler = () => {
         let columns = [];
         //parentBatches.map((item, index) => {
@@ -83,7 +86,7 @@ const FunctionEditor = (props) => {
                     };
                 },
                 render: (value) => {
-                    return value ? (
+                    return typeof(value)==='boolean' ? value?(
                         <Checkbox
                             checked={value}
                             onChange={(e) => onChange(e, key, value1, Index)}
@@ -92,6 +95,11 @@ const FunctionEditor = (props) => {
                         <span className='batchClosed'>
                             <CloseOutlined />
                         </span>
+                    ):(
+                        <Checkbox
+                            checked={false}
+                            onChange={(e) => onChange(e, key, value1, Index)}
+                        />
                     );
                 },
             };
@@ -104,14 +112,14 @@ const FunctionEditor = (props) => {
     };
 
     const onChange = (e, key, value, rowIndex) => {
-        console.log(props);
         console.log('checked = ', e.target.checked, key, value);
         console.log(rowIndex);
-        let filteredRecord = [...functionEditorRecord];
-        filteredRecord[rowIndex]={...filteredRecord[rowIndex]}
-        filteredRecord[rowIndex][key] = e.target.checked;
+        console.log(functionData.current);
+        let filteredRecord = [...functionData.current];
+        //filteredRecord[rowIndex] = { ...filteredRecord[rowIndex] }
+        filteredRecord[rowIndex][key] = e.target.checked==false?"":e.target.checked;
         console.log(filteredRecord);
-        //setFunctionEditorRecord(filteredRecord)
+        setFunctionEditorRecord(filteredRecord)
 
 
 
@@ -119,19 +127,39 @@ const FunctionEditor = (props) => {
 
     const onChangeParameterHandler = (value) => {
         console.log('valuess', value);
+        let indexDuplicate = functionEditorRecord.findIndex(
+            (x) => x.param == value
+        );
         let filteredParameter = viewSummaryTable.filter(
             (el) => el.param == value
         );
-        setFunctionEditorRecord([
-            ...functionEditorRecord,
-            ...filteredParameter,
-        ]);
+
+        if (indexDuplicate < 0) {
+            setFunctionEditorRecord([
+                ...functionEditorRecord,
+                ...filteredParameter,
+            ]);
+            setFunctionName(value)
+        }
+
+
+
+
     };
+
+    const mathEditorFunction=(value)=>{
+        setMathFunction(value);
+    }
+
 
     useEffect(() => {
         columnsHandler();
+        form.setFieldsValue({ function_name: functionName, parameter: functionName })
     });
 
+    useEffect(()=>{
+        functionData.current = functionEditorRecord;
+    },[functionEditorRecord])
 
     console.log('functionEditorColumns', functionEditorColumns);
     console.log('functionEditorRecord', functionEditorRecord);
@@ -140,10 +168,10 @@ const FunctionEditor = (props) => {
         <div className='viewSummary-container functionEditor-container'>
             <div className='viewSummary-FormBlock functionEditor-FormBlock'>
                 <Form.Item label='ID' name='id'>
-                    <Input placeholder='Enter ID'/>
+                    <Input placeholder='Enter ID' />
                 </Form.Item>
-                <Form.Item label='Function Name' name='functionName'>
-                    <Input placeholder='Enter Function Name' />
+                <Form.Item label='Function Name' name='function_name'>
+                    <Input placeholder='Enter Function Name' onChange={(e)=>setFunctionName(e.target.value)} />
                 </Form.Item>
                 <Form.Item label='Aggregation' name='aggregation'>
                     <Select placeholder='Select Aggregation'>
@@ -158,6 +186,7 @@ const FunctionEditor = (props) => {
                     <Select
                         placeholder='Select Parameter'
                         onChange={onChangeParameterHandler}
+
                     >
                         {viewSummaryTable.map((item, i) => {
                             return (
@@ -169,7 +198,7 @@ const FunctionEditor = (props) => {
                     </Select>
                 </Form.Item>
                 <Form.Item label='Function' name='function'>
-                    <Select placeholder='Select Function'>
+                    <Select placeholder='Select Function' onChange={mathEditorFunction}>
                         <Option value='round'>round</Option>
                         <Option value='sin'>sin</Option>
                         <Option value='cos'>cos</Option>
@@ -180,13 +209,15 @@ const FunctionEditor = (props) => {
                 </Form.Item>
             </div>
             <div className='viewSummary-FormBlock MathEditor-FormBlock'>
-                <div>
-                    <Table
-                        className='viewSummary-table functionBatch-table'
-                        columns={Editorcolumns}
-                        dataSource={[]}
-                        pagination={false}
-                    />
+                <div className="viewSummary-table functionBatch-table site-card-border-less-wrapper">
+                    <Card title="Math Editor" bordered >
+                        {mathFunction?
+                        mathFunction=='round'?
+                        <p>{`=${mathFunction}(${functionName},`} <input type="text" style={{height:'20px', width:'20px'}}/>)</p>
+                        :`=${mathFunction}(${functionName})`
+                        :''}
+                       
+                    </Card>
                 </div>
                 <div>
                     <Table

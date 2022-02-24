@@ -66,6 +66,7 @@ function ViewCreation() {
     const [functionEditorRecord, setFunctionEditorRecord] = useState([]);
     const [moleculeId, setMoleculeId] = useState();
     const [materialsList, setMaterialsList] = useState([]);
+    const [paramText, setParamText] = useState();
     const [filterdData, setFilterdData] = useState(null);
     const [dataLoadingState, setDataLoadingState] = useState(false);
     const [isNew, setIsNew] = useState(false);
@@ -125,7 +126,7 @@ function ViewCreation() {
             render: (text, record, index) => (
                 <>
                     {record.coverage_metric_percent === '100 %' ||
-                    record.coverage_metric_percent === '100%' ? (
+                        record.coverage_metric_percent === '100%' ? (
                         <span className='statusIcon-summary'>
                             <img src={StatusCorrect} />
                         </span>
@@ -157,15 +158,19 @@ function ViewCreation() {
             dataIndex: 'param',
             width: 150,
             fixed: 'left',
-            render: (text,record,index) => {
-              return (
-                <input type="radio" id={text} name="a" value={text}/>
-              )
-                    
-                
-                  
-                
-                
+            render: (text, record, index) => {
+                return (
+                    <input type="radio" 
+                    id={text} 
+                    name="a" 
+                    value={text} 
+                    onChange={()=>passTableData(record)}/>
+                )
+
+
+
+
+
             }
         },
         // {
@@ -197,6 +202,7 @@ function ViewCreation() {
         // console.log('row data', record, index);
         setFunctionEditorRecord((prevState) => [...prevState, record]);
         setFunctionName(record.param);
+
     };
 
     const [form] = Form.useForm();
@@ -204,14 +210,22 @@ function ViewCreation() {
     const handleValuesChange = (changedValues, values) => {
         // console.log('changedValues', changedValues)
         //console.log('values', JSON.stringify(values));
-    
+
     };
 
-    useEffect(() => {
-        form.setFieldsValue({ functionName: 'ARSENIC' });
-    }, []);
+    const saveFunctionData=()=>{
+        console.log("hello");
+        setViewSummaryTable([...viewSummaryTable,paramText])
+    }
 
-    console.log('record', functionEditorRecord);
+    const passTableData=(record)=>{
+        //record.param=functionName;
+        console.log(record);
+        setParamText(record);
+    }
+
+
+    console.log('record',  viewSummaryTable);
     return (
         <div className='reportDesigner-container viewCreation-container'>
             <div className='viewCreation-block'>
@@ -222,19 +236,25 @@ function ViewCreation() {
                     <Button type='text' className='viewCreation-newBtn'>
                         New
                     </Button>
-                    <Button
-                        className='viewCreation-loadBtn'
-                        onClick={() => {
-                            setVisible(true);
-                            setIsNew(false);
-                        }}
-                    >
+                    <Button type='text' className='viewCreation-clearBtn'>
+                        Clear
+                    </Button>
+                    <Button className='viewCreation-loadBtn' onClick={() => { setVisible(true); setIsNew(false); }}>
                         Load
                     </Button>
-                    <Button className='viewCreation-saveBtn'>Save</Button>
-                    <Button className='viewCreation-saveAsBtn'>Save As</Button>
-                    <Button className='viewCreation-shareBtn'>Share</Button>
-                    <Button className='viewCreation-publishBtn'>Publish</Button>
+                    <Button className='viewCreation-saveBtn'>
+                        Save
+                    </Button>
+                    <Button className='viewCreation-saveAsBtn'>
+                        Save As
+                    </Button>
+                    <Button className='viewCreation-shareBtn'>
+                        Share
+                    </Button>
+                    <Button className='viewCreation-publishBtn'>
+                        Publish
+                    </Button>
+                    
                 </div>
             </div>
 
@@ -398,8 +418,17 @@ function ViewCreation() {
                                 <div className='viewCreation-functionEditor bg-white'>
                                     <h4 className='viewCreation-blockHeader'>
                                         Function Editor
+                                        <div className='viewCreation-btns'>
+                                        <Button className='viewCreation-saveBtn' onClick={()=>{saveFunctionData}}>
+                                            Save
+                                        </Button>
+                                        <Button className='viewCreation-saveAsBtn'>
+                                            Save As
+                                        </Button>
+                                    </div>
                                     </h4>
                                     <FunctionEditor
+                                        form={form}
                                         parentBatches={parentBatches}
                                         setParentBatches={setParentBatches}
                                         functionEditorColumns={
