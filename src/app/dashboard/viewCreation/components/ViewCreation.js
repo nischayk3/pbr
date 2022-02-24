@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
     ArrowLeftOutlined,
@@ -24,6 +24,7 @@ import {
     Table,
     Radio,
     Tooltip,
+    message,
 } from 'antd';
 import StatusWrong from '../../../../assets/statusWrong.svg';
 import StatusCorrect from '../../../../assets/statusCorrect.svg';
@@ -76,6 +77,7 @@ function ViewCreation() {
     const [parentBatches, setParentBatches] = useState([]);
     const [newBatchData, setNewBatchData] = useState([]);
     const [viewSummaryTable, setViewSummaryTable] = useState([]);
+    const tableData = useRef();
     const [viewSummaryColumns, setViewSummaryColumns] = useState([
         {
             title: 'Action',
@@ -169,19 +171,16 @@ function ViewCreation() {
         // },
     ]);
 
-    console.log('viewSummaryTable outside', viewSummaryTable);
-    const handleRowDelete = (param) => {
-        console.log('param', param);
-        console.log('viewSummaryTable inside', viewSummaryTable);
-        // const a = viewSummaryTable.filter((item) => item.param !== param);
-        // console.log('a', a);
-        // const updatedSummaryTable = viewSummaryTable.filter(
-        //     (item) => item.param !== param
-        // );
-        // setViewSummaryTable(updatedSummaryTable);
-    };
+    //for not emptying state on rendering this component
+    tableData.current = viewSummaryTable;
 
-    // console.log('viewSummaryTable', viewSummaryTable);
+    const handleRowDelete = (param) => {
+        const updatedSummaryTable = tableData.current.filter(
+            (item) => item.param !== param
+        );
+        setViewSummaryTable(updatedSummaryTable);
+        message.success('Function deleted successfully');
+    };
 
     const functionPassHandler = (record, index) => {
         // console.log('row data', record, index);
@@ -210,21 +209,19 @@ function ViewCreation() {
                     <Button type='text' className='viewCreation-newBtn'>
                         New
                     </Button>
-                    <Button className='viewCreation-loadBtn' onClick={() => { setVisible(true); setIsNew(false); }}>
-                         Load
+                    <Button
+                        className='viewCreation-loadBtn'
+                        onClick={() => {
+                            setVisible(true);
+                            setIsNew(false);
+                        }}
+                    >
+                        Load
                     </Button>
-                    <Button className='viewCreation-saveBtn'>
-                         Save
-                    </Button>
-                    <Button className='viewCreation-saveAsBtn'>
-                         Save As
-                    </Button>
-                    <Button className='viewCreation-shareBtn'>
-                         Share
-                    </Button>
-                    <Button className='viewCreation-publishBtn'>
-                         Publish
-                    </Button>
+                    <Button className='viewCreation-saveBtn'>Save</Button>
+                    <Button className='viewCreation-saveAsBtn'>Save As</Button>
+                    <Button className='viewCreation-shareBtn'>Share</Button>
+                    <Button className='viewCreation-publishBtn'>Publish</Button>
                 </div>
             </div>
 
