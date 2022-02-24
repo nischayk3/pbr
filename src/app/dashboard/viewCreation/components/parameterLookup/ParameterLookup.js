@@ -88,6 +88,8 @@ function ParameterLookup(props) {
                     placeholder='Select'
                     // onClick={onSelectMoleculeHandler}
                     onChange={onChangeMoleculeHandler}
+                    defaultValue={moleculeId}
+                    value={moleculeId}
                 >
                     {moleculeList.map((item, i) => {
                         return (
