@@ -22,3 +22,8 @@ export const GET_CHART_NAME = 'GET_CHART_NAME';
 export const GENERATE_CHART = 'GENERATE_CHART';
 
 export const SELECTED_VIEW_ID = 'SELECTED_VIEW_ID';
+
+
+// Report Designer Actions
+
+export const SELECTED_REPORT_ID = 'SELECTED_REPORT_ID'; 
