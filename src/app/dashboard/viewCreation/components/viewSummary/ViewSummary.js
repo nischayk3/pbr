@@ -246,7 +246,6 @@ function ViewSummary(props) {
         onChangeColumnsHandler();
     }, [newBatchData]);
 
-    console.log('vv', viewDisplayId, viewStatus, viewVersion);
     return (
         <div className='viewSummary-container'>
             <div className='viewSummary-FormBlock'>

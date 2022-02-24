@@ -42,6 +42,7 @@ function ParameterLookup(props) {
     useEffect(() => {
         onSelectMoleculeHandler();
     }, []);
+    console.log('moleculeList', moleculeList);
 
     const onChangeMoleculeHandler = (value) => {
         setMoleculeId(value);
