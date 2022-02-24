@@ -38,7 +38,6 @@ function ChartPersonalization() {
   const [loading, setLoading] = useState(false);
   const [chartObjData, setChartObjData] = useState(chartObj);
   const [viewTableData, setviewTableData] = useState([]);
-  const [isModal, setisModal] = useState(true);
 
   const filterData = useSelector((state) => state.chartPersReducer);
   console.log('filter dataaa', filterData);
@@ -112,6 +111,7 @@ function ChartPersonalization() {
   }
 
   function callbackViewType(param) {
+    console.log('param..', param);
     setShowChart(true);
     setShowChartType(true);
     setShowFilter(true);
@@ -131,10 +131,14 @@ function ChartPersonalization() {
   };
 
   const handleCloseViewModal = () => {
-    setisModal(false);
     setIsLoad(false);
     setIsView(false);
   };
+
+  const handleCloseLoadModal = () => {
+    setIsLoad(false);
+  };
+
   function callbackIsLoad(param) {
     console.log('param', param);
     setIsView(true);
@@ -278,7 +282,11 @@ function ChartPersonalization() {
         data={viewTableData}
         handleCloseModal={handleCloseViewModal}
       />
-      <LoadModal isModal={isLoad} callbackLoadModal={openLoadModal} />
+      <LoadModal
+        isModal={isLoad}
+        callbackLoadModal={openLoadModal}
+        handleCloseModal={handleCloseLoadModal}
+      />
       <div className='modalPopup'>
         <Modal
           visible={visible}

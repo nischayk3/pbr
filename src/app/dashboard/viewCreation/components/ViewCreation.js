@@ -23,6 +23,7 @@ import {
     Input,
     Table,
     Radio,
+    Tooltip,
 } from 'antd';
 import StatusWrong from '../../../../assets/statusWrong.svg';
 import StatusCorrect from '../../../../assets/statusCorrect.svg';
@@ -100,15 +101,17 @@ function ViewCreation() {
             width: 150,
             fixed: 'left',
             render: (param, record, index) => (
-                <Tag
-                    color='magenta'
-                    className='parameter-tag'
-                    onClick={() => {
-                        functionPassHandler(record, index);
-                    }}
-                >
-                    {param}
-                </Tag>
+                <Tooltip title={param}>
+                    <Tag
+                        color='magenta'
+                        className='parameter-tag'
+                        onClick={() => {
+                            functionPassHandler(record, index);
+                        }}
+                    >
+                        {param}
+                    </Tag>
+                </Tooltip>
             ),
         },
         {
@@ -177,14 +180,19 @@ function ViewCreation() {
         // },
     ]);
 
+    console.log('viewSummaryTable outside', viewSummaryTable);
     const handleRowDelete = (param) => {
+        console.log('param', param);
+        console.log('viewSummaryTable inside', viewSummaryTable);
+        // const a = viewSummaryTable.filter((item) => item.param !== param);
+        // console.log('a', a);
         // const updatedSummaryTable = viewSummaryTable.filter(
         //     (item) => item.param !== param
         // );
         // setViewSummaryTable(updatedSummaryTable);
     };
 
-    console.log('viewSummaryTable', viewSummaryTable);
+    // console.log('viewSummaryTable', viewSummaryTable);
 
     const functionPassHandler = (record, index) => {
         // console.log('row data', record, index);
@@ -200,6 +208,10 @@ function ViewCreation() {
     
     };
 
+    useEffect(() => {
+        form.setFieldsValue({ functionName: 'ARSENIC' });
+    }, []);
+
     console.log('record', functionEditorRecord);
     return (
         <div className='reportDesigner-container viewCreation-container'>
@@ -208,8 +220,8 @@ function ViewCreation() {
                     <ArrowLeftOutlined /> Create View
                 </h1>
                 <div className='viewCreation-btns'>
-                    <Button type='text' className='viewCreation-clearBtn'>
-                        Clear
+                    <Button type='text' className='viewCreation-newBtn'>
+                        New
                     </Button>
                     <Button className='viewCreation-loadBtn' onClick={() => { setVisible(true); setIsNew(false); }}>
                          Load

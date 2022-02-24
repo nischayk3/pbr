@@ -30,7 +30,7 @@ spec:
           #   value: src/ 
           ports:
           - name: port
-            containerPort: 3030
+            containerPort: 80
           resources:
             requests:
               memory: 2Gi
@@ -45,7 +45,7 @@ metadata:
   namespace: bms-dev
 spec:
   ports:
-  - port: 3030
+  - port: 80
     targetPort: port
     protocol: TCP
   selector:
