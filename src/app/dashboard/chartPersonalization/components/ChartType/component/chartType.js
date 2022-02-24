@@ -1,8 +1,7 @@
 /* eslint-env browser, node */
 import React, { useState, useEffect } from 'react';
-
 import { WarningTwoTone } from '@ant-design/icons';
-import { Card, Select, Typography, Input, Button } from 'antd';
+import { Card, Button } from 'antd';
 
 import './styles.scss';
 
@@ -10,7 +9,12 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import SelectField from '../../../../../../components/SelectField/SelectField';
 import { getChartType } from '../../../../../../duck/actions/auditTrialAction';
-import { generateChart } from '../../../../../../duck/actions/chartPersonalizationAction';
+import {
+  generateChart,
+  sendChartType,
+  sendChartxAxis,
+  sendChartyAxis,
+} from '../../../../../../duck/actions/chartPersonalizationAction';
 import { getChartData } from '../../../../../../duck/actions/chartDataAction';
 import { showNotification } from '../../../../../../duck/actions/commonActions';
 import chartTypeJson from '../chartType.json';
@@ -29,6 +33,8 @@ const ChartType = (props) => {
   const [selectedXAxis, setselectedXAxis] = useState('');
   const [selectedYAxis, setselectedYAxis] = useState('');
   const [selectedTitle, setSelectedTitle] = useState('');
+  const [xAxisList, setxAxisList] = useState(['pH']);
+  const [yAxisList, setyAxisList] = useState(['Temperature']);
 
   const dispatch = useDispatch();
 
@@ -67,13 +73,20 @@ const ChartType = (props) => {
       setselectedXAxis(x_axis_value);
       setselectedYAxis(y_axis_value);
       setSelectedTitle(obj[0].Title);
+
       setisScattetruer(true);
+      dispatch(sendChartType(value));
+      dispatch(sendChartxAxis(x_axis_value));
+      dispatch(sendChartyAxis(y_axis_value));
     } else {
       setselectedChartType(value);
       setselectedXAxis(x_axis_value);
       setselectedYAxis(y_axis_value);
       setSelectedTitle(obj[0].Title);
       setisScattetruer(true);
+      dispatch(sendChartType(value));
+      dispatch(sendChartxAxis(x_axis_value));
+      dispatch(sendChartyAxis(y_axis_value));
     }
   };
 
@@ -145,32 +158,25 @@ const ChartType = (props) => {
             selectList={chartTypeList}
             selectedValue={selectedChartType}
           />
-          <Button
-            type='primary'
-            className='custom-secondary-btn'
-            onClick={createChart}
-            style={{ marginTop: '22px' }}
-          >
-            Apply
-          </Button>
         </div>
 
         {isScatter ? (
           <div className='grid-2-columns' style={{ marginTop: '10px' }}>
-            <InputField
+            <SelectField
               label='X-Axis'
               placeholder='X-Axis '
-              //onChangeClick={(e) => handleDateClick(e)}
-              value={selectedXAxis}
-              disabled
+              // onChangeSelect={(e) => selectChartType(e)}
+              selectList={xAxisList}
+              selectedValue={selectedXAxis}
             />
-            <InputField
+            <SelectField
               label='Y-Axis'
-              placeholder=' Y-Axis '
-              //onChangeClick={(e) => handleDateClick(e)}
-              value={selectedYAxis}
-              disabled
+              placeholder='Y-Axis '
+              //  onChangeSelect={(e) => selectChartType(e)}
+              selectList={yAxisList}
+              selectedValue={selectedYAxis}
             />
+
             {/* <WarningTwoTone style={{ marginLeft: 10 }} twoToneColor='red' /> */}
           </div>
         ) : (
@@ -182,6 +188,14 @@ const ChartType = (props) => {
             disabled
           />
         )}
+        <Button
+          type='primary'
+          className='custom-secondary-btn'
+          onClick={createChart}
+          style={{ marginTop: '12px', float: 'right' }}
+        >
+          Apply
+        </Button>
       </Card>
     </div>
   );

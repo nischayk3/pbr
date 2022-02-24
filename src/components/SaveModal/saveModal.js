@@ -5,7 +5,7 @@ import { CheckCircleTwoTone } from '@ant-design/icons';
 
 function SaveModal(props) {
 
-    const {isSave,setIsSave} = props
+    const {isSave,setIsSave,id} = props
 
     const handleCancel = () => {
         setIsSave(false);
@@ -29,7 +29,7 @@ function SaveModal(props) {
                             twoToneColor='Green'
                         />
                         <br />
-                        <p> Your Changes Have Been Successfully Saved </p>
+                        <p> <b>{id}</b> Have Been Successfully Saved </p>
                     </center>
                 </div>
 

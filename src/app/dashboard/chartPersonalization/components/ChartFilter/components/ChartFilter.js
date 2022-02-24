@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 import {
   Card,
-  Checkbox,
   DatePicker,
   Input,
   Typography,
   Button,
   Modal,
+  Switch,
 } from 'antd';
 import { useDispatch } from 'react-redux';
 
@@ -20,6 +20,7 @@ import {
   sendSelectedSite,
   sendUnApprovedData,
 } from '../../../../../../duck/actions/chartPersonalizationAction';
+import './styles.scss';
 
 const { Text } = Typography;
 const { Search } = Input;
@@ -66,9 +67,8 @@ function ChartFilter() {
   const handleCancel = () => {
     setVisible(false);
   };
-  const onChangeCheckbox = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-    const isChecked = e.target.checked;
+  const onChangeCheckbox = (checked) => {
+    const isChecked = checked;
     dispatch(sendUnApprovedData(isChecked));
   };
 
@@ -100,7 +100,7 @@ function ChartFilter() {
   return (
     <div>
       <Card title='Filters'>
-        <div className='grid-1-columns'>
+        <div className='grid-2-columns'>
           <SelectField
             label='Site'
             onChangeSelect={(e) => handleSelectChange(e)}
@@ -118,15 +118,23 @@ function ChartFilter() {
               // : props.chartObj.data_filter.date_range
             }
           />
-          <div style={{ padding: '4px 0' }}>
-            <Checkbox onChange={onChangeCheckbox}>Unapproved data</Checkbox>
-          </div>
+        </div>
+        <div className='show-data'>
+          <p> Show Unapproved data</p>
+          <Switch
+            type='primary'
+            size='small'
+            defaultChecked
+            onChange={onChangeCheckbox}
+          />
+
+          {/* <Checkbox onChange={onChangeCheckbox}>Unapproved data</Checkbox> */}
         </div>
         <Button
           type='primary'
           className='custom-secondary-btn'
           // onClick={createChart}
-          style={{ marginTop: '22px', float: 'right' }}
+          style={{ marginTop: '12px', float: 'right' }}
         >
           Apply
         </Button>

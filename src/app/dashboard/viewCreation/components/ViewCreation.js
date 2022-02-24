@@ -35,6 +35,7 @@ import Materials from './materials/Materials';
 import ParameterLookup from './parameterLookup/ParameterLookup';
 import ViewSummary from './viewSummary/ViewSummary';
 import './styles.scss';
+import { getViews } from '../../../../services/viewCreationPublishing';
 
 const { Panel } = Collapse;
 
@@ -42,12 +43,12 @@ const columns = [
     {
         title: 'Product Num',
         dataIndex: 'product_num',
-        key: 'name',
+        key: 'product_num',
     },
     {
         title: 'View',
         dataIndex: 'view',
-        key: 'view_disp_id',
+        key: 'view',
     },
     {
         title: 'View Name',
@@ -79,6 +80,11 @@ function ViewCreation() {
     const [parentBatches, setParentBatches] = useState([]);
     const [functionName, setFunctionName] = useState("");
     const [newBatchData, setNewBatchData] = useState([]);
+    const [viewList, setViewList] = useState([]);
+    const [viewDisplayId, setViewDisplayId] = useState('');
+    const [viewStatus, setViewStatus] = useState('');
+    const [viewVersion, setViewVersion] = useState('');
+    const [filterTable, setFilterTable] = useState(null);
     const [viewSummaryTable, setViewSummaryTable] = useState([]);
     const tableData = useRef();
     const [viewSummaryColumns, setViewSummaryColumns] = useState([
@@ -226,6 +232,43 @@ function ViewCreation() {
 
 
     console.log('record',  viewSummaryTable);
+    //Get view table data for load popup
+    const getViewsList = () => {
+        let req = {};
+        getViews(req).then((res) => {
+            setViewList(res['Data']);
+        });
+    };
+
+    const loadSearchHandler = (value) => {
+        const tableData = viewList;
+        const filterTable = tableData.filter((o) =>
+            Object.keys(o).some((k) =>
+                String(o[k]).toLowerCase().includes(value.toLowerCase())
+            )
+        );
+
+        setFilterTable(filterTable);
+    };
+
+    const ViewRowClicked = (record) => {
+        setViewDisplayId(record.view_disp_id);
+        setViewStatus(record.view_status);
+        setViewVersion(record.view_version);
+        message.success(`${record.view_disp_id} selected`);
+    };
+
+    const newButtonHandler = () => {
+        setMoleculeList([]);
+    };
+
+    useEffect(() => {
+        getViewsList();
+        form.setFieldsValue({ functionName: 'ARSENIC' });
+    }, []);
+
+    console.log('record', functionEditorRecord);
+    console.log('viewList', viewList);
     return (
         <div className='reportDesigner-container viewCreation-container'>
             <div className='viewCreation-block'>
@@ -233,7 +276,13 @@ function ViewCreation() {
                     <ArrowLeftOutlined /> Create View
                 </h1>
                 <div className='viewCreation-btns'>
-                    <Button type='text' className='viewCreation-newBtn'>
+                    <Button
+                        type='text'
+                        className='viewCreation-newBtn'
+                        onClick={() => {
+                            newButtonHandler();
+                        }}
+                    >
                         New
                     </Button>
                     <Button type='text' className='viewCreation-clearBtn'>
@@ -411,6 +460,9 @@ function ViewCreation() {
                                         functionEditorViewState={
                                             functionEditorViewState
                                         }
+                                        viewDisplayId={viewDisplayId}
+                                        viewStatus={viewStatus}
+                                        viewVersion={viewVersion}
                                     />
                                 </div>
                             )}
@@ -470,10 +522,23 @@ function ViewCreation() {
                     <Select
                         className='filter-button'
                         style={{ width: '140px' }}
+                        defaultValue={viewDisplayId}
+                        onChange={(e, value) => {
+                            let view_value = value.value ? value.value : '';
+                            let split_view_id = view_value
+                                ? view_value.split('-')
+                                : [];
+                            setViewDisplayId(split_view_id[0]);
+                        }}
+                        value={viewDisplayId}
                     >
-                        <Option value='1'>V1</Option>
-                        <Option value='2'>V2</Option>
-                        <Option value='3'>V3</Option>
+                        {viewList.map((item) => {
+                            return (
+                                <Option value={item.view} key={item.view}>
+                                    {item.view}
+                                </Option>
+                            );
+                        })}
                     </Select>
                     <Button onClick={() => setPopVisible(true)}>
                         <BuildTwoTone twoToneColor='#093185' />
@@ -484,35 +549,38 @@ function ViewCreation() {
                     visible={popvisible}
                     onOk={() => setPopVisible(false)}
                     onCancel={() => setPopVisible(false)}
-                    width={600}
+                    width={800}
                     title={
                         <span>
-                            Select View{' '}
+                            Select View
                             <Input.Search
                                 className='table-search'
                                 placeholder='Search by...'
                                 enterButton
-                                //onSearch={search}
+                                onSearch={loadSearchHandler}
                                 style={{ marginBottom: '40px' }}
                             />
                         </span>
                     }
                     centered
                     // bodyStyle={{height: 400}}
-                    width={500}
+                    width={600}
                 >
                     <Table
-                        dataSource={[]}
+                        dataSource={
+                            filterTable === null ? viewList : filterTable
+                        }
                         columns={columns}
                         onRow={(record) => ({
                             onClick: (e) => {
-                                console.log(record);
+                                ViewRowClicked(record);
                             },
                         })}
                         //loading={loading}
                         scroll={{ y: 200 }}
                         size='small'
                         pagination={false}
+                        rowKey={(record) => record.view}
                     />
                 </Modal>
             </div>
