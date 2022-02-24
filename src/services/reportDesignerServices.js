@@ -38,7 +38,7 @@ export const getReports = (request) => {
 };
 
 export const saveReportDesign = (request) => {
-    return Service.post(BMS_APP_PYTHON_SERVICE + '/put_report_data' , request).then(
+    return Service.put(BMS_APP_PYTHON_SERVICE + '/put-report-data' , request).then(
         (response) => {
             return response.data;
         },

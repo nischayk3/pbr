@@ -11,13 +11,12 @@ import {
   Table,
   Input,
   message,
-  Spin
 } from 'antd';
 import ChartSelector from './reportDesignerFilter/chartSelector';
 import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
 import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections'
 import './stylesNew.scss';
-import example_json from './example.json'
+// import example_json from './example.json'
 import { getViews, getCharts, saveReportDesign, getReports } from '../../../../services/reportDesignerServices';
 import SaveModal from '../../../../components/SaveModal/saveModal'
 import { useDispatch, useSelector } from 'react-redux';
@@ -70,7 +69,7 @@ function ReportDesignerNew() {
   const [reportList, setReportList] = useState([]);
   const [reportData, setReportData] = useState([]);
   const [formData, setFormData] = useState({});
-  // const [mainJson, setMainJson] = useState({});
+  const [mainJson, setMainJson] = useState({});
   const [form] = Form.useForm();
 
   const dispatch = useDispatch();
@@ -86,6 +85,8 @@ function ReportDesignerNew() {
     getReportList();
   }, []
   );
+  useEffect(() => { form.resetFields()}, [formData]);
+
 
   const OnNewClick = () => {
     setIsNew(true);
@@ -109,7 +110,7 @@ function ReportDesignerNew() {
 
   // Get form values
   const handleValuesChange = (changedValues, values) => {
-    setFormData(convertToJson(values));
+    setMainJson(convertToJson(values));
   };
 
   //Get view table data
@@ -205,6 +206,7 @@ function ReportDesignerNew() {
 
   // Saving the json
   const PrepareJson = (formData) => {
+   
     let obj = {}
     obj['view_disp_id'] = viewId;
     obj['chart_int_ids'] = selectedChartList;
@@ -213,9 +215,14 @@ function ReportDesignerNew() {
     obj['rep_status'] = status;
     obj['rep_disp_id'] = reportId;
     obj['layout_info'] = formData;
+    
+
+    
 
     let req = {}
     req['data'] = obj
+
+   
 
     if (reportName.length > 0) {
       saveReportDesign(req).then((res) => {
@@ -233,6 +240,8 @@ function ReportDesignerNew() {
     else {
       message.error('Report Name Is Required')
     }
+
+    window.alert(JSON.stringify(req))
   }
 
   // unloading the json into component readable form 
@@ -302,13 +311,16 @@ function ReportDesignerNew() {
         let form_res = {}
         form_res['response'] = res
         setFormData(form_res)
+        form.setFieldsValue(form_res);
       }
       else {
         setFormData({})
+        form.setFieldsValue({});
       }
     }
     else {
       setFormData({})
+      form.setFieldsValue({});
       setViewId('')
       setSelectedChartList([])
       setViewIdVersion('')
@@ -317,18 +329,6 @@ function ReportDesignerNew() {
 
   }
 
-  const updateInitialValues=()=>
-  {
-    if(formData['response'])
-    {
-      return formData
-    }
-    else
-    return {}
-  }
-
-
-  console.log(loading, isLoad, isNew, formData)
   return (
     <div className="reportDesigner-container">
       <div className="reportDesigner-block">
@@ -355,7 +355,7 @@ function ReportDesignerNew() {
               <>
                 <Button
                   className="reportDesigner-loadBtn"
-                  onClick={() => PrepareJson(formData)}
+                  onClick={() => PrepareJson(mainJson)}
                 >
 
                   Save
@@ -422,7 +422,7 @@ function ReportDesignerNew() {
             name="report-generator-form"
             form={form}
             onValuesChange={handleValuesChange}
-            initialValues={updateInitialValues()}
+            initialValues={formData}
           >
             <ReportDesignerDynamicSections formData={formData} />
           </Form>
@@ -434,7 +434,11 @@ function ReportDesignerNew() {
         onOk={() => {
 
           setVisible(false);
-          setIsLoad(true);
+          // setTimeout(()=>
+          // {
+            setIsLoad(true);
+
+          // },1000) 
           unLoadJson(reportData);
         }}
         onCancel={() => setVisible(false)}
@@ -476,7 +480,6 @@ function ReportDesignerNew() {
           style={{ marginBottom: '40px' }}
         /></span>}
         centered
-        // bodyStyle={{height: 400}}
         width={500}
       >
         <Table
