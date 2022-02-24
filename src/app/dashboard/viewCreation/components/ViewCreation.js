@@ -210,26 +210,20 @@ function ViewCreation() {
                     <Button type='text' className='viewCreation-newBtn'>
                         New
                     </Button>
-                    <Button
-                        className='viewCreation-loadBtn'
-                        onClick={() => {
-                            setVisible(true);
-                            setIsNew(false);
-                        }}
-                    >
-                        <Loading3QuartersOutlined /> Load
+                    <Button className='viewCreation-loadBtn' onClick={() => { setVisible(true); setIsNew(false); }}>
+                         Load
                     </Button>
                     <Button className='viewCreation-saveBtn'>
-                        <SaveOutlined /> Save
+                         Save
                     </Button>
                     <Button className='viewCreation-saveAsBtn'>
-                        <FileDoneOutlined /> Save As
+                         Save As
                     </Button>
                     <Button className='viewCreation-shareBtn'>
-                        <ShareAltOutlined /> Share
+                         Share
                     </Button>
                     <Button className='viewCreation-publishBtn'>
-                        <CloudUploadOutlined /> Publish
+                         Publish
                     </Button>
                 </div>
             </div>

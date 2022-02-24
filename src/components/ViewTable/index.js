@@ -1,4 +1,4 @@
-import { Modal, Button, Table } from 'antd';
+import { Modal, Button, Table, Input } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { sendViewId } from '../../duck/actions/chartPersonalizationAction';
@@ -8,6 +8,7 @@ const ViewTable = (props) => {
   console.log('props view table', props);
   const [selectedKeys, setselectedKeys] = useState([]);
   const [selectedViewId, setselectedViewId] = useState('');
+  const [filterData, setfilterData] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -35,9 +36,18 @@ const ViewTable = (props) => {
   ];
   const data = props.data;
 
-  const handleClose = () => {
+  const handleOk = () => {
     props.handleCloseModal();
     dispatch(sendViewId(selectedViewId));
+  };
+
+  const searchTable = (value) => {
+    const filterTable = data.filter((o) =>
+      Object.keys(o).some((k) =>
+        String(o[k]).toLowerCase().includes(value.toLowerCase())
+      )
+    );
+    setfilterData({ filterData });
   };
 
   return (
@@ -57,7 +67,7 @@ const ViewTable = (props) => {
           Cancel
         </Button>,
         <Button
-          onClick={handleClose}
+          onClick={handleOk}
           className='custom-secondary-btn'
           key='link'
           type='primary'
@@ -66,6 +76,14 @@ const ViewTable = (props) => {
         </Button>,
       ]}
     >
+      <div className='modal-search-bar'>
+        <Input.Search
+          className='table-search'
+          placeholder='Search by...'
+          enterButton
+          onSearch={searchTable}
+        />
+      </div>
       <div className='custom-table-antd'>
         <Table
           size='small'
@@ -98,7 +116,7 @@ const ViewTable = (props) => {
               setselectedKeys({ selectedRowKeys });
             },
           })}
-          dataSource={data}
+          dataSource={filterData === null ? data : filterData}
           pagination={{ pageSizeOptions: ['5', '10', '15'] }}
         />
       </div>
