@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import './styles.scss';
 import { PlusSquareOutlined } from '@ant-design/icons';
-import { Button, Collapse, message, Spin, Table, Tag } from 'antd';
+import { Button, Collapse, message, Spin, Table, Tag, Tooltip } from 'antd';
 const { Panel } = Collapse;
 
 function Materials(props) {
@@ -33,9 +33,11 @@ function Materials(props) {
             key: 'param',
             dataIndex: 'param',
             render: (param) => (
-                <Tag color='magenta' className='parameter-tag'>
-                    {param}
-                </Tag>
+                <Tooltip title={param}>
+                    <Tag color='magenta' className='parameter-tag'>
+                        {param}
+                    </Tag>
+                </Tooltip>
             ),
         },
         {
@@ -49,7 +51,7 @@ function Materials(props) {
             dataIndex: 'coverage_metric',
         },
         {
-            title: 'Add',
+            title: '',
             key: 'add',
             dataIndex: 'add',
             render: (text, record, index) => (
