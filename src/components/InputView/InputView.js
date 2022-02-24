@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Input, Button } from 'antd';
+import { Input, Button, Select } from 'antd';
 
-import { SearchOutlined } from '@ant-design/icons';
-import PopupIcon from '../../assets/popup_open.png';
+import { SearchOutlined, BlockOutlined } from '@ant-design/icons';
+
 import './InputViewStyle.scss';
 
 const InputView = (props) => {
@@ -11,7 +11,23 @@ const InputView = (props) => {
     <div className='input_field_view'>
       <p>{props.label}</p>
       <div className='input_view'>
-        <Input
+        <Select
+          placeholder={props.placeholder}
+          value={props.selectedValue}
+          onChange={props.onChangeSelect}
+          style={{ width: '100%', margin: '0px' }}
+          prefix={
+            <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
+          }
+        >
+          {props.selectList &&
+            props.selectList.map((item, index) => (
+              <Select.Option key={index} value={item.view}>
+                {item.view}
+              </Select.Option>
+            ))}
+        </Select>
+        {/* <Input
           placeholder={props.placeholder}
           value={props.value}
           onChange={props.onChangeInput}
@@ -20,10 +36,12 @@ const InputView = (props) => {
           prefix={
             <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
           }
+        /> */}
+        <Button
+          className='popup-btn'
+          icon={<BlockOutlined style={{ fontSize: '16px' }} />}
+          onClick={props.onClickPopup}
         />
-        <Button className='popup-btn' onClick={props.onClickPopup}>
-          <img src={PopupIcon} />
-        </Button>
       </div>
     </div>
   );
