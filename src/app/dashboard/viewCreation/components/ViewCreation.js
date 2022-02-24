@@ -226,6 +226,10 @@ function ViewCreation() {
         message.success(`${record.view_disp_id} selected`);
     };
 
+    const newButtonHandler = () => {
+        setMoleculeList([]);
+    };
+
     useEffect(() => {
         getViewsList();
         form.setFieldsValue({ functionName: 'ARSENIC' });
@@ -240,7 +244,13 @@ function ViewCreation() {
                     <ArrowLeftOutlined /> Create View
                 </h1>
                 <div className='viewCreation-btns'>
-                    <Button type='text' className='viewCreation-newBtn'>
+                    <Button
+                        type='text'
+                        className='viewCreation-newBtn'
+                        onClick={() => {
+                            newButtonHandler();
+                        }}
+                    >
                         New
                     </Button>
                     <Button
