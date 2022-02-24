@@ -25,6 +25,7 @@ const ViewCreation = lazy(() => import('./viewCreation'));
 const DataLoad = lazy(() => import('./dataLoad'));
 const ReportDesigner = lazy(() => import('./reportDesigner'));
 const AuditTrial = lazy(() => import('./auditTrial'));
+const ReportGenerator = lazy(() => import('./reportGenerator'));
 const { Content } = Layout;
 
 const Dashboard = () => {
@@ -91,6 +92,13 @@ const Dashboard = () => {
                                 >
                                     <AuditTrial />
                                 </Route>
+                                <Route
+                                    key='report_generator'
+                                    path={`${match.url}/report_generator`}
+                                >
+                                    <ReportGenerator />
+                                </Route>
+                                
                                 <Route key='redirect'>
                                     <Redirect to={`${match.url}/dashboard`} />
                                 </Route>

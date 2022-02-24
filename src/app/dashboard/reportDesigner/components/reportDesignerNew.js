@@ -16,7 +16,6 @@ import ChartSelector from './reportDesignerFilter/chartSelector';
 import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
 import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections'
 import './stylesNew.scss';
-// import example_json from './example.json'
 import { getViews, getCharts, saveReportDesign, getReports } from '../../../../services/reportDesignerServices';
 import SaveModal from '../../../../components/SaveModal/saveModal'
 import { useDispatch, useSelector } from 'react-redux';
@@ -74,7 +73,7 @@ function ReportDesignerNew() {
 
   const dispatch = useDispatch();
 
-  const savedData = useSelector((state) => state.reportDesignerReducer);
+  // const savedData = useSelector((state) => state.reportDesignerReducer);
 
   const mapViewList = viewList.length > 0 ? viewList : []
 
@@ -98,15 +97,15 @@ function ReportDesignerNew() {
     setReportId('')
     setViewId('')
     setViewIdVersion('')
-    setStatus('DRFT')
+    setStatus('NEW')
     setChartList([])
   }
 
-  const okClick = () => {
-    setVisible(false);
-    setIsLoad(true);
-    // unLoadJson(reportData);
-  }
+  // const okClick = () => {
+  //   setVisible(false);
+  //   setIsLoad(true);
+  //   // unLoadJson(reportData);
+  // }
 
   // Get form values
   const handleValuesChange = (changedValues, values) => {
@@ -149,11 +148,6 @@ function ReportDesignerNew() {
         setChartList(res['data']);
       else
         setChartList([]);
-
-      if (typeof res['data'] === 'string') {
-        // message.error(`Chart ${res['data']}`)
-      }
-
     });
   };
 
@@ -215,14 +209,9 @@ function ReportDesignerNew() {
     obj['rep_status'] = status;
     obj['rep_disp_id'] = reportId;
     obj['layout_info'] = formData;
-    
-
-    
-
+    obj['flag'] = "save";
     let req = {}
     req['data'] = obj
-
-   
 
     if (reportName.length > 0) {
       saveReportDesign(req).then((res) => {
@@ -285,6 +274,7 @@ function ReportDesignerNew() {
 
       // let status = jay['rep_status'] ? jay['rep_status'] : ''
       let view_version = jay['view_version'] ? jay['view_version'] : ''
+      setViewVersion(view_version)
       getChartsList(view + '-' + view_version)
       setViewIdVersion(view + '-' + view_version)
       let res = []
@@ -371,15 +361,17 @@ function ReportDesignerNew() {
                 // onClick={() => setVisible(true)}
                 >
                   Test
-                </Button> </> : <> </>
-          }
-          <Button
+                </Button>
+                <Button
             className="reportDesigner-shareBtn"
             type="primary"
             style={{ backgroundColor: '#093185', color: 'white' }}
           >
             Publish
-          </Button>
+          </Button> </> 
+                : <> </>
+          }
+         
         </div>
       </div>
 
@@ -500,7 +492,7 @@ function ReportDesignerNew() {
           pagination={false}
         />
       </Modal>
-      <SaveModal isSave={isSave} setIsSave={setIsSave} />
+      <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId}/>
     </div>
   );
 }

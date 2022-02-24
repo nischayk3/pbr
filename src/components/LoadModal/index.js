@@ -19,6 +19,8 @@ const LoadModal = (props) => {
   return (
     <Modal
       title='Load'
+      style={{ left: '20' }}
+      width={400}
       visible={props.isModal}
       onCancel={props.handleCloseModal}
       footer={[
@@ -38,8 +40,6 @@ const LoadModal = (props) => {
           Ok
         </Button>,
       ]}
-      width={500}
-      style={{ marginRight: '800px' }}
     >
       <InputView
         label='Chart ID'
