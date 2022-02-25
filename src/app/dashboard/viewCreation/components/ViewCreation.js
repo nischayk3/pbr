@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import { useSelector } from 'react-redux';
 import {
     ArrowLeftOutlined,
     CloudUploadOutlined,
@@ -70,15 +70,19 @@ function ViewCreation() {
     const [functionEditorRecord, setFunctionEditorRecord] = useState([]);
     const [moleculeId, setMoleculeId] = useState();
     const [materialsList, setMaterialsList] = useState([]);
+    const [paramText, setParamText] = useState();
+    const text=useRef();
     const [filterdData, setFilterdData] = useState(null);
     const [dataLoadingState, setDataLoadingState] = useState(false);
     const [isNew, setIsNew] = useState(false);
     const [visible, setVisible] = useState(false);
     const [popvisible, setPopVisible] = useState(false);
     const [isLoad, setIsLoad] = useState(false);
+    const [obj, setObj] = useState();
     const [functionEditorViewState, setFunctionEditorViewState] =
         useState(false);
     const [parentBatches, setParentBatches] = useState([]);
+    const [functionName, setFunctionName] = useState("");
     const [newBatchData, setNewBatchData] = useState([]);
     const [viewList, setViewList] = useState([]);
     const [viewDisplayId, setViewDisplayId] = useState('');
@@ -132,7 +136,7 @@ function ViewCreation() {
             render: (text, record, index) => (
                 <>
                     {record.coverage_metric_percent === '100 %' ||
-                    record.coverage_metric_percent === '100%' ? (
+                        record.coverage_metric_percent === '100%' ? (
                         <span className='statusIcon-summary'>
                             <img src={StatusCorrect} />
                         </span>
@@ -161,10 +165,23 @@ function ViewCreation() {
         {
             title: 'Primary',
             key: 'primary',
-            dataIndex: 'primary',
+            dataIndex: 'param',
             width: 150,
             fixed: 'left',
-            render: () => <Radio />,
+            render: (text, record, index) => {
+                return (
+                    <input type="radio" 
+                    id={text} 
+                    name="a" 
+                    value={text} 
+                    onChange={()=>passTableData(record)}/>
+                )
+
+
+
+
+
+            }
         },
         // {
         //     title: 'Action',
@@ -182,7 +199,7 @@ function ViewCreation() {
 
     //for not emptying state on rendering this component
     tableData.current = viewSummaryTable;
-
+    
     const handleRowDelete = (param) => {
         const updatedSummaryTable = tableData.current.filter(
             (item) => item.param !== param
@@ -194,14 +211,35 @@ function ViewCreation() {
     const functionPassHandler = (record, index) => {
         // console.log('row data', record, index);
         setFunctionEditorRecord((prevState) => [...prevState, record]);
+        setFunctionName(record.param);
+
     };
 
     const [form] = Form.useForm();
 
     const handleValuesChange = (changedValues, values) => {
         // console.log('changedValues', changedValues)
-        // console.log('values', values)
+        //console.log('values', JSON.stringify(values));
+
     };
+
+    const saveFunctionData=()=>{
+        setViewSummaryTable([...viewSummaryTable,paramText])
+        message.success("Function Added Successfully")
+    }
+
+    const passTableData=(record,textName)=>{
+        let newRecord={...record};
+        let data=text.current
+        newRecord.param=data;
+        console.log(newRecord);
+        setParamText(newRecord);
+
+    }
+
+    const passStateFunc=(value)=>{
+        text.current=value;
+    }
 
     //Get view table data for load popup
     const getViewsList = () => {
@@ -245,11 +283,11 @@ function ViewCreation() {
 
     useEffect(() => {
         getViewsList();
-        form.setFieldsValue({ functionName: 'ARSENIC' });
+        
     }, []);
 
-    console.log('record', functionEditorRecord);
-    console.log('viewList', viewList);
+
+    
     return (
         <div className='reportDesigner-container viewCreation-container'>
             <div className='viewCreation-block'>
@@ -266,19 +304,25 @@ function ViewCreation() {
                     >
                         New
                     </Button>
-                    <Button
-                        className='viewCreation-loadBtn'
-                        onClick={() => {
-                            setVisible(true);
-                            setIsNew(false);
-                        }}
-                    >
+                    {/* <Button type='text' className='viewCreation-clearBtn'>
+                        Clear
+                    </Button> */}
+                    <Button className='viewCreation-loadBtn' onClick={() => { setVisible(true); setIsNew(false); }}>
                         Load
                     </Button>
-                    <Button className='viewCreation-saveBtn'>Save</Button>
-                    <Button className='viewCreation-saveAsBtn'>Save As</Button>
-                    <Button className='viewCreation-shareBtn'>Share</Button>
-                    <Button className='viewCreation-publishBtn'>Publish</Button>
+                    <Button className='viewCreation-saveBtn'>
+                        Save
+                    </Button>
+                    <Button className='viewCreation-saveAsBtn'>
+                        Save As
+                    </Button>
+                    <Button className='viewCreation-shareBtn'>
+                        Share
+                    </Button>
+                    <Button className='viewCreation-publishBtn'>
+                        Publish
+                    </Button>
+                    
                 </div>
             </div>
 
@@ -446,8 +490,17 @@ function ViewCreation() {
                                 <div className='viewCreation-functionEditor bg-white'>
                                     <h4 className='viewCreation-blockHeader'>
                                         Function Editor
+                                        <div className='viewCreation-btns'>
+                                        <Button className='viewCreation-saveBtn' onClick={()=>{saveFunctionData()}}>
+                                            Save
+                                        </Button>
+                                        <Button className='viewCreation-saveAsBtn' onClick={()=>{saveFunctionData()}}>
+                                            Save As
+                                        </Button>
+                                    </div>
                                     </h4>
                                     <FunctionEditor
+                                        form={form}
                                         parentBatches={parentBatches}
                                         setParentBatches={setParentBatches}
                                         functionEditorColumns={
@@ -465,6 +518,9 @@ function ViewCreation() {
                                         newBatchData={newBatchData}
                                         setNewBatchData={setNewBatchData}
                                         viewSummaryTable={viewSummaryTable}
+                                        functionName={functionName}
+                                        setFunctionName={setFunctionName}
+                                        passStateFunc={(v)=>passStateFunc(v)}
                                     />
                                 </div>
                             )}
