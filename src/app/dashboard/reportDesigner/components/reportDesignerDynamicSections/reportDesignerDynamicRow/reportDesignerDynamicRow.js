@@ -36,7 +36,7 @@ function ReportDesignerDynamicRow(props) {
                         <tr
                             className="dynamicSections-spaceRows"
                             key={key} >
-                            <td>
+                            <td >
                             <Form.Item
                                     {...restField1}
                                     shouldUpdate={(prevValues, currentValues) => isEditableHandler(prevValues, currentValues,name,fieldKey) 
@@ -57,7 +57,7 @@ function ReportDesignerDynamicRow(props) {
                                             </Form.Item>
                                         ) : (
                                             <Form.Item  name={[name, 'keyName']} >
-                                                <Input  placeholder="Enter Key" bordered={true}/>
+                                                <Input  placeholder="Enter Key" style={{backgroundColor:'#baeaff'}}  bordered={true}/>
                                             </Form.Item>
                                         )
 }}
@@ -66,7 +66,7 @@ function ReportDesignerDynamicRow(props) {
                                     <Input placeholder="Enter key" />
                                 </Form.Item> */}
                             </td>
-                            <td>
+                            <td >
                                 <Form.Item
                                     {...restField1}
                                     shouldUpdate={(prevValues, currentValues) => isEditableHandler(prevValues, currentValues,name,fieldKey) 
@@ -87,7 +87,7 @@ function ReportDesignerDynamicRow(props) {
                                             </Form.Item>
                                         ) : (
                                             <Form.Item  name={[name, 'value']} >
-                                                <Input placeholder="Enter Value" bordered={true}  />
+                                                <Input placeholder="Enter Value" style={{backgroundColor:'#baeaff'}}  bordered={true}  />
                                             </Form.Item>
                                         )
 }}
@@ -96,17 +96,17 @@ function ReportDesignerDynamicRow(props) {
                                     <Input placeholder="Enter Value" />
                                 </Form.Item> */}
                             </td>
-                            <td>
+                            <td >
                                 <Popconfirm title="Are you Sure you want to delete?" onConfirm={() => remove(name)}>
-                                    <DeleteTwoTone />
+                                    <DeleteTwoTone twoToneColor="red" />
                                 </Popconfirm>
                             </td>
-                            <td>
+                            <td >
                                 <Form.Item {...restField1} name={[name, 'editable']} valuePropName="checked" defaultChecked>
                                     <Switch defaultChecked={false} />
                                 </Form.Item>
                             </td>
-                            <td>
+                            <td >
                             <Form.Item
                                     {...restField1}
                                     shouldUpdate={(prevValues, currentValues) => isEditableHandler(prevValues, currentValues,name,fieldKey) 
@@ -122,9 +122,9 @@ function ReportDesignerDynamicRow(props) {
                                         // console.log(value)
 
                                        return value['editable'] === true ?  (
-                                            <LockOutlined/>
+                                            <LockOutlined style={{backgroundColor:'#BAE7FF'}}/>
                                         ) : (
-                                            <UnlockOutlined/>
+                                            <UnlockOutlined style={{backgroundColor:'#E0E0E0'}}/>
                                         )
 }}
                                 </Form.Item>
