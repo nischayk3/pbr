@@ -4,6 +4,7 @@ import {
     Select,
     Typography,
     Form,
+    Button,
 } from 'antd';
 // import { AreaChartOutlined } from '@ant-design/icons';
 // import { getCharts } from '../../../../../services/reportDesignerServices';
@@ -49,10 +50,16 @@ function ChartSelector(props) {
                 <Text>Chart ID</Text> <br/><br/>
                 <Select
                     mode="multiple"
+                    showArrow
+                    showSearch
+                    bordered
+                    dropdownStyle={{border:'10'}}
+                    notFoundContent="No Result"
                     placeholder="Select Multiple Charts"
                     value={selectedChartList}
                     onChange={handleChange}
                     style={{ width: '100%' }}
+                    
                 >
                     {chartsList.length > 0  ? chartsList.map(item => (
                         <Option value={item}>

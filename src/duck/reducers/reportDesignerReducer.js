@@ -1,13 +1,16 @@
-import * as types from '../../constants/actionTypes';
+import {SELECTED_REPORT_ID,SCREEN_CHANGE} from '../../constants/actionTypes';
 
 const initialState = {
-    data:{}
+    reportData:{},
+    screen:false,
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case types.SELECTED_REPORT_ID:
-            return { ...state, data: action.payload };
+        case SELECTED_REPORT_ID:
+            return { ...state,reportData: action.payload };
+        case SCREEN_CHANGE:
+            return { ...state,screen: action.payload };
         default:
             return state;
     }
