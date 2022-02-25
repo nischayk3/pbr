@@ -77,6 +77,8 @@ const columns = [
 ];
 
 function ViewCreation() {
+    const molecule_Id=useSelector((state)=>state.viewCreationReducer.molecule_id);
+    console.log(molecule_Id);
     const [moleculeList, setMoleculeList] = useState([]);
     const [functionEditorRecord, setFunctionEditorRecord] = useState([]);
     const [moleculeId, setMoleculeId] = useState();
@@ -241,12 +243,14 @@ function ViewCreation() {
     const passTableData = (record, textName) => {
         let newRecord = { ...record };
         let data = text.current;
+        console.log(data)
         newRecord.param = data;
         console.log(newRecord);
         setParamText(newRecord);
     };
 
     const passStateFunc = (value) => {
+        console.log("value",value);
         text.current = value;
     };
 

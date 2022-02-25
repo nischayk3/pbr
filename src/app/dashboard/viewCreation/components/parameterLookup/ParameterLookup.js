@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch,useSelector } from 'react-redux';
 import './styles.scss';
 import { Form, message, Select } from 'antd';
 import { getMoleculeData } from '../../../../../duck/actions/auditTrialAction';
 import { materialsParameterTree } from '../../../../../duck/actions/fileUploadAction';
+import { moleculeName } from '../../../../../duck/actions/viewCreationAction';
 const { Option } = Select;
 
 function ParameterLookup(props) {
@@ -24,6 +26,7 @@ function ParameterLookup(props) {
         form,
     } = props;
 
+    const dispatch= useDispatch();
     const onSelectMoleculeHandler = () => {
         // let req = { user_id: localStorage.getItem('username') };
         let req = { user_id: 'demo' };
@@ -48,6 +51,7 @@ function ParameterLookup(props) {
         form.setFieldsValue({
             molecule: moleculeId,
         });
+        dispatch(moleculeName(moleculeId))
     }, [moleculeId]);
     console.log('moleculeList', moleculeList);
     console.log('moleculeId', moleculeId);
