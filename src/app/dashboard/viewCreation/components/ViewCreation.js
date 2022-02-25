@@ -39,6 +39,7 @@ import {
     getViewConfig,
     getViews,
 } from '../../../../services/viewCreationPublishing';
+import { materialsParameterTree } from '../../../../duck/actions/fileUploadAction';
 
 const { Panel } = Collapse;
 
@@ -57,6 +58,16 @@ const columns = [
         title: 'View Name',
         dataIndex: 'view_name',
         key: 'view_name',
+    },
+    {
+        title: 'View Status',
+        dataIndex: 'view_status',
+        key: 'view_status',
+    },
+    {
+        title: 'View Version',
+        dataIndex: 'view_version',
+        key: 'view_version',
     },
     {
         title: 'Created By',
@@ -82,8 +93,10 @@ function ViewCreation() {
     const [newBatchData, setNewBatchData] = useState([]);
     const [viewList, setViewList] = useState([]);
     const [viewDisplayId, setViewDisplayId] = useState('');
-    const [viewStatus, setViewStatus] = useState('');
-    const [viewVersion, setViewVersion] = useState('');
+    const [viewStatus, setViewStatus] = useState();
+    const [viewVersion, setViewVersion] = useState();
+    const viewStatusData = useRef();
+    const viewVersionData = useRef();
     const [filterTable, setFilterTable] = useState(null);
     const [viewSummaryTable, setViewSummaryTable] = useState([]);
     const tableData = useRef();
@@ -182,6 +195,8 @@ function ViewCreation() {
 
     //for not emptying state on rendering this component
     tableData.current = viewSummaryTable;
+    viewStatusData.current = viewStatus;
+    viewVersionData.current = viewVersion;
 
     const handleRowDelete = (param) => {
         const updatedSummaryTable = tableData.current.filter(
@@ -224,24 +239,92 @@ function ViewCreation() {
 
     const ViewRowClicked = (record) => {
         setViewDisplayId(record.view_disp_id);
-        setViewStatus(record.view_status);
-        setViewVersion(record.view_version);
         message.success(`${record.view_disp_id} selected`);
     };
 
     const newButtonHandler = () => {
-        setMoleculeList([]);
+        setMoleculeId();
+        setFunctionEditorRecord([]);
+        setFilterdData(null);
+        setViewSummaryTable([]);
+        setFunctionEditorViewState(false);
+        setMaterialsList([]);
+        setFilterdData(null);
+        form.setFieldsValue({
+            filters: null,
+        });
+        setDataLoadingState(false);
+        setViewDisplayId('');
+        setViewStatus();
+        setViewVersion();
     };
 
     const onOkHandler = () => {
-        setVisible(false);
-        setIsLoad(true);
-        let req = { view_disp_id: 'V5' };
+        let req = { view_disp_id: viewDisplayId };
         getViewConfig(req).then((res) => {
-            console.log('res', res.material_id);
             setMoleculeId(res.material_id);
+            setViewDisplayId(res.view_disp_id);
+            setViewStatus(res.view_status);
+            setViewVersion(res.view_version);
+            setVisible(false);
+            setIsLoad(true);
+            if (res.Status === 401) {
+                message.error(res.Message);
+                setVisible(true);
+                setIsLoad(false);
+            }
+            if (res.Status === 400) {
+                message.error(res.Message);
+                setVisible(true);
+                setIsLoad(false);
+            }
+            if (res.Status === 404) {
+                message.error(res.Message);
+                setVisible(true);
+                setIsLoad(false);
+            }
+        });
+        setFilterdData(null);
+        form.setFieldsValue({
+            filters: null,
         });
     };
+
+    useEffect(() => {
+        form.setFieldsValue({
+            viewId: viewDisplayId,
+            status: viewStatus,
+            version: viewVersion,
+        });
+    }, [viewDisplayId, viewStatus, viewVersion]);
+
+    const onMoleculeIdChanged = () => {
+        let reqMaterial = { moleculeId: moleculeId, detailedCoverage: true };
+        materialsParameterTree(reqMaterial).then((res) => {
+            {
+                res.map((item, index) => {
+                    setDataLoadingState(false);
+                    setMaterialsList(item.children);
+                    setDataLoadingState(true);
+                    setParentBatches(item.batches);
+                });
+            }
+
+            if (res.Status === 401) {
+                message.error(res.Message);
+            }
+            if (res.Status === 400) {
+                message.error(res.Message);
+            }
+            if (res.Status === 404) {
+                message.error(res.Message);
+            }
+        });
+    };
+
+    useEffect(() => {
+        onMoleculeIdChanged();
+    }, [moleculeId]);
 
     useEffect(() => {
         getViewsList();
@@ -311,6 +394,7 @@ function ViewCreation() {
                                     setParentBatches={setParentBatches}
                                     viewSummaryTable={viewSummaryTable}
                                     setViewSummaryTable={setViewSummaryTable}
+                                    form={form}
                                 />
                             </div>
                             <div className='viewCreation-materials'>
@@ -438,7 +522,8 @@ function ViewCreation() {
                                         viewDisplayId={viewDisplayId}
                                         viewStatus={viewStatus}
                                         viewVersion={viewVersion}
-                                        formViewSummary={form}
+                                        form={form}
+                                        moleculeId={moleculeId}
                                     />
                                 </div>
                             )}
@@ -488,6 +573,7 @@ function ViewCreation() {
                         style={{ width: '140px' }}
                         defaultValue={viewDisplayId}
                         onChange={(e, value) => {
+                            console.log('valeeee', value);
                             let view_value = value.value ? value.value : '';
                             let split_view_id = view_value
                                 ? view_value.split('-')
@@ -528,7 +614,7 @@ function ViewCreation() {
                     }
                     centered
                     // bodyStyle={{height: 400}}
-                    width={600}
+                    width={700}
                 >
                     <Table
                         dataSource={
