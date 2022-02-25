@@ -183,12 +183,13 @@ function ViewCreation() {
             title: 'Primary',
             key: 'primary',
             dataIndex: 'param',
-            width: 150,
+            width: 100,
             fixed: 'left',
             render: (text, record, index) => {
                 return (
                     <input
                         type='radio'
+                        style={{padding:'20px'}}
                         id={text}
                         name='a'
                         value={text}
