@@ -154,12 +154,25 @@ const FunctionEditor = (props) => {
     const mathEditorFunction = (value) => {
         setMathFunction(value);
         let data= [...functionEditorRecord];
-        let obj={}
+        let obj={},count=1;
         if(value!='round'|| value!='union'){
-            data.forEach((i)=>{
-            
-
-            }) 
+           data.forEach((item,i)=>{
+               if(i==0){
+                   obj={...item};
+               }else{
+                   Object.entries(item).forEach(([key,value],index)=>{
+                    if(key.includes("B")){
+                       // console.log(key,value);
+                        obj[key]=obj[key]&& item[key]
+                        obj.param=item.param
+                        
+                    }
+                   })
+                       
+                   }
+                   
+           })
+           console.log(obj);
         }
         
     }
@@ -224,8 +237,8 @@ const FunctionEditor = (props) => {
                 <Form.Item label='Function' name='function'>
                     <Select placeholder='Select Function' onChange={mathEditorFunction}>
                         <Option value='round'>round</Option>
-                        <Option value='sin'>sin</Option>
-                        <Option value='cos'>cos</Option>
+                        <Option value='sin'>add</Option>
+                        <Option value='cos'>multiply</Option>
                         <Option value='ln'>ln</Option>
                         <Option value='exp'>exp</Option>
                         <Option value='log'>log</Option>
