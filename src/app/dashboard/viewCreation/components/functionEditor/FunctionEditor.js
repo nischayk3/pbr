@@ -153,8 +153,18 @@ const FunctionEditor = (props) => {
 
     const mathEditorFunction = (value) => {
         setMathFunction(value);
+        let data= [...functionEditorRecord];
+        let obj={}
+        if(value!='round'|| value!='union'){
+            data.forEach((i)=>{
+            
+
+            }) 
+        }
+        
     }
 
+    
 
     useEffect(() => {
         form.setFieldsValue({ function_name: functionName, parameter: functionName })
