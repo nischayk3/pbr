@@ -1,8 +1,9 @@
-import React, { useEffect, useState,useRef } from 'react';
-
+import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import './styles.scss';
 import { CheckCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import { Checkbox, Form, Input, Select, Table, Tag, Card } from 'antd';
+import { functionTextName } from '../../../../../duck/actions/viewCreationAction';
 
 const { Option } = Select;
 
@@ -36,13 +37,16 @@ const FunctionEditor = (props) => {
         setNewBatchData,
         functionName,
         setFunctionName,
-        form
+        form,
+        functionText,
+        setFunctionText,
+        passStateFunc
     } = props;
 
-
-const[mathFunction,setMathFunction]=useState();
-const[data,setData]=useState([]);
-const functionData = useRef();
+    const dispatch = useDispatch();
+    const [mathFunction, setMathFunction] = useState();
+    const [data, setData] = useState([]);
+    const functionData = useRef();
     const columnsHandler = () => {
         let columns = [];
         //parentBatches.map((item, index) => {
@@ -86,7 +90,7 @@ const functionData = useRef();
                     };
                 },
                 render: (value) => {
-                    return typeof(value)==='boolean' ? value?(
+                    return typeof (value) === 'boolean' ? value ? (
                         <Checkbox
                             checked={value}
                             onChange={(e) => onChange(e, key, value1, Index)}
@@ -95,7 +99,7 @@ const functionData = useRef();
                         <span className='batchClosed'>
                             <CloseOutlined />
                         </span>
-                    ):(
+                    ) : (
                         <Checkbox
                             checked={false}
                             onChange={(e) => onChange(e, key, value1, Index)}
@@ -117,7 +121,7 @@ const functionData = useRef();
         console.log(functionData.current);
         let filteredRecord = [...functionData.current];
         //filteredRecord[rowIndex] = { ...filteredRecord[rowIndex] }
-        filteredRecord[rowIndex][key] = e.target.checked==false?"":e.target.checked;
+        filteredRecord[rowIndex][key] = e.target.checked == false ? "" : e.target.checked;
         console.log(filteredRecord);
         setFunctionEditorRecord(filteredRecord)
 
@@ -147,22 +151,29 @@ const functionData = useRef();
 
     };
 
-    const mathEditorFunction=(value)=>{
+    const mathEditorFunction = (value) => {
         setMathFunction(value);
     }
 
 
     useEffect(() => {
-        columnsHandler();
         form.setFieldsValue({ function_name: functionName, parameter: functionName })
-    });
+    },[functionName]);
 
     useEffect(()=>{
-        functionData.current = functionEditorRecord;
-    },[functionEditorRecord])
+        columnsHandler();
+    },[])
 
+    useEffect(() => {
+        functionData.current = functionEditorRecord;
+    }, [functionEditorRecord])
+
+    const handlePassState=(e)=>{
+        passStateFunc(e.target.value)
+    }
     console.log('functionEditorColumns', functionEditorColumns);
     console.log('functionEditorRecord', functionEditorRecord);
+    
 
     return (
         <div className='viewSummary-container functionEditor-container'>
@@ -171,7 +182,10 @@ const functionData = useRef();
                     <Input placeholder='Enter ID' />
                 </Form.Item>
                 <Form.Item label='Function Name' name='function_name'>
-                    <Input placeholder='Enter Function Name' onChange={(e)=>setFunctionName(e.target.value)} />
+                    <Input placeholder='Enter Function Name' 
+                    onChange={(e)=>handlePassState(e)}
+                    //onChange={(e) => functionName ? setFunctionText(`${functionName}${e.target.value}`):setFunctionText(e.target.value)} 
+                />
                 </Form.Item>
                 <Form.Item label='Aggregation' name='aggregation'>
                     <Select placeholder='Select Aggregation'>
@@ -211,12 +225,12 @@ const functionData = useRef();
             <div className='viewSummary-FormBlock MathEditor-FormBlock'>
                 <div className="viewSummary-table functionBatch-table site-card-border-less-wrapper">
                     <Card title="Math Editor" bordered >
-                        {mathFunction?
-                        mathFunction=='round'?
-                        <p>{`=${mathFunction}(${functionName},`} <input type="text" style={{height:'20px', width:'20px'}}/>)</p>
-                        :`=${mathFunction}(${functionName})`
-                        :''}
-                       
+                        {mathFunction ?
+                            mathFunction == 'round' ?
+                                <p>{`=${mathFunction}(${functionName},`} <input type="text" style={{ height: '20px', width: '20px' }} />)</p>
+                                : `=${mathFunction}(${functionName})`
+                            : ''}
+
                     </Card>
                 </div>
                 <div>

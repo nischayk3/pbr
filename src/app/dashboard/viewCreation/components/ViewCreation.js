@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import { useSelector } from 'react-redux';
 import {
     ArrowLeftOutlined,
     CloudUploadOutlined,
@@ -71,6 +71,7 @@ function ViewCreation() {
     const [moleculeId, setMoleculeId] = useState();
     const [materialsList, setMaterialsList] = useState([]);
     const [paramText, setParamText] = useState();
+    const text=useRef();
     const [filterdData, setFilterdData] = useState(null);
     const [dataLoadingState, setDataLoadingState] = useState(false);
     const [isNew, setIsNew] = useState(false);
@@ -198,7 +199,7 @@ function ViewCreation() {
 
     //for not emptying state on rendering this component
     tableData.current = viewSummaryTable;
-
+    
     const handleRowDelete = (param) => {
         const updatedSummaryTable = tableData.current.filter(
             (item) => item.param !== param
@@ -223,18 +224,23 @@ function ViewCreation() {
     };
 
     const saveFunctionData=()=>{
-        console.log("hello");
         setViewSummaryTable([...viewSummaryTable,paramText])
+        message.success("Function Added Successfully")
     }
 
-    const passTableData=(record)=>{
-        //record.param=functionName;
-        console.log(record);
-        setParamText(record);
+    const passTableData=(record,textName)=>{
+        let newRecord={...record};
+        let data=text.current
+        newRecord.param=data;
+        console.log(newRecord);
+        setParamText(newRecord);
+
     }
 
+    const passStateFunc=(value)=>{
+        text.current=value;
+    }
 
-    console.log('record',  viewSummaryTable);
     //Get view table data for load popup
     const getViewsList = () => {
         let req = {};
@@ -277,11 +283,11 @@ function ViewCreation() {
 
     useEffect(() => {
         getViewsList();
-        form.setFieldsValue({ functionName: 'ARSENIC' });
+        
     }, []);
 
-    console.log('record', functionEditorRecord);
-    console.log('viewList', viewList);
+
+    
     return (
         <div className='reportDesigner-container viewCreation-container'>
             <div className='viewCreation-block'>
@@ -298,9 +304,9 @@ function ViewCreation() {
                     >
                         New
                     </Button>
-                    <Button type='text' className='viewCreation-clearBtn'>
+                    {/* <Button type='text' className='viewCreation-clearBtn'>
                         Clear
-                    </Button>
+                    </Button> */}
                     <Button className='viewCreation-loadBtn' onClick={() => { setVisible(true); setIsNew(false); }}>
                         Load
                     </Button>
@@ -485,10 +491,10 @@ function ViewCreation() {
                                     <h4 className='viewCreation-blockHeader'>
                                         Function Editor
                                         <div className='viewCreation-btns'>
-                                        <Button className='viewCreation-saveBtn' onClick={()=>{saveFunctionData}}>
+                                        <Button className='viewCreation-saveBtn' onClick={()=>{saveFunctionData()}}>
                                             Save
                                         </Button>
-                                        <Button className='viewCreation-saveAsBtn'>
+                                        <Button className='viewCreation-saveAsBtn' onClick={()=>{saveFunctionData()}}>
                                             Save As
                                         </Button>
                                     </div>
@@ -514,6 +520,7 @@ function ViewCreation() {
                                         viewSummaryTable={viewSummaryTable}
                                         functionName={functionName}
                                         setFunctionName={setFunctionName}
+                                        passStateFunc={(v)=>passStateFunc(v)}
                                     />
                                 </div>
                             )}
