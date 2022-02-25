@@ -40,6 +40,7 @@ import {
     getViews,
 } from '../../../../services/viewCreationPublishing';
 import { materialsParameterTree } from '../../../../duck/actions/fileUploadAction';
+import { getData } from '../../../../duck/actions/filterAction';
 
 const { Panel } = Collapse;
 
@@ -85,6 +86,7 @@ function ViewCreation() {
     const [materialsList, setMaterialsList] = useState([]);
     const [paramText, setParamText] = useState();
     const text = useRef();
+    const getData=useRef();
     const [filterdData, setFilterdData] = useState(null);
     const [dataLoadingState, setDataLoadingState] = useState(false);
     const [isNew, setIsNew] = useState(false);
@@ -236,8 +238,16 @@ function ViewCreation() {
     };
 
     const saveFunctionData = () => {
-        setViewSummaryTable([...viewSummaryTable, paramText]);
-        message.success('Function Added Successfully');
+        if(paramText){
+            setViewSummaryTable([...viewSummaryTable, paramText]);
+            message.success('Function Added Successfully');
+        }else{
+            console.log(getData.current,text.current)
+            getData.current.param= text.current?text.current:getData.current.param;
+            setViewSummaryTable([...viewSummaryTable, getData.current]);
+            message.success('Function Added Successfully');
+        }
+        
     };
 
     const passTableData = (record, textName) => {
@@ -253,6 +263,13 @@ function ViewCreation() {
         console.log("value",value);
         text.current = value;
     };
+
+    const getNewData=(el)=>{
+        console.log("element",el)
+        getData.current=el
+    }
+
+  
 
     //Get view table data for load popup
     const getViewsList = () => {
@@ -608,6 +625,7 @@ function ViewCreation() {
                                         functionName={functionName}
                                         setFunctionName={setFunctionName}
                                         passStateFunc={(v) => passStateFunc(v)}
+                                        getNewData={(el)=>getNewData(el)}
                                     />
                                 </div>
                             )}
