@@ -21,6 +21,7 @@ function ParameterLookup(props) {
         setParentBatches,
         viewSummaryTable,
         setViewSummaryTable,
+        form,
     } = props;
 
     const onSelectMoleculeHandler = () => {
@@ -42,7 +43,14 @@ function ParameterLookup(props) {
     useEffect(() => {
         onSelectMoleculeHandler();
     }, []);
+
+    useEffect(() => {
+        form.setFieldsValue({
+            molecule: moleculeId,
+        });
+    }, [moleculeId]);
     console.log('moleculeList', moleculeList);
+    console.log('moleculeId', moleculeId);
 
     const onChangeMoleculeHandler = (value) => {
         setMoleculeId(value);

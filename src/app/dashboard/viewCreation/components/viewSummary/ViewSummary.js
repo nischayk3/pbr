@@ -193,7 +193,8 @@ function ViewSummary(props) {
         viewDisplayId,
         viewStatus,
         viewVersion,
-        formViewSummary,
+        form,
+        moleculeId,
     } = props;
 
     const onChangeColumnsHandler = () => {
@@ -245,15 +246,7 @@ function ViewSummary(props) {
 
     useEffect(() => {
         onChangeColumnsHandler();
-
-        formViewSummary.setFieldsValue({
-            viewId: viewDisplayId,
-            status: viewStatus,
-            version: viewVersion,
-        });
     }, [newBatchData]);
-
-    console.log('fsd', viewDisplayId, viewStatus, viewVersion);
 
     return (
         <div className='viewSummary-container'>
@@ -261,7 +254,7 @@ function ViewSummary(props) {
                 <Form.Item label='View ID' name='viewId'>
                     <Input placeholder='Enter View ID' disabled />
                 </Form.Item>
-                <Form.Item label='Name' name='name'>
+                <Form.Item label='Name' name='viewName'>
                     <Input placeholder='Enter Name' />
                 </Form.Item>
                 <Form.Item label='Status' name='status'>

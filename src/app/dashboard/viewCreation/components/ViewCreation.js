@@ -39,6 +39,7 @@ import {
     getViewConfig,
     getViews,
 } from '../../../../services/viewCreationPublishing';
+import { materialsParameterTree } from '../../../../duck/actions/fileUploadAction';
 
 const { Panel } = Collapse;
 
@@ -59,6 +60,16 @@ const columns = [
         key: 'view_name',
     },
     {
+        title: 'View Status',
+        dataIndex: 'view_status',
+        key: 'view_status',
+    },
+    {
+        title: 'View Version',
+        dataIndex: 'view_version',
+        key: 'view_version',
+    },
+    {
         title: 'Created By',
         dataIndex: 'created_by',
         key: 'created_by',
@@ -71,7 +82,7 @@ function ViewCreation() {
     const [moleculeId, setMoleculeId] = useState();
     const [materialsList, setMaterialsList] = useState([]);
     const [paramText, setParamText] = useState();
-    const text=useRef();
+    const text = useRef();
     const [filterdData, setFilterdData] = useState(null);
     const [dataLoadingState, setDataLoadingState] = useState(false);
     const [isNew, setIsNew] = useState(false);
@@ -82,12 +93,14 @@ function ViewCreation() {
     const [functionEditorViewState, setFunctionEditorViewState] =
         useState(false);
     const [parentBatches, setParentBatches] = useState([]);
-    const [functionName, setFunctionName] = useState("");
+    const [functionName, setFunctionName] = useState('');
     const [newBatchData, setNewBatchData] = useState([]);
     const [viewList, setViewList] = useState([]);
     const [viewDisplayId, setViewDisplayId] = useState('');
-    const [viewStatus, setViewStatus] = useState('');
-    const [viewVersion, setViewVersion] = useState('');
+    const [viewStatus, setViewStatus] = useState();
+    const [viewVersion, setViewVersion] = useState();
+    const viewStatusData = useRef();
+    const viewVersionData = useRef();
     const [filterTable, setFilterTable] = useState(null);
     const [viewSummaryTable, setViewSummaryTable] = useState([]);
     const tableData = useRef();
@@ -136,7 +149,7 @@ function ViewCreation() {
             render: (text, record, index) => (
                 <>
                     {record.coverage_metric_percent === '100 %' ||
-                        record.coverage_metric_percent === '100%' ? (
+                    record.coverage_metric_percent === '100%' ? (
                         <span className='statusIcon-summary'>
                             <img src={StatusCorrect} />
                         </span>
@@ -170,18 +183,15 @@ function ViewCreation() {
             fixed: 'left',
             render: (text, record, index) => {
                 return (
-                    <input type="radio" 
-                    id={text} 
-                    name="a" 
-                    value={text} 
-                    onChange={()=>passTableData(record)}/>
-                )
-
-
-
-
-
-            }
+                    <input
+                        type='radio'
+                        id={text}
+                        name='a'
+                        value={text}
+                        onChange={() => passTableData(record)}
+                    />
+                );
+            },
         },
         // {
         //     title: 'Action',
@@ -199,7 +209,9 @@ function ViewCreation() {
 
     //for not emptying state on rendering this component
     tableData.current = viewSummaryTable;
-    
+    viewStatusData.current = viewStatus;
+    viewVersionData.current = viewVersion;
+
     const handleRowDelete = (param) => {
         const updatedSummaryTable = tableData.current.filter(
             (item) => item.param !== param
@@ -212,7 +224,6 @@ function ViewCreation() {
         // console.log('row data', record, index);
         setFunctionEditorRecord((prevState) => [...prevState, record]);
         setFunctionName(record.param);
-
     };
 
     const [form] = Form.useForm();
@@ -220,26 +231,24 @@ function ViewCreation() {
     const handleValuesChange = (changedValues, values) => {
         // console.log('changedValues', changedValues)
         //console.log('values', JSON.stringify(values));
-
     };
 
-    const saveFunctionData=()=>{
-        setViewSummaryTable([...viewSummaryTable,paramText])
-        message.success("Function Added Successfully")
-    }
+    const saveFunctionData = () => {
+        setViewSummaryTable([...viewSummaryTable, paramText]);
+        message.success('Function Added Successfully');
+    };
 
-    const passTableData=(record,textName)=>{
-        let newRecord={...record};
-        let data=text.current
-        newRecord.param=data;
+    const passTableData = (record, textName) => {
+        let newRecord = { ...record };
+        let data = text.current;
+        newRecord.param = data;
         console.log(newRecord);
         setParamText(newRecord);
+    };
 
-    }
-
-    const passStateFunc=(value)=>{
-        text.current=value;
-    }
+    const passStateFunc = (value) => {
+        text.current = value;
+    };
 
     //Get view table data for load popup
     const getViewsList = () => {
@@ -262,32 +271,97 @@ function ViewCreation() {
 
     const ViewRowClicked = (record) => {
         setViewDisplayId(record.view_disp_id);
-        setViewStatus(record.view_status);
-        setViewVersion(record.view_version);
         message.success(`${record.view_disp_id} selected`);
     };
 
     const newButtonHandler = () => {
-        setMoleculeList([]);
+        setMoleculeId();
+        setFunctionEditorRecord([]);
+        setFilterdData(null);
+        setViewSummaryTable([]);
+        setFunctionEditorViewState(false);
+        setMaterialsList([]);
+        setFilterdData(null);
+        form.setFieldsValue({
+            filters: null,
+        });
+        setDataLoadingState(false);
+        setViewDisplayId('');
+        setViewStatus();
+        setViewVersion();
     };
 
     const onOkHandler = () => {
-        setVisible(false);
-        setIsLoad(true);
-        let req = { view_disp_id: 'V5' };
+        let req = { view_disp_id: viewDisplayId };
         getViewConfig(req).then((res) => {
-            console.log('res', res.material_id);
             setMoleculeId(res.material_id);
+            setViewDisplayId(res.view_disp_id);
+            setViewStatus(res.view_status);
+            setViewVersion(res.view_version);
+            setVisible(false);
+            setIsLoad(true);
+            if (res.Status === 401) {
+                message.error(res.Message);
+                setVisible(true);
+                setIsLoad(false);
+            }
+            if (res.Status === 400) {
+                message.error(res.Message);
+                setVisible(true);
+                setIsLoad(false);
+            }
+            if (res.Status === 404) {
+                message.error(res.Message);
+                setVisible(true);
+                setIsLoad(false);
+            }
+        });
+        setFilterdData(null);
+        form.setFieldsValue({
+            filters: null,
         });
     };
 
     useEffect(() => {
+        form.setFieldsValue({
+            viewId: viewDisplayId,
+            status: viewStatus,
+            version: viewVersion,
+        });
+    }, [viewDisplayId, viewStatus, viewVersion]);
+
+    const onMoleculeIdChanged = () => {
+        let reqMaterial = { moleculeId: moleculeId, detailedCoverage: true };
+        materialsParameterTree(reqMaterial).then((res) => {
+            {
+                res.map((item, index) => {
+                    setDataLoadingState(false);
+                    setMaterialsList(item.children);
+                    setDataLoadingState(true);
+                    setParentBatches(item.batches);
+                });
+            }
+
+            if (res.Status === 401) {
+                message.error(res.Message);
+            }
+            if (res.Status === 400) {
+                message.error(res.Message);
+            }
+            if (res.Status === 404) {
+                message.error(res.Message);
+            }
+        });
+    };
+
+    useEffect(() => {
+        onMoleculeIdChanged();
+    }, [moleculeId]);
+
+    useEffect(() => {
         getViewsList();
-        
     }, []);
 
-
-    
     return (
         <div className='reportDesigner-container viewCreation-container'>
             <div className='viewCreation-block'>
@@ -307,22 +381,19 @@ function ViewCreation() {
                     {/* <Button type='text' className='viewCreation-clearBtn'>
                         Clear
                     </Button> */}
-                    <Button className='viewCreation-loadBtn' onClick={() => { setVisible(true); setIsNew(false); }}>
+                    <Button
+                        className='viewCreation-loadBtn'
+                        onClick={() => {
+                            setVisible(true);
+                            setIsNew(false);
+                        }}
+                    >
                         Load
                     </Button>
-                    <Button className='viewCreation-saveBtn'>
-                        Save
-                    </Button>
-                    <Button className='viewCreation-saveAsBtn'>
-                        Save As
-                    </Button>
-                    <Button className='viewCreation-shareBtn'>
-                        Share
-                    </Button>
-                    <Button className='viewCreation-publishBtn'>
-                        Publish
-                    </Button>
-                    
+                    <Button className='viewCreation-saveBtn'>Save</Button>
+                    <Button className='viewCreation-saveAsBtn'>Save As</Button>
+                    <Button className='viewCreation-shareBtn'>Share</Button>
+                    <Button className='viewCreation-publishBtn'>Publish</Button>
                 </div>
             </div>
 
@@ -355,6 +426,7 @@ function ViewCreation() {
                                     setParentBatches={setParentBatches}
                                     viewSummaryTable={viewSummaryTable}
                                     setViewSummaryTable={setViewSummaryTable}
+                                    form={form}
                                 />
                             </div>
                             <div className='viewCreation-materials'>
@@ -482,7 +554,8 @@ function ViewCreation() {
                                         viewDisplayId={viewDisplayId}
                                         viewStatus={viewStatus}
                                         viewVersion={viewVersion}
-                                        formViewSummary={form}
+                                        form={form}
+                                        moleculeId={moleculeId}
                                     />
                                 </div>
                             )}
@@ -491,13 +564,23 @@ function ViewCreation() {
                                     <h4 className='viewCreation-blockHeader'>
                                         Function Editor
                                         <div className='viewCreation-btns'>
-                                        <Button className='viewCreation-saveBtn' onClick={()=>{saveFunctionData()}}>
-                                            Save
-                                        </Button>
-                                        <Button className='viewCreation-saveAsBtn' onClick={()=>{saveFunctionData()}}>
-                                            Save As
-                                        </Button>
-                                    </div>
+                                            <Button
+                                                className='viewCreation-saveBtn'
+                                                onClick={() => {
+                                                    saveFunctionData();
+                                                }}
+                                            >
+                                                Save
+                                            </Button>
+                                            <Button
+                                                className='viewCreation-saveAsBtn'
+                                                onClick={() => {
+                                                    saveFunctionData();
+                                                }}
+                                            >
+                                                Save As
+                                            </Button>
+                                        </div>
                                     </h4>
                                     <FunctionEditor
                                         form={form}
@@ -520,7 +603,7 @@ function ViewCreation() {
                                         viewSummaryTable={viewSummaryTable}
                                         functionName={functionName}
                                         setFunctionName={setFunctionName}
-                                        passStateFunc={(v)=>passStateFunc(v)}
+                                        passStateFunc={(v) => passStateFunc(v)}
                                     />
                                 </div>
                             )}
@@ -544,6 +627,7 @@ function ViewCreation() {
                         style={{ width: '140px' }}
                         defaultValue={viewDisplayId}
                         onChange={(e, value) => {
+                            console.log('valeeee', value);
                             let view_value = value.value ? value.value : '';
                             let split_view_id = view_value
                                 ? view_value.split('-')
@@ -584,7 +668,7 @@ function ViewCreation() {
                     }
                     centered
                     // bodyStyle={{height: 400}}
-                    width={600}
+                    width={700}
                 >
                     <Table
                         dataSource={
