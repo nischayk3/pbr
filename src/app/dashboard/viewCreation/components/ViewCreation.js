@@ -228,7 +228,7 @@ function ViewCreation() {
         message.success("Function Added Successfully")
     }
 
-    const passTableData=(record,textName)=>{
+    const passTableData=(record)=>{
         let newRecord={...record};
         let data=text.current
         newRecord.param=data;
