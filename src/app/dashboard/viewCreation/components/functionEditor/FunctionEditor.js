@@ -82,7 +82,7 @@ const FunctionEditor = (props) => {
                 title: `B${++index}`,
                 key: index,
                 dataIndex: key,
-                width: 100,
+                width: 50,
                 onCell: (record, rowIndex) => {
                     return {
                         onClick: () => {
@@ -262,6 +262,7 @@ const FunctionEditor = (props) => {
                         columns={functionEditorColumns}
                         dataSource={functionEditorRecord}
                         scroll={{ x: 900 }}
+                        style={{border:'1px solid #ececec',borderRadius:'2px'}}
                         pagination={false}
                         rowKey={(record) => record.param}
                     />
