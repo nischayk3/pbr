@@ -19,28 +19,15 @@
 
 .alert-tags {
   display: block;
-  .alert-tags_block {
-    display: inline-flex;
-    margin: 0 0 0 24px;
-    .alert-tags-label {
-      width: 120px;
-      text-align: center;
-      margin: 0;
-    }
-    .alert-progress {
-      margin-left: 20px;
-      width: 45px;
-      text-align: center;
-    }
-  }
+
   .alert-tags_error {
-    display: inline-flex;
+    display: grid;
+    grid-template-columns: 15px 120px 60px 30px;
+    grid-gap: 0 4px;
+    grid-auto-rows: minmax(20px, 20px);
     margin: 6px 0;
-    span {
-      margin: 4px;
-    }
+
     .alert-tags-label {
-      width: 120px;
       text-align: center;
       font-family: Roboto;
       font-style: normal;
@@ -57,13 +44,11 @@
       font-weight: 500;
       font-size: 14px;
       line-height: 20px;
-      /* identical to box height, or 143% */
       margin: 0px;
-      /* Gray / gray-9 */
-      padding: 5px 20px;
+      padding: 0px;
       color: #262626;
       border-right: 1px solid #ddd;
-      width: 75px;
+      text-align: center;
     }
     .tag-stats {
       font-family: Roboto;
@@ -73,8 +58,9 @@
       line-height: 22px;
       /* identical to box height, or 157% */
       margin: 0px;
-      padding: 5px 10px;
+      padding: 0;
       color: #000000;
+      text-align: center;
     }
     .alert-progress-error {
       margin-left: 15px;
