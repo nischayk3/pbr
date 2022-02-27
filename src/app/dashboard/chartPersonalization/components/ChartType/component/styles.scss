@@ -1,15 +1,10 @@
-.ant-card-body {
-  box-shadow: 10px 10px 14px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-}
 .grid-2-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px 20px;
-  }
-  .chartview-input {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px 20px;
-  }
-  
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px 20px;
+}
+.chartview-input {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px 20px;
+}

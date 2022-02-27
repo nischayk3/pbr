@@ -1,9 +1,26 @@
 {
   "data": {
-    "coverage": [
+    "coverage": {
+      "Temperature": 80,
+      "pH": 100
+    },
+    "batchstats": {
+      "Temperature": "4/5",
+      "pH": "5/5"
+    },
+
+    "coverage1": [
       {
-        "Temperature": 80,
-        "pH": 100
+        "batchstats": "17/44",
+        "coverage_metric_percent": "100%",
+        "function_name": "Temperature",
+        "function_id": 1
+      },
+      {
+        "batchstats": "17/44",
+        "coverage_metric_percent": "80%",
+        "function_name": "pH",
+        "function_id": 2
       }
     ],
     "data": [

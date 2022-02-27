@@ -3,18 +3,17 @@ import React, { Component } from 'react';
 import { Card, Table, Button, Modal } from 'antd';
 
 class DateFilter extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            visible: this.props.visible,
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      visible: this.props.visible,
+    };
+  }
 
-    render() {
-        console.log('hello', this.state.visible);
-        return <div>xexs</div>;
-    }
+  render() {
+    return <div>xexs</div>;
+  }
 }
 
 export default DateFilter;
