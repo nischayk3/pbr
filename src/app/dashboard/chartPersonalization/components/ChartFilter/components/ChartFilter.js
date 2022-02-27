@@ -1,44 +1,78 @@
-import React, { useState, useEffect } from 'react';
+import './styles.scss';
 
 import {
+  Button,
   Card,
   DatePicker,
   Input,
-  Typography,
-  Button,
   Modal,
   Switch,
+  Typography,
 } from 'antd';
-import { useDispatch } from 'react-redux';
-
-import InputField from '../../../../../../components/InputField/InputField';
-import SelectField from '../../../../../../components/SelectField/SelectField';
-import { getSiteId } from '../../../../../../services/chartPersonalizationService';
-import { showNotification } from '../../../../../../duck/actions/commonActions';
+import React, { useEffect, useState } from 'react';
 import {
   sendDateRange,
   sendSelectedSite,
   sendUnApprovedData,
 } from '../../../../../../duck/actions/chartPersonalizationAction';
-import './styles.scss';
+import { useDispatch, useSelector } from 'react-redux';
+
+import InputField from '../../../../../../components/InputField/InputField';
+import SelectField from '../../../../../../components/SelectField/SelectField';
+import { getSiteId } from '../../../../../../services/chartPersonalizationService';
+import moment from 'moment';
+import { showNotification } from '../../../../../../duck/actions/commonActions';
 
 const { Text } = Typography;
 const { Search } = Input;
 
-function ChartFilter() {
+function ChartFilter(props) {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [siteList, setSiteList] = useState([]);
-  const [selectedSite, setSelectedSite] = useState([]);
+  const [selectedSite, setSelectedSite] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [startTimeIso, setstartTimeIso] = useState('');
+  const [endTimeIso, setendTimeIso] = useState('');
+
   const [selectedDateRange, setSelectedDateRange] = useState('');
+  const [unapprovedData, setunapprovedData] = useState(false);
 
   const dispatch = useDispatch();
+
+  const getChartObjData = useSelector(
+    (state) =>
+      state.chartDataReducer && state.chartDataReducer.selectedChartData[0]
+  );
 
   useEffect(() => {
     getSiteIdHandler();
   }, []);
+
+  useEffect(() => {
+    setSelectedSite(
+      getChartObjData && getChartObjData.data_filter !== undefined
+        ? getChartObjData.data_filter.site
+        : ''
+    );
+    setSelectedDateRange(
+      getChartObjData && getChartObjData.data_filter !== undefined
+        ? getChartObjData.data_filter.date_range
+        : ''
+    );
+    setunapprovedData(
+      getChartObjData && getChartObjData.data_filter !== undefined
+        ? getChartObjData.data_filter.unapproved_data
+        : false
+    );
+    const splitDate =
+      getChartObjData && getChartObjData.data_filter !== undefined
+        ? getChartObjData.data_filter.date_range.split('/')
+        : '';
+    setStartTime(splitDate[0]);
+    setEndTime(splitDate[1]);
+  }, [getChartObjData]);
 
   const getSiteIdHandler = () => {
     let reqSite = { view_id: 'V1' };
@@ -52,6 +86,22 @@ function ChartFilter() {
       }
     });
   };
+
+  // const getDateRange = (indate) => {
+  //   let startdate = '';
+  //   let enddate = '';
+  //   if (indate[0] === 'P') {
+  //     enddate = moment()
+  //       .format()
+  //       .replace((microsecond = 0));
+  //     startdate = enddate - isodate.parse_duration(period);
+  //   } else {
+  //     startdate = datetime.fromisoformat(
+  //       incdate.split('/')[0].replace('Z', '')
+  //     );
+  //     enddate = datetime.fromisoformat(incdate.split('/')[1].replace('Z', ''));
+  //   }
+  // };
 
   const showModal = () => {
     setVisible(true);
@@ -69,22 +119,25 @@ function ChartFilter() {
   };
   const onChangeCheckbox = (checked) => {
     const isChecked = checked;
-    dispatch(sendUnApprovedData(isChecked));
+    setunapprovedData(isChecked);
   };
 
   const handleSelectChange = (value) => {
     if (value !== null) {
       setSelectedSite(value);
-      dispatch(sendSelectedSite(value));
     }
   };
   const onChangeStart = (date, dateString) => {
-    console.log('onChnageStart', date, dateString);
+    console.log('setStartTime', date, dateString);
+    console.log('forment', moment(date).toISOString());
     setStartTime(dateString);
+    setstartTimeIso(moment(date).toISOString());
   };
   const onChangeEnd = (date, dateString) => {
-    console.log('onChangeEnd', date, dateString);
+    console.log('setEndTime', dateString);
+    console.log('forment', moment(date).toISOString());
     setEndTime(dateString);
+    setendTimeIso(moment(date).toISOString());
   };
 
   const handleDateClick = () => {
@@ -92,10 +145,19 @@ function ChartFilter() {
   };
 
   const onClickTimeRange = () => {
-    setSelectedDateRange(`${startTime} / ${endTime}`);
-    console.log('setSelectedDateRange', `${startTime} / ${endTime}`);
-    dispatch(sendDateRange(`${startTime} / ${endTime}`));
+    console.log(
+      '`${startTime} / ${endTime}`',
+      `${startTimeIso} / ${endTimeIso}`
+    );
+    setSelectedDateRange(`${startTimeIso}/${endTimeIso}`);
     setVisible(false);
+  };
+
+  const chartFilter = () => {
+    dispatch(sendDateRange(selectedDateRange));
+    dispatch(sendSelectedSite(selectedSite));
+    dispatch(sendUnApprovedData(unapprovedData));
+    props.applyDateFilter(selectedSite, selectedDateRange, unapprovedData);
   };
   return (
     <div>
@@ -112,28 +174,19 @@ function ChartFilter() {
             label='Date Range'
             placeholder='Select Date Range'
             onChangeClick={(e) => handleDateClick(e)}
-            value={
-              selectedDateRange
-              // ? selectedDateRange
-              // : props.chartObj.data_filter.date_range
-            }
+            value={selectedDateRange}
           />
         </div>
         <div className='show-data'>
-          <p> Show Unapproved data</p>
-          <Switch
-            type='primary'
-            size='small'
-            defaultChecked
-            onChange={onChangeCheckbox}
-          />
+          <p>Show Unapproved data</p>
+          <Switch type='primary' size='small' onChange={onChangeCheckbox} />
 
           {/* <Checkbox onChange={onChangeCheckbox}>Unapproved data</Checkbox> */}
         </div>
         <Button
           type='primary'
           className='custom-secondary-btn'
-          // onClick={createChart}
+          onClick={chartFilter}
           style={{ marginTop: '12px', float: 'right' }}
         >
           Apply
@@ -163,16 +216,11 @@ function ChartFilter() {
             <DatePicker
               onChange={onChangeStart}
               style={{ marginTop: '10px', marginBottom: '10px' }}
-              showTime
             />
             <br />
             <Text style={{ marginTop: '10px' }}>To</Text>
             <br />
-            <DatePicker
-              onChange={onChangeEnd}
-              style={{ marginTop: '8px' }}
-              showTime
-            />
+            <DatePicker onChange={onChangeEnd} style={{ marginTop: '8px' }} />
             <br />
             <Button
               type='primary'

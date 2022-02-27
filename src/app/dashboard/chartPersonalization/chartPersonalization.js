@@ -1,36 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import ChartDataTable from './components/ChartDataTable/index';
-import ChartDetails from './components/ChartDetails';
-import ChartFilter from './components/ChartFilter/index';
-import ChartType from './components/ChartType/index';
-import ChartView from './components/ChartView/index';
 import './ChartStyle.scss';
-import Personalization from './components/Personalization/components/Personalization';
 
 import {
   ArrowLeftOutlined,
-  InfoCircleTwoTone,
-  ShareAltOutlined,
   CheckCircleTwoTone,
+  InfoCircleTwoTone,
 } from '@ant-design/icons';
 import { Button, Modal } from 'antd';
-
-import chartObj from './get_chart.json';
-import ViewTable from '../../../components/ViewTable';
-import { getViewTable } from '../../../services/commonService';
+import React, { useEffect, useState } from 'react';
 import {
+  getChartList,
   getChartObj,
   putChartObj,
   viewBatchData,
 } from '../../../services/chartPersonalizationService';
-import LoadModal from '../../../components/LoadModal';
+import {
+  hideLoader,
+  showLoader,
+  showNotification,
+} from '../../../duck/actions/commonActions';
+import {
+  sendBatchCoverage,
+  sendChartData,
+} from '../../../duck/actions/chartPersonalizationAction';
+import { useDispatch, useSelector } from 'react-redux';
+
 import BatchJson from '../chartPersonalization/components/ChartView/batch.json';
+import ChartDataTable from './components/ChartDataTable/index';
+import ChartDetails from './components/ChartDetails';
+import ChartFilter from './components/ChartFilter/index';
+import ChartTable from '../../../components/ChartTable';
+import ChartType from './components/ChartType/index';
+import ChartView from './components/ChartView/index';
+import LoadModal from '../../../components/LoadModal';
+import Personalization from './components/Personalization/components/Personalization';
+import ViewTable from '../../../components/ViewTable';
+import chartObj from './get_chart.json';
+import { getViewTable } from '../../../services/commonService';
 
 function ChartPersonalization() {
   const [chartDetails, setChartdetails] = useState([]);
   const [visible, setVisible] = useState(false);
-  const [isShare, setIsShare] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [isView, setIsView] = useState(false);
   const [isNew, setIsNew] = useState(false);
@@ -42,23 +51,32 @@ function ChartPersonalization() {
   const [showChartType, setShowChartType] = useState(false);
   const [showCustomization, setShowCustomization] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [chartObjData, setChartObjData] = useState(chartObj);
+  // const [chartObjData, setChartObjData] = useState([]);
+  const [chartResObj, setchartResObj] = useState([]);
+  const [showBatch, setshowBatch] = useState(false);
+
   const [viewTableData, setviewTableData] = useState([]);
   const [batchCoverage, setbatchCoverage] = useState();
-  const [batchData, setbatchData] = useState(BatchJson);
+  const [batchData, setbatchData] = useState({});
   const [resChartId, setresChartId] = useState('');
+  const [resChartVersion, setresChartVersion] = useState('');
+  const [chartTypeList, setchartTypeList] = useState([]);
+  const [isChart, setIsChart] = useState(false);
 
-  const filterData = useSelector((state) => state.chartPersReducer);
-  console.log('filter dataaa', filterData);
+  const chartPersReducer = useSelector((state) => state.chartPersReducer);
+  const chartDataReducer = useSelector((state) => state.chartDataReducer);
+  const chartViewReducer = useSelector((state) => state.chartViewReducer);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getViewTableData();
-    viewParamData();
+    getChartListSer();
   }, []);
 
   function handleCancel() {
     setVisible(false);
-    setIsShare(false);
+
     setIsLoad(false);
     setIsNew(false);
     setIsSave(false);
@@ -98,67 +116,74 @@ function ChartPersonalization() {
           Unsaved Changes
         </span>
       );
-    if (isShare)
-      return (
-        <span>
-          <ShareAltOutlined twoToneColor='Green' /> Share
-        </span>
-      );
   }
 
+  const destroyState = () => {
+    dispatch(sendChartData({}));
+    dispatch(sendBatchCoverage({}));
+  };
+
   const callbackViewType = (param) => {
-    console.log('param..', param);
     setShowChart(true);
     setShowChartType(true);
     setShowFilter(true);
     setShowCustomization(true);
+    let paramSplit = param ? param.split('-') : '';
+    viewParamData(paramSplit[0], paramSplit[1], '', '', '');
   };
 
   const handleSaveAs = () => {
-    const chartData = chartObj;
     let putChartSaveAs = {
       data: [
         {
-          view_id: filterData.viewId,
-          view_name: filterData.viewName,
+          chart_id: '',
+          chart_name: chartDataReducer.chartName,
+          chart_description: chartDataReducer.chartDesc,
+          chart_version: '',
+          chart_status: 'NEW',
+          view_id: chartViewReducer.viewId,
+          view_name: chartViewReducer.viewName,
           data_filter: {
-            date_range: filterData.dateRange,
-            unapproved_data: filterData.unApprovedData,
-            site: filterData.site,
+            date_range: chartPersReducer.dateRange,
+            unapproved_data: chartPersReducer.unApprovedData,
+            site: chartPersReducer.site,
           },
-          chart_name: filterData.chartName,
-          chart_description: filterData.chartDesc,
-          //      chart_version: filterData.chart_version,
-          // chart_status: filterData.chart_status,
-          chart_type: filterData.chartType,
+          chart_type: chartDataReducer.chartType,
+          chart_mapping: chartDataReducer.chartMapping,
+          data: chartDataReducer.data,
+          layout: chartDataReducer.layout,
+          exclusions: [],
+          violations: [],
+          limits: {},
+          alerts: [],
         },
       ],
       savetype: 'saveas',
     };
-    //  putChartObjData(putChart);
-    console.log('chartData', chartData);
+    putChartObjData(putChartSaveAs);
+    console.log('putChartSaveAs', putChartSaveAs);
   };
 
   const handleSave = () => {
     let putChart = {
       data: [
         {
-          view_id: filterData.viewId,
-          view_name: filterData.viewName,
+          chart_id: chartDataReducer.chartId,
+          chart_name: chartDataReducer.chartName,
+          chart_description: chartDataReducer.chartDesc,
+          chart_version: chartDataReducer.chartVersion,
+          chart_status: 'DRFT',
+          view_id: chartViewReducer.viewId,
+          view_name: chartViewReducer.viewName,
           data_filter: {
-            date_range: filterData.dateRange,
-            unapproved_data: filterData.unApprovedData,
-            site: filterData.site,
+            date_range: chartPersReducer.dateRange,
+            unapproved_data: chartPersReducer.unApprovedData,
+            site: chartPersReducer.site,
           },
-          chart_name: filterData.chartName,
-          chart_description: filterData.chartDesc,
-          chart_version: '',
-          chart_id: '',
-          chart_status: 'draft',
-          chart_type: filterData.chartType,
-          chart_mapping: {},
-          data: [],
-          layout: {},
+          chart_type: chartDataReducer.chartType,
+          chart_mapping: chartDataReducer.chartMapping,
+          data: chartDataReducer.data,
+          layout: chartDataReducer.layout,
           exclusions: [],
           violations: [],
           limits: {},
@@ -167,41 +192,84 @@ function ChartPersonalization() {
       ],
       savetype: 'save',
     };
-    putChartObjData(putChart);
+    // putChartObjData(putChart);
     console.log('putcharttttt save ', putChart);
   };
 
   const handleCloseViewModal = () => {
-    setIsLoad(false);
     setIsView(false);
   };
 
-  const handleCloseLoadModal = () => {
+  const handleCloseChartModal = (chart_id, chart_ver) => {
     setIsLoad(false);
+    setIsChart(false);
+    setShowChart(true);
+    setShowChartType(true);
+    setShowFilter(true);
+    setShowCustomization(true);
+
+    let reqChartObj = { chartId: chart_id, version: chart_ver };
+    getChrtObjData(reqChartObj);
   };
 
-  function callbackIsLoad() {
+  const handleCloseLoadModal = (chart_id, chart_ver) => {
+    setIsLoad(false);
+    setShowChart(true);
+    setShowChartType(true);
+    setShowFilter(true);
+    setShowCustomization(true);
+
+    let reqChartObj = { chartId: chart_id, version: chart_ver };
+    getChrtObjData(reqChartObj);
+  };
+
+  const callbackIsLoad = () => {
     setIsView(true);
     setShowChart(true);
     setShowChartType(true);
     setShowFilter(true);
     setShowCustomization(true);
-  }
+  };
 
   const openLoadModal = () => {
-    setIsView(true);
+    setIsChart(true);
     setShowChart(true);
     setShowChartType(true);
     setShowFilter(true);
     setShowCustomization(true);
   };
 
-  const getViewTableData = () => {
+  const callFilterAPI = (site, dateRange, isUnApproved) => {
+    let viewDisplayId =
+      chartViewReducer.viewId !== '' ? chartViewReducer.viewId : '';
+    let viewVersionId =
+      chartViewReducer.viewVersion !== '' ? chartViewReducer.viewVersion : '';
+    viewParamData(viewDisplayId, viewVersionId, site, dateRange, isUnApproved);
+  };
+
+  const getChartListSer = async () => {
+    let reqChartList = { chart_status: 'ALL' };
+    try {
+      dispatch(showLoader());
+      const chartListRes = await getChartList(reqChartList);
+      if (chartListRes.statuscode === 200) {
+        setchartTypeList(chartListRes.data);
+        dispatch(hideLoader());
+      }
+    } catch (err) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', err.message));
+    }
+  };
+
+  const getViewTableData = async () => {
     let reqView = { vew_status: 'APRD' };
     let antdDataTable = [];
 
-    getViewTable(reqView).then((res) => {
-      res.Data.forEach((item, key) => {
+    try {
+      dispatch(showLoader());
+      const viewRes = await getViewTable(reqView);
+      viewRes.Data.forEach((item, key) => {
         let antdObj = {};
         antdObj['key'] = key;
         antdObj['created_by'] = item.created_by;
@@ -215,48 +283,90 @@ function ChartPersonalization() {
         antdObj['view'] = item.view;
         antdDataTable.push(antdObj);
       });
-      console.log('antdDataTable', antdDataTable);
 
       setviewTableData(antdDataTable);
-    });
+
+      dispatch(hideLoader());
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', error.message));
+    }
   };
 
-  // const getChrtObjData = () => {
-  //   let reqChartObj = { chartId: 'C1', version: '10' };
-  //   getChartObj();
-  // };
+  const getChrtObjData = async (reqChartObj) => {
+    try {
+      dispatch(showLoader());
+      const chartRes = await getChartObj(reqChartObj);
+      if (chartRes.statuscode === 200) {
+        let chartResData =
+          chartRes.data && chartRes.data.length > 0 ? chartRes.data[0][0] : [];
+        setchartResObj(chartResData);
+        dispatch(sendChartData(chartResData));
+        console.log('chartResData', chartResData);
+      }
+      dispatch(hideLoader());
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', 'Chart Data Error - ', error));
+    }
+  };
 
-  const putChartObjData = (reqChart) => {
-    putChartObj(reqChart).then((res) => {
-      console.log('res.chart_id', res.chart_id);
-      if (res.statuscode === 200) {
+  const putChartObjData = async (reqChart) => {
+    try {
+      dispatch(showLoader());
+      const putChart = await putChartObj(reqChart);
+      if (putChart.statuscode === 200) {
         setVisible(true);
         setIsSave(true);
-        setresChartId(res.chart_id);
+        setresChartId(putChart.chart_id);
+        setresChartVersion(putChart.chart_version);
       }
-    });
+      dispatch(hideLoader());
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', error.message));
+    }
   };
 
-  const viewParamData = () => {
+  async function viewParamData(
+    viewDisId,
+    viewVer,
+    site,
+    dateRange,
+    isUnApproved
+  ) {
     let reqViewParam = {
-      view_disp_id: "'V23'",
-      view_version: '1',
-      site: '1255',
-      date: '2019-01-01T13:00:00Z/2022-12-31T15:30:00Z',
-      unapproved_data: 'True',
+      view_disp_id: viewDisId ? `'${viewDisId}'` : '',
+      view_version: viewVer ? viewVer : '',
+      site: site ? site : '',
+      date: dateRange ? dateRange : '',
+      unapproved_data: isUnApproved ? isUnApproved : false,
     };
-    console.log('reqViewParam', reqViewParam);
-    viewBatchData(reqViewParam).then((res) => {
-      console.log('ressssss view batche', res);
-    });
-  };
+    try {
+      dispatch(showLoader());
+      const viewData = await viewBatchData(reqViewParam);
+
+      if (viewData.statuscode === 200) {
+        let batchRes = viewData && viewData.data ? viewData.data : {};
+        setbatchData(batchRes);
+        dispatch(sendBatchCoverage(batchRes));
+      }
+
+      dispatch(hideLoader());
+    } catch (error) {
+      setbatchData({});
+      dispatch(hideLoader());
+      dispatch(showNotification('error', 'Parameter Data Error - '));
+    }
+  }
 
   return (
-    <div className='chart-wrapper'>
+    <div className='custom-wrapper'>
       <div className='sub-header'>
-        <h1 className='sub-header-title'>
-          <ArrowLeftOutlined /> Chart Personalization
-        </h1>
+        <div className='sub-header-title'>
+          <ArrowLeftOutlined className='header-icon' />
+          <span className='header-title'>Chart Personalization</span>
+        </div>
 
         <div className='sub-header-btns'>
           <Button
@@ -268,6 +378,8 @@ function ChartPersonalization() {
               setShowChartType(true);
               setShowFilter(true);
               setShowCustomization(true);
+              setshowBatch(true);
+              destroyState();
             }}
             type='primary'
           >
@@ -298,77 +410,79 @@ function ChartPersonalization() {
           >
             Save As
           </Button>
-          <Button
-            className='custom-primary-btn'
-            onClick={() => {
-              setVisible(true);
-              setIsNew(true);
-            }}
-            type='primary'
-          >
-            Share
+
+          <Button className='custom-secondary-btn' type='primary'>
+            Publish
           </Button>
         </div>
       </div>
-
-      <div className='chart-block'>
-        <div className='chart-left-panel'>
-          <div style={{ marginBottom: '10px' }}>
-            <ChartView
-              // callbackViewType={callbackViewType}
-              callbackViewTable={callbackIsLoad}
-              callbackViewData={callbackViewType}
-              chartObj={chartObjData}
-              viewTableData={viewTableData}
-              batchCoverageData={batchData}
-              isNew={isNew}
-            />
+      <div className='custom-content-layout'>
+        <div className='chart-block'>
+          <div className='chart-left-panel'>
+            <div style={{ marginBottom: '24px' }}>
+              <ChartView
+                // callbackViewType={callbackViewType}
+                callbackViewTable={callbackIsLoad}
+                callbackViewData={callbackViewType}
+                viewTableData={viewTableData}
+                batchCoverageData={batchData}
+                isNew={isNew}
+                showBatch={showBatch}
+              />
+            </div>
+            {showFilter && (
+              <div style={{ marginBottom: '24px' }}>
+                <ChartFilter applyDateFilter={callFilterAPI} />
+              </div>
+            )}
+            {showChartType && (
+              <div>
+                <ChartType />
+              </div>
+            )}
           </div>
-          {showFilter && (
-            <div style={{ marginBottom: '10px' }}>
-              <ChartFilter chartObj={chartObjData} />
+          {showChart && (
+            <div className='chart-center-panel'>
+              <ChartDetails />
+              <ChartDataTable />
             </div>
           )}
-          {showChartType && (
-            <div>
-              <ChartType chartObj={chartObjData} />
+          {showCustomization && (
+            <div className='chart-right-panel'>
+              <Personalization />
             </div>
           )}
         </div>
-        {showChart && (
-          <div className='chart-center-panel'>
-            <ChartDetails chartObj={chartObjData} />
-            <ChartDataTable />
-          </div>
-        )}
-        {showCustomization && (
-          <div className='chart-right-panel'>
-            <Personalization />
-          </div>
-        )}
-      </div>
 
-      <ViewTable
-        isModal={isView}
-        data={viewTableData}
-        handleCloseModal={handleCloseViewModal}
-      />
-      <LoadModal
-        isModal={isLoad}
-        callbackLoadModal={openLoadModal}
-        handleCloseModal={handleCloseLoadModal}
-      />
-      <div className='modalPopup'>
-        <Modal
-          visible={visible}
-          title={handleTitleChange}
-          width={500}
-          mask={true}
-          onCancel={handleCancel}
-          centered={true}
-          footer={null}
-        >
-          {/* {isLoad && (
+        <ViewTable
+          isModal={isView}
+          data={viewTableData}
+          handleCloseModal={handleCloseViewModal}
+        />
+
+        <ChartTable
+          isModal={isChart}
+          data={chartTypeList}
+          handleCloseModal={handleCloseChartModal}
+        />
+
+        <LoadModal
+          isModal={isLoad}
+          data={chartTypeList}
+          callbackLoadModal={openLoadModal}
+          handleCloseModal={handleCloseLoadModal}
+        />
+        <div className='modalPopup'>
+          <Modal
+            visible={visible}
+            title={handleTitleChange}
+            width={500}
+            mask={true}
+            onCancel={handleCancel}
+            centered={true}
+            footer={null}
+          >
+            {/* {isLoad && (
             <div>
               <p>
                 You Have made some changes <br /> Do you want to save or discard
@@ -404,139 +518,115 @@ function ChartPersonalization() {
               </div>
             </div>
           )} */}
-          {isSave && (
-            <div>
-              <center>
-                <CheckCircleTwoTone
-                  className='circleIcon'
-                  twoToneColor='Green'
-                />
-                <br />
+            {isSave && (
+              <div>
+                <center>
+                  <CheckCircleTwoTone
+                    className='circleIcon'
+                    twoToneColor='Green'
+                  />
+                  <br />
+                  <p>
+                    Chart ID : {resChartId ? resChartId : ''} <br />
+                    Chart Version : {resChartVersion ? resChartVersion : ''}
+                    <br />
+                    Your Changes Have Been Successfully Saved
+                  </p>
+                </center>
+
+                <div>
+                  <Button
+                    onClick={() => {
+                      setVisible(false);
+                      setIsSave(false);
+                    }}
+                    className='saveOkBtn'
+                  >
+                    OK
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {isLoad && (
+              <div>
+                <ViewTable />
                 <p>
-                  Chart ID : {resChartId ? resChartId : ''} <br /> Your Changes
-                  Have Been Successfully Saved
+                  You Have made some changes <br /> Do you want to save or
+                  discard them ?
                 </p>
-              </center>
 
-              <div>
-                <Button
-                  onClick={() => {
-                    setVisible(false);
-                    setIsSave(false);
-                  }}
-                  className='saveOkBtn'
-                >
-                  OK
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {isShare && (
-            <div>
-              <div>
-                <div className='shareButton'>
-                  <Text>Edit</Text>
-                  <Text>View</Text>
+                <div className='loadButton'>
+                  <Button className='loadButtons' style={{ width: '80px' }}>
+                    Save As
+                  </Button>
+                  <Button
+                    style={{ width: '80px' }}
+                    className='loadButtons'
+                    onClick={() => {
+                      setVisible(true);
+                      setIsSave(true);
+                      setIsLoad(false);
+                    }}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    style={{ width: '80px' }}
+                    className='loadButtons'
+                    onClick={() => {
+                      setVisible(true);
+                      setIsSave(true);
+                      setIsLoad(false);
+                    }}
+                  >
+                    Discard
+                  </Button>
                 </div>
               </div>
+            )}
+            {isNew && (
               <div>
-                <div className='shareButton'>
-                  <Input width='30' />
-                  <Input />
+                <p>
+                  You Have made some changes <br /> Do you want to save or
+                  discard them ?
+                </p>
+                <div className='loadButton'>
+                  <Button className='custom-primary-btn  '>Save As</Button>
+                  <Button
+                    className='custom-primary-btn  '
+                    onClick={() => {
+                      setVisible(true);
+                      setIsSave(true);
+                      setIsLoad(false);
+                    }}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    className='custom-primary-btn  '
+                    onClick={() => {
+                      setVisible(true);
+                      setIsSave(true);
+                      setIsLoad(false);
+                    }}
+                  >
+                    Discard
+                  </Button>
                 </div>
               </div>
+            )}
+            {isDiscard && (
               <div>
-                <Button
-                  onClick={() => {
-                    setVisible(false);
-                    setIsSave(false);
-                  }}
-                  className='shareOkBtn'
-                >
-                  OK
-                </Button>
+                <p>Are you sure you want to discard changes ?</p>
+                <div className='discardButton'>
+                  <Button className='custom-primary-btn  '>Ok</Button>
+                  <Button className='custom-primary-btn  '>Cancel</Button>
+                </div>
               </div>
-            </div>
-          )}
-          {isLoad && (
-            <div>
-              <ViewTable />
-              <p>
-                You Have made some changes <br /> Do you want to save or discard
-                them ?
-              </p>
-
-              <div className='loadButton'>
-                <Button className='loadButtons' style={{ width: '80px' }}>
-                  Save As
-                </Button>
-                <Button
-                  style={{ width: '80px' }}
-                  className='loadButtons'
-                  onClick={() => {
-                    setVisible(true);
-                    setIsSave(true);
-                    setIsLoad(false);
-                  }}
-                >
-                  Save
-                </Button>
-                <Button
-                  style={{ width: '80px' }}
-                  className='loadButtons'
-                  onClick={() => {
-                    setVisible(true);
-                    setIsSave(true);
-                    setIsLoad(false);
-                  }}
-                >
-                  Discard
-                </Button>
-              </div>
-            </div>
-          )}
-          {isNew && (
-            <div>
-              <p>
-                You Have made some changes <br /> Do you want to save or discard
-                them ?
-              </p>
-              <div className='loadButton'>
-                <Button className='custom-primary-btn  '>Save As</Button>
-                <Button
-                  className='custom-primary-btn  '
-                  onClick={() => {
-                    setVisible(true);
-                    setIsSave(true);
-                    setIsLoad(false);
-                  }}
-                >
-                  Save
-                </Button>
-                <Button
-                  className='custom-primary-btn  '
-                  onClick={() => {
-                    setVisible(true);
-                    setIsSave(true);
-                    setIsLoad(false);
-                  }}
-                >
-                  Discard
-                </Button>
-              </div>
-            </div>
-          )}
-          {isDiscard && (
-            <div>
-              <p>Are you sure you want to discard changes ?</p>
-              <div className='discardButton'>
-                <Button className='custom-primary-btn  '>Ok</Button>
-                <Button className='custom-primary-btn  '>Cancel</Button>
-              </div>
-            </div>
-          )}
-        </Modal>
+            )}
+          </Modal>
+        </div>
       </div>
     </div>
   );

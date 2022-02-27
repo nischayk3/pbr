@@ -1,9 +1,14 @@
 import {
+  CHART_MAPPING,
   GENERATE_CHART,
+  GET_BATCH_COVERAGE,
   GET_CHART_NAME,
+  SELECTED_CHART_DATA,
   SELECTED_CHART_DESCRIPTION,
+  SELECTED_CHART_ID,
   SELECTED_CHART_NAME,
   SELECTED_CHART_TYPE,
+  SELECTED_CHART_VERSION,
   SELECTED_DATE_RANGE,
   SELECTED_SITE,
   SELECTED_UNAPPROVED_DATA,
@@ -14,6 +19,8 @@ import {
   SELECTED_VIEW_VERSION,
   SELECTED_X_AXIS,
   SELECTED_Y_AXIS,
+  SEND_CHART_DATA,
+  SEND_CHART_LAYOUT,
 } from '../../constants/actionTypes';
 
 // get selected site
@@ -101,5 +108,41 @@ export const sendChartName = (payload) => ({
 // get selected chart Desc
 export const sendChartDesc = (payload) => ({
   type: SELECTED_CHART_DESCRIPTION,
+  payload,
+});
+
+//send chart id
+export const sendChartId = (payload) => ({
+  type: SELECTED_CHART_ID,
+  payload,
+});
+
+export const sendChartData = (payload) => ({
+  type: SELECTED_CHART_DATA,
+  payload,
+});
+
+export const sendChartVersion = (payload) => ({
+  type: SELECTED_CHART_VERSION,
+  payload,
+});
+
+export const sendBatchCoverage = (payload) => ({
+  type: GET_BATCH_COVERAGE,
+  payload,
+});
+
+export const sendChartMapping = (payload) => ({
+  type: CHART_MAPPING,
+  payload,
+});
+
+export const sendData = (payload) => ({
+  type: SEND_CHART_DATA,
+  payload,
+});
+
+export const sendLayout = (payload) => ({
+  type: SEND_CHART_LAYOUT,
   payload,
 });

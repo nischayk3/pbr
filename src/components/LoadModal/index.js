@@ -1,19 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'antd';
 import InputView from '../InputView/InputView';
-
+import { useDispatch } from 'react-redux';
+import {
+  sendChartData,
+  sendChartId,
+  sendChartVersion,
+} from '../../duck/actions/chartPersonalizationAction';
 const LoadModal = (props) => {
-  const handleClose = () => {
-    props.handleCloseModal();
-  };
+  console.log('load modal props', props);
+  const [chartId, setchartId] = useState('');
+  const [chartVersion, setchartVersion] = useState('');
+  const [chartViewId, setchartViewId] = useState('');
+
+  const dispatch = useDispatch();
+
+  const viewChartData = props.data && props.data.length > 0 ? props.data : [];
+  const options = viewChartData.map((item, i) => (
+    <Option key={i} value={`${item.chart_disp_id}-${item.chart_version}`}>
+      {`${item.chart_disp_id}-${item.chart_version}`}
+    </Option>
+  ));
 
   const callbackView = () => {
     props.callbackLoadModal();
   };
 
   const handleOk = () => {
-    props.handleCloseModal();
-    // dispatch(sendViewId(selectedViewId));
+    let displayChartId = chartId;
+    let displayChartVersion = chartVersion;
+    props.handleCloseModal(displayChartId, displayChartVersion);
+  };
+
+  const handleClickChart = (value) => {
+    let selectedVlaue = value ? value : '';
+    console.log('selectedVlaue', selectedVlaue);
+    let splitValue = selectedVlaue ? selectedVlaue.split('-') : [];
+
+    let filterChart = viewChartData.filter(
+      (item) => item.chart_disp_id === splitValue[0]
+    );
+    setchartViewId(selectedVlaue);
+    setchartId(splitValue[0]);
+    setchartVersion(splitValue[1]);
+    dispatch(sendChartId(splitValue[0]));
+    dispatch(sendChartVersion(splitValue[1]));
+    dispatch(sendChartData(filterChart));
   };
 
   return (
@@ -43,8 +75,11 @@ const LoadModal = (props) => {
     >
       <InputView
         label='Chart ID'
-        placeholder='Search Chart Id'
+        placeholder='Chart Id'
         onClickPopup={callbackView}
+        selectedValue={chartViewId}
+        onChangeSelect={(e) => handleClickChart(e)}
+        option={options}
       />
     </Modal>
   );

@@ -1,11 +1,7 @@
-.chart-wrapper {
-  padding: 10px;
-  .chart-block {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 8px 14px;
-    margin-top: 20px;
-  }
+.chart-block {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 8px 24px;
 }
 
 .grid-2-columns {
