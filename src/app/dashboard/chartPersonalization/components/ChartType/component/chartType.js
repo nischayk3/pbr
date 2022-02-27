@@ -33,6 +33,7 @@ const ChartType = (props) => {
   const [yAxisList, setyAxisList] = useState([]);
   const [chartBatchData, setChartBatchData] = useState({});
   const [batchData, setbatchData] = useState([]);
+  const [isDisabled, setisDisabled] = useState(true);
 
   const dispatch = useDispatch();
   const getChartObjData = useSelector(
@@ -100,7 +101,7 @@ const ChartType = (props) => {
   const chartData = {
     x: batchData.ph !== undefined ? batchData.ph : [],
     y: batchData.Temperature !== undefined ? batchData.Temperature : [],
-    batchData: batchData.batch !== undefined ? batchData.batch : [],
+    text: batchData.batch !== undefined ? batchData.batch : [],
     mode: 'markers',
     type: 'scatter',
   };
@@ -130,6 +131,7 @@ const ChartType = (props) => {
   };
 
   const selectChartType = (value, field) => {
+    setisDisabled(false);
     if (value !== null) {
       if (field === 'charttype') {
         setselectedChartType(value);
@@ -239,6 +241,7 @@ const ChartType = (props) => {
           className='custom-secondary-btn'
           onClick={createChart}
           style={{ marginTop: '12px', float: 'right' }}
+          disabled={isDisabled}
         >
           Apply
         </Button>

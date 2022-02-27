@@ -35,6 +35,7 @@ function ChartFilter(props) {
   const [endTime, setEndTime] = useState('');
   const [startTimeIso, setstartTimeIso] = useState('');
   const [endTimeIso, setendTimeIso] = useState('');
+  const [isDisabled, setisDisabled] = useState(true);
 
   const [selectedDateRange, setSelectedDateRange] = useState('');
   const [unapprovedData, setunapprovedData] = useState(false);
@@ -120,11 +121,13 @@ function ChartFilter(props) {
   const onChangeCheckbox = (checked) => {
     const isChecked = checked;
     setunapprovedData(isChecked);
+    setisDisabled(false);
   };
 
   const handleSelectChange = (value) => {
     if (value !== null) {
       setSelectedSite(value);
+      setisDisabled(false);
     }
   };
   const onChangeStart = (date, dateString) => {
@@ -142,6 +145,7 @@ function ChartFilter(props) {
 
   const handleDateClick = () => {
     showModal();
+    setisDisabled(false);
   };
 
   const onClickTimeRange = () => {
@@ -188,6 +192,7 @@ function ChartFilter(props) {
           className='custom-secondary-btn'
           onClick={chartFilter}
           style={{ marginTop: '12px', float: 'right' }}
+          disabled={isDisabled}
         >
           Apply
         </Button>

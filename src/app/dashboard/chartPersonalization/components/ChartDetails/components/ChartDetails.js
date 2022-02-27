@@ -1,6 +1,6 @@
 import './ChartDetailsStyle.scss';
 
-import { Card, Empty } from 'antd';
+import { Button, Card, Empty, Modal, Switch } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
   sendChartDesc,
@@ -22,6 +22,10 @@ function ChartDetails(props) {
   const [chartVersion, setchartVersion] = useState('');
   const [selectedData, setselectedData] = useState([]);
   const [selectedLayout, setselectedLayout] = useState({});
+  const [clickedBatchId, setclickedBatchId] = useState('');
+  const [isExcluedModal, setisExcluedModal] = useState(false);
+  const [isExcludeRecord, setisExcludeRecord] = useState(false);
+
   const chartPlotData = useSelector(
     (state) => state.chartDataReducer && state.chartDataReducer.chartData
   );
@@ -71,6 +75,22 @@ function ChartDetails(props) {
     }
   };
 
+  const chartNodeClicked = (batch) => {
+    console.log('batchhhhhhhhhhh', batch);
+    setisExcluedModal(true);
+    setclickedBatchId(batch);
+  };
+
+  const handleCloseModal = () => {
+    setisExcluedModal(false);
+  };
+  const handleOk = () => {
+    setisExcluedModal(false);
+  };
+  const onChangeCheckbox = (checked) => {
+    const isChecked = checked;
+    setisExcludeRecord(checked);
+  };
   return (
     <div>
       <Card title='Chart'>
@@ -109,7 +129,13 @@ function ChartDetails(props) {
         >
           {selectedLayout && Object.keys(selectedLayout).length > 0 ? (
             (console.log('object selectedData', selectedData),
-            (<ScatterPlot data={selectedData} layout={selectedLayout} />))
+            (
+              <ScatterPlot
+                data={selectedData}
+                layout={selectedLayout}
+                nodeClicked={chartNodeClicked}
+              />
+            ))
           ) : (
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -118,6 +144,34 @@ function ChartDetails(props) {
           )}
         </Card>
       </Card>
+      <Modal
+        title='Exclude Record'
+        visible={isExcluedModal}
+        footer={[
+          <Button
+            onClick={handleCloseModal}
+            className='custom-primary-btn'
+            key='cancel'
+          >
+            Cancel
+          </Button>,
+          <Button
+            onClick={handleOk}
+            className='custom-secondary-btn'
+            key='link'
+            type='primary'
+          >
+            Ok
+          </Button>,
+        ]}
+        width={400}
+      >
+        <InputField label='Batch' value={clickedBatchId} disabled />
+        <div className='show-data'>
+          <p>Exclude Record </p>
+          <Switch type='primary' size='small' onChange={onChangeCheckbox} />
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -539,6 +539,7 @@ function ChartPersonalization() {
                     onClick={() => {
                       setVisible(false);
                       setIsSave(false);
+                      destroyState();
                     }}
                     className='saveOkBtn'
                   >
