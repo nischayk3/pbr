@@ -44,4 +44,5 @@ export const GET_BATCH_COVERAGE = 'GET_BATCH_COVERAGE';
 
 // Report Designer Actions
 
-export const SELECTED_REPORT_ID = 'SELECTED_REPORT_ID';
+export const SELECTED_REPORT_ID = 'SELECTED_REPORT_ID'; 
+export const SCREEN_CHANGE = 'SCREEN_CHANGE'; 

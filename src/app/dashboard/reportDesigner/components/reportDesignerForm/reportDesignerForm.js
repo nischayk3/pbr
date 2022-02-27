@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Input, Select, Typography, Modal, Table } from 'antd';
-import { BuildTwoTone } from '@ant-design/icons';
+import { BlockOutlined } from '@ant-design/icons';
 import './styles.scss';
 // import { getCharts } from '../../../../../services/reportDesignerServices';
 
@@ -65,10 +65,10 @@ function ReportDesignerForm(props) {
     };
 
     return (
-        <div className='reportDesigner-grid bg-white'>
-            <div className='reportDesigner-block-left bg-white'>
+        <div className='reportDesigner-grid'>
+            <div className='reportDesigner-block-left'>
                 <Text className='filter-text'> Report ID </Text>
-                <Text className='filter-text'>Report Name *</Text>
+                <Text className='filter-text'>Report Name <b style={{color:'red'}}>*</b></Text>
                 <Text className='filter-text'>View</Text>
                 <Text className='filter-text'>Status</Text>
                 <Input className='filter-button' value={reportId} disabled />
@@ -85,6 +85,7 @@ function ReportDesignerForm(props) {
                     <Select
                         className='filter-button'
                         defaultValue={viewIdVersion}
+                        showArrow
                         onChange={(e, value) => {
                             let view_value = value.value;
                             let split_view_id = view_value.split('-');
@@ -105,7 +106,7 @@ function ReportDesignerForm(props) {
                         style={{ width: '40px' }}
                         onClick={() => setVisible(true)}
                     >
-                        <BuildTwoTone
+                        <BlockOutlined
                             style={{ marginRight: '5px' }}
                             twoToneColor='#093185'
                         />
@@ -130,6 +131,8 @@ function ReportDesignerForm(props) {
                 onOk={() => setVisible(false)}
                 onCancel={() => setVisible(false)}
                 width={600}
+                footer={[<Button style={{backgroundColor:'#093185',color:'white'}} onClick={() => setVisible(false)}>OK</Button>,]}
+
             >
                 <Table
                     dataSource={filterTable === null ? viewList : filterTable}
@@ -138,6 +141,7 @@ function ReportDesignerForm(props) {
                     size='small'
                     onRow={(record) => ({
                         onClick: (e) => {
+                            
                             setViewId(record.view_disp_id);
                             setStatus('NEW');
                             setViewVersion(record.view_version);

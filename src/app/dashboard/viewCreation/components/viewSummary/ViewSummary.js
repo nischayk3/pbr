@@ -193,6 +193,8 @@ function ViewSummary(props) {
         viewDisplayId,
         viewStatus,
         viewVersion,
+        form,
+        moleculeId,
     } = props;
 
     const onChangeColumnsHandler = () => {
@@ -249,10 +251,10 @@ function ViewSummary(props) {
     return (
         <div className='viewSummary-container'>
             <div className='viewSummary-FormBlock'>
-                <Form.Item label='View ID' name='viewDisplayId'>
+                <Form.Item label='View ID' name='viewId'>
                     <Input placeholder='Enter View ID' disabled />
                 </Form.Item>
-                <Form.Item label='Name' name='name'>
+                <Form.Item label='Name' name='viewName'>
                     <Input placeholder='Enter Name' />
                 </Form.Item>
                 <Form.Item label='Status' name='status'>

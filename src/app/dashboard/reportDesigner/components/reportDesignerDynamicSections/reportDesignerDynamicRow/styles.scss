@@ -3,3 +3,7 @@
     background-color: grey;
     color: hotpink;
 }
+::placeholder {
+    color: black;
+    opacity: 1; /* Firefox */
+  }
