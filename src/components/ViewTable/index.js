@@ -1,9 +1,11 @@
-import { Modal, Button, Table, Input } from 'antd';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { sendView } from '../../duck/actions/chartPersonalizationAction';
-import { SearchOutlined } from '@ant-design/icons';
 import './style.scss';
+
+import { Button, Input, Modal, Table } from 'antd';
+import React, { useState } from 'react';
+
+import { SearchOutlined } from '@ant-design/icons';
+import { sendView } from '../../duck/actions/chartPersonalizationAction';
+import { useDispatch } from 'react-redux';
 
 const ViewTable = (props) => {
   console.log('props view table', props);
@@ -44,8 +46,14 @@ const ViewTable = (props) => {
   const data = props.data;
 
   const handleOk = () => {
-    props.handleCloseModal();
+    let selectedId = selectedViewId.view_disp_id;
+    let selectedVersion = selectedViewId.view_version;
+    props.handleCloseModal(selectedId, selectedVersion);
     dispatch(sendView(selectedViewId));
+  };
+
+  const handleClose = () => {
+    props.handleCloseModal();
   };
 
   const searchTable = (value) => {
@@ -65,11 +73,11 @@ const ViewTable = (props) => {
       title='View Table'
       width={600}
       closable={false}
-      onCancel={props.handleCloseModal}
+      onCancel={handleClose}
       centered={true}
       footer={[
         <Button
-          onClick={props.handleCloseModal}
+          onClick={handleClose}
           className='custom-primary-btn'
           key='cancel'
         >
@@ -100,16 +108,16 @@ const ViewTable = (props) => {
       <div className='custom-table-antd'>
         <Table
           columns={columns}
-          rowSelection={() => ({
-            onChange: (selectedRowKeys, selectedRows) => {
-              console.log(
-                `selectedRowKeys: ${selectedRowKeys}`,
-                'selectedRows: ',
-                selectedRows
-              );
-              setselectedKeys({ selectedRowKeys });
-            },
-          })}
+          // rowSelection={() => ({
+          //   onChange: (selectedRowKeys, selectedRows) => {
+          //     console.log(
+          //       `selectedRowKeys: ${selectedRowKeys}`,
+          //       'selectedRows: ',
+          //       selectedRows
+          //     );
+          //     setselectedKeys({ selectedRowKeys });
+          //   },
+          // })}
           rowKey='key'
           onRow={(record) => ({
             onClick: () => {

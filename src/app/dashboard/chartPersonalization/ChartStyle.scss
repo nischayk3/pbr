@@ -1,6 +1,6 @@
 .chart-block {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 29% 45% 23%;
   grid-gap: 8px 24px;
 }
 
@@ -164,4 +164,19 @@
     color: black;
   }
   width: '80px' !important;
+}
+
+.save-wrapper {
+  p {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    /* identical to box height, or 150% */
+
+    /* Gray / gray-9 */
+    margin: 0;
+    color: #262626;
+  }
+  overflow: hidden;
 }

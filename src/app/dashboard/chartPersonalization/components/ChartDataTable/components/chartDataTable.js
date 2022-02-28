@@ -2,14 +2,15 @@ import './chartTableStyles.scss';
 
 import { Card, Table, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ExclusionTable from './exclusion_table';
 import ParameterTable from './parameter_table/components/ParameterTable';
 import ShiftTable from './shift_table';
 import TrendTable from './trend_table';
 import ViolationTable from './violation';
+import { sendParameterTableData } from '../../../../../../duck/actions/chartPersonalizationAction';
 import { updateTableColumn } from '../../../../../../utils/updateTableColumns';
-import { useSelector } from 'react-redux';
 
 function ChartDataTable(props) {
   const parameterData = useSelector(
@@ -18,8 +19,11 @@ function ChartDataTable(props) {
 
   const [paramData, setparamData] = useState([]);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     setparamData(parameterData);
+    dispatch(sendParameterTableData(parameterData));
   }, [parameterData]);
 
   const uniqueArr = (value, index, self) => {
@@ -69,7 +73,6 @@ function ChartDataTable(props) {
                 scroll={{ y: 150 }}
                 pagination={false}
               />
-              {/* <ParameterTable parameterData={paramData} /> */}
             </TabPane>
           </Tabs>
         </Card>

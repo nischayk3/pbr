@@ -1,12 +1,14 @@
+import { Button, Modal } from 'antd';
 import React, { useState } from 'react';
-import { Modal, Button } from 'antd';
-import InputView from '../InputView/InputView';
-import { useDispatch } from 'react-redux';
 import {
   sendChartData,
   sendChartId,
   sendChartVersion,
 } from '../../duck/actions/chartPersonalizationAction';
+
+import InputView from '../InputView/InputView';
+import { useDispatch } from 'react-redux';
+
 const LoadModal = (props) => {
   console.log('load modal props', props);
   const [chartId, setchartId] = useState('');
@@ -29,7 +31,19 @@ const LoadModal = (props) => {
   const handleOk = () => {
     let displayChartId = chartId;
     let displayChartVersion = chartVersion;
-    props.handleCloseModal(displayChartId, displayChartVersion);
+    let filterChart = viewChartData.filter(
+      (item) => item.chart_disp_id === chartId
+    );
+    props.handleOkModal(displayChartId, displayChartVersion);
+    dispatch(sendChartId(chartId));
+    dispatch(sendChartVersion(chartVersion));
+    dispatch(sendChartData(filterChart));
+    setchartViewId('');
+  };
+
+  const handleClose = () => {
+    props.handleCloseModal();
+    setchartViewId('');
   };
 
   const handleClickChart = (value) => {
@@ -37,15 +51,9 @@ const LoadModal = (props) => {
     console.log('selectedVlaue', selectedVlaue);
     let splitValue = selectedVlaue ? selectedVlaue.split('-') : [];
 
-    let filterChart = viewChartData.filter(
-      (item) => item.chart_disp_id === splitValue[0]
-    );
     setchartViewId(selectedVlaue);
     setchartId(splitValue[0]);
     setchartVersion(splitValue[1]);
-    dispatch(sendChartId(splitValue[0]));
-    dispatch(sendChartVersion(splitValue[1]));
-    dispatch(sendChartData(filterChart));
   };
 
   return (
@@ -54,10 +62,10 @@ const LoadModal = (props) => {
       style={{ left: '20' }}
       width={400}
       visible={props.isModal}
-      onCancel={props.handleCloseModal}
+      onCancel={handleClose}
       footer={[
         <Button
-          onClick={props.handleCloseModal}
+          onClick={handleClose}
           className='custom-primary-btn'
           key='cancel'
         >
