@@ -50,4 +50,4 @@ production/landing/*.html
 
 # misc
 package-lock.json
-
+.env
