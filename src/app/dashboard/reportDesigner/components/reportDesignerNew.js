@@ -505,10 +505,10 @@ function ReportDesignerNew() {
             value={reportId}
             showArrow
           >
-            {mapReportList.map((item) =>
+            {mapReportList.length <= 0 ? mapReportList.map((item) =>
 
               <Option value={item.rep_disp_id}>{item.rep_disp_id}</Option>
-            )}
+            ):<></>}
 
           </Select>
           <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>

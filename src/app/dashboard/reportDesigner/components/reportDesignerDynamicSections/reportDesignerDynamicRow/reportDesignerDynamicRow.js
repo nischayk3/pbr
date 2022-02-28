@@ -36,7 +36,7 @@ function ReportDesignerDynamicRow(props) {
                             className="dynamicSections-spaceRows"
                             key={key} >
                             <td><Form.Item>
-                                <PlusSquareOutlined onClick={() => add()} />
+                                <PlusSquareTwoTone onClick={() => add()} />
                             </Form.Item></td>
                             <td >
                                 <Form.Item
