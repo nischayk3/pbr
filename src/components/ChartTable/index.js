@@ -104,9 +104,7 @@ const ChartTable = (props) => {
           enterButton
           onSearch={searchTable}
           allowClear
-          prefix={
-            <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
-          }
+          
         />
       </div>
       <div className='custom-table-antd'>

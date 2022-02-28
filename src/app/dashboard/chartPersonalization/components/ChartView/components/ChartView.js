@@ -156,10 +156,7 @@ function ChartView(props) {
           />
         </div>{' '}
         {props && props.showBatch && (
-          <Card
-            title='Batch Coverage'
-            style={{ marginTop: '24px', height: '184px' }}
-          >
+          <Card title='Batch Coverage' bordered={false} style={{ marginTop: '24px',border: "1px solid #d9d9d9" }}>
             {showBatchCoverage ? (
               <div className='alert-tags'>
                 {batchStatus !== undefined &&

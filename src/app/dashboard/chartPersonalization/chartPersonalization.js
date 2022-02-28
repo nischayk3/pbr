@@ -72,9 +72,15 @@ function ChartPersonalization() {
   const [batchData, setbatchData] = useState({});
   const [resChartId, setresChartId] = useState('');
   const [resChartVersion, setresChartVersion] = useState('');
+  const [resChartStatus, setresChartStatus] = useState("");
+  
   const [chartTypeList, setchartTypeList] = useState([]);
   const [isChart, setIsChart] = useState(false);
   const [isLandingDisabled, setisLandingDisabled] = useState(false);
+  const [isFieldEmpty, setisFieldEmpty] = useState(false);
+  const [isSaveAsBtnDisabled, setisSaveAsBtnDisabled] = useState(true);
+  const [isSaveBtnDisabled, setisSaveBtnDisabled] = useState(false);
+  
 
   const chartPersReducer = useSelector((state) => state.chartPersReducer);
   const chartDataReducer = useSelector((state) => state.chartDataReducer);
@@ -89,7 +95,6 @@ function ChartPersonalization() {
 
   function handleCancel() {
     setVisible(false);
-
     setIsLoad(false);
     setIsNew(false);
     setIsSave(false);
@@ -138,6 +143,7 @@ function ChartPersonalization() {
     getChartListSer();
     setresChartId('');
     setresChartVersion('');
+    setresChartStatus("");
   };
 
   const callbackViewType = (param) => {
@@ -147,6 +153,7 @@ function ChartPersonalization() {
     setShowCustomization(true);
     setisNewBtnDisabled(false);
     setshowBatch(true);
+    setisLandingDisabled(true)
     let paramSplit = param ? param.split('-') : '';
     viewParamData(paramSplit[0], paramSplit[1], '', '', '');
   };
@@ -181,7 +188,14 @@ function ChartPersonalization() {
       ],
       savetype: 'saveas',
     };
-    putChartObjData(putChartSaveAs);
+
+    if (chartDataReducer.chartName === '') {
+      setisFieldEmpty(true);
+    } else{
+      putChartObjData(putChartSaveAs);
+    }
+
+   
     console.log('putChartSaveAs', putChartSaveAs);
   };
 
@@ -196,8 +210,7 @@ function ChartPersonalization() {
           chart_status: 'NEW',
           view_id: chartViewReducer.viewId,
           view_name: chartViewReducer.viewName,
-          view_version: chartViewReducer.viewVersion,
-
+         // view_version: chartViewReducer.viewVersion,
           data_filter: {
             date_range: chartPersReducer.dateRange,
             unapproved_data: chartPersReducer.unApprovedData,
@@ -207,7 +220,6 @@ function ChartPersonalization() {
           chart_mapping: chartDataReducer.chartMapping,
           data: chartDataReducer.data,
           layout: chartDataReducer.layout,
-
           exclusions: [],
           violations: [],
           limits: {},
@@ -216,7 +228,14 @@ function ChartPersonalization() {
       ],
       savetype: 'save',
     };
-    putChartObjData(putChart);
+    if (chartDataReducer.chartName === '') {
+      setisFieldEmpty(true);
+    } else {
+      putChartObjData(putChart)
+      setisSaveBtnDisabled(true)
+      setisSaveAsBtnDisabled(false)
+    }
+
     console.log('putcharttttt save ', putChart);
   };
 
@@ -266,6 +285,8 @@ function ChartPersonalization() {
     setShowChartType(true);
     setShowFilter(true);
     setShowCustomization(true);
+    setisSaveAsBtnDisabled(false)
+    setisNewBtnDisabled(true)
     let reqChartObj = { chartId: chart_id, version: chart_ver };
     getChrtObjData(reqChartObj);
   };
@@ -292,6 +313,10 @@ function ChartPersonalization() {
     let viewVersionId =
       chartViewReducer.viewVersion !== '' ? chartViewReducer.viewVersion : '';
     viewParamData(viewDisplayId, viewVersionId, site, dateRange, isUnApproved);
+  };
+
+  const callBackChartName = () => {
+    setisFieldEmpty(false);
   };
 
   const getChartListSer = async () => {
@@ -352,13 +377,13 @@ function ChartPersonalization() {
         console.log('chartResData', chartResData);
 
         dispatch(hideLoader());
-        // viewParamData(
-        //   chartResData && chartResData[0].view_id,
-        //   chartResData && chartResData[0].view_version,
-        //   chartResData && chartResData[0]?.data_filter?.site,
-        //   chartResData && chartResData[0]?.data_filter?.date_range,
-        //   chartResData && chartResData[0]?.data_filter?.unapproved_data
-        // );
+        viewParamData(
+          chartResData && chartResData[0].view_id,
+          chartResData && chartResData[0].view_version,
+          chartResData && chartResData[0]?.data_filter?.site,
+          chartResData && chartResData[0]?.data_filter?.date_range,
+          chartResData && chartResData[0]?.data_filter?.unapproved_data
+        );
 
         dispatch(
           sendChartVersion(chartResData && chartResData[0].chart_version)
@@ -388,6 +413,7 @@ function ChartPersonalization() {
         dispatch(
           sendChartMapping(chartResData && chartResData[0].chart_mapping)
         );
+        setshowBatch(true);
       }
     } catch (error) {
       dispatch(hideLoader());
@@ -404,6 +430,9 @@ function ChartPersonalization() {
         setIsSave(true);
         setresChartId(putChart.chart_id);
         setresChartVersion(putChart.chart_version);
+        setresChartStatus("NEW")
+      }else if(putChart.statuscode === 400){
+        dispatch(showNotification('error', putChart.message));
       }
       dispatch(hideLoader());
     } catch (error) {
@@ -465,6 +494,7 @@ function ChartPersonalization() {
                 setShowCustomization(true);
                 setshowBatch(true);
                 setisLandingDisabled(true);
+                setisSaveAsBtnDisabled(true)
                 setisNewBtnDisabled(false);
               }}
               type='primary'
@@ -492,9 +522,11 @@ function ChartPersonalization() {
                   setisNewBtnDisabled(true);
                 }}
                 type='primary'
+                disabled={isSaveBtnDisabled}
               >
                 Save
               </Button>
+
               <Button
                 className='custom-primary-btn'
                 onClick={() => {
@@ -502,6 +534,7 @@ function ChartPersonalization() {
                   setisNewBtnDisabled(true);
                 }}
                 type='primary'
+                disabled={isSaveAsBtnDisabled}
               >
                 Save As
               </Button>
@@ -541,6 +574,9 @@ function ChartPersonalization() {
               <ChartDetails
                 resChartId={resChartId}
                 resChartVersion={resChartVersion}
+                setresChartStatus={resChartStatus}
+                isFieldEmpty={isFieldEmpty}
+                isChartNameEmpty={callBackChartName}
               />
               <ChartDataTable />
             </div>
