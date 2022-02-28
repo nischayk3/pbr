@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal } from 'antd';
-import { CheckCircleTwoTone } from '@ant-design/icons';
+import { CheckCircleOutlined } from '@ant-design/icons';
 
 
 function SaveModal(props) {
@@ -15,7 +15,7 @@ function SaveModal(props) {
         <div>
             <Modal
                 visible={isSave}
-                title="Saved"
+                title="Congartulations"
                 width={500}
                 mask={true}
                 onCancel={handleCancel}
@@ -24,12 +24,13 @@ function SaveModal(props) {
             >
                 <div>
                     <center>
-                        <CheckCircleTwoTone
-                            className='circleIcon'
-                            twoToneColor='Green'
-                        />
-                        <br />
-                        <p> <b>{id}</b> Have Been Successfully Saved </p>
+                    <CheckCircleOutlined
+                    className='circleIcon'
+                    style={{color:'green',fontSize:'40px'}}
+                  /> <br/>
+                     <b style={{marginTop:'10px'}}>Report ID :{id}</b>
+                     <br/>
+                        <p style={{marginTop:'7px'}}>Changes have been successfully saved </p>
                     </center>
                 </div>
 
