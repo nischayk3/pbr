@@ -10,10 +10,16 @@ import configureStore, { history } from './duck/store';
 import * as serviceWorker from './serviceWorker';
 import './index.scss';
 import 'antd/dist/antd.min.css';
+import { PublicClientApplication } from "@azure/msal-browser";
+import { MsalProvider } from "@azure/msal-react";
+import { msalConfig } from "./services/authProvider";
+
+const msalInstance = new PublicClientApplication(msalConfig);
 
 ReactDOM.render(
     <>
         {/* <React.StrictMode> */}
+        <MsalProvider instance={msalInstance}>
         <Provider store={configureStore()}>
             <ConnectedRouter history={history}>
                 <Route>
@@ -21,6 +27,7 @@ ReactDOM.render(
                 </Route>
             </ConnectedRouter>
         </Provider>
+        </MsalProvider>
         {/* </React.StrictMode> */}
     </>,
     document.getElementById('root')
