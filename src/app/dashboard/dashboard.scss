@@ -149,3 +149,57 @@
   margin: 6px 0;
   color: rgba(0, 0, 0, 0.25);
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.ant-switch-checked {
+  background-color: #093185;
+}
+
+.input-error-label {
+  .error-label {
+    margin: 0;
+    color: #ff4d4f;
+  }
+}
+
+.ant-modal-content {
+  border-radius: 4px;
+}
+
+.table-row-light {
+  background-color: #ffffff;
+}
+.table-row-dark {
+  background-color: #f9f9f9;
+}
+.ant-table-small .ant-table-thead > tr > th {
+  background-color: rgba(242, 251, 255, 0.73);
+}
+.ant-table {
+  border: 1px solid #f0f0f0;
+}
+
+.ant-modal-header {
+  border-radius: 4px 4px 0 0;
+  background: #f1f7ff;
+  border-bottom: 1px solid #d9d9d9;
+}

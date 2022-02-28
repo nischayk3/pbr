@@ -67,6 +67,7 @@ function ChartDetails(props) {
       if (field === 'chart_name') {
         setchartName(e.target.value);
         dispatch(sendChartName(e.target.value));
+        props.isChartNameEmpty(false);
       } else if (field === 'description') {
         setchartDescription(e.target.value);
         dispatch(sendChartDesc(e.target.value));
@@ -105,17 +106,32 @@ function ChartDetails(props) {
           />
           <InputField
             label='Status'
-            value={chartStatus ? chartStatus : ''}
+            value={props.resChartStatus ? props.resChartStatus: chartStatus }
             disabled
           />
-          <InputField
-            onChangeInput={(e) => {
-              onChangeChart(e, 'chart_name');
-            }}
-            label='Chart Name '
-            placeholder='Enter Chart Name'
-            value={chartName}
-          />
+          {props.isFieldEmpty ? (
+            <div className='input-error-label'>
+              <InputField
+                onChangeInput={(e) => {
+                  onChangeChart(e, 'chart_name');
+                }}
+                label='Chart Name *'
+                placeholder='Enter Chart Name'
+                value={chartName}
+              />
+              <p className='error-label'>Please Enter Chart Name </p>
+            </div>
+          ) : (
+            <InputField
+              onChangeInput={(e) => {
+                onChangeChart(e, 'chart_name');
+              }}
+              label='Chart Name *'
+              placeholder='Enter Chart Name'
+              value={chartName}
+            />
+          )}
+
           <InputField
             onChangeInput={(e) => {
               onChangeChart(e, 'description');
@@ -126,6 +142,7 @@ function ChartDetails(props) {
           />
         </div>
         <Card
+        bordered={false} 
           title={
             <span>
               Scatter Plot
@@ -135,7 +152,7 @@ function ChartDetails(props) {
               </span> */}
             </span>
           }
-          style={{ marginTop: '24px' }}
+          style={{ marginTop: '24px'   ,border: "1px solid #d9d9d9" }}
         >
           {selectedLayout && Object.keys(selectedLayout).length > 0 ? (
             (console.log('object selectedData', selectedData),
