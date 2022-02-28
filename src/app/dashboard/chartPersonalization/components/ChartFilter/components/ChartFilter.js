@@ -247,19 +247,20 @@ function ChartFilter(props) {
             >
               Apply Time Range
             </Button>
-            <p style={{ marginTop: '10px' }}>
+            {/* <p style={{ marginTop: '10px' }}>
               <b>Recently Used time changes</b>
             </p>
             <p>2020-03-16T06:00:00Z - 2020-03-16T06:00:00Z </p>
             <p>2020-03-16T06:00:00Z - 2020-03-16T06:00:00Z </p>
             <p>2020-03-16T06:00:00Z - 2020-03-16T06:00:00Z </p>
-            <p>2020-03-16T06:00:00Z - 2020-03-16T06:00:00Z </p>
+            <p>2020-03-16T06:00:00Z - 2020-03-16T06:00:00Z </p> */}
           </div>
           <div>
-            <Search placeholder='Search quick Ranges' style={{ width: 200 }} />
+            {/* <Search placeholder='Search quick Ranges' style={{ width: 200 }} /> */}
             {/* <p style={{ marginTop: '10px' }}>Last 5 minutes</p> */}
             <Button
-              type='primary'
+              
+              type="link"
               onClick={() => generateISO(5)}
               style={{ marginTop: '10px' }}
             >
@@ -267,7 +268,7 @@ function ChartFilter(props) {
             </Button>
             <br />
             <Button
-              type='primary'
+             type="link"
               onClick={() => generateISO(15)}
               style={{ marginTop: '10px' }}
             >
@@ -276,7 +277,7 @@ function ChartFilter(props) {
             {/* <p onClick={generateISO}>Last 15 minutes</p> */}
             <br />
             <Button
-              type='primary'
+              type="link"
               onClick={() => generateISO(25)}
               style={{ marginTop: '10px' }}
             >
@@ -284,7 +285,7 @@ function ChartFilter(props) {
             </Button>
             <br />
             <Button
-              type='primary'
+             type="link"
               onClick={() => generateISO(35)}
               style={{ marginTop: '10px' }}
             >
@@ -292,7 +293,7 @@ function ChartFilter(props) {
             </Button>
             <br />
             <Button
-              type='primary'
+           type="link"
               onClick={() => generateISO(45)}
               style={{ marginTop: '10px' }}
             >
@@ -300,7 +301,7 @@ function ChartFilter(props) {
             </Button>
             <br />
             <Button
-              type='primary'
+              type="link"
               onClick={() => generateISO(60)}
               style={{ marginTop: '10px' }}
             >

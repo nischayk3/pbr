@@ -72,15 +72,14 @@ function ChartPersonalization() {
   const [batchData, setbatchData] = useState({});
   const [resChartId, setresChartId] = useState('');
   const [resChartVersion, setresChartVersion] = useState('');
-  const [resChartStatus, setresChartStatus] = useState("");
-  
+  const [resChartStatus, setresChartStatus] = useState('');
+
   const [chartTypeList, setchartTypeList] = useState([]);
   const [isChart, setIsChart] = useState(false);
   const [isLandingDisabled, setisLandingDisabled] = useState(false);
   const [isFieldEmpty, setisFieldEmpty] = useState(false);
   const [isSaveAsBtnDisabled, setisSaveAsBtnDisabled] = useState(true);
   const [isSaveBtnDisabled, setisSaveBtnDisabled] = useState(false);
-  
 
   const chartPersReducer = useSelector((state) => state.chartPersReducer);
   const chartDataReducer = useSelector((state) => state.chartDataReducer);
@@ -143,7 +142,7 @@ function ChartPersonalization() {
     getChartListSer();
     setresChartId('');
     setresChartVersion('');
-    setresChartStatus("");
+    setresChartStatus('');
   };
 
   const callbackViewType = (param) => {
@@ -153,7 +152,7 @@ function ChartPersonalization() {
     setShowCustomization(true);
     setisNewBtnDisabled(false);
     setshowBatch(true);
-    setisLandingDisabled(true)
+    setisLandingDisabled(true);
     let paramSplit = param ? param.split('-') : '';
     viewParamData(paramSplit[0], paramSplit[1], '', '', '');
   };
@@ -191,11 +190,10 @@ function ChartPersonalization() {
 
     if (chartDataReducer.chartName === '') {
       setisFieldEmpty(true);
-    } else{
+    } else {
       putChartObjData(putChartSaveAs);
     }
 
-   
     console.log('putChartSaveAs', putChartSaveAs);
   };
 
@@ -210,7 +208,7 @@ function ChartPersonalization() {
           chart_status: 'NEW',
           view_id: chartViewReducer.viewId,
           view_name: chartViewReducer.viewName,
-         // view_version: chartViewReducer.viewVersion,
+          // view_version: chartViewReducer.viewVersion,
           data_filter: {
             date_range: chartPersReducer.dateRange,
             unapproved_data: chartPersReducer.unApprovedData,
@@ -231,9 +229,9 @@ function ChartPersonalization() {
     if (chartDataReducer.chartName === '') {
       setisFieldEmpty(true);
     } else {
-      putChartObjData(putChart)
-      setisSaveBtnDisabled(true)
-      setisSaveAsBtnDisabled(false)
+      putChartObjData(putChart);
+      setisSaveBtnDisabled(true);
+      setisSaveAsBtnDisabled(false);
     }
 
     console.log('putcharttttt save ', putChart);
@@ -249,6 +247,14 @@ function ChartPersonalization() {
     let viewVersId = viewVersion !== '' ? viewVersion : '';
     viewParamData(viewDisId, viewVersId, '', '', '');
     setIsView(false);
+    setShowChart(true);
+    setShowChartType(true);
+    setShowFilter(true);
+    setShowCustomization(true);
+    setshowBatch(true);
+    setisLandingDisabled(true);
+    setisSaveAsBtnDisabled(true);
+    setisSaveBtnDisabled(false);
   };
 
   const handleCloseChartModal = () => {
@@ -285,10 +291,12 @@ function ChartPersonalization() {
     setShowChartType(true);
     setShowFilter(true);
     setShowCustomization(true);
-    setisSaveAsBtnDisabled(false)
-    setisNewBtnDisabled(true)
+    setisSaveAsBtnDisabled(false);
+
     let reqChartObj = { chartId: chart_id, version: chart_ver };
     getChrtObjData(reqChartObj);
+    setisNewBtnDisabled(true);
+    setisSaveBtnDisabled(true);
   };
 
   const callbackIsLoad = () => {
@@ -430,8 +438,8 @@ function ChartPersonalization() {
         setIsSave(true);
         setresChartId(putChart.chart_id);
         setresChartVersion(putChart.chart_version);
-        setresChartStatus("NEW")
-      }else if(putChart.statuscode === 400){
+        setresChartStatus('NEW');
+      } else if (putChart.statuscode === 400) {
         dispatch(showNotification('error', putChart.message));
       }
       dispatch(hideLoader());
@@ -472,6 +480,9 @@ function ChartPersonalization() {
       dispatch(showNotification('error', 'Parameter Data Error - '));
     }
   }
+  console.log('is save btn disabled', isSaveBtnDisabled);
+  console.log('is save as btn disabled', isSaveAsBtnDisabled);
+  console.log('is landing btn disbaled', isLandingDisabled);
 
   return (
     <div className='custom-wrapper'>
@@ -494,7 +505,8 @@ function ChartPersonalization() {
                 setShowCustomization(true);
                 setshowBatch(true);
                 setisLandingDisabled(true);
-                setisSaveAsBtnDisabled(true)
+                setisSaveAsBtnDisabled(true);
+                setisSaveBtnDisabled(false);
                 setisNewBtnDisabled(false);
               }}
               type='primary'

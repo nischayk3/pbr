@@ -52,7 +52,7 @@ function ChartDataTable(props) {
   return (
     <div>
       <div>
-        <Card bordered={false} style={{  height: "430px"}}>
+        <Card bordered={false} style={{ height: '430px' }}>
           <Tabs defaultActiveKey='1'>
             <TabPane tab='Exclusion' key='1'>
               <ExclusionTable />
@@ -68,11 +68,13 @@ function ChartDataTable(props) {
             </TabPane>
             <TabPane tab='Data Table' key='5'>
               <Table
+                rowClassName={(record, index) =>
+                  index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+                }
                 size='small'
                 className='parameter_table'
                 columns={columns}
                 dataSource={paramData}
-                bordered
                 scroll={{ y: 350 }}
                 pagination={false}
               />
