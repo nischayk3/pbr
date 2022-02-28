@@ -15,7 +15,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import InputField from '../../../../../../components/InputField/InputField';
-import PropTypes from 'prop-types';
 import SelectField from '../../../../../../components/SelectField/SelectField';
 import { WarningTwoTone } from '@ant-design/icons';
 import chartTypeJson from '../chartType.json';
@@ -34,6 +33,8 @@ const ChartType = (props) => {
   const [chartBatchData, setChartBatchData] = useState({});
   const [batchData, setbatchData] = useState([]);
   const [isDisabled, setisDisabled] = useState(true);
+  const [isDisableXAxis, setisDisableXAxis] = useState(false);
+  const [isDisabledYAxis, setisDisabledYAxis] = useState(false);
 
   const dispatch = useDispatch();
   const getChartObjData = useSelector(
@@ -135,41 +136,17 @@ const ChartType = (props) => {
     if (value !== null) {
       if (field === 'charttype') {
         setselectedChartType(value);
+        if (value === 'Scatter Plot') {
+          setisScattetruer(true);
+        } else if (value === 'Process Control') {
+          setisScattetruer(false);
+        }
       } else if (field === 'xaxis') {
         setselectedXAxis(value);
       } else if (field === 'yaxis') {
         setselectedYAxis(value);
       }
     }
-
-    // let selectedChart = chartTypeJson.filter(function (el) {
-    //   return el.chart_type === value;
-    // });
-
-    // let obj = selectedChart[0]['chart_info'];
-
-    // let x_axis_value = obj[0]['x-axis'];
-    // let y_axis_value = obj[0]['y-axis'];
-    // if ('x-axis' in obj && 'y-axis' in obj) {
-    //   setselectedChartType(value);
-    //   setselectedXAxis(x_axis_value);
-    //   setselectedYAxis(y_axis_value);
-    //   setSelectedTitle(obj[0].Title);
-
-    //   setisScattetruer(true);
-    //   dispatch(sendChartType(value));
-    //   dispatch(sendChartxAxis(x_axis_value));
-    //   dispatch(sendChartyAxis(y_axis_value));
-    // } else {
-    //   setselectedChartType(value);
-    //   setselectedXAxis(x_axis_value);
-    //   setselectedYAxis(y_axis_value);
-    //   setSelectedTitle(obj[0].Title);
-    //   setisScattetruer(true);
-    //   dispatch(sendChartType(value));
-    //   dispatch(sendChartxAxis(x_axis_value));
-    //   dispatch(sendChartyAxis(y_axis_value));
-    // }
   };
 
   const createChart = () => {
@@ -233,7 +210,6 @@ const ChartType = (props) => {
             placeholder=' Y-Axis '
             //onChangeClick={(e) => handleDateClick(e)}
             value={selectedYAxis}
-            disabled
           />
         )}
         <Button

@@ -54,12 +54,12 @@ function ChartView(props) {
       setViewStatus(selectedView.view_status);
       setViewVersion(selectedView.view_version);
     }
+
     setViewTableData(props.viewTableData);
-  }, [props.viewTableData]);
+  }, [props.viewTableData, selectedView]);
 
   useEffect(() => {
     console.log('use effect 2');
-    console.log('view id', getChartObjData);
     setViewId(
       getChartObjData && getChartObjData.view_id !== undefined
         ? getChartObjData.view_id
@@ -84,7 +84,6 @@ function ChartView(props) {
 
   useEffect(() => {
     console.log('use effect 3');
-
     let chartCoverage = batchCoverage && batchCoverage.coverage;
     let chartBatchStatus = batchCoverage && batchCoverage.batchstats;
 
@@ -102,15 +101,6 @@ function ChartView(props) {
         createObj1[key1] = value1;
         coverage.push(createObj1);
       });
-
-    console.log(
-      'covvvvvvvv',
-      cov,
-      cov1,
-      coverage,
-      chartCoverage,
-      chartBatchStatus
-    );
 
     setbatchData(chartBatchStatus);
     setbatchStatus(chartCoverage);
@@ -147,7 +137,7 @@ function ChartView(props) {
       {item.view}
     </Option>
   ));
-  console.log('batchStatus', batchStatus);
+  console.log('props.isNew');
   return (
     <div>
       <Card title='View'>
@@ -169,7 +159,7 @@ function ChartView(props) {
             value={viewVersion}
           />
         </div>{' '}
-        {showBatch && (
+        {props && props.showBatch && (
           <Card
             title='Batch Coverage'
             style={{ marginTop: '24px', height: '184px' }}
@@ -221,19 +211,6 @@ function ChartView(props) {
                       );
                     }
                   })}
-
-                {/* else {
-                      return (
-                        <div className='alert-tags_block   '>
-                          <Tag className='alert-tags-label' color='magenta'>
-                            {key}
-                          </Tag>
-                          <Tag className='alert-progress'>
-                            {value.toString()}
-                          </Tag>
-                        </div>
-                      );
-                    } */}
               </div>
             ) : (
               <Empty

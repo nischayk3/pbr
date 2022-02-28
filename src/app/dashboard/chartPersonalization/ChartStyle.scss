@@ -165,3 +165,18 @@
   }
   width: '80px' !important;
 }
+
+.save-wrapper {
+  p {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    /* identical to box height, or 150% */
+
+    /* Gray / gray-9 */
+    margin: 0;
+    color: #262626;
+  }
+  overflow: hidden;
+}
