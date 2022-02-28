@@ -275,22 +275,24 @@ function ReportDesignerNew() {
     let ReportName = jay['rep_name'] ? jay['rep_name'] : ''
     setReportName(ReportName)
 
-    jay = jay['layout_info']
+    
+    let view = jay['view_disp_id'] ? jay['view_disp_id'] : ''
+    setViewId(view)
+   
+    let chartList = jay['chart_details'].length > 0 ? jay['chart_details'] : []
+    setSelectedChartList(chartList)
+
+    // let status = jay['rep_status'] ? jay['rep_status'] : ''
+    let view_version = jay['view_version'] ? jay['view_version'].toString() : ''
+    setViewVersion(view_version)
+    getChartsList(view + '-' + view_version)
+    setViewIdVersion(view + '-' + view_version)
 
     console.log(jay)
     // view_disp_id,chart_int_ids,view_version
+    jay = jay['layout_info']
     if (jay) {
-      let view = jay['view_disp_id'] ? jay['view_disp_id'] : ''
-      setViewId(view)
 
-      let chartList = jay['chart_int_ids'].length > 0 ? jay['chart_int_ids'] : []
-      setSelectedChartList(chartList)
-
-      // let status = jay['rep_status'] ? jay['rep_status'] : ''
-      let view_version = jay['view_version'] ? jay['view_version'] : ''
-      setViewVersion(view_version)
-      getChartsList(view + '-' + view_version)
-      setViewIdVersion(view + '-' + view_version)
       let res = []
       console.log('layout', jay)
       let layout_info = jay ? jay : {}
