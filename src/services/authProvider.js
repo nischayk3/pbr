@@ -33,7 +33,7 @@ export const msalConfig = {
   auth: {
       authority: 'https://login.microsoftonline.com/mareana.com',
       clientId: '016b5077-e449-47f3-991d-098c6ded6ede',
-      redirectUri: 'http://localhost:3001/'
+      redirectUri: 'http://localhost:3000'
   },
   cache: {
     cacheLocation: "sessionStorage", // This configures where your cache will be stored
