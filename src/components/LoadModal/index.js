@@ -31,11 +31,19 @@ const LoadModal = (props) => {
   const handleOk = () => {
     let displayChartId = chartId;
     let displayChartVersion = chartVersion;
+    let filterChart = viewChartData.filter(
+      (item) => item.chart_disp_id === chartId
+    );
     props.handleOkModal(displayChartId, displayChartVersion);
+    dispatch(sendChartId(chartId));
+    dispatch(sendChartVersion(chartVersion));
+    dispatch(sendChartData(filterChart));
+    setchartViewId('');
   };
 
   const handleClose = () => {
     props.handleCloseModal();
+    setchartViewId('');
   };
 
   const handleClickChart = (value) => {
@@ -43,15 +51,9 @@ const LoadModal = (props) => {
     console.log('selectedVlaue', selectedVlaue);
     let splitValue = selectedVlaue ? selectedVlaue.split('-') : [];
 
-    let filterChart = viewChartData.filter(
-      (item) => item.chart_disp_id === splitValue[0]
-    );
     setchartViewId(selectedVlaue);
     setchartId(splitValue[0]);
     setchartVersion(splitValue[1]);
-    dispatch(sendChartId(splitValue[0]));
-    dispatch(sendChartVersion(splitValue[1]));
-    dispatch(sendChartData(filterChart));
   };
 
   return (

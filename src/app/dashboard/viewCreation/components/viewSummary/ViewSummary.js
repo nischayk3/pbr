@@ -273,6 +273,7 @@ function ViewSummary(props) {
                         columns={viewSummaryColumns}
                         dataSource={viewSummaryTable}
                         scroll={{ x: 900 }}
+                        style={{border:'1px solid #ececec',borderRadius:'2px'}}
                         rowKey={(record) => record.param}
                     />
                 </div>

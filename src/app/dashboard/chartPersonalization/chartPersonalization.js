@@ -37,7 +37,6 @@ import {
 } from '../../../duck/actions/chartPersonalizationAction';
 import { useDispatch, useSelector } from 'react-redux';
 
-import BatchJson from '../chartPersonalization/components/ChartView/batch.json';
 import ChartDataTable from './components/ChartDataTable/index';
 import ChartDetails from './components/ChartDetails';
 import ChartFilter from './components/ChartFilter/index';
@@ -47,7 +46,6 @@ import ChartView from './components/ChartView/index';
 import LoadModal from '../../../components/LoadModal';
 import Personalization from './components/Personalization/components/Personalization';
 import ViewTable from '../../../components/ViewTable';
-import chartObj from './get_chart.json';
 import { getViewTable } from '../../../services/commonService';
 
 function ChartPersonalization() {
@@ -69,7 +67,6 @@ function ChartPersonalization() {
   // const [chartObjData, setChartObjData] = useState([]);
   const [chartResObj, setchartResObj] = useState([]);
   const [showBatch, setshowBatch] = useState(false);
-
   const [viewTableData, setviewTableData] = useState([]);
   const [batchCoverage, setbatchCoverage] = useState();
   const [batchData, setbatchData] = useState({});
@@ -77,6 +74,7 @@ function ChartPersonalization() {
   const [resChartVersion, setresChartVersion] = useState('');
   const [chartTypeList, setchartTypeList] = useState([]);
   const [isChart, setIsChart] = useState(false);
+  const [isLandingDisabled, setisLandingDisabled] = useState(false);
 
   const chartPersReducer = useSelector((state) => state.chartPersReducer);
   const chartDataReducer = useSelector((state) => state.chartDataReducer);
@@ -138,6 +136,8 @@ function ChartPersonalization() {
     dispatch(sendBatchCoverage({}));
     getViewTableData();
     getChartListSer();
+    setresChartId('');
+    setresChartVersion('');
   };
 
   const callbackViewType = (param) => {
@@ -146,6 +146,7 @@ function ChartPersonalization() {
     setShowFilter(true);
     setShowCustomization(true);
     setisNewBtnDisabled(false);
+    setshowBatch(true);
     let paramSplit = param ? param.split('-') : '';
     viewParamData(paramSplit[0], paramSplit[1], '', '', '');
   };
@@ -195,6 +196,8 @@ function ChartPersonalization() {
           chart_status: 'NEW',
           view_id: chartViewReducer.viewId,
           view_name: chartViewReducer.viewName,
+          view_version: chartViewReducer.viewVersion,
+
           data_filter: {
             date_range: chartPersReducer.dateRange,
             unapproved_data: chartPersReducer.unApprovedData,
@@ -204,7 +207,7 @@ function ChartPersonalization() {
           chart_mapping: chartDataReducer.chartMapping,
           data: chartDataReducer.data,
           layout: chartDataReducer.layout,
-          // datatable: [chartPersReducer.parameterTableData],
+
           exclusions: [],
           violations: [],
           limits: {},
@@ -347,8 +350,16 @@ function ChartPersonalization() {
         setchartResObj(chartResData);
         dispatch(sendChartData(chartResData));
         console.log('chartResData', chartResData);
+
         dispatch(hideLoader());
-        // dispatch(sendChartId(chartResData && chartResData[0].chart_id));
+        // viewParamData(
+        //   chartResData && chartResData[0].view_id,
+        //   chartResData && chartResData[0].view_version,
+        //   chartResData && chartResData[0]?.data_filter?.site,
+        //   chartResData && chartResData[0]?.data_filter?.date_range,
+        //   chartResData && chartResData[0]?.data_filter?.unapproved_data
+        // );
+
         dispatch(
           sendChartVersion(chartResData && chartResData[0].chart_version)
         );
@@ -453,6 +464,7 @@ function ChartPersonalization() {
                 setShowFilter(true);
                 setShowCustomization(true);
                 setshowBatch(true);
+                setisLandingDisabled(true);
                 setisNewBtnDisabled(false);
               }}
               type='primary'
@@ -471,30 +483,33 @@ function ChartPersonalization() {
           >
             Load
           </Button>
-          <Button
-            className='custom-primary-btn'
-            onClick={() => {
-              handleSave();
-              setisNewBtnDisabled(true);
-            }}
-            type='primary'
-          >
-            Save
-          </Button>
-          <Button
-            className='custom-primary-btn'
-            onClick={() => {
-              handleSaveAs();
-              setisNewBtnDisabled(true);
-            }}
-            type='primary'
-          >
-            Save As
-          </Button>
-
-          <Button className='custom-secondary-btn' type='primary'>
-            Publish
-          </Button>
+          {isLandingDisabled && (
+            <>
+              <Button
+                className='custom-primary-btn'
+                onClick={() => {
+                  handleSave();
+                  setisNewBtnDisabled(true);
+                }}
+                type='primary'
+              >
+                Save
+              </Button>
+              <Button
+                className='custom-primary-btn'
+                onClick={() => {
+                  handleSaveAs();
+                  setisNewBtnDisabled(true);
+                }}
+                type='primary'
+              >
+                Save As
+              </Button>
+              <Button className='custom-secondary-btn' type='primary'>
+                Publish
+              </Button>
+            </>
+          )}
         </div>
       </div>
       <div className='custom-content-layout'>
@@ -523,7 +538,10 @@ function ChartPersonalization() {
           </div>
           {showChart && (
             <div className='chart-center-panel'>
-              <ChartDetails />
+              <ChartDetails
+                resChartId={resChartId}
+                resChartVersion={resChartVersion}
+              />
               <ChartDataTable />
             </div>
           )}
@@ -622,7 +640,7 @@ function ChartPersonalization() {
                   onClick={() => {
                     setVisible(false);
                     setIsSave(false);
-                    destroyState();
+                    // destroyState();
                   }}
                   className='custom-primary-btn'
                 >
@@ -631,7 +649,7 @@ function ChartPersonalization() {
               </div>
             )}
 
-            {isLoad && (
+            {/* {isLoad && (
               <div>
                 <ViewTable />
                 <p>
@@ -667,8 +685,8 @@ function ChartPersonalization() {
                   </Button>
                 </div>
               </div>
-            )}
-            {isNew && (
+            )} */}
+            {/* {isNew && (
               <div>
                 <p>
                   You Have made some changes <br /> Do you want to save or
@@ -703,11 +721,11 @@ function ChartPersonalization() {
               <div>
                 <p>Are you sure you want to discard changes ?</p>
                 <div className='discardButton'>
-                  <Button className='custom-primary-btn  '>Ok</Button>
-                  <Button className='custom-primary-btn  '>Cancel</Button>
+                  <Button className='custom-primary-btn'>Ok</Button>
+                  <Button className='custom-primary-btn'>Cancel</Button>
                 </div>
               </div>
-            )}
+            )} */}
           </Modal>
         </div>
       </div>
