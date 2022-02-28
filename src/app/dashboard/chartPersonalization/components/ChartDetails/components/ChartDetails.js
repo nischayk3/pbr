@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import InputField from '../../../../../../components/InputField/InputField';
 import { LineChartOutlined } from '@ant-design/icons';
-import PropTypes from 'prop-types';
 import ScatterPlot from './ScatterPlot';
 import { WarningTwoTone } from '@ant-design/icons';
 
@@ -76,7 +75,6 @@ function ChartDetails(props) {
   };
 
   const chartNodeClicked = (batch) => {
-    console.log('batchhhhhhhhhhh', batch);
     setisExcluedModal(true);
     setclickedBatchId(batch);
   };
@@ -95,9 +93,21 @@ function ChartDetails(props) {
     <div>
       <Card title='Chart'>
         <div className='chart-details-input'>
-          <InputField label='ID' value={chartId} disabled />
-          <InputField label='Version' value={chartVersion} disabled />
-          <InputField label='Status' value={chartStatus} disabled />
+          <InputField
+            label='ID'
+            value={props.resChartId ? props.resChartId : chartId}
+            disabled
+          />
+          <InputField
+            label='Version'
+            value={props.resChartVersion ? props.resChartVersion : chartVersion}
+            disabled
+          />
+          <InputField
+            label='Status'
+            value={chartStatus ? chartStatus : ''}
+            disabled
+          />
           <InputField
             onChangeInput={(e) => {
               onChangeChart(e, 'chart_name');
@@ -175,9 +185,5 @@ function ChartDetails(props) {
     </div>
   );
 }
-
-ChartDetails.propTypes = {
-  chartObj: PropTypes.object.isRequired,
-};
 
 export default ChartDetails;
