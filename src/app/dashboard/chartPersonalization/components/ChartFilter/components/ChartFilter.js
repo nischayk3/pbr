@@ -163,6 +163,19 @@ function ChartFilter(props) {
     dispatch(sendUnApprovedData(unapprovedData));
     props.applyDateFilter(selectedSite, selectedDateRange, unapprovedData);
   };
+  const generateISO = (val) => {
+    let endDate = new Date();
+    let startdate = new Date();
+    let durationInMinutes = val;
+    console.log("startDate",val)
+    startdate.setMinutes(endDate.getMinutes() - durationInMinutes);
+    let isoVar = startdate.toISOString().replace(/[^\d]/g,'').slice(0, -9)
+    let format = moment.duration(isoVar).toISOString()
+    
+    console.log("startDate",isoVar)
+    console.log("startDate",format)
+    // console.log("startDate",format[0][0].concat("0Y0M0DT").concat(format[1]))
+  }
   return (
     <div>
       <Card title='Filters'>
@@ -244,12 +257,59 @@ function ChartFilter(props) {
           </div>
           <div>
             <Search placeholder='Search quick Ranges' style={{ width: 200 }} />
-            <p style={{ marginTop: '10px' }}>Last 5 minutes</p>
-            <p>Last 15 minutes</p>
-            <p>Last 25 minutes</p>
+            {/* <p style={{ marginTop: '10px' }}>Last 5 minutes</p> */}
+            <Button
+              type='primary'
+              onClick={() => generateISO(5)}
+              style={{ marginTop: '10px' }}
+            >
+              Last 5 minutes
+            </Button>
+            <br />
+            <Button
+              type='primary'
+              onClick={() => generateISO(15)}
+              style={{ marginTop: '10px' }}
+            >
+              Last 15 minutes
+            </Button>
+            {/* <p onClick={generateISO}>Last 15 minutes</p> */}
+            <br />
+            <Button
+              type='primary'
+              onClick={() => generateISO(25)}
+              style={{ marginTop: '10px' }}
+            >
+              Last 25 minutes
+            </Button>
+            <br />
+            <Button
+              type='primary'
+              onClick={() => generateISO(35)}
+              style={{ marginTop: '10px' }}
+            >
+              Last 35 minutes
+            </Button>
+            <br />
+            <Button
+              type='primary'
+              onClick={() => generateISO(45)}
+              style={{ marginTop: '10px' }}
+            >
+              Last 45 minutes
+            </Button>
+            <br />
+            <Button
+              type='primary'
+              onClick={() => generateISO(60)}
+              style={{ marginTop: '10px' }}
+            >
+              Last 60 minutes
+            </Button>
+            {/* <p>Last 25 minutes</p>
             <p>Last 35 minutes</p>
             <p>Last 45 minutes</p>
-            <p>Last 60 minutes</p>
+            <p>Last 60 minutes</p> */}
           </div>
         </div>
       </Modal>
