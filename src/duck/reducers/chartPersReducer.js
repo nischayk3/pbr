@@ -5,6 +5,7 @@ const initState = {
   dateRange: '',
   unApprovedData: '',
   getBatchCoverage: {},
+  parameterTableData: [],
 };
 
 export default (state = initState, action) => {
@@ -17,6 +18,8 @@ export default (state = initState, action) => {
       return { ...state, unApprovedData: action.payload };
     case types.GET_BATCH_COVERAGE:
       return { ...state, getBatchCoverage: action.payload };
+    case types.PARAMETER_TABLE_DATA:
+      return { ...state, parameterTableData: action.payload };
     default:
       return state;
   }

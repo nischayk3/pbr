@@ -1,14 +1,16 @@
-import { Modal, Button, Table, Input } from 'antd';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import {
-  sendChartId,
-  sendView,
-  sendChartData,
-  sendChartVersion,
-} from '../../duck/actions/chartPersonalizationAction';
-import { SearchOutlined } from '@ant-design/icons';
 import './style.scss';
+
+import { Button, Input, Modal, Table } from 'antd';
+import React, { useState } from 'react';
+import {
+  sendChartData,
+  sendChartId,
+  sendChartVersion,
+  sendView,
+} from '../../duck/actions/chartPersonalizationAction';
+
+import { SearchOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
 
 const ChartTable = (props) => {
   console.log('props chart table', props);
@@ -52,7 +54,10 @@ const ChartTable = (props) => {
     let selectedChartId = selectedViewId.chart_disp_id;
     let selectedChartVersion = selectedViewId.chart_version;
 
-    props.handleCloseModal(selectedChartId, selectedChartVersion);
+    props.handleOkModal(selectedChartId, selectedChartVersion);
+  };
+  const handleClose = () => {
+    props.handleCloseModal();
   };
 
   const searchTable = (value) => {
@@ -72,11 +77,11 @@ const ChartTable = (props) => {
       title='Chart Table'
       width={600}
       closable={false}
-      onCancel={props.handleCloseModal}
+      onCancel={handleClose}
       centered={true}
       footer={[
         <Button
-          onClick={props.handleCloseModal}
+          onClick={handleClose}
           className='custom-primary-btn'
           key='cancel'
         >
