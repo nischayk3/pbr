@@ -20,12 +20,7 @@ const InputView = (props) => {
             <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
           }
         >
-          {props.selectList &&
-            props.selectList.map((item, index) => (
-              <Select.Option key={index} value={item.view}>
-                {item.view}
-              </Select.Option>
-            ))}
+          {props.option}
         </Select>
         {/* <Input
           placeholder={props.placeholder}

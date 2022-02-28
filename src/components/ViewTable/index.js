@@ -16,28 +16,29 @@ const ViewTable = (props) => {
 
   const columns = [
     {
-      title: 'Product No',
+      title: 'Product',
       dataIndex: 'product_num',
       key: 'product_num',
-      width: '200px',
     },
     {
       title: 'View ',
-      dataIndex: 'view_disp_id',
+      dataIndex: 'view',
       key: 'view',
-      width: '200px',
     },
     {
       title: 'View Name',
       dataIndex: 'view_name',
       key: 'view_name',
-      width: '100px',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'view_status',
+      key: 'view_status',
     },
     {
       title: 'Created By',
       dataIndex: 'created_by',
       key: 'created_by',
-      width: '150px',
     },
   ];
   const data = props.data;
@@ -62,8 +63,7 @@ const ViewTable = (props) => {
     <Modal
       visible={props.isModal}
       title='View Table'
-      // width={600}
-      // mask={true}
+      width={600}
       closable={false}
       onCancel={props.handleCloseModal}
       centered={true}
@@ -130,7 +130,8 @@ const ViewTable = (props) => {
           })}
           dataSource={filterData === null ? data : filterData}
           size='small'
-          pagination={true}
+          scroll={{ y: 300 }}
+          pagination={false}
         />
       </div>
     </Modal>

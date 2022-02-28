@@ -40,7 +40,8 @@ const FunctionEditor = (props) => {
         form,
         functionText,
         setFunctionText,
-        passStateFunc
+        passStateFunc,
+        getNewData
     } = props;
 
     const dispatch = useDispatch();
@@ -81,7 +82,7 @@ const FunctionEditor = (props) => {
                 title: `B${++index}`,
                 key: index,
                 dataIndex: key,
-                width: 100,
+                width: 50,
                 onCell: (record, rowIndex) => {
                     return {
                         onClick: () => {
@@ -173,6 +174,7 @@ const FunctionEditor = (props) => {
                    
            })
            console.log(obj);
+           getNewData(obj);
         }
         
     }
@@ -237,11 +239,9 @@ const FunctionEditor = (props) => {
                 <Form.Item label='Function' name='function'>
                     <Select placeholder='Select Function' onChange={mathEditorFunction}>
                         <Option value='round'>round</Option>
-                        <Option value='sin'>add</Option>
-                        <Option value='cos'>multiply</Option>
-                        <Option value='ln'>ln</Option>
-                        <Option value='exp'>exp</Option>
-                        <Option value='log'>log</Option>
+                        <Option value='add'>add</Option>
+                        <Option value='subtract'>subtract</Option>
+                        <Option value='multiply'>multiply</Option>
                     </Select>
                 </Form.Item>
             </div>
@@ -251,7 +251,7 @@ const FunctionEditor = (props) => {
                         {mathFunction ?
                             mathFunction == 'round' ?
                                 <p>{`=${mathFunction}(${functionName},`} <input type="text" style={{ height: '20px', width: '20px' }} />)</p>
-                                : `=${mathFunction}(${functionName})`
+                                : `=${mathFunction}(${functionEditorRecord.map(el=>el.param)})`
                             : ''}
 
                     </Card>
@@ -262,6 +262,7 @@ const FunctionEditor = (props) => {
                         columns={functionEditorColumns}
                         dataSource={functionEditorRecord}
                         scroll={{ x: 900 }}
+                        style={{border:'1px solid #ececec',borderRadius:'2px'}}
                         pagination={false}
                         rowKey={(record) => record.param}
                     />

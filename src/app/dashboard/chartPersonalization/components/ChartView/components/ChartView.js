@@ -1,24 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { WarningOutlined } from '@ant-design/icons';
-import { Card, Tag } from 'antd';
-import InputField from '../../../../../../components/InputField/InputField';
 import './ChartViewStyles.scss';
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import InputView from '../../../../../../components/InputView/InputView';
+
+import { Card, Empty, Tag } from 'antd';
+import React, { useEffect, useState } from 'react';
 import {
   sendViewId,
   sendViewName,
   sendViewStatus,
   sendViewVersion,
 } from '../../../../../../duck/actions/chartPersonalizationAction';
+import { useDispatch, useSelector } from 'react-redux';
+
+import InputField from '../../../../../../components/InputField/InputField';
+import InputView from '../../../../../../components/InputView/InputView';
+import PropTypes from 'prop-types';
+import { WarningOutlined } from '@ant-design/icons';
 
 function ChartView(props) {
-  console.log('chart props', props);
+  const coverage = [];
   const selectedView = useSelector(
-    (state) => state.chartPersReducer.selectedView
+    (state) => state.chartViewReducer.selectedView
   );
 
+  const batchCoverage = useSelector(
+    (state) => state.chartPersReducer.getBatchCoverage
+  );
+
+  const getChartObjData = useSelector(
+    (state) =>
+      state.chartDataReducer && state.chartDataReducer.selectedChartData[0]
+  );
+  console.log('getBatchCoverage', batchCoverage);
   const [showParam, setShowParam] = useState(false);
   const [viewId, setViewId] = useState('');
   const [viewName, setViewName] = useState('');
@@ -26,13 +37,15 @@ function ChartView(props) {
   const [viewVersion, setViewVersion] = useState('');
   const [viewIdVersion, setviewIdVersion] = useState();
   const [viewTableData, setViewTableData] = useState([]);
-  const [batchData, setbatchData] = useState(
-    props.batchCoverageData.data.coverage
-  );
+  const [batchData, setbatchData] = useState({});
+  const [batchStatus, setbatchStatus] = useState({});
 
   const dispatch = useDispatch();
 
+  const propsData = props !== undefined ? props : {};
+
   useEffect(() => {
+    console.log('use effect 1');
     if (selectedView) {
       setViewId(selectedView.view_disp_id);
       setViewName(selectedView.view_name);
@@ -42,8 +55,66 @@ function ChartView(props) {
     setViewTableData(props.viewTableData);
   }, [props.viewTableData]);
 
+  useEffect(() => {
+    console.log('use effect 2');
+    console.log('view id', getChartObjData);
+    setViewId(
+      getChartObjData && getChartObjData.view_id !== undefined
+        ? getChartObjData.view_id
+        : ''
+    );
+    setViewName(
+      getChartObjData && getChartObjData.view_name !== undefined
+        ? getChartObjData.view_name
+        : ''
+    );
+    setViewStatus(
+      getChartObjData && getChartObjData.view_status !== undefined
+        ? getChartObjData.view_status
+        : ''
+    );
+    setViewVersion(
+      getChartObjData && getChartObjData.view_version !== undefined
+        ? getChartObjData.view_version
+        : ''
+    );
+  }, [getChartObjData]);
+
+  useEffect(() => {
+    console.log('use effect 3');
+
+    let chartCoverage = batchCoverage && batchCoverage.coverage;
+    let chartBatchStatus = batchCoverage && batchCoverage.batchstats;
+
+    let cov =
+      chartCoverage !== undefined &&
+      Object.entries(chartCoverage).forEach(([key, value]) => {
+        let createObj = {};
+        createObj[key] = value;
+        coverage.push(createObj);
+      });
+    let cov1 =
+      chartCoverage !== undefined &&
+      Object.entries(chartBatchStatus).forEach(([key1, value1]) => {
+        let createObj1 = {};
+        createObj1[key1] = value1;
+        coverage.push(createObj1);
+      });
+
+    console.log(
+      'covvvvvvvv',
+      cov,
+      cov1,
+      coverage,
+      chartCoverage,
+      chartBatchStatus
+    );
+
+    setbatchData(chartBatchStatus);
+    setbatchStatus(chartCoverage);
+  }, [batchCoverage]);
+
   const handleClickLoad = (value) => {
-    console.log('eeeee', value);
     let view_value = value ? value : '';
     let split_view_id = view_value ? view_value.split('-') : [];
     setViewId(split_view_id[0]);
@@ -59,14 +130,7 @@ function ChartView(props) {
     dispatch(sendViewName(filterViewData[0].view_name));
     dispatch(sendViewStatus(filterViewData[0].view_status));
     dispatch(sendViewVersion(split_view_id[1]));
-    props.callbackViewData(split_view_id[0]);
-    console.log('filterViewData', filterViewData, view_value, split_view_id);
-  };
-
-  console.log('view', viewId, viewName, viewStatus, viewVersion);
-
-  const handleSearch = (value) => {
-    console.log('value', value);
+    props.callbackViewData(value);
   };
 
   const callbackView = () => {
@@ -85,66 +149,75 @@ function ChartView(props) {
   return (
     <div>
       <Card title='View'>
-        <div>
-          <div className='chartview-input'>
-            <InputView
-              label='View ID'
-              selectedValue={viewId}
-              placeholder='View Id'
-              onClickPopup={callbackView}
-              onChangeSelect={(e) => handleClickLoad(e)}
-              selectList={viewData}
-            />
+        <div className='chartview-input'>
+          <InputView
+            label='View ID'
+            selectedValue={viewId}
+            placeholder='Select View Id'
+            onClickPopup={callbackView}
+            onChangeSelect={(e) => handleClickLoad(e)}
+            option={options}
+          />
 
-            <InputField
-              placeholder='Enter View Name'
-              label='View Name'
-              value={viewName}
-              disabled
-            />
-            <InputField
-              placeholder='Status'
-              label='Status'
-              value={viewStatus}
-              disabled
-            />
-            <InputField
-              placeholder='Enter Version '
-              label='Version'
-              value={viewVersion}
-            />
-          </div>
-        </div>
+          <InputField label='View Name' value={viewName} disabled />
+          <InputField label='Status' value={viewStatus} disabled />
+          <InputField
+            placeholder='Enter Version '
+            label='Version'
+            value={viewVersion}
+          />
+        </div>{' '}
+        {propsData && propsData.showBatch && (
+          <Card
+            title='Batch Coverage'
+            style={{ marginTop: '24px', height: '184px' }}
+          >
+            {batchStatus !== undefined &&
+            Object.keys(batchStatus).length > 0 ? (
+              <div className='alert-tags'>
+                {batchStatus !== undefined &&
+                  Object.entries(batchStatus).map(([key1, value1]) => {
+                    return (
+                      <div className='alert-tags_error'>
+                        <WarningOutlined style={{ color: '#FA541C' }} />
+                        <Tag className='alert-tags-label' color='magenta'>
+                          {key1}
+                        </Tag>
+                        <p className='tag-percent'>{value1.toString()}</p>
+                        {batchData !== undefined &&
+                          Object.entries(batchData).map(([key, value]) => {
+                            if (key1 === key) {
+                              return (
+                                <p className='tag-stats'>{value.toString()}</p>
+                              );
+                            }
+                          })}
+                      </div>
+                    );
+                  })}
+
+                {/* else {
+                      return (
+                        <div className='alert-tags_block   '>
+                          <Tag className='alert-tags-label' color='magenta'>
+                            {key}
+                          </Tag>
+                          <Tag className='alert-progress'>
+                            {value.toString()}
+                          </Tag>
+                        </div>
+                      );
+                    } */}
+              </div>
+            ) : (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description='Please select View ID to load batch coverage'
+              />
+            )}
+          </Card>
+        )}
       </Card>
-      {showParam && (
-        <Card title='Parameter'>
-          <div className='alert-tags'>
-            {/* {batchData} */}
-            {/* <div className='alert-tags_block'>
-              <Tag className='alert-tags-label'>Temperature</Tag>
-              <Tag className='alert-progress'>100%</Tag>
-            </div>
-            <div className='alert-tags_error'>
-              <Tag className='alert-tags-label' color='magenta'>
-                Pressure
-              </Tag>
-              <WarningOutlined style={{ color: '#FA541C' }} />
-              <Tag className='alert-progress-error'>80%</Tag>
-            </div>
-            <div className='alert-tags_error'>
-              <Tag className='alert-tags-label' color='magenta'>
-                PH
-              </Tag>
-              <WarningOutlined style={{ color: '#FA541C' }} />
-              <Tag className='alert-progress-error'>90%</Tag>
-            </div> */}
-            {/* <div className='alert-tags_block'>
-              <Tag className='alert-tags-label'>Temparature</Tag>
-              <Tag className='alert-progress'>100%</Tag>
-            </div> */}
-          </div>
-        </Card>
-      )}
     </div>
   );
 }

@@ -1,137 +1,126 @@
-/* eslint-env browser, node */
-import React, { useState, useEffect } from 'react';
-import { WarningTwoTone } from '@ant-design/icons';
-import { Card, Button } from 'antd';
-
 import './styles.scss';
 
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import SelectField from '../../../../../../components/SelectField/SelectField';
-import { getChartType } from '../../../../../../duck/actions/auditTrialAction';
+import { Button, Card } from 'antd';
+/* eslint-env browser, node */
+import React, { useEffect, useState } from 'react';
 import {
   generateChart,
+  sendChartMapping,
   sendChartType,
   sendChartxAxis,
   sendChartyAxis,
+  sendData,
+  sendLayout,
 } from '../../../../../../duck/actions/chartPersonalizationAction';
-import { getChartData } from '../../../../../../duck/actions/chartDataAction';
-import { showNotification } from '../../../../../../duck/actions/commonActions';
-import chartTypeJson from '../chartType.json';
-import InputField from '../../../../../../components/InputField/InputField';
+import { useDispatch, useSelector } from 'react-redux';
 
-console.log('chartTypeJson', chartTypeJson);
+import InputField from '../../../../../../components/InputField/InputField';
+import PropTypes from 'prop-types';
+import SelectField from '../../../../../../components/SelectField/SelectField';
+import { WarningTwoTone } from '@ant-design/icons';
+import chartTypeJson from '../chartType.json';
 
 const ChartType = (props) => {
   const [isScatter, setisScattetruer] = useState(true);
   const [chartTypeList, setchartTypeList] = useState(
     chartTypeJson.map((item) => item.chart_type)
   );
-  const [selectedChartType, setselectedChartType] = useState(
-    props.chartObj.chart_type
-  );
+  const [selectedChartType, setselectedChartType] = useState('');
   const [selectedXAxis, setselectedXAxis] = useState('');
   const [selectedYAxis, setselectedYAxis] = useState('');
   const [selectedTitle, setSelectedTitle] = useState('');
-  const [xAxisList, setxAxisList] = useState(['pH']);
-  const [yAxisList, setyAxisList] = useState(['Temperature']);
+  const [xAxisList, setxAxisList] = useState([]);
+  const [yAxisList, setyAxisList] = useState([]);
+  const [chartBatchData, setChartBatchData] = useState({});
+  const [batchData, setbatchData] = useState([]);
+  const [isDisabled, setisDisabled] = useState(true);
 
   const dispatch = useDispatch();
+  const getChartObjData = useSelector(
+    (state) =>
+      state.chartDataReducer && state.chartDataReducer.selectedChartData[0]
+  );
+  console.log('getChartObjData', getChartObjData);
+  const batchCoverage = useSelector(
+    (state) => state.chartPersReducer.getBatchCoverage
+  );
+
+  const chartDesc = useSelector((state) => state.chartPersReducer.chartDesc);
+  console.log('chart type', getChartObjData?.chart_type);
+  useEffect(() => {
+    console.log('use effect 112');
+    setselectedChartType(getChartObjData?.chart_type);
+    setselectedXAxis(getChartObjData?.chart_mapping?.x?.function_name);
+    setselectedYAxis(getChartObjData?.chart_mapping?.y?.function_name);
+  }, [getChartObjData]);
 
   useEffect(() => {
-    getChartTypeHandler();
-  }, []);
+    console.log('use effect 22');
+    const xAxis = [];
+    const yAxis = [];
+    const batch = [];
+    const temp = [];
+    const ph = [];
 
-  const getChartTypeHandler = () => {
-    let req = { user_id: JSON.parse(localStorage.getItem('username')) };
-    getChartType(req).then((res) => {
-      console.log('res', res);
-      if (res.data.statuscode === 200) {
-        // setchartTypeList(res.data);
-      } else if (res.data.statuscode === 400 || res.data.statuscode === 401) {
-        console.log('res.statuscode', res.statuscode);
-        console.log('res.data.message', res.data.message);
-        dispatch(
-          showNotification('error', 'Chart Type Error - ' + res.data.message)
-        );
-      }
-    });
+    const fetchXYAxis =
+      chartBatchData &&
+      chartBatchData.coverage !== undefined &&
+      Object.keys(chartBatchData.coverage).map((key) => {
+        xAxis.push(key);
+        yAxis.push(key);
+      });
+
+    const filterChartBatch =
+      chartBatchData &&
+      chartBatchData.data !== undefined &&
+      chartBatchData.data.map((item) => {
+        batch.push(item.batch_num),
+          temp.push(item.Temperature),
+          ph.push(item.pH);
+      });
+
+    const data = {
+      batch: batch,
+      ph: ph,
+      Temperature: temp,
+    };
+    setbatchData(data);
+    setChartBatchData(batchCoverage);
+    setxAxisList(xAxis.filter(uniqueArr));
+    setyAxisList(yAxis.filter(uniqueArr));
+  }, [batchCoverage]);
+
+  useEffect(() => {
+    setSelectedTitle(chartDesc);
+  }, [chartDesc]);
+
+  const uniqueArr = (value, index, self) => {
+    return self.indexOf(value) === index;
   };
 
-  const selectChartType = (value) => {
-    let selectedChart = chartTypeJson.filter(function (el) {
-      return el.chart_type === value;
-    });
-
-    let obj = selectedChart[0]['chart_info'];
-    //this.props.getChartData(selectedChart[0]);
-    console.log('selectedChart', obj['x-axis'], obj);
-    let x_axis_value = obj[0]['x-axis'];
-    let y_axis_value = obj[0]['y-axis'];
-    if ('x-axis' in obj && 'y-axis' in obj) {
-      setselectedChartType(value);
-      setselectedXAxis(x_axis_value);
-      setselectedYAxis(y_axis_value);
-      setSelectedTitle(obj[0].Title);
-
-      setisScattetruer(true);
-      dispatch(sendChartType(value));
-      dispatch(sendChartxAxis(x_axis_value));
-      dispatch(sendChartyAxis(y_axis_value));
-    } else {
-      setselectedChartType(value);
-      setselectedXAxis(x_axis_value);
-      setselectedYAxis(y_axis_value);
-      setSelectedTitle(obj[0].Title);
-      setisScattetruer(true);
-      dispatch(sendChartType(value));
-      dispatch(sendChartxAxis(x_axis_value));
-      dispatch(sendChartyAxis(y_axis_value));
-    }
-  };
-
-  const Data = {
-    x: [
-      '2021-05-22 09:30:00',
-      '2021-05-23 09:30:00',
-      '2021-05-24 09:30:00',
-      '2021-05-24 09:30:00',
-      '2021-05-24 09:30:00',
-      '2021-05-25 09:30:00',
-      '2021-05-26 09:30:00',
-      '2021-05-27 09:30:00',
-      '2021-05-27 09:30:00',
-      '2021-05-28 09:30:00',
-    ],
-    y: [0.9211, 1.84, 0.22, 3.39, 3.39, 0.54, 1.28, 2.58, 2.79, 2.79],
+  const chartData = {
+    x: batchData.ph !== undefined ? batchData.ph : [],
+    y: batchData.Temperature !== undefined ? batchData.Temperature : [],
+    text: batchData.batch !== undefined ? batchData.batch : [],
     mode: 'markers',
     type: 'scatter',
-    marker: { size: 12 },
   };
-  const Layout = {
-    // plot_bgcolor: 'rgb(230, 230, 230)',
-    // xlabel: selectedXAxis,
-    // ylabel: selectedYAxis,
+  const chartLayout = {
     title: {
-      text: selectedTitle,
+      text: selectedTitle !== undefined ? selectedTitle : '',
     },
     xaxis: {
       title: {
         text: selectedXAxis,
       },
-      range: [0.75, 5.25],
     },
     yaxis: {
       title: {
         text: selectedYAxis,
       },
-      range: [0, 8],
     },
-
-    height: 150,
-    width: 250,
-    showlegend: true,
-    legend: { orientation: 'h' },
+    height: 250,
+    width: 450,
     margin: {
       l: 50,
       r: 50,
@@ -141,12 +130,71 @@ const ChartType = (props) => {
     },
   };
 
+  const selectChartType = (value, field) => {
+    setisDisabled(false);
+    if (value !== null) {
+      if (field === 'charttype') {
+        setselectedChartType(value);
+      } else if (field === 'xaxis') {
+        setselectedXAxis(value);
+      } else if (field === 'yaxis') {
+        setselectedYAxis(value);
+      }
+    }
+
+    // let selectedChart = chartTypeJson.filter(function (el) {
+    //   return el.chart_type === value;
+    // });
+
+    // let obj = selectedChart[0]['chart_info'];
+
+    // let x_axis_value = obj[0]['x-axis'];
+    // let y_axis_value = obj[0]['y-axis'];
+    // if ('x-axis' in obj && 'y-axis' in obj) {
+    //   setselectedChartType(value);
+    //   setselectedXAxis(x_axis_value);
+    //   setselectedYAxis(y_axis_value);
+    //   setSelectedTitle(obj[0].Title);
+
+    //   setisScattetruer(true);
+    //   dispatch(sendChartType(value));
+    //   dispatch(sendChartxAxis(x_axis_value));
+    //   dispatch(sendChartyAxis(y_axis_value));
+    // } else {
+    //   setselectedChartType(value);
+    //   setselectedXAxis(x_axis_value);
+    //   setselectedYAxis(y_axis_value);
+    //   setSelectedTitle(obj[0].Title);
+    //   setisScattetruer(true);
+    //   dispatch(sendChartType(value));
+    //   dispatch(sendChartxAxis(x_axis_value));
+    //   dispatch(sendChartyAxis(y_axis_value));
+    // }
+  };
+
   const createChart = () => {
-    const plotlyData = {
-      Data: Data,
-      Layout: Layout,
+    const chartMapping = {
+      x: {
+        function_id: '1',
+        function_name: selectedXAxis,
+      },
+      y: {
+        function_id: '2',
+        function_name: selectedYAxis,
+      },
     };
+    const plotlyData = {
+      data: chartData,
+      layout: chartLayout,
+    };
+
+    dispatch(sendData(chartData));
+    dispatch(sendLayout(chartLayout));
     dispatch(generateChart(plotlyData));
+    dispatch(sendChartType(selectedChartType));
+    dispatch(sendChartxAxis(selectedXAxis));
+    dispatch(sendChartyAxis(selectedXAxis));
+    dispatch(sendChartMapping(chartMapping));
   };
   return (
     <div>
@@ -154,7 +202,7 @@ const ChartType = (props) => {
         <div className='grid-2-columns'>
           <SelectField
             label='Chart Type'
-            onChangeSelect={(e) => selectChartType(e)}
+            onChangeSelect={(e) => selectChartType(e, 'charttype')}
             selectList={chartTypeList}
             selectedValue={selectedChartType}
           />
@@ -165,14 +213,14 @@ const ChartType = (props) => {
             <SelectField
               label='X-Axis'
               placeholder='X-Axis '
-              // onChangeSelect={(e) => selectChartType(e)}
+              onChangeSelect={(e) => selectChartType(e, 'xaxis')}
               selectList={xAxisList}
               selectedValue={selectedXAxis}
             />
             <SelectField
               label='Y-Axis'
               placeholder='Y-Axis '
-              //  onChangeSelect={(e) => selectChartType(e)}
+              onChangeSelect={(e) => selectChartType(e, 'yaxis')}
               selectList={yAxisList}
               selectedValue={selectedYAxis}
             />
@@ -193,16 +241,13 @@ const ChartType = (props) => {
           className='custom-secondary-btn'
           onClick={createChart}
           style={{ marginTop: '12px', float: 'right' }}
+          disabled={isDisabled}
         >
           Apply
         </Button>
       </Card>
     </div>
   );
-};
-
-ChartType.propTypes = {
-  chartObj: PropTypes.object.isRequired,
 };
 
 export default ChartType;

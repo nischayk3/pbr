@@ -20,27 +20,64 @@
 .alert-tags {
   display: block;
   .alert-tags_block {
-    margin-bottom: 5px;
+    display: inline-flex;
+    margin: 0 0 0 24px;
     .alert-tags-label {
       width: 120px;
       text-align: center;
+      margin: 0;
     }
     .alert-progress {
-      margin-left: 10%;
+      margin-left: 20px;
       width: 45px;
       text-align: center;
     }
   }
   .alert-tags_error {
+    display: inline-flex;
+    margin: 6px 0;
     span {
-      margin-bottom: 5px;
+      margin: 4px;
     }
     .alert-tags-label {
       width: 120px;
       text-align: center;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+      /* identical to box height, or 143% */
+
+      color: #eb2f96;
+    }
+    .tag-percent {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      /* identical to box height, or 143% */
+      margin: 0px;
+      /* Gray / gray-9 */
+      padding: 5px 20px;
+      color: #262626;
+      border-right: 1px solid #ddd;
+      width: 75px;
+    }
+    .tag-stats {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 22px;
+      /* identical to box height, or 157% */
+      margin: 0px;
+      padding: 5px 10px;
+      color: #000000;
     }
     .alert-progress-error {
-      margin-left: 6%;
+      margin-left: 15px;
       width: 45px;
       text-align: center;
     }
