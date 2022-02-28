@@ -1,12 +1,14 @@
+import { Button, Modal } from 'antd';
 import React, { useState } from 'react';
-import { Modal, Button } from 'antd';
-import InputView from '../InputView/InputView';
-import { useDispatch } from 'react-redux';
 import {
   sendChartData,
   sendChartId,
   sendChartVersion,
 } from '../../duck/actions/chartPersonalizationAction';
+
+import InputView from '../InputView/InputView';
+import { useDispatch } from 'react-redux';
+
 const LoadModal = (props) => {
   console.log('load modal props', props);
   const [chartId, setchartId] = useState('');
@@ -29,7 +31,11 @@ const LoadModal = (props) => {
   const handleOk = () => {
     let displayChartId = chartId;
     let displayChartVersion = chartVersion;
-    props.handleCloseModal(displayChartId, displayChartVersion);
+    props.handleOkModal(displayChartId, displayChartVersion);
+  };
+
+  const handleClose = () => {
+    props.handleCloseModal();
   };
 
   const handleClickChart = (value) => {
@@ -54,10 +60,10 @@ const LoadModal = (props) => {
       style={{ left: '20' }}
       width={400}
       visible={props.isModal}
-      onCancel={props.handleCloseModal}
+      onCancel={handleClose}
       footer={[
         <Button
-          onClick={props.handleCloseModal}
+          onClick={handleClose}
           className='custom-primary-btn'
           key='cancel'
         >

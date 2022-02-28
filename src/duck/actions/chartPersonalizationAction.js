@@ -3,6 +3,7 @@ import {
   GENERATE_CHART,
   GET_BATCH_COVERAGE,
   GET_CHART_NAME,
+  PARAMETER_TABLE_DATA,
   SELECTED_CHART_DATA,
   SELECTED_CHART_DESCRIPTION,
   SELECTED_CHART_ID,
@@ -144,5 +145,10 @@ export const sendData = (payload) => ({
 
 export const sendLayout = (payload) => ({
   type: SEND_CHART_LAYOUT,
+  payload,
+});
+
+export const sendParameterTableData = (payload) => ({
+  type: PARAMETER_TABLE_DATA,
   payload,
 });

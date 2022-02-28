@@ -2,7 +2,7 @@ import './ChartStyle.scss';
 
 import {
   ArrowLeftOutlined,
-  CheckCircleTwoTone,
+  CheckCircleOutlined,
   InfoCircleTwoTone,
 } from '@ant-design/icons';
 import { Button, Modal } from 'antd';
@@ -21,6 +21,19 @@ import {
 import {
   sendBatchCoverage,
   sendChartData,
+  sendChartDesc,
+  sendChartId,
+  sendChartMapping,
+  sendChartName,
+  sendChartType,
+  sendChartVersion,
+  sendData,
+  sendDateRange,
+  sendLayout,
+  sendSelectedSite,
+  sendUnApprovedData,
+  sendViewId,
+  sendViewName,
 } from '../../../duck/actions/chartPersonalizationAction';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -43,6 +56,8 @@ function ChartPersonalization() {
   const [isLoad, setIsLoad] = useState(false);
   const [isView, setIsView] = useState(false);
   const [isNew, setIsNew] = useState(false);
+  const [isNewBtnDisabled, setisNewBtnDisabled] = useState(true);
+
   const [isSave, setIsSave] = useState(false);
   const [isSaveAs, setIsSaveAs] = useState(false);
   const [isDiscard, setIsDiscard] = useState(false);
@@ -121,6 +136,8 @@ function ChartPersonalization() {
   const destroyState = () => {
     dispatch(sendChartData({}));
     dispatch(sendBatchCoverage({}));
+    getViewTableData();
+    getChartListSer();
   };
 
   const callbackViewType = (param) => {
@@ -128,6 +145,7 @@ function ChartPersonalization() {
     setShowChartType(true);
     setShowFilter(true);
     setShowCustomization(true);
+    setisNewBtnDisabled(false);
     let paramSplit = param ? param.split('-') : '';
     viewParamData(paramSplit[0], paramSplit[1], '', '', '');
   };
@@ -136,11 +154,13 @@ function ChartPersonalization() {
     let putChartSaveAs = {
       data: [
         {
-          chart_id: '',
+          chart_id: chartDataReducer.chartId,
           chart_name: chartDataReducer.chartName,
           chart_description: chartDataReducer.chartDesc,
-          chart_version: '',
-          chart_status: 'NEW',
+          chart_version: chartDataReducer.chartVersion,
+          chart_status: chartDataReducer.chartStatus
+            ? chartDataReducer.chartStatus
+            : 'DRFT',
           view_id: chartViewReducer.viewId,
           view_name: chartViewReducer.viewName,
           data_filter: {
@@ -168,11 +188,11 @@ function ChartPersonalization() {
     let putChart = {
       data: [
         {
-          chart_id: chartDataReducer.chartId,
+          chart_id: '',
           chart_name: chartDataReducer.chartName,
           chart_description: chartDataReducer.chartDesc,
-          chart_version: chartDataReducer.chartVersion,
-          chart_status: 'DRFT',
+          chart_version: '',
+          chart_status: 'NEW',
           view_id: chartViewReducer.viewId,
           view_name: chartViewReducer.viewName,
           data_filter: {
@@ -184,6 +204,7 @@ function ChartPersonalization() {
           chart_mapping: chartDataReducer.chartMapping,
           data: chartDataReducer.data,
           layout: chartDataReducer.layout,
+          // datatable: [chartPersReducer.parameterTableData],
           exclusions: [],
           violations: [],
           limits: {},
@@ -192,7 +213,7 @@ function ChartPersonalization() {
       ],
       savetype: 'save',
     };
-    // putChartObjData(putChart);
+    putChartObjData(putChart);
     console.log('putcharttttt save ', putChart);
   };
 
@@ -200,25 +221,48 @@ function ChartPersonalization() {
     setIsView(false);
   };
 
-  const handleCloseChartModal = (chart_id, chart_ver) => {
+  const handleOkViewModal = (viewId, viewVersion) => {
+    console.log('handleOkViewModal', viewId, viewVersion);
+    let viewDisId = viewId !== '' ? viewId : '';
+    let viewVersId = viewVersion !== '' ? viewVersion : '';
+    viewParamData(viewDisId, viewVersId, '', '', '');
+    setIsView(false);
+  };
+
+  const handleCloseChartModal = () => {
     setIsLoad(false);
     setIsChart(false);
     setShowChart(true);
     setShowChartType(true);
     setShowFilter(true);
     setShowCustomization(true);
+  };
 
+  const handleOkChartModal = (chart_id, chart_ver) => {
+    setIsLoad(false);
+    setIsChart(false);
+    setShowChart(true);
+    setShowChartType(true);
+    setShowFilter(true);
+    setShowCustomization(true);
     let reqChartObj = { chartId: chart_id, version: chart_ver };
     getChrtObjData(reqChartObj);
   };
 
-  const handleCloseLoadModal = (chart_id, chart_ver) => {
+  const handleCloseLoadModal = () => {
     setIsLoad(false);
     setShowChart(true);
     setShowChartType(true);
     setShowFilter(true);
     setShowCustomization(true);
+  };
 
+  const handleOkLoadModal = (chart_id, chart_ver) => {
+    setIsLoad(false);
+    setShowChart(true);
+    setShowChartType(true);
+    setShowFilter(true);
+    setShowCustomization(true);
     let reqChartObj = { chartId: chart_id, version: chart_ver };
     getChrtObjData(reqChartObj);
   };
@@ -303,8 +347,37 @@ function ChartPersonalization() {
         setchartResObj(chartResData);
         dispatch(sendChartData(chartResData));
         console.log('chartResData', chartResData);
+        dispatch(hideLoader());
+        // dispatch(sendChartId(chartResData && chartResData[0].chart_id));
+        dispatch(
+          sendChartVersion(chartResData && chartResData[0].chart_version)
+        );
+        dispatch(sendChartName(chartResData && chartResData[0].chart_name));
+        dispatch(
+          sendChartDesc(chartResData && chartResData[0].chart_description)
+        );
+        dispatch(sendData(chartResData && chartResData[0].data));
+        dispatch(sendLayout(chartResData && chartResData[0].layout));
+        dispatch(
+          sendSelectedSite(
+            chartResData && chartResData[0]?.data_filter?.date_range
+          )
+        );
+        dispatch(
+          sendDateRange(chartResData && chartResData[0]?.data_filter?.site)
+        );
+        dispatch(
+          sendUnApprovedData(
+            chartResData && chartResData[0]?.data_filter?.unapproved_data
+          )
+        );
+        dispatch(sendViewId(chartResData && chartResData[0].view_id));
+        dispatch(sendViewName(chartResData && chartResData[0].view_name));
+        dispatch(sendChartType(chartResData && chartResData[0].chart_type));
+        dispatch(
+          sendChartMapping(chartResData && chartResData[0].chart_mapping)
+        );
       }
-      dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
       dispatch(showNotification('error', 'Chart Data Error - ', error));
@@ -369,22 +442,24 @@ function ChartPersonalization() {
         </div>
 
         <div className='sub-header-btns'>
-          <Button
-            className='custom-primary-btn  '
-            onClick={() => {
-              // setVisible(true);
-              setIsNew(true);
-              setShowChart(true);
-              setShowChartType(true);
-              setShowFilter(true);
-              setShowCustomization(true);
-              setshowBatch(true);
-              destroyState();
-            }}
-            type='primary'
-          >
-            New
-          </Button>
+          {isNewBtnDisabled && (
+            <Button
+              className='custom-primary-btn  '
+              onClick={() => {
+                destroyState();
+                setIsNew(true);
+                setShowChart(true);
+                setShowChartType(true);
+                setShowFilter(true);
+                setShowCustomization(true);
+                setshowBatch(true);
+                setisNewBtnDisabled(false);
+              }}
+              type='primary'
+            >
+              New
+            </Button>
+          )}
           <Button
             className='custom-primary-btn  '
             onClick={() => {
@@ -398,14 +473,20 @@ function ChartPersonalization() {
           </Button>
           <Button
             className='custom-primary-btn'
-            onClick={handleSave}
+            onClick={() => {
+              handleSave();
+              setisNewBtnDisabled(true);
+            }}
             type='primary'
           >
             Save
           </Button>
           <Button
             className='custom-primary-btn'
-            onClick={handleSaveAs}
+            onClick={() => {
+              handleSaveAs();
+              setisNewBtnDisabled(true);
+            }}
             type='primary'
           >
             Save As
@@ -426,7 +507,6 @@ function ChartPersonalization() {
                 callbackViewData={callbackViewType}
                 viewTableData={viewTableData}
                 batchCoverageData={batchData}
-                isNew={isNew}
                 showBatch={showBatch}
               />
             </div>
@@ -458,12 +538,14 @@ function ChartPersonalization() {
           isModal={isView}
           data={viewTableData}
           handleCloseModal={handleCloseViewModal}
+          handleOkModal={handleOkViewModal}
         />
 
         <ChartTable
           isModal={isChart}
           data={chartTypeList}
           handleCloseModal={handleCloseChartModal}
+          handleOkModal={handleOkChartModal}
         />
 
         <LoadModal
@@ -471,6 +553,7 @@ function ChartPersonalization() {
           data={chartTypeList}
           callbackLoadModal={openLoadModal}
           handleCloseModal={handleCloseLoadModal}
+          handleOkModal={handleOkLoadModal}
         />
         <div className='modalPopup'>
           <Modal
@@ -478,7 +561,7 @@ function ChartPersonalization() {
             title={handleTitleChange}
             width={500}
             mask={true}
-            onCancel={handleCancel}
+            // onCancel={handleCancel}
             centered={true}
             footer={null}
           >
@@ -519,33 +602,32 @@ function ChartPersonalization() {
             </div>
           )} */}
             {isSave && (
-              <div>
+              <div className='save-wrapper'>
                 <center>
-                  <CheckCircleTwoTone
+                  <p style={{ textAlign: 'left' }}>Congratulations</p>
+                  <CheckCircleOutlined
                     className='circleIcon'
-                    twoToneColor='Green'
+                    style={{ color: 'green' }}
                   />
                   <br />
                   <p>
                     Chart ID : {resChartId ? resChartId : ''} <br />
-                    Chart Version : {resChartVersion ? resChartVersion : ''}
                     <br />
                     Your Changes Have Been Successfully Saved
                   </p>
                 </center>
 
-                <div>
-                  <Button
-                    onClick={() => {
-                      setVisible(false);
-                      setIsSave(false);
-                      destroyState();
-                    }}
-                    className='saveOkBtn'
-                  >
-                    OK
-                  </Button>
-                </div>
+                <Button
+                  style={{ float: 'right' }}
+                  onClick={() => {
+                    setVisible(false);
+                    setIsSave(false);
+                    destroyState();
+                  }}
+                  className='custom-primary-btn'
+                >
+                  OK
+                </Button>
               </div>
             )}
 
