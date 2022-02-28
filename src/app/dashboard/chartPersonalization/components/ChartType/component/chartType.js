@@ -41,10 +41,12 @@ const ChartType = (props) => {
     (state) =>
       state.chartDataReducer && state.chartDataReducer.selectedChartData[0]
   );
-  console.log('getChartObjData', getChartObjData);
+
   const batchCoverage = useSelector(
     (state) => state.chartPersReducer.getBatchCoverage
   );
+
+  console.log('get batchCoverage', batchCoverage);
 
   const chartDesc = useSelector((state) => state.chartPersReducer.chartDesc);
   console.log('chart type', getChartObjData?.chart_type);
@@ -64,17 +66,17 @@ const ChartType = (props) => {
     const ph = [];
 
     const fetchXYAxis =
-      chartBatchData &&
-      chartBatchData.coverage !== undefined &&
-      Object.keys(chartBatchData.coverage).map((key) => {
+      batchCoverage &&
+      batchCoverage.coverage !== undefined &&
+      Object.keys(batchCoverage.coverage).map((key) => {
         xAxis.push(key);
         yAxis.push(key);
       });
 
     const filterChartBatch =
-      chartBatchData &&
-      chartBatchData.data !== undefined &&
-      chartBatchData.data.map((item) => {
+      batchCoverage &&
+      batchCoverage.data !== undefined &&
+      batchCoverage.data.map((item) => {
         batch.push(item.batch_num),
           temp.push(item.Temperature),
           ph.push(item.pH);

@@ -29,7 +29,7 @@ function ChartView(props) {
     (state) =>
       state.chartDataReducer && state.chartDataReducer.selectedChartData[0]
   );
-  console.log('getBatchCoverage', batchCoverage);
+
   const [showParam, setShowParam] = useState(false);
   const [viewId, setViewId] = useState('');
   const [viewName, setViewName] = useState('');
@@ -39,15 +39,13 @@ function ChartView(props) {
   const [viewTableData, setViewTableData] = useState([]);
   const [batchData, setbatchData] = useState({});
   const [batchStatus, setbatchStatus] = useState({});
-  const [showBatch, setshowBatch] = useState(false);
+  const [showBatchCoverage, setshowBatchCoverage] = useState(false);
 
   const dispatch = useDispatch();
 
   const propsData = props !== undefined ? props : {};
-  console.log('propsData', propsData);
 
   useEffect(() => {
-    console.log('use effect 1');
     if (selectedView) {
       setViewId(selectedView.view_disp_id);
       setViewName(selectedView.view_name);
@@ -59,7 +57,6 @@ function ChartView(props) {
   }, [props.viewTableData, selectedView]);
 
   useEffect(() => {
-    console.log('use effect 2');
     setViewId(
       getChartObjData && getChartObjData.view_id !== undefined
         ? getChartObjData.view_id
@@ -83,7 +80,6 @@ function ChartView(props) {
   }, [getChartObjData]);
 
   useEffect(() => {
-    console.log('use effect 3');
     let chartCoverage = batchCoverage && batchCoverage.coverage;
     let chartBatchStatus = batchCoverage && batchCoverage.batchstats;
 
@@ -113,7 +109,7 @@ function ChartView(props) {
     setViewVersion(split_view_id[1]);
     setviewIdVersion(view_value);
     setShowParam(true);
-    setshowBatch(true);
+    setshowBatchCoverage(true);
     let filterViewData = viewTableData.filter((item) => item.view === value);
     setViewName(filterViewData[0].view_name);
     setViewStatus(filterViewData[0].view_status);
@@ -137,7 +133,7 @@ function ChartView(props) {
       {item.view}
     </Option>
   ));
-  console.log('props.isNew');
+
   return (
     <div>
       <Card title='View'>
@@ -164,8 +160,7 @@ function ChartView(props) {
             title='Batch Coverage'
             style={{ marginTop: '24px', height: '184px' }}
           >
-            {batchStatus !== undefined &&
-            Object.keys(batchStatus).length > 0 ? (
+            {showBatchCoverage ? (
               <div className='alert-tags'>
                 {batchStatus !== undefined &&
                   Object.entries(batchStatus).map(([key1, value1]) => {
