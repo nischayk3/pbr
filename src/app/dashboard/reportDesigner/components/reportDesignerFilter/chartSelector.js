@@ -46,8 +46,8 @@ function ChartSelector(props) {
 
     return (
         <div>
-            <Card className="chartid-main" title="Chart">
-                <Text>Chart ID</Text> <br/><br/>
+            <Card className="chartid-main" title="Chart" >
+                <Text>Chart ID</Text> <br/>
                 <Select
                     mode="multiple"
                     showArrow

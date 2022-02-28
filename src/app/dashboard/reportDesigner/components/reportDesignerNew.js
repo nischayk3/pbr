@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   ArrowLeftOutlined,
-  BuildTwoTone,
   BlockOutlined
 } from '@ant-design/icons';
 import {
@@ -21,6 +20,7 @@ import { getViews, getCharts, saveReportDesign, getReports } from '../../../../s
 import SaveModal from '../../../../components/SaveModal/saveModal'
 import { useDispatch, useSelector } from 'react-redux';
 import { sendReportId, sendReport, screenChange } from '../../../../duck/actions/reportDesignerAction';
+import { showLoader, hideLoader, showNotification } from '../../../../duck/actions/commonActions';
 
 //Columns For The view Selection modal
 const columns = [
@@ -52,6 +52,7 @@ function ReportDesignerNew() {
   const [loading, setLoading] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [isSave, setIsSave] = useState(false);
+  const [isChanged, setIsChanged] = useState(false);
   const [isSaveAs, setIsSaveAs] = useState(false);
   const [reportName, setReportName] = useState('');
   const [isNew, setIsNew] = useState(false);
@@ -76,9 +77,7 @@ function ReportDesignerNew() {
   const dispatch = useDispatch();
 
   // const savedData = useSelector((state) => state.reportDesignerReducer);
-
   const mapViewList = viewList.length > 0 ? viewList : []
-
   const mapReportList = reportList.length > 0 ? reportList : []
 
   useEffect(() => {
@@ -88,6 +87,24 @@ function ReportDesignerNew() {
   );
   useEffect(() => { form.resetFields() }, [formData]);
 
+
+  const checkChanges =  (reportData,mainJson) =>
+  {
+    let jay=reportData
+    let jayson=mainJson
+    if(Object.keys(jay).length>0 && Object.keys(jayson).length>0  )
+    {
+      return true
+    }
+    else if(Object.keys(jay).length==0 && Object.keys(jayson).length==0  )
+    {
+      return true
+    }
+    else
+    return false
+
+
+  }
 
   const OnNewClick = () => {
     setIsNew(true);
@@ -101,6 +118,24 @@ function ReportDesignerNew() {
     setViewIdVersion('')
     setStatus('NEW')
     setChartList([])
+  }
+
+  const onOk = async () => {
+
+    const unloadResponse = await unLoadJson(reportData);
+    console.log('unloadResponse', unloadResponse)
+    if (unloadResponse) {
+      dispatch(hideLoader());
+      setIsLoad(true);
+      setVisible(false)
+      setPopVisible(false);
+    }
+    else {
+      dispatch(hideLoader());
+
+    }
+
+    // unLoadJson(reportData);   
   }
 
 
@@ -126,7 +161,7 @@ function ReportDesignerNew() {
 
   const getReportData = (rep_id, rep_status) => {
     message.success(`${rep_id} selected`)
-    let req = { rep_status: rep_status ? rep_status : 'all' };
+    let req = { rep_status: rep_status ? rep_status : 'APRD' };
     if (rep_id)
       req['rep_disp_id'] = rep_id
     getReports(req).then((res) => {
@@ -199,7 +234,11 @@ function ReportDesignerNew() {
 
   // Saving the json
   const PrepareJson = (formData, saveType) => {
+    // let check =checkChanges(formData,reportData[0]['layout_info'] ? reportData[0]['layout_info'] : {} )
 
+    // console.log
+
+    // if
 
     let obj = {}
     obj['view_disp_id'] = viewId;
@@ -216,9 +255,13 @@ function ReportDesignerNew() {
       obj['rep_disp_id'] = reportId;
       obj['saveType'] = saveType
     }
+    if (saveType=='publish')
+    {
+      obj['rep_disp_id'] = reportId;
+      obj['saveType'] = saveType 
+    }
 
     obj['layout_info'] = formData;
-    // obj['flag'] = "save";
     let req = {}
     req['data'] = obj
 
@@ -239,7 +282,6 @@ function ReportDesignerNew() {
       message.error('Report Name Is Required')
     }
 
-    // window.alert(JSON.stringify(req))
   }
 
   // unloading the json into component readable form 
@@ -261,100 +303,100 @@ function ReportDesignerNew() {
     return rows
   }
 
-  const unLoadJson = (jay) => {
+  const unLoadJson = async (jay) => {
+    try {
+      jay = jay[0]
 
-    console.log(jay)
-    // jay = jay['Data']
-    // console.log(jay)
-    jay = jay[0]
-    console.log('unload', jay)
+      let status = jay['rep_status'] ? jay['rep_status'] : ''
+      setStatus(status)
 
-    let status = jay['rep_status'] ? jay['rep_status'] : ''
-    setStatus(status)
+      let ReportName = jay['rep_name'] ? jay['rep_name'] : ''
+      setReportName(ReportName)
 
-    let ReportName = jay['rep_name'] ? jay['rep_name'] : ''
-    setReportName(ReportName)
+      let view = jay['view_disp_id'] ? jay['view_disp_id'] : ''
+      setViewId(view)
 
-    
-    let view = jay['view_disp_id'] ? jay['view_disp_id'] : ''
-    setViewId(view)
-   
-    let chartList = jay['chart_details'].length > 0 ? jay['chart_details'] : []
-    setSelectedChartList(chartList)
+      let chartList = jay['chart_details'].length > 0 ? jay['chart_details'] : []
+      setSelectedChartList(chartList)
 
-    // let status = jay['rep_status'] ? jay['rep_status'] : ''
-    let view_version = jay['view_version'] ? jay['view_version'].toString() : ''
-    setViewVersion(view_version)
-    getChartsList(view + '-' + view_version)
-    setViewIdVersion(view + '-' + view_version)
+      let view_version = jay['view_version'] ? jay['view_version'].toString() : ''
+      setViewVersion(view_version)
+      getChartsList(view + '-' + view_version)
+      setViewIdVersion(view + '-' + view_version)
+      jay = jay['layout_info']
+      if (jay) {
 
-    console.log(jay)
-    // view_disp_id,chart_int_ids,view_version
-    jay = jay['layout_info']
-    if (jay) {
+        let res = []
+        console.log('layout', jay)
+        let layout_info = jay ? jay : {}
+        let title_page = layout_info['titlepage'] ? layout_info['titlepage'] : {}
 
-      let res = []
-      console.log('layout', jay)
-      let layout_info = jay ? jay : {}
-      let title_page = layout_info['titlepage'] ? layout_info['titlepage'] : {}
+        let title_section = title_page['heading'] ? title_page['heading'] : {}
+        let title_rows = title_page['content'] ? convertContent(title_page['content']) : {}
+        let title_obj = {}
+        title_obj['sectionName'] = title_section ? title_section : ''
+        title_obj['dymamic_rows'] = title_rows ? title_rows : ''
 
-      let title_section = title_page['heading'] ? title_page['heading'] : {}
-      let title_rows = title_page['content'] ? convertContent(title_page['content']) : {}
-      let title_obj = {}
-      title_obj['sectionName'] = title_section ? title_section : ''
-      title_obj['dymamic_rows'] = title_rows ? title_rows : ''
+        res.push(title_obj)
 
-      res.push(title_obj)
+        let section_area = layout_info['sections'] ? layout_info['sections'] : ''
 
-      let section_area = layout_info['sections'] ? layout_info['sections'] : ''
-
-      if (section_area) {
-        section_area.map((item) => {
-          let section_obj = {}
-          section_obj['sectionName'] = item['heading'] ? item['heading'] : ''
-          section_obj['dymamic_rows'] = item['content'] ? convertContent(item['content']) : ''
-          res.push(section_obj)
-        })
-        let form_res = {}
-        form_res['response'] = res
-        setFormData(form_res)
-        form.setFieldsValue(form_res);
+        if (section_area) {
+          section_area.map((item) => {
+            let section_obj = {}
+            section_obj['sectionName'] = item['heading'] ? item['heading'] : ''
+            section_obj['dymamic_rows'] = item['content'] ? convertContent(item['content']) : ''
+            res.push(section_obj)
+          })
+          let form_res = {}
+          form_res['response'] = res
+          setFormData(form_res)
+          form.setFieldsValue(form_res);
+          return true
+        }
+        else {
+          setFormData({})
+          form.setFieldsValue({});
+          return true
+        }
       }
       else {
         setFormData({})
         form.setFieldsValue({});
+        setViewId('')
+        setSelectedChartList([])
+        setViewIdVersion('')
+        setChartList([])
+        return false
       }
     }
-    else {
-      setFormData({})
-      form.setFieldsValue({});
-      setViewId('')
-      setSelectedChartList([])
-      setViewIdVersion('')
-      setChartList([])
-    }
+    catch
+    {
+      dispatch(hideLoader());
 
+      dispatch(showNotification('error', 'No Data in selected Report ID'));
+    }
   }
   const isStyledDifferently = (rowObject, index) => {
     return rowObject.isActive ? true : false;
   }
   return (
-    <div className="reportDesigner-container">
-      <div className="reportDesigner-block">
-        <h1 className="reportDesigner-headline">
-          <ArrowLeftOutlined /> Report Designer
-        </h1>
-        <div className="reportDesigner-btns">
+    <div className='custom-wrapper'>
+      <div className='sub-header'>
+        <div className='sub-header-title'>
+          <ArrowLeftOutlined className='header-icon' />
+          <span className='header-title'>Report Designer</span>
+        </div>
+        <div className='sub-header-btns'>
           {isLoad ? <></> : (
             <Button
-              className="reportDesigner-saveBtn"
+              className='custom-primary-btn'
               onClick={() => OnNewClick()}
             >
-
               New
             </Button>)}
           <Button
-            className="reportDesigner-loadBtn"
+            className='custom-primary-btn'
             onClick={() => { setVisible(true); setIsNew(false); }}
           >
             Load
@@ -363,14 +405,16 @@ function ReportDesignerNew() {
             isLoad || isNew ?
               <>
                 <Button
-                  className="reportDesigner-loadBtn"
-                  onClick={() => PrepareJson(mainJson, 'save')}
+                  className='custom-primary-btn'
+                  onClick={() => {
+                    PrepareJson(mainJson, 'save')
+                  }}
                 >
 
                   Save
                 </Button>
                 <Button
-                  className="reportDesigner-loadBtn"
+                  className='custom-primary-btn'
                   onClick={() => {
                     PrepareJson(mainJson, 'save_as')
                   }}
@@ -378,7 +422,7 @@ function ReportDesignerNew() {
                   Save As
                 </Button>
                 <Button
-                  className="reportDesigner-loadBtn"
+                  className='custom-primary-btn'
                   onClick={() => dispatch(screenChange(true))}
                 >
                   Test
@@ -387,6 +431,9 @@ function ReportDesignerNew() {
                   className="reportDesigner-shareBtn"
                   type="primary"
                   style={{ backgroundColor: '#093185', color: 'white' }}
+                  onClick={() => {
+                    PrepareJson(mainJson, 'publish')
+                  }}
                 >
                   Publish
                 </Button> </>
@@ -396,138 +443,114 @@ function ReportDesignerNew() {
         </div>
       </div>
 
-
-      <ReportDesignerForm
-        viewId={viewId}
-        setViewId={setViewId}
-        viewList={viewList}
-        setViewList={setViewList}
-        setStatus={setStatus}
-        status={status}
-        isLoad={isLoad}
-        setIsLoad={setIsLoad}
-        reportName={reportName}
-        setReportName={setReportName}
-        isNew={isNew}
-        setIsNew={setIsNew}
-        viewVersion={viewVersion}
-        setViewVersion={setViewVersion}
-        reportId={reportId}
-        viewIdVersion={viewIdVersion}
-        setViewIdVersion={setViewIdVersion}
-        getChartsList={getChartsList}
-        mapViewList={mapViewList}
-      />
-
-      {(isLoad || isNew) && loading == false ?
-        <div className="reportDesigner-grid-tables">
-          <ChartSelector
-            // chartId={chartId}
-            // setChartId={setChartId}
-            selectedChartList={selectedChartList}
-            setSelectedChartList={setSelectedChartList}
-            viewVersion={viewVersion}
-            viewID={viewId}
-            chartList={chartList}
-          />
-          <Form
-            className="report-form"
-            name="report-generator-form"
-            form={form}
-            onValuesChange={handleValuesChange}
-            initialValues={formData}
-          >
-            <ReportDesignerDynamicSections formData={formData} />
-          </Form>
-
-        </div> : <></>}
-      <Modal
-        title="Select View"
-        visible={visible}
-        onOk={() => {
-
-          setVisible(false);
-          // setTimeout(()=>
-          // {
-          setIsLoad(true);
-
-          // },1000) 
-          unLoadJson(reportData);
-        }}
-        onCancel={() => setVisible(false)}
-        width={500}
-        style={{ marginRight: '800px' }}
-        footer={[<Button style={{ backgroundColor: '#093185', color: 'white' }} onClick={() => {
-
-          setVisible(false);
-          // setTimeout(()=>
-          // {
-          setIsLoad(true);
-
-          // },1000) 
-          unLoadJson(reportData);
-        }}>OK</Button>,]}
-
-      >
-        <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
-          let view_value = value.value ? value.value : ''
-          // let split_view_id = view_value ? view_value.split('-') : []
-          setReportId(view_value)
-          getReportData(view_value)
-          // setViewId(split_view_id[0]);
-          // setViewVersion(split_view_id[1])
-          // setViewIdVersion(view_value);
-          // getChartsList(view_value);
-
-        }}
-          value={reportId}
-          showArrow
-        >
-          {mapReportList.map((item) =>
-
-            <Option value={item.rep_disp_id}>{item.rep_disp_id}</Option>
-          )}
-
-        </Select>
-        <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
-      </Modal>
-      <Modal
-        title="Select View"
-        visible={popvisible}
-        onOk={() => setPopVisible(false)}
-        onCancel={() => setPopVisible(false)}
-        width={600}
-        title={<span>Select View  <Input.Search
-          className='table-search'
-          placeholder='Search by...'
-          enterButton
-          onSearch={search}
-          style={{ marginBottom: '40px' }}
-        /></span>}
-        centered
-        width={500}
-        footer={[<Button style={{ backgroundColor: '#093185', color: 'white' }} onClick={() => setPopVisible(false)}>OK</Button>,]}
-      >
-        <Table
-          rowHighlightTest={isStyledDifferently}
-          dataSource={filterTable === null ? reportList : filterTable}
-          columns={columns}
-          onRow={record => ({
-            onClick: e => {
-              // setViewId(record.view_disp_id);
-              // setStatus(record.view_status);
-              // setViewVersion(record.view_version);
-              // getChartsList(record.view)
-              setReportId(record.rep_disp_id)
-              getReportData(record.rep_disp_id, record.rep_status)
-            }
-          })}
-          scroll={{ y: 200 }}
-          size='small'
-          pagination={false}
+      <div className='custom-content-layout'>
+        <ReportDesignerForm
+          viewId={viewId}
+          setViewId={setViewId}
+          viewList={viewList}
+          setViewList={setViewList}
+          setStatus={setStatus}
+          status={status}
+          isLoad={isLoad}
+          setIsLoad={setIsLoad}
+          reportName={reportName}
+          setReportName={setReportName}
+          isNew={isNew}
+          setIsNew={setIsNew}
+          viewVersion={viewVersion}
+          setViewVersion={setViewVersion}
+          reportId={reportId}
+          viewIdVersion={viewIdVersion}
+          setViewIdVersion={setViewIdVersion}
+          getChartsList={getChartsList}
+          mapViewList={mapViewList}
         />
-      </Modal>
-      <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
+
+        {(isLoad || isNew) && loading == false ?
+          <div className="reportDesigner-grid-tables">
+            <ChartSelector
+              selectedChartList={selectedChartList}
+              setSelectedChartList={setSelectedChartList}
+              viewVersion={viewVersion}
+              viewID={viewId}
+              chartList={chartList}
+            />
+            <Form
+              className="report-form"
+              name="report-generator-form"
+              form={form}
+              onValuesChange={handleValuesChange}
+              initialValues={formData}
+            >
+              <ReportDesignerDynamicSections formData={formData} />
+            </Form>
+
+          </div> : <></>}
+        <Modal
+          title="Select View"
+          visible={visible}
+          onCancel={() => setVisible(false)}
+          width={500}
+          style={{ marginRight: '800px' }}
+          footer={[<Button style={{ backgroundColor: '#093185', color: 'white' }} onClick={() => {
+            onOk()
+          }}>OK</Button>,]}
+
+        >
+          <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
+            let view_value = value.value ? value.value : ''
+            setReportId(view_value)
+            getReportData(view_value)
+          }}
+            value={reportId}
+            showArrow
+          >
+            {mapReportList.length <= 0 ? mapReportList.map((item) =>
+
+              <Option value={item.rep_disp_id}>{item.rep_disp_id}</Option>
+            ):<></>}
+
+          </Select>
+          <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
+        </Modal>
+        <Modal
+          title="Select View"
+          visible={popvisible}
+          onCancel={() => setPopVisible(false)}
+          width={600}
+          title={<span>Select View  <Input.Search
+            className='table-search'
+            placeholder='Search by...'
+            enterButton
+            onSearch={search}
+            style={{ marginBottom: '40px' }}
+          /></span>}
+          centered
+          width={500}
+          footer={[<Button style={{ backgroundColor: '#093185', color: 'white' }} onClick={() => {
+            dispatch(showLoader());
+            onOk()
+          }}>OK</Button>,]}
+        >
+          <Table
+            rowHighlightTest={isStyledDifferently}
+            dataSource={filterTable === null ? reportList : filterTable}
+            columns={columns}
+            onRow={record => ({
+              onClick: e => {
+                setReportId(record.rep_disp_id)
+                getReportData(record.rep_disp_id, record.rep_status)
+                dispatch(showLoader())
+                // onOk()
+              }
+            })}
+            scroll={{ y: 200 }}
+            size='small'
+            pagination={false}
+          />
+        </Modal>
+        <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
+      </div>
     </div>
   );
 }

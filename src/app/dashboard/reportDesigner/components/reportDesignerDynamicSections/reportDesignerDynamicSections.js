@@ -35,7 +35,7 @@ function ReportDesignerDynamicSections(props) {
 
                                                
 
-                                                    <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF',marginRight:'10px' , marginLeft:'50px' }}>
+                                                    <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF',marginRight:'10px' , marginLeft:'230px' }}>
                                                     </span>
                                                     <span class="Legend-label" style={{marginBottom:'10px'}}>
                                                         Edit
@@ -61,6 +61,7 @@ function ReportDesignerDynamicSections(props) {
                                                 <table className="dynamicSections-table" style={{ width: '930px' }}>
                                                     <thead className="dynamicSections-thead">
                                                         <tr>
+                                                        <th></th>
                                                             <th>Key</th>
                                                             <th>Value</th>
                                                             <th>Action</th>
@@ -74,14 +75,14 @@ function ReportDesignerDynamicSections(props) {
                                                     </tbody>
                                                 </table>
                                                 <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)}>
-                                                    <DeleteTwoTone twoToneColor="red" />
+                                                    <DeleteTwoTone twoToneColor="red" style={{marginBottom:'100px'}}/>
                                                 </Popconfirm>
                                             </Space>
                                         </div>
                                     ))}
                                     <Form.Item>
                                         <p>
-                                            <PlusSquareTwoTone style={{ fontSize: '16px', marginLeft: '10px' }} onClick={() => add()} /> <u>Add Multiple Sections</u>
+                                            <PlusSquareTwoTone   style={{ fontSize: '16px', marginLeft: '10px' }} onClick={() => add()} /> <u>Add Multiple Sections</u>
                                         </p>
 
                                     </Form.Item>
