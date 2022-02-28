@@ -41,7 +41,9 @@ const FunctionEditor = (props) => {
         functionText,
         setFunctionText,
         passStateFunc,
-        getNewData
+        getNewData,
+        id,
+        setId
     } = props;
 
     const dispatch = useDispatch();
@@ -110,7 +112,7 @@ const FunctionEditor = (props) => {
             };
             columns.push(obj);
         });
-        if (functionEditorColumns.length === 2) {
+        if (functionEditorColumns.length === 1) {
             let data = [...functionEditorColumns, ...columns];
             setFunctionEditorColumns(data);
         }
@@ -138,6 +140,7 @@ const FunctionEditor = (props) => {
         let filteredParameter = viewSummaryTable.filter(
             (el) => el.param == value
         );
+        console.log(filteredParameter);
 
         if (indexDuplicate < 0) {
             setFunctionEditorRecord([
@@ -145,6 +148,7 @@ const FunctionEditor = (props) => {
                 ...filteredParameter,
             ]);
             setFunctionName(value)
+            setId(filteredParameter[0].id)
         }
 
 
@@ -156,7 +160,7 @@ const FunctionEditor = (props) => {
         setMathFunction(value);
         let data= [...functionEditorRecord];
         let obj={},count=1;
-        if(value!='round'|| value!='union'){
+        if(value!='union'){
            data.forEach((item,i)=>{
                if(i==0){
                    obj={...item};
@@ -166,6 +170,7 @@ const FunctionEditor = (props) => {
                        // console.log(key,value);
                         obj[key]=obj[key]&& item[key]
                         obj.param=item.param
+                        obj.id=item.id
                         
                     }
                    })
@@ -175,6 +180,25 @@ const FunctionEditor = (props) => {
            })
            console.log(obj);
            getNewData(obj);
+        }else if(value=='union'){
+            data.forEach((item,i)=>{
+                if(i==0){
+                    obj={...item};
+                }else{
+                    Object.entries(item).forEach(([key,value],index)=>{
+                     if(key.includes("B")){
+                        // console.log(key,value);
+                         obj[key]=obj[key] || item[key]
+                         obj.param=item.param
+                         obj.id=item.id
+                     }
+                    })
+                        
+                    }
+                    
+            })
+            console.log(obj);
+           getNewData(obj);
         }
         
     }
@@ -182,8 +206,8 @@ const FunctionEditor = (props) => {
     
 
     useEffect(() => {
-        form.setFieldsValue({ function_name: functionName, parameter: functionName })
-    },[functionName]);
+        form.setFieldsValue({ function_name: functionName, parameter: functionName, id:id,aggregation:'Mean'})
+    },[functionName,id]);
 
     useEffect(()=>{
         columnsHandler();
@@ -196,7 +220,7 @@ const FunctionEditor = (props) => {
     const handlePassState=(e)=>{
         passStateFunc(e.target.value)
     }
-    console.log('functionEditorColumns', functionEditorColumns);
+    console.log('viewSummaryTable', viewSummaryTable);
     console.log('functionEditorRecord', functionEditorRecord);
     
 
@@ -204,7 +228,7 @@ const FunctionEditor = (props) => {
         <div className='viewSummary-container functionEditor-container'>
             <div className='viewSummary-FormBlock functionEditor-FormBlock'>
                 <Form.Item label='ID' name='id'>
-                    <Input placeholder='Enter ID' />
+                    <Input placeholder='Enter ID' disabled  />
                 </Form.Item>
                 <Form.Item label='Function Name' name='function_name'>
                     <Input placeholder='Enter Function Name' 
@@ -238,16 +262,18 @@ const FunctionEditor = (props) => {
                 </Form.Item>
                 <Form.Item label='Function' name='function'>
                     <Select placeholder='Select Function' onChange={mathEditorFunction}>
-                        <Option value='round'>round</Option>
+                        {/* <Option value='round'>round</Option> */}
                         <Option value='add'>add</Option>
                         <Option value='subtract'>subtract</Option>
                         <Option value='multiply'>multiply</Option>
+                        <Option value='divide'>divide</Option>
+                        <Option value='union'>union</Option>
                     </Select>
                 </Form.Item>
             </div>
             <div className='viewSummary-FormBlock MathEditor-FormBlock'>
                 <div className="viewSummary-table functionBatch-table site-card-border-less-wrapper">
-                    <Card title="Math Editor" bordered >
+                    <Card title="Math Editor" bordered className="cardClass">
                         {mathFunction ?
                             mathFunction == 'round' ?
                                 <p>{`=${mathFunction}(${functionName},`} <input type="text" style={{ height: '20px', width: '20px' }} />)</p>

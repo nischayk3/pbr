@@ -25,7 +25,10 @@ function Materials(props) {
         setParentBatches,
         newBatchData,
         setNewBatchData,
+        count,
+        setCount
     } = props;
+
 
     const columns = [
         {
@@ -84,12 +87,18 @@ function Materials(props) {
             if (record.coverage_list.includes(el)) {
                 batchData[`B${++index}`] = true;
                 newBatchData[`B${index}`] = true;
+               
             } else {
                 batchData[`B${++index}`] = false;
                 newBatchData[`B${index}`] = false;
+                
             }
+            
         });
-
+        console.log(count);
+        batchData['id']=count;
+        setCount(count+1);
+       
         //check for duplicate records
         const indexDuplicate = viewSummaryTable.findIndex(
             (x) => x.param == record.param
@@ -106,7 +115,8 @@ function Materials(props) {
             message.error('Function already exists');
         }
     };
-
+    
+   
     return (
         <div className='materials-wrapper'>
             <Collapse
