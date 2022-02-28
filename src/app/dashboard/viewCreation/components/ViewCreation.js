@@ -80,7 +80,7 @@ const columns = [
 function ViewCreation() {
     const molecule_Id=useSelector((state)=>state.viewCreationReducer.molecule_id);
     console.log(molecule_Id);
-    const[count,setCount]=useState(1);
+    const[count,setCount]=useState(0);
     const[id,setId]=useState();
     const [moleculeList, setMoleculeList] = useState([]);
     const [functionEditorRecord, setFunctionEditorRecord] = useState([]);
