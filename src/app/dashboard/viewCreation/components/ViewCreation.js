@@ -80,6 +80,8 @@ const columns = [
 function ViewCreation() {
     const molecule_Id=useSelector((state)=>state.viewCreationReducer.molecule_id);
     console.log(molecule_Id);
+    const[count,setCount]=useState(0);
+    const[id,setId]=useState();
     const [moleculeList, setMoleculeList] = useState([]);
     const [functionEditorRecord, setFunctionEditorRecord] = useState([]);
     const [moleculeId, setMoleculeId] = useState();
@@ -174,30 +176,32 @@ function ViewCreation() {
             width: 100,
             fixed: 'left',
             render: (param, record, index) => (
-                <Tag color='magenta' className='parameter-tag'>
+                <Tooltip title={param}>
+                <Tag color='magenta' className='paramColumn'>
                     {param}
                 </Tag>
+                </Tooltip>
             ),
         },
-        {
-            title: 'Primary',
-            key: 'primary',
-            dataIndex: 'param',
-            width: 100,
-            fixed: 'left',
-            render: (text, record, index) => {
-                return (
-                    <input
-                        type='radio'
-                        style={{padding:'20px'}}
-                        id={text}
-                        name='a'
-                        value={text}
-                        onChange={() => passTableData(record)}
-                    />
-                );
-            },
-        },
+        // {
+        //     title: 'Primary',
+        //     key: 'primary',
+        //     dataIndex: 'param',
+        //     width: 100,
+        //     fixed: 'left',
+        //     render: (text, record, index) => {
+        //         return (
+        //             <input
+        //                 type='radio'
+        //                 style={{padding:'20px'}}
+        //                 id={text}
+        //                 name='a'
+        //                 value={text}
+        //                 onChange={() => passTableData(record)}
+        //             />
+        //         );
+        //     },
+        // },
         // {
         //     title: 'Action',
         //     key: 'action',
@@ -227,8 +231,20 @@ function ViewCreation() {
 
     const functionPassHandler = (record, index) => {
         // console.log('row data', record, index);
+        // const indexDuplicate = functionEditorRecord.findIndex(
+        //     (x) => x.param == record.param
+        // );
+        // console.log(indexDuplicate);
+        // if (indexDuplicate === -1) {
+        //     setFunctionEditorRecord((prevState) => [...prevState, record]);
+        //     setFunctionName(record.param);
+        //     setId(record.id);
+        // } else {
+        //     message.error('Function already exists');
+        // }
         setFunctionEditorRecord((prevState) => [...prevState, record]);
         setFunctionName(record.param);
+        setId(record.id);
     };
 
     const [form] = Form.useForm();
@@ -250,6 +266,17 @@ function ViewCreation() {
         }
         
     };
+
+    const updateData=()=>{
+        console.log(count);
+        let data=[...viewSummaryTable];
+        let currentData={...getData.current};
+        data[count-1]=currentData;
+        console.log(data);
+        setViewSummaryTable(data);
+        message.success('Function Updated Successfully');
+        
+    }
 
     const passTableData = (record, textName) => {
         let newRecord = { ...record };
@@ -513,6 +540,8 @@ function ViewCreation() {
                                                     setNewBatchData={
                                                         setNewBatchData
                                                     }
+                                                    count={count}
+                                                    setCount={setCount}
                                                 />
                                             </Panel>
                                             <Panel
@@ -587,15 +616,15 @@ function ViewCreation() {
                                         Function Editor
                                         <div className='viewCreation-btns'>
                                             <Button
-                                                className='viewCreation-saveBtn'
+                                                className='custom-primary-btn'
                                                 onClick={() => {
-                                                    saveFunctionData();
+                                                    updateData();
                                                 }}
                                             >
                                                 Save
                                             </Button>
                                             <Button
-                                                className='viewCreation-saveAsBtn'
+                                                className='custom-primary-btn'
                                                 onClick={() => {
                                                     saveFunctionData();
                                                 }}
@@ -627,6 +656,9 @@ function ViewCreation() {
                                         setFunctionName={setFunctionName}
                                         passStateFunc={(v) => passStateFunc(v)}
                                         getNewData={(el)=>getNewData(el)}
+                                        id={id}
+                                        setId={setId}
+                                       
                                     />
                                 </div>
                             )}
