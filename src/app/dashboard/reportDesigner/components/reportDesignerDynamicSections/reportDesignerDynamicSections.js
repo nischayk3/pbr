@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, Space, Popconfirm } from 'antd';
-import { PlusSquareTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { PlusSquareTwoTone, DeleteTwoTone ,PlusSquareOutlined} from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
 
@@ -25,40 +25,29 @@ function ReportDesignerDynamicSections(props) {
                             {(fields, { add, remove }) => (
 
                                 <>
-                                    {/* {console.log('fileds',fields)} */}
                                     {fields.map(({ key, name, ...restField }) => (
-
                                         <div>
-                                            {/* {console.log('fill',key, name, ...restField )} */}
                                             <Form.Item {...restField} name={[name, 'sectionName']}>
                                                 <Input placeholder="Section" style={{ marginLeft: '400px' }} className="input-section" />
-
-                                               
-
-                                                    <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF',marginRight:'10px' , marginLeft:'230px' }}>
+                                                </Form.Item>
+                                                    <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF',marginRight:'10px' , marginLeft:'700px' }}>
                                                     </span>
                                                     <span class="Legend-label" style={{marginBottom:'10px'}}>
                                                         Edit
                                                     </span>
-
                                                     <span class="Legend-colorBox" style={{ backgroundColor: '#F5F5F5' ,marginLeft:'20px'}}>
                                                     </span>
                                                     <span class="Legend-label" style={{marginLeft:'10px'}}>
                                                         View Only
-                                                    </span>
-
+                                                    </span>                                            
                                             
-                                            </Form.Item>
-
-
                                             <Space
                                                 className="dynamicSections-spaceSection"
                                                 key={key}
                                                 style={{ display: 'flex', justifyContent: 'center' }}
                                                 align="baseline"
                                             >
-
-                                                <table className="dynamicSections-table" style={{ width: '930px' }}>
+                                                <table className="dynamicSections-table" style={{ width: '800px' }}>
                                                     <thead className="dynamicSections-thead">
                                                         <tr>
                                                         <th></th>
@@ -82,7 +71,7 @@ function ReportDesignerDynamicSections(props) {
                                     ))}
                                     <Form.Item>
                                         <p>
-                                            <PlusSquareTwoTone   style={{ fontSize: '16px', marginLeft: '10px' }} onClick={() => add()} /> <u>Add Multiple Sections</u>
+                                            <PlusSquareOutlined   style={{ fontSize: '16px', marginLeft: '10px' ,color:'#38acec'}} onClick={() => add()} /> <u>Add Multiple Sections</u>
                                         </p>
 
                                     </Form.Item>
