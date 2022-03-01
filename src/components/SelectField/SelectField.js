@@ -1,12 +1,14 @@
-import React from 'react';
-
-import { Select } from 'antd';
 import './SelectFieldStyle.scss';
+
+import React from 'react';
+import { Select } from 'antd';
 
 const SelectField = (props) => {
   return (
     <div className='select_field'>
-      <p>{props.label}</p>
+      <p>
+        {props.label} {props.iconlabel}
+      </p>
 
       <Select
         placeholder={props.placeholder}
