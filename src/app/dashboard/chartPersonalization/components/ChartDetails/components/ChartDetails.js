@@ -159,6 +159,7 @@ function ChartDetails(props) {
             />
           ) : (
             <Empty
+              style={{ height: '85px' }}
               image={Empty.PRESENTED_IMAGE_SIMPLE}
               description='Please select a chart type and enter relevant field data to load chart'
             />
@@ -185,6 +186,7 @@ function ChartDetails(props) {
             Ok
           </Button>,
         ]}
+        closable
         width={400}
       >
         <InputField label='Batch' value={clickedBatchId} disabled />
