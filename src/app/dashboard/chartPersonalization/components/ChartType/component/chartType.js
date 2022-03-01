@@ -33,8 +33,11 @@ const ChartType = (props) => {
   const [chartBatchData, setChartBatchData] = useState({});
   const [batchData, setbatchData] = useState([]);
   const [isDisabled, setisDisabled] = useState(true);
+  const [axisDataArray, setaxisDataArray] = useState([]);
+
   const [isDisableXAxis, setisDisableXAxis] = useState(false);
   const [isDisabledYAxis, setisDisabledYAxis] = useState(false);
+  const [showWarn, setshowWarn] = useState(false);
 
   const dispatch = useDispatch();
   const getChartObjData = useSelector(
@@ -64,11 +67,18 @@ const ChartType = (props) => {
     const batch = [];
     const temp = [];
     const ph = [];
+    const axisArray = [];
 
     const fetchXYAxis =
       batchCoverage &&
       batchCoverage.coverage !== undefined &&
-      Object.keys(batchCoverage.coverage).map((key) => {
+      Object.entries(batchCoverage.coverage).map(([key, value]) => {
+        let axisObj = {};
+
+        axisObj['key'] = key;
+        axisObj['value'] = value;
+
+        axisArray.push(axisObj);
         xAxis.push(key);
         yAxis.push(key);
       });
@@ -91,6 +101,7 @@ const ChartType = (props) => {
     setChartBatchData(batchCoverage);
     setxAxisList(xAxis.filter(uniqueArr));
     setyAxisList(yAxis.filter(uniqueArr));
+    setaxisDataArray(axisArray);
   }, [batchCoverage]);
 
   useEffect(() => {
@@ -147,6 +158,23 @@ const ChartType = (props) => {
         setselectedXAxis(value);
       } else if (field === 'yaxis') {
         setselectedYAxis(value);
+        let warnCheck = axisDataArray.map((item) => {
+          console.log('value1', item.value);
+          if (item.value.replace(/\d+% ?/g, 0) < 100.0) {
+            console.log(
+              'vakey1.key === valuelue1',
+              item === value,
+              item.key,
+
+              value
+            );
+            if (item.key === value) {
+              setshowWarn(true);
+            } else {
+              setshowWarn(false);
+            }
+          }
+        });
       }
     }
   };
@@ -175,6 +203,8 @@ const ChartType = (props) => {
     dispatch(sendChartyAxis(selectedXAxis));
     dispatch(sendChartMapping(chartMapping));
   };
+
+  console.log('axiss array', axisDataArray, showWarn);
   return (
     <div>
       <Card title='Chart'>
@@ -197,14 +227,22 @@ const ChartType = (props) => {
               selectedValue={selectedXAxis}
             />
             <SelectField
+              iconlabel={
+                showWarn ? (
+                  <WarningTwoTone
+                    style={{ marginLeft: 10 }}
+                    twoToneColor='red'
+                  />
+                ) : (
+                  ''
+                )
+              }
               label='Y-Axis'
               placeholder='Y-Axis '
               onChangeSelect={(e) => selectChartType(e, 'yaxis')}
               selectList={yAxisList}
               selectedValue={selectedYAxis}
             />
-
-            {/* <WarningTwoTone style={{ marginLeft: 10 }} twoToneColor='red' /> */}
           </div>
         ) : (
           <InputField
