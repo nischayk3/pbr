@@ -106,40 +106,6 @@ function ChartPersonalization() {
     setIsDiscard(false);
   }
 
-  function handleTitleChange() {
-    if (isDiscard)
-      return (
-        <span>
-          <InfoCircleTwoTone
-            twoToneColor='orange'
-            style={{ fontSize: '20px', margin: '10px' }}
-          />{' '}
-          Discard Changes
-        </span>
-      );
-    if (isSave) return <span>Congratulations</span>;
-    // if (isLoad)
-    //   return (
-    //     <span>
-    //       <InfoCircleTwoTone
-    //         twoToneColor='orange'
-    //         style={{ fontSize: '20px', margin: '10px' }}
-    //       />{' '}
-    //       Load
-    //     </span>
-    //   );
-    if (isNew)
-      return (
-        <span>
-          <InfoCircleTwoTone
-            twoToneColor='orange'
-            style={{ fontSize: '20px', margin: '10px' }}
-          />{' '}
-          Unsaved Changes
-        </span>
-      );
-  }
-
   const destroyState = () => {
     dispatch(sendChartData({}));
     dispatch(sendBatchCoverage({}));
@@ -645,156 +611,37 @@ function ChartPersonalization() {
         <div className='modalPopup'>
           <Modal
             visible={visible}
-            title={handleTitleChange}
             width={500}
             mask={true}
-            // onCancel={handleCancel}
             centered={true}
             footer={null}
           >
-            {/* {isLoad && (
-            <div>
-              <p>
-                You Have made some changes <br /> Do you want to save or discard
-                them ?
-              </p>
-
-              <div className='loadButton'>
-                <Button className='loadButtons' style={{ width: '80px' }}>
-                  Save As
-                </Button>
-                <Button
-                  style={{ width: '80px' }}
-                  className='loadButtons'
-                  onClick={() => {
-                    setVisible(false);
-                    setIsSave(true);
-                    setIsLoad(false);
-                  }}
-                >
-                  Save
-                </Button>
-                <Button
-                  style={{ width: '80px' }}
-                  className='loadButtons'
-                  onClick={() => {
-                    setVisible(false);
-                    setIsSave(true);
-                    setIsLoad(false);
-                  }}
-                >
-                  Discard
-                </Button>
-              </div>
-            </div>
-          )} */}
-            {isSave && (
-              <div className='save-wrapper'>
-                <center>
-                  <p style={{ textAlign: 'left' }}>Congratulations</p>
-                  <CheckCircleOutlined
-                    className='circleIcon'
-                    style={{ color: 'green' }}
-                  />
+            <div className='save-wrapper'>
+              <center>
+                <p style={{ textAlign: 'left' }}>Congratulations</p>
+                <CheckCircleOutlined
+                  className='circleIcon'
+                  style={{ color: 'green' }}
+                />
+                <br />
+                <p>
+                  Chart ID : {resChartId ? resChartId : ''} <br />
                   <br />
-                  <p>
-                    Chart ID : {resChartId ? resChartId : ''} <br />
-                    <br />
-                    Your Changes Have Been Successfully Saved
-                  </p>
-                </center>
-
-                <Button
-                  style={{ float: 'right' }}
-                  onClick={() => {
-                    setVisible(false);
-                    setIsSave(false);
-                    // destroyState();
-                  }}
-                  className='custom-primary-btn'
-                >
-                  OK
-                </Button>
-              </div>
-            )}
-
-            {/* {isLoad && (
-              <div>
-                <ViewTable />
-                <p>
-                  You Have made some changes <br /> Do you want to save or
-                  discard them ?
+                  Your Changes Have Been Successfully Saved
                 </p>
+              </center>
 
-                <div className='loadButton'>
-                  <Button className='loadButtons' style={{ width: '80px' }}>
-                    Save As
-                  </Button>
-                  <Button
-                    style={{ width: '80px' }}
-                    className='loadButtons'
-                    onClick={() => {
-                      setVisible(true);
-                      setIsSave(true);
-                      setIsLoad(false);
-                    }}
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    style={{ width: '80px' }}
-                    className='loadButtons'
-                    onClick={() => {
-                      setVisible(true);
-                      setIsSave(true);
-                      setIsLoad(false);
-                    }}
-                  >
-                    Discard
-                  </Button>
-                </div>
-              </div>
-            )} */}
-            {/* {isNew && (
-              <div>
-                <p>
-                  You Have made some changes <br /> Do you want to save or
-                  discard them ?
-                </p>
-                <div className='loadButton'>
-                  <Button className='custom-primary-btn  '>Save As</Button>
-                  <Button
-                    className='custom-primary-btn  '
-                    onClick={() => {
-                      setVisible(true);
-                      setIsSave(true);
-                      setIsLoad(false);
-                    }}
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    className='custom-primary-btn  '
-                    onClick={() => {
-                      setVisible(true);
-                      setIsSave(true);
-                      setIsLoad(false);
-                    }}
-                  >
-                    Discard
-                  </Button>
-                </div>
-              </div>
-            )}
-            {isDiscard && (
-              <div>
-                <p>Are you sure you want to discard changes ?</p>
-                <div className='discardButton'>
-                  <Button className='custom-primary-btn'>Ok</Button>
-                  <Button className='custom-primary-btn'>Cancel</Button>
-                </div>
-              </div>
-            )} */}
+              <Button
+                style={{ float: 'right' }}
+                onClick={() => {
+                  setVisible(false);
+                  setIsSave(false);
+                }}
+                className='custom-primary-btn'
+              >
+                OK
+              </Button>
+            </div>
           </Modal>
         </div>
       </div>
