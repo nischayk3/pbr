@@ -89,15 +89,22 @@ function ReportDesignerNew() {
   const checkChanges = (reportData, mainJson) => {
     let jay = reportData
     let jayson = mainJson
+
+    jay = jay[0] ? jay[0] : []
+    jay = jay['layout_info'] ? jay['layout_info'] : {}
+    console.log(jay,jayson);
     if (Object.keys(jay).length > 0 && Object.keys(jayson).length > 0) {
       return true
     }
     else if (Object.keys(jay).length == 0 && Object.keys(jayson).length == 0) {
       return true
     }
+    else if (Object.keys(jay).length == 0 && Object.keys(jayson).length > 0) {
+      return true
+    }
     else
       return false
-  }
+  };
 
   const OnNewClick = () => {
     setIsNew(true);
@@ -225,7 +232,11 @@ function ReportDesignerNew() {
   // Saving the json
   const PrepareJson = (formData, saveType) => {
     // let check = checkChanges(formData, reportData[0]['layout_info'] ? reportData[0]['layout_info'] : {})
-    // if (check) {
+    let check = checkChanges(reportData,formData)
+      console.log(check)
+     if (check) {
+      let check = checkChanges(reportData,formData)
+      console.log(check)
       let obj = {}
       obj['view_disp_id'] = viewId;
       obj['chart_int_ids'] = selectedChartList;
@@ -266,10 +277,10 @@ function ReportDesignerNew() {
       else {
         message.error('Report Name Is Required')
       }
-    // }
-    // else {
-    //   message.error('No Changes made')
-    // }
+    }
+    else {
+      message.error('No Changes To Save')
+    }
 
   }
 

@@ -19,6 +19,7 @@ import AppsIcon from '../../assets/icons/apps.svg';
 import Auth from '../../utils/auth';
 import LogOutIcon from '../../assets/icons/log-off.svg';
 import { useSelector } from 'react-redux';
+import { useMsal } from "@azure/msal-react";
 
 // import { userLogout } from '../../api/login';
 
@@ -84,8 +85,15 @@ const MENU = [
 const LogoutIcon = <LogoutOutlined style={{fontSize: "26px"}}  />;
 
 const { Sider } = Layout;
+function handleLogout(instance) {
+    instance.logoutPopup().catch(e => {
+        console.error(e);
+    });
+}
 
 const Sidebar = () => {
+  const { instance } = useMsal();
+
   const [selectedKey, setSelectedKey] = useState('');
   const location = useLocation();
   const history = useHistory();
