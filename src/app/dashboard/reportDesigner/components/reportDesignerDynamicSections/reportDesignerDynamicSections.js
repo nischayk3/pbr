@@ -30,14 +30,14 @@ function ReportDesignerDynamicSections(props) {
                                             <Form.Item {...restField} name={[name, 'sectionName']}>
                                                 <Input placeholder="Section" style={{ marginLeft: '400px' }} className="input-section" />
                                                 </Form.Item>
-                                                    <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF',marginRight:'10px' , marginLeft:'700px' }}>
+                                                    <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF',marginRight:'10px' , marginLeft:'720px',fontSize:'12px' }}>
                                                     </span>
-                                                    <span class="Legend-label" style={{marginBottom:'10px'}}>
+                                                    <span class="Legend-label" style={{marginBottom:'10px',fontSize:'12px'}}>
                                                         Edit
                                                     </span>
-                                                    <span class="Legend-colorBox" style={{ backgroundColor: '#F5F5F5' ,marginLeft:'20px'}}>
+                                                    <span class="Legend-colorBox" style={{ backgroundColor: '#F5F5F5' ,marginLeft:'20px',fontSize:'12px'}}>
                                                     </span>
-                                                    <span class="Legend-label" style={{marginLeft:'10px'}}>
+                                                    <span class="Legend-label" style={{marginLeft:'10px',fontSize:'12px'}}>
                                                         View Only
                                                     </span>                                            
                                             
@@ -69,12 +69,9 @@ function ReportDesignerDynamicSections(props) {
                                             </Space>
                                         </div>
                                     ))}
-                                    <Form.Item>
-                                        <p>
-                                            <PlusSquareOutlined   style={{ fontSize: '16px', marginLeft: '10px' ,color:'#38acec'}} onClick={() => add()} /> <u>Add Multiple Sections</u>
-                                        </p>
-
-                                    </Form.Item>
+                                    <Form.Item>                                 
+                                            <PlusSquareOutlined   style={{ fontSize: '16px', marginLeft: '10px' ,color:'#093185'}} onClick={() => add()} /> <u>Add Multiple Sections</u>
+                                                                   </Form.Item>
                                 </>
                             )}
                         </Form.List>

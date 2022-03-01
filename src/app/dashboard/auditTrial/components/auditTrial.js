@@ -469,7 +469,7 @@ class AuditTrials extends React.Component {
     let userReq = {
       //appId: "CPV",
       appId: 'MDH_APP',
-      filterId: 'MDH_APP_user_filter',
+      filterId: 'bms_user_filter',
       q: '',
     };
     loadFilter(userReq).then((res) => {
