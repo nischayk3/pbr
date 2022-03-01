@@ -35,11 +35,9 @@ function ChartDataTable(props) {
       : [];
 
   const filterColumn = objkeys.filter(uniqueArr);
-  console.log('filter column', filterColumn);
+
   const columns = [];
-  // columns.map((item) => {
-  //   item.title.toUpperCase();
-  // });
+
   filterColumn.map((item, i) => {
     columns.push({
       title: item.toUpperCase(),

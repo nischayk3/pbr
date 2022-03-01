@@ -27,7 +27,7 @@ function ChartView(props) {
 
   const getChartObjData = useSelector(
     (state) =>
-      state.chartDataReducer && state.chartDataReducer.selectedChartData[0]
+      state.chartDataReducer && state.chartDataReducer.selectedChartData
   );
 
   const [showParam, setShowParam] = useState(false);
@@ -156,7 +156,11 @@ function ChartView(props) {
           />
         </div>{' '}
         {props && props.showBatch && (
-          <Card title='Batch Coverage' bordered={false} style={{ marginTop: '24px',border: "1px solid #d9d9d9" }}>
+          <Card
+            title='Batch Coverage'
+            bordered={false}
+            style={{ marginTop: '24px', border: '1px solid #d9d9d9' }}
+          >
             {showBatchCoverage ? (
               <div className='alert-tags'>
                 {batchStatus !== undefined &&

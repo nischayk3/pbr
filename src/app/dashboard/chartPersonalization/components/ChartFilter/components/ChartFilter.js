@@ -47,7 +47,7 @@ function ChartFilter(props) {
 
   const getChartObjData = useSelector(
     (state) =>
-      state.chartDataReducer && state.chartDataReducer.selectedChartData[0]
+      state.chartDataReducer && state.chartDataReducer.selectedChartData
   );
 
   useEffect(() => {
@@ -181,7 +181,6 @@ function ChartFilter(props) {
     console.log(dateFormate, 'startDate', isoVar);
     console.log('startDate', format);
     setVisible(false);
-    // console.log("startDate",format[0][0].concat("0Y0M0DT").concat(format[1]))
   };
 
   const range = [
@@ -199,7 +198,6 @@ function ChartFilter(props) {
   ));
 
   const onChangeSelect = (value) => {
-    console.log('value', value);
     if (value !== null) {
       setselectedPeriod(value);
       generateISO(value);

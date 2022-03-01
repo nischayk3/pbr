@@ -6,16 +6,6 @@ import { Table } from 'antd';
 import { useSelector } from 'react-redux';
 
 function ParameterTable(props) {
-  //   const parameterData = useSelector(
-  //     (state) => state.chartPersReducer.getBatchCoverage.data
-  //   );
-
-  //   console.log('parameterData', parameterData);
-  //   const [paramData, setparamData] = useState([]);
-
-  //   useEffect(() => {
-  //     setparamData();
-  //   }, [parameterData]);
   return (
     <>
       <Table
