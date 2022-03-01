@@ -203,20 +203,20 @@ class AuditTrials extends React.Component {
   componentDidMount() {
     this.setState({ initialColumns: this.state.columns });
     this.auditHighlight();
-    // this.loadEventFilter('audit_activity_filter')
+    this.loadEventFilter('audit_activity_filter')
 
-    // let userReq = {
-    //   //appId: "CPV",
-    //   appId: "MDH_APP",
-    //   filterId: "bms_user_filter",
-    //   q: ""
-    // };
-    // loadFilter(userReq).then(res => {
-    //   let userList = res.data;
-    //   this.setState({
-    //     userList: userList
-    //   });
-    // });
+    let userReq = {
+      //appId: "CPV",
+      appId: "MDH_APP",
+      filterId: "bms_user_filter",
+      q: ""
+    };
+    loadFilter(userReq).then(res => {
+      let userList = res.data;
+      this.setState({
+        userList: userList
+      });
+    });
   }
 
   loadData = (column) => {
