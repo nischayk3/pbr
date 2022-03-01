@@ -100,6 +100,7 @@ function ChartView(props) {
 
     setbatchData(chartBatchStatus);
     setbatchStatus(chartCoverage);
+    setshowBatchCoverage(true);
   }, [batchCoverage]);
 
   const handleClickLoad = (value) => {
@@ -133,7 +134,7 @@ function ChartView(props) {
       {item.view}
     </Option>
   ));
-
+  console.log('batchCoverage........', showBatchCoverage);
   return (
     <div>
       <Card title='View'>

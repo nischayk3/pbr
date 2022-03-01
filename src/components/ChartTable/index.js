@@ -13,7 +13,6 @@ import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 
 const ChartTable = (props) => {
-  console.log('props chart table', props);
   const [selectedKeys, setselectedKeys] = useState([]);
   const [selectedViewId, setselectedViewId] = useState('');
   const [isDisabled, setisDisabled] = useState(true);
@@ -140,7 +139,7 @@ const ChartTable = (props) => {
                 dispatch(sendChartId(record.chart_disp_id));
                 dispatch(sendChartVersion(record.chart_version));
               }
-              console.log('selectedRowKeys111', selectedRowKeys);
+
               setselectedKeys({ selectedRowKeys });
             },
           })}

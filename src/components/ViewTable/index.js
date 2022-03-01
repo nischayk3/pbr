@@ -8,7 +8,6 @@ import { sendView } from '../../duck/actions/chartPersonalizationAction';
 import { useDispatch } from 'react-redux';
 
 const ViewTable = (props) => {
-  console.log('props view table', props);
   const [selectedKeys, setselectedKeys] = useState([]);
   const [selectedViewId, setselectedViewId] = useState('');
   const [isDisabled, setisDisabled] = useState(true);
@@ -126,7 +125,7 @@ const ViewTable = (props) => {
           onRow={(record) => ({
             onClick: () => {
               setselectedViewId(record);
-              console.log('record', record);
+
               setisDisabled(false);
               message.success(`${record.view} Selected`);
               const selectedRowKeys = [...selectedKeys];
@@ -137,7 +136,7 @@ const ViewTable = (props) => {
                 selectedRowKeys.push(record.key);
                 dispatch(sendView(record.view_disp_id));
               }
-              console.log('selectedRowKeys111', selectedRowKeys);
+
               setselectedKeys({ selectedRowKeys });
             },
           })}
