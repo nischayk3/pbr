@@ -114,6 +114,7 @@ const ChartType = (props) => {
     text: batchData.batch !== undefined ? batchData.batch : [],
     mode: 'markers',
     type: 'scatter',
+    marker: { size: 12 },
   };
   const chartLayout = {
     title: {

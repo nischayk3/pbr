@@ -51,7 +51,7 @@ function ChartDataTable(props) {
     <div>
       <div>
         <Card bordered={false} style={{ height: '430px' }}>
-          <Tabs defaultActiveKey='1'>
+          <Tabs defaultActiveKey='3'>
             <TabPane tab='Exclusion' key='1'>
               <ExclusionTable />
             </TabPane>
@@ -61,10 +61,10 @@ function ChartDataTable(props) {
                           <TabPane tab='Trends' key='3'>
                               <TrendTable />
                           </TabPane> */}
-            <TabPane tab='Violation' key='4'>
+            <TabPane tab='Violation' key='2'>
               <ViolationTable />
             </TabPane>
-            <TabPane tab='Data Table' key='5'>
+            <TabPane tab='Data Table' key='3'>
               <Table
                 rowClassName={(record, index) =>
                   index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
