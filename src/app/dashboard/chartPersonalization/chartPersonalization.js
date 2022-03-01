@@ -8,6 +8,28 @@ import {
 import { Button, Modal } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
+  generateChart,
+  sendBatchCoverage,
+  sendChartData,
+  sendChartDesc,
+  sendChartId,
+  sendChartMapping,
+  sendChartName,
+  sendChartType,
+  sendChartVersion,
+  sendChartxAxis,
+  sendChartyAxis,
+  sendData,
+  sendDateRange,
+  sendLayout,
+  sendSelectedSite,
+  sendUnApprovedData,
+  sendViewId,
+  sendViewName,
+  sendViewStatus,
+  sendViewVersion,
+} from '../../../duck/actions/chartPersonalizationAction';
+import {
   getChartList,
   getChartObj,
   putChartObj,
@@ -18,23 +40,6 @@ import {
   showLoader,
   showNotification,
 } from '../../../duck/actions/commonActions';
-import {
-  sendBatchCoverage,
-  sendChartData,
-  sendChartDesc,
-  sendChartId,
-  sendChartMapping,
-  sendChartName,
-  sendChartType,
-  sendChartVersion,
-  sendData,
-  sendDateRange,
-  sendLayout,
-  sendSelectedSite,
-  sendUnApprovedData,
-  sendViewId,
-  sendViewName,
-} from '../../../duck/actions/chartPersonalizationAction';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ChartDataTable from './components/ChartDataTable/index';
@@ -138,11 +143,27 @@ function ChartPersonalization() {
   const destroyState = () => {
     dispatch(sendChartData({}));
     dispatch(sendBatchCoverage({}));
+    dispatch(sendViewId(''));
+    dispatch(sendViewName(''));
+    dispatch(sendViewStatus(''));
+    dispatch(sendViewVersion(''));
+    dispatch(sendSelectedSite(''));
+    dispatch(sendDateRange(''));
+    dispatch(sendUnApprovedData(false));
+    dispatch(sendChartType(''));
+    dispatch(sendChartxAxis(''));
+    dispatch(sendChartyAxis(''));
+    dispatch(sendData({}));
+    dispatch(sendLayout({}));
+    dispatch(generateChart({}));
     getViewTableData();
     getChartListSer();
     setresChartId('');
     setresChartVersion('');
     setresChartStatus('');
+    setresChartId('');
+    setresChartStatus('');
+    setresChartVersion('');
   };
 
   const callbackViewType = (param) => {
@@ -170,6 +191,8 @@ function ChartPersonalization() {
             : 'DRFT',
           view_id: chartViewReducer.viewId,
           view_name: chartViewReducer.viewName,
+          view_version: chartViewReducer.viewVersion,
+          view_status: chartViewReducer.viewStatus,
           data_filter: {
             date_range: chartPersReducer.dateRange,
             unapproved_data: chartPersReducer.unApprovedData,
@@ -193,8 +216,6 @@ function ChartPersonalization() {
     } else {
       putChartObjData(putChartSaveAs);
     }
-
-    console.log('putChartSaveAs', putChartSaveAs);
   };
 
   const handleSave = () => {
@@ -208,7 +229,9 @@ function ChartPersonalization() {
           chart_status: 'NEW',
           view_id: chartViewReducer.viewId,
           view_name: chartViewReducer.viewName,
-          // view_version: chartViewReducer.viewVersion,
+          view_version: chartViewReducer.viewVersion,
+          view_status: chartViewReducer.viewStatus,
+
           data_filter: {
             date_range: chartPersReducer.dateRange,
             unapproved_data: chartPersReducer.unApprovedData,
@@ -233,8 +256,6 @@ function ChartPersonalization() {
       setisSaveBtnDisabled(true);
       setisSaveAsBtnDisabled(false);
     }
-
-    console.log('putcharttttt save ', putChart);
   };
 
   const handleCloseViewModal = () => {
@@ -242,7 +263,6 @@ function ChartPersonalization() {
   };
 
   const handleOkViewModal = (viewId, viewVersion) => {
-    console.log('handleOkViewModal', viewId, viewVersion);
     let viewDisId = viewId !== '' ? viewId : '';
     let viewVersId = viewVersion !== '' ? viewVersion : '';
     viewParamData(viewDisId, viewVersId, '', '', '');
@@ -378,50 +398,45 @@ function ChartPersonalization() {
       dispatch(showLoader());
       const chartRes = await getChartObj(reqChartObj);
       if (chartRes.statuscode === 200) {
-        let chartResData =
-          chartRes.data && chartRes.data.length > 0 ? chartRes.data[0][0] : [];
+        let chartResData = chartRes && chartRes.data ? chartRes.data : {};
+        console.log(
+          'chartResData && chartResData',
+          chartResData && chartResData
+        );
         setchartResObj(chartResData);
-        dispatch(sendChartData(chartResData));
-        console.log('chartResData', chartResData);
+        dispatch(sendChartData(chartResData && chartResData));
 
-        dispatch(hideLoader());
-        viewParamData(
-          chartResData && chartResData[0].view_id,
-          chartResData && chartResData[0].view_version,
-          chartResData && chartResData[0]?.data_filter?.site,
-          chartResData && chartResData[0]?.data_filter?.date_range,
-          chartResData && chartResData[0]?.data_filter?.unapproved_data
-        );
-
-        dispatch(
-          sendChartVersion(chartResData && chartResData[0].chart_version)
-        );
-        dispatch(sendChartName(chartResData && chartResData[0].chart_name));
-        dispatch(
-          sendChartDesc(chartResData && chartResData[0].chart_description)
-        );
-        dispatch(sendData(chartResData && chartResData[0].data));
-        dispatch(sendLayout(chartResData && chartResData[0].layout));
+        dispatch(sendChartVersion(chartResData && chartResData.chart_version));
+        dispatch(sendChartName(chartResData && chartResData.chart_name));
+        dispatch(sendChartDesc(chartResData && chartResData.chart_description));
+        dispatch(sendData(chartResData && chartResData.data));
+        dispatch(sendLayout(chartResData && chartResData.layout));
         dispatch(
           sendSelectedSite(
-            chartResData && chartResData[0]?.data_filter?.date_range
+            chartResData && chartResData?.data_filter?.date_range
           )
         );
         dispatch(
-          sendDateRange(chartResData && chartResData[0]?.data_filter?.site)
+          sendDateRange(chartResData && chartResData?.data_filter?.site)
         );
         dispatch(
           sendUnApprovedData(
-            chartResData && chartResData[0]?.data_filter?.unapproved_data
+            chartResData && chartResData?.data_filter?.unapproved_data
           )
         );
-        dispatch(sendViewId(chartResData && chartResData[0].view_id));
-        dispatch(sendViewName(chartResData && chartResData[0].view_name));
-        dispatch(sendChartType(chartResData && chartResData[0].chart_type));
-        dispatch(
-          sendChartMapping(chartResData && chartResData[0].chart_mapping)
-        );
+        dispatch(sendViewId(chartResData && chartResData.view_id));
+        dispatch(sendViewName(chartResData && chartResData.view_name));
+        dispatch(sendChartType(chartResData && chartResData.chart_type));
+        dispatch(sendChartMapping(chartResData && chartResData.chart_mapping));
         setshowBatch(true);
+        viewParamData(
+          chartResData && chartResData.view_id,
+          chartResData && chartResData.view_version,
+          chartResData && chartResData?.data_filter?.site,
+          chartResData && chartResData?.data_filter?.date_range,
+          chartResData && chartResData?.data_filter?.unapproved_data
+        );
+        dispatch(hideLoader());
       }
     } catch (error) {
       dispatch(hideLoader());
@@ -438,9 +453,11 @@ function ChartPersonalization() {
         setIsSave(true);
         setresChartId(putChart.chart_id);
         setresChartVersion(putChart.chart_version);
-        setresChartStatus('NEW');
+        setresChartStatus(putChart.chart_status);
       } else if (putChart.statuscode === 400) {
-        dispatch(showNotification('error', putChart.message));
+        dispatch(
+          showNotification('error', 'Save Data Error -', putChart.message)
+        );
       }
       dispatch(hideLoader());
     } catch (error) {
@@ -457,10 +474,10 @@ function ChartPersonalization() {
     isUnApproved
   ) {
     let reqViewParam = {
-      view_disp_id: viewDisId ? `'${viewDisId}'` : '',
-      view_version: viewVer ? viewVer : '',
-      site: site ? site : '',
-      date: dateRange ? dateRange : '',
+      view_disp_id: viewDisId ? viewDisId : '',
+      view_version: viewVer ? viewVer : null,
+      site: site ? site : null,
+      date: dateRange ? dateRange : null,
       unapproved_data: isUnApproved ? isUnApproved : false,
     };
     try {
@@ -471,18 +488,22 @@ function ChartPersonalization() {
         let batchRes = viewData && viewData.data ? viewData.data : {};
         setbatchData(batchRes);
         dispatch(sendBatchCoverage(batchRes));
+      } else if (viewData.statuscode === 400) {
+        dispatch(
+          showNotification('error', 'Parameter Data Error -', viewData.message)
+        );
       }
 
       dispatch(hideLoader());
     } catch (error) {
       setbatchData({});
       dispatch(hideLoader());
-      dispatch(showNotification('error', 'Parameter Data Error - '));
+      console.log('errrrrorrrrr', error);
+      dispatch(
+        showNotification('error', 'Parameter Data Error -', error?.message)
+      );
     }
   }
-  console.log('is save btn disabled', isSaveBtnDisabled);
-  console.log('is save as btn disabled', isSaveAsBtnDisabled);
-  console.log('is landing btn disbaled', isLandingDisabled);
 
   return (
     <div className='custom-wrapper'>
@@ -586,7 +607,7 @@ function ChartPersonalization() {
               <ChartDetails
                 resChartId={resChartId}
                 resChartVersion={resChartVersion}
-                setresChartStatus={resChartStatus}
+                resChartStatus={resChartStatus}
                 isFieldEmpty={isFieldEmpty}
                 isChartNameEmpty={callBackChartName}
               />
