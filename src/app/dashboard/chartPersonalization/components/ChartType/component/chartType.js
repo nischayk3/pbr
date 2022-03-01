@@ -33,42 +33,48 @@ const ChartType = (props) => {
   const [chartBatchData, setChartBatchData] = useState({});
   const [batchData, setbatchData] = useState([]);
   const [isDisabled, setisDisabled] = useState(true);
+  const [axisDataArray, setaxisDataArray] = useState([]);
+
   const [isDisableXAxis, setisDisableXAxis] = useState(false);
   const [isDisabledYAxis, setisDisabledYAxis] = useState(false);
+  const [showWarn, setshowWarn] = useState(false);
 
   const dispatch = useDispatch();
   const getChartObjData = useSelector(
     (state) =>
-      state.chartDataReducer && state.chartDataReducer.selectedChartData[0]
+      state.chartDataReducer && state.chartDataReducer.selectedChartData
   );
 
   const batchCoverage = useSelector(
     (state) => state.chartPersReducer.getBatchCoverage
   );
 
-  console.log('get batchCoverage', batchCoverage);
-
   const chartDesc = useSelector((state) => state.chartPersReducer.chartDesc);
-  console.log('chart type', getChartObjData?.chart_type);
+
   useEffect(() => {
-    console.log('use effect 112');
     setselectedChartType(getChartObjData?.chart_type);
     setselectedXAxis(getChartObjData?.chart_mapping?.x?.function_name);
     setselectedYAxis(getChartObjData?.chart_mapping?.y?.function_name);
   }, [getChartObjData]);
 
   useEffect(() => {
-    console.log('use effect 22');
     const xAxis = [];
     const yAxis = [];
     const batch = [];
     const temp = [];
     const ph = [];
+    const axisArray = [];
 
     const fetchXYAxis =
       batchCoverage &&
       batchCoverage.coverage !== undefined &&
-      Object.keys(batchCoverage.coverage).map((key) => {
+      Object.entries(batchCoverage.coverage).map(([key, value]) => {
+        let axisObj = {};
+
+        axisObj['key'] = key;
+        axisObj['value'] = value;
+
+        axisArray.push(axisObj);
         xAxis.push(key);
         yAxis.push(key);
       });
@@ -91,6 +97,7 @@ const ChartType = (props) => {
     setChartBatchData(batchCoverage);
     setxAxisList(xAxis.filter(uniqueArr));
     setyAxisList(yAxis.filter(uniqueArr));
+    setaxisDataArray(axisArray);
   }, [batchCoverage]);
 
   useEffect(() => {
@@ -145,8 +152,26 @@ const ChartType = (props) => {
         }
       } else if (field === 'xaxis') {
         setselectedXAxis(value);
+        let warnCheck = axisDataArray.map((item) => {
+          if (item.value.replace(/\d+% ?/g, 0) < 100.0) {
+            if (item.key === value) {
+              setshowWarn(true);
+            } else {
+              setshowWarn(false);
+            }
+          }
+        });
       } else if (field === 'yaxis') {
         setselectedYAxis(value);
+        let warnCheck = axisDataArray.map((item) => {
+          if (item.value.replace(/\d+% ?/g, 0) < 100.0) {
+            if (item.key === value) {
+              setshowWarn(true);
+            } else {
+              setshowWarn(false);
+            }
+          }
+        });
       }
     }
   };
@@ -175,6 +200,7 @@ const ChartType = (props) => {
     dispatch(sendChartyAxis(selectedXAxis));
     dispatch(sendChartMapping(chartMapping));
   };
+
   return (
     <div>
       <Card title='Chart'>
@@ -190,6 +216,16 @@ const ChartType = (props) => {
         {isScatter ? (
           <div className='grid-2-columns' style={{ marginTop: '10px' }}>
             <SelectField
+              iconlabel={
+                showWarn ? (
+                  <WarningTwoTone
+                    style={{ marginLeft: 10 }}
+                    twoToneColor='red'
+                  />
+                ) : (
+                  ''
+                )
+              }
               label='X-Axis'
               placeholder='X-Axis '
               onChangeSelect={(e) => selectChartType(e, 'xaxis')}
@@ -197,14 +233,22 @@ const ChartType = (props) => {
               selectedValue={selectedXAxis}
             />
             <SelectField
+              iconlabel={
+                showWarn ? (
+                  <WarningTwoTone
+                    style={{ marginLeft: 10 }}
+                    twoToneColor='red'
+                  />
+                ) : (
+                  ''
+                )
+              }
               label='Y-Axis'
               placeholder='Y-Axis '
               onChangeSelect={(e) => selectChartType(e, 'yaxis')}
               selectList={yAxisList}
               selectedValue={selectedYAxis}
             />
-
-            {/* <WarningTwoTone style={{ marginLeft: 10 }} twoToneColor='red' /> */}
           </div>
         ) : (
           <InputField

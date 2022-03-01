@@ -19,7 +19,8 @@
 
 .alert-tags {
   display: block;
-
+  height: 150px;
+  // overflow-x: auto;
   .alert-tags_error {
     display: grid;
     grid-template-columns: 15px 120px 60px 30px;

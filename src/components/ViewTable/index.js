@@ -1,6 +1,6 @@
 import './style.scss';
 
-import { Button, Input, Modal, Table } from 'antd';
+import { Button, Input, Modal, Table, message } from 'antd';
 import React, { useState } from 'react';
 
 import { SearchOutlined } from '@ant-design/icons';
@@ -11,7 +11,7 @@ const ViewTable = (props) => {
   console.log('props view table', props);
   const [selectedKeys, setselectedKeys] = useState([]);
   const [selectedViewId, setselectedViewId] = useState('');
-
+  const [isDisabled, setisDisabled] = useState(true);
   const [filterData, setfilterData] = useState(null);
 
   const dispatch = useDispatch();
@@ -88,6 +88,7 @@ const ViewTable = (props) => {
           className='custom-secondary-btn'
           key='link'
           type='primary'
+          disabled={isDisabled}
         >
           Ok
         </Button>,
@@ -100,13 +101,16 @@ const ViewTable = (props) => {
           enterButton
           onSearch={searchTable}
           allowClear
-          prefix={
-            <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
-          }
+          // prefix={
+          //   <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
+          // }
         />
       </div>
       <div className='custom-table-antd'>
         <Table
+          rowClassName={(record, index) =>
+            index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+          }
           columns={columns}
           // rowSelection={() => ({
           //   onChange: (selectedRowKeys, selectedRows) => {
@@ -121,9 +125,10 @@ const ViewTable = (props) => {
           rowKey='key'
           onRow={(record) => ({
             onClick: () => {
-              //selectRow(record);
               setselectedViewId(record);
-              console.log('selectedKeys', selectedKeys);
+              console.log('record', record);
+              setisDisabled(false);
+              message.success(`${record.view} Selected`);
               const selectedRowKeys = [...selectedKeys];
               if (selectedRowKeys.indexOf(record.key) >= 0) {
                 selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1);

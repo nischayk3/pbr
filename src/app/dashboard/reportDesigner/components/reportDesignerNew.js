@@ -52,8 +52,6 @@ function ReportDesignerNew() {
   const [loading, setLoading] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [isSave, setIsSave] = useState(false);
-  const [isChanged, setIsChanged] = useState(false);
-  const [isSaveAs, setIsSaveAs] = useState(false);
   const [reportName, setReportName] = useState('');
   const [isNew, setIsNew] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -88,23 +86,25 @@ function ReportDesignerNew() {
   useEffect(() => { form.resetFields() }, [formData]);
 
 
-  const checkChanges =  (reportData,mainJson) =>
-  {
-    let jay=reportData
-    let jayson=mainJson
-    if(Object.keys(jay).length>0 && Object.keys(jayson).length>0  )
-    {
+  const checkChanges = (reportData, mainJson) => {
+    let jay = reportData
+    let jayson = mainJson
+
+    jay = jay[0] ? jay[0] : []
+    jay = jay['layout_info'] ? jay['layout_info'] : {}
+    console.log(jay,jayson);
+    if (Object.keys(jay).length > 0 && Object.keys(jayson).length > 0) {
       return true
     }
-    else if(Object.keys(jay).length==0 && Object.keys(jayson).length==0  )
-    {
+    else if (Object.keys(jay).length == 0 && Object.keys(jayson).length == 0) {
+      return true
+    }
+    else if (Object.keys(jay).length == 0 && Object.keys(jayson).length > 0) {
       return true
     }
     else
-    return false
-
-
-  }
+      return false
+  };
 
   const OnNewClick = () => {
     setIsNew(true);
@@ -132,10 +132,7 @@ function ReportDesignerNew() {
     }
     else {
       dispatch(hideLoader());
-
     }
-
-    // unLoadJson(reportData);   
   }
 
 
@@ -189,7 +186,7 @@ function ReportDesignerNew() {
   const convertToJson = (jay) => {
     let arr = {};
     let section_arr = [];
-
+    console.log(jay)
     jay = jay['response'];
     jay.map((item, index) => {
       let obj = {};
@@ -234,52 +231,55 @@ function ReportDesignerNew() {
 
   // Saving the json
   const PrepareJson = (formData, saveType) => {
-    // let check =checkChanges(formData,reportData[0]['layout_info'] ? reportData[0]['layout_info'] : {} )
+    // let check = checkChanges(formData, reportData[0]['layout_info'] ? reportData[0]['layout_info'] : {})
+    let check = checkChanges(reportData,formData)
+      console.log(check)
+     if (check) {
+      let check = checkChanges(reportData,formData)
+      console.log(check)
+      let obj = {}
+      obj['view_disp_id'] = viewId;
+      obj['chart_int_ids'] = selectedChartList;
+      obj['view_version'] = viewVersion;
+      obj['rep_name'] = reportName;
+      obj['rep_status'] = status;
 
-    // console.log
+      if (saveType == 'save_as') {
+        obj['rep_disp_id'] = '';
+        obj['saveType'] = saveType
+      }
+      if (saveType == 'save') {
+        obj['rep_disp_id'] = reportId;
+        obj['saveType'] = saveType
+      }
+      if (saveType == 'publish') {
+        obj['rep_disp_id'] = reportId;
+        obj['saveType'] = saveType
+      }
 
-    // if
+      obj['layout_info'] = formData;
+      let req = {}
+      req['data'] = obj
 
-    let obj = {}
-    obj['view_disp_id'] = viewId;
-    obj['chart_int_ids'] = selectedChartList;
-    obj['view_version'] = viewVersion;
-    obj['rep_name'] = reportName;
-    obj['rep_status'] = status;
+      if (reportName.length > 0) {
+        saveReportDesign(req).then((res) => {
+          if (res && res['msg'] && res['msg'] == 'success') {
+            setReportId(res['rep_disp_id'])
+            setStatus(res['rep_stauts'])
+            setIsSave(true)
+          }
+          else
+            message.error('Not Saved')
 
-    if (saveType == 'save_as') {
-      obj['rep_disp_id'] = '';
-      obj['saveType'] = saveType
-    }
-    if (saveType == 'save') {
-      obj['rep_disp_id'] = reportId;
-      obj['saveType'] = saveType
-    }
-    if (saveType=='publish')
-    {
-      obj['rep_disp_id'] = reportId;
-      obj['saveType'] = saveType 
-    }
-
-    obj['layout_info'] = formData;
-    let req = {}
-    req['data'] = obj
-
-    if (reportName.length > 0) {
-      saveReportDesign(req).then((res) => {
-        if (res && res['msg'] && res['msg'] == 'success') {
-          setReportId(res['rep_disp_id'])
-          setStatus(res['rep_stauts'])
-          setIsSave(true)
-        }
-        else
-          message.error('Not Saved')
-
-      })
-      dispatch(sendReport(req['data']))
+        })
+        dispatch(sendReport(req['data']))
+      }
+      else {
+        message.error('Report Name Is Required')
+      }
     }
     else {
-      message.error('Report Name Is Required')
+      message.error('No Changes To Save')
     }
 
   }
@@ -373,13 +373,13 @@ function ReportDesignerNew() {
     catch
     {
       dispatch(hideLoader());
-
-      dispatch(showNotification('error', 'No Data in selected Report ID'));
+      dispatch(showNotification('error', 'Loading Data... , click OK again'));
     }
   }
   const isStyledDifferently = (rowObject, index) => {
     return rowObject.isActive ? true : false;
   }
+
   return (
     <div className='custom-wrapper'>
       <div className='sub-header'>
@@ -413,14 +413,16 @@ function ReportDesignerNew() {
 
                   Save
                 </Button>
-                <Button
-                  className='custom-primary-btn'
-                  onClick={() => {
-                    PrepareJson(mainJson, 'save_as')
-                  }}
-                >
-                  Save As
-                </Button>
+                {isLoad ?
+                  <Button
+                    className='custom-primary-btn'
+                    onClick={() => {
+                      PrepareJson(mainJson, 'save_as')
+                    }}
+                  >
+
+                    Save As
+                  </Button> : <></>}
                 <Button
                   className='custom-primary-btn'
                   onClick={() => dispatch(screenChange(true))}
@@ -428,7 +430,7 @@ function ReportDesignerNew() {
                   Test
                 </Button>
                 <Button
-                  className="reportDesigner-shareBtn"
+                  className="custom-secondary-btn"
                   type="primary"
                   style={{ backgroundColor: '#093185', color: 'white' }}
                   onClick={() => {
@@ -487,12 +489,12 @@ function ReportDesignerNew() {
 
           </div> : <></>}
         <Modal
-          title="Select View"
+          title="Select Report"
           visible={visible}
           onCancel={() => setVisible(false)}
           width={500}
           style={{ marginRight: '800px' }}
-          footer={[<Button style={{ backgroundColor: '#093185', color: 'white' }} onClick={() => {
+          footer={[<Button style={{ backgroundColor: '#093185', color: 'white',borderRadius:'4px' }} onClick={() => {
             onOk()
           }}>OK</Button>,]}
 
@@ -504,30 +506,31 @@ function ReportDesignerNew() {
           }}
             value={reportId}
             showArrow
+            style={{backgroundColor:'white',borderRadius:'4px'}}
           >
-            {mapReportList.length <= 0 ? mapReportList.map((item) =>
+            {mapReportList.length >= 0 ? mapReportList.map((item) =>
 
               <Option value={item.rep_disp_id}>{item.rep_disp_id}</Option>
-            ):<></>}
+            ) : <></>}
 
           </Select>
           <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
         </Modal>
         <Modal
-          title="Select View"
+          title="Select Report"
           visible={popvisible}
           onCancel={() => setPopVisible(false)}
           width={600}
-          title={<span>Select View  <Input.Search
+          title={<p>Select View  <Input.Search
             className='table-search'
             placeholder='Search by...'
             enterButton
             onSearch={search}
-            style={{ marginBottom: '40px' }}
-          /></span>}
+            style={{ borderRadius: '4px' }}
+          /></p>}
           centered
           width={500}
-          footer={[<Button style={{ backgroundColor: '#093185', color: 'white' }} onClick={() => {
+          footer={[<Button style={{ backgroundColor: '#093185', color: 'white',borderRadius:'4px'}} onClick={() => {
             dispatch(showLoader());
             onOk()
           }}>OK</Button>,]}

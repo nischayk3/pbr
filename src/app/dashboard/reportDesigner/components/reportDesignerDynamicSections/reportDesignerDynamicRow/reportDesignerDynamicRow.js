@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form, Input, Popconfirm, Switch } from 'antd';
 import {
-    PlusSquareTwoTone,
+    PlusSquareOutlined,
     UnlockOutlined,
     LockOutlined,
     DeleteTwoTone
@@ -12,7 +12,6 @@ function ReportDesignerDynamicRow(props) {
     const { fieldKey } = props;
 
     const isEditableHandler = (prev, current, name, fieldKey) => {
-        // console.log(prev,current,name,fieldKey)
         let res = prev['response']
         let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
         let dynamic_rows_row = dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
@@ -22,7 +21,6 @@ function ReportDesignerDynamicRow(props) {
         let dynamic_rows_curr = res_curr[fieldKey] ? res[fieldKey] : []
         let dynamic_rows_row_curr = dynamic_rows_curr['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
         let value_curr = dynamic_rows_row_curr[name] ? dynamic_rows_row[name] : []
-        // console.log(value_curr ? value_curr : false,value_curr)
         return value_curr ? value_curr : false
 
     }
@@ -35,37 +33,10 @@ function ReportDesignerDynamicRow(props) {
                         <tr
                             className="dynamicSections-spaceRows"
                             key={key} >
-                            <td><Form.Item>
-                                <PlusSquareTwoTone onClick={() => add()} />
-                            </Form.Item></td>
-                            <td >
-                                <Form.Item
-                                    {...restField1}
-                                    shouldUpdate={(prevValues, currentValues) => isEditableHandler(prevValues, currentValues, name, fieldKey)
-                                    }
-                                >
-                                    {({ getFieldValue }) => {
-                                        let res = getFieldValue('response')
-                                        let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
-                                        let dynamic_rows_row = dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
-                                        let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : []
-
-                                        // console.log(value)
-
-                                        return value['editable'] === true ? (
-                                            <Form.Item name={[name, 'keyName']} >
-                                                <Input placeholder="Enter Key" name={[name, 'keyName']} disabled />
-                                            </Form.Item>
-                                        ) : (
-                                            <Form.Item name={[name, 'keyName']} >
-                                                <Input placeholder="Enter Key" style={{ backgroundColor: '#baeaff' }} bordered={true} />
-                                            </Form.Item>
-                                        )
-                                    }}
-                                </Form.Item>
-                                {/* <Form.Item {...restField1} name={[name, 'keyName']}>
-                                    <Input placeholder="Enter key" />
-                                </Form.Item> */}
+                            <td>
+                            <Form.Item>
+                                <PlusSquareOutlined style ={{color:'#093185'}} onClick={() => add()} />
+                            </Form.Item>
                             </td>
                             <td >
                                 <Form.Item
@@ -78,8 +49,30 @@ function ReportDesignerDynamicRow(props) {
                                         let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
                                         let dynamic_rows_row = dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
                                         let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : []
-
-                                        // console.log(value)
+                                        
+                                        return value['editable'] === true ? (
+                                            <Form.Item name={[name, 'keyName']} >
+                                                <Input placeholder="Enter Key" name={[name, 'keyName']} disabled />
+                                            </Form.Item>
+                                        ) : (
+                                            <Form.Item name={[name, 'keyName']} >
+                                                <Input placeholder="Enter Key" style={{ backgroundColor: '#baeaff' }} bordered={true} />
+                                            </Form.Item>
+                                        )
+                                    }}
+                                </Form.Item>
+                            </td>
+                            <td >
+                                <Form.Item
+                                    {...restField1}
+                                    shouldUpdate={(prevValues, currentValues) => isEditableHandler(prevValues, currentValues, name, fieldKey)
+                                    }
+                                >
+                                    {({ getFieldValue }) => {
+                                        let res = getFieldValue('response')
+                                        let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
+                                        let dynamic_rows_row = dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
+                                        let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : []
 
                                         return value['editable'] === true ? (
                                             <Form.Item name={[name, 'value']} >
@@ -92,9 +85,6 @@ function ReportDesignerDynamicRow(props) {
                                         )
                                     }}
                                 </Form.Item>
-                                {/* <Form.Item {...restField1} name={[name, 'value']}>
-                                    <Input placeholder="Enter Value" />
-                                </Form.Item> */}
                             </td>
                             <td >
                                 <Popconfirm title="Are you Sure you want to delete?" onConfirm={() => remove(name)}>
@@ -103,7 +93,7 @@ function ReportDesignerDynamicRow(props) {
                             </td>
                             <td >
                                 <Form.Item {...restField1} name={[name, 'editable']} valuePropName="checked" defaultChecked>
-                                    <Switch defaultChecked={false} />
+                                    <Switch defaultChecked={false} size="small"/>
                                 </Form.Item>
                             </td>
                             <td >
@@ -118,12 +108,10 @@ function ReportDesignerDynamicRow(props) {
                                         let dynamic_rows_row = dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
                                         let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : []
 
-                                        // console.log(value)
-
                                         return value['editable'] === true ? (
-                                            <LockOutlined style={{ backgroundColor: '#BAE7FF' }} />
+                                            <LockOutlined style={{ fontSize:'16px' }} />
                                         ) : (
-                                            <UnlockOutlined style={{ backgroundColor: '#E0E0E0' }} />
+                                            <UnlockOutlined  style={{ fontSize:'16px' }}/>
                                         )
                                     }}
                                 </Form.Item>
@@ -131,7 +119,7 @@ function ReportDesignerDynamicRow(props) {
                         </tr>
                     ))}
                     <Form.Item>
-                        <PlusSquareTwoTone  onClick={() => add()} />
+                        <PlusSquareOutlined  style ={{color:'#093185'}} onClick={() => add()} />
                     </Form.Item>
                 </>
             )}

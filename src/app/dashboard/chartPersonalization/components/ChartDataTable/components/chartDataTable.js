@@ -37,9 +37,10 @@ function ChartDataTable(props) {
   const filterColumn = objkeys.filter(uniqueArr);
 
   const columns = [];
+
   filterColumn.map((item, i) => {
     columns.push({
-      title: item,
+      title: item.toUpperCase(),
       dataIndex: item,
       key: `${item}-${i}`,
     });
@@ -49,7 +50,7 @@ function ChartDataTable(props) {
   return (
     <div>
       <div>
-        <Card bordered={false} style={{ height: 285 }}>
+        <Card bordered={false} style={{ height: '430px' }}>
           <Tabs defaultActiveKey='1'>
             <TabPane tab='Exclusion' key='1'>
               <ExclusionTable />
@@ -65,12 +66,14 @@ function ChartDataTable(props) {
             </TabPane>
             <TabPane tab='Data Table' key='5'>
               <Table
+                rowClassName={(record, index) =>
+                  index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+                }
                 size='small'
                 className='parameter_table'
                 columns={columns}
                 dataSource={paramData}
-                bordered
-                scroll={{ y: 150 }}
+                scroll={{ y: 350 }}
                 pagination={false}
               />
             </TabPane>
