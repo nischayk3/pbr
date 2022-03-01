@@ -6,6 +6,7 @@ import {
   DatePicker,
   Input,
   Modal,
+  Select,
   Switch,
   Typography,
 } from 'antd';
@@ -36,6 +37,8 @@ function ChartFilter(props) {
   const [startTimeIso, setstartTimeIso] = useState('');
   const [endTimeIso, setendTimeIso] = useState('');
   const [isDisabled, setisDisabled] = useState(true);
+  const [selectedPeriod, setselectedPeriod] = useState('');
+  const [selectedPeriodDate, setselectedPeriodDate] = useState('');
 
   const [selectedDateRange, setSelectedDateRange] = useState('');
   const [unapprovedData, setunapprovedData] = useState(false);
@@ -167,15 +170,42 @@ function ChartFilter(props) {
     let endDate = new Date();
     let startdate = new Date();
     let durationInMinutes = val;
-    console.log("startDate",val)
+    console.log('startDate', val);
     startdate.setMinutes(endDate.getMinutes() - durationInMinutes);
-    let isoVar = startdate.toISOString().replace(/[^\d]/g,'').slice(0, -9)
-    let format = moment.duration(isoVar).toISOString()
-    
-    console.log("startDate",isoVar)
-    console.log("startDate",format)
+    let isoVar = startdate.toISOString().replace(/[^\d]/g, '').slice(0, -9);
+    let format = moment.duration(isoVar).toISOString();
+
+    let dateFormate = moment(isoVar).format('YYYY-MM-DD');
+    setselectedPeriodDate(dateFormate);
+    setSelectedDateRange(dateFormate);
+    console.log(dateFormate, 'startDate', isoVar);
+    console.log('startDate', format);
+    setVisible(false);
     // console.log("startDate",format[0][0].concat("0Y0M0DT").concat(format[1]))
-  }
+  };
+
+  const range = [
+    { key: 'Last 5 minutes', value: 5 },
+    { key: 'Last 10 minutes', value: 10 },
+    { key: 'Last 15 minutes', value: 15 },
+    { key: 'Last 20 minutes', value: 20 },
+    { key: 'Last 25 minutes', value: 25 },
+    { key: 'Last 30 minutes', value: 30 },
+  ];
+  const options = range.map((item, i) => (
+    <Option key={i} value={item.value}>
+      {item.key}
+    </Option>
+  ));
+
+  const onChangeSelect = (value) => {
+    console.log('value', value);
+    if (value !== null) {
+      setselectedPeriod(value);
+      generateISO(value);
+    }
+  };
+
   return (
     <div>
       <Card title='Filters'>
@@ -222,7 +252,13 @@ function ChartFilter(props) {
             Last 5 minutes United States EST
           </p>,
           <Button key='back'>UTC-05:00</Button>,
-          <Button key='submit' type='primary' loading={loading}>
+          <Button
+            type='primary'
+            className='custom-secondary-btn'
+            key='submit'
+            type='primary'
+            loading={loading}
+          >
             Change Time Settings
           </Button>,
         ]}
@@ -242,6 +278,7 @@ function ChartFilter(props) {
             <br />
             <Button
               type='primary'
+              className='custom-secondary-btn'
               style={{ marginTop: '20px' }}
               onClick={onClickTimeRange}
             >
@@ -258,9 +295,21 @@ function ChartFilter(props) {
           <div>
             {/* <Search placeholder='Search quick Ranges' style={{ width: 200 }} /> */}
             {/* <p style={{ marginTop: '10px' }}>Last 5 minutes</p> */}
-            <Button
-              
-              type="link"
+            <div className='input_field_view'>
+              <p>quick Ranges</p>
+              <div className='input_view'>
+                <Select
+                  // placeholder={props.placeholder}
+                  value={selectedPeriod}
+                  onChange={(e) => onChangeSelect(e)}
+                  style={{ width: '100%', margin: '0px' }}
+                >
+                  {options}
+                </Select>
+              </div>
+            </div>
+            {/* <Button
+              type='link'
               onClick={() => generateISO(5)}
               style={{ marginTop: '10px' }}
             >
@@ -268,16 +317,16 @@ function ChartFilter(props) {
             </Button>
             <br />
             <Button
-             type="link"
+              type='link'
               onClick={() => generateISO(15)}
               style={{ marginTop: '10px' }}
             >
               Last 15 minutes
             </Button>
-            {/* <p onClick={generateISO}>Last 15 minutes</p> */}
+        
             <br />
             <Button
-              type="link"
+              type='link'
               onClick={() => generateISO(25)}
               style={{ marginTop: '10px' }}
             >
@@ -285,7 +334,7 @@ function ChartFilter(props) {
             </Button>
             <br />
             <Button
-             type="link"
+              type='link'
               onClick={() => generateISO(35)}
               style={{ marginTop: '10px' }}
             >
@@ -293,7 +342,7 @@ function ChartFilter(props) {
             </Button>
             <br />
             <Button
-           type="link"
+              type='link'
               onClick={() => generateISO(45)}
               style={{ marginTop: '10px' }}
             >
@@ -301,16 +350,12 @@ function ChartFilter(props) {
             </Button>
             <br />
             <Button
-              type="link"
+              type='link'
               onClick={() => generateISO(60)}
               style={{ marginTop: '10px' }}
             >
               Last 60 minutes
-            </Button>
-            {/* <p>Last 25 minutes</p>
-            <p>Last 35 minutes</p>
-            <p>Last 45 minutes</p>
-            <p>Last 60 minutes</p> */}
+            </Button> */}
           </div>
         </div>
       </Modal>
