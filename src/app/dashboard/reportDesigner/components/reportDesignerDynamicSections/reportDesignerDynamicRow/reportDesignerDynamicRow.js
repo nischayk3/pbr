@@ -35,7 +35,7 @@ function ReportDesignerDynamicRow(props) {
                             key={key} >
                             <td>
                             <Form.Item>
-                                <PlusSquareOutlined style ={{color:'#38acec'}} onClick={() => add()} />
+                                <PlusSquareOutlined style ={{color:'#093185'}} onClick={() => add()} />
                             </Form.Item>
                             </td>
                             <td >
@@ -119,7 +119,7 @@ function ReportDesignerDynamicRow(props) {
                         </tr>
                     ))}
                     <Form.Item>
-                        <PlusSquareOutlined  style ={{color:'#38acec'}} onClick={() => add()} />
+                        <PlusSquareOutlined  style ={{color:'#093185'}} onClick={() => add()} />
                     </Form.Item>
                 </>
             )}

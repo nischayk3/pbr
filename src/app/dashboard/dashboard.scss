@@ -85,6 +85,12 @@
   border-radius: 4px;
   transition: all 0.3s;
 }
+.ant-select-selection-overflow-item .ant-select-selection-item
+{
+  background-color: #FAFAFA;
+  margin: 5px;
+  border-color: #093185;
+}
 .custom-primary-btn {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;

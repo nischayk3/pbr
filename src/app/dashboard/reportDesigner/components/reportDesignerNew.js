@@ -379,6 +379,7 @@ function ReportDesignerNew() {
   const isStyledDifferently = (rowObject, index) => {
     return rowObject.isActive ? true : false;
   }
+
   return (
     <div className='custom-wrapper'>
       <div className='sub-header'>
@@ -488,12 +489,12 @@ function ReportDesignerNew() {
 
           </div> : <></>}
         <Modal
-          title="Select View"
+          title="Select Report"
           visible={visible}
           onCancel={() => setVisible(false)}
           width={500}
           style={{ marginRight: '800px' }}
-          footer={[<Button style={{ backgroundColor: '#093185', color: 'white' }} onClick={() => {
+          footer={[<Button style={{ backgroundColor: '#093185', color: 'white',borderRadius:'4px' }} onClick={() => {
             onOk()
           }}>OK</Button>,]}
 
@@ -505,8 +506,9 @@ function ReportDesignerNew() {
           }}
             value={reportId}
             showArrow
+            style={{backgroundColor:'white',borderRadius:'4px'}}
           >
-            {mapReportList.length <= 0 ? mapReportList.map((item) =>
+            {mapReportList.length >= 0 ? mapReportList.map((item) =>
 
               <Option value={item.rep_disp_id}>{item.rep_disp_id}</Option>
             ) : <></>}
@@ -515,20 +517,20 @@ function ReportDesignerNew() {
           <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
         </Modal>
         <Modal
-          title="Select View"
+          title="Select Report"
           visible={popvisible}
           onCancel={() => setPopVisible(false)}
           width={600}
-          title={<span>Select View  <Input.Search
+          title={<p>Select View  <Input.Search
             className='table-search'
             placeholder='Search by...'
             enterButton
             onSearch={search}
-            style={{ marginBottom: '40px' }}
-          /></span>}
+            style={{ borderRadius: '4px' }}
+          /></p>}
           centered
           width={500}
-          footer={[<Button style={{ backgroundColor: '#093185', color: 'white' }} onClick={() => {
+          footer={[<Button style={{ backgroundColor: '#093185', color: 'white',borderRadius:'4px'}} onClick={() => {
             dispatch(showLoader());
             onOk()
           }}>OK</Button>,]}
