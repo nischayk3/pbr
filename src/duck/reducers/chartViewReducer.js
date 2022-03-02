@@ -20,7 +20,8 @@ export default (state = initState, action) => {
       return { ...state, viewStatus: action.payload };
     case types.SELECTED_VIEW_VERSION:
       return { ...state, viewVersion: action.payload };
-
+    case types.RESET_CHART:
+      return initState;
     default:
       return state;
   }
