@@ -80,6 +80,12 @@ const MENU = [
     title: 'Report Generator',
     linkTo: '/dashboard/report_generator',
   },
+  {
+    key: 'workflow',
+    icon: <LinkOutlined style={{fontSize: "26px"}} />,
+    title: 'Workflow',
+    linkTo: '/dashboard/workflow',
+  },
 ];
 
 const LogoutIcon = <LogoutOutlined style={{fontSize: "26px"}}  />;
