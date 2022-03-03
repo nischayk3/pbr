@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import Dash_Card from '../../../../components/CardComponent/customCard';
+import Dash_Card from '../../../../components/cardComponent/customCard';
 import './styles.scss';
 import Item from 'antd/lib/list/Item';
 
