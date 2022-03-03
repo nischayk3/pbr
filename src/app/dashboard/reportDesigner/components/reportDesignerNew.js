@@ -28,21 +28,54 @@ const columns = [
     title: 'Report ID',
     dataIndex: 'rep_disp_id',
     key: 'rep_disp_id',
+    render:(text, record) => {
+      return {
+        props: {
+          style: { background: record.color },
+        },
+        children: <div>{text}</div>,
+      };
+    },
   },
   {
     title: 'Report Name',
     dataIndex: 'rep_name',
     key: 'rep_name',
+    render:(text, record) => {
+      return {
+        props: {
+          style: { background: record.color },
+        },
+        children: <div>{text}</div>,
+      };
+    },
+    
   },
   {
     title: 'Report Status',
     dataIndex: 'rep_status',
     key: 'rep_status',
+    render:(text, record) => {
+      return {
+        props: {
+          style: { background: record.color },
+        },
+        children: <div>{text}</div>,
+      };
+    },
   },
   {
     title: 'Created By',
     dataIndex: 'created_by',
     key: 'created_by',
+    render:(text, record) => {
+      return {
+        props: {
+          style: { background: record.color },
+        },
+        children: <div>{text}</div>,
+      };
+    },
   },
 ];
 
@@ -92,7 +125,7 @@ function ReportDesignerNew() {
 
     jay = jay[0] ? jay[0] : []
     jay = jay['layout_info'] ? jay['layout_info'] : {}
-    console.log(jay,jayson);
+    console.log(jay, jayson);
     if (Object.keys(jay).length > 0 && Object.keys(jayson).length > 0) {
       return true
     }
@@ -158,7 +191,7 @@ function ReportDesignerNew() {
 
   const getReportData = (rep_id, rep_status) => {
     message.success(`${rep_id} selected`)
-    let req = { rep_status: rep_status ? rep_status : 'APRD' };
+    let req = { rep_status: rep_status ? rep_status : 'DRFT' };
     if (rep_id)
       req['rep_disp_id'] = rep_id
     getReports(req).then((res) => {
@@ -232,10 +265,10 @@ function ReportDesignerNew() {
   // Saving the json
   const PrepareJson = (formData, saveType) => {
     // let check = checkChanges(formData, reportData[0]['layout_info'] ? reportData[0]['layout_info'] : {})
-    let check = checkChanges(reportData,formData)
-      console.log(check)
-     if (check) {
-      let check = checkChanges(reportData,formData)
+    let check = checkChanges(reportData, formData)
+    console.log(check)
+    if (check) {
+      let check = checkChanges(reportData, formData)
       console.log(check)
       let obj = {}
       obj['view_disp_id'] = viewId;
@@ -494,7 +527,7 @@ function ReportDesignerNew() {
           onCancel={() => setVisible(false)}
           width={500}
           style={{ marginRight: '800px' }}
-          footer={[<Button style={{ backgroundColor: '#093185', color: 'white',borderRadius:'4px' }} onClick={() => {
+          footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => {
             onOk()
           }}>OK</Button>,]}
 
@@ -503,10 +536,12 @@ function ReportDesignerNew() {
             let view_value = value.value ? value.value : ''
             setReportId(view_value)
             getReportData(view_value)
+
           }}
             value={reportId}
+            showSearch
             showArrow
-            style={{backgroundColor:'white',borderRadius:'4px'}}
+            style={{ backgroundColor: 'white', borderRadius: '4px' }}
           >
             {mapReportList.length >= 0 ? mapReportList.map((item) =>
 
@@ -530,17 +565,19 @@ function ReportDesignerNew() {
           /></p>}
           centered
           width={500}
-          footer={[<Button style={{ backgroundColor: '#093185', color: 'white',borderRadius:'4px'}} onClick={() => {
+          footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => {
             dispatch(showLoader());
             onOk()
           }}>OK</Button>,]}
         >
           <Table
+            // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
             rowHighlightTest={isStyledDifferently}
             dataSource={filterTable === null ? reportList : filterTable}
             columns={columns}
             onRow={record => ({
               onClick: e => {
+                record['color']='red'
                 setReportId(record.rep_disp_id)
                 getReportData(record.rep_disp_id, record.rep_status)
                 dispatch(showLoader())

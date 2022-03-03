@@ -1,0 +1,16 @@
+[
+    {
+        "chart": "C5-Sodium Hydroxide 10N Bio-1",
+        "excursion": false,
+        "violation": false,
+        "parameter": false,
+        "exclusion": false
+    },
+    {
+        "chart": "C5-Sodium Hydroxide 10N Bio-2",
+        "excursion": true,
+        "violation": true,
+        "parameter": true,
+        "exclusion": false
+    }
+]
