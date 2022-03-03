@@ -47,14 +47,17 @@ const Workflow = () => {
                 <Card title='Approval Dashboard' style={{ width: '100%' }}>
                     <p className='dash-username'>Hello[username],welcome back!</p>
                     <div className='workflow_items approve-wrapper'>
-                    {
-                         
-                        config.map((item, index) => {
-                            return (
-                                    <Dash_Card count={item.count} desc={item.desc}/>
-                            )
-                        })
-                    }
+                        {
+
+                            config.map((item, index) => {
+                                return (
+                                    <div onClick={() => console.log(item)}>
+                                        <Dash_Card count={item.count} desc={item.desc} />
+                                    </div>
+
+                                )
+                            })
+                        }
                     </div>
                     {/* <div className='workflow_items approve-wrapper'>
                     <Dash_Card/>

@@ -6,7 +6,7 @@ import './styles.scss';
 const customCard = (props) => {
     return (
        
-            <div className="approval-cards" tabIndex="0" onClick={()=>console.log("Hello")}>
+            <div className="approval-cards" tabIndex="0">
                 <div className="circle_icon" >
                     <BarChartOutlined />
                 </div>
