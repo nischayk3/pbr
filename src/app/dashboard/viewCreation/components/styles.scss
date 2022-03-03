@@ -5,6 +5,7 @@
     }
     hr {
         margin: 0px !important;
+		border-width: 0.5px !important;
     }
 	.viewCreation-block {
 		padding: 10px 20px;
@@ -123,7 +124,7 @@ a.deleteTableAction {
 		background-color: #f1f7ff;
 
 		.ant-collapse-arrow {
-			right: 23px !important;
+			right: 36px !important;
 			color: #454545;
 		}
 	}

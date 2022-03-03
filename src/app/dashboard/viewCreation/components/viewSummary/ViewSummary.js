@@ -66,7 +66,7 @@ function ViewSummary(props) {
     const handleFunctionNameChange = (e) => {
         setViewFunctionName(e.target.value)
     }
- 
+
     useEffect(() => {
         form.setFieldsValue({ viewId: saveResponseView.viewId, status: saveResponseView.viewStatus, version: saveResponseView.version })
     }, [saveResponseView]);
@@ -76,18 +76,24 @@ function ViewSummary(props) {
         <div className='viewSummary-container'>
             <div className='viewSummary-FormBlock'>
                 <Form.Item label='View ID' name='viewId'>
-                    <Input placeholder='Enter View ID' value={saveResponseView.viewId} disabled />
+                    <Input placeholder='Enter View ID' disabled />
                 </Form.Item>
                 <Form.Item label='Name' name='viewName'>
                     <Input placeholder='Enter Name' value={viewFunctionName} onChange={handleFunctionNameChange} />
                 </Form.Item>
                 <Form.Item label='Status' name='status'>
-                    <Input placeholder='Status' value={saveResponseView.viewStatus} disabled />
+                    <Input placeholder='Status' disabled />
                 </Form.Item>
-                <Form.Item label='Version' value={saveResponseView.version} name='version'>
+                <Form.Item label='Version' name='version'>
                     <Input placeholder='Version' disabled />
                 </Form.Item>
             </div>
+            {!functionEditorViewState && <div className="emptyDiv">
+                <div>
+                    <img src={emptyIcon} alt={'empty'} />
+                    <p>Please select a parameter to create a function</p>
+                </div>
+            </div>}
             {functionEditorViewState && (
                 <div className='viewSummary-TableBlock'>
                     <Table

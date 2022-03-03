@@ -15,11 +15,7 @@ export const functionTextName = (payload) => ({
     payload,
   });
 
-  export const saveFunction = (request) => {
-    const headers = {
-      username:"user_mareana1",
-      password:"mareana_pass1"
-    }
+  export const saveFunction = (request, headers) => {
     return Service.put(
         BMS_APP_PYTHON_SERVICE + '/views/1',
         request,

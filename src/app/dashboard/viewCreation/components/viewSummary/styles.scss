@@ -3,12 +3,31 @@
 
   .viewSummary-FormBlock {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 0.5fr 1fr;
     grid-gap: 14px 24px;
     width: 900px;
   }
+  .emptyDiv {
+    display:flex; 
+    justify-content:center;
+    height:320px;
+    align-items:center;
+    p {
+      margin-left:-40px;
+      margin-top:10px;
+      color:#8C8C8C;
+      font-size:14px;
+      font-weight:400;
+      line-height:22px
+    }
+  }
+
+
 
   .viewSummary-TableBlock {
+    td > * {
+      vertical-align : middle !important;
+  }
     padding-top: 24px;
     .ant-table-thead > tr > th {
       padding: 8px !important;

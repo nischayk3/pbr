@@ -118,6 +118,7 @@ function ViewCreation() {
     const newParameterData = useRef([]);
     const [meanChange, setMeanChange] = useState('');
     const functionId = useRef();
+    const loadedData = useRef();
     const functionChanged = useRef(false);
     const [saveResponseView, setSaveResponseView] = useState({ viewId: '', version: '', viewStatus: '' });
     const [viewSummaryColumns, setViewSummaryColumns] = useState([
@@ -345,6 +346,7 @@ function ViewCreation() {
             setViewVersion(res.view_version);
             setVisible(false);
             setIsLoad(true);
+            loadedData.current = res;
             if (res.Status === 401) {
                 message.error(res.Message);
                 setVisible(true);
@@ -400,7 +402,55 @@ function ViewCreation() {
     };
 
     const handleSaveFunc = async () => {
+        if (!viewFunctionName.length) {
+            message.error("Please Enter Name");
 
+            return false;
+        }
+        const converted = Object.assign({}, ...filesListTree.map(object => ({ [object.File_id]: { file_name: object.File_name, file_url: `/services/v1/adhoc-files/${object.File_id}`, upload_timestamp: object.timeStamp } })))
+        const functionObj = Object.assign({}, ...viewSummaryTable.map((object, index) => ({ [object.id]: { name: object.param, definition: `{${index + 1}}`, aggregation: object.aggregation ? object.aggregation : 'Mean'  } })))
+        const parameter = Object.assign({}, ...viewSummaryTable.map((object, index) => ({
+            [index + 1]: object.parameters.map((ele, index) => {
+                return {
+                    parameter_name: ele.param,
+                    source_type: ele.sourceType,
+                    material_id: ele.mat_no,
+                    batch_lock: [],
+                    priority: 0
+                }
+            })
+        })))
+        const obj = {
+            view_name: viewFunctionName,
+            material_id: moleculeList[0].product_num,
+            material_name: moleculeList[0].product_desc,
+            files: converted,
+            functions: functionObj,
+            parameters: parameter,
+            view_description: "Test View Object",
+            view_status: 0,
+        }
+        const headers = {
+            username:"user_mareana1",
+            password:"mareana_pass1",
+            view_version: viewVersion,
+            view_disp_id: viewDisplayId,
+          }
+        try {
+            const response = await saveFunction(obj, headers);
+            if (response.statuscode === 200) {
+                setViewDisplayId(response.view_disp_id);
+                setViewStatus(response.view_status);
+                setViewVersion(response.view_version);
+                message.success('Saved Successfully')
+            } else {
+                message.error(response.data.message);
+            }
+        } catch (err) {
+            message.error(err.data.message);
+        }
+    }
+    const handleSaveAsFunc = async () => {
         if (!viewFunctionName.length) {
             message.error("Please Enter Name");
 
@@ -429,16 +479,17 @@ function ViewCreation() {
             view_description: "Test View Object",
             view_status: 0,
             view_version: 1,
-            chart_links: []
         }
+        const headers = {
+            username:"user_mareana1",
+            password:"mareana_pass1",
+          }
         try {
-            const response = await saveFunction(obj);
+            const response = await saveFunction(obj, headers);
             if (response.statuscode === 200) {
-                setSaveResponseView({
-                    viewId: response.view_disp_id,
-                    version: response.view_version,
-                    viewStatus: response.view_status
-                })
+                setViewDisplayId(response.view_disp_id);
+                setViewStatus(response.view_status);
+                setViewVersion(response.view_version);
                 message.success('Saved Successfully')
             } else {
                 message.error(response.data.message);
@@ -447,7 +498,6 @@ function ViewCreation() {
             message.error(err.data.message);
         }
     }
-
     useEffect(() => {
         onMoleculeIdChanged();
     }, [moleculeId]);
@@ -484,10 +534,10 @@ function ViewCreation() {
                     >
                         Load
                     </Button>
-                    <Button className='viewCreation-saveBtn' onClick={handleSaveFunc}>Save</Button>
-                    <Button className='viewCreation-saveAsBtn'>Save As</Button>
+                    <Button className='viewCreation-saveBtn' disabled={!viewDisplayId} onClick={handleSaveFunc}>Save</Button>
+                    <Button className='viewCreation-saveAsBtn' onClick={handleSaveAsFunc}>Save As</Button>
                     <Button className='viewCreation-shareBtn'>Share</Button>
-                    <Button className='viewCreation-publishBtn'>Publish</Button>
+                    <Button className='viewCreation-publishBtn'><CloudUploadOutlined />Publish</Button>
                 </div>}
             </div>
 
@@ -526,7 +576,7 @@ function ViewCreation() {
                             </div>
                             <div className='viewCreation-materials'>
                                 <Collapse
-                                    className='viewCreation-accordian'
+                                    className='viewCreation-accordian '
                                     defaultActiveKey={['1']}
                                     expandIconPosition='right'
                                 >

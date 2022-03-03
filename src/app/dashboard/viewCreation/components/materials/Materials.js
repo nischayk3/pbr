@@ -50,6 +50,7 @@ function Materials(props) {
             title: 'Batch',
             key: 'coverage_metric_percent',
             dataIndex: 'coverage_metric_percent',
+            align: 'right'
         },
         {
             title: 'Coverage',
@@ -127,6 +128,9 @@ function Materials(props) {
                     </div>
                 ) : filterdData != null ? (
                     filterdData.map((item, index) => {
+                        item.parameters.forEach((ele) => {
+                            ele.mat_no =  item.mat_no
+                        })
                         return (
                             <Panel
                                 className='materials-panel'

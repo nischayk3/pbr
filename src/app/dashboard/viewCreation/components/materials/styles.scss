@@ -23,7 +23,7 @@
             align-items: center;
 
             .ant-collapse-arrow {
-                right: 0px !important;
+                right: 5px !important;
                 color: #bfbfbf !important;
             }
         }
@@ -41,7 +41,7 @@
                 padding: 0px 0px 10px !important;
                 overflow: hidden !important;
                 max-height: none !important;
-                background-color: transparent !important;
+                // background-color: transparent !important;
             }
         }
     }
@@ -103,9 +103,38 @@ span.material-addIcon {
 
 .borderless-table {
     filter: none;
-
+    .ant-table {
+        border: none !important;
+    }
+    th:nth-child(2) {
+        padding: 10px 4px !important;
+    }
+    th:nth-child(3) {
+        padding: 10px 4px !important;
+    }
+    td {
+       border-bottom: none !important;
+    }
+    td > * {
+        vertical-align : middle;
+    }
+    .ant-table-tbody>tr>td:nth-child(2):before {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: 1px;
+        height: 1.6em;
+        background-color : #DBDBDB;
+        transform: translateY(-50%);
+        transition: background-color .3s;
+        content: "";
+    }
+    .ant-table-thead>tr>th:before {
+        background-color: white !important;
+    }
     .ant-table .ant-table-thead > tr > th {
-        background-color: transparent;
+        // background-color: transparent;
+        background-color: white !important;
         padding: 5px;
         border-bottom: none;
     }
