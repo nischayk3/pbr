@@ -65,7 +65,6 @@ function Materials(props) {
                     <span
                         className='material-addIcon'
                         onClick={() => {
-                            console.log(record.id, 'record')
                             parameterPassHandler(record, index);
                         }}
                     >
@@ -80,11 +79,6 @@ function Materials(props) {
         let rowData = {};
         let batchData = {};
         let newBatchData = {};
-        // record.coverage_list.map((item, index) => {
-        //     let item_key = item;
-        //     batchData[`B${++index}`] = item_key;
-        // });
-        console.log(record, 'record');
         parentBatches.map((el, index) => {
             if (record.coverage_list.includes(el)) {
                 batchData[el] = true;
@@ -105,11 +99,9 @@ function Materials(props) {
         );
         if (indexDuplicate === -1) {
             rowData = Object.assign(record, batchData);
-            console.log(rowData, "rou1")
             rowData.sourceType = 'material' 
             rowData.mat_no = record.mat_no
             rowData.parameters = [rowData];
-            //delete rowData['coverage_list'];
             getNewData(rowData);
             let data = [...viewSummaryTable];
             data.push(rowData);

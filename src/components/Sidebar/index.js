@@ -1,5 +1,4 @@
 import './style.scss';
-
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -86,7 +85,6 @@ const MENU = [
   },
 ];
 
-const LogoutIcon = <LogoutOutlined style={{ fontSize: '26px' }} />;
 
 const { Sider } = Layout;
 function handleLogout(instance) {
@@ -104,14 +102,6 @@ const Sidebar = () => {
   const collapsed = useSelector((state) => state.commonReducer.isMenuCollapsed);
   const theme = useSelector((state) => state.commonReducer.theme);
 
-  const Logout = async () => {
-    // LOGOUT API NOT WORKING
-    // const jwt = localStorage.getItem('user_token');
-    // await userLogout(jwt);
-    Auth.logout(() => {
-      history.push('/');
-    });
-  };
 
   const init = useCallback(() => {
     const screen = location.pathname.split('/');
@@ -140,9 +130,6 @@ const Sidebar = () => {
               <Link to={item.linkTo}>{item.title}</Link>
             </Menu.Item>
           ))}
-          <Menu.Item key={MENU.length + 1} icon={LogoutIcon} onClick={Logout}>
-            Logout
-          </Menu.Item>
         </Menu>
       </div>
     </Sider>

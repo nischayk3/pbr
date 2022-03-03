@@ -28,7 +28,6 @@ function ParameterLookup(props) {
 
     const dispatch= useDispatch();
     const onSelectMoleculeHandler = () => {
-        // let req = { user_id: localStorage.getItem('username') };
         let req = { user_id: 'demo' };
         getMoleculeData(req).then((res) => {
             if (res.statuscode === 200) {
@@ -53,8 +52,6 @@ function ParameterLookup(props) {
         });
         dispatch(moleculeName(moleculeId))
     }, [moleculeId]);
-    console.log('moleculeList', moleculeList);
-    console.log('moleculeId', moleculeId);
 
     const onChangeMoleculeHandler = (value) => {
         setMoleculeId(value);
@@ -98,7 +95,6 @@ function ParameterLookup(props) {
             <Form.Item label='Molecule' name='molecule'>
                 <Select
                     placeholder='Select'
-                    // onClick={onSelectMoleculeHandler}
                     onChange={onChangeMoleculeHandler}
                     defaultValue={moleculeId}
                     value={moleculeId}

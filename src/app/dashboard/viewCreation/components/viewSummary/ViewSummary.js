@@ -88,12 +88,6 @@ function ViewSummary(props) {
                     <Input placeholder='Version' disabled />
                 </Form.Item>
             </div>
-            {/* {!functionEditorViewState && <div style={{ height: '300px', display: 'flex', justifyContent: 'center', alignItems:'center' }}>
-                <div>
-                    <img style={{ width: '200px' }} src={emptyIcon} alt='Home' />
-                    <p>Please select a parameter to create function</p>
-                </div>
-            </div>} */}
             {functionEditorViewState && (
                 <div className='viewSummary-TableBlock'>
                     <Table

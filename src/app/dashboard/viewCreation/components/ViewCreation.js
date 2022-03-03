@@ -43,7 +43,6 @@ import {
 } from '../../../../services/viewCreationPublishing';
 import { materialsParameterTree } from '../../../../duck/actions/fileUploadAction';
 import { saveFunction } from '../../../../duck/actions/viewCreationAction';
-// import { getData } from '../../../../duck/actions/filterAction';
 
 const { Panel } = Collapse;
 
@@ -195,41 +194,9 @@ function ViewCreation() {
                 </Tooltip>
             ),
         },
-        // {
-        //     title: 'Primary',
-        //     key: 'primary',
-        //     dataIndex: 'param',
-        //     width: 100,
-        //     fixed: 'left',
-        //     render: (text, record, index) => {
-        //         return (
-        //             <input
-        //                 type='radio'
-        //                 style={{padding:'20px'}}
-        //                 id={text}
-        //                 name='a'
-        //                 value={text}
-        //                 onChange={() => passTableData(record)}
-        //             />
-        //         );
-        //     },
-        // },
-        // {
-        //     title: 'Action',
-        //     key: 'action',
-        //     dataIndex: 'action',
-        //     width: 100,
-        //     fixed: 'left',
-        //     render: (text, record, index) => (
-        //         <>
-        //             <Space size='middle'>Lock</Space>
-        //         </>
-        //     ),
-        // },
     ]);
 
     const getNewData = (el) => {
-        console.log("element", el)
         getData.current = el
     }
 
@@ -267,8 +234,6 @@ function ViewCreation() {
     const [form] = Form.useForm();
 
     const handleValuesChange = (changedValues, values) => {
-        // console.log('changedValues', changedValues)
-        //console.log('values', JSON.stringify(values));
     };
 
     const updateData = () => {
@@ -286,7 +251,6 @@ function ViewCreation() {
             data[count - 2].param = text.current ? text.current : data[count - 2].param
             data[count - 2].id = data[count - 2].id;
             data[count - 2].aggregation = meanChange;
-            // data[count - 2].parameters = newParameterData.current;
             data.forEach((ele) => {
                 if (ele.id === functionId.current) {
                     ele.parameters = newParameterData.current;
@@ -300,16 +264,12 @@ function ViewCreation() {
         text.current = '';
     }
 
-    console.log(viewSummaryTable, 'view');
-
-
     const saveFunctionData = () => {
         if (!functionChanged.current) {
             setViewSummaryTable([...viewSummaryTable, paramText]);
             message.success('Function Added Successfully');
         }
         else {
-            console.log(getData.current, text.current)
             getData.current.param = text.current ? text.current : getData.current.param;
             getData.current.id = setCount(count + 1);
             getData.current.aggregation = meanChange;
@@ -324,14 +284,11 @@ function ViewCreation() {
     const passTableData = (record, textName) => {
         let newRecord = { ...record };
         let data = text.current;
-        console.log(data)
         newRecord.param = data;
-        console.log(newRecord);
         setParamText(newRecord);
     };
 
     const passStateFunc = (value) => {
-        console.log("value111", value);
         text.current = value;
     };
 
@@ -453,8 +410,6 @@ function ViewCreation() {
         const functionObj = Object.assign({}, ...viewSummaryTable.map((object, index) => ({ [object.id]: { name: object.param, definition: `{${index + 1}}`, aggregation: object.aggregation ? object.aggregation : 'Mean'  } })))
         const parameter = Object.assign({}, ...viewSummaryTable.map((object, index) => ({
             [index + 1]: object.parameters.map((ele, index) => {
-                console.log(ele, 'ele')
-                console.log(object, 'ele')
                 return {
                     parameter_name: ele.param,
                     source_type: ele.sourceType,
@@ -478,7 +433,6 @@ function ViewCreation() {
         }
         try {
             const response = await saveFunction(obj);
-            console.log(response, 'resr');
             if (response.statuscode === 200) {
                 setSaveResponseView({
                     viewId: response.view_disp_id,
@@ -490,7 +444,7 @@ function ViewCreation() {
                 message.error(response.data.message);
             }
         } catch (err) {
-            console.log(err);
+            message.error(err.data.message);
         }
     }
 
@@ -792,7 +746,6 @@ function ViewCreation() {
                         style={{ width: '140px' }}
                         defaultValue={viewDisplayId}
                         onChange={(e, value) => {
-                            console.log('valeeee', value);
                             let view_value = value.value ? value.value : '';
                             let split_view_id = view_value
                                 ? view_value.split('-')
@@ -832,7 +785,6 @@ function ViewCreation() {
                         </span>
                     }
                     centered
-                    // bodyStyle={{height: 400}}
                     width={700}
                 >
                     <Table
@@ -845,7 +797,6 @@ function ViewCreation() {
                                 ViewRowClicked(record);
                             },
                         })}
-                        //loading={loading}
                         scroll={{ y: 200 }}
                         size='small'
                         pagination={false}

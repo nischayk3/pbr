@@ -94,14 +94,10 @@ function FileUpload(props) {
     ];
 
     const parameterPassHandler = (record, index) => {
-        console.log('record file', record, index);
         let rowData = {};
         let batchData = {};
         let newBatchData = [];
-        // record.coverage_list.map((item, index) => {
-        //     let item_key = item;
-        //     batchData[`B${++index}`] = item_key;
-        // });
+
 
         parentBatches.map((el, index) => {
             if (record.coverage_list.includes(el)) {
@@ -125,7 +121,6 @@ function FileUpload(props) {
             rowData.sourceType = 'material' 
             rowData.parameters = [rowData];
             getNewData(rowData);
-            //delete rowData['coverage_list'];
             let data = [...viewSummaryTable];
             data.push(rowData);
             setNewBatchData(newBatchData);
@@ -135,7 +130,6 @@ function FileUpload(props) {
             message.error('Function already exists');
         }
     };
-    console.log('filesListTree', filesListTree);
     const genExtra = (File_id) => (
         <div
             className='fileUpload-panelHeader'
@@ -176,7 +170,6 @@ function FileUpload(props) {
     function confirm(File_id) {
         let req = {
             fileid: parseInt(File_id),
-            // userid: localStorage.getItem('username'),
             userid: 'demo',
         };
         deleteAdHocFile(req).then((res) => {
@@ -233,7 +226,6 @@ function FileUpload(props) {
         var today = new Date();
         today.setDate(today.getDate());
         const nextState = {};
-        console.log(info.file.type, 'tyoeee');
         if (
             info.file.type !==
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' &&
@@ -291,7 +283,6 @@ function FileUpload(props) {
             }
         });
     };
-    console.log(setFilesListTree, 'setFilesListTree');
     return (
         <div className='materials-wrapper fileUpload-wrapper'>
             <div className='materials-uploadDownloadFiles'>

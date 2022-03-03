@@ -55,32 +55,6 @@ const FunctionEditor = (props) => {
     const functionData = useRef();
     const columnsHandler = () => {
         let columns = [];
-        //parentBatches.map((item, index) => {
-        //     let obj = {
-        //         title: `B${++index}`,
-        //         key: index,
-        //         dataIndex: item,
-        //         width: 100,
-        //         render: value =>{
-        //             return (
-        //                 value ? (
-        //                     <span className="batchChecked">
-        //                         <Checkbox
-        //                             checked={checkboxChecked}
-        //                             onChange={onChange}
-        //                         />
-        //                     </span>
-        //                 ) : (
-        //                     <span className="batchClosed">
-        //                         <CloseOutlined />
-        //                     </span>
-        //                 )
-        //             );
-        //         }
-
-        //     };
-        //     columns.push(obj);
-        // });
         Object.entries(newBatchData).map(([key, value1], index) => {
             let Index = 0;
             let obj = {
@@ -104,21 +78,6 @@ const FunctionEditor = (props) => {
                         <span className='batchClosed'>
                             <CloseOutlined />
                         </span>
-                    // return typeof (value) === 'boolean' ? value ? (
-                    //     <Checkbox
-                    //         checked={value}
-                    //         onChange={(e) => onChange(e, key, value1, Index)}
-                    //     />
-                    // ) : (
-                    //     <span className='batchClosed'>
-                    //         <CloseOutlined />
-                    //     </span>
-                    // ) : (
-                    //     <Checkbox
-                    //         checked={false}
-                    //         onChange={(e) => onChange(e, key, value1, Index)}
-                    //     />
-                    // );
                 },
             };
             columns.push(obj);
@@ -130,13 +89,8 @@ const FunctionEditor = (props) => {
     };
 
     const onChange = (e, key, value, rowIndex) => {
-        console.log('checked = ', e.target.checked, key, value);
-        console.log(rowIndex);
-        console.log(functionData.current);
         let filteredRecord = [...functionData.current];
-        //filteredRecord[rowIndex] = { ...filteredRecord[rowIndex] }
         filteredRecord[rowIndex][key] = e.target.checked == false ? "" : e.target.checked;
-        console.log(filteredRecord);
         setFunctionEditorRecord(filteredRecord)
 
 
@@ -144,7 +98,6 @@ const FunctionEditor = (props) => {
     };
 
     const onChangeParameterHandler = (value) => {
-        console.log('valuess', value);
         let indexDuplicate = functionEditorRecord.findIndex(
             (x) => x.param == value
         );
@@ -174,7 +127,6 @@ const FunctionEditor = (props) => {
                 } else {
                     Object.entries(item).forEach(([key, value], index) => {
                         if (key.includes("B")) {
-                            // console.log(key,value);
                             obj[key] = obj[key] && item[key]
                             obj.param = item.param
                             obj.id = item.id
@@ -192,7 +144,6 @@ const FunctionEditor = (props) => {
                 } else {
                     Object.entries(item).forEach(([key, value], index) => {
                         if (key.includes("B")) {
-                            // console.log(key,value);
                             obj[key] = obj[key] || item[key]
                             obj.param = item.param
                             obj.id = item.id
@@ -238,7 +189,6 @@ const FunctionEditor = (props) => {
                 <Form.Item label='Function Name' name='function_name'>
                     <Input placeholder='Enter Function Name'
                         onChange={(e) => handlePassState(e)}
-                    //onChange={(e) => functionName ? setFunctionText(`${functionName}${e.target.value}`):setFunctionText(e.target.value)} 
                     />
                 </Form.Item>
                 <Form.Item label='Aggregation' name='aggregation'>
