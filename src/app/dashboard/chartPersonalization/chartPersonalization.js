@@ -1,10 +1,6 @@
 import './ChartStyle.scss';
 
-import {
-  ArrowLeftOutlined,
-  CheckCircleOutlined,
-  InfoCircleTwoTone,
-} from '@ant-design/icons';
+import { ArrowLeftOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { Button, Modal } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
@@ -19,10 +15,10 @@ import {
   showNotification,
 } from '../../../duck/actions/commonActions';
 import {
+  resetChart,
   sendBatchCoverage,
   sendChartData,
   sendChartDesc,
-  sendChartId,
   sendChartMapping,
   sendChartName,
   sendChartType,
@@ -49,38 +45,28 @@ import ViewTable from '../../../components/ViewTable';
 import { getViewTable } from '../../../services/commonService';
 
 function ChartPersonalization() {
-  const [chartDetails, setChartdetails] = useState([]);
   const [visible, setVisible] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [isView, setIsView] = useState(false);
   const [isNew, setIsNew] = useState(false);
   const [isNewBtnDisabled, setisNewBtnDisabled] = useState(true);
-
-  const [isSave, setIsSave] = useState(false);
-  const [isSaveAs, setIsSaveAs] = useState(false);
-  const [isDiscard, setIsDiscard] = useState(false);
   const [showChart, setShowChart] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showChartType, setShowChartType] = useState(false);
   const [showCustomization, setShowCustomization] = useState(false);
-  const [loading, setLoading] = useState(false);
-  // const [chartObjData, setChartObjData] = useState([]);
   const [chartResObj, setchartResObj] = useState([]);
   const [showBatch, setshowBatch] = useState(false);
   const [viewTableData, setviewTableData] = useState([]);
-  const [batchCoverage, setbatchCoverage] = useState();
   const [batchData, setbatchData] = useState({});
   const [resChartId, setresChartId] = useState('');
   const [resChartVersion, setresChartVersion] = useState('');
   const [resChartStatus, setresChartStatus] = useState('');
-
   const [chartTypeList, setchartTypeList] = useState([]);
   const [isChart, setIsChart] = useState(false);
   const [isLandingDisabled, setisLandingDisabled] = useState(false);
   const [isFieldEmpty, setisFieldEmpty] = useState(false);
   const [isSaveAsBtnDisabled, setisSaveAsBtnDisabled] = useState(true);
   const [isSaveBtnDisabled, setisSaveBtnDisabled] = useState(false);
-
   const chartPersReducer = useSelector((state) => state.chartPersReducer);
   const chartDataReducer = useSelector((state) => state.chartDataReducer);
   const chartViewReducer = useSelector((state) => state.chartViewReducer);
@@ -92,57 +78,16 @@ function ChartPersonalization() {
     getChartListSer();
   }, []);
 
-  function handleCancel() {
-    setVisible(false);
-    setIsLoad(false);
-    setIsNew(false);
-    setIsSave(false);
-    setIsSaveAs(false);
-    setIsDiscard(false);
-  }
-
-  function handleTitleChange() {
-    if (isDiscard)
-      return (
-        <span>
-          <InfoCircleTwoTone
-            twoToneColor='orange'
-            style={{ fontSize: '20px', margin: '10px' }}
-          />{' '}
-          Discard Changes
-        </span>
-      );
-    if (isSave) return <span>Congratulations</span>;
-    // if (isLoad)
-    //   return (
-    //     <span>
-    //       <InfoCircleTwoTone
-    //         twoToneColor='orange'
-    //         style={{ fontSize: '20px', margin: '10px' }}
-    //       />{' '}
-    //       Load
-    //     </span>
-    //   );
-    if (isNew)
-      return (
-        <span>
-          <InfoCircleTwoTone
-            twoToneColor='orange'
-            style={{ fontSize: '20px', margin: '10px' }}
-          />{' '}
-          Unsaved Changes
-        </span>
-      );
-  }
-
   const destroyState = () => {
-    dispatch(sendChartData({}));
-    dispatch(sendBatchCoverage({}));
+    dispatch(resetChart({}));
     getViewTableData();
     getChartListSer();
     setresChartId('');
     setresChartVersion('');
     setresChartStatus('');
+    setresChartId('');
+    setresChartStatus('');
+    setresChartVersion('');
   };
 
   const callbackViewType = (param) => {
@@ -170,6 +115,8 @@ function ChartPersonalization() {
             : 'DRFT',
           view_id: chartViewReducer.viewId,
           view_name: chartViewReducer.viewName,
+          view_version: chartViewReducer.viewVersion,
+          view_status: chartViewReducer.viewStatus,
           data_filter: {
             date_range: chartPersReducer.dateRange,
             unapproved_data: chartPersReducer.unApprovedData,
@@ -193,8 +140,6 @@ function ChartPersonalization() {
     } else {
       putChartObjData(putChartSaveAs);
     }
-
-    console.log('putChartSaveAs', putChartSaveAs);
   };
 
   const handleSave = () => {
@@ -208,7 +153,9 @@ function ChartPersonalization() {
           chart_status: 'NEW',
           view_id: chartViewReducer.viewId,
           view_name: chartViewReducer.viewName,
-          // view_version: chartViewReducer.viewVersion,
+          view_version: chartViewReducer.viewVersion,
+          view_status: chartViewReducer.viewStatus,
+
           data_filter: {
             date_range: chartPersReducer.dateRange,
             unapproved_data: chartPersReducer.unApprovedData,
@@ -233,8 +180,6 @@ function ChartPersonalization() {
       setisSaveBtnDisabled(true);
       setisSaveAsBtnDisabled(false);
     }
-
-    console.log('putcharttttt save ', putChart);
   };
 
   const handleCloseViewModal = () => {
@@ -242,7 +187,6 @@ function ChartPersonalization() {
   };
 
   const handleOkViewModal = (viewId, viewVersion) => {
-    console.log('handleOkViewModal', viewId, viewVersion);
     let viewDisId = viewId !== '' ? viewId : '';
     let viewVersId = viewVersion !== '' ? viewVersion : '';
     viewParamData(viewDisId, viewVersId, '', '', '');
@@ -338,7 +282,7 @@ function ChartPersonalization() {
       }
     } catch (err) {
       dispatch(hideLoader());
-      dispatch(showNotification('error', err.message));
+      dispatch(showNotification('error', err));
     }
   };
 
@@ -378,50 +322,42 @@ function ChartPersonalization() {
       dispatch(showLoader());
       const chartRes = await getChartObj(reqChartObj);
       if (chartRes.statuscode === 200) {
-        let chartResData =
-          chartRes.data && chartRes.data.length > 0 ? chartRes.data[0][0] : [];
+        let chartResData = chartRes && chartRes.data ? chartRes.data : {};
+
         setchartResObj(chartResData);
-        dispatch(sendChartData(chartResData));
-        console.log('chartResData', chartResData);
+        dispatch(sendChartData(chartResData && chartResData));
 
-        dispatch(hideLoader());
-        viewParamData(
-          chartResData && chartResData[0].view_id,
-          chartResData && chartResData[0].view_version,
-          chartResData && chartResData[0]?.data_filter?.site,
-          chartResData && chartResData[0]?.data_filter?.date_range,
-          chartResData && chartResData[0]?.data_filter?.unapproved_data
-        );
-
-        dispatch(
-          sendChartVersion(chartResData && chartResData[0].chart_version)
-        );
-        dispatch(sendChartName(chartResData && chartResData[0].chart_name));
-        dispatch(
-          sendChartDesc(chartResData && chartResData[0].chart_description)
-        );
-        dispatch(sendData(chartResData && chartResData[0].data));
-        dispatch(sendLayout(chartResData && chartResData[0].layout));
+        dispatch(sendChartVersion(chartResData && chartResData.chart_version));
+        dispatch(sendChartName(chartResData && chartResData.chart_name));
+        dispatch(sendChartDesc(chartResData && chartResData.chart_description));
+        dispatch(sendData(chartResData && chartResData.data));
+        dispatch(sendLayout(chartResData && chartResData.layout));
         dispatch(
           sendSelectedSite(
-            chartResData && chartResData[0]?.data_filter?.date_range
+            chartResData && chartResData?.data_filter?.date_range
           )
         );
         dispatch(
-          sendDateRange(chartResData && chartResData[0]?.data_filter?.site)
+          sendDateRange(chartResData && chartResData?.data_filter?.site)
         );
         dispatch(
           sendUnApprovedData(
-            chartResData && chartResData[0]?.data_filter?.unapproved_data
+            chartResData && chartResData?.data_filter?.unapproved_data
           )
         );
-        dispatch(sendViewId(chartResData && chartResData[0].view_id));
-        dispatch(sendViewName(chartResData && chartResData[0].view_name));
-        dispatch(sendChartType(chartResData && chartResData[0].chart_type));
-        dispatch(
-          sendChartMapping(chartResData && chartResData[0].chart_mapping)
-        );
+        dispatch(sendViewId(chartResData && chartResData.view_id));
+        dispatch(sendViewName(chartResData && chartResData.view_name));
+        dispatch(sendChartType(chartResData && chartResData.chart_type));
+        dispatch(sendChartMapping(chartResData && chartResData.chart_mapping));
         setshowBatch(true);
+        viewParamData(
+          chartResData && chartResData.view_id,
+          chartResData && chartResData.view_version,
+          chartResData && chartResData?.data_filter?.site,
+          chartResData && chartResData?.data_filter?.date_range,
+          chartResData && chartResData?.data_filter?.unapproved_data
+        );
+        dispatch(hideLoader());
       }
     } catch (error) {
       dispatch(hideLoader());
@@ -435,12 +371,14 @@ function ChartPersonalization() {
       const putChart = await putChartObj(reqChart);
       if (putChart.statuscode === 200) {
         setVisible(true);
-        setIsSave(true);
+
         setresChartId(putChart.chart_id);
         setresChartVersion(putChart.chart_version);
-        setresChartStatus('NEW');
+        setresChartStatus(putChart.chart_status);
       } else if (putChart.statuscode === 400) {
-        dispatch(showNotification('error', putChart.message));
+        dispatch(
+          showNotification('error', 'Save Data Error -', putChart.message)
+        );
       }
       dispatch(hideLoader());
     } catch (error) {
@@ -457,10 +395,10 @@ function ChartPersonalization() {
     isUnApproved
   ) {
     let reqViewParam = {
-      view_disp_id: viewDisId ? `'${viewDisId}'` : '',
-      view_version: viewVer ? viewVer : '',
-      site: site ? site : '',
-      date: dateRange ? dateRange : '',
+      view_disp_id: viewDisId ? viewDisId : '',
+      view_version: viewVer ? viewVer : null,
+      site: site ? site : null,
+      date: dateRange ? dateRange : null,
       unapproved_data: isUnApproved ? isUnApproved : false,
     };
     try {
@@ -471,18 +409,22 @@ function ChartPersonalization() {
         let batchRes = viewData && viewData.data ? viewData.data : {};
         setbatchData(batchRes);
         dispatch(sendBatchCoverage(batchRes));
+      } else if (viewData.statuscode === 400) {
+        dispatch(
+          showNotification('error', 'Parameter Data Error -', viewData.message)
+        );
       }
 
       dispatch(hideLoader());
     } catch (error) {
       setbatchData({});
       dispatch(hideLoader());
-      dispatch(showNotification('error', 'Parameter Data Error - '));
+      console.log('errrrrorrrrr', error);
+      dispatch(
+        showNotification('error', 'Parameter Data Error -', error?.message)
+      );
     }
   }
-  console.log('is save btn disabled', isSaveBtnDisabled);
-  console.log('is save as btn disabled', isSaveAsBtnDisabled);
-  console.log('is landing btn disbaled', isLandingDisabled);
 
   return (
     <div className='custom-wrapper'>
@@ -517,8 +459,6 @@ function ChartPersonalization() {
           <Button
             className='custom-primary-btn  '
             onClick={() => {
-              // setVisible(true);
-              // setIsNew(true);
               setIsLoad(true);
             }}
             type='primary'
@@ -586,7 +526,7 @@ function ChartPersonalization() {
               <ChartDetails
                 resChartId={resChartId}
                 resChartVersion={resChartVersion}
-                setresChartStatus={resChartStatus}
+                resChartStatus={resChartStatus}
                 isFieldEmpty={isFieldEmpty}
                 isChartNameEmpty={callBackChartName}
               />
@@ -624,156 +564,36 @@ function ChartPersonalization() {
         <div className='modalPopup'>
           <Modal
             visible={visible}
-            title={handleTitleChange}
             width={500}
             mask={true}
-            // onCancel={handleCancel}
             centered={true}
             footer={null}
           >
-            {/* {isLoad && (
-            <div>
-              <p>
-                You Have made some changes <br /> Do you want to save or discard
-                them ?
-              </p>
-
-              <div className='loadButton'>
-                <Button className='loadButtons' style={{ width: '80px' }}>
-                  Save As
-                </Button>
-                <Button
-                  style={{ width: '80px' }}
-                  className='loadButtons'
-                  onClick={() => {
-                    setVisible(false);
-                    setIsSave(true);
-                    setIsLoad(false);
-                  }}
-                >
-                  Save
-                </Button>
-                <Button
-                  style={{ width: '80px' }}
-                  className='loadButtons'
-                  onClick={() => {
-                    setVisible(false);
-                    setIsSave(true);
-                    setIsLoad(false);
-                  }}
-                >
-                  Discard
-                </Button>
-              </div>
-            </div>
-          )} */}
-            {isSave && (
-              <div className='save-wrapper'>
-                <center>
-                  <p style={{ textAlign: 'left' }}>Congratulations</p>
-                  <CheckCircleOutlined
-                    className='circleIcon'
-                    style={{ color: 'green' }}
-                  />
+            <div className='save-wrapper'>
+              <center>
+                <p style={{ textAlign: 'left' }}>Congratulations</p>
+                <CheckCircleOutlined
+                  className='circleIcon'
+                  style={{ color: 'green' }}
+                />
+                <br />
+                <p>
+                  Chart ID : {resChartId ? resChartId : ''} <br />
                   <br />
-                  <p>
-                    Chart ID : {resChartId ? resChartId : ''} <br />
-                    <br />
-                    Your Changes Have Been Successfully Saved
-                  </p>
-                </center>
-
-                <Button
-                  style={{ float: 'right' }}
-                  onClick={() => {
-                    setVisible(false);
-                    setIsSave(false);
-                    // destroyState();
-                  }}
-                  className='custom-primary-btn'
-                >
-                  OK
-                </Button>
-              </div>
-            )}
-
-            {/* {isLoad && (
-              <div>
-                <ViewTable />
-                <p>
-                  You Have made some changes <br /> Do you want to save or
-                  discard them ?
+                  Your Changes Have Been Successfully Saved
                 </p>
+              </center>
 
-                <div className='loadButton'>
-                  <Button className='loadButtons' style={{ width: '80px' }}>
-                    Save As
-                  </Button>
-                  <Button
-                    style={{ width: '80px' }}
-                    className='loadButtons'
-                    onClick={() => {
-                      setVisible(true);
-                      setIsSave(true);
-                      setIsLoad(false);
-                    }}
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    style={{ width: '80px' }}
-                    className='loadButtons'
-                    onClick={() => {
-                      setVisible(true);
-                      setIsSave(true);
-                      setIsLoad(false);
-                    }}
-                  >
-                    Discard
-                  </Button>
-                </div>
-              </div>
-            )} */}
-            {/* {isNew && (
-              <div>
-                <p>
-                  You Have made some changes <br /> Do you want to save or
-                  discard them ?
-                </p>
-                <div className='loadButton'>
-                  <Button className='custom-primary-btn  '>Save As</Button>
-                  <Button
-                    className='custom-primary-btn  '
-                    onClick={() => {
-                      setVisible(true);
-                      setIsSave(true);
-                      setIsLoad(false);
-                    }}
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    className='custom-primary-btn  '
-                    onClick={() => {
-                      setVisible(true);
-                      setIsSave(true);
-                      setIsLoad(false);
-                    }}
-                  >
-                    Discard
-                  </Button>
-                </div>
-              </div>
-            )}
-            {isDiscard && (
-              <div>
-                <p>Are you sure you want to discard changes ?</p>
-                <div className='discardButton'>
-                  <Button className='custom-primary-btn'>Ok</Button>
-                  <Button className='custom-primary-btn'>Cancel</Button>
-                </div>
-              </div>
-            )} */}
+              <Button
+                style={{ float: 'right' }}
+                onClick={() => {
+                  setVisible(false);
+                }}
+                className='custom-primary-btn'
+              >
+                OK
+              </Button>
+            </div>
           </Modal>
         </div>
       </div>

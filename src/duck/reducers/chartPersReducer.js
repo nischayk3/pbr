@@ -3,7 +3,7 @@ import * as types from '../../constants/actionTypes';
 const initState = {
   site: '',
   dateRange: '',
-  unApprovedData: '',
+  unApprovedData: false,
   getBatchCoverage: {},
   parameterTableData: [],
 };
@@ -20,6 +20,8 @@ export default (state = initState, action) => {
       return { ...state, getBatchCoverage: action.payload };
     case types.PARAMETER_TABLE_DATA:
       return { ...state, parameterTableData: action.payload };
+    case types.RESET_CHART:
+      return initState;
     default:
       return state;
   }

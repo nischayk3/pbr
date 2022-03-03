@@ -42,26 +42,22 @@ const ChartType = (props) => {
   const dispatch = useDispatch();
   const getChartObjData = useSelector(
     (state) =>
-      state.chartDataReducer && state.chartDataReducer.selectedChartData[0]
+      state.chartDataReducer && state.chartDataReducer.selectedChartData
   );
 
   const batchCoverage = useSelector(
     (state) => state.chartPersReducer.getBatchCoverage
   );
 
-  console.log('get batchCoverage', batchCoverage);
-
   const chartDesc = useSelector((state) => state.chartPersReducer.chartDesc);
-  console.log('chart type', getChartObjData?.chart_type);
+
   useEffect(() => {
-    console.log('use effect 112');
     setselectedChartType(getChartObjData?.chart_type);
     setselectedXAxis(getChartObjData?.chart_mapping?.x?.function_name);
     setselectedYAxis(getChartObjData?.chart_mapping?.y?.function_name);
   }, [getChartObjData]);
 
   useEffect(() => {
-    console.log('use effect 22');
     const xAxis = [];
     const yAxis = [];
     const batch = [];
@@ -118,6 +114,7 @@ const ChartType = (props) => {
     text: batchData.batch !== undefined ? batchData.batch : [],
     mode: 'markers',
     type: 'scatter',
+    marker: { size: 12 },
   };
   const chartLayout = {
     title: {
@@ -156,18 +153,19 @@ const ChartType = (props) => {
         }
       } else if (field === 'xaxis') {
         setselectedXAxis(value);
+        let warnCheck = axisDataArray.map((item) => {
+          if (item.value.replace(/\d+% ?/g, 0) < 100.0) {
+            if (item.key === value) {
+              setshowWarn(true);
+            } else {
+              setshowWarn(false);
+            }
+          }
+        });
       } else if (field === 'yaxis') {
         setselectedYAxis(value);
         let warnCheck = axisDataArray.map((item) => {
-          console.log('value1', item.value);
           if (item.value.replace(/\d+% ?/g, 0) < 100.0) {
-            console.log(
-              'vakey1.key === valuelue1',
-              item === value,
-              item.key,
-
-              value
-            );
             if (item.key === value) {
               setshowWarn(true);
             } else {
@@ -204,7 +202,6 @@ const ChartType = (props) => {
     dispatch(sendChartMapping(chartMapping));
   };
 
-  console.log('axiss array', axisDataArray, showWarn);
   return (
     <div>
       <Card title='Chart'>
@@ -220,6 +217,16 @@ const ChartType = (props) => {
         {isScatter ? (
           <div className='grid-2-columns' style={{ marginTop: '10px' }}>
             <SelectField
+              iconlabel={
+                showWarn ? (
+                  <WarningTwoTone
+                    style={{ marginLeft: 10 }}
+                    twoToneColor='red'
+                  />
+                ) : (
+                  ''
+                )
+              }
               label='X-Axis'
               placeholder='X-Axis '
               onChangeSelect={(e) => selectChartType(e, 'xaxis')}

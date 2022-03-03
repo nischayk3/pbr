@@ -85,12 +85,12 @@ function Materials(props) {
         parentBatches.map((el, index) => {
             console.log(el, record.coverage_list.includes(el));
             if (record.coverage_list.includes(el)) {
-                batchData[`B${++index}`] = true;
-                newBatchData[`B${index}`] = true;
+                batchData[el] = true;
+                newBatchData[el] = true;
                
             } else {
-                batchData[`B${++index}`] = false;
-                newBatchData[`B${index}`] = false;
+                batchData[el] = false;
+                newBatchData[el] = false;
                 
             }
             

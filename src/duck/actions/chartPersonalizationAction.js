@@ -4,6 +4,7 @@ import {
   GET_BATCH_COVERAGE,
   GET_CHART_NAME,
   PARAMETER_TABLE_DATA,
+  RESET_CHART,
   SELECTED_CHART_DATA,
   SELECTED_CHART_DESCRIPTION,
   SELECTED_CHART_ID,
@@ -23,6 +24,12 @@ import {
   SEND_CHART_DATA,
   SEND_CHART_LAYOUT,
 } from '../../constants/actionTypes';
+
+//reset chart personalization
+export const resetChart = (payload) => ({
+  type: RESET_CHART,
+  payload,
+});
 
 // get selected site
 export const sendSelectedSite = (payload) => ({

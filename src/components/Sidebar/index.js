@@ -4,22 +4,20 @@ import {
   AppstoreOutlined,
   BarChartOutlined,
   FileSearchOutlined,
+  FundOutlined,
   HistoryOutlined,
   LinkOutlined,
   LogoutOutlined,
   PartitionOutlined,
   TeamOutlined,
-  FundOutlined  ,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import AppsIcon from '../../assets/icons/apps.svg';
 import Auth from '../../utils/auth';
-import LogOutIcon from '../../assets/icons/log-off.svg';
+import { useMsal } from '@azure/msal-react';
 import { useSelector } from 'react-redux';
-import { useMsal } from "@azure/msal-react";
 
 // import { userLogout } from '../../api/login';
 
@@ -33,62 +31,68 @@ const MENU = [
 
   {
     key: 'view_creation',
-    icon: <FundOutlined style={{fontSize: "26px"}}   />,
+    icon: <FundOutlined style={{ fontSize: '26px' }} />,
     title: 'View Creation',
     linkTo: '/dashboard/view_creation',
   },
   {
     key: 'chart_personalization',
-    icon: <BarChartOutlined style={{fontSize: "26px"}} />,
+    icon: <BarChartOutlined style={{ fontSize: '26px' }} />,
     title: 'Chart Personalization',
     linkTo: '/dashboard/chart_personalization',
   },
 
   {
     key: 'manual_data_upload',
-    icon: <HistoryOutlined  style={{fontSize: "26px"}} />,
+    icon: <HistoryOutlined style={{ fontSize: '26px' }} />,
     title: 'Manual Data Upload',
     linkTo: '/dashboard/manual_data_upload',
   },
   {
     key: 'system_error_report',
-    icon: <AppstoreOutlined style={{fontSize: "26px"}}  />,
+    icon: <AppstoreOutlined style={{ fontSize: '26px' }} />,
     title: 'System Error Report',
     linkTo: '/dashboard/system_error_report',
   },
   {
     key: 'data_load',
-    icon: <PartitionOutlined style={{fontSize: "26px"}}  />,
+    icon: <PartitionOutlined style={{ fontSize: '26px' }} />,
     title: 'Data Load',
     linkTo: '/dashboard/data_load',
   },
   {
     key: 'audit_trail_report',
-    icon: <FileSearchOutlined  style={{fontSize: "26px"}} />,
+    icon: <FileSearchOutlined style={{ fontSize: '26px' }} />,
     title: 'Audit Trail Report',
     linkTo: '/dashboard/audit_trail_report',
   },
   {
     key: 'report_designer',
-    icon: <TeamOutlined  style={{fontSize: "26px"}} />,
+    icon: <TeamOutlined style={{ fontSize: '26px' }} />,
     title: 'Report Designer',
     linkTo: '/dashboard/report_designer',
   },
   {
     key: 'report_generator',
-    icon: <LinkOutlined style={{fontSize: "26px"}} />,
+    icon: <LinkOutlined style={{ fontSize: '26px' }} />,
     title: 'Report Generator',
     linkTo: '/dashboard/report_generator',
   },
+  {
+    key: 'genealogy',
+    icon: <LinkOutlined style={{ fontSize: '26px' }} />,
+    title: 'Genealogy',
+    linkTo: '/dashboard/genealogy',
+  },
 ];
 
-const LogoutIcon = <LogoutOutlined style={{fontSize: "26px"}}  />;
+const LogoutIcon = <LogoutOutlined style={{ fontSize: '26px' }} />;
 
 const { Sider } = Layout;
 function handleLogout(instance) {
-    instance.logoutPopup().catch(e => {
-        console.error(e);
-    });
+  instance.logoutPopup().catch((e) => {
+    console.error(e);
+  });
 }
 
 const Sidebar = () => {
