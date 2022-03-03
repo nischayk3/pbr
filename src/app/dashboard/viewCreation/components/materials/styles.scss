@@ -29,6 +29,7 @@
         }
     }
 
+
     .materials-panel {
         border-bottom: 1px solid #cacaca;
 
@@ -44,6 +45,10 @@
             }
         }
     }
+}
+
+.ant-collapse {
+    border: none !important;
 }
 
 .ant-collapse-item.viewCreation-materialsPanel {

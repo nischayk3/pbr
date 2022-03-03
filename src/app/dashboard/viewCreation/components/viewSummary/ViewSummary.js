@@ -7,177 +7,8 @@ import {
     CloseOutlined,
 } from '@ant-design/icons';
 import { Form, Input, Space, Table, Tag } from 'antd';
+import emptyIcon from '../../../../../assets/icons/empty.svg';
 
-// const columns = [
-//   {
-//     title: 'Action',
-//     key: 'action',
-//     width: 100,
-//     fixed: 'left',
-//     render: (text, record) => (
-//       <Space size="middle" className="deleteTableAction">
-//         Delete
-//       </Space>
-//     ),
-//   },
-//   {
-//     title: 'Function',
-//     key: 'param',
-//     dataIndex: 'param',
-//     width: 150,
-//     fixed: 'left',
-//     render: param => (
-//       <>
-//         {param.map(item => {
-//           return (
-//             <Tag color="magenta" key={item} onClick={() => onClickTag(item)}>
-//               {item.toUpperCase()}
-//             </Tag>
-//           )
-//         })}
-//       </>
-//     ),
-//   },
-//   {
-//     title: 'Status',
-//     key: 'status',
-//     dataIndex: 'status',
-//     width: 100,
-//     fixed: 'left',
-//     render: status => (
-//       <>
-//         {status === 'success' ? (
-//           <span className="statusChecked">
-//             <CheckCircleOutlined />
-//           </span>
-//         ) : (
-//           <span className="statusClosed">
-//             <CloseOutlined />
-//           </span>
-//         )}
-//       </>
-//     ),
-//   },
-//   {
-//     title: 'Batch 1',
-//     key: 'batch1',
-//     dataIndex: 'batch1',
-//     width: 100,
-//     render: batch1 => (
-//       <>
-//         {batch1 === 'yes' ? (
-//           <span className="batchChecked">
-//             <CheckOutlined />
-//           </span>
-//         ) : (
-//           <span className="batchClosed">
-//             <CloseOutlined />
-//           </span>
-//         )}
-//       </>
-//     ),
-//   },
-//   {
-//     title: 'Batch 2',
-//     key: 'batch2',
-//     dataIndex: 'batch2',
-//     width: 100,
-//     render: batch2 => (
-//       <>
-//         {batch2 === 'yes' ? (
-//           <span className="batchChecked">
-//             <CheckOutlined />
-//           </span>
-//         ) : (
-//           <span className="batchClosed">
-//             <CloseOutlined />
-//           </span>
-//         )}
-//       </>
-//     ),
-//   },
-//   {
-//     title: 'Batch 3',
-//     key: 'batch3',
-//     dataIndex: 'batch3',
-//     width: 100,
-//     render: batch3 => (
-//       <>
-//         {batch3 === 'yes' ? (
-//           <span className="batchChecked">
-//             <CheckOutlined />
-//           </span>
-//         ) : (
-//           <span className="batchClosed">
-//             <CloseOutlined />
-//           </span>
-//         )}
-//       </>
-//     ),
-//   },
-//   {
-//     title: 'Batch 4',
-//     key: 'batch4',
-//     dataIndex: 'batch4',
-//     width: 100,
-//     render: batch4 => (
-//       <>
-//         {batch4 === 'yes' ? (
-//           <span className="batchChecked">
-//             <CheckOutlined />
-//           </span>
-//         ) : (
-//           <span className="batchClosed">
-//             <CloseOutlined />
-//           </span>
-//         )}
-//       </>
-//     ),
-//   },
-// ]
-
-const onClickTag = (item) => {
-    // console.log('item', item)
-};
-
-// const dataSource = [
-//   {
-//     key: '1',
-//     functions: ['parameter1', 'material1'],
-//     status: 'caution',
-//     batch1: 'yes',
-//     batch2: 'yes',
-//     batch3: 'yes',
-//     batch4: 'no',
-//   },
-//   {
-//     key: '2',
-//     functions: ['parameter2', 'material2'],
-//     status: 'success',
-//     batch1: 'yes',
-//     batch2: 'yes',
-//     batch3: 'yes',
-//     batch4: 'no',
-//   },
-//   {
-//     key: '3',
-//     functions: ['parameter3'],
-//     status: 'success',
-//     batch1: 'yes',
-//     batch2: 'yes',
-//     batch3: 'yes',
-//     batch4: 'no',
-//   },
-//   {
-//     key: '4',
-//     functions: ['parameter4', 'material4'],
-//     status: 'success',
-//     batch1: 'yes',
-//     batch2: 'yes',
-//     batch3: 'yes',
-//     batch4: 'no',
-//   },
-// ]
 
 function ViewSummary(props) {
     const {
@@ -195,32 +26,20 @@ function ViewSummary(props) {
         viewVersion,
         form,
         moleculeId,
+        setViewFunctionName,
+        viewFunctionName,
+        saveResponseView
     } = props;
+
+    useEffect(() => {
+        onChangeColumnsHandler();
+    }, [newBatchData]);
 
     const onChangeColumnsHandler = () => {
         let columns = [];
-        // parentBatches.map((item, index) => {
-        //     let obj = {
-        //         title: `Batch ${++index}`,
-        //         key: index,
-        //         dataIndex: item,
-        //         width: 100,
-        //         render: value =>
-        //             value ? (
-        //                 <span className="batchChecked">
-        //                     <CheckOutlined />
-        //                 </span>
-        //             ) : (
-        //                 <span className="batchClosed">
-        //                     <CloseOutlined />
-        //                 </span>
-        //             ),
-        //     };
-        //     columns.push(obj);
-        // });
         Object.entries(newBatchData).map(([key, value], index) => {
             let obj = {
-                title: `Batch ${++index}`,
+                title: key,
                 key: index,
                 dataIndex: key,
                 width: 100,
@@ -244,27 +63,37 @@ function ViewSummary(props) {
         }
     };
 
+    const handleFunctionNameChange = (e) => {
+        setViewFunctionName(e.target.value)
+    }
+ 
     useEffect(() => {
-        onChangeColumnsHandler();
-    }, [newBatchData]);
+        form.setFieldsValue({ viewId: saveResponseView.viewId, status: saveResponseView.viewStatus, version: saveResponseView.version })
+    }, [saveResponseView]);
+
 
     return (
         <div className='viewSummary-container'>
             <div className='viewSummary-FormBlock'>
                 <Form.Item label='View ID' name='viewId'>
-                    <Input placeholder='Enter View ID' disabled />
+                    <Input placeholder='Enter View ID' value={saveResponseView.viewId} disabled />
                 </Form.Item>
                 <Form.Item label='Name' name='viewName'>
-                    <Input placeholder='Enter Name' />
+                    <Input placeholder='Enter Name' value={viewFunctionName} onChange={handleFunctionNameChange} />
                 </Form.Item>
                 <Form.Item label='Status' name='status'>
-                    <Input placeholder='Status' disabled />
+                    <Input placeholder='Status' value={saveResponseView.viewStatus} disabled />
                 </Form.Item>
-                <Form.Item label='Version' name='version'>
+                <Form.Item label='Version' value={saveResponseView.version} name='version'>
                     <Input placeholder='Version' disabled />
                 </Form.Item>
             </div>
-
+            {/* {!functionEditorViewState && <div style={{ height: '300px', display: 'flex', justifyContent: 'center', alignItems:'center' }}>
+                <div>
+                    <img style={{ width: '200px' }} src={emptyIcon} alt='Home' />
+                    <p>Please select a parameter to create function</p>
+                </div>
+            </div>} */}
             {functionEditorViewState && (
                 <div className='viewSummary-TableBlock'>
                     <Table
@@ -273,8 +102,8 @@ function ViewSummary(props) {
                         columns={viewSummaryColumns}
                         dataSource={viewSummaryTable}
                         scroll={{ x: 900 }}
-                        style={{border:'1px solid #ececec',borderRadius:'2px'}}
-                        rowKey={(record) => record.param}
+                        style={{ border: '1px solid #ececec', borderRadius: '2px' }}
+                        rowKey={(record) => record.id}
                     />
                 </div>
             )}

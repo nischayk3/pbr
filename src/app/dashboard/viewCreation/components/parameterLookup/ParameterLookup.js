@@ -122,7 +122,7 @@ function ParameterLookup(props) {
                             .toLowerCase()
                             .indexOf(input.toLowerCase()) >= 0
                     }
-                    placeholder='Filter Materials'
+                    placeholder='Select'
                     allowClear={true}
                 >
                     {materialsList.map((item, index) => {

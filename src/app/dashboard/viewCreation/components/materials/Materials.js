@@ -26,7 +26,10 @@ function Materials(props) {
         newBatchData,
         setNewBatchData,
         count,
-        setCount
+        setCount,
+        setMaterialIdName,
+        materialIdName,
+        getNewData
     } = props;
 
 
@@ -62,6 +65,7 @@ function Materials(props) {
                     <span
                         className='material-addIcon'
                         onClick={() => {
+                            console.log(record.id, 'record')
                             parameterPassHandler(record, index);
                         }}
                     >
@@ -73,7 +77,6 @@ function Materials(props) {
     ];
 
     const parameterPassHandler = (record, index) => {
-        console.log('record materials', record, index);
         let rowData = {};
         let batchData = {};
         let newBatchData = {};
@@ -81,21 +84,18 @@ function Materials(props) {
         //     let item_key = item;
         //     batchData[`B${++index}`] = item_key;
         // });
-
+        console.log(record, 'record');
         parentBatches.map((el, index) => {
-            console.log(el, record.coverage_list.includes(el));
             if (record.coverage_list.includes(el)) {
-                batchData[`B${++index}`] = true;
-                newBatchData[`B${index}`] = true;
+                batchData[el] = true;
+                newBatchData[el] = true;
                
             } else {
-                batchData[`B${++index}`] = false;
-                newBatchData[`B${index}`] = false;
-                
+                batchData[el] = false;
+                newBatchData[el] = false;   
             }
             
         });
-        console.log(count);
         batchData['id']=count;
         setCount(count+1);
        
@@ -105,7 +105,12 @@ function Materials(props) {
         );
         if (indexDuplicate === -1) {
             rowData = Object.assign(record, batchData);
+            console.log(rowData, "rou1")
+            rowData.sourceType = 'material' 
+            rowData.mat_no = record.mat_no
+            rowData.parameters = [rowData];
             //delete rowData['coverage_list'];
+            getNewData(rowData);
             let data = [...viewSummaryTable];
             data.push(rowData);
             setNewBatchData(newBatchData);
@@ -148,6 +153,9 @@ function Materials(props) {
                     })
                 ) : (
                     materialsList.map((item, index) => {
+                        item.parameters.forEach((ele) => {
+                            ele.mat_no =  item.mat_no
+                        })
                         return (
                             <Panel
                                 className='materials-panel'
@@ -155,11 +163,11 @@ function Materials(props) {
                                 key={index}
                             >
                                 <Table
-                                    className='viewSummary-table materialsList-table borderless-table'
-                                    pagination={false}
-                                    columns={columns}
-                                    dataSource={item.parameters}
-                                    rowKey={(record) => record.param}
+                                  className='viewSummary-table materialsList-table borderless-table'
+                                  pagination={false}
+                                  columns={columns}
+                                  dataSource={item.parameters}
+                                  rowKey={(record) => record.param}
                                 />
                             </Panel>
                         );

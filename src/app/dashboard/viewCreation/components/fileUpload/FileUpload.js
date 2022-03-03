@@ -39,13 +39,17 @@ function FileUpload(props) {
         setNewBatchData,
         functionEditorViewState,
         setFunctionEditorViewState,
+        filesListTree,
+        setFilesListTree,
+        count,
+        setCount,
+        getNewData
     } = props;
 
     const [uploadModalVisible, setUploadModalVisible] = useState(false);
     const [uploadBtnDisabled, setUploadBtnDisabled] = useState(true);
     const [selectedAdHocFileList, setSelectedAdHocFileList] = useState([]);
     const [selectedFileId, setSelectedFileId] = useState();
-    const [filesListTree, setFilesListTree] = useState([]);
 
     const columns = [
         {
@@ -101,13 +105,16 @@ function FileUpload(props) {
 
         parentBatches.map((el, index) => {
             if (record.coverage_list.includes(el)) {
-                batchData[`B${++index}`] = true;
-                newBatchData[`B${index}`] = true;
+                batchData[el] = true;
+                newBatchData[el] = true;
             } else {
-                batchData[`B${++index}`] = false;
-                newBatchData[`B${index}`] = false;
+                batchData[el] = false;
+                newBatchData[el] = false; 
             }
         });
+
+        batchData['id']= count;
+        setCount(count+1);
 
         //check for duplicate records
         const indexDuplicate = viewSummaryTable.findIndex(
@@ -115,6 +122,9 @@ function FileUpload(props) {
         );
         if (indexDuplicate === -1) {
             rowData = Object.assign(record, batchData);
+            rowData.sourceType = 'material' 
+            rowData.parameters = [rowData];
+            getNewData(rowData);
             //delete rowData['coverage_list'];
             let data = [...viewSummaryTable];
             data.push(rowData);
@@ -125,8 +135,6 @@ function FileUpload(props) {
             message.error('Function already exists');
         }
     };
-
-    console.log('selectedAdHocFileList', selectedAdHocFileList);
     console.log('filesListTree', filesListTree);
     const genExtra = (File_id) => (
         <div
@@ -225,6 +233,7 @@ function FileUpload(props) {
         var today = new Date();
         today.setDate(today.getDate());
         const nextState = {};
+        console.log(info.file.type, 'tyoeee');
         if (
             info.file.type !==
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' &&
@@ -271,6 +280,8 @@ function FileUpload(props) {
         setUploadBtnDisabled(true);
         let req = { file_id: selectedFileId, detailedCoverage: true };
         adHocFilesParameterTree(req).then((res) => {
+            const date = new Date();
+            res.timeStamp =  date.toISOString();
             setFilesListTree([...filesListTree, res]);
             if (res.Status === 404) {
                 message.error(res.Message);
@@ -280,6 +291,7 @@ function FileUpload(props) {
             }
         });
     };
+    console.log(setFilesListTree, 'setFilesListTree');
     return (
         <div className='materials-wrapper fileUpload-wrapper'>
             <div className='materials-uploadDownloadFiles'>
