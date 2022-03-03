@@ -1,8 +1,7 @@
 .reportDesigner-dynamicSections {
-  min-height: 500px;
+   min-height: 500px;
   max-height: 500px;
-  width: auto;
-
+  // width: auto;
   overflow-y: auto;
   background-color: white !important;
 
@@ -15,7 +14,8 @@
     margin: 26px;
   }
   .dynamicSections-ul
-  { margin: 26px;
+  { 
+    
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
@@ -37,8 +37,7 @@
  }
   .dynamicSections-container {
     margin-top: 30px;
-    overflow-y: scroll;
-    margin: 26px;
+    margin: 10px;
 
     table.dynamicSections-table {
       border: 1px solid rgba(241, 247, 255, 0.73);
@@ -72,4 +71,5 @@
   display: inline-block;
   background-color: blue;
 border-radius:50%;
+font-size: 16px;
 }

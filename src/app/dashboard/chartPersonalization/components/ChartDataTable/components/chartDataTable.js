@@ -23,7 +23,7 @@ function ChartDataTable(props) {
 
   useEffect(() => {
     setparamData(parameterData);
-    dispatch(sendParameterTableData(parameterData));
+    dispatch(sendParameterTableData(parameterData ? parameterData : []));
   }, [parameterData]);
 
   const uniqueArr = (value, index, self) => {
@@ -37,9 +37,10 @@ function ChartDataTable(props) {
   const filterColumn = objkeys.filter(uniqueArr);
 
   const columns = [];
+
   filterColumn.map((item, i) => {
     columns.push({
-      title: item,
+      title: item.toUpperCase(),
       dataIndex: item,
       key: `${item}-${i}`,
     });
@@ -49,8 +50,8 @@ function ChartDataTable(props) {
   return (
     <div>
       <div>
-        <Card bordered={false} style={{ height: 285 }}>
-          <Tabs defaultActiveKey='1'>
+        <Card bordered={false} style={{ height: '430px' }}>
+          <Tabs defaultActiveKey='3'>
             <TabPane tab='Exclusion' key='1'>
               <ExclusionTable />
             </TabPane>
@@ -60,17 +61,19 @@ function ChartDataTable(props) {
                           <TabPane tab='Trends' key='3'>
                               <TrendTable />
                           </TabPane> */}
-            <TabPane tab='Violation' key='4'>
+            <TabPane tab='Violation' key='2'>
               <ViolationTable />
             </TabPane>
-            <TabPane tab='Data Table' key='5'>
+            <TabPane tab='Data Table' key='3'>
               <Table
+                rowClassName={(record, index) =>
+                  index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+                }
                 size='small'
                 className='parameter_table'
                 columns={columns}
                 dataSource={paramData}
-                bordered
-                scroll={{ y: 150 }}
+                scroll={{ y: 350 }}
                 pagination={false}
               />
             </TabPane>

@@ -289,10 +289,10 @@ a.deleteTableAction {
 }
 
 .paramColumn {
-	width: 90px;
-	overflow: auto;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	word-break: break-word;
-	margin: 0px;
+    width: 90px;
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    margin: 0px;
 }

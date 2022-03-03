@@ -31,11 +31,10 @@ function ChartDetails(props) {
 
   const getChartObjData = useSelector(
     (state) =>
-      state.chartDataReducer && state.chartDataReducer.selectedChartData[0]
+      state.chartDataReducer && state.chartDataReducer.selectedChartData
   );
 
   useEffect(() => {
-    console.log('use 111');
     setchartId(getChartObjData ? getChartObjData.chart_id : '');
     setchartVersion(getChartObjData ? getChartObjData.chart_version : '');
     setchartStatus(getChartObjData ? getChartObjData.chart_status : '');
@@ -54,12 +53,10 @@ function ChartDetails(props) {
   }, [getChartObjData]);
 
   useEffect(() => {
-    console.log('use 222');
     setselectedData(chartPlotData.data);
     setselectedLayout(chartPlotData.layout);
   }, [chartPlotData]);
 
-  console.log('chart data =', selectedData, selectedLayout);
   const dispatch = useDispatch();
 
   const onChangeChart = (e, field) => {
@@ -67,6 +64,7 @@ function ChartDetails(props) {
       if (field === 'chart_name') {
         setchartName(e.target.value);
         dispatch(sendChartName(e.target.value));
+        props.isChartNameEmpty(false);
       } else if (field === 'description') {
         setchartDescription(e.target.value);
         dispatch(sendChartDesc(e.target.value));
@@ -105,17 +103,32 @@ function ChartDetails(props) {
           />
           <InputField
             label='Status'
-            value={chartStatus ? chartStatus : ''}
+            value={props.resChartStatus ? props.resChartStatus : chartStatus}
             disabled
           />
-          <InputField
-            onChangeInput={(e) => {
-              onChangeChart(e, 'chart_name');
-            }}
-            label='Chart Name '
-            placeholder='Enter Chart Name'
-            value={chartName}
-          />
+          {props.isFieldEmpty ? (
+            <div className='input-error-label'>
+              <InputField
+                onChangeInput={(e) => {
+                  onChangeChart(e, 'chart_name');
+                }}
+                label='Chart Name *'
+                placeholder='Enter Chart Name'
+                value={chartName}
+              />
+              <p className='error-label'>Please Enter Chart Name </p>
+            </div>
+          ) : (
+            <InputField
+              onChangeInput={(e) => {
+                onChangeChart(e, 'chart_name');
+              }}
+              label='Chart Name *'
+              placeholder='Enter Chart Name'
+              value={chartName}
+            />
+          )}
+
           <InputField
             onChangeInput={(e) => {
               onChangeChart(e, 'description');
@@ -126,6 +139,7 @@ function ChartDetails(props) {
           />
         </div>
         <Card
+          bordered={false}
           title={
             <span>
               Scatter Plot
@@ -135,19 +149,17 @@ function ChartDetails(props) {
               </span> */}
             </span>
           }
-          style={{ marginTop: '24px' }}
+          style={{ marginTop: '24px', border: '1px solid #d9d9d9' }}
         >
           {selectedLayout && Object.keys(selectedLayout).length > 0 ? (
-            (console.log('object selectedData', selectedData),
-            (
-              <ScatterPlot
-                data={selectedData}
-                layout={selectedLayout}
-                nodeClicked={chartNodeClicked}
-              />
-            ))
+            <ScatterPlot
+              data={selectedData}
+              layout={selectedLayout}
+              nodeClicked={chartNodeClicked}
+            />
           ) : (
             <Empty
+              style={{ height: '85px' }}
               image={Empty.PRESENTED_IMAGE_SIMPLE}
               description='Please select a chart type and enter relevant field data to load chart'
             />
@@ -174,6 +186,7 @@ function ChartDetails(props) {
             Ok
           </Button>,
         ]}
+        closable
         width={400}
       >
         <InputField label='Batch' value={clickedBatchId} disabled />

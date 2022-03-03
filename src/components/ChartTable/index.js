@@ -1,6 +1,6 @@
 import './style.scss';
 
-import { Button, Input, Modal, Table } from 'antd';
+import { Button, Input, Modal, Table, message } from 'antd';
 import React, { useState } from 'react';
 import {
   sendChartData,
@@ -13,9 +13,9 @@ import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 
 const ChartTable = (props) => {
-  console.log('props chart table', props);
   const [selectedKeys, setselectedKeys] = useState([]);
   const [selectedViewId, setselectedViewId] = useState('');
+  const [isDisabled, setisDisabled] = useState(true);
 
   const [filterData, setfilterData] = useState(null);
 
@@ -53,7 +53,6 @@ const ChartTable = (props) => {
   const handleOk = () => {
     let selectedChartId = selectedViewId.chart_disp_id;
     let selectedChartVersion = selectedViewId.chart_version;
-
     props.handleOkModal(selectedChartId, selectedChartVersion);
   };
   const handleClose = () => {
@@ -92,6 +91,7 @@ const ChartTable = (props) => {
           className='custom-secondary-btn'
           key='link'
           type='primary'
+          disabled={isDisabled}
         >
           Ok
         </Button>,
@@ -104,13 +104,13 @@ const ChartTable = (props) => {
           enterButton
           onSearch={searchTable}
           allowClear
-          prefix={
-            <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
-          }
         />
       </div>
       <div className='custom-table-antd'>
         <Table
+          rowClassName={(record, index) =>
+            index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+          }
           columns={columns}
           // rowSelection={() => ({
           //   onChange: (selectedRowKeys, selectedRows) => {
@@ -126,7 +126,9 @@ const ChartTable = (props) => {
           onRow={(record) => ({
             onClick: () => {
               setselectedViewId(record);
-              console.log('selectedKeys', selectedKeys);
+
+              message.success(`${record.chart_disp_id} Selected`);
+              setisDisabled(false);
               const selectedRowKeys = [...selectedKeys];
               if (selectedRowKeys.indexOf(record.key) >= 0) {
                 selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1);
@@ -137,7 +139,7 @@ const ChartTable = (props) => {
                 dispatch(sendChartId(record.chart_disp_id));
                 dispatch(sendChartVersion(record.chart_version));
               }
-              console.log('selectedRowKeys111', selectedRowKeys);
+
               setselectedKeys({ selectedRowKeys });
             },
           })}

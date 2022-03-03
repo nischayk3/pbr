@@ -10,10 +10,10 @@ import InputView from '../InputView/InputView';
 import { useDispatch } from 'react-redux';
 
 const LoadModal = (props) => {
-  console.log('load modal props', props);
   const [chartId, setchartId] = useState('');
   const [chartVersion, setchartVersion] = useState('');
   const [chartViewId, setchartViewId] = useState('');
+  const [isDisabled, setisDisabled] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -48,12 +48,12 @@ const LoadModal = (props) => {
 
   const handleClickChart = (value) => {
     let selectedVlaue = value ? value : '';
-    console.log('selectedVlaue', selectedVlaue);
     let splitValue = selectedVlaue ? selectedVlaue.split('-') : [];
 
     setchartViewId(selectedVlaue);
     setchartId(splitValue[0]);
     setchartVersion(splitValue[1]);
+    setisDisabled(false);
   };
 
   return (
@@ -76,6 +76,7 @@ const LoadModal = (props) => {
           className='custom-secondary-btn'
           key='link'
           type='primary'
+          disabled={isDisabled}
         >
           Ok
         </Button>,

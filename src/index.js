@@ -1,10 +1,8 @@
 import React from 'react';
-
 import { ConnectedRouter } from 'connected-react-router';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Route } from 'react-router-dom';
-
 import App from './app';
 import configureStore, { history } from './duck/store';
 import * as serviceWorker from './serviceWorker';

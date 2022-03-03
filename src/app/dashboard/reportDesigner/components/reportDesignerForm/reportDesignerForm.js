@@ -67,11 +67,12 @@ function ReportDesignerForm(props) {
     return (
         <div className='reportDesigner-grid'>
             <div className='reportDesigner-block-left'>
-                <Text className='filter-text'> Report ID </Text>
-                <Text className='filter-text'>Report Name <b style={{color:'red'}}>*</b></Text>
-                <Text className='filter-text'>View</Text>
-                <Text className='filter-text'>Status</Text>
+                <div>
+                <Text className='filter-text'> Report ID </Text> <br/>
                 <Input className='filter-button' value={reportId} disabled />
+                </div>
+                <div>
+                <Text className='filter-text'>Report Name <b style={{color:'red'}}>*</b></Text><br/>
                 <Input
                     className='filter-button'
                     value={reportName}
@@ -79,6 +80,9 @@ function ReportDesignerForm(props) {
                     onChange={(e) => setReportName(e.target.value)}
                     required={true}
                 />
+                </div>
+                <div>
+                <Text className='filter-text'>View</Text><br/>
                 <div
                     style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}
                 >
@@ -112,11 +116,20 @@ function ReportDesignerForm(props) {
                         />
                     </Button>
                 </div>
+                </div>
+                <div>
+                <Text className='filter-text'>Status</Text><br/>
                 <Input className='filter-button' value={status} disabled />
+
+                </div>
+                
+                {/* <Input className='filter-button' value={reportId} disabled /> */}
+                
+    
             </div>
             <Modal
                 title={
-                    <span>
+                    <p>
                         Select View{' '}
                         <Input.Search
                             className='table-search'
@@ -124,14 +137,14 @@ function ReportDesignerForm(props) {
                             enterButton
                             onSearch={search}
                         />
-                    </span>
+                    </p>
                 }
                 centered
                 visible={visible}
                 onOk={() => setVisible(false)}
                 onCancel={() => setVisible(false)}
                 width={600}
-                footer={[<Button style={{backgroundColor:'#093185',color:'white'}} onClick={() => setVisible(false)}>OK</Button>,]}
+                footer={[<Button style={{backgroundColor:'#093185',color:'white',borderRadius:'4px'}} onClick={() => setVisible(false)}>OK</Button>,]}
 
             >
                 <Table
