@@ -1,3 +1,7 @@
+// Fahad Siddiqui
+// Mareana Software
+// Version 1
+// Last modified - 03 March, 2022
 import '../Personalization.scss';
 import './style.scss';
 import { Card, Collapse ,Table} from 'antd';
