@@ -23,7 +23,7 @@ function ChartDataTable(props) {
 
   useEffect(() => {
     setparamData(parameterData);
-    dispatch(sendParameterTableData(parameterData));
+    dispatch(sendParameterTableData(parameterData ? parameterData : []));
   }, [parameterData]);
 
   const uniqueArr = (value, index, self) => {

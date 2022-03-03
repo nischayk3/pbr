@@ -1,3 +1,4 @@
+//  cpv-layout-content
 .ant-layout-content {
   padding: 0;
   .custom-wrapper {
@@ -17,16 +18,28 @@
           color: #262626;
         }
         .header-title {
-          font-family: 'Maven Pro', sans-serif !important;
+          // font-family: 'Maven Pro', sans-serif !important;
+          // font-style: normal;
+          // font-weight: 600;
+          // font-size: 20px;
+          // line-height: 46px;
+          // /* identical to box height, or 230% */
+          // text-transform: uppercase;
+          // /* Gray / gray-9 */
+          // color: #262626;
+          // padding-left: 9.75px;
+          // border-bottom: none;
+          // display: flex;
+          // align-items: center;
+          // margin: 0;
+          font-family: 'Roboto', sans-serif !important;
           font-style: normal;
-          font-weight: 600;
-          font-size: 20px;
+          font-weight: 400;
+          font-size: 16px;
           line-height: 46px;
-          /* identical to box height, or 230% */
           text-transform: uppercase;
-          /* Gray / gray-9 */
           color: #262626;
-          padding-left: 9.75px;
+          padding-left: 5.75px;
           border-bottom: none;
           display: flex;
           align-items: center;
@@ -40,11 +53,12 @@
       }
     }
     .custom-content-layout {
-      padding: 7px 29px;
+      padding: 8px 29px;
     }
   }
 }
 
+// cpv card head
 .ant-card-head {
   background-color: #f1f7ff !important;
   min-height: 40px !important;
@@ -65,6 +79,7 @@
   }
 }
 
+// cpv input css
 .ant-input {
   box-sizing: border-box;
   margin: 0;
@@ -85,12 +100,14 @@
   border-radius: 4px;
   transition: all 0.3s;
 }
-.ant-select-selection-overflow-item .ant-select-selection-item
-{
-  background-color: #FAFAFA;
+.ant-select-selection-overflow-item .ant-select-selection-item {
+  background-color: #fafafa;
   margin: 5px;
   border-color: #093185;
 }
+
+// cpv custom buttons
+
 .custom-primary-btn {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
@@ -113,10 +130,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 4px;
   border: 1px solid #093185;
   background: #093185;
+}
+
+.custom-secondary-btn-link {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  /* identical to box height, or 157% */
+  /* Gray / gray-9 */
+  color: #262626;
 }
 
 .ant-btn-primary:focus,

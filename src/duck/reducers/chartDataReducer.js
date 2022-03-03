@@ -1,6 +1,6 @@
 import * as types from '../../constants/actionTypes';
 
-const initialState = {
+const initState = {
   chartName: '',
   chartDesc: '',
   chartData: {},
@@ -15,7 +15,7 @@ const initialState = {
   layout: {},
 };
 
-export default (state = initialState, action) => {
+export default (state = initState, action) => {
   switch (action.type) {
     case types.GET_CHART_NAME:
       return { ...state, chartName: action.payload };
@@ -43,6 +43,8 @@ export default (state = initialState, action) => {
       return { ...state, data: action.payload };
     case types.SEND_CHART_LAYOUT:
       return { ...state, layout: action.payload };
+    case types.RESET_CHART:
+      return initState;
     default:
       return state;
   }

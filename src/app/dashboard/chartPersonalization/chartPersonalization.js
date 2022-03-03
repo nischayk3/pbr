@@ -1,34 +1,8 @@
 import './ChartStyle.scss';
 
-import {
-  ArrowLeftOutlined,
-  CheckCircleOutlined,
-  InfoCircleTwoTone,
-} from '@ant-design/icons';
+import { ArrowLeftOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { Button, Modal } from 'antd';
 import React, { useEffect, useState } from 'react';
-import {
-  generateChart,
-  sendBatchCoverage,
-  sendChartData,
-  sendChartDesc,
-  sendChartId,
-  sendChartMapping,
-  sendChartName,
-  sendChartType,
-  sendChartVersion,
-  sendChartxAxis,
-  sendChartyAxis,
-  sendData,
-  sendDateRange,
-  sendLayout,
-  sendSelectedSite,
-  sendUnApprovedData,
-  sendViewId,
-  sendViewName,
-  sendViewStatus,
-  sendViewVersion,
-} from '../../../duck/actions/chartPersonalizationAction';
 import {
   getChartList,
   getChartObj,
@@ -40,6 +14,23 @@ import {
   showLoader,
   showNotification,
 } from '../../../duck/actions/commonActions';
+import {
+  resetChart,
+  sendBatchCoverage,
+  sendChartData,
+  sendChartDesc,
+  sendChartMapping,
+  sendChartName,
+  sendChartType,
+  sendChartVersion,
+  sendData,
+  sendDateRange,
+  sendLayout,
+  sendSelectedSite,
+  sendUnApprovedData,
+  sendViewId,
+  sendViewName,
+} from '../../../duck/actions/chartPersonalizationAction';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ChartDataTable from './components/ChartDataTable/index';
@@ -54,38 +45,28 @@ import ViewTable from '../../../components/ViewTable';
 import { getViewTable } from '../../../services/commonService';
 
 function ChartPersonalization() {
-  const [chartDetails, setChartdetails] = useState([]);
   const [visible, setVisible] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [isView, setIsView] = useState(false);
   const [isNew, setIsNew] = useState(false);
   const [isNewBtnDisabled, setisNewBtnDisabled] = useState(true);
-
-  const [isSave, setIsSave] = useState(false);
-  const [isSaveAs, setIsSaveAs] = useState(false);
-  const [isDiscard, setIsDiscard] = useState(false);
   const [showChart, setShowChart] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showChartType, setShowChartType] = useState(false);
   const [showCustomization, setShowCustomization] = useState(false);
-  const [loading, setLoading] = useState(false);
-  // const [chartObjData, setChartObjData] = useState([]);
   const [chartResObj, setchartResObj] = useState([]);
   const [showBatch, setshowBatch] = useState(false);
   const [viewTableData, setviewTableData] = useState([]);
-  const [batchCoverage, setbatchCoverage] = useState();
   const [batchData, setbatchData] = useState({});
   const [resChartId, setresChartId] = useState('');
   const [resChartVersion, setresChartVersion] = useState('');
   const [resChartStatus, setresChartStatus] = useState('');
-
   const [chartTypeList, setchartTypeList] = useState([]);
   const [isChart, setIsChart] = useState(false);
   const [isLandingDisabled, setisLandingDisabled] = useState(false);
   const [isFieldEmpty, setisFieldEmpty] = useState(false);
   const [isSaveAsBtnDisabled, setisSaveAsBtnDisabled] = useState(true);
   const [isSaveBtnDisabled, setisSaveBtnDisabled] = useState(false);
-
   const chartPersReducer = useSelector((state) => state.chartPersReducer);
   const chartDataReducer = useSelector((state) => state.chartDataReducer);
   const chartViewReducer = useSelector((state) => state.chartViewReducer);
@@ -97,31 +78,8 @@ function ChartPersonalization() {
     getChartListSer();
   }, []);
 
-  function handleCancel() {
-    setVisible(false);
-    setIsLoad(false);
-    setIsNew(false);
-    setIsSave(false);
-    setIsSaveAs(false);
-    setIsDiscard(false);
-  }
-
   const destroyState = () => {
-    dispatch(sendChartData({}));
-    dispatch(sendBatchCoverage({}));
-    dispatch(sendViewId(''));
-    dispatch(sendViewName(''));
-    dispatch(sendViewStatus(''));
-    dispatch(sendViewVersion(''));
-    dispatch(sendSelectedSite(''));
-    dispatch(sendDateRange(''));
-    dispatch(sendUnApprovedData(false));
-    dispatch(sendChartType(''));
-    dispatch(sendChartxAxis(''));
-    dispatch(sendChartyAxis(''));
-    dispatch(sendData({}));
-    dispatch(sendLayout({}));
-    dispatch(generateChart({}));
+    dispatch(resetChart({}));
     getViewTableData();
     getChartListSer();
     setresChartId('');
@@ -324,7 +282,7 @@ function ChartPersonalization() {
       }
     } catch (err) {
       dispatch(hideLoader());
-      dispatch(showNotification('error', err.message));
+      dispatch(showNotification('error', err));
     }
   };
 
@@ -365,10 +323,7 @@ function ChartPersonalization() {
       const chartRes = await getChartObj(reqChartObj);
       if (chartRes.statuscode === 200) {
         let chartResData = chartRes && chartRes.data ? chartRes.data : {};
-        console.log(
-          'chartResData && chartResData',
-          chartResData && chartResData
-        );
+
         setchartResObj(chartResData);
         dispatch(sendChartData(chartResData && chartResData));
 
@@ -416,7 +371,7 @@ function ChartPersonalization() {
       const putChart = await putChartObj(reqChart);
       if (putChart.statuscode === 200) {
         setVisible(true);
-        setIsSave(true);
+
         setresChartId(putChart.chart_id);
         setresChartVersion(putChart.chart_version);
         setresChartStatus(putChart.chart_status);
@@ -504,8 +459,6 @@ function ChartPersonalization() {
           <Button
             className='custom-primary-btn  '
             onClick={() => {
-              // setVisible(true);
-              // setIsNew(true);
               setIsLoad(true);
             }}
             type='primary'
@@ -635,7 +588,6 @@ function ChartPersonalization() {
                 style={{ float: 'right' }}
                 onClick={() => {
                   setVisible(false);
-                  setIsSave(false);
                 }}
                 className='custom-primary-btn'
               >

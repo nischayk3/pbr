@@ -136,89 +136,83 @@ function ChartView(props) {
   ));
   console.log('batchCoverage........', showBatchCoverage);
   return (
-    <div>
-      <Card title='View'>
-        <div className='chartview-input'>
-          <InputView
-            label='View ID'
-            selectedValue={viewId}
-            placeholder='Select View Id'
-            onClickPopup={callbackView}
-            onChangeSelect={(e) => handleClickLoad(e)}
-            option={options}
-          />
+    <Card title='View'>
+      <div className='chartview-input'>
+        <InputView
+          label='View ID'
+          selectedValue={viewId}
+          placeholder='Select View Id'
+          onClickPopup={callbackView}
+          onChangeSelect={(e) => handleClickLoad(e)}
+          option={options}
+        />
 
-          <InputField label='View Name' value={viewName} disabled />
-          <InputField label='Status' value={viewStatus} disabled />
-          <InputField
-            placeholder='Enter Version '
-            label='Version'
-            value={viewVersion}
-          />
-        </div>{' '}
-        {props && props.showBatch && (
-          <Card
-            title='Batch Coverage'
-            bordered={false}
-            style={{ marginTop: '24px', border: '1px solid #d9d9d9' }}
-          >
-            {showBatchCoverage ? (
-              <div className='alert-tags'>
-                {batchStatus !== undefined &&
-                  Object.entries(batchStatus).map(([key1, value1]) => {
-                    if (value1.replace(/\d+% ?/g, 0) < 100.0) {
-                      return (
-                        <div className='alert-tags_error'>
-                          <WarningOutlined style={{ color: '#FA541C' }} />
-                          <Tag className='alert-tags-label' color='magenta'>
-                            {key1}
-                          </Tag>
-                          <p className='tag-percent'>{value1.toString()}</p>
-                          {batchData !== undefined &&
-                            Object.entries(batchData).map(([key, value]) => {
-                              if (key1 === key) {
-                                return (
-                                  <p className='tag-stats'>
-                                    {value.toString()}
-                                  </p>
-                                );
-                              }
-                            })}
-                        </div>
-                      );
-                    } else {
-                      return (
-                        <div className='alert-tags_error'>
-                          <div></div>
-                          <Tag className='alert-tags-label' color='magenta'>
-                            {key1}
-                          </Tag>
-                          <p className='tag-percent'>{value1.toString()}</p>
-                          {batchData !== undefined &&
-                            Object.entries(batchData).map(([key, value]) => {
-                              if (key1 === key) {
-                                return (
-                                  <p className='tag-stats'>
-                                    {value.toString()}
-                                  </p>
-                                );
-                              }
-                            })}
-                        </div>
-                      );
-                    }
-                  })}
-              </div>
-            ) : (
-              <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description='Please select View ID to load batch coverage'
-              />
-            )}
-          </Card>
-        )}
-      </Card>
-    </div>
+        <InputField label='View Name' value={viewName} disabled />
+        <InputField label='Status' value={viewStatus} disabled />
+        <InputField
+          placeholder='Enter Version '
+          label='Version'
+          value={viewVersion}
+        />
+      </div>{' '}
+      {props && props.showBatch && (
+        <Card
+          title='Batch Coverage'
+          bordered={false}
+          style={{ marginTop: '24px', border: '1px solid #d9d9d9' }}
+        >
+          {showBatchCoverage ? (
+            <div className='alert-tags'>
+              {batchStatus !== undefined &&
+                Object.entries(batchStatus).map(([key1, value1]) => {
+                  if (value1.replace(/\d+% ?/g, 0) < 100.0) {
+                    return (
+                      <div className='alert-tags_error'>
+                        <WarningOutlined style={{ color: '#FA541C' }} />
+                        <Tag className='alert-tags-label' color='magenta'>
+                          {key1}
+                        </Tag>
+                        <p className='tag-percent'>{value1.toString()}</p>
+                        {batchData !== undefined &&
+                          Object.entries(batchData).map(([key, value]) => {
+                            if (key1 === key) {
+                              return (
+                                <p className='tag-stats'>{value.toString()}</p>
+                              );
+                            }
+                          })}
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div className='alert-tags_error'>
+                        <div></div>
+                        <Tag className='alert-tags-label' color='magenta'>
+                          {key1}
+                        </Tag>
+                        <p className='tag-percent'>{value1.toString()}</p>
+                        {batchData !== undefined &&
+                          Object.entries(batchData).map(([key, value]) => {
+                            if (key1 === key) {
+                              return (
+                                <p className='tag-stats'>{value.toString()}</p>
+                              );
+                            }
+                          })}
+                      </div>
+                    );
+                  }
+                })}
+            </div>
+          ) : (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description='Please select View ID to load batch coverage'
+            />
+          )}
+        </Card>
+      )}
+    </Card>
   );
 }
 
