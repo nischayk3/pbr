@@ -1,9 +1,10 @@
 import React from 'react';
-import { Card } from 'antd';
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import Dash_Card from '../../../../components/CardComponent/customCard';
+import { Card, Popover, Tabs } from 'antd';
+import { ArrowLeftOutlined, DownloadOutlined, } from '@ant-design/icons';
+import DashCard from '../../../../components/cardComponent/customCard';
+import illustrations from '../../../../assets/images/Banner illustration.svg';
+import WorkflowTable from './workflowTable/workflowTable';
 import './styles.scss';
-import Item from 'antd/lib/list/Item';
 
 
 const config = [
@@ -29,10 +30,11 @@ const config = [
     },
     {
         count: 0,
-        desc: 'Data Load Screen Approval'
+        desc: 'Data Load Approval'
     }
 ]
 
+const { TabPane } = Tabs;
 const Workflow = () => {
     return (
         <div className='custom-wrapper'>
@@ -44,26 +46,39 @@ const Workflow = () => {
                 </div>
             </div>
             <div className='custom-content-layout'>
-                <Card title='Approval Dashboard' style={{ width: '100%' }}>
-                    <p className='dash-username'>Hello[username],welcome back!</p>
-                    <div className='workflow_items approve-wrapper'>
-                        {
-
-                            config.map((item, index) => {
-                                return (
-                                    <div onClick={() => console.log(item)}>
-                                        <Dash_Card count={item.count} desc={item.desc} />
-                                    </div>
-
-                                )
-                            })
-                        }
+                <Card className='workflow_head'>
+                    <div>
+                        <p className='dash-username'>Hello[username],welcome back!</p>
+                        <p className='dash-text'>Today is a great day to approve some records! Let's take look.</p>
                     </div>
-                    {/* <div className='workflow_items approve-wrapper'>
-                    <Dash_Card/>
-                    </div> */}
+                    <img src={illustrations} className='illustration' />
 
                 </Card>
+                <div className='workflow_items approve-wrapper' style={{ width: '305px' }}>
+                    {
+
+                        config.map((item, index) => {
+                            return (
+                                <Popover placement="right" title={'Hello'} content={'content'} trigger="click">
+                                    <div onClick={() => console.log(item)}>
+                                        <DashCard count={item.count} desc={item.desc} />
+                                    </div>
+                                </Popover>
+                            )
+                        })
+                    }
+                    <Card title={<div className='table-head'>Param Data Approvals<DownloadOutlined style={{ color: '#093185', marginLeft: '25px' }} /></div>} className='table-cards'>
+                        <Tabs defaultActiveKey="1" className='workflow-tabs'>
+                            <TabPane tab="Awaiting Approval" key="1">
+                                <WorkflowTable/>
+                            </TabPane>
+                            <TabPane tab="Recently Approved" key="2">
+                                Content of Tab Pane 2
+                            </TabPane>
+                        </Tabs>
+                    </Card>
+                </div>
+
             </div>
 
         </div>
