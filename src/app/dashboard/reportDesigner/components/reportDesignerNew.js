@@ -28,7 +28,7 @@ const columns = [
     title: 'Report ID',
     dataIndex: 'rep_disp_id',
     key: 'rep_disp_id',
-    render:(text, record) => {
+    render: (text, record) => {
       return {
         props: {
           style: { background: record.color },
@@ -41,7 +41,7 @@ const columns = [
     title: 'Report Name',
     dataIndex: 'rep_name',
     key: 'rep_name',
-    render:(text, record) => {
+    render: (text, record) => {
       return {
         props: {
           style: { background: record.color },
@@ -49,13 +49,13 @@ const columns = [
         children: <div>{text}</div>,
       };
     },
-    
+
   },
   {
     title: 'Report Status',
     dataIndex: 'rep_status',
     key: 'rep_status',
-    render:(text, record) => {
+    render: (text, record) => {
       return {
         props: {
           style: { background: record.color },
@@ -68,7 +68,7 @@ const columns = [
     title: 'Created By',
     dataIndex: 'created_by',
     key: 'created_by',
-    render:(text, record) => {
+    render: (text, record) => {
       return {
         props: {
           style: { background: record.color },
@@ -577,7 +577,7 @@ function ReportDesignerNew() {
             columns={columns}
             onRow={record => ({
               onClick: e => {
-                record['color']='red'
+                record['color'] = 'red'
                 setReportId(record.rep_disp_id)
                 getReportData(record.rep_disp_id, record.rep_status)
                 dispatch(showLoader())

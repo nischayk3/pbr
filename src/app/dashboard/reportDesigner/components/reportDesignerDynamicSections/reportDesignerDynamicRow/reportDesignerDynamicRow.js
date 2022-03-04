@@ -56,7 +56,7 @@ function ReportDesignerDynamicRow(props) {
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea  bordered allowClear autoSize={true}  placeholder="Enter Key" style={{ backgroundColor: '#baeaff' }} bordered={true} />
+                                                <Input.TextArea  bordered allowClear autoSize={true}  placeholder="Enter Key" style={{ backgroundColor: '#baeaff ' }} bordered={true} />
                                             </Form.Item>
                                         )
                                     }}

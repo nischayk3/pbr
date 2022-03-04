@@ -1,9 +1,9 @@
 import React, {useState,useEffect} from 'react';
 import {
-    Input,
     Typography
 } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import InputField from '../../../../components/InputField/InputField';
 import './style.scss';
 
 const { Text } = Typography
@@ -38,23 +38,23 @@ function ReportDesignerForm(props) {
             <div className="reportDesigner-block-left bg-white" >
                 <div>
                 <Text className="filter-text" >Report ID</Text><br/>
-                <Input className="filter-button" value={reportId} disabled={true} />
+                <InputField className="filter-button" value={reportId} disabled={true} />
                 </div>
                 <div>
                 <Text className="filter-text" >Report Name</Text><br/>
-                <Input className="filter-button" value={reportName}  disabled={true} />                    
+                <InputField className="filter-button" value={reportName}  disabled={true} />                    
                 </div>
                 <div>
                 <Text className="filter-text">View</Text><br/>
-                <Input className="filter-button" value={viewId}  disabled={true} />
+                <InputField className="filter-button" value={viewId}  disabled={true} />
                 </div>
                 <div>
                 <Text className="filter-text">Status</Text><br/>
-                <Input className="filter-button" value={reportStatus}  disabled={true} />
+                <InputField className="filter-button" value={reportStatus}  disabled={true} />
                 </div>
                 <div>
                 <Text className="filter-text">Variant</Text><br/>
-                <Input className="filter-button" value={reportStatus}  disabled={true} />
+                <InputField className="filter-button" value={reportStatus}  disabled={true} />
                 </div>
 
             </div>
