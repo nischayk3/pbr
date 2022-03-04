@@ -79,6 +79,12 @@ const MENU = [
     linkTo: '/dashboard/report_generator',
   },
   {
+    key: 'workflow',
+    icon: <LinkOutlined style={{fontSize: "26px"}} />,
+    title: 'Workflow',
+    linkTo: '/dashboard/workflow',
+  },
+  {
     key: 'genealogy',
     icon: <LinkOutlined style={{ fontSize: '26px' }} />,
     title: 'Genealogy',
