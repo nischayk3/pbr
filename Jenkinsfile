@@ -1,4 +1,4 @@
-//CI-CD script--
+//CI-CD script---
 pipeline {
     environment {
         DOCKER_IMAGE = 'registry.mareana.com/bms/dev'
