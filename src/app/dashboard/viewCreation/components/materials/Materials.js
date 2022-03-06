@@ -40,23 +40,25 @@ function Materials(props) {
             dataIndex: 'param',
             render: (param) => (
                 <Tooltip title={param}>
-                    <Tag color='magenta' className='parameter-tag'>
+                    <Tag color="geekblue" className='parameter-tag'>
                         {param}
                     </Tag>
                 </Tooltip>
             ),
         },
         {
-            title: 'Batch',
-            key: 'coverage_metric_percent',
+            title: 'Batch Coverage',
+            key: 'coverage_metric' + 'coverage_metric_percent',
             dataIndex: 'coverage_metric_percent',
-            align: 'right'
+            render: (text, record) => (
+                <span>{record.coverage_metric}({record.coverage_metric_percent})</span>
+              )
         },
-        {
-            title: 'Coverage',
-            key: 'coverage_metric',
-            dataIndex: 'coverage_metric',
-        },
+        // {
+        //     title: 'Coverage',
+        //     key: 'coverage_metric',
+        //     dataIndex: 'coverage_metric',
+        // },
         {
             title: '',
             key: 'add',

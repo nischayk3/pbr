@@ -43,6 +43,10 @@ import {
 } from '../../../../services/viewCreationPublishing';
 import { materialsParameterTree } from '../../../../duck/actions/fileUploadAction';
 import { saveFunction } from '../../../../duck/actions/viewCreationAction';
+import {
+    adHocFilesParameterTree,
+} from '../../../../duck/actions/fileUploadAction';
+import Loading from '../../../../components/Loading'
 
 const { Panel } = Collapse;
 
@@ -120,6 +124,7 @@ function ViewCreation() {
     const functionId = useRef();
     const loadedData = useRef();
     const functionChanged = useRef(false);
+    const [showSpinner, setShowSpinner] = useState(false)
     const [saveResponseView, setSaveResponseView] = useState({ viewId: '', version: '', viewStatus: '' });
     const [viewSummaryColumns, setViewSummaryColumns] = useState([
         {
@@ -146,7 +151,7 @@ function ViewCreation() {
             render: (param, record, index) => (
                 <Tooltip title={param}>
                     <Tag
-                        color='magenta'
+                        color="geekblue"
                         className='parameter-tag'
                         onClick={() => {
                             functionId.current = record.id
@@ -189,7 +194,7 @@ function ViewCreation() {
             fixed: 'left',
             render: (param, record, index) => (
                 <Tooltip title={param}>
-                    <Tag color='magenta' className='paramColumn'>
+                    <Tag color='geekblue' className='paramColumn'>
                         {param}
                     </Tag>
                 </Tooltip>
@@ -266,18 +271,14 @@ function ViewCreation() {
     }
 
     const saveFunctionData = () => {
-        if (!functionChanged.current) {
-            setViewSummaryTable([...viewSummaryTable, paramText]);
-            message.success('Function Added Successfully');
-        }
-        else {
-            getData.current.param = text.current ? text.current : getData.current.param;
-            getData.current.id = setCount(count + 1);
-            getData.current.aggregation = meanChange;
-            getData.current.parameters = newParameterData.current;
-            setViewSummaryTable([...viewSummaryTable, getData.current]);
-            message.success('Function Added Successfully');
-        }
+        let currentData = { ...getData.current};
+        currentData.param = text.current ? text.current : currentData.param;
+        currentData.id = count;
+        currentData.aggregation = meanChange;
+        currentData.parameters = newParameterData.current;
+        setViewSummaryTable([...viewSummaryTable, currentData]);
+        setCount(count + 1)
+        message.success('Function Added Successfully');
     };
 
 
@@ -336,8 +337,16 @@ function ViewCreation() {
         setViewStatus();
         setViewVersion();
     };
+    const counter = useRef(0);
+    const onOkHandler = async () => {
+        setShowSpinner(true);
+        setVisible(false);
+        setViewSummaryTable([]);
+        setFilesListTree([]);
+        setFunctionEditorViewState(false);
+        setCount(1);
+        counter.current = 0;
 
-    const onOkHandler = () => {
         let req = { view_disp_id: viewDisplayId };
         getViewConfig(req).then((res) => {
             setMoleculeId(res.material_id);
@@ -346,29 +355,136 @@ function ViewCreation() {
             setViewVersion(res.view_version);
             setVisible(false);
             setIsLoad(true);
+            setViewSummaryTable([]);
+            setFilesListTree([]);
             loadedData.current = res;
-            if (res.Status === 401) {
-                message.error(res.Message);
-                setVisible(true);
-                setIsLoad(false);
-            }
-            if (res.Status === 400) {
-                message.error(res.Message);
-                setVisible(true);
-                setIsLoad(false);
-            }
-            if (res.Status === 404) {
-                message.error(res.Message);
-                setVisible(true);
-                setIsLoad(false);
-            }
-        });
+            let files = [];
+            Object.keys(loadedData.current.files).forEach((key) => {
+                let req = { file_id: key, detailedCoverage: true };
+                adHocFilesParameterTree(req).then((res) => {
+                    files.push(res)
+                    setFilesListTree([...filesListTree, ...files]);
+                    if (res.Status === 404) {
+                        message.error(res.Message);
+                    }
+                    if (res.Status === 401) {
+                        message.error('UnAuthorized User');
+                    }
+                });
+            });
+            let a = [];
+            Object.values(loadedData.current.functions).forEach((values) => {
+                a.push(values)
+            });
+            a.forEach((ele) => {
+                ele.definition = ele.definition.replace('{', '').replace('}', '')
+            })
+            Object.entries(loadedData.current.parameters).forEach(([key, value], index) => {
+                a.forEach((element) => {
+                    if (String(element.definition) === String(key)) {
+                        element.paramsOld = value
+                    }
+                })
+            })
+            let b = [];
+            a.forEach((values) => {
+                if (values.paramsOld.length <= 1) {
+                    values.paramsOld.forEach((element) => {
+                        materialsList.forEach((ele) => {
+                            if (String(ele.mat_no) === String(element.material_id)) {
+                                ele.parameters.forEach((item) => {
+                                    if (String(item.param) === String(values.name)) {
+                                        let rowData = {};
+                                        let batchData = {};
+                                        let newBatchData = {};
+                                        parentBatches.map((el, index) => {
+                                            if (item.coverage_list.includes(el)) {
+                                                batchData[el] = true;
+                                                newBatchData[el] = true;
+                                            } else {
+                                                batchData[el] = false;
+                                                newBatchData[el] = false;
+                                            }
+                                        });
+                                        counter.current = counter.current + 1
+                                        batchData['id'] = counter.current;
+                                        rowData = Object.assign(item, batchData);
+                                        b.push(rowData);
+                                        setNewBatchData(newBatchData);
+                                        setFunctionEditorViewState(true);
+                                    }
+                                })
+                            }
+                        })
+                    })
+                } else {
+                    let data = [];
+                    let obj = {};
+                    values.paramsOld.forEach((ele) => {
+                        materialsList.forEach((element) => {
+                            if (String(element.mat_no) === String(ele.material_id)) {
+                                element.parameters.forEach((item) => {
+                                    if (String(item.param) === String(ele.parameter_name)) {
+                                        data.push(item)
+                                    }
+                                })
+                            }
+                        })
+                    })
+                    if (values.functionType !== 'union') {
+                        data.forEach((item, i) => {
+                            if (i == 0) {
+                                obj = { ...item };
+                            } else {
+                                Object.entries(item).forEach(([key, value], index) => {
+                                    if (key.includes("B")) {
+                                        obj[key] = obj[key] && item[key]
+                                        obj.param = item.param
+                                        obj.id = item.id
+                                    }
+                                })
+
+                            }
+
+                        })
+                        getNewData(obj);
+                    } else {
+                        data.forEach((item, i) => {
+                            if (i == 0) {
+                                obj = { ...item };
+                            } else {
+                                Object.entries(item).forEach(([key, value], index) => {
+                                    if (key.includes("B")) {
+                                        obj[key] = obj[key] || item[key]
+                                        obj.param = item.param
+                                        obj.id = item.id
+                                    }
+                                })
+
+                            }
+                        })
+                        getNewData(obj);
+                    }
+                    counter.current = counter.current + 1
+                    getData.current.id = counter.current;
+                    getData.current.param = values.name;
+                    b.push(getData.current);
+                }
+            })
+            setCount(counter.current + 1);
+            setViewSummaryTable([...b]);
+            setFunctionEditorViewState(true);
+            setShowSpinner(false);
+        }).catch((err) => {
+            message.error(err.Message);
+            setVisible(true);
+            setIsLoad(false);
+        })
         setFilterdData(null);
         form.setFieldsValue({
             filters: null,
         });
     };
-
     useEffect(() => {
         form.setFieldsValue({
             viewId: viewDisplayId,
@@ -408,7 +524,7 @@ function ViewCreation() {
             return false;
         }
         const converted = Object.assign({}, ...filesListTree.map(object => ({ [object.File_id]: { file_name: object.File_name, file_url: `/services/v1/adhoc-files/${object.File_id}`, upload_timestamp: object.timeStamp } })))
-        const functionObj = Object.assign({}, ...viewSummaryTable.map((object, index) => ({ [object.id]: { name: object.param, definition: `{${index + 1}}`, aggregation: object.aggregation ? object.aggregation : 'Mean'  } })))
+        const functionObj = Object.assign({}, ...viewSummaryTable.map((object, index) => ({ [object.id]: { name: object.param, functionType: object.functionType, definition: `{${index + 1}}`, aggregation: object.aggregation ? object.aggregation : 'Mean' } })))
         const parameter = Object.assign({}, ...viewSummaryTable.map((object, index) => ({
             [index + 1]: object.parameters.map((ele, index) => {
                 return {
@@ -431,11 +547,12 @@ function ViewCreation() {
             view_status: 0,
         }
         const headers = {
-            username:"user_mareana1",
-            password:"mareana_pass1",
+            username: "user_mareana1",
+            password: "mareana_pass1",
             view_version: viewVersion,
             view_disp_id: viewDisplayId,
-          }
+        }
+        setShowSpinner(true);
         try {
             const response = await saveFunction(obj, headers);
             if (response.statuscode === 200) {
@@ -443,6 +560,7 @@ function ViewCreation() {
                 setViewStatus(response.view_status);
                 setViewVersion(response.view_version);
                 message.success('Saved Successfully')
+                setShowSpinner(false);
             } else {
                 message.error(response.data.message);
             }
@@ -457,13 +575,14 @@ function ViewCreation() {
             return false;
         }
         const converted = Object.assign({}, ...filesListTree.map(object => ({ [object.File_id]: { file_name: object.File_name, file_url: `/services/v1/adhoc-files/${object.File_id}`, upload_timestamp: object.timeStamp } })))
-        const functionObj = Object.assign({}, ...viewSummaryTable.map((object, index) => ({ [object.id]: { name: object.param, definition: `{${index + 1}}`, aggregation: object.aggregation ? object.aggregation : 'Mean'  } })))
+        const functionObj = Object.assign({}, ...viewSummaryTable.map((object, index) => ({ [object.id]: { name: object.param, definition: `{${index + 1}}`, aggregation: object.aggregation ? object.aggregation : 'Mean', functionType: object.functionType } })))
         const parameter = Object.assign({}, ...viewSummaryTable.map((object, index) => ({
             [index + 1]: object.parameters.map((ele, index) => {
                 return {
                     parameter_name: ele.param,
                     source_type: ele.sourceType,
-                    material_id: ele.mat_no,
+                    material_id: ele.sourceType === 'material' ? ele.mat_no : undefined,
+                    file_id: ele.sourceType === 'file' ? ele.file_id : undefined,
                     batch_lock: [],
                     priority: 0
                 }
@@ -481,9 +600,10 @@ function ViewCreation() {
             view_version: 1,
         }
         const headers = {
-            username:"user_mareana1",
-            password:"mareana_pass1",
-          }
+            username: "user_mareana1",
+            password: "mareana_pass1",
+        }
+        setShowSpinner(true);
         try {
             const response = await saveFunction(obj, headers);
             if (response.statuscode === 200) {
@@ -491,6 +611,7 @@ function ViewCreation() {
                 setViewStatus(response.view_status);
                 setViewVersion(response.view_version);
                 message.success('Saved Successfully')
+                setShowSpinner(false);
             } else {
                 message.error(response.data.message);
             }
@@ -512,6 +633,15 @@ function ViewCreation() {
                 <h1 className='reportDesigner-headline'>
                     <ArrowLeftOutlined /> Create View
                 </h1>
+                <Button
+                    className='viewCreation-loadBtn'
+                    onClick={() => {
+                        setVisible(true);
+                        setIsNew(false);
+                    }}
+                >
+                    Load
+                </Button>
                 {materialsList.length > 0 && <div className='viewCreation-btns'>
                     <Button
                         type='text'
@@ -732,7 +862,7 @@ function ViewCreation() {
                                                 Save
                                             </Button>
                                             <Button
-                                                style={{ marginLeft : '16px'}}
+                                                style={{ marginLeft: '16px' }}
                                                 className='custom-primary-btn'
                                                 onClick={() => {
                                                     saveFunctionData();
@@ -742,7 +872,7 @@ function ViewCreation() {
                                             </Button>
                                         </div>
                                     </h4>
-                                    <hr/>
+                                    <hr />
                                     <FunctionEditor
                                         form={form}
                                         parentBatches={parentBatches}
@@ -854,6 +984,7 @@ function ViewCreation() {
                     />
                 </Modal>
             </div>
+            <Loading show={showSpinner} />
         </div>
     );
 }

@@ -118,7 +118,8 @@ function FileUpload(props) {
         );
         if (indexDuplicate === -1) {
             rowData = Object.assign(record, batchData);
-            rowData.sourceType = 'material' 
+            rowData.sourceType = 'file'
+            rowData.file_id = record.File_id
             rowData.parameters = [rowData];
             getNewData(rowData);
             let data = [...viewSummaryTable];
@@ -309,6 +310,9 @@ function FileUpload(props) {
                 expandIconPosition='right'
             >
                 {filesListTree.map((item, index) => {
+                    item.Data.forEach((ele) => {
+                        ele.file_id =  item.File_id
+                    })
                     return (
                         <Panel
                             className='materials-panel fileUpload-panel'
@@ -328,7 +332,7 @@ function FileUpload(props) {
                                 pagination={false}
                                 columns={columns}
                                 dataSource={item.Data}
-                                rowKey={(record) => record.parameter_name}
+                                rowKey={(record, index) => index}
                             />
                         </Panel>
                     );

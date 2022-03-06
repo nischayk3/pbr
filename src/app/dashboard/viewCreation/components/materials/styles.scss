@@ -4,7 +4,7 @@
         background-color: transparent;
 
         .parameter-tag {
-            width: 70px;
+            width: 76px;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -23,7 +23,7 @@
             align-items: center;
 
             .ant-collapse-arrow {
-                right: 5px !important;
+                right: 15px !important;
                 color: #bfbfbf !important;
             }
         }
@@ -106,28 +106,18 @@ span.material-addIcon {
     .ant-table {
         border: none !important;
     }
-    th:nth-child(2) {
-        padding: 10px 4px !important;
-    }
-    th:nth-child(3) {
-        padding: 10px 4px !important;
-    }
     td {
        border-bottom: none !important;
     }
     td > * {
         vertical-align : middle;
     }
-    .ant-table-tbody>tr>td:nth-child(2):before {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        width: 1px;
-        height: 1.6em;
-        background-color : #DBDBDB;
-        transform: translateY(-50%);
-        transition: background-color .3s;
-        content: "";
+
+    th:first-of-type {
+        width: 126px !important;
+    }
+    td:first-of-type {
+        width: 126px !important;
     }
     .ant-table-thead>tr>th:before {
         background-color: white !important;
@@ -135,7 +125,7 @@ span.material-addIcon {
     .ant-table .ant-table-thead > tr > th {
         // background-color: transparent;
         background-color: white !important;
-        padding: 5px;
+        padding: 10px 5px !important;
         border-bottom: none;
     }
     .ant-table-tbody > tr > td {
