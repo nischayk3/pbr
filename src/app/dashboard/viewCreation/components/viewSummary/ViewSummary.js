@@ -1,3 +1,8 @@
+// Ranjith K
+// Mareana Software
+// Version 1
+// Last modified - 07 March, 2022
+
 import React, { useEffect, useState } from 'react';
 import './styles.scss';
 
@@ -76,16 +81,16 @@ function ViewSummary(props) {
         <div className='viewSummary-container'>
             <div className='viewSummary-FormBlock'>
                 <Form.Item label='View ID' name='viewId'>
-                    <Input placeholder='Enter View ID' disabled />
+                    <Input  disabled />
                 </Form.Item>
                 <Form.Item label='Name' name='viewName'>
                     <Input placeholder='Enter Name' value={viewFunctionName} onChange={handleFunctionNameChange} />
                 </Form.Item>
                 <Form.Item label='Status' name='status'>
-                    <Input placeholder='Status' disabled />
+                    <Input placeholder='New' disabled />
                 </Form.Item>
                 <Form.Item label='Version' name='version'>
-                    <Input placeholder='Version' disabled />
+                    <Input disabled />
                 </Form.Item>
             </div>
             {!functionEditorViewState && <div className="emptyDiv">

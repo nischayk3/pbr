@@ -1,3 +1,8 @@
+// Ranjith K
+// Mareana Software
+// Version 1
+// Last modified - 07 March, 2022
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import './styles.scss';

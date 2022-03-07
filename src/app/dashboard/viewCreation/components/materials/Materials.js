@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react';
+// Ranjith K
+// Mareana Software
+// Version 1
+// Last modified - 07 March, 2022
 
+import React, { useEffect, useState } from 'react';
 import './styles.scss';
 import { PlusSquareOutlined } from '@ant-design/icons';
 import { Button, Collapse, message, Spin, Table, Tag, Tooltip } from 'antd';
@@ -54,11 +58,6 @@ function Materials(props) {
                 <span>{record.coverage_metric}({record.coverage_metric_percent})</span>
               )
         },
-        // {
-        //     title: 'Coverage',
-        //     key: 'coverage_metric',
-        //     dataIndex: 'coverage_metric',
-        // },
         {
             title: '',
             key: 'add',

@@ -1,3 +1,8 @@
+// Ranjith K
+// Mareana Software
+// Version 1
+// Last modified - 07 March, 2022
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
@@ -336,6 +341,7 @@ function ViewCreation() {
         setViewDisplayId('');
         setViewStatus();
         setViewVersion();
+        setCount(1);
     };
     const counter = useRef(0);
     const onOkHandler = async () => {
@@ -633,15 +639,6 @@ function ViewCreation() {
                 <h1 className='reportDesigner-headline'>
                     <ArrowLeftOutlined /> Create View
                 </h1>
-                <Button
-                    className='viewCreation-loadBtn'
-                    onClick={() => {
-                        setVisible(true);
-                        setIsNew(false);
-                    }}
-                >
-                    Load
-                </Button>
                 {materialsList.length > 0 && <div className='viewCreation-btns'>
                     <Button
                         type='text'
