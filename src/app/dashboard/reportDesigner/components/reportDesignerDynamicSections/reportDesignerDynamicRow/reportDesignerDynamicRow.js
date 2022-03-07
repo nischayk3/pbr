@@ -52,11 +52,11 @@ function ReportDesignerDynamicRow(props) {
                                         
                                         return value['editable'] === true ? (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input placeholder="Enter Key" name={[name, 'keyName']} disabled />
+                                                <Input.TextArea  allowClear autoSize={true} placeholder="Enter Key" name={[name, 'keyName']} disabled />
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input placeholder="Enter Key" style={{ backgroundColor: '#baeaff' }} bordered={true} />
+                                                <Input.TextArea  bordered allowClear autoSize={true}  placeholder="Enter Key" style={{ backgroundColor: '#baeaff ' }} bordered={true} />
                                             </Form.Item>
                                         )
                                     }}
@@ -76,11 +76,11 @@ function ReportDesignerDynamicRow(props) {
 
                                         return value['editable'] === true ? (
                                             <Form.Item name={[name, 'value']} >
-                                                <Input placeholder="Enter Value" name={[name, 'value']} disabled />
+                                                <Input.TextArea bordered  allowClear autoSize={true}   placeholder="Enter Value" name={[name, 'value']} disabled />
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'value']} >
-                                                <Input placeholder="Enter Value" style={{ backgroundColor: '#baeaff' }} bordered={true} />
+                                                <Input.TextArea  bordered allowClear autoSize={true}  placeholder="Enter Value" style={{ backgroundColor: '#baeaff'}} bordered={true} />
                                             </Form.Item>
                                         )
                                     }}

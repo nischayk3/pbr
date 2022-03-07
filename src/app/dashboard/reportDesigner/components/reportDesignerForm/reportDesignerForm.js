@@ -68,64 +68,62 @@ function ReportDesignerForm(props) {
         <div className='reportDesigner-grid'>
             <div className='reportDesigner-block-left'>
                 <div>
-                <Text className='filter-text'> Report ID </Text> <br/>
-                <Input className='filter-button' value={reportId} disabled />
+                    <Text className='filter-text'> Report ID </Text> <br />
+                    <Input className='filter-button' value={reportId} disabled />
                 </div>
                 <div>
-                <Text className='filter-text'>Report Name <b style={{color:'red'}}>*</b></Text><br/>
-                <Input
-                    className='filter-button'
-                    value={reportName}
-                    disabled={isLoad}
-                    onChange={(e) => setReportName(e.target.value)}
-                    required={true}
-                />
-                </div>
-                <div>
-                <Text className='filter-text'>View</Text><br/>
-                <div
-                    style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}
-                >
-                    <Select
+                    <Text className='filter-text'>Report Name <b style={{ color: 'red' }}>*</b></Text><br />
+                    <Input
                         className='filter-button'
-                        defaultValue={viewIdVersion}
-                        showArrow
-                        onChange={(e, value) => {
-                            let view_value = value.value;
-                            let split_view_id = view_value.split('-');
-                            setViewId(split_view_id[0]);
-                            setViewVersion(split_view_id[1]);
-                            setViewIdVersion(view_value);
-                            getChartsList(view_value);
-                        }}
-                        value={viewIdVersion}
-                        disabled={isLoad}
-                    >
-                        {mapViewList.map((item) => (
-                            <Option value={item.view}>{item.view}</Option>
-                        ))}
-                    </Select>
-                    <Button
-                        disabled={isLoad}
-                        style={{ width: '40px' }}
-                        onClick={() => setVisible(true)}
-                    >
-                        <BlockOutlined
-                            style={{ marginRight: '5px' }}
-                            twoToneColor='#093185'
-                        />
-                    </Button>
-                </div>
+                        value={reportName}
+                        onChange={(e) => setReportName(e.target.value)}
+                        required={true}
+                    />
                 </div>
                 <div>
-                <Text className='filter-text'>Status</Text><br/>
-                <Input className='filter-button' value={status} disabled />
+                    <Text className='filter-text'>View</Text><br />
+                    <div
+                        style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}
+                    >
+                        <Select
+                            className='filter-button'
+                            defaultValue={viewIdVersion}
+                            showArrow
+                            onChange={(e, value) => {
+                                let view_value = value.value;
+                                let split_view_id = view_value.split('-');
+                                setViewId(split_view_id[0]);
+                                setViewVersion(split_view_id[1]);
+                                setViewIdVersion(view_value);
+                                getChartsList(view_value);
+                            }}
+                            value={viewIdVersion}
+                        >
+                            {mapViewList.map((item) => (
+                                <Option value={item.view}>{item.view}</Option>
+                            ))}
+                        </Select>
+                        <Button
+                            disabled={isLoad}
+                            style={{ width: '40px' }}
+                            onClick={() => setVisible(true)}
+                        >
+                            <BlockOutlined
+                                style={{ marginRight: '5px' }}
+                                twoToneColor='#093185'
+                            />
+                        </Button>
+                    </div>
+                </div>
+                <div>
+                    <Text className='filter-text'>Status</Text><br />
+                    <Input className='filter-button' value={status} disabled />
 
                 </div>
-                
+
                 {/* <Input className='filter-button' value={reportId} disabled /> */}
-                
-    
+
+
             </div>
             <Modal
                 title={
@@ -144,7 +142,7 @@ function ReportDesignerForm(props) {
                 onOk={() => setVisible(false)}
                 onCancel={() => setVisible(false)}
                 width={600}
-                footer={[<Button style={{backgroundColor:'#093185',color:'white',borderRadius:'4px'}} onClick={() => setVisible(false)}>OK</Button>,]}
+                footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => setVisible(false)}>OK</Button>,]}
 
             >
                 <Table
@@ -154,7 +152,7 @@ function ReportDesignerForm(props) {
                     size='small'
                     onRow={(record) => ({
                         onClick: (e) => {
-                            
+
                             setViewId(record.view_disp_id);
                             setStatus('NEW');
                             setViewVersion(record.view_version);
@@ -163,7 +161,7 @@ function ReportDesignerForm(props) {
                         },
                     })}
                     scroll={{ y: 200 }}
-                    // style={{ height: '200px' }}
+                // style={{ height: '200px' }}
                 />
             </Modal>
         </div>
