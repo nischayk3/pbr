@@ -1,5 +1,4 @@
 import './style.scss';
-
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -31,50 +30,50 @@ const MENU = [
 
   {
     key: 'view_creation',
-    icon: <FundOutlined style={{ fontSize: '26px' }} />,
+    icon: <FundOutlined style={{ fontSize: '23px' }} />,
     title: 'View Creation',
     linkTo: '/dashboard/view_creation',
   },
   {
     key: 'chart_personalization',
-    icon: <BarChartOutlined style={{ fontSize: '26px' }} />,
+    icon: <BarChartOutlined style={{ fontSize: '23px' }} />,
     title: 'Chart Personalization',
     linkTo: '/dashboard/chart_personalization',
   },
 
   {
     key: 'manual_data_upload',
-    icon: <HistoryOutlined style={{ fontSize: '26px' }} />,
+    icon: <HistoryOutlined style={{ fontSize: '23px' }} />,
     title: 'Manual Data Upload',
     linkTo: '/dashboard/manual_data_upload',
   },
   {
     key: 'system_error_report',
-    icon: <AppstoreOutlined style={{ fontSize: '26px' }} />,
+    icon: <AppstoreOutlined style={{ fontSize: '23px' }} />,
     title: 'System Error Report',
     linkTo: '/dashboard/system_error_report',
   },
   {
     key: 'data_load',
-    icon: <PartitionOutlined style={{ fontSize: '26px' }} />,
+    icon: <PartitionOutlined style={{ fontSize: '23px' }} />,
     title: 'Data Load',
     linkTo: '/dashboard/data_load',
   },
   {
     key: 'audit_trail_report',
-    icon: <FileSearchOutlined style={{ fontSize: '26px' }} />,
+    icon: <FileSearchOutlined style={{ fontSize: '23px' }} />,
     title: 'Audit Trail Report',
     linkTo: '/dashboard/audit_trail_report',
   },
   {
     key: 'report_designer',
-    icon: <TeamOutlined style={{ fontSize: '26px' }} />,
+    icon: <TeamOutlined style={{ fontSize: '23px' }} />,
     title: 'Report Designer',
     linkTo: '/dashboard/report_designer',
   },
   {
     key: 'report_generator',
-    icon: <LinkOutlined style={{ fontSize: '26px' }} />,
+    icon: <LinkOutlined style={{ fontSize: '23px' }} />,
     title: 'Report Generator',
     linkTo: '/dashboard/report_generator',
   },
@@ -86,13 +85,12 @@ const MENU = [
   },
   {
     key: 'genealogy',
-    icon: <LinkOutlined style={{ fontSize: '26px' }} />,
+    icon: <LinkOutlined style={{ fontSize: '23px' }} />,
     title: 'Genealogy',
     linkTo: '/dashboard/genealogy',
   },
 ];
 
-const LogoutIcon = <LogoutOutlined style={{ fontSize: '26px' }} />;
 
 const { Sider } = Layout;
 function handleLogout(instance) {
@@ -110,14 +108,6 @@ const Sidebar = () => {
   const collapsed = useSelector((state) => state.commonReducer.isMenuCollapsed);
   const theme = useSelector((state) => state.commonReducer.theme);
 
-  const Logout = async () => {
-    // LOGOUT API NOT WORKING
-    // const jwt = localStorage.getItem('user_token');
-    // await userLogout(jwt);
-    Auth.logout(() => {
-      history.push('/');
-    });
-  };
 
   const init = useCallback(() => {
     const screen = location.pathname.split('/');
@@ -146,9 +136,6 @@ const Sidebar = () => {
               <Link to={item.linkTo}>{item.title}</Link>
             </Menu.Item>
           ))}
-          <Menu.Item key={MENU.length + 1} icon={LogoutIcon} onClick={Logout}>
-            Logout
-          </Menu.Item>
         </Menu>
       </div>
     </Sider>

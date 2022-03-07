@@ -4,7 +4,7 @@
         background-color: transparent;
 
         .parameter-tag {
-            width: 70px;
+            width: 76px;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -23,11 +23,12 @@
             align-items: center;
 
             .ant-collapse-arrow {
-                right: 0px !important;
+                right: 15px !important;
                 color: #bfbfbf !important;
             }
         }
     }
+
 
     .materials-panel {
         border-bottom: 1px solid #cacaca;
@@ -40,10 +41,14 @@
                 padding: 0px 0px 10px !important;
                 overflow: hidden !important;
                 max-height: none !important;
-                background-color: transparent !important;
+                // background-color: transparent !important;
             }
         }
     }
+}
+
+.ant-collapse {
+    border: none !important;
 }
 
 .ant-collapse-item.viewCreation-materialsPanel {
@@ -98,10 +103,29 @@ span.material-addIcon {
 
 .borderless-table {
     filter: none;
+    .ant-table {
+        border: none !important;
+    }
+    td {
+       border-bottom: none !important;
+    }
+    td > * {
+        vertical-align : middle;
+    }
 
+    th:first-of-type {
+        width: 126px !important;
+    }
+    td:first-of-type {
+        width: 126px !important;
+    }
+    .ant-table-thead>tr>th:before {
+        background-color: white !important;
+    }
     .ant-table .ant-table-thead > tr > th {
-        background-color: transparent;
-        padding: 5px;
+        // background-color: transparent;
+        background-color: white !important;
+        padding: 10px 5px !important;
         border-bottom: none;
     }
     .ant-table-tbody > tr > td {
