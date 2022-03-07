@@ -47,6 +47,8 @@ color: #000000;
     width: 997px;
     height: 490px;
     background: #FFFFFF;
+    box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
     border: 1px solid #486BC9;
     box-sizing: border-box;
     border-radius: 2px;
@@ -55,12 +57,13 @@ color: #000000;
         height: 65px !important;
     }
     .ant-card-head-title{
-        padding:12px 5px !important;
+        padding:12px 15px !important;
     }
     .ant-card-body{
-        padding: 10px !important;
+        padding: 0px 25px !important;
     }
 }
+
 .table-head{
     font-family: 'Roboto';
     font-style: normal;

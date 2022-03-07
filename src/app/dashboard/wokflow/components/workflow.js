@@ -48,7 +48,7 @@ const Workflow = () => {
             <div className='custom-content-layout'>
                 <Card className='workflow_head'>
                     <div>
-                        <p className='dash-username'>Hello[username],welcome back!</p>
+                        <p className='dash-username'>Hello {(localStorage.getItem('user'))},welcome back!</p>
                         <p className='dash-text'>Today is a great day to approve some records! Let's take look.</p>
                     </div>
                     <img src={illustrations} className='illustration' />
@@ -59,11 +59,11 @@ const Workflow = () => {
 
                         config.map((item, index) => {
                             return (
-                                <Popover placement="right" title={'Hello'} content={'content'} trigger="click">
+                                
                                     <div onClick={() => console.log(item)}>
                                         <DashCard count={item.count} desc={item.desc} />
                                     </div>
-                                </Popover>
+                                
                             )
                         })
                     }

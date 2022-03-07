@@ -60,7 +60,6 @@
 
 .approval-cards{
     display: grid;
-
     width: 305px;
     height:66px;
     padding: 21px 6px 40px 6px;
@@ -106,6 +105,65 @@
         font-size: 16px;
         line-height: 22px;
         color: #093185;
+        margin-left: 23px;
+    }
+
+}
+
+}
+
+.approval-cards:focus{
+    background: #F1F7FF;
+    border: 1px solid #486BC9;
+}
+
+.approval-cards-disabled{
+    display: grid;
+    width: 305px;
+    height:66px;
+    padding: 21px 6px 40px 6px;
+    position:relative;  
+    background:#F8F8F8;
+    box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.14);
+    border-radius: 4px;
+    .circle_icon-disabled{
+        position: absolute;
+        top: 50%;
+        left:-5%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        text-align: center;
+        background: #FFFFFF;
+        border: 1px solid #C9C9C9;
+        box-sizing: border-box;
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+        width: 48px;
+        height: 48px;
+        border-radius: 100px;
+        padding: 7px;
+        color:#D2D2D2;
+        font-size: 25px;
+    }
+    .card_desc-disabled{
+        display: flex;
+        flex-direction: row;
+        margin-left: 51px;
+    .approve-title-disabled{
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 34px;
+        line-height: 22px;
+        color: #8D8D8D;
+    }
+    .approve-desc-disabled{
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 22px;
+        color: #8D8D8D;
         margin-left: 23px;
     }
 
