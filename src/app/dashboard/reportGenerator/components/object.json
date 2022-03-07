@@ -1,0 +1,102 @@
+{
+    "data": {
+        "rep_disp_id": "R119",
+        "rep_name": "Report_CPV",
+        "rep_status": "DRFT",
+        "user": "demo",
+        "variant_name": "demo_R119_variant",
+        "chart_info": {
+            "charts": [
+                {
+                    "chart": "C1-BELAC_ANALY-1",
+                    "excursion": false,
+                    "violation": false,
+                    "parameter": false,
+                    "exclusion": false
+                },
+                {
+                    "chart": "C1-BELAC_ANALY-2",
+                    "excursion": false,
+                    "violation": false,
+                    "parameter": false,
+                    "exclusion": false
+                },
+                {
+                    "chart": "C1-BELAC_ANALY-3",
+                    "excursion": false,
+                    "violation": false,
+                    "parameter": false,
+                    "exclusion": false
+                },
+                {
+                    "chart": "C1-BELAC_ANALY-4",
+                    "excursion": false,
+                    "violation": false,
+                    "parameter": false,
+                    "exclusion": false
+                }
+            ]
+        },
+        "layout_info": {
+            "titlepage": {
+                "heading": "CPV_REPORT",
+                "numbered": true,
+                "content": [
+                    {
+                        "ID": {
+                            "value": "93",
+                            "editable": false
+                        },
+                        "SITE ": {
+                            "value": "1255",
+                            "editable": true
+                        }
+                    }
+                ]
+            },
+            "sections": [
+                {
+                    "heading": "Summary",
+                    "numbered": false,
+                    "content": [
+                        {
+                            "Product": {
+                                "value": "Belaa",
+                                "editable": false
+                            },
+                            "Title": {
+                                "value": "CPV_PDF",
+                                "editable": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "heading": "RRP",
+                    "numbered": false,
+                    "content": [
+                        {
+                            "RESCUE": {
+                                "value": "UKRAINE",
+                                "editable": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "heading": "KISHTI",
+                    "numbered": false,
+                    "content": [
+                        {
+                            "TRUE": {
+                                "value": "FALSE",
+                                "editable": true
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "saveType": "save"
+}
