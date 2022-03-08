@@ -31,10 +31,8 @@ const columns = [
 ];
 function ReportDesignerForm(props) {
     const {
-        viewId,
         setViewId,
         viewList,
-        setViewList,
         status,
         setStatus,
         isLoad,
@@ -49,9 +47,8 @@ function ReportDesignerForm(props) {
     } = props;
 
     const [visible, setVisible] = useState(false);
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
     const [filterTable, setFilterTable] = useState(null);
-    const [viewListviewListForm, setViewListForm] = useState(viewList);
 
     const search = (value) => {
         const tableData = viewList;

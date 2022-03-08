@@ -1,102 +1,54 @@
 {
-    "data": {
-        "rep_disp_id": "R119",
-        "rep_name": "Report_CPV",
-        "rep_status": "DRFT",
-        "user": "demo",
-        "variant_name": "demo_R119_variant",
-        "chart_info": {
-            "charts": [
-                {
-                    "chart": "C1-BELAC_ANALY-1",
-                    "excursion": false,
-                    "violation": false,
-                    "parameter": false,
-                    "exclusion": false
-                },
-                {
-                    "chart": "C1-BELAC_ANALY-2",
-                    "excursion": false,
-                    "violation": false,
-                    "parameter": false,
-                    "exclusion": false
-                },
-                {
-                    "chart": "C1-BELAC_ANALY-3",
-                    "excursion": false,
-                    "violation": false,
-                    "parameter": false,
-                    "exclusion": false
-                },
-                {
-                    "chart": "C1-BELAC_ANALY-4",
-                    "excursion": false,
-                    "violation": false,
-                    "parameter": false,
-                    "exclusion": false
-                }
-            ]
-        },
-        "layout_info": {
-            "titlepage": {
-                "heading": "CPV_REPORT",
-                "numbered": true,
-                "content": [
-                    {
-                        "ID": {
-                            "value": "93",
-                            "editable": false
-                        },
-                        "SITE ": {
-                            "value": "1255",
-                            "editable": true
-                        }
-                    }
-                ]
+    "titlepage": {
+        "heading": "CPV_TITLE",
+        "numbered": true,
+        "content": [
+            {
+                "value": "1255",
+                "editable": false,
+                "id": 1,
+                "key": "SITE"
             },
-            "sections": [
-                {
-                    "heading": "Summary",
-                    "numbered": false,
-                    "content": [
-                        {
-                            "Product": {
-                                "value": "Belaa",
-                                "editable": false
-                            },
-                            "Title": {
-                                "value": "CPV_PDF",
-                                "editable": true
-                            }
-                        }
-                    ]
-                },
-                {
-                    "heading": "RRP",
-                    "numbered": false,
-                    "content": [
-                        {
-                            "RESCUE": {
-                                "value": "UKRAINE",
-                                "editable": true
-                            }
-                        }
-                    ]
-                },
-                {
-                    "heading": "KISHTI",
-                    "numbered": false,
-                    "content": [
-                        {
-                            "TRUE": {
-                                "value": "FALSE",
-                                "editable": true
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
+            {
+                "value": "123",
+                "editable": true,
+                "id": 2,
+                "key": "id"
+            }
+        ],
+        "id": 0
     },
-    "saveType": "save"
+    "sections": [
+        {
+            "heading": "SUMMARY",
+            "numbered": false,
+            "content": [
+                {
+                    "value": "BELA",
+                    "editable": false,
+                    "id": 1,
+                    "key": "Product"
+                },
+                {
+                    "value": "REPORT",
+                    "editable": true,
+                    "id": 2,
+                    "key": "TITLE"
+                }
+            ],
+            "id": 1
+        },
+        {
+            "heading": "SUmmary",
+            "numbered": false,
+            "content": [
+                {
+                    "value": "RE",
+                    "id": 1,
+                    "key": "undefined"
+                }
+            ],
+            "id": 2
+        }
+    ]
 }
