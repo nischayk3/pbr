@@ -12,3 +12,55 @@
   width: 505px;
   height: 280px;
 }
+
+.ant-modal-body{
+  padding: 18px 25px !important;
+}
+ .ant-modal-header {
+  padding: 10px 25px !important;
+}
+.ant-modal-content {
+  button:first-of-type {
+    margin-top: -6px !important;
+  }
+}
+.exclusion-modal {
+ .ant-row {
+   padding-bottom: 15px;
+ }
+ .ant-row:last-of-type {
+   margin-top: 4px !important;
+  padding-bottom: 0px !important;
+}
+textarea {
+  margin-top: 7px !important;
+}
+ p {
+  font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+    padding-bottom: 7px !important;
+ }
+ .radio-btn {
+  display: flex; 
+   align-items: center;
+    margin-top: 34px;
+    p {
+      padding-bottom: 0px !important;
+    }
+    button {
+      margin-top: 1px !important;
+      margin-left:20px
+    }
+ }
+ .btn-three{
+  display:flex;
+  justify-content: space-between;
+   .last-btn {
+     button:last-of-type {
+       margin-left: 16px;
+     }
+   }
+ }}

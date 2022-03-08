@@ -1,6 +1,6 @@
 import './ChartDetailsStyle.scss';
 
-import { Button, Card, Empty, Modal, Switch } from 'antd';
+import { Button, Card, Empty, Modal, Switch, Row, Col, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
   sendChartDesc,
@@ -12,6 +12,9 @@ import InputField from '../../../../../../components/InputField/InputField';
 import { LineChartOutlined } from '@ant-design/icons';
 import ScatterPlot from './ScatterPlot';
 import { WarningTwoTone } from '@ant-design/icons';
+
+
+const { TextArea } = Input;
 
 function ChartDetails(props) {
   const [chartName, setchartName] = useState('');
@@ -169,30 +172,92 @@ function ChartDetails(props) {
       <Modal
         title='Exclude Record'
         visible={isExcluedModal}
-        footer={[
-          <Button
-            onClick={handleCloseModal}
-            className='custom-primary-btn'
-            key='cancel'
-          >
-            Cancel
-          </Button>,
-          <Button
-            onClick={handleOk}
-            className='custom-secondary-btn'
-            key='link'
-            type='primary'
-          >
-            Ok
-          </Button>,
-        ]}
+        onCancel={handleCloseModal}
+        footer={null}
         closable
-        width={400}
+        width={500}
       >
-        <InputField label='Batch' value={clickedBatchId} disabled />
-        <div className='show-data'>
-          <p>Exclude Record </p>
-          <Switch type='primary' size='small' onChange={onChangeCheckbox} />
+        <div className='exclusion-modal'>
+          <Row gutter={24}>
+            <Col className="gutter-row" span={12}>
+              <div>
+                <InputField label='Product Code' value={clickedBatchId} disabled />
+              </div>
+            </Col>
+            <Col className="gutter-row" span={12}>
+              <div>
+                <InputField label='Unit' value={clickedBatchId} disabled />
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col className="gutter-row" span={12}>
+              <div>
+                <InputField label='NC Number' value={clickedBatchId} disabled />
+              </div>
+            </Col>
+            <Col className="gutter-row" span={12}>
+              <div>
+                <InputField label='Batch Number' value={clickedBatchId} disabled />
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col className="gutter-row" span={12}>
+              <div>
+                <InputField label='Test Date' value={clickedBatchId} disabled />
+              </div>
+            </Col>
+            <Col className="gutter-row" span={12}>
+              <div className="radio-btn">
+                <p>Show/Hide Record</p>
+                <Switch type='primary' size='small' onChange={onChangeCheckbox} />
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col className="gutter-row" span={24}>
+              <div>
+                <InputField label='Parameter Name' value={clickedBatchId} disabled />
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col className="gutter-row" span={24}>
+              <div>
+                <label>Notes</label>
+              <TextArea rows={2} placeholder="Reason for excluding Record." maxLength={6} />
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col className="gutter-row btn-three" span={24}>
+              <Button
+                onClick={handleCloseModal}
+                className='custom-primary-btn'
+                key='cancel'
+              >
+                Create NC
+              </Button>
+              <div className='last-btn'>
+                <Button
+                  onClick={handleCloseModal}
+                  className='custom-primary-btn'
+                  key='cancel'
+                >
+                  Genealogy
+                </Button>
+                <Button
+                  onClick={handleOk}
+                  className='custom-secondary-btn'
+                  key='link'
+                  type='primary'
+                >
+                  Submit
+                </Button>
+              </div>
+            </Col>
+          </Row>
         </div>
       </Modal>
     </div>
@@ -200,3 +265,10 @@ function ChartDetails(props) {
 }
 
 export default ChartDetails;
+
+
+{/* <InputField label='Batch' value={clickedBatchId} disabled />
+        <div className='show-data'>
+          <p>Exclude Record </p>
+          <Switch type='primary' size='small' onChange={onChangeCheckbox} />
+        </div> */}

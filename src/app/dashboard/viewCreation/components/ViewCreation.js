@@ -289,6 +289,7 @@ function ViewCreation() {
         currentData.param = text.current ? text.current : currentData.param;
         currentData.id = count;
         currentData.aggregation = meanChange;
+        currentData.functionType = mathFunction;
         currentData.parameters = newParameterData.current;
         setViewSummaryTable([...viewSummaryTable, currentData]);
         setCount(count + 1)
@@ -481,102 +482,109 @@ function ViewCreation() {
                     tempSummaryArr.push(getData.current);
                 }
             })
-            Object.keys(loadedData.current.files).forEach((key) => {
-                let req = { file_id: key, detailedCoverage: true };
-                adHocFilesParameterTree(req).then((res) => {
-                    files.push(res)
-                    setFilesListTree([...files]);
-                    tempArr.forEach((values) => {
-                        if (values.paramsOld.length <= 1) {
-                            values.paramsOld.forEach((element) => {
-                                files.forEach((ele) => {
-                                    if (String(ele.File_id) === String(element.file_id)) {
-                                        ele.Data.forEach((item) => {
-                                            let rowData = {};
-                                            let batchData = {};
-                                            let newBatchData = {};
-                                            if (String(item.param) === String(element.parameter_name)) {
-                                                parentBatches.map((el, index) => {
-                                                    if (item.coverage_list.includes(el)) {
-                                                        batchData[el] = true;
-                                                        newBatchData[el] = true;
-                                                    } else {
-                                                        batchData[el] = false;
-                                                        newBatchData[el] = false;
-                                                    }
-                                                });
-                                                counter.current = counter.current + 1
-                                                batchData['id'] = counter.current;
-                                                rowData = Object.assign(item, batchData);
-                                                rowData.parameters = [item];
-                                                tempSummaryArr.push(rowData);
-                                            }
-                                        })
-                                    }
+            if(Object.keys(loadedData.current.files).length) {
+                Object.keys(loadedData.current.files).forEach((key) => {
+                    let req = { file_id: key, detailedCoverage: true };
+                    adHocFilesParameterTree(req).then((res) => {
+                        files.push(res)
+                        setFilesListTree([...files]);
+                        tempArr.forEach((values) => {
+                            if (values.paramsOld.length <= 1) {
+                                values.paramsOld.forEach((element) => {
+                                    files.forEach((ele) => {
+                                        if (String(ele.File_id) === String(element.file_id)) {
+                                            ele.Data.forEach((item) => {
+                                                let rowData = {};
+                                                let batchData = {};
+                                                let newBatchData = {};
+                                                if (String(item.param) === String(element.parameter_name)) {
+                                                    parentBatches.map((el, index) => {
+                                                        if (item.coverage_list.includes(el)) {
+                                                            batchData[el] = true;
+                                                            newBatchData[el] = true;
+                                                        } else {
+                                                            batchData[el] = false;
+                                                            newBatchData[el] = false;
+                                                        }
+                                                    });
+                                                    counter.current = counter.current + 1
+                                                    batchData['id'] = counter.current;
+                                                    rowData = Object.assign(item, batchData);
+                                                    rowData.parameters = [item];
+                                                    tempSummaryArr.push(rowData);
+                                                }
+                                            })
+                                        }
+                                    })
                                 })
-                            })
-                        } else {
-                            let data = [];
-                            let obj = {};
-                            values.paramsOld.forEach((ele) => {
-                                files.forEach((element) => {
-                                    if (String(element.File_id) === String(ele.file_id)) {
-                                        element.parameters.forEach((item) => {
-                                            if (String(item.param) === String(ele.parameter_name)) {
-                                                data.push(item)
-                                            }
-                                        })
-                                    }
-                                })
-                            })
-                            if (values.functionType !== 'union') {
-                                data.forEach((item, i) => {
-                                    if (i == 0) {
-                                        obj = { ...item };
-                                    } else {
-                                        Object.entries(item).forEach(([key, value], index) => {
-                                            if (key.includes("B")) {
-                                                obj[key] = obj[key] && item[key]
-                                                obj.param = item.param
-                                                obj.id = item.id
-                                            }
-                                        })
-
-                                    }
-
-                                })
-                                getNewData(obj);
                             } else {
-                                data.forEach((item, i) => {
-                                    if (i == 0) {
-                                        obj = { ...item };
-                                    } else {
-                                        Object.entries(item).forEach(([key, value], index) => {
-                                            if (key.includes("B")) {
-                                                obj[key] = obj[key] || item[key]
-                                                obj.param = item.param
-                                                obj.id = item.id
-                                            }
-                                        })
-
-                                    }
+                                let data = [];
+                                let obj = {};
+                                values.paramsOld.forEach((ele) => {
+                                    files.forEach((element) => {
+                                        if (String(element.File_id) === String(ele.file_id)) {
+                                            element.parameters.forEach((item) => {
+                                                if (String(item.param) === String(ele.parameter_name)) {
+                                                    data.push(item)
+                                                }
+                                            })
+                                        }
+                                    })
                                 })
-                                getNewData(obj);
+                                if (values.functionType !== 'union') {
+                                    data.forEach((item, i) => {
+                                        if (i == 0) {
+                                            obj = { ...item };
+                                        } else {
+                                            Object.entries(item).forEach(([key, value], index) => {
+                                                if (key.includes("B")) {
+                                                    obj[key] = obj[key] && item[key]
+                                                    obj.param = item.param
+                                                    obj.id = item.id
+                                                }
+                                            })
+    
+                                        }
+    
+                                    })
+                                    getNewData(obj);
+                                } else {
+                                    data.forEach((item, i) => {
+                                        if (i == 0) {
+                                            obj = { ...item };
+                                        } else {
+                                            Object.entries(item).forEach(([key, value], index) => {
+                                                if (key.includes("B")) {
+                                                    obj[key] = obj[key] || item[key]
+                                                    obj.param = item.param
+                                                    obj.id = item.id
+                                                }
+                                            })
+    
+                                        }
+                                    })
+                                    getNewData(obj);
+                                }
+                                counter.current = counter.current + 1
+                                getData.current.id = counter.current;
+                                getData.current.param = values.name;
+                                tempSummaryArr.push(getData.current);
                             }
-                            counter.current = counter.current + 1
-                            getData.current.id = counter.current;
-                            getData.current.param = values.name;
-                            tempSummaryArr.push(getData.current);
-                        }
-                    })
-                    setCount(counter.current + 1);
-                    setViewSummaryTable([...tempSummaryArr]);
-                    setFunctionEditorViewState(true);
-                    setShowSpinner(false);
-                    setNewBatchData(newBatchData);
-                    setFunctionEditorViewState(true);
+                        })
+                        setCount(counter.current + 1);
+                        setViewSummaryTable([...tempSummaryArr]);
+                        setFunctionEditorViewState(true);
+                        setShowSpinner(false);
+                        setNewBatchData(newBatchData);
+                    });
                 });
-            });
+            } else {
+                setCount(counter.current + 1);
+                setViewSummaryTable([...tempSummaryArr]);
+                setFunctionEditorViewState(true);
+                setNewBatchData(newBatchData);
+                setShowSpinner(false)
+            }
         }).catch((err) => {
             message.error(err.Message);
             setVisible(true);
@@ -633,7 +641,7 @@ function ViewCreation() {
                     parameter_name: ele.param,
                     source_type: ele.sourceType,
                     material_id: ele.mat_no,
-                    batch_lock: [],
+                    batch_excl: [],
                     priority: 0
                 }
             })
@@ -691,7 +699,7 @@ function ViewCreation() {
                     source_type: ele.sourceType,
                     material_id: ele.sourceType === 'material' ? ele.mat_no : undefined,
                     file_id: ele.sourceType === 'file' ? ele.file_id : undefined,
-                    batch_lock: [],
+                    batch_excl: [],
                     priority: 0
                 }
             })
