@@ -8,7 +8,7 @@ import {
 import { getCountData } from '../../../../services/workFlowServices';
 import { Card, Tabs } from 'antd';
 import { ArrowLeftOutlined, DownloadOutlined, } from '@ant-design/icons';
-import DashCard from '../../../../components/cardComponent/customCard';
+import DashCard from '../../../../components/CardComponent/customCard';
 import illustrations from '../../../../assets/images/Banner illustration.svg';
 import WorkflowTable from './workflowTable/workflowTable';
 import './styles.scss';
@@ -57,13 +57,15 @@ const Workflow = () => {
             dispatch(showLoader());
             const tilesResponse = await getCountData(req);
             console.log(tilesResponse);
-            setTilesData(tilesResponse);
+            setTilesData(tilesResponse['Data']);
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
             dispatch(showNotification('error', error.message));
         }
     }
+
+    console.log(tilesData)
     return (
         <div className='custom-wrapper'>
             <div className='sub-header'>
