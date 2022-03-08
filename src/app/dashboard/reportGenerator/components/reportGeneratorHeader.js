@@ -19,6 +19,7 @@ function ReportDesignerForm(props) {
       const [reportId,setReportId] = useState('')
       const [reportName,setReportName] = useState('')
       const [reportStatus,setReportStatus] = useState('')
+      const [variantname,setVariantname] = useState('')
       const [viewId,setViewId] = useState('')
 
       useEffect(() => {
@@ -27,10 +28,14 @@ function ReportDesignerForm(props) {
     );
     const unload = (ReportData) =>
     {
+       let user_details = JSON.parse(localStorage.getItem('user_details'))
+       let user = user_details["username"] ? user_details["username"] : ''
+
        setReportId(ReportData['rep_disp_id'])
        setReportName(ReportData['rep_name'])
        setReportStatus(ReportData['rep_status'])
        setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id']+'-'+ReportData['view_version'] : '')
+       setVariantname(user+'_variant')
     }
 
     return (
@@ -54,7 +59,7 @@ function ReportDesignerForm(props) {
                 </div>
                 <div>
                 <Text className="filter-text">Variant</Text><br/>
-                <InputField className="filter-button" value={reportStatus}  disabled={true} />
+                <InputField className="filter-button" value={variantname}  disabled={true} />
                 </div>
 
             </div>
