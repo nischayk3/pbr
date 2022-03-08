@@ -21,6 +21,7 @@ import './styles.scss';
 const { TabPane } = Tabs;
 const Workflow = () => {
     const [itemCount, setItemCount] = useState();
+    const [cardTitle, setCardTitle] = useState('');
     const [tilesData, setTilesData] = useState([]);
     const dispatch = useDispatch();
 
@@ -43,6 +44,7 @@ const Workflow = () => {
 
     const tilesClicked = (item) => {
        setItemCount(item.item_count);
+       setCardTitle(item.text)
     }
     return (
         <div className='custom-wrapper'>
@@ -76,7 +78,7 @@ const Workflow = () => {
                         })
                     }
                     {itemCount>0 && (
-                        <Card title={<div className='table-head'>Param Data Approvals<DownloadOutlined style={{ color: '#093185', marginLeft: '25px' }} /></div>} className='table-cards'>
+                        <Card title={<div className='table-head'>{cardTitle}<DownloadOutlined style={{ color: '#093185', marginLeft: '25px' }} /></div>} className='table-cards'>
                             <Tabs defaultActiveKey="1" className='workflow-tabs'>
                                 <TabPane tab="Awaiting Approval" key="1">
                                     <WorkflowTable />
