@@ -20,7 +20,7 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
 import { screenChange } from '../../../../duck/actions/reportDesignerAction';
-// import ex_json from './object.json'
+
 
 const { Panel } = Collapse;
 const { Text } = Typography;
@@ -45,11 +45,11 @@ function ReportGenerator() {
     const [table, setTable] = useState([])
     const [schedule, setSchedule] = useState('')
     const [emailList, setEmailList] = useState([])
-    const [selectedUser, setSelectedUser] = useState(false)
+    // const [selectedUser, setSelectedUser] = useState(false)
     const [reportId, setReportId] = useState('')
     const [reportName, setReportName] = useState('')
     const [reportStatus, setReportStatus] = useState('')
-    const [viewId, setViewId] = useState('')
+    // const [viewId, setViewId] = useState('')
     const dispatch = useDispatch();
 
 
@@ -112,7 +112,7 @@ function ReportGenerator() {
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
-        setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
+        // setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
     }
 
     const update_object = (arr, i) => {
@@ -158,7 +158,7 @@ function ReportGenerator() {
         obj['rep_name'] = reportName
         obj['rep_status'] = reportStatus
         obj['user'] = user
-        obj['variant_name'] = user + '_' + reportId + '_variant'
+        obj['variant_name'] = user + '_variant'
         obj['chart_info'] = { charts: chart }
 
 
