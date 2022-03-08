@@ -7,7 +7,7 @@ import InputField from '../../../../../../components/InputField/InputField';
 import SelectField from '../../../../../../components/SelectField/SelectField';
 import Alerts from './alerts';
 import ControLimits from './controlLimts';
-import { PlusSquareOutlined } from '@ant-design/icons';
+import { PlusSquareOutlined ,ControlOutlined} from '@ant-design/icons';
 const { Panel } = Collapse;
 
 
@@ -31,6 +31,7 @@ const Personalization = (props) => {
     setAlertCount(data);
   }
 
+
   return (
     <>
       <Card className='Configuration-card' title='Configuration'>
@@ -38,22 +39,18 @@ const Personalization = (props) => {
           expandIconPosition='right'
           ghost
         >
-          {/* Alert */}
-          <Panel header='Alerts' key='1'>
-            <PlusSquareOutlined style={{ fontSize: '16px', marginLeft: '10px', color: '#093185' }} onClick={() => handleClick()} /> <u>Add Multiple Sections</u>
-            {alertCount.map((item) => (
-              <Alerts deleteAlert={deleteAlert} data={item}/>
-            ))
-            }
+          
+            {/* Limits */}
+            <Panel header="Limits" key='3'>
+                  <ControLimits />
           </Panel>
 
-          {/* Customization */}
-          <Panel header='Customization' key='2'></Panel>
-
-          {/* control Limits */}
-          <Panel header='Control Limits' key='3'>
-            <ControLimits />
+          {/* Display */}
+          <Panel header='Display' key='2'>
+            
           </Panel>
+
+
         </Collapse>
       </Card>
     </>
