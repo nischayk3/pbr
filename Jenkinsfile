@@ -37,7 +37,7 @@ pipeline {
            }
           stage("Build Docker Image") {
             steps {
-                sh 'sudo docker build -t  $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest  .'
+                sh 'sudo docker build -t  $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest --no-cache .'
                 }
               }
           stage("Push Docker Image to Docker Registry") {
