@@ -1,3 +1,7 @@
+// # Binkita Tiwari
+// # Mareana Software
+// # Version 1
+// # Last modified - 8 Mar 2022
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
@@ -8,7 +12,7 @@ import {
 import { getCountData } from '../../../../services/workFlowServices';
 import { Card, Tabs } from 'antd';
 import { ArrowLeftOutlined, DownloadOutlined, } from '@ant-design/icons';
-import DashCard from '../../../../components/CardComponent/customCard';
+import DashCard from '../../../../components/cardComponent/customCard';
 import illustrations from '../../../../assets/images/Banner illustration.svg';
 import WorkflowTable from './workflowTable/workflowTable';
 import './styles.scss';
