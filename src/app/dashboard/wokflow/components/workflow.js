@@ -13,34 +13,7 @@ import illustrations from '../../../../assets/images/Banner illustration.svg';
 import WorkflowTable from './workflowTable/workflowTable';
 import './styles.scss';
 
-
-const config = [
-    {
-        count: 5,
-        desc: 'Parameter data Approval'
-    },
-    {
-        count: 2,
-        desc: 'View Approval'
-    },
-    {
-        count: 2,
-        desc: 'Chart Approval'
-    },
-    {
-        count: 0,
-        desc: 'Report Approval'
-    },
-    {
-        count: 0,
-        desc: 'PBR Approval'
-    },
-    {
-        count: 0,
-        desc: 'Data Load Approval'
-    }
-]
-
+ 
 const { TabPane } = Tabs;
 const Workflow = () => {
     const [visible, setVisible] = useState(false);
@@ -56,7 +29,6 @@ const Workflow = () => {
         try {
             dispatch(showLoader());
             const tilesResponse = await getCountData(req);
-            console.log(tilesResponse);
             setTilesData(tilesResponse['Data']);
             dispatch(hideLoader());
         } catch (error) {
@@ -65,7 +37,11 @@ const Workflow = () => {
         }
     }
 
-    console.log(tilesData)
+    const tilesClicked = (item) => {
+        if (item.item_count != 0) {
+            setVisible(true);
+        }
+    }
     return (
         <div className='custom-wrapper'>
             <div className='sub-header'>
@@ -90,23 +66,25 @@ const Workflow = () => {
                         tilesData.map((item, index) => {
                             return (
 
-                                <div onClick={() => console.log(item)}>
+                                <div onClick={(item) => tilesClicked(item)}>
                                     <DashCard count={item.item_count} desc={item.text} />
                                 </div>
 
                             )
                         })
                     }
-                    <Card title={<div className='table-head'>Param Data Approvals<DownloadOutlined style={{ color: '#093185', marginLeft: '25px' }} /></div>} className='table-cards'>
-                        <Tabs defaultActiveKey="1" className='workflow-tabs'>
-                            <TabPane tab="Awaiting Approval" key="1">
-                                <WorkflowTable />
-                            </TabPane>
-                            <TabPane tab="Recently Approved" key="2">
-                                Content of Tab Pane 2
-                            </TabPane>
-                        </Tabs>
-                    </Card>
+                    {visible && (
+                        <Card title={<div className='table-head'>Param Data Approvals<DownloadOutlined style={{ color: '#093185', marginLeft: '25px' }} /></div>} className='table-cards'>
+                            <Tabs defaultActiveKey="1" className='workflow-tabs'>
+                                <TabPane tab="Awaiting Approval" key="1">
+                                    <WorkflowTable />
+                                </TabPane>
+                                <TabPane tab="Recently Approved" key="2">
+                                    Content of Tab Pane 2
+                                </TabPane>
+                            </Tabs>
+                        </Card>
+                    )}
                 </div>
 
             </div>
