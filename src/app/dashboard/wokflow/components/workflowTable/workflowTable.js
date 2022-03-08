@@ -34,7 +34,7 @@ function workflowTable() {
             setSelectedKeys(e.target.value ? [e.target.value] : [])
           }
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex,setSearchText,setSearchedColumn)}
-          style={{ width: 188, marginBottom: 8, display: "block" }}
+          style={{ width: 240, marginBottom: 8, display: "block" }}
         />
         <Space>
           <Button
