@@ -1,3 +1,8 @@
+// Ranjith K
+// Mareana Software
+// Version 1
+// Last modified - 07 March, 2022
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
@@ -12,6 +17,7 @@ import {
     BuildTwoTone,
 } from '@ant-design/icons';
 import {
+    Spin,
     Button,
     Collapse,
     Form,
@@ -25,6 +31,7 @@ import {
     Radio,
     Tooltip,
     message,
+    Divider,
 } from 'antd';
 import StatusWrong from '../../../../assets/statusWrong.svg';
 import StatusCorrect from '../../../../assets/statusCorrect.svg';
@@ -40,7 +47,11 @@ import {
     getViews,
 } from '../../../../services/viewCreationPublishing';
 import { materialsParameterTree } from '../../../../duck/actions/fileUploadAction';
-import { getData } from '../../../../duck/actions/filterAction';
+import { saveFunction } from '../../../../duck/actions/viewCreationAction';
+import {
+    adHocFilesParameterTree,
+} from '../../../../duck/actions/fileUploadAction';
+import Loading from '../../../../components/Loading'
 
 const { Panel } = Collapse;
 
@@ -78,17 +89,16 @@ const columns = [
 ];
 
 function ViewCreation() {
-    const molecule_Id=useSelector((state)=>state.viewCreationReducer.molecule_id);
-    console.log(molecule_Id);
-    const[count,setCount]=useState(0);
-    const[id,setId]=useState();
+    const molecule_Id = useSelector((state) => state.viewCreationReducer.molecule_id);
+    const [count, setCount] = useState(1);
+    const [id, setId] = useState();
     const [moleculeList, setMoleculeList] = useState([]);
     const [functionEditorRecord, setFunctionEditorRecord] = useState([]);
     const [moleculeId, setMoleculeId] = useState();
     const [materialsList, setMaterialsList] = useState([]);
     const [paramText, setParamText] = useState();
     const text = useRef();
-    const getData=useRef();
+    const getData = useRef();
     const [filterdData, setFilterdData] = useState(null);
     const [dataLoadingState, setDataLoadingState] = useState(false);
     const [isNew, setIsNew] = useState(false);
@@ -109,7 +119,18 @@ function ViewCreation() {
     const viewVersionData = useRef();
     const [filterTable, setFilterTable] = useState(null);
     const [viewSummaryTable, setViewSummaryTable] = useState([]);
+    const [filesListTree, setFilesListTree] = useState([]);
+    const [mathFunction, setMathFunction] = useState();
     const tableData = useRef();
+    const [viewFunctionName, setViewFunctionName] = useState('');
+    const [materialIdName, setMaterialIdName] = useState({});
+    const newParameterData = useRef([]);
+    const [meanChange, setMeanChange] = useState('');
+    const functionId = useRef();
+    const loadedData = useRef();
+    const functionChanged = useRef(false);
+    const [showSpinner, setShowSpinner] = useState(false)
+    const [saveResponseView, setSaveResponseView] = useState({ viewId: '', version: '', viewStatus: '' });
     const [viewSummaryColumns, setViewSummaryColumns] = useState([
         {
             title: 'Action',
@@ -135,9 +156,10 @@ function ViewCreation() {
             render: (param, record, index) => (
                 <Tooltip title={param}>
                     <Tag
-                        color='magenta'
+                        color="geekblue"
                         className='parameter-tag'
                         onClick={() => {
+                            functionId.current = record.id
                             functionPassHandler(record, index);
                         }}
                     >
@@ -155,7 +177,7 @@ function ViewCreation() {
             render: (text, record, index) => (
                 <>
                     {record.coverage_metric_percent === '100 %' ||
-                    record.coverage_metric_percent === '100%' ? (
+                        record.coverage_metric_percent === '100%' ? (
                         <span className='statusIcon-summary'>
                             <img src={StatusCorrect} />
                         </span>
@@ -177,44 +199,17 @@ function ViewCreation() {
             fixed: 'left',
             render: (param, record, index) => (
                 <Tooltip title={param}>
-                <Tag color='magenta' className='paramColumn'>
-                    {param}
-                </Tag>
+                    <Tag color='geekblue' className='paramColumn'>
+                        {param}
+                    </Tag>
                 </Tooltip>
             ),
         },
-        // {
-        //     title: 'Primary',
-        //     key: 'primary',
-        //     dataIndex: 'param',
-        //     width: 100,
-        //     fixed: 'left',
-        //     render: (text, record, index) => {
-        //         return (
-        //             <input
-        //                 type='radio'
-        //                 style={{padding:'20px'}}
-        //                 id={text}
-        //                 name='a'
-        //                 value={text}
-        //                 onChange={() => passTableData(record)}
-        //             />
-        //         );
-        //     },
-        // },
-        // {
-        //     title: 'Action',
-        //     key: 'action',
-        //     dataIndex: 'action',
-        //     width: 100,
-        //     fixed: 'left',
-        //     render: (text, record, index) => (
-        //         <>
-        //             <Space size='middle'>Lock</Space>
-        //         </>
-        //     ),
-        // },
     ]);
+
+    const getNewData = (el) => {
+        getData.current = el
+    }
 
     //for not emptying state on rendering this component
     tableData.current = viewSummaryTable;
@@ -225,79 +220,87 @@ function ViewCreation() {
         const updatedSummaryTable = tableData.current.filter(
             (item) => item.param !== param
         );
+        newParameterData.current = newParameterData.current.filter(
+            (item) => item.param !== param
+        );
+        setFunctionEditorRecord(newParameterData.current);
+        form.setFieldsValue({ function_name: '', parameter: '', id: '', aggregation: '' })
         setViewSummaryTable(updatedSummaryTable);
         message.success('Function deleted successfully');
     };
 
     const functionPassHandler = (record, index) => {
-        // console.log('row data', record, index);
-        // const indexDuplicate = functionEditorRecord.findIndex(
-        //     (x) => x.param == record.param
-        // );
-        // console.log(indexDuplicate);
-        // if (indexDuplicate === -1) {
-        //     setFunctionEditorRecord((prevState) => [...prevState, record]);
-        //     setFunctionName(record.param);
-        //     setId(record.id);
-        // } else {
-        //     message.error('Function already exists');
-        // }
-        setFunctionEditorRecord((prevState) => [...prevState, record]);
+        const indexDuplicate = newParameterData.current.findIndex(
+            (x) => x.id == record.id
+        );
+        if (indexDuplicate === -1) {
+            newParameterData.current = [...newParameterData.current, record]
+            setFunctionEditorRecord((prevState) => [...prevState, record]);
+        } else {
+            message.error('Function already exists');
+        }
         setFunctionName(record.param);
         setId(record.id);
     };
-
     const [form] = Form.useForm();
 
     const handleValuesChange = (changedValues, values) => {
-        // console.log('changedValues', changedValues)
-        //console.log('values', JSON.stringify(values));
     };
+
+    const updateData = () => {
+        if (!functionChanged.current) {
+            let data = [...viewSummaryTable]
+            let currentData = { ...getData.current };
+            data[count - 2] = currentData;
+            data[count - 2].param = text.current ? text.current : data[count - 2].param
+            data[count - 2].id = data[count - 2].id;
+            setViewSummaryTable(data);
+        } else {
+            let data = [...viewSummaryTable];
+            let currentData = { ...getData.current };
+            data[count - 2] = currentData;
+            data[count - 2].param = text.current ? text.current : data[count - 2].param
+            data[count - 2].id = data[count - 2].id;
+            data[count - 2].aggregation = meanChange;
+            data.forEach((ele) => {
+                if (ele.id === functionId.current) {
+                    ele.parameters = newParameterData.current;
+                    ele.functionType = mathFunction
+                }
+            })
+            setViewSummaryTable(data);
+        }
+        message.success('Function Updated Successfully');
+        functionChanged.current = false;
+        text.current = '';
+    }
 
     const saveFunctionData = () => {
-        if(paramText){
-            setViewSummaryTable([...viewSummaryTable, paramText]);
-            message.success('Function Added Successfully');
-        }else{
-            console.log(getData.current,text.current)
-            getData.current.param= text.current?text.current:getData.current.param;
-            setViewSummaryTable([...viewSummaryTable, getData.current]);
-            message.success('Function Added Successfully');
-        }
-        
+        let currentData = { ...getData.current};
+        currentData.param = text.current ? text.current : currentData.param;
+        currentData.id = count;
+        currentData.aggregation = meanChange;
+        currentData.parameters = newParameterData.current;
+        setViewSummaryTable([...viewSummaryTable, currentData]);
+        setCount(count + 1)
+        message.success('Function Added Successfully');
     };
 
-    const updateData=()=>{
-        console.log(count);
-        let data=[...viewSummaryTable];
-        let currentData={...getData.current};
-        data[count-1]=currentData;
-        console.log(data);
-        setViewSummaryTable(data);
-        message.success('Function Updated Successfully');
-        
-    }
+
 
     const passTableData = (record, textName) => {
         let newRecord = { ...record };
         let data = text.current;
-        console.log(data)
         newRecord.param = data;
-        console.log(newRecord);
         setParamText(newRecord);
     };
 
     const passStateFunc = (value) => {
-        console.log("value",value);
         text.current = value;
     };
 
-    const getNewData=(el)=>{
-        console.log("element",el)
-        getData.current=el
-    }
 
-  
+
 
     //Get view table data for load popup
     const getViewsList = () => {
@@ -338,9 +341,18 @@ function ViewCreation() {
         setViewDisplayId('');
         setViewStatus();
         setViewVersion();
+        setCount(1);
     };
+    const counter = useRef(0);
+    const onOkHandler = async () => {
+        setShowSpinner(true);
+        setVisible(false);
+        setViewSummaryTable([]);
+        setFilesListTree([]);
+        setFunctionEditorViewState(false);
+        setCount(1);
+        counter.current = 0;
 
-    const onOkHandler = () => {
         let req = { view_disp_id: viewDisplayId };
         getViewConfig(req).then((res) => {
             setMoleculeId(res.material_id);
@@ -349,28 +361,136 @@ function ViewCreation() {
             setViewVersion(res.view_version);
             setVisible(false);
             setIsLoad(true);
-            if (res.Status === 401) {
-                message.error(res.Message);
-                setVisible(true);
-                setIsLoad(false);
-            }
-            if (res.Status === 400) {
-                message.error(res.Message);
-                setVisible(true);
-                setIsLoad(false);
-            }
-            if (res.Status === 404) {
-                message.error(res.Message);
-                setVisible(true);
-                setIsLoad(false);
-            }
-        });
+            setViewSummaryTable([]);
+            setFilesListTree([]);
+            loadedData.current = res;
+            let files = [];
+            Object.keys(loadedData.current.files).forEach((key) => {
+                let req = { file_id: key, detailedCoverage: true };
+                adHocFilesParameterTree(req).then((res) => {
+                    files.push(res)
+                    setFilesListTree([...filesListTree, ...files]);
+                    if (res.Status === 404) {
+                        message.error(res.Message);
+                    }
+                    if (res.Status === 401) {
+                        message.error('UnAuthorized User');
+                    }
+                });
+            });
+            let a = [];
+            Object.values(loadedData.current.functions).forEach((values) => {
+                a.push(values)
+            });
+            a.forEach((ele) => {
+                ele.definition = ele.definition.replace('{', '').replace('}', '')
+            })
+            Object.entries(loadedData.current.parameters).forEach(([key, value], index) => {
+                a.forEach((element) => {
+                    if (String(element.definition) === String(key)) {
+                        element.paramsOld = value
+                    }
+                })
+            })
+            let b = [];
+            a.forEach((values) => {
+                if (values.paramsOld.length <= 1) {
+                    values.paramsOld.forEach((element) => {
+                        materialsList.forEach((ele) => {
+                            if (String(ele.mat_no) === String(element.material_id)) {
+                                ele.parameters.forEach((item) => {
+                                    if (String(item.param) === String(values.name)) {
+                                        let rowData = {};
+                                        let batchData = {};
+                                        let newBatchData = {};
+                                        parentBatches.map((el, index) => {
+                                            if (item.coverage_list.includes(el)) {
+                                                batchData[el] = true;
+                                                newBatchData[el] = true;
+                                            } else {
+                                                batchData[el] = false;
+                                                newBatchData[el] = false;
+                                            }
+                                        });
+                                        counter.current = counter.current + 1
+                                        batchData['id'] = counter.current;
+                                        rowData = Object.assign(item, batchData);
+                                        b.push(rowData);
+                                        setNewBatchData(newBatchData);
+                                        setFunctionEditorViewState(true);
+                                    }
+                                })
+                            }
+                        })
+                    })
+                } else {
+                    let data = [];
+                    let obj = {};
+                    values.paramsOld.forEach((ele) => {
+                        materialsList.forEach((element) => {
+                            if (String(element.mat_no) === String(ele.material_id)) {
+                                element.parameters.forEach((item) => {
+                                    if (String(item.param) === String(ele.parameter_name)) {
+                                        data.push(item)
+                                    }
+                                })
+                            }
+                        })
+                    })
+                    if (values.functionType !== 'union') {
+                        data.forEach((item, i) => {
+                            if (i == 0) {
+                                obj = { ...item };
+                            } else {
+                                Object.entries(item).forEach(([key, value], index) => {
+                                    if (key.includes("B")) {
+                                        obj[key] = obj[key] && item[key]
+                                        obj.param = item.param
+                                        obj.id = item.id
+                                    }
+                                })
+
+                            }
+
+                        })
+                        getNewData(obj);
+                    } else {
+                        data.forEach((item, i) => {
+                            if (i == 0) {
+                                obj = { ...item };
+                            } else {
+                                Object.entries(item).forEach(([key, value], index) => {
+                                    if (key.includes("B")) {
+                                        obj[key] = obj[key] || item[key]
+                                        obj.param = item.param
+                                        obj.id = item.id
+                                    }
+                                })
+
+                            }
+                        })
+                        getNewData(obj);
+                    }
+                    counter.current = counter.current + 1
+                    getData.current.id = counter.current;
+                    getData.current.param = values.name;
+                    b.push(getData.current);
+                }
+            })
+            setCount(counter.current + 1);
+            setViewSummaryTable([...b]);
+            setFunctionEditorViewState(true);
+            setShowSpinner(false);
+        }).catch((err) => {
+            message.error(err.Message);
+            setVisible(true);
+            setIsLoad(false);
+        })
         setFilterdData(null);
         form.setFieldsValue({
             filters: null,
         });
     };
-
     useEffect(() => {
         form.setFieldsValue({
             viewId: viewDisplayId,
@@ -403,6 +523,108 @@ function ViewCreation() {
         });
     };
 
+    const handleSaveFunc = async () => {
+        if (!viewFunctionName.length) {
+            message.error("Please Enter Name");
+
+            return false;
+        }
+        const converted = Object.assign({}, ...filesListTree.map(object => ({ [object.File_id]: { file_name: object.File_name, file_url: `/services/v1/adhoc-files/${object.File_id}`, upload_timestamp: object.timeStamp } })))
+        const functionObj = Object.assign({}, ...viewSummaryTable.map((object, index) => ({ [object.id]: { name: object.param, functionType: object.functionType, definition: `{${index + 1}}`, aggregation: object.aggregation ? object.aggregation : 'Mean' } })))
+        const parameter = Object.assign({}, ...viewSummaryTable.map((object, index) => ({
+            [index + 1]: object.parameters.map((ele, index) => {
+                return {
+                    parameter_name: ele.param,
+                    source_type: ele.sourceType,
+                    material_id: ele.mat_no,
+                    batch_lock: [],
+                    priority: 0
+                }
+            })
+        })))
+        const obj = {
+            view_name: viewFunctionName,
+            material_id: moleculeList[0].product_num,
+            material_name: moleculeList[0].product_desc,
+            files: converted,
+            functions: functionObj,
+            parameters: parameter,
+            view_description: "Test View Object",
+            view_status: 0,
+        }
+        const headers = {
+            username: "user_mareana1",
+            password: "mareana_pass1",
+            view_version: viewVersion,
+            view_disp_id: viewDisplayId,
+        }
+        setShowSpinner(true);
+        try {
+            const response = await saveFunction(obj, headers);
+            if (response.statuscode === 200) {
+                setViewDisplayId(response.view_disp_id);
+                setViewStatus(response.view_status);
+                setViewVersion(response.view_version);
+                message.success('Saved Successfully')
+                setShowSpinner(false);
+            } else {
+                message.error(response.data.message);
+            }
+        } catch (err) {
+            message.error(err.data.message);
+        }
+    }
+    const handleSaveAsFunc = async () => {
+        if (!viewFunctionName.length) {
+            message.error("Please Enter Name");
+
+            return false;
+        }
+        const converted = Object.assign({}, ...filesListTree.map(object => ({ [object.File_id]: { file_name: object.File_name, file_url: `/services/v1/adhoc-files/${object.File_id}`, upload_timestamp: object.timeStamp } })))
+        const functionObj = Object.assign({}, ...viewSummaryTable.map((object, index) => ({ [object.id]: { name: object.param, definition: `{${index + 1}}`, aggregation: object.aggregation ? object.aggregation : 'Mean', functionType: object.functionType } })))
+        const parameter = Object.assign({}, ...viewSummaryTable.map((object, index) => ({
+            [index + 1]: object.parameters.map((ele, index) => {
+                return {
+                    parameter_name: ele.param,
+                    source_type: ele.sourceType,
+                    material_id: ele.sourceType === 'material' ? ele.mat_no : undefined,
+                    file_id: ele.sourceType === 'file' ? ele.file_id : undefined,
+                    batch_lock: [],
+                    priority: 0
+                }
+            })
+        })))
+        const obj = {
+            view_name: viewFunctionName,
+            material_id: moleculeList[0].product_num,
+            material_name: moleculeList[0].product_desc,
+            files: converted,
+            functions: functionObj,
+            parameters: parameter,
+            view_description: "Test View Object",
+            view_status: 0,
+            view_version: 1,
+        }
+        const headers = {
+            username: "user_mareana1",
+            password: "mareana_pass1",
+        }
+        setShowSpinner(true);
+        try {
+            const response = await saveFunction(obj, headers);
+            if (response.statuscode === 200) {
+                setViewDisplayId(response.view_disp_id);
+                setViewStatus(response.view_status);
+                setViewVersion(response.view_version);
+                message.success('Saved Successfully')
+                setShowSpinner(false);
+            } else {
+                message.error(response.data.message);
+            }
+        } catch (err) {
+            message.error(err.data.message);
+        }
+    }
     useEffect(() => {
         onMoleculeIdChanged();
     }, [moleculeId]);
@@ -417,7 +639,7 @@ function ViewCreation() {
                 <h1 className='reportDesigner-headline'>
                     <ArrowLeftOutlined /> Create View
                 </h1>
-                <div className='viewCreation-btns'>
+                {materialsList.length > 0 && <div className='viewCreation-btns'>
                     <Button
                         type='text'
                         className='viewCreation-newBtn'
@@ -439,11 +661,11 @@ function ViewCreation() {
                     >
                         Load
                     </Button>
-                    <Button className='viewCreation-saveBtn'>Save</Button>
-                    <Button className='viewCreation-saveAsBtn'>Save As</Button>
+                    <Button className='viewCreation-saveBtn' disabled={!viewDisplayId} onClick={handleSaveFunc}>Save</Button>
+                    <Button className='viewCreation-saveAsBtn' onClick={handleSaveAsFunc}>Save As</Button>
                     <Button className='viewCreation-shareBtn'>Share</Button>
-                    <Button className='viewCreation-publishBtn'>Publish</Button>
-                </div>
+                    <Button className='viewCreation-publishBtn'><CloudUploadOutlined />Publish</Button>
+                </div>}
             </div>
 
             <Form
@@ -460,6 +682,7 @@ function ViewCreation() {
                                 <h4 className='viewCreation-blockHeader'>
                                     Parameter Lookup
                                 </h4>
+                                <hr />
                                 <ParameterLookup
                                     moleculeList={moleculeList}
                                     setMoleculeList={setMoleculeList}
@@ -480,7 +703,7 @@ function ViewCreation() {
                             </div>
                             <div className='viewCreation-materials'>
                                 <Collapse
-                                    className='viewCreation-accordian'
+                                    className='viewCreation-accordian '
                                     defaultActiveKey={['1']}
                                     expandIconPosition='right'
                                 >
@@ -542,10 +765,13 @@ function ViewCreation() {
                                                     }
                                                     count={count}
                                                     setCount={setCount}
+                                                    materialIdName={materialIdName}
+                                                    setMaterialIdName={setMaterialIdName}
+                                                    getNewData={(el) => getNewData(el)}
                                                 />
                                             </Panel>
                                             <Panel
-                                                className='viewCreation-filesPanel'
+                                                className='viewCreation-accordian viewCreation-filesPanel'
                                                 header='Files'
                                                 key='2'
                                             >
@@ -572,6 +798,11 @@ function ViewCreation() {
                                                     setFunctionEditorViewState={
                                                         setFunctionEditorViewState
                                                     }
+                                                    filesListTree={filesListTree}
+                                                    setFilesListTree={setFilesListTree}
+                                                    count={count}
+                                                    setCount={setCount}
+                                                    getNewData={(el) => getNewData(el)}
                                                 />
                                             </Panel>
                                         </>
@@ -580,12 +811,13 @@ function ViewCreation() {
                             </div>
                         </div>
 
-                        <div className='viewCreation-rightBlocks'>
+                        {materialsList.length > 0 && <div className='viewCreation-rightBlocks'>
                             {moleculeId && (
                                 <div className='viewCreation-viewSummary bg-white'>
                                     <h4 className='viewCreation-blockHeader'>
                                         View Summary
                                     </h4>
+                                    <hr />
                                     <ViewSummary
                                         viewSummaryTable={viewSummaryTable}
                                         setViewSummaryTable={
@@ -607,6 +839,9 @@ function ViewCreation() {
                                         viewVersion={viewVersion}
                                         form={form}
                                         moleculeId={moleculeId}
+                                        setViewFunctionName={setViewFunctionName}
+                                        viewFunctionName={viewFunctionName}
+                                        saveResponseView={saveResponseView}
                                     />
                                 </div>
                             )}
@@ -624,6 +859,7 @@ function ViewCreation() {
                                                 Save
                                             </Button>
                                             <Button
+                                                style={{ marginLeft: '16px' }}
                                                 className='custom-primary-btn'
                                                 onClick={() => {
                                                     saveFunctionData();
@@ -633,6 +869,7 @@ function ViewCreation() {
                                             </Button>
                                         </div>
                                     </h4>
+                                    <hr />
                                     <FunctionEditor
                                         form={form}
                                         parentBatches={parentBatches}
@@ -655,14 +892,18 @@ function ViewCreation() {
                                         functionName={functionName}
                                         setFunctionName={setFunctionName}
                                         passStateFunc={(v) => passStateFunc(v)}
-                                        getNewData={(el)=>getNewData(el)}
+                                        getNewData={(el) => getNewData(el)}
                                         id={id}
                                         setId={setId}
-                                       
+                                        functionChanged={functionChanged}
+                                        mathFunction={mathFunction}
+                                        setMathFunction={setMathFunction}
+                                        meanChange={meanChange}
+                                        setMeanChange={setMeanChange}
                                     />
                                 </div>
                             )}
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </Form>
@@ -682,7 +923,6 @@ function ViewCreation() {
                         style={{ width: '140px' }}
                         defaultValue={viewDisplayId}
                         onChange={(e, value) => {
-                            console.log('valeeee', value);
                             let view_value = value.value ? value.value : '';
                             let split_view_id = view_value
                                 ? view_value.split('-')
@@ -722,7 +962,6 @@ function ViewCreation() {
                         </span>
                     }
                     centered
-                    // bodyStyle={{height: 400}}
                     width={700}
                 >
                     <Table
@@ -735,7 +974,6 @@ function ViewCreation() {
                                 ViewRowClicked(record);
                             },
                         })}
-                        //loading={loading}
                         scroll={{ y: 200 }}
                         size='small'
                         pagination={false}
@@ -743,6 +981,7 @@ function ViewCreation() {
                     />
                 </Modal>
             </div>
+            <Loading show={showSpinner} />
         </div>
     );
 }
