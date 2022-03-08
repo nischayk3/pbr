@@ -1,7 +1,7 @@
 // Ranjith K
 // Mareana Software
 // Version 1
-// Last modified - 07 March, 2022
+// Last modified - 08 March, 2022
 import React, { useEffect, useState } from 'react';
 
 import './styles.scss';
@@ -62,7 +62,7 @@ function FileUpload(props) {
             dataIndex: 'param',
             render: (param) => (
                 <Tooltip title={param}>
-                    <Tag color='magenta' className='parameter-tag'>
+                    <Tag color='geekblue' className='parameter-tag'>
                         {param}
                     </Tag>
                 </Tooltip>
