@@ -20,6 +20,7 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
 import { screenChange } from '../../../../duck/actions/reportDesignerAction';
+import { saveReportGenerator } from '../../../../services/reportGeneratorServices';
 
 
 const { Panel } = Collapse;
@@ -180,6 +181,15 @@ function ReportGenerator() {
         let req = {}
         req['data'] = obj
         req['saveType'] = 'save'
+
+        console.log(JSON.stringify(req))
+
+        // saveReportGenerator(req).then((res)=>
+        // {
+
+
+           
+        // })
 
     }
 

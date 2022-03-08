@@ -240,7 +240,7 @@ function ReportDesignerNew() {
         key_obj['key'] = i.keyName
 
         return key_obj;
-      });      
+      });
       obj['content'] = content_arr;
       obj['id'] = index;
 
@@ -322,19 +322,19 @@ function ReportDesignerNew() {
   // unloading the json into component readable form 
   // getting json from GET service distrupting json for each component (as required)
   const convertContent = (obj) => {
-    
+
     let content_obj = obj
     let rows = []
-    content_obj.map((i)=>{
+    content_obj.map((i) => {
       let o = {}
       o['keyName'] = i.key
       o['value'] = i.value
       o['editable'] = i.editable
 
       rows.push(o)
-    }) 
-      
-    
+    })
+
+
 
     return rows
   }
