@@ -661,20 +661,20 @@ function ViewCreation() {
             view_disp_id: viewDisplayId,
         }
         setShowSpinner(true);
-        // try {
-        //     const response = await updateFunction(obj, viewDisplayId, viewVersion, headers);
-        //     if (response.statuscode === 200) {
-        //         setViewDisplayId(response.view_disp_id);
-        //         setViewStatus(response.view_status);
-        //         setViewVersion(response.view_version);
-        //         message.success('Updated Successfully')
-        //         setShowSpinner(false);
-        //     } else {
-        //         message.error(response);
-        //     }
-        // } catch (err) {
-        //     message.error(err);
-        // }
+        try {
+            const response = await updateFunction(obj, viewDisplayId, viewVersion, headers);
+            if (response.statuscode === 200) {
+                setViewDisplayId(response.view_disp_id);
+                setViewStatus(response.view_status);
+                setViewVersion(response.view_version);
+                message.success('Updated Successfully')
+                setShowSpinner(false);
+            } else {
+                message.error(response);
+            }
+        } catch (err) {
+            message.error(err);
+        }
     }
     const handleSaveAsFunc = async () => {
         if (!viewFunctionName.length) {
