@@ -29,3 +29,18 @@ export const functionTextName = (payload) => ({
         }
     );
 };
+
+export const updateFunction = (request,dispid, version,headers) => {
+    return Service.put(
+        BMS_APP_PYTHON_SERVICE + `/views/1/${dispid}/${version}`,
+        request,
+        headers
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
