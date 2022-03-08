@@ -22,25 +22,6 @@ const customCard = (props) => {
 
         </div>
 
-
-        // {/* <div className="approve-wrapper">
-        // <div className="approval-cards">
-        //     <div className="circle_icon">
-        //         <BarChartOutlined />
-        //     </div>
-        //     <p className="approve-title">5</p>
-        //     <p className="approve-desc">parameter Data Approval</p>
-        // </div>
-        // <div className="approval-cards">
-        //     <div className="circle_icon">
-        //         <BarChartOutlined />
-        //     </div>
-        //     <p className="approve-title">5</p>
-        //     <p className="approve-desc">parameter Data Approval</p>
-        // </div>
-        // </div> */}
-
-
     )
 }
 

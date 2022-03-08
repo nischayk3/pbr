@@ -64,14 +64,14 @@ const Workflow = () => {
                         tilesData.map((item, index) => {
                             return (
 
-                                <div onClick={(item) => tilesClicked(item)}>
+                                <div onClick={() => tilesClicked(item)}>
                                     <DashCard count={item.item_count} desc={item.text} />
                                 </div>
 
                             )
                         })
                     }
-                    {itemCount && (
+                    {itemCount>0 && (
                         <Card title={<div className='table-head'>Param Data Approvals<DownloadOutlined style={{ color: '#093185', marginLeft: '25px' }} /></div>} className='table-cards'>
                             <Tabs defaultActiveKey="1" className='workflow-tabs'>
                                 <TabPane tab="Awaiting Approval" key="1">
