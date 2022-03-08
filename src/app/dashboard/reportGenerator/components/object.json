@@ -1,36 +1,22 @@
 {
     "data": {
-        "rep_disp_id": "R119",
-        "rep_name": "Report_CPV",
+        "rep_disp_id": "R133",
+        "rep_name": "REPORT_NEW_JSON",
         "rep_status": "DRFT",
         "user": "demo",
-        "variant_name": "demo_R119_variant",
+        "variant_name": "demo_R133_variant",
         "chart_info": {
             "charts": [
                 {
                     "chart": "C1-BELAC_ANALY-1",
-                    "excursion": false,
+                    "excursion": true,
                     "violation": false,
                     "parameter": false,
-                    "exclusion": false
-                },
-                {
-                    "chart": "C1-BELAC_ANALY-2",
-                    "excursion": false,
-                    "violation": false,
-                    "parameter": false,
-                    "exclusion": false
-                },
-                {
-                    "chart": "C1-BELAC_ANALY-3",
-                    "excursion": false,
-                    "violation": false,
-                    "parameter": false,
-                    "exclusion": false
+                    "exclusion": true
                 },
                 {
                     "chart": "C1-BELAC_ANALY-4",
-                    "excursion": false,
+                    "excursion": true,
                     "violation": false,
                     "parameter": false,
                     "exclusion": false
@@ -39,63 +25,67 @@
         },
         "layout_info": {
             "titlepage": {
-                "heading": "CPV_REPORT",
+                "heading": "TITLEPAGE",
                 "numbered": true,
                 "content": [
                     {
-                        "ID": {
-                            "value": "93",
-                            "editable": false
-                        },
-                        "SITE ": {
-                            "value": "1255",
-                            "editable": true
-                        }
+                        "value": "Mihir",
+                        "editable": true,
+                        "id": 1,
+                        "key": "NAME"
+                    },
+                    {
+                        "value": "22",
+                        "editable": false,
+                        "id": 2,
+                        "key": "AGE"
                     }
-                ]
+                ],
+                "id": 0
             },
             "sections": [
                 {
-                    "heading": "Summary",
+                    "heading": "SUMMARY",
                     "numbered": false,
                     "content": [
                         {
-                            "Product": {
-                                "value": "Belaa",
-                                "editable": false
-                            },
-                            "Title": {
-                                "value": "CPV_PDF",
-                                "editable": true
-                            }
+                            "value": "DETAILS",
+                            "editable": false,
+                            "id": 1,
+                            "key": "TITLE"
+                        },
+                        {
+                            "value": "SDE",
+                            "id": 2,
+                            "key": "DESC"
                         }
-                    ]
+                    ],
+                    "id": 1
                 },
                 {
-                    "heading": "RRP",
+                    "heading": "NON",
                     "numbered": false,
                     "content": [
                         {
-                            "RESCUE": {
-                                "value": "UKRAINE",
-                                "editable": true
-                            }
+                            "value": "NA",
+                            "editable": true,
+                            "id": 1,
+                            "key": "NAN"
                         }
-                    ]
-                },
-                {
-                    "heading": "KISHTI",
-                    "numbered": false,
-                    "content": [
-                        {
-                            "TRUE": {
-                                "value": "FALSE",
-                                "editable": true
-                            }
-                        }
-                    ]
+                    ],
+                    "id": 2
                 }
             ]
+        },
+        "share": {
+            "frequency_unit": "Daily",
+            "email_list": [
+                "m@gmail.com",
+                "b@gmail.com"
+            ],
+            "scheduled_start": "2022-03-01 09:55:22",
+            "scheduled_end": "2022-03-03 09:50:22",
+            "frequency": "1"
         }
     },
     "saveType": "save"
