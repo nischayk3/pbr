@@ -266,9 +266,3 @@ function ChartDetails(props) {
 
 export default ChartDetails;
 
-
-{/* <InputField label='Batch' value={clickedBatchId} disabled />
-        <div className='show-data'>
-          <p>Exclude Record </p>
-          <Switch type='primary' size='small' onChange={onChangeCheckbox} />
-        </div> */}
