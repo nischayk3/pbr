@@ -130,7 +130,6 @@ function ReportDesignerNew() {
 
     jay = jay[0] ? jay[0] : []
     jay = jay['layout_info'] ? jay['layout_info'] : {}
-    console.log(jay, jayson);
     if (Object.keys(jay).length > 0 && Object.keys(jayson).length > 0) {
       return true
     }
@@ -161,7 +160,6 @@ function ReportDesignerNew() {
   const onOk = async () => {
 
     const unloadResponse = await unLoadJson(reportData);
-    console.log('unloadResponse', unloadResponse)
     if (unloadResponse) {
       dispatch(hideLoader());
       setIsLoad(true);
@@ -176,9 +174,7 @@ function ReportDesignerNew() {
 
   // Get form values
   const handleValuesChange = (changedValues, values) => {
-    console.log(values)
     setMainJson(convertToJson(values));
-    console.log(JSON.stringify(mainJson))
   };
 
   //Get view table data
@@ -327,7 +323,6 @@ function ReportDesignerNew() {
   // getting json from GET service distrupting json for each component (as required)
   const convertContent = (obj) => {
     
-    console.log(obj)
     let content_obj = obj
     let rows = []
     content_obj.map((i)=>{
@@ -365,11 +360,9 @@ function ReportDesignerNew() {
       getChartsList(view + '-' + view_version)
       setViewIdVersion(view + '-' + view_version)
       jay = jay['layout_info']
-      console.log(jay)
       if (jay) {
 
         let res = []
-        console.log('layout', jay)
         let layout_info = jay ? jay : {}
         let title_page = layout_info['titlepage'] ? layout_info['titlepage'] : {}
 
@@ -392,7 +385,6 @@ function ReportDesignerNew() {
           })
           let form_res = {}
           form_res['response'] = res
-          console.log(form_res)
           setFormData(form_res)
           form.setFieldsValue(form_res);
           return true

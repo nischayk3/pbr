@@ -9,14 +9,14 @@
             "charts": [
                 {
                     "chart": "C1-BELAC_ANALY-1",
-                    "excursion": false,
+                    "excursion": true,
                     "violation": false,
                     "parameter": false,
-                    "exclusion": false
+                    "exclusion": true
                 },
                 {
                     "chart": "C1-BELAC_ANALY-4",
-                    "excursion": false,
+                    "excursion": true,
                     "violation": false,
                     "parameter": false,
                     "exclusion": false
@@ -35,8 +35,8 @@
                         "key": "NAME"
                     },
                     {
-                        "value": "21",
-                        "editable": true,
+                        "value": "22",
+                        "editable": false,
                         "id": 2,
                         "key": "AGE"
                     }
@@ -49,13 +49,13 @@
                     "numbered": false,
                     "content": [
                         {
-                            "value": "Report",
-                            "editable": true,
+                            "value": "DETAILS",
+                            "editable": false,
                             "id": 1,
                             "key": "TITLE"
                         },
                         {
-                            "value": "BELAAAA",
+                            "value": "SDE",
                             "id": 2,
                             "key": "DESC"
                         }
@@ -78,8 +78,11 @@
             ]
         },
         "share": {
-            "frequency_unit": "",
-            "email_list": [],
+            "frequency_unit": "Daily",
+            "email_list": [
+                "m@gmail.com",
+                "b@gmail.com"
+            ],
             "scheduled_start": "2022-03-01 09:55:22",
             "scheduled_end": "2022-03-03 09:50:22",
             "frequency": "1"
