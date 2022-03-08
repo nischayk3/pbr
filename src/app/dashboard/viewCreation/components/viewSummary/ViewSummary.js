@@ -1,3 +1,8 @@
+// Ranjith K
+// Mareana Software
+// Version 1
+// Last modified - 07 March, 2022
+
 import React, { useEffect, useState } from 'react';
 import './styles.scss';
 
@@ -7,10 +12,7 @@ import {
     CloseOutlined,
 } from '@ant-design/icons';
 import { Form, Input, Space, Table, Tag } from 'antd';
-
-const onClickTag = (item) => {
-    // console.log('item', item)
-};
+import emptyIcon from '../../../../../assets/icons/empty.svg';
 
 
 function ViewSummary(props) {
@@ -29,7 +31,14 @@ function ViewSummary(props) {
         viewVersion,
         form,
         moleculeId,
+        setViewFunctionName,
+        viewFunctionName,
+        saveResponseView
     } = props;
+
+    useEffect(() => {
+        onChangeColumnsHandler();
+    }, [newBatchData]);
 
     const onChangeColumnsHandler = () => {
         let columns = [];
@@ -59,27 +68,37 @@ function ViewSummary(props) {
         }
     };
 
+    const handleFunctionNameChange = (e) => {
+        setViewFunctionName(e.target.value)
+    }
+
     useEffect(() => {
-        onChangeColumnsHandler();
-    }, [newBatchData]);
+        form.setFieldsValue({ viewId: saveResponseView.viewId, status: saveResponseView.viewStatus, version: saveResponseView.version })
+    }, [saveResponseView]);
+
 
     return (
         <div className='viewSummary-container'>
             <div className='viewSummary-FormBlock'>
                 <Form.Item label='View ID' name='viewId'>
-                    <Input placeholder='Enter View ID' disabled />
+                    <Input  disabled />
                 </Form.Item>
                 <Form.Item label='Name' name='viewName'>
-                    <Input placeholder='Enter Name' />
+                    <Input placeholder='Enter Name' value={viewFunctionName} onChange={handleFunctionNameChange} />
                 </Form.Item>
                 <Form.Item label='Status' name='status'>
-                    <Input placeholder='Status' disabled />
+                    <Input placeholder='New' disabled />
                 </Form.Item>
                 <Form.Item label='Version' name='version'>
-                    <Input placeholder='Version' disabled />
+                    <Input disabled />
                 </Form.Item>
             </div>
-
+            {!functionEditorViewState && <div className="emptyDiv">
+                <div>
+                    <img src={emptyIcon} alt={'empty'} />
+                    <p>Please select a parameter to create a function</p>
+                </div>
+            </div>}
             {functionEditorViewState && (
                 <div className='viewSummary-TableBlock'>
                     <Table
@@ -88,7 +107,8 @@ function ViewSummary(props) {
                         columns={viewSummaryColumns}
                         dataSource={viewSummaryTable}
                         scroll={{ x: 900 }}
-                        rowKey={(record) => record.param}
+                        style={{ border: '1px solid #ececec', borderRadius: '2px' }}
+                        rowKey={(record) => record.id}
                     />
                 </div>
             )}

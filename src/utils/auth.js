@@ -6,6 +6,7 @@ const Auth = {
         // set user token with expiry of 3 days
         // setWithExpiry("user_details", {accessToken, username, refreshToken}, 259200);
         localStorage.setItem('user_details', JSON.stringify({accessToken, username, refreshToken}));
+        localStorage.setItem('user',username);
     },
     logout: (callback) => {
         authStatus = false;

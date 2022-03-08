@@ -1,3 +1,8 @@
+// Ranjith K
+// Mareana Software
+// Version 1
+// Last modified - 07 March, 2022
+
 import React, { useEffect, useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import './styles.scss';
@@ -28,7 +33,6 @@ function ParameterLookup(props) {
 
     const dispatch= useDispatch();
     const onSelectMoleculeHandler = () => {
-        // let req = { user_id: localStorage.getItem('username') };
         let req = { user_id: 'demo' };
         getMoleculeData(req).then((res) => {
             if (res.statuscode === 200) {
@@ -53,8 +57,6 @@ function ParameterLookup(props) {
         });
         dispatch(moleculeName(moleculeId))
     }, [moleculeId]);
-    console.log('moleculeList', moleculeList);
-    console.log('moleculeId', moleculeId);
 
     const onChangeMoleculeHandler = (value) => {
         setMoleculeId(value);
@@ -98,7 +100,6 @@ function ParameterLookup(props) {
             <Form.Item label='Molecule' name='molecule'>
                 <Select
                     placeholder='Select'
-                    // onClick={onSelectMoleculeHandler}
                     onChange={onChangeMoleculeHandler}
                     defaultValue={moleculeId}
                     value={moleculeId}
@@ -122,7 +123,7 @@ function ParameterLookup(props) {
                             .toLowerCase()
                             .indexOf(input.toLowerCase()) >= 0
                     }
-                    placeholder='Filter Materials'
+                    placeholder='Select'
                     allowClear={true}
                 >
                     {materialsList.map((item, index) => {

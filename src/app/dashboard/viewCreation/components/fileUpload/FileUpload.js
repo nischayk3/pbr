@@ -1,3 +1,7 @@
+// Ranjith K
+// Mareana Software
+// Version 1
+// Last modified - 07 March, 2022
 import React, { useEffect, useState } from 'react';
 
 import './styles.scss';
@@ -39,13 +43,17 @@ function FileUpload(props) {
         setNewBatchData,
         functionEditorViewState,
         setFunctionEditorViewState,
+        filesListTree,
+        setFilesListTree,
+        count,
+        setCount,
+        getNewData
     } = props;
 
     const [uploadModalVisible, setUploadModalVisible] = useState(false);
     const [uploadBtnDisabled, setUploadBtnDisabled] = useState(true);
     const [selectedAdHocFileList, setSelectedAdHocFileList] = useState([]);
     const [selectedFileId, setSelectedFileId] = useState();
-    const [filesListTree, setFilesListTree] = useState([]);
 
     const columns = [
         {
@@ -90,24 +98,23 @@ function FileUpload(props) {
     ];
 
     const parameterPassHandler = (record, index) => {
-        console.log('record file', record, index);
         let rowData = {};
         let batchData = {};
         let newBatchData = [];
-        // record.coverage_list.map((item, index) => {
-        //     let item_key = item;
-        //     batchData[`B${++index}`] = item_key;
-        // });
+
 
         parentBatches.map((el, index) => {
             if (record.coverage_list.includes(el)) {
-                batchData[`B${++index}`] = true;
-                newBatchData[`B${index}`] = true;
+                batchData[el] = true;
+                newBatchData[el] = true;
             } else {
-                batchData[`B${++index}`] = false;
-                newBatchData[`B${index}`] = false;
+                batchData[el] = false;
+                newBatchData[el] = false; 
             }
         });
+
+        batchData['id']= count;
+        setCount(count+1);
 
         //check for duplicate records
         const indexDuplicate = viewSummaryTable.findIndex(
@@ -115,7 +122,10 @@ function FileUpload(props) {
         );
         if (indexDuplicate === -1) {
             rowData = Object.assign(record, batchData);
-            //delete rowData['coverage_list'];
+            rowData.sourceType = 'file'
+            rowData.file_id = record.File_id
+            rowData.parameters = [rowData];
+            getNewData(rowData);
             let data = [...viewSummaryTable];
             data.push(rowData);
             setNewBatchData(newBatchData);
@@ -125,9 +135,6 @@ function FileUpload(props) {
             message.error('Function already exists');
         }
     };
-
-    console.log('selectedAdHocFileList', selectedAdHocFileList);
-    console.log('filesListTree', filesListTree);
     const genExtra = (File_id) => (
         <div
             className='fileUpload-panelHeader'
@@ -168,7 +175,6 @@ function FileUpload(props) {
     function confirm(File_id) {
         let req = {
             fileid: parseInt(File_id),
-            // userid: localStorage.getItem('username'),
             userid: 'demo',
         };
         deleteAdHocFile(req).then((res) => {
@@ -271,6 +277,8 @@ function FileUpload(props) {
         setUploadBtnDisabled(true);
         let req = { file_id: selectedFileId, detailedCoverage: true };
         adHocFilesParameterTree(req).then((res) => {
+            const date = new Date();
+            res.timeStamp =  date.toISOString();
             setFilesListTree([...filesListTree, res]);
             if (res.Status === 404) {
                 message.error(res.Message);
@@ -306,6 +314,9 @@ function FileUpload(props) {
                 expandIconPosition='right'
             >
                 {filesListTree.map((item, index) => {
+                    item.Data.forEach((ele) => {
+                        ele.file_id =  item.File_id
+                    })
                     return (
                         <Panel
                             className='materials-panel fileUpload-panel'
@@ -325,7 +336,7 @@ function FileUpload(props) {
                                 pagination={false}
                                 columns={columns}
                                 dataSource={item.Data}
-                                rowKey={(record) => record.parameter_name}
+                                rowKey={(record, index) => index}
                             />
                         </Panel>
                     );

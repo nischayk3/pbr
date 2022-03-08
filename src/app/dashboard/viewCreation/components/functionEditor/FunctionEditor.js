@@ -1,8 +1,13 @@
+// Ranjith K
+// Mareana Software
+// Version 1
+// Last modified - 07 March, 2022
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import './styles.scss';
 import { CheckCircleOutlined, CloseOutlined } from '@ant-design/icons';
-import { Checkbox, Form, Input, Select, Table, Tag, Card } from 'antd';
+import { Checkbox, Form, Input, Select, Table, Tag, Card, Tooltip } from 'antd';
 import { functionTextName } from '../../../../../duck/actions/viewCreationAction';
 
 const { Option } = Select;
@@ -43,45 +48,22 @@ const FunctionEditor = (props) => {
         passStateFunc,
         getNewData,
         id,
-        setId
+        setId,
+        functionChanged,
+        setMathFunction,
+        mathFunction,
+        setMeanChange,
     } = props;
 
     const dispatch = useDispatch();
-    const [mathFunction, setMathFunction] = useState();
     const [data, setData] = useState([]);
     const functionData = useRef();
     const columnsHandler = () => {
         let columns = [];
-        //parentBatches.map((item, index) => {
-        //     let obj = {
-        //         title: `B${++index}`,
-        //         key: index,
-        //         dataIndex: item,
-        //         width: 100,
-        //         render: value =>{
-        //             return (
-        //                 value ? (
-        //                     <span className="batchChecked">
-        //                         <Checkbox
-        //                             checked={checkboxChecked}
-        //                             onChange={onChange}
-        //                         />
-        //                     </span>
-        //                 ) : (
-        //                     <span className="batchClosed">
-        //                         <CloseOutlined />
-        //                     </span>
-        //                 )
-        //             );
-        //         }
-
-        //     };
-        //     columns.push(obj);
-        // });
-        Object.entries(newBatchData).forEach(([key, value1], index) => {
+        Object.entries(newBatchData).map(([key, value1], index) => {
             let Index = 0;
             let obj = {
-                title: `B${++index}`,
+                title: <Tooltip placement="topLeft" title={key}>{key.substring(0, 3)}</Tooltip>,
                 key: index,
                 dataIndex: key,
                 width: 50,
@@ -92,22 +74,15 @@ const FunctionEditor = (props) => {
                         },
                     };
                 },
-                render: (value) => {
-                    return typeof (value) === 'boolean' ? value ? (
+                render: (key) => {
+                    return key === true ?
                         <Checkbox
-                            checked={value}
-                            onChange={(e) => onChange(e, key, value1, Index)}
-                        />
-                    ) : (
+                            checked={true}
+                            onChange={(e) => onChange(e, key, key, index)}
+                        /> :
                         <span className='batchClosed'>
                             <CloseOutlined />
                         </span>
-                    ) : (
-                        <Checkbox
-                            checked={false}
-                            onChange={(e) => onChange(e, key, value1, Index)}
-                        />
-                    );
                 },
             };
             columns.push(obj);
@@ -119,13 +94,8 @@ const FunctionEditor = (props) => {
     };
 
     const onChange = (e, key, value, rowIndex) => {
-        console.log('checked = ', e.target.checked, key, value);
-        console.log(rowIndex);
-        console.log(functionData.current);
         let filteredRecord = [...functionData.current];
-        //filteredRecord[rowIndex] = { ...filteredRecord[rowIndex] }
         filteredRecord[rowIndex][key] = e.target.checked == false ? "" : e.target.checked;
-        console.log(filteredRecord);
         setFunctionEditorRecord(filteredRecord)
 
 
@@ -133,14 +103,12 @@ const FunctionEditor = (props) => {
     };
 
     const onChangeParameterHandler = (value) => {
-        console.log('valuess', value);
         let indexDuplicate = functionEditorRecord.findIndex(
             (x) => x.param == value
         );
         let filteredParameter = viewSummaryTable.filter(
             (el) => el.param == value
         );
-        console.log(filteredParameter);
 
         if (indexDuplicate < 0) {
             setFunctionEditorRecord([
@@ -150,94 +118,86 @@ const FunctionEditor = (props) => {
             setFunctionName(value)
             setId(filteredParameter[0].id)
         }
-
-
-
-
     };
 
     const mathEditorFunction = (value) => {
         setMathFunction(value);
-        let data= [...functionEditorRecord];
-        let obj={},count=1;
-        if(value!='union'){
-           data.forEach((item,i)=>{
-               if(i==0){
-                   obj={...item};
-               }else{
-                   Object.entries(item).forEach(([key,value],index)=>{
-                    if(key.includes("B")){
-                       // console.log(key,value);
-                        obj[key]=obj[key]&& item[key]
-                        obj.param=item.param
-                        obj.id=item.id
-                        
-                    }
-                   })
-                       
-                   }
-                   
-           })
-           console.log(obj);
-           getNewData(obj);
-        }else if(value=='union'){
-            data.forEach((item,i)=>{
-                if(i==0){
-                    obj={...item};
-                }else{
-                    Object.entries(item).forEach(([key,value],index)=>{
-                     if(key.includes("B")){
-                        // console.log(key,value);
-                         obj[key]=obj[key] || item[key]
-                         obj.param=item.param
-                         obj.id=item.id
-                     }
+        functionChanged.current = true;
+        let data = [...functionEditorRecord];
+        let obj = {}, count = 1;
+        if (value != 'union') {
+            data.forEach((item, i) => {
+                if (i == 0) {
+                    obj = { ...item };
+                } else {
+                    Object.entries(item).forEach(([key, value], index) => {
+                        if (key.includes("B")) {
+                            obj[key] = obj[key] && item[key]
+                            obj.param = item.param
+                            obj.id = item.id
+                        }
                     })
-                        
-                    }
-                    
+
+                }
+
             })
-            console.log(obj);
-           getNewData(obj);
+            getNewData(obj);
+        } else if (value == 'union') {
+            data.forEach((item, i) => {
+                if (i == 0) {
+                    obj = { ...item };
+                } else {
+                    Object.entries(item).forEach(([key, value], index) => {
+                        if (key.includes("B")) {
+                            obj[key] = obj[key] || item[key]
+                            obj.param = item.param
+                            obj.id = item.id
+                        }
+                    })
+
+                }
+
+            })
+            getNewData(obj);
         }
-        
+
+    }
+
+
+    const handleMean = (e) => {
+        setMeanChange(e)
     }
 
     
+    useEffect(() => {
+        form.setFieldsValue({ function_name: functionName, parameter: functionName, id: id, aggregation: 'Mean' })
+    }, [functionName, id]);
 
     useEffect(() => {
-        form.setFieldsValue({ function_name: functionName, parameter: functionName, id:id,aggregation:'Mean'})
-    },[functionName,id]);
-
-    useEffect(()=>{
         columnsHandler();
-    },[])
+    }, [])
 
     useEffect(() => {
         functionData.current = functionEditorRecord;
     }, [functionEditorRecord])
 
-    const handlePassState=(e)=>{
+    const handlePassState = (e) => {
         passStateFunc(e.target.value)
     }
-    console.log('viewSummaryTable', viewSummaryTable);
-    console.log('functionEditorRecord', functionEditorRecord);
-    
 
     return (
         <div className='viewSummary-container functionEditor-container'>
             <div className='viewSummary-FormBlock functionEditor-FormBlock'>
                 <Form.Item label='ID' name='id'>
-                    <Input placeholder='Enter ID' disabled  />
+                    <Input placeholder='Enter ID' disabled />
                 </Form.Item>
                 <Form.Item label='Function Name' name='function_name'>
-                    <Input placeholder='Enter Function Name' 
-                    onChange={(e)=>handlePassState(e)}
-                    //onChange={(e) => functionName ? setFunctionText(`${functionName}${e.target.value}`):setFunctionText(e.target.value)} 
-                />
+                    <Input placeholder='Enter Function Name'
+                        onChange={(e) => handlePassState(e)}
+                    />
                 </Form.Item>
                 <Form.Item label='Aggregation' name='aggregation'>
-                    <Select placeholder='Select Aggregation'>
+                    <Select placeholder='Select Aggregation' onChange={handleMean}>
                         <Option value='Min'>Min</Option>
                         <Option value='Mean'>Mean</Option>
                         <Option value='Max'>Max</Option>
@@ -277,7 +237,7 @@ const FunctionEditor = (props) => {
                         {mathFunction ?
                             mathFunction == 'round' ?
                                 <p>{`=${mathFunction}(${functionName},`} <input type="text" style={{ height: '20px', width: '20px' }} />)</p>
-                                : `=${mathFunction}(${functionEditorRecord.map(el=>el.param)})`
+                                : `=${mathFunction}(${functionEditorRecord.map(el => el.param)})`
                             : ''}
 
                     </Card>
@@ -288,7 +248,7 @@ const FunctionEditor = (props) => {
                         columns={functionEditorColumns}
                         dataSource={functionEditorRecord}
                         scroll={{ x: 900 }}
-                        style={{border:'1px solid #ececec',borderRadius:'2px'}}
+                        style={{ border: '1px solid #ececec', borderRadius: '2px' }}
                         pagination={false}
                         rowKey={(record) => record.param}
                     />

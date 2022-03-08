@@ -470,8 +470,8 @@ function ChartPersonalization() {
               <Button
                 className='custom-primary-btn'
                 onClick={() => {
-                  handleSave();
-                  setisNewBtnDisabled(true);
+                   handleSave();
+                   setisNewBtnDisabled(true);
                 }}
                 type='primary'
                 disabled={isSaveBtnDisabled}

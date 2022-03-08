@@ -12,7 +12,8 @@
     "cypress": "npx cypress open",
     "build-theme": "lessc -clean-css=\"--s1 --advanced --compatibility=ie8\" ./src/assets/styles/less/main.less ./src/assets/styles/css/doNotModify/custom-theme.css --js",
     "lint": "eslint src/**/*.js",
-    "lint-fix": "eslint src/**/*.js --fix"
+    "lint-fix": "eslint src/**/*.js --fix",
+    "start:local": "react-scripts --max_old_space_size=8192 start"
   },
   "dependencies": {
     "@azure/msal-browser": "^2.22.0",
