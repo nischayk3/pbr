@@ -20,7 +20,7 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
 import { screenChange } from '../../../../duck/actions/reportDesignerAction';
-// import ex_json from './object.json'
+
 
 const { Panel } = Collapse;
 const { Text } = Typography;
@@ -33,12 +33,9 @@ function ReportGenerator() {
         (state) => state.reportDesignerReducer.reportData
     );
 
-    console.log(repotData)
 
     function onChange(checkedValues, i) {
-        console.log(checkedValues, i)
         update_object(checkedValues, i)
-        console.log(JSON.stringify(chart))
     }
 
 
@@ -48,11 +45,11 @@ function ReportGenerator() {
     const [table, setTable] = useState([])
     const [schedule, setSchedule] = useState('')
     const [emailList, setEmailList] = useState([])
-    const [selectedUser, setSelectedUser] = useState(false)
+    // const [selectedUser, setSelectedUser] = useState(false)
     const [reportId, setReportId] = useState('')
     const [reportName, setReportName] = useState('')
     const [reportStatus, setReportStatus] = useState('')
-    const [viewId, setViewId] = useState('')
+    // const [viewId, setViewId] = useState('')
     const dispatch = useDispatch();
 
 
@@ -104,12 +101,10 @@ function ReportGenerator() {
         //         headingList.push(i.heading)
         // })
 
-        console.log(headingList)
         return allSections
     }
 
     const unloadTest = (ReportData) => {
-        console.log("REPORT_DATA", ReportData)
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setCharts(ReportData['chart_int_ids'] ? createArraObj(ReportData['chart_int_ids']) : [])
@@ -117,7 +112,7 @@ function ReportGenerator() {
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
-        setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
+        // setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
     }
 
     const update_object = (arr, i) => {
@@ -163,7 +158,7 @@ function ReportGenerator() {
         obj['rep_name'] = reportName
         obj['rep_status'] = reportStatus
         obj['user'] = user
-        obj['variant_name'] = user + '_' + reportId + '_variant'
+        obj['variant_name'] = user + '_variant'
         obj['chart_info'] = { charts: chart }
 
 
@@ -186,24 +181,19 @@ function ReportGenerator() {
         req['data'] = obj
         req['saveType'] = 'save'
 
-
-        console.log(JSON.stringify(req))
     }
 
     const handleEdit = (value, heading, k) => {
-        console.log(value, heading, k)
         let objIndex = table.findIndex((t => t.heading == heading));
+
         if (objIndex >= 0) {
-            if (table[objIndex].content && table[objIndex].content[0]) {
-                table[objIndex].content[0][k].value = value
+            if (table[objIndex].content.length > 0) {
+                let cntnt_Index = table[objIndex].content.findIndex((t => t.key == k));
+                table[objIndex].content[cntnt_Index].value = value
             }
         }
-
-        console.log(table)
     }
 
-    console.log(chart, 'charts')
-    console.log(table, 'table')
     return (
         <div className='custom-wrapper'>
             <div className='sub-header'>
@@ -290,21 +280,31 @@ function ReportGenerator() {
 
                         <Collapse key={i.heading} accordion>
                             <Panel header={i.heading} key={i.heading}>
+                                <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF', marginRight: '10px', marginLeft: '1070px', fontSize: '12px' }}>
+                                </span>
+                                <span class="Legend-label" style={{ marginBottom: '10px', fontSize: '12px' }}>
+                                    Edit
+                                </span>
+                                <span class="Legend-colorBox" style={{ backgroundColor: '#F5F5F5', marginLeft: '20px', fontSize: '12px' }}>
+                                </span>
+                                <span class="Legend-label" style={{ marginLeft: '10px', fontSize: '12px' }}>
+                                    View Only
+                                </span>
                                 <table className="table">
                                     <tbody>
                                         <tr className="tr-tr" >
                                             <th className="th">Key</th>
                                             <th className="th">Value</th>
                                         </tr>
-                                        {i['content'] && i['content'].map((item, j) => 
+                                        {i['content'] && i['content'].map((item, j) =>
                                             // return Object.entries(item).map((k, value) => {
-                                           
+
                                             <tr className="tr">
-                                                    <td className="td">{item.key}</td>
-                                                    <td className="td">{item.editable == false || item.editable == undefined ? <textarea defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, item.heading, item.key)} /> : item.value} </td>
-                                                </tr>
+                                                <td className="td">{item.key}</td>
+                                                <td className="td">{item.editable == false || item.editable == undefined ? <textarea defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : item.value} </td>
+                                            </tr>
                                             // })
-                                        
+
                                         )}
 
                                     </tbody>
@@ -333,7 +333,7 @@ function ReportGenerator() {
                     title="Schedule"
                     visible={visible}
                     onCancel={() => setVisible(false)}
-                    onOk={() => { console.log('ok') }}
+                    onOk={() => setVisible(false)}
                 >
                     <Radio.Group onChange={radioSchedule} >
                         <Space direction="vertical">
