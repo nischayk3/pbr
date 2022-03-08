@@ -625,7 +625,6 @@ function ViewCreation() {
 
             return false;
         }
-        console.log(viewSummaryTable, 'viewSummaryTable');
         const converted = Object.assign({}, ...filesListTree.map(object => ({ [object.File_id]: { file_name: object.File_name, file_url: `/services/v1/adhoc-files/${object.File_id}`, upload_timestamp: object.timeStamp } })))
         const functionObj = Object.assign({}, ...viewSummaryTable.map((object, index) => ({ [object.id]: { name: object.param, functionType: object.functionType, definition: `{${index + 1}}`, aggregation: object.aggregation ? object.aggregation : 'Mean' } })))
         const parameter = Object.assign({}, ...viewSummaryTable.map((object, index) => ({
@@ -655,7 +654,6 @@ function ViewCreation() {
             view_disp_id: viewDisplayId,
             view_status: status,
         }
-        console.log(obj, 'obj')
         const headers = {
             username: "user_mareana1",
             password: "mareana_pass1",
@@ -679,7 +677,6 @@ function ViewCreation() {
         // }
     }
     const handleSaveAsFunc = async () => {
-        console.log('step11')
         if (!viewFunctionName.length) {
             message.error("Please Enter Name");
 
