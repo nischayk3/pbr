@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Popover, Tabs } from 'antd';
 import { ArrowLeftOutlined, DownloadOutlined, } from '@ant-design/icons';
-import DashCard from '../../../../components/cardComponent/customCard';
+import DashCard from '../../../../components/CardComponent/customCard';
 import illustrations from '../../../../assets/images/Banner illustration.svg';
 import WorkflowTable from './workflowTable/workflowTable';
 import './styles.scss';

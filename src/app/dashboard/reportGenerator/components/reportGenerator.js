@@ -192,10 +192,16 @@ function ReportGenerator() {
 
     const handleEdit = (value, heading, k) => {
         console.log(value, heading, k)
+        console.log(table)
         let objIndex = table.findIndex((t => t.heading == heading));
+        console.log(table[objIndex].content)
+
         if (objIndex >= 0) {
-            if (table[objIndex].content && table[objIndex].content[0]) {
-                table[objIndex].content[0][k].value = value
+            if (table[objIndex].content.length > 0) {
+                let cntnt_Index = table[objIndex].content.findIndex((t => t.key == k));
+                console.log(cntnt_Index)
+                console.log(table[objIndex].content[cntnt_Index].value )
+                table[objIndex].content[cntnt_Index].value = value
             }
         }
 
@@ -301,7 +307,7 @@ function ReportGenerator() {
                                            
                                             <tr className="tr">
                                                     <td className="td">{item.key}</td>
-                                                    <td className="td">{item.editable == false || item.editable == undefined ? <textarea defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, item.heading, item.key)} /> : item.value} </td>
+                                                    <td className="td">{item.editable == false || item.editable == undefined ? <textarea defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : item.value} </td>
                                                 </tr>
                                             // })
                                         

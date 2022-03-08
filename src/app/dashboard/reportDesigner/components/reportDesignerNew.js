@@ -337,7 +337,6 @@ function ReportDesignerNew() {
       o['editable'] = i.editable
 
       rows.push(o)
-
     }) 
       
     
