@@ -69,9 +69,12 @@ function ReportDesignerDynamicSections(props) {
                                             </Space>
                                         </div>
                                     ))}
-                                    <Form.Item>                                 
+                                    <Form.Item>
+                                        <p>
                                             <PlusSquareOutlined   style={{ fontSize: '16px', marginLeft: '10px' ,color:'#093185'}} onClick={() => add()} /> <u>Add Multiple Sections</u>
-                                                                   </Form.Item>
+                                        </p>
+
+                                    </Form.Item>
                                 </>
                             )}
                         </Form.List>

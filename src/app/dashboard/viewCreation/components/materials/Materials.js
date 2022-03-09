@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react';
+// Ranjith K
+// Mareana Software
+// Version 1
+// Last modified - 07 March, 2022
 
+import React, { useEffect, useState } from 'react';
 import './styles.scss';
 import { PlusSquareOutlined } from '@ant-design/icons';
 import { Button, Collapse, message, Spin, Table, Tag, Tooltip } from 'antd';
@@ -26,7 +30,10 @@ function Materials(props) {
         newBatchData,
         setNewBatchData,
         count,
-        setCount
+        setCount,
+        setMaterialIdName,
+        materialIdName,
+        getNewData
     } = props;
 
 
@@ -37,21 +44,19 @@ function Materials(props) {
             dataIndex: 'param',
             render: (param) => (
                 <Tooltip title={param}>
-                    <Tag color='magenta' className='parameter-tag'>
+                    <Tag color="geekblue" className='parameter-tag'>
                         {param}
                     </Tag>
                 </Tooltip>
             ),
         },
         {
-            title: 'Batch',
-            key: 'coverage_metric_percent',
+            title: 'Batch Coverage',
+            key: 'coverage_metric' + 'coverage_metric_percent',
             dataIndex: 'coverage_metric_percent',
-        },
-        {
-            title: 'Coverage',
-            key: 'coverage_metric',
-            dataIndex: 'coverage_metric',
+            render: (text, record) => (
+                <span>{record.coverage_metric}({record.coverage_metric_percent})</span>
+              )
         },
         {
             title: '',
@@ -73,29 +78,20 @@ function Materials(props) {
     ];
 
     const parameterPassHandler = (record, index) => {
-        console.log('record materials', record, index);
         let rowData = {};
         let batchData = {};
         let newBatchData = {};
-        // record.coverage_list.map((item, index) => {
-        //     let item_key = item;
-        //     batchData[`B${++index}`] = item_key;
-        // });
-
         parentBatches.map((el, index) => {
-            console.log(el, record.coverage_list.includes(el));
             if (record.coverage_list.includes(el)) {
                 batchData[el] = true;
                 newBatchData[el] = true;
                
             } else {
                 batchData[el] = false;
-                newBatchData[el] = false;
-                
+                newBatchData[el] = false;   
             }
             
         });
-        console.log(count);
         batchData['id']=count;
         setCount(count+1);
        
@@ -105,7 +101,10 @@ function Materials(props) {
         );
         if (indexDuplicate === -1) {
             rowData = Object.assign(record, batchData);
-            //delete rowData['coverage_list'];
+            rowData.sourceType = 'material' 
+            rowData.mat_no = record.mat_no
+            rowData.parameters = [rowData];
+            getNewData(rowData);
             let data = [...viewSummaryTable];
             data.push(rowData);
             setNewBatchData(newBatchData);
@@ -130,6 +129,9 @@ function Materials(props) {
                     </div>
                 ) : filterdData != null ? (
                     filterdData.map((item, index) => {
+                        item.parameters.forEach((ele) => {
+                            ele.mat_no =  item.mat_no
+                        })
                         return (
                             <Panel
                                 className='materials-panel'
@@ -148,6 +150,9 @@ function Materials(props) {
                     })
                 ) : (
                     materialsList.map((item, index) => {
+                        item.parameters.forEach((ele) => {
+                            ele.mat_no =  item.mat_no
+                        })
                         return (
                             <Panel
                                 className='materials-panel'
@@ -155,11 +160,11 @@ function Materials(props) {
                                 key={index}
                             >
                                 <Table
-                                    className='viewSummary-table materialsList-table borderless-table'
-                                    pagination={false}
-                                    columns={columns}
-                                    dataSource={item.parameters}
-                                    rowKey={(record) => record.param}
+                                  className='viewSummary-table materialsList-table borderless-table'
+                                  pagination={false}
+                                  columns={columns}
+                                  dataSource={item.parameters}
+                                  rowKey={(record) => record.param}
                                 />
                             </Panel>
                         );
