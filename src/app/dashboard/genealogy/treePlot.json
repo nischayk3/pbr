@@ -1,0 +1,218 @@
+[
+  {
+    "id": "62441",
+    "matNo": "1342585",
+    "matType": "HALB",
+    "batchNo": "ABM5734",
+    "nodeId": "1255|1342585|ABM5734",
+    "level": 0,
+    "type": "Material",
+    "matDesc": "MEDIA 145-E DEXTRAN SULFATE MBR10547",
+    "children": [
+      {
+        "id": "286546",
+        "level": 1,
+        "poNo": "102262006",
+        "type": "Process Order",
+        "children": [
+          {
+            "id": "61856",
+            "matNo": "1318135",
+            "matType": "HIBE",
+            "batchNo": "ABM7984",
+            "nodeId": "1255|1318135|ABM7984",
+            "level": 2,
+            "type": "Material",
+            "matDesc": "HOSE C-FLEX 48\" B107096-I"
+          },
+          {
+            "id": "66593",
+            "matNo": "1410034",
+            "matType": "RAW",
+            "batchNo": "ABK3325",
+            "nodeId": "1255|1410034|ABK3325",
+            "level": 2,
+            "type": "Material",
+            "matDesc": "Sodium Dextran Sulfate"
+          },
+          {
+            "id": "64634",
+            "matNo": "1393250",
+            "matType": "HIBE",
+            "batchNo": "ABL9168",
+            "nodeId": "1255|1393250|ABL9168",
+            "level": 2,
+            "type": "Material",
+            "matDesc": "FUNNEL ICI-TA-13368"
+          },
+          {
+            "id": "66539",
+            "matNo": "1398846",
+            "matType": "HIBE",
+            "batchNo": "ABF9634",
+            "nodeId": "1255|1398846|ABF9634",
+            "level": 2,
+            "type": "Material",
+            "matDesc": "FILTER ASSY 0.22UM W/MPORE KVGLG10TT1"
+          },
+          {
+            "id": "66491",
+            "matNo": "1393366",
+            "matType": "HIBE",
+            "batchNo": "ABM2841",
+            "nodeId": "1255|1393366|ABM2841",
+            "level": 2,
+            "type": "Material",
+            "matDesc": "BAG 200L PALL 6403-0601V"
+          },
+          {
+            "id": "67972",
+            "matNo": "1372995",
+            "matType": "HALB",
+            "batchNo": "ABM9134",
+            "nodeId": "1255|1372995|ABM9134",
+            "level": 2,
+            "type": "Material",
+            "matDesc": "SOL MANGANESE SULFATE MONOHY 18.58MG/L",
+            "children": [
+              {
+                "id": "288400",
+                "level": 3,
+                "poNo": "102262259",
+                "type": "Process Order",
+                "children": [
+                  {
+                    "id": "56723",
+                    "matNo": "1176363",
+                    "matType": "HIBE",
+                    "batchNo": "ABL2835",
+                    "nodeId": "1255|1176363|ABL2835",
+                    "level": 4,
+                    "type": "Material",
+                    "matDesc": "FILTER CORNING VAC FLASK 1L 0.22 430517"
+                  },
+                  {
+                    "id": "63632",
+                    "matNo": "1318153",
+                    "matType": "RAW",
+                    "batchNo": "ABJ7938",
+                    "nodeId": "1255|1318153|ABJ7938",
+                    "level": 4,
+                    "type": "Material",
+                    "matDesc": "MANGANESE II SULFATE MONOHYDRATE"
+                  }
+                ],
+                "relationshipMap": {
+                  "288400-63632": {
+                    "id": "136905",
+                    "type": "Input",
+                    "uom": "KG",
+                    "qty": "0.002",
+                    "startNodeId": "63632",
+                    "endNodeId": "288400"
+                  },
+                  "288400-56723": {
+                    "id": "136904",
+                    "type": "Input",
+                    "uom": "ST",
+                    "qty": "6.0",
+                    "startNodeId": "56723",
+                    "endNodeId": "288400"
+                  }
+                }
+              }
+            ],
+            "relationshipMap": {
+              "67972-288400": {
+                "id": "8789",
+                "type": "Output",
+                "uom": "L",
+                "qty": "5.84",
+                "startNodeId": "288400",
+                "endNodeId": "67972"
+              }
+            }
+          },
+          {
+            "id": "67547",
+            "matNo": "1398816",
+            "matType": "HIBE",
+            "batchNo": "ABF9690",
+            "nodeId": "1255|1398816|ABF9690",
+            "level": 2,
+            "type": "Material",
+            "matDesc": "FILTER ASSY 0.1UM W/MPORE KVVLG10TT1"
+          }
+        ],
+        "relationshipMap": {
+          "286546-67972": {
+            "id": "136009",
+            "type": "Input",
+            "uom": "L",
+            "qty": "2.28",
+            "startNodeId": "67972",
+            "endNodeId": "286546"
+          },
+          "286546-61856": {
+            "id": "136008",
+            "type": "Input",
+            "uom": "ST",
+            "qty": "2.0",
+            "startNodeId": "61856",
+            "endNodeId": "286546"
+          },
+          "286546-66593": {
+            "id": "136014",
+            "type": "Input",
+            "uom": "G",
+            "qty": "720.0",
+            "startNodeId": "66593",
+            "endNodeId": "286546"
+          },
+          "286546-64634": {
+            "id": "136010",
+            "type": "Input",
+            "uom": "ST",
+            "qty": "1.0",
+            "startNodeId": "64634",
+            "endNodeId": "286546"
+          },
+          "286546-66539": {
+            "id": "136013",
+            "type": "Input",
+            "uom": "ST",
+            "qty": "1.0",
+            "startNodeId": "66539",
+            "endNodeId": "286546"
+          },
+          "286546-66491": {
+            "id": "136011",
+            "type": "Input",
+            "uom": "ST",
+            "qty": "1.0",
+            "startNodeId": "66491",
+            "endNodeId": "286546"
+          },
+          "286546-67547": {
+            "id": "136012",
+            "type": "Input",
+            "uom": "ST",
+            "qty": "1.0",
+            "startNodeId": "67547",
+            "endNodeId": "286546"
+          }
+        }
+      }
+    ],
+    "relationshipMap": {
+      "62441-286546": {
+        "id": "8636",
+        "type": "Output",
+        "uom": "L",
+        "qty": "120.0",
+        "startNodeId": "286546",
+        "endNodeId": "62441"
+      }
+    }
+  }
+]

@@ -43,9 +43,9 @@ const Dashboard = () => {
   return (
     <>
       <Layout style={{ minHeight: '100vh' }}>
-        <Sidebar />
+        <HeaderBar />
         <Layout>
-          <HeaderBar />
+          <Sidebar />
           <Content>
             {/* <BreadCrumbWrapper /> */}
             <SuspenseWrapper>

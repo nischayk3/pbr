@@ -15,6 +15,7 @@ const SelectSearchField = (props) => {
         placeholder={props.placeholder}
         value={props.selectedValue}
         onChange={props.onChangeSelect}
+        onSearch={props.onSearchSelect}
         style={{ width: '100%', margin: '0px' }}
       >
         {props.selectList &&

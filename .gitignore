@@ -18,6 +18,7 @@ test-report.xml
 .env.test.local
 .env.production.local
 package-lock.json
+.eslintrc.json
 # Logs
 logs
 *.log
@@ -48,6 +49,3 @@ production/landing-dist-min
 production/documentation/*.html
 production/landing/*.html
 
-# misc
-package-lock.json
-.env
