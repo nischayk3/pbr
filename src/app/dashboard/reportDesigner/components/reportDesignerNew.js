@@ -26,6 +26,8 @@ import SaveModal from '../../../../components/SaveModal/saveModal'
 import { useDispatch } from 'react-redux';
 import { sendReport, screenChange } from '../../../../duck/actions/reportDesignerAction';
 import { showLoader, hideLoader, showNotification } from '../../../../duck/actions/commonActions';
+import Highlighter from "react-highlight-words";
+import Signature from '../../../../components/ElectronicSignature/signature'
 
 //Columns For The view Selection modal
 const columns = [
@@ -108,6 +110,7 @@ function ReportDesignerNew() {
   const [reportData, setReportData] = useState([]);
   const [formData, setFormData] = useState({});
   const [mainJson, setMainJson] = useState({});
+  const [isPublish, setIsPublish] = useState(false);
   const [ form ] = Form.useForm();
 
 
@@ -127,12 +130,12 @@ function ReportDesignerNew() {
   const checkChanges = (reportData, mainJson) => {
     let json_data = reportData
     let jayson = mainJson
-    let chart_data = reportData[0]['chart_details']
+    // let chart_data = reportData[0]['chart_details']
     json_data = json_data[0] ? json_data[0] : []
     json_data = json_data['layout_info'] ? json_data['layout_info'] : {}
 
 
-    console.log(json_data,reportData[0]['chart_details'],selectedChartList)
+    // console.log(json_data,reportData[0]['chart_details'],selectedChartList)
     
     if (Object.keys(json_data).length > 0 && Object.keys(jayson).length > 0) {
       return true
@@ -151,8 +154,8 @@ function ReportDesignerNew() {
       return false
   };
 
-  const mapViewList = viewList.length > 0 ? viewList : []
-  const mapReportList = reportList.length > 0 ? reportList : []
+  const mapViewList = viewList &&  viewList.length > 0 ? viewList : []
+  const mapReportList = reportList && reportList.length > 0 ? reportList : []
 
   const OnNewClick = () => {
     setIsNew(true);
@@ -189,7 +192,10 @@ function ReportDesignerNew() {
   const handleValuesChange = (changedValues, values) => {
     setMainJson(convertToJson(values));
   };
-
+  
+  const handleClose = () => {
+    setIsPublish(false)
+  };
   //Get view table data
   const getViewsList = () => {
     let req = {};
@@ -203,6 +209,10 @@ function ReportDesignerNew() {
     getReports(req).then((res) => {
       setReportList(res['Data']);
     });
+  };
+
+  const setPublish = () => {
+    setIsPublish(true)
   };
 
   const getReportData = (rep_id, rep_status) => {
@@ -427,6 +437,7 @@ function ReportDesignerNew() {
     return rowObject.isActive ? true : false;
   }
 
+
   return (
     <div className='custom-wrapper'>
       <div className='sub-header'>
@@ -478,11 +489,7 @@ function ReportDesignerNew() {
                 </Button>
                 <Button
                   className="custom-secondary-btn"
-                  type="primary"
-                  style={{ backgroundColor: '#093185', color: 'white' }}
-                  onClick={() => {
-                    PrepareJson(mainJson, 'publish')
-                  }}
+                  onClick={() => setIsPublish(true)}
                 >
                   Publish
                 </Button> </>
@@ -601,7 +608,9 @@ function ReportDesignerNew() {
           />
         </Modal>
         <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
+        
       </div>
+      <Signature isPublish={isPublish} handleClose={handleClose}  screenName="Report Designer"/>
     </div>
   );
 }

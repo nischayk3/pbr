@@ -39,7 +39,7 @@ function ChartSelector(props) {
                     
                 >
                     {chartsList.length > 0  ? chartsList.map(item => (
-                        <Option value={item}>
+                        <Option value={item} key={item}>
                             {item}
                         </Option>
                     )):<Option >
