@@ -7,6 +7,7 @@ import InputField from '../../../../../../components/InputField/InputField';
 import SelectField from '../../../../../../components/SelectField/SelectField';
 import Alerts from './alerts';
 import ControLimits from './controlLimts';
+import Display from './display';
 import { PlusSquareOutlined ,ControlOutlined} from '@ant-design/icons';
 const { Panel } = Collapse;
 
@@ -39,6 +40,9 @@ const Personalization = (props) => {
           expandIconPosition='right'
           ghost
         >
+           <Panel header="Alerts" key='1'>
+                  <Alerts />
+          </Panel>
           
             {/* Limits */}
             <Panel header="Limits" key='3'>
@@ -47,7 +51,7 @@ const Personalization = (props) => {
 
           {/* Display */}
           <Panel header='Display' key='2'>
-            
+            <Display/>
           </Panel>
 
 

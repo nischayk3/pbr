@@ -1,4 +1,4 @@
-//CI-CD script--
+//CI-CD script---
 pipeline {
     environment {
         DOCKER_IMAGE = 'registry.mareana.com/bms/dev'
@@ -25,7 +25,7 @@ pipeline {
             steps {
                  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                   sh '''#!/bin/bash -x
-                        STATUS="$(curl -s -u admin:Mzreana@190$  https://sonarqube.mareana.com/api/qualitygates/project_status?projectKey=project:cpv_ui)"
+                        STATUS="$(curl -s -u admin:Mzreana@190$  https://sonarqube.cloud.mareana.com/api/qualitygates/project_status?projectKey=project:cpv_ui)"
                         if [[ $STATUS = *"\\"status\\":\\"ERROR\\""* ]]; then
   	                    echo "Quality Gates Failed for Project cpv_UI hence aborting the pipeline"
                         exit 1
@@ -37,14 +37,14 @@ pipeline {
            }
           stage("Build Docker Image") {
             steps {
-                sh 'docker build -t  $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest  .'
+                sh 'sudo docker build -t  $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest --no-cache .'
                 }
               }
           stage("Push Docker Image to Docker Registry") {
             steps {
                 withDockerRegistry(credentialsId: 'docker-registry-mareana', url: 'https://registry.mareana.com') {
-                sh 'docker push $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest'
-                sh 'docker rmi $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest'
+                sh 'sudo docker push $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest'
+                sh 'sudo docker rmi $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest'
                 }
             }
           }
