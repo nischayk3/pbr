@@ -12,18 +12,18 @@ import ViolationTable from './violation';
 import { sendParameterTableData } from '../../../../../../duck/actions/chartPersonalizationAction';
 import { updateTableColumn } from '../../../../../../utils/updateTableColumns';
 
-function ChartDataTable(props) {
+function ChartDataTable({exclusionTableData}) {
   const parameterData = useSelector(
     (state) => state.chartPersReducer.getBatchCoverage.data
   );
-
+  console.log(parameterData, 'data')
   const [paramData, setparamData] = useState([]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     setparamData(parameterData);
-    dispatch(sendParameterTableData(parameterData ? parameterData : []));
+    // dispatch(sendParameterTableData(parameterData ? parameterData : []));
   }, [parameterData]);
 
   const uniqueArr = (value, index, self) => {
@@ -46,6 +46,8 @@ function ChartDataTable(props) {
     });
   });
 
+  console.log(paramData, 'paramData');
+
   const { TabPane } = Tabs;
   return (
     <div>
@@ -53,7 +55,7 @@ function ChartDataTable(props) {
         <Card bordered={false} style={{ height: '430px' }}>
           <Tabs defaultActiveKey='3'>
             <TabPane tab='Exclusion' key='1'>
-              <ExclusionTable />
+              <ExclusionTable exclusionTableData={exclusionTableData} />
             </TabPane>
             {/* <TabPane tab='Shift' key='2'>
                               <ShiftTable />

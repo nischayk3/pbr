@@ -1,7 +1,7 @@
 import './ChartDetailsStyle.scss';
 
-import { Button, Card, Empty, Modal, Switch, Row, Col, Input } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Button, Card, Empty, Modal, Checkbox, Row, Col, Input } from 'antd';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   sendChartDesc,
   sendChartName,
@@ -27,9 +27,24 @@ function ChartDetails(props) {
   const [clickedBatchId, setclickedBatchId] = useState('');
   const [isExcluedModal, setisExcluedModal] = useState(false);
   const [isExcludeRecord, setisExcludeRecord] = useState(false);
+  const counterId = useRef(0);
+  const [exclusionValues, setExclusionValues] = useState({
+    productCode:'',
+    parameterName:'',
+    parameterValue:'',
+    unit:'',
+    testDate:'',
+    ncNumber:'',
+    notes:'',
+    excludeRecord:false
+  })
 
   const chartPlotData = useSelector(
     (state) => state.chartDataReducer && state.chartDataReducer.chartData
+  );
+
+  const parameterData1 = useSelector(
+    (state) => state.chartPersReducer.getBatchCoverage.data
   );
 
   const getChartObjData = useSelector(
@@ -85,11 +100,30 @@ function ChartDetails(props) {
   };
   const handleOk = () => {
     setisExcluedModal(false);
+    counterId.current = counterId.current + 1;
+    let filtered = parameterData1 && parameterData1.find((ele) => ele.batch_num === clickedBatchId);
+    filtered.userId = 1;
+    filtered.exclusionDesc = exclusionValues.notes;
+    filtered.exclusionId = counterId.current;
+    filtered.timeStamp = new Date().toLocaleTimeString();
+    props.setExclusionTableData([...props.exclusionTableData, filtered])
   };
+  console.log(props.exclusionTableData, 'exclusionTableData');
   const onChangeCheckbox = (checked) => {
     const isChecked = checked;
     setisExcludeRecord(checked);
   };
+
+  const handleExcludeChange = (e) => {
+      setExclusionValues({...exclusionValues, excludeRecord : e.target.checked })
+  }
+
+  const handleChangeNotes = (e) => {
+    setExclusionValues({...exclusionValues, notes : e.target.value })
+  }
+
+  console.log(exclusionValues, 'exclusionValues');
+
   return (
     <div>
       <Card title='Chart'>
@@ -170,7 +204,7 @@ function ChartDetails(props) {
         </Card>
       </Card>
       <Modal
-        title='Exclude Record'
+        title='Batch Parameter'
         visible={isExcluedModal}
         onCancel={handleCloseModal}
         footer={null}
@@ -181,19 +215,7 @@ function ChartDetails(props) {
           <Row gutter={24}>
             <Col className="gutter-row" span={12}>
               <div>
-                <InputField label='Product Code' value={clickedBatchId} disabled />
-              </div>
-            </Col>
-            <Col className="gutter-row" span={12}>
-              <div>
-                <InputField label='Unit' value={clickedBatchId} disabled />
-              </div>
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col className="gutter-row" span={12}>
-              <div>
-                <InputField label='NC Number' value={clickedBatchId} disabled />
+                <InputField label='Product Code' value={exclusionValues.productCode} disabled />
               </div>
             </Col>
             <Col className="gutter-row" span={12}>
@@ -205,28 +227,42 @@ function ChartDetails(props) {
           <Row gutter={24}>
             <Col className="gutter-row" span={12}>
               <div>
-                <InputField label='Test Date' value={clickedBatchId} disabled />
+                <InputField label='Parameter Name' value={exclusionValues.parameterName} disabled />
               </div>
             </Col>
             <Col className="gutter-row" span={12}>
-              <div className="radio-btn">
-                <p>Show/Hide Record</p>
-                <Switch type='primary' size='small' onChange={onChangeCheckbox} />
+              <div>
+                <InputField label='Parameter Value' value={exclusionValues.parameterValue} disabled />
               </div>
             </Col>
           </Row>
           <Row gutter={24}>
-            <Col className="gutter-row" span={24}>
+            <Col className="gutter-row" span={12}>
               <div>
-                <InputField label='Parameter Name' value={clickedBatchId} disabled />
+                <InputField label='Unit' value={exclusionValues.unit} disabled />
               </div>
+            </Col>
+            <Col className="gutter-row" span={12}>
+              <div>
+                <InputField label='Test Date' value={exclusionValues.testDate} disabled />
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col className="gutter-row" span={12}>
+              <div>
+                <InputField label='NC Number' value={exclusionValues.ncNumber} disabled />
+              </div>
+            </Col>
+            <Col className="gutter-row" span={12}>
+            <Checkbox checked={exclusionValues.excludeRecord} onChange={handleExcludeChange}>Exclude Record</Checkbox>
             </Col>
           </Row>
           <Row gutter={24}>
             <Col className="gutter-row" span={24}>
               <div>
                 <label>Notes</label>
-              <TextArea rows={2} placeholder="Reason for excluding Record." maxLength={6} />
+                <TextArea rows={2} placeholder="Reason for excluding Record." value={exclusionValues.notes} onChange={handleChangeNotes}  />
               </div>
             </Col>
           </Row>
