@@ -100,15 +100,16 @@ function ChartDetails(props) {
   };
   const handleOk = () => {
     setisExcluedModal(false);
-    counterId.current = counterId.current + 1;
-    let filtered = parameterData1 && parameterData1.find((ele) => ele.batch_num === clickedBatchId);
-    filtered.userId = 1;
-    filtered.exclusionDesc = exclusionValues.notes;
-    filtered.exclusionId = counterId.current;
-    filtered.timeStamp = new Date().toLocaleTimeString();
-    props.setExclusionTableData([...props.exclusionTableData, filtered])
+    if (exclusionValues.excludeRecord) {
+      counterId.current = counterId.current + 1;
+      let filtered = parameterData1 && parameterData1.find((ele) => ele.batch_num === clickedBatchId);
+      filtered.userId = localStorage.getItem('user');
+      filtered.exclusionDesc = exclusionValues.notes;
+      filtered.exclusionId = counterId.current;
+      filtered.timeStamp = new Date().toLocaleTimeString();
+      props.setExclusionTableData([...props.exclusionTableData, filtered])
+    }  
   };
-  console.log(props.exclusionTableData, 'exclusionTableData');
   const onChangeCheckbox = (checked) => {
     const isChecked = checked;
     setisExcludeRecord(checked);
@@ -122,7 +123,6 @@ function ChartDetails(props) {
     setExclusionValues({...exclusionValues, notes : e.target.value })
   }
 
-  console.log(exclusionValues, 'exclusionValues');
 
   return (
     <div>
