@@ -15,3 +15,20 @@ export const eSign = (request) => {
     );
 };
 
+
+export const publishEvent = (request) => {
+    return Service.put(BMS_APP_PYTHON_SERVICE + '/workflow-publish-event', request).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+
+
+
+
+

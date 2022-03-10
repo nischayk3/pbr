@@ -5,7 +5,7 @@ import Service from './AjaxService';
 
 
 export const getViews = (request) => {
-    return Service.get(BMS_APP_PYTHON_SERVICE + '/views', request).then(
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/views-list', request).then(
         (response) => {
             return response.data;
         },
