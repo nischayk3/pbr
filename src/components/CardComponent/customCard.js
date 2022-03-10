@@ -3,10 +3,10 @@ import { Card } from 'antd';
 import { BarChartOutlined ,ProjectOutlined,LayoutOutlined,FileDoneOutlined,FolderOpenOutlined,FileSyncOutlined} from '@ant-design/icons';
 import './styles.scss';
 
+ 
 const customCard = (props) => {
     return (
-
-        <div className={props.count===0?'approval-cards-disabled':'approval-cards'} tabIndex="0">
+        <div className={props.count===0?'approval-cards-disabled':props.active===props.desc?'approval-cards-active':'approval-cards'} >
             <div className={props.count===0?'circle_icon-disabled':'circle_icon'} >
                 {props.desc=='View Approval' && <LayoutOutlined />}
                 {props.desc=='Param Approval' && <ProjectOutlined />}

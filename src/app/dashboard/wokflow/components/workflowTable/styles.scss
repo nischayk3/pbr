@@ -1,7 +1,18 @@
 .workflow-table{
-   
-    .ant-table-thead > tr > th:first-of-type {
-       padding: 50px !important;
+    th:first-of-type {
+        padding-left: 25px !important;
+       
     }
- 
+    th:last-of-type {
+        padding-right: 25px !important;
+       
+    }
+    td:first-of-type {
+        padding-left: 25px !important;
+       
+    }
+    td:last-of-type {
+        padding-right: 25px !important;
+       
+    }
 }

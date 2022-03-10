@@ -1,15 +1,24 @@
 import React,{useEffect,useState,useRef} from 'react';
+import {
+  useHistory
+} from 'react-router-dom';
 import { Table,Input ,Space,Button} from 'antd';
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import './styles.scss';
 
 
 
-function workflowTable() {
+function workflowTable(props) {
     const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [newColumns,setNewColumns]=useState([]);
   const refSearchInput = useRef();
+  const history = useHistory();
  
+useEffect(()=>{
+  updateTableColumns();
+},[props.columns])
 
   const getColumnSearchProps = (
     dataIndex,
@@ -123,58 +132,83 @@ function workflowTable() {
     clearFilters();
     setSearchText("");
   };
-    const columns = [
-        {
-            title: 'Site',
-            key: 'site',
-            dataIndex: 'site',
-            ...getColumnSearchProps('site',refSearchInput,searchText,setSearchText,searchedColumn,setSearchedColumn)
-        },
-        {
-            title: 'Product',
-            key: 'product',
-            dataIndex: 'product',
-        },
-        {
-            title: 'Test Name',
-            key: 'test_name',
-            dataIndex: 'test_name',
-        },
-        {
-            title: 'Batch',
-            key: 'batch',
-            dataIndex: 'batch',
-        },
-        {
-            title: 'Test Value',
-            key: 'test_value',
-            dataIndex: 'test_value',
-        },
-        {
-            title: 'UOM Code',
-            key: 'uom code',
-            dataIndex: 'uom code',
-        }
-    ]
+    // const columns = [
+    //     {
+    //         title: 'Site',
+    //         key: 'site',
+    //         dataIndex: 'site',
+    //         ...getColumnSearchProps('site',refSearchInput,searchText,setSearchText,searchedColumn,setSearchedColumn)
+    //     },
+    //     {
+    //         title: 'Product',
+    //         key: 'product',
+    //         dataIndex: 'product',
+    //     },
+    //     {
+    //         title: 'Test Name',
+    //         key: 'test_name',
+    //         dataIndex: 'test_name',
+    //     },
+    //     {
+    //         title: 'Batch',
+    //         key: 'batch',
+    //         dataIndex: 'batch',
+    //     },
+    //     {
+    //         title: 'Test Value',
+    //         key: 'test_value',
+    //         dataIndex: 'test_value',
+    //     },
+    //     {
+    //         title: 'UOM Code',
+    //         key: 'uom code',
+    //         dataIndex: 'uom code',
+    //     }
+    // ]
 
-    const data=[
-        {
-            'site': 'US11',
-            'product':'bela chow',
-            'test_name':123
-        },
-        {
-            'site': 'U11',
-            'product':'bela chow',
-            'test_name':123
+    
+    const updateTableColumns=()=>{
+      let columns = [];
+      props.columns.map((i) => {
+        let { displayName, fieldName } = i;
+  
+        if (i.visible) {
+          let obj = {
+            title: displayName,
+            dataIndex: fieldName,
+            key: i.id,
+            ...getColumnSearchProps(fieldName,refSearchInput,searchText,setSearchText,searchedColumn,setSearchedColumn),
+            sorter: (a, b) => {
+  
+              return a.fieldName === null || a.fieldName === undefined || a.fieldName === "" ? -1 : b.fieldName == null || b.fieldName == undefined || b.fieldName == "" ? 1 : a.fieldName.toString().localeCompare(b.fieldName)
+  
+            },
+  
+          };
+  
+          if (i.fieldName === "action") {
+            obj.render = (text, row,index) => {
+              return (
+                <a onClick={()=>window.open(`${process.env.REACT_APP_URL}${text}?id=${row.view_id}&version=${row.version}`)}>Review Submission</a>
+                
+              );
+            }
+          }
+  
+  
+          columns.push(obj)
         }
-    ]
+  
+      })
+  
+      setNewColumns(columns)
+    }
     return (
-        <div>
+        <div className='workflow-table'>
             <Table
-                className='workflow-table'
-                columns={columns}
-                dataSource={data}
+                //className='workflow-table'
+                columns={newColumns}
+                dataSource={props.dataSource}
                 style={{ border: '1px solid #ececec', borderRadius: '2px' }}
                 pagination={false}
             //rowKey={(record) => record.param}

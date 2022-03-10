@@ -15,6 +15,7 @@ import { ArrowLeftOutlined, DownloadOutlined, } from '@ant-design/icons';
 import DashCard from '../../../../components/cardComponent/customCard';
 import illustrations from '../../../../assets/images/Banner illustration.svg';
 import WorkflowTable from './workflowTable/workflowTable';
+import response from './dummy.json';
 import './styles.scss';
 
  
@@ -23,18 +24,59 @@ const Workflow = () => {
     const [itemCount, setItemCount] = useState();
     const [cardTitle, setCardTitle] = useState('');
     const [tilesData, setTilesData] = useState([]);
+    const [activeDiv, setActiveDiv] = useState('');
+    const [activeTab, setActiveTab] = useState("1");
+    const [columns, setColumns] = useState([]);
+    const [dataSource, setDataSource] = useState([]);
     const dispatch = useDispatch();
 
     useEffect(() => {
         getTilesData();
     }, []);
 
+    useEffect(()=>{
+        setColumns(response.config);
+        setDataSource(response.data.content);
+    },[cardTitle])
+
     const getTilesData = async () => {
         let req = {};
         try {
             dispatch(showLoader());
-            const tilesResponse = await getCountData(req);
-            setTilesData(tilesResponse['Data']);
+            // const tilesResponse = await getCountData(req);
+            // setTilesData(tilesResponse['Data']);
+            setTilesData([
+                {
+                  "application_type": "VIEW",
+                  "item_count": 2,
+                  "text": "View Approval"
+                },
+                {
+                  "application_type": "CHART",
+                  "item_count": 2,
+                  "text": "Chart Approval"
+                },
+                {
+                  "application_type": "REPORT",
+                  "item_count": 1,
+                  "text": "Report Approval"
+                },
+                {
+                  "application_type": "PBR",
+                  "item_count": 0,
+                  "text": "Pbr Approval"
+                },
+                {
+                  "application_type": "PARAM",
+                  "item_count": 0,
+                  "text": "Param Approval"
+                },
+                {
+                  "application_type": "DTLOAD",
+                  "item_count": 0,
+                  "text": "Dtload Approval"
+                }
+              ])
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
@@ -43,9 +85,16 @@ const Workflow = () => {
     }
 
     const tilesClicked = (item) => {
+        console.log(item);
        setItemCount(item.item_count);
-       setCardTitle(item.text)
+       setCardTitle(item.text);
+       setActiveDiv(item.text);
     }
+
+   const changeTab = activeKey => {
+        console.log(activeKey);
+        setActiveTab(activeKey);
+      };
     return (
         <div className='custom-wrapper'>
             <div className='sub-header'>
@@ -71,7 +120,7 @@ const Workflow = () => {
                             return (
 
                                 <div onClick={() => tilesClicked(item)}>
-                                    <DashCard count={item.item_count} desc={item.text} />
+                                    <DashCard count={item.item_count} desc={item.text} active={activeDiv} />
                                 </div>
 
                             )
@@ -79,9 +128,9 @@ const Workflow = () => {
                     }
                     {itemCount>0 && (
                         <Card title={<div className='table-head'>{cardTitle}<DownloadOutlined style={{ color: '#093185', marginLeft: '25px' }} /></div>} className='table-cards'>
-                            <Tabs defaultActiveKey="1" className='workflow-tabs'>
+                            <Tabs className='workflow-tabs' activeKey={activeTab} onChange={changeTab}>
                                 <TabPane tab="Awaiting Approval" key="1">
-                                    <WorkflowTable />
+                                    <WorkflowTable columns={columns} dataSource={dataSource}/>
                                 </TabPane>
                                 <TabPane tab="Recently Approved" key="2">
                                     Content of Tab Pane 2
