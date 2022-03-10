@@ -47,3 +47,14 @@ export const saveReportDesign = (request) => {
         }
     );
 };
+
+export const PublishReport = (request) => {
+    return Service.put(BMS_APP_PYTHON_SERVICE + '/put-report-data' , request).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};

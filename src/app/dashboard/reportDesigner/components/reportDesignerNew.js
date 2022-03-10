@@ -26,6 +26,8 @@ import SaveModal from '../../../../components/SaveModal/saveModal'
 import { useDispatch } from 'react-redux';
 import { sendReport, screenChange } from '../../../../duck/actions/reportDesignerAction';
 import { showLoader, hideLoader, showNotification } from '../../../../duck/actions/commonActions';
+import Highlighter from "react-highlight-words";
+import Signature from '../../../../components/ElectronicSignature/signature'
 
 //Columns For The view Selection modal
 const columns = [
@@ -108,13 +110,14 @@ function ReportDesignerNew() {
   const [reportData, setReportData] = useState([]);
   const [formData, setFormData] = useState({});
   const [mainJson, setMainJson] = useState({});
-  const [form] = Form.useForm();
+  const [isPublish, setIsPublish] = useState(false);
+  const [ form ] = Form.useForm();
+
 
   const dispatch = useDispatch();
 
   // const savedData = useSelector((state) => state.reportDesignerReducer);
-  const mapViewList = viewList.length > 0 ? viewList : []
-  const mapReportList = reportList.length > 0 ? reportList : []
+
 
   useEffect(() => {
     getViewsList();
@@ -125,23 +128,34 @@ function ReportDesignerNew() {
   useEffect(() => { form.resetFields() }, [formData]);
 
   const checkChanges = (reportData, mainJson) => {
-    let jay = reportData
+    let json_data = reportData
     let jayson = mainJson
+    // let chart_data = reportData[0]['chart_details']
+    json_data = json_data[0] ? json_data[0] : []
+    json_data = json_data['layout_info'] ? json_data['layout_info'] : {}
 
-    jay = jay[0] ? jay[0] : []
-    jay = jay['layout_info'] ? jay['layout_info'] : {}
-    if (Object.keys(jay).length > 0 && Object.keys(jayson).length > 0) {
+
+    // console.log(json_data,reportData[0]['chart_details'],selectedChartList)
+    
+    if (Object.keys(json_data).length > 0 && Object.keys(jayson).length > 0) {
       return true
     }
-    else if (Object.keys(jay).length == 0 && Object.keys(jayson).length == 0) {
+    else if (Object.keys(json_data).length == 0 && Object.keys(jayson).length == 0) {
       return true
     }
-    else if (Object.keys(jay).length == 0 && Object.keys(jayson).length > 0) {
+    // else if ((Object.keys(json_data).length == 0 && Object.keys(jayson).length == 0)&&())
+    // {
+    //   return true
+    // } 
+    else if (Object.keys(json_data).length == 0 && Object.keys(jayson).length > 0) {
       return true
     }
     else
       return false
   };
+
+  const mapViewList = viewList &&  viewList.length > 0 ? viewList : []
+  const mapReportList = reportList && reportList.length > 0 ? reportList : []
 
   const OnNewClick = () => {
     setIsNew(true);
@@ -156,6 +170,8 @@ function ReportDesignerNew() {
     setStatus('NEW')
     setChartList([])
   }
+
+
 
   const onOk = async () => {
 
@@ -176,7 +192,10 @@ function ReportDesignerNew() {
   const handleValuesChange = (changedValues, values) => {
     setMainJson(convertToJson(values));
   };
-
+  
+  const handleClose = () => {
+    setIsPublish(false)
+  };
   //Get view table data
   const getViewsList = () => {
     let req = {};
@@ -192,6 +211,10 @@ function ReportDesignerNew() {
     });
   };
 
+  const setPublish = () => {
+    setIsPublish(true)
+  };
+
   const getReportData = (rep_id, rep_status) => {
     message.success(`${rep_id} selected`)
     let req = { rep_status: rep_status ? rep_status : 'DRFT' };
@@ -203,7 +226,7 @@ function ReportDesignerNew() {
   };
 
 
-  //   Get charts based on viewId-version
+  //Get charts based on viewId-version
   const getChartsList = (version) => {
     if (viewId.length > 0)
       setSelectedChartList([])
@@ -219,11 +242,11 @@ function ReportDesignerNew() {
   };
 
   // Converting form json into layout info required by the report generator json
-  const convertToJson = (jay) => {
+  const convertToJson = (json_data) => {
     let arr = {};
     let section_arr = [];
-    jay = jay['response'];
-    jay.map((item, index) => {
+    json_data = json_data['response'];
+    json_data.map((item, index) => {
       let obj = {};
       obj['heading'] = item.sectionName;
       if (index == 0)
@@ -240,7 +263,7 @@ function ReportDesignerNew() {
         key_obj['key'] = i.keyName
 
         return key_obj;
-      });      
+      });
       obj['content'] = content_arr;
       obj['id'] = index;
 
@@ -322,48 +345,46 @@ function ReportDesignerNew() {
   // unloading the json into component readable form 
   // getting json from GET service distrupting json for each component (as required)
   const convertContent = (obj) => {
-    
+
     let content_obj = obj
     let rows = []
-    content_obj.map((i)=>{
+    content_obj.map((i) => {
       let o = {}
       o['keyName'] = i.key
       o['value'] = i.value
       o['editable'] = i.editable
 
       rows.push(o)
-    }) 
-      
-    
+    })
 
     return rows
   }
 
-  const unLoadJson = async (jay) => {
+  const unLoadJson = async (json_data) => {
     try {
-      jay = jay[0]
+      json_data = json_data[0]
 
-      let status = jay['rep_status'] ? jay['rep_status'] : ''
+      let status = json_data['rep_status'] ? json_data['rep_status'] : ''
       setStatus(status)
 
-      let ReportName = jay['rep_name'] ? jay['rep_name'] : ''
+      let ReportName = json_data['rep_name'] ? json_data['rep_name'] : ''
       setReportName(ReportName)
 
-      let view = jay['view_disp_id'] ? jay['view_disp_id'] : ''
+      let view = json_data['view_disp_id'] ? json_data['view_disp_id'] : ''
       setViewId(view)
 
-      let chartList = jay['chart_details'].length > 0 ? jay['chart_details'] : []
+      let chartList = json_data['chart_details'].length > 0 ? json_data['chart_details'] : []
       setSelectedChartList(chartList)
 
-      let view_version = jay['view_version'] ? jay['view_version'].toString() : ''
+      let view_version = json_data['view_version'] ? json_data['view_version'].toString() : ''
       setViewVersion(view_version)
       getChartsList(view + '-' + view_version)
       setViewIdVersion(view + '-' + view_version)
-      jay = jay['layout_info']
-      if (jay) {
+      json_data = json_data['layout_info']
+      if (json_data) {
 
         let res = []
-        let layout_info = jay ? jay : {}
+        let layout_info = json_data ? json_data : {}
         let title_page = layout_info['titlepage'] ? layout_info['titlepage'] : {}
 
         let title_section = title_page['heading'] ? title_page['heading'] : {}
@@ -416,6 +437,7 @@ function ReportDesignerNew() {
     return rowObject.isActive ? true : false;
   }
 
+
   return (
     <div className='custom-wrapper'>
       <div className='sub-header'>
@@ -467,11 +489,7 @@ function ReportDesignerNew() {
                 </Button>
                 <Button
                   className="custom-secondary-btn"
-                  type="primary"
-                  style={{ backgroundColor: '#093185', color: 'white' }}
-                  onClick={() => {
-                    PrepareJson(mainJson, 'publish')
-                  }}
+                  onClick={() => setIsPublish(true)}
                 >
                   Publish
                 </Button> </>
@@ -499,7 +517,7 @@ function ReportDesignerNew() {
           mapViewList={mapViewList}
         />
 
-        {(isLoad || isNew) && loading == false ?
+        { (isLoad || isNew) && loading == false ?
           <div className="reportDesigner-grid-tables">
             <ChartSelector
               selectedChartList={selectedChartList}
@@ -527,9 +545,9 @@ function ReportDesignerNew() {
           onCancel={() => setVisible(false)}
           width={500}
           style={{ marginRight: '800px' }}
-          footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => {
+          footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => 
             onOk()
-          }}>OK</Button>,]}
+          }>OK</Button>,]}
 
         >
           <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
@@ -545,7 +563,7 @@ function ReportDesignerNew() {
           >
             {mapReportList.length >= 0 ? mapReportList.map((item) =>
 
-              <Option value={item.rep_disp_id}>{item.rep_disp_id}</Option>
+              <Option value={item.rep_disp_id} key={item.rep_disp_id}>{item.rep_disp_id}</Option>
             ) : <></>}
 
           </Select>
@@ -577,7 +595,7 @@ function ReportDesignerNew() {
             columns={columns}
             onRow={record => ({
               onClick: e => {
-                record['color'] = 'grey'
+                record['color'] = '#D3D3D3'
                 setReportId(record.rep_disp_id)
                 getReportData(record.rep_disp_id, record.rep_status)
                 dispatch(showLoader())
@@ -590,7 +608,9 @@ function ReportDesignerNew() {
           />
         </Modal>
         <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
+        
       </div>
+      <Signature isPublish={isPublish} handleClose={handleClose}  screenName="Report Designer"/>
     </div>
   );
 }

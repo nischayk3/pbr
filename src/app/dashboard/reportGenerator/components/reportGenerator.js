@@ -20,6 +20,9 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
 import { screenChange } from '../../../../duck/actions/reportDesignerAction';
+import { saveReportGenerator } from '../../../../services/reportGeneratorServices';
+import SaveModal from '../../../../components/SaveModal/saveModal'
+import { showNotification } from '../../../../duck/actions/commonActions';
 
 
 const { Panel } = Collapse;
@@ -45,7 +48,7 @@ function ReportGenerator() {
     const [table, setTable] = useState([])
     const [schedule, setSchedule] = useState('')
     const [emailList, setEmailList] = useState([])
-    // const [selectedUser, setSelectedUser] = useState(false)
+    const [isSave, setIsSave] = useState(false);    // const [selectedUser, setSelectedUser] = useState(false)
     const [reportId, setReportId] = useState('')
     const [reportName, setReportName] = useState('')
     const [reportStatus, setReportStatus] = useState('')
@@ -104,7 +107,8 @@ function ReportGenerator() {
         return allSections
     }
 
-    const unloadTest = (ReportData) => {
+    const unloadTest = (ReportData) => 
+    {
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setCharts(ReportData['chart_int_ids'] ? createArraObj(ReportData['chart_int_ids']) : [])
@@ -181,6 +185,18 @@ function ReportGenerator() {
         req['data'] = obj
         req['saveType'] = 'save'
 
+        saveReportGenerator(req).then((res)=>
+        {
+           if(res.Status==200)
+           {
+              setIsSave(true)
+           }
+          else{
+            dispatch(showNotification('Not Saved'))
+          }
+
+           
+        })
     }
 
     const handleEdit = (value, heading, k) => {
@@ -367,6 +383,7 @@ function ReportGenerator() {
                     </Select>
                 </Modal>
             </div>
+            <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
         </div>
 
     );
