@@ -4,19 +4,19 @@
         "rep_name": "REPORT_NEW_JSON",
         "rep_status": "DRFT",
         "user": "demo",
-        "variant_name": "demo_R133_variant",
+        "variant_name": "demo_variant",
         "chart_info": {
             "charts": [
                 {
                     "chart": "C1-BELAC_ANALY-1",
-                    "excursion": true,
+                    "excursion": false,
                     "violation": false,
                     "parameter": false,
-                    "exclusion": true
+                    "exclusion": false
                 },
                 {
                     "chart": "C1-BELAC_ANALY-4",
-                    "excursion": true,
+                    "excursion": false,
                     "violation": false,
                     "parameter": false,
                     "exclusion": false
@@ -35,8 +35,8 @@
                         "key": "NAME"
                     },
                     {
-                        "value": "22",
-                        "editable": false,
+                        "value": "21",
+                        "editable": true,
                         "id": 2,
                         "key": "AGE"
                     }
@@ -49,13 +49,14 @@
                     "numbered": false,
                     "content": [
                         {
-                            "value": "DETAILS",
-                            "editable": false,
+                            "value": "Report",
+                            "editable": true,
                             "id": 1,
                             "key": "TITLE"
                         },
                         {
-                            "value": "SDE",
+                            "value": "BELA",
+                            "editable": true,
                             "id": 2,
                             "key": "DESC"
                         }
@@ -68,7 +69,7 @@
                     "content": [
                         {
                             "value": "NA",
-                            "editable": true,
+                            "editable": false,
                             "id": 1,
                             "key": "NAN"
                         }
@@ -80,8 +81,10 @@
         "share": {
             "frequency_unit": "Daily",
             "email_list": [
-                "m@gmail.com",
-                "b@gmail.com"
+                "a@gmail.com",
+                "c@gmail.com",
+                "b@gmail.com",
+                "m@gmail.com"
             ],
             "scheduled_start": "2022-03-01 09:55:22",
             "scheduled_end": "2022-03-03 09:50:22",
