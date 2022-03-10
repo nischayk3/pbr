@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as d3 from 'd3';
 import Draggable from 'react-draggable';
 import svgPanZoom from 'svg-pan-zoom';
-import { Input, Select } from 'antd';
+import { Input, Select, Button } from 'antd';
 import {
   EyeOutlined,
   PlusOutlined,
@@ -20,12 +20,13 @@ function TreePlot(props) {
   const backwardTreeDiv = useRef();
   const forwardTreeDiv = useRef();
 
-  const [chartType, setchartType] = useState('backward');
   const [isMaterialLink, setisMaterialLink] = useState('#08C6FF');
   const [isProcesslink, setisProcesslink] = useState('#08C6FF');
   const [searchOptions, setsearchOptions] = useState([]);
   const [searchValue, setsearchValue] = useState('');
   const [selectedNodeId, setselectedNodeId] = useState('');
+  const [popVisible, setPopVisible] = useState(false);
+  const [nodeData, setNodeData] = useState({});
 
   const { Search } = Input;
 
@@ -297,8 +298,8 @@ function TreePlot(props) {
     let dynamicHeight = getDynamicHeight(hasDuplicateObj.levelWidth);
     console.log('dynamicHeight--------', dynamicHeight);
     let linkArray = [];
-    let isBackward = true;
-    let isForward = false;
+    let isBackward = props.Backward;
+    let isForward = props.Forward;
 
     chartData = processData(chartData, {});
 
@@ -344,6 +345,7 @@ function TreePlot(props) {
       });
       // eslint-disable-next-line no-undef
       var toolTip = d3.select(document.getElementById('gbttooltip'));
+      var popupDiv = d3.select(document.getElementById('popup'));
       // eslint-disable-next-line no-undef
       var onclickWidget = d3.select(document.getElementById('gbtonclick'));
 
@@ -391,43 +393,43 @@ function TreePlot(props) {
           .attr('transform', 'translate(180,20)scale(0.5,0.5)')
           .attr('class', 'viewport');
 
-        d3.select('#treeviewid' + THIS.type)
-          .append('svg:defs')
-          .selectAll('marker')
-          .data([
-            'material_' + THIS.type + '_additional',
-            'processOrder_' + THIS.type + '_additional',
-          ]) // Different link/path types can be defined here
-          .enter()
-          .append('svg:marker') // This section adds in the arrows
-          .attr('id', String)
-          .attr('viewBox', '0 -5 10 10')
-          .attr('refX', function () {
-            if (isBackward) return 10;
-            else if (isForward) return 7;
-          }) // use -10 to draw arrow in front of node
-          .attr('refY', 0)
-          .attr('markerWidth', 8)
-          .attr('markerHeight', 8)
-          .attr('fill', function (d) {
-            if (isForward) {
-              if (d.indexOf('material') > -1) {
-                return isMaterialLink;
-              } else {
-                return isProcesslink;
-              }
-            }
-            if (isBackward) {
-              if (d.indexOf('material') > -1) {
-                return isProcesslink;
-              } else {
-                return isMaterialLink;
-              }
-            }
-          })
-          .attr('orient', '0') // use 180 for right to left
-          .append('svg:path')
-          .attr('d', 'M0,-5L10,0L0,5');
+        // d3.select('#treeviewid' + THIS.type)
+        //   .append('svg:defs')
+        //   .selectAll('marker')
+        //   .data([
+        //     'material_' + THIS.type + '_additional',
+        //     'processOrder_' + THIS.type + '_additional',
+        //   ]) // Different link/path types can be defined here
+        //   .enter()
+        //   .append('svg:marker') // This section adds in the arrows
+        //   .attr('id', String)
+        //   .attr('viewBox', '0 -5 10 10')
+        //   .attr('refX', function () {
+        //     if (isBackward) return 10;
+        //     else if (isForward) return 7;
+        //   }) // use -10 to draw arrow in front of node
+        //   .attr('refY', 0)
+        //   .attr('markerWidth', 8)
+        //   .attr('markerHeight', 8)
+        //   .attr('fill', function (d) {
+        //     if (isForward) {
+        //       if (d.indexOf('material') > -1) {
+        //         return isMaterialLink;
+        //       } else {
+        //         return isProcesslink;
+        //       }
+        //     }
+        //     if (isBackward) {
+        //       if (d.indexOf('material') > -1) {
+        //         return isProcesslink;
+        //       } else {
+        //         return isMaterialLink;
+        //       }
+        //     }
+        //   })
+        //   .attr('orient', '0') // use 180 for right to left
+        //   .append('svg:path')
+        //   .attr('d', 'M0,-5L10,0L0,5');
 
         // add the links and the arrows
         if (json === null || json === 'null') {
@@ -633,26 +635,31 @@ function TreePlot(props) {
           })
           .on('click', function (d) {
             //******** Remove border on all other nodes
-            d3.selectAll('svg')
-              .selectAll('circle')
-              .transition()
-              .duration(750)
-              .attr('r', 10);
+            // d3.selectAll('svg')
+            //   .selectAll('circle')
+            //   .transition()
+            //   .duration(750)
+            //   .attr('r', 10);
 
             // // Set circle border on selected node
-            d3.select(this)
-              .select('circle')
-              .transition()
-              .duration(750)
-              .attr('r', 20)
-              .style('fill', '#ccc');
+            // d3.select(this)
+            //   .select('circle')
+            //   .transition()
+            //   .duration(750)
+            //   .attr('r', 20)
+            //   .style('fill', '#ccc');
 
-            node_onClick(d);
-
+            var top = d3.event.pageY - 400;
+            var left = d3.event.pageX - 300;
+            console.log('top left', top, left);
+            console.log('d3.event.pageY', d3, d3.event.pageX);
             toolTip
               .transition() // declare the transition properties to
               .duration(500) // fade out div for 500ms
               .style('opacity', '0'); // a
+
+            popupDiv.style('top', top + 'px').style('left', left + 'px');
+            node_onClick(d);
           });
 
         var highlightForwardLink = function (
@@ -799,12 +806,10 @@ function TreePlot(props) {
           .attr('x', function (d) {
             return d.traceability === 'backward' ? 70 : -13;
           })
-
           .attr('dy', '0.35em')
           .attr('text-anchor', function (d) {
             return d.traceability === 'backward' ? 'end' : 'start';
           })
-
           .text(function (d) {
             var nodeName = '';
             var batchName = '';
@@ -827,6 +832,38 @@ function TreePlot(props) {
               .duration(500) // it shall take 500ms
               .style('opacity', '0'); // and go all the way to an opacity of nil
             highlightLink(d, '#6E6E6E', '0.7', 2);
+          })
+          .on('click', function (d) {
+            d3.event.preventDefault();
+
+            // var x;
+            // var y;
+            // if (d3.event.pageX || d3.event.pageY) {
+            //   x = d3.event.pageX;
+            //   y = d3.event.pageY;
+            // } else if (d3.event.clientX || d3.event.clientY) {
+            //   x =
+            //     d3.event.clientX +
+            //     // eslint-disable-next-line no-undef
+            //     document.body.scrollLeft +
+            //     // eslint-disable-next-line no-undef
+            //     document.documentElement.scrollLeft;
+            //   y =
+            //     d3.event.clientY +
+            //     // eslint-disable-next-line no-undef
+            //     document.body.scrollTop +
+            //     // eslint-disable-next-line no-undef
+            //     document.documentElement.scrollTop;
+            // }
+
+            // eslint-disable-next-line no-undef
+
+            // $('.popup')
+            //   .toggle(100)
+            //   .css({
+            //     top: top + 'px',
+            //     left: left + 'px',
+            //   });
           })
           .style('fill-opacity', '0')
           .style('fill', function (d) {
@@ -1042,7 +1079,7 @@ function TreePlot(props) {
         // On Node Click Event
         //toggle children click
         function node_onClick(d) {
-          // that.props.handleChartClick(d);
+          handleChartClick(d);
           // that.setState({ nodeDetails: d });
           console.log('ddddddddddddd', d);
           if (d.children) {
@@ -1380,12 +1417,31 @@ function TreePlot(props) {
     };
 
     let TreeViewBackward = {};
-    const plotType = chartType;
+    const plotType = props.chartType;
     TreeViewBackward = new TreeViewObject(plotType);
     TreeViewBackward.drawTree(chartData);
     setTimeout(() => TreeViewBackward.multiParentCoupling(multiParent), 100);
   };
+  const handleChartClick = (data) => {
+    console.log('dataaaaa', data);
+    setPopVisible(true);
+    setNodeData((prevState) => {
+      return { ...prevState, data };
+    });
+  };
 
+  const onClickView = (field) => {
+    console.log('field', field);
+    console.log('nodeee dataaaa', nodeData);
+    let nodeDetails = {
+      nodeId: nodeData.data.nodeId,
+      clickType: field,
+      product: nodeData.data.matNo,
+    };
+    props.nodeClick(nodeDetails);
+  };
+
+  console.log('popvisibleeee', popVisible);
   return (
     <>
       <Draggable>
@@ -1426,6 +1482,34 @@ function TreePlot(props) {
                   <div id='keyTooltip' className='headerattribute row'></div>
                 </div>
               </div>
+              {popVisible && (
+                <div className='popup-div' id='popup'>
+                  <Button
+                    type='primary'
+                    onClick={() => {
+                      onClickView('backward');
+                    }}
+                  >
+                    Backward Genealogy
+                  </Button>
+                  <Button
+                    type='primary'
+                    onClick={() => {
+                      onClickView('forward');
+                    }}
+                  >
+                    Forward Genealogy
+                  </Button>
+                  <Button
+                    type='primary'
+                    onClick={() => {
+                      onClickView('view');
+                    }}
+                  >
+                    View Details
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>

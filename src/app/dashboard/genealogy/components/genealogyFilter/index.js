@@ -108,13 +108,15 @@ function Filter(props) {
     matText
   ) => {
     let reqFilter = {
-      batch_no: selectedBatchValue,
-      material: selectedProductValue,
-      plant_no: selectedPlantValue,
-      batchText: batchText,
-      plantText: plantText,
-      matText: matText,
+      batch_no: selectedBatchValue ? `'${selectedBatchValue}'` : "''",
+      material: selectedProductValue ? `'${selectedProductValue}'` : "''",
+      plant_no: selectedPlantValue ? `'${selectedPlantValue}'` : "''",
+      batchText: batchText ? `'${batchText}'` : "''",
+      plantText: plantText ? `'${plantText}'` : "''",
+      matText: matText ? `'${matText}'` : "''",
     };
+    let jsonReq = JSON.stringify(reqFilter);
+    console.log('jsonReq', jsonReq, reqFilter);
     try {
       const filterRes = await getGeanealogyFilter(reqFilter);
       setParamList((prevParamList) => {
@@ -203,7 +205,7 @@ function Filter(props) {
           type='primary'
           className='custom-secondary-btn'
           onClick={OnSearchTree}
-          disabled={disabled}
+          // disabled={disabled}
         >
           Search
         </Button>

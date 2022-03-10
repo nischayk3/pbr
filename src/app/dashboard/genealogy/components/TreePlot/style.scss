@@ -207,7 +207,7 @@ div#federalDiv {
 
 .additionalParentLink {
   fill: none;
-  stroke: #0000ff;
+  stroke: #08c6ff;
   stroke-width: 2px;
   // stroke-linecap: round !important;
   // opacity: 0.7 !important;
@@ -412,11 +412,14 @@ div.popup {
 // #treeWrapper {
 //   position: relative;
 // }
-
+.tree-wrap {
+  position: relative;
+}
 .drag-search {
   position: absolute;
   cursor: move;
-
+  right: 40px;
+  top: 40px;
   max-width: 290px;
   width: 265px;
   border-radius: 5px;
@@ -436,5 +439,22 @@ div.popup {
     display: block;
     color: #ffffff;
     width: 100%;
+  }
+}
+
+.popup-div {
+  position: absolute;
+  width: 215px;
+  padding: 12px 26px;
+  background: #ffffff;
+  box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.24);
+  border-radius: 4px;
+  button {
+    margin: -1px 0;
+    width: 100%;
+    background: #fff;
+    color: #093185;
+    padding: 6px 0;
+    height: 36px;
   }
 }
