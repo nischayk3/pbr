@@ -93,7 +93,7 @@ const columns = [
 
 function ViewCreation() {
     const molecule_Id = useSelector((state) => state.viewCreationReducer.molecule_id);
-    const location=useLocation();
+    const location = useLocation();
     const [count, setCount] = useState(1);
     const [params, setParams] = useState(false);
     const [id, setId] = useState();
@@ -138,6 +138,7 @@ function ViewCreation() {
     const functionChanged = useRef(false);
     const counter = useRef(0);
     const [showSpinner, setShowSpinner] = useState(false)
+    const [publishResponse, setPublishResponse] = useState({});
     const [saveResponseView, setSaveResponseView] = useState({ viewId: '', version: '', viewStatus: '' });
     const [viewSummaryColumns, setViewSummaryColumns] = useState([
         {
@@ -369,7 +370,7 @@ function ViewCreation() {
         setCount(1);
         counter.current = 0;
         let files = [];
-        let req = { view_disp_id: viewID ? viewID:viewDisplayId };
+        let req = { view_disp_id: viewID ? viewID : viewDisplayId };
         getViewConfig(req).then((res) => {
             setMoleculeId(res.material_id);
             setViewStatus(res.view_status);
@@ -738,7 +739,12 @@ function ViewCreation() {
 
     const handleClose = () => {
         setIsPublish(false)
-      };
+    };
+
+    const PublishResponse = (res) => {
+        console.log(res)
+        setPublishResponse(res);
+    }
 
     useEffect(() => {
         onMoleculeIdChanged();
@@ -748,7 +754,7 @@ function ViewCreation() {
         getViewsList();
         const params = queryString.parse(location.search);
         console.log(params);
-        if(Object.keys(params).length>0){
+        if (Object.keys(params).length > 0) {
             setParams(true);
             onOkHandler(params.id);
         }
@@ -760,39 +766,39 @@ function ViewCreation() {
                 <h1 className='reportDesigner-headline'>
                     <ArrowLeftOutlined /> Create View
                 </h1>
-                {params?(
+                {params ? (
                     <div className='viewCreation-btns'>
-                    <Button className='viewCreation-rejectBtn'>Reject</Button>
-                    <Button className='viewCreation-approveBtn'>Approve</Button>
+                        <Button className='viewCreation-rejectBtn'>Reject</Button>
+                        <Button className='viewCreation-approveBtn'>Approve</Button>
                     </div>
-                ):(
-                materialsList.length > 0 && <div className='viewCreation-btns'>
-                    <Button
-                        type='text'
-                        className='viewCreation-newBtn'
-                        onClick={() => {
-                            newButtonHandler();
-                        }}
-                    >
-                        New
-                    </Button>
-                    {/* <Button type='text' className='viewCreation-clearBtn'>
+                ) : (
+                    materialsList.length > 0 && <div className='viewCreation-btns'>
+                        <Button
+                            type='text'
+                            className='viewCreation-newBtn'
+                            onClick={() => {
+                                newButtonHandler();
+                            }}
+                        >
+                            New
+                        </Button>
+                        {/* <Button type='text' className='viewCreation-clearBtn'>
                         Clear
                     </Button> */}
-                    <Button
-                        className='viewCreation-loadBtn'
-                        onClick={() => {
-                            setVisible(true);
-                            setIsNew(false);
-                        }}
-                    >
-                        Load
-                    </Button>
-                    <Button className='viewCreation-saveBtn' disabled={!viewDisplayId} onClick={handleSaveFunc}>Save</Button>
-                    <Button className='viewCreation-saveAsBtn' onClick={handleSaveAsFunc}>Save As</Button>
-                    <Button className='viewCreation-shareBtn'>Share</Button>
-                    <Button className='viewCreation-publishBtn' onClick={() => setIsPublish(true)}><CloudUploadOutlined />Publish</Button>
-                </div>)}
+                        <Button
+                            className='viewCreation-loadBtn'
+                            onClick={() => {
+                                setVisible(true);
+                                setIsNew(false);
+                            }}
+                        >
+                            Load
+                        </Button>
+                        <Button className='viewCreation-saveBtn' disabled={!viewDisplayId} onClick={handleSaveFunc}>Save</Button>
+                        <Button className='viewCreation-saveAsBtn' onClick={handleSaveAsFunc}>Save As</Button>
+                        <Button className='viewCreation-shareBtn'>Share</Button>
+                        <Button className='viewCreation-publishBtn' onClick={() => setIsPublish(true)}><CloudUploadOutlined />Publish</Button>
+                    </div>)}
             </div>
 
             <Form
@@ -1109,7 +1115,15 @@ function ViewCreation() {
                 </Modal>
             </div>
             <Loading show={showSpinner} />
-            <Signature isPublish={isPublish} handleClose={handleClose}  screenName="View Creation"/>
+            <Signature
+                isPublish={isPublish}
+                handleClose={handleClose}
+                screenName="View Creation"
+                PublishResponse={PublishResponse}
+                appType="VIEW"
+                dispId={viewDisplayId}
+                version={viewVersion}
+            />
         </div>
     );
 }
