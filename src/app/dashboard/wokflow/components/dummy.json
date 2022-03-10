@@ -9,7 +9,7 @@
                 "id": "25",
                 "creator": "demo",
                 "creation_date": "25-12-22",
-                "action":"/dashboard/view_creation"
+                "action":"/dashboard/report_designer"
             },
             {
                 "view_id": "V2",
@@ -29,7 +29,7 @@
                 "id": "27",
                 "creator": "demo",
                 "creation_date": "25-12-22",
-                "action":"/dashboard/view_creation"
+                "action":"/dashboard/chart_personalization"
             },
             {
                 "view_id": "V5",

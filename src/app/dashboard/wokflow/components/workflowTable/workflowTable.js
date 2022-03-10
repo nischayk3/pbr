@@ -189,7 +189,7 @@ useEffect(()=>{
           if (i.fieldName === "action") {
             obj.render = (text, row,index) => {
               return (
-                <a onClick={()=>window.open(`${process.env.REACT_APP_URL}${text}?id=${row.view_id}&version=${row.version}`)}>Review Submission</a>
+                <a onClick={()=>history.push(`${text}?id=${row.view_id}&version=${row.version}`)}>Review Submission</a>
                 
               );
             }
