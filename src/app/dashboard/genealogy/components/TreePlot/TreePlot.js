@@ -365,7 +365,8 @@ function TreePlot(props) {
       });
       // eslint-disable-next-line no-undef
       var toolTip = d3.select('#gbttooltip');
-      var popupDiv = d3.select(document.getElementById('popup'));
+      var popupDiv = d3.select('#popup');
+      console.log('toolTip popupDiv', toolTip, popupDiv);
       // eslint-disable-next-line no-undef
       var onclickWidget = d3.select(document.getElementById('gbtonclick'));
 
@@ -669,17 +670,21 @@ function TreePlot(props) {
             //   .attr('r', 20)
             //   .style('fill', '#ccc');
 
-            var top = d3.event.pageY - 400;
-            var left = d3.event.pageX - 300;
-            console.log('top left', top, left);
-            console.log('d3.event.pageY', d3, d3.event.pageX);
             toolTip
               .transition() // declare the transition properties to
               .duration(500) // fade out div for 500ms
               .style('opacity', '0'); // a
 
-            popupDiv.style('top', top + 'px').style('left', left + 'px');
+            popupDiv.style('position', 'absolute');
+            console.log('popuppppppp', popupDiv, toolTip);
+
             node_onClick(d);
+            popupDiv.style('left', d3.event.layerX + 'px');
+            if (d3.event.layerY > 200) {
+              popupDiv.style('top', d3.event.layerY - 150 + 'px');
+            } else {
+              popupDiv.style('top', d3.event.layerY + 20 + 'px');
+            }
           });
 
         var highlightForwardLink = function (
@@ -1505,34 +1510,34 @@ function TreePlot(props) {
                   <div id='keyTooltip' className='headerattribute row'></div>
                 </div>
               </div>
-              {popVisible && (
-                <div className='popup-div' id='popup'>
-                  <Button
-                    type='primary'
-                    onClick={() => {
-                      onClickView('backward');
-                    }}
-                  >
-                    Backward Genealogy
-                  </Button>
-                  <Button
-                    type='primary'
-                    onClick={() => {
-                      onClickView('forward');
-                    }}
-                  >
-                    Forward Genealogy
-                  </Button>
-                  <Button
-                    type='primary'
-                    onClick={() => {
-                      onClickView('view');
-                    }}
-                  >
-                    View Details
-                  </Button>
-                </div>
-              )}
+              {/* {popVisible && ( */}
+              <div className='popup-div' id='popup'>
+                <Button
+                  type='primary'
+                  onClick={() => {
+                    onClickView('backward');
+                  }}
+                >
+                  Backward Genealogy
+                </Button>
+                <Button
+                  type='primary'
+                  onClick={() => {
+                    onClickView('forward');
+                  }}
+                >
+                  Forward Genealogy
+                </Button>
+                <Button
+                  type='primary'
+                  onClick={() => {
+                    onClickView('view');
+                  }}
+                >
+                  View Details
+                </Button>
+              </div>
+              {/* )} */}
             </div>
           </div>
         </div>
