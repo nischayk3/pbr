@@ -37,14 +37,14 @@ pipeline {
            }
           stage("Build Docker Image") {
             steps {
-                sh 'sudo docker build -t  $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest  .'
+                sh 'sudo docker build -t  $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest --no-cache .'
                 }
               }
           stage("Push Docker Image to Docker Registry") {
             steps {
                 withDockerRegistry(credentialsId: 'docker-registry-mareana', url: 'https://registry.mareana.com') {
-                sh 'sudo docker push $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest'
-                sh 'sudo docker rmi $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest'
+                sh 'docker push $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest'
+                sh 'docker rmi $DOCKER_IMAGE/cpv-ui-$BUILD_NUMBER:latest'
                 }
             }
           }
