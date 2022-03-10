@@ -2,9 +2,6 @@
 .ant-layout-content {
   padding: 0;
   .custom-wrapper {
-    min-height: 100vh;
-    height: 100vh;
-    overflow-y: auto;
     .sub-header {
       padding: 10px 29px;
       background: #ffffff;
@@ -56,6 +53,9 @@
     }
     .custom-content-layout {
       padding: 8px 29px;
+      min-height: calc(100vh - 120px);
+      overflow-y: scroll;
+      height: calc(100vh - 120px);
     }
   }
 }
@@ -242,9 +242,6 @@
   background: #f1f7ff;
   border-bottom: 1px solid #d9d9d9;
 }
-.ant-input-textarea
-  {
-
-    background-color: #baeaff 
-  }
-
+.ant-input-textarea {
+  background-color: #baeaff;
+}

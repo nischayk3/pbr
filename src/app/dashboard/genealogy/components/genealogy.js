@@ -159,7 +159,6 @@ function Genealogy() {
                 </>
               }
               key='2'
-              style={{ height: '1000px' }}
               className='tree-wrap'
             >
               <TreePlot

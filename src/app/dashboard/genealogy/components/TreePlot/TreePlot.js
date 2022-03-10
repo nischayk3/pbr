@@ -162,6 +162,26 @@ function TreePlot(props) {
       let splitedvalue = splitvalue[1];
       setselectedNodeId(splitedvalue);
       setsearchValue(splitvalue[0]);
+
+      let svgNodeClass = document.querySelectorAll('.node');
+      for (let i = 0; i < svgNodeClass.length; i++) {
+        const element = svgNodeClass[i].children;
+        element[0].setAttribute('r', '10');
+        console.log('element', element);
+      }
+      let svgNode = document.getElementById('node-' + splitvalue[1]).children;
+      console.log('svgNodeClass', svgNodeClass, svgNode);
+
+      d3.select('#body');
+      console.log(" d3.select('#body')", d3.select('#body'));
+      // Update the links...
+      // var link = d3.selectAll('path.link').data(function (d) {
+      //   return d;
+      // });
+      // .data(function (d) {
+      //   return d;
+      // });
+      console.log('linlkkkkkkkkkkkk', d3.selectAll('path.link').data());
     }
   };
   /**
@@ -344,7 +364,7 @@ function TreePlot(props) {
         return [d.y, d.x];
       });
       // eslint-disable-next-line no-undef
-      var toolTip = d3.select(document.getElementById('gbttooltip'));
+      var toolTip = d3.select('#gbttooltip');
       var popupDiv = d3.select(document.getElementById('popup'));
       // eslint-disable-next-line no-undef
       var onclickWidget = d3.select(document.getElementById('gbtonclick'));
@@ -458,9 +478,9 @@ function TreePlot(props) {
             dragEnabled: true,
             controlIconsEnabled: false,
             zoomEnabled: true, //lets see
-            zoomScaleSensitivity: 5,
-            minZoom: 0.1,
-            maxZoom: 10,
+            zoomScaleSensitivity: 10,
+            minZoom: 8,
+            maxZoom: 15,
             fit: false,
             center: true,
             destroy: function (options) {
@@ -488,77 +508,77 @@ function TreePlot(props) {
         THIS.update(THIS.root);
         /********  PAN ZOOM ***********/
         if (THIS.type === 'backward') {
-          var panZoomBackward = null;
+          // var panZoomBackward = null;
           // eslint-disable-next-line no-undef
           PanZoomsvg('treeviewidbackward');
           // eslint-disable-next-line no-undef
-          var zoomIn = document.getElementById('zoom-in');
-          if (zoomIn) {
-            zoomIn.addEventListener('click', function (ev) {
-              ev.preventDefault();
-              panZoomBackward.zoomIn();
-            });
-          }
+          // var zoomIn = document.getElementById('zoom-in');
+          // if (zoomIn) {
+          //   zoomIn.addEventListener('click', function (ev) {
+          //     ev.preventDefault();
+          //     panZoomBackward.zoomIn();
+          //   });
+          // }
 
           // eslint-disable-next-line no-undef
-          var zoomOut = document.getElementById('zoom-out');
-          if (zoomOut) {
-            zoomOut.addEventListener('click', function (ev) {
-              ev.preventDefault();
-              panZoomBackward.zoomOut();
-            });
-          }
+          // var zoomOut = document.getElementById('zoom-out');
+          // if (zoomOut) {
+          //   zoomOut.addEventListener('click', function (ev) {
+          //     ev.preventDefault();
+          //     panZoomBackward.zoomOut();
+          //   });
+          // }
 
-          if (zoomOut) {
-            zoomOut.addEventListener('click', function (ev) {
-              ev.preventDefault();
-              panZoomBackward.zoomOut();
-            });
-          }
+          // if (zoomOut) {
+          //   zoomOut.addEventListener('click', function (ev) {
+          //     ev.preventDefault();
+          //     panZoomBackward.zoomOut();
+          //   });
+          // }
 
           // eslint-disable-next-line no-undef
-          var zoomReset = document.getElementById('zoom-reset');
-          if (zoomReset) {
-            zoomReset.addEventListener('click', function (ev) {
-              ev.preventDefault();
-              panZoomBackward.resetZoom();
-              panZoomBackward.resetPan();
-            });
-          }
+          // var zoomReset = document.getElementById('zoom-reset');
+          // if (zoomReset) {
+          //   zoomReset.addEventListener('click', function (ev) {
+          //     ev.preventDefault();
+          //     panZoomBackward.resetZoom();
+          //     panZoomBackward.resetPan();
+          //   });
+          // }
 
           // END custom zoom controls
           // panZoomBackward.enablePan();
           // }
         } else if (THIS.type === 'forward') {
-          var panZoomForward = null;
+          // var panZoomForward = null;
           // eslint-disable-next-line no-undef
           PanZoomsvg('treeviewidforward');
           // if (panZoomForward && panZoomForward != null) {
           // custom zoom controls
           // eslint-disable-next-line no-undef
-          document
-            .getElementById('zoom-in')
-            .addEventListener('click', function (ev) {
-              ev.preventDefault();
-              panZoomForward.zoomIn();
-            });
+          // document
+          //   .getElementById('zoom-in')
+          //   .addEventListener('click', function (ev) {
+          //     ev.preventDefault();
+          //     panZoomForward.zoomIn();
+          //   });
           // eslint-disable-next-line no-undef
-          document
-            .getElementById('zoom-out')
-            .addEventListener('click', function (ev) {
-              ev.preventDefault();
-              panZoomForward.zoomOut();
-            });
+          // document
+          //   .getElementById('zoom-out')
+          //   .addEventListener('click', function (ev) {
+          //     ev.preventDefault();
+          //     panZoomForward.zoomOut();
+          //   });
           // eslint-disable-next-line no-undef
-          document
-            .getElementById('zoom-reset')
-            .addEventListener('click', function (ev) {
-              ev.preventDefault();
-              panZoomForward.resetZoom();
-              panZoomForward.resetPan();
-            });
+          // document
+          //   .getElementById('zoom-reset')
+          //   .addEventListener('click', function (ev) {
+          //     ev.preventDefault();
+          //     panZoomForward.resetZoom();
+          //     panZoomForward.resetPan();
+          //   });
           // END custom zoom controls
-          panZoomForward.enablePan();
+          // panZoomForward.enablePan();
           // }
         }
 
@@ -1025,6 +1045,7 @@ function TreePlot(props) {
               "</b></span><br/><span class='col-xs-1' style='padding:5px'>Quantity :  </span><span class='col-xs-1' style='padding:5px'><b>" +
               quantity +
               '</b></span><br/></span></div>';
+            d3.select('#keyTooltip').html(tooltipHtml);
             // $('#keyTooltip').html(tooltipHtml);
             toolTip.style('left', d3.event.layerX + 'px');
             if (d3.event.layerY > 200) {
@@ -1154,6 +1175,7 @@ function TreePlot(props) {
                 }
 
                 d._children = validchildren;
+                d3.select('#keyTooltip').html(d.toolTipDetails);
                 // $('#keyTooltip').html(d.toolTipDetails);
               }
             });
@@ -1222,7 +1244,7 @@ function TreePlot(props) {
                 uom +
                 '</b></span><br/></span></div>';
             }
-
+            d3.select('#keyTooltip').html(tooltipHtml);
             // $('#keyTooltip').html(tooltipHtml);
           }
 
@@ -1403,6 +1425,7 @@ function TreePlot(props) {
                 "</b></span><br/><span class='col-xs-1' style='padding:5px'>Quantity  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
                 quantity +
                 '</b></span><br/></span></div>';
+              d3.select('#keyTooltip').html(tooltipHtml);
               // $('#keyTooltip').html(tooltipHtml);
               toolTip.style('left', d3.event.layerX + 'px');
               if (d3.event.layerY > 200) {
