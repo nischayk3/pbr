@@ -111,6 +111,7 @@ function ReportDesignerNew() {
   const [formData, setFormData] = useState({});
   const [mainJson, setMainJson] = useState({});
   const [isPublish, setIsPublish] = useState(false);
+  const [publishResponse, setPublishResponse] = useState({});
   const [ form ] = Form.useForm();
 
 
@@ -196,6 +197,12 @@ function ReportDesignerNew() {
   const handleClose = () => {
     setIsPublish(false)
   };
+
+  const PublishResponse = (res) =>
+  {
+    setPublishResponse(res)
+    setStatus(res.rep_stauts)
+  }
   //Get view table data
   const getViewsList = () => {
     let req = {};
@@ -437,6 +444,7 @@ function ReportDesignerNew() {
     return rowObject.isActive ? true : false;
   }
 
+  
 
   return (
     <div className='custom-wrapper'>
@@ -493,7 +501,18 @@ function ReportDesignerNew() {
                 >
                   Publish
                 </Button> </>
-              : <> </>
+              : <><Button
+              className='custom-primary-btn'
+              onClick={() => dispatch(screenChange(true))}
+            >
+              Approve
+            </Button>
+            <Button
+              className="custom-secondary-btn"
+              onClick={() => setIsPublish(true)}
+            >
+              Reject
+            </Button> </>
           }
 
         </div>
@@ -610,7 +629,12 @@ function ReportDesignerNew() {
         <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
         
       </div>
-      <Signature isPublish={isPublish} handleClose={handleClose}  screenName="Report Designer"/>
+      {/* reqs['application_type'] = props.appType
+            reqs['created_by'] = user
+            reqs['esign_id'] = primaryId
+            reqs['disp_id'] = props.dispId
+            reqs['version'] = props.version */}
+      <Signature isPublish={isPublish} handleClose={handleClose}  screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT" dispId={reportId} version={0}/>
     </div>
   );
 }
