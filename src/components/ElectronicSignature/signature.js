@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Modal, Input, Select, Button } from 'antd';
 import './styles.scss'
 import { eSign } from '../../services/electronicSignatureService'
+import { useDispatch, useSelector } from 'react-redux';
+import { showNotification } from '../../duck/actions/commonActions'
 
 
 const { Option } = Select
@@ -12,18 +14,8 @@ function Signature(props) {
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
     const [reason, setReason] = useState('')
+    const dispatch = useDispatch();
 
-    console.log(username, password, reason)
-
-    // {
-    //     "date": "2015-01-05",
-    //     "first_name": "first",
-    //     "last_name": "last",
-    //     "reason": "test reason",
-    //     "screen": "test_screen",
-    //     "timestamp": "09:38:59",
-    //     "user_id": "test_01"
-    //   }
     const handleConfirm = () => {
 
         var today = new Date();
@@ -50,7 +42,7 @@ function Signature(props) {
         {
             if(res.statuscode==200)
             {
-               console.log(res)
+                dispatch(showNotification(res['message']))
             }
         })
 
