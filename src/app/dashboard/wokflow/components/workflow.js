@@ -85,14 +85,12 @@ const Workflow = () => {
     }
 
     const tilesClicked = (item) => {
-        console.log(item);
        setItemCount(item.item_count);
        setCardTitle(item.text);
        setActiveDiv(item.text);
     }
 
    const changeTab = activeKey => {
-        console.log(activeKey);
         setActiveTab(activeKey);
       };
     return (

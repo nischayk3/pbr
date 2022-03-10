@@ -76,9 +76,6 @@ function Signature(props) {
 
 
     }
-
-    console.log(primaryId)
-
     return (
         <div>
             <Modal

@@ -742,7 +742,6 @@ function ViewCreation() {
     };
 
     const PublishResponse = (res) => {
-        console.log(res)
         setPublishResponse(res);
     }
 
@@ -753,7 +752,6 @@ function ViewCreation() {
     useEffect(() => {
         getViewsList();
         const params = queryString.parse(location.search);
-        console.log(params);
         if (Object.keys(params).length > 0) {
             setParams(true);
             onOkHandler(params.id);
