@@ -201,6 +201,7 @@ function ReportDesignerNew() {
   const PublishResponse = (res) =>
   {
     setPublishResponse(res)
+    setStatus(res.rep_stauts)
   }
   //Get view table data
   const getViewsList = () => {
@@ -500,7 +501,18 @@ function ReportDesignerNew() {
                 >
                   Publish
                 </Button> </>
-              : <> </>
+              : <><Button
+              className='custom-primary-btn'
+              onClick={() => dispatch(screenChange(true))}
+            >
+              Approve
+            </Button>
+            <Button
+              className="custom-secondary-btn"
+              onClick={() => setIsPublish(true)}
+            >
+              Reject
+            </Button> </>
           }
 
         </div>
@@ -622,7 +634,7 @@ function ReportDesignerNew() {
             reqs['esign_id'] = primaryId
             reqs['disp_id'] = props.dispId
             reqs['version'] = props.version */}
-      <Signature isPublish={isPublish} handleClose={handleClose}  screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT" dispId={viewId} version={viewVersion}/>
+      <Signature isPublish={isPublish} handleClose={handleClose}  screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT" dispId={reportId} version={0}/>
     </div>
   );
 }
