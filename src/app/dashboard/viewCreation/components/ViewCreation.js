@@ -4,6 +4,7 @@
 // Last modified - 08 March, 2022
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router';
 import { useSelector } from 'react-redux';
 import {
     ArrowLeftOutlined,
@@ -53,6 +54,7 @@ import {
 } from '../../../../duck/actions/fileUploadAction';
 import Loading from '../../../../components/Loading'
 import Signature from '../../../../components/ElectronicSignature/signature'
+import queryString from "query-string";
 
 const { Panel } = Collapse;
 
@@ -91,7 +93,9 @@ const columns = [
 
 function ViewCreation() {
     const molecule_Id = useSelector((state) => state.viewCreationReducer.molecule_id);
+    const location=useLocation();
     const [count, setCount] = useState(1);
+    const [params, setParams] = useState(false);
     const [id, setId] = useState();
     const [moleculeList, setMoleculeList] = useState([]);
     const [functionEditorRecord, setFunctionEditorRecord] = useState([]);
@@ -356,7 +360,7 @@ function ViewCreation() {
         updateSaved.current = false;
         counter.current = 0;
     };
-    const onOkHandler = async () => {
+    const onOkHandler = async (viewID) => {
         setShowSpinner(true);
         setVisible(false);
         setViewSummaryTable([]);
@@ -365,7 +369,7 @@ function ViewCreation() {
         setCount(1);
         counter.current = 0;
         let files = [];
-        let req = { view_disp_id: viewDisplayId };
+        let req = { view_disp_id: viewID ? viewID:viewDisplayId };
         getViewConfig(req).then((res) => {
             setMoleculeId(res.material_id);
             setViewStatus(res.view_status);
@@ -581,8 +585,9 @@ function ViewCreation() {
             });
         }).catch((err) => {
             message.error(err.Message);
-            setVisible(true);
+            //setVisible(true);
             setIsLoad(false);
+            setShowSpinner(false);
         })
         setFilterdData(null);
         form.setFieldsValue({
@@ -734,12 +739,19 @@ function ViewCreation() {
     const handleClose = () => {
         setIsPublish(false)
       };
+
     useEffect(() => {
         onMoleculeIdChanged();
     }, [moleculeId]);
 
     useEffect(() => {
         getViewsList();
+        const params = queryString.parse(location.search);
+        console.log(params);
+        if(Object.keys(params).length>0){
+            setParams(true);
+            onOkHandler(params.id);
+        }
     }, []);
 
     return (
@@ -748,7 +760,13 @@ function ViewCreation() {
                 <h1 className='reportDesigner-headline'>
                     <ArrowLeftOutlined /> Create View
                 </h1>
-                {materialsList.length > 0 && <div className='viewCreation-btns'>
+                {params?(
+                    <div className='viewCreation-btns'>
+                    <Button className='viewCreation-rejectBtn'>Reject</Button>
+                    <Button className='viewCreation-approveBtn'>Approve</Button>
+                    </div>
+                ):(
+                materialsList.length > 0 && <div className='viewCreation-btns'>
                     <Button
                         type='text'
                         className='viewCreation-newBtn'
@@ -774,7 +792,7 @@ function ViewCreation() {
                     <Button className='viewCreation-saveAsBtn' onClick={handleSaveAsFunc}>Save As</Button>
                     <Button className='viewCreation-shareBtn'>Share</Button>
                     <Button className='viewCreation-publishBtn' onClick={() => setIsPublish(true)}><CloudUploadOutlined />Publish</Button>
-                </div>}
+                </div>)}
             </div>
 
             <Form
