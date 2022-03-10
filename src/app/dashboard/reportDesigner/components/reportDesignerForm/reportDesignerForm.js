@@ -97,7 +97,7 @@ function ReportDesignerForm(props) {
                             value={viewIdVersion}
                         >
                             {mapViewList.map((item) => (
-                                <Option value={item.view}>{item.view}</Option>
+                                <Option value={item.view} key={item.view}>{item.view}</Option>
                             ))}
                         </Select>
                         <Button

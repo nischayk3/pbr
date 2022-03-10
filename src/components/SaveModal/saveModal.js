@@ -28,7 +28,7 @@ function SaveModal(props) {
                     className='circleIcon'
                     style={{color:'green',fontSize:'40px'}}
                   /> <br/>
-                     <b style={{marginTop:'10px'}}>Report ID :{id}</b>
+                    { id ? <b style={{marginTop:'10px'}}>Report ID :{id}</b> :<></> }
                      <br/>
                         <p style={{marginTop:'7px'}}>Changes have been successfully saved </p>
                     </center>
