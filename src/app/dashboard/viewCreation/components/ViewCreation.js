@@ -52,6 +52,7 @@ import {
     adHocFilesParameterTree,
 } from '../../../../duck/actions/fileUploadAction';
 import Loading from '../../../../components/Loading'
+import Signature from '../../../../components/ElectronicSignature/signature'
 
 const { Panel } = Collapse;
 
@@ -94,6 +95,7 @@ function ViewCreation() {
     const [id, setId] = useState();
     const [moleculeList, setMoleculeList] = useState([]);
     const [functionEditorRecord, setFunctionEditorRecord] = useState([]);
+    const [isPublish, setIsPublish] = useState(false);
     const [moleculeId, setMoleculeId] = useState();
     const [materialsList, setMaterialsList] = useState([]);
     const [paramText, setParamText] = useState();
@@ -728,6 +730,10 @@ function ViewCreation() {
             message.error(err);
         }
     }
+
+    const handleClose = () => {
+        setIsPublish(false)
+      };
     useEffect(() => {
         onMoleculeIdChanged();
     }, [moleculeId]);
@@ -767,7 +773,7 @@ function ViewCreation() {
                     <Button className='viewCreation-saveBtn' disabled={!viewDisplayId} onClick={handleSaveFunc}>Save</Button>
                     <Button className='viewCreation-saveAsBtn' onClick={handleSaveAsFunc}>Save As</Button>
                     <Button className='viewCreation-shareBtn'>Share</Button>
-                    <Button className='viewCreation-publishBtn'><CloudUploadOutlined />Publish</Button>
+                    <Button className='viewCreation-publishBtn' onClick={() => setIsPublish(true)}><CloudUploadOutlined />Publish</Button>
                 </div>}
             </div>
 
@@ -1085,6 +1091,7 @@ function ViewCreation() {
                 </Modal>
             </div>
             <Loading show={showSpinner} />
+            <Signature isPublish={isPublish} handleClose={handleClose}  screenName="View Creation"/>
         </div>
     );
 }
