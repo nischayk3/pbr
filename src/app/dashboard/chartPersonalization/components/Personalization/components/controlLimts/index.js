@@ -7,7 +7,8 @@ import './style.scss';
 import { Button, Card, Collapse, Table, Popconfirm, DatePicker, Input } from 'antd';
 import React, { Component, useState, useEffect } from 'react';
 import {
-  DeleteTwoTone
+  DeleteTwoTone,
+  PlusSquareOutlined
 } from '@ant-design/icons';
 
 import InputField from '../../../../../../../components/InputField/InputField';
@@ -167,7 +168,7 @@ const ControLimits = (props) => {
       render: (text, row, index) => <a><DatePicker suffixIcon={null} name='date' value={controlColumns.date} onChange={(dateString) => handleDateChange(dateString, row)} /></a>,
     },
     {
-      title: 'action',
+      title: 'Action',
       dataIndex: 'action',
       width: '8%',
       render: (_, record) =>
@@ -202,7 +203,7 @@ const ControLimits = (props) => {
       render: (text, row, index) => <a><DatePicker suffixIcon={null} name='date' value={specifyColumns.date} onChange={(dateString) => handleSpecifyDateChange(dateString, row)} /></a>,
     },
     {
-      title: 'action',
+      title: 'Action',
       dataIndex: 'action',
       width: '8%',
       render: (_, record) =>
@@ -236,7 +237,7 @@ const ControLimits = (props) => {
       render: (text, row, index) => <a><DatePicker suffixIcon={null} name='date' value={warningColumns.date} onChange={(dateString) => handleWarnDateChange(dateString, row)}/></a>,
     },
     {
-      title: 'action',
+      title: 'Action',
       dataIndex: 'action',
       width: '8%',
       render: (_, record) =>
@@ -296,7 +297,7 @@ const ControLimits = (props) => {
               return (
                 <>
                   <span>{'Control Limit'}</span>
-                  <Button onClick={() => handleAdd()} className='add-row-btn' type="primary">Add Row</Button>
+                  <Button onClick={() => handleAdd()} className='add-row-btn' type="primary"><PlusSquareOutlined />Add Row</Button>
                 </>
               )
             }
@@ -311,7 +312,7 @@ const ControLimits = (props) => {
               return (
                 <>
                   <span>{'Specification'}</span>
-                  <Button onClick={() => handleSpecAdd()} className='add-row-btn' type="primary">Add Row</Button>
+                  <Button onClick={() => handleSpecAdd()} className='add-row-btn' type="primary"><PlusSquareOutlined />Add Row</Button>
                 </>
               )
             }
@@ -326,7 +327,7 @@ const ControLimits = (props) => {
               return (
                 <>
                   <span>{'Warning'}</span>
-                  <Button onClick={() => handleWarnAdd()} className='add-row-btn' type="primary">Add Row</Button>
+                  <Button onClick={() => handleWarnAdd()} className='add-row-btn' type="primary"><PlusSquareOutlined />Add Row</Button>
                 </>
               )
             }

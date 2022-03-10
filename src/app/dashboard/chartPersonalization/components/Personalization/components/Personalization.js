@@ -5,10 +5,10 @@ import React, { useState, useEffect } from 'react';
 
 import InputField from '../../../../../../components/InputField/InputField';
 import SelectField from '../../../../../../components/SelectField/SelectField';
-import Alerts from './alerts';
+import Alerts from './alerts/index';
 import ControLimits from './controlLimts';
 import Display from './display';
-import { PlusSquareOutlined ,ControlOutlined} from '@ant-design/icons';
+import { ControlOutlined, StarOutlined} from '@ant-design/icons';
 const { Panel } = Collapse;
 
 
@@ -32,6 +32,7 @@ const Personalization = (props) => {
     setAlertCount(data);
   }
 
+  const limits = 'Limits'
 
   return (
     <>
@@ -45,12 +46,12 @@ const Personalization = (props) => {
           </Panel>
           
             {/* Limits */}
-            <Panel header="Limits" key='3'>
+          <Panel header={<div><StarOutlined />Limits</div>} key='3'>
                   <ControLimits />
           </Panel>
 
           {/* Display */}
-          <Panel header='Display' key='2'>
+          <Panel header={<div><ControlOutlined />Display</div>} key='2'>
             <Display/>
           </Panel>
 
