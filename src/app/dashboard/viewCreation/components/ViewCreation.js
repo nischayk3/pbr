@@ -403,6 +403,7 @@ function ViewCreation() {
                 })
             })
             let tempSummaryArr = [];
+            console.log(tempArr, 'tempaee');
             tempArr.forEach((values) => {
                 if (values.paramsOld.length <= 1) {
                     values.paramsOld.forEach((element) => {
@@ -743,6 +744,7 @@ function ViewCreation() {
 
     const PublishResponse = (res) => {
         setPublishResponse(res);
+        setViewStatus(res.stauts);
     }
 
     useEffect(() => {
