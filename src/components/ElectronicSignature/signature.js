@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Input, Select, Button } from 'antd';
 import './styles.scss'
-import { eSign } from '../../services/electronicSignatureService'
+import { eSign, publishEvent } from '../../services/electronicSignatureService'
 import { useDispatch, useSelector } from 'react-redux';
 import { showNotification } from '../../duck/actions/commonActions'
 
@@ -10,24 +10,24 @@ const { Option } = Select
 function Signature(props) {
 
     var { isPublish, handleClose } = props
-
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
     const [reason, setReason] = useState('')
+    const [primaryId, setPrimaryId] = useState()
     const dispatch = useDispatch();
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
 
         var today = new Date();
         var h = today.getHours();
         var m = today.getMinutes();
         var s = today.getSeconds();
-        let time_today = h+":"+m+":"+s; 
+        let time_today = h + ":" + m + ":" + s;
         var date = new Date();
         var day = date.getDate();
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
-        let date_today = day+"-"+month+"-"+year  
+        let date_today = day + "-" + month + "-" + year
         let req = {}
 
         req['date'] = date_today
@@ -37,17 +37,47 @@ function Signature(props) {
         req['screen'] = props.screenName
         req['first_name'] = "first_name"
         req['last_name'] = "last_name"
+        try {
+            let esign_response = await eSign(req)
 
-        eSign(req).then((res)=>
-        {
-            if(res.statuscode==200)
-            {
-                dispatch(showNotification(res['message']))
+            if (esign_response.statuscode == 200) {
+                setPrimaryId(esign_response.primary_id)
+                dispatch(showNotification('success', esign_response.message))
+                handleClose()
+
+                let reqs = {}
+                let user_details = JSON.parse(localStorage.getItem('user_details'))
+                let user = user_details["username"] ? user_details["username"] : ''
+
+                reqs['application_type'] = props.appType
+                reqs['created_by'] = user
+                reqs['esign_id'] = esign_response.primary_id
+                reqs['disp_id'] = props.dispId
+                reqs['version'] = parseInt(props.version)
+
+                let publish_response = await publishEvent(reqs)
+
+                if (publish_response.status_code == 200) {
+                    dispatch(showNotification('success', publish_response.msg))
+                    props.PublishResponse(publish_response)
+                }
+                else {
+                    dispatch(showNotification('error', publish_response.msg))
+                }
             }
-        })
+            else {
+                dispatch(showNotification('error', esign_response.message))
+            }
+        }
+        catch
+        {
+            dispatch(showNotification('error', 'Error Occured'))
+        }
 
 
     }
+
+    console.log(primaryId)
 
     return (
         <div>
@@ -57,17 +87,17 @@ function Signature(props) {
                 width={500}
                 mask={true}
                 onCancel={handleClose}
-                footer={[<Button className="custom-secondary-btn" key="2" onClick={() => handleClose()}>Cancel</Button>, <Button className="custom-secondary-btn" key="1" onClick={()=>handleConfirm()} >Confirm</Button>,]}
+                footer={[<Button className="custom-secondary-btn" key="2" onClick={() => handleClose()}>Cancel</Button>, <Button className="custom-secondary-btn" key="1" onClick={() => handleConfirm()} >Confirm</Button>,]}
                 mask={true}
             >
                 <div className="electronic-sig">
                     <div>
                         <p>User ID</p>
-                        <Input onChange={(e) => setUsername(e.target.value)} />
+                        <Input value={username} onChange={(e) => setUsername(e.target.value)} />
                     </div>
                     <div>
                         <p>Password</p>
-                        <Input type="password" onChange={(e) => setPassword(e.target.value)} />
+                        <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <div>
                         <p>Signing</p>
