@@ -373,13 +373,12 @@ function ViewCreation() {
     counter.current = 0;
     let files = [];
     let req = { view_disp_id: viewDisplayId };
-    getViewConfig(req)
-      .then((res) => {
+    getViewConfig(req).then((res) => {
         setMoleculeId(res.material_id);
         setViewStatus(res.view_status);
         setViewVersion(res.view_version);
         form.setFieldsValue({
-          viewName: res.view_name,
+            viewName: res.view_name
         });
         updateSaved.current = true;
         setVisible(false);
@@ -387,215 +386,223 @@ function ViewCreation() {
         setViewSummaryTable([]);
         loadedData.current = res;
         const getFile = (req) => {
-          const resp = adHocFilesParameterTree(req);
-          files.push(resp);
-          setFilesListTree([...files]);
-        };
+            const resp = adHocFilesParameterTree(req);
+            files.push(resp);
+            setFilesListTree([...files]);
+        }
         let tempArr = [];
         Object.values(loadedData.current.functions).forEach((values) => {
-          tempArr.push(values);
+            tempArr.push(values)
         });
         tempArr.forEach((ele) => {
-          ele.definition = ele.definition.replace('{', '').replace('}', '');
-        });
-        Object.entries(loadedData.current.parameters).forEach(
-          ([key, value], index) => {
+            ele.definition = ele.definition.replace('{', '').replace('}', '')
+        })
+        Object.entries(loadedData.current.parameters).forEach(([key, value], index) => {
             tempArr.forEach((element) => {
-              if (String(element.definition) === String(key)) {
-                element.paramsOld = value;
-              }
-            });
-          }
-        );
+                if (String(element.definition) === String(key)) {
+                    element.paramsOld = value
+                }
+            })
+        })
         let tempSummaryArr = [];
         tempArr.forEach((values) => {
-          if (values.paramsOld.length <= 1) {
-            values.paramsOld.forEach((element) => {
-              materialsList.forEach((ele) => {
-                if (String(ele.mat_no) === String(element.material_id)) {
-                  ele.parameters.forEach((item) => {
-                    if (String(item.param) === String(values.name)) {
-                      let rowData = {};
-                      let batchData = {};
-                      let newBatchData = {};
-                      parentBatches.map((el, index) => {
-                        if (item.coverage_list.includes(el)) {
-                          batchData[el] = true;
-                          newBatchData[el] = true;
-                        } else {
-                          batchData[el] = false;
-                          newBatchData[el] = false;
-                        }
-                      });
-                      counter.current = counter.current + 1;
-                      batchData['id'] = counter.current;
-                      rowData = Object.assign(item, batchData);
-                      rowData.parameters = [item];
-                      tempSummaryArr.push(rowData);
-                      setNewBatchData(newBatchData);
-                      setFunctionEditorViewState(true);
-                    }
-                  });
-                }
-              });
-            });
-          } else {
-            let data = [];
-            let obj = {};
-            values.paramsOld.forEach((ele) => {
-              materialsList.forEach((element) => {
-                if (String(element.mat_no) === String(ele.material_id)) {
-                  element.parameters.forEach((item) => {
-                    if (String(item.param) === String(ele.parameter_name)) {
-                      data.push(item);
-                    }
-                  });
-                }
-              });
-            });
-            if (values.functionType !== 'union') {
-              data.forEach((item, i) => {
-                if (i == 0) {
-                  obj = { ...item };
-                } else {
-                  Object.entries(item).forEach(([key, value], index) => {
-                    if (key.includes('B')) {
-                      obj[key] = obj[key] && item[key];
-                      obj.param = item.param;
-                      obj.id = item.id;
-                    }
-                  });
-                }
-              });
-              getNewData(obj);
-            } else {
-              data.forEach((item, i) => {
-                if (i == 0) {
-                  obj = { ...item };
-                } else {
-                  Object.entries(item).forEach(([key, value], index) => {
-                    if (key.includes('B')) {
-                      obj[key] = obj[key] || item[key];
-                      obj.param = item.param;
-                      obj.id = item.id;
-                    }
-                  });
-                }
-              });
-              getNewData(obj);
-            }
-            counter.current = counter.current + 1;
-            getData.current.id = counter.current;
-            getData.current.param = values.name;
-            tempSummaryArr.push(getData.current);
-          }
-        });
-        Object.keys(loadedData.current.files).forEach((key) => {
-          let req = { file_id: key, detailedCoverage: true };
-          adHocFilesParameterTree(req).then((res) => {
-            files.push(res);
-            setFilesListTree([...files]);
-            tempArr.forEach((values) => {
-              if (values.paramsOld.length <= 1) {
+            if (values.paramsOld.length <= 1) {
                 values.paramsOld.forEach((element) => {
-                  files.forEach((ele) => {
-                    if (String(ele.File_id) === String(element.file_id)) {
-                      ele.Data.forEach((item) => {
-                        let rowData = {};
-                        let batchData = {};
-                        let newBatchData = {};
-                        if (
-                          String(item.param) === String(element.parameter_name)
-                        ) {
-                          parentBatches.map((el, index) => {
-                            if (item.coverage_list.includes(el)) {
-                              batchData[el] = true;
-                              newBatchData[el] = true;
-                            } else {
-                              batchData[el] = false;
-                              newBatchData[el] = false;
-                            }
-                          });
-                          counter.current = counter.current + 1;
-                          batchData['id'] = counter.current;
-                          rowData = Object.assign(item, batchData);
-                          rowData.parameters = [item];
-                          tempSummaryArr.push(rowData);
+                    materialsList.forEach((ele) => {
+                        if (String(ele.mat_no) === String(element.material_id)) {
+                            ele.parameters.forEach((item) => {
+                                if (String(item.param) === String(values.name)) {
+                                    let rowData = {};
+                                    let batchData = {};
+                                    let newBatchData = {};
+                                    parentBatches.map((el, index) => {
+                                        if (item.coverage_list.includes(el)) {
+                                            batchData[el] = true;
+                                            newBatchData[el] = true;
+                                        } else {
+                                            batchData[el] = false;
+                                            newBatchData[el] = false;
+                                        }
+                                    });
+                                    counter.current = counter.current + 1
+                                    batchData['id'] = counter.current;
+                                    rowData = Object.assign(item, batchData);
+                                    rowData.parameters = [item];
+                                    tempSummaryArr.push(rowData);
+                                    setNewBatchData(newBatchData);
+                                    setFunctionEditorViewState(true);
+                                }
+                            })
                         }
-                      });
-                    }
-                  });
-                });
-              } else {
+                    })
+                })
+            } else {
                 let data = [];
                 let obj = {};
                 values.paramsOld.forEach((ele) => {
-                  files.forEach((element) => {
-                    if (String(element.File_id) === String(ele.file_id)) {
-                      element.parameters.forEach((item) => {
-                        if (String(item.param) === String(ele.parameter_name)) {
-                          data.push(item);
+                    materialsList.forEach((element) => {
+                        if (String(element.mat_no) === String(ele.material_id)) {
+                            element.parameters.forEach((item) => {
+                                if (String(item.param) === String(ele.parameter_name)) {
+                                    data.push(item)
+                                }
+                            })
                         }
-                      });
-                    }
-                  });
-                });
+                    })
+                })
                 if (values.functionType !== 'union') {
-                  data.forEach((item, i) => {
-                    if (i == 0) {
-                      obj = { ...item };
-                    } else {
-                      Object.entries(item).forEach(([key, value], index) => {
-                        if (key.includes('B')) {
-                          obj[key] = obj[key] && item[key];
-                          obj.param = item.param;
-                          obj.id = item.id;
+                    data.forEach((item, i) => {
+                        if (i == 0) {
+                            obj = { ...item };
+                        } else {
+                            Object.entries(item).forEach(([key, value], index) => {
+                                if (key.includes("B")) {
+                                    obj[key] = obj[key] && item[key]
+                                    obj.param = item.param
+                                    obj.id = item.id
+                                }
+                            })
+
                         }
-                      });
-                    }
-                  });
-                  getNewData(obj);
+
+                    })
+                    getNewData(obj);
                 } else {
-                  data.forEach((item, i) => {
-                    if (i == 0) {
-                      obj = { ...item };
-                    } else {
-                      Object.entries(item).forEach(([key, value], index) => {
-                        if (key.includes('B')) {
-                          obj[key] = obj[key] || item[key];
-                          obj.param = item.param;
-                          obj.id = item.id;
+                    data.forEach((item, i) => {
+                        if (i == 0) {
+                            obj = { ...item };
+                        } else {
+                            Object.entries(item).forEach(([key, value], index) => {
+                                if (key.includes("B")) {
+                                    obj[key] = obj[key] || item[key]
+                                    obj.param = item.param
+                                    obj.id = item.id
+                                }
+                            })
+
                         }
-                      });
-                    }
-                  });
-                  getNewData(obj);
+                    })
+                    getNewData(obj);
                 }
-                counter.current = counter.current + 1;
+                counter.current = counter.current + 1
                 getData.current.id = counter.current;
                 getData.current.param = values.name;
                 tempSummaryArr.push(getData.current);
-              }
+            }
+        })
+        if(Object.keys(loadedData.current.files).length) {
+            Object.keys(loadedData.current.files).forEach((key) => {
+                let req = { file_id: key, detailedCoverage: true };
+                adHocFilesParameterTree(req).then((res) => {
+                    files.push(res)
+                    setFilesListTree([...files]);
+                    tempArr.forEach((values) => {
+                        if (values.paramsOld.length <= 1) {
+                            values.paramsOld.forEach((element) => {
+                                files.forEach((ele) => {
+                                    if (String(ele.File_id) === String(element.file_id)) {
+                                        ele.Data.forEach((item) => {
+                                            let rowData = {};
+                                            let batchData = {};
+                                            let newBatchData = {};
+                                            if (String(item.param) === String(element.parameter_name)) {
+                                                parentBatches.map((el, index) => {
+                                                    if (item.coverage_list.includes(el)) {
+                                                        batchData[el] = true;
+                                                        newBatchData[el] = true;
+                                                    } else {
+                                                        batchData[el] = false;
+                                                        newBatchData[el] = false;
+                                                    }
+                                                });
+                                                counter.current = counter.current + 1
+                                                batchData['id'] = counter.current;
+                                                rowData = Object.assign(item, batchData);
+                                                rowData.parameters = [item];
+                                                tempSummaryArr.push(rowData);
+                                            }
+                                        })
+                                    }
+                                })
+                            })
+                        } else {
+                            let data = [];
+                            let obj = {};
+                            values.paramsOld.forEach((ele) => {
+                                files.forEach((element) => {
+                                    if (String(element.File_id) === String(ele.file_id)) {
+                                        element.parameters.forEach((item) => {
+                                            if (String(item.param) === String(ele.parameter_name)) {
+                                                data.push(item)
+                                            }
+                                        })
+                                    }
+                                })
+                            })
+                            if (values.functionType !== 'union') {
+                                data.forEach((item, i) => {
+                                    if (i == 0) {
+                                        obj = { ...item };
+                                    } else {
+                                        Object.entries(item).forEach(([key, value], index) => {
+                                            if (key.includes("B")) {
+                                                obj[key] = obj[key] && item[key]
+                                                obj.param = item.param
+                                                obj.id = item.id
+                                            }
+                                        })
+
+                                    }
+
+                                })
+                                getNewData(obj);
+                            } else {
+                                data.forEach((item, i) => {
+                                    if (i == 0) {
+                                        obj = { ...item };
+                                    } else {
+                                        Object.entries(item).forEach(([key, value], index) => {
+                                            if (key.includes("B")) {
+                                                obj[key] = obj[key] || item[key]
+                                                obj.param = item.param
+                                                obj.id = item.id
+                                            }
+                                        })
+
+                                    }
+                                })
+                                getNewData(obj);
+                            }
+                            counter.current = counter.current + 1
+                            getData.current.id = counter.current;
+                            getData.current.param = values.name;
+                            tempSummaryArr.push(getData.current);
+                        }
+                    })
+                    setCount(counter.current + 1);
+                    setViewSummaryTable([...tempSummaryArr]);
+                    setFunctionEditorViewState(true);
+                    setShowSpinner(false);
+                    setNewBatchData(newBatchData);
+                });
             });
+        } else {
             setCount(counter.current + 1);
             setViewSummaryTable([...tempSummaryArr]);
             setFunctionEditorViewState(true);
-            setShowSpinner(false);
             setNewBatchData(newBatchData);
-            setFunctionEditorViewState(true);
-          });
-        });
-      })
-      .catch((err) => {
+            setShowSpinner(false)
+        }
+    }).catch((err) => {
         message.error(err.Message);
         setVisible(true);
         setIsLoad(false);
-      });
+    })
     setFilterdData(null);
     form.setFieldsValue({
-      filters: null,
+        filters: null,
     });
-  };
+};
   useEffect(() => {
     form.setFieldsValue({
       viewId: viewDisplayId,
