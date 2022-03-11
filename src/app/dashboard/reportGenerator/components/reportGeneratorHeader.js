@@ -39,7 +39,7 @@ console.log(repotData)
        setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
        setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
        setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id']+'-'+ReportData['view_version'] : '')
-       setVariantname(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : user+'_variant')
+       setVariantname(ReportData['variant_name'] ? ReportData['variant_name'] : user+'_variant')
     }
 
     return (
