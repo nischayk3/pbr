@@ -169,37 +169,61 @@ useEffect(()=>{
     
     const updateTableColumns=()=>{
       let columns = [];
-      props.columns.map((i) => {
-        let { display_name, field_name } = i;
-  
-        if (i.visible) {
-          let obj = {
-            title: display_name,
-            dataIndex: field_name,
-            key: i.field_name,
-            ...getColumnSearchProps(field_name,refSearchInput,searchText,setSearchText,searchedColumn,setSearchedColumn),
-            sorter: (a, b) => {
-  
-              return a.field_name === null || a.field_name === undefined || a.field_name === "" ? -1 : b.field_name == null || b.field_name == undefined || b.field_name == "" ? 1 : a.field_name.toString().localeCompare(b.field_name)
-  
-            },
-  
-          };
-  
-          if (i.field_name === "appl_url") {
-            obj.render = (text, row,index) => {
-              return (
-                <a onClick={()=>history.push(`${text}?id=${row.id}&version=${row.version}`)}>Review Submission</a>
-                
-              );
+      if(props.activeTab==="1"){
+        props.columns.map((i) => {
+          let { display_name, field_name } = i;
+    
+          if (i.visible) {
+            let obj = {
+              title: display_name,
+              dataIndex: field_name,
+              key: i.field_name,
+              ...getColumnSearchProps(field_name,refSearchInput,searchText,setSearchText,searchedColumn,setSearchedColumn),
+              sorter: (a, b) => {
+    
+                return a.field_name === null || a.field_name === undefined || a.field_name === "" ? -1 : b.field_name == null || b.field_name == undefined || b.field_name == "" ? 1 : a.field_name.toString().localeCompare(b.field_name)
+    
+              },
+    
+            };
+    
+            if (i.field_name === "appl_url") {
+              obj.render = (text, row,index) => {
+                return (
+                  <a onClick={()=>history.push(`${text}?id=${row.id}&version=${row.version}`)}>Review Submission</a>
+                  
+                );
+              }
             }
+    
+    
+            columns.push(obj)
           }
-  
-  
-          columns.push(obj)
-        }
-  
-      })
+    
+        })
+      }else{
+        props.columns.map((i) => {
+          let { display_name, field_name } = i;
+    
+          if (i.visible) {
+            let obj = {
+              title: display_name,
+              dataIndex: field_name,
+              key: i.field_name,
+              ...getColumnSearchProps(field_name,refSearchInput,searchText,setSearchText,searchedColumn,setSearchedColumn),
+              sorter: (a, b) => {
+    
+                return a.field_name === null || a.field_name === undefined || a.field_name === "" ? -1 : b.field_name == null || b.field_name == undefined || b.field_name == "" ? 1 : a.field_name.toString().localeCompare(b.field_name)
+    
+              },
+    
+            };
+            columns.push(obj)
+          }
+    
+        })
+      }
+    
   
       setNewColumns(columns)
     }

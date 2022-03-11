@@ -152,10 +152,10 @@ const Workflow = () => {
                         <Card title={<div className='table-head'>{cardTitle}<DownloadOutlined style={{ color: '#093185', marginLeft: '25px' }} /></div>} className='table-cards'>
                             <Tabs className='workflow-tabs' activeKey={activeTab} onChange={changeTab}>
                                 <TabPane tab="Awaiting Approval" key="1">
-                                    <WorkflowTable columns={columns} dataSource={dataSource}/>
+                                    <WorkflowTable columns={columns} dataSource={dataSource} activeTab={activeTab}/>
                                 </TabPane>
                                 <TabPane tab="Recently Approved" key="2">
-                                    Content of Tab Pane 2
+                                <WorkflowTable columns={columns} dataSource={dataSource} activeTab={activeTab}/>
                                 </TabPane>
                             </Tabs>
                         </Card>
