@@ -818,7 +818,7 @@ function ViewCreation() {
                 onValuesChange={handleValuesChange}
             >
                 <div className='reportDesigner-gridBlocks viewCreation-grids'>
-                    <div className='reportDesigner-grid-tables viewCreation-blocks'>
+                    <div className={params?'reportDesigner-grid-tables viewCreation-blocks approveView':'reportDesigner-grid-tables viewCreation-blocks'}>
                         <div className='viewCreation-leftBlocks bg-white'>
                             <div className='viewCreation-parameterLookup'>
                                 <h4 className='viewCreation-blockHeader'>
