@@ -19,10 +19,7 @@ import SelectField from '../../../../../../../components/SelectField/SelectField
 
 
 
-const ControLimits = (props) => {
-  const [controlSource, setControlSource] = useState([]);
-  const [specificationSource, setSpecificationSource] = useState([]);
-  const [warningSource, setWarningSource] = useState([]);
+const ControLimits = ({controlSource,setControlSource,specificationSource, setSpecificationSource, warningSource, setWarningSource}) => {
   const [controlColumns, setControlColumns] = useState({ll:'', ul:'', date:''});
   const [specifyColumns, setSpecifyColumns] = useState({ll:'', ul:'', date:''});
   const [warningColumns, setWarningColumns] = useState({ll:'', ul:'', date:''});

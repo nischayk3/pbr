@@ -130,15 +130,16 @@ const ChartType = (props) => {
         text: selectedYAxis,
       },
     },
+    showlegend:true,
     height: 250,
     width: 450,
-    margin: {
-      l: 50,
-      r: 50,
-      b: 50,
-      t: 50,
-      pad: 5,
-    },
+    // margin: {
+    //   l: 50,
+    //   r: 50,
+    //   b: 50,
+    //   t: 50,
+    //   pad: 5,
+    // },
   };
 
   const selectChartType = (value, field) => {

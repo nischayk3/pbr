@@ -38,4 +38,17 @@
   padding: 0px !important;
 }
 
+.ant-collapse-header {
+  svg {
+    color: #093185;
+  }
 }
+
+}
+
+.ant-collapse-item-active {
+  .ant-collapse-header {
+    background: #F1F7FF !important;
+  }
+}
+

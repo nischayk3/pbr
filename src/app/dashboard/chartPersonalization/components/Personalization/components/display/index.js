@@ -16,67 +16,19 @@ import SelectField from '../../../../../../../components/SelectField/SelectField
 const { Panel } = Collapse;
 const { Option } = Select;
 
-const Display = (props) => {
-    const figureObj = {
-        lines: false,
-        lineWidth: '',
-        stairCases: false,
-        areaFill: '',
-        areaGradient: '',
-        points: false,
-        alertTreshold: false,
-        panelOptions: {
-            title: '',
-            desc: '',
-            transparentBackground: ''
-        }
+const Display = ({figure,setFigure,legend,setLegend,axes,setAxes, selectedLayout, setselectedLayout}) => {
+
+    const onLegendChange = (e) => {
+        setLegend({ ...legend, options: { ...legend.options, show: e } })
+        setselectedLayout(prevState => ({
+            ...prevState,
+            showlegend:e,
+            mode:"lines",  
+            marker:{},
+            line: {width:100}
+          }));
     }
-    const legendObj = {
-        options: {
-            show: false,
-            atTable: false,
-            toRight: false,
-        },
-        values: {
-            min: false,
-            max: false,
-            avg: false,
-            current: false,
-            total: false,
-            decimal: false,
-        },
-        hideSeries: {
-            withOnlyNull: false,
-            withOnlyZero: false
-        }
-    }
-    const axesObj = {
-        leftX: {
-            show: false,
-            unit: '',
-            scale: '',
-            ymin: '',
-            ymax: '',
-            decimal: '',
-            label: '',
-        },
-        rightX: {
-            show: false,
-            unit: '',
-            scale: '',
-            ymin: '',
-            ymax: '',
-            decimal: '',
-            label: '',
-        },
-        xaxis: {
-            show: false,
-            unit: ''
-        }
-    }
-    const [figure, setFigure] = useState(figureObj)
-    const [legend, setLegend] = useState(legendObj)
-    const [axes, setAxes] = useState(axesObj)
+
     return (
         <>
             <div className='display-section'>
@@ -86,7 +38,7 @@ const Display = (props) => {
                     ghost
                 >
                     {/* Figure */}
-                    <Panel header="Figure" key='5'>
+                    <Panel header="Figure" key='5' style={{ background: 'white !important'}}>
                         <div className='figure-container'>
                             <Row className="figure-inputs" gutter={24}>
                                 <Col className="gutter-row" span={14}>
@@ -189,7 +141,7 @@ const Display = (props) => {
                                     <label>Show:</label>
                                 </Col>
                                 <Col className="gutter-row" span={10}>
-                                    <Switch size="small" checked={legend.options.show} onChange={(e) => setLegend({ ...legend, options: { ...legend.options, show: e } })} />
+                                    <Switch size="small" checked={legend.options.show} onChange={onLegendChange} />
                                 </Col>
                             </Row>
                             <Row className="figure-inputs" gutter={24}>
@@ -442,7 +394,6 @@ const Display = (props) => {
                             </Row>
                         </div>
                     </Panel>
-
 
                 </Collapse>
 
