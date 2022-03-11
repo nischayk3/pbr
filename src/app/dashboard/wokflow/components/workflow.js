@@ -9,7 +9,7 @@ import {
     showLoader,
     showNotification,
 } from '../../../../duck/actions/commonActions';
-import { getCountData } from '../../../../services/workFlowServices';
+import { getCountData,getTableData } from '../../../../services/workFlowServices';
 import { Card, Tabs } from 'antd';
 import { ArrowLeftOutlined, DownloadOutlined, } from '@ant-design/icons';
 import DashCard from '../../../../components/cardComponent/customCard';
@@ -25,6 +25,7 @@ const Workflow = () => {
     const [cardTitle, setCardTitle] = useState('');
     const [tilesData, setTilesData] = useState([]);
     const [activeDiv, setActiveDiv] = useState('');
+    const [applicationType, setApplicationType] = useState('');
     const [activeTab, setActiveTab] = useState("1");
     const [columns, setColumns] = useState([]);
     const [dataSource, setDataSource] = useState([]);
@@ -35,10 +36,30 @@ const Workflow = () => {
     }, []);
 
     useEffect(()=>{
-        setColumns(response.config);
-        setDataSource(response.data.content);
-    },[cardTitle])
+        cardTableData();
+        // setColumns(response.config);
+        // setDataSource(response.data.content);
+    },[cardTitle,activeTab])
 
+    const cardTableData=async()=>{
+        let req;
+        if(activeTab==="1"){
+             req=`/${applicationType}/awaiting_approval`
+        }else{
+            req=`/${applicationType}/recently_approved`
+        }
+        try{
+            dispatch(showLoader());
+            const tableResponse = await getTableData(req);
+            setColumns(tableResponse.Data.config);
+            setDataSource(tableResponse.Data.data);
+            dispatch(hideLoader());
+        }catch (error) {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', error.message));
+        }
+       
+    }
     const getTilesData = async () => {
         let req = {};
         try {
@@ -88,6 +109,7 @@ const Workflow = () => {
        setItemCount(item.item_count);
        setCardTitle(item.text);
        setActiveDiv(item.text);
+       setApplicationType(item.application_type);
     }
 
    const changeTab = activeKey => {

@@ -170,26 +170,26 @@ useEffect(()=>{
     const updateTableColumns=()=>{
       let columns = [];
       props.columns.map((i) => {
-        let { displayName, fieldName } = i;
+        let { display_name, field_name } = i;
   
         if (i.visible) {
           let obj = {
-            title: displayName,
-            dataIndex: fieldName,
-            key: i.id,
-            ...getColumnSearchProps(fieldName,refSearchInput,searchText,setSearchText,searchedColumn,setSearchedColumn),
+            title: display_name,
+            dataIndex: field_name,
+            key: i.field_name,
+            ...getColumnSearchProps(field_name,refSearchInput,searchText,setSearchText,searchedColumn,setSearchedColumn),
             sorter: (a, b) => {
   
-              return a.fieldName === null || a.fieldName === undefined || a.fieldName === "" ? -1 : b.fieldName == null || b.fieldName == undefined || b.fieldName == "" ? 1 : a.fieldName.toString().localeCompare(b.fieldName)
+              return a.field_name === null || a.field_name === undefined || a.field_name === "" ? -1 : b.field_name == null || b.field_name == undefined || b.field_name == "" ? 1 : a.field_name.toString().localeCompare(b.field_name)
   
             },
   
           };
   
-          if (i.fieldName === "action") {
+          if (i.field_name === "appl_url") {
             obj.render = (text, row,index) => {
               return (
-                <a onClick={()=>history.push(`${text}?id=${row.view_id}&version=${row.version}`)}>Review Submission</a>
+                <a onClick={()=>history.push(`${text}?id=${row.id}&version=${row.version}`)}>Review Submission</a>
                 
               );
             }
