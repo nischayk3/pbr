@@ -8,11 +8,7 @@ import SelectField from '../../../../../../components/SelectField/SelectField';
 import Alerts from './alerts/index';
 import ControLimits from './controlLimts';
 import Display from './display';
-<<<<<<< HEAD
-import { ControlOutlined, StarOutlined, BellOutlined} from '@ant-design/icons';
-=======
-import { ControlOutlined, StarOutlined, PlusSquareOutlined } from '@ant-design/icons';
->>>>>>> a5808390a1b3d36215aacad2da7ab34322f6a6dc
+import { ControlOutlined, StarOutlined, PlusSquareOutlined, BellOutlined } from '@ant-design/icons';
 const { Panel } = Collapse;
 
 
