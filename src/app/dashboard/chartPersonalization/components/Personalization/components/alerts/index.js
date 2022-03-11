@@ -73,7 +73,7 @@ const Alerts = (props) => {
   }
   
   return (
-
+    
     <Card title={<div>Alert Name1
       <Popconfirm
         title="Are you sure to delete this task?"
