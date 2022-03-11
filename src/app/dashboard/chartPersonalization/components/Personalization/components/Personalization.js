@@ -1,66 +1,66 @@
 import './Personalization.scss';
 
 import { Card, Collapse } from 'antd';
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import InputField from '../../../../../../components/InputField/InputField';
 import SelectField from '../../../../../../components/SelectField/SelectField';
+import Alerts from './alerts';
+import ControLimits from './controlLimts';
+import Display from './display';
+import { PlusSquareOutlined ,ControlOutlined} from '@ant-design/icons';
+const { Panel } = Collapse;
 
-class Personalization extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+
+
+const Personalization = (props) => {
+  const [count, setCount] = useState(1);
+  const [alertCount, setAlertCount] = useState([1]);
+
+  const handleClick=()=>{
+    setCount(count + 1);
+    setAlertCount([...alertCount,count+1]);
   }
 
-  render() {
-    const { Panel } = Collapse;
-    return (
-      <Card title='Configuration'>
+  const deleteAlert=(value)=>{
+    console.log(value);
+    console.log("before",alertCount);
+    let data=[...alertCount];
+    let index=data.findIndex(el=>el==value);
+    data.splice(index,1)
+    console.log("after",data);
+    setAlertCount(data);
+  }
+
+
+  return (
+    <>
+      <Card className='Configuration-card' title='Configuration'>
         <Collapse
-          // defaultActiveKey={['1']}
+          expandIconPosition='right'
           ghost
         >
-          <Panel header='Alerts' key='1'>
-            <div className='alerts-input'>
-              <p>Params</p>
-              <div className='alerts-input-param'>
-                <InputField vlaue='' />
-                <SelectField />
-                <InputField vlaue='' />
-              </div>
-            </div>
-            <div>
-              <InputField label='Users' vlaue='' />
-            </div>
-            <div>
-              <SelectField label='Schedule' />
-            </div>
+           <Panel header="Alerts" key='1'>
+                  <Alerts />
           </Panel>
-          <Panel header='Sharing' key='2'>
-            <div>
-              <InputField label='Edit' vlaue='' />
-              <InputField label='View' vlaue='' />
-            </div>
+          
+            {/* Limits */}
+            <Panel header="Limits" key='3'>
+                  <ControLimits />
           </Panel>
-          <Panel header='Customization' key='3'></Panel>
 
-          <Panel header='Panel Options' key='4'></Panel>
-          <Panel header='Panel Links' key='5'></Panel>
-          <Panel header='Repeat Options' key='6'></Panel>
-          <Panel header='Display' key='7'></Panel>
-          <Panel header='Legend' key='8'></Panel>
-          <Panel header='Axis' key='9'></Panel>
+          {/* Display */}
+          <Panel header='Display' key='2'>
+            <Display/>
+          </Panel>
 
-          <Panel header='Control Limits' key='10'>
-            <p>Text</p>
-          </Panel>
-          <Panel header='Rule' key='11'>
-            <p>Text</p>
-          </Panel>
+
         </Collapse>
       </Card>
-    );
-  }
+    </>
+  );
+
 }
+
 
 export default Personalization;

@@ -26,7 +26,6 @@ import SaveModal from '../../../../components/SaveModal/saveModal'
 import { useDispatch } from 'react-redux';
 import { sendReport, screenChange } from '../../../../duck/actions/reportDesignerAction';
 import { showLoader, hideLoader, showNotification } from '../../../../duck/actions/commonActions';
-import Highlighter from "react-highlight-words";
 import Signature from '../../../../components/ElectronicSignature/signature'
 
 //Columns For The view Selection modal
@@ -345,6 +344,7 @@ function ReportDesignerNew() {
     }
     else {
       message.error('No Changes To Save')
+      dispatch(sendReport(mainJson))
     }
 
   }
@@ -629,11 +629,6 @@ function ReportDesignerNew() {
         <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
         
       </div>
-      {/* reqs['application_type'] = props.appType
-            reqs['created_by'] = user
-            reqs['esign_id'] = primaryId
-            reqs['disp_id'] = props.dispId
-            reqs['version'] = props.version */}
       <Signature isPublish={isPublish} handleClose={handleClose}  screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT" dispId={reportId} version={0}/>
     </div>
   );

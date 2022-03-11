@@ -18,8 +18,7 @@ function ReportDesignerForm(props) {
     const repotData = useSelector(
         (state) => state.reportDesignerReducer.reportData
       );
-      console.log(repotData)
-
+console.log(repotData)
       const [ReportData, setReportData] = useState(repotData)
       const [reportId,setReportId] = useState('')
       const [reportName,setReportName] = useState('')
@@ -28,19 +27,19 @@ function ReportDesignerForm(props) {
       const [viewId,setViewId] = useState('')
 
       useEffect(() => {
-        unload(ReportData)
-    }, [ReportData]
+        unload(repotData)
+    }, [repotData]
     );
     const unload = (ReportData) =>
-    {
+    {  console.log(ReportData)
        let user_details = JSON.parse(localStorage.getItem('user_details'))
        let user = user_details["username"] ? user_details["username"] : ''
 
-       setReportId(ReportData['rep_disp_id'])
-       setReportName(ReportData['rep_name'])
-       setReportStatus(ReportData['rep_status'])
+       setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
+       setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
+       setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
        setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id']+'-'+ReportData['view_version'] : '')
-       setVariantname(user+'_variant')
+       setVariantname(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : user+'_variant')
     }
 
     return (

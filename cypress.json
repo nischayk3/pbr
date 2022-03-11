@@ -1,3 +1,4 @@
 {
-    "baseUrl": "http://localhost:3004/"
+    "baseUrl": "https://bms-cpvdev.mareana.com/",
+    "chromeWebSecurity": false
 }
