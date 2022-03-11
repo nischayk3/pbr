@@ -48,6 +48,7 @@ const ChartType = (props) => {
   const batchCoverage = useSelector(
     (state) => state.chartPersReducer.getBatchCoverage
   );
+ 
 
   const chartDesc = useSelector((state) => state.chartPersReducer.chartDesc);
 
@@ -64,11 +65,19 @@ const ChartType = (props) => {
     const temp = [];
     const ph = [];
     const axisArray = [];
-
+    let tempArr = [];
+    batchCoverage && batchCoverage.functions &&  Object.entries(batchCoverage.functions).map(([key,val]) => {
+          const a = val[0]
+          console.log(a, 'a')
+          const b = a && Object.keys(a)[0]
+          tempArr.push(b)
+    })
+    setxAxisList(tempArr);
+    setyAxisList(tempArr);
     const fetchXYAxis =
       batchCoverage &&
       batchCoverage.coverage !== undefined &&
-      Object.entries(batchCoverage.coverage).map(([key, value]) => {
+      Object.entries(batchCoverage.functions).map(([key, value]) => {
         let axisObj = {};
 
         axisObj['key'] = key;
@@ -95,8 +104,8 @@ const ChartType = (props) => {
     };
     setbatchData(data);
     setChartBatchData(batchCoverage);
-    setxAxisList(xAxis.filter(uniqueArr));
-    setyAxisList(yAxis.filter(uniqueArr));
+    // setxAxisList(xAxis.filter(uniqueArr));
+    // setyAxisList(yAxis.filter(uniqueArr));
     setaxisDataArray(axisArray);
   }, [batchCoverage]);
 
@@ -179,6 +188,15 @@ const ChartType = (props) => {
   };
 
   const createChart = () => {
+    Object.entries(batchCoverage.functions).map(([key,val]) => {
+      let a = [];
+       val.forEach(element => {
+         console.log(Object.values(element)[0])
+         const x = element && Object.values(element)[0]
+            a.push(x)
+       });
+       console.log(a, 'aaaaaa');
+    })
     const chartMapping = {
       x: {
         function_id: '1',
@@ -203,6 +221,7 @@ const ChartType = (props) => {
     dispatch(sendChartMapping(chartMapping));
   };
 
+  console.log(xAxisList, 'xAxisList');
   return (
     <div>
       <Card title='Chart'>

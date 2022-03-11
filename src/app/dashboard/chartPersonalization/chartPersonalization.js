@@ -465,9 +465,9 @@ function ChartPersonalization() {
   ) {
     let reqViewParam = {
       view_disp_id: viewDisId ? viewDisId : '',
-      view_version: viewVer ? viewVer : null,
-      site: site ? site : null,
-      date: dateRange ? dateRange : null,
+      view_version: viewVer ? Number(viewVer) : null,
+      // site: site ? site : null,
+      // date: dateRange ? dateRange : null,
       unapproved_data: isUnApproved ? isUnApproved : false,
     };
     try {

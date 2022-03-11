@@ -8,7 +8,7 @@ import SelectField from '../../../../../../components/SelectField/SelectField';
 import Alerts from './alerts/index';
 import ControLimits from './controlLimts';
 import Display from './display';
-import { ControlOutlined, StarOutlined} from '@ant-design/icons';
+import { ControlOutlined, StarOutlined, BellOutlined} from '@ant-design/icons';
 const { Panel } = Collapse;
 
 
@@ -38,7 +38,7 @@ const Personalization = ({controlSource,setControlSource,specificationSource, se
           expandIconPosition='right'
           ghost
         >
-           <Panel header="Alerts" key='1'>
+           <Panel header={<div><BellOutlined />&nbsp;  Alerts</div>} key='1'>
                   <Alerts />
           </Panel>
           

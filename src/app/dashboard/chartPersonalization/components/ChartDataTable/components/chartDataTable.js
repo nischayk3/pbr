@@ -14,7 +14,7 @@ import { updateTableColumn } from '../../../../../../utils/updateTableColumns';
 
 function ChartDataTable(props) {
   const parameterData = useSelector(
-    (state) => state.chartPersReducer.getBatchCoverage.data
+    (state) => state.chartPersReducer.getBatchCoverage
   );
 
   const [paramData, setparamData] = useState([]);
@@ -22,13 +22,16 @@ function ChartDataTable(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setparamData(parameterData);
-    dispatch(sendParameterTableData(parameterData ? parameterData : []));
+     if (parameterData) {
+      setparamData(parameterData.parameter);
+      dispatch(sendParameterTableData(parameterData.parameter ? parameterData.parameter : []));
+     }
   }, [parameterData]);
 
   const uniqueArr = (value, index, self) => {
     return self.indexOf(value) === index;
   };
+  console.log(paramData,'parameter')
   const objkeys =
     paramData !== undefined && paramData.length > 0
       ? Object.keys(paramData[0])
@@ -45,6 +48,7 @@ function ChartDataTable(props) {
       key: `${item}-${i}`,
     });
   });
+
 
   const { TabPane } = Tabs;
   return (
@@ -65,17 +69,17 @@ function ChartDataTable(props) {
               <ViolationTable />
             </TabPane>
             <TabPane tab='Data Table' key='3'>
-              <Table
+              {<Table
                 rowClassName={(record, index) =>
                   index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
                 }
                 size='small'
                 className='parameter_table'
                 columns={columns}
-                dataSource={paramData}
+                // dataSource={paramData}
                 scroll={{ y: 350 }}
                 pagination={false}
-              />
+              />}
             </TabPane>
           </Tabs>
         </Card>
