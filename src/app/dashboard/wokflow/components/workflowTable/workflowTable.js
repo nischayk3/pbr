@@ -10,7 +10,7 @@ import './styles.scss';
 
 
 function workflowTable(props) {
-    const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [newColumns,setNewColumns]=useState([]);
   const refSearchInput = useRef();
@@ -178,6 +178,7 @@ useEffect(()=>{
               title: display_name,
               dataIndex: field_name,
               key: i.field_name,
+              width : '120px',
               ...getColumnSearchProps(field_name,refSearchInput,searchText,setSearchText,searchedColumn,setSearchedColumn),
               sorter: (a, b) => {
     
@@ -210,6 +211,7 @@ useEffect(()=>{
               title: display_name,
               dataIndex: field_name,
               key: i.field_name,
+              width : '120px',
               ...getColumnSearchProps(field_name,refSearchInput,searchText,setSearchText,searchedColumn,setSearchedColumn),
               sorter: (a, b) => {
     
