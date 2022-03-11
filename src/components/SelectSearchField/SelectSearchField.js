@@ -17,6 +17,7 @@ const SelectSearchField = (props) => {
         onChange={props.onChangeSelect}
         onSearch={props.onSearchSelect}
         style={{ width: '100%', margin: '0px' }}
+        allowClear={props.allowClear}
       >
         {props.selectList &&
           props.selectList.map((item) => (

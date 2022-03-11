@@ -11,6 +11,7 @@ import {
   WarningOutlined,
 } from '@ant-design/icons';
 import processOrderIcon from '../../../../../assets/images/processorder.png';
+import batchIcon from '../../../../../assets/images/material.png';
 import './style.scss';
 import SelectSearchField from '../../../../../components/SelectSearchField/SelectSearchField';
 
@@ -19,7 +20,6 @@ function TreePlot(props) {
   const treeDiv = useRef();
   const backwardTreeDiv = useRef();
   const forwardTreeDiv = useRef();
-
   const [isMaterialLink, setisMaterialLink] = useState('#08C6FF');
   const [isProcesslink, setisProcesslink] = useState('#08C6FF');
   const [searchOptions, setsearchOptions] = useState([]);
@@ -150,7 +150,7 @@ function TreePlot(props) {
     //   productTypeList: [...new Set(arrProType)],
     // });
   };
-  console.log('searchOptions', searchOptions);
+
   const onSearchParam = (text) => {
     console.log('search', text);
   };
@@ -158,7 +158,7 @@ function TreePlot(props) {
     console.log('onChangeParam', value);
     if (value !== null && value !== undefined) {
       let splitvalue = value.split('---');
-      console.log('splitvalue', splitvalue);
+
       let splitedvalue = splitvalue[1];
       setselectedNodeId(splitedvalue);
       setsearchValue(splitvalue[0]);
@@ -167,23 +167,32 @@ function TreePlot(props) {
       for (let i = 0; i < svgNodeClass.length; i++) {
         const element = svgNodeClass[i].children;
         element[0].setAttribute('r', '10');
-        console.log('element', element);
       }
-      let svgNode = document.getElementById('node-' + splitvalue[1]).children;
-      console.log('svgNodeClass', svgNodeClass, svgNode);
 
-      d3.select('#body');
-      console.log(" d3.select('#body')", d3.select('#body'));
-      // Update the links...
-      // var link = d3.selectAll('path.link').data(function (d) {
-      //   return d;
-      // });
-      // .data(function (d) {
-      //   return d;
-      // });
-      console.log('linlkkkkkkkkkkkk', d3.selectAll('path.link').data());
+      let diagramLayout = d3.select('#backwardDiv');
+
+      let nodeSvg = diagramLayout.selectAll('.node');
+      let linkSvg = diagramLayout.selectAll('.link');
+
+      let linkSearch = linkSvg.filter(function (d) {
+        return d.source.id === splitedvalue || d.target.id === splitedvalue;
+      });
+
+      linkSearch.style('stroke-width', function (obj) {
+        if (obj.source.id === splitedvalue || obj.target.id === splitedvalue) {
+          console.log('obj.source.id ', obj.source.id);
+          return '6';
+        } else {
+          console.log('{elseeee}');
+          return '1';
+        }
+      });
+
+      console.log('linkSvg ', linkSvg);
+      console.log('linkSearch ', linkSearch);
     }
   };
+
   /**
    * Checks if the element is an empty object or array
    */
@@ -340,11 +349,10 @@ function TreePlot(props) {
       // eslint-disable-next-line no-undef
       //document.getElementById('main').style.height = graphHeight - 250 + 'px';
 
-      d3.select(nodeDiv)
-        .append('div')
-        .attr('class', 'row')
-        .attr('id', 'mainDiv')
-        .attr('align', 'center');
+      // .append('div')
+      // .attr('class', 'row')
+      // .attr('id', 'mainDiv')
+      // .attr('align', 'center');
 
       // eslint-disable-next-line no-undef
       window.scroll({
@@ -398,7 +406,6 @@ function TreePlot(props) {
           })
           .attr('width', width + margin[1] + margin[3])
           .attr('height', height)
-
           .append('g')
           .append('svg:g')
           .attr('transform', function () {
@@ -480,8 +487,8 @@ function TreePlot(props) {
             controlIconsEnabled: false,
             zoomEnabled: true, //lets see
             zoomScaleSensitivity: 10,
-            minZoom: 8,
-            maxZoom: 15,
+            minZoom: 12,
+            maxZoom: 18,
             fit: false,
             center: true,
             destroy: function (options) {
@@ -675,10 +682,9 @@ function TreePlot(props) {
               .duration(500) // fade out div for 500ms
               .style('opacity', '0'); // a
 
-            popupDiv.style('position', 'absolute');
-            console.log('popuppppppp', popupDiv, toolTip);
-
             node_onClick(d);
+
+            popupDiv.style('display', 'block');
             popupDiv.style('left', d3.event.layerX + 'px');
             if (d3.event.layerY > 200) {
               popupDiv.style('top', d3.event.layerY - 150 + 'px');
@@ -814,10 +820,13 @@ function TreePlot(props) {
               .duration(500) // it shall take 500ms
               .style('opacity', '0'); // and go all the way to an opacity of nil
 
-            highlightLink(d, '#6E6E6E', '0.7', 2);
+            // highlightLink(d, '#6E6E6E', '0.7', 2);
           })
           .attr('xlink:href', function (d) {
-            //return d.traceability =="backward" ? -15 : 15;
+            if (d.batchNo === 'ABJ7938') {
+              return 'img/genealogy/non-material.png';
+            }
+            console.log('xlinkkkkkk', d);
             if (d.type === 'Material') {
               return 'img/genealogy/material.png'; //"http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_daredevil.png";
             } else {
@@ -856,7 +865,8 @@ function TreePlot(props) {
               .transition() // declare the transition properties to
               .duration(500) // it shall take 500ms
               .style('opacity', '0'); // and go all the way to an opacity of nil
-            highlightLink(d, '#6E6E6E', '0.7', 2);
+
+            //   highlightLink(d, '#6E6E6E', '0.7', 2);
           })
           .on('click', function (d) {
             d3.event.preventDefault();
@@ -973,7 +983,7 @@ function TreePlot(props) {
                 rootCounter++;
                 if (d.source) {
                   if (d.source.type === 'Material') {
-                    return isProcesslink;
+                    return isMaterialLink;
                   } else {
                     return isMaterialLink;
                   }
@@ -984,7 +994,7 @@ function TreePlot(props) {
                 if (d.target.isFolder === false) return '#0B3B0B';
                 else if (d.source) {
                   if (d.source.type === 'Material') {
-                    return isProcesslink;
+                    return isMaterialLink;
                   } else {
                     return isMaterialLink;
                   }
@@ -1024,7 +1034,7 @@ function TreePlot(props) {
             else return 2;
           })
           .on('mouseover', function (d) {
-            highlightLink(d.target, '#FF8C00', 1, 10);
+            // highlightLink(d.target, '#FF8C00', 1, 10);
 
             toolTip.transition().duration(200).style('opacity', '.9');
             var material = '';
@@ -1202,7 +1212,9 @@ function TreePlot(props) {
               d.parent.relationshipMap &&
               d.parent.relationshipMap[d.parent.id + '-' + d.id]
             ) {
-              uom = d.parent.relationshipMap[d.parent.id + '-' + d.id].uom;
+              uom =
+                d.parent.relationshipMap[d.parent.id + '-' + d.id].uom ||
+                'Not available';
               quantity = d.parent.relationshipMap[d.parent.id + '-' + d.id].qty;
             }
             if (
@@ -1210,7 +1222,9 @@ function TreePlot(props) {
               d.relationshipMap &&
               d.relationshipMap[d.id + '-' + d.children[0].id]
             ) {
-              uom = d.relationshipMap[d.id + '-' + d.children[0].id].uom;
+              uom =
+                d.relationshipMap[d.id + '-' + d.children[0].id].uom ||
+                'Not available';
               quantity = d.relationshipMap[d.id + '-' + d.children[0].id].qty;
             }
 
@@ -1469,12 +1483,20 @@ function TreePlot(props) {
     props.nodeClick(nodeDetails);
   };
 
-  console.log('popvisibleeee', popVisible);
+  window.onclick = function (event) {
+    console.log('event targetttttt', event, event.target.className);
+    if (!(event.target.className.baseVal == '')) {
+      d3.select('#popup').style('display', 'none');
+    }
+  };
+
   return (
     <>
       <Draggable>
         <div className='drag-search'>
-          <span className='drag-search_head'>Parameters - Quick Search</span>
+          <div className='drag-search_head'>
+            <span>Parameters - Quick Search</span>
+          </div>
           <Select
             showSearch
             placeholder='Search Here...'
@@ -1510,36 +1532,34 @@ function TreePlot(props) {
                   <div id='keyTooltip' className='headerattribute row'></div>
                 </div>
               </div>
-              {/* {popVisible && ( */}
-              <div className='popup-div' id='popup'>
-                <Button
-                  type='primary'
-                  onClick={() => {
-                    onClickView('backward');
-                  }}
-                >
-                  Backward Genealogy
-                </Button>
-                <Button
-                  type='primary'
-                  onClick={() => {
-                    onClickView('forward');
-                  }}
-                >
-                  Forward Genealogy
-                </Button>
-                <Button
-                  type='primary'
-                  onClick={() => {
-                    onClickView('view');
-                  }}
-                >
-                  View Details
-                </Button>
-              </div>
-              {/* )} */}
             </div>
           </div>
+        </div>
+        <div className='popup-div' id='popup'>
+          <Button
+            type='primary'
+            onClick={() => {
+              onClickView('backward');
+            }}
+          >
+            Backward Genealogy
+          </Button>
+          <Button
+            type='primary'
+            onClick={() => {
+              onClickView('forward');
+            }}
+          >
+            Forward Genealogy
+          </Button>
+          <Button
+            type='primary'
+            onClick={() => {
+              onClickView('view');
+            }}
+          >
+            View Details
+          </Button>
         </div>
         <div className='genealogy-legends'>
           <span className='genealogy-legends_icon'>
@@ -1548,7 +1568,7 @@ function TreePlot(props) {
           <div className='genealogy-legends_frames'>
             <ul>
               <li>
-                <span className='batch_icon'></span>
+                <img src={batchIcon} />
                 <p>Material/Batch</p>
               </li>
               <li>

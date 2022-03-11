@@ -287,10 +287,10 @@ div.popup {
 }
 
 .genealogy-legends_frames {
+  position: absolute;
+  bottom: 0px;
   display: none;
-  /* Gray / gray-1 */
   background: #ffffff;
-  /* Elevation */
   width: 251px;
   height: 196px;
   box-shadow: 0px 9px 28px 8px rgba(0, 0, 0, 0.05),
@@ -372,7 +372,8 @@ div.popup {
 
 .genealogy-legends {
   position: absolute;
-  left: 10px;
+  left: 40px;
+  bottom: 40px;
 }
 
 // #treeWrapper {
@@ -411,7 +412,7 @@ div.popup {
 .popup-div {
   position: absolute;
   width: 215px;
-  padding: 12px 26px;
+  padding: 12px;
   background: #ffffff;
   box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.24);
   border-radius: 4px;
