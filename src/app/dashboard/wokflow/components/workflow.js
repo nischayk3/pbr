@@ -141,7 +141,7 @@ const Workflow = () => {
                         tilesData.map((item, index) => {
                             return (
 
-                                <div onClick={() => tilesClicked(item)}>
+                                <div onClick={() => tilesClicked(item)} style={{cursor:'pointer'}}>
                                     <DashCard count={item.item_count} desc={item.text} active={activeDiv} />
                                 </div>
 

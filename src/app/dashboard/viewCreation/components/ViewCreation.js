@@ -778,7 +778,7 @@ function ViewCreation() {
                 {params ? (
                     <div className='viewCreation-btns'>
                         <Button className='viewCreation-rejectBtn'>Reject</Button>
-                        <Button className='viewCreation-approveBtn'>Approve</Button>
+                        <Button className='viewCreation-publishBtn'>Approve</Button>
                     </div>
                 ) : (
                     materialsList.length > 0 && <div className='viewCreation-btns'>
@@ -817,8 +817,8 @@ function ViewCreation() {
                 form={form}
                 onValuesChange={handleValuesChange}
             >
-                <div className='reportDesigner-gridBlocks viewCreation-grids'>
-                    <div className={params?'reportDesigner-grid-tables viewCreation-blocks approveView':'reportDesigner-grid-tables viewCreation-blocks'}>
+                <div className={params?'reportDesigner-gridBlocks viewCreation-grids approveViewParent':'reportDesigner-gridBlocks viewCreation-grids'}>
+                    <div className={params?'reportDesigner-grid-tables viewCreation-blocks approveViewChildren':'reportDesigner-grid-tables viewCreation-blocks'}>
                         <div className='viewCreation-leftBlocks bg-white'>
                             <div className='viewCreation-parameterLookup'>
                                 <h4 className='viewCreation-blockHeader'>
