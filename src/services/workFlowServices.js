@@ -19,7 +19,7 @@ export const getCountData = (_queryParam) => {
 //get table data
 
 export const getTableData = (_queryParam) => {
-    return Service.get(BMS_APP_PYTHON_SERVICE + '/approvals'+ _queryParam,{
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/approvals'+ _queryParam,'',{
         'content-type': 'application/json',
         'username': localStorage.getItem('user'),
     }).then(

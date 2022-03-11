@@ -64,40 +64,40 @@ const Workflow = () => {
         let req = {};
         try {
             dispatch(showLoader());
-            // const tilesResponse = await getCountData(req);
-            // setTilesData(tilesResponse['Data']);
-            setTilesData([
-                {
-                  "application_type": "VIEW",
-                  "item_count": 2,
-                  "text": "View Approval"
-                },
-                {
-                  "application_type": "CHART",
-                  "item_count": 2,
-                  "text": "Chart Approval"
-                },
-                {
-                  "application_type": "REPORT",
-                  "item_count": 1,
-                  "text": "Report Approval"
-                },
-                {
-                  "application_type": "PBR",
-                  "item_count": 0,
-                  "text": "Pbr Approval"
-                },
-                {
-                  "application_type": "PARAM",
-                  "item_count": 0,
-                  "text": "Param Approval"
-                },
-                {
-                  "application_type": "DTLOAD",
-                  "item_count": 0,
-                  "text": "Dtload Approval"
-                }
-              ])
+            const tilesResponse = await getCountData(req);
+            setTilesData(tilesResponse['Data']);
+            // setTilesData([
+            //     {
+            //       "application_type": "VIEW",
+            //       "item_count": 2,
+            //       "text": "View Approval"
+            //     },
+            //     {
+            //       "application_type": "CHART",
+            //       "item_count": 2,
+            //       "text": "Chart Approval"
+            //     },
+            //     {
+            //       "application_type": "REPORT",
+            //       "item_count": 1,
+            //       "text": "Report Approval"
+            //     },
+            //     {
+            //       "application_type": "PBR",
+            //       "item_count": 0,
+            //       "text": "Pbr Approval"
+            //     },
+            //     {
+            //       "application_type": "PARAM",
+            //       "item_count": 0,
+            //       "text": "Param Approval"
+            //     },
+            //     {
+            //       "application_type": "DTLOAD",
+            //       "item_count": 0,
+            //       "text": "Dtload Approval"
+            //     }
+            //   ])
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
@@ -115,6 +115,8 @@ const Workflow = () => {
    const changeTab = activeKey => {
         setActiveTab(activeKey);
       };
+
+      console.log(cardTitle,activeTab)
     return (
         <div className='custom-wrapper'>
             <div className='sub-header'>
