@@ -230,11 +230,12 @@ useEffect(()=>{
     return (
         <div className='workflow-table'>
             <Table
-                //className='workflow-table'
+                className='approval-table'
                 columns={newColumns}
                 dataSource={props.dataSource}
                 style={{ border: '1px solid #ececec', borderRadius: '2px' }}
                 pagination={false}
+                scroll={{y:250}}
             //rowKey={(record) => record.param}
             />
         </div>
