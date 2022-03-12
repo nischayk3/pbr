@@ -77,8 +77,8 @@ const ChartType = (props) => {
     let tempArr = [];
     setxAxisList([])
     setyAxisList([]);
-    let chartCoverage = batchCoverage && batchCoverage.coverage_stats;
-    if (chartCoverage) {
+    let chartCoverage = batchCoverage;
+    if (chartCoverage && chartCoverage.coverage) {
       chartCoverage && chartCoverage.coverage.forEach((ele) => {
         tempArr.push(ele.function_name)
       })
