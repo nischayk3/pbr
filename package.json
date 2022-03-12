@@ -6,7 +6,7 @@
     "start": "react-scripts --max_old_space_size=8192 start",
     "build": "react-scripts  --max_old_space_size=8192 build",
     "cypress:start:app": "react-scripts -r @cypress/instrument-cra start",
-    "cypress:start:wait": "start-server-and-test cypress:start:app http://localhost:3030",
+    "cypress:start:wait": "start-server-and-test cypress:start:app https://bms-cpvdev.mareana.com",
     "cypress:open": "npm run cypress:start:wait -- \"cypress open\"",
     "cypress:run": "npm run cypress:start:wait -- \"cypress run\"",
     "build-theme": "lessc -clean-css=\"--s1 --advanced --compatibility=ie8\" ./src/assets/styles/less/main.less ./src/assets/styles/css/doNotModify/custom-theme.css --js",
