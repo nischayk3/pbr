@@ -27,6 +27,17 @@ export const publishEvent = (request) => {
     );
 };
 
+//approve reject 
+export const approveRecord = (request) => {
+    return Service.put(BMS_APP_PYTHON_SERVICE + '/workflow-status', request).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
 
 
 
