@@ -174,7 +174,7 @@ function workflowTable(props) {
     //   color += letters[Math.floor(Math.random() * 16)];
     // }
     // return color;
-    let colors=['#c19a6b','#728C69','#c04000','#c19578']
+    let colors=['#56483F','#728C69','#c04000','#c19578']
     return colors[index%4];
 
   }
