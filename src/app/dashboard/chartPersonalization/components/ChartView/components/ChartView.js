@@ -80,24 +80,8 @@ function ChartView(props) {
   }, [getChartObjData]);
 
   useEffect(() => {
-    let chartCoverage = batchCoverage && batchCoverage.coverage;
+    let chartCoverage = batchCoverage && batchCoverage.coverage_stats;
     let chartBatchStatus = batchCoverage && batchCoverage.batchstats;
-
-    let cov =
-      chartCoverage !== undefined &&
-      Object.entries(chartCoverage).forEach(([key, value]) => {
-        let createObj = {};
-        createObj[key] = value;
-        coverage.push(createObj);
-      });
-    let cov1 =
-      chartCoverage !== undefined &&
-      Object.entries(chartBatchStatus).forEach(([key1, value1]) => {
-        let createObj1 = {};
-        createObj1[key1] = value1;
-        coverage.push(createObj1);
-      });
-
     setbatchData(chartBatchStatus);
     setbatchStatus(chartCoverage);
     setshowBatchCoverage(true);
@@ -134,7 +118,6 @@ function ChartView(props) {
       {item.view}
     </Option>
   ));
-  console.log('batchCoverage........', showBatchCoverage);
   return (
     <Card title='View'>
       <div className='chartview-input'>
@@ -163,46 +146,18 @@ function ChartView(props) {
         >
           {showBatchCoverage ? (
             <div className='alert-tags'>
-              {batchStatus !== undefined &&
-                Object.entries(batchStatus).map(([key1, value1]) => {
-                  if (value1.replace(/\d+% ?/g, 0) < 100.0) {
-                    return (
-                      <div className='alert-tags_error'>
-                        <WarningOutlined style={{ color: '#FA541C' }} />
-                        <Tag className='alert-tags-label' color='magenta'>
-                          {key1}
+              {batchStatus && batchStatus.coverage.map((ele, index) => {
+                  return (
+                    <div className='alert-tags_error' key={index}>
+                       <div></div>
+                        <Tag className='alert-tags-label' color='geekblue'>
+                          {ele.function_name}
                         </Tag>
-                        <p className='tag-percent'>{value1.toString()}</p>
-                        {batchData !== undefined &&
-                          Object.entries(batchData).map(([key, value]) => {
-                            if (key1 === key) {
-                              return (
-                                <p className='tag-stats'>{value.toString()}</p>
-                              );
-                            }
-                          })}
+                        <p className='tag-percent'>{ele.coverage_metric_percent}</p>
+                        <p className='tag-stats'>{ele.batchstats}</p>
                       </div>
-                    );
-                  } else {
-                    return (
-                      <div className='alert-tags_error'>
-                        <div></div>
-                        <Tag className='alert-tags-label' color='magenta'>
-                          {key1}
-                        </Tag>
-                        <p className='tag-percent'>{value1.toString()}</p>
-                        {batchData !== undefined &&
-                          Object.entries(batchData).map(([key, value]) => {
-                            if (key1 === key) {
-                              return (
-                                <p className='tag-stats'>{value.toString()}</p>
-                              );
-                            }
-                          })}
-                      </div>
-                    );
-                  }
-                })}
+                  )
+              })}
             </div>
           ) : (
             <Empty

@@ -23,7 +23,7 @@ function ChartDetails(props) {
   const [chartId, setchartId] = useState('');
   const [chartVersion, setchartVersion] = useState('');
   const [selectedData, setselectedData] = useState([]);
-  const [selectedLayout, setselectedLayout] = useState({});
+  // const [selectedLayout, setselectedLayout] = useState({});
   const [clickedBatchId, setclickedBatchId] = useState('');
   const [isExcluedModal, setisExcluedModal] = useState(false);
   const [isExcludeRecord, setisExcludeRecord] = useState(false);
@@ -67,14 +67,14 @@ function ChartDetails(props) {
       layout: getChartObjData ? getChartObjData.layout : {},
     };
     setselectedData(getChartObjData ? getChartObjData.data : []);
-    setselectedLayout(getChartObjData ? getChartObjData.layout : {});
+    props.setselectedLayout(getChartObjData ? getChartObjData.layout : {});
   }, [getChartObjData]);
 
   useEffect(() => {
     setselectedData(chartPlotData.data);
-    setselectedLayout(chartPlotData.layout);
+    props.setselectedLayout(chartPlotData.layout);
   }, [chartPlotData]);
-
+  console.log(props.selectedLayout, 'selected');
   const dispatch = useDispatch();
 
   const onChangeChart = (e, field) => {
@@ -188,10 +188,10 @@ function ChartDetails(props) {
           }
           style={{ marginTop: '24px', border: '1px solid #d9d9d9' }}
         >
-          {selectedLayout && Object.keys(selectedLayout).length > 0 ? (
+          {props.selectedLayout && Object.keys(props.selectedLayout).length > 0 ? (
             <ScatterPlot
               data={selectedData}
-              layout={selectedLayout}
+              layout={props.selectedLayout}
               nodeClicked={chartNodeClicked}
             />
           ) : (

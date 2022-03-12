@@ -4,6 +4,7 @@
 // Last modified - 08 March, 2022
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router';
 import { useSelector } from 'react-redux';
 import {
     ArrowLeftOutlined,
@@ -52,6 +53,8 @@ import {
     adHocFilesParameterTree,
 } from '../../../../duck/actions/fileUploadAction';
 import Loading from '../../../../components/Loading'
+import Signature from '../../../../components/ElectronicSignature/signature'
+import queryString from "query-string";
 
 const { Panel } = Collapse;
 
@@ -90,10 +93,13 @@ const columns = [
 
 function ViewCreation() {
     const molecule_Id = useSelector((state) => state.viewCreationReducer.molecule_id);
+    const location = useLocation();
     const [count, setCount] = useState(1);
+    const [params, setParams] = useState(false);
     const [id, setId] = useState();
     const [moleculeList, setMoleculeList] = useState([]);
     const [functionEditorRecord, setFunctionEditorRecord] = useState([]);
+    const [isPublish, setIsPublish] = useState(false);
     const [moleculeId, setMoleculeId] = useState();
     const [materialsList, setMaterialsList] = useState([]);
     const [paramText, setParamText] = useState();
@@ -132,6 +138,8 @@ function ViewCreation() {
     const functionChanged = useRef(false);
     const counter = useRef(0);
     const [showSpinner, setShowSpinner] = useState(false)
+    const [approveReject, setApproveReject] = useState('')
+    const [publishResponse, setPublishResponse] = useState({});
     const [saveResponseView, setSaveResponseView] = useState({ viewId: '', version: '', viewStatus: '' });
     const [viewSummaryColumns, setViewSummaryColumns] = useState([
         {
@@ -289,7 +297,6 @@ function ViewCreation() {
         currentData.param = text.current ? text.current : currentData.param;
         currentData.id = count;
         currentData.aggregation = meanChange;
-        currentData.functionType = mathFunction;
         currentData.parameters = newParameterData.current;
         setViewSummaryTable([...viewSummaryTable, currentData]);
         setCount(count + 1)
@@ -355,7 +362,7 @@ function ViewCreation() {
         updateSaved.current = false;
         counter.current = 0;
     };
-    const onOkHandler = async () => {
+    const onOkHandler = async (viewId) => {
         setShowSpinner(true);
         setVisible(false);
         setViewSummaryTable([]);
@@ -364,13 +371,16 @@ function ViewCreation() {
         setCount(1);
         counter.current = 0;
         let files = [];
-        let req = { view_disp_id: viewDisplayId };
+        let req = { view_disp_id: viewId ? viewId : viewDisplayId };
         getViewConfig(req).then((res) => {
             setMoleculeId(res.material_id);
             setViewStatus(res.view_status);
             setViewVersion(res.view_version);
             form.setFieldsValue({
-                viewName: res.view_name
+                viewName: res.view_name,
+                version: res.view_version,
+                status:res.view_status,
+                viewId: viewId ? viewId : viewDisplayId
             });
             updateSaved.current = true;
             setVisible(false);
@@ -587,7 +597,8 @@ function ViewCreation() {
             }
         }).catch((err) => {
             message.error(err.Message);
-            setVisible(true);
+            // setVisible(true);
+            setShowSpinner(false)
             setIsLoad(false);
         })
         setFilterdData(null);
@@ -595,6 +606,7 @@ function ViewCreation() {
             filters: null,
         });
     };
+
     useEffect(() => {
         form.setFieldsValue({
             viewId: viewDisplayId,
@@ -609,9 +621,9 @@ function ViewCreation() {
             {
                 res.map((item, index) => {
                     setDataLoadingState(false);
+                    setParentBatches(item.batches); 
                     setMaterialsList(item.children);
                     setDataLoadingState(true);
-                    setParentBatches(item.batches);
                 });
             }
 
@@ -626,7 +638,6 @@ function ViewCreation() {
             }
         });
     };
-
     const handleSaveFunc = async () => {
         if (!viewFunctionName.length) {
             message.error("Please Enter Name");
@@ -641,7 +652,7 @@ function ViewCreation() {
                     parameter_name: ele.param,
                     source_type: ele.sourceType,
                     material_id: ele.mat_no,
-                    batch_excl: [],
+                    batch_lock: [],
                     priority: 0
                 }
             })
@@ -699,7 +710,7 @@ function ViewCreation() {
                     source_type: ele.sourceType,
                     material_id: ele.sourceType === 'material' ? ele.mat_no : undefined,
                     file_id: ele.sourceType === 'file' ? ele.file_id : undefined,
-                    batch_excl: [],
+                    batch_lock: [],
                     priority: 0
                 }
             })
@@ -736,13 +747,28 @@ function ViewCreation() {
             message.error(err);
         }
     }
+
+    const handleClose = () => {
+        setIsPublish(false)
+    };
+
+    const PublishResponse = (res) => {
+        setPublishResponse(res);
+        setViewStatus(res.stauts);
+    }
+
     useEffect(() => {
         onMoleculeIdChanged();
     }, [moleculeId]);
 
     useEffect(() => {
         getViewsList();
-    }, []);
+        const params = queryString.parse(location.search);
+        if (Object.keys(params).length > 0) {
+            setParams(true);
+            onOkHandler(params.id);
+        }
+    }, [materialsList]);
 
     return (
         <div className='reportDesigner-container viewCreation-container'>
@@ -750,33 +776,39 @@ function ViewCreation() {
                 <h1 className='reportDesigner-headline'>
                     <ArrowLeftOutlined /> Create View
                 </h1>
-                {materialsList.length > 0 && <div className='viewCreation-btns'>
-                    <Button
-                        type='text'
-                        className='viewCreation-newBtn'
-                        onClick={() => {
-                            newButtonHandler();
-                        }}
-                    >
-                        New
-                    </Button>
-                    {/* <Button type='text' className='viewCreation-clearBtn'>
+                {params ? (
+                    <div className='viewCreation-btns'>
+                        <Button className='viewCreation-rejectBtn' onClick={() => {setIsPublish(true); setApproveReject('R')}}>Reject</Button>
+                        <Button className='viewCreation-publishBtn' onClick={() => {setIsPublish(true); setApproveReject('A')}}>Approve</Button>
+                    </div>
+                ) : (
+                    materialsList.length > 0 && <div className='viewCreation-btns'>
+                        <Button
+                            type='text'
+                            className='viewCreation-newBtn'
+                            onClick={() => {
+                                newButtonHandler();
+                            }}
+                        >
+                            New
+                        </Button>
+                        {/* <Button type='text' className='viewCreation-clearBtn'>
                         Clear
                     </Button> */}
-                    <Button
-                        className='viewCreation-loadBtn'
-                        onClick={() => {
-                            setVisible(true);
-                            setIsNew(false);
-                        }}
-                    >
-                        Load
-                    </Button>
-                    <Button className='viewCreation-saveBtn' disabled={!viewDisplayId} onClick={handleSaveFunc}>Save</Button>
-                    <Button className='viewCreation-saveAsBtn' onClick={handleSaveAsFunc}>Save As</Button>
-                    <Button className='viewCreation-shareBtn'>Share</Button>
-                    <Button className='viewCreation-publishBtn'><CloudUploadOutlined />Publish</Button>
-                </div>}
+                        <Button
+                            className='viewCreation-loadBtn'
+                            onClick={() => {
+                                setVisible(true);
+                                setIsNew(false);
+                            }}
+                        >
+                            Load
+                        </Button>
+                        <Button className='viewCreation-saveBtn' disabled={!viewDisplayId} onClick={handleSaveFunc}>Save</Button>
+                        <Button className='viewCreation-saveAsBtn' onClick={handleSaveAsFunc}>Save As</Button>
+                        <Button className='viewCreation-shareBtn'>Share</Button>
+                        <Button className='viewCreation-publishBtn' onClick={() => setIsPublish(true)}><CloudUploadOutlined />Publish</Button>
+                    </div>)}
             </div>
 
             <Form
@@ -786,8 +818,8 @@ function ViewCreation() {
                 form={form}
                 onValuesChange={handleValuesChange}
             >
-                <div className='reportDesigner-gridBlocks viewCreation-grids'>
-                    <div className='reportDesigner-grid-tables viewCreation-blocks'>
+                <div className={params?'reportDesigner-gridBlocks viewCreation-grids approveViewParent':'reportDesigner-gridBlocks viewCreation-grids'}>
+                    <div className={params?'reportDesigner-grid-tables viewCreation-blocks approveViewChildren':'reportDesigner-grid-tables viewCreation-blocks'}>
                         <div className='viewCreation-leftBlocks bg-white'>
                             <div className='viewCreation-parameterLookup'>
                                 <h4 className='viewCreation-blockHeader'>
@@ -1093,6 +1125,16 @@ function ViewCreation() {
                 </Modal>
             </div>
             <Loading show={showSpinner} />
+            <Signature
+                isPublish={isPublish}
+                handleClose={handleClose}
+                screenName="View Creation"
+                PublishResponse={PublishResponse}
+                appType="VIEW"
+                dispId={viewDisplayId}
+                version={viewVersion}
+                status={approveReject}
+            />
         </div>
     );
 }

@@ -14,7 +14,7 @@ import { updateTableColumn } from '../../../../../../utils/updateTableColumns';
 
 function ChartDataTable({exclusionTableData, setExclusionTableData}) {
   const parameterData = useSelector(
-    (state) => state.chartPersReducer.getBatchCoverage.data
+    (state) => state.chartPersReducer.getBatchCoverage
   );
   console.log(parameterData, 'data')
   const [paramData, setparamData] = useState([]);
@@ -29,6 +29,7 @@ function ChartDataTable({exclusionTableData, setExclusionTableData}) {
   const uniqueArr = (value, index, self) => {
     return self.indexOf(value) === index;
   };
+  console.log(paramData,'parameter')
   const objkeys =
     paramData !== undefined && paramData.length > 0
       ? Object.keys(paramData[0])
@@ -46,7 +47,6 @@ function ChartDataTable({exclusionTableData, setExclusionTableData}) {
     });
   });
 
-  console.log(paramData, 'paramData');
 
   const { TabPane } = Tabs;
   return (
@@ -67,17 +67,17 @@ function ChartDataTable({exclusionTableData, setExclusionTableData}) {
               <ViolationTable />
             </TabPane>
             <TabPane tab='Data Table' key='3'>
-              <Table
+              {<Table
                 rowClassName={(record, index) =>
                   index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
                 }
                 size='small'
                 className='parameter_table'
                 columns={columns}
-                dataSource={paramData}
+                // dataSource={paramData}
                 scroll={{ y: 350 }}
                 pagination={false}
-              />
+              />}
             </TabPane>
           </Tabs>
         </Card>
