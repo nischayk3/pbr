@@ -5,11 +5,10 @@
   "scripts": {
     "start": "react-scripts --max_old_space_size=8192 start",
     "build": "react-scripts  --max_old_space_size=8192 build",
-    "start:instrument": "react-scripts -r @cypress/instrument-cra start",
-    "eject": "react-scripts eject",
-    "cy:run": "cypress run --browser chrome",
-    "test": "start-server-and-test start:instrument http://localhost:3004 cy:run",
-    "cypress": "npx cypress open",
+    "cypress:start:app": "react-scripts -r @cypress/instrument-cra start",
+    "cypress:start:wait": "start-server-and-test cypress:start:app http://localhost:3030",
+    "cypress:open": "npm run cypress:start:wait -- \"cypress open\"",
+    "cypress:run": "npm run cypress:start:wait -- \"cypress run\"",
     "build-theme": "lessc -clean-css=\"--s1 --advanced --compatibility=ie8\" ./src/assets/styles/less/main.less ./src/assets/styles/css/doNotModify/custom-theme.css --js",
     "lint": "eslint src/**/*.js",
     "lint-fix": "eslint src/**/*.js --fix",
@@ -67,5 +66,8 @@
     "cypress-localstorage-commands": "^1.2.1",
     "eslint-plugin-import": "^2.25.4",
     "start-server-and-test": "^1.11.3"
+  },
+  "nyc": {
+    "report-dir": "coverage"
   }
 }
