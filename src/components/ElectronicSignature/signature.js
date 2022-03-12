@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router';
 import { Modal, Input, Select, Button } from 'antd';
 import './styles.scss'
 import { eSign, publishEvent } from '../../services/electronicSignatureService'
 import { useDispatch, useSelector } from 'react-redux';
 import { showNotification } from '../../duck/actions/commonActions'
-
+import queryString from 'query-string';
 
 const { Option } = Select
 function Signature(props) {
-
+    const location= useLocation();
+    const params= queryString.parse(location.search)
     var { isPublish, handleClose } = props
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
@@ -52,8 +54,8 @@ function Signature(props) {
                 reqs['application_type'] = props.appType
                 reqs['created_by'] = user
                 reqs['esign_id'] = esign_response.primary_id
-                reqs['disp_id'] = props.dispId
-                reqs['version'] = parseInt(props.version)
+                reqs['disp_id'] = Object.keys(params).length>0?params.id:props.dispId
+                reqs['version'] = Object.keys(params).length>0?parseInt(params.version):parseInt(props.version)
 
                 let publish_response = await publishEvent(reqs)
 
@@ -76,9 +78,6 @@ function Signature(props) {
 
 
     }
-
-    console.log(primaryId)
-
     return (
         <div>
             <Modal
