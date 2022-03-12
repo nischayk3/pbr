@@ -64,7 +64,8 @@ function Genealogy() {
     if (param.treeType === 'Backward') {
       let _reqBack = {
         levels: 5,
-        batch_id: selectedValue.replace(/\s/g, ''),
+        batch_id: '1338|1144279|390288',
+        //selectedValue.replace(/\s/g, ''),
         backward: true,
       };
       setActivateKey('2');
@@ -95,7 +96,7 @@ function Genealogy() {
       const backwardRes = await getBackwardData(_reqBack);
       console.log('backwardRes', backwardRes);
       if (backwardRes.length > 0) {
-        setGenealogyData(backwardRes);
+        setGenealogyData(response);
         setisBackward(true);
         setisForward(false);
         setShowTree(true);
