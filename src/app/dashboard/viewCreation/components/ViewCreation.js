@@ -138,6 +138,7 @@ function ViewCreation() {
     const functionChanged = useRef(false);
     const counter = useRef(0);
     const [showSpinner, setShowSpinner] = useState(false)
+    const [approveReject, setApproveReject] = useState('')
     const [publishResponse, setPublishResponse] = useState({});
     const [saveResponseView, setSaveResponseView] = useState({ viewId: '', version: '', viewStatus: '' });
     const [viewSummaryColumns, setViewSummaryColumns] = useState([
@@ -777,8 +778,8 @@ function ViewCreation() {
                 </h1>
                 {params ? (
                     <div className='viewCreation-btns'>
-                        <Button className='viewCreation-rejectBtn' onClick={() => setIsPublish(true)}>Reject</Button>
-                        <Button className='viewCreation-publishBtn' onClick={() => setIsPublish(true)}>Approve</Button>
+                        <Button className='viewCreation-rejectBtn' onClick={() => {setIsPublish(true); setApproveReject('R')}}>Reject</Button>
+                        <Button className='viewCreation-publishBtn' onClick={() => {setIsPublish(true); setApproveReject('A')}}>Approve</Button>
                     </div>
                 ) : (
                     materialsList.length > 0 && <div className='viewCreation-btns'>
@@ -1132,6 +1133,7 @@ function ViewCreation() {
                 appType="VIEW"
                 dispId={viewDisplayId}
                 version={viewVersion}
+                status={approveReject}
             />
         </div>
     );
