@@ -379,7 +379,7 @@ function ViewCreation() {
             form.setFieldsValue({
                 viewName: res.view_name,
                 version: res.view_version,
-                status:res.view_status,
+                status: res.view_status,
                 viewId: viewId ? viewId : viewDisplayId
             });
             updateSaved.current = true;
@@ -492,7 +492,7 @@ function ViewCreation() {
                     tempSummaryArr.push(getData.current);
                 }
             })
-            if(Object.keys(loadedData.current.files).length) {
+            if (Object.keys(loadedData.current.files).length) {
                 Object.keys(loadedData.current.files).forEach((key) => {
                     let req = { file_id: key, detailedCoverage: true };
                     adHocFilesParameterTree(req).then((res) => {
@@ -553,9 +553,9 @@ function ViewCreation() {
                                                     obj.id = item.id
                                                 }
                                             })
-    
+
                                         }
-    
+
                                     })
                                     getNewData(obj);
                                 } else {
@@ -570,7 +570,7 @@ function ViewCreation() {
                                                     obj.id = item.id
                                                 }
                                             })
-    
+
                                         }
                                     })
                                     getNewData(obj);
@@ -621,7 +621,7 @@ function ViewCreation() {
             {
                 res.map((item, index) => {
                     setDataLoadingState(false);
-                    setParentBatches(item.batches); 
+                    setParentBatches(item.batches);
                     setMaterialsList(item.children);
                     setDataLoadingState(true);
                 });
@@ -778,8 +778,8 @@ function ViewCreation() {
                 </h1>
                 {params ? (
                     <div className='viewCreation-btns'>
-                        <Button className='viewCreation-rejectBtn' onClick={() => {setIsPublish(true); setApproveReject('R')}}>Reject</Button>
-                        <Button className='viewCreation-publishBtn' onClick={() => {setIsPublish(true); setApproveReject('A')}}>Approve</Button>
+                        <Button className='viewCreation-rejectBtn' onClick={() => { setIsPublish(true); setApproveReject('R') }}>Reject</Button>
+                        <Button className='viewCreation-publishBtn' onClick={() => { setIsPublish(true); setApproveReject('A') }}>Approve</Button>
                     </div>
                 ) : (
                     materialsList.length > 0 && <div className='viewCreation-btns'>
@@ -818,8 +818,8 @@ function ViewCreation() {
                 form={form}
                 onValuesChange={handleValuesChange}
             >
-                <div className={params?'reportDesigner-gridBlocks viewCreation-grids approveViewParent':'reportDesigner-gridBlocks viewCreation-grids'}>
-                    <div className={params?'reportDesigner-grid-tables viewCreation-blocks approveViewChildren':'reportDesigner-grid-tables viewCreation-blocks'}>
+                <div className='reportDesigner-gridBlocks viewCreation-grids'>
+                    <div className='reportDesigner-grid-tables viewCreation-blocks'>
                         <div className='viewCreation-leftBlocks bg-white'>
                             <div className='viewCreation-parameterLookup'>
                                 <h4 className='viewCreation-blockHeader'>
@@ -842,6 +842,7 @@ function ViewCreation() {
                                     viewSummaryTable={viewSummaryTable}
                                     setViewSummaryTable={setViewSummaryTable}
                                     form={form}
+                                    params={params}
                                 />
                             </div>
                             <div className='viewCreation-materials'>
@@ -985,6 +986,7 @@ function ViewCreation() {
                                         setViewFunctionName={setViewFunctionName}
                                         viewFunctionName={viewFunctionName}
                                         saveResponseView={saveResponseView}
+                                        params={params}
                                     />
                                 </div>
                             )}
@@ -992,25 +994,27 @@ function ViewCreation() {
                                 <div className='viewCreation-functionEditor bg-white'>
                                     <h4 className='viewCreation-blockHeader'>
                                         Function Editor
-                                        <div className='viewCreation-btns'>
-                                            <Button
-                                                className='custom-primary-btn'
-                                                onClick={() => {
-                                                    updateData();
-                                                }}
-                                            >
-                                                Save
-                                            </Button>
-                                            <Button
-                                                style={{ marginLeft: '16px' }}
-                                                className='custom-primary-btn'
-                                                onClick={() => {
-                                                    saveFunctionData();
-                                                }}
-                                            >
-                                                Save As
-                                            </Button>
-                                        </div>
+                                        {!params && (
+                                            <div className='viewCreation-btns'>
+                                                <Button
+                                                    className='custom-primary-btn'
+                                                    onClick={() => {
+                                                        updateData();
+                                                    }}
+                                                >
+                                                    Save
+                                                </Button>
+                                                <Button
+                                                    style={{ marginLeft: '16px' }}
+                                                    className='custom-primary-btn'
+                                                    onClick={() => {
+                                                        saveFunctionData();
+                                                    }}
+                                                >
+                                                    Save As
+                                                </Button>
+                                            </div>
+                                        )}
                                     </h4>
                                     <hr />
                                     <FunctionEditor
@@ -1043,6 +1047,7 @@ function ViewCreation() {
                                         setMathFunction={setMathFunction}
                                         meanChange={meanChange}
                                         setMeanChange={setMeanChange}
+                                        params={params}
                                     />
                                 </div>
                             )}

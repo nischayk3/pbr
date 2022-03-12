@@ -80,7 +80,7 @@ function ChartView(props) {
   }, [getChartObjData]);
 
   useEffect(() => {
-    let chartCoverage = batchCoverage && batchCoverage.coverage_stats;
+    let chartCoverage = batchCoverage;
     let chartBatchStatus = batchCoverage && batchCoverage.batchstats;
     setbatchData(chartBatchStatus);
     setbatchStatus(chartCoverage);
@@ -146,7 +146,7 @@ function ChartView(props) {
         >
           {showBatchCoverage ? (
             <div className='alert-tags'>
-              {batchStatus && batchStatus.coverage.map((ele, index) => {
+              {batchStatus.coverage && batchStatus.coverage.map((ele, index) => {
                   return (
                     <div className='alert-tags_error' key={index}>
                        <div></div>

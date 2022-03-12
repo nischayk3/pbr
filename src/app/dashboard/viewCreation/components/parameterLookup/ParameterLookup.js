@@ -29,6 +29,7 @@ function ParameterLookup(props) {
         viewSummaryTable,
         setViewSummaryTable,
         form,
+        params
     } = props;
 
     const dispatch= useDispatch();
@@ -103,6 +104,7 @@ function ParameterLookup(props) {
                     onChange={onChangeMoleculeHandler}
                     defaultValue={moleculeId}
                     value={moleculeId}
+                    disabled={params}
                 >
                     {moleculeList.map((item, i) => {
                         return (
@@ -125,6 +127,7 @@ function ParameterLookup(props) {
                     }
                     placeholder='Select'
                     allowClear={true}
+                    disabled={params}
                 >
                     {materialsList.map((item, index) => {
                         return (
