@@ -42,40 +42,42 @@ const Workflow = () => {
         }
     }, [cardTitle, activeTab])
 
-    const updateDate=()=>{
-        const date= new Date();
+    const updateDate = () => {
+        const date = new Date();
         const month = date.toLocaleString('default', { month: 'long' });
-        const latestDate= date.getDate();
-        const year= date.getFullYear();
-        const resultDate= month + ' ' + latestDate +','+' ' + year
+        const latestDate = date.getDate();
+        const year = date.getFullYear();
+        const resultDate = month + ' ' + latestDate + ',' + ' ' + year
         setResultDate(resultDate);
     }
 
     const cardTableData = async () => {
         let req;
-        if (activeTab === "1") {
-            req = `/${applicationType}/awaiting_approval`
-        } else {
-            req = `/${applicationType}/recently_approved`
-        }
-        try {
-            dispatch(showLoader());
-            const tableResponse = await getTableData(req);
-            if(tableResponse['status-code']===200){
-                setColumns(tableResponse.Data.config);
-                setDataSource(tableResponse.Data.data);
-                dispatch(hideLoader());
+        if (itemCount != 0) {
+            if (activeTab === "1") {
+                req = `/${applicationType}/awaiting_approval`
+            } else {
+                req = `/${applicationType}/recently_approved`
             }
-            else if(tableResponse['status-code']===404){
-                setColumns(tableResponse.Data.config);
-                setDataSource(tableResponse.Data.data);
+            try {
+                dispatch(showLoader());
+                const tableResponse = await getTableData(req);
+                if (tableResponse['status-code'] === 200) {
+                    setColumns(tableResponse.Data.config);
+                    setDataSource(tableResponse.Data.data);
+                    dispatch(hideLoader());
+                }
+                else if (tableResponse['status-code'] === 404) {
+                    setColumns(tableResponse.Data.config);
+                    setDataSource(tableResponse.Data.data);
+                    dispatch(hideLoader());
+                    dispatch(showNotification('error', tableResponse.Message));
+                }
+
+            } catch (error) {
                 dispatch(hideLoader());
-                dispatch(showNotification('error', tableResponse.Message));
+                dispatch(showNotification('error', error.Message));
             }
-           
-        } catch (error) {
-            dispatch(hideLoader());
-            dispatch(showNotification('error', error.Message));
         }
 
     }
