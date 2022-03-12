@@ -190,6 +190,19 @@ function ReportGenerator() {
         return allSections
     }
 
+    const convertToList =  (a) =>
+    {   if(a.length > 0)
+        {
+        let b= a.replace("{",'')
+        b= b.replace("}",'')
+        b=b.split(',')
+        if(b.length>0)
+        return b
+        else
+        return []
+        }
+    }
+
     const unloadTest = (ReportData) => {
         dispatch(showLoader())
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
@@ -199,7 +212,9 @@ function ReportGenerator() {
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
-        dispatch(hideLoader())
+        setEmailList(convertToList(ReportData.share ? ReportData.share.email_list : []))
+        setSchedule(ReportData.share ? ReportData.share.frequency_unit : '')
+        dispatch(hideLoader());
         // setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
     }
 
@@ -301,6 +316,7 @@ function ReportGenerator() {
                 let response = await getReportGenerator(req)
                 if (response.Status == 404) {
                     dispatch(showNotification("error", 'No Data for this variant'))
+                    dispatch(hideLoader());
                      }
                 else
                 {   
@@ -328,6 +344,7 @@ function ReportGenerator() {
             }
         }
     }
+
 
 
     return (
@@ -402,7 +419,7 @@ function ReportGenerator() {
                             </div>
                             <div>
                                 <Card title="Recipients">
-                                    {emailList.map(function (item, i) {
+                                    {emailList && emailList.map(function (item, i) {
                                         return <p>{item}</p>
                                     })}
                                 </Card>

@@ -8,6 +8,7 @@ import {
   ArrowLeftOutlined,
   BlockOutlined
 } from '@ant-design/icons';
+import { useLocation } from 'react-router';
 import {
   Form,
   Select,
@@ -27,6 +28,8 @@ import { useDispatch } from 'react-redux';
 import { sendReport, screenChange } from '../../../../duck/actions/reportDesignerAction';
 import { showLoader, hideLoader, showNotification } from '../../../../duck/actions/commonActions';
 import Signature from '../../../../components/ElectronicSignature/signature'
+import queryString from "query-string";
+
 
 //Columns For The view Selection modal
 const columns = [
@@ -88,6 +91,7 @@ const columns = [
 function ReportDesignerNew() {
 
   const { Option } = Select;
+  const location = useLocation()
   const [loading, setLoading] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [isSave, setIsSave] = useState(false);
@@ -110,8 +114,9 @@ function ReportDesignerNew() {
   const [formData, setFormData] = useState({});
   const [mainJson, setMainJson] = useState({});
   const [isPublish, setIsPublish] = useState(false);
+  const [params, setParams] = useState(false)
   const [publishResponse, setPublishResponse] = useState({});
-  const [ form ] = Form.useForm();
+  const [form] = Form.useForm();
 
 
   const dispatch = useDispatch();
@@ -120,6 +125,21 @@ function ReportDesignerNew() {
 
 
   useEffect(() => {
+    const params = queryString.parse(location.search);
+    console.log(params);
+    if (Object.keys(params).length > 0) {
+      try {
+        dispatch(showLoader())
+        setParams(true);
+        getReportData(params.id, 'AWAP')
+        unLoadJson(reportData)
+        dispatch(hideLoader())
+      }
+      catch (err) {
+        dispatch(showNotification('error', err))
+      }
+
+    }
     getViewsList();
     getReportList();
   }, []
@@ -136,7 +156,7 @@ function ReportDesignerNew() {
 
 
     // console.log(json_data,reportData[0]['chart_details'],selectedChartList)
-    
+
     if (Object.keys(json_data).length > 0 && Object.keys(jayson).length > 0) {
       return true
     }
@@ -154,7 +174,7 @@ function ReportDesignerNew() {
       return false
   };
 
-  const mapViewList = viewList &&  viewList.length > 0 ? viewList : []
+  const mapViewList = viewList && viewList.length > 0 ? viewList : []
   const mapReportList = reportList && reportList.length > 0 ? reportList : []
 
   const OnNewClick = () => {
@@ -192,13 +212,12 @@ function ReportDesignerNew() {
   const handleValuesChange = (changedValues, values) => {
     setMainJson(convertToJson(values));
   };
-  
+
   const handleClose = () => {
     setIsPublish(false)
   };
 
-  const PublishResponse = (res) =>
-  {
+  const PublishResponse = (res) => {
     setPublishResponse(res)
     setStatus(res.rep_stauts)
   }
@@ -221,7 +240,7 @@ function ReportDesignerNew() {
     setIsPublish(true)
   };
 
-  const getReportData = (rep_id, rep_status) => {
+  const getReportData = async (rep_id, rep_status) => {
     message.success(`${rep_id} selected`)
     let req = { rep_status: rep_status ? rep_status : 'DRFT' };
     if (rep_id)
@@ -444,7 +463,7 @@ function ReportDesignerNew() {
     return rowObject.isActive ? true : false;
   }
 
-  
+  console.log(params)
 
   return (
     <div className='custom-wrapper'>
@@ -454,21 +473,23 @@ function ReportDesignerNew() {
           <span className='header-title'>Report Designer</span>
         </div>
         <div className='sub-header-btns'>
-          {isLoad ? <></> : (
+          {isLoad || params ? <> </> : (
             <Button
               className='custom-primary-btn'
               onClick={() => OnNewClick()}
             >
               New
             </Button>)}
-          <Button
-            className='custom-primary-btn'
-            onClick={() => { setVisible(true); setIsNew(false); }}
-          >
-            Load
-          </Button>
+          {!params ?
+            <Button
+              className='custom-primary-btn'
+              onClick={() => { setVisible(true); setIsNew(false); }}
+            >
+              Load
+            </Button> : <></>
+          }
           {
-            isLoad || isNew ?
+            (isLoad || isNew) && !params ?
               <>
                 <Button
                   className='custom-primary-btn'
@@ -501,18 +522,21 @@ function ReportDesignerNew() {
                 >
                   Publish
                 </Button> </>
-              : <><Button
+              : <> </>
+          }
+          {
+            params ? <div> <Button
               className='custom-primary-btn'
               onClick={() => dispatch(screenChange(true))}
             >
               Approve
             </Button>
-            <Button
-              className="custom-secondary-btn"
-              onClick={() => setIsPublish(true)}
-            >
-              Reject
-            </Button> </>
+              <Button
+                className="custom-secondary-btn"
+                onClick={() => setIsPublish(true)}
+              >
+                Reject
+              </Button> </div> : <></>
           }
 
         </div>
@@ -536,7 +560,7 @@ function ReportDesignerNew() {
           mapViewList={mapViewList}
         />
 
-        { (isLoad || isNew) && loading == false ?
+        {(isLoad || isNew) && loading == false ?
           <div className="reportDesigner-grid-tables">
             <ChartSelector
               selectedChartList={selectedChartList}
@@ -564,7 +588,7 @@ function ReportDesignerNew() {
           onCancel={() => setVisible(false)}
           width={500}
           style={{ marginRight: '800px' }}
-          footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => 
+          footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() =>
             onOk()
           }>OK</Button>,]}
 
@@ -627,9 +651,9 @@ function ReportDesignerNew() {
           />
         </Modal>
         <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
-        
+
       </div>
-      <Signature isPublish={isPublish} handleClose={handleClose}  screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT" dispId={reportId} version={0}/>
+      <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT" dispId={reportId} version={0} />
     </div>
   );
 }
