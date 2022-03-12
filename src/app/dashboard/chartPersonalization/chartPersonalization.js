@@ -488,7 +488,6 @@ function ChartPersonalization() {
     } catch (error) {
       setbatchData({});
       dispatch(hideLoader());
-      console.log('errrrrorrrrr', error);
       dispatch(
         showNotification('error', 'Parameter Data Error -', error?.message)
       );
@@ -586,7 +585,7 @@ function ChartPersonalization() {
             )}
             {showChartType && (
               <div>
-                <ChartType />
+                <ChartType resetBatchData={batchData} setselectedLayout={setselectedLayout} />
               </div>
             )}
           </div>

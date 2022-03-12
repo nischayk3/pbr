@@ -23,9 +23,9 @@ const Display = ({figure,setFigure,legend,setLegend,axes,setAxes, selectedLayout
         setselectedLayout(prevState => ({
             ...prevState,
             showlegend:e,
-            mode:"lines",  
+            mode:"lines+markers",  
             marker:{},
-            line: {width:100}
+            line: {width:10}
           }));
     }
 

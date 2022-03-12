@@ -96,7 +96,6 @@ const ControLimits = ({controlSource,setControlSource,specificationSource, setSp
 }
 
   const handleSpecChange = (event,record) => {
-    console.log(record, 'recode')
     const { name, value } = event.target;
     setSpecifyColumns((prevState) => {
       return {
@@ -119,7 +118,6 @@ const ControLimits = ({controlSource,setControlSource,specificationSource, setSp
   };
 
   const handleWarnChange = (event,record) => {
-    console.log(record, 'recode')
     const { name, value } = event.target;
     setWarningColumns((prevState) => {
       return {

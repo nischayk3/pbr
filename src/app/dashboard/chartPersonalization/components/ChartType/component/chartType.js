@@ -34,7 +34,7 @@ const ChartType = (props) => {
   const [batchData, setbatchData] = useState([]);
   const [isDisabled, setisDisabled] = useState(true);
   const [axisDataArray, setaxisDataArray] = useState([]);
-
+  const [processControl, setProcessControl,] = useState(['Batch', 'Date'])
   const [isDisableXAxis, setisDisableXAxis] = useState(false);
   const [isDisabledYAxis, setisDisabledYAxis] = useState(false);
   const [showWarn, setshowWarn] = useState(false);
@@ -58,6 +58,15 @@ const ChartType = (props) => {
     setselectedYAxis(getChartObjData?.chart_mapping?.y?.function_name);
   }, [getChartObjData]);
 
+
+  //useEffect to clear the loaded chart data
+  useEffect(() => {
+    setselectedChartType('');
+    setselectedXAxis('');
+    setselectedYAxis('');
+    props.setselectedLayout({})
+  }, [props.resetBatchData])
+
   useEffect(() => {
     const xAxis = [];
     const yAxis = [];
@@ -66,12 +75,14 @@ const ChartType = (props) => {
     const ph = [];
     const axisArray = [];
     let tempArr = [];
-    batchCoverage && batchCoverage.functions &&  Object.entries(batchCoverage.functions).map(([key,val]) => {
-          const a = val[0]
-          console.log(a, 'a')
-          const b = a && Object.keys(a)[0]
-          tempArr.push(b)
-    })
+    setxAxisList([])
+    setyAxisList([]);
+    let chartCoverage = batchCoverage && batchCoverage.coverage_stats;
+    if (chartCoverage) {
+      chartCoverage && chartCoverage.coverage.forEach((ele) => {
+        tempArr.push(ele.function_name)
+      })
+    }
     setxAxisList(tempArr);
     setyAxisList(tempArr);
     const fetchXYAxis =
@@ -116,15 +127,6 @@ const ChartType = (props) => {
   const uniqueArr = (value, index, self) => {
     return self.indexOf(value) === index;
   };
-
-  const chartData = {
-    x: batchData.ph !== undefined ? batchData.ph : [],
-    y: batchData.Temperature !== undefined ? batchData.Temperature : [],
-    text: batchData.batch !== undefined ? batchData.batch : [],
-    mode: 'markers',
-    type: 'scatter',
-    marker: { size: 12 },
-  };
   const chartLayout = {
     title: {
       text: selectedTitle !== undefined ? selectedTitle : '',
@@ -159,44 +161,88 @@ const ChartType = (props) => {
         if (value === 'Scatter Plot') {
           setisScattetruer(true);
         } else if (value === 'Process Control') {
-          setisScattetruer(false);
+          setisScattetruer(true);
         }
       } else if (field === 'xaxis') {
         setselectedXAxis(value);
-        let warnCheck = axisDataArray.map((item) => {
-          if (item.value.replace(/\d+% ?/g, 0) < 100.0) {
-            if (item.key === value) {
-              setshowWarn(true);
-            } else {
-              setshowWarn(false);
-            }
-          }
-        });
       } else if (field === 'yaxis') {
         setselectedYAxis(value);
-        let warnCheck = axisDataArray.map((item) => {
-          if (item.value.replace(/\d+% ?/g, 0) < 100.0) {
-            if (item.key === value) {
-              setshowWarn(true);
-            } else {
-              setshowWarn(false);
-            }
-          }
-        });
       }
     }
   };
 
   const createChart = () => {
+    let xaxisValues = [];
+    let yaxisValues = [];
+     let xaxis = [];
+    let yaxis = [];
+    let batch = [];
     Object.entries(batchCoverage.functions).map(([key,val]) => {
-      let a = [];
-       val.forEach(element => {
-         console.log(Object.values(element)[0])
-         const x = element && Object.values(element)[0]
-            a.push(x)
-       });
-       console.log(a, 'aaaaaa');
+      val.forEach(element => {
+        Object.entries(element).map(([key,value]) => { 
+          const x = [];
+          if (key === selectedXAxis) {
+            x.push(element);
+            x.forEach((item) => {
+              xaxisValues.push(item)
+            })
+          }
+        } )
+        Object.entries(element).map(([key,value]) => { 
+          const y = [];
+          if (key === selectedYAxis) {
+            y.push(element);
+            y.forEach((item) => {
+              yaxisValues.push(item)
+            })
+          }
+        } )
+      });
     })
+    let mergedObj;
+    if(xaxisValues.length >= yaxisValues.length) {
+       mergedObj = xaxisValues.map((subject) => {
+        let otherObj = yaxisValues.find((ele) =>ele.batch_num === subject.batch_num)
+        return {...subject, ...otherObj}
+      })
+    } else {
+      mergedObj = yaxisValues.map((subject) => {
+        let otherObj = xaxisValues.find((ele) =>ele.batch_num === subject.batch_num)
+        return {...subject, ...otherObj}
+      })
+    }
+    if (mergedObj.length) {
+      mergedObj.forEach((ele) => {
+        batch.push(ele.batch_num)
+         Object.entries(ele).map(([key,value]) => {
+          if (selectedChartType === 'Scatter Plot') {
+            if (key === selectedXAxis) {
+              xaxis.push(value)
+             } 
+          } else {
+            if (key === selectedYAxis) {
+              if (selectedXAxis === 'Batch') {
+                xaxis.push(ele.batch_num)
+              } else {
+                const date = new Date(ele.recorded_date).toLocaleDateString();
+                xaxis.push(date)
+              }
+            }
+          }
+           if(key === selectedYAxis) {
+             yaxis.push(value)
+           }
+         }) 
+      })
+    }
+    const chartData = {
+      x: xaxis.length ? xaxis : [],
+      y: yaxis.length ?  yaxis : [],
+      text: batch,
+      mode: 'lines',
+      type: 'scatter',
+      marker: { },
+    };
     const chartMapping = {
       x: {
         function_id: '1',
@@ -220,8 +266,6 @@ const ChartType = (props) => {
     dispatch(sendChartyAxis(selectedXAxis));
     dispatch(sendChartMapping(chartMapping));
   };
-
-  console.log(xAxisList, 'xAxisList');
   return (
     <div>
       <Card title='Chart'>
@@ -231,6 +275,7 @@ const ChartType = (props) => {
             onChangeSelect={(e) => selectChartType(e, 'charttype')}
             selectList={chartTypeList}
             selectedValue={selectedChartType}
+            placeholder="Select"
           />
         </div>
 
@@ -248,9 +293,46 @@ const ChartType = (props) => {
                 )
               }
               label='X-Axis'
+              placeholder='X-Axis'
+              onChangeSelect={(e) => selectChartType(e, 'xaxis')}
+              selectList={selectedChartType === 'Scatter Plot' ? xAxisList : processControl}
+              selectedValue={selectedXAxis}
+            />
+            <SelectField
+              iconlabel={
+                showWarn ? (
+                  <WarningTwoTone
+                    style={{ marginLeft: 10 }}
+                    twoToneColor='red'
+                  />
+                ) : (
+                  ''
+                )
+              }
+              label='Y-Axis'
+              placeholder='Y-Axis'
+              onChangeSelect={(e) => selectChartType(e, 'yaxis')}
+              selectList={yAxisList}
+              selectedValue={selectedYAxis}
+            />
+          </div>
+        ) : (
+          <div className='grid-2-columns' style={{ marginTop: '10px' }}>
+            <SelectField
+              iconlabel={
+                showWarn ? (
+                  <WarningTwoTone
+                    style={{ marginLeft: 10 }}
+                    twoToneColor='red'
+                  />
+                ) : (
+                  ''
+                )
+              }
+              label='X-Axis'
               placeholder='X-Axis '
               onChangeSelect={(e) => selectChartType(e, 'xaxis')}
-              selectList={xAxisList}
+              selectList={processControl}
               selectedValue={selectedXAxis}
             />
             <SelectField
@@ -271,13 +353,6 @@ const ChartType = (props) => {
               selectedValue={selectedYAxis}
             />
           </div>
-        ) : (
-          <InputField
-            label='Y-Axis'
-            placeholder=' Y-Axis '
-            //onChangeClick={(e) => handleDateClick(e)}
-            value={selectedYAxis}
-          />
         )}
         <Button
           type='primary'

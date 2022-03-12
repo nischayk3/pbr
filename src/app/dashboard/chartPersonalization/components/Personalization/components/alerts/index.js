@@ -32,13 +32,12 @@ const Alerts = (props) => {
   ));
 
   const handleChange = (value) => {
-    console.log(value)
     let typeValue = value ? value : ''
     setType(typeValue);
   }
 
   const hanldeCheckboxChange = (value) => {
-    console.log('checked = ', value);
+
   }
   const handleUserChange = (e) => {
     setUserEmail(e.target.value);
@@ -47,12 +46,10 @@ const Alerts = (props) => {
   const handleUserClick = () => {
     let data = [...userEmailArray];
     data.push(userEmail);
-    console.log(data);
     setUserEmailArray(data);
   }
 
   const handleDelete = () => {
-    console.log(props.data);
     props.deleteAlert(props.data);
   }
   const handleTitle = () => {
@@ -68,7 +65,6 @@ const Alerts = (props) => {
     }
   
   const cancel=(e) =>{
-    console.log(e);
     message.error('Click on No');
   }
   
@@ -97,7 +93,7 @@ const Alerts = (props) => {
         />
         {userEmailArray.map((item, i) => {
           return (
-            <Tag closable onClose={() => console.log('item removed')} key={i}>
+            <Tag closable onClose={() => {}} key={i}>
               {item}
             </Tag>
           )

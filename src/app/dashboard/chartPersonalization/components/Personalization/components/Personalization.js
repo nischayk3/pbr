@@ -45,24 +45,18 @@ const Personalization = ({ controlSource, setControlSource, specificationSource,
             ))
             }
           </Panel>
-
           {/* Limits */}
           <Panel header={<div><StarOutlined /> &nbsp;Limits</div>} key='3'>
             <ControLimits controlSource={controlSource} setControlSource={setControlSource} specificationSource={specificationSource} setSpecificationSource={setSpecificationSource} warningSource={warningSource} setWarningSource={setWarningSource} />
           </Panel>
-
           {/* Display */}
           <Panel header={<div><ControlOutlined /> &nbsp;Display</div>} key='2'>
             <Display figure={figure} setFigure={setFigure} legend={legend} setLegend={setLegend} axes={axes} setAxes={setAxes} setselectedLayout={setselectedLayout} selectedLayout={selectedLayout} />
           </Panel>
-
-
         </Collapse>
       </Card>
     </>
   );
-
 }
-
 
 export default Personalization;
