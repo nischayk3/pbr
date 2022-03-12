@@ -47,7 +47,7 @@ const Workflow = () => {
         const month = date.toLocaleString('default', { month: 'long' });
         const latestDate= date.getDate();
         const year= date.getFullYear();
-        const resultDate= month + ' ' + latestDate +',' + year
+        const resultDate= month + ' ' + latestDate +','+' ' + year
         setResultDate(resultDate);
     }
 

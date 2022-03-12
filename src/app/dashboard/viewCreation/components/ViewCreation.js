@@ -777,8 +777,8 @@ function ViewCreation() {
                 </h1>
                 {params ? (
                     <div className='viewCreation-btns'>
-                        <Button className='viewCreation-rejectBtn'>Reject</Button>
-                        <Button className='viewCreation-publishBtn'>Approve</Button>
+                        <Button className='viewCreation-rejectBtn' onClick={() => setIsPublish(true)}>Reject</Button>
+                        <Button className='viewCreation-publishBtn' onClick={() => setIsPublish(true)}>Approve</Button>
                     </div>
                 ) : (
                     materialsList.length > 0 && <div className='viewCreation-btns'>
