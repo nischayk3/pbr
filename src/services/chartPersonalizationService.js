@@ -50,7 +50,7 @@ export const putChartObj = (request) => {
 };
 
 export const viewBatchData = (request) => {
-  return Service.get(BMS_APP_PYTHON_SERVICE + '/view-data', request).then(
+  return Service.post(BMS_APP_PYTHON_SERVICE + '/views', request).then(
     (response) => {
       return response.data;
     },

@@ -74,7 +74,6 @@
  font-size: 16px;
  }
  
-
  .alert-main{
     .ant-card-head-title{
         font-family: 'Roboto';
@@ -86,7 +85,7 @@
      }
      display: flex;
      flex-direction: column;
-     width:220px;
+     width:100%;
      height:300px;
      overflow-y:auto;
      background: #FFFFFF;
@@ -110,4 +109,13 @@
         margin:0px;
         padding: 4px 0px;
      }
+     .ant-checkbox-group{
+      display: flex;
+     flex-direction: column;
+     }
  }
+
+.ant-collapse-ghost>.ant-collapse-item>.ant-collapse-content {
+  padding: 0px 12px;
+  margin-bottom:10px;
+}
