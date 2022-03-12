@@ -10,6 +10,18 @@ pipeline {
   //            git branch: 'master', credentialsId: 'b7fc056f-aa79-44ba-ae9a-616535d691dd', url: 'git@bitbucket.org:qmareanateam/cpvui.git'
        // }
     //}
+    stage("Code Coverage") {
+         
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+               
+                  sh '''#!/bin/bash -x
+                        npm run cypress:run
+                        ls coverage
+                 '''       
+                }
+              }
+           }  
       stage('Sonarqube Analysis') {
         environment {
            scannerHome = tool 'SonarQubeScanner'
@@ -20,6 +32,8 @@ pipeline {
          }
       }
     }
+    
+     
       stage("Quality Gate Status Check") {
              
             steps {
