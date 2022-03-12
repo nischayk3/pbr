@@ -128,9 +128,6 @@ const Alerts = (props) => {
           <InputView
             label='Condition'
             placeholder='Select Condition'
-          //  option={options_type}
-          //  selectedValue={type}
-          //  onChangeSelect={(e)=>handleChange(e)}
           />
         )}
 
