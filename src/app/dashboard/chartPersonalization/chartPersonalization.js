@@ -63,6 +63,7 @@ function ChartPersonalization() {
   const [resChartStatus, setresChartStatus] = useState('');
   const [chartTypeList, setchartTypeList] = useState([]);
   const [exclusionTableData, setExclusionTableData] = useState([]);
+  const [dataTable, setDataTable] = useState([]);
   const [isChart, setIsChart] = useState(false);
   const [isLandingDisabled, setisLandingDisabled] = useState(false);
   const [isFieldEmpty, setisFieldEmpty] = useState(false);
@@ -231,7 +232,7 @@ function ChartPersonalization() {
           chart_mapping: chartDataReducer.chartMapping,
           data: chartDataReducer.data,
           layout: chartDataReducer.layout,
-          exclusions: [],
+          exclusions: exclusionTableData,
           violations: [],
           limits: {
             controlSource: controlSource,
@@ -478,6 +479,8 @@ function ChartPersonalization() {
       if (viewData.statuscode === 200) {
         let batchRes = viewData && viewData.data ? viewData.data : {};
         setbatchData(batchRes);
+        setDataTable([]);
+        setExclusionTableData([]);
         dispatch(sendBatchCoverage(batchRes));
       } else if (viewData.statuscode === 400) {
         dispatch(
@@ -586,7 +589,7 @@ function ChartPersonalization() {
             )}
             {showChartType && (
               <div>
-                <ChartType resetBatchData={batchData} setselectedLayout={setselectedLayout} />
+                <ChartType setDataTable={setDataTable} resetBatchData={batchData} setselectedLayout={setselectedLayout} />
               </div>
             )}
           </div>
@@ -602,8 +605,9 @@ function ChartPersonalization() {
                 exclusionTableData={exclusionTableData}
                 selectedLayout={selectedLayout} 
                 setselectedLayout={setselectedLayout}
+                dataTable={dataTable}
               />
-              <ChartDataTable setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
+              <ChartDataTable dataTable={dataTable} setDataTable={setDataTable} setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
             </div>
           )}
           {showCustomization && (

@@ -4,17 +4,18 @@ import { Table, Popconfirm, } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons'
 import './exclusion.scss';
 
-const ExclusionTable = ({exclusionTableData, setExclusionTableData}) => {
+const ExclusionTable = ({exclusionTableData, setExclusionTableData, dataTable}) => {
+    const columns=[];
     const handleRowDelete = (record) => {
       const data = exclusionTableData.filter((ele) => ele.batch_num !==record.batch_num)
       setExclusionTableData(data);
     }
-    const columns = [
+    const newColumns = [
         {
             title: 'Id',
             key: 'exclusionId',
             dataIndex: 'exclusionId',
-            width: 100,
+            width: 50,
             fixed: 'left'
         },
         {
@@ -35,20 +36,6 @@ const ExclusionTable = ({exclusionTableData, setExclusionTableData}) => {
             fixed: 'left'
         },
         {
-            title: 'Temperature',
-            key: 'Temperature',
-            dataIndex: 'Temperature',
-            width: 100,
-            fixed: 'left'
-        },
-        {
-            title: 'pH',
-            key: 'pH',
-            dataIndex: 'pH',
-            width: 100,
-            fixed: 'left'
-        },
-        {
             title: 'User',
             key: 'userId',
             dataIndex: 'userId',
@@ -61,33 +48,57 @@ const ExclusionTable = ({exclusionTableData, setExclusionTableData}) => {
             dataIndex: 'timeStamp',
             width: 100,
             fixed: 'left'
-        },
-        {
-            title: '',
-            key: 'action',
-            width: 100,
-            fixed: 'left',
-            align:'center',
-            render: (text, record, index) => (
-                <Popconfirm
-                    title='Sure to delete?'
-                    className='deleteTableAction'
-                    onConfirm={() => handleRowDelete(record)}
-                >
-                    <DeleteOutlined />
-                </Popconfirm>
-            ),
-        },
+        }
     ]
+    newColumns.forEach((ele) => {
+        columns.push(ele);
+    })
+    const uniqueArr = (value, index, self) => {
+        return self.indexOf(value) === index;
+      };
+      const objkeys = dataTable !== undefined && dataTable.length > 0
+          ? Object.keys(dataTable[0])
+          : [];
+    
+      const filterColumn = objkeys.filter(uniqueArr);
+      filterColumn.map((item, i) => {
+         if(item !== 'recorded_date' && item !== 'batch_num') {
+            columns.push({
+                title: item.toUpperCase(),
+                dataIndex: item,
+                key: `${item}-${i}`,
+                width: 100,
+              }); 
+         }
+      });
+      const deleteColumn =  {
+        title: '',
+        key: 'action',
+        width: 100,
+        fixed: 'left',
+        align:'center',
+        render: (text, record, index) => (
+            <Popconfirm
+                title='Sure to delete?'
+                className='deleteTableAction'
+                onConfirm={() => handleRowDelete(record)}
+            >
+                <DeleteOutlined />
+            </Popconfirm>
+        ),
+    }
+    if(columns) {
+        columns.push(deleteColumn)
+    }
+
     return (
         <div>
             <Table
                 size='small'
-                className='violation_table'
                 columns={columns}
                 dataSource={exclusionTableData}
-                bordered
                 pagination={false}
+                rowKey={(record) => record.id}
             />
         </div>
     )
