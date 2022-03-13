@@ -16,7 +16,6 @@ function ChartDataTable({exclusionTableData, setExclusionTableData}) {
   const parameterData = useSelector(
     (state) => state.chartPersReducer.getBatchCoverage
   );
-  console.log(parameterData, 'data')
   const [paramData, setparamData] = useState([]);
 
   const dispatch = useDispatch();
@@ -29,7 +28,6 @@ function ChartDataTable({exclusionTableData, setExclusionTableData}) {
   const uniqueArr = (value, index, self) => {
     return self.indexOf(value) === index;
   };
-  console.log(paramData,'parameter')
   const objkeys =
     paramData !== undefined && paramData.length > 0
       ? Object.keys(paramData[0])
