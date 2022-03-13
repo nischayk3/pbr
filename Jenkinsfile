@@ -67,7 +67,7 @@ pipeline {
            }
           stage("Build Docker Image") {
             steps {
-                sh 'sudo docker build -t  $DOCKER_IMAGE/md-cpv-ui-$BUILD_NUMBER:latest --no-cache .'
+                sh 'sudo docker build -t  $DOCKER_IMAGE/mdh-cpv-ui-$BUILD_NUMBER:latest --no-cache .'
                 }
               }
           stage("Push Docker Image to Docker Registry") {
