@@ -4,11 +4,11 @@
 // Last modified - 03 March, 2022
 import '../Personalization.scss';
 import './style.scss';
-        <Checkbox>Remember me</Checkbox>
-import { Button, Card, Collapse ,Table,Popconfirm,DatePicker,Input,Switch,Form,Checkbox,Select } from 'antd';
-import React, { Component, useState,useEffect } from 'react';
+<Checkbox>Remember me</Checkbox>
+import { Button, Card, Collapse, Table, Popconfirm, DatePicker, Input, Switch, Form, Checkbox, Select, Row, Col } from 'antd';
+import React, { Component, useState, useEffect, useRef } from 'react';
 import {
-  DeleteTwoTone
+    DeleteTwoTone
 } from '@ant-design/icons';
 
 import InputField from '../../../../../../../components/InputField/InputField';
@@ -16,411 +16,392 @@ import SelectField from '../../../../../../../components/SelectField/SelectField
 const { Panel } = Collapse;
 const { Option } = Select;
 
-const  Display = (props)=>{
-    
-  const apllyFigure = (values)=>{
-      console.log(values)
-  }
+const Display = ({figure,setFigure,legend,setLegend,axes,setAxes, selectedLayout, setselectedLayout}) => {
+
+    const onLegendChange = (e) => {
+        setLegend({ ...legend, options: { ...legend.options, show: e } })
+        setselectedLayout(prevState => ({
+            ...prevState,
+            showlegend:e,
+            mode:"lines+markers",  
+            marker:{},
+            line: {width:10}
+          }));
+    }
+
     return (
-      <>
-      <div className='display-section'>
+        <>
+            <div className='display-section'>
 
-      <Collapse
-          expandIconPosition='right'
-          ghost
-        >
-          
-            {/* Figure */}
-          <Panel header="Figure" key='5'>
+                <Collapse
+                    expandIconPosition='right'
+                    ghost
+                >
+                    {/* Figure */}
+                    <Panel header="Figure" key='5' style={{ background: 'white !important'}}>
+                        <div className='figure-container'>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Lines:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" name='lines' checked={figure.lines} onChange={(e) => setFigure({ ...figure, lines: e })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Line Width:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Select defaultValue="1" onChange={(e) => setFigure({ ...figure, lineWidth: e })}>
+                                        <Option value="1">1</Option>
+                                        <Option value="2">2</Option>
+                                        <Option value="3">3</Option>
+                                    </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Stair Cases:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={figure.stairCases} onChange={(e) => setFigure({ ...figure, stairCases: e })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Area Fill:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
 
-          <Form
-            name="basic"
-            onFinish={apllyFigure}  
-        >
-                <Form.Item
-                    label="Lines"
-                    name="lines"
-                    labelCol={{span:16}}
-                    wrapperCol={{span:5}}
-                    
-                >
-                    <Switch size="small" />
-                </Form.Item>
+                                    <Select defaultValue="1" onChange={(e) => setFigure({ ...figure, areaFill: e })}>
+                                        <Option value="1">1</Option>
+                                        <Option value="2">2</Option>
+                                        <Option value="3">3</Option>
+                                    </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Area Gradient:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
 
-                <Form.Item
-                    label="Line width"
-                    name="linewidth"
-                    labelCol={{span:16}}
-                    wrapperCol={{span:8}}
-                >
-                    <Select defaultValue="1"  onChange={console.log()}>
-                        <Option value="1">1</Option>
-                        <Option value="2">2</Option>
-                        <Option value="3">3</Option>
-                        </Select>
-                </Form.Item>
-                <Form.Item
-                    label="Stair Cases"
-                    name="staircases"
-                    labelCol={{span:16}}
-                    wrapperCol={{span:5}}
-                >
-                    <Switch size="small" />
-                
-                </Form.Item>
-                <Form.Item
-                    label="Area Fill"
-                    name="areafill"
-                    labelCol={{span:16}}
-                    wrapperCol={{span:8}}
-                >
-                    <Select defaultValue="1"  onChange={console.log()}>
-                        <Option value="1">1</Option>
-                        <Option value="2">2</Option>
-                        <Option value="3">3</Option>
-                        </Select>
-                </Form.Item>
-                <Form.Item
-                    label="Area Gradient"
-                    name="areaGradient"
-                    labelCol={{span:16}}
-                    wrapperCol={{span:8}}
-                >
-                    <Select defaultValue="1"  onChange={console.log()}>
-                        <Option value="1">1</Option>
-                        <Option value="2">2</Option>
-                        <Option value="3">3</Option>
-                        </Select>
-                </Form.Item>
-                <Form.Item
-                    label="Points"
-                    name="point"
-                    labelCol={{span:16}}
-                    wrapperCol={{span:5}}
-                >
-                    <Switch size="small" />
-                
-                </Form.Item>
-                <Form.Item
-                    label="Alert Threshold"
-                    name="alertthreshold"
-                    labelCol={{span:16}}
-                    wrapperCol={{span:5}}
-                >
-                    <Switch size="small" />
-                
-                </Form.Item>
-                <Form.Item
-                    label="Stair Cases"
-                    name="staircases"
-                    labelCol={{span:16}}
-                    wrapperCol={{span:5}}
-                >
-                    <Switch size="small" />
-                
-                </Form.Item>
-                <div>
-                    Panel Options
-                </div>
+                                    <Select defaultValue="1" onChange={(e) => setFigure({ ...figure, areaGradient: e })}>
+                                        <Option value="1">1</Option>
+                                        <Option value="2">2</Option>
+                                        <Option value="3">3</Option>
+                                    </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Points:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={figure.points} onChange={(e) => setFigure({ ...figure, points: e })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Alert Treshold:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={figure.alertTreshold} onChange={(e) => setFigure({ ...figure, alertTreshold: e })} />
+                                </Col>
+                            </Row>
+                            <div className='figure-inputs header'>
+                                Panel Options
+                            </div>
+                            <div className='figure-inputs'>
+                                <label>Title</label>
+                                <Input value={figure.panelOptions.title} onChange={(e) => setFigure({ ...figure, panelOptions: { ...figure.panelOptions, title: e.target.value } })} />
+                            </div>
+                            <div className='figure-inputs'>
+                                <label>Title Description</label>
+                                <Input.TextArea maxLength={100} value={figure.panelOptions.desc} onChange={(e) => setFigure({ ...figure, panelOptions: { ...figure.panelOptions, desc: e.target.value } })} />
+                            </div>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={24}>
+                                    <label>Transparent Background:</label>
+                                </Col>
+                                <Col className="gutter-row" span={24}>
+                                    <Switch size="small" checked={figure.panelOptions.transparentBackground} onChange={(e) => setFigure({ ...figure, panelOptions: { ...figure.panelOptions, transparentBackground: e } })} />
+                                </Col>
+                            </Row>
+                        </div>
+                    </Panel>
 
-                <Form.Item
-                    label="Title"
-                    name="tiitle"
-                    labelCol={{span:24}}
-                >
-                    <Input />
-                    
-                </Form.Item>
-                <Form.Item
-                    label="Title"
-                    name="tiitle"
-                    labelCol={{span:24}}
-                >
-                    <Input />
-                    
-                </Form.Item>
-                <Form.Item
-                    label="Description"
-                    name="tidescriptionitle"
-                    labelCol={{span:24}}
-                >
-                    <Input.TextArea  maxLength={100} />
-                    
-                </Form.Item>
+                    {/* Legend */}
+                    <Panel header='Legend' key='6'>
+                        <div className='figure-container'>
+                            <div className="header option-header">Options</div>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Show:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={legend.options.show} onChange={onLegendChange} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>At table:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={legend.options.atTable} onChange={(e) => setLegend({ ...legend, options: { ...legend.options, atTable: e } })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>To right:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={legend.options.toRight} onChange={(e) => setLegend({ ...legend, options: { ...legend.options, toRight: e } })} />
+                                </Col>
+                            </Row>
+                            <div className="header">Values</div>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Min:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={legend.values.min} onChange={(e) => setLegend({ ...legend, values: { ...legend.values, min: e } })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Max:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={legend.values.max} onChange={(e) => setLegend({ ...legend, values: { ...legend.values, max: e } })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Avg:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={legend.values.avg} onChange={(e) => setLegend({ ...legend, values: { ...legend.values, avg: e } })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Current:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={legend.values.current} onChange={(e) => setLegend({ ...legend, values: { ...legend.values, current: e } })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Total:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={legend.values.total} onChange={(e) => setLegend({ ...legend, values: { ...legend.values, total: e } })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Decimal:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={legend.values.decimal} onChange={(e) => setLegend({ ...legend, values: { ...legend.values, decimal: e } })} />
+                                </Col>
+                            </Row>
+                            <div className="header">Hide Series</div>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>With only null:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={legend.hideSeries.withOnlyNull} onChange={(e) => setLegend({ ...legend, hideSeries: { ...legend.hideSeries, withOnlyNull: e } })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>with only Zero:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={legend.hideSeries.withOnlyZero} onChange={(e) => setLegend({ ...legend, hideSeries: { ...legend.hideSeries, withOnlyZero: e } })} />
+                                </Col>
+                            </Row>
+                        </div>
+                    </Panel>
 
-                <Form.Item
-                    wrapperCol={{
-                    offset: 8,
-                    span: 16,
-                    }}
-                >
-                    <Button type="primary" htmlType="submit">
-                    apply
-                    </Button>
-                </Form.Item>
-                </Form>
-          </Panel>
+                    {/* Axes */}
+                    <Panel header='Axes' key='7'>
+                        <div className='figure-container'>
+                            <div className="header option-header">Left X</div>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                    <label>Show:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                    <Switch size="small" checked={axes.leftX.show} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, show: e } })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Unit:</label>
+                                </Col>
+                                <Col className="gutter-row select-top" span={10}>
+                                <Select defaultValue="Short" value={axes.leftX.unit} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, unit: e } })}>
+                                    <Option value="Short">Short</Option>
+                                    <Option value="Long">Long</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Scale:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Select defaultValue="Linear" value={axes.leftX.scale} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, scale: e } })}>
+                                    <Option value="Linear">Linear</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Y Min:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Select defaultValue="Auto" value={axes.leftX.ymin} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, ymin: e } })}>
+                                    <Option value="Auto">Auto</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Y Max:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Select defaultValue="Auto" value={axes.leftX.ymax} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, ymax: e } })}>
+                                    <Option value="Auto">Auto</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Decimal:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Select defaultValue="Auto" value={axes.leftX.decimal} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, decimal: e } })}>
+                                    <Option value="Auto">Auto</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Label:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Select defaultValue="Auto" value={axes.leftX.label} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, label: e } })}>
+                                    <Option value="Auto">Auto</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                            <div className="header">right X</div>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Show:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Switch size="small" checked={axes.rightX.show} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, show: e } })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Unit:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Select value={axes.rightX.unit} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, unit: e } })}>
+                                    <Option value="Short">Short</Option>
+                                    <Option value="Long">Long</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Scale:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Select value={axes.rightX.scale} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, scale: e } })}>
+                                    <Option value="Linear">Linear</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Y Min:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Select value={axes.rightX.ymin} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, ymin: e } })}>
+                                    <Option value="Auto">Auto</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Y Max:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Select value={axes.rightX.ymax} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, ymax: e } })}>
+                                    <Option value="Auto">Auto</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Decimal:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Select value={axes.rightX.decimal} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, decimal: e } })}>
+                                    <Option value="Auto">Auto</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Label:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Select value={axes.rightX.label} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, label: e } })}>
+                                    <Option value="Auto">Auto</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                            <div className="header">X - Axis</div>
+                            <Row className="figure-inputs" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Show:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Switch size="small" checked={axes.xaxis.show} onChange={(e) => setAxes({ ...axes, xaxis: { ...axes.xaxis, show: e } })} />
+                                </Col>
+                            </Row>
+                            <Row className="figure-inputs select-top" gutter={24}>
+                                <Col className="gutter-row" span={14}>
+                                <label>Unit:</label>
+                                </Col>
+                                <Col className="gutter-row" span={10}>
+                                <Select value={axes.xaxis.unit} onChange={(e) => setAxes({ ...axes, xaxis: { ...axes.xaxis, unit: e } })}>
+                                    <Option value="Short">Short</Option>
+                                    <Option value="Long">Long</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                        </div>
+                    </Panel>
 
-          {/* Legend */}
-          <Panel header='Legend' key='6'>
-          <Form
-            name="basic"
-            onFinish={apllyFigure}  
-        >
-                <div>Options</div>
-                <Form.Item
-                    label="Show"
-                    name="show"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-                <Form.Item
-                    label="At table"
-                    name="attable"
-                    
-                >
-                    <Switch />
-                </Form.Item>
+                </Collapse>
 
-                <Form.Item
-                    label="To right"
-                    name="toright"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-
-                <div>Values</div>
-                <Form.Item
-                    label="Min"
-                    name="min"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-                <Form.Item
-                    label="Max"
-                    name="max"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-                <Form.Item
-                    label="Avg"
-                    name="avg"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-
-                <Form.Item
-                    label="Current"
-                    name="current"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-                <Form.Item
-                    label="total"
-                    name="total"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-                <Form.Item
-                    label="Decimal"
-                    name="decimal"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-
-                <div>Hide Series</div>
-                
-                <Form.Item
-                    label="With only null"
-                    name="withonlynull"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-
-                <Form.Item
-                    label="With only Zero"
-                    name="withonlyzero"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-                
-                </Form>
-          </Panel>
-           
-           {/* Axes */}
-          <Panel header='Axes' key='7'>
-
-          <Form
-            name="basic"
-            onFinish={apllyFigure}  
-        >
-                <div>Left X</div>
-                <Form.Item
-                    label="Show"
-                    name="showleftx"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-
-                <Form.Item
-                    label="Unit"
-                    name="unit"
-                >
-                    <Select defaultValue="Short"  onChange={console.log()}>
-                        <Option value="Short">Short</Option>
-                        <Option value="Long">Long</Option>
-                        </Select>
-                </Form.Item>
-
-                <Form.Item
-                    label="Scale"
-                    name="scale"
-                >
-                    <Select defaultValue="Linear"  onChange={console.log()}>
-                        <Option value="Linear">Linear</Option>
-                        </Select>
-                </Form.Item>
-                <Form.Item
-                    label="Y Min"
-                    name="ymin"
-                >
-                    <Select defaultValue="Auto"  onChange={console.log()}>
-                        <Option value="Auto">Auto</Option>
-                        </Select>
-                </Form.Item>
-                <Form.Item
-                    label="Y Max"
-                    name="ymax"
-                >
-                    <Select defaultValue="Auto"  onChange={console.log()}>
-                        <Option value="Auto">Auto</Option>
-                        </Select>
-                </Form.Item>
-
-                <Form.Item
-                    label="Decimal"
-                    name="decimal"
-                >
-                    <Select defaultValue="Auto"  onChange={console.log()}>
-                        <Option value="Auto">Auto</Option>
-                        </Select>
-                </Form.Item>
-
-                <Form.Item
-                    label="Lable"
-                    name="label"
-                >
-                    <Select defaultValue="Auto"  onChange={console.log()}>
-                        <Option value="Auto">Auto</Option>
-                        </Select>
-                </Form.Item>
-                
-
-                <div>right X</div>
-                <Form.Item
-                    label="Show"
-                    name="showrightx"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-
-                <Form.Item
-                    label="Unit"
-                    name="unit"
-                >
-                    <Select defaultValue="Short"  onChange={console.log()}>
-                        <Option value="Short">Short</Option>
-                        <Option value="Long">Long</Option>
-                        </Select>
-                </Form.Item>
-
-                <Form.Item
-                    label="Scale"
-                    name="scale"
-                >
-                    <Select defaultValue="Linear"  onChange={console.log()}>
-                        <Option value="Linear">Linear</Option>
-                        </Select>
-                </Form.Item>
-                <Form.Item
-                    label="Y Min"
-                    name="ymin"
-                >
-                    <Select defaultValue="Auto"  onChange={console.log()}>
-                        <Option value="Auto">Auto</Option>
-                        </Select>
-                </Form.Item>
-                <Form.Item
-                    label="Y Max"
-                    name="ymax"
-                >
-                    <Select defaultValue="Auto"  onChange={console.log()}>
-                        <Option value="Auto">Auto</Option>
-                        </Select>
-                </Form.Item>
-
-                <Form.Item
-                    label="Decimal"
-                    name="decimal"
-                >
-                    <Select defaultValue="Auto"  onChange={console.log()}>
-                        <Option value="Auto">Auto</Option>
-                        </Select>
-                </Form.Item>
-
-                <Form.Item
-                    label="Lable"
-                    name="label"
-                >
-                    <Select defaultValue="Auto"  onChange={console.log()}>
-                        <Option value="Auto">Auto</Option>
-                        </Select>
-                </Form.Item>
-                
-                <div>X - Axis</div>
-                <Form.Item
-                    label="Show"
-                    name="showxaxis"
-                    
-                >
-                    <Switch />
-                </Form.Item>
-
-                <Form.Item
-                    label="Unit"
-                    name="unit"
-                >
-                    <Select defaultValue="Short"  onChange={console.log()}>
-                        <Option value="Short">Short</Option>
-                        <Option value="Long">Long</Option>
-                        </Select>
-                </Form.Item>
-                
-                
-                </Form>
-           
-          </Panel>
-
-
-        </Collapse>
-          
-      </div>
-      </>
+            </div>
+        </>
     );
-    
-  }
+
+}
 
 
 export default Display;

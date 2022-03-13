@@ -53,6 +53,7 @@ const FunctionEditor = (props) => {
         setMathFunction,
         mathFunction,
         setMeanChange,
+        params
     } = props;
 
     const dispatch = useDispatch();
@@ -194,10 +195,11 @@ const FunctionEditor = (props) => {
                 <Form.Item label='Function Name' name='function_name'>
                     <Input placeholder='Enter Function Name'
                         onChange={(e) => handlePassState(e)}
+                        disabled={params}
                     />
                 </Form.Item>
                 <Form.Item label='Aggregation' name='aggregation'>
-                    <Select placeholder='Select Aggregation' onChange={handleMean}>
+                    <Select placeholder='Select Aggregation' onChange={handleMean} disabled={params}>
                         <Option value='Min'>Min</Option>
                         <Option value='Mean'>Mean</Option>
                         <Option value='Max'>Max</Option>
@@ -209,6 +211,7 @@ const FunctionEditor = (props) => {
                     <Select
                         placeholder='Select Parameter'
                         onChange={onChangeParameterHandler}
+                        disabled={params}
 
                     >
                         {viewSummaryTable.map((item, i) => {
@@ -221,7 +224,7 @@ const FunctionEditor = (props) => {
                     </Select>
                 </Form.Item>
                 <Form.Item label='Function' name='function'>
-                    <Select placeholder='Select Function' onChange={mathEditorFunction}>
+                    <Select placeholder='Select Function' onChange={mathEditorFunction} disabled={params}>
                         {/* <Option value='round'>round</Option> */}
                         <Option value='add'>add</Option>
                         <Option value='subtract'>subtract</Option>
@@ -244,7 +247,7 @@ const FunctionEditor = (props) => {
                 </div>
                 <div>
                     <Table
-                        className='viewSummary-table MathEditor-table'
+                        className={params? 'viewSummary-table MathEditor-table tabledisable':'viewSummary-table MathEditor-table'}
                         columns={functionEditorColumns}
                         dataSource={functionEditorRecord}
                         scroll={{ x: 900 }}
