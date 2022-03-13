@@ -237,9 +237,8 @@ const ChartType = (props) => {
       x: xaxis.length ? xaxis : [],
       y: yaxis.length ?  yaxis : [],
       text: batch,
-      mode: 'lines',
       type: 'scatter',
-      marker: { },
+      mode: 'markers',
     };
     const chartMapping = {
       x: {

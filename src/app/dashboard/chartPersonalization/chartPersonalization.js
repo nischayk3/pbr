@@ -62,6 +62,7 @@ function ChartPersonalization() {
   const [resChartVersion, setresChartVersion] = useState('');
   const [resChartStatus, setresChartStatus] = useState('');
   const [chartTypeList, setchartTypeList] = useState([]);
+  const [exclusionTableData, setExclusionTableData] = useState([]);
   const [isChart, setIsChart] = useState(false);
   const [isLandingDisabled, setisLandingDisabled] = useState(false);
   const [isFieldEmpty, setisFieldEmpty] = useState(false);
@@ -597,10 +598,12 @@ function ChartPersonalization() {
                 resChartStatus={resChartStatus}
                 isFieldEmpty={isFieldEmpty}
                 isChartNameEmpty={callBackChartName}
+                setExclusionTableData={setExclusionTableData}
+                exclusionTableData={exclusionTableData}
                 selectedLayout={selectedLayout} 
                 setselectedLayout={setselectedLayout}
               />
-              <ChartDataTable />
+              <ChartDataTable setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
             </div>
           )}
           {showCustomization && (

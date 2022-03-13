@@ -12,26 +12,22 @@ import ViolationTable from './violation';
 import { sendParameterTableData } from '../../../../../../duck/actions/chartPersonalizationAction';
 import { updateTableColumn } from '../../../../../../utils/updateTableColumns';
 
-function ChartDataTable(props) {
+function ChartDataTable({exclusionTableData, setExclusionTableData}) {
   const parameterData = useSelector(
     (state) => state.chartPersReducer.getBatchCoverage
   );
-
   const [paramData, setparamData] = useState([]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-     if (parameterData) {
-      setparamData(parameterData.parameter);
-      dispatch(sendParameterTableData(parameterData.parameter ? parameterData.parameter : []));
-     }
+    setparamData(parameterData);
+    // dispatch(sendParameterTableData(parameterData ? parameterData : []));
   }, [parameterData]);
 
   const uniqueArr = (value, index, self) => {
     return self.indexOf(value) === index;
   };
-  console.log(paramData,'parameter')
   const objkeys =
     paramData !== undefined && paramData.length > 0
       ? Object.keys(paramData[0])
@@ -57,7 +53,7 @@ function ChartDataTable(props) {
         <Card bordered={false} style={{ height: '430px' }}>
           <Tabs defaultActiveKey='3'>
             <TabPane tab='Exclusion' key='1'>
-              <ExclusionTable />
+              <ExclusionTable setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
             </TabPane>
             {/* <TabPane tab='Shift' key='2'>
                               <ShiftTable />
