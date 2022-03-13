@@ -9,7 +9,7 @@ import {
     showLoader,
     showNotification,
 } from '../../../../duck/actions/commonActions';
-import { getCountData } from '../../../../services/workFlowServices';
+import { getCountData, getTableData } from '../../../../services/workFlowServices';
 import { Card, Tabs } from 'antd';
 import { ArrowLeftOutlined, DownloadOutlined, } from '@ant-design/icons';
 import DashCard from '../../../../components/CardComponent/customCard';
@@ -17,17 +17,70 @@ import illustrations from '../../../../assets/images/Banner illustration.svg';
 import WorkflowTable from './workflowTable/workflowTable';
 import './styles.scss';
 
- 
+
 const { TabPane } = Tabs;
 const Workflow = () => {
     const [itemCount, setItemCount] = useState();
+    const [cardTitle, setCardTitle] = useState('');
+    const [resultDate, setResultDate] = useState('');
     const [tilesData, setTilesData] = useState([]);
+    const [activeDiv, setActiveDiv] = useState('');
+    const [applicationType, setApplicationType] = useState('');
+    const [activeTab, setActiveTab] = useState("1");
+    const [columns, setColumns] = useState([]);
+    const [dataSource, setDataSource] = useState([]);
     const dispatch = useDispatch();
 
     useEffect(() => {
         getTilesData();
+        updateDate();
     }, []);
 
+    useEffect(() => {
+        if (cardTitle != '') {
+            cardTableData();
+        }
+    }, [cardTitle, activeTab])
+
+    const updateDate = () => {
+        const date = new Date();
+        const month = date.toLocaleString('default', { month: 'long' });
+        const latestDate = date.getDate();
+        const year = date.getFullYear();
+        const resultDate = month + ' ' + latestDate + ',' + ' ' + year
+        setResultDate(resultDate);
+    }
+
+    const cardTableData = async () => {
+        let req;
+        if (itemCount != 0) {
+            if (activeTab === "1") {
+                req = `/${applicationType}/awaiting_approval`
+            } else {
+                req = `/${applicationType}/recently_approved`
+            }
+            try {
+                dispatch(showLoader());
+                const tableResponse = await getTableData(req);
+                if (tableResponse['status-code'] === 200) {
+                    setColumns(tableResponse.Data.config);
+                    setDataSource(tableResponse.Data.data);
+                    dispatch(hideLoader());
+                }
+                else if (tableResponse['status-code'] === 404) {
+                    setColumns(tableResponse.Data.config);
+                    setDataSource(tableResponse.Data.data);
+                    dispatch(hideLoader());
+                    dispatch(showNotification('error', tableResponse.Message));
+                }
+
+            } catch (error) {
+                dispatch(hideLoader());
+                dispatch(showNotification('error', error.Message));
+            }
+        }
+
+    }
     const getTilesData = async () => {
         let req = {};
         try {
@@ -42,8 +95,16 @@ const Workflow = () => {
     }
 
     const tilesClicked = (item) => {
-       setItemCount(item.item_count);
+        setItemCount(item.item_count);
+        setCardTitle(item.text);
+        setActiveDiv(item.text);
+        setApplicationType(item.application_type);
     }
+
+    const changeTab = activeKey => {
+        setActiveTab(activeKey);
+    };
+
     return (
         <div className='custom-wrapper'>
             <div className='sub-header'>
@@ -56,10 +117,11 @@ const Workflow = () => {
             <div className='custom-content-layout'>
                 <Card className='workflow_head'>
                     <div>
-                        <p className='dash-username'>Hello {(localStorage.getItem('user'))},welcome back!</p>
+                        <p className='dash-username'>Hello {(localStorage.getItem('user'))}!</p>
                         <p className='dash-text'>Today is a great day to approve some records! Let's take look.</p>
                     </div>
                     <img src={illustrations} className='illustration' />
+                    <span className='resultdate'>{resultDate}</span>
 
                 </Card>
                 <div className='workflow_items approve-wrapper' style={{ width: '305px' }}>
@@ -68,21 +130,21 @@ const Workflow = () => {
                         tilesData.map((item, index) => {
                             return (
 
-                                <div onClick={() => tilesClicked(item)}>
-                                    <DashCard count={item.item_count} desc={item.text} />
+                                <div onClick={() => tilesClicked(item)} style={{ cursor: 'pointer' }}>
+                                    <DashCard count={item.item_count} desc={item.text} active={activeDiv} />
                                 </div>
 
                             )
                         })
                     }
-                    {itemCount>0 && (
-                        <Card title={<div className='table-head'>Param Data Approvals<DownloadOutlined style={{ color: '#093185', marginLeft: '25px' }} /></div>} className='table-cards'>
-                            <Tabs defaultActiveKey="1" className='workflow-tabs'>
+                    {itemCount > 0 && (
+                        <Card title={<div className='table-head'>{cardTitle}<DownloadOutlined style={{ color: '#093185', marginLeft: '25px' }} /></div>} className='table-cards'>
+                            <Tabs className='workflow-tabs' activeKey={activeTab} onChange={changeTab}>
                                 <TabPane tab="Awaiting Approval" key="1">
-                                    <WorkflowTable />
+                                    <WorkflowTable columns={columns} dataSource={dataSource} activeTab={activeTab} />
                                 </TabPane>
                                 <TabPane tab="Recently Approved" key="2">
-                                    Content of Tab Pane 2
+                                    <WorkflowTable columns={columns} dataSource={dataSource} activeTab={activeTab} />
                                 </TabPane>
                             </Tabs>
                         </Card>

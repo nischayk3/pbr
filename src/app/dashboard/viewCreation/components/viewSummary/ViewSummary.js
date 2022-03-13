@@ -33,7 +33,8 @@ function ViewSummary(props) {
         moleculeId,
         setViewFunctionName,
         viewFunctionName,
-        saveResponseView
+        saveResponseView,
+        params
     } = props;
 
     useEffect(() => {
@@ -84,7 +85,7 @@ function ViewSummary(props) {
                     <Input  disabled />
                 </Form.Item>
                 <Form.Item label='Name' name='viewName'>
-                    <Input placeholder='Enter Name' value={viewFunctionName} onChange={handleFunctionNameChange} />
+                    <Input placeholder='Enter Name' value={viewFunctionName} onChange={handleFunctionNameChange} disabled={params}/>
                 </Form.Item>
                 <Form.Item label='Status' name='status'>
                     <Input placeholder='New' disabled />
@@ -102,7 +103,7 @@ function ViewSummary(props) {
             {functionEditorViewState && (
                 <div className='viewSummary-TableBlock'>
                     <Table
-                        className='viewSummary-table viewSummary-tablewidth'
+                        className={params?'viewSummary-table viewSummary-tablewidth viewSummaryTable-disable':'viewSummary-table viewSummary-tablewidth'}
                         pagination={false}
                         columns={viewSummaryColumns}
                         dataSource={viewSummaryTable}

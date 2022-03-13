@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router';
 import { Modal, Input, Select, Button } from 'antd';
 import './styles.scss'
-import { eSign, publishEvent } from '../../services/electronicSignatureService'
+import { eSign, publishEvent,approveRecord } from '../../services/electronicSignatureService'
 import { useDispatch, useSelector } from 'react-redux';
 import { showNotification } from '../../duck/actions/commonActions'
-
+import queryString from 'query-string';
 
 const { Option } = Select
 function Signature(props) {
-
+    const location= useLocation();
+    const params= queryString.parse(location.search)
     var { isPublish, handleClose } = props
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
@@ -46,6 +48,7 @@ function Signature(props) {
                 handleClose()
 
                 let reqs = {}
+                let req1={}
                 let user_details = JSON.parse(localStorage.getItem('user_details'))
                 let user = user_details["username"] ? user_details["username"] : ''
 
@@ -55,11 +58,19 @@ function Signature(props) {
                 reqs['disp_id'] = props.dispId
                 reqs['version'] = parseInt(props.version)
 
-                let publish_response = await publishEvent(reqs)
+                req1['applicationType']= props.appType
+                req1['esignId']= esign_response.primary_id.toString()
+                req1['resourceDispId']= params.id
+                req1['resourceVersion']= parseInt(params.version)
+                req1['status']= props.status
+
+                let publish_response = Object.keys(params).length>0? await approveRecord(req1): await publishEvent(reqs)
 
                 if (publish_response.status_code == 200) {
                     dispatch(showNotification('success', publish_response.msg))
                     props.PublishResponse(publish_response)
+                }else if(publish_response.Status==200){
+                    dispatch(showNotification('success', publish_response.Message))
                 }
                 else {
                     dispatch(showNotification('error', publish_response.msg))
@@ -76,9 +87,6 @@ function Signature(props) {
 
 
     }
-
-    console.log(primaryId)
-
     return (
         <div>
             <Modal

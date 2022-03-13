@@ -8,7 +8,7 @@ import InputField from '../../../../../../../components/InputField/InputField';
 import SelectField from '../../../../../../../components/SelectField/SelectField';
 
 const handleValuesChange = (changedValues, values) => {
-  console.log(values);
+
 };
 const Alerts = (props) => {
   return (

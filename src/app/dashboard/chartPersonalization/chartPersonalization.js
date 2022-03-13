@@ -67,6 +67,72 @@ function ChartPersonalization() {
   const [isFieldEmpty, setisFieldEmpty] = useState(false);
   const [isSaveAsBtnDisabled, setisSaveAsBtnDisabled] = useState(true);
   const [isSaveBtnDisabled, setisSaveBtnDisabled] = useState(false);
+  const [selectedLayout, setselectedLayout] = useState({});
+  //control limits table data
+  const [controlSource, setControlSource] = useState([]);
+  const [specificationSource, setSpecificationSource] = useState([]);
+  const [warningSource, setWarningSource] = useState([]);
+  //display layout data
+  const figureObj = {
+    lines: false,
+    lineWidth: '',
+    stairCases: false,
+    areaFill: '',
+    areaGradient: '',
+    points: false,
+    alertTreshold: false,
+    panelOptions: {
+      title: '',
+      desc: '',
+      transparentBackground: ''
+    }
+  }
+  const legendObj = {
+    options: {
+      show: false,
+      atTable: false,
+      toRight: false,
+    },
+    values: {
+      min: false,
+      max: false,
+      avg: false,
+      current: false,
+      total: false,
+      decimal: false,
+    },
+    hideSeries: {
+      withOnlyNull: false,
+      withOnlyZero: false
+    }
+  }
+  const axesObj = {
+    leftX: {
+      show: false,
+      unit: '',
+      scale: '',
+      ymin: '',
+      ymax: '',
+      decimal: '',
+      label: '',
+    },
+    rightX: {
+      show: false,
+      unit: '',
+      scale: '',
+      ymin: '',
+      ymax: '',
+      decimal: '',
+      label: '',
+    },
+    xaxis: {
+      show: false,
+      unit: ''
+    }
+  }
+  const [figure, setFigure] = useState(figureObj)
+  const [legend, setLegend] = useState(legendObj)
+  const [axes, setAxes] = useState(axesObj)
   const chartPersReducer = useSelector((state) => state.chartPersReducer);
   const chartDataReducer = useSelector((state) => state.chartDataReducer);
   const chartViewReducer = useSelector((state) => state.chartViewReducer);
@@ -155,7 +221,6 @@ function ChartPersonalization() {
           view_name: chartViewReducer.viewName,
           view_version: chartViewReducer.viewVersion,
           view_status: chartViewReducer.viewStatus,
-
           data_filter: {
             date_range: chartPersReducer.dateRange,
             unapproved_data: chartPersReducer.unApprovedData,
@@ -167,7 +232,11 @@ function ChartPersonalization() {
           layout: chartDataReducer.layout,
           exclusions: [],
           violations: [],
-          limits: {},
+          limits: {
+            controlSource: controlSource,
+            specificationSource: specificationSource,
+            warningSource: warningSource
+          },
           alerts: [],
         },
       ],
@@ -396,9 +465,9 @@ function ChartPersonalization() {
   ) {
     let reqViewParam = {
       view_disp_id: viewDisId ? viewDisId : '',
-      view_version: viewVer ? viewVer : null,
-      site: site ? site : null,
-      date: dateRange ? dateRange : null,
+      view_version: viewVer ? Number(viewVer) : null,
+      // site: site ? site : null,
+      // date: dateRange ? dateRange : null,
       unapproved_data: isUnApproved ? isUnApproved : false,
     };
     try {
@@ -419,7 +488,6 @@ function ChartPersonalization() {
     } catch (error) {
       setbatchData({});
       dispatch(hideLoader());
-      console.log('errrrrorrrrr', error);
       dispatch(
         showNotification('error', 'Parameter Data Error -', error?.message)
       );
@@ -470,8 +538,8 @@ function ChartPersonalization() {
               <Button
                 className='custom-primary-btn'
                 onClick={() => {
-                   handleSave();
-                   setisNewBtnDisabled(true);
+                  handleSave();
+                  setisNewBtnDisabled(true);
                 }}
                 type='primary'
                 disabled={isSaveBtnDisabled}
@@ -517,7 +585,7 @@ function ChartPersonalization() {
             )}
             {showChartType && (
               <div>
-                <ChartType />
+                <ChartType resetBatchData={batchData} setselectedLayout={setselectedLayout} />
               </div>
             )}
           </div>
@@ -529,13 +597,15 @@ function ChartPersonalization() {
                 resChartStatus={resChartStatus}
                 isFieldEmpty={isFieldEmpty}
                 isChartNameEmpty={callBackChartName}
+                selectedLayout={selectedLayout} 
+                setselectedLayout={setselectedLayout}
               />
               <ChartDataTable />
             </div>
           )}
           {showCustomization && (
             <div className='chart-right-panel'>
-              <Personalization />
+              <Personalization selectedLayout={selectedLayout} setselectedLayout={setselectedLayout} figure={figure} setFigure={setFigure} legend={legend} setLegend={setLegend} axes={axes} setAxes={setAxes} controlSource={controlSource} setControlSource={setControlSource} specificationSource={specificationSource} setSpecificationSource={setSpecificationSource} warningSource={warningSource} setWarningSource={setWarningSource} />
             </div>
           )}
         </div>
