@@ -211,6 +211,7 @@ const ChartType = (props) => {
     }
     if (mergedObj.length) {
       mergedObj.forEach((ele) => {
+        ele.recorded_date = new Date(ele.recorded_date).toLocaleDateString();
         batch.push(ele.batch_num)
          Object.entries(ele).map(([key,value]) => {
           if (selectedChartType === 'Scatter Plot') {
@@ -222,7 +223,7 @@ const ChartType = (props) => {
               if (selectedXAxis === 'Batch') {
                 xaxis.push(ele.batch_num)
               } else {
-                const date = new Date(ele.recorded_date).toLocaleDateString();
+                const date = ele.recorded_date;
                 xaxis.push(date)
               }
             }
@@ -232,13 +233,19 @@ const ChartType = (props) => {
            }
          }) 
       })
+      props.setDataTable(mergedObj);
     }
+    const length = [];
+    xaxis.forEach((ele) => {
+      length.push('red')
+    })
     const chartData = {
       x: xaxis.length ? xaxis : [],
       y: yaxis.length ?  yaxis : [],
       text: batch,
       type: 'scatter',
       mode: 'markers',
+      marker: {color: length}
     };
     const chartMapping = {
       x: {

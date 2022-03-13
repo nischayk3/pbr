@@ -74,7 +74,6 @@ function ChartDetails(props) {
     setselectedData(chartPlotData.data);
     props.setselectedLayout(chartPlotData.layout);
   }, [chartPlotData]);
-  console.log(props.selectedLayout, 'selected');
   const dispatch = useDispatch();
 
   const onChangeChart = (e, field) => {
@@ -101,14 +100,15 @@ function ChartDetails(props) {
   const handleOk = () => {
     setisExcluedModal(false);
     if (exclusionValues.excludeRecord) {
+      let filtered = {};
+      filtered = props.dataTable && props.dataTable.find((ele) => ele.batch_num === clickedBatchId)
       counterId.current = counterId.current + 1;
-      let filtered = parameterData1 && parameterData1.find((ele) => ele.batch_num === clickedBatchId);
-      filtered.userId = localStorage.getItem('user');
-      filtered.exclusionDesc = exclusionValues.notes;
-      filtered.exclusionId = counterId.current;
       filtered.timeStamp = new Date().toLocaleTimeString();
+      filtered.exclusionDesc = exclusionValues.notes;
+      filtered.userId = localStorage.getItem('user');
+      filtered.exclusionId = counterId.current;
       props.setExclusionTableData([...props.exclusionTableData, filtered])
-    }  
+    }
   };
   const onChangeCheckbox = (checked) => {
     const isChecked = checked;
