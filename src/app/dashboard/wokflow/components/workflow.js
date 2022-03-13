@@ -14,7 +14,7 @@ import {
   getTableData,
 } from '../../../../services/workFlowServices';
 import { Card, Tabs } from 'antd';
-import { ArrowLeftOutlined, DownloadOutlined, } from '@ant-design/icons';
+import { ArrowLeftOutlined, DownloadOutlined } from '@ant-design/icons';
 import DashCard from '../../../../components/CardComponent/customCard';
 import illustrations from '../../../../assets/images/Banner illustration.svg';
 import WorkflowTable from './workflowTable/workflowTable';
@@ -22,84 +22,81 @@ import './styles.scss';
 
 const { TabPane } = Tabs;
 const Workflow = () => {
-    const [itemCount, setItemCount] = useState();
-    const [cardTitle, setCardTitle] = useState('');
-    const [resultDate, setResultDate] = useState('');
-    const [tilesData, setTilesData] = useState([]);
-    const [activeDiv, setActiveDiv] = useState('');
-    const [applicationType, setApplicationType] = useState('');
-    const [activeTab, setActiveTab] = useState("1");
-    const [columns, setColumns] = useState([]);
-    const [dataSource, setDataSource] = useState([]);
-    const dispatch = useDispatch();
+  const [itemCount, setItemCount] = useState();
+  const [cardTitle, setCardTitle] = useState('');
+  const [resultDate, setResultDate] = useState('');
+  const [tilesData, setTilesData] = useState([]);
+  const [activeDiv, setActiveDiv] = useState('');
+  const [applicationType, setApplicationType] = useState('');
+  const [activeTab, setActiveTab] = useState('1');
+  const [columns, setColumns] = useState([]);
+  const [dataSource, setDataSource] = useState([]);
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        getTilesData();
-        updateDate();
-    }, []);
+  useEffect(() => {
+    getTilesData();
+    updateDate();
+  }, []);
 
-    useEffect(() => {
-        if (cardTitle != '') {
-            cardTableData();
-        }
-    }, [cardTitle, activeTab])
-
-    const updateDate = () => {
-        const date = new Date();
-        const month = date.toLocaleString('default', { month: 'long' });
-        const latestDate = date.getDate();
-        const year = date.getFullYear();
-        const resultDate = month + ' ' + latestDate + ',' + ' ' + year
-        setResultDate(resultDate);
+  useEffect(() => {
+    if (cardTitle != '') {
+      cardTableData();
     }
+  }, [cardTitle, activeTab]);
 
-    const cardTableData = async () => {
-        let req;
-        if (itemCount != 0) {
-            if (activeTab === "1") {
-                req = `/${applicationType}/awaiting_approval`
-            } else {
-                req = `/${applicationType}/recently_approved`
-            }
-            try {
-                dispatch(showLoader());
-                const tableResponse = await getTableData(req);
-                if (tableResponse['status-code'] === 200) {
-                    setColumns(tableResponse.Data.config);
-                    setDataSource(tableResponse.Data.data);
-                    dispatch(hideLoader());
-                }
-                else if (tableResponse['status-code'] === 404) {
-                    setColumns(tableResponse.Data.config);
-                    setDataSource(tableResponse.Data.data);
-                    dispatch(hideLoader());
-                    dispatch(showNotification('error', tableResponse.Message));
-                }
+  const updateDate = () => {
+    const date = new Date();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const latestDate = date.getDate();
+    const year = date.getFullYear();
+    const resultDate = month + ' ' + latestDate + ',' + ' ' + year;
+    setResultDate(resultDate);
+  };
 
-            } catch (error) {
-                dispatch(hideLoader());
-                dispatch(showNotification('error', error.Message));
-            }
-        }
-
-    }
-    try {
-      dispatch(showLoader());
-      const tableResponse = await getTableData(req);
-      if (tableResponse['status-code'] === 200) {
-        setColumns(tableResponse.Data.config);
-        setDataSource(tableResponse.Data.data);
-        dispatch(hideLoader());
-      } else if (tableResponse['status-code'] === 404) {
-        setColumns(tableResponse.Data.config);
-        setDataSource(tableResponse.Data.data);
-        dispatch(hideLoader());
-        dispatch(showNotification('error', tableResponse.Message));
+  const cardTableData = async () => {
+    let req;
+    if (itemCount != 0) {
+      if (activeTab === '1') {
+        req = `/${applicationType}/awaiting_approval`;
+      } else {
+        req = `/${applicationType}/recently_approved`;
       }
-    } catch (error) {
-      dispatch(hideLoader());
-      dispatch(showNotification('error', error.Message));
+      try {
+        dispatch(showLoader());
+        const tableResponse = await getTableData(req);
+        if (tableResponse['status-code'] === 200) {
+          setColumns(tableResponse.Data.config);
+          setDataSource(tableResponse.Data.data);
+          dispatch(hideLoader());
+        } else if (tableResponse['status-code'] === 404) {
+          setColumns(tableResponse.Data.config);
+          setDataSource(tableResponse.Data.data);
+          dispatch(hideLoader());
+          dispatch(showNotification('error', tableResponse.Message));
+        }
+      } catch (error) {
+        dispatch(hideLoader());
+        dispatch(showNotification('error', error.Message));
+      }
     }
+
+    // try {
+    //   dispatch(showLoader());
+    //   const tableResponse = await getTableData(req);
+    //   if (tableResponse['status-code'] === 200) {
+    //     setColumns(tableResponse.Data.config);
+    //     setDataSource(tableResponse.Data.data);
+    //     dispatch(hideLoader());
+    //   } else if (tableResponse['status-code'] === 404) {
+    //     setColumns(tableResponse.Data.config);
+    //     setDataSource(tableResponse.Data.data);
+    //     dispatch(hideLoader());
+    //     dispatch(showNotification('error', tableResponse.Message));
+    //   }
+    // } catch (error) {
+    //   dispatch(hideLoader());
+    //   dispatch(showNotification('error', error.Message));
+    // }
   };
   const getTilesData = async () => {
     let req = {};
