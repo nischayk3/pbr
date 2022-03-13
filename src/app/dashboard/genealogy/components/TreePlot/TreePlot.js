@@ -161,59 +161,20 @@ function TreePlot(props) {
 
       let diagramLayout = d3.select('#backwardDiv');
 
-      //let nodeSvg = diagramLayout.selectAll('.node');
       let linkSvg = diagramLayout.selectAll('.link');
-      linkSvg.style('stroke', isMaterialLink);
+      linkSvg.style('stroke', isMaterialLink).style('stroke-width', '4');
 
-      let linkSearch = linkSvg.filter(function (d) {
+      let linkSearchMatch = linkSvg.filter(function (d) {
         return d.source.id === splitedvalue || d.target.id === splitedvalue;
       });
+      linkSearchMatch.attr('class', 'value-match');
+      let linkMatch = diagramLayout.selectAll('.link');
+      let linkNotMatch = diagramLayout.selectAll('.value-match');
+      let parentLink = diagramLayout.selectAll('.additionalParentLink');
 
-      linkSearch
-        .style('stroke-width', function (obj) {
-          console.log('objjjjjjjjjjj', obj);
-          if (
-            obj.source.id === splitedvalue ||
-            obj.target.id === splitedvalue
-          ) {
-            return '6';
-          } else {
-            return '1';
-          }
-        })
-        .style('stroke', function (obj) {
-          console.log('objjjjjjjjjjj', obj);
-          if (
-            obj.source.id === splitedvalue ||
-            obj.target.id === splitedvalue
-          ) {
-            return '#486BC9';
-          }
-        });
-      // linkSearch.style('stroke', function (obj) {
-      //   console.log('objjjjjjjjjjj', obj.source.class);
-
-      //   if (obj.source.id === splitedvalue || obj.target.id === splitedvalue) {
-      //     return '#486BC9';
-      //   }
-      // });
-
-      let nodeSvg = d3.select('#node-' + splitedvalue).call(
-        d3.behavior.zoom().on('zoom', function () {
-          console.log('zoommmmmmmmm');
-          nodeSvg.attr(
-            'transform',
-            'translate(' +
-              d3.event.translate +
-              ')' +
-              ' scale(' +
-              d3.event.scale +
-              ')'
-          );
-        })
-      );
-
-      console.log('nodeSvgggggg', nodeSvg);
+      linkMatch.style('stroke', '#ddd');
+      parentLink.style('stroke', '#ddd');
+      linkNotMatch.style('stroke', isMaterialLink);
     }
   };
 
@@ -842,6 +803,7 @@ function TreePlot(props) {
             });
           })
           .style('stroke', function (d) {
+            console.log('nodeeee ddddddddddd', d);
             if (isBackward) {
               if (d.source.depth === 0) {
                 rootCounter++;

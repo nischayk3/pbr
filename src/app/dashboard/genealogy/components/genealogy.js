@@ -140,6 +140,13 @@ function Genealogy() {
     setActivateKey(activateKey);
   };
 
+  const onEditTab = (targetKey, action) => {
+    console.log('targetKey, action', targetKey, action);
+  };
+
+  const remove = (targetKey) => {
+    console.log('targetKey', targetKey);
+  };
   console.log('genealogyData key', genealogyData);
   return (
     <div className='custom-wrapper'>
@@ -154,8 +161,11 @@ function Genealogy() {
           className='custom-tabs'
           activeKey={activateKey}
           onChange={handleChangeTab}
+          onEdit={onEditTab}
+          hideAdd
+          type='editable-card'
         >
-          <TabPane tab='Select Parameter' key='1'>
+          <TabPane tab='Select Parameter' key='1' closable={false}>
             <Filter parameterDetails={selectedParameter} />
           </TabPane>
           {showTree && (
