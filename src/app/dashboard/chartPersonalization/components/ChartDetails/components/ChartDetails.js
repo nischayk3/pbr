@@ -5,6 +5,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import {
   sendChartDesc,
   sendChartName,
+  generateChart
 } from '../../../../../../duck/actions/chartPersonalizationAction';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -23,34 +24,43 @@ function ChartDetails(props) {
   const [chartId, setchartId] = useState('');
   const [chartVersion, setchartVersion] = useState('');
   const [selectedData, setselectedData] = useState([]);
+  const [selectedTitle, setSelectedTitle] = useState('');
   // const [selectedLayout, setselectedLayout] = useState({});
   const [clickedBatchId, setclickedBatchId] = useState('');
   const [isExcluedModal, setisExcluedModal] = useState(false);
   const [isExcludeRecord, setisExcludeRecord] = useState(false);
   const counterId = useRef(0);
   const [exclusionValues, setExclusionValues] = useState({
-    productCode:'',
-    parameterName:'',
-    parameterValue:'',
-    unit:'',
-    testDate:'',
-    ncNumber:'',
-    notes:'',
-    excludeRecord:false
+    productCode: '',
+    parameterName: '',
+    parameterValue: '',
+    unit: '',
+    testDate: '',
+    ncNumber: '',
+    notes: '',
+    excludeRecord: false
   })
 
   const chartPlotData = useSelector(
     (state) => state.chartDataReducer && state.chartDataReducer.chartData
   );
+  const chartPlotData1 = useSelector(
+    (state) => state.chartDataReducer
+  );
+  const chartDesc = useSelector((state) => state.chartPersReducer.chartDesc);
 
   const parameterData1 = useSelector(
-    (state) => state.chartPersReducer.getBatchCoverage.data
+    (state) => state.chartPersReducer.getBatchCoverage
   );
 
   const getChartObjData = useSelector(
     (state) =>
       state.chartDataReducer && state.chartDataReducer.selectedChartData
   );
+
+  useEffect(() => {
+    setSelectedTitle(chartDesc);
+  }, [chartDesc]);
 
   useEffect(() => {
     setchartId(getChartObjData ? getChartObjData.chart_id : '');
@@ -92,23 +102,106 @@ function ChartDetails(props) {
   const chartNodeClicked = (batch) => {
     setisExcluedModal(true);
     setclickedBatchId(batch);
+    Object.values(parameterData1.parameter).forEach((element) => {
+     element.forEach((ele) => {
+      if(String(batch) === String(ele.batch_num)) {
+        setExclusionValues({ ...exclusionValues, productCode: ele.product_num, parameterName:ele.parameter_name, parameterValue:ele.parameter_value, testDate : new Date(ele.recorded_date).toLocaleDateString()})
+      }
+     })
+    })
   };
 
   const handleCloseModal = () => {
     setisExcluedModal(false);
   };
+  const tempArr = useRef([]);
   const handleOk = () => {
     setisExcluedModal(false);
+    const mergedObj = JSON.parse(JSON.stringify(props.dataTable));
     if (exclusionValues.excludeRecord) {
       let filtered = {};
-      filtered = props.dataTable && props.dataTable.find((ele) => ele.batch_num === clickedBatchId)
+      filtered = mergedObj.find((ele) => ele.batch_num === clickedBatchId)
       counterId.current = counterId.current + 1;
       filtered.timeStamp = new Date().toLocaleTimeString();
       filtered.exclusionDesc = exclusionValues.notes;
       filtered.userId = localStorage.getItem('user');
       filtered.exclusionId = counterId.current;
       props.setExclusionTableData([...props.exclusionTableData, filtered])
+      tempArr.current.push(filtered)
     }
+    const colorArr = [];
+    props.dataTable.forEach((ele) => {
+       colorArr.push('blue');
+    })
+    tempArr.current.forEach((ele) => {
+      const findValue = props.dataTable.findIndex((element) => element.batch_num === ele.batch_num)
+      colorArr[findValue] = 'red'
+    })
+    let xaxis = [];
+    let yaxis = [];
+    let batch = [];
+    mergedObj.forEach((ele) => {
+      batch.push(ele.batch_num)
+       Object.entries(ele).map(([key,value]) => {
+        if (chartPlotData1.chartType === 'Scatter Plot') {
+          if (key === chartPlotData1.chartxAxis) {
+            xaxis.push(value)
+           } 
+        } else {
+          if (key === chartPlotData1.chartyAxis) {
+            if (chartPlotData1.chartxAxis === 'Batch') {
+              xaxis.push(ele.batch_num)
+            } else {
+              const date = ele.recorded_date;
+              xaxis.push(date)
+            }
+          }
+        }
+         if(key === chartPlotData1.chartyAxis) {
+           yaxis.push(value)
+         }
+       }) 
+    })
+    const chartLayout = {
+      title: {
+        text: selectedTitle !== undefined ? selectedTitle : '',
+      },
+      xaxis: {
+        title: {
+          text: chartPlotData1.chartxAxis,
+        },
+      },
+      yaxis: {
+        title: {
+          text: chartPlotData1.chartyAxis,
+        },
+      },
+      showlegend:true,
+      height: 250,
+      width: 450,
+      margin: {
+        l: 50,
+        r: 50,
+        b: 50,
+        t: 50,
+        pad: 5,
+      },
+    };
+    const chartData = {
+      x: xaxis.length ? xaxis : [],
+      y: yaxis.length ?  yaxis : [],
+      text: batch,
+      type: 'scatter',
+      mode: 'markers',
+      marker:{color:colorArr}
+    };
+
+
+    const plotlyData = {
+      data: chartData,
+      layout: chartLayout,
+    };
+    dispatch(generateChart(plotlyData));
   };
   const onChangeCheckbox = (checked) => {
     const isChecked = checked;
@@ -116,11 +209,11 @@ function ChartDetails(props) {
   };
 
   const handleExcludeChange = (e) => {
-      setExclusionValues({...exclusionValues, excludeRecord : e.target.checked })
+    setExclusionValues({ ...exclusionValues, excludeRecord: e.target.checked })
   }
 
   const handleChangeNotes = (e) => {
-    setExclusionValues({...exclusionValues, notes : e.target.value })
+    setExclusionValues({ ...exclusionValues, notes: e.target.value })
   }
 
 
@@ -189,11 +282,13 @@ function ChartDetails(props) {
           style={{ marginTop: '24px', border: '1px solid #d9d9d9' }}
         >
           {props.selectedLayout && Object.keys(props.selectedLayout).length > 0 ? (
-            <ScatterPlot
+           <div  id="newData">
+              <ScatterPlot
               data={selectedData}
               layout={props.selectedLayout}
               nodeClicked={chartNodeClicked}
             />
+             </div>
           ) : (
             <Empty
               style={{ height: '85px' }}
@@ -255,14 +350,14 @@ function ChartDetails(props) {
               </div>
             </Col>
             <Col className="gutter-row" span={12}>
-            <Checkbox checked={exclusionValues.excludeRecord} onChange={handleExcludeChange}>Exclude Record</Checkbox>
+              <Checkbox checked={exclusionValues.excludeRecord} onChange={handleExcludeChange}>Exclude Record</Checkbox>
             </Col>
           </Row>
           <Row gutter={24}>
             <Col className="gutter-row" span={24}>
               <div>
                 <label>Notes</label>
-                <TextArea rows={2} placeholder="Reason for excluding Record." value={exclusionValues.notes} onChange={handleChangeNotes}  />
+                <TextArea rows={2} placeholder="Reason for excluding Record." value={exclusionValues.notes} onChange={handleChangeNotes} />
               </div>
             </Col>
           </Row>
