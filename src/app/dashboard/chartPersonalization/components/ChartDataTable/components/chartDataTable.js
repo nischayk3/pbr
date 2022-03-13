@@ -12,35 +12,28 @@ import ViolationTable from './violation';
 import { sendParameterTableData } from '../../../../../../duck/actions/chartPersonalizationAction';
 import { updateTableColumn } from '../../../../../../utils/updateTableColumns';
 
-function ChartDataTable(props) {
+function ChartDataTable({exclusionTableData, setExclusionTableData, dataTable, setTableData}) {
   const parameterData = useSelector(
     (state) => state.chartPersReducer.getBatchCoverage
   );
-
   const [paramData, setparamData] = useState([]);
+  const columns = [];
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-     if (parameterData) {
-      setparamData(parameterData.parameter);
-      dispatch(sendParameterTableData(parameterData.parameter ? parameterData.parameter : []));
-     }
+    setparamData(parameterData);
+    // dispatch(sendParameterTableData(parameterData ? parameterData : []));
   }, [parameterData]);
 
   const uniqueArr = (value, index, self) => {
     return self.indexOf(value) === index;
   };
-  console.log(paramData,'parameter')
-  const objkeys =
-    paramData !== undefined && paramData.length > 0
-      ? Object.keys(paramData[0])
+  const objkeys = dataTable !== undefined && dataTable.length > 0
+      ? Object.keys(dataTable[0])
       : [];
 
   const filterColumn = objkeys.filter(uniqueArr);
-
-  const columns = [];
-
   filterColumn.map((item, i) => {
     columns.push({
       title: item.toUpperCase(),
@@ -49,15 +42,18 @@ function ChartDataTable(props) {
     });
   });
 
+  useEffect(() => {
+    
+  }, [dataTable])
 
   const { TabPane } = Tabs;
   return (
     <div>
       <div>
-        <Card bordered={false} style={{ height: '430px' }}>
+        <Card bordered={false} style={{ height: '350px' }}>
           <Tabs defaultActiveKey='3'>
             <TabPane tab='Exclusion' key='1'>
-              <ExclusionTable />
+              <ExclusionTable dataTable={dataTable} setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
             </TabPane>
             {/* <TabPane tab='Shift' key='2'>
                               <ShiftTable />
@@ -70,13 +66,14 @@ function ChartDataTable(props) {
             </TabPane>
             <TabPane tab='Data Table' key='3'>
               {<Table
+              style={{height:'300px'}}
                 rowClassName={(record, index) =>
                   index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
                 }
                 size='small'
                 className='parameter_table'
                 columns={columns}
-                // dataSource={paramData}
+                dataSource={dataTable}
                 scroll={{ y: 350 }}
                 pagination={false}
               />}
