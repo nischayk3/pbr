@@ -8,7 +8,7 @@ import './styles.scss';
 
 import {
   CheckCircleOutlined,
-  CheckCircleFilled,
+  CheckOutlined,
   CloseOutlined,
 } from '@ant-design/icons';
 import { Form, Input, Space, Table, Tag } from 'antd';
@@ -51,7 +51,7 @@ function ViewSummary(props) {
         render: (value) =>
           value ? (
             <span className='batchChecked'>
-              <CheckCircleFilled style={{ color: '#093185' }} />
+              <CheckOutlined />
             </span>
           ) : (
             <span className='batchClosed'>

@@ -6,7 +6,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import './styles.scss';
-import { CheckCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import {
+  CheckCircleOutlined,
+  CloseOutlined,
+  CheckCircleFilled,
+} from '@ant-design/icons';
 import { Checkbox, Form, Input, Select, Table, Tag, Card, Tooltip } from 'antd';
 import { functionTextName } from '../../../../../duck/actions/viewCreationAction';
 
@@ -81,12 +85,21 @@ const FunctionEditor = (props) => {
         },
         render: (key) => {
           return key === true ? (
-            <Checkbox
-              checked={true}
-              onChange={(e) => onChange(e, key, key, index)}
-            />
+            // <Checkbox
+            //   checked={true}
+            //   onChange={(e) => onChange(e, key, key, index)}
+            // />
+            <span style={{ textAlign: 'center', display: 'block' }}>
+              <CheckCircleFilled
+                style={{ color: '#093185', fontSize: '18px' }}
+                onChange={(e) => onChange(e, key, key, index)}
+              />
+            </span>
           ) : (
-            <span className='batchClosed'>
+            <span
+              className='batchClosed'
+              style={{ textAlign: 'center', display: 'block' }}
+            >
               <CloseOutlined />
             </span>
           );
@@ -101,6 +114,7 @@ const FunctionEditor = (props) => {
   };
 
   const onChange = (e, key, value, rowIndex) => {
+    console.log('eeeeeeeeeeeeee');
     let filteredRecord = [...functionData.current];
     filteredRecord[rowIndex][key] =
       e.target.checked == false ? '' : e.target.checked;
