@@ -1,7 +1,11 @@
-// # Mihir Bagga
-// # Mareana Software
-// # Version 1
-// # Last modified - 3 Mar 2022
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 1
+ * @Last Modified - 14 March, 2022
+ * @Last Changed By - @Mihir 
+ */
+
 
 import React, { useEffect, useState } from 'react';
 import {
@@ -100,7 +104,6 @@ function ReportGenerator() {
     const repotData = useSelector(
         (state) => state.reportDesignerReducer.reportData
     );
-
 
     function onChange(checkedValues, i) {
         update_object(checkedValues, i)
@@ -252,6 +255,19 @@ function ReportGenerator() {
     }
 
     const prepareJson = () => {
+
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        let time_today = h + ":" + m + ":" + s;
+
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        let date_today =year+'-'+month + "-"+day 
+
         let obj = {}
         let user_details = JSON.parse(localStorage.getItem('user_details'))
         let user = user_details["username"] ? user_details["username"] : ''
@@ -267,8 +283,8 @@ function ReportGenerator() {
         let share_obj = {}
         share_obj['frequency_unit'] = schedule
         share_obj['email_list'] = emailList
-        share_obj['scheduled_start'] = '2022-03-01 09:55:22'
-        share_obj['scheduled_end'] = '2022-03-03 09:50:22'
+        share_obj['scheduled_start'] = date_today + ' ' + time_today
+        share_obj['scheduled_end'] = '2022-04-03 09:50:22'
         share_obj['frequency'] = '1'
 
 
@@ -372,10 +388,9 @@ function ReportGenerator() {
                     <Card className="card-chart" title="Chart">
                         {chart && chart.map((i) => {
                             return (
-                                <Collapse key={i.chart} accordion style={{ width: '500px' }}>
+                                <Collapse key={i.chart} accordion style={{ width: '500px' }} bordered={false}>
                                     <Panel header={i.chart} key={i.chart}>
                                         <Checkbox.Group style={{ width: '100%' }} defaultValue={i.default} onChange={(checkedValue) => onChange(checkedValue, i.chart)}>
-
                                             <table className="table" >
                                                 <tbody>
                                                     <tr style={{ backgroundColor: '#F1F7FF' }} className="tr">
@@ -417,7 +432,7 @@ function ReportGenerator() {
                                 <Button onClick={() => { setVisible(true) }} >Click To Select Schedule</Button>
                             </div>
                             <div>
-                                <Card title="Recipients">
+                                <Card title="Recipients" className="card-recipients">
                                     {emailList && emailList.map(function (item, i) {
                                         return <p>{item}</p>
                                     })}
@@ -458,7 +473,6 @@ function ReportGenerator() {
                                             // })
 
                                         )}
-
                                     </tbody>
                                 </table>
                             </Panel>
@@ -497,24 +511,34 @@ function ReportGenerator() {
 
                     <Text>Users</Text> <br />
                     <Select
-                        mode="multiple"
+                        mode="tags"
                         style={{ width: '50%', marginTop: '10px' }}
                         placeholder="Select Users"
                         optionLabelProp="label"
                         value={emailList}
                         onChange={handleChange}
+                        
                     >
-                        <Option value="a@gmail.com" label="a@gmail.com">
-                            a@gmail.com
+                        <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
+                            mihir.bagga@mareana.com
                         </Option>
-                        <Option value="c@gmail.com" label="c@gmail.com">
-                            c@gmail.com
+                        <Option value="muskan.gupta@mareana.com" label="muskan.gupta@mareana.com">
+                            muskan.gupta@mareana.com
                         </Option>
-                        <Option value="b@gmail.com" label="b@gmail.com">
-                            b@gmail.com
+                        <Option value="binkita.tiwari@mareana.com" label="binkita.tiwari@mareana.com">
+                        binkita.tiwari@mareana.com
                         </Option>
-                        <Option value="m@gmail.com" label="m@gmail.com">
-                            m@gmail.com
+                        <Option value="someswara.rao@mareana.com" label="someswara.rao@mareana.com">
+                        someswara.rao@mareana.com
+                        </Option>
+                        <Option value="ramaa.rao@mareana.com" label="ramaa.rao@mareana.com">
+                        ramaa.rao@mareana.com
+                        </Option>
+                        <Option value="rahul.neogi@mareana.com" label="rahul.neogi@mareana.com">
+                        rahul.neogi@mareana.com
+                        </Option>
+                        <Option value="vishal@mareana.com" label="vishal@mareana.com">
+                        vishal@mareana.com
                         </Option>
                     </Select>
                 </Modal>
@@ -551,7 +575,7 @@ function ReportGenerator() {
                     visible={popvisible}
                     onCancel={() => setPopVisible(false)}
                     width={600}
-                    title={<p>Select View  <Input.Search
+                    title={<p>Select Report Variant  <Input.Search
                         className='table-search'
                         placeholder='Search by...'
                         enterButton
