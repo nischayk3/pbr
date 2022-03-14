@@ -155,6 +155,8 @@ const ChartType = (props) => {
     setisDisabled(false);
     if (value !== null) {
       if (field === 'charttype') {
+        setselectedXAxis('');
+        setselectedYAxis('');
         setselectedChartType(value);
         if (value === 'Scatter Plot') {
           setisScattetruer(true);
