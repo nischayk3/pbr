@@ -32,7 +32,23 @@
 }
 .ant-collapse-icon-position-right>.ant-collapse-item>.ant-collapse-header {
   position: relative;
-  padding: 12px 40px 0px 16px;
+  // padding: 12px 40px 0px 16px;
+}
+.ant-collapse-content-box {
+  padding: 0px !important;
+}
+
+.ant-collapse-header {
+  svg {
+    color: #093185;
+  }
 }
 
 }
+
+.ant-collapse-item-active {
+  .ant-collapse-header {
+    background: #F1F7FF !important;
+  }
+}
+
