@@ -44,12 +44,18 @@
   {
     width: 651px;
     min-height: 282px;
-    max-height: 282px;
-    overflow-y: auto;
+    // max-height: 282px;
+    // overflow-y: auto;
     .schedule
     {
       display: grid;
     grid-template-columns: 1fr 1fr; 
+
+    .card-recipients
+    {
+      max-height: 180px;
+    overflow-y: auto;
+    }
     }
   }
 }

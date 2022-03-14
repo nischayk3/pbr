@@ -706,7 +706,7 @@ function ViewCreation() {
       view_description: 'Test View Object',
       view_version: viewVersion,
       view_disp_id: viewDisplayId,
-      view_status: status?status:viewStatus,
+      view_status: status ? status : viewStatus,
     };
     const headers = {
       username: 'user_mareana1',
@@ -885,7 +885,7 @@ function ViewCreation() {
               </Button>
               <Button
                 className='viewCreation-saveBtn'
-                disabled={!viewDisplayId}
+                //  disabled={!viewDisplayId}
                 onClick={handleSaveFunc}
               >
                 Save

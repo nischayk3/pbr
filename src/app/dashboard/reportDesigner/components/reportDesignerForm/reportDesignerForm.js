@@ -116,7 +116,7 @@ function ReportDesignerForm(props) {
                 </div>
                 <div>
                     <Text className='filter-text' disabled={props.show}>Status</Text><br />
-                    <Input className='filter-button' value={status} disabled />
+                    <Input className='filter-button' value={status} disabled={props.show} />
 
                 </div>
 
