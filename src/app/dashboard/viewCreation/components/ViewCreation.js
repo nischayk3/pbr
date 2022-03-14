@@ -885,7 +885,7 @@ function ViewCreation() {
               </Button>
               <Button
                 className='viewCreation-saveBtn'
-                disabled={!viewDisplayId}
+                //  disabled={!viewDisplayId}
                 onClick={handleSaveFunc}
               >
                 Save
