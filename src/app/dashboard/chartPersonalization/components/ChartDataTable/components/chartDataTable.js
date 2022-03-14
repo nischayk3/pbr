@@ -17,7 +17,7 @@ function ChartDataTable({exclusionTableData, setExclusionTableData, dataTable, s
     (state) => state.chartPersReducer.getBatchCoverage
   );
   const [paramData, setparamData] = useState([]);
-  const columns = [];
+  let columns = [];
 
   const dispatch = useDispatch();
 
@@ -45,6 +45,7 @@ function ChartDataTable({exclusionTableData, setExclusionTableData, dataTable, s
   useEffect(() => {
     
   }, [dataTable])
+
 
   const { TabPane } = Tabs;
   return (

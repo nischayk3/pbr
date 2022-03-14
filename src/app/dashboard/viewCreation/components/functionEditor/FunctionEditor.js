@@ -6,11 +6,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import './styles.scss';
-import {
-  CheckCircleOutlined,
-  CloseOutlined,
-  CheckCircleFilled,
-} from '@ant-design/icons';
+import { CheckCircleFilled, CloseOutlined } from '@ant-design/icons';
 import { Checkbox, Form, Input, Select, Table, Tag, Card, Tooltip } from 'antd';
 import { functionTextName } from '../../../../../duck/actions/viewCreationAction';
 
@@ -86,8 +82,8 @@ const FunctionEditor = (props) => {
         render: (key) => {
           return key === true ? (
             // <Checkbox
-            //   checked={true}
-            //   onChange={(e) => onChange(e, key, key, index)}
+            //     checked={true}
+            //     onChange={(e) => onChange(e, key, key, index)}
             // />
             <span style={{ textAlign: 'center', display: 'block' }}>
               <CheckCircleFilled
@@ -114,7 +110,6 @@ const FunctionEditor = (props) => {
   };
 
   const onChange = (e, key, value, rowIndex) => {
-    console.log('eeeeeeeeeeeeee');
     let filteredRecord = [...functionData.current];
     filteredRecord[rowIndex][key] =
       e.target.checked == false ? '' : e.target.checked;
@@ -200,7 +195,7 @@ const FunctionEditor = (props) => {
 
   return (
     <div className='viewSummary-container functionEditor-container'>
-      <div className=' functionEditor-FormBlock'>
+      <div className='functionEditor-FormBlock'>
         <Form.Item label='ID' name='id'>
           <Input placeholder='Enter ID' disabled />
         </Form.Item>
@@ -254,8 +249,8 @@ const FunctionEditor = (props) => {
           </Select>
         </Form.Item>
       </div>
-      <div className='MathEditor-FormBlock'>
-        <div className='viewSummary-table  site-card-border-less-wrapper'>
+      <div className=' MathEditor-FormBlock'>
+        <div className='viewSummary-table functionBatch-table site-card-border-less-wrapper'>
           <Card title='Math Editor' bordered className='cardClass'>
             {mathFunction ? (
               mathFunction == 'round' ? (
