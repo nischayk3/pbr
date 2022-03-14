@@ -127,7 +127,7 @@ function ReportDesignerForm(props) {
             <Modal
                 title={
                     <p>
-                        Select View{' '}
+                        Select Report{' '}
                         <Input.Search
                             className='table-search'
                             placeholder='Search by...'

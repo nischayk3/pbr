@@ -47,7 +47,7 @@ function ReportDesignerForm(props) {
     }
 
     return (
-        <div className="reportDesigner-grid bg-white" >
+        <div className="reportDesigner-gen bg-white" >
             <div className="reportDesigner-block-left bg-white" >
                 <div>
                 <Text className="filter-text" >Report ID</Text><br/>

@@ -4,7 +4,7 @@
  * @version 1
  * @Last Modified - 14 March, 2022
  * @Last Changed By - @Mihir 
- */
+*/
 
 
 import React, { useEffect, useState } from 'react';
@@ -32,7 +32,7 @@ import { saveReportGenerator, getReportGenerator } from '../../../../services/re
 import SaveModal from '../../../../components/SaveModal/saveModal'
 import {
     hideLoader,
-    showLoader, 
+    showLoader,
     showNotification
 } from '../../../../duck/actions/commonActions';
 
@@ -266,7 +266,7 @@ function ReportGenerator() {
         var day = date.getDate();
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
-        let date_today =year+'-'+month + "-"+day 
+        let date_today = year + '-' + month + "-" + day
 
         let obj = {}
         let user_details = JSON.parse(localStorage.getItem('user_details'))
@@ -320,32 +320,31 @@ function ReportGenerator() {
     };
 
     const getReportData = async (rep_id) => {
-        
+
         message.success(`${rep_id} selected`)
         dispatch(showLoader());
         let user_details = JSON.parse(localStorage.getItem('user_details'))
         let user = user_details["username"] ? user_details["username"] : ''
         let req = { username: user, report_id: rep_id };
-            try {
-                
-                let response = await getReportGenerator(req)
-                if (response.Status == 404) {
-                    dispatch(showNotification("error", 'No Data for this variant'))
-                    dispatch(hideLoader());
-                     }
-                else
-                {   
-                    dispatch(sendReport(response))
-                    unloadTest(response)
-                    dispatch(hideLoader());
-                }
+        try {
 
-              }
-               catch (err) {
+            let response = await getReportGenerator(req)
+            if (response.Status == 404) {
+                dispatch(showNotification("error", 'No Data for this variant'))
                 dispatch(hideLoader());
-                dispatch(showNotification('error', err));
-              }
+            }
+            else {
+                dispatch(sendReport(response))
+                unloadTest(response)
+                dispatch(hideLoader());
+            }
+
         }
+        catch (err) {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', err));
+        }
+    }
 
 
 
@@ -388,8 +387,8 @@ function ReportGenerator() {
                     <Card className="card-chart" title="Chart">
                         {chart && chart.map((i) => {
                             return (
-                                <Collapse key={i.chart} accordion style={{ width: '500px' }} bordered={false}>
-                                    <Panel header={i.chart} key={i.chart}>
+                                <Collapse key={i.chart} accordion style={{ width: '500px' }} bordered={false} expandIconPosition='right'>
+                                    <Panel header={i.chart} key={i.chart} className="chart-panel" >
                                         <Checkbox.Group style={{ width: '100%' }} defaultValue={i.default} onChange={(checkedValue) => onChange(checkedValue, i.chart)}>
                                             <table className="table" >
                                                 <tbody>
@@ -445,8 +444,8 @@ function ReportGenerator() {
                 <Card title="Table" className="table-card">
                     {table.length > 0 && table.map((i) =>
 
-                        <Collapse key={i.heading} accordion>
-                            <Panel header={i.heading} key={i.heading}>
+                        <Collapse key={i.heading} accordion  bordered={false} expandIconPosition="right">
+                            <Panel header={i.heading} key={i.heading} className="chart-panel">
                                 <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF', marginRight: '10px', marginLeft: '1070px', fontSize: '12px' }}>
                                 </span>
                                 <span class="Legend-label" style={{ marginBottom: '10px', fontSize: '12px' }}>
@@ -459,15 +458,11 @@ function ReportGenerator() {
                                 </span>
                                 <table className="table">
                                     <tbody>
-                                        <tr className="tr-tr" >
-                                            <th className="th">Key</th>
-                                            <th className="th">Value</th>
-                                        </tr>
                                         {i['content'] && i['content'].map((item, j) =>
                                             // return Object.entries(item).map((k, value) => {
 
-                                            <tr className="tr">
-                                                <td className="td">{item.key}</td>
+                                            <tr className="tr" style={{backgroundColor : item.editable==false || item.editable == undefined ? '#BAE7FF' : '#F5F5F5'}}>
+                                                <td className="td" >{item.key}</td>
                                                 <td className="td">{item.editable == false || item.editable == undefined ? <textarea defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : item.value} </td>
                                             </tr>
                                             // })
@@ -509,7 +504,7 @@ function ReportGenerator() {
                         </Space>
                     </Radio.Group> <br /> <br />
 
-                    <Text>Users</Text> <br />
+                    <Text>Users</Text> <br/>
                     <Select
                         mode="tags"
                         style={{ width: '50%', marginTop: '10px' }}
@@ -517,7 +512,7 @@ function ReportGenerator() {
                         optionLabelProp="label"
                         value={emailList}
                         onChange={handleChange}
-                        
+
                     >
                         <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
                             mihir.bagga@mareana.com
@@ -526,19 +521,19 @@ function ReportGenerator() {
                             muskan.gupta@mareana.com
                         </Option>
                         <Option value="binkita.tiwari@mareana.com" label="binkita.tiwari@mareana.com">
-                        binkita.tiwari@mareana.com
+                            binkita.tiwari@mareana.com
                         </Option>
                         <Option value="someswara.rao@mareana.com" label="someswara.rao@mareana.com">
-                        someswara.rao@mareana.com
+                            someswara.rao@mareana.com
                         </Option>
                         <Option value="ramaa.rao@mareana.com" label="ramaa.rao@mareana.com">
-                        ramaa.rao@mareana.com
+                            ramaa.rao@mareana.com
                         </Option>
                         <Option value="rahul.neogi@mareana.com" label="rahul.neogi@mareana.com">
-                        rahul.neogi@mareana.com
+                            rahul.neogi@mareana.com
                         </Option>
                         <Option value="vishal@mareana.com" label="vishal@mareana.com">
-                        vishal@mareana.com
+                            vishal@mareana.com
                         </Option>
                     </Select>
                 </Modal>
@@ -584,7 +579,7 @@ function ReportGenerator() {
                     /></p>}
                     centered
                     width={500}
-                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px'  }}onClick={()=>{setIsVisible(false);setPopVisible(false)}} key="1">OK</Button>,]}
+                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setIsVisible(false); setPopVisible(false) }} key="1">OK</Button>,]}
                 >
                     <Table
                         // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}

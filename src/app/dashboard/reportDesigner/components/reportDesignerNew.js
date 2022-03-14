@@ -4,7 +4,6 @@
  * @version 1
  * @Last Modified - 14 March, 2022
  * @Last Changed By - @Mihir 
-
  */
 
 import React, { useEffect, useState } from 'react';
@@ -145,8 +144,7 @@ function ReportDesignerNew() {
   useEffect(() => { form.resetFields() }, [formData]);
 
   const unloadUrl = async (params) => {
-    try 
-    {
+    try {
       dispatch(showLoader())
       setParams(true);
       let data = await getReportData(params.id, 'AWAP')
@@ -595,7 +593,7 @@ function ReportDesignerNew() {
               onValuesChange={handleValuesChange}
               initialValues={formData}
             >
-              <ReportDesignerDynamicSections formData={formData} show={params}/>
+              <ReportDesignerDynamicSections formData={formData} show={params} />
             </Form>
 
           </div> :
