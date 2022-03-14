@@ -82,9 +82,9 @@
   }
 
   .reportDesigner-grid-tables.viewCreation-blocks {
-    grid-template-columns: 29% 68%;
-    grid-gap: 24px;
-    padding: 10px;
+    grid-template-columns: 29% 69%;
+    grid-gap: 0 24px;
+    padding: 7px 24px;
     height: calc(100vh - 120px);
     min-height: calc(100vh - 120px);
     overflow-y: auto;
@@ -132,7 +132,9 @@ a.deleteTableAction {
       color: #454545;
     }
   }
-
+  .ant-collapse-item:last-child {
+    border-bottom: 0px !important;
+  }
   .ant-collapse-content {
     .ant-collapse-content-box {
       padding: 10px 24px 20px !important;
@@ -217,7 +219,7 @@ a.deleteTableAction {
   box-shadow: 1px 1px 14px #0000001a;
   border-radius: 4px;
   background-color: #ffffff;
-
+  height: fit-content;
   .ant-row.ant-form-item {
     margin: 0px;
 
@@ -290,7 +292,8 @@ a.deleteTableAction {
 }
 
 .viewCreation-blockHeader {
-  border-radius: 4px;
+  border-radius: 4px 4px 0 0 !important;
+  border-bottom: 1px solid #cacaca;
 }
 
 .paramColumn {
