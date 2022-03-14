@@ -15,7 +15,10 @@ const SelectSearchField = (props) => {
         placeholder={props.placeholder}
         value={props.selectedValue}
         onChange={props.onChangeSelect}
+        onSearch={props.onSearchSelect}
         style={{ width: '100%', margin: '0px' }}
+        allowClear
+        mode='combobox'
       >
         {props.selectList &&
           props.selectList.map((item) => (
