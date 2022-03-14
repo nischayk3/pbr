@@ -235,17 +235,12 @@ const ChartType = (props) => {
       })
       props.setDataTable(mergedObj);
     }
-    const length = [];
-    xaxis.forEach((ele) => {
-      length.push('red')
-    })
     const chartData = {
       x: xaxis.length ? xaxis : [],
       y: yaxis.length ?  yaxis : [],
       text: batch,
       type: 'scatter',
       mode: 'markers',
-      marker: {color: length}
     };
     const chartMapping = {
       x: {
@@ -267,7 +262,7 @@ const ChartType = (props) => {
     dispatch(generateChart(plotlyData));
     dispatch(sendChartType(selectedChartType));
     dispatch(sendChartxAxis(selectedXAxis));
-    dispatch(sendChartyAxis(selectedXAxis));
+    dispatch(sendChartyAxis(selectedYAxis));
     dispatch(sendChartMapping(chartMapping));
   };
   return (
