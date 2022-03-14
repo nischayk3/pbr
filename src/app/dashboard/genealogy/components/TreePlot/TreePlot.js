@@ -389,7 +389,7 @@ function TreePlot(props) {
           .append('svg:g')
           .attr('transform', function () {
             if (graphHeight > 2000) return 'translate(530,100)scale(0.5,0.5)';
-            if (graphHeight < 500) return 'translate(100,20)scale(0.1,0.1)';
+            if (graphHeight < 500) return 'translate(100,20)scale(0.6,0.6)';
             if (graphHeight > 500 && graphHeight < 1000)
               return 'translate(400,100)scale(0.6,0.6)';
             if (graphHeight > 1000 && graphHeight < 1500)
