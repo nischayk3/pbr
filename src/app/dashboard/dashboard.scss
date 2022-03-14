@@ -54,6 +54,9 @@
     }
     .custom-content-layout {
       padding: 8px 29px;
+      min-height: calc(100vh - 120px);
+      overflow-y: scroll;
+      height: calc(100vh - 120px);
     }
   }
 }
@@ -236,9 +239,6 @@
   background: #f1f7ff;
   border-bottom: 1px solid #d9d9d9;
 }
-.ant-input-textarea
-  {
-
-    background-color: #baeaff 
-  }
-
+.ant-input-textarea {
+  background-color: #baeaff;
+}
