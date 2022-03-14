@@ -7,7 +7,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { Button, Tabs } from 'antd';
+import { Button, Select } from 'antd';
 import { getGeanealogyFilter } from '../../../../../services/genealogyService.js';
 import './style.scss';
 import SelectSearchField from '../../../../../components/SelectSearchField/SelectSearchField';
@@ -137,6 +137,7 @@ function Filter(props) {
 
     try {
       const filterRes = await getGeanealogyFilter(reqFilter);
+      console.log('filterRes', filterRes);
       setParamList(() => {
         return {
           plantList: filterRes && filterRes.plant_no,
@@ -173,6 +174,21 @@ function Filter(props) {
     getGenealogyFilterData();
   };
 
+  const optionsPlant = paramList['plantList'].map((item, index) => (
+    <Select.Option key={index} value={item}>
+      {item}
+    </Select.Option>
+  ));
+  const optionsBatch = paramList['batchList'].map((item, index) => (
+    <Select.Option key={index} value={item}>
+      {item}
+    </Select.Option>
+  ));
+  const optionsProduct = paramList['produtList'].map((item, index) => (
+    <Select.Option key={index} value={item}>
+      {item}
+    </Select.Option>
+  ));
   return (
     <div className='param-filter-wrap'>
       <div className='param-filter'>
@@ -183,7 +199,8 @@ function Filter(props) {
             placeholder='Select'
             onChangeSelect={(value) => onChangeParam(value, 'plant')}
             onSearchSelect={(type) => onSearchParam(type, 'plant')}
-            selectList={paramList['plantList']}
+            options={optionsPlant}
+            //selectList={paramList['plantList']}
             selectedValue={selectParam['plant']}
           />
           <SelectSearchField
@@ -192,7 +209,8 @@ function Filter(props) {
             placeholder='Select'
             onChangeSelect={(value) => onChangeParam(value, 'batch_num')}
             onSearchSelect={(type) => onSearchParam(type, 'batch_num')}
-            selectList={paramList['batchList']}
+            // selectList={paramList['batchList']}
+            options={optionsBatch}
             selectedValue={selectParam['batchNum']}
           />
         </div>
@@ -203,7 +221,8 @@ function Filter(props) {
             placeholder='Select'
             onChangeSelect={(value) => onChangeParam(value, 'product_code')}
             onSearchSelect={(type) => onSearchParam(type, 'product_code')}
-            selectList={paramList['produtList']}
+            options={optionsProduct}
+            // selectList={paramList['produtList']}
             selectedValue={selectParam['productCode']}
           />
           <Toggle
