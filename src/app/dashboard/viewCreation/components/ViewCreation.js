@@ -386,6 +386,7 @@ function ViewCreation() {
         setMoleculeId(res.material_id);
         setViewStatus(res.view_status);
         setViewVersion(res.view_version);
+        setViewFunctionName(res.view_name);
         form.setFieldsValue({
           viewName: res.view_name,
           version: res.view_version,
@@ -705,7 +706,7 @@ function ViewCreation() {
       view_description: 'Test View Object',
       view_version: viewVersion,
       view_disp_id: viewDisplayId,
-      view_status: status,
+      view_status: status ? status : viewStatus,
     };
     const headers = {
       username: 'user_mareana1',
@@ -907,277 +908,276 @@ function ViewCreation() {
           )
         )}
       </div>
-      <div className='custom-content-layout'>
-        <Form
-          className='viewSummary-form'
-          name='viewSummary-form'
-          layout='vertical'
-          form={form}
-          onValuesChange={handleValuesChange}
-        >
-          <div className='reportDesigner-gridBlocks viewCreation-grids'>
-            <div className='reportDesigner-grid-tables viewCreation-blocks'>
-              <div className='viewCreation-leftBlocks bg-white'>
-                <div className='viewCreation-parameterLookup'>
-                  <h4 className='viewCreation-blockHeader'>Parameter Lookup</h4>
-                  <hr />
-                  <ParameterLookup
-                    moleculeList={moleculeList}
-                    setMoleculeList={setMoleculeList}
-                    moleculeId={moleculeId}
-                    setMoleculeId={setMoleculeId}
-                    materialsList={materialsList}
-                    setMaterialsList={setMaterialsList}
-                    filterdData={filterdData}
-                    setFilterdData={setFilterdData}
-                    dataLoadingState={dataLoadingState}
-                    setDataLoadingState={setDataLoadingState}
-                    parentBatches={parentBatches}
-                    setParentBatches={setParentBatches}
-                    viewSummaryTable={viewSummaryTable}
-                    setViewSummaryTable={setViewSummaryTable}
-                    form={form}
-                    params={params}
-                  />
-                </div>
-                <div className='viewCreation-materials'>
-                  <Collapse
-                    className='viewCreation-accordian '
-                    defaultActiveKey={['1']}
-                    expandIconPosition='right'
-                  >
-                    {moleculeId && (
-                      <>
-                        <Panel
-                          className='viewCreation-materialsPanel'
-                          header='Materials'
-                          key='1'
-                        >
-                          <Materials
-                            moleculeId={moleculeId}
-                            setMoleculeId={setMoleculeId}
-                            materialsList={materialsList}
-                            setMaterialsList={setMaterialsList}
-                            filterdData={filterdData}
-                            setFilterdData={setFilterdData}
-                            dataLoadingState={dataLoadingState}
-                            setDataLoadingState={setDataLoadingState}
-                            viewSummaryTable={viewSummaryTable}
-                            setViewSummaryTable={setViewSummaryTable}
-                            viewSummaryColumns={viewSummaryColumns}
-                            setViewSummaryColumns={setViewSummaryColumns}
-                            functionEditorViewState={functionEditorViewState}
-                            setFunctionEditorViewState={
-                              setFunctionEditorViewState
-                            }
-                            parentBatches={parentBatches}
-                            setParentBatches={setParentBatches}
-                            newBatchData={newBatchData}
-                            setNewBatchData={setNewBatchData}
-                            count={count}
-                            setCount={setCount}
-                            materialIdName={materialIdName}
-                            setMaterialIdName={setMaterialIdName}
-                            getNewData={(el) => getNewData(el)}
-                          />
-                        </Panel>
-                        <Panel
-                          className='viewCreation-accordian viewCreation-filesPanel'
-                          header='Files'
-                          key='2'
-                        >
-                          <FileUpload
-                            viewSummaryTable={viewSummaryTable}
-                            setViewSummaryTable={setViewSummaryTable}
-                            parentBatches={parentBatches}
-                            setParentBatches={setParentBatches}
-                            newBatchData={newBatchData}
-                            setNewBatchData={setNewBatchData}
-                            functionEditorViewState={functionEditorViewState}
-                            setFunctionEditorViewState={
-                              setFunctionEditorViewState
-                            }
-                            filesListTree={filesListTree}
-                            setFilesListTree={setFilesListTree}
-                            count={count}
-                            setCount={setCount}
-                            getNewData={(el) => getNewData(el)}
-                          />
-                        </Panel>
-                      </>
-                    )}
-                  </Collapse>
-                </div>
-              </div>
 
-              {materialsList.length > 0 && (
-                <div className='viewCreation-rightBlocks'>
-                  {moleculeId && (
-                    <div className='viewCreation-viewSummary bg-white'>
-                      <h4 className='viewCreation-blockHeader'>View Summary</h4>
-                      <hr />
-                      <ViewSummary
-                        viewSummaryTable={viewSummaryTable}
-                        setViewSummaryTable={setViewSummaryTable}
-                        parentBatches={parentBatches}
-                        setParentBatches={setParentBatches}
-                        viewSummaryColumns={viewSummaryColumns}
-                        setViewSummaryColumns={setViewSummaryColumns}
-                        newBatchData={newBatchData}
-                        setNewBatchData={setNewBatchData}
-                        functionEditorViewState={functionEditorViewState}
-                        viewDisplayId={viewDisplayId}
-                        viewStatus={viewStatus}
-                        viewVersion={viewVersion}
-                        form={form}
-                        moleculeId={moleculeId}
-                        setViewFunctionName={setViewFunctionName}
-                        viewFunctionName={viewFunctionName}
-                        saveResponseView={saveResponseView}
-                        params={params}
-                      />
-                    </div>
-                  )}
-                  {functionEditorViewState && (
-                    <div className='viewCreation-functionEditor bg-white'>
-                      <h4 className='viewCreation-blockHeader'>
-                        Function Editor
-                        {!params && (
-                          <div className='viewCreation-btns'>
-                            <Button
-                              className='custom-primary-btn'
-                              onClick={() => {
-                                updateData();
-                              }}
-                            >
-                              Save
-                            </Button>
-                            <Button
-                              style={{ marginLeft: '16px' }}
-                              className='custom-primary-btn'
-                              onClick={() => {
-                                saveFunctionData();
-                              }}
-                            >
-                              Save As
-                            </Button>
-                          </div>
-                        )}
-                      </h4>
-                      <hr />
-                      <FunctionEditor
-                        form={form}
-                        parentBatches={parentBatches}
-                        setParentBatches={setParentBatches}
-                        functionEditorColumns={functionEditorColumns}
-                        setFunctionEditorColumns={setFunctionEditorColumns}
-                        functionEditorRecord={functionEditorRecord}
-                        setFunctionEditorRecord={setFunctionEditorRecord}
-                        newBatchData={newBatchData}
-                        setNewBatchData={setNewBatchData}
-                        viewSummaryTable={viewSummaryTable}
-                        functionName={functionName}
-                        setFunctionName={setFunctionName}
-                        passStateFunc={(v) => passStateFunc(v)}
-                        getNewData={(el) => getNewData(el)}
-                        id={id}
-                        setId={setId}
-                        functionChanged={functionChanged}
-                        mathFunction={mathFunction}
-                        setMathFunction={setMathFunction}
-                        meanChange={meanChange}
-                        setMeanChange={setMeanChange}
-                        params={params}
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        </Form>
-        <div>
-          <Modal
-            title='Select View'
-            visible={visible}
-            onOk={() => {
-              onOkHandler();
-            }}
-            onCancel={() => setVisible(false)}
-            width={500}
-            style={{ marginRight: '800px' }}
-          >
-            <Select
-              className='filter-button'
-              style={{ width: '140px' }}
-              defaultValue={viewDisplayId}
-              onChange={(e, value) => {
-                let view_value = value.value ? value.value : '';
-                let split_view_id = view_value ? view_value.split('-') : [];
-                setViewDisplayId(split_view_id[0]);
-              }}
-              value={viewDisplayId}
-            >
-              {viewList.map((item) => {
-                return (
-                  <Option value={item.view} key={item.view}>
-                    {item.view}
-                  </Option>
-                );
-              })}
-            </Select>
-            <Button onClick={() => setPopVisible(true)}>
-              <BuildTwoTone twoToneColor='#093185' />
-            </Button>
-          </Modal>
-          <Modal
-            title='Select View'
-            visible={popvisible}
-            onOk={() => setPopVisible(false)}
-            onCancel={() => setPopVisible(false)}
-            width={800}
-            title={
-              <span>
-                Select View
-                <Input.Search
-                  className='table-search'
-                  placeholder='Search by...'
-                  enterButton
-                  onSearch={loadSearchHandler}
-                  style={{ marginBottom: '40px' }}
+      <Form
+        className='viewSummary-form'
+        name='viewSummary-form'
+        layout='vertical'
+        form={form}
+        onValuesChange={handleValuesChange}
+      >
+        <div className='reportDesigner-gridBlocks viewCreation-grids'>
+          <div className='reportDesigner-grid-tables viewCreation-blocks'>
+            <div className='viewCreation-leftBlocks bg-white'>
+              <div className='viewCreation-parameterLookup'>
+                <h4 className='viewCreation-blockHeader'>Parameter Lookup</h4>
+                {/* <hr /> */}
+                <ParameterLookup
+                  moleculeList={moleculeList}
+                  setMoleculeList={setMoleculeList}
+                  moleculeId={moleculeId}
+                  setMoleculeId={setMoleculeId}
+                  materialsList={materialsList}
+                  setMaterialsList={setMaterialsList}
+                  filterdData={filterdData}
+                  setFilterdData={setFilterdData}
+                  dataLoadingState={dataLoadingState}
+                  setDataLoadingState={setDataLoadingState}
+                  parentBatches={parentBatches}
+                  setParentBatches={setParentBatches}
+                  viewSummaryTable={viewSummaryTable}
+                  setViewSummaryTable={setViewSummaryTable}
+                  form={form}
+                  params={params}
                 />
-              </span>
-            }
-            centered
-            width={700}
-          >
-            <Table
-              dataSource={filterTable === null ? viewList : filterTable}
-              columns={columns}
-              onRow={(record) => ({
-                onClick: (e) => {
-                  ViewRowClicked(record);
-                },
-              })}
-              scroll={{ y: 200 }}
-              size='small'
-              pagination={false}
-              rowKey={(record) => record.view}
-            />
-          </Modal>
+              </div>
+              <div className='viewCreation-materials'>
+                <Collapse
+                  className='viewCreation-accordian '
+                  defaultActiveKey={['1']}
+                  expandIconPosition='right'
+                >
+                  {moleculeId && (
+                    <>
+                      <Panel
+                        className='viewCreation-materialsPanel'
+                        header='Materials'
+                        key='1'
+                      >
+                        <Materials
+                          moleculeId={moleculeId}
+                          setMoleculeId={setMoleculeId}
+                          materialsList={materialsList}
+                          setMaterialsList={setMaterialsList}
+                          filterdData={filterdData}
+                          setFilterdData={setFilterdData}
+                          dataLoadingState={dataLoadingState}
+                          setDataLoadingState={setDataLoadingState}
+                          viewSummaryTable={viewSummaryTable}
+                          setViewSummaryTable={setViewSummaryTable}
+                          viewSummaryColumns={viewSummaryColumns}
+                          setViewSummaryColumns={setViewSummaryColumns}
+                          functionEditorViewState={functionEditorViewState}
+                          setFunctionEditorViewState={
+                            setFunctionEditorViewState
+                          }
+                          parentBatches={parentBatches}
+                          setParentBatches={setParentBatches}
+                          newBatchData={newBatchData}
+                          setNewBatchData={setNewBatchData}
+                          count={count}
+                          setCount={setCount}
+                          materialIdName={materialIdName}
+                          setMaterialIdName={setMaterialIdName}
+                          getNewData={(el) => getNewData(el)}
+                        />
+                      </Panel>
+                      <Panel
+                        className='viewCreation-accordian viewCreation-filesPanel'
+                        header='Files'
+                        key='2'
+                      >
+                        <FileUpload
+                          viewSummaryTable={viewSummaryTable}
+                          setViewSummaryTable={setViewSummaryTable}
+                          parentBatches={parentBatches}
+                          setParentBatches={setParentBatches}
+                          newBatchData={newBatchData}
+                          setNewBatchData={setNewBatchData}
+                          functionEditorViewState={functionEditorViewState}
+                          setFunctionEditorViewState={
+                            setFunctionEditorViewState
+                          }
+                          filesListTree={filesListTree}
+                          setFilesListTree={setFilesListTree}
+                          count={count}
+                          setCount={setCount}
+                          getNewData={(el) => getNewData(el)}
+                        />
+                      </Panel>
+                    </>
+                  )}
+                </Collapse>
+              </div>
+            </div>
+
+            {materialsList.length > 0 && (
+              <div className='viewCreation-rightBlocks'>
+                {moleculeId && (
+                  <div className='viewCreation-viewSummary bg-white'>
+                    <h4 className='viewCreation-blockHeader'>View Summary</h4>
+                    {/* <hr /> */}
+                    <ViewSummary
+                      viewSummaryTable={viewSummaryTable}
+                      setViewSummaryTable={setViewSummaryTable}
+                      parentBatches={parentBatches}
+                      setParentBatches={setParentBatches}
+                      viewSummaryColumns={viewSummaryColumns}
+                      setViewSummaryColumns={setViewSummaryColumns}
+                      newBatchData={newBatchData}
+                      setNewBatchData={setNewBatchData}
+                      functionEditorViewState={functionEditorViewState}
+                      viewDisplayId={viewDisplayId}
+                      viewStatus={viewStatus}
+                      viewVersion={viewVersion}
+                      form={form}
+                      moleculeId={moleculeId}
+                      setViewFunctionName={setViewFunctionName}
+                      viewFunctionName={viewFunctionName}
+                      saveResponseView={saveResponseView}
+                      params={params}
+                    />
+                  </div>
+                )}
+                {functionEditorViewState && (
+                  <div className='viewCreation-functionEditor bg-white'>
+                    <h4 className='viewCreation-blockHeader'>
+                      Function Editor
+                      {!params && (
+                        <div className='viewCreation-btns'>
+                          <Button
+                            className='custom-primary-btn'
+                            onClick={() => {
+                              updateData();
+                            }}
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            style={{ marginLeft: '16px' }}
+                            className='custom-primary-btn'
+                            onClick={() => {
+                              saveFunctionData();
+                            }}
+                          >
+                            Save As
+                          </Button>
+                        </div>
+                      )}
+                    </h4>
+                    {/* <hr /> */}
+                    <FunctionEditor
+                      form={form}
+                      parentBatches={parentBatches}
+                      setParentBatches={setParentBatches}
+                      functionEditorColumns={functionEditorColumns}
+                      setFunctionEditorColumns={setFunctionEditorColumns}
+                      functionEditorRecord={functionEditorRecord}
+                      setFunctionEditorRecord={setFunctionEditorRecord}
+                      newBatchData={newBatchData}
+                      setNewBatchData={setNewBatchData}
+                      viewSummaryTable={viewSummaryTable}
+                      functionName={functionName}
+                      setFunctionName={setFunctionName}
+                      passStateFunc={(v) => passStateFunc(v)}
+                      getNewData={(el) => getNewData(el)}
+                      id={id}
+                      setId={setId}
+                      functionChanged={functionChanged}
+                      mathFunction={mathFunction}
+                      setMathFunction={setMathFunction}
+                      meanChange={meanChange}
+                      setMeanChange={setMeanChange}
+                      params={params}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-        <Loading show={showSpinner} />
-        <Signature
-          isPublish={isPublish}
-          handleClose={handleClose}
-          screenName='View Creation'
-          PublishResponse={PublishResponse}
-          appType='VIEW'
-          dispId={viewDisplayId}
-          version={viewVersion}
-          status={approveReject}
-        />
+      </Form>
+      <div>
+        <Modal
+          title='Select View'
+          visible={visible}
+          onOk={() => {
+            onOkHandler();
+          }}
+          onCancel={() => setVisible(false)}
+          width={500}
+          style={{ marginRight: '800px' }}
+        >
+          <Select
+            className='filter-button'
+            style={{ width: '140px' }}
+            defaultValue={viewDisplayId}
+            onChange={(e, value) => {
+              let view_value = value.value ? value.value : '';
+              let split_view_id = view_value ? view_value.split('-') : [];
+              setViewDisplayId(split_view_id[0]);
+            }}
+            value={viewDisplayId}
+          >
+            {viewList.map((item) => {
+              return (
+                <Option value={item.view} key={item.view}>
+                  {item.view}
+                </Option>
+              );
+            })}
+          </Select>
+          <Button onClick={() => setPopVisible(true)}>
+            <BuildTwoTone twoToneColor='#093185' />
+          </Button>
+        </Modal>
+        <Modal
+          title='Select View'
+          visible={popvisible}
+          onOk={() => setPopVisible(false)}
+          onCancel={() => setPopVisible(false)}
+          width={800}
+          title={
+            <span>
+              Select View
+              <Input.Search
+                className='table-search'
+                placeholder='Search by...'
+                enterButton
+                onSearch={loadSearchHandler}
+                style={{ marginBottom: '40px' }}
+              />
+            </span>
+          }
+          centered
+          width={700}
+        >
+          <Table
+            dataSource={filterTable === null ? viewList : filterTable}
+            columns={columns}
+            onRow={(record) => ({
+              onClick: (e) => {
+                ViewRowClicked(record);
+              },
+            })}
+            scroll={{ y: 200 }}
+            size='small'
+            pagination={false}
+            rowKey={(record) => record.view}
+          />
+        </Modal>
       </div>
+      <Loading show={showSpinner} />
+      <Signature
+        isPublish={isPublish}
+        handleClose={handleClose}
+        screenName='View Creation'
+        PublishResponse={PublishResponse}
+        appType='VIEW'
+        dispId={viewDisplayId}
+        version={viewVersion}
+        status={approveReject}
+      />
     </div>
   );
 }

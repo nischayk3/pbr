@@ -29,7 +29,7 @@ function Signature(props) {
         var day = date.getDate();
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
-        let date_today = day + "-" + month + "-" + year
+        let date_today = year + "-" + month + "-" + day
         let req = {}
 
         req['date'] = date_today

@@ -36,6 +36,7 @@ function ChartSelector(props) {
                     value={selectedChartList}
                     onChange={handleChange}
                     style={{ width: '100%' }}
+                    disabled={props.show}
                     
                 >
                     {chartsList.length > 0  ? chartsList.map(item => (
