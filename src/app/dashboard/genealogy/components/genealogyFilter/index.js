@@ -56,8 +56,9 @@ function Filter(props) {
       } else if (field === 'product_code') {
         getGenealogyFilterData(
           selectParam['plant'],
+          selectParam['batchNum'],
           value,
-          selectParam['productCode'],
+
           '',
           '',
           ''
@@ -69,8 +70,9 @@ function Filter(props) {
       if (field === 'batch_num') {
         getGenealogyFilterData(
           selectParam['plant'],
-          selectParam['batchNum'],
+          selectParam['productCode'],
           value,
+
           '',
           '',
           ''

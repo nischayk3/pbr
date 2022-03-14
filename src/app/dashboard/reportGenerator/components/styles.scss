@@ -40,12 +40,18 @@
     max-height: 282px;
     overflow-y: auto;
   }
+  .chart-panel
+  {
+    background-color: white;
+    color: black; 
+  }
   .card-schedule
   {
     width: 651px;
     min-height: 282px;
     // max-height: 282px;
     // overflow-y: auto;
+   
     .schedule
     {
       display: grid;
@@ -57,6 +63,7 @@
     overflow-y: auto;
     }
     }
+   
   }
 }
 .table-card

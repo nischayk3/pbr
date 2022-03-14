@@ -69,10 +69,9 @@ function Genealogy() {
         batch_id: selectedValue.replace(/\s/g, ''),
         backward: true,
       };
-      setActivateKey('2');
+      //setActivateKey('2');
       setisBackward(true);
       setisForward(false);
-
       getBackwardGeneology(_reqBack);
       setchartType('backward');
       setProductCode(product[0]);
@@ -82,7 +81,7 @@ function Genealogy() {
         batch_id: selectedValue.replace(/\s/g, ''),
         backward: false,
       };
-      setActivateKey('2');
+      //  setActivateKey('2');
       setisBackward(false);
       setisForward(true);
       getForwardGeneology(_reqFor);
@@ -107,6 +106,7 @@ function Genealogy() {
         setGenealogyData([]);
         dispatch(hideLoader());
         dispatch(showNotification('error', 'No Data Found'));
+        setActivateKey('1');
       }
     } catch (error) {
       dispatch(hideLoader());
@@ -128,6 +128,7 @@ function Genealogy() {
       } else if (forwardRes.status === 400) {
         dispatch(hideLoader());
         dispatch(showNotification('error', 'No Data Found'));
+        setActivateKey('1');
       }
 
       dispatch(hideLoader());
@@ -141,9 +142,9 @@ function Genealogy() {
     setActivateKey(activateKey);
   };
 
-  const onEditTab = (targetKey, action) => {
-    console.log('targetKey, action', targetKey, action);
-  };
+  // const onEditTab = (targetKey, action) => {
+  //   console.log('targetKey, action', targetKey, action);
+  // };
 
   // const remove = (targetKey) => {
   //   console.log('targetKey', targetKey);
@@ -162,15 +163,16 @@ function Genealogy() {
           className='custom-tabs'
           activeKey={activateKey}
           onChange={handleChangeTab}
-          onEdit={onEditTab}
-          hideAdd
-          type='editable-card'
+          // onEdit={onEditTab}
+          // hideAdd
+          // type='editable-card'
         >
           <TabPane tab='Select Parameter' key='1' closable={false}>
             <Filter parameterDetails={selectedParameter} />
           </TabPane>
           {showTree && (
             <TabPane
+              style={{ minHeight: '450px' }}
               tab={
                 <>
                   <p className='tab-label'>
