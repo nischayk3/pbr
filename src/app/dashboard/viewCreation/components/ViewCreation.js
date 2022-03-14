@@ -376,6 +376,7 @@ function ViewCreation() {
             setMoleculeId(res.material_id);
             setViewStatus(res.view_status);
             setViewVersion(res.view_version);
+            setViewFunctionName(res.view_name);
             form.setFieldsValue({
                 viewName: res.view_name,
                 version: res.view_version,

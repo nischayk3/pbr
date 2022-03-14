@@ -29,7 +29,6 @@ function ChartDetails(props) {
   const [clickedBatchId, setclickedBatchId] = useState('');
   const [isExcluedModal, setisExcluedModal] = useState(false);
   const [isExcludeRecord, setisExcludeRecord] = useState(false);
-  const counterId = useRef(0);
   const [exclusionValues, setExclusionValues] = useState({
     productCode: '',
     parameterName: '',
@@ -114,26 +113,27 @@ function ChartDetails(props) {
   const handleCloseModal = () => {
     setisExcluedModal(false);
   };
-  const tempArr = useRef([]);
+  // const tempArr = useRef([]);
   const handleOk = () => {
     setisExcluedModal(false);
     const mergedObj = JSON.parse(JSON.stringify(props.dataTable));
     if (exclusionValues.excludeRecord) {
       let filtered = {};
       filtered = mergedObj.find((ele) => ele.batch_num === clickedBatchId)
-      counterId.current = counterId.current + 1;
+      props.counterIdForExclusion.current = props.counterIdForExclusion.current + 1;
       filtered.timeStamp = new Date().toLocaleTimeString();
       filtered.exclusionDesc = exclusionValues.notes;
       filtered.userId = localStorage.getItem('user');
-      filtered.exclusionId = counterId.current;
+      filtered.exclusionId = props.counterIdForExclusion.current;
       props.setExclusionTableData([...props.exclusionTableData, filtered])
-      tempArr.current.push(filtered)
+      props.tempArrForExclude.current.push(filtered)
     }
     const colorArr = [];
     props.dataTable.forEach((ele) => {
        colorArr.push('blue');
     })
-    tempArr.current.forEach((ele) => {
+  
+    props.tempArrForExclude.current.forEach((ele) => {
       const findValue = props.dataTable.findIndex((element) => element.batch_num === ele.batch_num)
       colorArr[findValue] = 'red'
     })

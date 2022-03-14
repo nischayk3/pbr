@@ -2,7 +2,7 @@ import './ChartStyle.scss';
 
 import { ArrowLeftOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { Button, Modal } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   getChartList,
   getChartObj,
@@ -64,6 +64,8 @@ function ChartPersonalization() {
   const [chartTypeList, setchartTypeList] = useState([]);
   const [exclusionTableData, setExclusionTableData] = useState([]);
   const [dataTable, setDataTable] = useState([]);
+  const tempArrForExclude = useRef([]);
+  const counterIdForExclusion = useRef(0);
   const [isChart, setIsChart] = useState(false);
   const [isLandingDisabled, setisLandingDisabled] = useState(false);
   const [isFieldEmpty, setisFieldEmpty] = useState(false);
@@ -596,6 +598,8 @@ function ChartPersonalization() {
           {showChart && (
             <div className='chart-center-panel'>
               <ChartDetails
+                counterIdForExclusion={counterIdForExclusion}
+                tempArrForExclude={tempArrForExclude}
                 resChartId={resChartId}
                 resChartVersion={resChartVersion}
                 resChartStatus={resChartStatus}
@@ -607,7 +611,7 @@ function ChartPersonalization() {
                 setselectedLayout={setselectedLayout}
                 dataTable={dataTable}
               />
-              <ChartDataTable dataTable={dataTable} setDataTable={setDataTable} setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
+              <ChartDataTable counterIdForExclusion={counterIdForExclusion} tempArrForExclude={tempArrForExclude} dataTable={dataTable} setDataTable={setDataTable} setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
             </div>
           )}
           {showCustomization && (
