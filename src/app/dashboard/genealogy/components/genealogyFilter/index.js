@@ -135,9 +135,8 @@ function Filter(props) {
 
     try {
       const filterRes = await getGeanealogyFilter(reqFilter);
-      setParamList((prevParamList) => {
+      setParamList(() => {
         return {
-          ...prevParamList,
           plantList: filterRes && filterRes.plant_no,
           batchList: filterRes && filterRes.batch_no,
           produtList: filterRes && filterRes.material,
@@ -177,7 +176,6 @@ function Filter(props) {
       <div className='param-filter'>
         <div>
           <SelectSearchField
-            allowClear={true}
             showSearch
             label='Plant'
             placeholder='Select'
@@ -187,7 +185,6 @@ function Filter(props) {
             selectedValue={selectParam['plant']}
           />
           <SelectSearchField
-            allowClear={true}
             showSearch
             label='Batch'
             placeholder='Select'
@@ -199,7 +196,6 @@ function Filter(props) {
         </div>
         <div>
           <SelectSearchField
-            allowClear={true}
             showSearch
             label='Product'
             placeholder='Select'
