@@ -365,6 +365,7 @@ function ReportDesignerNew() {
         saveReportDesign(req).then((res) => {
           if (res && res['msg'] && res['msg'] == 'success') {
             setReportId(res['rep_disp_id'])
+            req.data['rep_disp_id'] = res['rep_disp_id']
             setStatus(res['rep_stauts'])
             setIsSave(true)
           }
@@ -372,6 +373,7 @@ function ReportDesignerNew() {
             message.error('Not Saved')
 
         })
+        
         dispatch(sendReport(req['data']))
       }
       else {

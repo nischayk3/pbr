@@ -124,7 +124,7 @@ function ReportGenerator() {
     const [reportList, setReportList] = useState('')
     const [popvisible, setPopVisible] = useState(false);
     const [filterTable, setFilterTable] = useState(null);
-    // const [viewId, setViewId] = useState('')
+    const [viewId, setViewId] = useState('')
     const dispatch = useDispatch();
 
 
@@ -444,7 +444,7 @@ function ReportGenerator() {
                 <Card title="Table" className="table-card">
                     {table.length > 0 && table.map((i) =>
 
-                        <Collapse key={i.heading} accordion  bordered={false} expandIconPosition="right">
+                        <Collapse key={i.heading} accordion className="chart-panel" bordered={false} expandIconPosition="right">
                             <Panel header={i.heading} key={i.heading} className="chart-panel">
                                 <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF', marginRight: '10px', marginLeft: '1070px', fontSize: '12px' }}>
                                 </span>
