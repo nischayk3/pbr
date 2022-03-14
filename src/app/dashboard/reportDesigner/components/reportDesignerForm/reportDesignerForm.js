@@ -63,7 +63,7 @@ function ReportDesignerForm(props) {
 
     return (
         <div className='reportDesigner-grid'>
-            <div className='reportDesigner-block-left'>
+            <div className='reportDesigner-block-design'>
                 <div>
                     <Text className='filter-text'> Report ID </Text> <br />
                     <Input className='filter-button' value={reportId} disabled />
@@ -151,7 +151,6 @@ function ReportDesignerForm(props) {
                     size='small'
                     onRow={(record) => ({
                         onClick: (e) => {
-
                             setViewId(record.view_disp_id);
                             setStatus('NEW');
                             setViewVersion(record.view_version);
