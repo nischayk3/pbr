@@ -64,7 +64,6 @@ function Signature(props)
                 req1['applicationType'] = props.appType
                 req1['esignId'] = esign_response.primary_id.toString()
                 req1['resourceDispId'] = params.id
-                if(props.appType!='REPORT')
                 req1['resourceVersion'] = parseInt(params.version)
                 req1['status'] = props.status
 
