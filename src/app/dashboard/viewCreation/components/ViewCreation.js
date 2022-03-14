@@ -376,6 +376,7 @@ function ViewCreation() {
             setMoleculeId(res.material_id);
             setViewStatus(res.view_status);
             setViewVersion(res.view_version);
+            setViewFunctionName(res.view_name);
             form.setFieldsValue({
                 viewName: res.view_name,
                 version: res.view_version,
@@ -661,6 +662,7 @@ function ViewCreation() {
         if (viewStatus === 'DRFT') {
             status = 0
         }
+        
         const obj = {
             view_name: viewFunctionName,
             material_id: moleculeList[0].product_num,
@@ -671,7 +673,7 @@ function ViewCreation() {
             view_description: "Test View Object",
             view_version: viewVersion,
             view_disp_id: viewDisplayId,
-            view_status: status,
+            view_status: status?status:viewStatus,
         }
         const headers = {
             username: "user_mareana1",
