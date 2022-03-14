@@ -15,3 +15,14 @@ export const saveReportGenerator = (request) => {
     );
 };
 
+export const getReportGenerator = (request) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/report-variant', request).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+

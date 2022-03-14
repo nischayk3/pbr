@@ -1,31 +1,19 @@
 .reportDesigner-grid {
   height: 120px;
-  .reportDesigner-block-left {
+  .reportDesigner-block-design {
     display: grid;
     grid-template-columns: .2fr .2fr .2fr .2fr  ;
     grid-gap: 24px;
     padding: 20px;
     box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
     // // align-items: center;
-    margin: 24px 24px ;
-    height: 120px;
+    margin: 10px 1px ;
+    height: 100px;
     background-color: white !important;
-    border-radius: 4px;
-    
+    border-radius: 4px;  
   }
 
-  .reportDesigner-block-right {
-    padding: 20px;
 
-    // .ant-row.ant-form-item {
-    //   display: grid;
-    //   grid-template-columns: 1fr 2fr;
-
-    //   .ant-form-item-label {
-    //     text-align: left;
-    //   }
-    // }
-  }
 
   .ant-row.ant-form-item {
     margin: 0px 0px 10px;

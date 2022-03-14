@@ -12,7 +12,7 @@ import {
 import { getCountData, getTableData } from '../../../../services/workFlowServices';
 import { Card, Tabs } from 'antd';
 import { ArrowLeftOutlined, DownloadOutlined, } from '@ant-design/icons';
-import DashCard from '../../../../components/CardComponent/customCard';
+import DashCard from '../../../../components/ CardComponent/customCard';
 import illustrations from '../../../../assets/images/Banner illustration.svg';
 import WorkflowTable from './workflowTable/workflowTable';
 import './styles.scss';
