@@ -1,3 +1,8 @@
+/**
+ * @author Dinesh Kumar <dinesh.kumar@mareana.com>
+ * @version 1
+ * @Last Modified - 14 March, 2022
+ */
 import React, { useEffect, useState, useRef } from 'react';
 import * as _ from 'lodash';
 import * as d3 from 'd3';
@@ -324,8 +329,6 @@ function TreePlot(props) {
 
       var graphHeight = dynamicHeight * 30;
 
-      console.log('graph height ', graphHeight);
-      console.log('dynamicHeight', dynamicHeight);
       var nodeDepth = 240;
 
       window.scroll({
@@ -419,27 +422,24 @@ function TreePlot(props) {
           .zoom()
           .scaleExtent([0.5, 5])
           .on('zoom', function () {
-            console.log('zooom function');
             zoom();
           });
         zb.translate([margin.left, margin.top]);
         //zoom
         function zoom() {
-          console.log('zooom function calling');
           var scale = d3.event.scale,
             translation = d3.event.translate,
             tbound = -height * scale * 100,
             bbound = height * scale,
             lbound = (-width + margin.right) * scale,
             rbound = (width - margin.bottom) * scale;
-          console.log('pre min/max' + translation);
+
           // limit translation to thresholds
           translation = [
             Math.max(Math.min(translation[0], rbound), lbound),
             Math.max(Math.min(translation[1], bbound), tbound),
           ];
-          console.log('scale' + scale);
-          console.log('translation' + translation);
+
           THIS.vis.attr(
             'transform',
             'translate(' + translation + ')' + ' scale(' + scale + ')'
@@ -803,7 +803,6 @@ function TreePlot(props) {
             });
           })
           .style('stroke', function (d) {
-            console.log('nodeeee ddddddddddd', d);
             if (isBackward) {
               if (d.source.depth === 0) {
                 rootCounter++;

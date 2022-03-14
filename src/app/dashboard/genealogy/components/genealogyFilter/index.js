@@ -1,14 +1,18 @@
+/**
+ * @author Dinesh Kumar <dinesh.kumar@mareana.com>
+ * @Mareana - CPV Product
+ * @version 1
+ * @Last Modified - 14 March, 2022
+ * @Last Changed By - Dinesh Kumar
+ */
+
 import React, { useEffect, useState } from 'react';
 import { Button, Tabs } from 'antd';
 import { getGeanealogyFilter } from '../../../../../services/genealogyService.js';
 import './style.scss';
 import SelectSearchField from '../../../../../components/SelectSearchField/SelectSearchField';
 import Toggle from '../../../../../components/Toggle';
-import {
-  hideLoader,
-  showLoader,
-  showNotification,
-} from '../../../../../duck/actions/commonActions.js';
+import { showNotification } from '../../../../../duck/actions/commonActions.js';
 import { useDispatch } from 'react-redux';
 
 function Filter(props) {
@@ -32,30 +36,45 @@ function Filter(props) {
   }, []);
 
   const handleChangeToggle = (e) => {
-    console.log('eeeeeeeeeeeeeeeeeeeeeee', {
-      [e.target.name]:
-        typeof [e.target.name] === 'boolean'
-          ? ![e.target.name]
-          : e.target.value,
-    });
     setisCheck(typeof isCheck === 'boolean' ? !isCheck : e.target.value);
   };
 
   const onChangeParam = (value, field) => {
-    console.log('value', value);
-
-    console.log('field', field);
     if (value != null) {
       if (field === 'plant') {
+        getGenealogyFilterData(
+          value,
+          selectParam['batchNum'],
+          selectParam['productCode'],
+          '',
+          '',
+          ''
+        );
         setselectParam((prevState) => {
           return { ...prevState, plant: value };
         });
       } else if (field === 'product_code') {
+        getGenealogyFilterData(
+          selectParam['plant'],
+          value,
+          selectParam['productCode'],
+          '',
+          '',
+          ''
+        );
         setselectParam((prevState) => {
           return { ...prevState, productCode: value };
         });
       }
       if (field === 'batch_num') {
+        getGenealogyFilterData(
+          selectParam['plant'],
+          selectParam['batchNum'],
+          value,
+          '',
+          '',
+          ''
+        );
         setselectParam((prevState) => {
           return { ...prevState, batchNum: value };
         });
@@ -65,13 +84,11 @@ function Filter(props) {
   };
 
   const onSearchParam = (type, field) => {
-    console.log('type', type);
-    console.log('field', field);
     if (type != null) {
       if (field === 'plant') {
         getGenealogyFilterData(
           selectParam['plant'],
-          selectParam['batch'],
+          selectParam['batchNum'],
           selectParam['productCode'],
           '',
           type,
@@ -80,7 +97,7 @@ function Filter(props) {
       } else if (field === 'product_code') {
         getGenealogyFilterData(
           selectParam['plant'],
-          selectParam['batch'],
+          selectParam['batchNum'],
           selectParam['productCode'],
           '',
           '',
@@ -90,7 +107,7 @@ function Filter(props) {
       if (field === 'batch_num') {
         getGenealogyFilterData(
           selectParam['plant'],
-          selectParam['batch'],
+          selectParam['batchNum'],
           selectParam['productCode'],
           type,
           '',
@@ -132,12 +149,6 @@ function Filter(props) {
   };
 
   const OnSearchTree = () => {
-    console.log(
-      'plantttttt',
-      selectParam['plant'],
-      selectParam['productCode'],
-      selectParam['batchNum']
-    );
     let paramDetail = {
       plant: selectParam['plant'],
       product: selectParam['productCode'],
@@ -146,23 +157,27 @@ function Filter(props) {
     };
     props.parameterDetails(paramDetail);
     if (isCheck) {
-      console.log('iffff');
       setisBackward(true);
       setisForward(false);
     } else {
-      console.log('else');
       setisForward(true);
       setisBackward(false);
     }
   };
 
-  console.log('isCheckeddddd', isCheck);
+  const handleClear = () => {
+    setselectParam((prevState) => {
+      return { ...prevState, plant: '', productCode: '', batchNum: '' };
+    });
+    getGenealogyFilterData();
+  };
+
   return (
     <div className='param-filter-wrap'>
       <div className='param-filter'>
         <div>
           <SelectSearchField
-            allowClear
+            allowClear={true}
             showSearch
             label='Plant'
             placeholder='Select'
@@ -172,7 +187,7 @@ function Filter(props) {
             selectedValue={selectParam['plant']}
           />
           <SelectSearchField
-            allowClear
+            allowClear={true}
             showSearch
             label='Batch'
             placeholder='Select'
@@ -184,7 +199,7 @@ function Filter(props) {
         </div>
         <div>
           <SelectSearchField
-            allowClear
+            allowClear={true}
             showSearch
             label='Product'
             placeholder='Select'
@@ -211,7 +226,11 @@ function Filter(props) {
         >
           Search
         </Button>
-        <Button type='link' className='custom-secondary-btn-link'>
+        <Button
+          type='link'
+          className='custom-secondary-btn-link'
+          onClick={handleClear}
+        >
           Clear
         </Button>
       </div>

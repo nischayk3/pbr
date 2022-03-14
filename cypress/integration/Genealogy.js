@@ -34,9 +34,7 @@ describe('The App', () => {
     cy.get(
       ':nth-child(7) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content'
     ).click();
-    /* ==== End Cypress Studio ==== */
-    /* ==== Generated with Cypress Studio ==== */
-    cy.get('.ant-btn-primary').click();
+
     /* ==== End Cypress Studio ==== */
   });
 });

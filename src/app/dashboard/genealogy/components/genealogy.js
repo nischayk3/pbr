@@ -1,3 +1,9 @@
+/**
+ * @author Dinesh Kumar <dinesh.kumar@mareana.com>
+ * @version 1
+ * @Last Modified - 14 March, 2022
+ */
+
 import React, { useState } from 'react';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Tabs, Popover, Button, message } from 'antd';
@@ -15,7 +21,6 @@ import {
   getBackwardData,
   getForwardData,
 } from '../../../../services/genealogyService';
-import { setMinZoom } from 'svg-pan-zoom';
 
 const { TabPane } = Tabs;
 function Genealogy() {
@@ -26,12 +31,10 @@ function Genealogy() {
   const [showTree, setShowTree] = useState(false);
   const [productCode, setProductCode] = useState('');
   const [activateKey, setActivateKey] = useState('1');
-  // const [popVisible, setPopVisible] = useState(false);
 
   const dispatch = useDispatch();
 
   const onClickNode = (node) => {
-    console.log('nodeeeeeeee', node);
     if (node.clickType === 'backward') {
       let _reqBackward = {
         levels: 5,
@@ -56,7 +59,6 @@ function Genealogy() {
   };
 
   const selectedParameter = (param) => {
-    console.log('parammmmmmmmmmm', param);
     const product = param && param.product.split('-');
     const plant = param && param.plant.split('-');
     const selectedValue = plant[0] + '|' + product[0] + '|' + param.batch;
@@ -64,8 +66,7 @@ function Genealogy() {
     if (param.treeType === 'Backward') {
       let _reqBack = {
         levels: 5,
-        batch_id: '1338|1144279|390288',
-        //selectedValue.replace(/\s/g, ''),
+        batch_id: selectedValue.replace(/\s/g, ''),
         backward: true,
       };
       setActivateKey('2');
@@ -94,9 +95,9 @@ function Genealogy() {
     try {
       dispatch(showLoader());
       const backwardRes = await getBackwardData(_reqBack);
-      console.log('backwardRes', backwardRes);
+
       if (backwardRes.length > 0) {
-        setGenealogyData(response);
+        setGenealogyData(backwardRes);
         setisBackward(true);
         setisForward(false);
         setShowTree(true);
@@ -144,10 +145,10 @@ function Genealogy() {
     console.log('targetKey, action', targetKey, action);
   };
 
-  const remove = (targetKey) => {
-    console.log('targetKey', targetKey);
-  };
-  console.log('genealogyData key', genealogyData);
+  // const remove = (targetKey) => {
+  //   console.log('targetKey', targetKey);
+  // };
+
   return (
     <div className='custom-wrapper'>
       <div className='sub-header'>

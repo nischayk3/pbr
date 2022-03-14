@@ -1,3 +1,8 @@
+/**
+ * @author Dinesh Kumar <dinesh.kumar@mareana.com>
+ * @version 1
+ * @Last Modified - 14 March, 2022
+ */
 .custom-tabs {
   background: #ffffff;
   box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
@@ -36,7 +41,8 @@
       align-items: center;
 
       /* Character/Primary .85 */
-
+      background: #f1f7ff;
+      border: 0;
       color: rgba(0, 0, 0, 0.85);
     }
     .ant-tabs-ink-bar {
