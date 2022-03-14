@@ -18,6 +18,20 @@
     grid-gap: 14px 24px;
     grid-template-columns: 38% 59%;
   }
+  .functionEditor-FormBlock {
+    display: grid;
+
+    grid-gap: 14px 24px;
+    grid-template-columns: repeat(5, 133px);
+  }
+
+  .MathEditor-FormBlock {
+    display: grid;
+    padding-top: 24px;
+    grid-gap: 14px 24px;
+    grid-template-columns: 38% 59%;
+  }
+
   .emptyDiv {
     display: flex;
     justify-content: center;

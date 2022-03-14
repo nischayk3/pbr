@@ -129,7 +129,7 @@ const Sidebar = () => {
   return (
     <Sider collapsed={collapsed} theme={theme} id='sidebar'>
       <div>
-        <div id='logo-small'></div>
+        {/* <div id='logo-small'></div> */}
         <Menu selectedKeys={[selectedKey]} mode='inline' theme={theme}>
           {MENU.map((item) => (
             <Menu.Item key={item.key} icon={item.icon} id={item.key}>

@@ -706,7 +706,7 @@ function ViewCreation() {
       view_description: 'Test View Object',
       view_version: viewVersion,
       view_disp_id: viewDisplayId,
-      view_status: status?status:viewStatus,
+      view_status: status ? status : viewStatus,
     };
     const headers = {
       username: 'user_mareana1',
@@ -826,6 +826,7 @@ function ViewCreation() {
   useEffect(() => {
     getViewsList();
     const params = queryString.parse(location.search);
+    console.log('paramssssssss', params);
     if (Object.keys(params).length > 0) {
       setParams(true);
       onOkHandler(params.id);
@@ -885,7 +886,7 @@ function ViewCreation() {
               </Button>
               <Button
                 className='viewCreation-saveBtn'
-                disabled={!viewDisplayId}
+                //  disabled={!viewDisplayId}
                 onClick={handleSaveFunc}
               >
                 Save

@@ -6,7 +6,7 @@ import './exclusion.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { generateChart } from '../../../../../../../../duck/actions/chartPersonalizationAction';
 
-const ExclusionTable = ({ exclusionTableData, setExclusionTableData, dataTable }) => {
+const ExclusionTable = ({ exclusionTableData, setExclusionTableData, dataTable, tempArrForExclude, counterIdForExclusion }) => {
     const [selectedTitle, setSelectedTitle] = useState('');
     const tempArr = useRef([]);
     const dispatch = useDispatch()
@@ -22,6 +22,8 @@ const ExclusionTable = ({ exclusionTableData, setExclusionTableData, dataTable }
         const data = exclusionTableData.filter((ele) => ele.batch_num !== record.batch_num)
         setExclusionTableData(data);
         tempArr.current = JSON.parse(JSON.stringify(data));
+        tempArrForExclude.current = tempArrForExclude.current.filter((ele) => ele.batch_num !== record.batch_num)
+        counterIdForExclusion.current = counterIdForExclusion.current - 1;
         let xaxis = [];
         let yaxis = [];
         let batch = [];
