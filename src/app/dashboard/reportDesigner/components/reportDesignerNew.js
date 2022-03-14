@@ -150,6 +150,7 @@ function ReportDesignerNew() {
       dispatch(showLoader())
       setParams(true);
       let data = await getReportData(params.id, 'AWAP')
+      setReportId(params.id)
       if (data) {
         unLoadJson(data)
         setTimeout(() => {
@@ -635,7 +636,7 @@ function ReportDesignerNew() {
           visible={popvisible}
           onCancel={() => setPopVisible(false)}
           width={600}
-          title={<p>Select View  <Input.Search
+          title={<p>Select Report  <Input.Search
             className='table-search'
             placeholder='Search by...'
             enterButton
