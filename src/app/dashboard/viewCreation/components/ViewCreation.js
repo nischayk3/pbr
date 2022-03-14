@@ -138,6 +138,7 @@ function ViewCreation() {
     const functionChanged = useRef(false);
     const counter = useRef(0);
     const [showSpinner, setShowSpinner] = useState(false)
+    const [approveReject, setApproveReject] = useState('')
     const [publishResponse, setPublishResponse] = useState({});
     const [saveResponseView, setSaveResponseView] = useState({ viewId: '', version: '', viewStatus: '' });
     const [viewSummaryColumns, setViewSummaryColumns] = useState([
@@ -361,7 +362,7 @@ function ViewCreation() {
         updateSaved.current = false;
         counter.current = 0;
     };
-    const onOkHandler = async (viewID) => {
+    const onOkHandler = async (viewId) => {
         setShowSpinner(true);
         setVisible(false);
         setViewSummaryTable([]);
@@ -370,13 +371,16 @@ function ViewCreation() {
         setCount(1);
         counter.current = 0;
         let files = [];
-        let req = { view_disp_id: viewID ? viewID : viewDisplayId };
+        let req = { view_disp_id: viewId ? viewId : viewDisplayId };
         getViewConfig(req).then((res) => {
             setMoleculeId(res.material_id);
             setViewStatus(res.view_status);
             setViewVersion(res.view_version);
             form.setFieldsValue({
-                viewName: res.view_name
+                viewName: res.view_name,
+                version: res.view_version,
+                status: res.view_status,
+                viewId: viewId ? viewId : viewDisplayId
             });
             updateSaved.current = true;
             setVisible(false);
@@ -488,113 +492,121 @@ function ViewCreation() {
                     tempSummaryArr.push(getData.current);
                 }
             })
-            Object.keys(loadedData.current.files).forEach((key) => {
-                let req = { file_id: key, detailedCoverage: true };
-                adHocFilesParameterTree(req).then((res) => {
-                    files.push(res)
-                    setFilesListTree([...files]);
-                    tempArr.forEach((values) => {
-                        if (values.paramsOld.length <= 1) {
-                            values.paramsOld.forEach((element) => {
-                                files.forEach((ele) => {
-                                    if (String(ele.File_id) === String(element.file_id)) {
-                                        ele.Data.forEach((item) => {
-                                            let rowData = {};
-                                            let batchData = {};
-                                            let newBatchData = {};
-                                            if (String(item.param) === String(element.parameter_name)) {
-                                                parentBatches.map((el, index) => {
-                                                    if (item.coverage_list.includes(el)) {
-                                                        batchData[el] = true;
-                                                        newBatchData[el] = true;
-                                                    } else {
-                                                        batchData[el] = false;
-                                                        newBatchData[el] = false;
-                                                    }
-                                                });
-                                                counter.current = counter.current + 1
-                                                batchData['id'] = counter.current;
-                                                rowData = Object.assign(item, batchData);
-                                                rowData.parameters = [item];
-                                                tempSummaryArr.push(rowData);
-                                            }
-                                        })
-                                    }
+            if (Object.keys(loadedData.current.files).length) {
+                Object.keys(loadedData.current.files).forEach((key) => {
+                    let req = { file_id: key, detailedCoverage: true };
+                    adHocFilesParameterTree(req).then((res) => {
+                        files.push(res)
+                        setFilesListTree([...files]);
+                        tempArr.forEach((values) => {
+                            if (values.paramsOld.length <= 1) {
+                                values.paramsOld.forEach((element) => {
+                                    files.forEach((ele) => {
+                                        if (String(ele.File_id) === String(element.file_id)) {
+                                            ele.Data.forEach((item) => {
+                                                let rowData = {};
+                                                let batchData = {};
+                                                let newBatchData = {};
+                                                if (String(item.param) === String(element.parameter_name)) {
+                                                    parentBatches.map((el, index) => {
+                                                        if (item.coverage_list.includes(el)) {
+                                                            batchData[el] = true;
+                                                            newBatchData[el] = true;
+                                                        } else {
+                                                            batchData[el] = false;
+                                                            newBatchData[el] = false;
+                                                        }
+                                                    });
+                                                    counter.current = counter.current + 1
+                                                    batchData['id'] = counter.current;
+                                                    rowData = Object.assign(item, batchData);
+                                                    rowData.parameters = [item];
+                                                    tempSummaryArr.push(rowData);
+                                                }
+                                            })
+                                        }
+                                    })
                                 })
-                            })
-                        } else {
-                            let data = [];
-                            let obj = {};
-                            values.paramsOld.forEach((ele) => {
-                                files.forEach((element) => {
-                                    if (String(element.File_id) === String(ele.file_id)) {
-                                        element.parameters.forEach((item) => {
-                                            if (String(item.param) === String(ele.parameter_name)) {
-                                                data.push(item)
-                                            }
-                                        })
-                                    }
-                                })
-                            })
-                            if (values.functionType !== 'union') {
-                                data.forEach((item, i) => {
-                                    if (i == 0) {
-                                        obj = { ...item };
-                                    } else {
-                                        Object.entries(item).forEach(([key, value], index) => {
-                                            if (key.includes("B")) {
-                                                obj[key] = obj[key] && item[key]
-                                                obj.param = item.param
-                                                obj.id = item.id
-                                            }
-                                        })
-
-                                    }
-
-                                })
-                                getNewData(obj);
                             } else {
-                                data.forEach((item, i) => {
-                                    if (i == 0) {
-                                        obj = { ...item };
-                                    } else {
-                                        Object.entries(item).forEach(([key, value], index) => {
-                                            if (key.includes("B")) {
-                                                obj[key] = obj[key] || item[key]
-                                                obj.param = item.param
-                                                obj.id = item.id
-                                            }
-                                        })
-
-                                    }
+                                let data = [];
+                                let obj = {};
+                                values.paramsOld.forEach((ele) => {
+                                    files.forEach((element) => {
+                                        if (String(element.File_id) === String(ele.file_id)) {
+                                            element.parameters.forEach((item) => {
+                                                if (String(item.param) === String(ele.parameter_name)) {
+                                                    data.push(item)
+                                                }
+                                            })
+                                        }
+                                    })
                                 })
-                                getNewData(obj);
+                                if (values.functionType !== 'union') {
+                                    data.forEach((item, i) => {
+                                        if (i == 0) {
+                                            obj = { ...item };
+                                        } else {
+                                            Object.entries(item).forEach(([key, value], index) => {
+                                                if (key.includes("B")) {
+                                                    obj[key] = obj[key] && item[key]
+                                                    obj.param = item.param
+                                                    obj.id = item.id
+                                                }
+                                            })
+
+                                        }
+
+                                    })
+                                    getNewData(obj);
+                                } else {
+                                    data.forEach((item, i) => {
+                                        if (i == 0) {
+                                            obj = { ...item };
+                                        } else {
+                                            Object.entries(item).forEach(([key, value], index) => {
+                                                if (key.includes("B")) {
+                                                    obj[key] = obj[key] || item[key]
+                                                    obj.param = item.param
+                                                    obj.id = item.id
+                                                }
+                                            })
+
+                                        }
+                                    })
+                                    getNewData(obj);
+                                }
+                                counter.current = counter.current + 1
+                                getData.current.id = counter.current;
+                                getData.current.param = values.name;
+                                tempSummaryArr.push(getData.current);
                             }
-                            counter.current = counter.current + 1
-                            getData.current.id = counter.current;
-                            getData.current.param = values.name;
-                            tempSummaryArr.push(getData.current);
-                        }
-                    })
-                    setCount(counter.current + 1);
-                    setViewSummaryTable([...tempSummaryArr]);
-                    setFunctionEditorViewState(true);
-                    setShowSpinner(false);
-                    setNewBatchData(newBatchData);
-                    setFunctionEditorViewState(true);
+                        })
+                        setCount(counter.current + 1);
+                        setViewSummaryTable([...tempSummaryArr]);
+                        setFunctionEditorViewState(true);
+                        setShowSpinner(false);
+                        setNewBatchData(newBatchData);
+                    });
                 });
-            });
+            } else {
+                setCount(counter.current + 1);
+                setViewSummaryTable([...tempSummaryArr]);
+                setFunctionEditorViewState(true);
+                setNewBatchData(newBatchData);
+                setShowSpinner(false)
+            }
         }).catch((err) => {
             message.error(err.Message);
-            //setVisible(true);
+            // setVisible(true);
+            setShowSpinner(false)
             setIsLoad(false);
-            setShowSpinner(false);
         })
         setFilterdData(null);
         form.setFieldsValue({
             filters: null,
         });
     };
+
     useEffect(() => {
         form.setFieldsValue({
             viewId: viewDisplayId,
@@ -609,9 +621,9 @@ function ViewCreation() {
             {
                 res.map((item, index) => {
                     setDataLoadingState(false);
+                    setParentBatches(item.batches);
                     setMaterialsList(item.children);
                     setDataLoadingState(true);
-                    setParentBatches(item.batches);
                 });
             }
 
@@ -626,7 +638,6 @@ function ViewCreation() {
             }
         });
     };
-
     const handleSaveFunc = async () => {
         if (!viewFunctionName.length) {
             message.error("Please Enter Name");
@@ -742,8 +753,8 @@ function ViewCreation() {
     };
 
     const PublishResponse = (res) => {
-        console.log(res)
         setPublishResponse(res);
+        setViewStatus(res.stauts);
     }
 
     useEffect(() => {
@@ -753,12 +764,11 @@ function ViewCreation() {
     useEffect(() => {
         getViewsList();
         const params = queryString.parse(location.search);
-        console.log(params);
         if (Object.keys(params).length > 0) {
             setParams(true);
             onOkHandler(params.id);
         }
-    }, []);
+    }, [materialsList]);
 
     return (
         <div className='reportDesigner-container viewCreation-container'>
@@ -768,8 +778,8 @@ function ViewCreation() {
                 </h1>
                 {params ? (
                     <div className='viewCreation-btns'>
-                        <Button className='viewCreation-rejectBtn'>Reject</Button>
-                        <Button className='viewCreation-approveBtn'>Approve</Button>
+                        <Button className='viewCreation-rejectBtn' onClick={() => { setIsPublish(true); setApproveReject('R') }}>Reject</Button>
+                        <Button className='viewCreation-publishBtn' onClick={() => { setIsPublish(true); setApproveReject('A') }}>Approve</Button>
                     </div>
                 ) : (
                     materialsList.length > 0 && <div className='viewCreation-btns'>
@@ -832,6 +842,7 @@ function ViewCreation() {
                                     viewSummaryTable={viewSummaryTable}
                                     setViewSummaryTable={setViewSummaryTable}
                                     form={form}
+                                    params={params}
                                 />
                             </div>
                             <div className='viewCreation-materials'>
@@ -975,6 +986,7 @@ function ViewCreation() {
                                         setViewFunctionName={setViewFunctionName}
                                         viewFunctionName={viewFunctionName}
                                         saveResponseView={saveResponseView}
+                                        params={params}
                                     />
                                 </div>
                             )}
@@ -982,25 +994,27 @@ function ViewCreation() {
                                 <div className='viewCreation-functionEditor bg-white'>
                                     <h4 className='viewCreation-blockHeader'>
                                         Function Editor
-                                        <div className='viewCreation-btns'>
-                                            <Button
-                                                className='custom-primary-btn'
-                                                onClick={() => {
-                                                    updateData();
-                                                }}
-                                            >
-                                                Save
-                                            </Button>
-                                            <Button
-                                                style={{ marginLeft: '16px' }}
-                                                className='custom-primary-btn'
-                                                onClick={() => {
-                                                    saveFunctionData();
-                                                }}
-                                            >
-                                                Save As
-                                            </Button>
-                                        </div>
+                                        {!params && (
+                                            <div className='viewCreation-btns'>
+                                                <Button
+                                                    className='custom-primary-btn'
+                                                    onClick={() => {
+                                                        updateData();
+                                                    }}
+                                                >
+                                                    Save
+                                                </Button>
+                                                <Button
+                                                    style={{ marginLeft: '16px' }}
+                                                    className='custom-primary-btn'
+                                                    onClick={() => {
+                                                        saveFunctionData();
+                                                    }}
+                                                >
+                                                    Save As
+                                                </Button>
+                                            </div>
+                                        )}
                                     </h4>
                                     <hr />
                                     <FunctionEditor
@@ -1033,6 +1047,7 @@ function ViewCreation() {
                                         setMathFunction={setMathFunction}
                                         meanChange={meanChange}
                                         setMeanChange={setMeanChange}
+                                        params={params}
                                     />
                                 </div>
                             )}
@@ -1123,6 +1138,7 @@ function ViewCreation() {
                 appType="VIEW"
                 dispId={viewDisplayId}
                 version={viewVersion}
+                status={approveReject}
             />
         </div>
     );

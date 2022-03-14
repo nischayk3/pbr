@@ -28,7 +28,7 @@ function ReportDesignerDynamicSections(props) {
                                     {fields.map(({ key, name, ...restField }) => (
                                         <div>
                                             <Form.Item {...restField} name={[name, 'sectionName']}>
-                                                <Input placeholder="Section" style={{ marginLeft: '400px' }} className="input-section" />
+                                                <Input placeholder="Section" style={{ marginLeft: '400px' }} className="input-section" disabled={props.show}/>
                                                 </Form.Item>
                                                     <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF',marginRight:'10px' , marginLeft:'720px',fontSize:'12px' }}>
                                                     </span>
@@ -60,11 +60,11 @@ function ReportDesignerDynamicSections(props) {
                                                     </thead>
                                                     <tbody className="dynamicSections-tbody">
                                                         <tr><td></td></tr>
-                                                        <ReportDesignerDynamicRow fieldKey={name} />
+                                                        <ReportDesignerDynamicRow fieldKey={name} show={props.show}/>
                                                     </tbody>
                                                 </table>
                                                 <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)}>
-                                                    <DeleteTwoTone twoToneColor="red" style={{marginBottom:'100px'}}/>
+                                                    <DeleteTwoTone twoToneColor="red" style={{marginBottom:'100px'}} disabled={props.show}/>
                                                 </Popconfirm>
                                             </Space>
                                         </div>

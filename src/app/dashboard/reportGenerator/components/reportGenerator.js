@@ -181,7 +181,6 @@ function ReportGenerator() {
 
         let headingSection = obj['sections'] ? obj['sections'] : []
         allSections = [...allSections, ...headingSection]
-        // console.log(allSections,headingSection)
         // headingSection.map((i) => {
         //     if (i.heading)
         //         headingList.push(i.heading)
@@ -190,18 +189,18 @@ function ReportGenerator() {
         return allSections
     }
 
-    const convertToList =  (a) =>
-    {   if(a.length > 0)
-        {
-        let b= a.replace("{",'')
-        b= b.replace("}",'')
-        b=b.split(',')
-        if(b.length>0)
-        return b
-        else
-        return []
-        }
-    }
+    // const convertToList =  (a) =>
+    // {   if(a.length > 0)
+    //     {
+    //     let b= a.replace("{",'')
+    //     b= b.replace("}",'')
+    //     b=b.split(',')
+    //     if(b.length>0)
+    //     return b
+    //     else
+    //     return []
+    //     }
+    // }
 
     const unloadTest = (ReportData) => {
         dispatch(showLoader())
@@ -212,7 +211,7 @@ function ReportGenerator() {
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
-        setEmailList(convertToList(ReportData.share ? ReportData.share.email_list : []))
+        setEmailList(ReportData.share ? ReportData.share.email_list : [])
         setSchedule(ReportData.share ? ReportData.share.frequency_unit : '')
         dispatch(hideLoader());
         // setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')

@@ -75,6 +75,7 @@ function ReportDesignerForm(props) {
                         value={reportName}
                         onChange={(e) => setReportName(e.target.value)}
                         required={true}
+                        disabled={props.show}
                     />
                 </div>
                 <div>
@@ -95,6 +96,7 @@ function ReportDesignerForm(props) {
                                 getChartsList(view_value);
                             }}
                             value={viewIdVersion}
+                            disabled={props.show}
                         >
                             {mapViewList.map((item) => (
                                 <Option value={item.view} key={item.view}>{item.view}</Option>
@@ -113,7 +115,7 @@ function ReportDesignerForm(props) {
                     </div>
                 </div>
                 <div>
-                    <Text className='filter-text'>Status</Text><br />
+                    <Text className='filter-text' disabled={props.show}>Status</Text><br />
                     <Input className='filter-button' value={status} disabled />
 
                 </div>

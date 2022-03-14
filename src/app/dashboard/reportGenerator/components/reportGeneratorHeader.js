@@ -18,7 +18,7 @@ function ReportDesignerForm(props) {
     const repotData = useSelector(
         (state) => state.reportDesignerReducer.reportData
       );
-console.log(repotData)
+
       const [ReportData, setReportData] = useState(repotData)
       const [reportId,setReportId] = useState('')
       const [reportName,setReportName] = useState('')
@@ -31,14 +31,15 @@ console.log(repotData)
     }, [repotData]
     );
     const unload = (ReportData) =>
-    {  console.log(ReportData)
+    {
+
        let user_details = JSON.parse(localStorage.getItem('user_details'))
        let user = user_details["username"] ? user_details["username"] : ''
 
        setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
        setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
        setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
-       setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id']+'-'+ReportData['view_version'] : '')
+       setViewId(ReportData['view_id'] && ReportData['view_id'] ? ReportData['view_id'] : '')
        setVariantname(ReportData['variant_name'] ? ReportData['variant_name'] : user+'_variant')
     }
 
