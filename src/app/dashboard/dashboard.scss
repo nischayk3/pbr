@@ -2,14 +2,13 @@
 .ant-layout-content {
   padding: 0;
   .custom-wrapper {
-    margin-top: 1px;
     .sub-header {
       padding: 10px 29px;
       background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 62px;
+      height: 50px;
       .sub-header-title {
         display: flex;
         .header-icon {
@@ -54,6 +53,9 @@
     }
     .custom-content-layout {
       padding: 8px 29px;
+      min-height: calc(100vh - 120px);
+      overflow-y: scroll;
+      height: calc(100vh - 120px);
     }
   }
 }
@@ -149,22 +151,26 @@
 .ant-btn-primary:focus,
 .ant-btn-primary:hover {
   color: #fff;
-  border-color: #093185;
-  background: #093185;
+  border-color: #486bc9;
+  background: #486bc9;
 }
 
 .custom-primary-btn:focus,
 .custom-primary-btn:hover {
   color: #fff;
-  border-color: #093185;
-  background: #093185;
+  border-color: #486bc9;
+  background: #486bc9;
 }
 
 .custom-secondary-btn:focus,
 .custom-secondary-btn:hover {
   color: #fff;
-  border-color: #093185;
-  background: #093185;
+  border-color: #486bc9;
+  background: #486bc9;
+}
+.custom-secondary-btn-link:focus,
+.custom-secondary-btn-link:hover {
+  color: #486bc9;
 }
 .ant-table-thead > tr > th {
   background: #f2fbff;
@@ -185,7 +191,7 @@
 
 /* width */
 ::-webkit-scrollbar {
-  width: 6px;
+  //width: 6px;
 }
 
 /* Track */
@@ -236,9 +242,6 @@
   background: #f1f7ff;
   border-bottom: 1px solid #d9d9d9;
 }
-.ant-input-textarea
-  {
-
-    background-color: #baeaff 
-  }
-
+.ant-input-textarea {
+  background-color: #baeaff;
+}

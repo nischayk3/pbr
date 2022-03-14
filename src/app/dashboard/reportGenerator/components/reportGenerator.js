@@ -1,7 +1,11 @@
-// # Mihir Bagga
-// # Mareana Software
-// # Version 1
-// # Last modified - 3 Mar 2022
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 1
+ * @Last Modified - 14 March, 2022
+ * @Last Changed By - @Mihir 
+ */
+
 
 import React, { useEffect, useState } from 'react';
 import {
@@ -14,20 +18,85 @@ import {
     Radio,
     Space,
     Select,
+    message,
+    Input,
+    Table
 } from 'antd';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, BlockOutlined } from '@ant-design/icons';
 import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
+import { getReports } from '../../../../services/reportDesignerServices';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
-import { screenChange } from '../../../../duck/actions/reportDesignerAction';
-import { saveReportGenerator } from '../../../../services/reportGeneratorServices';
+import { sendReport, screenChange } from '../../../../duck/actions/reportDesignerAction';
+import { saveReportGenerator, getReportGenerator } from '../../../../services/reportGeneratorServices';
 import SaveModal from '../../../../components/SaveModal/saveModal'
-import { showNotification } from '../../../../duck/actions/commonActions';
+import {
+    hideLoader,
+    showLoader, 
+    showNotification
+} from '../../../../duck/actions/commonActions';
+
 
 
 const { Panel } = Collapse;
 const { Text } = Typography;
 const { Option } = Select
+
+const columns = [
+    {
+        title: 'Report ID',
+        dataIndex: 'rep_disp_id',
+        key: 'rep_disp_id',
+        render: (text, record) => {
+            return {
+                props: {
+                    style: { background: record.color },
+                },
+                children: <div>{text}</div>,
+            };
+        },
+    },
+    {
+        title: 'Report Name',
+        dataIndex: 'rep_name',
+        key: 'rep_name',
+        render: (text, record) => {
+            return {
+                props: {
+                    style: { background: record.color },
+                },
+                children: <div>{text}</div>,
+            };
+        },
+
+    },
+    {
+        title: 'Report Status',
+        dataIndex: 'rep_status',
+        key: 'rep_status',
+        render: (text, record) => {
+            return {
+                props: {
+                    style: { background: record.color },
+                },
+                children: <div>{text}</div>,
+            };
+        },
+    },
+    {
+        title: 'Created By',
+        dataIndex: 'created_by',
+        key: 'created_by',
+        render: (text, record) => {
+            return {
+                props: {
+                    style: { background: record.color },
+                },
+                children: <div>{text}</div>,
+            };
+        },
+    },
+];
 
 
 function ReportGenerator() {
@@ -36,13 +105,13 @@ function ReportGenerator() {
         (state) => state.reportDesignerReducer.reportData
     );
 
-
     function onChange(checkedValues, i) {
         update_object(checkedValues, i)
     }
 
 
     const [visible, setVisible] = useState(false)
+    const [isvisible, setIsVisible] = useState(false)
     const [ReportData, setReportData] = useState(repotData)
     const [chart, setCharts] = useState([])
     const [table, setTable] = useState([])
@@ -52,6 +121,9 @@ function ReportGenerator() {
     const [reportId, setReportId] = useState('')
     const [reportName, setReportName] = useState('')
     const [reportStatus, setReportStatus] = useState('')
+    const [reportList, setReportList] = useState('')
+    const [popvisible, setPopVisible] = useState(false);
+    const [filterTable, setFilterTable] = useState(null);
     // const [viewId, setViewId] = useState('')
     const dispatch = useDispatch();
 
@@ -60,6 +132,20 @@ function ReportGenerator() {
         unloadTest(ReportData)
     }, [ReportData]
     );
+
+    useEffect(() => {
+        getReportList()
+    }, []
+    );
+
+    const getReportList = () => {
+        let req = { rep_status: 'all' };
+        getReports(req).then((res) => {
+            setReportList(res['Data']);
+        });
+    };
+
+    const mapReportList = reportList && reportList.length > 0 ? reportList : []
 
     const createArraObj = (arr) => {
         let res = []
@@ -98,7 +184,6 @@ function ReportGenerator() {
 
         let headingSection = obj['sections'] ? obj['sections'] : []
         allSections = [...allSections, ...headingSection]
-        // console.log(allSections,headingSection)
         // headingSection.map((i) => {
         //     if (i.heading)
         //         headingList.push(i.heading)
@@ -107,8 +192,21 @@ function ReportGenerator() {
         return allSections
     }
 
-    const unloadTest = (ReportData) => 
-    {
+    // const convertToList =  (a) =>
+    // {   if(a.length > 0)
+    //     {
+    //     let b= a.replace("{",'')
+    //     b= b.replace("}",'')
+    //     b=b.split(',')
+    //     if(b.length>0)
+    //     return b
+    //     else
+    //     return []
+    //     }
+    // }
+
+    const unloadTest = (ReportData) => {
+        dispatch(showLoader())
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setCharts(ReportData['chart_int_ids'] ? createArraObj(ReportData['chart_int_ids']) : [])
@@ -116,6 +214,9 @@ function ReportGenerator() {
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
+        setEmailList(ReportData.share ? ReportData.share.email_list : [])
+        setSchedule(ReportData.share ? ReportData.share.frequency_unit : '')
+        dispatch(hideLoader());
         // setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
     }
 
@@ -154,6 +255,19 @@ function ReportGenerator() {
     }
 
     const prepareJson = () => {
+
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        let time_today = h + ":" + m + ":" + s;
+
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        let date_today =year+'-'+month + "-"+day 
+
         let obj = {}
         let user_details = JSON.parse(localStorage.getItem('user_details'))
         let user = user_details["username"] ? user_details["username"] : ''
@@ -169,8 +283,8 @@ function ReportGenerator() {
         let share_obj = {}
         share_obj['frequency_unit'] = schedule
         share_obj['email_list'] = emailList
-        share_obj['scheduled_start'] = '2022-03-01 09:55:22'
-        share_obj['scheduled_end'] = '2022-03-03 09:50:22'
+        share_obj['scheduled_start'] = date_today + ' ' + time_today
+        share_obj['scheduled_end'] = '2022-04-03 09:50:22'
         share_obj['frequency'] = '1'
 
 
@@ -185,19 +299,55 @@ function ReportGenerator() {
         req['data'] = obj
         req['saveType'] = 'save'
 
-        saveReportGenerator(req).then((res)=>
-        {
-           if(res.Status==200)
-           {
-              setIsSave(true)
-           }
-          else{
-            dispatch(showNotification('Not Saved'))
-          }
-
-           
+        saveReportGenerator(req).then((res) => {
+            if (res.Status == 200) {
+                setIsSave(true)
+            }
+            else {
+                dispatch(showNotification('Not Saved'))
+            }
         })
     }
+
+    const search = (value) => {
+        const tableData = reportList;
+        const filterTable = tableData.filter((o) =>
+            Object.keys(o).some((k) =>
+                String(o[k]).toLowerCase().includes(value.toLowerCase())
+            )
+        );
+        setFilterTable(filterTable);
+    };
+
+    const getReportData = async (rep_id) => {
+        
+        message.success(`${rep_id} selected`)
+        dispatch(showLoader());
+        let user_details = JSON.parse(localStorage.getItem('user_details'))
+        let user = user_details["username"] ? user_details["username"] : ''
+        let req = { username: user, report_id: rep_id };
+            try {
+                
+                let response = await getReportGenerator(req)
+                if (response.Status == 404) {
+                    dispatch(showNotification("error", 'No Data for this variant'))
+                    dispatch(hideLoader());
+                     }
+                else
+                {   
+                    dispatch(sendReport(response))
+                    unloadTest(response)
+                    dispatch(hideLoader());
+                }
+
+              }
+               catch (err) {
+                dispatch(hideLoader());
+                dispatch(showNotification('error', err));
+              }
+        }
+
+
 
     const handleEdit = (value, heading, k) => {
         let objIndex = table.findIndex((t => t.heading == heading));
@@ -210,6 +360,8 @@ function ReportGenerator() {
         }
     }
 
+
+
     return (
         <div className='custom-wrapper'>
             <div className='sub-header'>
@@ -219,7 +371,7 @@ function ReportGenerator() {
                 </div>
 
                 <div className='sub-header-btns'>
-                    <Button className='custom-primary-btn' onClick={() => dispatch(screenChange(false))}>
+                    <Button className='custom-primary-btn' onClick={() => { setIsVisible(true); }}>
                         Load
                     </Button>
                     <Button className='custom-primary-btn' onClick={() => prepareJson()}>
@@ -236,10 +388,9 @@ function ReportGenerator() {
                     <Card className="card-chart" title="Chart">
                         {chart && chart.map((i) => {
                             return (
-                                <Collapse key={i.chart} accordion style={{ width: '500px' }}>
+                                <Collapse key={i.chart} accordion style={{ width: '500px' }} bordered={false}>
                                     <Panel header={i.chart} key={i.chart}>
                                         <Checkbox.Group style={{ width: '100%' }} defaultValue={i.default} onChange={(checkedValue) => onChange(checkedValue, i.chart)}>
-
                                             <table className="table" >
                                                 <tbody>
                                                     <tr style={{ backgroundColor: '#F1F7FF' }} className="tr">
@@ -281,8 +432,8 @@ function ReportGenerator() {
                                 <Button onClick={() => { setVisible(true) }} >Click To Select Schedule</Button>
                             </div>
                             <div>
-                                <Card title="Recipients">
-                                    {emailList.map(function (item, i) {
+                                <Card title="Recipients" className="card-recipients">
+                                    {emailList && emailList.map(function (item, i) {
                                         return <p>{item}</p>
                                     })}
                                 </Card>
@@ -322,7 +473,6 @@ function ReportGenerator() {
                                             // })
 
                                         )}
-
                                     </tbody>
                                 </table>
                             </Panel>
@@ -361,26 +511,98 @@ function ReportGenerator() {
 
                     <Text>Users</Text> <br />
                     <Select
-                        mode="multiple"
+                        mode="tags"
                         style={{ width: '50%', marginTop: '10px' }}
                         placeholder="Select Users"
                         optionLabelProp="label"
                         value={emailList}
                         onChange={handleChange}
+                        
                     >
-                        <Option value="a@gmail.com" label="a@gmail.com">
-                            a@gmail.com
+                        <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
+                            mihir.bagga@mareana.com
                         </Option>
-                        <Option value="c@gmail.com" label="c@gmail.com">
-                            c@gmail.com
+                        <Option value="muskan.gupta@mareana.com" label="muskan.gupta@mareana.com">
+                            muskan.gupta@mareana.com
                         </Option>
-                        <Option value="b@gmail.com" label="b@gmail.com">
-                            b@gmail.com
+                        <Option value="binkita.tiwari@mareana.com" label="binkita.tiwari@mareana.com">
+                        binkita.tiwari@mareana.com
                         </Option>
-                        <Option value="m@gmail.com" label="m@gmail.com">
-                            m@gmail.com
+                        <Option value="someswara.rao@mareana.com" label="someswara.rao@mareana.com">
+                        someswara.rao@mareana.com
+                        </Option>
+                        <Option value="ramaa.rao@mareana.com" label="ramaa.rao@mareana.com">
+                        ramaa.rao@mareana.com
+                        </Option>
+                        <Option value="rahul.neogi@mareana.com" label="rahul.neogi@mareana.com">
+                        rahul.neogi@mareana.com
+                        </Option>
+                        <Option value="vishal@mareana.com" label="vishal@mareana.com">
+                        vishal@mareana.com
                         </Option>
                     </Select>
+                </Modal>
+
+                <Modal
+                    title="Select Report"
+                    visible={isvisible}
+                    onCancel={() => setIsVisible(false)}
+                    width={500}
+                    style={{ marginRight: '800px' }}
+                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} key="1">OK</Button>,]}
+                >
+                    <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
+                        let view_value = value.value ? value.value : ''
+                        setReportId(view_value)
+                        getReportData(view_value)
+
+                    }}
+                        value={reportId}
+                        showSearch
+                        showArrow
+                        style={{ backgroundColor: 'white', borderRadius: '4px' }}
+                    >
+                        {mapReportList.length >= 0 ? mapReportList.map((item) =>
+
+                            <Option value={item.rep_disp_id} key={item.rep_disp_id}>{item.rep_disp_id}</Option>
+                        ) : <></>}
+
+                    </Select>
+                    <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
+                </Modal>
+                <Modal
+                    title="Select Report"
+                    visible={popvisible}
+                    onCancel={() => setPopVisible(false)}
+                    width={600}
+                    title={<p>Select Report Variant  <Input.Search
+                        className='table-search'
+                        placeholder='Search by...'
+                        enterButton
+                        onSearch={search}
+                        style={{ borderRadius: '4px' }}
+                    /></p>}
+                    centered
+                    width={500}
+                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px'  }}onClick={()=>{setIsVisible(false);setPopVisible(false)}} key="1">OK</Button>,]}
+                >
+                    <Table
+                        // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
+                        // rowHighlightTest={isStyledDifferently}
+                        dataSource={filterTable === null ? reportList : filterTable}
+                        columns={columns}
+                        onRow={record => ({
+                            onClick: e => {
+                                record['color'] = '#D3D3D3'
+                                setReportId(record.rep_disp_id)
+                                getReportData(record.rep_disp_id, record.rep_status)
+                                // onOk()
+                            }
+                        })}
+                        scroll={{ y: 200 }}
+                        size='small'
+                        pagination={false}
+                    />
                 </Modal>
             </div>
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />

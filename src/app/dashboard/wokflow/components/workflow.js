@@ -10,7 +10,7 @@ import {
     showNotification,
 } from '../../../../duck/actions/commonActions';
 import { getCountData, getTableData } from '../../../../services/workFlowServices';
-import { Card, Tabs } from 'antd';
+import { Card, Empty, Tabs } from 'antd';
 import { ArrowLeftOutlined, DownloadOutlined, } from '@ant-design/icons';
 import DashCard from '../../../../components/CardComponent/customCard';
 import illustrations from '../../../../assets/images/Banner illustration.svg';
@@ -124,21 +124,23 @@ const Workflow = () => {
                     <span className='resultdate'>{resultDate}</span>
 
                 </Card>
-                <div className='workflow_items approve-wrapper' style={{ width: '305px' }}>
+                <div className='workflow_items' style={{ width: '305px' }}>
                     {
-
-                        tilesData.map((item, index) => {
+                        <div className='approve-wrapper'>
+                        {tilesData.map((item, index) => {
                             return (
 
                                 <div onClick={() => tilesClicked(item)} style={{ cursor: 'pointer' }}>
                                     <DashCard count={item.item_count} desc={item.text} active={activeDiv} />
                                 </div>
 
+
                             )
-                        })
+                        })}
+                        </div>
                     }
-                    {itemCount > 0 && (
-                        <Card title={<div className='table-head'>{cardTitle}<DownloadOutlined style={{ color: '#093185', marginLeft: '25px' }} /></div>} className='table-cards'>
+                    {itemCount > 0 ? (
+                        <Card title={<div className='table-head'>{cardTitle}<DownloadOutlined style={{ color: '#093185', marginLeft: '25px', fontSize: '20px' }} /></div>} className='table-cards'>
                             <Tabs className='workflow-tabs' activeKey={activeTab} onChange={changeTab}>
                                 <TabPane tab="Awaiting Approval" key="1">
                                     <WorkflowTable columns={columns} dataSource={dataSource} activeTab={activeTab} />
@@ -148,7 +150,17 @@ const Workflow = () => {
                                 </TabPane>
                             </Tabs>
                         </Card>
-                    )}
+                    ) :
+                        (
+                            <Empty
+                                className='empty-workflow'
+                                description={
+                                    <span>
+                                        Please select one to view its approvals
+                                    </span>
+                                } />
+                        )}
+
                 </div>
 
             </div>

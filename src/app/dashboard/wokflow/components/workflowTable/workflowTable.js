@@ -11,6 +11,7 @@ import './styles.scss';
 
 
 function workflowTable(props) {
+  
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [newColumns, setNewColumns] = useState([]);

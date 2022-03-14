@@ -1,7 +1,10 @@
-// # Mihir Bagga
-// # Mareana Software
-// # Version 1
-// # Last modified - 3 Mar 2022
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 1
+ * @Last Modified - 14 March, 2022
+ * @Last Changed By - @Mihir 
+ */
 
 import React, {useState,useEffect} from 'react';
 import {
@@ -18,7 +21,6 @@ function ReportDesignerForm(props) {
     const repotData = useSelector(
         (state) => state.reportDesignerReducer.reportData
       );
-      console.log(repotData)
 
       const [ReportData, setReportData] = useState(repotData)
       const [reportId,setReportId] = useState('')
@@ -28,19 +30,20 @@ function ReportDesignerForm(props) {
       const [viewId,setViewId] = useState('')
 
       useEffect(() => {
-        unload(ReportData)
-    }, [ReportData]
+        unload(repotData)
+    }, [repotData]
     );
     const unload = (ReportData) =>
     {
+
        let user_details = JSON.parse(localStorage.getItem('user_details'))
        let user = user_details["username"] ? user_details["username"] : ''
 
-       setReportId(ReportData['rep_disp_id'])
-       setReportName(ReportData['rep_name'])
-       setReportStatus(ReportData['rep_status'])
-       setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id']+'-'+ReportData['view_version'] : '')
-       setVariantname(user+'_variant')
+       setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
+       setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
+       setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
+       setViewId(ReportData['view_id'] && ReportData['view_id'] ? ReportData['view_id'] : '')
+       setVariantname(ReportData['variant_name'] ? ReportData['variant_name'] : user+'_variant')
     }
 
     return (

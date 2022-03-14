@@ -10,6 +10,7 @@ body {
   font-family: 'Roboto', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
 }
 
 .inline {
@@ -35,9 +36,9 @@ body {
   border-color: transparent !important;
 }
 
-.ant-layout-sider {
-  margin-top: 58px;
-}
+// .ant-layout-sider {
+//   margin-top: 58px;
+// }
 #logo-small {
   display: none;
 }

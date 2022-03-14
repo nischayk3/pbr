@@ -1,5 +1,12 @@
-import './ChartStyle.scss';
+/**
+ * @author Dinesh Kumar <dinesh.kumar@mareana.com>
+ * @Mareana - CPV Product
+ * @version 1
+ * @Last Modified - 14 March, 2022
+ * @Last Changed By - @Binkita
+ */
 
+import './ChartStyle.scss';
 import { ArrowLeftOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { Button, Modal } from 'antd';
 import React, { useEffect, useState, useRef } from 'react';
@@ -396,7 +403,7 @@ function ChartPersonalization() {
       const chartRes = await getChartObj(reqChartObj);
       if (chartRes.statuscode === 200) {
         let chartResData = chartRes && chartRes.data ? chartRes.data : {};
-
+        
         setchartResObj(chartResData);
         dispatch(sendChartData(chartResData && chartResData));
 
