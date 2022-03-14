@@ -682,10 +682,10 @@ function TreePlot(props) {
               .style('opacity', '0'); // and go all the way to an opacity of nil
           })
           .attr('xlink:href', function (d) {
-            if (d.batchNo === 'ABJ7938') {
+            console.log('dddddddddd', d.OpenNC, d);
+            if (d.OpenNC != undefined || d.OpenNC === true) {
               return 'img/genealogy/non-material.png';
             }
-
             if (d.type === 'Material') {
               return 'img/genealogy/material.png'; //"http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_daredevil.png";
             } else {
