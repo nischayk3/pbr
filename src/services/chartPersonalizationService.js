@@ -59,3 +59,15 @@ export const viewBatchData = (request) => {
     }
   );
 };
+
+//get rule list
+export const getRuleList = (request) => {
+  return Service.get(BMS_APP_PYTHON_SERVICE + '/rules', request).then(
+    (response) => {
+      return response.data;
+    },
+    (error) => {
+      return error;
+    }
+  );
+};
