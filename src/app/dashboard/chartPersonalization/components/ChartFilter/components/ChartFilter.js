@@ -170,7 +170,6 @@ function ChartFilter(props) {
     let endDate = new Date();
     let startdate = new Date();
     let durationInMinutes = val;
-    console.log('startDate', val);
     startdate.setMinutes(endDate.getMinutes() - durationInMinutes);
     let isoVar = startdate.toISOString().replace(/[^\d]/g, '').slice(0, -9);
     let format = moment.duration(isoVar).toISOString();
@@ -178,8 +177,6 @@ function ChartFilter(props) {
     let dateFormate = moment(isoVar).format('YYYY-MM-DD');
     setselectedPeriodDate(dateFormate);
     setSelectedDateRange(dateFormate);
-    console.log(dateFormate, 'startDate', isoVar);
-    console.log('startDate', format);
     setVisible(false);
   };
 
