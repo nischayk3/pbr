@@ -444,26 +444,36 @@ function ReportGenerator() {
                 <Card title="Table" className="table-card">
                     {table.length > 0 && table.map((i) =>
 
-                        <Collapse key={i.heading} accordion className="chart-panel" bordered={false} expandIconPosition="right">
+                        <Collapse key={i.heading} accordion className="chart-panel" expandIconPosition="right">
                             <Panel header={i.heading} key={i.heading} className="chart-panel">
-                                <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF', marginRight: '10px', marginLeft: '1070px', fontSize: '12px' }}>
-                                </span>
+                                {/* <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF', marginRight: '10px', marginLeft: '1070px', fontSize: '12px' }}>
+                                </span> */}
+                                <div >
+                                <i class="fa fa-circle" style={{ color: '#BAE7FF', marginRight: '10px', marginLeft: '1070px', fontSize: '18px' }}></i>
                                 <span class="Legend-label" style={{ marginBottom: '10px', fontSize: '12px' }}>
                                     Edit
                                 </span>
-                                <span class="Legend-colorBox" style={{ backgroundColor: '#F5F5F5', marginLeft: '20px', fontSize: '12px' }}>
-                                </span>
+                                <i class="fa fa-circle" style={{ color: '#F5F5F5', marginLeft: '25px', fontSize: '18px' }}></i>
                                 <span class="Legend-label" style={{ marginLeft: '10px', fontSize: '12px' }}>
                                     View Only
                                 </span>
+                                </div>
                                 <table className="table">
+                                    <tr className="tr" align= "right"  style={{backgroundColor:'#f1f7ff'}} >
+                                        <td className="td">
+                                            <b>Key</b>
+                                        </td>
+                                        <td className="td">
+                                            <b>Value</b>
+                                        </td>
+                                    </tr>
                                     <tbody>
                                         {i['content'] && i['content'].map((item, j) =>
                                             // return Object.entries(item).map((k, value) => {
 
                                             <tr className="tr" style={{backgroundColor : item.editable==false || item.editable == undefined ? '#BAE7FF' : '#F5F5F5'}}>
-                                                <td className="td" >{item.key}</td>
-                                                <td className="td">{item.editable == false || item.editable == undefined ? <textarea defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : item.value} </td>
+                                                <td className="td" ><b>{item.key}</b></td>
+                                                <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea style={{width:'200px'}} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : item.value} </td>
                                             </tr>
                                             // })
 
@@ -544,7 +554,7 @@ function ReportGenerator() {
                     onCancel={() => setIsVisible(false)}
                     width={500}
                     style={{ marginRight: '800px' }}
-                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} key="1">OK</Button>,]}
+                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={()=>setIsVisible(false)} key="1">OK</Button>,]}
                 >
                     <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
                         let view_value = value.value ? value.value : ''

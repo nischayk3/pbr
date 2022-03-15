@@ -5,14 +5,11 @@
 import '../Personalization.scss';
 import './style.scss';
 <Checkbox>Remember me</Checkbox>
-import { Button, Card, Collapse, Table, Popconfirm, DatePicker, Input, Switch, Form, Checkbox, Select, Row, Col } from 'antd';
-import React, { Component, useState, useEffect, useRef } from 'react';
+import {  Collapse,  Input, Switch,  Checkbox, Select, Row, Col } from 'antd';
+import React from 'react';
 import {
     DeleteTwoTone
 } from '@ant-design/icons';
-
-import InputField from '../../../../../../../components/InputField/InputField';
-import SelectField from '../../../../../../../components/SelectField/SelectField';
 const { Panel } = Collapse;
 const { Option } = Select;
 
@@ -23,9 +20,14 @@ const Display = ({figure,setFigure,legend,setLegend,axes,setAxes, selectedLayout
         setselectedLayout(prevState => ({
             ...prevState,
             showlegend:e,
-            mode:"lines+markers",  
-            marker:{},
-            line: {width:10}
+            type: 'scatter',
+            mode: 'lines',
+            // legend: {
+            //     x: 1,
+            //     xanchor:'right',
+            //     y: 1,
+            //   }
+              legend: {"orientation": "v"}
           }));
     }
 

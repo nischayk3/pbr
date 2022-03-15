@@ -3,6 +3,7 @@
  * @version 1
  * @Last Modified - 14 March, 2022
  */
+
 import React, { useEffect, useState, useRef } from 'react';
 import * as _ from 'lodash';
 import * as d3 from 'd3';
@@ -14,6 +15,7 @@ import {
   PlusOutlined,
   MinusOutlined,
   WarningOutlined,
+  CloseOutlined,
 } from '@ant-design/icons';
 import processOrderIcon from '../../../../../assets/images/processorder.png';
 import batchIcon from '../../../../../assets/images/material.png';
@@ -61,7 +63,7 @@ function TreePlot(props) {
           nodeId: item.id,
         });
         proType.push({
-          value: item.matType,
+          value: item.mat_type,
           nodeId: item.id,
         });
       }
@@ -107,8 +109,8 @@ function TreePlot(props) {
     };
     let loopChildrenPType = (item) => {
       item.forEach((i) => {
-        if (i.matType !== undefined) {
-          arrProType.push(i.matType);
+        if (i.mat_type !== undefined) {
+          arrProType.push(i.mat_type);
         }
         if (i.children) {
           loopChildrenPType(i.children);
@@ -124,7 +126,7 @@ function TreePlot(props) {
           pushMaterial(item);
         } else if (item.matDesc.length) {
           pushMaterial(item);
-        } else if (item.matType.length) {
+        } else if (item.mat_type.length) {
           pushMaterial(item);
         }
         if (item.children) {
@@ -163,23 +165,56 @@ function TreePlot(props) {
         const element = svgNodeClass[i].children;
         element[0].setAttribute('r', '10');
       }
+      if (props.chartType === 'backward') {
+        let diagramLayout = d3.select('#backwardDiv');
+        let linkSvg = diagramLayout.selectAll('.link');
+        linkSvg.style('stroke', isMaterialLink).style('stroke-width', '4');
+        let linkSearchMatch = linkSvg.filter(function (d) {
+          return d.source.id === splitedvalue || d.target.id === splitedvalue;
+        });
+        linkSearchMatch.attr('class', 'value-match');
+        let linkMatch = diagramLayout.selectAll('.link');
+        let linkNotMatch = diagramLayout.selectAll('.value-match');
+        let parentLink = diagramLayout.selectAll('.additionalParentLink');
 
-      let diagramLayout = d3.select('#backwardDiv');
+        linkMatch.style('stroke', '#ddd');
+        parentLink.style('stroke', '#ddd');
+        linkNotMatch.style('stroke', isMaterialLink);
+      } else if (props.chartType === 'forward') {
+        let diagramForward = d3.select('#forwardDiv');
+        let linkSvgFor = diagramForward.selectAll('.link');
+        linkSvgFor.style('stroke', isMaterialLink).style('stroke-width', '4');
+        let linkSearchMatchFor = linkSvgFor.filter(function (d) {
+          return d.source.id === splitedvalue || d.target.id === splitedvalue;
+        });
+        linkSearchMatchFor.attr('class', 'value-match');
+        let linkMatchFor = diagramForward.selectAll('.link');
+        let linkNotMatchFor = diagramForward.selectAll('.value-match');
+        let parentLinkFor = diagramForward.selectAll('.additionalParentLink');
+        linkMatchFor.style('stroke', '#ddd');
+        parentLinkFor.style('stroke', '#ddd');
+        linkNotMatchFor.style('stroke', isMaterialLink);
+      }
+    } else if (value === null && value === undefined) {
+      let diagramLayoutBack = d3.select('#backwardDiv');
+      let linkSvgBack = diagramLayoutBack.selectAll('.link');
+      linkSvgBack.style('stroke', isMaterialLink).style('stroke-width', '4');
+    }
+  };
 
-      let linkSvg = diagramLayout.selectAll('.link');
-      linkSvg.style('stroke', isMaterialLink).style('stroke-width', '4');
-
-      let linkSearchMatch = linkSvg.filter(function (d) {
-        return d.source.id === splitedvalue || d.target.id === splitedvalue;
-      });
-      linkSearchMatch.attr('class', 'value-match');
-      let linkMatch = diagramLayout.selectAll('.link');
-      let linkNotMatch = diagramLayout.selectAll('.value-match');
-      let parentLink = diagramLayout.selectAll('.additionalParentLink');
-
-      linkMatch.style('stroke', '#ddd');
-      parentLink.style('stroke', '#ddd');
-      linkNotMatch.style('stroke', isMaterialLink);
+  const handleClearSearch = () => {
+    setsearchValue('');
+    if (props.chartType === 'backward') {
+      let diagramLayoutBack = d3.select('#backwardDiv');
+      let linkSvgBackword = diagramLayoutBack.selectAll('.link');
+      let linkValMatchBack = diagramLayoutBack.selectAll('.value-match');
+      //  let pLinkBack = diagramLayoutBack.selectAll('.additionalParentLink');
+      linkValMatchBack.style('stroke', isMaterialLink);
+      linkSvgBackword.style('stroke', isMaterialLink);
+    } else if (props.chartType === 'forward') {
+      let diagramLayoutFor = d3.select('#forwardDiv');
+      let linkSvgFor = diagramLayoutFor.selectAll('.link');
+      linkSvgFor.style('stroke', isMaterialLink).style('stroke-width', '4');
     }
   };
 
@@ -455,7 +490,7 @@ function TreePlot(props) {
             zoomEnabled: true, //lets see
             zoomScaleSensitivity: 2,
             minZoom: 1,
-            maxZoom: 10,
+            maxZoom: 5,
             fit: false,
             //   center: true,
             destroy: function (options) {
@@ -559,7 +594,8 @@ function TreePlot(props) {
           .attr('transform', function (d) {
             return 'translate(' + source.y0 + ',' + source.x0 + ')';
           })
-          .on('click', function (d) {
+          .on('contextmenu', function (d) {
+            d3.event.preventDefault();
             toolTip
               .transition() // declare the transition properties to
               .duration(500) // fade out div for 500ms
@@ -682,10 +718,9 @@ function TreePlot(props) {
               .style('opacity', '0'); // and go all the way to an opacity of nil
           })
           .attr('xlink:href', function (d) {
-            if (d.batchNo === 'ABJ7938') {
+            if (d.OpenNC != undefined || d.OpenNC === true) {
               return 'img/genealogy/non-material.png';
             }
-
             if (d.type === 'Material') {
               return 'img/genealogy/material.png'; //"http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_daredevil.png";
             } else {
@@ -697,7 +732,7 @@ function TreePlot(props) {
         nodeEnter
           .append('svg:text')
           .attr('x', function (d) {
-            return d.traceability === 'backward' ? 70 : -13;
+            return d.traceability === 'backward' ? 70 : -70;
           })
           .attr('dy', '0.35em')
           .attr('text-anchor', function (d) {
@@ -867,7 +902,7 @@ function TreePlot(props) {
             var quantity =
               d.source.relationshipMap[d.source.id + '-' + d.target.id].qty +
               ' ' +
-              d.source.relationshipMap[d.source.id + '-' + d.target.id].uom;
+              d.source.relationshipMap[d.source.id + '-' + d.target.id].unit;
             if (THIS.type === 'forward') {
               material = d.source.matNo || d.target.matNo;
               processOrder = d.target.poNo || d.source.poNo;
@@ -1027,14 +1062,14 @@ function TreePlot(props) {
             var batchNo = d.batchNo || 'Not available';
             var uom = 'Not Available';
             var quantity = 'Not Available';
-            var productType = d.matType || 'Not available';
+            var productType = d.mat_type || 'Not available';
             if (
               d.parent &&
               d.parent.relationshipMap &&
               d.parent.relationshipMap[d.parent.id + '-' + d.id]
             ) {
               uom =
-                d.parent.relationshipMap[d.parent.id + '-' + d.id].uom ||
+                d.parent.relationshipMap[d.parent.id + '-' + d.id].unit ||
                 'Not available';
               quantity = d.parent.relationshipMap[d.parent.id + '-' + d.id].qty;
             }
@@ -1044,7 +1079,7 @@ function TreePlot(props) {
               d.relationshipMap[d.id + '-' + d.children[0].id]
             ) {
               uom =
-                d.relationshipMap[d.id + '-' + d.children[0].id].uom ||
+                d.relationshipMap[d.id + '-' + d.children[0].id].unit ||
                 'Not available';
               quantity = d.relationshipMap[d.id + '-' + d.children[0].id].qty;
             }
@@ -1084,6 +1119,7 @@ function TreePlot(props) {
                 uom +
                 '</b></span><br/></span></div>';
             }
+
             d3.select('#keyTooltip').html(tooltipHtml);
           }
 
@@ -1227,7 +1263,7 @@ function TreePlot(props) {
                       multiPair.parent &&
                       multiPair.parent.relationshipMap[
                         multiPair.parent.id + '-' + multiPair.child.id
-                      ].uom,
+                      ].unit,
                   };
                   this.setAttribute('data', JSON.stringify(data));
                   return diagonal({
@@ -1251,7 +1287,7 @@ function TreePlot(props) {
               toolTip.transition().duration(200).style('opacity', '.9');
               var material = data.mat;
               var processOrder = data.poNo;
-              var quantity = data.qty + ' ' + data.uom;
+              var quantity = data.qty + ' ' + data.unit;
 
               var tooltipHtml =
                 "<div ><span class='col-xs-1' style='padding:5px'>Material   :  </span><span class='col-xs-1' style='padding:5px'><b>" +
@@ -1309,30 +1345,40 @@ function TreePlot(props) {
       <Draggable>
         <div className='drag-search'>
           <div className='drag-search_head'>
-            <span>Parameters - Quick Search</span>
+            <span>Quick Search</span>
           </div>
-          <Select
-            showSearch
-            placeholder='Search Here...'
-            optionFilterProp='children'
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-            value={searchValue}
-            onChange={(value) => onChangeParam(value)}
-            onSearch={(type) => onSearchParam(type)}
-            style={{ width: '100%', margin: '0px' }}
-          >
-            {searchOptions &&
-              searchOptions.map((item, index) => (
-                <Select.Option
-                  key={index}
-                  value={`${item.value}---${item.nodeId}`}
-                >
-                  {item.value}
-                </Select.Option>
-              ))}
-          </Select>
+          <div className='select-allowclear'>
+            <Select
+              // allowClear
+              showSearch
+              placeholder='Search Here...'
+              optionFilterProp='children'
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              value={searchValue}
+              onChange={(value) => onChangeParam(value)}
+              onSearch={(type) => onSearchParam(type)}
+              style={{ width: '100%', margin: '0px' }}
+            >
+              {searchOptions &&
+                searchOptions.map((item, index) => (
+                  <Select.Option
+                    key={index}
+                    value={`${item.value}---${item.nodeId}`}
+                  >
+                    {item.value}
+                  </Select.Option>
+                ))}
+            </Select>
+            {searchValue !== '' ? (
+              <Button onClick={handleClearSearch} className='close-searchicon'>
+                <CloseOutlined />
+              </Button>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </Draggable>
       <div id='treeWrapper'>

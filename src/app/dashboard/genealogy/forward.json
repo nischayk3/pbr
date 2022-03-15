@@ -1,0 +1,56 @@
+[
+  {
+    "OpenNC": false,
+    "batchNo": "X8202",
+    "children": [
+      {
+        "children": [
+          {
+            "OpenNC": false,
+            "batchNo": "394154",
+            "id": "9038",
+            "level": 0,
+            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
+            "matNo": "1089084",
+            "mat_type": "HALB",
+            "nodeId": "1338|1089084|394154",
+            "plant": 1338,
+            "type": "Material"
+          }
+        ],
+        "id": "311965",
+        "level": 1,
+        "poNo": "1.02280631E8",
+        "relationshipMap": {
+          "311965-9038": {
+            "endNodeId": "311965",
+            "id": "196853",
+            "qty": 3908.0,
+            "startNodeId": "9038",
+            "type": "Input",
+            "unit": "KG"
+          }
+        },
+        "type": "Process Order"
+      }
+    ],
+    "id": "8947",
+    "level": 2,
+    "matDesc": "FERVEX AD PSOL 500MG (8SACH) 13.1G RO",
+    "matNo": "1088713",
+    "mat_type": "FIN",
+    "nodeId": "1338|1088713|X8202",
+    "plant": 1338,
+    "relationshipMap": {
+      "8947-311965": {
+        "endNodeId": "8947",
+        "id": "555732",
+        "qty": 107900.0,
+        "startNodeId": "311965",
+        "type": "Output",
+        "unit": "ST"
+      }
+    },
+    "type": "Material"
+  }
+]
