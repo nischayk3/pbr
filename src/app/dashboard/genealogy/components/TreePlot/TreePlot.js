@@ -153,7 +153,6 @@ function TreePlot(props) {
   };
   const onChangeParam = (value) => {
     if (value !== null && value !== undefined) {
-      console.log('filled select');
       let splitvalue = value.split('---');
 
       let splitedvalue = splitvalue[1];
@@ -166,7 +165,6 @@ function TreePlot(props) {
         element[0].setAttribute('r', '10');
       }
       if (props.chartType === 'backward') {
-        console.log('chartType backward');
         let diagramLayout = d3.select('#backwardDiv');
         let linkSvg = diagramLayout.selectAll('.link');
         linkSvg.style('stroke', isMaterialLink).style('stroke-width', '4');
@@ -182,7 +180,6 @@ function TreePlot(props) {
         parentLink.style('stroke', '#ddd');
         linkNotMatch.style('stroke', isMaterialLink);
       } else if (props.chartType === 'forward') {
-        console.log('chartType forward');
         let diagramForward = d3.select('#forwardDiv');
         let linkSvgFor = diagramForward.selectAll('.link');
         linkSvgFor.style('stroke', isMaterialLink).style('stroke-width', '4');
@@ -198,7 +195,6 @@ function TreePlot(props) {
         linkNotMatchFor.style('stroke', isMaterialLink);
       }
     } else if (value === null && value === undefined) {
-      console.log('emptyyyyyy select');
       let diagramLayoutBack = d3.select('#backwardDiv');
       let linkSvgBack = diagramLayoutBack.selectAll('.link');
       linkSvgBack.style('stroke', isMaterialLink).style('stroke-width', '4');
@@ -207,7 +203,6 @@ function TreePlot(props) {
 
   const handleClearSearch = () => {
     setsearchValue('');
-    console.log('emptyyyyyy select');
     if (props.chartType === 'backward') {
       let diagramLayoutBack = d3.select('#backwardDiv');
       let linkSvgBack = diagramLayoutBack.selectAll('.link');
