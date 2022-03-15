@@ -392,10 +392,10 @@ function ViewCreation() {
           status = 'DRFT'
         }
         if(res.view_status === 1)  {
-          status = 'awap'
+          status = 'AWAP'
         }
         if(res.view_status === 2)  {
-          status = 'approved'
+          status = 'APRD'
         }
         form.setFieldsValue({
           viewName: res.view_name,
@@ -706,10 +706,10 @@ function ViewCreation() {
     if(viewStatus === 'DRFT')  {
       status = 0
     }
-    if(viewStatus === 'awap')  {
+    if(viewStatus === 'AWAP')  {
       status = 1
     }
-    if(viewStatus === 'approved')  {
+    if(viewStatus === 'APRD')  {
       status = 2
     }
     const obj = {
