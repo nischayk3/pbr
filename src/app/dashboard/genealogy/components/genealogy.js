@@ -10,6 +10,7 @@ import { Tabs, Popover, Button, message } from 'antd';
 import Filter from './genealogyFilter';
 import TreePlot from './TreePlot/TreePlot';
 import response from '../treePlot.json';
+import forwardJson from '../forward.json';
 import batchIcon from '../../../../assets/images/material.png';
 import { useDispatch } from 'react-redux';
 import {

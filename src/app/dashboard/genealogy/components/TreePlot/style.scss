@@ -461,3 +461,14 @@ div.headerattribute {
 
   color: #486bc9;
 }
+
+.select-allowclear {
+  position: relative;
+  .close-searchicon {
+    border: 0;
+    position: absolute;
+    right: -5px;
+    top: 1px;
+    background: transparent;
+  }
+}
