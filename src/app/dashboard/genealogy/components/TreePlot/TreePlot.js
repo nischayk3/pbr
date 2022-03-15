@@ -165,23 +165,38 @@ function TreePlot(props) {
         const element = svgNodeClass[i].children;
         element[0].setAttribute('r', '10');
       }
+      if (props.chartType === 'backward') {
+        console.log('chartType backward');
+        let diagramLayout = d3.select('#backwardDiv');
+        let linkSvg = diagramLayout.selectAll('.link');
+        linkSvg.style('stroke', isMaterialLink).style('stroke-width', '4');
+        let linkSearchMatch = linkSvg.filter(function (d) {
+          return d.source.id === splitedvalue || d.target.id === splitedvalue;
+        });
+        linkSearchMatch.attr('class', 'value-match');
+        let linkMatch = diagramLayout.selectAll('.link');
+        let linkNotMatch = diagramLayout.selectAll('.value-match');
+        let parentLink = diagramLayout.selectAll('.additionalParentLink');
 
-      let diagramLayout = d3.select('#backwardDiv');
-
-      let linkSvg = diagramLayout.selectAll('.link');
-      linkSvg.style('stroke', isMaterialLink).style('stroke-width', '4');
-
-      let linkSearchMatch = linkSvg.filter(function (d) {
-        return d.source.id === splitedvalue || d.target.id === splitedvalue;
-      });
-      linkSearchMatch.attr('class', 'value-match');
-      let linkMatch = diagramLayout.selectAll('.link');
-      let linkNotMatch = diagramLayout.selectAll('.value-match');
-      let parentLink = diagramLayout.selectAll('.additionalParentLink');
-
-      linkMatch.style('stroke', '#ddd');
-      parentLink.style('stroke', '#ddd');
-      linkNotMatch.style('stroke', isMaterialLink);
+        linkMatch.style('stroke', '#ddd');
+        parentLink.style('stroke', '#ddd');
+        linkNotMatch.style('stroke', isMaterialLink);
+      } else if (props.chartType === 'forward') {
+        console.log('chartType forward');
+        let diagramForward = d3.select('#forwardDiv');
+        let linkSvgFor = diagramForward.selectAll('.link');
+        linkSvgFor.style('stroke', isMaterialLink).style('stroke-width', '4');
+        let linkSearchMatchFor = linkSvgFor.filter(function (d) {
+          return d.source.id === splitedvalue || d.target.id === splitedvalue;
+        });
+        linkSearchMatchFor.attr('class', 'value-match');
+        let linkMatchFor = diagramForward.selectAll('.link');
+        let linkNotMatchFor = diagramForward.selectAll('.value-match');
+        let parentLinkFor = diagramForward.selectAll('.additionalParentLink');
+        linkMatchFor.style('stroke', '#ddd');
+        parentLinkFor.style('stroke', '#ddd');
+        linkNotMatchFor.style('stroke', isMaterialLink);
+      }
     } else if (value === null && value === undefined) {
       console.log('emptyyyyyy select');
       let diagramLayoutBack = d3.select('#backwardDiv');
@@ -198,7 +213,7 @@ function TreePlot(props) {
       let linkSvgBack = diagramLayoutBack.selectAll('.link');
       linkSvgBack.style('stroke', isMaterialLink).style('stroke-width', '4');
     } else if (props.chartType === 'forward') {
-      let diagramLayoutFor = d3.select('#backwardDiv');
+      let diagramLayoutFor = d3.select('#forwardDiv');
       let linkSvgFor = diagramLayoutFor.selectAll('.link');
       linkSvgFor.style('stroke', isMaterialLink).style('stroke-width', '4');
     }
@@ -718,7 +733,7 @@ function TreePlot(props) {
         nodeEnter
           .append('svg:text')
           .attr('x', function (d) {
-            return d.traceability === 'backward' ? 70 : -13;
+            return d.traceability === 'backward' ? 70 : -70;
           })
           .attr('dy', '0.35em')
           .attr('text-anchor', function (d) {

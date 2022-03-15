@@ -36,10 +36,11 @@ function Genealogy() {
   const dispatch = useDispatch();
 
   const onClickNode = (node) => {
+    setGenealogyData([]);
     if (node.clickType === 'backward') {
       let _reqBackward = {
         levels: 5,
-        matBatchNo: node.nodeId,
+        batch_id: node.nodeId,
         backward: true,
       };
       getBackwardGeneology(_reqBackward);
@@ -49,7 +50,7 @@ function Genealogy() {
     } else {
       let _reqFor = {
         levels: 5,
-        matBatchNo: node.nodeId,
+        batch_id: node.nodeId,
         backward: false,
       };
       getForwardGeneology(_reqFor);
