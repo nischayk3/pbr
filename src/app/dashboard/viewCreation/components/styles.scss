@@ -47,6 +47,9 @@
           }
         }
       }
+      .ant-btn[disabled]:hover{
+       color:#262626;
+      }
 
       .viewCreation-clearBtn {
         border: none !important;
