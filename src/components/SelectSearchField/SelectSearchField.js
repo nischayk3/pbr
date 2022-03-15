@@ -20,12 +20,7 @@ const SelectSearchField = (props) => {
         allowClear
         mode='combobox'
       >
-        {props.selectList &&
-          props.selectList.map((item) => (
-            <Select.Option key={item} value={item}>
-              {item}
-            </Select.Option>
-          ))}
+        {props.options}
       </Select>
     </div>
   );
