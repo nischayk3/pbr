@@ -9,6 +9,7 @@ import {
   LogoutOutlined,
   PartitionOutlined,
   TeamOutlined,
+  FileFilled,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { Link, useHistory, useLocation } from 'react-router-dom';
@@ -73,7 +74,7 @@ const MENU = [
   },
   {
     key: 'report_generator',
-    icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+    icon: <FileFilled style={{ fontSize: '23px' }} />,
     title: 'Report Generator',
     linkTo: '/dashboard/report_generator',
   },
