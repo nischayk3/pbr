@@ -10,6 +10,7 @@ import { Tabs, Popover, Button, message } from 'antd';
 import Filter from './genealogyFilter';
 import TreePlot from './TreePlot/TreePlot';
 import response from '../treePlot.json';
+import forwardJson from '../forward.json';
 import batchIcon from '../../../../assets/images/material.png';
 import { useDispatch } from 'react-redux';
 import {
@@ -35,10 +36,11 @@ function Genealogy() {
   const dispatch = useDispatch();
 
   const onClickNode = (node) => {
+    setGenealogyData([]);
     if (node.clickType === 'backward') {
       let _reqBackward = {
         levels: 5,
-        matBatchNo: node.nodeId,
+        batch_id: node.nodeId,
         backward: true,
       };
       getBackwardGeneology(_reqBackward);
@@ -48,7 +50,7 @@ function Genealogy() {
     } else {
       let _reqFor = {
         levels: 5,
-        matBatchNo: node.nodeId,
+        batch_id: node.nodeId,
         backward: false,
       };
       getForwardGeneology(_reqFor);
@@ -62,7 +64,7 @@ function Genealogy() {
     const product = param && param.product.split('-');
     const plant = param && param.plant.split('-');
     const selectedValue = plant[0] + '|' + product[0] + '|' + param.batch;
-
+    setGenealogyData([]);
     if (param.treeType === 'Backward') {
       let _reqBack = {
         levels: 5,
@@ -93,6 +95,7 @@ function Genealogy() {
   const getBackwardGeneology = async (_reqBack) => {
     try {
       dispatch(showLoader());
+
       const backwardRes = await getBackwardData(_reqBack);
 
       if (backwardRes.length > 0) {

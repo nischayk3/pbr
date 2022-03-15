@@ -85,6 +85,23 @@ function Filter(props) {
     }
   };
 
+  const clearSearch = (e, field) => {
+    console.log('fieldddddd', field);
+    if (field === 'plant') {
+      setselectParam((prevState) => {
+        return { ...prevState, plant: '' };
+      });
+    } else if (field === 'product') {
+      setselectParam((prevState) => {
+        return { ...prevState, productCode: '' };
+      });
+    } else if (field === 'batch') {
+      setselectParam((prevState) => {
+        return { ...prevState, batchNum: '' };
+      });
+    }
+  };
+
   const onSearchParam = (type, field) => {
     if (type != null) {
       if (field === 'plant') {
@@ -200,6 +217,7 @@ function Filter(props) {
             onChangeSelect={(value) => onChangeParam(value, 'plant')}
             onSearchSelect={(type) => onSearchParam(type, 'plant')}
             options={optionsPlant}
+            handleClearSearch={(e) => clearSearch(e, 'plant')}
             //selectList={paramList['plantList']}
             selectedValue={selectParam['plant']}
           />
@@ -209,6 +227,7 @@ function Filter(props) {
             placeholder='Select'
             onChangeSelect={(value) => onChangeParam(value, 'batch_num')}
             onSearchSelect={(type) => onSearchParam(type, 'batch_num')}
+            handleClearSearch={(e) => clearSearch(e, 'batch')}
             // selectList={paramList['batchList']}
             options={optionsBatch}
             selectedValue={selectParam['batchNum']}
@@ -222,6 +241,7 @@ function Filter(props) {
             onChangeSelect={(value) => onChangeParam(value, 'product_code')}
             onSearchSelect={(type) => onSearchParam(type, 'product_code')}
             options={optionsProduct}
+            handleClearSearch={(e) => clearSearch(e, 'product')}
             // selectList={paramList['produtList']}
             selectedValue={selectParam['productCode']}
           />
