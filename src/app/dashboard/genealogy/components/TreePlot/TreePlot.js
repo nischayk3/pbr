@@ -3,6 +3,7 @@
  * @version 1
  * @Last Modified - 14 March, 2022
  */
+
 import React, { useEffect, useState, useRef } from 'react';
 import * as _ from 'lodash';
 import * as d3 from 'd3';
@@ -160,7 +161,8 @@ function TreePlot(props) {
       setsearchValue(splitvalue[0]);
 
       let svgNodeClass = document.querySelectorAll('.node');
-      for (let i = 0; i < svgNodeClass.length; i++) {
+      for (let i = 0; i < svgNodeClass.length; i++) 
+      {
         const element = svgNodeClass[i].children;
         element[0].setAttribute('r', '10');
       }
@@ -486,7 +488,7 @@ function TreePlot(props) {
             zoomEnabled: true, //lets see
             zoomScaleSensitivity: 2,
             minZoom: 1,
-            maxZoom: 10,
+            maxZoom: 5,
             fit: false,
             //   center: true,
             destroy: function (options) {
