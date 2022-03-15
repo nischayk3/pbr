@@ -12,7 +12,7 @@ import ViolationTable from './violation';
 import { sendParameterTableData } from '../../../../../../duck/actions/chartPersonalizationAction';
 import { updateTableColumn } from '../../../../../../utils/updateTableColumns';
 
-function ChartDataTable({exclusionTableData, setExclusionTableData, dataTable, setTableData, tempArrForExclude, counterIdForExclusion}) {
+function ChartDataTable({exclusionTableData, setExclusionTableData, dataTable, setDataTable, tempArrForExclude, counterIdForExclusion, tempArrForData}) {
   const parameterData = useSelector(
     (state) => state.chartPersReducer.getBatchCoverage
   );
@@ -54,7 +54,7 @@ function ChartDataTable({exclusionTableData, setExclusionTableData, dataTable, s
         <Card bordered={false} style={{ height: '350px' }}>
           <Tabs defaultActiveKey='3'>
             <TabPane tab='Exclusion' key='1'>
-              <ExclusionTable counterIdForExclusion={counterIdForExclusion} tempArrForExclude={tempArrForExclude} dataTable={dataTable} setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
+              <ExclusionTable tempArrForData={tempArrForData} setDataTable={setDataTable} counterIdForExclusion={counterIdForExclusion} tempArrForExclude={tempArrForExclude} dataTable={dataTable} setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
             </TabPane>
             {/* <TabPane tab='Shift' key='2'>
                               <ShiftTable />

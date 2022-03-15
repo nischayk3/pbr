@@ -72,6 +72,7 @@ function ChartPersonalization() {
   const [exclusionTableData, setExclusionTableData] = useState([]);
   const [dataTable, setDataTable] = useState([]);
   const tempArrForExclude = useRef([]);
+  const tempArrForData = useRef([]);
   const counterIdForExclusion = useRef(0);
   const [isChart, setIsChart] = useState(false);
   const [isLandingDisabled, setisLandingDisabled] = useState(false);
@@ -490,6 +491,7 @@ function ChartPersonalization() {
         setbatchData(batchRes);
         setDataTable([]);
         setExclusionTableData([]);
+        setshowBatch(true);
         dispatch(sendBatchCoverage(batchRes));
       } else if (viewData.statuscode === 400) {
         dispatch(
@@ -598,13 +600,14 @@ function ChartPersonalization() {
             )}
             {showChartType && (
               <div>
-                <ChartType setDataTable={setDataTable} resetBatchData={batchData} setselectedLayout={setselectedLayout} />
+                <ChartType tempArrForData={tempArrForData} setDataTable={setDataTable} resetBatchData={batchData} setselectedLayout={setselectedLayout} />
               </div>
             )}
           </div>
           {showChart && (
             <div className='chart-center-panel'>
               <ChartDetails
+                tempArrForData={tempArrForData}
                 counterIdForExclusion={counterIdForExclusion}
                 tempArrForExclude={tempArrForExclude}
                 resChartId={resChartId}
@@ -617,8 +620,9 @@ function ChartPersonalization() {
                 selectedLayout={selectedLayout} 
                 setselectedLayout={setselectedLayout}
                 dataTable={dataTable}
+                setDataTable={setDataTable}
               />
-              <ChartDataTable counterIdForExclusion={counterIdForExclusion} tempArrForExclude={tempArrForExclude} dataTable={dataTable} setDataTable={setDataTable} setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
+              <ChartDataTable tempArrForData={tempArrForData} setDataTable={setDataTable} counterIdForExclusion={counterIdForExclusion} tempArrForExclude={tempArrForExclude} dataTable={dataTable} setDataTable={setDataTable} setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
             </div>
           )}
           {showCustomization && (
