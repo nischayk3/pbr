@@ -62,7 +62,7 @@ function TreePlot(props) {
           nodeId: item.id,
         });
         proType.push({
-          value: item.matType,
+          value: item.mat_type,
           nodeId: item.id,
         });
       }
@@ -108,8 +108,8 @@ function TreePlot(props) {
     };
     let loopChildrenPType = (item) => {
       item.forEach((i) => {
-        if (i.matType !== undefined) {
-          arrProType.push(i.matType);
+        if (i.mat_type !== undefined) {
+          arrProType.push(i.mat_type);
         }
         if (i.children) {
           loopChildrenPType(i.children);
@@ -125,7 +125,7 @@ function TreePlot(props) {
           pushMaterial(item);
         } else if (item.matDesc.length) {
           pushMaterial(item);
-        } else if (item.matType.length) {
+        } else if (item.mat_type.length) {
           pushMaterial(item);
         }
         if (item.children) {
@@ -205,8 +205,11 @@ function TreePlot(props) {
     setsearchValue('');
     if (props.chartType === 'backward') {
       let diagramLayoutBack = d3.select('#backwardDiv');
-      let linkSvgBack = diagramLayoutBack.selectAll('.link');
-      linkSvgBack.style('stroke', isMaterialLink).style('stroke-width', '4');
+      let linkSvgBackword = diagramLayoutBack.selectAll('.link');
+      let linkValMatchBack = diagramLayoutBack.selectAll('.value-match');
+      //  let pLinkBack = diagramLayoutBack.selectAll('.additionalParentLink');
+      linkValMatchBack.style('stroke', isMaterialLink);
+      linkSvgBack.style('stroke', isMaterialLink);
     } else if (props.chartType === 'forward') {
       let diagramLayoutFor = d3.select('#forwardDiv');
       let linkSvgFor = diagramLayoutFor.selectAll('.link');
@@ -1058,7 +1061,7 @@ function TreePlot(props) {
             var batchNo = d.batchNo || 'Not available';
             var uom = 'Not Available';
             var quantity = 'Not Available';
-            var productType = d.matType || 'Not available';
+            var productType = d.mat_type || 'Not available';
             if (
               d.parent &&
               d.parent.relationshipMap &&
@@ -1341,7 +1344,7 @@ function TreePlot(props) {
       <Draggable>
         <div className='drag-search'>
           <div className='drag-search_head'>
-            <span>Parameters - Quick Search</span>
+            <span>Quick Search</span>
           </div>
           <div className='select-allowclear'>
             <Select
