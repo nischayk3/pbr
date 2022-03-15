@@ -544,7 +544,7 @@ function ReportGenerator() {
                     onCancel={() => setIsVisible(false)}
                     width={500}
                     style={{ marginRight: '800px' }}
-                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} key="1">OK</Button>,]}
+                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={()=>setIsVisible(false)} key="1">OK</Button>,]}
                 >
                     <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
                         let view_value = value.value ? value.value : ''
