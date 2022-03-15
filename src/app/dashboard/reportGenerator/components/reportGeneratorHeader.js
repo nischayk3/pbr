@@ -42,12 +42,15 @@ function ReportDesignerForm(props) {
        setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
        setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
        setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
+       if(ReportData['view_disp_id'])
+       setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
+       else
        setViewId(ReportData['view_id'] && ReportData['view_id'] ? ReportData['view_id'] : '')
        setVariantname(ReportData['variant_name'] ? ReportData['variant_name'] : user+'_variant')
     }
 
     return (
-        <div className="reportDesigner-grid bg-white" >
+        <div className="reportDesigner-gen bg-white" >
             <div className="reportDesigner-block-left bg-white" >
                 <div>
                 <Text className="filter-text" >Report ID</Text><br/>

@@ -11,4 +11,14 @@
     color: #262626;
     margin-bottom: 7px;
   }
+  .search-block {
+    position: relative;
+    .close-search {
+      border: 0;
+      position: absolute;
+      right: -5px;
+      top: 1px;
+      background: transparent;
+    }
+  }
 }

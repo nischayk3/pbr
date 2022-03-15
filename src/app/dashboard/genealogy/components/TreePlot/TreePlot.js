@@ -14,6 +14,7 @@ import {
   PlusOutlined,
   MinusOutlined,
   WarningOutlined,
+  CloseOutlined,
 } from '@ant-design/icons';
 import processOrderIcon from '../../../../../assets/images/processorder.png';
 import batchIcon from '../../../../../assets/images/material.png';
@@ -152,6 +153,7 @@ function TreePlot(props) {
   };
   const onChangeParam = (value) => {
     if (value !== null && value !== undefined) {
+      console.log('filled select');
       let splitvalue = value.split('---');
 
       let splitedvalue = splitvalue[1];
@@ -180,6 +182,25 @@ function TreePlot(props) {
       linkMatch.style('stroke', '#ddd');
       parentLink.style('stroke', '#ddd');
       linkNotMatch.style('stroke', isMaterialLink);
+    } else if (value === null && value === undefined) {
+      console.log('emptyyyyyy select');
+      let diagramLayoutBack = d3.select('#backwardDiv');
+      let linkSvgBack = diagramLayoutBack.selectAll('.link');
+      linkSvgBack.style('stroke', isMaterialLink).style('stroke-width', '4');
+    }
+  };
+
+  const handleClearSearch = () => {
+    setsearchValue('');
+    console.log('emptyyyyyy select');
+    if (props.chartType === 'backward') {
+      let diagramLayoutBack = d3.select('#backwardDiv');
+      let linkSvgBack = diagramLayoutBack.selectAll('.link');
+      linkSvgBack.style('stroke', isMaterialLink).style('stroke-width', '4');
+    } else if (props.chartType === 'forward') {
+      let diagramLayoutFor = d3.select('#backwardDiv');
+      let linkSvgFor = diagramLayoutFor.selectAll('.link');
+      linkSvgFor.style('stroke', isMaterialLink).style('stroke-width', '4');
     }
   };
 
@@ -559,7 +580,8 @@ function TreePlot(props) {
           .attr('transform', function (d) {
             return 'translate(' + source.y0 + ',' + source.x0 + ')';
           })
-          .on('click', function (d) {
+          .on('contextmenu', function (d) {
+            d3.event.preventDefault();
             toolTip
               .transition() // declare the transition properties to
               .duration(500) // fade out div for 500ms
@@ -682,10 +704,9 @@ function TreePlot(props) {
               .style('opacity', '0'); // and go all the way to an opacity of nil
           })
           .attr('xlink:href', function (d) {
-            if (d.batchNo === 'ABJ7938') {
+            if (d.OpenNC != undefined || d.OpenNC === true) {
               return 'img/genealogy/non-material.png';
             }
-
             if (d.type === 'Material') {
               return 'img/genealogy/material.png'; //"http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_daredevil.png";
             } else {
@@ -867,7 +888,7 @@ function TreePlot(props) {
             var quantity =
               d.source.relationshipMap[d.source.id + '-' + d.target.id].qty +
               ' ' +
-              d.source.relationshipMap[d.source.id + '-' + d.target.id].uom;
+              d.source.relationshipMap[d.source.id + '-' + d.target.id].unit;
             if (THIS.type === 'forward') {
               material = d.source.matNo || d.target.matNo;
               processOrder = d.target.poNo || d.source.poNo;
@@ -1034,7 +1055,7 @@ function TreePlot(props) {
               d.parent.relationshipMap[d.parent.id + '-' + d.id]
             ) {
               uom =
-                d.parent.relationshipMap[d.parent.id + '-' + d.id].uom ||
+                d.parent.relationshipMap[d.parent.id + '-' + d.id].unit ||
                 'Not available';
               quantity = d.parent.relationshipMap[d.parent.id + '-' + d.id].qty;
             }
@@ -1044,7 +1065,7 @@ function TreePlot(props) {
               d.relationshipMap[d.id + '-' + d.children[0].id]
             ) {
               uom =
-                d.relationshipMap[d.id + '-' + d.children[0].id].uom ||
+                d.relationshipMap[d.id + '-' + d.children[0].id].unit ||
                 'Not available';
               quantity = d.relationshipMap[d.id + '-' + d.children[0].id].qty;
             }
@@ -1084,6 +1105,7 @@ function TreePlot(props) {
                 uom +
                 '</b></span><br/></span></div>';
             }
+
             d3.select('#keyTooltip').html(tooltipHtml);
           }
 
@@ -1227,7 +1249,7 @@ function TreePlot(props) {
                       multiPair.parent &&
                       multiPair.parent.relationshipMap[
                         multiPair.parent.id + '-' + multiPair.child.id
-                      ].uom,
+                      ].unit,
                   };
                   this.setAttribute('data', JSON.stringify(data));
                   return diagonal({
@@ -1251,7 +1273,7 @@ function TreePlot(props) {
               toolTip.transition().duration(200).style('opacity', '.9');
               var material = data.mat;
               var processOrder = data.poNo;
-              var quantity = data.qty + ' ' + data.uom;
+              var quantity = data.qty + ' ' + data.unit;
 
               var tooltipHtml =
                 "<div ><span class='col-xs-1' style='padding:5px'>Material   :  </span><span class='col-xs-1' style='padding:5px'><b>" +
@@ -1311,28 +1333,38 @@ function TreePlot(props) {
           <div className='drag-search_head'>
             <span>Parameters - Quick Search</span>
           </div>
-          <Select
-            showSearch
-            placeholder='Search Here...'
-            optionFilterProp='children'
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-            value={searchValue}
-            onChange={(value) => onChangeParam(value)}
-            onSearch={(type) => onSearchParam(type)}
-            style={{ width: '100%', margin: '0px' }}
-          >
-            {searchOptions &&
-              searchOptions.map((item, index) => (
-                <Select.Option
-                  key={index}
-                  value={`${item.value}---${item.nodeId}`}
-                >
-                  {item.value}
-                </Select.Option>
-              ))}
-          </Select>
+          <div className='select-allowclear'>
+            <Select
+              // allowClear
+              showSearch
+              placeholder='Search Here...'
+              optionFilterProp='children'
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              value={searchValue}
+              onChange={(value) => onChangeParam(value)}
+              onSearch={(type) => onSearchParam(type)}
+              style={{ width: '100%', margin: '0px' }}
+            >
+              {searchOptions &&
+                searchOptions.map((item, index) => (
+                  <Select.Option
+                    key={index}
+                    value={`${item.value}---${item.nodeId}`}
+                  >
+                    {item.value}
+                  </Select.Option>
+                ))}
+            </Select>
+            {searchValue !== '' ? (
+              <Button onClick={handleClearSearch} className='close-searchicon'>
+                <CloseOutlined />
+              </Button>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </Draggable>
       <div id='treeWrapper'>

@@ -1,6 +1,6 @@
 /**
  * @author Dinesh Kumar <dinesh.kumar@mareana.com>
- * @version 1
+ * @version  1
  * @Last Modified - 14 March, 2022
  */
 
@@ -10,6 +10,7 @@ import { Tabs, Popover, Button, message } from 'antd';
 import Filter from './genealogyFilter';
 import TreePlot from './TreePlot/TreePlot';
 import response from '../treePlot.json';
+import forwardJson from '../forward.json';
 import batchIcon from '../../../../assets/images/material.png';
 import { useDispatch } from 'react-redux';
 import {
@@ -62,7 +63,7 @@ function Genealogy() {
     const product = param && param.product.split('-');
     const plant = param && param.plant.split('-');
     const selectedValue = plant[0] + '|' + product[0] + '|' + param.batch;
-
+    setGenealogyData([]);
     if (param.treeType === 'Backward') {
       let _reqBack = {
         levels: 5,
@@ -93,6 +94,7 @@ function Genealogy() {
   const getBackwardGeneology = async (_reqBack) => {
     try {
       dispatch(showLoader());
+
       const backwardRes = await getBackwardData(_reqBack);
 
       if (backwardRes.length > 0) {

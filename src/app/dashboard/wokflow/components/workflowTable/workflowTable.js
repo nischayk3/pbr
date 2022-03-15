@@ -206,7 +206,7 @@ function workflowTable(props) {
           if (i.field_name === "appl_url") {
             obj.render = (text, row, index) => {
               return (
-                <a onClick={() => history.push(`${text}?id=${row.id}&version=${row.version}`)} className='review-submission'>Review Submission</a>
+                <a onClick={() => history.push(`${text}?id=${row.Id}&version=${row.version}`)} className='review-submission'>Review Submission</a>
 
               );
             }

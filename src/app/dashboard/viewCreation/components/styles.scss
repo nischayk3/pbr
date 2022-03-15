@@ -8,7 +8,7 @@
     border-width: 0.5px !important;
   }
   .viewCreation-block {
-    padding: 10px 20px;
+    padding: 10px 25px;
     background: #ffffff;
     display: flex;
     align-items: center;
@@ -84,7 +84,7 @@
   .reportDesigner-grid-tables.viewCreation-blocks {
     grid-template-columns: 29% 70%;
     grid-gap: 0 24px;
-    padding: 7px 24px;
+    padding: 7px 20px;
     height: calc(100vh - 120px);
     min-height: calc(100vh - 120px);
     overflow-y: auto;

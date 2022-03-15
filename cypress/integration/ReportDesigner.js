@@ -4,9 +4,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
   
   describe("ReportDesigner", () => {
    
-    /* ==== Test Created with Cypress Studio ==== */
     it('reportDesigner', function() {
-      /* ==== Generated with Cypress Studio ==== */
       cy.visit('http://localhost/');
       cy.get('#username').clear();
       cy.get('#username').type('demo');
@@ -39,7 +37,6 @@ Cypress.on('uncaught:exception', (err, runnable) => {
       cy.get('.ant-modal-body > .ant-btn').click();
       cy.get(':nth-child(34) > :nth-child(1) > div').click();
       cy.get(':nth-child(11) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-footer > .ant-btn').click();
-      /* ==== End Cypress Studio ==== */
     });
   });
   
