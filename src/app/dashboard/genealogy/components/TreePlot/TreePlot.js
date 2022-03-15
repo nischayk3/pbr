@@ -161,8 +161,7 @@ function TreePlot(props) {
       setsearchValue(splitvalue[0]);
 
       let svgNodeClass = document.querySelectorAll('.node');
-      for (let i = 0; i < svgNodeClass.length; i++) 
-      {
+      for (let i = 0; i < svgNodeClass.length; i++) {
         const element = svgNodeClass[i].children;
         element[0].setAttribute('r', '10');
       }
@@ -211,7 +210,7 @@ function TreePlot(props) {
       let linkValMatchBack = diagramLayoutBack.selectAll('.value-match');
       //  let pLinkBack = diagramLayoutBack.selectAll('.additionalParentLink');
       linkValMatchBack.style('stroke', isMaterialLink);
-      linkSvgBack.style('stroke', isMaterialLink);
+      linkSvgBackword.style('stroke', isMaterialLink);
     } else if (props.chartType === 'forward') {
       let diagramLayoutFor = d3.select('#forwardDiv');
       let linkSvgFor = diagramLayoutFor.selectAll('.link');
