@@ -139,7 +139,6 @@ const ChartType = (props) => {
         text: selectedYAxis,
       },
     },
-    showlegend:true,
     height: 250,
     width: 450,
     margin: {
@@ -236,6 +235,7 @@ const ChartType = (props) => {
          }) 
       })
       props.setDataTable(mergedObj);
+      props.tempArrForData.current = JSON.parse(JSON.stringify(mergedObj));
     }
     const chartData = {
       x: xaxis.length ? xaxis : [],

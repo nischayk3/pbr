@@ -6,7 +6,7 @@ import './exclusion.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { generateChart } from '../../../../../../../../duck/actions/chartPersonalizationAction';
 
-const ExclusionTable = ({ exclusionTableData, setExclusionTableData, dataTable, tempArrForExclude, counterIdForExclusion }) => {
+const ExclusionTable = ({ tempArrForData, exclusionTableData, setExclusionTableData, dataTable, tempArrForExclude, counterIdForExclusion, setDataTable }) => {
     const [selectedTitle, setSelectedTitle] = useState('');
     const tempArr = useRef([]);
     const dispatch = useDispatch()
@@ -20,6 +20,10 @@ const ExclusionTable = ({ exclusionTableData, setExclusionTableData, dataTable, 
       }, [chartDesc]);
     const handleRowDelete = (record) => {
         const data = exclusionTableData.filter((ele) => ele.batch_num !== record.batch_num)
+        const dataNew = tempArrForData.current.find((ele) => ele.batch_num === record.batch_num)
+        const obj = [...dataTable]
+        obj.push(dataNew)
+        setDataTable([...obj])
         setExclusionTableData(data);
         tempArr.current = JSON.parse(JSON.stringify(data));
         tempArrForExclude.current = tempArrForExclude.current.filter((ele) => ele.batch_num !== record.batch_num)
@@ -27,9 +31,8 @@ const ExclusionTable = ({ exclusionTableData, setExclusionTableData, dataTable, 
         let xaxis = [];
         let yaxis = [];
         let batch = [];
-        const mergedObj = JSON.parse(JSON.stringify(dataTable));
+        const mergedObj = JSON.parse(JSON.stringify(tempArrForData.current));
         mergedObj.forEach((ele) => {
-            ele.recorded_date = new Date(ele.recorded_date).toLocaleDateString();
             batch.push(ele.batch_num)
             Object.entries(ele).map(([key, value]) => {
                 if (chartPlotData1.chartType === 'Scatter Plot') {
@@ -52,11 +55,11 @@ const ExclusionTable = ({ exclusionTableData, setExclusionTableData, dataTable, 
             })
         })
         const colorArr = [];
-        dataTable.forEach((ele) => {
+        tempArrForData.current.forEach((ele) => {
             colorArr.push('blue');
          })
         tempArr.current.forEach((ele) => {
-        const findValue = dataTable.findIndex((element) => element.batch_num === ele.batch_num)
+        const findValue = tempArrForData.current.findIndex((element) => element.batch_num === ele.batch_num)
         colorArr[findValue] = 'red'
         })
         const chartLayout = {
@@ -73,7 +76,6 @@ const ExclusionTable = ({ exclusionTableData, setExclusionTableData, dataTable, 
                     text: chartPlotData1.chartyAxis,
                 },
             },
-            showlegend: true,
             height: 250,
             width: 450,
             margin: {
@@ -194,3 +196,4 @@ const ExclusionTable = ({ exclusionTableData, setExclusionTableData, dataTable, 
 }
 
 export default ExclusionTable;
+

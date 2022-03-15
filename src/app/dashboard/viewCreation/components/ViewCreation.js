@@ -693,9 +693,12 @@ function ViewCreation() {
       }))
     );
     let status;
+    console.log(viewStatus, 'view')
     if (viewStatus === 'DRFT') {
+      console.log('inside');
       status = 0;
     }
+    console.log(status, 'status')
     const obj = {
       view_name: viewFunctionName,
       material_id: moleculeList[0].product_num,
@@ -706,7 +709,7 @@ function ViewCreation() {
       view_description: 'Test View Object',
       view_version: viewVersion,
       view_disp_id: viewDisplayId,
-      view_status: status ? status : viewStatus,
+      view_status: status === 0 ? status : viewStatus,
     };
     const headers = {
       username: 'user_mareana1',
@@ -826,7 +829,6 @@ function ViewCreation() {
   useEffect(() => {
     getViewsList();
     const params = queryString.parse(location.search);
-    console.log('paramssssssss', params);
     if (Object.keys(params).length > 0) {
       setParams(true);
       onOkHandler(params.id);
