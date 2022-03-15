@@ -47,7 +47,7 @@ const ViewTable = (props) => {
   const handleOk = () => {
     let selectedId = selectedViewId.view_disp_id;
     let selectedVersion = selectedViewId.view_version;
-    props.handleCloseModal(selectedId, selectedVersion);
+    props.handleOkModal(selectedId, selectedVersion);
     dispatch(sendView(selectedViewId));
   };
 
