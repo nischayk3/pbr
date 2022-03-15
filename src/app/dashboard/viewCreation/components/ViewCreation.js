@@ -380,6 +380,7 @@ function ViewCreation() {
     setCount(1);
     counter.current = 0;
     let files = [];
+    let status = {};
     let req = { view_disp_id: viewId ? viewId : viewDisplayId };
     getViewConfig(req)
       .then((res) => {
@@ -387,10 +388,19 @@ function ViewCreation() {
         setViewStatus(res.view_status);
         setViewVersion(res.view_version);
         setViewFunctionName(res.view_name);
+        if(res.view_status === 0)  {
+          status = 'DRFT'
+        }
+        if(res.view_status === 1)  {
+          status = 'AWAP'
+        }
+        if(res.view_status === 2)  {
+          status = 'APRD'
+        }
         form.setFieldsValue({
           viewName: res.view_name,
           version: res.view_version,
-          status: res.view_status,
+          status: status,
           viewId: viewId ? viewId : viewDisplayId,
         });
         updateSaved.current = true;
@@ -693,12 +703,15 @@ function ViewCreation() {
       }))
     );
     let status;
-    console.log(viewStatus, 'view')
-    if (viewStatus === 'DRFT') {
-      console.log('inside');
-      status = 0;
+    if(viewStatus === 'DRFT')  {
+      status = 0
     }
-    console.log(status, 'status')
+    if(viewStatus === 'AWAP')  {
+      status = 1
+    }
+    if(viewStatus === 'APRD')  {
+      status = 2
+    }
     const obj = {
       view_name: viewFunctionName,
       material_id: moleculeList[0].product_num,
@@ -709,7 +722,7 @@ function ViewCreation() {
       view_description: 'Test View Object',
       view_version: viewVersion,
       view_disp_id: viewDisplayId,
-      view_status: status === 0 ? status : viewStatus,
+      view_status:  viewStatus,
     };
     const headers = {
       username: 'user_mareana1',
@@ -818,8 +831,9 @@ function ViewCreation() {
   };
 
   const PublishResponse = (res) => {
+  console.log(res);
     setPublishResponse(res);
-    setViewStatus(res.stauts);
+    setViewStatus(res.rep_stauts);
   };
 
   useEffect(() => {
@@ -888,7 +902,7 @@ function ViewCreation() {
               </Button>
               <Button
                 className='viewCreation-saveBtn'
-                //  disabled={!viewDisplayId}
+                disabled={!viewDisplayId}
                 onClick={handleSaveFunc}
               >
                 Save

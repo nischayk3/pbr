@@ -55,6 +55,7 @@ function ChartPersonalization() {
   const [visible, setVisible] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [isView, setIsView] = useState(false);
+  const [displayId, setDispalyId] = useState({viewId:'', version:''});
   const [isNew, setIsNew] = useState(false);
   const [isNewBtnDisabled, setisNewBtnDisabled] = useState(true);
   const [showChart, setShowChart] = useState(false);
@@ -148,7 +149,7 @@ function ChartPersonalization() {
   const chartPersReducer = useSelector((state) => state.chartPersReducer);
   const chartDataReducer = useSelector((state) => state.chartDataReducer);
   const chartViewReducer = useSelector((state) => state.chartViewReducer);
-
+  console.log(chartViewReducer, 'chartView')
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -341,10 +342,9 @@ function ChartPersonalization() {
   };
 
   const callFilterAPI = (site, dateRange, isUnApproved) => {
-    let viewDisplayId =
-      chartViewReducer.viewId !== '' ? chartViewReducer.viewId : '';
-    let viewVersionId =
-      chartViewReducer.viewVersion !== '' ? chartViewReducer.viewVersion : '';
+    console.log(chartViewReducer, 'chartview')
+    let viewDisplayId = chartViewReducer.viewId;
+    let viewVersionId = chartViewReducer.viewVersion;
     viewParamData(viewDisplayId, viewVersionId, site, dateRange, isUnApproved);
   };
 
@@ -477,10 +477,10 @@ function ChartPersonalization() {
   ) {
     let reqViewParam = {
       view_disp_id: viewDisId ? viewDisId : '',
-      view_version: viewVer ? Number(viewVer) : null,
-      // site: site ? site : null,
-      // date: dateRange ? dateRange : null,
-      unapproved_data: isUnApproved ? isUnApproved : false,
+      view_version: viewVer ? Number(viewVer) : undefined,
+      // site: site ? [site] : undefined,
+      date: dateRange ? dateRange : undefined,
+      unapproved_data: true,
     };
     try {
       dispatch(showLoader());
