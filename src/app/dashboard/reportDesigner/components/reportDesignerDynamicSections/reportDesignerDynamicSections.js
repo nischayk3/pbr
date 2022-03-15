@@ -63,8 +63,8 @@ function ReportDesignerDynamicSections(props) {
                                                         <ReportDesignerDynamicRow fieldKey={name} show={props.show}/>
                                                     </tbody>
                                                 </table>
-                                                <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)}>
-                                                    <DeleteTwoTone twoToneColor="red" style={{marginBottom:'100px'}} disabled={props.show}/>
+                                                <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
+                                                    <DeleteTwoTone twoToneColor="red" style={{marginBottom:'100px'}} />
                                                 </Popconfirm>
                                             </Space>
                                         </div>

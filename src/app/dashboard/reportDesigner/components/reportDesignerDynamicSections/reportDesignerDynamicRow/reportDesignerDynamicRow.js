@@ -51,11 +51,11 @@ function ReportDesignerDynamicRow(props) {
 
                                         return value['editable'] === true ? (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea allowClear autoSize={true} placeholder="Enter Key" name={[name, 'keyName']} disabled />
+                                                <Input.TextArea allowClear autoSize={true} placeholder="Enter Key" name={[name, 'keyName']} disabled  />
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Key" style={{ backgroundColor: '#baeaff ' }} bordered={true} disabled={props.show} />
+                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Key" className="ant-input-textarea" bordered={true} disabled={props.show} />
                                             </Form.Item>
                                         )
                                     }}
@@ -79,7 +79,7 @@ function ReportDesignerDynamicRow(props) {
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'value']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Value" style={{ backgroundColor: '#baeaff' }} bordered={true} disabled={props.show} />
+                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Value" style={{ backgroundColor: '#baeaff' }} bordered={true} disabled={props.show} className="ant-input-textarea" />
                                             </Form.Item>
                                         )
                                     }}
