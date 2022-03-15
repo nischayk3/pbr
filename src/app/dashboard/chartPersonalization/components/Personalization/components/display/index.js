@@ -22,6 +22,12 @@ const Display = ({figure,setFigure,legend,setLegend,axes,setAxes, selectedLayout
             showlegend:e,
             type: 'scatter',
             mode: 'lines',
+            // legend: {
+            //     x: 1,
+            //     xanchor:'right',
+            //     y: 1,
+            //   }
+              legend: {"orientation": "v"}
           }));
     }
 
