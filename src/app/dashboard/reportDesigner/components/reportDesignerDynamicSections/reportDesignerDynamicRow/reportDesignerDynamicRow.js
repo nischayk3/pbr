@@ -86,7 +86,7 @@ function ReportDesignerDynamicRow(props) {
                                 </Form.Item>
                             </td>
                             <td >
-                                <Popconfirm title="Are you Sure you want to delete?" onConfirm={() => remove(name)}>
+                                <Popconfirm title="Are you Sure you want to delete?" onConfirm={() => remove(name)} disabled={props.show} >
                                     <DeleteTwoTone twoToneColor="red" disabled={props.show} />
                                 </Popconfirm>
                             </td>
