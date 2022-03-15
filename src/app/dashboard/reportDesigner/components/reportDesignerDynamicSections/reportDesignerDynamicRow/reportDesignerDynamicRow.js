@@ -79,7 +79,7 @@ function ReportDesignerDynamicRow(props) {
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'value']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Value" style={{ backgroundColor: '#baeaff' }} bordered={true} disabled={props.show} className="ant-input-textarea" />
+                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Value" bordered={true} disabled={props.show} className="ant-input-textarea" />
                                             </Form.Item>
                                         )
                                     }}
