@@ -818,8 +818,9 @@ function ViewCreation() {
   };
 
   const PublishResponse = (res) => {
+  console.log(res);
     setPublishResponse(res);
-    setViewStatus(res.stauts);
+    setViewStatus(res.rep_stauts);
   };
 
   useEffect(() => {
