@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { Card, Table, Input, Space, Avatar,Row, Col } from 'antd';
+import { Card, Table, Input, Space, Avatar, Row, Col } from 'antd';
 import illustrations from '../../../../assets/images/Group 33808.svg';
 import DeviationTable from './deviationTable/deviationTable';
-import { BellOutlined, LayoutOutlined } from '@ant-design/icons';
+import DataQuality from './dataQuality/dataQuality';
+import { BellOutlined, LayoutOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import {
   hideLoader,
   showLoader,
@@ -16,7 +18,8 @@ const Workspace = () => {
 
   const [resultDate, setResultDate] = useState('');
   const [tilesData, setTilesData] = useState([]);
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     updateDate();
@@ -31,19 +34,19 @@ const Workspace = () => {
     const resultDate = month + ' ' + latestDate + ',' + ' ' + year
     setResultDate(resultDate);
   }
-  
+
   const getTilesData = async () => {
     let req = {};
     try {
-        dispatch(showLoader());
-        const tilesResponse = await getCountData(req);
-        setTilesData(tilesResponse['Data']);
-        dispatch(hideLoader());
+      dispatch(showLoader());
+      const tilesResponse = await getCountData(req);
+      setTilesData(tilesResponse['Data']);
+      dispatch(hideLoader());
     } catch (error) {
-        dispatch(hideLoader());
-        dispatch(showNotification('error', error.message));
+      dispatch(hideLoader());
+      dispatch(showNotification('error', error.message));
     }
-}
+  }
   return (
     <div className='custom-wrapper'>
       <div className='workspace-subheader'>
@@ -66,8 +69,12 @@ const Workspace = () => {
             <p className='workspace-username'>Howdy {(localStorage.getItem('user'))}! Good Morning</p>
             <p className='workspace-text'>Let's see what you have on your plate today!</p>
           </div>
-          <img src={illustrations} className='workspace-illustration' />
-          <span className='workspace-resultdate'>{resultDate}</span>
+          <div style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
+            <img src={illustrations} className='workspace-illustration' />
+          </div>
+          <div>
+            <span className='workspace-resultdate'>{resultDate}</span>
+          </div>
 
         </Card>
         <div className='workspace-wrapper'>
@@ -75,31 +82,69 @@ const Workspace = () => {
             <div className='workspace-innerColumn'>
               <div className='workspace-card1'>
                 <div className='innercard'>
-                  <LayoutOutlined />
+                  <LayoutOutlined style={{ color: '#0CE7CC', fontSize: '15px' }} />
                   <span className='deviation-text'> Workflow Approvals</span>
+                  <span style={{ float: 'right' }}>
+                    <ArrowRightOutlined style={{ color: '#0CE7CC', fontSize: '15px' }} />
+                    <a className='workspace-review' onClick={() => history.push('/dashboard/workflow')}>Review</a>
+                  </span>
+
                   <Row gutter={4}>
-                  {tilesData.map((item, index) => {
-                    return(
-                      <Col className="gutter-row" span={6}>
-                      {item.item_count>0&&(
-                      <div style={{marginTop:'15px'}}>
-                      <p className='approval-text'>{item.text.split(" ")[0]}</p>
-                      <p className='approval-count'>{item.item_count}</p>
-                      </div>
-                      )}
-                    </Col>
-                    )
-                    
-                  })}
+                    {tilesData.map((item, index) => {
+                      return (
+                        <Col className="gutter-row" span={4}>
+                          {item.item_count > 0 && (
+                            <div style={{ marginTop: '15px' }} key={index}>
+                              <p className='approval-text'>{item.text.split(" ")[0]}</p>
+                              <p className='approval-count'>{item.item_count}</p>
+                            </div>
+                          )}
+                        </Col>
+                      )
+
+                    })}
                   </Row>
                 </div>
+                <div>
+                  <p>5 People awaiting your approval!</p>
+                  <Avatar.Group
+                    maxCount={2}
+                    maxStyle={{
+                      color: '#f56a00',
+                      backgroundColor: '#fde3cf',
+                    }}
+                  >
+                    <Avatar
+                      style={{
+                        backgroundColor: '#f56a00',
+                      }}
+                    >
+                      V
+                    </Avatar>
+                  </Avatar.Group>
+                </div>
               </div>
-              <div className='workspace-card2'><Card >Hello</Card></div>
+              <div className='workspace-card2'>
+                <div className='innercard'>
+                  <LayoutOutlined style={{ color: '#0CE7CC', fontSize: '15px' }} />
+                  <span className='deviation-text'>Paper Batch Records</span>
+                  <span style={{ float: 'right' }}>
+                    <ArrowRightOutlined style={{ color: '#0CE7CC', fontSize: '15px' }} />
+                    <a onClick={() => console.log('PBR')} className='workspace-review'>View All</a>
+                  </span>
+                  <div className='paper-batch-card'>
+                    <p className='paper-batch-count'>5</p>
+                    <p className='paper-batch-desc'>New paper batch records are awaiting your approval!</p>
+                  </div>
+                </div>
+
+              </div>
             </div>
             <div className='workspace-chart'>
-              <Card>
-                Hello
-              </Card>
+              <div className='innercard'>
+                <LayoutOutlined style={{ color: '#0CE7CC', fontSize: '15px' }} />
+                <span className='deviation-text'>Process Control Charts</span>
+              </div>
             </div>
 
           </div>
@@ -107,14 +152,18 @@ const Workspace = () => {
           <div className='workspace-outerColumn'>
             <div className='workspace-table1'>
               <div className='innercard'>
-                <LayoutOutlined />
+                <LayoutOutlined style={{ color: '#0CE7CC', fontSize: '15px' }} />
                 <span className='deviation-text'> Recent Deviations</span>
                 <DeviationTable />
               </div>
 
             </div>
             <div className='workspace-table2'>
-              <Card >Hello</Card>
+              <div className='innercard'>
+                <LayoutOutlined style={{ color: '#0CE7CC', fontSize: '15px' }} />
+                <span className='deviation-text'> Data Quality</span>
+                <DataQuality />
+              </div>
             </div>
           </div>
 
