@@ -30,3 +30,12 @@
 .cardClass.ant-card-bordered {
   height: 150px;
 }
+
+.MathEditor-table{
+  th:first-of-type{
+    padding-left: 15px !important;
+  }
+  td:first-of-type{
+    padding-left: 15px !important;
+  }
+}
