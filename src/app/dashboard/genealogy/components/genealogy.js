@@ -1,12 +1,14 @@
 /**
  * @author Dinesh Kumar <dinesh.kumar@mareana.com>
+ * @Mareana - CPV Product
  * @version  1
- * @Last Modified - 14 March, 2022
+ * @Last Modified - 16 March, 2022
+ * @Last Changed By - Dinesh
  */
 
 import React, { useState } from 'react';
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Tabs, Popover, Button, message } from 'antd';
+import { ArrowLeftOutlined, DownloadOutlined } from '@ant-design/icons';
+import { Tabs } from 'antd';
 import Filter from './genealogyFilter';
 import TreePlot from './TreePlot/TreePlot';
 import response from '../treePlot.json';
@@ -20,8 +22,13 @@ import {
 } from '../../../../duck/actions/commonActions';
 import {
   getBackwardData,
+  getBatchInfo,
+  getProcessInfo,
   getForwardData,
 } from '../../../../services/genealogyService';
+import popupicon from '../../../../assets/images/popup.png';
+import GenealogyDrawer from '../components/genealogyDrawer/index.js';
+import GenealogyDataTable from './genealogyDataTable';
 
 const { TabPane } = Tabs;
 function Genealogy() {
@@ -32,10 +39,16 @@ function Genealogy() {
   const [showTree, setShowTree] = useState(false);
   const [productCode, setProductCode] = useState('');
   const [activateKey, setActivateKey] = useState('1');
+  const [isDrawer, setIsDrawer] = useState(false);
+  const [batchInfo, setBatchInfo] = useState([]);
+  const [processInfo, setProcessInfo] = useState([]);
+
+  const [showView, setShowView] = useState(false);
 
   const dispatch = useDispatch();
 
   const onClickNode = (node) => {
+    console.log('nodeeeeeeeeeeeee', node);
     setGenealogyData([]);
     if (node.clickType === 'backward') {
       let _reqBackward = {
@@ -47,7 +60,7 @@ function Genealogy() {
       setActivateKey('2');
       setchartType('backward');
       setProductCode(node.product);
-    } else {
+    } else if (node.clickType === 'forward') {
       let _reqFor = {
         levels: 5,
         batch_id: node.nodeId,
@@ -57,6 +70,22 @@ function Genealogy() {
       setActivateKey('2');
       setchartType('forward');
       setProductCode(node.product);
+    } else if (node.clickType === 'view') {
+      let nodeSplit = node.nodeId.split('|');
+      let _reqBatchInfo = {
+        ///batch-info?entity_type=Lims&relation_id=batch_to_lims&batch_id=ABV4103
+        entity_type: 'Lims',
+        relation_id: 'batch_to_lims',
+        batch_id: 'ABV4103',
+        // nodeSplit[2],
+      };
+      let _reqProcessInfo = {
+        entity_type: 'Batch',
+        process_order_id: '1338|1.02279687E8',
+        relation_id: 'input_process_order_to_batch',
+      };
+      getNodeBatchInfo(_reqBatchInfo);
+      getNodeProcessInfo(_reqProcessInfo);
     }
   };
 
@@ -68,7 +97,8 @@ function Genealogy() {
     if (param.treeType === 'Backward') {
       let _reqBack = {
         levels: 5,
-        batch_id: selectedValue.replace(/\s/g, ''),
+        batch_id: '1338|1089084|394154',
+        //selectedValue.replace(/\s/g, ''),
         backward: true,
       };
       //setActivateKey('2');
@@ -91,7 +121,9 @@ function Genealogy() {
       setProductCode(product[0]);
     }
   };
-
+  /**
+   * TODO: get backward genealogy data from selected parameters or from on node click
+   */
   const getBackwardGeneology = async (_reqBack) => {
     try {
       dispatch(showLoader());
@@ -116,7 +148,9 @@ function Genealogy() {
       dispatch(showNotification('error', error));
     }
   };
-
+  /**
+   * TODO: get forward genealogy data from selected parameters or from on node click
+   */
   const getForwardGeneology = async (_reqFor) => {
     try {
       dispatch(showLoader());
@@ -141,10 +175,48 @@ function Genealogy() {
     }
   };
 
+  /**
+   * TODO: get bacth info of node
+   */
+  const getNodeBatchInfo = async (_reqBatch) => {
+    try {
+      dispatch(showLoader());
+      const batchRes = await getBatchInfo(_reqBatch);
+      setBatchInfo(batchRes);
+      dispatch(hideLoader());
+      console.log('batchressssss', batchRes);
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', 'No Data Found'));
+    }
+  };
+
+  /**
+   *TODO: get Process Info of node
+   */
+  const getNodeProcessInfo = async (_reqProcessInfo) => {
+    try {
+      dispatch(showLoader());
+      const processRes = await getProcessInfo(_reqProcessInfo);
+      if (processRes.length > 0) {
+        setProcessInfo(processRes);
+      }
+      dispatch(hideLoader());
+      console.log('procsssRes', processRes);
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', 'No Data Found'));
+    }
+  };
   const handleChangeTab = (activateKey) => {
     setActivateKey(activateKey);
   };
 
+  const isDrawerVisible = (val) => {
+    setIsDrawer(val);
+    setShowView(true);
+    setActivateKey('3');
+  };
   // const onEditTab = (targetKey, action) => {
   //   console.log('targetKey, action', targetKey, action);
   // };
@@ -152,7 +224,7 @@ function Genealogy() {
   // const remove = (targetKey) => {
   //   console.log('targetKey', targetKey);
   // };
-
+  console.log('avtivate leu', activateKey);
   return (
     <div className='custom-wrapper'>
       <div className='sub-header'>
@@ -186,7 +258,7 @@ function Genealogy() {
               }
               closable={true}
               key='2'
-              className='tree-wrap'
+              className='tree-wrap site-drawer-render-in-current-wrapper'
             >
               {genealogyData && genealogyData.length > 0 && (
                 <TreePlot
@@ -198,6 +270,35 @@ function Genealogy() {
                   //  handleChartClick={handleClickNode}
                 />
               )}
+              <GenealogyDrawer isDrawer={isDrawerVisible} />
+            </TabPane>
+          )}
+          {showView && (
+            <TabPane
+              tab={
+                <>
+                  <p className='tab-label'>
+                    <img className='tree-type-icon' src={popupicon} />
+                    Popout - {productCode}
+                  </p>
+                </>
+              }
+              key='3'
+              closable={false}
+            >
+              <div className='popout-table'>
+                <div className='drawer-heading'>
+                  <p>35735735 - Material</p>
+                  <span>
+                    <DownloadOutlined />
+                  </span>
+                </div>
+                <GenealogyDataTable
+                  className={isDrawer ? 'drawer-collapse' : 'popout-collapse'}
+                  batchInfo={batchInfo}
+                  processInfo={processInfo}
+                />
+              </div>
             </TabPane>
           )}
         </Tabs>

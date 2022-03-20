@@ -155,13 +155,17 @@ function Filter(props) {
     try {
       const filterRes = await getGeanealogyFilter(reqFilter);
       console.log('filterRes', filterRes);
-      setParamList(() => {
-        return {
-          plantList: filterRes && filterRes.plant_no,
-          batchList: filterRes && filterRes.batch_no,
-          produtList: filterRes && filterRes.material,
-        };
-      });
+      if (filterRes.data.statuscode === 400) {
+        dispatch(showNotification('error', filterRes.data.message));
+      } else {
+        setParamList(() => {
+          return {
+            plantList: filterRes && filterRes.plant_no,
+            batchList: filterRes && filterRes.batch_no,
+            produtList: filterRes && filterRes.material,
+          };
+        });
+      }
     } catch (err) {
       dispatch(showNotification('error', err));
     }
@@ -259,7 +263,7 @@ function Filter(props) {
           type='primary'
           className='custom-secondary-btn'
           onClick={OnSearchTree}
-          disabled={disabled}
+          // disabled={disabled}
         >
           Search
         </Button>
