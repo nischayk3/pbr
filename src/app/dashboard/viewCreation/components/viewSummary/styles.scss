@@ -8,8 +8,10 @@
   }
   .functionEditor-FormBlock {
     display: grid;
-    grid-gap: 14px 24px;
-    grid-template-columns: repeat(5, 133px);
+    // grid-gap: 14px 24px;
+    // grid-template-columns: repeat(5, 133px);
+    grid-gap: 30px;
+    grid-template-columns: repeat(5, 150px);
   }
 
   .MathEditor-FormBlock {
@@ -21,8 +23,10 @@
   .functionEditor-FormBlock {
     display: grid;
 
-    grid-gap: 14px 24px;
-    grid-template-columns: repeat(5, 133px);
+    // grid-gap: 14px 24px;
+    // grid-template-columns: repeat(5, 133px);
+    grid-gap: 30px;
+    grid-template-columns: repeat(5, 150px);
   }
 
   .MathEditor-FormBlock {
@@ -48,12 +52,28 @@
   }
 
   .viewSummary-TableBlock {
+    th:first-of-type {
+      padding-left: 25px !important;
+     
+  }
+  th:last-of-type {
+    padding-right: 25px !important;
+   
+}
+  td:first-of-type {
+    padding-left: 25px !important;
+   
+}
+td:last-of-type {
+  padding-right: 25px !important;
+ 
+}
     td > * {
       vertical-align: middle !important;
     }
     padding-top: 24px;
     .ant-table-thead > tr > th {
-      padding: 8px !important;
+      //padding: 8px !important;
     }
   }
 }

@@ -47,6 +47,9 @@
           }
         }
       }
+      .ant-btn[disabled]:hover{
+       color:#262626;
+      }
 
       .viewCreation-clearBtn {
         border: none !important;
@@ -297,10 +300,14 @@ a.deleteTableAction {
 }
 
 .paramColumn {
-  width: 90px;
+  width: 85px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   word-break: break-word;
   margin: 0px;
+}
+
+.ant-input-wrapper {
+  margin-top:-13px !important;
 }
