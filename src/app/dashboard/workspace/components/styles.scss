@@ -100,6 +100,8 @@
 .workspace-table1 {
   //width: 455px;
   //height: 341px;
+  min-height: 285px !important;
+  overflow-y: auto;
   box-sizing: border-box;
   border-radius: 4px;
   background: #ffffff;

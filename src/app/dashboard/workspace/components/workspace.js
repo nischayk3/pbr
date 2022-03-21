@@ -213,10 +213,10 @@ const Workspace = () => {
                     // activeKey={activeTab}
                     // onChange={changeTab}
                   >
-                    <TabPane tab='Awaiting Approval' key='1'>
+                    <TabPane tab='Chart ID 1009' key='1'>
                       <p>content 1</p>
                     </TabPane>
-                    <TabPane tab='Recently Approved' key='2'>
+                    <TabPane tab='Chart ID 1222' key='2'>
                       <p>content 2</p>
                     </TabPane>
                   </Tabs>

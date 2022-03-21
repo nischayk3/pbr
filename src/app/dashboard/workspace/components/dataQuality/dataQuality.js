@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from 'react';
 import { useDispatch } from 'react-redux';
 import {Table} from 'antd';
-import { getDeviationData } from '../../../../../services/workSpaceServices';
+import { getDataQualityData } from '../../../../../services/workSpaceServices';
 import {
     hideLoader,
     showLoader,
@@ -15,8 +15,8 @@ const DeviationTable=()=> {
     const columns=[
         {
             title: 'Display ID',
-            key: 'display_id',
-            dataIndex: 'display_id'
+            key: 'view_disp_id',
+            dataIndex: 'view_disp_id'
         },
         {
             title: 'View Name',
@@ -25,25 +25,25 @@ const DeviationTable=()=> {
         },
         {
             title: 'Version',
-            key: 'version',
-            dataIndex: 'version',    
+            key: 'view_version',
+            dataIndex: 'view_version',    
         },
         {
             title: 'Product Name',
-            key: 'product_name',
-            dataIndex: 'product_name',    
+            key: 'product_descr',
+            dataIndex: 'product_descr',    
         }
     ]
     
-    // useEffect(()=>{
-    //     dataQualityTableData();
-    // },[])
+    useEffect(()=>{
+        dataQualityTableData();
+    },[])
 
     const dataQualityTableData=async()=>{
         let req={limit:5}
         try {
             dispatch(showLoader());
-            const tableResponse = await getDeviationData(req);
+            const tableResponse = await getDataQualityData(req);
             if (tableResponse['status-code'] === 200) {
                 setDataSource(tableResponse.Data);
                 dispatch(hideLoader());
