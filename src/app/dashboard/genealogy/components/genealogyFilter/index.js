@@ -86,7 +86,6 @@ function Filter(props) {
   };
 
   const clearSearch = (e, field) => {
-    console.log('fieldddddd', field);
     if (field === 'plant') {
       setselectParam((prevState) => {
         return { ...prevState, plant: '' };
@@ -154,14 +153,18 @@ function Filter(props) {
 
     try {
       const filterRes = await getGeanealogyFilter(reqFilter);
-      console.log('filterRes', filterRes);
-      setParamList(() => {
-        return {
-          plantList: filterRes && filterRes.plant_no,
-          batchList: filterRes && filterRes.batch_no,
-          produtList: filterRes && filterRes.material,
-        };
-      });
+
+      if (filterRes.statuscode === 200) {
+        setParamList(() => {
+          return {
+            plantList: filterRes && filterRes.plant_no,
+            batchList: filterRes && filterRes.batch_no,
+            produtList: filterRes && filterRes.material,
+          };
+        });
+      } else if (filterRes.data.statuscode === 400) {
+        dispatch(showNotification('error', filterRes.data.message));
+      }
     } catch (err) {
       dispatch(showNotification('error', err));
     }
@@ -206,60 +209,58 @@ function Filter(props) {
       {item}
     </Select.Option>
   ));
+
   return (
     <div className='param-filter-wrap'>
       <div className='param-filter'>
-        <div>
-          <SelectSearchField
-            showSearch
-            label='Plant'
-            placeholder='Select'
-            onChangeSelect={(value) => onChangeParam(value, 'plant')}
-            onSearchSelect={(type) => onSearchParam(type, 'plant')}
-            options={optionsPlant}
-            handleClearSearch={(e) => clearSearch(e, 'plant')}
-            //selectList={paramList['plantList']}
-            selectedValue={selectParam['plant']}
-          />
-          <SelectSearchField
-            showSearch
-            label='Batch'
-            placeholder='Select'
-            onChangeSelect={(value) => onChangeParam(value, 'batch_num')}
-            onSearchSelect={(type) => onSearchParam(type, 'batch_num')}
-            handleClearSearch={(e) => clearSearch(e, 'batch')}
-            // selectList={paramList['batchList']}
-            options={optionsBatch}
-            selectedValue={selectParam['batchNum']}
-          />
-        </div>
-        <div>
-          <SelectSearchField
-            showSearch
-            label='Product'
-            placeholder='Select'
-            onChangeSelect={(value) => onChangeParam(value, 'product_code')}
-            onSearchSelect={(type) => onSearchParam(type, 'product_code')}
-            options={optionsProduct}
-            handleClearSearch={(e) => clearSearch(e, 'product')}
-            // selectList={paramList['produtList']}
-            selectedValue={selectParam['productCode']}
-          />
-          <Toggle
-            name='isChecked'
-            checked={isCheck}
-            inline={true}
-            labels={['Backward', 'Forward']}
-            handleChange={handleChangeToggle}
-          />
-        </div>
+        <SelectSearchField
+          showSearch
+          label='Plant'
+          placeholder='Select'
+          onChangeSelect={(value) => onChangeParam(value, 'plant')}
+          onSearchSelect={(type) => onSearchParam(type, 'plant')}
+          options={optionsPlant}
+          handleClearSearch={(e) => clearSearch(e, 'plant')}
+          //selectList={paramList['plantList']}
+          selectedValue={selectParam['plant']}
+        />
+        <SelectSearchField
+          showSearch
+          label='Batch'
+          placeholder='Select'
+          onChangeSelect={(value) => onChangeParam(value, 'batch_num')}
+          onSearchSelect={(type) => onSearchParam(type, 'batch_num')}
+          handleClearSearch={(e) => clearSearch(e, 'batch')}
+          // selectList={paramList['batchList']}
+          options={optionsBatch}
+          selectedValue={selectParam['batchNum']}
+        />
+
+        <SelectSearchField
+          showSearch
+          label='Product'
+          placeholder='Select'
+          onChangeSelect={(value) => onChangeParam(value, 'product_code')}
+          onSearchSelect={(type) => onSearchParam(type, 'product_code')}
+          options={optionsProduct}
+          handleClearSearch={(e) => clearSearch(e, 'product')}
+          // selectList={paramList['produtList']}
+          selectedValue={selectParam['productCode']}
+        />
+        <Toggle
+          name='isChecked'
+          checked={isCheck}
+          inline={true}
+          labels={['Backward', 'Forward']}
+          handleChange={handleChangeToggle}
+        />
       </div>
       <div className='param-filter-btn'>
         <Button
           type='primary'
           className='custom-secondary-btn'
           onClick={OnSearchTree}
-          disabled={disabled}
+          // disabled={disabled}
         >
           Search
         </Button>

@@ -1,7 +1,6 @@
 import Service from './AjaxService';
 import {
   BMS_APP_PYTHON_SERVICE,
-  API_APPLICATION_MDH,
   MDH_APP_PYTHON_SERVICE,
 } from '../constants/apiBaseUrl';
 
@@ -21,20 +20,6 @@ export const getGeanealogyFilter = (_queryParam) => {
   );
 };
 
-// export const getBackwardData = (_queryParam) => {
-//   return Service.post(
-//     API_APPLICATION_MDH + '/mdh-getBackwardGeneology-service',
-//     _queryParam
-//   ).then(
-//     (response) => {
-//       return response.data;
-//     },
-//     (error) => {
-//       return error.response.data;
-//     }
-//   );
-// };
-
 export const getBackwardData = (_queryParam) => {
   return Service.get(
     MDH_APP_PYTHON_SERVICE + '/mdhgenealogy/v1/genealogy',
@@ -49,23 +34,44 @@ export const getBackwardData = (_queryParam) => {
   );
 };
 
-// export const getForwardData = (_queryParam) => {
-//   return Service.post(
-//     API_APPLICATION_MDH + '/mdh-getForwardGeneology-service',
-//     _queryParam
-//   ).then(
-//     (response) => {
-//       return response.data;
-//     },
-//     (error) => {
-//       return error.response.data;
-//     }
-//   );
-// };
-
 export const getForwardData = (_queryParam) => {
   return Service.get(
     MDH_APP_PYTHON_SERVICE + '/mdhgenealogy/v1/genealogy',
+    _queryParam
+  ).then(
+    (response) => {
+      return response.data;
+    },
+    (error) => {
+      return error.response.data;
+    }
+  );
+};
+
+/**
+ * TODO: get batch details from node
+ */
+export const getBatchInfo = (_queryParam) => {
+  return Service.get(
+    MDH_APP_PYTHON_SERVICE + '/mdhgenealogy/v1/batch-info',
+    _queryParam
+  ).then(
+    (response) => {
+      return response.data;
+    },
+    (error) => {
+      return error.response.data;
+    }
+  );
+};
+
+/**
+ * TODO: get Input Proces Order & From Process Order details
+ */
+
+export const getProcessInfo = (_queryParam) => {
+  return Service.get(
+    MDH_APP_PYTHON_SERVICE + '/mdhgenealogy/v1/process-info',
     _queryParam
   ).then(
     (response) => {
