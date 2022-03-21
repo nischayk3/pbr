@@ -16,6 +16,7 @@ import { Layout } from 'antd';
 import Sidebar from '../../components/Sidebar';
 import SuspenseWrapper from '../../components/SuspenseWrapper';
 import Uploader from './dataLoad/index';
+import LoginRedirect from '../user/login/redirect';
 
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
@@ -37,9 +38,9 @@ const Dashboard = () => {
   const history = useHistory();
 
   useEffect(() => {
-    if (!Auth.isAuthenticated()) {
-      history.push('/user/login');
-    }
+    // if (!Auth.isAuthenticated()) {
+    //   history.push('/user/login');
+    // }
   }, [history]);
   return (
     <>
@@ -102,7 +103,9 @@ const Dashboard = () => {
                 <Route key='workflow' path={`${match.url}/workflow`}>
                   <Workflow />
                 </Route>
-
+                <Route key='workflow' path={`${match.url}/redirect`}>
+                  <LoginRedirect />
+                </Route>
                 <Route key='redirect'>
                   <Redirect to={`${match.url}/dashboard`} />
                 </Route>

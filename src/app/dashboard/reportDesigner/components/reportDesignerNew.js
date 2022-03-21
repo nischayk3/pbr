@@ -255,7 +255,7 @@ function ReportDesignerNew() {
   // };
 
   const getReportData = async (rep_id, rep_status) => {
-    message.success(`${rep_id} selected`)
+    // message.success(`${rep_id} selected`)
     let req = { rep_status: rep_status ? rep_status : 'DRFT' };
     if (rep_id)
       req['rep_disp_id'] = rep_id
@@ -272,7 +272,7 @@ function ReportDesignerNew() {
   const getChartsList = (version) => {
     if (viewId.length > 0)
       setSelectedChartList([])
-    message.success(`${version} selected`)
+    // message.success(`${version} selected`)
     let req = version;
     getCharts(req).then((res) => {
 
@@ -370,18 +370,18 @@ function ReportDesignerNew() {
             setIsSave(true)
           }
           else
-            message.error('Not Saved')
+          dispatch(showNotification('error', 'Not Saved'));
 
         })
         
         dispatch(sendReport(req['data']))
       }
       else {
-        message.error('Report Name Is Required')
+        dispatch(showNotification('error', 'Report Name Is Required'));
       }
     }
     else {
-      message.error('No Changes To Save')
+      dispatch(showNotification('error', 'No Changes To Save'));
       dispatch(sendReport(mainJson))
     }
 
