@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 import { useDispatch } from 'react-redux';
 import {Table} from 'antd';
 import { getDeviationData } from '../../../../../services/workSpaceServices';
+import BatchIcon from '../../../../../assets/images/batch-icon.png';
 import {
     hideLoader,
     showLoader,
@@ -26,9 +27,80 @@ const DeviationTable=()=> {
         {
             title: 'Batch',
             key: 'batch_num',
-            dataIndex: 'batch_num',    
+            dataIndex: 'batch_num',
+            render:(text,row,index)=>{
+                return(
+                    <div>
+                        <img src={BatchIcon}  />
+                        <span style={{marginLeft:'5px'}}>{text}</span>
+                    </div>
+                )
+            } 
         }
     ]
+
+    // const source=[
+    //     {
+    //         "batch_num": "ABVL1029",
+    //         "event_id": "EV0100",
+    //         "product_num": "1314755"
+    //       },
+    //       {
+    //         "batch_num": "ABVL1028",
+    //         "event_id": "EV0292",
+    //         "product_num": "1322454"
+    //       },
+    //       {
+    //         "batch_num": "ABW3503",
+    //         "event_id": "EV0300",
+    //         "product_num": "1400285Z0"
+    //       },
+    //       {
+    //         "batch_num": "ABVL1029",
+    //         "event_id": "EV0100",
+    //         "product_num": "1314755"
+    //       },
+    //       {
+    //         "batch_num": "ABVL1028",
+    //         "event_id": "EV0292",
+    //         "product_num": "1322454"
+    //       },
+    //       {
+    //         "batch_num": "ABW3503",
+    //         "event_id": "EV0300",
+    //         "product_num": "1400285Z0"
+    //       },
+    //       {
+    //         "batch_num": "ABVL1029",
+    //         "event_id": "EV0100",
+    //         "product_num": "1314755"
+    //       },
+    //       {
+    //         "batch_num": "ABVL1028",
+    //         "event_id": "EV0292",
+    //         "product_num": "1322454"
+    //       },
+    //       {
+    //         "batch_num": "ABW3503",
+    //         "event_id": "EV0300",
+    //         "product_num": "1400285Z0"
+    //       },
+    //       {
+    //         "batch_num": "ABVL1029",
+    //         "event_id": "EV0100",
+    //         "product_num": "1314755"
+    //       },
+    //       {
+    //         "batch_num": "ABVL1028",
+    //         "event_id": "EV0292",
+    //         "product_num": "1322454"
+    //       },
+    //       {
+    //         "batch_num": "ABW3503",
+    //         "event_id": "EV0300",
+    //         "product_num": "1400285Z0"
+    //       }
+    // ]
     
     useEffect(()=>{
         deviationTableData();

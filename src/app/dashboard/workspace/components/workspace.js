@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { Card, Table, Input, Space, Avatar, Row, Col, Tabs } from 'antd';
+import { Card,Input, Space, Avatar, Row, Col, Tabs } from 'antd';
 import illustrations from '../../../../assets/images/Group 33808.svg';
 import DeviationTable from './deviationTable/deviationTable';
 import DataQuality from './dataQuality/dataQuality';
@@ -61,7 +61,7 @@ const Workspace = () => {
           //onSearch={ }
           style={{ width: 304 }}
         />
-        <BellOutlined style={{ margin: '0px 25px' }} />
+        <BellOutlined style={{ margin: '0px 25px',fontSize:'20px' }} />
         <div>
           <Avatar style={{ backgroundColor: 'orange' }}>
             {localStorage.getItem('user').split('')[0].toUpperCase()}{' '}

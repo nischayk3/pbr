@@ -34,6 +34,74 @@ const DeviationTable=()=> {
             dataIndex: 'product_descr',    
         }
     ]
+    // const source=[
+    //     {
+    //         'view_disp_id':'1',
+    //         'view_name':'abcd',
+    //         'view_version':'1.0',
+    //         'product_descr':'hello'
+    //     },
+    //     {
+    //         'view_disp_id':'1',
+    //         'view_name':'abcd',
+    //         'view_version':'1.0',
+    //         'product_descr':'hello'
+    //     },
+    //     {
+    //         'view_disp_id':'1',
+    //         'view_name':'abcd',
+    //         'view_version':'1.0',
+    //         'product_descr':'hello'
+    //     },
+    //     {
+    //         'view_disp_id':'1',
+    //         'view_name':'abcd',
+    //         'view_version':'1.0',
+    //         'product_descr':'hello'
+    //     },
+    //     {
+    //         'view_disp_id':'1',
+    //         'view_name':'abcd',
+    //         'view_version':'1.0',
+    //         'product_descr':'hello'
+    //     },
+    //     {
+    //         'view_disp_id':'1',
+    //         'view_name':'abcd',
+    //         'view_version':'1.0',
+    //         'product_descr':'hello'
+    //     },
+    //     {
+    //         'view_disp_id':'1',
+    //         'view_name':'abcd',
+    //         'view_version':'1.0',
+    //         'product_descr':'hello'
+    //     },
+    //     {
+    //         'view_disp_id':'1',
+    //         'view_name':'abcd',
+    //         'view_version':'1.0',
+    //         'product_descr':'hello'
+    //     },
+    //     {
+    //         'view_disp_id':'1',
+    //         'view_name':'abcd',
+    //         'view_version':'1.0',
+    //         'product_descr':'hello'
+    //     },
+    //     {
+    //         'view_disp_id':'1',
+    //         'view_name':'abcd',
+    //         'view_version':'1.0',
+    //         'product_descr':'hello'
+    //     },
+    //     {
+    //         'view_disp_id':'1',
+    //         'view_name':'abcd',
+    //         'view_version':'1.0',
+    //         'product_descr':'hello'
+    //     }
+    // ]
     
     useEffect(()=>{
         dataQualityTableData();

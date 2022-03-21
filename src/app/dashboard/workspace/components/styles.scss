@@ -94,14 +94,14 @@
 }
 .workspace-outerColumn {
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  //grid-template-rows:1fr 1fr;
+  height: fit-content;
   gap: 24px;
 }
 .workspace-table1 {
   //width: 455px;
-  //height: 341px;
-  min-height: 285px !important;
-  overflow-y: auto;
+  //max-height: 341px;
+  overflow-y: hidden;
   box-sizing: border-box;
   border-radius: 4px;
   background: #ffffff;
@@ -109,7 +109,8 @@
 }
 .workspace-table2 {
   //width: 455px;
-  //height: 341px;
+  //max-height: 407px;
+  overflow-y: hidden;
   background: #ffffff;
   box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
