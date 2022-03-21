@@ -137,8 +137,9 @@ color: #000000;
       border-width: 10px 12px 10px 0;
       border-color: transparent white transparent transparent;
       z-index: 1;
-      left: -12px;
-      box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1) !important;
+      //box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1) !important;
+      left: -8px;
+      filter: drop-shadow(-3px 0px 0px #486ac9);
     }
     .arrow-step-0 {
       top: 25px;
