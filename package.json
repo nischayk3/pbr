@@ -13,7 +13,7 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "dev": "start-test 3030 cy:open",
-    "cy:build": "start-server-and-test start https://bms-cpvdev.mareana.com cy:run",
+    "cy:build": "start-server-and-test https://bms-cpvdev.mareana.com cy:run",
     "e2e": "start-test 3030     "
   },
   "dependencies": {
