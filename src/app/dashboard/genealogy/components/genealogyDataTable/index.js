@@ -10,22 +10,18 @@ import { Collapse, Table } from 'antd';
 import { tableColumns } from '../../../../../utils/TableColumns';
 
 function GenealogyDataTable(props) {
-  console.log('propsssssssssss', props);
   const [batchData, setbatchData] = useState([]);
   const [processData, setprocessData] = useState([]);
   const { Panel } = Collapse;
   useEffect(() => {
     if (props && props.batchInfo && props.batchInfo.length > 0) {
-      console.log('props1', props);
-
       setbatchData(props.batchInfo);
     }
     if (props && props.processInfo && props.processInfo.length > 0) {
-      console.log('props2', props);
       setprocessData(props.processInfo);
     }
   }, [props.processInfo, props.batchInfo]);
-  console.log('process dataaaaa', processData);
+
   return (
     <Collapse
       bordered={false}

@@ -593,21 +593,6 @@ function TreePlot(props) {
           })
           .attr('transform', function (d) {
             return 'translate(' + source.y0 + ',' + source.x0 + ')';
-          })
-          .on('contextmenu', function (d) {
-            d3.event.preventDefault();
-            toolTip
-              .transition() // declare the transition properties to
-              .duration(500) // fade out div for 500ms
-              .style('opacity', '0'); // a
-            node_onClick(d);
-            popupDiv.style('display', 'block');
-            popupDiv.style('left', d3.event.layerX + 'px');
-            if (d3.event.layerY > 200) {
-              popupDiv.style('top', d3.event.layerY - 150 + 'px');
-            } else {
-              popupDiv.style('top', d3.event.layerY + 20 + 'px');
-            }
           });
 
         var highlightForwardLink = function (
@@ -717,6 +702,17 @@ function TreePlot(props) {
               .duration(500) // it shall take 500ms
               .style('opacity', '0'); // and go all the way to an opacity of nil
           })
+          .on('click', function (d) {
+            d3.event.preventDefault();
+            handleChartClick(d);
+            popupDiv.style('display', 'block');
+            popupDiv.style('left', d3.event.layerX + 'px');
+            if (d3.event.layerY > 200) {
+              popupDiv.style('top', d3.event.layerY - 150 + 'px');
+            } else {
+              popupDiv.style('top', d3.event.layerY + 20 + 'px');
+            }
+          })
           .attr('xlink:href', function (d) {
             if (d.OpenNC != undefined || d.OpenNC === true) {
               return 'img/genealogy/non-material.png';
@@ -757,12 +753,31 @@ function TreePlot(props) {
               .duration(500) // it shall take 500ms
               .style('opacity', '0'); // and go all the way to an opacity of nil
           })
-          .on('click', function (d) {
-            d3.event.preventDefault();
-          })
+
           .style('fill-opacity', '0')
           .style('fill', function (d) {
             return '#000000';
+          });
+
+        nodeEnter
+          .append('svg:text')
+          .attr('x', function (d) {
+            return d.traceability === 'backward' ? 15 : -15;
+          })
+          .attr('dy', '3.2em')
+          .attr('text-anchor', function (d) {
+            return d.traceability === 'backward' ? 'end' : 'start';
+          })
+          .on('click', function (d) {
+            d3.event.preventDefault();
+            node_onClick(d);
+          })
+          .text(function (d) {
+            var icon = '';
+            if (d.type === 'Material') {
+              icon = '+';
+            }
+            return icon;
           });
 
         // Transition nodes to their new position.
@@ -971,8 +986,6 @@ function TreePlot(props) {
         // On Node Click Event
         //toggle children click
         function node_onClick(d) {
-          handleChartClick(d);
-
           if (d.children) {
             d._children = d.children;
 
@@ -1319,7 +1332,9 @@ function TreePlot(props) {
     setTimeout(() => TreeViewBackward.multiParentCoupling(multiParent), 100);
   };
   const handleChartClick = (data) => {
+    console.log('handleChartClick', data);
     setPopVisible(true);
+
     setNodeData((prevState) => {
       return { ...prevState, data };
     });

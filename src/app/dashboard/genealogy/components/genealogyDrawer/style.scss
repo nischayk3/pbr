@@ -17,11 +17,25 @@
     padding: 12px 24px 21px 19px;
   }
 }
-
-.drawer-heading {
-  grid-template-columns: 185px 25px 75px;
+.drawer-title {
+  grid-template-columns: 20px 150px 22px;
   display: grid;
-  grid-gap: 24px;
+  grid-gap: 4px;
+  img {
+    width: 19px;
+    height: 19px;
+  }
+}
+.drawer-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .drawer-title {
+    grid-template-columns: 20px 160px 22px;
+    display: grid;
+    grid-gap: 4px;
+  }
   img {
     width: 19px;
     height: 19px;
