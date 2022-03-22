@@ -764,20 +764,22 @@ function TreePlot(props) {
           .attr('x', function (d) {
             return d.traceability === 'backward' ? 15 : -15;
           })
-          .attr('dy', '3.2em')
+          .attr('class', 'expand')
+          .attr('dy', '1.2em')
           .attr('text-anchor', function (d) {
             return d.traceability === 'backward' ? 'end' : 'start';
           })
-          .on('click', function (d) {
-            d3.event.preventDefault();
-            node_onClick(d);
-          })
           .text(function (d) {
+            console.log('ddddddddddddddd', d);
             var icon = '';
-            if (d.type === 'Material') {
-              icon = '+';
+            if (d.children !== undefined) {
+              icon = '-';
             }
             return icon;
+          })
+
+          .on('click', function (d) {
+            node_onClick(d, d.id);
           });
 
         // Transition nodes to their new position.
@@ -985,16 +987,52 @@ function TreePlot(props) {
 
         // On Node Click Event
         //toggle children click
-        function node_onClick(d) {
+        function node_onClick(d, id) {
+          let lastClickD = null;
+          let nExpand = d3.select('#node-' + id);
           if (d.children) {
+            console.log('ifffffffffffff');
             d._children = d.children;
-
             d.children = null;
+            let nodeExpand = nExpand.selectAll('.expand');
+            console.log('nodeExpand', nExpand);
+            console.log('nodeExpand', nodeExpand);
+            nodeExpand
+              .text(function (a) {
+                console.log('aaaaaaaa', a);
+                console.log('dddiiiiddddd', d.id);
+                console.log('aaaaa.iddddd', a.id);
+                var nodeIcon = '';
+                if (a.id === d.id) {
+                  nodeIcon = '+';
+                }
+                return nodeIcon;
+              })
+              .attr('class', 'collapsed');
           } else {
+            console.log('elsssssssssssss');
             d.children = d._children;
 
             d._children = null;
+            let nodeCollappsed = nExpand.selectAll('.collapsed');
+            nodeCollappsed
+              .text(function (b) {
+                console.log('aaaaaaaa', b);
+                console.log('dddiiiiddddd', d.id);
+                console.log('aaaaa.iddddd', b.id);
+                var nodeIconC = '';
+                if (b.id === d.id) {
+                  nodeIconC = '-';
+                }
+                return nodeIconC;
+              })
+              .attr('class', 'expand');
           }
+          if (lastClickD) {
+            lastClickD._isSelected = false;
+          }
+          d._isSelected = true;
+          lastClickD = d;
           THIS.update(d);
         }
 
@@ -1116,9 +1154,7 @@ function TreePlot(props) {
               }
             } else if (d.type === 'Material') {
               tooltipHtml =
-                "<div><span class='col-xs-1' style='padding:5px'>Plant :  </span><span class='col-xs-1' style='padding:5px'><b>" +
-                (key[0] || 'N/A') +
-                "</b></span><br/><span class='col-xs-1' style='padding:5px'>Product No.  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+                "<div></span><br/><span class='col-xs-1' style='padding:5px'>Product No.  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
                 (key[1] || 'N/A') +
                 "</b></span><br/><span class='col-xs-1' style='padding:5px'>Batch No.  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
                 batchNo +
