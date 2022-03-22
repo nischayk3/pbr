@@ -1,6 +1,6 @@
-import React,{useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {Table} from 'antd';
+import { Table } from 'antd';
 import { getDataQualityData } from '../../../../../services/workSpaceServices';
 import {
     hideLoader,
@@ -9,10 +9,10 @@ import {
 } from '../../../../../duck/actions/commonActions';
 import './styles.scss';
 
-const DeviationTable=()=> {
+const QualityTable = () => {
     const [dataSource, setDataSource] = useState([]);
     const dispatch = useDispatch();
-    const columns=[
+    const columns = [
         {
             title: 'Display ID',
             key: 'view_disp_id',
@@ -21,94 +21,26 @@ const DeviationTable=()=> {
         {
             title: 'View Name',
             key: 'view_name',
-            dataIndex: 'view_name',          
+            dataIndex: 'view_name',
         },
         {
             title: 'Version',
             key: 'view_version',
-            dataIndex: 'view_version',    
+            dataIndex: 'view_version',
         },
         {
             title: 'Product Name',
             key: 'product_descr',
-            dataIndex: 'product_descr',    
+            dataIndex: 'product_descr',
         }
     ]
-    // const source=[
-    //     {
-    //         'view_disp_id':'1',
-    //         'view_name':'abcd',
-    //         'view_version':'1.0',
-    //         'product_descr':'hello'
-    //     },
-    //     {
-    //         'view_disp_id':'1',
-    //         'view_name':'abcd',
-    //         'view_version':'1.0',
-    //         'product_descr':'hello'
-    //     },
-    //     {
-    //         'view_disp_id':'1',
-    //         'view_name':'abcd',
-    //         'view_version':'1.0',
-    //         'product_descr':'hello'
-    //     },
-    //     {
-    //         'view_disp_id':'1',
-    //         'view_name':'abcd',
-    //         'view_version':'1.0',
-    //         'product_descr':'hello'
-    //     },
-    //     {
-    //         'view_disp_id':'1',
-    //         'view_name':'abcd',
-    //         'view_version':'1.0',
-    //         'product_descr':'hello'
-    //     },
-    //     {
-    //         'view_disp_id':'1',
-    //         'view_name':'abcd',
-    //         'view_version':'1.0',
-    //         'product_descr':'hello'
-    //     },
-    //     {
-    //         'view_disp_id':'1',
-    //         'view_name':'abcd',
-    //         'view_version':'1.0',
-    //         'product_descr':'hello'
-    //     },
-    //     {
-    //         'view_disp_id':'1',
-    //         'view_name':'abcd',
-    //         'view_version':'1.0',
-    //         'product_descr':'hello'
-    //     },
-    //     {
-    //         'view_disp_id':'1',
-    //         'view_name':'abcd',
-    //         'view_version':'1.0',
-    //         'product_descr':'hello'
-    //     },
-    //     {
-    //         'view_disp_id':'1',
-    //         'view_name':'abcd',
-    //         'view_version':'1.0',
-    //         'product_descr':'hello'
-    //     },
-    //     {
-    //         'view_disp_id':'1',
-    //         'view_name':'abcd',
-    //         'view_version':'1.0',
-    //         'product_descr':'hello'
-    //     }
-    // ]
-    
-    useEffect(()=>{
-        dataQualityTableData();
-    },[])
 
-    const dataQualityTableData=async()=>{
-        let req={limit:5}
+    useEffect(() => {
+        dataQualityTableData();
+    }, [])
+
+    const dataQualityTableData = async () => {
+        let req = { limit: 5 }
         try {
             dispatch(showLoader());
             const tableResponse = await getDataQualityData(req);
@@ -140,4 +72,4 @@ const DeviationTable=()=> {
     )
 }
 
-export default DeviationTable;
+export default QualityTable;

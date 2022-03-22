@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { Card,Input, Space, Avatar, Row, Col, Tabs } from 'antd';
+import { Card, Input, Space, Avatar, Row, Col, Tabs } from 'antd';
 import illustrations from '../../../../assets/images/Group 33808.svg';
 import DeviationTable from './deviationTable/deviationTable';
 import DataQuality from './dataQuality/dataQuality';
+import Chart from './chartComponent/chartComponent';
 import {
   BellOutlined,
   LayoutOutlined,
@@ -23,6 +24,26 @@ const { TabPane } = Tabs;
 const Workspace = () => {
   const [resultDate, setResultDate] = useState('');
   const [tilesData, setTilesData] = useState([]);
+  const [userApproval, setUserApproval] = useState([]);
+  const [activeTab, setActiveTab] = useState("1");
+  const chartData = [
+    {
+      'chart_id': '1222',
+      'chart_version': '1'
+    },
+    {
+      'chart_id': '1222',
+      'chart_version': '2'
+    },
+    {
+      'chart_id': '1222',
+      'chart_version': '3'
+    },
+    {
+      'chart_id': '1222',
+      'chart_version': '4'
+    }
+  ]
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -46,11 +67,16 @@ const Workspace = () => {
       dispatch(showLoader());
       const tilesResponse = await getCountData(req);
       setTilesData(tilesResponse['Data']);
+      setUserApproval(tilesResponse['counts'])
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
       dispatch(showNotification('error', error.message));
     }
+  };
+
+  const changeTab = activeKey => {
+    setActiveTab(activeKey);
   };
   return (
     <div className='custom-wrapper'>
@@ -61,7 +87,7 @@ const Workspace = () => {
           //onSearch={ }
           style={{ width: 304 }}
         />
-        <BellOutlined style={{ margin: '0px 25px',fontSize:'20px' }} />
+        <BellOutlined style={{ margin: '0px 25px', fontSize: '20px' }} />
         <div>
           <Avatar style={{ backgroundColor: 'orange' }}>
             {localStorage.getItem('user').split('')[0].toUpperCase()}{' '}
@@ -129,7 +155,7 @@ const Workspace = () => {
                   </Row>
                 </div>
                 <div className='avatar-block'>
-                  <p>5 People awaiting your approval!</p>
+                  <p>{`${userApproval?.length} People awaiting your approval!`} </p>
                   <Avatar.Group
                     maxCount={4}
                     maxStyle={{
@@ -137,7 +163,18 @@ const Workspace = () => {
                       backgroundColor: '#fde3cf',
                     }}
                   >
-                    <Avatar
+                    {userApproval.length>0 && userApproval.map((e, j) => {
+                      return (
+                        <Avatar
+                          style={{
+                            backgroundColor: '#0CE7CC',
+                          }}
+                        >
+                          {e.created_by.split("")[0].toUpperCase()}
+                        </Avatar>
+                      )
+                    })}
+                    {/* <Avatar
                       style={{
                         backgroundColor: '#0CE7CC',
                       }}
@@ -171,7 +208,7 @@ const Workspace = () => {
                       }}
                     >
                       E
-                    </Avatar>
+                    </Avatar> */}
                   </Avatar.Group>
                 </div>
               </div>
@@ -210,15 +247,19 @@ const Workspace = () => {
                 <div>
                   <Tabs
                     className='workspace-tabs'
-                    // activeKey={activeTab}
-                    // onChange={changeTab}
+                    activeKey={activeTab}
+                    onChange={changeTab}
                   >
-                    <TabPane tab='Chart ID 1009' key='1'>
+                    {chartData.map((el, i) => {
+                      return (
+                        <TabPane tab={el.chart_id} key={i + 1}>
+                          <Chart />
+                        </TabPane>
+                      )
+                    })}
+                    {/* <TabPane tab='Chart ID 1009' key='1'>
                       <p>content 1</p>
-                    </TabPane>
-                    <TabPane tab='Chart ID 1222' key='2'>
-                      <p>content 2</p>
-                    </TabPane>
+                    </TabPane> */}
                   </Tabs>
                 </div>
               </div>
