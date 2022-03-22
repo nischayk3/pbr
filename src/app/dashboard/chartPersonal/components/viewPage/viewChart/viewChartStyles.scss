@@ -1,0 +1,53 @@
+.view-container {
+    padding: 0px 26px;
+    p,label {
+        font-family: Roboto;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 22px;
+        letter-spacing: 0em;
+    }
+    .view-details {
+        margin-top: 25px;
+    }
+    .pb {
+        p {
+            margin-bottom: 3px !important;
+        }
+    }
+    .batch {
+        margin-top: 22px;
+    }
+    .ant-select {
+        width: 100%;
+    }
+    .ant-divider{
+        margin: 0px !important
+    }
+    .filter{
+        margin-top: 10px;
+        .unapproved {
+            margin-top: 5px;
+            label {
+              font-family: Roboto;
+              font-size: 14px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 22px;
+              letter-spacing: 0em;
+              color: #777777;
+            }
+        }
+    }
+    .table-cont {
+        margin-top: 10px;
+      .ant-table {
+          border: none !important;
+      }
+      .ant-table-thead > tr > th {
+          background-color: white;
+          padding: 5px 1px !important;
+      }
+    }
+}

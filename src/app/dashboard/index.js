@@ -20,7 +20,8 @@ import Uploader from './dataLoad/index';
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
-const ChartPersonalization = lazy(() => import('./chartPersonalization'));
+// const ChartPersonalization = lazy(() => import('./chartPersonalization'));
+const ChartPersonal = lazy(() => import('./chartPersonal'));
 const SystemErrorReport = lazy(() => import('./systemErrorReport'));
 const ViewCreation = lazy(() => import('./viewCreation'));
 
@@ -67,7 +68,7 @@ const Dashboard = () => {
                   key='chart_personalization'
                   path={`${match.url}/chart_personalization`}
                 >
-                  <ChartPersonalization />
+                  <ChartPersonal />
                 </Route>
                 <Route
                   key='system_error_report'
