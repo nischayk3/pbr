@@ -9,6 +9,7 @@ import {
   LogoutOutlined,
   PartitionOutlined,
   TeamOutlined,
+  FileFilled,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { Link, useHistory, useLocation } from 'react-router-dom';
@@ -73,7 +74,7 @@ const MENU = [
   },
   {
     key: 'report_generator',
-    icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+    icon: <FileFilled style={{ fontSize: '23px' }} />,
     title: 'Report Generator',
     linkTo: '/dashboard/report_generator',
   },
@@ -88,6 +89,12 @@ const MENU = [
     icon: <LinkOutlined style={{ fontSize: '23px' }} />,
     title: 'Genealogy',
     linkTo: '/dashboard/genealogy',
+  },
+  {
+    key: 'workspace',
+    icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+    title: 'Workspace',
+    linkTo: '/dashboard/workspace',
   },
 ];
 
@@ -129,7 +136,7 @@ const Sidebar = () => {
   return (
     <Sider collapsed={collapsed} theme={theme} id='sidebar'>
       <div>
-        <div id='logo-small'></div>
+        {/* <div id='logo-small'></div> */}
         <Menu selectedKeys={[selectedKey]} mode='inline' theme={theme}>
           {MENU.map((item) => (
             <Menu.Item key={item.key} icon={item.icon} id={item.key}>

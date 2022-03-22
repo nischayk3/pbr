@@ -3,11 +3,17 @@
 // Version 1
 // Last modified - 03 March, 2022
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import '../Personalization.scss';
 import './style.scss';
 import { Card, Collapse, Form, Button, Input, Space, Popconfirm, Select, Checkbox, Tag,message } from 'antd';
 import { PlusSquareOutlined, DeleteOutlined } from '@ant-design/icons';
-
+import { getRuleList } from '../../../../../../../services/chartPersonalizationService';
+import {
+  hideLoader,
+  showLoader,
+  showNotification,
+} from '../../../../../../../duck/actions/commonActions';
 import InputField from './InputField/InputField';
 import InputView from './InputComponent/inputComponent';
 
@@ -15,10 +21,20 @@ const Alerts = (props) => {
 
   const [type, setType] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [selectedRule, setSelectedRule] = useState('');
   const [userEmailArray, setUserEmailArray] = useState([]);
+  const [ruleListArray, setRuleListArray] = useState([]);
+
+   const dispatch = useDispatch()
   let scheduleData = ['Hourly', 'Weekly', 'Daily'];
   let typeData = ['Control Limits', 'Rule', 'Threshold'];
   const checkboxOptions = ['Control', 'Specification', 'Warning']
+
+  useEffect(()=>{
+    if(type==='Rule'){
+      handleRuleChange();
+    }  
+  },[type])
   const options_schedule = scheduleData.map((item, i) => (
     <Option key={i} value={item}>
       {item}
@@ -66,6 +82,30 @@ const Alerts = (props) => {
   
   const cancel=(e) =>{
     message.error('Click on No');
+  }
+
+  const handleRuleChange=async()=>{
+        try {
+            dispatch(showLoader());
+            const rulesResponse = await getRuleList();
+            setRuleListArray(rulesResponse['rules_list']);
+            dispatch(hideLoader());
+        } catch (error) {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', error.message));
+        }
+  }
+
+  const ruleOptions=ruleListArray.map((item,i)=>{
+    return(
+      <Option key={i} value={item.rule_int_id}>
+      {item.rule_disp_id}
+    </Option>
+    )
+  })
+
+  const handleRuleChangeSelect=(value)=>{
+    setSelectedRule(value);
   }
   
   return (
@@ -128,6 +168,9 @@ const Alerts = (props) => {
           <InputView
             label='Condition'
             placeholder='Select Condition'
+            selectedValue={selectedRule}
+            onChangeSelect={(e)=>handleRuleChangeSelect(e)}
+            option={ruleOptions}
           />
         )}
 

@@ -1,8 +1,15 @@
-import './ChartStyle.scss';
+/**
+ * @author Dinesh Kumar <dinesh.kumar@mareana.com>
+ * @Mareana - CPV Product
+ * @version 1
+ * @Last Modified - 14 March, 2022
+ * @Last Changed By - @Binkita
+ */
 
+import './ChartStyle.scss';
 import { ArrowLeftOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { Button, Modal } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   getChartList,
   getChartObj,
@@ -48,6 +55,7 @@ function ChartPersonalization() {
   const [visible, setVisible] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [isView, setIsView] = useState(false);
+  const [displayId, setDispalyId] = useState({viewId:'', version:''});
   const [isNew, setIsNew] = useState(false);
   const [isNewBtnDisabled, setisNewBtnDisabled] = useState(true);
   const [showChart, setShowChart] = useState(false);
@@ -64,6 +72,9 @@ function ChartPersonalization() {
   const [chartTypeList, setchartTypeList] = useState([]);
   const [exclusionTableData, setExclusionTableData] = useState([]);
   const [dataTable, setDataTable] = useState([]);
+  const tempArrForExclude = useRef([]);
+  const tempArrForData = useRef([]);
+  const counterIdForExclusion = useRef(0);
   const [isChart, setIsChart] = useState(false);
   const [isLandingDisabled, setisLandingDisabled] = useState(false);
   const [isFieldEmpty, setisFieldEmpty] = useState(false);
@@ -138,7 +149,7 @@ function ChartPersonalization() {
   const chartPersReducer = useSelector((state) => state.chartPersReducer);
   const chartDataReducer = useSelector((state) => state.chartDataReducer);
   const chartViewReducer = useSelector((state) => state.chartViewReducer);
-
+  console.log(chartViewReducer, 'chartView')
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -331,10 +342,9 @@ function ChartPersonalization() {
   };
 
   const callFilterAPI = (site, dateRange, isUnApproved) => {
-    let viewDisplayId =
-      chartViewReducer.viewId !== '' ? chartViewReducer.viewId : '';
-    let viewVersionId =
-      chartViewReducer.viewVersion !== '' ? chartViewReducer.viewVersion : '';
+    console.log(chartViewReducer, 'chartview')
+    let viewDisplayId = chartViewReducer.viewId;
+    let viewVersionId = chartViewReducer.viewVersion;
     viewParamData(viewDisplayId, viewVersionId, site, dateRange, isUnApproved);
   };
 
@@ -394,7 +404,7 @@ function ChartPersonalization() {
       const chartRes = await getChartObj(reqChartObj);
       if (chartRes.statuscode === 200) {
         let chartResData = chartRes && chartRes.data ? chartRes.data : {};
-
+        
         setchartResObj(chartResData);
         dispatch(sendChartData(chartResData && chartResData));
 
@@ -467,10 +477,10 @@ function ChartPersonalization() {
   ) {
     let reqViewParam = {
       view_disp_id: viewDisId ? viewDisId : '',
-      view_version: viewVer ? Number(viewVer) : null,
-      // site: site ? site : null,
-      // date: dateRange ? dateRange : null,
-      unapproved_data: isUnApproved ? isUnApproved : false,
+      view_version: viewVer ? Number(viewVer) : undefined,
+      // site: site ? [site] : undefined,
+      date: dateRange ? dateRange : undefined,
+      unapproved_data: true,
     };
     try {
       dispatch(showLoader());
@@ -481,6 +491,7 @@ function ChartPersonalization() {
         setbatchData(batchRes);
         setDataTable([]);
         setExclusionTableData([]);
+        setshowBatch(true);
         dispatch(sendBatchCoverage(batchRes));
       } else if (viewData.statuscode === 400) {
         dispatch(
@@ -589,13 +600,16 @@ function ChartPersonalization() {
             )}
             {showChartType && (
               <div>
-                <ChartType setDataTable={setDataTable} resetBatchData={batchData} setselectedLayout={setselectedLayout} />
+                <ChartType tempArrForData={tempArrForData} setDataTable={setDataTable} resetBatchData={batchData} setselectedLayout={setselectedLayout} />
               </div>
             )}
           </div>
           {showChart && (
             <div className='chart-center-panel'>
               <ChartDetails
+                tempArrForData={tempArrForData}
+                counterIdForExclusion={counterIdForExclusion}
+                tempArrForExclude={tempArrForExclude}
                 resChartId={resChartId}
                 resChartVersion={resChartVersion}
                 resChartStatus={resChartStatus}
@@ -606,8 +620,9 @@ function ChartPersonalization() {
                 selectedLayout={selectedLayout} 
                 setselectedLayout={setselectedLayout}
                 dataTable={dataTable}
+                setDataTable={setDataTable}
               />
-              <ChartDataTable dataTable={dataTable} setDataTable={setDataTable} setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
+              <ChartDataTable tempArrForData={tempArrForData} setDataTable={setDataTable} counterIdForExclusion={counterIdForExclusion} tempArrForExclude={tempArrForExclude} dataTable={dataTable} setDataTable={setDataTable} setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
             </div>
           )}
           {showCustomization && (

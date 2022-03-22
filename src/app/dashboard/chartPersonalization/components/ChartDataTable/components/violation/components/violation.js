@@ -4,25 +4,37 @@ import { Table } from 'antd';
 
 import './violation.scss';
 
-class ViolationTable extends Component {
-    constructor(props) {
-        super(props);
-    }
+const ViolationTable = () => {
+  
+    const newColumns = [
+        {
+            title: 'Id',
+            key: 'exclusionId',
+            dataIndex: 'exclusionId',
+            width: 50,
+            fixed: 'left'
+        },
+        {
+            title: 'Batch',
+            key: 'batch_num',
+            dataIndex: 'batch_num',
+            width: 100,
+            fixed: 'left'
+        }
+    ]
 
-    render() {
-        return (
-            <div>
-                <Table
-                    size='small'
-                    className='violation_table'
-                    columns={[]}
-                    dataSource={[]}
-                    bordered
-                    pagination={false}
-                />
-            </div>
-        );
-    }
+    return (
+        <div>
+            <Table
+                size='small'
+                className='violation_table'
+                columns={newColumns}
+                dataSource={[]}
+                bordered
+                pagination={false}
+            />
+        </div>
+    );
 }
 
 export default ViolationTable;

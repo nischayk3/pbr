@@ -139,7 +139,6 @@ const ChartType = (props) => {
         text: selectedYAxis,
       },
     },
-    showlegend:true,
     height: 250,
     width: 450,
     margin: {
@@ -155,6 +154,8 @@ const ChartType = (props) => {
     setisDisabled(false);
     if (value !== null) {
       if (field === 'charttype') {
+        setselectedXAxis('');
+        setselectedYAxis('');
         setselectedChartType(value);
         if (value === 'Scatter Plot') {
           setisScattetruer(true);
@@ -234,18 +235,14 @@ const ChartType = (props) => {
          }) 
       })
       props.setDataTable(mergedObj);
+      props.tempArrForData.current = JSON.parse(JSON.stringify(mergedObj));
     }
-    const length = [];
-    xaxis.forEach((ele) => {
-      length.push('red')
-    })
     const chartData = {
       x: xaxis.length ? xaxis : [],
       y: yaxis.length ?  yaxis : [],
       text: batch,
       type: 'scatter',
       mode: 'markers',
-      marker: {color: length}
     };
     const chartMapping = {
       x: {
@@ -267,7 +264,7 @@ const ChartType = (props) => {
     dispatch(generateChart(plotlyData));
     dispatch(sendChartType(selectedChartType));
     dispatch(sendChartxAxis(selectedXAxis));
-    dispatch(sendChartyAxis(selectedXAxis));
+    dispatch(sendChartyAxis(selectedYAxis));
     dispatch(sendChartMapping(chartMapping));
   };
   return (

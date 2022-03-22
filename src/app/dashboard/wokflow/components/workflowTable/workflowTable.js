@@ -11,6 +11,7 @@ import './styles.scss';
 
 
 function workflowTable(props) {
+  
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [newColumns, setNewColumns] = useState([]);
@@ -191,7 +192,7 @@ function workflowTable(props) {
               title: display_name,
               dataIndex: field_name,
               key: i.field_name,
-              width: '165px',
+              width: field_name=='Id' || field_name=='event_id'?'110px':'165px',
               ...getColumnSearchProps(field_name, refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
               sorter: (a, b) => {
 
@@ -203,9 +204,10 @@ function workflowTable(props) {
           
 
           if (i.field_name === "appl_url") {
+            obj.fixed='left'
             obj.render = (text, row, index) => {
               return (
-                <a onClick={() => history.push(`${text}?id=${row.id}&version=${row.version}`)} className='review-submission'>Review Submission</a>
+                <a onClick={() => history.push(`${text}?id=${row.Id}&version=${row.version}`)} className='review-submission'>Review Submission</a>
 
               );
             }
@@ -294,7 +296,7 @@ function workflowTable(props) {
         dataSource={props.dataSource}
         style={{ border: '1px solid #ececec', borderRadius: '2px' }}
         pagination={false}
-        scroll={{ y: 300 }}
+        scroll={{ x:600,y:300 }}
       //rowKey={(record) => record.param}
       />
     </div>

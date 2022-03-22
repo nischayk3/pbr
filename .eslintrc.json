@@ -38,7 +38,7 @@
         "semi": [
             "off",
             "always"
-        ]
+        ],
         // "no-const-assign":"error",
         // "no-dupe-args":"error",
         // "no-dupe-else-if":"error",
@@ -47,7 +47,7 @@
         // "no-duplicate-imports":"error",
         // "no-empty-pattern":"error",
         // "no-irregular-whitespace":"error",
-        // "no-console":"off",
+        "no-console":"warn"
         // "import/order": [
         //     "error",
         //     {

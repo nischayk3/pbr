@@ -10,14 +10,21 @@ import ShiftTable from './shift_table';
 import TrendTable from './trend_table';
 import ViolationTable from './violation';
 import { sendParameterTableData } from '../../../../../../duck/actions/chartPersonalizationAction';
-import { updateTableColumn } from '../../../../../../utils/updateTableColumns';
 
-function ChartDataTable({exclusionTableData, setExclusionTableData, dataTable, setTableData}) {
+function ChartDataTable({
+  exclusionTableData,
+  setExclusionTableData,
+  dataTable,
+  setDataTable,
+  tempArrForExclude,
+  counterIdForExclusion,
+  tempArrForData,
+}) {
   const parameterData = useSelector(
     (state) => state.chartPersReducer.getBatchCoverage
   );
   const [paramData, setparamData] = useState([]);
-  const columns = [];
+  let columns = [];
 
   const dispatch = useDispatch();
 
@@ -29,7 +36,8 @@ function ChartDataTable({exclusionTableData, setExclusionTableData, dataTable, s
   const uniqueArr = (value, index, self) => {
     return self.indexOf(value) === index;
   };
-  const objkeys = dataTable !== undefined && dataTable.length > 0
+  const objkeys =
+    dataTable !== undefined && dataTable.length > 0
       ? Object.keys(dataTable[0])
       : [];
 
@@ -42,9 +50,7 @@ function ChartDataTable({exclusionTableData, setExclusionTableData, dataTable, s
     });
   });
 
-  useEffect(() => {
-    
-  }, [dataTable])
+  useEffect(() => {}, [dataTable]);
 
   const { TabPane } = Tabs;
   return (
@@ -53,7 +59,15 @@ function ChartDataTable({exclusionTableData, setExclusionTableData, dataTable, s
         <Card bordered={false} style={{ height: '350px' }}>
           <Tabs defaultActiveKey='3'>
             <TabPane tab='Exclusion' key='1'>
-              <ExclusionTable dataTable={dataTable} setExclusionTableData={setExclusionTableData} exclusionTableData={exclusionTableData} />
+              <ExclusionTable
+                tempArrForData={tempArrForData}
+                setDataTable={setDataTable}
+                counterIdForExclusion={counterIdForExclusion}
+                tempArrForExclude={tempArrForExclude}
+                dataTable={dataTable}
+                setExclusionTableData={setExclusionTableData}
+                exclusionTableData={exclusionTableData}
+              />
             </TabPane>
             {/* <TabPane tab='Shift' key='2'>
                               <ShiftTable />
@@ -65,18 +79,20 @@ function ChartDataTable({exclusionTableData, setExclusionTableData, dataTable, s
               <ViolationTable />
             </TabPane>
             <TabPane tab='Data Table' key='3'>
-              {<Table
-              style={{height:'300px'}}
-                rowClassName={(record, index) =>
-                  index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
-                }
-                size='small'
-                className='parameter_table'
-                columns={columns}
-                dataSource={dataTable}
-                scroll={{ y: 350 }}
-                pagination={false}
-              />}
+              {
+                <Table
+                  style={{ height: '300px' }}
+                  rowClassName={(record, index) =>
+                    index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+                  }
+                  size='small'
+                  className='parameter_table'
+                  columns={columns}
+                  dataSource={dataTable}
+                  scroll={{ y: 350 }}
+                  pagination={false}
+                />
+              }
             </TabPane>
           </Tabs>
         </Card>
