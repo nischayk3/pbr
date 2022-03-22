@@ -1,23 +1,10 @@
-.workflow-table{
-    // th:first-of-type {
-    //     padding-left: 25px !important;
-       
-    // }
-    // th:last-of-type {
-    //     padding-right: 25px !important;
-       
-    // }
-    // td:first-of-type {
-    //     padding-left: 25px !important;
-       
-    // }
-    // td:last-of-type {
-    //     padding-right: 25px !important;
-       
-    // }
+.data-quality-main{
+    margin-top: 25px;
+    max-height: 305px;
+    overflow-y: scroll;
 }
 
-.approval-table{
+.data-quality-table{
     th:first-of-type {
         padding-left: 25px !important;
        
@@ -59,21 +46,3 @@
       }
 
 }
-
-.avatar-icon{
-    color: #ffff;
-    background-color: #728C69;
-}
-.avatar-text{
-    padding: 0px 10px;
-}
-
-.review-submission{
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
-line-height: 22px;
-color: #093185;
-}
-
