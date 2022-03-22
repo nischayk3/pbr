@@ -6,8 +6,15 @@ import { eSign, publishEvent, approveRecord } from '../../services/electronicSig
 import { useDispatch } from 'react-redux';
 import { showNotification } from '../../duck/actions/commonActions'
 import queryString from 'query-string';
+import { loginUrl } from '../../services/loginService';
 
 const { Option } = Select
+
+const onLogin = async () =>
+{
+    window.open(`${loginUrl}?is_ui=true`,'_self')
+}
+
 
 function Signature(props)
 {
