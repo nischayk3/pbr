@@ -16,22 +16,25 @@ const QualityTable = () => {
         {
             title: 'Display ID',
             key: 'view_disp_id',
-            dataIndex: 'view_disp_id'
+            dataIndex: 'view_disp_id',
         },
         {
             title: 'View Name',
             key: 'view_name',
             dataIndex: 'view_name',
+           
         },
         {
             title: 'Version',
             key: 'view_version',
             dataIndex: 'view_version',
+            
         },
         {
             title: 'Product Name',
             key: 'product_descr',
             dataIndex: 'product_descr',
+           
         }
     ]
 

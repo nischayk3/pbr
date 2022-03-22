@@ -28,7 +28,7 @@ const chartComponent = () => {
         },
         autosize: false,
         width: 800,
-        height: 400,
+        height: 350,
         margin: {
             l: 50,
             r: 50,
@@ -47,6 +47,7 @@ const chartComponent = () => {
                 data={data}
                 layout={layout}
             />
+            <p style={{display:'flex',justifyContent:'center'}}>Let's see what you have on your plate today!</p>
         </div>
     )
 }

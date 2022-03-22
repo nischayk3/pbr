@@ -28,21 +28,29 @@ const Workspace = () => {
   const [activeTab, setActiveTab] = useState("1");
   const chartData = [
     {
-      'chart_id': '1222',
-      'chart_version': '1'
+      "chart_disp_id": "C150",
+      "chart_name": "Sample Chart",
+      "chart_version": 1
     },
     {
-      'chart_id': '1222',
-      'chart_version': '2'
+      "chart_disp_id": "C153",
+      "chart_name": "Sample Chart",
+      "chart_version": 1
     },
     {
-      'chart_id': '1222',
-      'chart_version': '3'
+      "chart_disp_id": "C153",
+      "chart_name": "Sample Chart",
+      "chart_version": 2
     },
     {
-      'chart_id': '1222',
-      'chart_version': '4'
-    }
+      "chart_disp_id": "C161",
+      "chart_name": "Sample Chart 2",
+      "chart_version": 1
+    },
+    // {
+    //   'chart_id': 'chart ID1222',
+    //   'chart_version': '1'
+    // },
   ]
   const dispatch = useDispatch();
   const history = useHistory();
@@ -163,7 +171,7 @@ const Workspace = () => {
                       backgroundColor: '#fde3cf',
                     }}
                   >
-                    {userApproval.length>0 && userApproval.map((e, j) => {
+                    {userApproval.length > 0 && userApproval.map((e, j) => {
                       return (
                         <Avatar
                           style={{
@@ -252,7 +260,7 @@ const Workspace = () => {
                   >
                     {chartData.map((el, i) => {
                       return (
-                        <TabPane tab={el.chart_id} key={i + 1}>
+                        <TabPane tab={el.chart_disp_id} key={i + 1}>
                           <Chart />
                         </TabPane>
                       )
