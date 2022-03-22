@@ -90,6 +90,12 @@ const MENU = [
     title: 'Genealogy',
     linkTo: '/dashboard/genealogy',
   },
+  {
+    key: 'workspace',
+    icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+    title: 'Workspace',
+    linkTo: '/dashboard/workspace',
+  },
 ];
 
 

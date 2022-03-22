@@ -36,7 +36,7 @@
       font-size: 16px;
       line-height: 24px;
       /* identical to box height, or 150% */
-
+      margin: 0 30px 0 0;
       display: flex;
       align-items: center;
 
@@ -65,6 +65,7 @@
     }
   }
   .param-filter-btn {
+    padding-top: 26px;
     button {
       padding: 5px 40px;
     }
@@ -87,4 +88,8 @@
 .ant-tabs-card > .ant-tabs-nav .ant-tabs-ink-bar,
 .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-ink-bar {
   visibility: visible;
+}
+
+.popout-table {
+  padding: 24px 26px;
 }

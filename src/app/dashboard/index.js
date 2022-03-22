@@ -30,6 +30,7 @@ const ReportDesigner = lazy(() => import('./reportDesigner'));
 const AuditTrial = lazy(() => import('./auditTrial'));
 const ReportGenerator = lazy(() => import('./reportGenerator'));
 const Workflow = lazy(() => import('./wokflow'));
+const Workspace = lazy(() => import('./workspace'));
 const Genealogy = lazy(() => import('./genealogy'));
 const { Content } = Layout;
 
@@ -103,9 +104,17 @@ const Dashboard = () => {
                 <Route key='workflow' path={`${match.url}/workflow`}>
                   <Workflow />
                 </Route>
+<<<<<<< HEAD
                 <Route key='workflow' path={`${match.url}/redirect`}>
                   <LoginRedirect />
                 </Route>
+=======
+                <Route key='workspace' path={`${match.url}/workspace`}>
+                  <Workspace />
+                </Route>
+
+
+>>>>>>> 8bae03f163a86de76dd3c52ea9f2c8b96ccac32f
                 <Route key='redirect'>
                   <Redirect to={`${match.url}/dashboard`} />
                 </Route>
