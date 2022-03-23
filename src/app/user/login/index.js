@@ -11,25 +11,15 @@ import {
 import './login.scss';
 import { useHistory } from 'react-router-dom';
 import Icon from '../../../assets/mareana_logo.png';
+import { loginUrl } from '../../../services/loginService';
+import { adenabled } from '../../../config/config';
 
-// const layout = {
-// 	labelCol: {
-// 		span: 4,
-// 	},
-// 	wrapperCol: {
-// 		span: 8,
-// 	},
-// };
-// const tailLayout = {
-// 	wrapperCol: {
-// 		offset: 8,
-// 		span: 16,
-// 	},
-// };
 
-const Login = () => {
+const Login = () => 
+{
     const dispatch = useDispatch();
     const history = useHistory();
+    
     const onFinish = async (values) => {
         try {
             dispatch(showLoader());
@@ -42,6 +32,11 @@ const Login = () => {
             dispatch(showNotification('error', err.message));
         }
     };
+
+    const onLogin = async () =>
+    {
+        window.open(`${loginUrl}?is_ui=true`,'_self')
+    }
 
     return (
         <div className='page-login bg-img'>
@@ -68,8 +63,9 @@ const Login = () => {
                                 initialValues={{
                                     remember: true,
                                 }}
-                                onFinish={onFinish}
+                                onFinish={adenabled ? onLogin : onFinish}
                             >
+                                {!adenabled ? <>
                                 <Form.Item
                                     label='Username'
                                     name='username'
@@ -97,6 +93,7 @@ const Login = () => {
                                 >
                                     <Input.Password id='password' />
                                 </Form.Item>
+                                </>: <></>}
 
                                 <Form.Item
                                 //  {...tailLayout}
@@ -106,7 +103,7 @@ const Login = () => {
                                         htmlType='submit'
                                         id='login-btn'
                                     >
-                                        Submit
+                                        Login
                                     </Button>
                                 </Form.Item>
                             </Form>

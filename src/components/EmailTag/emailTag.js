@@ -1,20 +1,9 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router';
-import { Modal, Input, Select, Button } from 'antd';
+import { Modal, Input, Select, Button, Avatar} from 'antd';
 import './styles.scss'
-import { eSign, publishEvent, approveRecord } from '../../services/electronicSignatureService'
-import { useDispatch } from 'react-redux';
-import { showNotification } from '../../duck/actions/commonActions'
-import queryString from 'query-string';
-import { loginUrl } from '../../services/loginService';
+
 
 const { Option } = Select
-
-const onLogin = async () =>
-{
-    window.open(`${loginUrl}?is_ui=true`,'_self')
-}
-
 
 function Signature(props)
 {
