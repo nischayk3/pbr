@@ -1,6 +1,6 @@
 {
     "/dashboard": "Dashboard",
-    "/dashboard/appRegister": "App Register",
+    "/dashboard/report_designer": "Report Designer",
     "/dashboard/appRegister/appList": "App List",
     "/dashboard/appRegister/appList/appDetails": "App Details",
     "/dashboard/tableRegister": "Table Register",
