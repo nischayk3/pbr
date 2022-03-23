@@ -29,3 +29,17 @@ export const getDataQualityData = (_queryParam) => {
         }
     );
 };
+
+//get top5 charts with exceptions
+export const getChartExceptionData = (_queryParam) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/chart-exceptions', _queryParam,{
+        'content-type': 'application/json',
+    }).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};

@@ -17,6 +17,7 @@ import {
   showNotification,
 } from '../../../../duck/actions/commonActions';
 import { getCountData } from '../../../../services/workFlowServices';
+import { getChartExceptionData } from '../../../../services/workSpaceServices';
 import './styles.scss';
 const { Search } = Input;
 
@@ -25,39 +26,15 @@ const Workspace = () => {
   const [resultDate, setResultDate] = useState('');
   const [tilesData, setTilesData] = useState([]);
   const [userApproval, setUserApproval] = useState([]);
+  const [chartIdException, setChartIdException] = useState([]);
   const [activeTab, setActiveTab] = useState("1");
-  const chartData = [
-    {
-      "chart_disp_id": "C150",
-      "chart_name": "Sample Chart",
-      "chart_version": 1
-    },
-    {
-      "chart_disp_id": "C153",
-      "chart_name": "Sample Chart",
-      "chart_version": 1
-    },
-    {
-      "chart_disp_id": "C153",
-      "chart_name": "Sample Chart",
-      "chart_version": 2
-    },
-    {
-      "chart_disp_id": "C161",
-      "chart_name": "Sample Chart 2",
-      "chart_version": 1
-    },
-    // {
-    //   'chart_id': 'chart ID1222',
-    //   'chart_version': '1'
-    // },
-  ]
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
     updateDate();
     getTilesData();
+    getChartId();
   }, []);
 
   const updateDate = () => {
@@ -82,6 +59,19 @@ const Workspace = () => {
       dispatch(showNotification('error', error.message));
     }
   };
+
+  const getChartId=async()=>{
+    let req = { limit: 5, username:localStorage.getItem('user') }
+        try {
+            dispatch(showLoader());
+            const chartIdResponse = await getChartExceptionData(req);
+            setChartIdException(chartIdResponse.Data);
+            dispatch(hideLoader());
+        } catch (error) {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', error.Message));
+        }
+  }
 
   const changeTab = activeKey => {
     setActiveTab(activeKey);
@@ -258,10 +248,10 @@ const Workspace = () => {
                     activeKey={activeTab}
                     onChange={changeTab}
                   >
-                    {chartData.map((el, i) => {
+                    {chartIdException.map((el, i) => {
                       return (
                         <TabPane tab={el.chart_disp_id} key={i + 1}>
-                          <Chart />
+                          <Chart chartId={el.chart_disp_id} chartVersion={el.chart_version}/>
                         </TabPane>
                       )
                     })}
