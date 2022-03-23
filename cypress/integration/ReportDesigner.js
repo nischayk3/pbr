@@ -4,7 +4,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 describe('ReportDesigner', () => {
   it('reportDesigner', function () {
-    cy.visit('http://localhost/');
+    cy.visit('https://bms-cpvdev.mareana.com');
     cy.get('#username').clear();
     cy.get('#username').type('demo');
     cy.get('#password').clear();
