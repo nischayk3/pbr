@@ -2,7 +2,7 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 import './styles.scss';
 
-const chartComponent = () => {
+const chartComponent = (props) => {
     const data = [
         {
             x: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
@@ -15,7 +15,7 @@ const chartComponent = () => {
     ]
     const layout = {
         xaxis: {
-            range: [2,4],
+            range: [2, 4],
             title: {
                 text: "ARSENIC"
             }
@@ -28,7 +28,7 @@ const chartComponent = () => {
         },
         autosize: false,
         width: 800,
-        height: 400,
+        height: 350,
         margin: {
             l: 50,
             r: 50,
@@ -37,16 +37,16 @@ const chartComponent = () => {
             pad: 4
         },
         title: {
-            text: "scatter Plot chart"
+            text: "Scatter Plot chart"
         }
     };
-
     return (
         <div className='workspace-plot'>
             <Plot
                 data={data}
                 layout={layout}
             />
+            <p style={{ display: 'flex', justifyContent: 'center' }}>Let's see what you have on your plate today!</p>
         </div>
     )
 }
