@@ -5,6 +5,8 @@ node_modules
 
 # testing
 /coverage
+.nyc_output
+/.nyc_output
 # __mocks__
 
 # Report

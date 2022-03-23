@@ -127,6 +127,39 @@ color: #000000;
     border-radius: 4px;
  }
 
+ .approval-table-block {
+    position: relative;
+    .card-arrow {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 10px 12px 10px 0;
+      border-color: transparent white transparent transparent;
+      z-index: 1;
+      //box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1) !important;
+      left: -8px;
+      filter: drop-shadow(-3px 0px 0px #486ac9);
+    }
+    .arrow-step-0 {
+      top: 25px;
+    }
+    .arrow-step-1 {
+      top: 106px;
+    }
+    .arrow-step-2 {
+      top: 195px;
+    }
+    .arrow-step-3 {
+      top: 278px;
+    }
+    .arrow-step-4 {
+      top: 365px;
+    }
+    .arrow-step-5 {
+      top: 446px;
+    }
+  }
 
 
 
