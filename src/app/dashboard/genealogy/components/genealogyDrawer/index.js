@@ -14,6 +14,7 @@ import GenealogyDataTable from '../genealogyDataTable';
 import './style.scss';
 
 function GenealogyDrawer(props) {
+  console.log('GenealogyDrawer propssssssss', props);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -54,7 +55,10 @@ function GenealogyDrawer(props) {
       <GenealogyDataTable
         className={visible ? 'drawer-collapse' : 'popout-collapse'}
         batchInfo={props.batchInfo}
-        processInfo={props.processInfo}
+        limsBatchInfo={props.limsBatchInfo}
+        processInput={props.processInput}
+        processOutput={props.processOutput}
+        type={props.type}
       />
     </Drawer>
   );

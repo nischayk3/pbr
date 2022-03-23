@@ -29,7 +29,7 @@ import {
 import popupicon from '../../../../assets/images/popup.png';
 import GenealogyDrawer from '../components/genealogyDrawer/index.js';
 import GenealogyDataTable from './genealogyDataTable';
-
+import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
 const { TabPane } = Tabs;
 
 const initialPanes = [
@@ -45,15 +45,19 @@ function Genealogy() {
   const [activateKey, setActivateKey] = useState('1');
   const [isDrawer, setIsDrawer] = useState(false);
   const [batchInfo, setBatchInfo] = useState([]);
-  const [processInfo, setProcessInfo] = useState([]);
+  const [processInput, setProcessInput] = useState([]);
+  const [processOutput, setProcessOutput] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isDrawerRef, setIsDrawerRef] = useState(false);
   const [panes, setPanes] = useState(initialPanes);
-
+  const [limsBatchInfo, setLimsBatchInfo] = useState([]);
   const [showView, setShowView] = useState(false);
+  const [nodeType, setNodeType] = useState('');
 
   const dispatch = useDispatch();
 
   const onClickNode = (node) => {
+    console.log('npodeeeeeeeeee', node);
     if (node.clickType === 'backward') {
       setGenealogyData([]);
       let _reqBackward = {
@@ -77,23 +81,44 @@ function Genealogy() {
       setchartType('forward');
       setProductCode(node.product);
     } else if (node.clickType === 'view') {
-      let nodeSplit = node.nodeId.split('|');
-      let _reqBatchInfo = {
-        ///batch-info?entity_type=Lims&relation_id=batch_to_lims&batch_id=ABV4103
-        entity_type: 'Lims',
-        relation_id: 'batch_to_lims',
-        batch_id: 'ABV4103',
-        // nodeSplit[2],
-      };
-      let _reqProcessInfo = {
-        entity_type: 'Batch',
-        process_order_id: '1338|1.02279687E8',
-        relation_id: 'input_process_order_to_batch',
-      };
+      if (node.nodeType === 'Material') {
+        let batchInfoDetails = {
+          product: node.nodeData.matNo,
+          batch: node.nodeData.batchNo,
+          product_desc: node.nodeData.matDesc,
+          node_id: node.nodeData.nodeId,
+        };
+        setBatchInfo(batchInfoDetails);
+        setIsDrawerOpen(true);
+        setIsDrawerRef(true);
+        setNodeType(node.nodeType);
+        let nodeSplit = node.nodeId.split('|');
+        let _reqBatchInfo = {
+          entity_type: 'Lims',
+          relation_id: 'batch_to_lims',
+          batch_id: nodeSplit[2],
 
-      getNodeBatchInfo(_reqBatchInfo);
-      getNodeProcessInfo(_reqProcessInfo);
-      setIsDrawerOpen(true);
+          // 'ABV4103',
+        };
+        getNodeBatchInfo(_reqBatchInfo);
+      } else if (node.nodeType === 'Process Order') {
+        setNodeType(node.nodeType);
+        let _reqProcessInput = {
+          entity_type: 'Batch',
+          process_order_id: `${node.nodeData.plant}|${node.nodeData.poNo}`,
+          relation_id: 'input_process_order_to_batch',
+        };
+        let _reqProcessOutput = {
+          entity_type: 'Batch',
+          process_order_id: `${node.nodeData.plant}|${node.nodeData.poNo}`,
+          relation_id: 'output_batch_to_process_order',
+        };
+        setIsDrawerOpen(true);
+        setIsDrawerRef(true);
+        setNodeType(node.nodeType);
+        getNodeProcessInput(_reqProcessInput);
+        getNodeProcessOutput(_reqProcessOutput);
+      }
     }
   };
 
@@ -105,8 +130,9 @@ function Genealogy() {
     if (param.treeType === 'Backward') {
       let _reqBack = {
         levels: 5,
-        batch_id: '1338|1089084|394154',
-        //selectedValue.replace(/\s/g, ''),
+        batch_id: selectedValue.replace(/\s/g, ''),
+        //'1338|1089084|394154',
+        //
         backward: true,
       };
       //setActivateKey('2');
@@ -199,7 +225,12 @@ function Genealogy() {
     try {
       dispatch(showLoader());
       const batchRes = await getBatchInfo(_reqBatch);
-      setBatchInfo(batchRes);
+      if (batchRes.status === 200) {
+        setLimsBatchInfo(batchRes);
+      } else if (batchRes.status === 404) {
+        setLimsBatchInfo();
+        dispatch(showNotification('error', batchRes.detail));
+      }
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
@@ -208,14 +239,14 @@ function Genealogy() {
   };
 
   /**
-   *TODO: get Process Info of node
+   *TODO: get Process Input of node
    */
-  const getNodeProcessInfo = async (_reqProcessInfo) => {
+  const getNodeProcessInput = async (_reqProcessInfo) => {
     try {
       dispatch(showLoader());
-      const processRes = await getProcessInfo(_reqProcessInfo);
-      if (processRes.length > 0) {
-        setProcessInfo(processRes);
+      const processResInput = await getProcessInfo(_reqProcessInfo);
+      if (processResInput.length > 0) {
+        setProcessInput(processResInput);
       }
       dispatch(hideLoader());
     } catch (error) {
@@ -223,15 +254,34 @@ function Genealogy() {
       dispatch(showNotification('error', 'No Data Found'));
     }
   };
+
+  /**
+   *TODO: get Process output of node
+   */
+  const getNodeProcessOutput = async (_reqProcessInfo) => {
+    try {
+      dispatch(showLoader());
+      const processResOutput = await getProcessInfo(_reqProcessInfo);
+      if (processResOutput.length > 0) {
+        setProcessOutput(processResOutput);
+      }
+      dispatch(hideLoader());
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', 'No Data Found'));
+    }
+  };
+
   const handleChangeTab = (activateKey) => {
     setActivateKey(activateKey);
   };
 
   const isDrawerVisible = (val) => {
     setIsDrawer(val);
-
     setShowView(true);
     setIsDrawerOpen(false);
+    // if (isDrawerVisible === false) {
+    // }
     initialPanes.push({
       title: '',
       content: '',
@@ -265,7 +315,8 @@ function Genealogy() {
     setPanes(newPanes);
     setActivateKey(newActiveKey);
   };
-  console.log('genealogyData', genealogyData);
+  console.log('isDrawerOpen', isDrawerOpen);
+
   return (
     <div className='custom-wrapper'>
       <div className='sub-header'>
@@ -275,6 +326,20 @@ function Genealogy() {
         </div>
       </div>
       <div className='custom-content-layout'>
+        {activateKey == '1' ? (
+          <div style={{ marginBottom: '9px' }}>
+            <ScreenHeader
+              bannerbg={{
+                background: 'linear-gradient(180deg, #FFFFFF 0%, #B9D6FF 100%)',
+              }}
+              title='Hello there,'
+              description='Shall we get down to tracing some batches and materials?'
+            />
+          </div>
+        ) : (
+          <></>
+        )}
+
         <Tabs
           className='custom-tabs'
           activeKey={activateKey}
@@ -322,14 +387,18 @@ function Genealogy() {
                         Forward={isForward}
                         data={genealogyData[0]}
                         nodeClick={onClickNode}
+                        firstNode={productCode}
                         //handleChartClick={handleClickNode}
                       />
                     )}
                     <GenealogyDrawer
                       drawerVisible={isDrawerOpen}
                       isDrawer={isDrawerVisible}
+                      type={nodeType}
+                      limsBatchInfo={limsBatchInfo}
                       batchInfo={batchInfo}
-                      processInfo={processInfo}
+                      processInput={processInput}
+                      processOutput={processOutput}
                     />
                   </>
                 ) : item.key === '3' ? (
@@ -345,8 +414,11 @@ function Genealogy() {
                       className={
                         isDrawer ? 'drawer-collapse' : 'popout-collapse'
                       }
+                      type={nodeType}
+                      limsBatchInfo={limsBatchInfo}
                       batchInfo={batchInfo}
-                      processInfo={processInfo}
+                      processInput={processInput}
+                      processOutput={processOutput}
                     />
                   </div>
                 ) : (
