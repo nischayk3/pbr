@@ -17,16 +17,18 @@ const ScreenHeader = (props) => {
     setResultDate(resultDate);
   };
   return (
-    <Card className='screen_header_head' style={props.bannerbg}>
-      <div>
-        <p className='screen_header_username'>{props.title}</p>
-        <p className='screen_header_text'>{props.description}</p>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'row', flex: 1 }}>
-        <img src={props.source} />
-      </div>
-      <div>
-        <span className='screen_header_resultdate'>{resultDate}</span>
+    <Card className='screen_header_wrap' style={props.bannerbg}>
+      <div className='screen_header_head'>
+        <div>
+          <p className='screen_header_username'>{props.title}</p>
+          <p className='screen_header_text'>{props.description}</p>
+        </div>
+        <div className={props.sourceClass}>
+          <img src={props.source} />
+        </div>
+        <div>
+          <span className='screen_header_resultdate'>{resultDate}</span>
+        </div>
       </div>
     </Card>
   );

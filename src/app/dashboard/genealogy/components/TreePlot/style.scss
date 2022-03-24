@@ -300,7 +300,8 @@ div.popup {
 
 .genealogy-legends_frames {
   position: absolute;
-  bottom: 0px;
+  bottom: 3px;
+  left: 25px;
   display: none;
   background: #ffffff;
   width: 251px;
@@ -315,6 +316,7 @@ div.popup {
       grid-template-columns: 30px 200px;
       grid-gap: 8px 13px;
       padding-bottom: 10px !important;
+      text-align: left;
       img {
         width: 19px;
         height: 21px;

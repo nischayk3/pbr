@@ -30,9 +30,10 @@ import popupicon from '../../../../assets/images/popup.png';
 import GenealogyDrawer from '../components/genealogyDrawer/index.js';
 import GenealogyDataTable from './genealogyDataTable';
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
+import genealogyLanding from '../../../../assets/images/genealogy-landing.png';
 const { TabPane } = Tabs;
 
-const initialPanes = [
+let initialPanes = [
   { title: ' ', content: '', key: '1', closable: false, class: '' },
 ];
 function Genealogy() {
@@ -155,14 +156,21 @@ function Genealogy() {
       setProductCode(product[0]);
     }
 
-    initialPanes.push({
-      title: '',
-      content: '',
-      key: '2',
-      closable: true,
-      class: 'tree-wrap site-drawer-render-in-current-wrapper',
-    });
-    setPanes(initialPanes);
+    if (isDrawerRef === false) {
+      console.log('ifffff', isDrawerRef);
+      console.log('paneeess', panes);
+      console.log('inital panes', initialPanes);
+      initialPanes.push({
+        title: '',
+        content: '',
+        key: '2',
+        closable: true,
+        class: 'tree-wrap site-drawer-render-in-current-wrapper',
+      });
+      setPanes(initialPanes);
+    } else {
+      console.log('elsssseeeee', isDrawerRef);
+    }
   };
   /**
    * TODO: get backward genealogy data from selected parameters or from on node click
@@ -178,6 +186,7 @@ function Genealogy() {
         setisBackward(true);
         setisForward(false);
         setShowTree(true);
+        setIsDrawerRef(true);
         setActivateKey('2');
         dispatch(hideLoader());
       } else if (backwardRes.status === 400) {
@@ -280,8 +289,6 @@ function Genealogy() {
     setIsDrawer(val);
     setShowView(true);
     setIsDrawerOpen(false);
-    // if (isDrawerVisible === false) {
-    // }
     initialPanes.push({
       title: '',
       content: '',
@@ -290,7 +297,17 @@ function Genealogy() {
       class: '',
     });
     setPanes(initialPanes);
+    // if (isDrawerRef === true) {
+    //   console.log('isDrawerRef iffff');
+    // } else if (isDrawerRef === false) {
+
+    // }
+
     setActivateKey('3');
+  };
+
+  const onCloseDrawer = (val) => {
+    setIsDrawerOpen(val);
   };
   const onEditTab = (targetKey, action) => {
     remove(targetKey);
@@ -304,7 +321,20 @@ function Genealogy() {
         lastIndex = i - 1;
       }
     });
+    initialPanes.forEach((pane, i) => {
+      if (pane.key === targetKey) {
+        lastIndex = i - 1;
+      }
+    });
     const newPanes = panes.filter((pane) => pane.key !== targetKey);
+    const newInitPanes = initialPanes.filter((pane) => pane.key !== targetKey);
+    if (newInitPanes.length && newActiveKey === targetKey) {
+      if (lastIndex >= 0) {
+        newActiveKey = newInitPanes[lastIndex].key;
+      } else {
+        newActiveKey = newInitPanes[0].key;
+      }
+    }
     if (newPanes.length && newActiveKey === targetKey) {
       if (lastIndex >= 0) {
         newActiveKey = newPanes[lastIndex].key;
@@ -312,10 +342,14 @@ function Genealogy() {
         newActiveKey = newPanes[0].key;
       }
     }
+    console.log('remove initial panes', initialPanes);
+    console.log('remove panes', newPanes, newInitPanes);
+    initialPanes = newInitPanes;
+    setIsDrawerRef(false);
     setPanes(newPanes);
     setActivateKey(newActiveKey);
   };
-  console.log('isDrawerOpen', isDrawerOpen);
+  console.log('tabssssss', panes, activateKey, initialPanes);
 
   return (
     <div className='custom-wrapper'>
@@ -334,6 +368,8 @@ function Genealogy() {
               }}
               title='Hello there,'
               description='Shall we get down to tracing some batches and materials?'
+              source={genealogyLanding}
+              sourceClass='geanealogy-image'
             />
           </div>
         ) : (
@@ -394,6 +430,7 @@ function Genealogy() {
                     <GenealogyDrawer
                       drawerVisible={isDrawerOpen}
                       isDrawer={isDrawerVisible}
+                      drawerClose={onCloseDrawer}
                       type={nodeType}
                       limsBatchInfo={limsBatchInfo}
                       batchInfo={batchInfo}

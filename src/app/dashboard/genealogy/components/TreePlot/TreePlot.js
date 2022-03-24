@@ -377,7 +377,7 @@ function TreePlot(props) {
         width = window.innerWidth - margin[1] - margin[3],
         height =
           graphHeight <= 500
-            ? 500
+            ? 700
             : graphHeight > 3000
             ? graphHeight - 1000
             : graphHeight - margin[0] - margin[2],
@@ -811,8 +811,8 @@ function TreePlot(props) {
             }
             return icon;
           })
-          .style('fill', '#486BC9')
-          .style('font-size', '20px')
+          .style('fill', '#000')
+          .style('font-size', '16px')
           .style('font-weight', '700')
           .on('click', function (d) {
             node_onClick(d, d.id);
@@ -1043,8 +1043,8 @@ function TreePlot(props) {
                 return nodeIcon;
               })
               .attr('class', 'collapsed')
-              .style('fill', '#486BC9')
-              .style('font-size', '20px')
+              .style('fill', '#000')
+              .style('font-size', '16px')
               .style('font-weight', '700');
           } else {
             d.children = d._children;
@@ -1063,8 +1063,8 @@ function TreePlot(props) {
                 return nodeIconC;
               })
               .attr('class', 'expand')
-              .style('fill', '#486BC9')
-              .style('font-size', '20px')
+              .style('fill', '#000')
+              .style('font-size', '16px')
               .style('font-weight', '700');
           }
           if (lastClickD) {
@@ -1408,7 +1408,11 @@ function TreePlot(props) {
   };
   const handleChartClick = (data) => {
     console.log('handleChartClick', data);
-    setPopVisible(true);
+    if (data.type === 'Process Order') {
+      setPopVisible(false);
+    } else {
+      setPopVisible(true);
+    }
 
     setNodeData((prevState) => {
       return { ...prevState, data };
@@ -1443,7 +1447,7 @@ function TreePlot(props) {
             <Select
               // allowClear
               showSearch
-              placeholder='Search Here...'
+              placeholder='Search by batch number, product code, etc'
               optionFilterProp='children'
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -1488,22 +1492,26 @@ function TreePlot(props) {
           </div>
         </div>
         <div className='popup-div' id='popup'>
-          <Button
-            type='primary'
-            onClick={() => {
-              onClickView('backward');
-            }}
-          >
-            Backward Genealogy
-          </Button>
-          <Button
-            type='primary'
-            onClick={() => {
-              onClickView('forward');
-            }}
-          >
-            Forward Genealogy
-          </Button>
+          {popVisible && (
+            <>
+              <Button
+                type='primary'
+                onClick={() => {
+                  onClickView('backward');
+                }}
+              >
+                Backward Genealogy
+              </Button>
+              <Button
+                type='primary'
+                onClick={() => {
+                  onClickView('forward');
+                }}
+              >
+                Forward Genealogy
+              </Button>
+            </>
+          )}
           <Button
             type='primary'
             onClick={() => {

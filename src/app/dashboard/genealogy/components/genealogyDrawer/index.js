@@ -25,7 +25,13 @@ function GenealogyDrawer(props) {
     setVisible(false);
     props.isDrawer(false);
   };
-
+  const onCloseDrawer = () => {
+    setVisible(false);
+    props.drawerClose(false);
+  };
+  // () => {
+  //   setVisible(false);
+  // }
   return (
     <Drawer
       className='genealogy-drawer'
@@ -45,9 +51,7 @@ function GenealogyDrawer(props) {
       }
       placement='right'
       closable={false}
-      onClose={() => {
-        setVisible(false);
-      }}
+      onClose={onCloseDrawer}
       visible={visible}
       getContainer={false}
       style={{ position: 'absolute' }}
