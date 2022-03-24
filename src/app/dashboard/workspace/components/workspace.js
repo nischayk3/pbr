@@ -324,7 +324,7 @@ const Workspace = () => {
                       return (
                         <Col className='gutter-row' span={8}>
 
-                          <div className='workspace-processChart-card'>
+                          <div className='workspace-processChart-card' onClick={()=>history.push(`/dashboard/chart_personalization?id=${j.chart_disp_id}&version=${j.chart_version}`)}>
                             <p className='workspace-processCharts-id'>
                               {j.chart_disp_id}
                             </p>
@@ -350,7 +350,7 @@ const Workspace = () => {
                     {lastupdatedViews.map((m, n) => {
                       return (
                         <Col className='gutter-row' span={8}>
-                          <div className='workspace-processView-card'>
+                          <div className='workspace-processView-card' onClick={()=>history.push(`/dashboard/chart_personalization?id=${m.view_disp_id}&version=${m.view_version}`)}>
                             <p className='workspace-processView-id'>
                               {m.view_disp_id}
                             </p>
