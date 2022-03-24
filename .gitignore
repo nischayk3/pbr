@@ -7,6 +7,9 @@ node_modules
 /coverage
 .nyc_output
 /.nyc_output
+cypress.json
+/cypress.json
+
 # __mocks__
 
 # Report

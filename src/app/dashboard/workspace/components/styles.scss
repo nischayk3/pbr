@@ -59,7 +59,7 @@
 }
 .workspace-main-block {
   display: grid;
-  grid-template-rows:auto auto;
+  grid-template-rows: auto auto;
   gap: 24px;
 }
 .workspace-innerColumn {
@@ -88,7 +88,7 @@
 .workspace-chart {
   //width: 853px;
   display: flex;
-  flex:1;
+  flex: 1;
   height: 528px;
   background: #ffffff;
   box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
@@ -239,52 +239,52 @@
 // }
 
 .workspace-tabs {
-    margin-top:15px;
-    .ant-tabs-nav-list {
-        display: flex;
+  margin-top: 15px;
+  .ant-tabs-nav-list {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    > .ant-tabs-tab {
+      padding: 0;
+      flex: 1;
+      > .ant-tabs-tab-btn {
         flex: 1;
-        justify-content: space-between;
-      > .ant-tabs-tab {
-        padding: 0;
-        flex: 1;
-        > .ant-tabs-tab-btn {
-            flex: 1;
-          font-family: 'Roboto';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 22px;
-          color:#000000;;
-          text-align: center;
-        }
-      }
-      > .ant-tabs-tab-active {
-            flex: 1;
-        > .ant-tabs-tab-btn {
-            flex: 1;
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 22px;
-            color:  #FFFFFF;
-            background: #3f3d56;
-            border: 1px solid #bcbcbc;
-            box-sizing: border-box;
-            border-radius: 60px;
-            text-align: center;
-            padding: 8px 0px;
-        }
-      }
-      .ant-tabs-ink-bar {
-        background: transparent;
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px;
+        color: #000000;
+        text-align: center;
       }
     }
-    .ant-tabs-nav {
-      .ant-tabs-nav-wrap {
+    > .ant-tabs-tab-active {
+      flex: 1;
+      > .ant-tabs-tab-btn {
+        flex: 1;
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px;
+        color: #ffffff;
+        background: #3f3d56;
         border: 1px solid #bcbcbc;
         box-sizing: border-box;
         border-radius: 60px;
+        text-align: center;
+        padding: 8px 0px;
       }
     }
+    .ant-tabs-ink-bar {
+      background: transparent;
+    }
   }
+  .ant-tabs-nav {
+    .ant-tabs-nav-wrap {
+      border: 1px solid #bcbcbc;
+      box-sizing: border-box;
+      border-radius: 60px;
+    }
+  }
+}
