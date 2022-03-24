@@ -769,13 +769,17 @@ function TreePlot(props) {
           .text(function (d) {
             var nodeName = '';
             var batchName = '';
+            var poName = '';
             if (d.type === 'Material') {
               batchName = d['nodeId'].split('|');
               nodeName = batchName[1];
+              return nodeName;
+            } else if (d.type === 'Process Order') {
+              poName = d.poNo;
+              return poName;
             }
-
-            return nodeName;
           })
+
           .on('mouseover', function (d) {
             node_onMouseOver(d);
           })
@@ -977,7 +981,7 @@ function TreePlot(props) {
             // $('#keyTooltip').html(tooltipHtml);
             toolTip.style('left', d3.event.layerX + 'px');
             if (d3.event.layerY > 200) {
-              toolTip.style('top', d3.event.layerY - 150 + 'px');
+              toolTip.style('top', d3.event.layerY - 50 + 'px');
             } else {
               toolTip.style('top', d3.event.layerY + 20 + 'px');
             }
