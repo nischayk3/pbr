@@ -37,7 +37,7 @@ function ReportDesignerForm(props) {
     {
 
        let user_details = JSON.parse(localStorage.getItem('user_details'))
-       let user = user_details["username"] ? user_details["username"] : ''
+       let user = user_details && user_details.username ? user_details["username"] : ''
 
        setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
        setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
