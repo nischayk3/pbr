@@ -38,22 +38,6 @@ const chartComponent = (props) => {
             dispatch(showNotification('error', error.Message));
         }
     }
-    const data = [
-        {
-            // x: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-            // y: [52.4945, 52.4945, 52.4945, 52.4945, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283],
-            // text: ["ABL2258", "ABL2259", "ABL2261", "ABL2264", "ABV4295", "ABV4296", "ABV4297", "ABV4298", "ABV4299", "ABY0079", "ABY0080", "ABY0081", "ABY0082", "ABY0083",
-            //     "ABY0084", "ABY0086", "ABY0088"],
-            // type: 'scatter',
-            // mode: 'markers',
-            mode: "markers",
-            text: ['ABL2258', 'ABL2259', 'ABL2261', 'ABL2264', 'ABV4295', 'ABV4296', 'ABV4297', 'ABV4298', 'ABV4299', 'ABY0079', 'ABY0080', 'ABY0081', 'ABY0082', 'ABY0083', 'ABY0084', 'ABY0086', 'ABY0088'],
-            type: "scatter",
-            x: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
-            y: [52.4945, 52.4945, 52.4945, 52.4945, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283, 52.283]
-
-        }
-    ]
     const layout = {
         xaxis: workspaceChartLayoutXAxis,
         yaxis: workspaceChartLayoutYAxis,
