@@ -17,17 +17,20 @@ const DeviationTable = () => {
         {
             title: 'Event ID',
             key: 'event_id',
-            dataIndex: 'event_id'
+            dataIndex: 'event_id',
+            sorter:(a, b)=>a.event_id.localeCompare(b.event_id),
         },
         {
             title: 'Product',
             key: 'product_num',
             dataIndex: 'product_num',
+            sorter:(a, b)=>a.product_num.localeCompare(b.product_num),
         },
         {
             title: 'Batch',
             key: 'batch_num',
             dataIndex: 'batch_num',
+            sorter:(a, b)=>a.batch_num.localeCompare(b.batch_num),
             render: (text, row, index) => {
                 return (
                     <div>
