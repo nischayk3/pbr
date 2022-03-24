@@ -27,7 +27,7 @@ const Workspace = () => {
   const [tilesData, setTilesData] = useState([]);
   const [userApproval, setUserApproval] = useState([]);
   const [chartIdException, setChartIdException] = useState([]);
-  const [activeTab, setActiveTab] = useState("1");
+  const [activeTab, setActiveTab] = useState('');
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -66,6 +66,7 @@ const Workspace = () => {
             dispatch(showLoader());
             const chartIdResponse = await getChartExceptionData(req);
             setChartIdException(chartIdResponse.Data);
+            setActiveTab(chartIdResponse.Data[0]?.chart_disp_id+'_'+chartIdResponse.Data[0]?.chart_version)
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
@@ -74,6 +75,7 @@ const Workspace = () => {
   }
 
   const changeTab = activeKey => {
+    console.log(activeKey);
     setActiveTab(activeKey);
   };
   return (
@@ -250,8 +252,8 @@ const Workspace = () => {
                   >
                     {chartIdException.map((el, i) => {
                       return (
-                        <TabPane tab={el.chart_disp_id} key={i + 1}>
-                          <Chart chartId={el.chart_disp_id} chartVersion={el.chart_version}/>
+                        <TabPane tab={el.chart_disp_id} key={`${el.chart_disp_id}_${el.chart_version}`}>
+                          <Chart chartId={el.chart_disp_id} chartVersion={el.chart_version} activeTab={activeTab} current_tab={`${el.chart_disp_id}_${el.chart_version}`}/>
                         </TabPane>
                       )
                     })}
