@@ -14,7 +14,6 @@ import GenealogyDataTable from '../genealogyDataTable';
 import './style.scss';
 
 function GenealogyDrawer(props) {
-  console.log('GenealogyDrawer propssssssss', props);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {

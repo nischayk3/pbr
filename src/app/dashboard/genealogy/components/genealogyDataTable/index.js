@@ -10,7 +10,6 @@ import { Collapse, List, Table } from 'antd';
 import { tableColumns } from '../../../../../utils/TableColumns';
 
 function GenealogyDataTable(props) {
-  console.log('props batch', props);
   const [batchData, setbatchData] = useState({});
   const [limsBatchData, setLimsBatchData] = useState([]);
   const [proInput, setProInput] = useState([]);
@@ -55,7 +54,7 @@ function GenealogyDataTable(props) {
     props.batchInfo,
     props.limsBatchInfo,
   ]);
-  console.log('batchData', batchData, limsBatchData);
+
   return (
     <Collapse
       bordered={false}

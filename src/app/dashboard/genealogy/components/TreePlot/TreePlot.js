@@ -22,7 +22,6 @@ import batchIcon from '../../../../../assets/images/material.png';
 import './style.scss';
 
 function TreePlot(props) {
-  console.log('tree plot props', props);
   const treeDiv = useRef();
   const backwardTreeDiv = useRef();
   const forwardTreeDiv = useRef();
@@ -151,7 +150,7 @@ function TreePlot(props) {
   };
 
   const onSearchParam = (text) => {
-    console.log('search', text);
+    console.log(text);
   };
   const onChangeParam = (value) => {
     if (value !== null && value !== undefined) {
@@ -1411,7 +1410,6 @@ function TreePlot(props) {
     setTimeout(() => TreeViewBackward.multiParentCoupling(multiParent), 100);
   };
   const handleChartClick = (data) => {
-    console.log('handleChartClick', data);
     if (data.type === 'Process Order') {
       setPopVisible(false);
     } else {

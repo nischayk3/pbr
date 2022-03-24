@@ -31,6 +31,7 @@ import GenealogyDrawer from '../components/genealogyDrawer/index.js';
 import GenealogyDataTable from './genealogyDataTable';
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
 import genealogyLanding from '../../../../assets/images/genealogy-landing.png';
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 const { TabPane } = Tabs;
 
 let initialPanes = [
@@ -58,7 +59,6 @@ function Genealogy() {
   const dispatch = useDispatch();
 
   const onClickNode = (node) => {
-    console.log('npodeeeeeeeeee', node);
     if (node.clickType === 'backward') {
       setGenealogyData([]);
       let _reqBackward = {
@@ -157,9 +157,6 @@ function Genealogy() {
     }
 
     if (isDrawerRef === false) {
-      console.log('ifffff', isDrawerRef);
-      console.log('paneeess', panes);
-      console.log('inital panes', initialPanes);
       initialPanes.push({
         title: '',
         content: '',
@@ -169,7 +166,7 @@ function Genealogy() {
       });
       setPanes(initialPanes);
     } else {
-      console.log('elsssseeeee', isDrawerRef);
+      console.log(isDrawerRef);
     }
   };
   /**
@@ -297,11 +294,6 @@ function Genealogy() {
       class: '',
     });
     setPanes(initialPanes);
-    // if (isDrawerRef === true) {
-    //   console.log('isDrawerRef iffff');
-    // } else if (isDrawerRef === false) {
-
-    // }
 
     setActivateKey('3');
   };
@@ -342,23 +334,16 @@ function Genealogy() {
         newActiveKey = newPanes[0].key;
       }
     }
-    console.log('remove initial panes', initialPanes);
-    console.log('remove panes', newPanes, newInitPanes);
+
     initialPanes = newInitPanes;
     setIsDrawerRef(false);
     setPanes(newPanes);
     setActivateKey(newActiveKey);
   };
-  console.log('tabssssss', panes, activateKey, initialPanes);
 
   return (
     <div className='custom-wrapper'>
-      <div className='sub-header'>
-        <div className='sub-header-title'>
-          <ArrowLeftOutlined className='header-icon' />
-          <span className='header-title'>Genealogy</span>
-        </div>
-      </div>
+      <BreadCrumbWrapper />
       <div className='custom-content-layout'>
         {activateKey == '1' ? (
           <div style={{ marginBottom: '9px' }}>
