@@ -1,6 +1,5 @@
 import React, { lazy } from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
-
 import Loading from '../components/Loading';
 import Notification from '../components/Notification';
 import SuspenseWrapper from '../components/SuspenseWrapper';
@@ -11,8 +10,10 @@ const Dashboard = lazy(() => import('./dashboard'));
 const Account = lazy(() => import('./user'));
 
 const App = () => {
+
   const match = useRouteMatch();
   const showLoading = useSelector((state) => state.commonReducer.showLoading);
+
   return (
     <>
       <Loading show={showLoading} />
@@ -35,5 +36,4 @@ const App = () => {
     </>
   );
 };
-
 export default App;

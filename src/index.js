@@ -12,12 +12,14 @@ import 'antd/dist/antd.min.css';
 import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./services/authProvider";
+import { CookiesProvider } from "react-cookie";
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
 ReactDOM.render(
     <>
         {/* <React.StrictMode> */}
+        <CookiesProvider>
         <MsalProvider instance={msalInstance}>
         <Provider store={configureStore()}>
             <ConnectedRouter history={history}>
@@ -27,6 +29,7 @@ ReactDOM.render(
             </ConnectedRouter>
         </Provider>
         </MsalProvider>
+        </CookiesProvider>
         {/* </React.StrictMode> */}
     </>,
     document.getElementById('root')
