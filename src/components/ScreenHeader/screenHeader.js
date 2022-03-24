@@ -7,6 +7,7 @@ const ScreenHeader = (props) => {
   useEffect(() => {
     updateDate();
   }, []);
+  
 
   const updateDate = () => {
     const date = new Date();
