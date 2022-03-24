@@ -59,7 +59,7 @@
 }
 .workspace-main-block {
   display: grid;
-  grid-template-rows:auto auto;
+  grid-template-rows:auto auto auto;
   gap: 24px;
 }
 .workspace-innerColumn {
@@ -93,6 +93,13 @@
   background: #ffffff;
   box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
+}
+.workspace-recent{
+    height: 317px;
+    background: #ffffff;
+    box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    margin-top: -10px;
 }
 .workspace-outerColumn {
   display: grid;
@@ -287,4 +294,96 @@
         border-radius: 60px;
       }
     }
+  }
+
+  .workspace-processCharts{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.03em;
+    color: rgba(0, 0, 0, 0.85);
+  }
+  .workspace-processCharts-name{
+    display:flex;
+    justify-content: center;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000000;
+  }
+
+  .workspace-processCharts-id{
+    display:flex;
+    justify-content: center;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px; 
+    color: #000000;
+    margin-top: 0px;
+  }
+
+  .workspace-processChart-card{
+    width:162px;
+    height:84px;
+    background: #E2E8F2;
+    border-radius: 4px;
+    padding: 10px;
+  }
+
+  .workspace-processChart-main{
+      margin:25px;
+  }
+
+  .workspace-processView{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.03em;
+    color: rgba(0, 0, 0, 0.85);
+  }
+  .workspace-processView-name{
+    display:flex;
+    justify-content: center;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000000;
+  }
+
+  .workspace-processView-id{
+    display:flex;
+    justify-content: center;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px; 
+    color: #000000;
+    margin-top: 0px;
+  }
+
+  .workspace-processView-card{
+    width:162px;
+    height:84px;
+    background: #E2E8F2;
+    border-radius: 4px;
+    padding: 10px;
+  }
+
+  .recentcard{
+    padding: 25px;
+    margin: 12px 13px;
+  }
+  .workspace-processView-main{
+      margin:25px 25px 25px 10px;
   }

@@ -58,3 +58,18 @@ export const getChartPlotData = (_queryParam) => {
         }
     );
 };
+
+// get last updated views and charts
+export const getUpdatedChartsViewsData = (_queryParam) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/last-views-and-charts', _queryParam,{
+        'content-type': 'application/json',
+        'username': localStorage.getItem('user'),
+    }).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
