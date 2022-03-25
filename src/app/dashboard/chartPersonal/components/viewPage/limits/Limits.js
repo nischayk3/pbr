@@ -4,7 +4,7 @@ import './limitsStyles.scss';
 import { Button, Card, Collapse, Table, Popconfirm, DatePicker, Input } from 'antd';
 import {
     DeleteTwoTone,
-    PlusSquareOutlined
+    PlusOutlined
 } from '@ant-design/icons';
 
 
@@ -293,7 +293,7 @@ const Limits = ({ controlSource, setControlSource, specificationSource, setSpeci
                         dataSource={controlSource}
                         columns={columns}
                     />
-                    <Button onClick={() => handleAdd()}><PlusSquareOutlined />Add new row</Button>
+                    <Button onClick={() => handleAdd()}><PlusOutlined />Add new row</Button>
                 </div>
                 <div className='table-bottom'>
                     <p>Specification</p>
@@ -302,7 +302,7 @@ const Limits = ({ controlSource, setControlSource, specificationSource, setSpeci
                         dataSource={specificationSource}
                         columns={specColumns}
                     />
-                    <Button onClick={() => handleSpecAdd()}><PlusSquareOutlined />Add new row</Button>
+                    <Button onClick={() => handleSpecAdd()}><PlusOutlined />Add new row</Button>
                 </div>
                 <div className='table-bottom'>
                     <p>Warning</p>
@@ -311,7 +311,7 @@ const Limits = ({ controlSource, setControlSource, specificationSource, setSpeci
                         dataSource={warningSource}
                         columns={warnColumns}
                     />
-                    <Button onClick={() => handleWarnAdd()}><PlusSquareOutlined />Add new row</Button>
+                    <Button onClick={() => handleWarnAdd()}><PlusOutlined />Add new row</Button>
                 </div>
             </div>
 

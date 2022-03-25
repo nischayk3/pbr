@@ -31,7 +31,7 @@ const ChartPersonal = () => {
             <div className='sub-header'>
                 <div className='sub-header-title'>
                     <ArrowLeftOutlined className='header-icon' onClick={onBackArrowClick} /> &nbsp;
-                    <span className='header-title'>Chart Personalization</span>
+                    <span className='header-title'>Process Control Charts</span>
                 </div>
                 {showView && <div className='btns'>
                     <Button>Schedule Alert</Button>

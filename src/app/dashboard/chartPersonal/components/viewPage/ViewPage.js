@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './viewPageStyles.scss'
 //antd imports
 import { Row, Col, Tabs } from 'antd';
@@ -8,6 +8,8 @@ import ViewChart from './viewChart/ViewChart';
 import Limits from './limits/Limits';
 import Display from './display/Display';
 import Chart from './chart/Chart';
+//chart json object
+import chartJson from './chartObj.json'
 
 const { TabPane } = Tabs;
 
@@ -15,9 +17,9 @@ const { TabPane } = Tabs;
 //main component
 const ViewPage = () => {
 
-
+    const [postChartData, setPostChartData] = useState(chartJson);
     const callback = (key) => {
-        console.log(key);
+
     }
 
     return (
@@ -26,7 +28,7 @@ const ViewPage = () => {
                 <Col span={7} className='tab-container'>
                     <Tabs defaultActiveKey="1" onChange={callback}>
                         <TabPane tab={<div><AntDesignOutlined />View</div>} key="1">
-                            <ViewChart />
+                            <ViewChart postChartData={postChartData} setPostChartData={setPostChartData} />
                         </TabPane>
                         <TabPane tab={<div><ControlOutlined />Limits</div>} key="2">
                             <Limits />
@@ -37,7 +39,7 @@ const ViewPage = () => {
                     </Tabs>
                 </Col>
                 <Col span={17}>
-                    <Chart />
+                    <Chart postChartData={postChartData} setPostChartData={setPostChartData} />
                 </Col>
             </Row>
         </div>

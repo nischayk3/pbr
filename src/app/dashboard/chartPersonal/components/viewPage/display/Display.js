@@ -288,7 +288,7 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                                 </Select>
                             </Col>
                         </Row>
-                        <div className="header">right X</div>
+                        <div className="header">Right X</div>
                         <Row className="figure-inputs" gutter={24}>
                             <Col className="gutter-row" span={14}>
                                 <label>Show:</label>

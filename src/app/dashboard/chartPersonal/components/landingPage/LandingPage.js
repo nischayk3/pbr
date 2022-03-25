@@ -28,7 +28,7 @@ const LandingPage = ({ showView, setShowView }) => {
                                 <p>Let's personalise some charts today!</p>
                             </div>
                             <img src={Banner} alt="banner" />
-                            <h6>March 6th 2022</h6>
+                            <h6>March 6 2022</h6>
                         </div>
                     </Card>
                 </Col>

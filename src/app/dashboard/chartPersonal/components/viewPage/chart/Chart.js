@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.scss';
 //antd imports
 import { Row, Col, Divider } from 'antd';
@@ -8,7 +8,20 @@ import ScatterChart from './scatterChart/ScatterChart';
 
 
 //main component
-const Chart = () => {
+const Chart = ({ postChartData, setPostChartData }) => {
+    const [xaxisList, setXAxisList] = useState([]);
+    const [yaxisList, setYAxisList] = useState([]);
+
+
+    useEffect(() => {
+        let list = [];
+        postChartData.extras && postChartData.extras.coverage && postChartData.extras.coverage.forEach((ele) => {
+            list.push(ele.function_name);
+            setXAxisList(list);
+            setYAxisList(list);
+        })
+    }, [postChartData])
+
     return (
         <div className='chart-container'>
             <Row>
@@ -32,7 +45,7 @@ const Chart = () => {
                             <p>Version</p>
                         </Col>
                         <Col span={8}>
-                            <p>:6</p>
+                            <p>: 6</p>
                         </Col>
                         <Col span={6} />
                     </Row>
@@ -41,7 +54,7 @@ const Chart = () => {
                             <p>Status</p>
                         </Col>
                         <Col span={8}>
-                            <p>:Draft</p>
+                            <p>: Draft</p>
                         </Col>
                         <Col span={6} />
                     </Row>
@@ -56,7 +69,7 @@ const Chart = () => {
                 </Col>
             </Row>
             <Divider />
-            <ScatterChart />
+            <ScatterChart postChartData={postChartData} setPostChartData={setPostChartData} xaxisList={xaxisList} yaxisList={yaxisList} />
         </div>
     )
 }
