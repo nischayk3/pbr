@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Space, Popconfirm } from 'antd';
+import { Form, Input, Space, Popconfirm,Card } from 'antd';
 import { PlusSquareTwoTone, DeleteTwoTone ,PlusSquareOutlined} from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
@@ -10,14 +10,14 @@ function ReportDesignerDynamicSections(props) {
 
     return (
         <div className="reportDesigner-dynamicSections bg-white">
-            <h6 className="dynamicSections-noteHeadline">Note</h6>
+            {/* <h6 className="dynamicSections-noteHeadline">Note</h6>
             <ul className="dynamicSections-ul">
                 <li>
                     To Create multiple sections, Please click on Add Multiple Sections
                 </li>
                 <li style={{ marginTop: '10px' }}>To Create multiple rows, Please click on plus icon in the row</li>
-            </ul>
-
+            </ul> */}
+            <Card className="reportTableCard" title="Report Table" >
             <div className="dynamicSections-container">
                 <div className="dynamicSections-section">
                     <div className="dynamicSections-block">
@@ -81,6 +81,7 @@ function ReportDesignerDynamicSections(props) {
                     </div>
                 </div>
             </div>
+            </Card>
         </div>
     );
 }

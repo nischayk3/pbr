@@ -2,8 +2,6 @@ import React from 'react';
 import { Form, Input, Popconfirm, Switch } from 'antd';
 import {
     PlusSquareOutlined,
-    UnlockOutlined,
-    LockOutlined,
     DeleteTwoTone
 } from '@ant-design/icons';
 import './styles.scss';
@@ -30,12 +28,11 @@ function ReportDesignerDynamicRow(props) {
                 <>
                     {rows.map(({ key, name, ...restField1 }) => (
                         <tr
-                            className="dynamicSections-spaceRows"
                             key={key} >
-                            <td>
-                                <Form.Item>
-                                    <PlusSquareOutlined style={{ color: '#093185' }} onClick={() => add()} />
-                                </Form.Item>
+                            <td >
+                                <Popconfirm title="Are you Sure you want to delete?" onConfirm={() => remove(name)} disabled={props.show} >
+                                    <DeleteTwoTone twoToneColor="red" disabled={props.show} />
+                                </Popconfirm>
                             </td>
                             <td >
                                 <Form.Item
@@ -51,11 +48,11 @@ function ReportDesignerDynamicRow(props) {
 
                                         return value['editable'] === true ? (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea allowClear autoSize={true} placeholder="Enter Key" name={[name, 'keyName']} disabled  />
+                                                <Input.TextArea allowClear autoSize={true} style={{ width: '100px' }} placeholder="Enter Key" name={[name, 'keyName']} disabled />
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Key" className="ant-input-textarea" bordered={true} disabled={props.show} />
+                                                <Input.TextArea bordered allowClear autoSize={true} style={{ width: '100px', height: '20px' }} placeholder="Enter Key" bordered={true} disabled={props.show} />
                                             </Form.Item>
                                         )
                                     }}
@@ -79,23 +76,19 @@ function ReportDesignerDynamicRow(props) {
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'value']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Value" bordered={true} disabled={props.show} className="ant-input-textarea" />
+                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Value" bordered={true} disabled={props.show} />
                                             </Form.Item>
                                         )
                                     }}
                                 </Form.Item>
                             </td>
-                            <td >
-                                <Popconfirm title="Are you Sure you want to delete?" onConfirm={() => remove(name)} disabled={props.show} >
-                                    <DeleteTwoTone twoToneColor="red" disabled={props.show} />
-                                </Popconfirm>
-                            </td>
+
                             <td >
                                 <Form.Item {...restField1} name={[name, 'editable']} valuePropName="checked" defaultChecked>
                                     <Switch defaultChecked={false} size="small" disabled={props.show} />
                                 </Form.Item>
                             </td>
-                            <td >
+                            {/* <td >
                                 <Form.Item
                                     {...restField1}
                                     shouldUpdate={(prevValues, currentValues) => isEditableHandler(prevValues, currentValues, name, fieldKey)
@@ -114,12 +107,13 @@ function ReportDesignerDynamicRow(props) {
                                         )
                                     }}
                                 </Form.Item>
-                            </td>
+                            </td> */}
                         </tr>
                     ))}
                     <Form.Item>
                         <PlusSquareOutlined style={{ color: '#093185' }} onClick={() => add()} />
                     </Form.Item>
+
                 </>
             )}
         </Form.List>

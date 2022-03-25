@@ -44,13 +44,15 @@ function ReportDesignerForm(props) {
         setViewVersion,
         reportId,
         viewIdVersion,
-        setViewIdVersion
+        setViewIdVersion,
+        setSelectedChartList,
+        selectedChartList
     } = props;
 
     const [visible, setVisible] = useState(false);
     // const [loading, setLoading] = useState(false);
     const [filterTable, setFilterTable] = useState(null);
-    const [selectedChartList, setSelectedChartList] = useState([])
+    // const [selectedChartList, setSelectedChartList] = useState([])
     const [chartsList, setChartList] = useState([])
     
     
@@ -156,6 +158,8 @@ function ReportDesignerForm(props) {
                     value={selectedChartList}
                     onChange={handleChange}
                     style={{ width: '100%' }}
+                    onMouseDown={e => {e.preventDefault()}}
+                    draggable="true"
                     
                 >
                     {chartsList.length > 0  ? chartsList.map(item => (

@@ -8,6 +8,7 @@ import {
   TOGGLE_MENU,
 } from '../types/types';
 
+
 export const toggleMenu = () => (dispatch) => {
   dispatch({
     type: TOGGLE_MENU,

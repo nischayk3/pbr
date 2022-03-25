@@ -372,10 +372,10 @@ function ReportDesignerNew() {
             setIsSave(true)
           }
           else
-          dispatch(showNotification('error', 'Not Saved'));
+            dispatch(showNotification('error', 'Not Saved'));
 
         })
-        
+
         dispatch(sendReport(req['data']))
       }
       else {
@@ -578,21 +578,24 @@ function ReportDesignerNew() {
           getChartsList={getChartsList}
           mapViewList={mapViewList}
           show={params}
+          selectedChartList={selectedChartList}
+          setSelectedChartList={setSelectedChartList}
+          chartList={chartList}
         />
 
-        {(isLoad || isNew) && loading == false && viewId == ''?<div className='new-empty-block'>
-              <Empty description={
-                    <span>
-                      Fill in ‘Report info’ to add new section
-                    </span>
-                    }
-                     className='empty-block'
-                     image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                </div>:<></>
-    
-    }
+        {(isLoad || isNew) && loading == false && viewId == '' ? <div className='new-empty-block'>
+          <Empty description={
+            <span>
+              Fill in ‘Report info’ to add new section
+            </span>
+          }
+            className='empty-block'
+            image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        </div> : <></>
 
-        {(isLoad || isNew) && loading == false  &&  viewId !== ''?
+        }
+
+        {(isLoad || isNew) && loading == false && viewId !== '' ?
           <div className="reportDesigner-grid-tables">
             {/* <ChartSelector
               selectedChartList={selectedChartList}
@@ -646,6 +649,7 @@ function ReportDesignerNew() {
             showSearch
             showArrow
             style={{ backgroundColor: 'white', borderRadius: '4px' }}
+            onMouseDown={e => {e.stopPropagation();}}
           >
             {mapReportList.length >= 0 ? mapReportList.map((item) =>
 

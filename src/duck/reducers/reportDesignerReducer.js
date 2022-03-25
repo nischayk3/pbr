@@ -1,8 +1,9 @@
-import {SELECTED_REPORT_ID,SCREEN_CHANGE} from '../../constants/actionTypes';
+import {SELECTED_REPORT_ID,SCREEN_CHANGE,LOGIN_DETAILS} from '../../constants/actionTypes';
 
 const initialState = {
     reportData:{},
     screen:false,
+    loginDetails:{}
 };
 
 export default (state = initialState, action) => {
