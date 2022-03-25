@@ -29,7 +29,7 @@ import {
 import popupicon from '../../../../assets/images/popup.png';
 import GenealogyDrawer from '../components/genealogyDrawer/index.js';
 import GenealogyDataTable from './genealogyDataTable';
-import ScreenHeader from '../../../../components/screenHeader/screenHeader';
+import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
 import genealogyLanding from '../../../../assets/images/genealogy-landing.png';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 const { TabPane } = Tabs;
@@ -37,6 +37,7 @@ const { TabPane } = Tabs;
 let initialPanes = [
   { title: ' ', content: '', key: '1', closable: false, class: '' },
 ];
+
 function Genealogy() {
   const [chartType, setchartType] = useState('backward');
   const [isBackward, setisBackward] = useState(true);

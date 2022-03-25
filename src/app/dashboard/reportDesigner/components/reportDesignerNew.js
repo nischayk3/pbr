@@ -34,6 +34,7 @@ import { sendReport, screenChange } from '../../../../duck/actions/reportDesigne
 import { showLoader, hideLoader, showNotification } from '../../../../duck/actions/commonActions';
 import Signature from '../../../../components/ElectronicSignature/signature'
 import queryString from "query-string";
+import { loginUrl } from '../../../../services/loginService';
 
 
 //Columns For The view Selection modal
@@ -168,6 +169,10 @@ function ReportDesignerNew() {
     catch (err) {
       dispatch(showNotification('error', err))
     }
+  }
+
+  const onLogin = async () => {
+    window.open(`${loginUrl}?is_ui=true&ui_type='sign`, '_self')
   }
 
   const checkChanges = (reportData, mainJson) => {
@@ -649,7 +654,7 @@ function ReportDesignerNew() {
             showSearch
             showArrow
             style={{ backgroundColor: 'white', borderRadius: '4px' }}
-            onMouseDown={e => {e.stopPropagation();}}
+            onMouseDown={e => { e.stopPropagation(); }}
           >
             {mapReportList.length >= 0 ? mapReportList.map((item) =>
 

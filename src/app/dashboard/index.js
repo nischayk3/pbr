@@ -1,14 +1,11 @@
 import './dashboard.scss';
-
 import React, { lazy, useEffect } from 'react';
 import {
-  Redirect,
   Route,
   Switch,
   useHistory,
   useRouteMatch,
 } from 'react-router-dom';
-
 import Auth from '../../utils/auth';
 import BreadCrumbWrapper from '../../components/BreadCrumbWrapper';
 import HeaderBar from '../../components/Header';
@@ -17,6 +14,7 @@ import Sidebar from '../../components/Sidebar';
 import SuspenseWrapper from '../../components/SuspenseWrapper';
 import Uploader from './dataLoad/index';
 import LoginRedirect from '../user/login/redirect';
+import RedirectSign from '../user/login/redirectSign';
 
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
@@ -109,6 +107,9 @@ const Dashboard = () => {
                 </Route>
                 <Route key='redirect' path={`${match.url}/redirect`}>
                   <LoginRedirect/>
+                </Route>
+                <Route key='redirect_sign' path={`${match.url}/redirect_sign`}>
+                  <RedirectSign/>
                 </Route>
               </Switch>
             </SuspenseWrapper>
