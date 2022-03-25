@@ -150,7 +150,7 @@ function TreePlot(props) {
   };
 
   const onSearchParam = (text) => {
-    console.log('search', text);
+    console.log(text);
   };
   const onChangeParam = (value) => {
     if (value !== null && value !== undefined) {
@@ -348,6 +348,7 @@ function TreePlot(props) {
     let linkArray = [];
     let isBackward = props.Backward;
     let isForward = props.Forward;
+    let firstNode = props.firstNode && props.firstNode.trim();
 
     chartData = processData(chartData, {});
 
@@ -372,10 +373,10 @@ function TreePlot(props) {
         behavior: 'smooth',
       });
       var margin = [20, 20, 20, 20],
-        width = 1350 - margin[1] - margin[3],
+        width = window.innerWidth - margin[1] - margin[3],
         height =
           graphHeight <= 500
-            ? 500
+            ? 700
             : graphHeight > 3000
             ? graphHeight - 1000
             : graphHeight - margin[0] - margin[2],
@@ -430,7 +431,7 @@ function TreePlot(props) {
             if (graphHeight > 1000 && graphHeight < 1500)
               return 'translate(450,100)scale(0.5,0.5)';
           })
-          .append('svg:g')
+
           .attr('transform', 'translate(180,20)scale(0.5,0.5)')
           .attr('class', 'viewport');
 
@@ -594,6 +595,11 @@ function TreePlot(props) {
           .attr('transform', function (d) {
             return 'translate(' + source.y0 + ',' + source.x0 + ')';
           });
+        // .style('stroke', function (d) {
+        //   if (d.matNo === firstNode) {
+        //     return 'red';
+        //   }
+        // });
 
         var highlightForwardLink = function (
           d,
@@ -684,6 +690,31 @@ function TreePlot(props) {
           highlightBackwardLink(d, displayColor, opacity, strokeWidth);
         };
 
+        nodeEnter
+          .append('rect')
+          //nodeEnter.append("circle")
+          //  .attr("r", 1e-6)
+          .attr('dy', '-0.4em')
+          .attr('x', '-27')
+          .attr('y', '-20')
+          .attr('rx', '20')
+          .attr('width', '120')
+          .attr('height', '40')
+          .style('fill', function (d) {
+            if (d.matNo === firstNode) {
+              return '#fff';
+            } else {
+              return 'transparent';
+            }
+          })
+          .style('stroke', function (d) {
+            if (d.matNo === firstNode) {
+              return '#6C534E';
+            } else {
+              return 'transparent';
+            }
+          });
+
         // add Image In Circle
         nodeEnter
           .append('svg:image')
@@ -737,13 +768,17 @@ function TreePlot(props) {
           .text(function (d) {
             var nodeName = '';
             var batchName = '';
+            var poName = '';
             if (d.type === 'Material') {
               batchName = d['nodeId'].split('|');
               nodeName = batchName[1];
+              return nodeName;
+            } else if (d.type === 'Process Order') {
+              poName = d.poNo;
+              return poName;
             }
-
-            return nodeName;
           })
+
           .on('mouseover', function (d) {
             node_onMouseOver(d);
           })
@@ -764,20 +799,26 @@ function TreePlot(props) {
           .attr('x', function (d) {
             return d.traceability === 'backward' ? 15 : -15;
           })
-          .attr('dy', '3.2em')
+          .attr('class', 'expand')
+          .attr('dy', '1.2em')
           .attr('text-anchor', function (d) {
             return d.traceability === 'backward' ? 'end' : 'start';
           })
-          .on('click', function (d) {
-            d3.event.preventDefault();
-            node_onClick(d);
-          })
           .text(function (d) {
             var icon = '';
-            if (d.type === 'Material') {
-              icon = '+';
+            if (d.children !== undefined) {
+              icon = '−';
+            }
+            if (d.matNo === firstNode) {
+              icon = '';
             }
             return icon;
+          })
+          .style('fill', '#000')
+          .style('font-size', '16px')
+          .style('font-weight', '700')
+          .on('click', function (d) {
+            node_onClick(d, d.id);
           });
 
         // Transition nodes to their new position.
@@ -939,7 +980,7 @@ function TreePlot(props) {
             // $('#keyTooltip').html(tooltipHtml);
             toolTip.style('left', d3.event.layerX + 'px');
             if (d3.event.layerY > 200) {
-              toolTip.style('top', d3.event.layerY - 150 + 'px');
+              toolTip.style('top', d3.event.layerY - 50 + 'px');
             } else {
               toolTip.style('top', d3.event.layerY + 20 + 'px');
             }
@@ -985,16 +1026,55 @@ function TreePlot(props) {
 
         // On Node Click Event
         //toggle children click
-        function node_onClick(d) {
+        function node_onClick(d, id) {
+          let lastClickD = null;
+          let nExpand = d3.select('#node-' + id);
           if (d.children) {
             d._children = d.children;
-
             d.children = null;
+            let nodeExpand = nExpand.selectAll('.expand');
+
+            nodeExpand
+              .text(function (a) {
+                var nodeIcon = '';
+                if (a.id === d.id) {
+                  nodeIcon = '+';
+                }
+                // if (a.matNo === firstNode) {
+                //   nodeIcon = '';
+                // }
+                return nodeIcon;
+              })
+              .attr('class', 'collapsed')
+              .style('fill', '#000')
+              .style('font-size', '16px')
+              .style('font-weight', '700');
           } else {
             d.children = d._children;
 
             d._children = null;
+            let nodeCollappsed = nExpand.selectAll('.collapsed');
+            nodeCollappsed
+              .text(function (b) {
+                var nodeIconC = '';
+                if (b.id === d.id) {
+                  nodeIconC = '−';
+                }
+                // if (b.matNo === firstNode) {
+                //   nodeIcon = '';
+                // }
+                return nodeIconC;
+              })
+              .attr('class', 'expand')
+              .style('fill', '#000')
+              .style('font-size', '16px')
+              .style('font-weight', '700');
           }
+          if (lastClickD) {
+            lastClickD._isSelected = false;
+          }
+          d._isSelected = true;
+          lastClickD = d;
           THIS.update(d);
         }
 
@@ -1116,9 +1196,7 @@ function TreePlot(props) {
               }
             } else if (d.type === 'Material') {
               tooltipHtml =
-                "<div><span class='col-xs-1' style='padding:5px'>Plant :  </span><span class='col-xs-1' style='padding:5px'><b>" +
-                (key[0] || 'N/A') +
-                "</b></span><br/><span class='col-xs-1' style='padding:5px'>Product No.  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+                "<div></span><br/><span class='col-xs-1' style='padding:5px'>Product No.  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
                 (key[1] || 'N/A') +
                 "</b></span><br/><span class='col-xs-1' style='padding:5px'>Batch No.  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
                 batchNo +
@@ -1332,8 +1410,11 @@ function TreePlot(props) {
     setTimeout(() => TreeViewBackward.multiParentCoupling(multiParent), 100);
   };
   const handleChartClick = (data) => {
-    console.log('handleChartClick', data);
-    setPopVisible(true);
+    if (data.type === 'Process Order') {
+      setPopVisible(false);
+    } else {
+      setPopVisible(true);
+    }
 
     setNodeData((prevState) => {
       return { ...prevState, data };
@@ -1345,6 +1426,8 @@ function TreePlot(props) {
       nodeId: nodeData.data.nodeId,
       clickType: field,
       product: nodeData.data.matNo,
+      nodeData: nodeData.data,
+      nodeType: nodeData.data.type,
     };
     props.nodeClick(nodeDetails);
   };
@@ -1366,7 +1449,7 @@ function TreePlot(props) {
             <Select
               // allowClear
               showSearch
-              placeholder='Search Here...'
+              placeholder='Search by batch number, product code, etc'
               optionFilterProp='children'
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -1411,22 +1494,26 @@ function TreePlot(props) {
           </div>
         </div>
         <div className='popup-div' id='popup'>
-          <Button
-            type='primary'
-            onClick={() => {
-              onClickView('backward');
-            }}
-          >
-            Backward Genealogy
-          </Button>
-          <Button
-            type='primary'
-            onClick={() => {
-              onClickView('forward');
-            }}
-          >
-            Forward Genealogy
-          </Button>
+          {popVisible && (
+            <>
+              <Button
+                type='primary'
+                onClick={() => {
+                  onClickView('backward');
+                }}
+              >
+                Backward Genealogy
+              </Button>
+              <Button
+                type='primary'
+                onClick={() => {
+                  onClickView('forward');
+                }}
+              >
+                Forward Genealogy
+              </Button>
+            </>
+          )}
           <Button
             type='primary'
             onClick={() => {
