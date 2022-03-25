@@ -80,9 +80,10 @@ function ReportDesigneTable(props) {
                                 <p disabled={props.show}>
 
                                     <div classname="dynamicDiv" style={{ border: "1px solid #486BC9", marginBottom: "10px", minHeight: "160px", borderRadius: "4px" }}>
-                                        <div onClick={() => handleClick()} >+ ADD Chart</div>
-                                        <div onClick={() => add()} >ADD</div>
-
+                                        <div className="add-box">
+                                        <div className="box" onClick={() => handleClick()} >+ ADD Chart</div>
+                                        <div className="box"  onClick={() => add()} >ADD</div>
+                                        </div>
 
 
                                     </div>

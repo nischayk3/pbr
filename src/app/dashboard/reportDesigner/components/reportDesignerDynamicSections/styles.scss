@@ -317,4 +317,18 @@ line-height: 16px;
 
 color: #9B9B9B;
 }
+.box {
+  height: 100px;
+  width: 100px;
+opacity: 1px;
+  color: #fff;
+  align-content: center;
+  justify-content: center;
+}
+.add-box
+{
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  // grid-gap: 10px 10px;
+}
 
