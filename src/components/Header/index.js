@@ -33,7 +33,7 @@ const HeaderBar = () => {
   };
   const adLogout = () =>
   {
-    window.open(`${logoutUrl}?localhost=True`,'_self') 
+    window.open(`${logoutUrl}`,'_self') 
     localStorage.clear()
   }
 
