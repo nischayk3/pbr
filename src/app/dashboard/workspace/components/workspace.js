@@ -19,9 +19,10 @@ import {
 import { getCountData } from '../../../../services/workFlowServices';
 import { getChartExceptionData, getUpdatedChartsViewsData } from '../../../../services/workSpaceServices';
 import './styles.scss';
-const { Search } = Input;
 
+const { Search } = Input;
 const { TabPane } = Tabs;
+
 const Workspace = () => {
   const [resultDate, setResultDate] = useState('');
   const [tilesData, setTilesData] = useState([]);

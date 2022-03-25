@@ -26,3 +26,14 @@ export const getReportGenerator = (request) => {
     );
 };
 
+export const getChartData = (request) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/chart', request).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
