@@ -10,6 +10,8 @@ import { toggleMenu } from '../../duck/actions/commonActions';
 import './style.scss';
 import Auth from '../../utils/auth';
 import { useHistory } from 'react-router-dom';
+import { adenabled } from '../../config/config';
+import { logoutUrl} from '../../services/loginService';
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -29,6 +31,11 @@ const HeaderBar = () => {
       history.push('/');
     });
   };
+  const adLogout = () =>
+  {
+    window.open(`${logoutUrl}?localhost=True`,'_self') 
+    localStorage.clear()
+  }
 
   return (
     <Header id='header'>
@@ -39,7 +46,7 @@ const HeaderBar = () => {
           <img src={cpvLogo} alt='cpv' />
         </div>
       </div>
-      <div className='logout-btn' onClick={Logout}>
+      <div className='logout-btn' onClick={()=>adenabled ? adLogout() :  Logout}>
         <LogoutOutlined />
       </div>
     </Header>

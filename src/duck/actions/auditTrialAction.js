@@ -89,8 +89,8 @@ export const exportAuditData = (request) => {
     );
 };
 
-export const getMoleculeData = (request) => {
-    return Service.get(BMS_APP_PYTHON_SERVICE + '/molecules', request,{ 'content-type': 'application/json' }).then(
+export const getMoleculeData = (request,headers) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/molecules', request,headers).then(
         (response) => {
             return response.data;
         },

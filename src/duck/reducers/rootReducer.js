@@ -6,6 +6,7 @@ import commonReducer from './commonReducer';
 import { connectRouter } from 'connected-react-router';
 import reportDesignerReducer from './reportDesignerReducer';
 import viewCreationReducer from './viewCreationReducer';
+import loginReducer from './loginReducer';
 
 const createRootReducer = (history) =>
   combineReducers({
@@ -16,5 +17,7 @@ const createRootReducer = (history) =>
     chartViewReducer,
     reportDesignerReducer,
     viewCreationReducer,
+    loginReducer
+    
   });
 export default createRootReducer;
