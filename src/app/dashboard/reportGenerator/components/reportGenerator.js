@@ -23,8 +23,6 @@ import {
     Table,
     DatePicker,
     Divider,
-    Dropdown,
-    Avatar
 } from 'antd';
 import { ArrowLeftOutlined, BlockOutlined, DeleteOutlined, SendOutlined, UserOutlined, ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons';
 import './styles.scss';
@@ -322,6 +320,7 @@ function ReportGenerator() {
         );
         setFilterTable(filterTable);
     };
+
 
     const getReportData = async (rep_id) => {
 
@@ -627,20 +626,21 @@ function ReportGenerator() {
 
                 >
                     <UserOutlined />
-                    <u><Select
-                        mode="tags"
-                        style={{ width: '90%', marginTop: '10px' }}
-                        placeholder="Recipients"
-                        optionLabelProp="label"
-                        value={emailList}
-                        bordered={false}
-                        onChange={handleChange}
-                    >
+                    <u>
+                        <Select
+                            mode="tags"
+                            style={{ width: '90%', marginTop: '10px' }}
+                            placeholder="Recipients"
+                            optionLabelProp="label"
+                            value={emailList}
+                            bordered={false}
+                            onChange={handleChange}
+                        >
 
-                        <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
-                            mihir.bagga@mareana.com
-                        </Option>
-                    </Select></u> <Divider />
+                            <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
+                                mihir.bagga@mareana.com
+                            </Option>
+                        </Select></u> <Divider />
                     <ClockCircleOutlined /> <DatePicker bordered={false} /><Divider orientation="left" />
 
                     <ReloadOutlined />
@@ -656,24 +656,16 @@ function ReportGenerator() {
                         <Option value="daily">daily</Option>
                     </Select>
 
-                    <Radio.Group defaultValue="large">
-                        <Radio.Button value="large" className="radio-button">Large</Radio.Button>
-                        <Radio.Button value="default" className="radio-button">Default</Radio.Button>
-                        <Radio.Button value="small" className="radio-button">Small</Radio.Button>
-                        <Radio.Button value="small" className="radio-button">Small</Radio.Button>
-                        <Radio.Button value="small" className="radio-button">Small</Radio.Button>
-                        <Radio.Button value="small" className="radio-button">Small</Radio.Button>
-                        <Radio.Button value="small" className="radio-button">Small</Radio.Button>
+                    <Radio.Group defaultValue="Sunday">
+                        <Radio.Button value="Sunday" className="radio-button">S</Radio.Button>
+                        <Radio.Button value="Monday" className="radio-button">M</Radio.Button>
+                        <Radio.Button value="Tuesday" className="radio-button">T</Radio.Button>
+                        <Radio.Button value="Wednesday" className="radio-button">W</Radio.Button>
+                        <Radio.Button value="Thursday" className="radio-button">T</Radio.Button>
+                        <Radio.Button value="Friday" className="radio-button">F</Radio.Button>
+                        <Radio.Button value="Saturday" className="radio-button">S</Radio.Button>
                     </Radio.Group>
-                    {/* <div> */}
-                    {/* <Avatar onClick={()=>console.log('led')}>S</Avatar>
-                    <Avatar>M</Avatar>
-                    <Avatar>T</Avatar>
-                    <Avatar>W</Avatar>
-                    <Avatar>T</Avatar>
-                    <Avatar>F</Avatar>
-                    <Avatar>S</Avatar> */}
-                    {/* </div> */}
+
 
 
 

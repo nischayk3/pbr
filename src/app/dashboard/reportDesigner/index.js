@@ -7,7 +7,6 @@ import Landing from './components/reportLanding'
 function Report()
 {
     const screen = useSelector((state)=>state.reportDesignerReducer.screen)
-    console.log(screen)
 
     useEffect(()=>
     {

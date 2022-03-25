@@ -37,6 +37,7 @@ const { TabPane } = Tabs;
 let initialPanes = [
   { title: ' ', content: '', key: '1', closable: false, class: '' },
 ];
+
 function Genealogy() {
   const [chartType, setchartType] = useState('backward');
   const [isBackward, setisBackward] = useState(true);

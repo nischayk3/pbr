@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { Card, Input, Space, Avatar, Row, Col, Tabs } from 'antd';
+import { Card, Input, Space, Avatar, Row, Col, Tabs, Divider } from 'antd';
 import illustrations from '../../../../assets/images/Group 33808.svg';
 import DeviationTable from './deviationTable/deviationTable';
 import DataQuality from './dataQuality/dataQuality';
@@ -17,17 +17,20 @@ import {
   showNotification,
 } from '../../../../duck/actions/commonActions';
 import { getCountData } from '../../../../services/workFlowServices';
-import { getChartExceptionData } from '../../../../services/workSpaceServices';
+import { getChartExceptionData, getUpdatedChartsViewsData } from '../../../../services/workSpaceServices';
 import './styles.scss';
-const { Search } = Input;
 
+const { Search } = Input;
 const { TabPane } = Tabs;
+
 const Workspace = () => {
   const [resultDate, setResultDate] = useState('');
   const [tilesData, setTilesData] = useState([]);
   const [userApproval, setUserApproval] = useState([]);
   const [chartIdException, setChartIdException] = useState([]);
-  const [activeTab, setActiveTab] = useState("1");
+  const [lastupdatedCharts, setLastUpdatedCharts] = useState([]);
+  const [lastupdatedViews, setLastUpdatedViews] = useState([]);
+  const [activeTab, setActiveTab] = useState('');
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -35,8 +38,10 @@ const Workspace = () => {
     updateDate();
     getTilesData();
     getChartId();
+    lastUpdatedChartsViews();
   }, []);
 
+  //get todays date
   const updateDate = () => {
     const date = new Date();
     const month = date.toLocaleString('default', { month: 'long' });
@@ -46,6 +51,7 @@ const Workspace = () => {
     setResultDate(resultDate);
   };
 
+  //workflow approval card function
   const getTilesData = async () => {
     let req = {};
     try {
@@ -60,20 +66,39 @@ const Workspace = () => {
     }
   };
 
-  const getChartId=async()=>{
-    let req = { limit: 5, username:localStorage.getItem('user') }
-        try {
-            dispatch(showLoader());
-            const chartIdResponse = await getChartExceptionData(req);
-            setChartIdException(chartIdResponse.Data);
-            dispatch(hideLoader());
-        } catch (error) {
-            dispatch(hideLoader());
-            dispatch(showNotification('error', error.Message));
-        }
+  //top 5 charts with exception function
+  const getChartId = async () => {
+    let req = { limit: 5, username: localStorage.getItem('user') }
+    try {
+      dispatch(showLoader());
+      const chartIdResponse = await getChartExceptionData(req);
+      setChartIdException(chartIdResponse.Data);
+      setActiveTab(chartIdResponse.Data[0]?.chart_disp_id + '_' + chartIdResponse.Data[0]?.chart_version)
+      dispatch(hideLoader());
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', error.Message));
+    }
   }
 
+  //last updated views and chart function
+  const lastUpdatedChartsViews = async () => {
+    let req = { limit: 5 }
+    try {
+      dispatch(showLoader());
+      const chartResponse = await getUpdatedChartsViewsData(req);
+      setLastUpdatedCharts(chartResponse.last_created_or_changed_charts);
+      setLastUpdatedViews(chartResponse.last_created_or_changed_views);
+      dispatch(hideLoader());
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', error.Message));
+    }
+  }
+
+  //changing of tabs
   const changeTab = activeKey => {
+    console.log(activeKey);
     setActiveTab(activeKey);
   };
   return (
@@ -250,8 +275,8 @@ const Workspace = () => {
                   >
                     {chartIdException.map((el, i) => {
                       return (
-                        <TabPane tab={el.chart_disp_id} key={i + 1}>
-                          <Chart chartId={el.chart_disp_id} chartVersion={el.chart_version}/>
+                        <TabPane tab={el.chart_disp_id} key={`${el.chart_disp_id}_${el.chart_version}`}>
+                          <Chart chartId={el.chart_disp_id} chartVersion={el.chart_version} activeTab={activeTab} current_tab={`${el.chart_disp_id}_${el.chart_version}`} />
                         </TabPane>
                       )
                     })}
@@ -284,6 +309,68 @@ const Workspace = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div className='workspace-recent'>
+          <div className='recentcard'>
+            <LayoutOutlined
+              style={{ color: '#0CE7CC', fontSize: '15px' }}
+            />
+            <span className='deviation-text'>Recently Approved Creations</span>
+            <Row>
+              <Col span={11}>
+                <div className='workspace-processChart-main'>
+                  <p className='workspace-processCharts'>Process Control Charts</p>
+                  <Row gutter={[6, 12]}>
+                    {lastupdatedCharts.map((j, k) => {
+                      return (
+                        <Col className='gutter-row' span={8}>
+
+                          <div className='workspace-processChart-card' onClick={()=>history.push(`/dashboard/chart_personalization?id=${j.chart_disp_id}&version=${j.chart_version}`)}>
+                            <p className='workspace-processCharts-id'>
+                              {j.chart_disp_id}
+                            </p>
+                            <p className='workspace-processCharts-name'>
+                              {j.chart_name}
+                            </p>
+
+                          </div>
+
+                        </Col>
+                      )
+                    })}
+                  </Row>
+                </div>
+              </Col>
+              <Col span={1}>
+                <Divider type="vertical" style={{ height: "100%", border: '1px solid #CACACA' }} />
+              </Col>
+              <Col span={11}>
+                <div className='workspace-processView-main'>
+                  <p className='workspace-processView'>Views</p>
+                  <Row gutter={[6, 12]}>
+                    {lastupdatedViews.map((m, n) => {
+                      return (
+                        <Col className='gutter-row' span={8}>
+                          <div className='workspace-processView-card' onClick={()=>history.push(`/dashboard/view_creation?id=${m.view_disp_id}&version=${m.view_version}`)}>
+                            <p className='workspace-processView-id'>
+                              {m.view_disp_id}
+                            </p>
+                            <p className='workspace-processView-name'>
+                            {m.view_name}
+                            </p>
+
+                          </div>
+
+                        </Col>
+                      )
+                    })}
+
+                  </Row>
+                </div>
+              </Col>
+            </Row>
+          </div>
+
         </div>
       </div>
     </div>
