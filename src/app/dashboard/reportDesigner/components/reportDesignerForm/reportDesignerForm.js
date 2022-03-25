@@ -64,11 +64,10 @@ function ReportDesignerForm(props) {
         setSelectedChartList(selectedItems);
     };
     const drag = selectedItems => {
-        console.log(selectedItems);
+
     };
 
     const onDragEnd = (fromIndex, toIndex) => {
-        console.log(fromIndex,toIndex)
         if (toIndex < 0) return; // Ignores if outside designated area
     
         const items = [...this.state.data];
