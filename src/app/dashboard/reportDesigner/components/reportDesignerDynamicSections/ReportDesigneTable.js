@@ -22,15 +22,17 @@ function ReportDesigneTable(props) {
                                     <Form.Item {...restField} name={[name, 'sectionName']}>
                                         <Input placeholder="Section Name" style={{ marginLeft: '35px', width: '150px' }} bordered={false} className="input-section" disabled={props.show} />
                                     </Form.Item>
+                                    
                                     <div style={{ marginLeft: '1200px' }}>
                                         {/* <Button>+Add Chart</Button> */}
+                                        <div>+ ADD Chart</div>
                                         <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
                                             <DeleteTwoTone twoToneColor="red" style={{ marginBottom: '100px' }} />
                                         </Popconfirm>
                                     </div>
 
                                     <Space
-                                        // className="designer-spaceSection"
+                                        className="designer-spaceSection"
                                         key={key}
                                         style={{ display: 'flex', justifyContent: 'center' }}
                                         align="baseline"
@@ -59,7 +61,8 @@ function ReportDesigneTable(props) {
                             <Form.Item >
                                 <p disabled={props.show}>
                                     <div classname="dynamicDiv" style={{ border: "1px solid #486BC9", marginBottom: "10px", minHeight: "160px", borderRadius: "4px" }}>
-
+                                    <div onDragOver={(ev)=>console.log(ev)}>+ ADD Chart</div>
+                                    <div onClick={() => add()} >ADD</div>
                                     </div>
                                     <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: 6, right: -10, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> <u disabled={props.show}></u>
                                 </p>

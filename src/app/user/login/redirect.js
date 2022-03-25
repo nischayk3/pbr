@@ -24,6 +24,7 @@ export default function Redirect(props) {
         if (data) 
         {
             dispatch(sendLoginDetails(data))
+            localStorage.setItem('login_details',JSON.stringify(data))
             dispatch(showNotification('success', `Logined As ${data.email_id}`))
             history.push('/dashboard/genealogy');
             dispatch(hideLoader())

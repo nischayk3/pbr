@@ -4,6 +4,8 @@ import { BlockOutlined } from '@ant-design/icons';
 import { getCharts } from '../../../../../services/reportDesignerServices';
 import './styles.scss';
 // import { getCharts } from '../../../../../services/reportDesignerServices';
+import ReactDragListView from "react-drag-listview";
+
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -61,7 +63,19 @@ function ReportDesignerForm(props) {
     const handleChange = selectedItems => {
         setSelectedChartList(selectedItems);
     };
+    const drag = selectedItems => {
+        console.log(selectedItems);
+    };
 
+    const onDragEnd = (fromIndex, toIndex) => {
+        console.log(fromIndex,toIndex)
+        if (toIndex < 0) return; // Ignores if outside designated area
+    
+        const items = [...this.state.data];
+        const item = items.splice(fromIndex, 1)[0];
+        items.splice(toIndex, 0, item);
+        this.setState({ data: items });
+      };
     //Get charts based on viewId-version
   const getChartsList = (version,viewId) => {
     if (viewId.length > 0)
@@ -148,6 +162,10 @@ function ReportDesignerForm(props) {
                 </div>
                 <div>
                 <Text className='filter-text' >Chart ID</Text><br />
+                <ReactDragListView
+          nodeSelector=".ant-list-item.draggble"
+          onDragEnd={onDragEnd}
+        >
                 <Select
                     row={1}
                     mode="multiple"
@@ -158,18 +176,19 @@ function ReportDesignerForm(props) {
                     value={selectedChartList}
                     onChange={handleChange}
                     style={{ width: '100%' }}
-                    onMouseDown={e => {e.preventDefault()}}
-                    draggable="true"
+                    onMouseDown={drag}
+                    
                     
                 >
                     {chartsList.length > 0  ? chartsList.map(item => (
-                        <Option value={item} key={item}>
+                        <Option draggable="true" value={item} key={item}>
                             {item}
                         </Option>
                     )):<Option >
                     
                 </Option> }
                 </Select>
+                </ReactDragListView>
                 </div>
                 {/* <div>
                     <Text className='filter-text' >Status</Text><br />
