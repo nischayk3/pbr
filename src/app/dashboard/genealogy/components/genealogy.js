@@ -91,7 +91,7 @@ function Genealogy() {
         };
         setBatchInfo(batchInfoDetails);
         setIsDrawerOpen(true);
-        setIsDrawerRef(true);
+        setIsDrawerRef(false);
         setNodeType(node.nodeType);
         let nodeSplit = node.nodeId.split('|');
         let _reqBatchInfo = {
@@ -115,7 +115,7 @@ function Genealogy() {
           relation_id: 'output_batch_to_process_order',
         };
         setIsDrawerOpen(true);
-        setIsDrawerRef(true);
+        setIsDrawerRef(false);
         setNodeType(node.nodeType);
         getNodeProcessInput(_reqProcessInput);
         getNodeProcessOutput(_reqProcessOutput);
@@ -209,6 +209,7 @@ function Genealogy() {
         setisBackward(false);
         setisForward(true);
         setShowTree(true);
+        setIsDrawerRef(true);
         setActivateKey('2');
         dispatch(hideLoader());
       } else if (forwardRes.status === 400) {
@@ -286,15 +287,27 @@ function Genealogy() {
     setIsDrawer(val);
     setShowView(true);
     setIsDrawerOpen(false);
-    initialPanes.push({
-      title: '',
-      content: '',
-      key: '3',
-      closable: true,
-      class: '',
-    });
-    setPanes(initialPanes);
-
+    console.log('isDrawerRef', isDrawerRef);
+    if (isDrawerRef === false) {
+      initialPanes.push({
+        title: '',
+        content: '',
+        key: '3',
+        closable: true,
+        class: '',
+      });
+      setPanes(initialPanes);
+    } else {
+      console.log(isDrawerRef);
+    }
+    // initialPanes.push({
+    //   title: '',
+    //   content: '',
+    //   key: '3',
+    //   closable: true,
+    //   class: '',
+    // });
+    // setPanes(initialPanes);
     setActivateKey('3');
   };
 

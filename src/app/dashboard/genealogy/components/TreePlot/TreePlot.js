@@ -157,6 +157,7 @@ function TreePlot(props) {
       let splitvalue = value.split('---');
 
       let splitedvalue = splitvalue[1];
+      console.log('splitedvalue', splitvalue[0], splitvalue[1]);
       setselectedNodeId(splitedvalue);
       setsearchValue(splitvalue[0]);
 
@@ -168,6 +169,18 @@ function TreePlot(props) {
       if (props.chartType === 'backward') {
         let diagramLayout = d3.select('#backwardDiv');
         let linkSvg = diagramLayout.selectAll('.link');
+        // let linkSvg1 = diagramLayout.selectAll('#treeviewidbackward');
+        // let linkSvg2 = diagramLayout.selectAll('#node-' + splitedvalue);
+        // let nodeCoords = d3.transform(linkSvg2.attr('transform'));
+        // let ntranslateX = nodeCoords.translate[0];
+        // let ntranslateY = nodeCoords.translate[1];
+        // let newTranslateX = ntranslateX - 600;
+        // let newtranslateY = ntranslateY - ntranslateY - 40;
+
+        // linkSvg1.attr(
+        //   'transform',
+        //   'translate(' + newTranslateX + ',' + newtranslateY + ')scale(1,1)'
+        // );
         linkSvg.style('stroke', isMaterialLink).style('stroke-width', '4');
         let linkSearchMatch = linkSvg.filter(function (d) {
           return d.source.id === splitedvalue || d.target.id === splitedvalue;
@@ -179,10 +192,31 @@ function TreePlot(props) {
 
         linkMatch.style('stroke', '#ddd');
         parentLink.style('stroke', '#ddd');
-        linkNotMatch.style('stroke', isMaterialLink);
+        //  highlightLink(d.target, '#FF8C00', 1, 10)
+        linkNotMatch.style('stroke', function (d) {
+          if (d.source && d.source.type === 'Material') {
+            return isMaterialLink;
+          }
+        });
       } else if (props.chartType === 'forward') {
         let diagramForward = d3.select('#forwardDiv');
         let linkSvgFor = diagramForward.selectAll('.link');
+        // let linkSvg1For = diagramForward.selectAll('#treeviewidforward');
+        // let linkSvg2For = diagramForward.selectAll('#node-' + splitedvalue);
+        // let nodeCoordsFor = d3.transform(linkSvg2For.attr('transform'));
+        // let ntranslateXFor = nodeCoordsFor.translate[0];
+        // let ntranslateYFor = nodeCoordsFor.translate[1];
+        // let newTranslateXFor = ntranslateXFor - 600;
+        // let newtranslateYFor = ntranslateYFor - ntranslateYFor - 40;
+
+        // linkSvg1For.attr(
+        //   'transform',
+        //   'translate(' +
+        //     newTranslateXFor +
+        //     ',' +
+        //     newtranslateYFor +
+        //     ')scale(1,1)'
+        // );
         linkSvgFor.style('stroke', isMaterialLink).style('stroke-width', '4');
         let linkSearchMatchFor = linkSvgFor.filter(function (d) {
           return d.source.id === splitedvalue || d.target.id === splitedvalue;
@@ -363,7 +397,7 @@ function TreePlot(props) {
       var THIS = this;
       THIS.type = type;
 
-      var graphHeight = dynamicHeight * 30;
+      var graphHeight = dynamicHeight * 25;
 
       var nodeDepth = 240;
 
@@ -376,7 +410,7 @@ function TreePlot(props) {
         width = window.innerWidth - margin[1] - margin[3],
         height =
           graphHeight <= 500
-            ? 700
+            ? 600
             : graphHeight > 3000
             ? graphHeight - 1000
             : graphHeight - margin[0] - margin[2],
@@ -432,7 +466,7 @@ function TreePlot(props) {
               return 'translate(450,100)scale(0.5,0.5)';
           })
 
-          .attr('transform', 'translate(180,20)scale(0.5,0.5)')
+          .attr('transform', 'translate(180,20)scale(0.6,0.6)')
           .attr('class', 'viewport');
 
         // add the links and the arrows
@@ -453,75 +487,83 @@ function TreePlot(props) {
         THIS.root.y0 = width;
 
         d3.select('#wid-id-3, #wid-id-5, #wid-id-6').attr('hide', null);
-
-        var zb = d3.behavior
-          .zoom()
-          .scaleExtent([0.5, 5])
-          .on('zoom', function () {
-            zoom();
-          });
-        zb.translate([margin.left, margin.top]);
+        /**
+         * TODO: Tree Zoom layout
+         */
+        var treeZoom = function (id) {
+          d3.select('#' + id).call(
+            d3.behavior.zoom().scaleExtent([0.5, 5]).on('zoom', zoom)
+          );
+        };
         //zoom
         function zoom() {
+          console.log('zoom finction calling');
+          console.log('translation 11111', d3.event.translate);
           var scale = d3.event.scale,
             translation = d3.event.translate,
-            tbound = -height * scale * 100,
+            tbound = -height * scale,
             bbound = height * scale,
-            lbound = (-width + margin.right) * scale,
-            rbound = (width - margin.bottom) * scale;
+            lbound = (-width + margin[1]) * scale,
+            rbound = (width - margin[3]) * scale;
 
           // limit translation to thresholds
           translation = [
             Math.max(Math.min(translation[0], rbound), lbound),
             Math.max(Math.min(translation[1], bbound), tbound),
           ];
-
+          console.log('translation 222222', translation);
+          console.log('scaleeee', scale);
           THIS.vis.attr(
             'transform',
             'translate(' + translation + ')' + ' scale(' + scale + ')'
           );
         }
-        var panZoomsvgObject;
-        var PanZoomsvg = function (id) {
-          panZoomsvgObject = svgPanZoom('#' + id, {
-            panEnabled: true,
-            dragEnabled: true,
-            controlIconsEnabled: false,
-            mouseWheelZoomEnabled: true,
-            zoomEnabled: true, //lets see
-            zoomScaleSensitivity: 2,
-            minZoom: 1,
-            maxZoom: 5,
-            fit: false,
-            //   center: true,
-            destroy: function (options) {
-              for (var eventName in this.listeners) {
-                options.svgElement.removeEventListener(
-                  eventName,
-                  this.listeners[eventName]
-                );
-              }
-            },
-          });
+        // var panZoomsvgObject;
+        // var PanZoomsvg = function (id) {
+        //   panZoomsvgObject = svgPanZoom('#' + id, {
+        //     panEnabled: true,
+        //     dragEnabled: true,
+        //     controlIconsEnabled: false,
+        //     mouseWheelZoomEnabled: true,
+        //     zoomEnabled: true, //lets see
+        //     zoomScaleSensitivity: 5,
+        //     minZoom: 1,
+        //     maxZoom: 3,
+        //     fit: false,
+        //     //   center: true,
+        //     destroy: function (options) {
+        //       for (var eventName in this.listeners) {
+        //         options.svgElement.removeEventListener(
+        //           eventName,
+        //           this.listeners[eventName]
+        //         );
+        //       }
+        //     },y
+        //   });
 
-          d3.select('#' + id)
-            .on('mousedown', function () {
-              d3.select('#' + id).attr('class', 'grabbableactive');
-            })
-            .on('mouseup', function () {
-              d3.select('#' + id).attr('class', 'grabbable');
-            })
-            .attr('class', 'grabbable');
+        //   d3.select('#' + id)
+        //     .on('mousedown', function () {
+        //       d3.select('#' + id).attr('class', 'grabbableactive');
+        //     })
+        //     .on('mouseup', function () {
+        //       d3.select('#' + id).attr('class', 'grabbable');
+        //     })
+        //     .attr('class', 'grabbable');
 
-          return panZoomsvgObject;
-        };
+        //   return panZoomsvgObject;
+        // };
 
         THIS.update(THIS.root);
         /********  PAN ZOOM ***********/
+        // if (THIS.type === 'backward') {
+        //   PanZoomsvg('treeviewidbackward');
+        // } else if (THIS.type === 'forward') {
+        //   PanZoomsvg('treeviewidforward');
+        // }
         if (THIS.type === 'backward') {
-          PanZoomsvg('treeviewidbackward');
+          treeZoom('treeviewidbackward');
         } else if (THIS.type === 'forward') {
-          PanZoomsvg('treeviewidforward');
+          treeZoom('treeviewidforward');
         }
 
         /******** END PAN ZOOM ***********/
@@ -737,15 +779,16 @@ function TreePlot(props) {
             d3.event.preventDefault();
             handleChartClick(d);
             popupDiv.style('display', 'block');
-            popupDiv.style('left', d3.event.layerX + 'px');
+            popupDiv.style('left', d3.event.layerX + 100 + 'px');
+
             if (d3.event.layerY > 200) {
-              popupDiv.style('top', d3.event.layerY - 150 + 'px');
+              popupDiv.style('top', d3.event.layerY - 40 + 'px');
             } else {
               popupDiv.style('top', d3.event.layerY + 20 + 'px');
             }
           })
           .attr('xlink:href', function (d) {
-            if (d.OpenNC != undefined || d.OpenNC === true) {
+            if (d.OpenNC === true) {
               return 'img/genealogy/non-material.png';
             }
             if (d.type === 'Material') {
@@ -759,7 +802,7 @@ function TreePlot(props) {
         nodeEnter
           .append('svg:text')
           .attr('x', function (d) {
-            return d.traceability === 'backward' ? 70 : -70;
+            return d.traceability === 'backward' ? 70 : 20;
           })
           .attr('dy', '0.35em')
           .attr('text-anchor', function (d) {
@@ -978,15 +1021,16 @@ function TreePlot(props) {
               '</b></span><br/></span></div>';
             d3.select('#keyTooltip').html(tooltipHtml);
             // $('#keyTooltip').html(tooltipHtml);
-            toolTip.style('left', d3.event.layerX + 'px');
+            toolTip.style('left', d3.event.layerX + 100 + 'px');
+
             if (d3.event.layerY > 200) {
-              toolTip.style('top', d3.event.layerY - 50 + 'px');
+              toolTip.style('top', d3.event.layerY - 40 + 'px');
             } else {
               toolTip.style('top', d3.event.layerY + 20 + 'px');
             }
           })
           .on('mouseout', function (d) {
-            highlightLink(d.target, '#6E6E6E', '0.7', 2);
+            //  highlightLink(d.target, '#6E6E6E', '0.7', 2);
 
             toolTip
               .transition()
@@ -1030,6 +1074,7 @@ function TreePlot(props) {
           let lastClickD = null;
           let nExpand = d3.select('#node-' + id);
           if (d.children) {
+            console.log('iffffffff', d);
             d._children = d.children;
             d.children = null;
             let nodeExpand = nExpand.selectAll('.expand');
@@ -1050,6 +1095,7 @@ function TreePlot(props) {
               .style('font-size', '16px')
               .style('font-weight', '700');
           } else {
+            console.log('elsssseeeee', d);
             d.children = d._children;
 
             d._children = null;
@@ -1457,7 +1503,7 @@ function TreePlot(props) {
               value={searchValue}
               onChange={(value) => onChangeParam(value)}
               onSearch={(type) => onSearchParam(type)}
-              style={{ width: '100%', margin: '0px' }}
+              style={{ width: '100%', margin: '0px', textAlign: 'left' }}
             >
               {searchOptions &&
                 searchOptions.map((item, index) => (
