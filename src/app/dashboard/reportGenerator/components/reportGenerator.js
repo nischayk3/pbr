@@ -20,9 +20,11 @@ import {
     Select,
     message,
     Input,
-    Table
+    Table,
+    DatePicker,
+    Divider,
 } from 'antd';
-import { ArrowLeftOutlined, BlockOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, BlockOutlined, DeleteOutlined, SendOutlined, UserOutlined, ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons';
 import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
@@ -35,12 +37,13 @@ import {
     showLoader,
     showNotification
 } from '../../../../duck/actions/commonActions';
-
+import { Tabs } from 'antd';
 
 
 const { Panel } = Collapse;
 const { Text } = Typography;
 const { Option } = Select
+const { TabPane } = Tabs;
 
 const columns = [
     {
@@ -109,7 +112,6 @@ function ReportGenerator() {
         update_object(checkedValues, i)
     }
 
-
     const [visible, setVisible] = useState(false)
     const [isvisible, setIsVisible] = useState(false)
     const [ReportData, setReportData] = useState(repotData)
@@ -124,9 +126,9 @@ function ReportGenerator() {
     const [reportList, setReportList] = useState('')
     const [popvisible, setPopVisible] = useState(false);
     const [filterTable, setFilterTable] = useState(null);
+    const [openSchedule, setOpenSchedule] = useState(false);
     const [viewId, setViewId] = useState('')
     const dispatch = useDispatch();
-
 
     useEffect(() => {
         unloadTest(ReportData)
@@ -319,6 +321,7 @@ function ReportGenerator() {
         setFilterTable(filterTable);
     };
 
+
     const getReportData = async (rep_id) => {
 
         message.success(`${rep_id} selected`)
@@ -370,6 +373,9 @@ function ReportGenerator() {
                 </div>
 
                 <div className='sub-header-btns'>
+                    <Button className='custom-primary-btn' onClick={() => { setOpenSchedule(true); }}>
+                        Schedule Alert
+                    </Button>
                     <Button className='custom-primary-btn' onClick={() => { setIsVisible(true); }}>
                         Load
                     </Button>
@@ -388,7 +394,7 @@ function ReportGenerator() {
                         {chart && chart.map((i) => {
                             return (
                                 <Collapse key={i.chart} accordion style={{ width: '500px' }} bordered={false} expandIconPosition='right'>
-                                    <Panel header={i.chart} key={i.chart} className="chart-panel" >
+                                    <Panel header={i.chart} key={i.chart} className="chart-panel">
                                         <Checkbox.Group style={{ width: '100%' }} defaultValue={i.default} onChange={(checkedValue) => onChange(checkedValue, i.chart)}>
                                             <table className="table" >
                                                 <tbody>
@@ -441,25 +447,26 @@ function ReportGenerator() {
 
                     </Card>
                 </div>
-                <Card title="Table" className="table-card">
-                    {table.length > 0 && table.map((i) =>
+                <Card title="Report Table Data" className="table-card">
+                    <Tabs  >
+                        {table.length > 0 && table.map((i) =>
 
-                        <Collapse key={i.heading} accordion className="chart-panel" expandIconPosition="right">
-                            <Panel header={i.heading} key={i.heading} className="chart-panel">
+
+                            <TabPane tab={i.heading} key={i.heading}>
                                 {/* <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF', marginRight: '10px', marginLeft: '1070px', fontSize: '12px' }}>
                                 </span> */}
                                 <div >
-                                <i class="fa fa-circle" style={{ color: '#BAE7FF', marginRight: '10px', marginLeft: '1070px', fontSize: '18px' }}></i>
-                                <span class="Legend-label" style={{ marginBottom: '10px', fontSize: '12px' }}>
-                                    Edit
-                                </span>
-                                <i class="fa fa-circle" style={{ color: '#F5F5F5', marginLeft: '25px', fontSize: '18px' }}></i>
-                                <span class="Legend-label" style={{ marginLeft: '10px', fontSize: '12px' }}>
-                                    View Only
-                                </span>
+                                    <i class="fa fa-circle" style={{ color: '#BAE7FF', marginRight: '10px', marginLeft: '1070px', fontSize: '18px' }}></i>
+                                    <span class="Legend-label" style={{ marginBottom: '10px', fontSize: '12px' }}>
+                                        Edit
+                                    </span>
+                                    <i class="fa fa-circle" style={{ color: '#F5F5F5', marginLeft: '25px', fontSize: '18px' }}></i>
+                                    <span class="Legend-label" style={{ marginLeft: '10px', fontSize: '12px' }}>
+                                        View Only
+                                    </span>
                                 </div>
                                 <table className="table">
-                                    <tr className="tr" align= "right"  style={{backgroundColor:'#f1f7ff'}} >
+                                    <tr className="tr" align="right" style={{ backgroundColor: '#f1f7ff' }} >
                                         <td className="td">
                                             <b>Key</b>
                                         </td>
@@ -471,18 +478,19 @@ function ReportGenerator() {
                                         {i['content'] && i['content'].map((item, j) =>
                                             // return Object.entries(item).map((k, value) => {
 
-                                            <tr className="tr" style={{backgroundColor : item.editable==false || item.editable == undefined ? '#BAE7FF' : '#F5F5F5'}}>
+                                            <tr className="tr" style={{ backgroundColor: item.editable == false || item.editable == undefined ? '#BAE7FF' : '#F5F5F5' }}>
                                                 <td className="td" ><b>{item.key}</b></td>
-                                                <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea style={{width:'200px'}} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : item.value} </td>
+                                                <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea style={{ width: '200px' }} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : item.value} </td>
                                             </tr>
                                             // })
 
                                         )}
                                     </tbody>
                                 </table>
-                            </Panel>
-                        </Collapse>
-                    )}
+                            </TabPane>
+
+                        )}
+                    </Tabs>
                 </Card>
                 <Card title="Charts" style={{ marginTop: '10px' }}>
                 </Card>
@@ -514,7 +522,7 @@ function ReportGenerator() {
                         </Space>
                     </Radio.Group> <br /> <br />
 
-                    <Text>Users</Text> <br/>
+                    <Text>Users</Text> <br />
                     <Select
                         mode="tags"
                         style={{ width: '50%', marginTop: '10px' }}
@@ -554,7 +562,7 @@ function ReportGenerator() {
                     onCancel={() => setIsVisible(false)}
                     width={500}
                     style={{ marginRight: '800px' }}
-                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={()=>setIsVisible(false)} key="1">OK</Button>,]}
+                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => setIsVisible(false)} key="1">OK</Button>,]}
                 >
                     <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
                         let view_value = value.value ? value.value : ''
@@ -608,6 +616,59 @@ function ReportGenerator() {
                         size='small'
                         pagination={false}
                     />
+                </Modal>
+                <Modal
+                    title="Send Alert"
+                    visible={openSchedule}
+                    onCancel={() => setOpenSchedule(false)}
+                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px', float: 'left' }} onClick={() => { setOpenSchedule(false) }} key="1">  <SendOutlined />Schedule</Button>, <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setOpenSchedule(false) }} key="1">  <DeleteOutlined />Discard</Button>,]}
+                    width="60%"
+
+                >
+                    <UserOutlined />
+                    <u>
+                        <Select
+                            mode="tags"
+                            style={{ width: '90%', marginTop: '10px' }}
+                            placeholder="Recipients"
+                            optionLabelProp="label"
+                            value={emailList}
+                            bordered={false}
+                            onChange={handleChange}
+                        >
+
+                            <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
+                                mihir.bagga@mareana.com
+                            </Option>
+                        </Select></u> <Divider />
+                    <ClockCircleOutlined /> <DatePicker bordered={false} /><Divider orientation="left" />
+
+                    <ReloadOutlined />
+                    <Select defaultValue="1" style={{ width: 60 }} onChange={handleChange} bordered={false}>
+                        <Option value="1">1</Option>
+                        <Option value="2">2</Option>
+                        <Option value="3">3</Option>
+                        <Option value="4">4</Option>
+                    </Select>
+                    <Select defaultValue="week" style={{ width: 100 }} onChange={handleChange} bordered={false}>
+                        <Option value="week">week</Option>
+                        <Option value="monthly">monthly</Option>
+                        <Option value="daily">daily</Option>
+                    </Select>
+
+                    <Radio.Group defaultValue="Sunday">
+                        <Radio.Button value="Sunday" className="radio-button">S</Radio.Button>
+                        <Radio.Button value="Monday" className="radio-button">M</Radio.Button>
+                        <Radio.Button value="Tuesday" className="radio-button">T</Radio.Button>
+                        <Radio.Button value="Wednesday" className="radio-button">W</Radio.Button>
+                        <Radio.Button value="Thursday" className="radio-button">T</Radio.Button>
+                        <Radio.Button value="Friday" className="radio-button">F</Radio.Button>
+                        <Radio.Button value="Saturday" className="radio-button">S</Radio.Button>
+                    </Radio.Group>
+
+
+
+
                 </Modal>
             </div>
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />

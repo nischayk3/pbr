@@ -29,3 +29,47 @@ export const getDataQualityData = (_queryParam) => {
         }
     );
 };
+
+//get top5 charts with exceptions
+export const getChartExceptionData = (_queryParam) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/chart-exceptions', _queryParam,{
+        'content-type': 'application/json',
+    }).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+
+//get chart plot data
+export const getChartPlotData = (_queryParam) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/chart', _queryParam,{
+        'content-type': 'application/json',
+    }).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+// get last updated views and charts
+export const getUpdatedChartsViewsData = (_queryParam) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/last-views-and-charts', _queryParam,{
+        'content-type': 'application/json',
+        'username': localStorage.getItem('user'),
+    }).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};

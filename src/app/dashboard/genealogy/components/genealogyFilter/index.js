@@ -226,6 +226,17 @@ function Filter(props) {
         />
         <SelectSearchField
           showSearch
+          label='Product'
+          placeholder='Select'
+          onChangeSelect={(value) => onChangeParam(value, 'product_code')}
+          onSearchSelect={(type) => onSearchParam(type, 'product_code')}
+          options={optionsProduct}
+          handleClearSearch={(e) => clearSearch(e, 'product')}
+          // selectList={paramList['produtList']}
+          selectedValue={selectParam['productCode']}
+        />
+        <SelectSearchField
+          showSearch
           label='Batch'
           placeholder='Select'
           onChangeSelect={(value) => onChangeParam(value, 'batch_num')}
@@ -236,17 +247,6 @@ function Filter(props) {
           selectedValue={selectParam['batchNum']}
         />
 
-        <SelectSearchField
-          showSearch
-          label='Product'
-          placeholder='Select'
-          onChangeSelect={(value) => onChangeParam(value, 'product_code')}
-          onSearchSelect={(type) => onSearchParam(type, 'product_code')}
-          options={optionsProduct}
-          handleClearSearch={(e) => clearSearch(e, 'product')}
-          // selectList={paramList['produtList']}
-          selectedValue={selectParam['productCode']}
-        />
         <Toggle
           name='isChecked'
           checked={isCheck}
@@ -260,7 +260,7 @@ function Filter(props) {
           type='primary'
           className='custom-secondary-btn'
           onClick={OnSearchTree}
-          // disabled={disabled}
+          disabled={disabled}
         >
           Search
         </Button>

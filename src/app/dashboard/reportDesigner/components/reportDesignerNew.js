@@ -20,10 +20,12 @@ import {
   Table,
   Input,
   message,
+  Empty,
 } from 'antd';
 import ChartSelector from './reportDesignerFilter/chartSelector';
 import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
 import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections'
+import ReportDesigneTable from './reportDesignerDynamicSections/ReportDesigneTable'
 import './stylesNew.scss';
 import { getViews, getCharts, saveReportDesign, getReports } from '../../../../services/reportDesignerServices';
 import SaveModal from '../../../../components/SaveModal/saveModal'
@@ -32,6 +34,7 @@ import { sendReport, screenChange } from '../../../../duck/actions/reportDesigne
 import { showLoader, hideLoader, showNotification } from '../../../../duck/actions/commonActions';
 import Signature from '../../../../components/ElectronicSignature/signature'
 import queryString from "query-string";
+import { loginUrl } from '../../../../services/loginService';
 
 
 //Columns For The view Selection modal
@@ -168,6 +171,10 @@ function ReportDesignerNew() {
     }
   }
 
+  const onLogin = async () => {
+    window.open(`${loginUrl}?is_ui=true&ui_type='sign`, '_self')
+  }
+
   const checkChanges = (reportData, mainJson) => {
 
     let json_data = reportData
@@ -255,7 +262,7 @@ function ReportDesignerNew() {
   // };
 
   const getReportData = async (rep_id, rep_status) => {
-    message.success(`${rep_id} selected`)
+    // message.success(`${rep_id} selected`)
     let req = { rep_status: rep_status ? rep_status : 'DRFT' };
     if (rep_id)
       req['rep_disp_id'] = rep_id
@@ -272,7 +279,7 @@ function ReportDesignerNew() {
   const getChartsList = (version) => {
     if (viewId.length > 0)
       setSelectedChartList([])
-    message.success(`${version} selected`)
+    // message.success(`${version} selected`)
     let req = version;
     getCharts(req).then((res) => {
 
@@ -370,18 +377,18 @@ function ReportDesignerNew() {
             setIsSave(true)
           }
           else
-            message.error('Not Saved')
+            dispatch(showNotification('error', 'Not Saved'));
 
         })
-        
+
         dispatch(sendReport(req['data']))
       }
       else {
-        message.error('Report Name Is Required')
+        dispatch(showNotification('error', 'Report Name Is Required'));
       }
     }
     else {
-      message.error('No Changes To Save')
+      dispatch(showNotification('error', 'No Changes To Save'));
       dispatch(sendReport(mainJson))
     }
 
@@ -576,19 +583,34 @@ function ReportDesignerNew() {
           getChartsList={getChartsList}
           mapViewList={mapViewList}
           show={params}
+          selectedChartList={selectedChartList}
+          setSelectedChartList={setSelectedChartList}
+          chartList={chartList}
         />
 
-        {(isLoad || isNew) && loading == false ?
+        {(isLoad || isNew) && loading == false && viewId == '' ? <div className='new-empty-block'>
+          <Empty description={
+            <span>
+              Fill in ‘Report info’ to add new section
+            </span>
+          }
+            className='empty-block'
+            image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        </div> : <></>
+
+        }
+
+        {(isLoad || isNew) && loading == false && viewId !== '' ?
           <div className="reportDesigner-grid-tables">
-            <ChartSelector
+            {/* <ChartSelector
               selectedChartList={selectedChartList}
               setSelectedChartList={setSelectedChartList}
               viewVersion={viewVersion}
               viewID={viewId}
               chartList={chartList}
               show={params}
-            />
-            <Form
+            /> */}
+            {/* <Form
               className="report-form"
               name="report-generator-form"
               form={form}
@@ -596,6 +618,16 @@ function ReportDesignerNew() {
               initialValues={formData}
             >
               <ReportDesignerDynamicSections formData={formData} show={params} />
+            </Form> */}
+
+            <Form
+              className="report-form"
+              name="report-generator-form"
+              form={form}
+              onValuesChange={handleValuesChange}
+              initialValues={formData}
+            >
+              <ReportDesigneTable formData={formData} show={params} />
             </Form>
 
           </div> :
@@ -622,6 +654,7 @@ function ReportDesignerNew() {
             showSearch
             showArrow
             style={{ backgroundColor: 'white', borderRadius: '4px' }}
+            onMouseDown={e => { e.stopPropagation(); }}
           >
             {mapReportList.length >= 0 ? mapReportList.map((item) =>
 
