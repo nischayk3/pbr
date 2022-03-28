@@ -43,7 +43,6 @@ function Signature(props) {
 
         req['date'] = date_today
         req['timestamp'] = time_today
-        console.log(reason)
         req['reason'] = reason
         req['user_id'] = props.ad ? localStorage.getItem('username') : username
         req['screen'] = props.screenName
@@ -71,7 +70,6 @@ function Signature(props) {
                 req1['applicationType'] = props.appType
                 req1['esignId'] = esign_response.primary_id.toString()
                 req1['resourceDispId'] = params.id
-                console.log(params.version)
 
                 if (params.version != 'undefined') {
                     req1['resourceVersion'] = parseInt(params.version)
@@ -103,7 +101,6 @@ function Signature(props) {
 
     }
     const { TextArea } = Input;
-    console.log(adenabled, next)
     return (
         <div>
             <Modal

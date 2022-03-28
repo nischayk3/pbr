@@ -24,7 +24,6 @@ export default function Redirect(props) {
         if (data) 
         {
             dispatch(sendLoginDetails(data))
-            console.log(data);
             localStorage.setItem('login_details',JSON.stringify(data))
             localStorage.setItem('user',data.email_id.replaceAll("^\"|\"$", ""));
             localStorage.setItem('username',data.firstname.replaceAll("^\"|\"$", ""));
