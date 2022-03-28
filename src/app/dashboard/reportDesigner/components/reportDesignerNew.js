@@ -551,7 +551,8 @@ function ReportDesignerNew() {
             params ? <div>
               <Button
                 className='custom-primary-btn'
-                onClick={() => { setIsPublish(true); setApproveReject('A') }}
+                // onClick={() => { setIsPublish(true); setApproveReject('A') }}
+                onClick={()=>{ console.log(`${loginUrl}?is_ui=True&ui_type=sign&localhost=True`) ; window.open(`${loginUrl}?is_ui=true&ui_type='sign&localhost=True`,'_self') }}
               >
                 Approve
               </Button>

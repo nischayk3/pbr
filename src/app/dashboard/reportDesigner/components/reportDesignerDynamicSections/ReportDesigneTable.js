@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Space, Popconfirm, Card, Button } from 'antd';
-import { DeleteTwoTone, PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
 import ChartTable from '../reportChart/reportChart';
@@ -81,11 +81,9 @@ function ReportDesigneTable(props) {
 
                                     <div classname="dynamicDiv" style={{ border: "1px solid #486BC9", marginBottom: "10px", minHeight: "160px", borderRadius: "4px" }}>
                                         <div className="add-box">
-                                        <div className="box" onClick={() => handleClick()} >+ ADD Chart</div>
-                                        <div className="box"  onClick={() => add()} >ADD</div>
+                                            <div className="box" onClick={() => handleClick()} >+ ADD Chart</div>
+                                            <div className="box" onClick={() => add()} >ADD</div>
                                         </div>
-
-
                                     </div>
                                     <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: 6, right: -10, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> <u disabled={props.show}></u>
                                 </p>
