@@ -15,12 +15,12 @@ function Report()
     },[])
     return (
         <div>
-            {/* <Landing/> */}
-            {screen ?
+            <Landing/>
+            {/* {screen ?
            <div><ReportGenerator/></div> :
           <div><DesignCharts/></div> 
 
-            }
+            } */}
             
 
         </div>
