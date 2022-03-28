@@ -42,7 +42,7 @@ const chartComponent = (props) => {
         xaxis: workspaceChartLayoutXAxis,
         yaxis: workspaceChartLayoutYAxis,
         autosize: false,
-        width: 800,
+        width: 400,
         height: 310,
         margin: {
             l: 50,
@@ -61,13 +61,13 @@ const chartComponent = (props) => {
                 data={[workspaceChartData]}
                 layout={layout}
             />
-            <Alert
+            {/* <Alert
                 style={{marginTop:'-10px'}}
                 message="Alert"
                 description={`The voilation of [action] has triggered an alert for Chart ID ${props.chartId}`}
                 type="warning"
                 showIcon
-            />
+            /> */}
         </div>
     )
 }

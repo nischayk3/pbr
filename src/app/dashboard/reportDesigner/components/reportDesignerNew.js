@@ -35,6 +35,8 @@ import { showLoader, hideLoader, showNotification } from '../../../../duck/actio
 import Signature from '../../../../components/ElectronicSignature/signature'
 import queryString from "query-string";
 import { loginUrl } from '../../../../services/loginService';
+import { adenabled } from '../../../../config/config';
+import { sendUrl } from '../../../../duck/actions/loginAction';
 
 
 //Columns For The view Selection modal
@@ -123,6 +125,7 @@ function ReportDesignerNew() {
   const [params, setParams] = useState(false)
   const [publishResponse, setPublishResponse] = useState({});
   const [approveReject, setApproveReject] = useState('')
+  const [ad, setAd] = useState(false)
   const [form] = Form.useForm();
 
 
@@ -133,6 +136,18 @@ function ReportDesignerNew() {
 
   useEffect(() => {
     const params = queryString.parse(location.search);
+
+    if (Object.keys(params).length > 0) {
+      dispatch(showLoader())
+      unloadUrl(params)
+      if(Object.keys(params).includes('publish'))
+      { 
+        dispatch(showLoader())
+        unloadUrl(params)
+        setAd(true)
+        setIsPublish(true)
+      }
+    }
 
     if (Object.keys(params).length > 0) {
       dispatch(showLoader())
@@ -175,6 +190,14 @@ function ReportDesignerNew() {
     window.open(`${loginUrl}?is_ui=true&ui_type='sign`, '_self')
   }
 
+
+  const onApprove = (item) => {
+    localStorage.setItem('status', item);
+    //setApproveReject(item);
+    window.open(`${loginUrl}?is_ui=true&ui_type=sign`, '_self')
+    dispatch(sendUrl(window.location.href));
+    localStorage.setItem('redirectUrl', window.location.href);
+  }
   const checkChanges = (reportData, mainJson) => {
 
     let json_data = reportData
@@ -550,18 +573,25 @@ function ReportDesignerNew() {
           {
             params ? <div>
               <Button
-                className='custom-primary-btn'
-                // onClick={() => { setIsPublish(true); setApproveReject('A') }}
-                onClick={()=>{ console.log(`${loginUrl}?is_ui=True&ui_type=sign&localhost=True`) ; window.open(`${loginUrl}?is_ui=true&ui_type='sign&localhost=True`,'_self') }}
-              >
-                Approve
-              </Button>
-              <Button
-                className="custom-secondary-btn"
-                onClick={() => { setIsPublish(true); setApproveReject('R') }}
+                className='viewCreation-rejectBtn'
+                // onClick={() => {
+                //   setIsPublish(true);
+                //   setApproveReject('R');
+                // }}
+                onClick={() => { adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
               >
                 Reject
-              </Button> </div> : <></>
+              </Button>
+              <Button
+                className='viewCreation-publishBtn'
+                // onClick={() => {
+                //   setIsPublish(true);
+                //   setApproveReject('A');
+                // }}
+                onClick={() => { adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
+              >
+                Approve
+              </Button></div> : <></>
           }
 
         </div>

@@ -36,7 +36,7 @@ function ParameterLookup(props) {
     const logindetails = useSelector((state) => state.loginReducer.loginDetails);
     const onSelectMoleculeHandler = () => {
         let req = { user_id: 'demo' };
-        getMoleculeData(req,{ 'content-type': 'application/json','x-access-token':logindetails.token ? logindetails.token : '','resource_name':'VIEW' }).then((res) => {
+        getMoleculeData(req,{ 'content-type': 'application/json','x-access-token':logindetails.token ? logindetails.token : '','resource-name':'VIEW' }).then((res) => {
             if (res.statuscode === 200) {
                 setMoleculeList(res.data);
             }
