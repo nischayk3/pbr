@@ -5,7 +5,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import {
   ArrowLeftOutlined,
   CloudUploadOutlined,
@@ -56,7 +56,9 @@ import { adHocFilesParameterTree } from '../../../../duck/actions/fileUploadActi
 import Loading from '../../../../components/Loading';
 import Signature from '../../../../components/ElectronicSignature/signature';
 import queryString from 'query-string';
-
+import { sendUrl } from '../../../../duck/actions/loginAction';
+import { loginUrl } from '../../../../services/loginService';
+import { adenabled } from '../../../../config/config';
 const { Panel } = Collapse;
 
 const columns = [
@@ -96,6 +98,7 @@ function ViewCreation() {
   const molecule_Id = useSelector(
     (state) => state.viewCreationReducer.molecule_id
   );
+  const dispatch= useDispatch();
   const location = useLocation();
   const [count, setCount] = useState(1);
   const [params, setParams] = useState(false);
@@ -141,6 +144,7 @@ function ViewCreation() {
   const counter = useRef(0);
   const [showSpinner, setShowSpinner] = useState(false);
   const [approveReject, setApproveReject] = useState('');
+  const [ad, setAd] = useState(false);
   const [publishResponse, setPublishResponse] = useState({});
   const [saveResponseView, setSaveResponseView] = useState({
     viewId: '',
@@ -661,6 +665,15 @@ function ViewCreation() {
       }
     });
   };
+
+  const onApprove = (item) =>
+  {
+    localStorage.setItem('status',item);
+    //setApproveReject(item);
+    window.open(`${loginUrl}?is_ui=true&ui_type=sign`,'_self')
+    dispatch(sendUrl(window.location.href));
+    localStorage.setItem('redirectUrl',window.location.href);
+  }
   const handleSaveFunc = async () => {
     if (!viewFunctionName.length) {
       message.error('Please Enter Name');
@@ -846,6 +859,12 @@ function ViewCreation() {
     if (Object.keys(params).length > 0) {
       setParams(true);
       onOkHandler(params.id);
+      if(Object.keys(params).includes('publish'))
+      { setParams(true);
+        setAd(true)
+        onOkHandler(params.id);
+        setIsPublish(true)
+      }
     }
   }, [materialsList]);
 
@@ -859,19 +878,21 @@ function ViewCreation() {
           <div className='viewCreation-btns'>
             <Button
               className='viewCreation-rejectBtn'
-              onClick={() => {
-                setIsPublish(true);
-                setApproveReject('R');
-              }}
+              // onClick={() => {
+              //   setIsPublish(true);
+              //   setApproveReject('R');
+              // }}
+              onClick={()=>{adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
             >
               Reject
             </Button>
             <Button
               className='viewCreation-publishBtn'
-              onClick={() => {
-                setIsPublish(true);
-                setApproveReject('A');
-              }}
+              // onClick={() => {
+              //   setIsPublish(true);
+              //   setApproveReject('A');
+              // }}
+              onClick={()=>{adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
             >
               Approve
             </Button>
@@ -1194,6 +1215,7 @@ function ViewCreation() {
         dispId={viewDisplayId}
         version={viewVersion}
         status={approveReject}
+        ad={ad}
       />
     </div>
   );

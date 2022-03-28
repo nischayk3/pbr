@@ -28,6 +28,7 @@ const Login = () =>
             history.push('/dashboard/view_creation');
             dispatch(hideLoader());
         } catch (err) {
+
             dispatch(hideLoader());
             dispatch(showNotification('error', err.message));
         }
@@ -35,7 +36,20 @@ const Login = () =>
 
     const onLogin = async () =>
     {
-        window.open(`${loginUrl}?is_ui=true`,'_self')
+        if(localStorage.getItem('login_details'))
+        {
+            history.push('/dashboard/genealogy');
+            dispatch(showNotification('success', "Logged In Success"));
+        }
+        else{
+            if(localStorage.getItem("test_enabled")){
+                window.open(`${loginUrl}?is_ui=true&localhost=True`,'_self')
+            }else{
+                window.open(`${loginUrl}?is_ui=true&localhost=True`,'_self')
+            }
+                
+        }
+        
     }
 
     return (
