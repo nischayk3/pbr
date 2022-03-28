@@ -2,7 +2,8 @@ import { Table } from 'antd';
 import React from 'react';
 import { SearchOutlined } from '@ant-design/icons';
 
-const ViewSearchTable = ({ searchTableData, viewData, setViewData, setViewSearch, setData, postChartData, setPostChartData }) => {
+const ViewSearchTable = ({ searchViewData, setVersionList, searchTableData, viewData, setViewData, setViewSearch, setData, postChartData, setPostChartData }) => {
+
     const columns = [
         {
             title: 'Name',
@@ -23,6 +24,7 @@ const ViewSearchTable = ({ searchTableData, viewData, setViewData, setViewSearch
             width: 120
         }
     ]
+
     return (
         <div className="table-box">
             <Table
@@ -34,6 +36,14 @@ const ViewSearchTable = ({ searchTableData, viewData, setViewData, setViewSearch
                 rowKey='key'
                 onRow={(record) => ({
                     onClick: () => {
+                        let tempVersionList = [0];
+                        searchViewData.current.forEach((ele) => {
+                            if (ele.view_disp_id === record.view_disp_id) {
+                                tempVersionList.push(ele.view_version);
+                                tempVersionList = tempVersionList.sort((a, b) => a - b);
+                                setVersionList(tempVersionList);
+                            }
+                        })
                         setViewData({ ...viewData, viewName: record.view_name, viewDispId: record.view_disp_id, status: record.view_status, searchValue: record.view_disp_id })
                         let newArr = [...postChartData.data];
                         newArr.forEach((ele) => {

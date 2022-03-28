@@ -8,7 +8,7 @@ const ScatterPlot = (props) => {
     };
     return (
         <Plot
-            data={[props.data]}
+            data={props.data}
             layout={props.layout}
             config={{ autosizable: true }}
             onClick={(data, e) => {

@@ -8,6 +8,7 @@
             "chart_status": 0,
             "view_id": "",
             "view_name": "",
+            "view_version": "0",
             "data_filter": {
                 "date_range": "",
                 "unapproved_data": 1,
@@ -23,7 +24,7 @@
                 "mode": "markers",
                 "marker": {
                     "color": "#5B8FF9",
-                    "size": 20
+                    "size": 15
                 }
             },
             "layout": {

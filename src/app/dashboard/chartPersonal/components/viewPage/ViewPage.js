@@ -15,9 +15,8 @@ const { TabPane } = Tabs;
 
 
 //main component
-const ViewPage = () => {
+const ViewPage = ({ postChartData, setPostChartData }) => {
 
-    const [postChartData, setPostChartData] = useState(chartJson);
     const callback = (key) => {
 
     }

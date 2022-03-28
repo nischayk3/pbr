@@ -9,18 +9,24 @@ import ScatterChart from './scatterChart/ScatterChart';
 
 //main component
 const Chart = ({ postChartData, setPostChartData }) => {
-    const [xaxisList, setXAxisList] = useState([]);
-    const [yaxisList, setYAxisList] = useState([]);
 
+    const [chartValues, setChartValues] = useState({ chartName: '', chartdesc: '' })
 
-    useEffect(() => {
-        let list = [];
-        postChartData.extras && postChartData.extras.coverage && postChartData.extras.coverage.forEach((ele) => {
-            list.push(ele.function_name);
-            setXAxisList(list);
-            setYAxisList(list);
+    const handleChange = (e, value) => {
+        const newArr = [...postChartData.data];
+        newArr.forEach((ele) => {
+            if (value === 'name') {
+                ele.chart_name = e.target.value;
+                setChartValues({ ...chartValues, chartName: e.target.value })
+            }
+            if (value === 'desc') {
+                ele.chart_description = e.target.value;
+                setChartValues({ ...chartValues, chartdesc: e.target.value })
+            }
         })
-    }, [postChartData])
+
+        setPostChartData({ ...postChartData, data: newArr })
+    }
 
     return (
         <div className='chart-container'>
@@ -35,8 +41,8 @@ const Chart = ({ postChartData, setPostChartData }) => {
                         <Col span={8}>
                             <p>Chart ID</p>
                         </Col>
-                        <Col span={8}>
-                            <p>:Unassigned</p>
+                        <Col span={10}>
+                            <p>: Unassigned</p>
                         </Col>
                         <Col span={6} />
                     </Row>
@@ -61,15 +67,15 @@ const Chart = ({ postChartData, setPostChartData }) => {
                 </Col>
                 <Col span={6}>
                     <label>Chart Name</label>
-                    <InputField placeholder="Enter name" />
+                    <InputField placeholder="Enter name" value={chartValues.chartName} onChangeInput={(e) => handleChange(e, 'name')} />
                 </Col>
                 <Col span={10}>
                     <label>Chart description</label>
-                    <InputField placeholder="Enter description" />
+                    <InputField placeholder="Enter description" value={chartValues.chartdesc} onChangeInput={(e) => handleChange(e, 'desc')} />
                 </Col>
             </Row>
             <Divider />
-            <ScatterChart postChartData={postChartData} setPostChartData={setPostChartData} xaxisList={xaxisList} yaxisList={yaxisList} />
+            <ScatterChart postChartData={postChartData} setPostChartData={setPostChartData} />
         </div>
     )
 }

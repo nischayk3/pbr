@@ -28,9 +28,10 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     const [viewSearch, setViewSearch] = useState(false);
     const [searchTableData, setSearchTableData] = useState([]);
     const [coverageTableData, setCoverageTableData] = useState([]);
+    const [versionList, setVersionList] = useState([0]);
     const searchViewData = useRef([]);
     const ref = useRef(null);
-    const [viewData, setViewData] = useState({ viewName: '', status: '', version: '', viewDispId: ' ', searchValue: '' });
+    const [viewData, setViewData] = useState({ viewName: '', status: '', version: '', viewDispId: ' ', searchValue: '', chartVersion: 0 });
 
     const columns = [
         {
@@ -166,7 +167,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
                 <Col ref={ref} span={24} className='search-table'>
                     <label>View ID</label>
                     <Search placeholder="Search" onFocus={onFocus} value={viewData.searchValue} onChange={onSearchChange} onSearch={searchTable} />
-                    {viewSearch && <ViewSearchTable postChartData={postChartData} setPostChartData={setPostChartData} setData={setData} setViewSearch={setViewSearch} searchTableData={searchTableData} viewData={viewData} setViewData={setViewData} />}
+                    {viewSearch && <ViewSearchTable setVersionList={setVersionList} searchViewData={searchViewData} postChartData={postChartData} setPostChartData={setPostChartData} setData={setData} setViewSearch={setViewSearch} searchTableData={searchTableData} viewData={viewData} setViewData={setViewData} />}
                 </Col>
             </Row>
             <Row className='view-details'>
@@ -191,10 +192,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
                 {/* <Col span={3} /> */}
                 <Col span={5} className='pb'>
                     <p>Version</p>
-                    <Select>
-                        <Option value="1">1</Option>
-                        <Option value="2">2</Option>
-                    </Select>
+                    <SelectField placeholder="Select Chart type" selectList={versionList} value={viewData.chartVersion} onChangeSelect={(e) => setViewData({ ...viewData, chartVersion: e })} />
                 </Col>
             </Row>
             <Row className='batch'>
