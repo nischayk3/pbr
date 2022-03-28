@@ -48,9 +48,10 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             function_id: null
         }
         newArr.forEach((ele) => {
-            if (ele.chart_type === 'process control') {
+            if (axisValues.chartType === 'process control') {
                 ele.data.mode = 'markers+lines';
             }
+            ele.chart_type = axisValues.chartType;
             ele.chart_mapping.x = Object.keys(xAxis).length !== 0 ? xAxis : obj;
             ele.chart_mapping.y = yAxis;
             ele.layout.xaxis.title.text = Object.keys(xAxis).length !== 0 ? xAxis.function_name : obj.function_name === 'batch_num' ? 'Batch' : 'Recorded Date';
@@ -84,11 +85,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
         if (axisValues.chartType !== chartType) {
             setAxisValues({ xaxis: '', yaxis: '', chartType: chartType });
         }
-        const newArr = [...postChartData.data]
-        newArr.forEach((ele) => {
-            ele.chart_type = chartType;
-        })
-        setPostChartData({ ...postChartData, data: newArr });
     }
     useEffect(() => {
         const newCovArr = JSON.parse(JSON.stringify(postChartData));
@@ -113,6 +109,9 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             setChartData([ele.data, obj]);
             setLayoutData(ele.layout);
         })
+    }, [postChartData])
+
+    useEffect(() => {
         let list = [];
         postChartData.extras && postChartData.extras.coverage && postChartData.extras.coverage.forEach((ele) => {
             list.push(ele.function_name);
@@ -125,8 +124,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
                 setYAxisList(list);
             }
         })
-    }, [postChartData])
-
+    }, [axisValues.chartType])
 
     return (
         <div className='chartLayout-container'>

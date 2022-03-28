@@ -15,7 +15,7 @@ const { TabPane } = Tabs;
 
 
 //main component
-const ViewPage = ({ postChartData, setPostChartData }) => {
+const ViewPage = ({ postChartData, setPostChartData, controlSource, setControlSource, specificationSource, setSpecificationSource, warningSource, setWarningSource }) => {
 
     const callback = (key) => {
 

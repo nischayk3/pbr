@@ -15,13 +15,14 @@ import { saveChartPlotData } from '../../../../services/chartPersonalizationServ
 const ChartPersonal = () => {
     //state for showing view page or landing page
     const [showView, setShowView] = useState(false);
+    //state for chart json data
     const [postChartData, setPostChartData] = useState(chartJson);
-
     //function to back to landing page
     const onBackArrowClick = () => {
         setShowView(false);
     }
 
+    //function for saving chart data
     const saveAs = async () => {
         const obj = {
             ...postChartData,
@@ -31,7 +32,6 @@ const ChartPersonal = () => {
             // dispatch(showLoader());
             const viewRes = await saveChartPlotData(obj);
             console.log(viewRes);
-            // setviewTableData(antdDataTable);
 
             // dispatch(hideLoader());
         } catch (error) {

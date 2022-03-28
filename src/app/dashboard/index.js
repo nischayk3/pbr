@@ -107,10 +107,10 @@ const Dashboard = () => {
                   <Workspace />
                 </Route>
                 <Route key='redirect' path={`${match.url}/redirect`}>
-                  <LoginRedirect/>
+                  <LoginRedirect />
                 </Route>
                 <Route key='redirect_sign' path={`${match.url}/redirect_sign`}>
-                  <RedirectSign/>
+                  <RedirectSign />
                 </Route>
               </Switch>
             </SuspenseWrapper>
