@@ -95,6 +95,7 @@ function Genealogy() {
         setIsDrawerRef(false);
         setNodeType(node.nodeType);
         let nodeSplit = node.nodeId.split('|');
+
         let _reqBatchInfo = {
           entity_type: 'Lims',
           relation_id: 'batch_to_lims',
@@ -176,9 +177,8 @@ function Genealogy() {
   const getBackwardGeneology = async (_reqBack) => {
     try {
       dispatch(showLoader());
-
       const backwardRes = await getBackwardData(_reqBack);
-
+      console.log('backwaresssss 1', backwardRes);
       if (backwardRes.length > 0) {
         setGenealogyData(backwardRes);
         setisBackward(true);
@@ -205,6 +205,7 @@ function Genealogy() {
     try {
       dispatch(showLoader());
       const forwardRes = await getForwardData(_reqFor);
+
       if (forwardRes.length > 0) {
         setGenealogyData(forwardRes);
         setisBackward(false);
@@ -288,7 +289,7 @@ function Genealogy() {
     setIsDrawer(val);
     setShowView(true);
     setIsDrawerOpen(false);
-    console.log('isDrawerRef', isDrawerRef);
+
     if (isDrawerRef === false) {
       initialPanes.push({
         title: '',

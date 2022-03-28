@@ -157,7 +157,7 @@ function TreePlot(props) {
       let splitvalue = value.split('---');
 
       let splitedvalue = splitvalue[1];
-      console.log('splitedvalue', splitvalue[0], splitvalue[1]);
+
       setselectedNodeId(splitedvalue);
       setsearchValue(splitvalue[0]);
 
@@ -185,18 +185,48 @@ function TreePlot(props) {
         let linkSearchMatch = linkSvg.filter(function (d) {
           return d.source.id === splitedvalue || d.target.id === splitedvalue;
         });
-        linkSearchMatch.attr('class', 'value-match');
+
+        linkSearchMatch.attr('class', function (b) {
+          if (b.source && b.source.parent ? b.source.parent : b.parent) {
+            return 'value-match';
+          }
+        });
         let linkMatch = diagramLayout.selectAll('.link');
-        let linkNotMatch = diagramLayout.selectAll('.value-match');
+        let linkMatchValue = diagramLayout.selectAll('.value-match');
         let parentLink = diagramLayout.selectAll('.additionalParentLink');
 
         linkMatch.style('stroke', '#ddd');
         parentLink.style('stroke', '#ddd');
-        //  highlightLink(d.target, '#FF8C00', 1, 10)
-        linkNotMatch.style('stroke', function (d) {
-          if (d.source && d.source.type === 'Material') {
-            return isMaterialLink;
-          }
+
+        let highlightLinkPath = function (
+          d,
+          displayColor,
+          opacity,
+          strokeWidth
+        ) {
+          linkMatch
+            .filter(function (e) {
+              if (d && d !== null) {
+                while (e.target === d) {
+                  highlightLinkPath(
+                    e.source,
+                    displayColor,
+                    opacity,
+                    strokeWidth
+                  );
+                  return d && d !== null ? true : false;
+                }
+              }
+            })
+            .transition(0)
+            .duration(300)
+            // .style('stroke', 'isMaterialLink')
+            .style('opacity', opacity)
+            .style('stroke-width', strokeWidth);
+        };
+        linkMatchValue.style('stroke', function (d) {
+          highlightLinkPath(d.source, isMaterialLink, 1, 10);
+          // return isMaterialLink;
         });
       } else if (props.chartType === 'forward') {
         let diagramForward = d3.select('#forwardDiv');
@@ -494,11 +524,17 @@ function TreePlot(props) {
           d3.select('#' + id).call(
             d3.behavior.zoom().scaleExtent([0.5, 5]).on('zoom', zoom)
           );
+          d3.select('#' + id)
+            .on('mousedown', function () {
+              d3.select('#' + id).attr('class', 'grabbableactive');
+            })
+            .on('mouseup', function () {
+              d3.select('#' + id).attr('class', 'grabbable');
+            })
+            .attr('class', 'grabbable');
         };
         //zoom
         function zoom() {
-          console.log('zoom finction calling');
-          console.log('translation 11111', d3.event.translate);
           var scale = d3.event.scale,
             translation = d3.event.translate,
             tbound = -height * scale,
@@ -511,55 +547,16 @@ function TreePlot(props) {
             Math.max(Math.min(translation[0], rbound), lbound),
             Math.max(Math.min(translation[1], bbound), tbound),
           ];
-          console.log('translation 222222', translation);
-          console.log('scaleeee', scale);
+
           THIS.vis.attr(
             'transform',
             'translate(' + translation + ')' + ' scale(' + scale + ')'
           );
         }
-        // var panZoomsvgObject;
-        // var PanZoomsvg = function (id) {
-        //   panZoomsvgObject = svgPanZoom('#' + id, {
-        //     panEnabled: true,
-        //     dragEnabled: true,
-        //     controlIconsEnabled: false,
-        //     mouseWheelZoomEnabled: true,
-        //     zoomEnabled: true, //lets see
-        //     zoomScaleSensitivity: 5,
-        //     minZoom: 1,
-        //     maxZoom: 3,
-        //     fit: false,
-        //     //   center: true,
-        //     destroy: function (options) {
-        //       for (var eventName in this.listeners) {
-        //         options.svgElement.removeEventListener(
-        //           eventName,
-        //           this.listeners[eventName]
-        //         );
-        //       }
-        //     },y
-        //   });
-
-        //   d3.select('#' + id)
-        //     .on('mousedown', function () {
-        //       d3.select('#' + id).attr('class', 'grabbableactive');
-        //     })
-        //     .on('mouseup', function () {
-        //       d3.select('#' + id).attr('class', 'grabbable');
-        //     })
-        //     .attr('class', 'grabbable');
-
-        //   return panZoomsvgObject;
-        // };
 
         THIS.update(THIS.root);
         /********  PAN ZOOM ***********/
-        // if (THIS.type === 'backward') {
-        //   PanZoomsvg('treeviewidbackward');
-        // } else if (THIS.type === 'forward') {
-        //   PanZoomsvg('treeviewidforward');
-        // }
+
         if (THIS.type === 'backward') {
           treeZoom('treeviewidbackward');
         } else if (THIS.type === 'forward') {
@@ -579,11 +576,6 @@ function TreePlot(props) {
           else d.y = width - d.depth * nodeDepth;
           d.numChildren = d.children ? d.children.length : 0;
           d.traceability = THIS.type;
-          // if (d.type === "Material") {
-          //   //d.linkColor = "isMaterialLink";
-          // } else {
-          //   //d.linkColor = "darkorange";
-          // }
 
           if (d.numChildren === 0 && d._children)
             d.numChildren = d._children.length;
@@ -613,6 +605,7 @@ function TreePlot(props) {
             d.toolTipDetails = mastername;
           }
         });
+
         nodes.forEach(function (d) {
           var obj = d;
 
@@ -777,6 +770,7 @@ function TreePlot(props) {
           })
           .on('click', function (d) {
             d3.event.preventDefault();
+
             handleChartClick(d);
             popupDiv.style('display', 'block');
             popupDiv.style('left', d3.event.layerX + 100 + 'px');
@@ -1074,7 +1068,6 @@ function TreePlot(props) {
           let lastClickD = null;
           let nExpand = d3.select('#node-' + id);
           if (d.children) {
-            console.log('iffffffff', d);
             d._children = d.children;
             d.children = null;
             let nodeExpand = nExpand.selectAll('.expand');
@@ -1095,7 +1088,6 @@ function TreePlot(props) {
               .style('font-size', '16px')
               .style('font-weight', '700');
           } else {
-            console.log('elsssseeeee', d);
             d.children = d._children;
 
             d._children = null;
