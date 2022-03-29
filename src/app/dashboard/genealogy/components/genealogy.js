@@ -421,7 +421,7 @@ function Genealogy() {
                         chartType={chartType}
                         Backward={isBackward}
                         Forward={isForward}
-                        data={response[0]}
+                        data={genealogyData[0]}
                         nodeClick={onClickNode}
                         firstNode={productCode}
                       //handleChartClick={handleClickNode}
