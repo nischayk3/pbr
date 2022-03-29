@@ -1,976 +1,604 @@
 [
   {
     "OpenNC": false,
-    "batchNo": "393486",
+    "batchNo": "ABM0660",
     "children": [
       {
         "children": [
           {
             "OpenNC": false,
-            "batchNo": "394575",
-            "children": [
-              {
-                "children": [
-                  {
-                    "OpenNC": false,
-                    "batchNo": "X8331",
-                    "id": "36935",
-                    "level": 4,
-                    "matDesc": "FERVEX 500 PDRE AD (8SAC) VTE SER",
-                    "matNo": "1191376",
-                    "mat_type": "FIN",
-                    "nodeId": "1338|1191376|X8331",
-                    "plant": 1338,
-                    "type": "Material"
-                  }
-                ],
-                "id": "288184",
-                "level": 3,
-                "poNo": "1.02281163E8",
-                "relationshipMap": {
-                  "288184-36935": {
-                    "endNodeId": "288184",
-                    "id": "550473",
-                    "qty": 109000.0,
-                    "startNodeId": "36935",
-                    "type": "Output",
-                    "unit": "ST"
-                  }
-                },
-                "type": "Process Order"
-              }
-            ],
-            "id": "9044",
+            "batchNo": "ABM0673",
+            "id": "41012",
             "level": 2,
-            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
-            "matNo": "1089084",
+            "matDesc": "SOL 2% BENZYL ALCOHOL MBR823/10680",
+            "matNo": "1225361",
             "mat_type": "HALB",
-            "nodeId": "1338|1089084|394575",
-            "plant": 1338,
-            "relationshipMap": {
-              "9044-288184": {
-                "endNodeId": "9044",
-                "id": "199865",
-                "qty": 3939.0,
-                "startNodeId": "288184",
-                "type": "Input",
-                "unit": "KG"
-              }
-            },
+            "nodeId": "1255|1225361|ABM0673",
+            "plant": "1255",
             "type": "Material"
-          }
-        ],
-        "id": "281304",
-        "level": 1,
-        "poNo": "1.02280646E8",
-        "relationshipMap": {
-          "281304-9044": {
-            "endNodeId": "281304",
-            "id": "555738",
-            "qty": 3939.0,
-            "startNodeId": "9044",
-            "type": "Output",
-            "unit": "KG"
-          }
-        },
-        "type": "Process Order"
-      },
-      {
-        "children": [
+          },
           {
             "OpenNC": false,
-            "batchNo": "394574",
-            "children": [
-              {
-                "children": [
-                  {
-                    "OpenNC": false,
-                    "batchNo": "X8331",
-                    "id": "36935",
-                    "level": 4,
-                    "matDesc": "FERVEX 500 PDRE AD (8SAC) VTE SER",
-                    "matNo": "1191376",
-                    "mat_type": "FIN",
-                    "nodeId": "1338|1191376|X8331",
-                    "plant": 1338,
-                    "type": "Material"
-                  }
-                ],
-                "id": "288184",
-                "level": 3,
-                "poNo": "1.02281163E8",
-                "relationshipMap": {
-                  "288184-36935": {
-                    "endNodeId": "288184",
-                    "id": "550473",
-                    "qty": 109000.0,
-                    "startNodeId": "36935",
-                    "type": "Output",
-                    "unit": "ST"
-                  }
-                },
-                "type": "Process Order"
-              }
-            ],
-            "id": "9043",
+            "batchNo": "ABA8224",
+            "id": "144446",
             "level": 2,
-            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
-            "matNo": "1089084",
-            "mat_type": "HALB",
-            "nodeId": "1338|1089084|394574",
-            "plant": 1338,
-            "relationshipMap": {
-              "9043-288184": {
-                "endNodeId": "9043",
-                "id": "199864",
-                "qty": 3938.0,
-                "startNodeId": "288184",
-                "type": "Input",
-                "unit": "KG"
-              }
-            },
+            "matDesc": "MANIFOLD ARTESYN ART001423G",
+            "matNo": "1349354",
+            "mat_type": "HIBE",
+            "nodeId": "1255|1349354|ABA8224",
+            "plant": "1255",
             "type": "Material"
-          }
-        ],
-        "id": "302596",
-        "level": 1,
-        "poNo": "1.02280645E8",
-        "relationshipMap": {
-          "302596-9043": {
-            "endNodeId": "302596",
-            "id": "555737",
-            "qty": 3938.0,
-            "startNodeId": "9043",
-            "type": "Output",
-            "unit": "KG"
-          }
-        },
-        "type": "Process Order"
-      },
-      {
-        "children": [
+          },
           {
             "OpenNC": false,
-            "batchNo": "394156",
-            "children": [
-              {
-                "children": [
-                  {
-                    "OpenNC": false,
-                    "batchNo": "X8203",
-                    "id": "8949",
-                    "level": 4,
-                    "matDesc": "FERVEX AD PSOL 500MG (8SACH) 13.1G RO",
-                    "matNo": "1088713",
-                    "mat_type": "FIN",
-                    "nodeId": "1338|1088713|X8203",
-                    "plant": 1338,
-                    "type": "Material"
-                  }
-                ],
-                "id": "307490",
-                "level": 3,
-                "poNo": "1.02280632E8",
-                "relationshipMap": {
-                  "307490-8949": {
-                    "endNodeId": "307490",
-                    "id": "555733",
-                    "qty": 72200.0,
-                    "startNodeId": "8949",
-                    "type": "Output",
-                    "unit": "ST"
-                  }
-                },
-                "type": "Process Order"
-              }
-            ],
-            "id": "9040",
+            "batchNo": "ABH9498",
+            "id": "150639",
             "level": 2,
-            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
-            "matNo": "1089084",
-            "mat_type": "HALB",
-            "nodeId": "1338|1089084|394156",
-            "plant": 1338,
-            "relationshipMap": {
-              "9040-307490": {
-                "endNodeId": "9040",
-                "id": "196858",
-                "qty": 3890.0,
-                "startNodeId": "307490",
-                "type": "Input",
-                "unit": "KG"
-              }
-            },
+            "matDesc": "GASKET EPDM 1.5IN",
+            "matNo": "1361910",
+            "mat_type": "HIBE",
+            "nodeId": "1255|1361910|ABH9498",
+            "plant": "1255",
             "type": "Material"
-          }
-        ],
-        "id": "305098",
-        "level": 1,
-        "poNo": "1.02279689E8",
-        "relationshipMap": {
-          "305098-9040": {
-            "endNodeId": "305098",
-            "id": "555637",
-            "qty": 3890.0,
-            "startNodeId": "9040",
-            "type": "Output",
-            "unit": "KG"
-          }
-        },
-        "type": "Process Order"
-      },
-      {
-        "children": [
+          },
           {
             "OpenNC": false,
-            "batchNo": "394579",
-            "children": [
-              {
-                "children": [
-                  {
-                    "OpenNC": false,
-                    "batchNo": "X8438",
-                    "id": "36939",
-                    "level": 4,
-                    "matDesc": "FERVEX 500 PDRE AD (8SAC) VTE SER",
-                    "matNo": "1191376",
-                    "mat_type": "FIN",
-                    "nodeId": "1338|1191376|X8438",
-                    "plant": 1338,
-                    "type": "Material"
-                  }
-                ],
-                "id": "300151",
-                "level": 3,
-                "poNo": "1.02282748E8",
-                "relationshipMap": {
-                  "300151-36939": {
-                    "endNodeId": "300151",
-                    "id": "552186",
-                    "qty": 35900.0,
-                    "startNodeId": "36939",
-                    "type": "Output",
-                    "unit": "ST"
-                  }
-                },
-                "type": "Process Order"
-              }
-            ],
-            "id": "10409",
+            "batchNo": "ABL3001",
+            "id": "105565",
             "level": 2,
-            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
-            "matNo": "1089084",
-            "mat_type": "HALB",
-            "nodeId": "1338|1089084|394579",
-            "plant": 1338,
-            "relationshipMap": {
-              "10409-300151": {
-                "endNodeId": "10409",
-                "id": "208868",
-                "qty": 3916.0,
-                "startNodeId": "300151",
-                "type": "Input",
-                "unit": "KG"
-              }
-            },
+            "matDesc": "HOSE ADVANTAPURE 120 IN",
+            "matNo": "1307833",
+            "mat_type": "HIBE",
+            "nodeId": "1255|1307833|ABL3001",
+            "plant": "1255",
             "type": "Material"
-          }
-        ],
-        "id": "298169",
-        "level": 1,
-        "poNo": "1.0228083E8",
-        "relationshipMap": {
-          "298169-10409": {
-            "endNodeId": "298169",
-            "id": "555772",
-            "qty": 3916.0,
-            "startNodeId": "10409",
-            "type": "Output",
-            "unit": "KG"
-          }
-        },
-        "type": "Process Order"
-      },
-      {
-        "children": [
+          },
           {
             "OpenNC": false,
-            "batchNo": "394578",
-            "children": [
-              {
-                "children": [
-                  {
-                    "OpenNC": false,
-                    "batchNo": "X8390",
-                    "id": "36937",
-                    "level": 4,
-                    "matDesc": "FERVEX 500 PDRE AD (8SAC) VTE SER",
-                    "matNo": "1191376",
-                    "mat_type": "FIN",
-                    "nodeId": "1338|1191376|X8390",
-                    "plant": 1338,
-                    "type": "Material"
-                  }
-                ],
-                "id": "281055",
-                "level": 3,
-                "poNo": "1.0228232E8",
-                "relationshipMap": {
-                  "281055-36937": {
-                    "endNodeId": "281055",
-                    "id": "552104",
-                    "qty": 109000.0,
-                    "startNodeId": "36937",
-                    "type": "Output",
-                    "unit": "ST"
-                  }
-                },
-                "type": "Process Order"
-              }
-            ],
-            "id": "9047",
+            "batchNo": "ABM0674",
+            "id": "41013",
             "level": 2,
-            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
-            "matNo": "1089084",
+            "matDesc": "SOL 2% BENZYL ALCOHOL MBR823/10680",
+            "matNo": "1225361",
             "mat_type": "HALB",
-            "nodeId": "1338|1089084|394578",
-            "plant": 1338,
-            "relationshipMap": {
-              "9047-281055": {
-                "endNodeId": "9047",
-                "id": "206006",
-                "qty": 3916.0,
-                "startNodeId": "281055",
-                "type": "Input",
-                "unit": "KG"
-              }
-            },
+            "nodeId": "1255|1225361|ABM0674",
+            "plant": "1255",
             "type": "Material"
-          }
-        ],
-        "id": "271944",
-        "level": 1,
-        "poNo": "1.02280829E8",
-        "relationshipMap": {
-          "271944-9047": {
-            "endNodeId": "271944",
-            "id": "555766",
-            "qty": 3916.0,
-            "startNodeId": "9047",
-            "type": "Output",
-            "unit": "KG"
-          }
-        },
-        "type": "Process Order"
-      },
-      {
-        "children": [
+          },
           {
             "OpenNC": false,
-            "batchNo": "394572",
-            "children": [
-              {
-                "children": [
-                  {
-                    "OpenNC": false,
-                    "batchNo": "X8203",
-                    "id": "8949",
-                    "level": 4,
-                    "matDesc": "FERVEX AD PSOL 500MG (8SACH) 13.1G RO",
-                    "matNo": "1088713",
-                    "mat_type": "FIN",
-                    "nodeId": "1338|1088713|X8203",
-                    "plant": 1338,
-                    "type": "Material"
-                  }
-                ],
-                "id": "307490",
-                "level": 3,
-                "poNo": "1.02280632E8",
-                "relationshipMap": {
-                  "307490-8949": {
-                    "endNodeId": "307490",
-                    "id": "555733",
-                    "qty": 72200.0,
-                    "startNodeId": "8949",
-                    "type": "Output",
-                    "unit": "ST"
-                  }
-                },
-                "type": "Process Order"
-              }
-            ],
-            "id": "9041",
+            "batchNo": "ABN0297",
+            "id": "41024",
             "level": 2,
-            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
-            "matNo": "1089084",
+            "matDesc": "SOL 2% BENZYL ALCOHOL MBR823/10680",
+            "matNo": "1225361",
             "mat_type": "HALB",
-            "nodeId": "1338|1089084|394572",
-            "plant": 1338,
-            "relationshipMap": {
-              "9041-307490": {
-                "endNodeId": "9041",
-                "id": "196859",
-                "qty": 3925.0,
-                "startNodeId": "307490",
-                "type": "Input",
-                "unit": "KG"
-              }
-            },
+            "nodeId": "1255|1225361|ABN0297",
+            "plant": "1255",
             "type": "Material"
-          }
-        ],
-        "id": "285359",
-        "level": 1,
-        "poNo": "1.02280643E8",
-        "relationshipMap": {
-          "285359-9041": {
-            "endNodeId": "285359",
-            "id": "555735",
-            "qty": 3925.0,
-            "startNodeId": "9041",
-            "type": "Output",
-            "unit": "KG"
-          }
-        },
-        "type": "Process Order"
-      },
-      {
-        "children": [
+          },
           {
             "OpenNC": false,
-            "batchNo": "394580",
-            "children": [
-              {
-                "children": [
-                  {
-                    "OpenNC": false,
-                    "batchNo": "X8440",
-                    "id": "161914",
-                    "level": 4,
-                    "matDesc": "FERVEX GRAN DO SPORZ.ROZTW.12SASZ PO 13G",
-                    "matNo": "1367749",
-                    "mat_type": "FIN",
-                    "nodeId": "1338|1367749|X8440",
-                    "plant": 1338,
-                    "type": "Material"
-                  }
-                ],
-                "id": "293702",
-                "level": 3,
-                "poNo": "1.0228275E8",
-                "relationshipMap": {
-                  "293702-161914": {
-                    "endNodeId": "293702",
-                    "id": "562027",
-                    "qty": 71160.0,
-                    "startNodeId": "161914",
-                    "type": "Output",
-                    "unit": "ST"
-                  }
-                },
-                "type": "Process Order"
-              }
-            ],
-            "id": "10410",
+            "batchNo": "ABM0670",
+            "id": "41010",
             "level": 2,
-            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
-            "matNo": "1089084",
+            "matDesc": "SOL 2% BENZYL ALCOHOL MBR823/10680",
+            "matNo": "1225361",
             "mat_type": "HALB",
-            "nodeId": "1338|1089084|394580",
-            "plant": 1338,
-            "relationshipMap": {
-              "10410-293702": {
-                "endNodeId": "10410",
-                "id": "208893",
-                "qty": 3917.0,
-                "startNodeId": "293702",
-                "type": "Input",
-                "unit": "KG"
-              }
-            },
+            "nodeId": "1255|1225361|ABM0670",
+            "plant": "1255",
             "type": "Material"
-          }
-        ],
-        "id": "272855",
-        "level": 1,
-        "poNo": "1.02280831E8",
-        "relationshipMap": {
-          "272855-10410": {
-            "endNodeId": "272855",
-            "id": "555768",
-            "qty": 3917.0,
-            "startNodeId": "10410",
-            "type": "Output",
-            "unit": "KG"
-          }
-        },
-        "type": "Process Order"
-      },
-      {
-        "children": [
+          },
           {
             "OpenNC": false,
-            "batchNo": "394576",
-            "children": [
-              {
-                "children": [
-                  {
-                    "OpenNC": false,
-                    "batchNo": "X8390",
-                    "id": "36937",
-                    "level": 4,
-                    "matDesc": "FERVEX 500 PDRE AD (8SAC) VTE SER",
-                    "matNo": "1191376",
-                    "mat_type": "FIN",
-                    "nodeId": "1338|1191376|X8390",
-                    "plant": 1338,
-                    "type": "Material"
-                  }
-                ],
-                "id": "281055",
-                "level": 3,
-                "poNo": "1.0228232E8",
-                "relationshipMap": {
-                  "281055-36937": {
-                    "endNodeId": "281055",
-                    "id": "552104",
-                    "qty": 109000.0,
-                    "startNodeId": "36937",
-                    "type": "Output",
-                    "unit": "ST"
-                  }
-                },
-                "type": "Process Order"
-              }
-            ],
-            "id": "9045",
+            "batchNo": "ABM0664",
+            "id": "18373",
             "level": 2,
-            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
-            "matNo": "1089084",
+            "matDesc": "SOL 1N NAOH MBR414/10670",
+            "matNo": "1176150",
             "mat_type": "HALB",
-            "nodeId": "1338|1089084|394576",
-            "plant": 1338,
-            "relationshipMap": {
-              "9045-281055": {
-                "endNodeId": "9045",
-                "id": "206004",
-                "qty": 3925.0,
-                "startNodeId": "281055",
-                "type": "Input",
-                "unit": "KG"
-              }
-            },
+            "nodeId": "1255|1176150|ABM0664",
+            "plant": "1255",
             "type": "Material"
-          }
-        ],
-        "id": "295805",
-        "level": 1,
-        "poNo": "1.02280647E8",
-        "relationshipMap": {
-          "295805-9045": {
-            "endNodeId": "295805",
-            "id": "555739",
-            "qty": 3925.0,
-            "startNodeId": "9045",
-            "type": "Output",
-            "unit": "KG"
-          }
-        },
-        "type": "Process Order"
-      },
-      {
-        "children": [
+          },
           {
             "OpenNC": false,
-            "batchNo": "394155",
-            "children": [
-              {
-                "children": [
-                  {
-                    "OpenNC": false,
-                    "batchNo": "X8202",
-                    "id": "8947",
-                    "level": 4,
-                    "matDesc": "FERVEX AD PSOL 500MG (8SACH) 13.1G RO",
-                    "matNo": "1088713",
-                    "mat_type": "FIN",
-                    "nodeId": "1338|1088713|X8202",
-                    "plant": 1338,
-                    "type": "Material"
-                  }
-                ],
-                "id": "311965",
-                "level": 3,
-                "poNo": "1.02280631E8",
-                "relationshipMap": {
-                  "311965-8947": {
-                    "endNodeId": "311965",
-                    "id": "555732",
-                    "qty": 107900.0,
-                    "startNodeId": "8947",
-                    "type": "Output",
-                    "unit": "ST"
-                  }
-                },
-                "type": "Process Order"
-              }
-            ],
-            "id": "9039",
+            "batchNo": "ABM0668",
+            "id": "30327",
             "level": 2,
-            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
-            "matNo": "1089084",
+            "matDesc": "BUFFER 2M NACL MBR10592/10684",
+            "matNo": "1176172",
             "mat_type": "HALB",
-            "nodeId": "1338|1089084|394155",
-            "plant": 1338,
-            "relationshipMap": {
-              "9039-311965": {
-                "endNodeId": "9039",
-                "id": "196854",
-                "qty": 3937.0,
-                "startNodeId": "311965",
-                "type": "Input",
-                "unit": "KG"
-              }
-            },
+            "nodeId": "1255|1176172|ABM0668",
+            "plant": "1255",
             "type": "Material"
-          }
-        ],
-        "id": "299772",
-        "level": 1,
-        "poNo": "1.02279688E8",
-        "relationshipMap": {
-          "299772-9039": {
-            "endNodeId": "299772",
-            "id": "555636",
-            "qty": 3937.0,
-            "startNodeId": "9039",
-            "type": "Output",
-            "unit": "KG"
-          }
-        },
-        "type": "Process Order"
-      },
-      {
-        "children": [
+          },
           {
             "OpenNC": false,
-            "batchNo": "394573",
-            "children": [
-              {
-                "children": [
-                  {
-                    "OpenNC": false,
-                    "batchNo": "X8331",
-                    "id": "36935",
-                    "level": 4,
-                    "matDesc": "FERVEX 500 PDRE AD (8SAC) VTE SER",
-                    "matNo": "1191376",
-                    "mat_type": "FIN",
-                    "nodeId": "1338|1191376|X8331",
-                    "plant": 1338,
-                    "type": "Material"
-                  }
-                ],
-                "id": "288184",
-                "level": 3,
-                "poNo": "1.02281163E8",
-                "relationshipMap": {
-                  "288184-36935": {
-                    "endNodeId": "288184",
-                    "id": "550473",
-                    "qty": 109000.0,
-                    "startNodeId": "36935",
-                    "type": "Output",
-                    "unit": "ST"
-                  }
-                },
-                "type": "Process Order"
-              }
-            ],
-            "id": "9042",
+            "batchNo": "ABM0682",
+            "id": "225626",
             "level": 2,
-            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
-            "matNo": "1089084",
+            "matDesc": "25MMSODPHOS150MMNACL2XPH7.5 MBR518/10673",
+            "matNo": "1357973",
             "mat_type": "HALB",
-            "nodeId": "1338|1089084|394573",
-            "plant": 1338,
-            "relationshipMap": {
-              "9042-288184": {
-                "endNodeId": "9042",
-                "id": "199863",
-                "qty": 3917.0,
-                "startNodeId": "288184",
-                "type": "Input",
-                "unit": "KG"
-              }
-            },
+            "nodeId": "1255|1357973|ABM0682",
+            "plant": "1255",
             "type": "Material"
-          }
-        ],
-        "id": "301547",
-        "level": 1,
-        "poNo": "1.02280644E8",
-        "relationshipMap": {
-          "301547-9042": {
-            "endNodeId": "301547",
-            "id": "555736",
-            "qty": 3917.0,
-            "startNodeId": "9042",
-            "type": "Output",
-            "unit": "KG"
-          }
-        },
-        "type": "Process Order"
-      },
-      {
-        "children": [
+          },
           {
             "OpenNC": false,
-            "batchNo": "394581",
-            "children": [
-              {
-                "children": [
-                  {
-                    "OpenNC": false,
-                    "batchNo": "X8440",
-                    "id": "161914",
-                    "level": 4,
-                    "matDesc": "FERVEX GRAN DO SPORZ.ROZTW.12SASZ PO 13G",
-                    "matNo": "1367749",
-                    "mat_type": "FIN",
-                    "nodeId": "1338|1367749|X8440",
-                    "plant": 1338,
-                    "type": "Material"
-                  }
-                ],
-                "id": "293702",
-                "level": 3,
-                "poNo": "1.0228275E8",
-                "relationshipMap": {
-                  "293702-161914": {
-                    "endNodeId": "293702",
-                    "id": "562027",
-                    "qty": 71160.0,
-                    "startNodeId": "161914",
-                    "type": "Output",
-                    "unit": "ST"
-                  }
-                },
-                "type": "Process Order"
-              }
-            ],
-            "id": "10411",
+            "batchNo": "ABJ2080",
+            "id": "205298",
             "level": 2,
-            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
-            "matNo": "1089084",
-            "mat_type": "HALB",
-            "nodeId": "1338|1089084|394581",
-            "plant": 1338,
-            "relationshipMap": {
-              "10411-293702": {
-                "endNodeId": "10411",
-                "id": "208894",
-                "qty": 3916.0,
-                "startNodeId": "293702",
-                "type": "Input",
-                "unit": "KG"
-              }
-            },
+            "matDesc": "BAG 500L HYCLONE SH3B7326",
+            "matNo": "1348424",
+            "mat_type": "HIBE",
+            "nodeId": "1255|1348424|ABJ2080",
+            "plant": "1255",
             "type": "Material"
-          }
-        ],
-        "id": "307491",
-        "level": 1,
-        "poNo": "1.02280832E8",
-        "relationshipMap": {
-          "307491-10411": {
-            "endNodeId": "307491",
-            "id": "555769",
-            "qty": 3916.0,
-            "startNodeId": "10411",
-            "type": "Output",
-            "unit": "KG"
-          }
-        },
-        "type": "Process Order"
-      },
-      {
-        "children": [
+          },
           {
             "OpenNC": false,
-            "batchNo": "394577",
-            "children": [
-              {
-                "children": [
-                  {
-                    "OpenNC": false,
-                    "batchNo": "X8390",
-                    "id": "36937",
-                    "level": 4,
-                    "matDesc": "FERVEX 500 PDRE AD (8SAC) VTE SER",
-                    "matNo": "1191376",
-                    "mat_type": "FIN",
-                    "nodeId": "1338|1191376|X8390",
-                    "plant": 1338,
-                    "type": "Material"
-                  }
-                ],
-                "id": "281055",
-                "level": 3,
-                "poNo": "1.0228232E8",
-                "relationshipMap": {
-                  "281055-36937": {
-                    "endNodeId": "281055",
-                    "id": "552104",
-                    "qty": 109000.0,
-                    "startNodeId": "36937",
-                    "type": "Output",
-                    "unit": "ST"
-                  }
-                },
-                "type": "Process Order"
-              }
-            ],
-            "id": "9046",
+            "batchNo": "ABE7749",
+            "id": "30182",
             "level": 2,
-            "matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
-            "matNo": "1089084",
+            "matDesc": "MAB SELECT PROTEIN A RESIN",
+            "matNo": "1176143",
+            "mat_type": "RAW",
+            "nodeId": "1255|1176143|ABE7749",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABJ6043",
+            "id": "30189",
+            "level": 2,
+            "matDesc": "MAB SELECT PROTEIN A RESIN",
+            "matNo": "1176143",
+            "mat_type": "RAW",
+            "nodeId": "1255|1176143|ABJ6043",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABM0675",
+            "id": "41014",
+            "level": 2,
+            "matDesc": "SOL 2% BENZYL ALCOHOL MBR823/10680",
+            "matNo": "1225361",
             "mat_type": "HALB",
-            "nodeId": "1338|1089084|394577",
-            "plant": 1338,
-            "relationshipMap": {
-              "9046-281055": {
-                "endNodeId": "9046",
-                "id": "206005",
-                "qty": 3954.0,
-                "startNodeId": "281055",
-                "type": "Input",
-                "unit": "KG"
-              }
-            },
+            "nodeId": "1255|1225361|ABM0675",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABM0665",
+            "id": "18374",
+            "level": 2,
+            "matDesc": "SOL 1N NAOH MBR414/10670",
+            "matNo": "1176150",
+            "mat_type": "HALB",
+            "nodeId": "1255|1176150|ABM0665",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABM0681",
+            "id": "154658",
+            "level": 2,
+            "matDesc": "120MMH3P04167MM AA2%BNOH1.5X 10349/10682",
+            "matNo": "1342047",
+            "mat_type": "HALB",
+            "nodeId": "1255|1342047|ABM0681",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABM0695",
+            "id": "18379",
+            "level": 2,
+            "matDesc": "SOL 1N NAOH MBR414/10670",
+            "matNo": "1176150",
+            "mat_type": "HALB",
+            "nodeId": "1255|1176150|ABM0695",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "AAS2899",
+            "id": "52933",
+            "level": 2,
+            "matDesc": "FILTER PALL 10\" 0.2 SUPOR EKV AB1EKV7PH4",
+            "matNo": "1245791",
+            "mat_type": "HIBE",
+            "nodeId": "1255|1245791|AAS2899",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABL5256",
+            "id": "30190",
+            "level": 2,
+            "matDesc": "MAB SELECT PROTEIN A RESIN",
+            "matNo": "1176143",
+            "mat_type": "RAW",
+            "nodeId": "1255|1176143|ABL5256",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABM0680",
+            "id": "153238",
+            "level": 2,
+            "matDesc": "200MMSCIT20MMNAOH1%BNOH1.5X MBR930/10681",
+            "matNo": "1341884",
+            "mat_type": "HALB",
+            "nodeId": "1255|1341884|ABM0680",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABL2696",
+            "id": "160006",
+            "level": 2,
+            "matDesc": "CAP 1.5IN",
+            "matNo": "1361914",
+            "mat_type": "HIBE",
+            "nodeId": "1255|1361914|ABL2696",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABB0484",
+            "id": "169145",
+            "level": 2,
+            "matDesc": "HOSE 3/4INX10FT CLR PCS W/1IN TC",
+            "matNo": "1367410",
+            "mat_type": "HIBE",
+            "nodeId": "1255|1367410|ABB0484",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABA6130",
+            "id": "205296",
+            "level": 2,
+            "matDesc": "BAG 500L HYCLONE SH3B7326",
+            "matNo": "1348424",
+            "mat_type": "HIBE",
+            "nodeId": "1255|1348424|ABA6130",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {},
+          {
+            "OpenNC": false,
+            "batchNo": "ABK7532",
+            "id": "172292",
+            "level": 2,
+            "matDesc": "ASEPTIC CONNECTOR RC2012-0095",
+            "matNo": "1307824",
+            "mat_type": "HIBE",
+            "nodeId": "1255|1307824|ABK7532",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABL3548",
+            "id": "160356",
+            "level": 2,
+            "matDesc": "BAG 200L CX514 THERMO SH3B4916.03",
+            "matNo": "1287667",
+            "mat_type": "PACK",
+            "nodeId": "1255|1287667|ABL3548",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABJ4678",
+            "id": "30186",
+            "level": 2,
+            "matDesc": "MAB SELECT PROTEIN A RESIN",
+            "matNo": "1176143",
+            "mat_type": "RAW",
+            "nodeId": "1255|1176143|ABJ4678",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABM0666",
+            "id": "18375",
+            "level": 2,
+            "matDesc": "SOL 1N NAOH MBR414/10670",
+            "matNo": "1176150",
+            "mat_type": "HALB",
+            "nodeId": "1255|1176150|ABM0666",
+            "plant": "1255",
+            "type": "Material"
+          },
+          {
+            "OpenNC": false,
+            "batchNo": "ABM0672",
+            "id": "41011",
+            "level": 2,
+            "matDesc": "SOL 2% BENZYL ALCOHOL MBR823/10680",
+            "matNo": "1225361",
+            "mat_type": "HALB",
+            "nodeId": "1255|1225361|ABM0672",
+            "plant": "1255",
             "type": "Material"
           }
         ],
-        "id": "272489",
+        "id": "311757",
         "level": 1,
-        "poNo": "1.02280828E8",
+        "plant": "1255",
+        "poNo": "102258270",
         "relationshipMap": {
-          "272489-9046": {
-            "endNodeId": "272489",
-            "id": "555765",
-            "qty": 3954.0,
-            "startNodeId": "9046",
-            "type": "Output",
+          "311757-105565": {
+            "endNodeId": "311757",
+            "id": "33184",
+            "qty": 9.0,
+            "startNodeId": "105565",
+            "type": "Input",
+            "unit": "ST"
+          },
+          "311757-144446": {
+            "endNodeId": "311757",
+            "id": "33185",
+            "qty": 1.0,
+            "startNodeId": "144446",
+            "type": "Input",
+            "unit": "ST"
+          },
+          "311757-146611": {
+            "endNodeId": "311757",
+            "id": "40192",
+            "qty": 1.0,
+            "startNodeId": "146611",
+            "type": "Input",
+            "unit": "CYC"
+          },
+          "311757-150639": {
+            "endNodeId": "311757",
+            "id": "33186",
+            "qty": 2.0,
+            "startNodeId": "150639",
+            "type": "Input",
+            "unit": "ST"
+          },
+          "311757-153238": {
+            "endNodeId": "311757",
+            "id": "32870",
+            "qty": 500.0,
+            "startNodeId": "153238",
+            "type": "Input",
+            "unit": "L"
+          },
+          "311757-154658": {
+            "endNodeId": "311757",
+            "id": "32871",
+            "qty": 500.0,
+            "startNodeId": "154658",
+            "type": "Input",
+            "unit": "L"
+          },
+          "311757-160006": {
+            "endNodeId": "311757",
+            "id": "40193",
+            "qty": 4.0,
+            "startNodeId": "160006",
+            "type": "Input",
+            "unit": "ST"
+          },
+          "311757-160356": {
+            "endNodeId": "311757",
+            "id": "35860",
+            "qty": 1.0,
+            "startNodeId": "160356",
+            "type": "Input",
+            "unit": "ST"
+          },
+          "311757-169145": {
+            "endNodeId": "311757",
+            "id": "40194",
+            "qty": 4.0,
+            "startNodeId": "169145",
+            "type": "Input",
+            "unit": "ST"
+          },
+          "311757-172292": {
+            "endNodeId": "311757",
+            "id": "35861",
+            "qty": 10.0,
+            "startNodeId": "172292",
+            "type": "Input",
+            "unit": "ST"
+          },
+          "311757-18373": {
+            "endNodeId": "311757",
+            "id": "33180",
+            "qty": 1000.0,
+            "startNodeId": "18373",
+            "type": "Input",
             "unit": "KG"
+          },
+          "311757-18374": {
+            "endNodeId": "311757",
+            "id": "33181",
+            "qty": 1000.0,
+            "startNodeId": "18374",
+            "type": "Input",
+            "unit": "KG"
+          },
+          "311757-18375": {
+            "endNodeId": "311757",
+            "id": "33182",
+            "qty": 1000.0,
+            "startNodeId": "18375",
+            "type": "Input",
+            "unit": "KG"
+          },
+          "311757-18379": {
+            "endNodeId": "311757",
+            "id": "33183",
+            "qty": 1000.0,
+            "startNodeId": "18379",
+            "type": "Input",
+            "unit": "KG"
+          },
+          "311757-205296": {
+            "endNodeId": "311757",
+            "id": "35862",
+            "qty": 4.0,
+            "startNodeId": "205296",
+            "type": "Input",
+            "unit": "ST"
+          },
+          "311757-205298": {
+            "endNodeId": "311757",
+            "id": "35863",
+            "qty": 5.0,
+            "startNodeId": "205298",
+            "type": "Input",
+            "unit": "ST"
+          },
+          "311757-225626": {
+            "endNodeId": "311757",
+            "id": "32271",
+            "qty": 500.0,
+            "startNodeId": "225626",
+            "type": "Input",
+            "unit": "L"
+          },
+          "311757-30182": {
+            "endNodeId": "311757",
+            "id": "40187",
+            "qty": 10.0,
+            "startNodeId": "30182",
+            "type": "Input",
+            "unit": "L"
+          },
+          "311757-30186": {
+            "endNodeId": "311757",
+            "id": "40188",
+            "qty": 80.0,
+            "startNodeId": "30186",
+            "type": "Input",
+            "unit": "L"
+          },
+          "311757-30189": {
+            "endNodeId": "311757",
+            "id": "40189",
+            "qty": 40.0,
+            "startNodeId": "30189",
+            "type": "Input",
+            "unit": "L"
+          },
+          "311757-30190": {
+            "endNodeId": "311757",
+            "id": "40190",
+            "qty": 150.0,
+            "startNodeId": "30190",
+            "type": "Input",
+            "unit": "L"
+          },
+          "311757-30327": {
+            "endNodeId": "311757",
+            "id": "40191",
+            "qty": 500.0,
+            "startNodeId": "30327",
+            "type": "Input",
+            "unit": "KG"
+          },
+          "311757-41010": {
+            "endNodeId": "311757",
+            "id": "32863",
+            "qty": 500.0,
+            "startNodeId": "41010",
+            "type": "Input",
+            "unit": "KG"
+          },
+          "311757-41011": {
+            "endNodeId": "311757",
+            "id": "32864",
+            "qty": 500.0,
+            "startNodeId": "41011",
+            "type": "Input",
+            "unit": "KG"
+          },
+          "311757-41012": {
+            "endNodeId": "311757",
+            "id": "32865",
+            "qty": 500.0,
+            "startNodeId": "41012",
+            "type": "Input",
+            "unit": "KG"
+          },
+          "311757-41013": {
+            "endNodeId": "311757",
+            "id": "32866",
+            "qty": 500.0,
+            "startNodeId": "41013",
+            "type": "Input",
+            "unit": "KG"
+          },
+          "311757-41014": {
+            "endNodeId": "311757",
+            "id": "32867",
+            "qty": 500.0,
+            "startNodeId": "41014",
+            "type": "Input",
+            "unit": "KG"
+          },
+          "311757-41024": {
+            "endNodeId": "311757",
+            "id": "32868",
+            "qty": 500.0,
+            "startNodeId": "41024",
+            "type": "Input",
+            "unit": "KG"
+          },
+          "311757-52933": {
+            "endNodeId": "311757",
+            "id": "32869",
+            "qty": 2.0,
+            "startNodeId": "52933",
+            "type": "Input",
+            "unit": "ST"
           }
         },
         "type": "Process Order"
       }
     ],
-    "id": "8259",
-    "level": 0,
-    "matDesc": "CARIBBEAN AROMA",
-    "matNo": "1091460",
-    "mat_type": "RAW",
-    "nodeId": "1338|1091460|393486",
-    "plant": 1338,
+    "id": "146611",
+    "level": 2,
+    "matDesc": "BELA E PACKED MAB SELECT PROTEIN COLUMN",
+    "matNo": "1342328",
+    "mat_type": "HALB",
+    "nodeId": "1255|1342328|ABM0660",
+    "plant": "1255",
     "relationshipMap": {
-      "8259-271944": {
-        "endNodeId": "8259",
-        "id": "178422",
-        "qty": 150.0,
-        "startNodeId": "271944",
-        "type": "Input",
-        "unit": "KG"
-      },
-      "8259-272489": {
-        "endNodeId": "8259",
-        "id": "178420",
-        "qty": 151.0,
-        "startNodeId": "272489",
-        "type": "Input",
-        "unit": "KG"
-      },
-      "8259-272855": {
-        "endNodeId": "8259",
-        "id": "178425",
-        "qty": 150.0,
-        "startNodeId": "272855",
-        "type": "Input",
-        "unit": "KG"
-      },
-      "8259-281304": {
-        "endNodeId": "8259",
-        "id": "178247",
-        "qty": 151.0,
-        "startNodeId": "281304",
-        "type": "Input",
-        "unit": "KG"
-      },
-      "8259-285359": {
-        "endNodeId": "8259",
-        "id": "178241",
-        "qty": 150.0,
-        "startNodeId": "285359",
-        "type": "Input",
-        "unit": "KG"
-      },
-      "8259-295805": {
-        "endNodeId": "8259",
-        "id": "178249",
-        "qty": 150.0,
-        "startNodeId": "295805",
-        "type": "Input",
-        "unit": "KG"
-      },
-      "8259-298169": {
-        "endNodeId": "8259",
-        "id": "178439",
-        "qty": 150.0,
-        "startNodeId": "298169",
-        "type": "Input",
-        "unit": "KG"
-      },
-      "8259-299772": {
-        "endNodeId": "8259",
-        "id": "169321",
-        "qty": 76.0,
-        "startNodeId": "299772",
-        "type": "Input",
-        "unit": "KG"
-      },
-      "8259-301547": {
-        "endNodeId": "8259",
-        "id": "178243",
-        "qty": 150.0,
-        "startNodeId": "301547",
-        "type": "Input",
-        "unit": "KG"
-      },
-      "8259-302596": {
-        "endNodeId": "8259",
-        "id": "178245",
-        "qty": 151.0,
-        "startNodeId": "302596",
-        "type": "Input",
-        "unit": "KG"
-      },
-      "8259-305098": {
-        "endNodeId": "8259",
-        "id": "169323",
-        "qty": 149.0,
-        "startNodeId": "305098",
-        "type": "Input",
-        "unit": "KG"
-      },
-      "8259-307491": {
-        "endNodeId": "8259",
-        "id": "178427",
-        "qty": 102.0,
-        "startNodeId": "307491",
-        "type": "Input",
-        "unit": "KG"
+      "146611-311757": {
+        "endNodeId": "146611",
+        "id": "535474",
+        "qty": 60.0,
+        "startNodeId": "311757",
+        "type": "Output",
+        "unit": "CYC"
       }
     },
     "type": "Material"
