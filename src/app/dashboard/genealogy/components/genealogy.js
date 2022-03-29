@@ -234,7 +234,7 @@ function Genealogy() {
     try {
       dispatch(showLoader());
       const batchRes = await getBatchInfo(_reqBatch);
-      if (batchRes.status === 200) {
+      if (batchRes.length > 0) {
         setLimsBatchInfo(batchRes);
       } else if (batchRes.status === 404) {
         setLimsBatchInfo();
