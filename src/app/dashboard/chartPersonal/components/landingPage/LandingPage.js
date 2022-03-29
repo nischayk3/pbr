@@ -88,7 +88,7 @@ const LandingPage = ({ showView, setShowView }) => {
                             </Col>
                             <Col span={6} />
                         </Row>
-                        <Row className='recent-charts'>
+                        {chartData.length !== 0 && <Row className='recent-charts'>
                             <Col span={6} />
                             <Col span={12}>
                                 <h3>Recently created charts</h3>
@@ -110,7 +110,7 @@ const LandingPage = ({ showView, setShowView }) => {
                                 </Row>
                             </Col>
                             <Col span={6} />
-                        </Row>
+                        </Row>}
                     </Card>
                 </Col>
             </Row>
