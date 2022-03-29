@@ -28,10 +28,10 @@ const chartComponent = (props) => {
         try {
             dispatch(showLoader());
             const chartResponse = await getChartPlotData(req);
-            setWorkSpaceChartData(chartResponse.data.data);
-            setWorkSpaceChartLayout(chartResponse.data.layout)
-            setWorkSpaceChartLayoutXAxis(chartResponse.data.layout.xaxis)
-            setWorkSpaceChartLayoutYAxis(chartResponse.data.layout.yaxis)
+            setWorkSpaceChartData(chartResponse.data);
+            setWorkSpaceChartLayout(chartResponse.layout)
+            setWorkSpaceChartLayoutXAxis(chartResponse.layout.xaxis)
+            setWorkSpaceChartLayoutYAxis(chartResponse.layout.yaxis)
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
