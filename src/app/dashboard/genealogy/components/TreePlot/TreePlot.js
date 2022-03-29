@@ -16,6 +16,7 @@ import {
   MinusOutlined,
   WarningOutlined,
   CloseOutlined,
+  SearchOutlined,
 } from '@ant-design/icons';
 import processOrderIcon from '../../../../../assets/images/processorder.png';
 import batchIcon from '../../../../../assets/images/material.png';
@@ -160,109 +161,110 @@ function TreePlot(props) {
 
       setselectedNodeId(splitedvalue);
       setsearchValue(splitvalue[0]);
-
-      let svgNodeClass = document.querySelectorAll('.node');
-      for (let i = 0; i < svgNodeClass.length; i++) {
-        const element = svgNodeClass[i].children;
-        element[0].setAttribute('r', '10');
-      }
-      if (props.chartType === 'backward') {
-        let diagramLayout = d3.select('#backwardDiv');
-        let linkSvg = diagramLayout.selectAll('.link');
-        // let linkSvg1 = diagramLayout.selectAll('#treeviewidbackward');
-        // let linkSvg2 = diagramLayout.selectAll('#node-' + splitedvalue);
-        // let nodeCoords = d3.transform(linkSvg2.attr('transform'));
-        // let ntranslateX = nodeCoords.translate[0];
-        // let ntranslateY = nodeCoords.translate[1];
-        // let newTranslateX = ntranslateX - 600;
-        // let newtranslateY = ntranslateY - ntranslateY - 40;
-
-        // linkSvg1.attr(
-        //   'transform',
-        //   'translate(' + newTranslateX + ',' + newtranslateY + ')scale(1,1)'
-        // );
-        linkSvg.style('stroke', isMaterialLink).style('stroke-width', '4');
-        let linkSearchMatch = linkSvg.filter(function (d) {
-          return d.source.id === splitedvalue || d.target.id === splitedvalue;
-        });
-
-        linkSearchMatch.attr('class', function (b) {
-          if (b.source && b.source.parent ? b.source.parent : b.parent) {
-            return 'value-match';
-          }
-        });
-        let linkMatch = diagramLayout.selectAll('.link');
-        let linkMatchValue = diagramLayout.selectAll('.value-match');
-        let parentLink = diagramLayout.selectAll('.additionalParentLink');
-
-        linkMatch.style('stroke', '#ddd');
-        parentLink.style('stroke', '#ddd');
-
-        let highlightLinkPath = function (
-          d,
-          displayColor,
-          opacity,
-          strokeWidth
-        ) {
-          linkMatch
-            .filter(function (e) {
-              if (d && d !== null) {
-                while (e.target === d) {
-                  highlightLinkPath(
-                    e.source,
-                    displayColor,
-                    opacity,
-                    strokeWidth
-                  );
-                  return d && d !== null ? true : false;
-                }
-              }
-            })
-            .transition(0)
-            .duration(300)
-            // .style('stroke', 'isMaterialLink')
-            .style('opacity', opacity)
-            .style('stroke-width', strokeWidth);
-        };
-        linkMatchValue.style('stroke', function (d) {
-          highlightLinkPath(d.source, isMaterialLink, 1, 10);
-          // return isMaterialLink;
-        });
-      } else if (props.chartType === 'forward') {
-        let diagramForward = d3.select('#forwardDiv');
-        let linkSvgFor = diagramForward.selectAll('.link');
-        // let linkSvg1For = diagramForward.selectAll('#treeviewidforward');
-        // let linkSvg2For = diagramForward.selectAll('#node-' + splitedvalue);
-        // let nodeCoordsFor = d3.transform(linkSvg2For.attr('transform'));
-        // let ntranslateXFor = nodeCoordsFor.translate[0];
-        // let ntranslateYFor = nodeCoordsFor.translate[1];
-        // let newTranslateXFor = ntranslateXFor - 600;
-        // let newtranslateYFor = ntranslateYFor - ntranslateYFor - 40;
-
-        // linkSvg1For.attr(
-        //   'transform',
-        //   'translate(' +
-        //     newTranslateXFor +
-        //     ',' +
-        //     newtranslateYFor +
-        //     ')scale(1,1)'
-        // );
-        linkSvgFor.style('stroke', isMaterialLink).style('stroke-width', '4');
-        let linkSearchMatchFor = linkSvgFor.filter(function (d) {
-          return d.source.id === splitedvalue || d.target.id === splitedvalue;
-        });
-        linkSearchMatchFor.attr('class', 'value-match');
-        let linkMatchFor = diagramForward.selectAll('.link');
-        let linkNotMatchFor = diagramForward.selectAll('.value-match');
-        let parentLinkFor = diagramForward.selectAll('.additionalParentLink');
-        linkMatchFor.style('stroke', '#ddd');
-        parentLinkFor.style('stroke', '#ddd');
-        linkNotMatchFor.style('stroke', isMaterialLink);
-      }
     } else if (value === null && value === undefined) {
       let diagramLayoutBack = d3.select('#backwardDiv');
+
       let linkSvgBack = diagramLayoutBack.selectAll('.link');
       linkSvgBack.style('stroke', isMaterialLink).style('stroke-width', '4');
+    }
+  };
+
+  const handleTreeSearch = () => {
+    let svgNodeClass = document.querySelectorAll('.node');
+    for (let i = 0; i < svgNodeClass.length; i++) {
+      const element = svgNodeClass[i].children;
+      element[0].setAttribute('r', '10');
+    }
+    if (props.chartType === 'backward') {
+      let diagramLayout = d3.select('#backwardDiv');
+      let linkSvg = diagramLayout.selectAll('.link');
+      // let linkSvg1 = diagramLayout.selectAll('#treeviewidbackward');
+      // let linkSvg2 = diagramLayout.selectAll('#node-' + splitedvalue);
+      // let nodeCoords = d3.transform(linkSvg2.attr('transform'));
+      // let ntranslateX = nodeCoords.translate[0];
+      // let ntranslateY = nodeCoords.translate[1];
+      // let newTranslateX = ntranslateX - 600;
+      // let newtranslateY = ntranslateY - ntranslateY - 40;
+
+      // linkSvg1.attr(
+      //   'transform',
+      //   'translate(' + newTranslateX + ',' + newtranslateY + ')scale(1,1)'
+      // );
+      linkSvg.style('stroke', isMaterialLink).style('stroke-width', '4');
+      let linkSearchMatch = linkSvg.filter(function (d) {
+        return d.source.id === selectedNodeId || d.target.id === selectedNodeId;
+      });
+
+      linkSearchMatch.attr('class', 'value-match');
+      let linkMatch = diagramLayout.selectAll('.link');
+      let linkMatchValue = diagramLayout.selectAll('.value-match');
+      let parentLink = diagramLayout.selectAll('.additionalParentLink');
+      linkMatch.style('stroke', '#ddd');
+      parentLink.style('stroke', '#ddd');
+      let highlightPathBackward = function (d, displayColor) {
+        linkMatch
+          .filter(function (e) {
+            if (d && d !== null) {
+              while (e.target === d) {
+                highlightPathBackward(e.source, displayColor);
+                return d && d !== null ? true : false;
+              }
+            }
+          })
+          .transition(0)
+          .duration(300)
+          // .attr('class', 'value-match')
+          .style('stroke', isMaterialLink);
+      };
+
+      linkMatchValue.style('stroke', function (d) {
+        highlightPathBackward(d.source, isMaterialLink);
+      });
+    } else if (props.chartType === 'forward') {
+      let diagramForward = d3.select('#forwardDiv');
+      let linkSvgFor = diagramForward.selectAll('.link');
+      // let linkSvg1For = diagramForward.selectAll('#treeviewidforward');
+      // let linkSvg2For = diagramForward.selectAll('#node-' + splitedvalue);
+      // let nodeCoordsFor = d3.transform(linkSvg2For.attr('transform'));
+      // let ntranslateXFor = nodeCoordsFor.translate[0];
+      // let ntranslateYFor = nodeCoordsFor.translate[1];
+      // let newTranslateXFor = ntranslateXFor - 600;
+      // let newtranslateYFor = ntranslateYFor - ntranslateYFor - 40;
+
+      // linkSvg1For.attr(
+      //   'transform',
+      //   'translate(' +
+      //     newTranslateXFor +
+      //     ',' +
+      //     newtranslateYFor +
+      //     ')scale(1,1)'
+      // );
+      linkSvgFor.style('stroke', isMaterialLink).style('stroke-width', '4');
+      let linkSearchMatchFor = linkSvgFor.filter(function (d) {
+        return d.source.id === selectedNodeId || d.target.id === selectedNodeId;
+      });
+      linkSearchMatchFor.attr('class', 'value-match');
+      let linkMatchFor = diagramForward.selectAll('.link');
+      let linkMatchValueFor = diagramForward.selectAll('.value-match');
+      let parentLinkFor = diagramForward.selectAll('.additionalParentLink');
+      linkMatchFor.style('stroke', '#ddd');
+      parentLinkFor.style('stroke', '#ddd');
+      let highlightPathForward = function (d, displayColor) {
+        linkSvgFor
+          .filter(function (e) {
+            if (d && d !== null) {
+              while (e.source === d) {
+                highlightPathForward(e.target, displayColor);
+                return d && d !== null ? true : false;
+              }
+            }
+          })
+          .transition(0)
+          .duration(300)
+          .attr('class', 'value-match')
+          .style('stroke', isMaterialLink);
+      };
+      linkMatchValueFor.style('stroke', isMaterialLink);
     }
   };
 
@@ -272,13 +274,18 @@ function TreePlot(props) {
       let diagramLayoutBack = d3.select('#backwardDiv');
       let linkSvgBackword = diagramLayoutBack.selectAll('.link');
       let linkValMatchBack = diagramLayoutBack.selectAll('.value-match');
-      //  let pLinkBack = diagramLayoutBack.selectAll('.additionalParentLink');
+      let parentLinkBack = diagramLayoutBack.selectAll('.additionalParentLink');
+      parentLinkBack.style('stroke', isMaterialLink);
       linkValMatchBack.style('stroke', isMaterialLink);
       linkSvgBackword.style('stroke', isMaterialLink);
     } else if (props.chartType === 'forward') {
       let diagramLayoutFor = d3.select('#forwardDiv');
       let linkSvgFor = diagramLayoutFor.selectAll('.link');
-      linkSvgFor.style('stroke', isMaterialLink).style('stroke-width', '4');
+      let linkValMatchFor = diagramLayoutFor.selectAll('.value-match');
+      let parentLinkFor = diagramLayoutFor.selectAll('.additionalParentLink');
+      linkSvgFor.style('stroke', isMaterialLink);
+      linkValMatchFor.style('stroke', isMaterialLink);
+      parentLinkFor.style('stroke', isMaterialLink);
     }
   };
 
@@ -660,18 +667,19 @@ function TreePlot(props) {
             .duration(300)
             .style('stroke', function (obj) {
               if (isBackward) {
-                if (obj.source && obj.source.type === 'Material') {
-                  return isProcesslink;
-                } else {
-                  return isMaterialLink;
-                }
+                return isMaterialLink;
+                // if (obj.source && obj.source.type === 'Material') {
+                //   return isProcesslink;
+                // } else {
+                //   return isMaterialLink;
+                // }
               }
               if (isForward) {
-                if (obj.source && obj.source.type === 'Process Order') {
-                  return isProcesslink;
-                } else {
-                  return isMaterialLink;
-                }
+                // if (obj.source && obj.source.type === 'Process Order') {
+                //   return isProcesslink;
+                // } else {
+                //   return isMaterialLink;
+                // }
               }
             })
             .style('opacity', opacity)
@@ -702,18 +710,20 @@ function TreePlot(props) {
             .duration(300)
             .style('stroke', function (obj) {
               if (isBackward) {
-                if (obj.source && obj.source.type === 'Material') {
-                  return isProcesslink;
-                } else {
-                  return isMaterialLink;
-                }
+                return isMaterialLink;
+                // if (obj.source && obj.source.type === 'Material') {
+                //   return isProcesslink;
+                // } else {
+                //   return isMaterialLink;
+                // }
               }
               if (isForward) {
-                if (obj.source && obj.source.type === 'Process Order') {
-                  return isProcesslink;
-                } else {
-                  return isMaterialLink;
-                }
+                return isMaterialLink;
+                // if (obj.source && obj.source.type === 'Process Order') {
+                //   return isProcesslink;
+                // } else {
+                //   return isMaterialLink;
+                // }
               }
             })
             .style('opacity', opacity)
@@ -784,11 +794,12 @@ function TreePlot(props) {
           .attr('xlink:href', function (d) {
             if (d.OpenNC === true) {
               return 'img/genealogy/non-material.png';
-            }
-            if (d.type === 'Material') {
+            } else if (d.type === 'Material') {
               return 'img/genealogy/material.png'; //"http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_daredevil.png";
-            } else {
+            } else if (d.type === 'Process Order') {
               return 'img/genealogy/processorder.png'; //"http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png";
+            } else if (d.type === 'Purchase Order') {
+              return 'img/genealogy/purchaseorder.png';
             }
           });
 
@@ -796,7 +807,7 @@ function TreePlot(props) {
         nodeEnter
           .append('svg:text')
           .attr('x', function (d) {
-            return d.traceability === 'backward' ? 70 : 20;
+            return d.traceability === 'backward' ? 80 : 20;
           })
           .attr('dy', '0.35em')
           .attr('text-anchor', function (d) {
@@ -806,6 +817,7 @@ function TreePlot(props) {
             var nodeName = '';
             var batchName = '';
             var poName = '';
+            var purchaseOrder = '';
             if (d.type === 'Material') {
               batchName = d['nodeId'].split('|');
               nodeName = batchName[1];
@@ -813,6 +825,9 @@ function TreePlot(props) {
             } else if (d.type === 'Process Order') {
               poName = d.poNo;
               return poName;
+            } else if (d.type === 'Purchase Order') {
+              purchaseOrder = d.pur_ord_no;
+              return purchaseOrder;
             }
           })
 
@@ -916,8 +931,10 @@ function TreePlot(props) {
           .attr(markerType, function (d) {
             if (d.source.type == 'Material') {
               return 'url(#material_' + THIS.type + ')';
-            } else {
+            } else if (d.source.type == 'Process Order') {
               return 'url(#processOrder_' + THIS.type + ')';
+            } else if (d.source.type == 'Purchase Order') {
+              return 'url(#purchaseOrder' + THIS.type + ')';
             }
           })
           .attr('d', function (d) {
@@ -935,22 +952,24 @@ function TreePlot(props) {
               if (d.source.depth === 0) {
                 rootCounter++;
                 if (d.source) {
-                  if (d.source.type === 'Material') {
-                    return isMaterialLink;
-                  } else {
-                    return isMaterialLink;
-                  }
+                  return isMaterialLink;
+                  // if (d.source.type === 'Material') {
+                  //   return isMaterialLink;
+                  // } else {
+                  //   return isMaterialLink;
+                  // }
                 } else {
                   return d.source.children[rootCounter - 1].linkColor;
                 }
               } else {
                 if (d.target.isFolder === false) return '#0B3B0B';
                 else if (d.source) {
-                  if (d.source.type === 'Material') {
-                    return isMaterialLink;
-                  } else {
-                    return isMaterialLink;
-                  }
+                  return isMaterialLink;
+                  // if (d.source.type === 'Material') {
+                  //   return isMaterialLink;
+                  // } else {
+                  //   return isMaterialLink;
+                  // }
                 } else {
                   return d.source.children[rootCounter - 1].linkColor;
                 }
@@ -960,22 +979,24 @@ function TreePlot(props) {
               if (d.source.depth === 0) {
                 rootCounter++;
                 if (d.source) {
-                  if (d.source.type === 'Material') {
-                    return isMaterialLink;
-                  } else {
-                    return isProcesslink;
-                  }
+                  return isMaterialLink;
+                  // if (d.source.type === 'Material') {
+                  //   return isMaterialLink;
+                  // } else {
+                  //   return isProcesslink;
+                  // }
                 } else {
                   return d.source.children[rootCounter - 1].linkColor;
                 }
               } else {
                 if (d.target.isFolder === false) return '#0B3B0B';
                 else if (d.source) {
-                  if (d.source.type === 'Material') {
-                    return isMaterialLink;
-                  } else {
-                    return isProcesslink;
-                  }
+                  return isMaterialLink;
+                  // if (d.source.type === 'Material') {
+                  //   return isMaterialLink;
+                  // } else {
+                  //   return isProcesslink;
+                  // }
                 } else {
                   return d.source.children[rootCounter - 1].linkColor;
                 }
@@ -1247,6 +1268,8 @@ function TreePlot(props) {
                 "</b></span><br/><span class='col-xs-1' style='padding:5px'>UOM  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
                 uom +
                 '</b></span><br/></span></div>';
+            } else if (d.type === 'Purchase Order ') {
+              console.log('purchase order');
             }
 
             d3.select('#keyTooltip').html(tooltipHtml);
@@ -1312,30 +1335,77 @@ function TreePlot(props) {
             .attr(markerType, function () {
               if (multiPair.parent && multiPair.parent.type === 'Material') {
                 return 'url(#material_' + THIS.type + '_additional' + ')';
-              } else {
+              } else if (
+                multiPair.parent &&
+                multiPair.parent.type === 'Process Order'
+              ) {
                 return 'url(#processOrder_' + THIS.type + '_additional' + ')';
+              } else if (
+                multiPair.parent &&
+                multiPair.parent.type === 'Purchase Order'
+              ) {
+                return 'url(#purchaseOrder' + THIS.type + '_additional' + ')';
               }
             })
 
             .attr('class', function () {
-              if (multiPair.parent && multiPair.parent.poNo) {
-                if (
-                  multiPair.child.type === 'Material' &&
-                  multiPair.parent.type === 'Process Order'
-                ) {
-                  return 'additionalParentLink';
-                } else {
-                  return 'additionalParentForwardLink';
+              if (isForward) {
+                if (multiPair.parent?.poNo) {
+                  return multiPair.parent?.poNo
+                    ? 'additionalParentLink'
+                    : 'additionalParentLink';
+                }
+                if (multiPair.parent?.matNo) {
+                  return multiPair.parent?.matNo
+                    ? 'additionalParentLink'
+                    : 'additionalParentLink';
+                }
+                if (multiPair.parent?.pur_ord_no) {
+                  return multiPair.parent?.pur_ord_no
+                    ? 'additionalParentLink'
+                    : 'additionalParentLink';
                 }
               }
-              if (multiPair.child.poNo) {
-                if (
-                  multiPair.child.type === 'Process Order' &&
-                  multiPair.parent.type === 'Material'
-                ) {
-                  return 'additionalParentForwardLink';
-                } else {
-                  return 'additionalParentLink';
+              if (isBackward) {
+                if (multiPair.parent?.poNo) {
+                  if (
+                    multiPair.child.type == 'Material' &&
+                    multiPair.parent.type == 'Process Order'
+                  ) {
+                    return 'additionalParentLink';
+                  } else {
+                    return 'additionalParentLink';
+                  }
+                }
+                if (multiPair.child?.poNo) {
+                  if (
+                    multiPair.child.type == 'Process Order' &&
+                    multiPair.parent.type == 'Material'
+                  ) {
+                    return 'additionalParentLink';
+                  } else {
+                    return 'additionalParentLink';
+                  }
+                }
+                if (multiPair.parent?.pur_ord_no) {
+                  if (
+                    multiPair.child.type == 'Material' &&
+                    multiPair.parent.type == 'Purchase Order'
+                  ) {
+                    return 'additionalParentLink';
+                  } else {
+                    return 'additionalParentLink';
+                  }
+                }
+                if (multiPair.child?.pur_ord_no) {
+                  if (
+                    multiPair.child.type == 'Purchase Order' &&
+                    multiPair.parent.type == 'Material'
+                  ) {
+                    return 'additionalParentLink';
+                  } else {
+                    return 'additionalParentLink';
+                  }
                 }
               }
             })
@@ -1492,10 +1562,10 @@ function TreePlot(props) {
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
-              value={searchValue}
+              value={searchValue || undefined}
               onChange={(value) => onChangeParam(value)}
               onSearch={(type) => onSearchParam(type)}
-              style={{ width: '100%', margin: '0px', textAlign: 'left' }}
+              style={{ width: '83%', margin: '0px', textAlign: 'left' }}
             >
               {searchOptions &&
                 searchOptions.map((item, index) => (
@@ -1507,6 +1577,9 @@ function TreePlot(props) {
                   </Select.Option>
                 ))}
             </Select>
+            <Button onClick={handleTreeSearch} className='search-tree'>
+              <SearchOutlined />
+            </Button>
             {searchValue !== '' ? (
               <Button onClick={handleClearSearch} className='close-searchicon'>
                 <CloseOutlined />
