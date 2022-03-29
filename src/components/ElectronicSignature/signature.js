@@ -58,8 +58,8 @@ function Signature(props) {
                 handleClose()
                 let reqs = {}
                 let req1 = {}
-                let user_details = localStorage.getItem('username')
-                let user = user_details["username"] ? user_details["username"] : ''
+                let user_details = localStorage.getItem('user')
+                let user = user_details? user_details : ''
 
                 reqs['application_type'] = props.appType
                 reqs['created_by'] = user

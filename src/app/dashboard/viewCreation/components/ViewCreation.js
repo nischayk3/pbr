@@ -937,7 +937,7 @@ function ViewCreation() {
               <Button className='viewCreation-shareBtn'>Share</Button>
               <Button
                 className='viewCreation-publishBtn'
-                onClick={() => setIsPublish(true)}
+                onClick={() => {setIsPublish(true); setAd(true)}}
               >
                 <CloudUploadOutlined />
                 Publish
