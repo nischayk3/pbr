@@ -214,11 +214,10 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                         </Row>
                     </div>
                 </Panel>
-
                 {/* Axes */}
                 <Panel header='Axes' key='7'>
                     <div className='figure-container'>
-                        <div className="header option-header">Left X</div>
+                        <div className="header option-header">X-Axis</div>
                         <Row className="figure-inputs" gutter={24}>
                             <Col className="gutter-row" span={14}>
                                 <label>Show:</label>
@@ -229,7 +228,7 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                         </Row>
                         <Row className="figure-inputs" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Unit:</label>
+                                <label>Title:</label>
                             </Col>
                             <Col className="gutter-row select-top" span={10}>
                                 <Select defaultValue="Short" value={axes.leftX.unit} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, unit: e } })}>
@@ -240,7 +239,7 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Scale:</label>
+                                <label>Title Size:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
                                 <Select defaultValue="Linear" value={axes.leftX.scale} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, scale: e } })}>
@@ -250,7 +249,7 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Y Min:</label>
+                                <label>Title color:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
                                 <Select defaultValue="Auto" value={axes.leftX.ymin} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, ymin: e } })}>
@@ -260,7 +259,7 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Y Max:</label>
+                                <label>Show Tick Labels:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
                                 <Select defaultValue="Auto" value={axes.leftX.ymax} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, ymax: e } })}>
@@ -270,7 +269,7 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Decimal:</label>
+                                <label>Show Line:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
                                 <Select defaultValue="Auto" value={axes.leftX.decimal} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, decimal: e } })}>
@@ -280,7 +279,17 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Label:</label>
+                                <label>Show Grid:</label>
+                            </Col>
+                            <Col className="gutter-row" span={10}>
+                                <Select defaultValue="Auto" value={axes.leftX.label} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, label: e } })}>
+                                    <Option value="Auto">Auto</Option>
+                                </Select>
+                            </Col>
+                        </Row>
+                        <Row className="figure-inputs select-top" gutter={24}>
+                            <Col className="gutter-row" span={14}>
+                                <label>Grid Color:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
                                 <Select defaultValue="Auto" value={axes.leftX.label} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, label: e } })}>
