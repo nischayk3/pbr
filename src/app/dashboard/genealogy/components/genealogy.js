@@ -178,7 +178,7 @@ function Genealogy() {
     try {
       dispatch(showLoader());
       const backwardRes = await getBackwardData(_reqBack);
-      console.log('backwaresssss 1', backwardRes);
+      console.log(backwardRes);
       if (backwardRes.length > 0) {
         setGenealogyData(backwardRes);
         setisBackward(true);
@@ -443,7 +443,7 @@ function Genealogy() {
                     <div className='drawer-title'>
                       <img className='tree-type-icon' src={batchIcon} />
                       <p>35735735 - Material</p>
-                      <span>
+                      <span className='download-file'>
                         <DownloadOutlined />
                       </span>
                     </div>

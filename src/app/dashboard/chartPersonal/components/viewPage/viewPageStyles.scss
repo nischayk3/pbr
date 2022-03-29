@@ -1,0 +1,20 @@
+.tab-container {
+    min-height: 83vh;
+    border-radius: 4px;
+    background: #FFFFFF;
+    padding: 0 !important;
+    box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+    .ant-tabs-nav-wrap {
+        background-color: #f1f7ff !important;
+        padding: 0px 26px;
+    }
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: #093185 !important;
+    }
+    .ant-tabs-ink-bar {
+        background: #093185 !important;
+    }
+    .ant-tabs-tab .anticon {
+        margin-right: 8px !important;
+    }
+}

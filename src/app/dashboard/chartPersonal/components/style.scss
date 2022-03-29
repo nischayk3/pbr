@@ -1,0 +1,23 @@
+.ant-card-body {
+    padding: 12px;
+}
+
+.btns {
+    button {
+        margin-right: 16px;
+        background: #FFFFFF;
+        border: 1px solid #093185;
+        border-radius: 4px; 
+    }
+    button:nth-child(3n) {
+        background-color: #093185;
+        color:white ;
+        .anticon{
+            margin-left: 0px !important;
+            margin-right: 2px !important;
+        }
+    }
+    .anticon-more {
+        font-size: 20px;
+    }
+}
