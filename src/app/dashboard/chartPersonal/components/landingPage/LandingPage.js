@@ -5,7 +5,8 @@ import { Card, Row, Col, Input, Space, Divider } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 //svg
 import Banner from '../../../../../assets/images/ChartBanner.svg';
-
+//redux
+import { useSelector } from 'react-redux';
 //antd unpacking components
 const { Search } = Input;
 
@@ -20,6 +21,14 @@ const LandingPage = ({ showView, setShowView }) => {
     let date = new Date();
     date = date.toDateString().substring(4, 15);
 
+    const loginDetails = useSelector(
+
+        (state) => state.loginReducer.loginDetails
+
+    );
+
+    console.log(loginDetails, 'login');
+
     return (
         <div>
             <Row>
@@ -27,7 +36,7 @@ const LandingPage = ({ showView, setShowView }) => {
                     <Card bordered={false}>
                         <div className="card-body-div">
                             <div className='text-descp'>
-                                <h2>Howdy {localStorage.getItem('user')},</h2>
+                                <h2>Howdy {localStorage.getItem('username')},</h2>
                                 <p>Let's personalise some charts today!</p>
                             </div>
                             <img src={Banner} alt="banner" />
