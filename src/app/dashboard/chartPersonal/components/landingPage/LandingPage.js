@@ -69,17 +69,17 @@ const LandingPage = ({ showView, setShowView }) => {
                                 <Divider />
                                 <Row gutter={16}>
                                     <Col span={6}>
-                                        <div className='chart-tiles red'>
+                                        <div className='chart-tiles'>
                                             C1
                                         </div>
                                     </Col>
                                     <Col span={6}>
-                                        <div className='chart-tiles green'>
+                                        <div className='chart-tiles'>
                                             C2
                                         </div>
                                     </Col>
                                     <Col span={6}>
-                                        <div className='chart-tiles draft'>
+                                        <div className='chart-tiles'>
                                             C3
                                         </div>
                                     </Col>
