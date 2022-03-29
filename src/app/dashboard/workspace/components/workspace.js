@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { Card, Input, Space, Avatar, Row, Col, Tabs, Divider } from 'antd';
+import { Card, Input, Space, Avatar, Row, Col, Tabs, Divider,Empty } from 'antd';
 import illustrations from '../../../../assets/images/Group 33808.svg';
 import DeviationTable from './deviationTable/deviationTable';
 import DataQuality from './dataQuality/dataQuality';
@@ -320,11 +320,11 @@ const Workspace = () => {
                 <div className='workspace-processChart-main'>
                   <p className='workspace-processCharts'>Process Control Charts</p>
                   <Row gutter={[6, 12]}>
-                    {lastupdatedCharts.map((j, k) => {
+                    {lastupdatedCharts.length > 0 ? lastupdatedCharts.map((j, k) => {
                       return (
                         <Col className='gutter-row' span={8}>
 
-                          <div className='workspace-processChart-card' onClick={()=>history.push(`/dashboard/chart_personalization?id=${j.chart_disp_id}&version=${j.chart_version}`)}>
+                          <div className='workspace-processChart-card' onClick={() => history.push(`/dashboard/chart_personalization?id=${j.chart_disp_id}&version=${j.chart_version}`)}>
                             <p className='workspace-processCharts-id'>
                               {j.chart_disp_id}
                             </p>
@@ -336,7 +336,16 @@ const Workspace = () => {
 
                         </Col>
                       )
-                    })}
+                    }) :
+                      (
+                        <Empty
+                          className='empty-workspace'
+                          description={
+                            <span>
+                              Nothing to see here
+                            </span>
+                          } />
+                      )}
                   </Row>
                 </div>
               </Col>
@@ -347,22 +356,30 @@ const Workspace = () => {
                 <div className='workspace-processView-main'>
                   <p className='workspace-processView'>Views</p>
                   <Row gutter={[6, 12]}>
-                    {lastupdatedViews.map((m, n) => {
+                    {lastupdatedViews.length>0 ?lastupdatedViews.map((m, n) => {
                       return (
                         <Col className='gutter-row' span={8}>
-                          <div className='workspace-processView-card' onClick={()=>history.push(`/dashboard/view_creation?id=${m.view_disp_id}&version=${m.view_version}`)}>
+                          <div className='workspace-processView-card' onClick={() => history.push(`/dashboard/view_creation?id=${m.view_disp_id}&version=${m.view_version}`)}>
                             <p className='workspace-processView-id'>
                               {m.view_disp_id}
                             </p>
                             <p className='workspace-processView-name'>
-                            {m.view_name}
+                              {m.view_name}
                             </p>
 
                           </div>
 
                         </Col>
                       )
-                    })}
+                    }):(
+                      <Empty
+                          className='empty-workspace'
+                          description={
+                            <span>
+                              Nothing to see here
+                            </span>
+                          } />
+                    )}
 
                   </Row>
                 </div>
