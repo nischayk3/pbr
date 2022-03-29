@@ -122,7 +122,7 @@ export default function Landing(props) {
             return 'awap'
         }
     }
-    console.log(filterTable)
+
     return (
         <div>
             <div className='custom-wrapper'>
