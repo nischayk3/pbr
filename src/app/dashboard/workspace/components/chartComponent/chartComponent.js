@@ -55,8 +55,6 @@ const chartComponent = (props) => {
             text: ""
         }
     };
-    console.log(workspaceChartData)
-    console.log(workspaceChartLayout);
     return (
         <div className='workspace-plot'>
             <Plot
