@@ -29,9 +29,9 @@
             },
             "layout": {
                 "width": "900",
-                "height": "",
-                "showlegend": "",
-                "plot_bgcolor": "",
+                "height": "400",
+                "showlegend": "true",
+                "plot_bgcolor": "white",
                 "legend": {
                     "title": {
                         "text": "",
