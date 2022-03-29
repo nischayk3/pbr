@@ -10,7 +10,7 @@ import ScatterChart from './scatterChart/ScatterChart';
 //main component
 const Chart = ({ postChartData, setPostChartData }) => {
 
-    const [chartValues, setChartValues] = useState({ chartName: '', chartdesc: '' })
+    const [chartValues, setChartValues] = useState({ chartName: '', chartdesc: '', chartId: '', chartVersion: '', chartStatus: '' })
 
     const handleChange = (e, value) => {
         const newArr = [...postChartData.data];
@@ -24,9 +24,16 @@ const Chart = ({ postChartData, setPostChartData }) => {
                 setChartValues({ ...chartValues, chartdesc: e.target.value })
             }
         })
-
         setPostChartData({ ...postChartData, data: newArr })
     }
+
+    useEffect(() => {
+        postChartData && postChartData.data && postChartData.data.forEach((ele) => {
+            if (ele.chart_id) {
+                setChartValues({ ...chartValues, chartId: ele.chart_id, chartVersion: ele.chart_version, chartStatus: ele.chart_status });
+            }
+        })
+    }, [postChartData])
 
     return (
         <div className='chart-container'>
@@ -42,7 +49,7 @@ const Chart = ({ postChartData, setPostChartData }) => {
                             <p>Chart ID</p>
                         </Col>
                         <Col span={10}>
-                            <p>: Unassigned</p>
+                            <p>: {chartValues.chartId ? chartValues.chartId : 'Unassigned'}</p>
                         </Col>
                         <Col span={6} />
                     </Row>
@@ -51,7 +58,7 @@ const Chart = ({ postChartData, setPostChartData }) => {
                             <p>Version</p>
                         </Col>
                         <Col span={8}>
-                            <p>: 6</p>
+                            <p>: {chartValues.chartVersion ? chartValues.chartVersion : '-'}</p>
                         </Col>
                         <Col span={6} />
                     </Row>
@@ -60,7 +67,7 @@ const Chart = ({ postChartData, setPostChartData }) => {
                             <p>Status</p>
                         </Col>
                         <Col span={8}>
-                            <p>: Draft</p>
+                            <p>: {chartValues.chartStatus ? chartValues.chartStatus : '-'}</p>
                         </Col>
                         <Col span={6} />
                     </Row>

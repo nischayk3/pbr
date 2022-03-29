@@ -17,6 +17,9 @@ const LandingPage = ({ showView, setShowView }) => {
         setShowView(true);
     }
 
+    let date = new Date();
+    date = date.toDateString().substring(4, 15);
+
     return (
         <div>
             <Row>
@@ -24,11 +27,11 @@ const LandingPage = ({ showView, setShowView }) => {
                     <Card bordered={false}>
                         <div className="card-body-div">
                             <div className='text-descp'>
-                                <h2>Howdy Rahul,</h2>
+                                <h2>Howdy {localStorage.getItem('user')},</h2>
                                 <p>Let's personalise some charts today!</p>
                             </div>
                             <img src={Banner} alt="banner" />
-                            <h6>March 6 2022</h6>
+                            <h6>{date}</h6>
                         </div>
                     </Card>
                 </Col>

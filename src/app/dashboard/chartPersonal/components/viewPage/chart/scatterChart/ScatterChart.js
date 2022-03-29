@@ -82,9 +82,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             chartType = 'process control';
         }
         setAxisValues({ ...axisValues, chartType: chartType });
-        if (axisValues.chartType !== chartType) {
-            setAxisValues({ xaxis: '', yaxis: '', chartType: chartType });
-        }
     }
     useEffect(() => {
         const newCovArr = JSON.parse(JSON.stringify(postChartData));

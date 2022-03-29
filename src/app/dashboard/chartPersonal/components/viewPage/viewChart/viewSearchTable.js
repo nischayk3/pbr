@@ -1,8 +1,10 @@
 import { Table } from 'antd';
 import React from 'react';
 import { SearchOutlined } from '@ant-design/icons';
+//cjson
+import cjson from './chartObj2.json';
 
-const ViewSearchTable = ({ searchViewData, setVersionList, searchTableData, viewData, setViewData, setViewSearch, setData, postChartData, setPostChartData }) => {
+const ViewSearchTable = ({ postChartView, searchViewData, setVersionList, searchTableData, viewData, setViewData, setViewSearch, setData, postChartData, setPostChartData }) => {
 
     const columns = [
         {
@@ -44,7 +46,7 @@ const ViewSearchTable = ({ searchViewData, setVersionList, searchTableData, view
                                 setVersionList(tempVersionList);
                             }
                         })
-                        setViewData({ ...viewData, viewName: record.view_name, viewDispId: record.view_disp_id, status: record.view_status, searchValue: record.view_disp_id })
+                        setViewData({ ...viewData, viewName: record.view_name, viewDispId: record.view_disp_id, status: record.view_status, searchValue: record.view_disp_id, chartVersion: record.view_version });
                         let newArr = [...postChartData.data];
                         newArr.forEach((ele) => {
                             ele.view_id = record.view_disp_id,

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './viewChartStyles.scss';
 //antd imports
-import { Row, Col, Input, Select, Divider, Switch, Tag, Tooltip, Table, Button } from 'antd';
+import { Row, Col, Input, Select, Divider, Switch, Tag, Tooltip, Table, Button, message } from 'antd';
 import { ArrowRightOutlined } from '@ant-design/icons';
 //components
 import InputField from '../../../../../../components/InputField/InputField';
@@ -15,6 +15,8 @@ import { showLoader, hideLoader, showNotification } from '../../../../../../duck
 //services
 import { getViewTable } from '../../../../../../services/commonService';
 import { postChartPlotData } from '../../../../../../services/chartPersonalizationService';
+//cjson
+import chartJson from '../chartObj.json';
 
 //unpacking antd components
 const { Search } = Input;
@@ -30,8 +32,10 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     const [coverageTableData, setCoverageTableData] = useState([]);
     const [versionList, setVersionList] = useState([0]);
     const searchViewData = useRef([]);
+    const postChart = useRef();
+    const postChartView = useRef({});
     const ref = useRef(null);
-    const [viewData, setViewData] = useState({ viewName: '', status: '', version: '', viewDispId: ' ', searchValue: '', chartVersion: 0 });
+    const [viewData, setViewData] = useState({ viewName: '', status: '', viewDispId: ' ', searchValue: '', chartVersion: 0 });
 
     const columns = [
         {
@@ -128,7 +132,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
-            dispatch(showNotification('error', error.message));
+            message.error('Unable to fetch coverages');
         }
     }
 
@@ -156,10 +160,23 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
         document.addEventListener('mousedown', closeTableView);
     }, []);
 
+    //function for handle version change
+    const handleVersionChange = (e) => {
+        setViewData({ ...viewData, chartVersion: e });
+        if (e !== viewData.chartVersion) {
+            const newArr = [...postChartData.data];
+            newArr.forEach((item) => {
+                item.view_version = e;
+            })
+            setPostChartData({ ...postChartData, data: newArr });
+            setData();
+        }
+    };
     //useEffect for calling view list.
     useEffect(() => {
         getViewTableData();
     }, [])
+
 
     return (
         <div className='view-container'>
@@ -167,7 +184,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
                 <Col ref={ref} span={24} className='search-table'>
                     <label>View ID</label>
                     <Search placeholder="Search" onFocus={onFocus} value={viewData.searchValue} onChange={onSearchChange} onSearch={searchTable} />
-                    {viewSearch && <ViewSearchTable setVersionList={setVersionList} searchViewData={searchViewData} postChartData={postChartData} setPostChartData={setPostChartData} setData={setData} setViewSearch={setViewSearch} searchTableData={searchTableData} viewData={viewData} setViewData={setViewData} />}
+                    {viewSearch && <ViewSearchTable postChartView={postChartView} setVersionList={setVersionList} searchViewData={searchViewData} postChartData={postChartData} setPostChartData={setPostChartData} setData={setData} setViewSearch={setViewSearch} searchTableData={searchTableData} viewData={viewData} setViewData={setViewData} />}
                 </Col>
             </Row>
             <Row className='view-details'>
@@ -192,7 +209,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
                 {/* <Col span={3} /> */}
                 <Col span={5} className='pb'>
                     <p>Version</p>
-                    <SelectField placeholder="Select Chart type" selectList={versionList} value={viewData.chartVersion} onChangeSelect={(e) => setViewData({ ...viewData, chartVersion: e })} />
+                    <SelectField placeholder="Select Chart type" selectList={versionList} selectedValue={viewData.chartVersion} onChangeSelect={handleVersionChange} />
                 </Col>
             </Row>
             <Row className='batch'>
