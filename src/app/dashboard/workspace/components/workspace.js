@@ -112,7 +112,7 @@ const Workspace = () => {
         <BellOutlined style={{ margin: '0px 25px', fontSize: '20px' }} />
         <div>
           <Avatar style={{ backgroundColor: 'orange' }}>
-            {localStorage.getItem('username').split('')[0].toUpperCase()}{' '}
+            {localStorage.getItem('username') && localStorage.getItem('username').split('')[0].toUpperCase()}{' '}
           </Avatar>
           <span style={{ padding: '0px 10px' }}>
             {localStorage.getItem('username')}
