@@ -32,7 +32,7 @@ export default function RedirectSign(props) {
             setIsPublish(true)
             let url = localStorage.getItem('redirectUrl')
             // http://localhost/#/dashboard/view_creation?id=V84&version=1&
-            window.open(url+'&publish=True','_self')
+            window.open(url+'&publish=True&localhost=True','_self')
         }
         else {
             dispatch(showNotification('error', 'Error in Login'))

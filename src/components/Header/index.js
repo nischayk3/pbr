@@ -46,7 +46,7 @@ const HeaderBar = () => {
           <img src={cpvLogo} alt='cpv' />
         </div>
       </div>
-      <div className='logout-btn' onClick={()=>adenabled ? adLogout() :  Logout}>
+      <div className='logout-btn' onClick={()=>adenabled ? adLogout() :  Logout()}>
         <LogoutOutlined />
       </div>
     </Header>

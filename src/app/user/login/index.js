@@ -43,9 +43,9 @@ const Login = () =>
         }
         else{
             if(localStorage.getItem("test_enabled")){
-                window.open(`${loginUrl}?is_ui=true&localhost=True`,'_self')
+                window.open(`${loginUrl}?is_ui=true`,'_self')
             }else{
-                window.open(`${loginUrl}?is_ui=true&localhost=True`,'_self')
+                window.open(`${loginUrl}?is_ui=true`,'_self')
             }
                 
         }
