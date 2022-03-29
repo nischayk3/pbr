@@ -37,7 +37,7 @@ export default function Landing(props) {
                 <div className='custom-content-layout'>
                     <Card className='workflow_head'>
                         <div>
-                            <p className='dash-username'>Howdy {(localStorage.getItem('user'))}!</p>
+                            <p className='dash-username'>Howdy {(localStorage.getItem('username'))}!</p>
                             <p className='dash-text'>Let's get designing some report templates!</p>
                         </div>
                         <img src={illustrations} className='illustration' />
@@ -64,7 +64,7 @@ export default function Landing(props) {
                                 </TabPane>
                                 <TabPane tab="Generate Report Variant" key="Generate Report Variant">
 
-                                    <Input.Search placeholder="Search by name, view, product number"
+                                    <Input.Search placeholder="Search by report id,eport name name, view, product number"
                                         allowClear
                                         enterButton="Search"
                                         size="medium"
