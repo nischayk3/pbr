@@ -33,7 +33,7 @@
     ],
     "chart_int_id": 3,
     "chart_name": "BELAC_ANALY",
-    "chart_type": "Levey-Jennings Plot"
+    "chart_type": "Levey-Jennings Plot,"
   },
   {
     "chart_info": [
@@ -45,7 +45,7 @@
     ],
     "chart_int_id": 4,
     "chart_name": "BELAC_ANALY",
-    "chart_type": "I-MR Plot"
+    "chart_type": "I-MR Plot,"
   },
   {
     "chart_info": [

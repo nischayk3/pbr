@@ -71,3 +71,31 @@ export const getRuleList = (request) => {
     }
   );
 };
+
+//get chart plot data
+export const postChartPlotData = (_queryParam) => {
+  return Service.post(BMS_APP_PYTHON_SERVICE + '/chart', _queryParam, {
+    'content-type': 'application/json',
+  }).then(
+    (response) => {
+      return response.data;
+    },
+    (error) => {
+      return error.response.data;
+    }
+  );
+};
+
+//save chart data
+export const saveChartPlotData = (_queryParam) => {
+  return Service.put(BMS_APP_PYTHON_SERVICE + '/chart', _queryParam, {
+    'content-type': 'application/json',
+  }).then(
+    (response) => {
+      return response.data;
+    },
+    (error) => {
+      return error.response.data;
+    }
+  );
+};
