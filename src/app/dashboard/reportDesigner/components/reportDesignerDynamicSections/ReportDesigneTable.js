@@ -81,6 +81,10 @@ function ReportDesigneTable(props) {
 
                                     <div classname="dynamicDiv" style={{ border: "1px solid #486BC9", marginBottom: "10px", minHeight: "160px", borderRadius: "4px" }}>
                                         <div className="add-box">
+                                        <div className='create-new' onClick={() => handleClick()} >
+                                    <PlusOutlined />
+                                    <p>Add Chart</p>
+                                </div>
                                             <div className="box" onClick={() => handleClick()} >+ ADD Chart</div>
                                             <div className="box" onClick={() => add()} >ADD</div>
                                         </div>

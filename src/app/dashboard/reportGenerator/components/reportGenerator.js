@@ -374,7 +374,7 @@ function ReportGenerator() {
 
                 <div className='sub-header-btns'>
                     <Button className='custom-primary-btn' onClick={() => { setOpenSchedule(true); }}>
-                        Schedule Alert
+                        Notify Report
                     </Button>
                     <Button className='custom-primary-btn' onClick={() => { setIsVisible(true); }}>
                         Load
