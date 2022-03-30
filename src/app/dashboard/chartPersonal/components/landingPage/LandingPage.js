@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './LandingStyles.scss';
 //antd imports
-import { Card, Row, Col, Input, Space, Divider } from 'antd';
+import { Card, Row, Col, Input, Space, Divider, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 //svg
 import Banner from '../../../../../assets/images/ChartBanner.svg';
-
+//redux
+import { useDispatch, useSelector } from 'react-redux';
+import { showLoader, hideLoader } from '../../../../../duck/actions/commonActions';
+//services
+import { getUpdatedChartsViewsData } from '../../../../../services/workSpaceServices';
 //antd unpacking components
 const { Search } = Input;
 
@@ -13,12 +17,34 @@ const { Search } = Input;
 //main component
 const LandingPage = ({ showView, setShowView }) => {
 
+    //state for recently created charts
+    const [chartData, setChartData] = useState([]);
     const onClickOfAdd = () => {
         setShowView(true);
     }
 
+    const dispatch = useDispatch();
+
     let date = new Date();
     date = date.toDateString().substring(4, 15);
+
+    const lastUpdatedChartsViews = async () => {
+        let req = { limit: 5 }
+        try {
+            dispatch(showLoader());
+            const chartResponse = await getUpdatedChartsViewsData(req);
+            console.log(chartResponse, 'chart');
+            setChartData(chartResponse.last_created_or_changed_charts);
+            dispatch(hideLoader());
+        } catch (error) {
+            dispatch(hideLoader());
+            message.error('Unable to fetch charts')
+        }
+    }
+
+    useEffect(() => {
+        lastUpdatedChartsViews();
+    }, []);
 
     return (
         <div>
@@ -27,7 +53,7 @@ const LandingPage = ({ showView, setShowView }) => {
                     <Card bordered={false}>
                         <div className="card-body-div">
                             <div className='text-descp'>
-                                <h2>Howdy {localStorage.getItem('user')},</h2>
+                                <h2>Howdy {localStorage.getItem('username')},</h2>
                                 <p>Let's personalise some charts today!</p>
                             </div>
                             <img src={Banner} alt="banner" />
@@ -62,33 +88,29 @@ const LandingPage = ({ showView, setShowView }) => {
                             </Col>
                             <Col span={6} />
                         </Row>
-                        <Row className='recent-charts'>
+                        {chartData.length !== 0 && <Row className='recent-charts'>
                             <Col span={6} />
-                            <Col span={12} className='p36'>
+                            <Col span={12}>
                                 <h3>Recently created charts</h3>
                                 <Divider />
-                                <Row gutter={16}>
-                                    <Col span={6}>
-                                        <div className='chart-tiles red'>
-                                            C1
-                                        </div>
-                                    </Col>
-                                    <Col span={6}>
-                                        <div className='chart-tiles green'>
-                                            C2
-                                        </div>
-                                    </Col>
-                                    <Col span={6}>
-                                        <div className='chart-tiles draft'>
-                                            C3
-                                        </div>
-                                    </Col>
-                                    <Col span={6}>
-                                    </Col>
+                                <Row gutter={24}>
+                                    {chartData && chartData.map((ele) => {
+                                        return (
+                                            <Col span={6} style={{ marginTop: '10px' }}>
+                                                <div className='chart-tiles'>
+                                                    <div className='legend' style={{ background: ele.chart_status === 'DRFT' ? '#363636' : ele.chart_status === 'AWAP' ? '#F6BB61' : '#A4F588', color: ele.chart_status === 'DRFT' ? '#FFFFFF' : '#000000' }}>
+                                                        <p className='legendP'>{ele.chart_status}</p>
+                                                    </div>
+                                                    <p className='cid'>{ele.chart_disp_id}</p>
+                                                    <p className='chartName'>{ele.chart_name}</p>
+                                                </div>
+                                            </Col>
+                                        )
+                                    })}
                                 </Row>
                             </Col>
                             <Col span={6} />
-                        </Row>
+                        </Row>}
                     </Card>
                 </Col>
             </Row>
