@@ -43,7 +43,7 @@ const chartComponent = (props) => {
         yaxis: workspaceChartLayoutYAxis,
         autosize: false,
         width: 800,
-        height: 310,
+        height: 250,
         margin: {
             l: 50,
             r: 50,
