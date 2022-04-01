@@ -203,9 +203,12 @@ p {
   .landing-modal{
       .ant-modal-content{
         width: 787px;
-        height: 451px;
+        height: auto;
         background: #FFFFFF;
         border-radius: 4px;
+      }
+      .ant-modal-footer{
+          border-top:0px;
       }
     
   }
@@ -214,8 +217,8 @@ p {
     grid-template-columns: 1fr 1fr;
     grid-gap:24px
   }
-  .dashboard-modal-layout{
+  .dashboard-field-layout{
     display: grid;
     grid-template-rows: 1fr 1fr;
-    grid-gap:24px
+    row-gap:24px
   }

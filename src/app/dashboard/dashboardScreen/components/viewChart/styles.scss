@@ -1,0 +1,31 @@
+.show-data {
+    padding: 10px 0;
+    display: grid;
+    grid-template-columns: 150px 20px;
+    grid-gap: 0px 10px;
+    p {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 22px;
+      color: #262626;
+    }
+  
+    button {
+      margin: 5px 0;
+    }
+  }
+
+  .dashboard-timerange{
+      width:682px;
+      background: #FFFFFF;
+    box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+  }
+
+  .grid-2-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px 20px;
+  }

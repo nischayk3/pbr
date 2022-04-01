@@ -3,13 +3,16 @@ import ScreenHeader from '../../../../../components/ScreenHeader/screenHeader';
 import illustrations from '../../../../../assets/images/Dashboard-Banner.svg';
 import Banner from '../../../../../assets/images/Popup-Side.svg';
 import { Card, Row, Col, Input, Space, Divider, message, Modal, Button } from 'antd';
+import ChartSearchTable from './chartTableLoad';
 import { PlusOutlined } from '@ant-design/icons';
 import './styles.scss';
 
-export default function landingPage() {
+export default function landingPage(props) {
     const { Search } = Input;
     const [resultDate, setResultDate] = useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [chartSearch, setChartSearch] = useState(false);
+    const [searchTableData, setSearchTableData] = useState([]);
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -17,6 +20,7 @@ export default function landingPage() {
 
     const handleOk = () => {
         setIsModalVisible(false);
+        props.chartCard(true);
     };
 
     const handleCancel = () => {
@@ -33,6 +37,29 @@ export default function landingPage() {
         const resultDate = month + ' ' + latestDate + ',' + ' ' + year;
         setResultDate(resultDate);
     };
+
+    //on focus of input field showing table results.
+    const onFocus = () => {
+        setChartSearch(true);
+    }
+
+    //on search value changes
+    // const onSearchChange = (e) => {
+    //     if (e.target.value === '') {
+    //         setSearchTableData(searchViewData.current);
+    //     }
+    //     setViewData({ ...viewData, searchValue: e.target.value });
+    // }
+
+    //function to handle search
+    // const searchTable = (value) => {
+    //     const filterData = searchViewData.current.filter((o) =>
+    //         Object.keys(o).some((k) =>
+    //             String(o[k]).toLowerCase().includes(viewData.searchValue.toLowerCase())
+    //         )
+    //     );
+    //     setSearchTableData(filterData)
+    // };
     return (
         <div>
             <ScreenHeader
@@ -96,23 +123,38 @@ export default function landingPage() {
             </Row>
             {
                 isModalVisible && (
-                    <Modal title="Create New Dashboard" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} className='landing-modal'>
-                        <div className='dashboard-modal-layout'>
-                            <div>
-                            <img src={Banner} />
-                            </div>
-                            <div className='dashboard-field-layout'>
-                            <p>Let's give your dashboard a name</p>
-                                <Input
-                                    placeholder='Enter Dashboard Name'
-                                    
-                                />
-                                <p>Add a chart to get started</p>
-                                <Input
-                                    placeholder='Enter Function Name'
-                                    
-                                />
-                            </div>
+                    <Modal
+                        className='landing-modal'
+                        title="Create New Dashboard"
+                        visible={isModalVisible}
+                        //onOk={handleOk} 
+                        onCancel={handleCancel}
+                        footer={[
+                            <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() =>
+                                handleOk()
+                            }>Let's Go!</Button>
+                        ]}>
+
+                        <div>
+                            <Row>
+                                <Col span={12}>
+                                    <img src={Banner} />
+                                </Col>
+                                <Col span={12}>
+                                    <Row>
+                                        <p>Let's give your dashboard a name</p>
+                                        <Input
+                                            placeholder='Enter Dashboard Name'
+
+                                        />
+                                    </Row>
+                                    <Row>
+                                        <p>Add a chart to get started</p>
+                                        <Search placeholder="Search" onFocus={onFocus} />
+                                         {chartSearch && <ChartSearchTable />}
+                                    </Row>
+                                </Col>
+                            </Row>
                         </div>
                     </Modal>
                 )
