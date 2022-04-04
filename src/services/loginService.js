@@ -6,6 +6,8 @@ import {
 
 export const loginUrl = BMS_APP_PYTHON_SERVICE + '/login'
 
+export const logoutUrl = BMS_APP_PYTHON_SERVICE + '/logout'
+
 export const getSession = (request) => {
     return Service.get(BMS_APP_PYTHON_SERVICE + '/get-session', request,{ withCredentials: true }).then(
         (response) => {

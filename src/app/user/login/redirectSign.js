@@ -30,6 +30,9 @@ export default function RedirectSign(props) {
             dispatch(showNotification('success', `Logined As ${data.email_id}`))
             dispatch(hideLoader())
             setIsPublish(true)
+            let url = localStorage.getItem('redirectUrl')
+            // http://localhost/#/dashboard/view_creation?id=V84&version=1&
+            window.open(url+'&publish=True','_self')
         }
         else {
             dispatch(showNotification('error', 'Error in Login'))
@@ -48,12 +51,12 @@ export default function RedirectSign(props) {
     return (
         <div>
             <Result
-                title="Redirecting You to the Main Screen"
-                extra={
-                    <Button type="primary" key="console">
-                        CPV
-                    </Button>
-                }
+                title="Electonic Signature"
+                // extra={
+                //     <Button type="primary" key="console">
+                        
+                //     </Button>
+                // }
             />
             {/* <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={publishResponse} appType="REPORT" dispId={reportId} version={0} status={approveReject} /> */}
 

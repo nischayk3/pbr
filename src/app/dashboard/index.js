@@ -19,7 +19,8 @@ import RedirectSign from '../user/login/redirectSign';
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
-const ChartPersonalization = lazy(() => import('./chartPersonalization'));
+// const ChartPersonalization = lazy(() => import('./chartPersonalization'));
+const ChartPersonal = lazy(() => import('./chartPersonal'));
 const SystemErrorReport = lazy(() => import('./systemErrorReport'));
 const ViewCreation = lazy(() => import('./viewCreation'));
 
@@ -67,7 +68,7 @@ const Dashboard = () => {
                   key='chart_personalization'
                   path={`${match.url}/chart_personalization`}
                 >
-                  <ChartPersonalization />
+                  <ChartPersonal />
                 </Route>
                 <Route
                   key='system_error_report'
@@ -106,10 +107,10 @@ const Dashboard = () => {
                   <Workspace />
                 </Route>
                 <Route key='redirect' path={`${match.url}/redirect`}>
-                  <LoginRedirect/>
+                  <LoginRedirect />
                 </Route>
                 <Route key='redirect_sign' path={`${match.url}/redirect_sign`}>
-                  <RedirectSign/>
+                  <RedirectSign />
                 </Route>
               </Switch>
             </SuspenseWrapper>

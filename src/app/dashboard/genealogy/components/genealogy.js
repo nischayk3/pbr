@@ -32,8 +32,8 @@ import GenealogyDataTable from './genealogyDataTable';
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
 import genealogyLanding from '../../../../assets/images/genealogy-landing.png';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-const { TabPane } = Tabs;
 
+const { TabPane } = Tabs;
 let initialPanes = [
   { title: ' ', content: '', key: '1', closable: false, class: '' },
 ];
@@ -435,7 +435,7 @@ function Genealogy() {
                         data={genealogyData[0]}
                         nodeClick={onClickNode}
                         firstNode={productCode}
-                        //handleChartClick={handleClickNode}
+                      //handleChartClick={handleClickNode}
                       />
                     )}
                     <GenealogyDrawer

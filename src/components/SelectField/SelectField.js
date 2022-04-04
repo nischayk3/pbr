@@ -6,9 +6,9 @@ import { Select } from 'antd';
 const SelectField = (props) => {
   return (
     <div className='select_field'>
-      <p>
+      {props.label || props.iconlabel && <p>
         {props.label} {props.iconlabel}
-      </p>
+      </p>}
 
       <Select
         placeholder={props.placeholder}

@@ -1,8 +1,3 @@
-// Ranjith K
-// Mareana Software
-// Version 1
-// Last modified - 07 March, 2022
-
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './styles.scss';
@@ -10,6 +5,7 @@ import { Form, message, Select } from 'antd';
 import { getMoleculeData } from '../../../../../duck/actions/auditTrialAction';
 import { materialsParameterTree } from '../../../../../duck/actions/fileUploadAction';
 import { moleculeName } from '../../../../../duck/actions/viewCreationAction';
+
 const { Option } = Select;
 
 function ParameterLookup(props) {
@@ -28,9 +24,15 @@ function ParameterLookup(props) {
   } = props;
 
   const dispatch = useDispatch();
+  const logindetails = useSelector((state) => state.loginReducer.loginDetails);
   const onSelectMoleculeHandler = () => {
     let req = { user_id: 'demo' };
-    getMoleculeData(req).then((res) => {
+    let res = JSON.parse(localStorage.getItem('login_details'));
+    getMoleculeData(req, {
+      'content-type': 'application/json',
+      'x-access-token': res.token ? res.token : '',
+      'resource-name': 'VIEW',
+    }).then((res) => {
       if (res.statuscode === 200) {
         setMoleculeList(res.data);
       }
@@ -42,6 +44,10 @@ function ParameterLookup(props) {
       }
     });
   };
+
+  useEffect(() => {
+    onSelectMoleculeHandler();
+  }, []);
 
   useEffect(() => {
     onSelectMoleculeHandler();
