@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import ScreenHeader from '../../../../../components/ScreenHeader/screenHeader';
 import illustrations from '../../../../../assets/images/Dashboard-Banner.svg';
 import Banner from '../../../../../assets/images/Popup-Side.svg';
@@ -13,6 +13,7 @@ export default function landingPage(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [chartSearch, setChartSearch] = useState(false);
     const [searchTableData, setSearchTableData] = useState([]);
+    const ref = useRef(null);
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -28,6 +29,7 @@ export default function landingPage(props) {
     };
     useEffect(() => {
         updateDate();
+        document.addEventListener('mousedown', closeTableView);
     }, []);
     const updateDate = () => {
         const date = new Date();
@@ -41,6 +43,13 @@ export default function landingPage(props) {
     //on focus of input field showing table results.
     const onFocus = () => {
         setChartSearch(true);
+    }
+    //function for closing view table result on click of outside.
+    const closeTableView = (e) => {
+        if (ref.current && !ref.current.contains(e.target)) {
+            setChartSearch(false);
+            
+        }
     }
 
     //on search value changes
@@ -148,7 +157,7 @@ export default function landingPage(props) {
 
                                         />
                                     </Row>
-                                    <Row>
+                                    <Row ref={ref}>
                                         <p>Add a chart to get started</p>
                                         <Search placeholder="Search" onFocus={onFocus} />
                                          {chartSearch && <ChartSearchTable />}

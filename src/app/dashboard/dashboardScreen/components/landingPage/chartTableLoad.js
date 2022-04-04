@@ -5,7 +5,7 @@ import { SearchOutlined } from '@ant-design/icons';
 //cjson
 //import cjson from './chartObj2.json';
 
-const ChartSearchTable = () => {
+const ChartSearchTable = (props) => {
 
     const columns = [
         {
@@ -31,7 +31,7 @@ const ChartSearchTable = () => {
     ]
 
     return (
-        <div className="table-box">
+        <div style={props.style}>
             <Table
                 bordered={false}
                 columns={columns}

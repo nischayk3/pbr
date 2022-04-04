@@ -1,8 +1,21 @@
+.global-filters{
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+margin-left:157px;
+}
+.inner-chart-filters{
+  padding: 5px 11px;
+  border-bottom: 1px solid #D9D9D9;
+  background: #F1F7FF;
+  border-radius: 4px 4px 0px 0px;
+}
 .show-data {
     padding: 10px 0;
     display: grid;
     grid-template-columns: 150px 20px;
     grid-gap: 0px 10px;
+    margin-top:-6px;
     p {
       margin: 0;
       font-family: 'Roboto', sans-serif;
@@ -22,10 +35,52 @@
       width:682px;
       background: #FFFFFF;
     box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    position: absolute;
+    z-index: 999;
   }
 
   .grid-2-columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px 20px;
+  }
+  .chartCard{
+
+  height:425px;
+  //overflow-y: scroll;
+background: #FFFFFF;
+border: 1px solid #D9D9D9;
+box-sizing: border-box;
+border-radius: 4px;
+  }
+
+  .newCard{
+    height: 425px;
+    //overflow-y: scroll;
+  background: #FFFFFF;
+  border: 1px dashed #CDCDCD;
+  box-sizing: border-box;
+  border-radius: 4px;
+  }
+  .before-new-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 115px;
+    svg {
+      cursor: pointer;
+      font-size: 40px;
+      color: #cbcbcb;
+    }
+    p {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+    }
+   
+  }
+  .chart-row{
+    margin-top: 34px;
   }

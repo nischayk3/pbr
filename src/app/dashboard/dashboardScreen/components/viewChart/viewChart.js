@@ -2,16 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Input, Button, Card, Select, Switch, Slider, DatePicker, Typography } from 'antd';
 import SelectField from '../../../../../components/SelectField/SelectField';
 import InputField from '../../../../../components/InputField/InputField';
-import { SyncOutlined } from '@ant-design/icons';
+import ChartFilter from '../chartFilter/chartFilter';
+import Plot from 'react-plotly.js';
+import { SyncOutlined, PlusOutlined, EditOutlined, CloseOutlined, CheckCircleOutlined, UndoOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './styles.scss';
 
 
 const ViewChart = () => {
     const { Text } = Typography;
-    const {Search}= Input;
+    const { Search } = Input;
     const [visible, setVisible] = useState(false);
     const [unapprovedData, setunapprovedData] = useState(false);
+    const [unapprovedInnerData, setunapprovedInnerData] = useState(false);
+    const [isEditable, setIsEditable] = useState(false);
     const [isDisabled, setisDisabled] = useState(true);
     const [startTimeIso, setstartTimeIso] = useState('');
     const [endTimeIso, setendTimeIso] = useState('');
@@ -25,17 +29,23 @@ const ViewChart = () => {
         { key: 'Last 20 minutes', value: 20 },
         { key: 'Last 25 minutes', value: 25 },
         { key: 'Last 30 minutes', value: 30 },
-      ];
-      const options = range.map((item, i) => (
+    ];
+    const options = range.map((item, i) => (
         <Option key={i} value={item.value}>
-          {item.key}
+            {item.key}
         </Option>
-      ));
+    ));
 
     const onChangeCheckbox = (checked) => {
         const isChecked = checked;
         setunapprovedData(isChecked);
         setisDisabled(false);
+    };
+
+    const onChangeInnerCheckbox = (checked) => {
+        const isChecked = checked;
+        setunapprovedInnerData(isChecked);
+
     };
     const showModal = () => {
         setVisible(true);
@@ -71,12 +81,29 @@ const ViewChart = () => {
         startdate.setMinutes(endDate.getMinutes() - durationInMinutes);
         let isoVar = startdate.toISOString().replace(/[^\d]/g, '').slice(0, -9);
         let format = moment.duration(isoVar).toISOString();
-    
+
         let dateFormate = moment(isoVar).format('YYYY-MM-DD');
         // setselectedPeriodDate(dateFormate);
         setSelectedDateRange(dateFormate);
         setVisible(false);
-      };
+    };
+    const layout = {
+        xaxis: {},
+        yaxis: {},
+        autosize: false,
+        width: 550,
+        height: 250,
+        margin: {
+            l: 50,
+            r: 50,
+            b: 75,
+            t: 30,
+            pad: 4
+        },
+        title: {
+            text: ""
+        }
+    };
     return (
         <div>
             <Card title="Dashboard Sample Name">
@@ -115,7 +142,7 @@ const ViewChart = () => {
                         </div>
                     </Col>
                 </Row> */}
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div className='global-filters'>
                     <div>
                         <SyncOutlined />
                     </div>
@@ -252,6 +279,52 @@ const ViewChart = () => {
                     </div>
 
                 </div>
+                <Row gutter={[16, 24]} className='chart-row'>
+
+                    <Col className="gutter-row" span={12}>
+                        <div className='chartCard'>
+                            <div className='inner-chart-filters'>
+                                <span>PH</span>
+                                <div style={{ float: 'right' }}>
+                                    <span>Edit <EditOutlined style={{ color: '#486BC9' }} onClick={() => setIsEditable(true)} /></span>
+                                    <span style={{ marginLeft: '10px' }}><CloseOutlined style={{ color: '#262626' }} /></span>
+                                </div>
+
+                                {isEditable && (
+                                    <div style={{ float: 'right' }}>
+                                        <span>< UndoOutlined style={{ color: '#486BC9' }} /></span>
+                                        <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }} /></span>
+                                        <span><CloseOutlined style={{ color: '#262626' }} /></span>
+                                    </div>
+                                )}
+
+
+                            </div>
+                            <div>
+                                {isEditable && (
+                                     <ChartFilter
+                                     checkboxChange={onChangeInnerCheckbox}
+                                 />
+                                )}
+                               
+                                <Plot
+                                    data={[]}
+                                    layout={layout}
+                                />
+                            </div>
+                        </div>
+                    </Col>
+                    <Col className="gutter-row" span={12}>
+                        <div className='newCard'>
+                            <div className='before-new-card'>
+                                <PlusOutlined />
+                                <p>Add new chart</p>
+                            </div>
+
+                        </div>
+                    </Col>
+
+                </Row>
             </Card>
         </div>
     )
