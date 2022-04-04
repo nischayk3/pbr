@@ -13,6 +13,7 @@ const ViewChart = () => {
     const { Text } = Typography;
     const { Search } = Input;
     const [visible, setVisible] = useState(false);
+    const [addNewChartFilter, setAddNewChartFilter] = useState(false);
     const [unapprovedData, setunapprovedData] = useState(false);
     const [unapprovedInnerData, setunapprovedInnerData] = useState(false);
     const [isEditable, setIsEditable] = useState(false);
@@ -302,11 +303,11 @@ const ViewChart = () => {
                             </div>
                             <div>
                                 {isEditable && (
-                                     <ChartFilter
-                                     checkboxChange={onChangeInnerCheckbox}
-                                 />
+                                    <ChartFilter
+                                        checkboxChange={onChangeInnerCheckbox}
+                                    />
                                 )}
-                               
+
                                 <Plot
                                     data={[]}
                                     layout={layout}
@@ -316,10 +317,35 @@ const ViewChart = () => {
                     </Col>
                     <Col className="gutter-row" span={12}>
                         <div className='newCard'>
-                            <div className='before-new-card'>
-                                <PlusOutlined />
-                                <p>Add new chart</p>
-                            </div>
+                            {addNewChartFilter == false ? (
+                                <div className='before-new-card' onClick={() => setAddNewChartFilter(true)}>
+                                    <PlusOutlined />
+                                    <p>Add new chart</p>
+                                </div>
+                            ) :
+                                (<>
+                                    <div className='inner-chart-filters'>
+                                        <span>Untitled</span>
+
+                                        <div style={{ float: 'right' }}>
+                                            <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }} /></span>
+                                            <span><CloseOutlined style={{ color: '#262626' }} /></span>
+                                        </div>
+
+
+
+                                    </div>
+                                    <div>
+                                        <ChartFilter
+                                            checkboxChange={onChangeInnerCheckbox}
+                                        />
+                                        <Plot
+                                            data={[]}
+                                            layout={layout}
+                                        />
+                                    </div>
+                                </>
+                                )}
 
                         </div>
                     </Col>
