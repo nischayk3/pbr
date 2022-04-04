@@ -1,7 +1,10 @@
-// Ranjith K
-// Mareana Software
-// Version 1
-// Last modified - 08 March, 2022
+/**
+ * @author Dinesh Kumar <dinesh.kumar@mareana.com>
+ * @Mareana - CPV Product
+ * @version  1
+ * @Last Modified - 04 April, 2022
+ * @Last Changed By - Dinesh
+ */
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
@@ -9,30 +12,20 @@ import { useSelector } from 'react-redux';
 import {
   ArrowLeftOutlined,
   CloudUploadOutlined,
-  FileDoneOutlined,
-  Loading3QuartersOutlined,
-  SaveOutlined,
-  ShareAltOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
   BuildTwoTone,
 } from '@ant-design/icons';
 import {
-  Spin,
   Button,
   Collapse,
   Form,
   Popconfirm,
-  Space,
   Tag,
   Modal,
   Select,
   Input,
   Table,
-  Radio,
   Tooltip,
   message,
-  Divider,
 } from 'antd';
 import StatusWrong from '../../../../assets/statusWrong.svg';
 import StatusCorrect from '../../../../assets/statusCorrect.svg';
@@ -47,12 +40,14 @@ import {
   getViewConfig,
   getViews,
 } from '../../../../services/viewCreationPublishing';
-import { materialsParameterTree } from '../../../../duck/actions/fileUploadAction';
 import {
   saveFunction,
   updateFunction,
 } from '../../../../duck/actions/viewCreationAction';
-import { adHocFilesParameterTree } from '../../../../duck/actions/fileUploadAction';
+import {
+  adHocFilesParameterTree,
+  materialsParameterTree,
+} from '../../../../duck/actions/fileUploadAction';
 import Loading from '../../../../components/Loading';
 import Signature from '../../../../components/ElectronicSignature/signature';
 import queryString from 'query-string';
@@ -388,14 +383,14 @@ function ViewCreation() {
         setViewStatus(res.view_status);
         setViewVersion(res.view_version);
         setViewFunctionName(res.view_name);
-        if(res.view_status === 0)  {
-          status = 'DRFT'
+        if (res.view_status === 0) {
+          status = 'DRFT';
         }
-        if(res.view_status === 1)  {
-          status = 'AWAP'
+        if (res.view_status === 1) {
+          status = 'AWAP';
         }
-        if(res.view_status === 2)  {
-          status = 'APRD'
+        if (res.view_status === 2) {
+          status = 'APRD';
         }
         form.setFieldsValue({
           viewName: res.view_name,
@@ -703,14 +698,14 @@ function ViewCreation() {
       }))
     );
     let status;
-    if(viewStatus === 'DRFT')  {
-      status = 0
+    if (viewStatus === 'DRFT') {
+      status = 0;
     }
-    if(viewStatus === 'AWAP')  {
-      status = 1
+    if (viewStatus === 'AWAP') {
+      status = 1;
     }
-    if(viewStatus === 'APRD')  {
-      status = 2
+    if (viewStatus === 'APRD') {
+      status = 2;
     }
     const obj = {
       view_name: viewFunctionName,
@@ -722,7 +717,7 @@ function ViewCreation() {
       view_description: 'Test View Object',
       view_version: viewVersion,
       view_disp_id: viewDisplayId,
-      view_status:  viewStatus,
+      view_status: viewStatus,
     };
     const headers = {
       username: 'user_mareana1',
@@ -831,7 +826,7 @@ function ViewCreation() {
   };
 
   const PublishResponse = (res) => {
-  console.log(res);
+    console.log(res);
     setPublishResponse(res);
     setViewStatus(res.rep_stauts);
   };
