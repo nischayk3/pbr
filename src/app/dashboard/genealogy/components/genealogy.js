@@ -2,7 +2,7 @@
  * @author Dinesh Kumar <dinesh.kumar@mareana.com>
  * @Mareana - CPV Product
  * @version  1
- * @Last Modified - 16 March, 2022
+ * @Last Modified - 31 March, 2022
  * @Last Changed By - Dinesh
  */
 
@@ -11,8 +11,8 @@ import { ArrowLeftOutlined, DownloadOutlined } from '@ant-design/icons';
 import { Tabs } from 'antd';
 import Filter from './genealogyFilter';
 import TreePlot from './TreePlot/TreePlot';
-import response from '../treePlot.json';
-import forwardJson from '../forward.json';
+// import response from '../treePlot.json';
+// import forwardJson from '../forward.json';
 import batchIcon from '../../../../assets/images/material.png';
 import { useDispatch } from 'react-redux';
 import {
@@ -48,6 +48,7 @@ function Genealogy() {
   const [activateKey, setActivateKey] = useState('1');
   const [isDrawer, setIsDrawer] = useState(false);
   const [batchInfo, setBatchInfo] = useState([]);
+  const [purchaseInfo, setPurchaseInfo] = useState([]);
   const [processInput, setProcessInput] = useState([]);
   const [processOutput, setProcessOutput] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -100,7 +101,6 @@ function Genealogy() {
           entity_type: 'Lims',
           relation_id: 'batch_to_lims',
           batch_id: nodeSplit[2],
-
           // 'ABV4103',
         };
         getNodeBatchInfo(_reqBatchInfo);
@@ -121,6 +121,17 @@ function Genealogy() {
         setNodeType(node.nodeType);
         getNodeProcessInput(_reqProcessInput);
         getNodeProcessOutput(_reqProcessOutput);
+      } else if (node.nodeType === 'Purchase Order') {
+        let purchaseInfo = {
+          node_id: node.nodeData.nodeId,
+          plant: node.nodeData.plant,
+          purchase_id: node.nodeData.pur_ord_no,
+          vendor_no: node.nodeData.vendor_no,
+        };
+        setPurchaseInfo(purchaseInfo);
+        setIsDrawerOpen(true);
+        setIsDrawerRef(false);
+        setNodeType(node.nodeType);
       }
     }
   };
@@ -433,6 +444,7 @@ function Genealogy() {
                       drawerClose={onCloseDrawer}
                       type={nodeType}
                       limsBatchInfo={limsBatchInfo}
+                      purchaseInfo={purchaseInfo}
                       batchInfo={batchInfo}
                       processInput={processInput}
                       processOutput={processOutput}
@@ -453,6 +465,7 @@ function Genealogy() {
                       }
                       type={nodeType}
                       limsBatchInfo={limsBatchInfo}
+                      purchaseInfo={purchaseInfo}
                       batchInfo={batchInfo}
                       processInput={processInput}
                       processOutput={processOutput}
