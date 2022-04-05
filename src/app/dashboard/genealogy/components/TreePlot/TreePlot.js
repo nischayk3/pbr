@@ -8,7 +8,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import * as _ from 'lodash';
 import * as d3 from 'd3';
 import Draggable from 'react-draggable';
-import svgPanZoom from 'svg-pan-zoom';
 import { Select, Button } from 'antd';
 import {
   EyeOutlined,
@@ -45,10 +44,12 @@ function TreePlot(props) {
     let arrBatch = [];
     let arrMatDes = [];
     let arrProType = [];
+    let arrPurAdd = [];
     let material = [];
     let batch = [];
     let materialDisc = [];
     let proType = [];
+    let purOrder = [];
     let pushMaterial = (item) => {
       if (item.matNo.length > 0) {
         material.push({
@@ -65,6 +66,10 @@ function TreePlot(props) {
         });
         proType.push({
           value: item.mat_type,
+          nodeId: item.id,
+        });
+        purOrder.push({
+          value: item.pur_ord_no,
           nodeId: item.id,
         });
       }
@@ -118,6 +123,16 @@ function TreePlot(props) {
         }
       });
     };
+    let loopChildrenPurchase = (item) => {
+      item.forEach((i) => {
+        if (i.pur_ord_no !== undefined) {
+          arrPurAdd.push(i.pur_ord_no);
+        }
+        if (i.children) {
+          loopChildrenPurchase(i.children);
+        }
+      });
+    };
 
     chartDataRes &&
       chartDataRes.forEach((item) => {
@@ -129,6 +144,8 @@ function TreePlot(props) {
           pushMaterial(item);
         } else if (item.mat_type.length) {
           pushMaterial(item);
+        } else if (item.pur_ord_no.length) {
+          pushMaterial(item);
         }
         if (item.children) {
           loopChildrenMat(item.children);
@@ -137,7 +154,6 @@ function TreePlot(props) {
           loopChildrenPType(item.children);
         }
       });
-
     const mergeArray = [
       ...material,
       ...arrMat,
@@ -145,20 +161,19 @@ function TreePlot(props) {
       ...arrMatDes,
       ...batch,
       ...arrBatch,
+      ...purOrder,
+      ...arrPurAdd,
     ];
-
     setsearchOptions(mergeArray);
   };
-
+  console.log('search optionssssssss', searchOptions);
   const onSearchParam = (text) => {
     console.log(text);
   };
   const onChangeParam = (value) => {
     if (value !== null && value !== undefined) {
       let splitvalue = value.split('---');
-
       let splitedvalue = splitvalue[1];
-
       setselectedNodeId(splitedvalue);
       setsearchValue(splitvalue[0]);
     } else if (value === null && value === undefined) {
@@ -1017,12 +1032,20 @@ function TreePlot(props) {
               d.source.relationshipMap[d.source.id + '-' + d.target.id].qty +
               ' ' +
               d.source.relationshipMap[d.source.id + '-' + d.target.id].unit;
+            var purchaseOrder = '';
+            var plant = '';
             if (THIS.type === 'forward') {
               material = d.source.matNo || d.target.matNo;
               processOrder = d.target.poNo || d.source.poNo;
+              purchaseOrder =
+                d.target.purchaseOrderNo || d.source.purchaseOrderNo;
+              plant = d.target.plant || d.source.plant;
             } else {
               material = d.target.matNo || d.source.matNo;
               processOrder = d.source.poNo || d.target.poNo;
+              purchaseOrder =
+                d.source.purchaseOrderNo || d.target.purchaseOrderNo;
+              plant = d.source.plant || d.target.plant;
             }
 
             var tooltipHtml =
@@ -1032,6 +1055,8 @@ function TreePlot(props) {
               "</b></span><br/><span class='col-xs-1' style='padding:5px'>Process Order :  </span><span class='col-xs-1' style='padding:5px'><b>" +
               processOrder +
               "</b></span><br/><span class='col-xs-1' style='padding:5px'>Quantity :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+              purchaseOrder +
+              "</b></span><br/><span class='col-xs-1' style='padding:5px'>Quantity  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
               quantity +
               '</b></span><br/></span></div>';
             d3.select('#keyTooltip').html(tooltipHtml);
@@ -1206,6 +1231,8 @@ function TreePlot(props) {
             var key;
             if (d.type === 'Material') {
               key = d['nodeId'].split('|');
+            } else if (d.type === 'Purchase Order') {
+              key = [d.pur_ord_no];
             } else {
               key = [d.poNo];
             }
@@ -1268,8 +1295,23 @@ function TreePlot(props) {
                 "</b></span><br/><span class='col-xs-1' style='padding:5px'>UOM  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
                 uom +
                 '</b></span><br/></span></div>';
-            } else if (d.type === 'Purchase Order ') {
-              console.log('purchase order');
+            } else if (d.type === 'Purchase Order') {
+              let purchaseKeys = key[0].split(',');
+              if (purchaseKeys.length > 1) {
+                tooltipHtml =
+                  "<div ><span class='col-xs-1' style='padding:5px'>" +
+                  "Plant :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+                  d.plant +
+                  "</b></span><br/><span class='col-xs-1' style='padding:5px'>Purchase Order  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+                  'Multiple POs' +
+                  '</b></span><br/></span></div>';
+              } else {
+                tooltipHtml =
+                  "<div ><span class='col-xs-1' style='padding:5px'>" +
+                  "<span class='col-xs-1' style='padding:5px'>Purchase Order  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+                  purchaseKeys[0] +
+                  '</b></span><br/></span></div>';
+              }
             }
 
             d3.select('#keyTooltip').html(tooltipHtml);
@@ -1486,14 +1528,19 @@ function TreePlot(props) {
               toolTip.transition().duration(200).style('opacity', '.9');
               var material = data.mat;
               var processOrder = data.poNo;
+              var purchaseOrder = data.pur_ord_no;
               var quantity = data.qty + ' ' + data.unit;
-
+              var plant = data.plant;
               var tooltipHtml =
+                "<div ><span class='col-xs-1' style='padding:5px'>Plant  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+                plant +
                 "<div ><span class='col-xs-1' style='padding:5px'>Material   :  </span><span class='col-xs-1' style='padding:5px'><b>" +
                 material +
                 // "</b></span><br/><span class='col-xs-1' style='padding:5px'>Batch  :  </span><span class='col-xs-1' style='padding:5px'><b>" + (key[2] || "N/A") +
                 "</b></span><br/><span class='col-xs-1' style='padding:5px'>Process Order  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
                 processOrder +
+                "</b></span><br/><span class='col-xs-1' style='padding:5px'>Quantity  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+                purchaseOrder +
                 "</b></span><br/><span class='col-xs-1' style='padding:5px'>Quantity  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
                 quantity +
                 '</b></span><br/></span></div>';

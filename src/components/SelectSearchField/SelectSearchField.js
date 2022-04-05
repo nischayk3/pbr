@@ -1,6 +1,5 @@
-import './SelectSearchField.scss';
-
 import React from 'react';
+import './SelectSearchField.scss';
 import { Button, Select } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 const SelectSearchField = (props) => {
