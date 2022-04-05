@@ -3,28 +3,67 @@
 .ant-card-head {
   background-color: #f1f7ff !important;
 }
-.table {
-    border: .5px solid black;
-    width: 100%;
-  }
-  
-  .th {
-    text-align: left;
-    padding: 8px;
-    width: 100%;
-  }
-  .tr-tr {
-   background-color: #F1F7FF;
-  }
-  .td {
-    text-align: left;
-    padding: 8px;
-    width: 100%;
-  }
+.ant-table-cell 
+{
+  background-color: #F2FBFF !important;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
 
-  .tr:nth-child(even) {
-    background-color: #F9F9F9;
-  }
+ th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  background: #F2FBFFBA;
+
+}
+ td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+ 
+
+}
+// .table {
+//     border: .5px solid black;
+//     width: 100%;
+//   }
+  
+//   .th-key {
+//       background: rgba(242, 251, 255, 0.73);
+//       text-align: left;
+//       align-items: center;
+//       padding: 12px 8px 12px 26px;
+
+//       position: static;
+//       width: 167px;
+//       height: 46px;
+//   }
+//     .th-value {
+//       background: rgba(242, 251, 255, 0.73);
+//       text-align: left;
+//       align-items: center;
+//       padding: 12px 8px 12px 26px;
+
+//       position: static;
+//       width: 167px;
+//       height: 46px;
+//   }
+//   .tr-tr {
+//   //  background-color: #F1F7FF;
+//   }
+//   .td {
+//     text-align: left;
+//     padding: 8px;
+//     width: 100%;
+//   }
+
+//   .tr:nth-child(even) {
+
+//   }
 
   .chart-schedule-card
   {
@@ -54,12 +93,12 @@
    
     .schedule
     {
-      display: grid;
+    display: grid;
     grid-template-columns: 1fr 1fr; 
 
     .card-recipients
     {
-      max-height: 180px;
+    max-height: 180px;
     overflow-y: auto;
     }
     }
@@ -73,4 +112,111 @@
 .radio-button
 {
   border-radius: 50%;
+}
+.schedule-btn
+{
+    background: '#093185';
+    color : 'white';
+    border-radius: '4px';
+    float: 'left';
+}
+.chart-tags
+{
+    background: #F0F5FF;
+    border: 1px solid #ADC6FF;
+    box-sizing: border-box;
+    border-radius: 2px;
+    align-items: center;
+    padding: 1px 8px; 
+    margin-left: 20px;
+    color: #2F54EB;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+}
+.chart-tag
+{
+
+  align-items: center;
+  padding: 1px 8px;   
+  background: #E2F5FF;
+  box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  width: 86px;
+  height: 22px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  margin-left: 1px;
+
+  color: #262626;
+}
+.chart-names
+{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  /* identical to box height */
+  
+  display: flex;
+  align-items: center;
+  
+  /* Character/Primary .85 */
+  
+  color: rgba(0, 0, 0, 0.85);
+}
+.email-subject
+{
+  font-family: 'Roboto';
+font-style: normal;
+font-weight: 300;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height, or 138% */
+margin-left: 10px;
+
+
+color: #000000;
+}
+.email-sub
+{
+  font-family: 'Roboto';
+font-style: normal;
+font-weight: 300;
+font-size: 16px;
+line-height: 22px;
+/* identical to box height, or 138% */
+
+
+color: #000000;
+margin-left: 30px;
+}
+.email-recipients
+{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  /* identical to box height, or 138% */
+  color: #000000;
+}
+.email-content
+{
+  font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 19px;
+
+color: #343434;
+margin-left: 10px;
+}
+.email-freq
+{
+  margin-left: 20%;
 }

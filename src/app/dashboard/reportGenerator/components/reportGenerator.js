@@ -6,14 +6,12 @@
  * @Last Changed By - @Mihir 
 */
 
-
 import React, { useEffect, useState } from 'react';
 import {
     Button,
     Card,
     Collapse,
     Typography,
-    Checkbox,
     Modal,
     Radio,
     Space,
@@ -23,8 +21,10 @@ import {
     Table,
     DatePicker,
     Divider,
+    Popconfirm,
+    Tag
 } from 'antd';
-import { ArrowLeftOutlined, BlockOutlined, DeleteOutlined, SendOutlined, UserOutlined, ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, BlockOutlined, DeleteOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone } from '@ant-design/icons';
 import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
@@ -38,6 +38,7 @@ import {
     showNotification
 } from '../../../../duck/actions/commonActions';
 import { Tabs } from 'antd';
+import Chart from '../../reportDesigner/components/reportChart/chartComponent/chartComponent'
 
 
 const { Panel } = Collapse;
@@ -127,7 +128,9 @@ function ReportGenerator() {
     const [popvisible, setPopVisible] = useState(false);
     const [filterTable, setFilterTable] = useState(null);
     const [openSchedule, setOpenSchedule] = useState(false);
+    const [chartLayout, setChartLayout] = useState({});
     const [viewId, setViewId] = useState('')
+    // const [ sectionCharts,setSectionCharts] = 
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -173,11 +176,10 @@ function ReportGenerator() {
     };
 
 
-    const getTableData = (obj) => {
+    const getTableData = (obj, rep_layout) => {
 
         let headingList = []
         let allSections = []
-
         let titleHeading = obj['titlepage'] && obj['titlepage'].heading ? obj['titlepage'].heading : ''
         let titleObj = obj && obj['titlepage'] ? obj['titlepage'] : ''
 
@@ -186,10 +188,10 @@ function ReportGenerator() {
 
         let headingSection = obj['sections'] ? obj['sections'] : []
         allSections = [...allSections, ...headingSection]
-        // headingSection.map((i) => {
-        //     if (i.heading)
-        //         headingList.push(i.heading)
-        // })
+
+        for (let i = 0; i < allSections.length; i++) {
+            allSections[i].charts = rep_layout[i + 1]
+        }
 
         return allSections
     }
@@ -208,16 +210,19 @@ function ReportGenerator() {
     // }
 
     const unloadTest = (ReportData) => {
+        console.log(ReportData)
         dispatch(showLoader())
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
+        setChartLayout(ReportData.charts_layout ? ReportData.charts_layout : {})
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setCharts(ReportData['chart_int_ids'] ? createArraObj(ReportData['chart_int_ids']) : [])
-        setTable(ReportData['layout_info'] ? getTableData(ReportData['layout_info']) : {})
+        setTable(ReportData['layout_info'] ? getTableData(ReportData['layout_info'], ReportData.charts_layout ? ReportData.charts_layout : {}) : {})
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
         setEmailList(ReportData.share ? ReportData.share.email_list : [])
         setSchedule(ReportData.share ? ReportData.share.frequency_unit : '')
+
         dispatch(hideLoader());
         // setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
     }
@@ -362,9 +367,10 @@ function ReportGenerator() {
         }
     }
 
-
+    console.log(table)
 
     return (
+
         <div className='custom-wrapper'>
             <div className='sub-header'>
                 <div className='sub-header-title'>
@@ -387,292 +393,229 @@ function ReportGenerator() {
                     </Button>
                 </div>
             </div>
-            <div className='custom-content-layout'>
-                <ReportDesignerForm />
-                <div className="chart-schedule-card">
-                    <Card className="card-chart" title="Chart">
-                        {chart && chart.map((i) => {
-                            return (
-                                <Collapse key={i.chart} accordion style={{ width: '500px' }} bordered={false} expandIconPosition='right'>
-                                    <Panel header={i.chart} key={i.chart} className="chart-panel">
-                                        <Checkbox.Group style={{ width: '100%' }} defaultValue={i.default} onChange={(checkedValue) => onChange(checkedValue, i.chart)}>
-                                            <table className="table" >
-                                                <tbody>
-                                                    <tr style={{ backgroundColor: '#F1F7FF' }} className="tr">
-                                                        <th className="th">
-                                                            Select
-                                                        </th>
-                                                        <th className="th">
-                                                            Chart Data
-                                                        </th>
-                                                    </tr>
-                                                    <tr className="tr">
-                                                        <td className="td"><Checkbox value="excursion" checked={i.excursion} /></td>
-                                                        <td className="td">Excursion/Shift/Trend</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="td"><Checkbox value="violation" /></td>
-                                                        <td className="td">Rule Violation</td>
-                                                    </tr>
-                                                    <tr className="tr">
-                                                        <td className="td"><Checkbox value="parameter" /></td>
-                                                        <td className="td">Parameters</td>
-                                                    </tr>
-                                                    <tr className="tr">
-                                                        <td className="td"><Checkbox value="exclusion" /></td>
-                                                        <td className="td">Exclusions</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </Checkbox.Group>
-                                    </Panel>
-                                </Collapse>)
-                        })}
-
-                    </Card>
-                    <Card title="Share" className="card-schedule">
-                        <div className="schedule">
-                            <div>
-                                <Text>Schedule</Text><br /><br />
-                                <Button onClick={() => { setVisible(true) }} >Click To Select Schedule</Button>
-                            </div>
-                            <div>
-                                <Card title="Recipients" className="card-recipients">
-                                    {emailList && emailList.map(function (item, i) {
-                                        return <p>{item}</p>
-                                    })}
-                                </Card>
-                            </div>
-                        </div>
-
-                    </Card>
-                </div>
-                <Card title="Report Table Data" className="table-card">
-                    <Tabs  >
+            <Card title="Generate new report variant" className="table-card">
+                <div className='custom-content-layout'>
+                    <ReportDesignerForm />
+                    <Card title="Report Table Data" className="table-card">
                         {table.length > 0 && table.map((i) =>
-
-
-                            <TabPane tab={i.heading} key={i.heading}>
-                                {/* <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF', marginRight: '10px', marginLeft: '1070px', fontSize: '12px' }}>
-                                </span> */}
-                                <div >
-                                    <i class="fa fa-circle" style={{ color: '#BAE7FF', marginRight: '10px', marginLeft: '1070px', fontSize: '18px' }}></i>
-                                    <span class="Legend-label" style={{ marginBottom: '10px', fontSize: '12px' }}>
-                                        Edit
-                                    </span>
-                                    <i class="fa fa-circle" style={{ color: '#F5F5F5', marginLeft: '25px', fontSize: '18px' }}></i>
-                                    <span class="Legend-label" style={{ marginLeft: '10px', fontSize: '12px' }}>
-                                        View Only
-                                    </span>
-                                </div>
-                                <table className="table">
-                                    <tr className="tr" align="right" style={{ backgroundColor: '#f1f7ff' }} >
-                                        <td className="td">
-                                            <b>Key</b>
-                                        </td>
-                                        <td className="td">
-                                            <b>Value</b>
-                                        </td>
-                                    </tr>
-                                    <tbody>
-                                        {i['content'] && i['content'].map((item, j) =>
-                                            // return Object.entries(item).map((k, value) => {
-
-                                            <tr className="tr" style={{ backgroundColor: item.editable == false || item.editable == undefined ? '#BAE7FF' : '#F5F5F5' }}>
-                                                <td className="td" ><b>{item.key}</b></td>
-                                                <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea style={{ width: '200px' }} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : item.value} </td>
-                                            </tr>
-                                            // })
-
-                                        )}
-                                    </tbody>
-                                </table>
-                            </TabPane>
-
+                            <Collapse key={i.heading} accordion bordered={false} expandIconPosition='right'>
+                                <Panel header={<span className="chart-names">{i.heading} {i.charts && i.charts.length > 0 && i.charts.map((i) => (<span className="chart-tags">
+                                    {i}
+                                </span>))}</span>} key={i.heading} className="chart-panel">
+                                    <table className="table">
+                                        <tr className="tr" >
+                                            <th className="th-key">
+                                                Key
+                                            </th>
+                                            <th className="th-value">
+                                                Value
+                                            </th>
+                                        </tr>
+                                        <tbody>
+                                            {i['content'] && i['content'].map((item, j) =>
+                                                <tr className="tr" >
+                                                    <td className="td" >{item.key}</td>
+                                                    <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <p style={{ width: '1000px' }}>{item.value}</p>} </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                    {i.charts && i.charts.length > 0 && i.charts.map((i) =>
+                                    (
+                                        <div>
+                                            <p className="chart-name">{i} <Tag className="chart-tag" closable>Violation</Tag> <Tag className="chart-tag" closable>Exclusion</Tag> <Tag className="chart-tag" closable>Data Table</Tag> </p>
+                                            <Chart />
+                                        </div>
+                                    ))}
+                                </Panel>
+                            </Collapse>
                         )}
-                    </Tabs>
-                </Card>
-                <Card title="Charts" style={{ marginTop: '10px' }}>
-                </Card>
-                <Card title="Data" style={{ marginTop: '10px' }}>
-                    <Collapse accordion>
-                        <Panel header="Excrusion Shift Trend" key="3">
-                            <p></p>
-                        </Panel>
-                        <Panel header="Parameters" key="1">
-                            <p></p>
-                        </Panel>
-                        <Panel header="Exclusion" key="2">
-                            <p></p>
-                        </Panel>
-                    </Collapse>
-                </Card>
-
-                <Modal
-                    title="Schedule"
-                    visible={visible}
-                    onCancel={() => setVisible(false)}
-                    onOk={() => setVisible(false)}
-                >
-                    <Radio.Group onChange={radioSchedule} >
-                        <Space direction="vertical">
-                            <Radio value="Hourly">Hourly</Radio>
-                            <Radio value="Monthly">Monthly</Radio>
-                            <Radio value="Daily">Daily</Radio>
-                        </Space>
-                    </Radio.Group> <br /> <br />
-
-                    <Text>Users</Text> <br />
-                    <Select
-                        mode="tags"
-                        style={{ width: '50%', marginTop: '10px' }}
-                        placeholder="Select Users"
-                        optionLabelProp="label"
-                        value={emailList}
-                        onChange={handleChange}
-
+                    </Card>
+                    <Modal
+                        title="Schedule"
+                        visible={visible}
+                        onCancel={() => setVisible(false)}
+                        onOk={() => setVisible(false)}
                     >
-                        <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
-                            mihir.bagga@mareana.com
-                        </Option>
-                        <Option value="muskan.gupta@mareana.com" label="muskan.gupta@mareana.com">
-                            muskan.gupta@mareana.com
-                        </Option>
-                        <Option value="binkita.tiwari@mareana.com" label="binkita.tiwari@mareana.com">
-                            binkita.tiwari@mareana.com
-                        </Option>
-                        <Option value="someswara.rao@mareana.com" label="someswara.rao@mareana.com">
-                            someswara.rao@mareana.com
-                        </Option>
-                        <Option value="ramaa.rao@mareana.com" label="ramaa.rao@mareana.com">
-                            ramaa.rao@mareana.com
-                        </Option>
-                        <Option value="rahul.neogi@mareana.com" label="rahul.neogi@mareana.com">
-                            rahul.neogi@mareana.com
-                        </Option>
-                        <Option value="vishal@mareana.com" label="vishal@mareana.com">
-                            vishal@mareana.com
-                        </Option>
-                    </Select>
-                </Modal>
+                        <Radio.Group onChange={radioSchedule} >
+                            <Space direction="vertical">
+                                <Radio value="Hourly">Hourly</Radio>
+                                <Radio value="Monthly">Monthly</Radio>
+                                <Radio value="Daily">Daily</Radio>
+                            </Space>
+                        </Radio.Group> <br /> <br />
 
-                <Modal
-                    title="Select Report"
-                    visible={isvisible}
-                    onCancel={() => setIsVisible(false)}
-                    width={500}
-                    style={{ marginRight: '800px' }}
-                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => setIsVisible(false)} key="1">OK</Button>,]}
-                >
-                    <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
-                        let view_value = value.value ? value.value : ''
-                        setReportId(view_value)
-                        getReportData(view_value)
-
-                    }}
-                        value={reportId}
-                        showSearch
-                        showArrow
-                        style={{ backgroundColor: 'white', borderRadius: '4px' }}
-                    >
-                        {mapReportList.length >= 0 ? mapReportList.map((item) =>
-
-                            <Option value={item.rep_disp_id} key={item.rep_disp_id}>{item.rep_disp_id}</Option>
-                        ) : <></>}
-
-                    </Select>
-                    <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
-                </Modal>
-                <Modal
-                    title="Select Report"
-                    visible={popvisible}
-                    onCancel={() => setPopVisible(false)}
-                    width={600}
-                    title={<p>Select Report Variant  <Input.Search
-                        className='table-search'
-                        placeholder='Search by...'
-                        enterButton
-                        onSearch={search}
-                        style={{ borderRadius: '4px' }}
-                    /></p>}
-                    centered
-                    width={500}
-                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setIsVisible(false); setPopVisible(false) }} key="1">OK</Button>,]}
-                >
-                    <Table
-                        // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
-                        // rowHighlightTest={isStyledDifferently}
-                        dataSource={filterTable === null ? reportList : filterTable}
-                        columns={columns}
-                        onRow={record => ({
-                            onClick: e => {
-                                record['color'] = '#D3D3D3'
-                                setReportId(record.rep_disp_id)
-                                getReportData(record.rep_disp_id, record.rep_status)
-                                // onOk()
-                            }
-                        })}
-                        scroll={{ y: 200 }}
-                        size='small'
-                        pagination={false}
-                    />
-                </Modal>
-                <Modal
-                    title="Send Alert"
-                    visible={openSchedule}
-                    onCancel={() => setOpenSchedule(false)}
-                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px', float: 'left' }} onClick={() => { setOpenSchedule(false) }} key="1">  <SendOutlined />Schedule</Button>, <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setOpenSchedule(false) }} key="1">  <DeleteOutlined />Discard</Button>,]}
-                    width="60%"
-
-                >
-                    <UserOutlined />
-                    <u>
+                        <Text>Users</Text> <br />
                         <Select
                             mode="tags"
-                            style={{ width: '90%', marginTop: '10px' }}
-                            placeholder="Recipients"
+                            style={{ width: '50%', marginTop: '10px' }}
+                            placeholder="Select Users"
                             optionLabelProp="label"
                             value={emailList}
-                            bordered={false}
                             onChange={handleChange}
-                        >
 
+                        >
                             <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
                                 mihir.bagga@mareana.com
                             </Option>
-                        </Select></u> <Divider />
-                    <ClockCircleOutlined /> <DatePicker bordered={false} /><Divider orientation="left" />
+                            <Option value="muskan.gupta@mareana.com" label="muskan.gupta@mareana.com">
+                                muskan.gupta@mareana.com
+                            </Option>
+                            <Option value="binkita.tiwari@mareana.com" label="binkita.tiwari@mareana.com">
+                                binkita.tiwari@mareana.com
+                            </Option>
+                            <Option value="someswara.rao@mareana.com" label="someswara.rao@mareana.com">
+                                someswara.rao@mareana.com
+                            </Option>
+                            <Option value="ramaa.rao@mareana.com" label="ramaa.rao@mareana.com">
+                                ramaa.rao@mareana.com
+                            </Option>
+                            <Option value="rahul.neogi@mareana.com" label="rahul.neogi@mareana.com">
+                                rahul.neogi@mareana.com
+                            </Option>
+                            <Option value="vishal@mareana.com" label="vishal@mareana.com">
+                                vishal@mareana.com
+                            </Option>
+                        </Select>
+                    </Modal>
 
-                    <ReloadOutlined />
-                    <Select defaultValue="1" style={{ width: 60 }} onChange={handleChange} bordered={false}>
-                        <Option value="1">1</Option>
-                        <Option value="2">2</Option>
-                        <Option value="3">3</Option>
-                        <Option value="4">4</Option>
-                    </Select>
-                    <Select defaultValue="week" style={{ width: 100 }} onChange={handleChange} bordered={false}>
-                        <Option value="week">week</Option>
-                        <Option value="monthly">monthly</Option>
-                        <Option value="daily">daily</Option>
-                    </Select>
+                    <Modal
+                        title="Select Report"
+                        visible={isvisible}
+                        onCancel={() => setIsVisible(false)}
+                        width={500}
+                        style={{ marginRight: '800px' }}
+                        footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => setIsVisible(false)} key="1">OK</Button>,]}
+                    >
+                        <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
+                            let view_value = value.value ? value.value : ''
+                            setReportId(view_value)
+                            getReportData(view_value)
 
-                    <Radio.Group defaultValue="Sunday">
-                        <Radio.Button value="Sunday" className="radio-button">S</Radio.Button>
-                        <Radio.Button value="Monday" className="radio-button">M</Radio.Button>
-                        <Radio.Button value="Tuesday" className="radio-button">T</Radio.Button>
-                        <Radio.Button value="Wednesday" className="radio-button">W</Radio.Button>
-                        <Radio.Button value="Thursday" className="radio-button">T</Radio.Button>
-                        <Radio.Button value="Friday" className="radio-button">F</Radio.Button>
-                        <Radio.Button value="Saturday" className="radio-button">S</Radio.Button>
-                    </Radio.Group>
+                        }}
+                            value={reportId}
+                            showSearch
+                            showArrow
+                            style={{ backgroundColor: 'white', borderRadius: '4px' }}
+                        >
+                            {mapReportList && mapReportList.length >= 0 ? mapReportList.map((item) =>
+
+                                <Option value={item.rep_disp_id} key={item.rep_disp_id}>{item.rep_disp_id}</Option>
+                            ) : <></>}
+
+                        </Select>
+                        <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
+                    </Modal>
+                    <Modal
+                        title="Select Report"
+                        visible={popvisible}
+                        onCancel={() => setPopVisible(false)}
+                        width={600}
+                        title={<p>Select Report Variant  <Input.Search
+                            className='table-search'
+                            placeholder='Search by...'
+                            enterButton
+                            onSearch={search}
+                            style={{ borderRadius: '4px' }}
+                        /></p>}
+                        centered
+                        width={500}
+                        footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setIsVisible(false); setPopVisible(false) }} key="1">OK</Button>,]}
+                    >
+                        <Table
+                            // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
+                            // rowHighlightTest={isStyledDifferently}
+                            dataSource={filterTable === null ? reportList : filterTable}
+                            columns={columns}
+                            onRow={record => ({
+                                onClick: e => {
+                                    record['color'] = '#D3D3D3'
+                                    setReportId(record.rep_disp_id)
+                                    getReportData(record.rep_disp_id, record.rep_status)
+                                    // onOk()
+                                }
+                            })}
+                            scroll={{ y: 200 }}
+                            size='small'
+                            pagination={false}
+                        />
+                    </Modal>
+                    <Modal
+                        title={<span >Notify Report  <span style={{ marginLeft: '70%' }}><Popconfirm title="Sure to delete?" >
+                            <DeleteTwoTone twoToneColor="red" />
+                        </Popconfirm> <Button className="schedule-btn"><SendOutlined />Schedule</Button></span></span>}
+                        visible={openSchedule}
+                        onCancel={() => setOpenSchedule(false)}
+                        footer={[<Button className="schedule-btn" onClick={() => { setOpenSchedule(false) }} key="1">  <SendOutlined />Schedule</Button>, <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setOpenSchedule(false) }} key="1">  <DeleteOutlined />Discard</Button>,]}
+                        width="60%"
+
+                    >
+                        {/* <UserOutlined /> */}
+                        <u>
+                            <Select
+                                mode="tags"
+                                style={{ width: '90%', marginTop: '10px' }}
+                                placeholder={<span className="email-recipients">Recipients</span>}
+                                optionLabelProp="label"
+                                value={emailList}
+                                bordered={false}
+                                onChange={handleChange}
+                            >
+
+                                <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
+                                    mihir.bagga@mareana.com
+                                </Option>
+                            </Select>
+                        </u> <Divider />
+                        <p className="email-subject">Subject <span className="email-sub">Update For  </span>{reportName}</p>
+                        <Divider />
+                        <p className="email-content"> Hey,<br /><br />
+
+                            This is to inform you of the recept update to [report variant name]. Check the attachment for details.<br />
+                            Visit www.cpv-mareana.com/alert-dashboard to know more.<br />
+                            <br />
+                            Regards,<br />
+                            [variant_username]</p>
+                        <Divider />
+                        <span>
+                            <DatePicker bordered={false} prefixIcon={<ClockCircleTwoTone />} />
+                            <span className="email-freq">
+                                <ReloadOutlined />
+                                <Select defaultValue="1" style={{ width: 60 }} onChange={handleChange} bordered={false}>
+                                    <Option value="1">1</Option>
+                                    <Option value="2">2</Option>
+                                    <Option value="3">3</Option>
+                                    <Option value="4">4</Option>
+                                </Select>
+                                <Select defaultValue="week" style={{ width: 100 }} onChange={handleChange} bordered={false}>
+                                    <Option value="week">week</Option>
+                                    <Option value="monthly">monthly</Option>
+                                    <Option value="daily">daily</Option>
+                                </Select>
+                            </span>
+                        </span><br />
+
+                        <Radio.Group defaultValue="Sunday">
+                            <Radio.Button value="Sunday" className="radio-button">S</Radio.Button>
+                            <Radio.Button value="Monday" className="radio-button">M</Radio.Button>
+                            <Radio.Button value="Tuesday" className="radio-button">T</Radio.Button>
+                            <Radio.Button value="Wednesday" className="radio-button">W</Radio.Button>
+                            <Radio.Button value="Thursday" className="radio-button">T</Radio.Button>
+                            <Radio.Button value="Friday" className="radio-button">F</Radio.Button>
+                            <Radio.Button value="Saturday" className="radio-button">S</Radio.Button>
+                        </Radio.Group>
 
 
 
 
-                </Modal>
-            </div>
+                    </Modal>
+                </div>
+            </Card>
+
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
         </div>
+
+
 
     );
 }

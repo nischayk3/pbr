@@ -1,0 +1,44 @@
+.chart-tiles {
+    height: 84px;
+    width: 162px;
+    border-radius: 0px 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   background: #E2E8F2;
+   position: relative;
+   .tile-status
+{
+// background: #F7BB61;
+border-radius: 0px 4px;
+margin-right: right;
+position: absolute;
+ top: 0%; 
+right: 0%;
+width: 52px;
+align-content: center;
+font-size: small;
+}
+}
+.tile
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+
+    .awap
+    {
+        background: #F7BB61;
+        align-content: center;
+    }
+    .aprd
+    {
+
+background: #A4F588;
+    }
+    .drft
+    {
+        background: #363636;
+        color: white;
+    }
+}

@@ -1,23 +1,49 @@
 import React, { useState } from 'react';
 import { Form, Input, Space, Popconfirm, Card, Button } from 'antd';
-import { DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
+import { DeleteTwoTone, PlusOutlined, CheckCircleTwoTone } from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
 import ChartTable from '../reportChart/reportChart';
 
 function ReportDesigneTable(props) {
 
-    const { formData } = props;
+    const { formData, list } = props;
 
     const [count, setCount] = useState(0)
     const [alertCount, setAlertCount] = useState([0]);
+    const [showCharts, setShowCharts] = useState(false)
+    const [addedCharts, setAddedCharts] = useState([])
+    const [selected, setSelected] = useState('')
+
+
+    let chartsObj = {
+
+    }
 
     const handleClick = () => {
-        // console.log(count)
-        // console.log(alertCount)
         setCount(count + 1);
         setAlertCount([...alertCount, count + 1]);
     }
+
+    const showChart = (y) => {
+        if (!y)
+            setShowCharts(true)
+        if (y)
+            setShowCharts(false)
+    }
+
+    const addCharts = (chartname, name) => {
+
+        let arr = [...addedCharts]
+        arr.push(chartname)
+        setSelected(chartname)
+        setAddedCharts(arr)
+        // setAddedCharts(addedCharts.push(chartname));
+        // setCount(count + 1);
+        // setAlertCount([...alertCount, count + 1]);
+    }
+
+    console.log(addedCharts)
 
     return (
         <Card className="reportTableCard" title="Report Table" >
@@ -34,12 +60,14 @@ function ReportDesigneTable(props) {
                                         <Input placeholder="Section Name" style={{ marginLeft: '35px', width: '150px' }} bordered={false} className="input-section" disabled={props.show} />
                                     </Form.Item>
 
-                                    <div style={{ marginLeft: '1200px' }}>
+                                    <div style={{ marginLeft: '1100px' }}>
                                         {/* <Button>+Add Chart</Button> */}
-                                        <div onClick={() => handleClick()}>+ ADD Chart</div>
-                                        <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
-                                            <DeleteTwoTone twoToneColor="red" style={{ marginBottom: '100px' }} />
-                                        </Popconfirm>
+                                        <span>
+                                            <div className="add-chart" onClick={() => showChart(showCharts)}>+ Add Chart</div>
+                                            <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
+                                                <DeleteTwoTone twoToneColor="red" style={{ marginBottom: '100px' }} />
+                                            </Popconfirm>
+                                        </span>
                                     </div>
 
                                     <Space
@@ -61,31 +89,47 @@ function ReportDesigneTable(props) {
                                                 <ReportDesignerDynamicRow fieldKey={name} show={props.show} />
                                             </tbody>
                                         </table>
-                                        {/* <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
-                                            <DeleteTwoTone twoToneColor="red" />
-                                        </Popconfirm> */}
+
                                     </Space>
-                                    {alertCount.map((i) =>
+
+                                    <div className="chart-block">
+                                        {showCharts &&
+                                            list.map((i) =>
+                                            (<Form.Item {...restField} name={[name, 'select']}>
+                                                <div className='chart-tiless' onClick={(e) => addCharts(e.target.innerHTML, name)}>
+                                                    {/* <div className="chart-tile"><CheckCircleTwoTone twoToneColor="green" /></div> */}
+                                                    <p className="charttile-content">{i}</p>
+                                                </div>
+                                            </Form.Item>
+
+                                            ))
+                                        }
+                                        {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: 0, right: 0, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> <u disabled={props.show}></u> */}
+                                    </div>
+                                    <center>
+                                        <div className='create-chart' onClick={() => showChart()} >
+                                            <Button className="add-chart-btn">Add Chart</Button>
+                                        </div>
+                                    </center>
+                                    {addedCharts.map((i) =>
                                     (
                                         <Form.Item>
+                                            {i}
                                             <ChartTable />
                                         </Form.Item>
                                     ))}
-                                    {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: 0, right: 0, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> <u disabled={props.show}></u> */}
                                 </div>
 
                             ))}
-
                             <Form.Item >
                                 <p disabled={props.show}>
-
                                     <div classname="dynamicDiv" style={{ border: "1px solid #486BC9", marginBottom: "10px", minHeight: "160px", borderRadius: "4px" }}>
                                         <div className="add-box">
-                                        <div className='create-new' onClick={() => handleClick()} >
-                                    <PlusOutlined />
-                                    <p>Add Chart</p>
-                                </div>
-                                            <div className="box" onClick={() => handleClick()} >+ ADD Chart</div>
+                                            <div className='create-new' onClick={() => handleClick()} >
+                                                <PlusOutlined />
+                                                <p>Add Key and value</p>
+                                            </div>
+                                            <div className="box" onClick={() => handleClick()} >Add Key and value</div>
                                             <div className="box" onClick={() => add()} >ADD</div>
                                         </div>
                                     </div>

@@ -36,8 +36,8 @@ function ReportDesignerForm(props) {
     const unload = (ReportData) =>
     {
 
-       let user_details = JSON.parse(localStorage.getItem('user_details'))
-       let user = user_details && user_details.username ? user_details["username"] : ''
+       let user_details = localStorage.getItem('username')
+       let user = user_details && user_details ? user_details : ''
 
        setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
        setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
@@ -53,24 +53,19 @@ function ReportDesignerForm(props) {
         <div className="reportDesigner-gen bg-white" >
             <div className="reportDesigner-block-left bg-white" >
                 <div>
-                <Text className="filter-text" >Report ID</Text><br/>
-                <InputField className="filter-button" value={reportId} disabled={true} />
+                Report ID : {reportId}
                 </div>
                 <div>
-                <Text className="filter-text" >Report Name</Text><br/>
-                <InputField className="filter-button" value={reportName}  disabled={true} />                    
+                Report Name : {reportName}                  
                 </div>
                 <div>
-                <Text className="filter-text">View</Text><br/>
-                <InputField className="filter-button" value={viewId}  disabled={true} />
+                View : {viewId}
                 </div>
                 <div>
-                <Text className="filter-text">Status</Text><br/>
-                <InputField className="filter-button" value={reportStatus}  disabled={true} />
+                Status : {reportStatus}
                 </div>
                 <div>
-                <Text className="filter-text">Variant</Text><br/>
-                <InputField className="filter-button" value={variantname}  disabled={true} />
+                Variant : {variantname}  
                 </div>
 
             </div>

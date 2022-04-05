@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert } from 'antd';
+import { Tabs,Table } from 'antd'
 import { useDispatch } from 'react-redux';
 import Plot from 'react-plotly.js';
 import { getChartPlotData } from '../../../../../../services/workSpaceServices';
@@ -11,11 +11,71 @@ import {
 import './styles.scss';
 import 'antd/dist/antd.css';
 
+const { TabPane } = Tabs;
+
+const exclusionColumns = [
+    {
+      title: 'ARSENIC',
+      dataIndex: 'ARSENIC',
+      key: 'ARSENIC',
+      render: (text, record) => {
+        return {
+          props: {
+            style: { background: record.color },
+          },
+          children: <div>{text}</div>,
+        };
+      },
+    },
+    {
+      title: 'batch_num',
+      dataIndex: 'batch_num',
+      key: 'batch_num',
+      render: (text, record) => {
+        return {
+          props: {
+            style: { background: record.color },
+          },
+          children: <div>{text}</div>,
+        };
+      },
+  
+    },
+    {
+      title: 'new function',
+      dataIndex: 'new function',
+      key: 'new function',
+      render: (text, record) => {
+        return {
+          props: {
+            style: { background: record.color },
+          },
+          children: <div>{text}</div>,
+        };
+      },
+    },
+    {
+      title: 'new function1',
+      dataIndex: 'new function1',
+      key: 'new function1',
+      render: (text, record) => {
+        return {
+          props: {
+            style: { background: record.color },
+          },
+          children: <div>{text}</div>,
+        };
+      },
+    },
+  ];
+
 const chartComponent = (props) => {
+    
     const [workspaceChartData, setWorkSpaceChartData] = useState([]);
     const [workspaceChartLayout, setWorkSpaceChartLayout] = useState([]);
     const [workspaceChartLayoutXAxis, setWorkSpaceChartLayoutXAxis] = useState([]);
     const [workspaceChartLayoutYAxis, setWorkSpaceChartLayoutYAxis] = useState([]);
+    const [dataTable, setDataTable] = useState([]);
     const dispatch = useDispatch();
     useEffect(() => {
         if (props.activeTab == props.current_tab) {
@@ -24,14 +84,15 @@ const chartComponent = (props) => {
     }, [props.activeTab])
 
     const getChartData = async () => {
-        let req = { chartId: props.chartId }
+        let req = { chartId: 'C189' }
         try {
             dispatch(showLoader());
             const chartResponse = await getChartPlotData(req);
-            setWorkSpaceChartData(chartResponse.data.data);
-            setWorkSpaceChartLayout(chartResponse.data.layout)
-            setWorkSpaceChartLayoutXAxis(chartResponse.data.layout.xaxis)
-            setWorkSpaceChartLayoutYAxis(chartResponse.data.layout.yaxis)
+            setWorkSpaceChartData(chartResponse.data[0].data[0]);
+            setWorkSpaceChartLayout(chartResponse.data[0].layout)
+            setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
+            setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
+            setDataTable(chartResponse.extras.data_table)
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
@@ -42,7 +103,7 @@ const chartComponent = (props) => {
         xaxis: workspaceChartLayoutXAxis,
         yaxis: workspaceChartLayoutYAxis,
         autosize: false,
-        width: 400,
+        width: 500,
         height: 310,
         margin: {
             l: 50,
@@ -56,19 +117,25 @@ const chartComponent = (props) => {
         }
     };
     return (
-        <div className='workspace-plot'>
+           
+          <div className="chartTable">
+            <div >
             <Plot
                 data={[workspaceChartData]}
                 layout={layout}
             />
-            {/* <Alert
-                style={{marginTop:'-10px'}}
-                message="Alert"
-                description={`The voilation of [action] has triggered an alert for Chart ID ${props.chartId}`}
-                type="warning"
-                showIcon
-            /> */}
+            </div>
+            <div>
+               <Tabs>
+                   <TabPane tab="Exclusion" key="Exclusion"><Table columns={props.columns1} dataSource={props.data1}/></TabPane>
+                   <TabPane tab="Violation" key="Violation"><Table columns={props.columns2} dataSource={props.data2}/></TabPane>
+                   <TabPane tab="Data Table" key="Data Table"><Table columns={exclusionColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }}/></TabPane>
+            
+            </Tabs> 
+            </div>
         </div>
+       
+        
     )
 }
 
