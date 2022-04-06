@@ -5,7 +5,7 @@
  * @Last Modified - 14 March, 2022
  * @Last Changed By - @Mihir 
 */
-
+import './styles.scss';
 import React, { useEffect, useState } from 'react';
 import {
     Button,
@@ -25,7 +25,6 @@ import {
     Tag
 } from 'antd';
 import { ArrowLeftOutlined, BlockOutlined, DeleteOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone } from '@ant-design/icons';
-import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
@@ -130,6 +129,17 @@ function ReportGenerator() {
     const [openSchedule, setOpenSchedule] = useState(false);
     const [chartLayout, setChartLayout] = useState({});
     const [viewId, setViewId] = useState('')
+    const [repeat, setRepeat] = useState('')
+    const [frequency, setFrequency] = useState('')
+    const [selectedDays, setSelectedDays] = useState({
+        Sunday: true,
+        Monday: false,
+        Tuesday: false,
+        Wednesday: false,
+        Thursday: false,
+        Friday: false,
+        Saturday: false,
+    })
     // const [ sectionCharts,setSectionCharts] = 
     const dispatch = useDispatch();
 
@@ -150,6 +160,22 @@ function ReportGenerator() {
         });
     };
 
+    const updateDays = (day) =>
+    {
+
+        if(selectedDays[day])
+        {
+        selectedDays[day]=false
+        setSelectedDays(selectedDays)
+        }
+        else
+        {
+        selectedDays[day]=true
+        setSelectedDays(selectedDays)
+        }
+        console.log(selectedDays)
+    }
+
     const mapReportList = reportList && reportList.length > 0 ? reportList : []
 
     const createArraObj = (arr) => {
@@ -165,6 +191,33 @@ function ReportGenerator() {
             res.push(chart)
         })
         return res
+    }
+
+    const makeArrayOfObject = (ar) => {
+        let res = []
+        for (let i = 0; i < ar.length; i++) {
+            let res_obj = {}
+            res_obj['chart'] = ar[i]
+            res_obj['violation'] = true
+            res_obj['exclusion'] = true
+            res_obj['data_table'] = true
+            res_obj['layout'] = {}
+            res_obj['data'] = {}
+            res_obj['chartType'] = ''
+            res.push(res_obj)
+        }
+        return res
+    }
+    const createChartRecord = (arr) => {
+        let res = {}
+        for (let key in arr) {
+            res[`${key}`] = makeArrayOfObject(arr[key])
+        }
+        return res
+    }
+
+    const updateChartLayout = (chart, section, param) => {
+        console.log(chart, section, chartLayout)
     }
 
     const radioSchedule = (e) => {
@@ -213,7 +266,7 @@ function ReportGenerator() {
         console.log(ReportData)
         dispatch(showLoader())
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
-        setChartLayout(ReportData.charts_layout ? ReportData.charts_layout : {})
+        setChartLayout(ReportData.charts_layout ? createChartRecord(ReportData.charts_layout) : {})
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setCharts(ReportData['chart_int_ids'] ? createArraObj(ReportData['chart_int_ids']) : [])
         setTable(ReportData['layout_info'] ? getTableData(ReportData['layout_info'], ReportData.charts_layout ? ReportData.charts_layout : {}) : {})
@@ -276,8 +329,8 @@ function ReportGenerator() {
         let date_today = year + '-' + month + "-" + day
 
         let obj = {}
-        let user_details = JSON.parse(localStorage.getItem('user_details'))
-        let user = user_details["username"] ? user_details["username"] : ''
+        let user_details = localStorage.getItem('username')
+        let user = user_details ? user_details : ''
 
         obj['rep_disp_id'] = reportId
         obj['rep_name'] = reportName
@@ -285,6 +338,7 @@ function ReportGenerator() {
         obj['user'] = user
         obj['variant_name'] = user + '_variant'
         obj['chart_info'] = { charts: chart }
+        obj['chart_layout'] = chartLayout
 
 
         let share_obj = {}
@@ -367,7 +421,7 @@ function ReportGenerator() {
         }
     }
 
-    console.log(table)
+    console.log(table, chartLayout)
 
     return (
 
@@ -420,10 +474,10 @@ function ReportGenerator() {
                                             )}
                                         </tbody>
                                     </table>
-                                    {i.charts && i.charts.length > 0 && i.charts.map((i) =>
+                                    {i.charts && i.charts.length > 0 && i.charts.map((j) =>
                                     (
                                         <div>
-                                            <p className="chart-name">{i} <Tag className="chart-tag" closable>Violation</Tag> <Tag className="chart-tag" closable>Exclusion</Tag> <Tag className="chart-tag" closable>Data Table</Tag> </p>
+                                            <p className="chart-name">{j} <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'violation')}>Violation</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'exclusion')}>Exclusion</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'data_table')}>Data Table</Tag> </p>
                                             <Chart />
                                         </div>
                                     ))}
@@ -431,54 +485,6 @@ function ReportGenerator() {
                             </Collapse>
                         )}
                     </Card>
-                    <Modal
-                        title="Schedule"
-                        visible={visible}
-                        onCancel={() => setVisible(false)}
-                        onOk={() => setVisible(false)}
-                    >
-                        <Radio.Group onChange={radioSchedule} >
-                            <Space direction="vertical">
-                                <Radio value="Hourly">Hourly</Radio>
-                                <Radio value="Monthly">Monthly</Radio>
-                                <Radio value="Daily">Daily</Radio>
-                            </Space>
-                        </Radio.Group> <br /> <br />
-
-                        <Text>Users</Text> <br />
-                        <Select
-                            mode="tags"
-                            style={{ width: '50%', marginTop: '10px' }}
-                            placeholder="Select Users"
-                            optionLabelProp="label"
-                            value={emailList}
-                            onChange={handleChange}
-
-                        >
-                            <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
-                                mihir.bagga@mareana.com
-                            </Option>
-                            <Option value="muskan.gupta@mareana.com" label="muskan.gupta@mareana.com">
-                                muskan.gupta@mareana.com
-                            </Option>
-                            <Option value="binkita.tiwari@mareana.com" label="binkita.tiwari@mareana.com">
-                                binkita.tiwari@mareana.com
-                            </Option>
-                            <Option value="someswara.rao@mareana.com" label="someswara.rao@mareana.com">
-                                someswara.rao@mareana.com
-                            </Option>
-                            <Option value="ramaa.rao@mareana.com" label="ramaa.rao@mareana.com">
-                                ramaa.rao@mareana.com
-                            </Option>
-                            <Option value="rahul.neogi@mareana.com" label="rahul.neogi@mareana.com">
-                                rahul.neogi@mareana.com
-                            </Option>
-                            <Option value="vishal@mareana.com" label="vishal@mareana.com">
-                                vishal@mareana.com
-                            </Option>
-                        </Select>
-                    </Modal>
-
                     <Modal
                         title="Select Report"
                         visible={isvisible}
@@ -551,22 +557,22 @@ function ReportGenerator() {
 
                     >
                         {/* <UserOutlined /> */}
-                        <u>
-                            <Select
-                                mode="tags"
-                                style={{ width: '90%', marginTop: '10px' }}
-                                placeholder={<span className="email-recipients">Recipients</span>}
-                                optionLabelProp="label"
-                                value={emailList}
-                                bordered={false}
-                                onChange={handleChange}
-                            >
 
-                                <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
-                                    mihir.bagga@mareana.com
-                                </Option>
-                            </Select>
-                        </u> <Divider />
+                        <Select
+                            mode="tags"
+                            style={{ width: '90%', marginTop: '10px' }}
+                            placeholder={<span className="email-recipients">Recipients</span>}
+                            optionLabelProp="label"
+                            value={emailList}
+                            bordered={false}
+                            onChange={handleChange}
+                        >
+
+                            <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
+                                mihir.bagga@mareana.com
+                            </Option>
+                        </Select>
+                        <Divider />
                         <p className="email-subject">Subject <span className="email-sub">Update For  </span>{reportName}</p>
                         <Divider />
                         <p className="email-content"> Hey,<br /><br />
@@ -581,21 +587,38 @@ function ReportGenerator() {
                             <DatePicker bordered={false} prefixIcon={<ClockCircleTwoTone />} />
                             <span className="email-freq">
                                 <ReloadOutlined />
-                                <Select defaultValue="1" style={{ width: 60 }} onChange={handleChange} bordered={false}>
+                                <Select defaultValue="1" style={{ width: 60 }}  bordered={false}>
                                     <Option value="1">1</Option>
                                     <Option value="2">2</Option>
                                     <Option value="3">3</Option>
                                     <Option value="4">4</Option>
                                 </Select>
-                                <Select defaultValue="week" style={{ width: 100 }} onChange={handleChange} bordered={false}>
+                                <Select defaultValue="week" style={{ width: 100 }}  bordered={false}>
                                     <Option value="week">week</Option>
                                     <Option value="monthly">monthly</Option>
                                     <Option value="daily">daily</Option>
                                 </Select>
                             </span>
                         </span><br />
+                        <div>
+                            {
+                            <div className="select-days">
+                                <Button className={selectedDays['Sunday'] ? "selected-day-buttons" : "day-buttons"} onClick={()=>updateDays('Sunday')} >S</Button>
+                                <Button className={selectedDays['Monday'] ? "selected-day-buttons" : "day-buttons"} onClick={()=>updateDays('Monday')} >M</Button>
+                                <Button className={selectedDays['Tuesday'] ? "selected-day-buttons" : "day-buttons"}  onClick={()=>updateDays('Tuesday')}>T</Button>
+                                <Button className={selectedDays['Wednesday'] ? "selected-day-buttons" : "day-buttons"} onClick={()=>updateDays('Wednesday')} >W</Button>
+                                <Button className={selectedDays['Thursday'] ? "selected-day-buttons" : "day-buttons"} onClick={()=>updateDays('Thursday')} >T</Button>
+                                <Button className={selectedDays['Friday'] ? "selected-day-buttons" : "day-buttons"} onClick={()=>updateDays('Friday')} >F</Button>
+                                <Button className={selectedDays['Saturday'] ? "selected-day-buttons" : "day-buttons"} onClick={()=>updateDays('Saturday')} >S</Button>
+                            </div>
+}
+                             <div className="end-date">   
+                            Occures every Day
+                            <p className="end-dates">Choose an end date</p>
+                            </div> 
+                        </div>
 
-                        <Radio.Group defaultValue="Sunday">
+                        {/* <Radio.Group defaultValue="Sunday">
                             <Radio.Button value="Sunday" className="radio-button">S</Radio.Button>
                             <Radio.Button value="Monday" className="radio-button">M</Radio.Button>
                             <Radio.Button value="Tuesday" className="radio-button">T</Radio.Button>
@@ -603,7 +626,7 @@ function ReportGenerator() {
                             <Radio.Button value="Thursday" className="radio-button">T</Radio.Button>
                             <Radio.Button value="Friday" className="radio-button">F</Radio.Button>
                             <Radio.Button value="Saturday" className="radio-button">S</Radio.Button>
-                        </Radio.Group>
+                        </Radio.Group> */}
 
 
 

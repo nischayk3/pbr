@@ -24,7 +24,8 @@ font-size: small;
 {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 10px;
+    grid-gap: 5px;
+    text-align: center;
 
     .awap
     {

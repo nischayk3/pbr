@@ -3,8 +3,7 @@ import DesignCharts from './components/reportDesignerNew';
 import ReportGenerator from '../reportGenerator/components/reportGenerator';
 import {useSelector,useDispatch} from 'react-redux'
 import Landing from './components/reportLanding'
-import ChartTable from '../../../components/ChartTable';
-import ReportHead from './component/reportLanding/reportHead';
+
 
 function Report()
 {

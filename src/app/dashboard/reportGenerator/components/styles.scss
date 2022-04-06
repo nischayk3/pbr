@@ -27,6 +27,7 @@ table {
  
 
 }
+
 // .table {
 //     border: .5px solid black;
 //     width: 100%;
@@ -219,4 +220,36 @@ margin-left: 10px;
 .email-freq
 {
   margin-left: 20%;
+}
+.end-dates
+{
+  color:#093185;
+}
+.day-buttons
+{
+border-radius: 50% !important;
+width: 40px !important;
+height: 40px !important;
+background: #EAEAEA !important;
+align-items: center !important;
+margin-left: 10px;
+}
+.selected-day-buttons
+{
+border-radius: 50% !important;
+width: 45px !important;
+height: 40px !important;
+background: #486BC9 !important;
+align-items: center !important;
+font-size: 10px;
+margin-left: 10px;
+}
+
+.select-days
+{
+  margin-left: 30%;
+}
+.end-date
+{
+  margin-left: 30%;
 }

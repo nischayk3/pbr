@@ -126,8 +126,7 @@ export default function Landing(props) {
             return 'awap'
         }
     }
-   console.log(reportList.length) 
-    
+
     return (
         <div>
             <div className='custom-wrapper'>
@@ -169,7 +168,8 @@ export default function Landing(props) {
                                 <Divider />
                                 <div>
                                     <div className="tile">
-                                        {reportList.length > 0 ? reportList.map(i => (
+                                        {reportList.length > 0 ? reportList.map((i, index) => (
+                                            index < 10 &&
                                             <StatusBlock id={i.rep_disp_id} status={i.rep_status} />
                                         )) : <></>}
                                     </div>
@@ -195,8 +195,8 @@ export default function Landing(props) {
                                 <h3 className="recent-report">Recently created reports</h3>
                                 <Divider />
                                 <div className="tile">
-                                    {reportList && reportList.length > 0 && reportList.map((i,index) => (
-                                        
+                                    {reportList && reportList.length > 0 && reportList.map((i, index) => (
+                                        index < 10 &&
                                         <StatusBlock id={i.rep_disp_id} status={i.rep_status} />
                                     ))}
                                 </div>

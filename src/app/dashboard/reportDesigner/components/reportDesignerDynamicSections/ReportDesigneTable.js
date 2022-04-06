@@ -103,7 +103,10 @@ function ReportDesigneTable(props) {
                                             </Form.Item>
 
                                             ))
+
                                         }
+
+
                                         {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: 0, right: 0, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> <u disabled={props.show}></u> */}
                                     </div>
                                     <center>
