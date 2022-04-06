@@ -72,13 +72,14 @@ function paperBatchRecords() {
         useState(false);
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
-    const [tableDataSource, setTableDataSource] = useState(
-        initialTableDataSource
-    );
+    const [tableDataSource, setTableDataSource] = useState([]);
+    const [tableDataSourceFiltered, setTableDataSourceFiltered] =
+        useState(null);
     const [form] = Form.useForm();
 
     useEffect(() => {
         updateDate();
+        setTableDataSource(initialTableDataSource);
     }, []);
 
     ////////////////////////
@@ -244,16 +245,12 @@ function paperBatchRecords() {
     };
 
     function globalTemplateSearch(value) {
-        if (!value) {
-            setTableDataSource(initialTableDataSource);
-        } else {
-            const filterdDataArr = tableDataSource.filter((o) =>
-                Object.keys(o).some((k) =>
-                    String(o[k]).toLowerCase().includes(value.toLowerCase())
-                )
-            );
-            setTableDataSource(filterdDataArr);
-        }
+        const filterdDataArr = tableDataSource.filter((o) =>
+            Object.keys(o).some((k) =>
+                String(o[k]).toLowerCase().includes(value.toLowerCase())
+            )
+        );
+        setTableDataSourceFiltered(filterdDataArr);
     }
 
     return (
@@ -323,10 +320,12 @@ function paperBatchRecords() {
                                 <div className='pbrTemplates-tableBlock'>
                                     <Table
                                         className='pbrTemplates-table'
-                                        pagination={false}
                                         columns={columns}
-                                        dataSource={tableDataSource}
-                                        // rowKey={(record) => record.id}
+                                        dataSource={
+                                            tableDataSourceFiltered === null
+                                                ? tableDataSource
+                                                : tableDataSourceFiltered
+                                        }
                                     />
                                 </div>
                             </Col>
