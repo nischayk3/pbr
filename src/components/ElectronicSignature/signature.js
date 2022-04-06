@@ -6,17 +6,24 @@ import { eSign, publishEvent, approveRecord } from '../../services/electronicSig
 import { useDispatch } from 'react-redux';
 import { showNotification } from '../../duck/actions/commonActions'
 import queryString from 'query-string';
-
+import { loginUrl } from '../../services/loginService';
+import { adenabled } from '../../config/config';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 const { Option } = Select
 
-function Signature(props)
-{
+const onLogin = async () => {
+    window.open(`${loginUrl}?is_ui=true`, '_self')
+}
+
+
+function Signature(props) {
     const location = useLocation();
     const params = queryString.parse(location.search)
     var { isPublish, handleClose } = props
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
     const [reason, setReason] = useState('')
+    const [next, setClickedNext] = useState(false);
     const [primaryId, setPrimaryId] = useState()
     const dispatch = useDispatch();
 
@@ -37,23 +44,22 @@ function Signature(props)
         req['date'] = date_today
         req['timestamp'] = time_today
         req['reason'] = reason
-        req['user_id'] = username
+        req['user_id'] = props.ad ? localStorage.getItem('username') : username
         req['screen'] = props.screenName
         req['first_name'] = "first_name"
         req['last_name'] = "last_name"
         try {
-            
+
             let esign_response = await eSign(req)
 
-            if (esign_response.statuscode == 200) 
-            {
+            if (esign_response.statuscode == 200) {
                 setPrimaryId(esign_response.primary_id)
                 dispatch(showNotification('success', esign_response.message))
                 handleClose()
                 let reqs = {}
                 let req1 = {}
-                let user_details = JSON.parse(localStorage.getItem('user_details'))
-                let user = user_details["username"] ? user_details["username"] : ''
+                let user_details = localStorage.getItem('user')
+                let user = user_details? user_details : ''
 
                 reqs['application_type'] = props.appType
                 reqs['created_by'] = user
@@ -64,13 +70,12 @@ function Signature(props)
                 req1['applicationType'] = props.appType
                 req1['esignId'] = esign_response.primary_id.toString()
                 req1['resourceDispId'] = params.id
-                console.log(params.version)
 
-                if(params.version!='undefined')
-                {
-                req1['resourceVersion'] = parseInt(params.version)
+                if (params.version != 'undefined') {
+                    req1['resourceVersion'] = parseInt(params.version)
                 }
-                req1['status'] = props.status
+                //req1['status'] = props.status
+                req1['status'] = adenabled ? localStorage.getItem('status') : props.status
 
                 let publish_response = Object.keys(params).length > 0 ? await approveRecord(req1) : await publishEvent(reqs)
 
@@ -95,29 +100,36 @@ function Signature(props)
 
 
     }
+    const { TextArea } = Input;
     return (
         <div>
             <Modal
                 visible={isPublish}
-                title="Enter details to confirm update"
+                title="Let's Confirm your action"
                 width={500}
                 mask={true}
                 onCancel={handleClose}
-                footer={[<Button className="custom-secondary-btn" key="2" onClick={() => handleClose()}>Cancel</Button>, <Button className="custom-secondary-btn" key="1" onClick={() => handleConfirm()} >Confirm</Button>,]}
+                footer={adenabled || next ? [<Button className="custom-secondary-btn" key="2" onClick={() => {handleClose(); setClickedNext(false)}}>Cancel</Button>, <Button className="custom-secondary-btn" key="1" onClick={() => handleConfirm()} >Confirm</Button>,] : [<Button  key="3" onClick={() => setClickedNext(true)}>Next</Button>]}
                 mask={true}
             >
                 <div className="electronic-sig">
-                    <div>
-                        <p>User ID</p>
-                        <Input value={username} onChange={(e) => setUsername(e.target.value)} />
-                    </div>
-                    <div>
-                        <p>Password</p>
-                        <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    </div>
-                    <div>
-                        <p>Signing</p>
-                        <Select onChange={(e, value) => {
+                    { (!next && adenabled== false )  ? 
+                        <>
+                            <div>
+                                <p>User ID</p>
+                                <Input value={username} onChange={(e) => setUsername(e.target.value)} />
+                            </div>
+                            <div>
+                                <p>Password</p>
+                                <Input.Password  value={password} onChange={(e) => setPassword(e.target.value)} iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}/>
+                            </div>
+                        </> :
+                        <></>
+                    }
+                    {(adenabled || next) &&
+                        <div>
+                            <p>Comment</p>
+                            {/* <Select onChange={(e, value) => {
                             let reason_value = value.value ? value.value : ''
                             setReason(reason_value)
                         }}
@@ -136,8 +148,12 @@ function Signature(props)
                             <Option key="Other Reason">
                                 Other Reason
                             </Option>
-                        </Select>
-                    </div>
+                        </Select> */}
+                            <TextArea rows={3} value={reason} style={{ width: '450px' }} onChange={(e) => {
+                                setReason(e.target.value);
+                            }} />
+
+                        </div>}
                 </div>
             </Modal>
         </div>

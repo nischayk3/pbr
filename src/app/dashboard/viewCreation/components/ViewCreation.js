@@ -1,38 +1,31 @@
-// Ranjith K
-// Mareana Software
-// Version 1
-// Last modified - 08 March, 2022
+/**
+ * @author Dinesh Kumar <dinesh.kumar@mareana.com>
+ * @Mareana - CPV Product
+ * @version  1
+ * @Last Modified - 04 April, 2022
+ * @Last Changed By - Dinesh
+ */
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import {
   ArrowLeftOutlined,
   CloudUploadOutlined,
-  FileDoneOutlined,
-  Loading3QuartersOutlined,
-  SaveOutlined,
-  ShareAltOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
   BuildTwoTone,
 } from '@ant-design/icons';
 import {
-  Spin,
   Button,
   Collapse,
   Form,
   Popconfirm,
-  Space,
   Tag,
   Modal,
   Select,
   Input,
   Table,
-  Radio,
   Tooltip,
   message,
-  Divider,
 } from 'antd';
 import StatusWrong from '../../../../assets/statusWrong.svg';
 import StatusCorrect from '../../../../assets/statusCorrect.svg';
@@ -47,16 +40,20 @@ import {
   getViewConfig,
   getViews,
 } from '../../../../services/viewCreationPublishing';
-import { materialsParameterTree } from '../../../../duck/actions/fileUploadAction';
 import {
   saveFunction,
   updateFunction,
 } from '../../../../duck/actions/viewCreationAction';
-import { adHocFilesParameterTree } from '../../../../duck/actions/fileUploadAction';
+import {
+  adHocFilesParameterTree,
+  materialsParameterTree,
+} from '../../../../duck/actions/fileUploadAction';
 import Loading from '../../../../components/Loading';
 import Signature from '../../../../components/ElectronicSignature/signature';
 import queryString from 'query-string';
-
+import { sendUrl } from '../../../../duck/actions/loginAction';
+import { loginUrl } from '../../../../services/loginService';
+import { adenabled } from '../../../../config/config';
 const { Panel } = Collapse;
 
 const columns = [
@@ -96,6 +93,7 @@ function ViewCreation() {
   const molecule_Id = useSelector(
     (state) => state.viewCreationReducer.molecule_id
   );
+  const dispatch= useDispatch();
   const location = useLocation();
   const [count, setCount] = useState(1);
   const [params, setParams] = useState(false);
@@ -141,6 +139,7 @@ function ViewCreation() {
   const counter = useRef(0);
   const [showSpinner, setShowSpinner] = useState(false);
   const [approveReject, setApproveReject] = useState('');
+  const [ad, setAd] = useState(false);
   const [publishResponse, setPublishResponse] = useState({});
   const [saveResponseView, setSaveResponseView] = useState({
     viewId: '',
@@ -388,14 +387,14 @@ function ViewCreation() {
         setViewStatus(res.view_status);
         setViewVersion(res.view_version);
         setViewFunctionName(res.view_name);
-        if(res.view_status === 0)  {
-          status = 'DRFT'
+        if (res.view_status === 0) {
+          status = 'DRFT';
         }
-        if(res.view_status === 1)  {
-          status = 'AWAP'
+        if (res.view_status === 1) {
+          status = 'AWAP';
         }
-        if(res.view_status === 2)  {
-          status = 'APRD'
+        if (res.view_status === 2) {
+          status = 'APRD';
         }
         form.setFieldsValue({
           viewName: res.view_name,
@@ -661,6 +660,15 @@ function ViewCreation() {
       }
     });
   };
+
+  const onApprove = (item) =>
+  {
+    localStorage.setItem('status',item);
+    //setApproveReject(item);
+    window.open(`${loginUrl}?is_ui=true&ui_type=sign`,'_self')
+    dispatch(sendUrl(window.location.href));
+    localStorage.setItem('redirectUrl',window.location.href);
+  }
   const handleSaveFunc = async () => {
     if (!viewFunctionName.length) {
       message.error('Please Enter Name');
@@ -703,14 +711,14 @@ function ViewCreation() {
       }))
     );
     let status;
-    if(viewStatus === 'DRFT')  {
-      status = 0
+    if (viewStatus === 'DRFT') {
+      status = 0;
     }
-    if(viewStatus === 'AWAP')  {
-      status = 1
+    if (viewStatus === 'AWAP') {
+      status = 1;
     }
-    if(viewStatus === 'APRD')  {
-      status = 2
+    if (viewStatus === 'APRD') {
+      status = 2;
     }
     const obj = {
       view_name: viewFunctionName,
@@ -722,7 +730,7 @@ function ViewCreation() {
       view_description: 'Test View Object',
       view_version: viewVersion,
       view_disp_id: viewDisplayId,
-      view_status:  viewStatus,
+      view_status: viewStatus,
     };
     const headers = {
       username: 'user_mareana1',
@@ -831,7 +839,7 @@ function ViewCreation() {
   };
 
   const PublishResponse = (res) => {
-  console.log(res);
+    console.log(res);
     setPublishResponse(res);
     setViewStatus(res.rep_stauts);
   };
@@ -846,6 +854,12 @@ function ViewCreation() {
     if (Object.keys(params).length > 0) {
       setParams(true);
       onOkHandler(params.id);
+      if(Object.keys(params).includes('publish'))
+      { setParams(true);
+        setAd(true)
+        onOkHandler(params.id);
+        setIsPublish(true)
+      }
     }
   }, [materialsList]);
 
@@ -859,19 +873,21 @@ function ViewCreation() {
           <div className='viewCreation-btns'>
             <Button
               className='viewCreation-rejectBtn'
-              onClick={() => {
-                setIsPublish(true);
-                setApproveReject('R');
-              }}
+              // onClick={() => {
+              //   setIsPublish(true);
+              //   setApproveReject('R');
+              // }}
+              onClick={()=>{adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
             >
               Reject
             </Button>
             <Button
               className='viewCreation-publishBtn'
-              onClick={() => {
-                setIsPublish(true);
-                setApproveReject('A');
-              }}
+              // onClick={() => {
+              //   setIsPublish(true);
+              //   setApproveReject('A');
+              // }}
+              onClick={()=>{adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
             >
               Approve
             </Button>
@@ -916,7 +932,7 @@ function ViewCreation() {
               <Button className='viewCreation-shareBtn'>Share</Button>
               <Button
                 className='viewCreation-publishBtn'
-                onClick={() => setIsPublish(true)}
+                onClick={() => {setIsPublish(true); setAd(true)}}
               >
                 <CloudUploadOutlined />
                 Publish
@@ -1194,6 +1210,7 @@ function ViewCreation() {
         dispId={viewDisplayId}
         version={viewVersion}
         status={approveReject}
+        ad={ad}
       />
     </div>
   );

@@ -92,6 +92,12 @@ const MENU = [
         linkTo: '/dashboard/genealogy',
     },
     {
+        key: 'workspace',
+        icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+        title: 'Workspace',
+        linkTo: '/dashboard/workspace',
+    },
+    {
         key: 'paper_batch_records',
         icon: <LinkOutlined style={{ fontSize: '23px' }} />,
         title: 'Paper Batch Records',

@@ -2,7 +2,7 @@
  * @author Dinesh Kumar <dinesh.kumar@mareana.com>
  * @Mareana - CPV Product
  * @version  1
- * @Last Modified - 16 March, 2022
+ * @Last Modified - 31 March, 2022
  * @Last Changed By - Dinesh
  */
 
@@ -11,8 +11,8 @@ import { ArrowLeftOutlined, DownloadOutlined } from '@ant-design/icons';
 import { Tabs } from 'antd';
 import Filter from './genealogyFilter';
 import TreePlot from './TreePlot/TreePlot';
-import response from '../treePlot.json';
-import forwardJson from '../forward.json';
+// import response from '../treePlot.json';
+// import forwardJson from '../forward.json';
 import batchIcon from '../../../../assets/images/material.png';
 import { useDispatch } from 'react-redux';
 import {
@@ -29,12 +29,15 @@ import {
 import popupicon from '../../../../assets/images/popup.png';
 import GenealogyDrawer from '../components/genealogyDrawer/index.js';
 import GenealogyDataTable from './genealogyDataTable';
+import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
+import genealogyLanding from '../../../../assets/images/genealogy-landing.png';
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 
 const { TabPane } = Tabs;
-
-const initialPanes = [
+let initialPanes = [
   { title: ' ', content: '', key: '1', closable: false, class: '' },
 ];
+
 function Genealogy() {
   const [chartType, setchartType] = useState('backward');
   const [isBackward, setisBackward] = useState(true);
@@ -45,11 +48,15 @@ function Genealogy() {
   const [activateKey, setActivateKey] = useState('1');
   const [isDrawer, setIsDrawer] = useState(false);
   const [batchInfo, setBatchInfo] = useState([]);
-  const [processInfo, setProcessInfo] = useState([]);
+  const [purchaseInfo, setPurchaseInfo] = useState([]);
+  const [processInput, setProcessInput] = useState([]);
+  const [processOutput, setProcessOutput] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isDrawerRef, setIsDrawerRef] = useState(false);
   const [panes, setPanes] = useState(initialPanes);
-
+  const [limsBatchInfo, setLimsBatchInfo] = useState([]);
   const [showView, setShowView] = useState(false);
+  const [nodeType, setNodeType] = useState('');
 
   const dispatch = useDispatch();
 
@@ -77,23 +84,55 @@ function Genealogy() {
       setchartType('forward');
       setProductCode(node.product);
     } else if (node.clickType === 'view') {
-      let nodeSplit = node.nodeId.split('|');
-      let _reqBatchInfo = {
-        ///batch-info?entity_type=Lims&relation_id=batch_to_lims&batch_id=ABV4103
-        entity_type: 'Lims',
-        relation_id: 'batch_to_lims',
-        batch_id: 'ABV4103',
-        // nodeSplit[2],
-      };
-      let _reqProcessInfo = {
-        entity_type: 'Batch',
-        process_order_id: '1338|1.02279687E8',
-        relation_id: 'input_process_order_to_batch',
-      };
+      if (node.nodeType === 'Material') {
+        let batchInfoDetails = {
+          product: node.nodeData.matNo,
+          batch: node.nodeData.batchNo,
+          product_desc: node.nodeData.matDesc,
+          node_id: node.nodeData.nodeId,
+        };
+        setBatchInfo(batchInfoDetails);
+        setIsDrawerOpen(true);
+        setIsDrawerRef(false);
+        setNodeType(node.nodeType);
+        let nodeSplit = node.nodeId.split('|');
 
-      getNodeBatchInfo(_reqBatchInfo);
-      getNodeProcessInfo(_reqProcessInfo);
-      setIsDrawerOpen(true);
+        let _reqBatchInfo = {
+          entity_type: 'Lims',
+          relation_id: 'batch_to_lims',
+          batch_id: nodeSplit[2],
+          // 'ABV4103',
+        };
+        getNodeBatchInfo(_reqBatchInfo);
+      } else if (node.nodeType === 'Process Order') {
+        setNodeType(node.nodeType);
+        let _reqProcessInput = {
+          entity_type: 'Batch',
+          process_order_id: `${node.nodeData.plant}|${node.nodeData.poNo}`,
+          relation_id: 'input_process_order_to_batch',
+        };
+        let _reqProcessOutput = {
+          entity_type: 'Batch',
+          process_order_id: `${node.nodeData.plant}|${node.nodeData.poNo}`,
+          relation_id: 'output_batch_to_process_order',
+        };
+        setIsDrawerOpen(true);
+        setIsDrawerRef(false);
+        setNodeType(node.nodeType);
+        getNodeProcessInput(_reqProcessInput);
+        getNodeProcessOutput(_reqProcessOutput);
+      } else if (node.nodeType === 'Purchase Order') {
+        let purchaseInfo = {
+          node_id: node.nodeData.nodeId,
+          plant: node.nodeData.plant,
+          purchase_id: node.nodeData.pur_ord_no,
+          vendor_no: node.nodeData.vendor_no,
+        };
+        setPurchaseInfo(purchaseInfo);
+        setIsDrawerOpen(true);
+        setIsDrawerRef(false);
+        setNodeType(node.nodeType);
+      }
     }
   };
 
@@ -105,8 +144,9 @@ function Genealogy() {
     if (param.treeType === 'Backward') {
       let _reqBack = {
         levels: 5,
-        batch_id: '1338|1089084|394154',
-        //selectedValue.replace(/\s/g, ''),
+        batch_id: selectedValue.replace(/\s/g, ''),
+        //'1338|1089084|394154',
+        //
         backward: true,
       };
       //setActivateKey('2');
@@ -129,14 +169,18 @@ function Genealogy() {
       setProductCode(product[0]);
     }
 
-    initialPanes.push({
-      title: '',
-      content: '',
-      key: '2',
-      closable: true,
-      class: 'tree-wrap site-drawer-render-in-current-wrapper',
-    });
-    setPanes(initialPanes);
+    if (isDrawerRef === false) {
+      initialPanes.push({
+        title: '',
+        content: '',
+        key: '2',
+        closable: true,
+        class: 'tree-wrap site-drawer-render-in-current-wrapper',
+      });
+      setPanes(initialPanes);
+    } else {
+      console.log(isDrawerRef);
+    }
   };
   /**
    * TODO: get backward genealogy data from selected parameters or from on node click
@@ -144,14 +188,14 @@ function Genealogy() {
   const getBackwardGeneology = async (_reqBack) => {
     try {
       dispatch(showLoader());
-
       const backwardRes = await getBackwardData(_reqBack);
-
+      console.log(backwardRes);
       if (backwardRes.length > 0) {
         setGenealogyData(backwardRes);
         setisBackward(true);
         setisForward(false);
         setShowTree(true);
+        setIsDrawerRef(true);
         setActivateKey('2');
         dispatch(hideLoader());
       } else if (backwardRes.status === 400) {
@@ -172,11 +216,13 @@ function Genealogy() {
     try {
       dispatch(showLoader());
       const forwardRes = await getForwardData(_reqFor);
+
       if (forwardRes.length > 0) {
         setGenealogyData(forwardRes);
         setisBackward(false);
         setisForward(true);
         setShowTree(true);
+        setIsDrawerRef(true);
         setActivateKey('2');
         dispatch(hideLoader());
       } else if (forwardRes.status === 400) {
@@ -199,7 +245,12 @@ function Genealogy() {
     try {
       dispatch(showLoader());
       const batchRes = await getBatchInfo(_reqBatch);
-      setBatchInfo(batchRes);
+      if (batchRes.length > 0) {
+        setLimsBatchInfo(batchRes);
+      } else if (batchRes.status === 404) {
+        setLimsBatchInfo();
+        dispatch(showNotification('error', batchRes.detail));
+      }
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
@@ -208,14 +259,14 @@ function Genealogy() {
   };
 
   /**
-   *TODO: get Process Info of node
+   *TODO: get Process Input of node
    */
-  const getNodeProcessInfo = async (_reqProcessInfo) => {
+  const getNodeProcessInput = async (_reqProcessInfo) => {
     try {
       dispatch(showLoader());
-      const processRes = await getProcessInfo(_reqProcessInfo);
-      if (processRes.length > 0) {
-        setProcessInfo(processRes);
+      const processResInput = await getProcessInfo(_reqProcessInfo);
+      if (processResInput.length > 0) {
+        setProcessInput(processResInput);
       }
       dispatch(hideLoader());
     } catch (error) {
@@ -223,24 +274,58 @@ function Genealogy() {
       dispatch(showNotification('error', 'No Data Found'));
     }
   };
+
+  /**
+   *TODO: get Process output of node
+   */
+  const getNodeProcessOutput = async (_reqProcessInfo) => {
+    try {
+      dispatch(showLoader());
+      const processResOutput = await getProcessInfo(_reqProcessInfo);
+      if (processResOutput.length > 0) {
+        setProcessOutput(processResOutput);
+      }
+      dispatch(hideLoader());
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', 'No Data Found'));
+    }
+  };
+
   const handleChangeTab = (activateKey) => {
     setActivateKey(activateKey);
   };
 
   const isDrawerVisible = (val) => {
     setIsDrawer(val);
-
     setShowView(true);
     setIsDrawerOpen(false);
-    initialPanes.push({
-      title: '',
-      content: '',
-      key: '3',
-      closable: true,
-      class: '',
-    });
-    setPanes(initialPanes);
+
+    if (isDrawerRef === false) {
+      initialPanes.push({
+        title: '',
+        content: '',
+        key: '3',
+        closable: true,
+        class: '',
+      });
+      setPanes(initialPanes);
+    } else {
+      console.log(isDrawerRef);
+    }
+    // initialPanes.push({
+    //   title: '',
+    //   content: '',
+    //   key: '3',
+    //   closable: true,
+    //   class: '',
+    // });
+    // setPanes(initialPanes);
     setActivateKey('3');
+  };
+
+  const onCloseDrawer = (val) => {
+    setIsDrawerOpen(val);
   };
   const onEditTab = (targetKey, action) => {
     remove(targetKey);
@@ -254,7 +339,20 @@ function Genealogy() {
         lastIndex = i - 1;
       }
     });
+    initialPanes.forEach((pane, i) => {
+      if (pane.key === targetKey) {
+        lastIndex = i - 1;
+      }
+    });
     const newPanes = panes.filter((pane) => pane.key !== targetKey);
+    const newInitPanes = initialPanes.filter((pane) => pane.key !== targetKey);
+    if (newInitPanes.length && newActiveKey === targetKey) {
+      if (lastIndex >= 0) {
+        newActiveKey = newInitPanes[lastIndex].key;
+      } else {
+        newActiveKey = newInitPanes[0].key;
+      }
+    }
     if (newPanes.length && newActiveKey === targetKey) {
       if (lastIndex >= 0) {
         newActiveKey = newPanes[lastIndex].key;
@@ -262,19 +360,33 @@ function Genealogy() {
         newActiveKey = newPanes[0].key;
       }
     }
+
+    initialPanes = newInitPanes;
+    setIsDrawerRef(false);
     setPanes(newPanes);
     setActivateKey(newActiveKey);
   };
-  console.log('genealogyData', genealogyData);
+
   return (
     <div className='custom-wrapper'>
-      <div className='sub-header'>
-        <div className='sub-header-title'>
-          <ArrowLeftOutlined className='header-icon' />
-          <span className='header-title'>Genealogy</span>
-        </div>
-      </div>
+      <BreadCrumbWrapper />
       <div className='custom-content-layout'>
+        {activateKey == '1' ? (
+          <div style={{ marginBottom: '9px' }}>
+            <ScreenHeader
+              bannerbg={{
+                background: 'linear-gradient(180deg, #FFFFFF 0%, #B9D6FF 100%)',
+              }}
+              title='Hello there,'
+              description='Shall we get down to tracing some batches and materials?'
+              source={genealogyLanding}
+              sourceClass='geanealogy-image'
+            />
+          </div>
+        ) : (
+          <></>
+        )}
+
         <Tabs
           className='custom-tabs'
           activeKey={activateKey}
@@ -322,14 +434,20 @@ function Genealogy() {
                         Forward={isForward}
                         data={genealogyData[0]}
                         nodeClick={onClickNode}
-                        //handleChartClick={handleClickNode}
+                        firstNode={productCode}
+                      //handleChartClick={handleClickNode}
                       />
                     )}
                     <GenealogyDrawer
                       drawerVisible={isDrawerOpen}
                       isDrawer={isDrawerVisible}
+                      drawerClose={onCloseDrawer}
+                      type={nodeType}
+                      limsBatchInfo={limsBatchInfo}
+                      purchaseInfo={purchaseInfo}
                       batchInfo={batchInfo}
-                      processInfo={processInfo}
+                      processInput={processInput}
+                      processOutput={processOutput}
                     />
                   </>
                 ) : item.key === '3' ? (
@@ -337,7 +455,7 @@ function Genealogy() {
                     <div className='drawer-title'>
                       <img className='tree-type-icon' src={batchIcon} />
                       <p>35735735 - Material</p>
-                      <span>
+                      <span className='download-file'>
                         <DownloadOutlined />
                       </span>
                     </div>
@@ -345,8 +463,12 @@ function Genealogy() {
                       className={
                         isDrawer ? 'drawer-collapse' : 'popout-collapse'
                       }
+                      type={nodeType}
+                      limsBatchInfo={limsBatchInfo}
+                      purchaseInfo={purchaseInfo}
                       batchInfo={batchInfo}
-                      processInfo={processInfo}
+                      processInput={processInput}
+                      processOutput={processOutput}
                     />
                   </div>
                 ) : (

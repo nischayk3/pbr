@@ -192,9 +192,11 @@ p {
     }
 
     form.ant-form.ant-form-vertical.formNewTemplate {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 0 24px;
+        .formNewTemplateDiv {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 0 24px;
+        }
 
         label {
             font-weight: 400;
@@ -204,14 +206,47 @@ p {
     }
 }
 
+.radioPdfBlock {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0 24px;
+    margin-bottom: 10px;
+
+    label {
+        padding: 11px 5px;
+        border: 0.5px solid #c2c2c2;
+        border-radius: 4px;
+        margin: 10px 0px;
+        height: 57px;
+    }
+
+    .ant-radio-button-wrapper:first-child {
+        border-radius: 4px;
+    }
+
+    .ant-radio-button-wrapper:not(:first-child):before {
+        background-color: transparent;
+    }
+
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+        border-color: #486bc9;
+
+        &::after {
+            content: '';
+            position: absolute;
+            background-image: url('../../../../assets/images/checkbox.svg');
+            width: 18px;
+            height: 18px;
+            top: -12px;
+            right: -8px;
+        }
+    }
+}
+
 .pdfListBlock {
-    border: 0.5px solid #c2c2c2;
-    padding: 10px;
-    border-radius: 4px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 24px;
 
     img {
         margin-right: 4px;

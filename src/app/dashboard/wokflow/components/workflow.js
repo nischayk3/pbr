@@ -119,7 +119,7 @@ const Workflow = () => {
             <div className='custom-content-layout'>
                 <Card className='workflow_head'>
                     <div>
-                        <p className='dash-username'>Hello {(localStorage.getItem('user'))}!</p>
+                        <p className='dash-username'>Hello {(localStorage.getItem('username'))}!</p>
                         <p className='dash-text'>Today is a great day to approve some records! Let's take look.</p>
                     </div>
                     <img src={illustrations} className='illustration' />

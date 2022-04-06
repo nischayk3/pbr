@@ -55,7 +55,7 @@ function ChartPersonalization() {
   const [visible, setVisible] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [isView, setIsView] = useState(false);
-  const [displayId, setDispalyId] = useState({viewId:'', version:''});
+  const [displayId, setDispalyId] = useState({ viewId: '', version: '' });
   const [isNew, setIsNew] = useState(false);
   const [isNewBtnDisabled, setisNewBtnDisabled] = useState(true);
   const [showChart, setShowChart] = useState(false);
@@ -404,7 +404,7 @@ function ChartPersonalization() {
       const chartRes = await getChartObj(reqChartObj);
       if (chartRes.statuscode === 200) {
         let chartResData = chartRes && chartRes.data ? chartRes.data : {};
-        
+
         setchartResObj(chartResData);
         dispatch(sendChartData(chartResData && chartResData));
 
@@ -617,7 +617,7 @@ function ChartPersonalization() {
                 isChartNameEmpty={callBackChartName}
                 setExclusionTableData={setExclusionTableData}
                 exclusionTableData={exclusionTableData}
-                selectedLayout={selectedLayout} 
+                selectedLayout={selectedLayout}
                 setselectedLayout={setselectedLayout}
                 dataTable={dataTable}
                 setDataTable={setDataTable}

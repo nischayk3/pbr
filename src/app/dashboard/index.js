@@ -1,14 +1,6 @@
 import './dashboard.scss';
-
 import React, { lazy, useEffect } from 'react';
-import {
-    Redirect,
-    Route,
-    Switch,
-    useHistory,
-    useRouteMatch,
-} from 'react-router-dom';
-
+import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
 import Auth from '../../utils/auth';
 import BreadCrumbWrapper from '../../components/BreadCrumbWrapper';
 import HeaderBar from '../../components/Header';
@@ -16,13 +8,16 @@ import { Layout } from 'antd';
 import Sidebar from '../../components/Sidebar';
 import SuspenseWrapper from '../../components/SuspenseWrapper';
 import Uploader from './dataLoad/index';
-import Pbr from './paperBatchRecords';
+import LoginRedirect from '../user/login/redirect';
+import RedirectSign from '../user/login/redirectSign';
 import PaperBatchRecords from './paperBatchRecords';
+import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate';
 
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
-const ChartPersonalization = lazy(() => import('./chartPersonalization'));
+// const ChartPersonalization = lazy(() => import('./chartPersonalization'));
+const ChartPersonal = lazy(() => import('./chartPersonal'));
 const SystemErrorReport = lazy(() => import('./systemErrorReport'));
 const ViewCreation = lazy(() => import('./viewCreation'));
 
@@ -31,6 +26,7 @@ const ReportDesigner = lazy(() => import('./reportDesigner'));
 const AuditTrial = lazy(() => import('./auditTrial'));
 const ReportGenerator = lazy(() => import('./reportGenerator'));
 const Workflow = lazy(() => import('./wokflow'));
+const Workspace = lazy(() => import('./workspace'));
 const Genealogy = lazy(() => import('./genealogy'));
 const { Content } = Layout;
 
@@ -39,9 +35,9 @@ const Dashboard = () => {
     const history = useHistory();
 
     useEffect(() => {
-        if (!Auth.isAuthenticated()) {
-            history.push('/user/login');
-        }
+        // if (!Auth.isAuthenticated()) {
+        //   history.push('/user/login');
+        // }
     }, [history]);
     return (
         <>
@@ -72,7 +68,7 @@ const Dashboard = () => {
                                     key='chart_personalization'
                                     path={`${match.url}/chart_personalization`}
                                 >
-                                    <ChartPersonalization />
+                                    <ChartPersonal />
                                 </Route>
                                 <Route
                                     key='system_error_report'
@@ -117,14 +113,34 @@ const Dashboard = () => {
                                     <Workflow />
                                 </Route>
                                 <Route
+                                    key='workspace'
+                                    path={`${match.url}/workspace`}
+                                >
+                                    <Workspace />
+                                </Route>
+                                <Route
                                     key='paper_batch_records'
                                     path={`${match.url}/paper_batch_records`}
                                 >
                                     <PaperBatchRecords />
                                 </Route>
-
-                                <Route key='redirect'>
-                                    <Redirect to={`${match.url}/dashboard`} />
+                                <Route
+                                    key='paper_batch_records_template'
+                                    path={`${match.url}/pbr_template`}
+                                >
+                                    <PaperBatchRecordsTemplate />
+                                </Route>
+                                <Route
+                                    key='redirect'
+                                    path={`${match.url}/redirect`}
+                                >
+                                    <LoginRedirect />
+                                </Route>
+                                <Route
+                                    key='redirect_sign'
+                                    path={`${match.url}/redirect_sign`}
+                                >
+                                    <RedirectSign />
                                 </Route>
                             </Switch>
                         </SuspenseWrapper>

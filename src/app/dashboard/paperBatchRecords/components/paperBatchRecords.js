@@ -23,10 +23,12 @@ import Highlighter from 'react-highlight-words';
 import illustrations from '../../../../assets/images/banner-pbr.svg';
 import newTemplateModal from '../../../../assets/images/newTemplateModal.svg';
 import pdfIcon from '../../../../assets/images/pdfIcon.svg';
+import { useHistory } from 'react-router-dom';
 
 const { Search } = Input;
 
 function paperBatchRecords() {
+    let history = useHistory();
     const initialTableDataSource = [
         {
             key: '1',
@@ -237,7 +239,9 @@ function paperBatchRecords() {
         setNewTemplateModalVisible(false);
     };
 
-    const handleTemplateSubmit = () => {};
+    const handleTemplateSubmit = () => {
+        history.push('/dashboard/pbr_template');
+    };
 
     function globalTemplateSearch(value) {
         if (!value) {
@@ -269,7 +273,9 @@ function paperBatchRecords() {
                     <Card bordered={false}>
                         <div className='card-body-div'>
                             <div className='text-descp'>
-                                <h2>Howdy {localStorage.getItem('user')},</h2>
+                                <h2>
+                                    Howdy {localStorage.getItem('username')},
+                                </h2>
                                 <p>
                                     In the mood to draw up some snippets today?
                                 </p>
@@ -359,28 +365,31 @@ function paperBatchRecords() {
                                 form={form}
                                 className='formNewTemplate'
                             >
-                                <Form.Item
-                                    label='Template name'
-                                    name='templateName'
-                                >
-                                    <Input />
-                                </Form.Item>
-                                <Form.Item label='Status' name='status'>
-                                    <Input placeholder='Draft' disabled />
-                                </Form.Item>
-                                <Form.Item
-                                    label='Material number'
-                                    name='materialNumber'
-                                >
-                                    <Input />
-                                </Form.Item>
-                                <Form.Item
-                                    label='Batch number'
-                                    name='batchNumber'
-                                >
-                                    <Input />
-                                </Form.Item>
-                                {/* <Radio.Group
+                                <div className='formNewTemplateDiv'>
+                                    <Form.Item
+                                        label='Template name'
+                                        name='templateName'
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                    <Form.Item label='Status' name='status'>
+                                        <Input placeholder='Draft' disabled />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label='Material number'
+                                        name='materialNumber'
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label='Batch number'
+                                        name='batchNumber'
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </div>
+
+                                <Radio.Group
                                     // onChange={onChange}
                                     defaultValue='a'
                                     className='radioPdfBlock'
@@ -409,9 +418,8 @@ function paperBatchRecords() {
                                             <span>loremipsum23.pdf</span>
                                         </div>
                                     </Radio.Button>
-                                </Radio.Group> */}
-
-                                <div className='pdfListBlock'>
+                                </Radio.Group>
+                                {/* <div className='pdfListBlock'>
                                     <img src={pdfIcon} alt='pdfIcon' />
                                     <span>loremipsum23.pdf</span>
                                 </div>
@@ -426,7 +434,7 @@ function paperBatchRecords() {
                                 <div className='pdfListBlock'>
                                     <img src={pdfIcon} alt='pdfIcon' />
                                     <span>loremipsum23.pdf</span>
-                                </div>
+                                </div> */}
                             </Form>
                         </Col>
                     </Row>

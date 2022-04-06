@@ -192,7 +192,7 @@ div#federalDiv {
 }
 .additionalParentForwardLink {
   fill: none;
-  stroke: rgb(255, 140, 0);
+  stroke: #08c6ff;
   stroke-width: 2px;
   // stroke-linecap: round !important;
   // opacity: 0.7 !important;
@@ -300,7 +300,8 @@ div.popup {
 
 .genealogy-legends_frames {
   position: absolute;
-  bottom: 0px;
+  bottom: 3px;
+  left: 25px;
   display: none;
   background: #ffffff;
   width: 251px;
@@ -315,6 +316,7 @@ div.popup {
       grid-template-columns: 30px 200px;
       grid-gap: 8px 13px;
       padding-bottom: 10px !important;
+      text-align: left;
       img {
         width: 19px;
         height: 21px;
@@ -393,7 +395,7 @@ div.popup {
 // }
 .tree-wrap {
   position: relative;
-  min-height: 450px;
+  min-height: 750px;
 }
 .drag-search {
   position: absolute;
@@ -414,8 +416,9 @@ div.popup {
     font-size: 16px;
     border-radius: 4px 4px 0px 0px;
     line-height: 22px;
+    text-align: left;
     /* identical to box height, or 138% */
-    padding: 8px 25px;
+    padding: 8px 12px;
     display: block;
     color: #ffffff;
     width: 100%;
@@ -429,13 +432,23 @@ div.popup {
   background: #ffffff;
   box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.24);
   border-radius: 4px;
-  button {
-    margin: -1px 0;
+  > button {
+    margin: 1px 0;
     width: 100%;
     background: #fff;
     color: #093185;
-    padding: 6px 0;
+    padding: 0;
     height: 36px;
+    border-bottom: 1px solid #ccc;
+    border: 0;
+    text-align: left;
+  }
+  > button:nth-child(3) {
+    border: 0 !important;
+  }
+  :hover {
+    background-color: transparent;
+    color: #093185;
   }
 }
 
@@ -465,11 +478,12 @@ div.headerattribute {
 
 .select-allowclear {
   position: relative;
+  display: flex;
   .close-searchicon {
     border: 0;
     position: absolute;
-    right: -5px;
-    top: 1px;
+    right: 41px;
+    top: 2px;
     background: transparent;
   }
 }
