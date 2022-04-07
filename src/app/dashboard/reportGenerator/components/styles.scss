@@ -3,14 +3,22 @@
 .ant-card-head {
   background-color: #f1f7ff !important;
 }
-.ant-table-cell 
-{
+// .ant-table-cell 
+// {
+//   background-color: #F2FBFF !important;
+// }
+thead[class*="ant-table-thead"] th{
   background-color: #F2FBFF !important;
+}
+
+tr:nth-child(odd){ 
+  background: #F9F9F9;
 }
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
+  border: none;
 }
 
  th {
@@ -24,7 +32,6 @@ table {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
- 
 
 }
 
@@ -108,7 +115,7 @@ table {
 }
 .table-card
 {
-  margin-top: 15px;
+  margin-top: 40px;
 }
 .radio-button
 {
@@ -116,7 +123,14 @@ table {
 }
 .schedule-btn
 {
-    background: '#093185';
+    background-color: #093185;
+    color : 'white';
+    border-radius: '4px';
+    float: 'left';
+}
+.schedule-btn-true
+{
+  background-color:  #093185;
     color : 'white';
     border-radius: '4px';
     float: 'left';
@@ -233,16 +247,16 @@ height: 40px !important;
 background: #EAEAEA !important;
 align-items: center !important;
 margin-left: 10px;
+color: black !important;
 
 }
 .selected-day-buttons
 {
-border-radius: 50% !important;
-width: 45px !important;
+  border-radius: 50% !important;
+width: 40px !important;
 height: 40px !important;
-background: #486BC9 !important;
+background: #486BC9  !important;
 align-items: center !important;
-font-size: 10px;
 margin-left: 10px;
 color: white !important;
 }
@@ -257,10 +271,15 @@ color: white !important;
 }
 .generator-card
 {
-  min-height: 720px;
-  max-height: 720px;
+  min-height: 700px;
+  max-height: 700px;
   width: 100%;
-  margin-left: 20px;
-  padding: 30px;
+  // margin-left: 20px;
+  // padding: 30px;
   overflow: scroll;
+}
+.collapse-generate
+{
+background: #FAFAFA;
+border: 1px solid #D9D9D9;
 }

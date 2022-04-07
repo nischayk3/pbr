@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Space, Popconfirm, Card, Button } from 'antd';
-import { CheckCircleTwoTone, DeleteTwoTone, PlusSquareOutlined } from '@ant-design/icons';
+import { CheckCircleTwoTone, DeleteTwoTone, PlusSquareOutlined, PlusOutlined } from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
 import Chart from '../reportChart/chartComponent/chartComponent'
@@ -10,7 +10,6 @@ import { useDispatch } from 'react-redux';
 
 
 function ReportDesignerDynamicSections(props) {
-
 
     const convertListToObj = (arr) => {
         let obj = []
@@ -42,7 +41,11 @@ function ReportDesignerDynamicSections(props) {
 
         dispatch(showLoader())
         section = section + 1
-        addedCharts[`${section}`].pop(chartName)
+        let chart_index =  addedCharts[`${section}`].indexOf(chartName)
+        if (chart_index > -1) {
+            addedCharts[`${section}`].splice(chart_index,1)  // 2nd parameter means remove one item only
+          }
+        
         dispatch(hideLoader())
     }
 
@@ -71,6 +74,7 @@ function ReportDesignerDynamicSections(props) {
         props.setSectionCharts(chartName, addedCharts)
 
     }
+
 
     return (
         <div className="reportDesigner-dynamicSections bg-white">
@@ -113,6 +117,10 @@ function ReportDesignerDynamicSections(props) {
                                                 </tbody>
                                             </table>
                                         </Space>
+                                        <center>
+                                            <PlusOutlined />
+                                            <div>ADD Chart</div>
+                                        </center>
                                         <div className="chart-block">
                                             {showChart &&
                                                 list.map((i) =>
@@ -151,7 +159,7 @@ function ReportDesignerDynamicSections(props) {
                     </Form.List>
                 </div>
             </Card>
-         </div>
+        </div>
     );
 }
 

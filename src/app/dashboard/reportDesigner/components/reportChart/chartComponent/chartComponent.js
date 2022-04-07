@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs,Table } from 'antd'
+import { Tabs, Table } from 'antd'
 import { useDispatch } from 'react-redux';
 import Plot from 'react-plotly.js';
 import { getChartPlotData } from '../../../../../../services/workSpaceServices';
@@ -15,62 +15,62 @@ const { TabPane } = Tabs;
 
 const exclusionColumns = [
     {
-      title: 'ARSENIC',
-      dataIndex: 'ARSENIC',
-      key: 'ARSENIC',
-      render: (text, record) => {
-        return {
-          props: {
-            style: { background: record.color },
-          },
-          children: <div>{text}</div>,
-        };
-      },
+        title: 'ARSENIC',
+        dataIndex: 'ARSENIC',
+        key: 'ARSENIC',
+        render: (text, record) => {
+            return {
+                props: {
+                    style: { background: record.color },
+                },
+                children: <div>{text}</div>,
+            };
+        },
     },
     {
-      title: 'batch_num',
-      dataIndex: 'batch_num',
-      key: 'batch_num',
-      render: (text, record) => {
-        return {
-          props: {
-            style: { background: record.color },
-          },
-          children: <div>{text}</div>,
-        };
-      },
-  
+        title: 'batch_num',
+        dataIndex: 'batch_num',
+        key: 'batch_num',
+        render: (text, record) => {
+            return {
+                props: {
+                    style: { background: record.color },
+                },
+                children: <div>{text}</div>,
+            };
+        },
+
     },
     {
-      title: 'new function',
-      dataIndex: 'new function',
-      key: 'new function',
-      render: (text, record) => {
-        return {
-          props: {
-            style: { background: record.color },
-          },
-          children: <div>{text}</div>,
-        };
-      },
+        title: 'new function',
+        dataIndex: 'new function',
+        key: 'new function',
+        render: (text, record) => {
+            return {
+                props: {
+                    style: { background: record.color },
+                },
+                children: <div>{text}</div>,
+            };
+        },
     },
     {
-      title: 'new function1',
-      dataIndex: 'new function1',
-      key: 'new function1',
-      render: (text, record) => {
-        return {
-          props: {
-            style: { background: record.color },
-          },
-          children: <div>{text}</div>,
-        };
-      },
+        title: 'new function1',
+        dataIndex: 'new function1',
+        key: 'new function1',
+        render: (text, record) => {
+            return {
+                props: {
+                    style: { background: record.color },
+                },
+                children: <div>{text}</div>,
+            };
+        },
     },
-  ];
+];
 
 const chartComponent = (props) => {
-    
+
     const [workspaceChartData, setWorkSpaceChartData] = useState([]);
     const [workspaceChartLayout, setWorkSpaceChartLayout] = useState([]);
     const [workspaceChartLayoutXAxis, setWorkSpaceChartLayoutXAxis] = useState([]);
@@ -117,25 +117,25 @@ const chartComponent = (props) => {
         }
     };
     return (
-           
-          <div className="chartTable">
+
+        <div className="chartTable">
             <div >
-            <Plot
-                data={[workspaceChartData]}
-                layout={layout}
-            />
+                <Plot
+                    data={[workspaceChartData]}
+                    layout={layout}
+                />
             </div>
             <div>
-               <Tabs>
-                   <TabPane tab="Exclusion" key="Exclusion"><Table columns={props.columns1} dataSource={props.data1}/></TabPane>
-                   <TabPane tab="Violation" key="Violation"><Table columns={props.columns2} dataSource={props.data2}/></TabPane>
-                   <TabPane tab="Data Table" key="Data Table"><Table columns={exclusionColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }}/></TabPane>
-            
-            </Tabs> 
+                <Tabs>
+                    <TabPane tab="Exclusion" key="Exclusion"><Table columns={props.columns1} dataSource={props.data1} /></TabPane>
+                    <TabPane tab="Violation" key="Violation"><Table columns={props.columns2} dataSource={props.data2} /></TabPane>
+                    <TabPane tab="Data Table" key="Data Table"><Table columns={exclusionColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }} /></TabPane>
+
+                </Tabs>
             </div>
         </div>
-       
-        
+
+
     )
 }
 

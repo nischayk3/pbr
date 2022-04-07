@@ -129,10 +129,13 @@ function ReportGenerator() {
     const [openSchedule, setOpenSchedule] = useState(false);
     const [chartLayout, setChartLayout] = useState({});
     const [viewId, setViewId] = useState('')
+    // const [subject, setSubject] = useState(`Update for ${reportName}`)
     const [repeat, setRepeat] = useState('')
     const [frequency, setFrequency] = useState('')
+    const [scheduleStartDate, setScheduleStartDate] = useState('')
+    const [scheduleEndDate, setScheduleEndDate] = useState('')
     const [selectedDays, setSelectedDays] = useState({
-        Sunday: true,
+        Sunday: false,
         Monday: false,
         Tuesday: false,
         Wednesday: false,
@@ -161,7 +164,7 @@ function ReportGenerator() {
     };
 
     const updateDays = (day) => {
-
+        dispatch(showLoader())
         if (selectedDays[day]) {
             selectedDays[day] = false
             setSelectedDays(selectedDays)
@@ -170,7 +173,7 @@ function ReportGenerator() {
             selectedDays[day] = true
             setSelectedDays(selectedDays)
         }
-     
+        dispatch(hideLoader())
     }
 
     const mapReportList = reportList && reportList.length > 0 ? reportList : []
@@ -214,6 +217,11 @@ function ReportGenerator() {
     }
 
     const updateChartLayout = (chart, section, param) => {
+
+        section = section + 1
+        let objIndex = chartLayout[section].findIndex((obj => obj.chart == chart));
+        chartLayout[section][objIndex][`${param}`] = false
+
     }
 
     const radioSchedule = (e) => {
@@ -259,7 +267,7 @@ function ReportGenerator() {
     // }
 
     const unloadTest = (ReportData) => {
-     
+
         dispatch(showLoader())
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setChartLayout(ReportData.charts_layout ? createChartRecord(ReportData.charts_layout) : {})
@@ -312,18 +320,6 @@ function ReportGenerator() {
 
     const prepareJson = () => {
 
-        var today = new Date();
-        var h = today.getHours();
-        var m = today.getMinutes();
-        var s = today.getSeconds();
-        let time_today = h + ":" + m + ":" + s;
-
-        var date = new Date();
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
-        let date_today = year + '-' + month + "-" + day
-
         let obj = {}
         let user_details = localStorage.getItem('username')
         let user = user_details ? user_details : ''
@@ -338,11 +334,13 @@ function ReportGenerator() {
 
 
         let share_obj = {}
-        share_obj['frequency_unit'] = schedule
         share_obj['email_list'] = emailList
-        share_obj['scheduled_start'] = date_today + ' ' + time_today
-        share_obj['scheduled_end'] = '2022-04-03 09:50:22'
-        share_obj['frequency'] = '1'
+        share_obj['scheduled_start'] = scheduleStartDate
+        share_obj['scheduled_end'] = scheduleEndDate
+        share_obj['subject'] = `Update for ${reportName}`
+        share_obj['frequency_unit'] = repeat
+        share_obj['frequency'] = frequency
+        share_obj['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
 
 
         let layout_obj = {}
@@ -361,11 +359,18 @@ function ReportGenerator() {
                 setIsSave(true)
             }
             else {
-                dispatch(showNotification('Not Saved'))
+                dispatch(showNotification('error', 'Not Saved'))
             }
         })
     }
-
+    const onChangeStart = (date, dateString) => {
+        setScheduleStartDate(dateString);
+        // setstartTimeIso(moment(date).toISOString());
+    };
+    const onChangeEnd = (date, dateString) => {
+        setScheduleEndDate(dateString);
+        // setendTimeIso(moment(date).toISOString());
+    };
     const search = (value) => {
         const tableData = reportList;
         const filterTable = tableData.filter((o) =>
@@ -417,8 +422,6 @@ function ReportGenerator() {
         }
     }
 
-    
-
     return (
 
         <div className='custom-wrapper'>
@@ -427,9 +430,8 @@ function ReportGenerator() {
                     <ArrowLeftOutlined className='header-icon' />
                     <span className='header-title'>Report Generator</span>
                 </div>
-
                 <div className='sub-header-btns'>
-                    <Button className='custom-primary-btn' onClick={() => { setOpenSchedule(true); }}>
+                    <Button className='custom-secondary-btn' onClick={() => { setOpenSchedule(true); }}>
                         Notify Report
                     </Button>
                     <Button className='custom-primary-btn' onClick={() => { setIsVisible(true); }}>
@@ -439,165 +441,163 @@ function ReportGenerator() {
                         Save
                     </Button>
                     <Button className='custom-secondary-btn' onClick={() => dispatch(screenChange(false))}>
-                        Generate
+                        Generate Report
                     </Button>
                 </div>
             </div>
-            <Card title="Generate new report variant" className="generator-card">
-                {/* <div className='custom-content-layout'> */}
-                <ReportDesignerForm />
-                <div className="table-card">
-                    {table.length > 0 && table.map((i) =>
-                        <Collapse key={i.heading} accordion>
-                            <Panel header={<span className="chart-names">{i.heading} {i.charts && i.charts.length > 0 && i.charts.map((i) => (<span className="chart-tags">
-                                {i}
-                            </span>))}</span>} key={i.heading} className="chart-panel">
-                                <table className="table">
-                                    <tr className="tr" >
-                                        <th className="th-key">
-                                            Key
-                                        </th>
-                                        <th className="th-value">
-                                            Value
-                                        </th>
-                                    </tr>
-                                    <tbody>
-                                        {i['content'] && i['content'].map((item, j) =>
-                                            <tr className="tr" >
-                                                <td className="td" >{item.key}</td>
-                                                <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <p style={{ width: '1000px' }}>{item.value}</p>} </td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </table>
-                                {i.charts && i.charts.length > 0 && i.charts.map((j) =>
-                                (
-                                    <div>
-                                        <p className="chart-name">{j} <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'violation')}>Violation</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'exclusion')}>Exclusion</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'data_table')}>Data Table</Tag> </p>
-                                        <Chart />
-                                    </div>
-                                ))}
-                            </Panel>
-                        </Collapse>
-                    )}
-                </div>
-                <Modal
-                    title="Select Report"
-                    visible={isvisible}
-                    onCancel={() => setIsVisible(false)}
-                    width={500}
-                    style={{ marginRight: '800px' }}
-                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => setIsVisible(false)} key="1">OK</Button>,]}
-                >
-                    <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
-                        let view_value = value.value ? value.value : ''
-                        setReportId(view_value)
-                        getReportData(view_value)
-
-                    }}
-                        value={reportId}
-                        showSearch
-                        showArrow
-                        style={{ backgroundColor: 'white', borderRadius: '4px' }}
+            <div className='custom-content-layout'>
+                <Card title="Generate new report variant" className="generator-card">
+                    <ReportDesignerForm />
+                    <div className="table-card">
+                        {table.length > 0 && table.map((i) =>
+                            <Collapse key={i.heading} accordion className="collapse-generate">
+                                <Panel header={<span className="chart-names">{i.heading} {i.charts && i.charts.length > 0 && i.charts.map((i) => (<span className="chart-tags">
+                                    {i}
+                                </span>))}</span>} key={i.heading} className="chart-panel">
+                                    <table className="table">
+                                        <tr className="tr" >
+                                            <th className="th-key">
+                                                Key
+                                            </th>
+                                            <th className="th-value">
+                                                Value
+                                            </th>
+                                        </tr>
+                                        <tbody>
+                                            {i['content'] && i['content'].map((item, j) =>
+                                                <tr className="tr" >
+                                                    <td className="td" >{item.key}</td>
+                                                    <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span style={{ width: '1000px' }}>{item.value}</span>} </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                    {i.charts && i.charts.length > 0 && i.charts.map((j) =>
+                                    (
+                                        <div>
+                                            <p className="chart-name">{j} <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'violation')}>Violation</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'exclusion')}>Exclusion</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'data_table')}>Data Table</Tag> </p>
+                                            <Chart />
+                                        </div>
+                                    ))}
+                                </Panel>
+                            </Collapse>
+                        )}
+                    </div>
+                    <Modal
+                        title="Select Report"
+                        visible={isvisible}
+                        onCancel={() => setIsVisible(false)}
+                        width={500}
+                        style={{ marginRight: '800px' }}
+                        footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => setIsVisible(false)} key="1">OK</Button>,]}
                     >
-                        {mapReportList && mapReportList.length >= 0 ? mapReportList.map((item) =>
+                        <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
+                            let view_value = value.value ? value.value : ''
+                            setReportId(view_value)
+                            getReportData(view_value)
 
-                            <Option value={item.rep_disp_id} key={item.rep_disp_id}>{item.rep_disp_id}</Option>
-                        ) : <></>}
+                        }}
+                            value={reportId}
+                            showSearch
+                            showArrow
+                            style={{ backgroundColor: 'white', borderRadius: '4px' }}
+                        >
+                            {mapReportList && mapReportList.length >= 0 ? mapReportList.map((item) =>
 
-                    </Select>
-                    <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
-                </Modal>
-                <Modal
-                    title="Select Report"
-                    visible={popvisible}
-                    onCancel={() => setPopVisible(false)}
-                    width={600}
-                    title={<p>Select Report Variant  <Input.Search
-                        className='table-search'
-                        placeholder='Search by...'
-                        enterButton
-                        onSearch={search}
-                        style={{ borderRadius: '4px' }}
-                    /></p>}
-                    centered
-                    width={500}
-                    footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setIsVisible(false); setPopVisible(false) }} key="1">OK</Button>,]}
-                >
-                    <Table
-                        // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
-                        // rowHighlightTest={isStyledDifferently}
-                        dataSource={filterTable === null ? reportList : filterTable}
-                        columns={columns}
-                        onRow={record => ({
-                            onClick: e => {
-                                record['color'] = '#D3D3D3'
-                                setReportId(record.rep_disp_id)
-                                getReportData(record.rep_disp_id, record.rep_status)
-                                // onOk()
-                            }
-                        })}
-                        scroll={{ y: 200 }}
-                        size='small'
-                        pagination={false}
-                    />
-                </Modal>
-                <Modal
-                    title={<span >Notify Report  <span style={{ marginLeft: '70%' }}><Popconfirm title="Sure to delete?" >
-                        <DeleteTwoTone twoToneColor="red" />
-                    </Popconfirm> <Button className="schedule-btn"><SendOutlined />Schedule</Button></span></span>}
-                    visible={openSchedule}
-                    onCancel={() => setOpenSchedule(false)}
-                    footer={[<Button className="schedule-btn" onClick={() => { setOpenSchedule(false) }} key="1">  <SendOutlined />Schedule</Button>, <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setOpenSchedule(false) }} key="1">  <DeleteOutlined />Discard</Button>,]}
-                    width="60%"
+                                <Option value={item.rep_disp_id} key={item.rep_disp_id}>{item.rep_disp_id}</Option>
+                            ) : <></>}
 
-                >
-                    {/* <UserOutlined /> */}
-
-                    <Select
-                        mode="tags"
-                        style={{ width: '90%', marginTop: '10px' }}
-                        placeholder={<span className="email-recipients">Recipients</span>}
-                        optionLabelProp="label"
-                        value={emailList}
-                        bordered={false}
-                        onChange={handleChange}
+                        </Select>
+                        <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
+                    </Modal>
+                    <Modal
+                        title="Select Report"
+                        visible={popvisible}
+                        onCancel={() => setPopVisible(false)}
+                        width={600}
+                        title={<p>Select Report Variant  <Input.Search
+                            className='table-search'
+                            placeholder='Search by...'
+                            enterButton
+                            onSearch={search}
+                            style={{ borderRadius: '4px' }}
+                        /></p>}
+                        centered
+                        width={500}
+                        footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setIsVisible(false); setPopVisible(false) }} key="1">OK</Button>,]}
                     >
+                        <Table
+                            // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
+                            // rowHighlightTest={isStyledDifferently}
+                            dataSource={filterTable === null ? reportList : filterTable}
+                            columns={columns}
+                            onRow={record => ({
+                                onClick: e => {
+                                    record['color'] = '#D3D3D3'
+                                    setReportId(record.rep_disp_id)
+                                    getReportData(record.rep_disp_id, record.rep_status)
+                                    // onOk()
+                                }
+                            })}
+                            scroll={{ y: 200 }}
+                            size='small'
+                            pagination={false}
+                        />
+                    </Modal>
+                    <Modal
+                        title={<span >Notify Report  <span style={{ marginLeft: '70%' }}><Popconfirm title="Sure to delete?" >
+                            <DeleteTwoTone twoToneColor="red" />
+                        </Popconfirm> <Button style={{ backgroundColor: emailList.length > 0 ? '#093185' : '#F5F5F5', color: emailList.length > 0 ? 'white' : 'black' }} disabled={emailList.length > 0 ? false : true} onClick={() => setOpenSchedule(false)}><SendOutlined />Schedule</Button></span></span>}
+                        visible={openSchedule}
+                        onCancel={() => setOpenSchedule(false)}
+                        footer={false}
+                        // footer={[<Button className="schedule-btn" onClick={() => { setOpenSchedule(false) }} key="1">  <SendOutlined />Schedule</Button>, <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setOpenSchedule(false) }} key="1">  <DeleteOutlined />Discard</Button>,]}
+                        width="60%"
 
-                        <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
-                            mihir.bagga@mareana.com
-                        </Option>
-                    </Select>
-                    <Divider />
-                    <p className="email-subject">Subject <span className="email-sub">Update For  </span>{reportName}</p>
-                    <Divider />
-                    <p className="email-content"> Hey,<br /><br />
+                    >
+                        <Select
+                            mode="tags"
+                            style={{ width: '90%', marginTop: '10px' }}
+                            placeholder={<span className="email-recipients">Recipients</span>}
+                            optionLabelProp="label"
+                            value={emailList}
+                            bordered={false}
+                            onChange={handleChange}
+                        >
 
-                        This is to inform you of the recept update to [report variant name]. Check the attachment for details.<br />
-                        Visit www.cpv-mareana.com/alert-dashboard to know more.<br />
-                        <br />
-                        Regards,<br />
-                        [variant_username]</p>
-                    <Divider />
-                    <span>
-                        <DatePicker bordered={false} prefixIcon={<ClockCircleTwoTone />} />
-                        <span className="email-freq">
-                            <ReloadOutlined />
-                            <Select defaultValue="1" style={{ width: 60 }} bordered={false}>
-                                <Option value="1">1</Option>
-                                <Option value="2">2</Option>
-                                <Option value="3">3</Option>
-                                <Option value="4">4</Option>
-                            </Select>
-                            <Select defaultValue="week" style={{ width: 100 }} bordered={false}>
-                                <Option value="week">week</Option>
-                                <Option value="monthly">monthly</Option>
-                                <Option value="daily">daily</Option>
-                            </Select>
-                        </span>
-                    </span><br />
-                    <div>
-                        {
+                            <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
+                                mihir.bagga@mareana.com
+                            </Option>
+                        </Select>
+                        <Divider />
+                        <p className="email-subject">Subject <span className="email-sub">Update For </span>{reportName}</p>
+                        <Divider />
+                        <p className="email-content"> Hey,<br /><br />
+
+                            This is to inform you of the recept update to [report variant name]. Check the attachment for details.<br />
+                            Visit www.cpv-mareana.com/alert-dashboard to know more.<br />
+                            <br />
+                            Regards,<br />
+                            [variant_username]</p>
+                        <Divider />
+                        <span>
+                            <DatePicker bordered={false} onChange={onChangeStart} prefixIcon={<ClockCircleTwoTone />} />
+                            <span className="email-freq">
+                                <ReloadOutlined />
+                                <Select defaultValue="1" style={{ width: 60 }} bordered={false} onChange={(value) => setRepeat(value)}>
+                                    <Option value="1">1</Option>
+                                    <Option value="2">2</Option>
+                                    <Option value="3">3</Option>
+                                    <Option value="4">4</Option>
+                                </Select>
+                                <Select defaultValue="week" style={{ width: 100 }} bordered={false} onChange={(value) => setFrequency(value)}>
+                                    <Option value="week">week</Option>
+                                    <Option value="monthly">monthly</Option>
+                                    <Option value="daily">daily</Option>
+                                </Select>
+                            </span>
+                        </span><br />
+                        <div>
                             <div className="select-days">
                                 <Button className={selectedDays['Sunday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Sunday')} >S</Button>
                                 <Button className={selectedDays['Monday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Monday')} >M</Button>
@@ -607,29 +607,16 @@ function ReportGenerator() {
                                 <Button className={selectedDays['Friday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Friday')} >F</Button>
                                 <Button className={selectedDays['Saturday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Saturday')} >S</Button>
                             </div>
-                        }
-                        <div className="end-date">
-                            Occures every Day
-                            <p className="end-dates">Choose an end date</p>
+                            <div className="end-date">
+                                Occures every {Object.keys(selectedDays).filter(k => selectedDays[k] === true).map((i) => (<span>,{i} </span>))}
+                                <p className="end-dates" >Choose an end date  <DatePicker bordered={false} onChange={onChangeEnd} /></p>
+                                {scheduleEndDate.length > 0 ? <><span className="end-dates" onClick={() => setScheduleEndDate('')}>Remove end date </span> <span>{scheduleEndDate}</span></> : <></>}
+                            </div>
                         </div>
-                    </div>
+                    </Modal>
+                </Card>
+            </div>
 
-                    {/* <Radio.Group defaultValue="Sunday">
-                            <Radio.Button value="Sunday" className="radio-button">S</Radio.Button>
-                            <Radio.Button value="Monday" className="radio-button">M</Radio.Button>
-                            <Radio.Button value="Tuesday" className="radio-button">T</Radio.Button>
-                            <Radio.Button value="Wednesday" className="radio-button">W</Radio.Button>
-                            <Radio.Button value="Thursday" className="radio-button">T</Radio.Button>
-                            <Radio.Button value="Friday" className="radio-button">F</Radio.Button>
-                            <Radio.Button value="Saturday" className="radio-button">S</Radio.Button>
-                        </Radio.Group> */}
-
-
-
-
-                </Modal>
-                {/* </div> */}
-            </Card>
 
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
         </div>
