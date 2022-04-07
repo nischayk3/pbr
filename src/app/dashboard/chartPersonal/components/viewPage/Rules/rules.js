@@ -1,13 +1,35 @@
-import { Checkbox, Collapse } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.scss';
+import { Checkbox, Collapse, message } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import InputField from '../../../../../../components/InputField/InputField';
+import { getRuleList } from '../../../../../../services/chartPersonalizationService';
 
 
 const { Panel } = Collapse;
 
 const rules = () => {
+
+    const [ruleList, setRuleList] = useState([]);
+
+
+
+    const getRules = async () => {
+        try {
+            const rulesResponse = await getRuleList();
+            setRuleList(rulesResponse);
+        } catch (error) {
+            message.error('Unable to fetch rules');
+        }
+    }
+
+
+    useEffect(() => {
+        getRules();
+    }, [])
+
+
+
     return (
         <div className='rule-container'>
             <Collapse expandIconPosition='right' ghost className='collapse-rule'>
