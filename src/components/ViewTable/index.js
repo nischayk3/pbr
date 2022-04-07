@@ -100,9 +100,9 @@ const ViewTable = (props) => {
           enterButton
           onSearch={searchTable}
           allowClear
-        // prefix={
-        //   <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
-        // }
+          // prefix={
+          //   <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
+          // }
         />
       </div>
       <div className='custom-table-antd'>
@@ -125,7 +125,6 @@ const ViewTable = (props) => {
           onRow={(record) => ({
             onClick: () => {
               setselectedViewId(record);
-
               setisDisabled(false);
               message.success(`${record.view} Selected`);
               const selectedRowKeys = [...selectedKeys];
@@ -136,7 +135,6 @@ const ViewTable = (props) => {
                 selectedRowKeys.push(record.key);
                 dispatch(sendView(record.view_disp_id));
               }
-
               setselectedKeys({ selectedRowKeys });
             },
           })}

@@ -1,42 +1,30 @@
-// Ranjith K
-// Mareana Software
-// Version 1
-// Last modified - 08 March, 2022
+/**
+ * @author Dinesh Kumar <dinesh.kumar@mareana.com>
+ * @Mareana - CPV Product
+ * @version  1
+ * @Last Modified - 4 April, 2022
+ * @Last Changed By - Dinesh
+ */
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { CloudUploadOutlined, BuildTwoTone } from '@ant-design/icons';
 import {
-  ArrowLeftOutlined,
-  CloudUploadOutlined,
-  FileDoneOutlined,
-  Loading3QuartersOutlined,
-  SaveOutlined,
-  ShareAltOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  BuildTwoTone,
-} from '@ant-design/icons';
-import {
-  Spin,
   Button,
   Collapse,
   Form,
-  Popconfirm,
-  Space,
+  Radio,
   Tag,
   Modal,
   Select,
   Input,
   Table,
-  Radio,
   Tooltip,
   message,
-  Divider,
 } from 'antd';
 import StatusWrong from '../../../../assets/statusWrong.svg';
 import StatusCorrect from '../../../../assets/statusCorrect.svg';
-
 import FileUpload from './fileUpload/FileUpload';
 import FunctionEditor from './functionEditor/FunctionEditor';
 import Materials from './materials/Materials';
@@ -47,18 +35,23 @@ import {
   getViewConfig,
   getViews,
 } from '../../../../services/viewCreationPublishing';
-import { materialsParameterTree } from '../../../../duck/actions/fileUploadAction';
+import {
+  materialsParameterTree,
+  adHocFilesParameterTree,
+} from '../../../../duck/actions/fileUploadAction';
 import {
   saveFunction,
   updateFunction,
 } from '../../../../duck/actions/viewCreationAction';
-import { adHocFilesParameterTree } from '../../../../duck/actions/fileUploadAction';
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Loading from '../../../../components/Loading';
 import Signature from '../../../../components/ElectronicSignature/signature';
 import queryString from 'query-string';
 import { sendUrl } from '../../../../duck/actions/loginAction';
 import { loginUrl } from '../../../../services/loginService';
 import { adenabled } from '../../../../config/config';
+import MaterialTree from './materialTree';
+import MathEditor from './mathEditor';
 const { Panel } = Collapse;
 
 const columns = [
@@ -94,11 +87,12 @@ const columns = [
   },
 ];
 
+let paramType = '';
 function ViewCreation() {
   const molecule_Id = useSelector(
     (state) => state.viewCreationReducer.molecule_id
   );
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
   const location = useLocation();
   const [count, setCount] = useState(1);
   const [params, setParams] = useState(false);
@@ -146,29 +140,33 @@ function ViewCreation() {
   const [approveReject, setApproveReject] = useState('');
   const [ad, setAd] = useState(false);
   const [publishResponse, setPublishResponse] = useState({});
+  const [paramRadioValue, setParamRadioValue] = useState('');
+  const [primarySelect, setPrimarySelect] = useState(false);
+
   const [saveResponseView, setSaveResponseView] = useState({
     viewId: '',
     version: '',
     viewStatus: '',
   });
-  const [viewSummaryColumns, setViewSummaryColumns] = useState([
+  const [viewSummaryColumns, setViewSummaryColumns] = useState([]);
+  const tableColumn = [
+    // {
+    //   title: 'Action',
+    //   key: 'action',
+    //   width: 100,
+    //   fixed: 'left',
+    //   render: (text, record, index) => (
+    //     <Popconfirm
+    //       title='Sure to delete?'
+    //       className='deleteTableAction'
+    //       onConfirm={() => handleRowDelete(record.param)}
+    //     >
+    //       <a>Delete</a>
+    //     </Popconfirm>
+    //   ),
+    // },
     {
-      title: 'Action',
-      key: 'action',
-      width: 100,
-      fixed: 'left',
-      render: (text, record, index) => (
-        <Popconfirm
-          title='Sure to delete?'
-          className='deleteTableAction'
-          onConfirm={() => handleRowDelete(record.param)}
-        >
-          <a>Delete</a>
-        </Popconfirm>
-      ),
-    },
-    {
-      title: 'Function',
+      title: 'Parameter',
       key: 'param',
       dataIndex: 'param',
       width: 150,
@@ -189,27 +187,79 @@ function ViewCreation() {
       ),
     },
     {
-      title: 'Status',
-      key: 'status',
-      dataIndex: 'status',
-      width: 100,
+      title: 'Primary',
+      key: 'primary',
+      dataIndex: 'primary',
+      width: 150,
       fixed: 'left',
-      render: (text, record, index) => (
-        <>
-          {record.coverage_metric_percent === '100 %' ||
-          record.coverage_metric_percent === '100%' ? (
-            <span className='statusIcon-summary'>
-              <img src={StatusCorrect} />
-            </span>
-          ) : (
-            <span className='statusIcon-summary'>
-              <img src={StatusWrong} />
-            </span>
-          )}
-        </>
+      render: (text, record) => {
+        return (
+          <Radio
+            checked={paramType === record.param}
+            onChange={(e) =>
+              onRadioChange({
+                checked: e.target.checked,
+                type: record.param,
+                primary: 'primary',
+              })
+            }
+          >
+            {text}
+          </Radio>
+        );
+      },
+    },
+    {
+      title: 'Aggregation',
+      key: 'aggregation',
+      dataIndex: 'aggregation',
+      width: 150,
+      fixed: 'left',
+      render: (param, record, index) => (
+        <Select
+          placeholder='  Aggregation'
+          //  onChange={handleMean}
+        >
+          <Option value='Min'>Min</Option>
+          <Option value='Mean'>Mean</Option>
+          <Option value='Max'>Max</Option>
+          <Option value='First'>First</Option>
+          <Option value='last'>last</Option>
+        </Select>
       ),
     },
-  ]);
+    // {
+    //   title: 'Status',
+    //   key: 'status',
+    //   dataIndex: 'status',
+    //   width: 100,
+    //   fixed: 'left',
+    //   render: (text, record, index) => (
+    //     <>
+    //       {record.coverage_metric_percent === '100 %' ||
+    //       record.coverage_metric_percent === '100%' ? (
+    //         <span className='statusIcon-summary'>
+    //           <img src={StatusCorrect} />
+    //         </span>
+    //       ) : (
+    //         <span className='statusIcon-summary'>
+    //           <img src={StatusWrong} />
+    //         </span>
+    //       )}
+    //     </>
+    //   ),
+    // },
+  ];
+  const onRadioChange = ({ checked, type, primary }) => {
+    console.log('on radio checked', checked);
+    console.log('on radio type', type);
+    console.log('on radio primary', primary);
+
+    setParamRadioValue(type);
+    setPrimarySelect(true);
+    paramType = type;
+  };
+
   const [functionEditorColumns, setFunctionEditorColumns] = useState([
     {
       title: 'Parameter',
@@ -303,6 +353,7 @@ function ViewCreation() {
           ele.functionType = mathFunction;
         }
       });
+      console.log('save data table', data);
       setViewSummaryTable(data);
     }
     message.success('Function Updated Successfully');
@@ -317,6 +368,7 @@ function ViewCreation() {
     currentData.aggregation = meanChange;
     currentData.parameters = newParameterData.current;
     setViewSummaryTable([...viewSummaryTable, currentData]);
+    console.log('save data table', [...viewSummaryTable, currentData]);
     setCount(count + 1);
     message.success('Function Added Successfully');
   };
@@ -392,14 +444,14 @@ function ViewCreation() {
         setViewStatus(res.view_status);
         setViewVersion(res.view_version);
         setViewFunctionName(res.view_name);
-        if(res.view_status === 0)  {
-          status = 'DRFT'
+        if (res.view_status === 0) {
+          status = 'DRFT';
         }
-        if(res.view_status === 1)  {
-          status = 'AWAP'
+        if (res.view_status === 1) {
+          status = 'AWAP';
         }
-        if(res.view_status === 2)  {
-          status = 'APRD'
+        if (res.view_status === 2) {
+          status = 'APRD';
         }
         form.setFieldsValue({
           viewName: res.view_name,
@@ -633,7 +685,12 @@ function ViewCreation() {
       filters: null,
     });
   };
-
+  useEffect(() => {
+    console.log('paramRadioValue useeffect', paramRadioValue);
+  }, [paramRadioValue]);
+  useEffect(() => {
+    setViewSummaryColumns(tableColumn);
+  }, []);
   useEffect(() => {
     form.setFieldsValue({
       viewId: viewDisplayId,
@@ -666,14 +723,13 @@ function ViewCreation() {
     });
   };
 
-  const onApprove = (item) =>
-  {
-    localStorage.setItem('status',item);
+  const onApprove = (item) => {
+    localStorage.setItem('status', item);
     //setApproveReject(item);
-    window.open(`${loginUrl}?is_ui=true&ui_type=sign`,'_self')
+    window.open(`${loginUrl}?is_ui=true&ui_type=sign`, '_self');
     dispatch(sendUrl(window.location.href));
-    localStorage.setItem('redirectUrl',window.location.href);
-  }
+    localStorage.setItem('redirectUrl', window.location.href);
+  };
   const handleSaveFunc = async () => {
     if (!viewFunctionName.length) {
       message.error('Please Enter Name');
@@ -716,14 +772,14 @@ function ViewCreation() {
       }))
     );
     let status;
-    if(viewStatus === 'DRFT')  {
-      status = 0
+    if (viewStatus === 'DRFT') {
+      status = 0;
     }
-    if(viewStatus === 'AWAP')  {
-      status = 1
+    if (viewStatus === 'AWAP') {
+      status = 1;
     }
-    if(viewStatus === 'APRD')  {
-      status = 2
+    if (viewStatus === 'APRD') {
+      status = 2;
     }
     const obj = {
       view_name: viewFunctionName,
@@ -735,7 +791,7 @@ function ViewCreation() {
       view_description: 'Test View Object',
       view_version: viewVersion,
       view_disp_id: viewDisplayId,
-      view_status:  viewStatus,
+      view_status: viewStatus,
     };
     const headers = {
       username: 'user_mareana1',
@@ -844,7 +900,7 @@ function ViewCreation() {
   };
 
   const PublishResponse = (res) => {
-  console.log(res);
+    console.log(res);
     setPublishResponse(res);
     setViewStatus(res.rep_stauts);
   };
@@ -859,93 +915,105 @@ function ViewCreation() {
     if (Object.keys(params).length > 0) {
       setParams(true);
       onOkHandler(params.id);
-      if(Object.keys(params).includes('publish'))
-      { setParams(true);
-        setAd(true)
+      if (Object.keys(params).includes('publish')) {
+        setParams(true);
+        setAd(true);
         onOkHandler(params.id);
-        setIsPublish(true)
+        setIsPublish(true);
       }
     }
   }, [materialsList]);
 
   return (
     <div className='reportDesigner-container viewCreation-container'>
-      <div className='viewCreation-block'>
-        <h1 className='reportDesigner-headline'>
-          <ArrowLeftOutlined /> Create View
-        </h1>
-        {params ? (
-          <div className='viewCreation-btns'>
-            <Button
-              className='viewCreation-rejectBtn'
-              // onClick={() => {
-              //   setIsPublish(true);
-              //   setApproveReject('R');
-              // }}
-              onClick={()=>{adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
-            >
-              Reject
-            </Button>
-            <Button
-              className='viewCreation-publishBtn'
-              // onClick={() => {
-              //   setIsPublish(true);
-              //   setApproveReject('A');
-              // }}
-              onClick={()=>{adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
-            >
-              Approve
-            </Button>
-          </div>
-        ) : (
-          materialsList.length > 0 && (
+      <BreadCrumbWrapper>
+        <>
+          {params ? (
             <div className='viewCreation-btns'>
               <Button
-                type='text'
-                className='viewCreation-newBtn'
+                className='viewCreation-rejectBtn'
+                // onClick={() => {
+                //   setIsPublish(true);
+                //   setApproveReject('R');
+                // }}
                 onClick={() => {
-                  newButtonHandler();
+                  adenabled ? onApprove('R') : setIsPublish(true);
+                  setApproveReject('R');
                 }}
               >
-                New
+                Reject
               </Button>
-              {/* <Button type='text' className='viewCreation-clearBtn'>
-                        Clear
-                    </Button> */}
-              <Button
-                className='viewCreation-loadBtn'
-                onClick={() => {
-                  setVisible(true);
-                  setIsNew(false);
-                }}
-              >
-                Load
-              </Button>
-              <Button
-                className='viewCreation-saveBtn'
-                disabled={!viewDisplayId}
-                onClick={handleSaveFunc}
-              >
-                Save
-              </Button>
-              <Button
-                className='viewCreation-saveAsBtn'
-                onClick={handleSaveAsFunc}
-              >
-                Save As
-              </Button>
-              <Button className='viewCreation-shareBtn'>Share</Button>
               <Button
                 className='viewCreation-publishBtn'
-                onClick={() => {setIsPublish(true); setAd(true)}}
+                // onClick={() => {
+                //   setIsPublish(true);
+                //   setApproveReject('A');
+                // }}
+                onClick={() => {
+                  adenabled ? onApprove('A') : setIsPublish(true);
+                  setApproveReject('A');
+                }}
               >
-                <CloudUploadOutlined />
-                Publish
+                Approve
               </Button>
             </div>
-          )
-        )}
-      </div>
+          ) : (
+            materialsList.length > 0 && (
+              <div className='viewCreation-btns'>
+                <Button
+                  type='text'
+                  className='viewCreation-newBtn'
+                  onClick={() => {
+                    newButtonHandler();
+                  }}
+                >
+                  New
+                </Button>
+                {/* <Button type='text' className='viewCreation-clearBtn'>
+                        Clear
+                    </Button> */}
+                <Button
+                  className='viewCreation-loadBtn'
+                  onClick={() => {
+                    setVisible(true);
+                    setIsNew(false);
+                  }}
+                >
+                  Load
+                </Button>
+                <Button
+                  className='viewCreation-saveBtn'
+                  disabled={!viewDisplayId}
+                  onClick={handleSaveFunc}
+                >
+                  Save
+                </Button>
+                <Button
+                  className='viewCreation-saveAsBtn'
+                  onClick={handleSaveAsFunc}
+                >
+                  Save As
+                </Button>
+                <Button className='viewCreation-shareBtn'>Share</Button>
+                <Button
+                  className='viewCreation-publishBtn'
+                  onClick={() => {
+                    setIsPublish(true);
+                    setAd(true);
+                  }}
+                >
+                  <CloudUploadOutlined />
+                  Publish
+                </Button>
+              </div>
+            )
+          )}
+        </>
+      </BreadCrumbWrapper>
+      {/* <div className='viewCreation-block'>
+      
+      
+      </div> */}
 
       <Form
         className='viewSummary-form'
@@ -992,6 +1060,7 @@ function ViewCreation() {
                         header='Materials'
                         key='1'
                       >
+                        <MaterialTree />
                         <Materials
                           moleculeId={moleculeId}
                           setMoleculeId={setMoleculeId}
@@ -1051,6 +1120,13 @@ function ViewCreation() {
 
             {materialsList.length > 0 && (
               <div className='viewCreation-rightBlocks'>
+                <MathEditor
+                  selectedParamData={viewSummaryTable}
+                  selectedParamColumn={viewSummaryColumns}
+                  primarySelected={primarySelect}
+                  // functionEditorColumns={functionEditorColumns}
+                  // functionEditorRecord={functionEditorRecord}
+                />
                 {moleculeId && (
                   <div className='viewCreation-viewSummary bg-white'>
                     <h4 className='viewCreation-blockHeader'>View Summary</h4>
@@ -1103,7 +1179,7 @@ function ViewCreation() {
                         </div>
                       )}
                     </h4>
-                    {/* <hr /> */}
+
                     <FunctionEditor
                       form={form}
                       parentBatches={parentBatches}

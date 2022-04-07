@@ -47,8 +47,8 @@
           }
         }
       }
-      .ant-btn[disabled]:hover{
-       color:#262626;
+      .ant-btn[disabled]:hover {
+        color: #262626;
       }
 
       .viewCreation-clearBtn {
@@ -123,24 +123,35 @@ a.deleteTableAction {
 }
 
 .viewCreation-accordian {
-  .ant-collapse-header {
-    font-size: 16px;
-    font-family: 'Maven Pro', sans-serif;
-    font-weight: 560;
-    padding: 10px 25px !important;
-    background-color: #f1f7ff;
+  .viewCreation-materialsPanel {
+    .ant-collapse-header {
+      background-color: #f1f7ff;
+      font-family: 'Maven Pro', sans-serif;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 22px;
+      /* identical to box height, or 138% */
+      background: #f1f7ff;
+      border-radius: 4px 4px 0px 0px;
+      padding: 15px 12px 8px 25px;
+      letter-spacing: 0.01em;
 
-    .ant-collapse-arrow {
-      right: 48px !important;
-      color: #454545;
+      color: #000000;
+
+      .ant-collapse-arrow {
+        right: 10px !important;
+        color: #454545;
+        position: absolute;
+      }
     }
-  }
-  .ant-collapse-item:last-child {
-    border-bottom: 0px !important;
-  }
-  .ant-collapse-content {
-    .ant-collapse-content-box {
-      padding: 10px 24px 20px !important;
+    .ant-collapse-item:last-child {
+      border-bottom: 0px !important;
+    }
+    .ant-collapse-content {
+      .ant-collapse-content-box {
+        padding: 10px 24px 20px !important;
+      }
     }
   }
 }
@@ -309,5 +320,5 @@ a.deleteTableAction {
 }
 
 .ant-input-wrapper {
-  margin-top:-13px !important;
+  margin-top: -13px !important;
 }
