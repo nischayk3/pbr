@@ -1246,11 +1246,9 @@ function ViewCreation() {
           </Button>
         </Modal>
         <Modal
-          title='Select View'
           visible={popvisible}
           onOk={() => setPopVisible(false)}
           onCancel={() => setPopVisible(false)}
-          width={800}
           title={
             <span>
               Select View
