@@ -873,21 +873,21 @@ function ViewCreation() {
           <div className='viewCreation-btns'>
             <Button
               className='viewCreation-rejectBtn'
-              // onClick={() => {
-              //   setIsPublish(true);
-              //   setApproveReject('R');
-              // }}
-              onClick={()=>{adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
+              onClick={() => {
+                setIsPublish(true);
+                setApproveReject('R');
+              }}
+              //onClick={()=>{adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
             >
               Reject
             </Button>
             <Button
               className='viewCreation-publishBtn'
-              // onClick={() => {
-              //   setIsPublish(true);
-              //   setApproveReject('A');
-              // }}
-              onClick={()=>{adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
+              onClick={() => {
+                setIsPublish(true);
+                setApproveReject('A');
+              }}
+              //onClick={()=>{adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
             >
               Approve
             </Button>

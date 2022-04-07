@@ -1,8 +1,15 @@
-import React, { useState, useEffect,useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import ScreenHeader from '../../../../../components/ScreenHeader/screenHeader';
 import illustrations from '../../../../../assets/images/Dashboard-Banner.svg';
 import Banner from '../../../../../assets/images/Popup-Side.svg';
-import { Card, Row, Col, Input, Space, Divider, message, Modal, Button } from 'antd';
+import { getDashboard } from '../../../../../services/dashboardServices';
+import {
+    hideLoader,
+    showLoader,
+    showNotification,
+} from '../../../../../duck/actions/commonActions';
+import { Card, Row, Col, Input, Space, Divider, message, Modal, Button,Avatar,Table } from 'antd';
 import ChartSearchTable from './chartTableLoad';
 import { PlusOutlined } from '@ant-design/icons';
 import './styles.scss';
@@ -13,7 +20,87 @@ export default function landingPage(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [chartSearch, setChartSearch] = useState(false);
     const [searchTableData, setSearchTableData] = useState([]);
+    const [dashboardData, setDashboardData] = useState([]);
+    const [searchedLanding, setSearchedLanding] = useState(false);
+    const [filterTableLanding, setFilterTableLanding] = useState(null)
     const ref = useRef(null);
+    const dispatch = useDispatch();
+
+    const columns = [
+        {
+            title: 'Dashboard Id',
+            dataIndex: 'dashboard_id',
+            key: 'dashboard_id',
+            render: (text, record) => {
+                return {
+                    props: {
+                        style: { background: record.color },
+                    },
+                    children: <div>{text}</div>,
+                };
+            },
+        },
+        {
+            title: 'Dashboard Name',
+            dataIndex: 'dashboard_name',
+            key: 'dashboard_name',
+            render: (text, record) => {
+                return {
+                    props: {
+                        style: { background: record.color },
+                    },
+                    children: <div>{text}</div>,
+                };
+            },
+
+        },
+        {
+            title: 'Dashboard Status',
+            dataIndex: 'dashboard_status',
+            key: 'dashboard_status',
+            render: (text, record) => {
+                return {
+                    props: {
+                        style: { background: record.color },
+                    },
+                    children: <div>{text}</div>,
+                };
+            },
+        },
+        {
+            title: 'Created By',
+            dataIndex: 'created_by',
+            key: 'created_by',
+            render: (text, row, index) => {
+                return (
+                    <div>
+                        <Avatar className='avatar-icon' style={{ backgroundColor: getRandomColor(index + 1) }} >{text.split("")[0].toUpperCase()} </Avatar>
+                        <span className='avatar-text'>{text}</span>
+                    </div>
+                );
+            },
+        },
+    ];
+
+    const getRandomColor = (index) => {
+        let colors = ['#56483F', '#728C69', '#c04000', '#c19578']
+        return colors[index % 4];
+
+    }
+
+    //landing page search
+    const landingSearch = (value) => {
+        setSearchedLanding(true)
+        const tableData = dashboardData
+        const filterTable = tableData.filter((o) =>
+            Object.keys(o).some((k) =>
+                String(o[k]).toLowerCase().includes(value.toLowerCase())
+            )
+        );
+
+        setFilterTableLanding(filterTable)
+    };
+
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -29,6 +116,7 @@ export default function landingPage(props) {
     };
     useEffect(() => {
         updateDate();
+        dashboardRes();
         document.addEventListener('mousedown', closeTableView);
     }, []);
     const updateDate = () => {
@@ -40,6 +128,20 @@ export default function landingPage(props) {
         setResultDate(resultDate);
     };
 
+    //get Dashboard
+    const dashboardRes = async () => {
+        let req = {}
+        try {
+            dispatch(showLoader());
+            const dashboardRes = await getDashboard(req);
+            setDashboardData(dashboardRes.data);
+            dispatch(hideLoader());
+        } catch (error) {
+            dispatch(hideLoader());
+            message.error('Unable to fetch coverages');
+        }
+    }
+
     //on focus of input field showing table results.
     const onFocus = () => {
         setChartSearch(true);
@@ -48,7 +150,7 @@ export default function landingPage(props) {
     const closeTableView = (e) => {
         if (ref.current && !ref.current.contains(e.target)) {
             setChartSearch(false);
-            
+
         }
     }
 
@@ -91,8 +193,10 @@ export default function landingPage(props) {
                                     allowClear
                                     enterButton="Search"
                                     size="large"
-                                // onSearch={onSearch}
+                                    onSearch={landingSearch}
                                 />
+                                {searchedLanding ? <Table className="landing-table" columns={columns} dataSource={filterTableLanding === null ? dashboardData : filterTableLanding} /> : <></>}
+
                             </Col>
                             <Col span={6} />
                         </Row>
@@ -108,21 +212,21 @@ export default function landingPage(props) {
                         </Row>
                         <Row className='recent-charts'>
                             <Col span={6} />
-                            <Col span={12} style={{ padding: '12px 18px' }}>
+                            <Col span={12}>
                                 <h3>Recently created dashboard</h3>
                                 <Divider />
-                                <Row gutter={24}>
-
-                                    <Col span={6} style={{ marginTop: '10px' }}>
-                                        <div className='chart-tiles'>
-                                            {/* <div className='legend' style={{ background: ele.chart_status === 'DRFT' ? '#363636' : ele.chart_status === 'AWAP' ? '#F6BB61' : '#A4F588', color: ele.chart_status === 'DRFT' ? '#FFFFFF' : '#000000' }}>
-                                                    <p className='legendP'>{ele.chart_status}</p>
-                                                </div> */}
-                                            <p className='cid'>D1</p>
-                                            <p className='chartName'>Dashboard</p>
-                                        </div>
-                                    </Col>
-
+                                <Row gutter={40}>
+                                    {/* {dashboardData.map((el,index)=>{
+                                        return (
+                                            <Col className="gutter-row" span={6} style={{ marginTop: '10px' }} key={index}>
+                                            <div className='chart-tiles'>
+                                                <p className='cid'>{el.dashboard_id}</p>
+                                                <p className='chartName'>{el.dashboard_name}</p>
+                                            </div>
+                                        </Col>
+                                        )
+                                    })} */}
+                                   
                                 </Row>
                             </Col>
                             <Col span={6} />
@@ -160,7 +264,7 @@ export default function landingPage(props) {
                                     <Row ref={ref}>
                                         <p>Add a chart to get started</p>
                                         <Search placeholder="Search" onFocus={onFocus} />
-                                         {chartSearch && <ChartSearchTable />}
+                                        {chartSearch && <ChartSearchTable />}
                                     </Row>
                                 </Col>
                             </Row>
