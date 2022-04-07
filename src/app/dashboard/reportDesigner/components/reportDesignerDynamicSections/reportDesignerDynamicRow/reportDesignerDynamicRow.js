@@ -66,7 +66,6 @@ function ReportDesignerDynamicRow(props) {
                                 >
                                     {({ getFieldValue }) => {
                                         let res = getFieldValue('response')
-                                        console.log(res)
                                         let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
                                         let dynamic_rows_row = dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
                                         let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : []

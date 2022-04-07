@@ -170,7 +170,7 @@ function ReportGenerator() {
             selectedDays[day] = true
             setSelectedDays(selectedDays)
         }
-        console.log(selectedDays)
+     
     }
 
     const mapReportList = reportList && reportList.length > 0 ? reportList : []
@@ -214,7 +214,6 @@ function ReportGenerator() {
     }
 
     const updateChartLayout = (chart, section, param) => {
-        console.log(chart, section, chartLayout)
     }
 
     const radioSchedule = (e) => {
@@ -260,7 +259,7 @@ function ReportGenerator() {
     // }
 
     const unloadTest = (ReportData) => {
-        console.log(ReportData)
+     
         dispatch(showLoader())
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setChartLayout(ReportData.charts_layout ? createChartRecord(ReportData.charts_layout) : {})
@@ -418,7 +417,7 @@ function ReportGenerator() {
         }
     }
 
-    console.log(table, chartLayout)
+    
 
     return (
 

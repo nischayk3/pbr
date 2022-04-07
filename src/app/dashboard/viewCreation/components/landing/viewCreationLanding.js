@@ -127,7 +127,7 @@ export default function Landing(props) {
             return 'awap'
         }
     }
-    //    console.log(reportList.length) 
+
 
     return (
         <div>

@@ -43,7 +43,7 @@ function ReportDesigneTable(props) {
         // setAlertCount([...alertCount, count + 1]);
     }
 
-    console.log(addedCharts)
+   
 
     return (
         <Card className="reportTableCard" title="Report Table" >
