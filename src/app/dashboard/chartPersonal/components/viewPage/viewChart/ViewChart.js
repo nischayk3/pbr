@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './viewChartStyles.scss';
 //antd imports
-import { Row, Col, Input, Select, Divider, Switch, Tag, Tooltip, Table, Button, message } from 'antd';
-import { ArrowRightOutlined } from '@ant-design/icons';
+import { Row, Col, Input, Select, Divider, Switch, Tag, Tooltip, Table, Button, message, DatePicker } from 'antd';
+import { ArrowRightOutlined, FilterOutlined } from '@ant-design/icons';
 //components
 import InputField from '../../../../../../components/InputField/InputField';
 import SelectField from '../../../../../../components/SelectField/SelectField';
 import ViewSearchTable from './viewSearchTable';
+import Modal from '../../../../../../components/Modal/Modal';
 import StatusWrong from '../../../../../../assets/statusWrong.svg';
 import StatusCorrect from '../../../../../../assets/statusCorrect.svg';
 //redux
@@ -14,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../../../../duck/actions/commonActions';
 //services
 import { getViewTable } from '../../../../../../services/commonService';
-import { postChartPlotData } from '../../../../../../services/chartPersonalizationService';
+import { postChartPlotData, getSiteId } from '../../../../../../services/chartPersonalizationService';
 //cjson
 import chartJson from '../chartObj.json';
 
@@ -30,7 +31,9 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     const [viewSearch, setViewSearch] = useState(false);
     const [searchTableData, setSearchTableData] = useState([]);
     const [coverageTableData, setCoverageTableData] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const [versionList, setVersionList] = useState([0]);
+    const [siteList, setSiteList] = useState([]);
     const searchViewData = useRef([]);
     const postChart = useRef();
     const postChartView = useRef({});
@@ -127,8 +130,9 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
         try {
             dispatch(showLoader());
             const viewRes = await postChartPlotData(postChartData);
+            getSites(viewRes.data[0].view_id);
             setPostChartData({ ...postChartData, extras: viewRes.extras })
-            setCoverageTableData(viewRes.extras.coverage)
+            // setCoverageTableData(viewRes.extras.coverage)
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
@@ -172,10 +176,32 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
             setData();
         }
     };
+    //function for getting site-ids
+    const getSites = async (id) => {
+        const obj = { view_id: id }
+        try {
+            const siteRes = await getSiteId(obj);
+            setSiteList(siteRes.Data[0]);
+        } catch (error) {
+            message.error('Unable to fetch sites')
+        }
+    }
+
+    const onAdvanceClick = () => {
+        setIsModalVisible(!isModalVisible);
+    }
     //useEffect for calling view list.
     useEffect(() => {
         getViewTableData();
     }, [])
+
+    useEffect(() => {
+        postChartData && postChartData.data && postChartData.data.forEach((ele) => {
+            console.log(ele, 'ele');
+            setViewData({ ...viewData, viewName: ele.view_name, viewDispId: ele.view_id, status: ele.view_status, searchValue: ele.view_id, chartVersion: ele.view_version });
+        })
+        setCoverageTableData(postChartData.extras && postChartData.extras.coverage)
+    }, [postChartData])
 
 
     return (
@@ -184,7 +210,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
                 <Col ref={ref} span={24} className='search-table'>
                     <label>View ID</label>
                     <Search placeholder="Search" onFocus={onFocus} value={viewData.searchValue} onChange={onSearchChange} onSearch={searchTable} />
-                    {viewSearch && <ViewSearchTable postChartView={postChartView} setVersionList={setVersionList} searchViewData={searchViewData} postChartData={postChartData} setPostChartData={setPostChartData} setData={setData} setViewSearch={setViewSearch} searchTableData={searchTableData} viewData={viewData} setViewData={setViewData} />}
+                    {viewSearch && <ViewSearchTable getSites={getSites} postChartView={postChartView} setVersionList={setVersionList} searchViewData={searchViewData} postChartData={postChartData} setPostChartData={setPostChartData} setData={setData} setViewSearch={setViewSearch} searchTableData={searchTableData} viewData={viewData} setViewData={setViewData} />}
                 </Col>
             </Row>
             <Row className='view-details'>
@@ -218,29 +244,34 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
                     <Divider />
                 </Col>
             </Row>
-            <Row gutter={24} className='filter'>
+            <Row gutter={16} className='filter'>
                 <Col span={11}>
                     <SelectField
                         placeholder='Site'
-                    // label='Site'
-                    // onChangeSelect={(e) => handleSelectChange(e)}
-                    // selectList={siteList}
+                        // onChangeSelect={(e) => handleSelectChange(e)}
+                        selectList={siteList}
                     // selectedValue={selectedSite}
                     />
                 </Col>
                 <Col span={13} className='unapproved'>
-                    <label>Show Unapproved data</label>&nbsp;&nbsp;
+                    <label>Show Unapproved data</label>&emsp;&nbsp;
                     <Switch type='primary' size='small' />
                 </Col>
             </Row>
-            <Row gutter={24} className='filter'>
+            <Row gutter={16} className='filter'>
                 <Col span={11}>
-                    <InputField
-                        placeholder='Select Date Range'
-                    // onChangeClick={(e) => handleDateClick(e)}
-                    // value={selectedDateRange}
-                    />
+                    <DatePicker placeholder='From Date' />
                 </Col>
+                <Col span={11}>
+                    <DatePicker placeholder='To Date' />
+                </Col>
+                <Col span={1} className='date'>
+                    <Tooltip title='Advanced Filters'><FilterOutlined onClick={onAdvanceClick} /></Tooltip>
+                </Col>
+
+            </Row>
+            <Row gutter={24} className='filter'>
+                <Col span={12} />
                 <Col className='arrow-right' span={12}>
                     <Button>Apply</Button>
                     <ArrowRightOutlined />
@@ -256,6 +287,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
                     />
                 </Col>
             </Row>
+            <Modal isModalVisible={isModalVisible}>Modal</Modal>
         </div>
     )
 }

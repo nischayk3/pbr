@@ -1,0 +1,26 @@
+.rule-container {
+    padding: 0px 24px !important;
+    .ant-collapse-header {
+        padding: 12px 40px 12px 2px !important;
+    }
+    .collapse-rule {
+        .ant-collapse-content>.ant-collapse-content-box {
+            padding: 0px !important;
+        }
+        .ant-input {
+            width:50px !important;
+        }
+       .rule-content {
+           .ant-collapse-content {
+               padding: 16px !important;
+           }
+           .rules {
+               display: flex;
+               flex-direction: row;
+               .input_field{
+                   display: inline !important;
+               }
+           }
+       }
+    }
+}

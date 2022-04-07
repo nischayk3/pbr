@@ -15,6 +15,7 @@ import SuspenseWrapper from '../../components/SuspenseWrapper';
 import Uploader from './dataLoad/index';
 import LoginRedirect from '../user/login/redirect';
 import RedirectSign from '../user/login/redirectSign';
+import ViewPage from './chartPersonal/components/viewPage/ViewPage';
 
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
@@ -65,11 +66,14 @@ const Dashboard = () => {
                   <ViewCreation />
                 </Route>
                 <Route
-                  key='chart_personalization'
                   path={`${match.url}/chart_personalization`}
-                >
-                  <ChartPersonal />
-                </Route>
+                  render={({ match: { url } }) => (
+                    <>
+                      <Route path={`${url}/`} component={ChartPersonal} exact />
+                      <Route path={`${url}/:id`} component={ViewPage} />
+                    </>
+                  )}
+                />
                 <Route
                   key='system_error_report'
                   path={`${match.url}/system_error_report`}

@@ -15,8 +15,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 
     const dispatch = useDispatch();
     const chartTypeList = ['Scatter Plot', 'Process Control', 'Levey-Jennings Plot', 'I-MR Plot', 'Trend Control', 'KDE Control', 'Box Control'];
-    const [axisValues, setAxisValues] = useState({ xaxis: '', yaxis: '', chartType: '' });
-    const [chartData, setChartData] = useState({});
+    const [axisValues, setAxisValues] = useState({ xaxis: null, yaxis: null, chartType: null });
+    const [chartData, setChartData] = useState([]);
     const [layoutData, setLayoutData] = useState({});
     const [showChart, setShowChart] = useState(false);
     const [xaxisList, setXAxisList] = useState([]);
@@ -51,7 +51,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             if (axisValues.chartType === 'process control') {
                 ele.data.mode = 'markers+lines';
             }
-            ele.chart_type = axisValues.chartType;
+            ele.chart_type = axisValues.chartType === 'Scatter Plot' ? 'scatter' : 'process control';
             ele.chart_mapping.x = Object.keys(xAxis).length !== 0 ? xAxis : obj;
             ele.chart_mapping.y = yAxis;
             ele.layout.xaxis.title.text = Object.keys(xAxis).length !== 0 ? xAxis.function_name : obj.function_name === 'batch_num' ? 'Batch' : 'Recorded Date';
@@ -74,45 +74,35 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
         }
     }
     const handleChartType = (e) => {
-        let chartType = e;
-        if (e === 'Scatter Plot') {
-            chartType = 'scatter';
-        }
-        if (e === 'Process Control') {
-            chartType = 'process control';
-        }
-        setAxisValues({ ...axisValues, chartType: chartType });
+        setAxisValues({ ...axisValues, chartType: e });
     }
     useEffect(() => {
         const newCovArr = JSON.parse(JSON.stringify(postChartData));
-        let obj = {
-            "line": {
-                "color": "black"
-            },
-            "mode": "lines",
-            "showlegend": false,
-            "type": "scatter",
-            "x": [],
-            "y": []
-        }
-        newCovArr.data.forEach((ele) => {
-            if (ele.chart_type === 'process control') {
-                const meanValue = ele.data.y ? ele.data.y.reduce((a, b) => a + b, 0) / ele.data.y.length : '';
-                obj.x = ele.data.x ? ele.data.x : [];
-                obj.x.length >= 1 && obj.x.forEach(() => {
-                    obj.y.push(meanValue);
-                })
+        newCovArr && newCovArr.data && newCovArr.data.forEach((ele) => {
+            if (ele.data[0].x && ele.data[0].x.length >= 1) {
+                const chart = ele.chart_type === 'scatter' ? 'Scatter Plot' : 'Process Control';
+                let xValue = '';
+                let yValue = '';
+                if (ele.chart_type === 'scatter') {
+                    xValue = ele.chart_mapping.x.function_name;
+                } else {
+                    xValue = ele.chart_mapping.x.function_name === 'batch_num' ? 'Batch' : 'Date';
+                }
+                yValue = ele.chart_mapping.y.function_name ? ele.chart_mapping.y.function_name : '';
+                setAxisValues({ ...axisValues, chartType: chart, xaxis: xValue, yaxis: yValue });
+                setShowChart(true);
+                setChartData(ele.data);
+                setLayoutData(ele.layout);
             }
-            setChartData([ele.data, obj]);
-            setLayoutData(ele.layout);
         })
     }, [postChartData])
+
 
     useEffect(() => {
         let list = [];
         postChartData.extras && postChartData.extras.coverage && postChartData.extras.coverage.forEach((ele) => {
             list.push(ele.function_name);
-            if (axisValues.chartType === 'scatter') {
+            if (axisValues.chartType === 'Scatter Plot') {
                 setXAxisList(list);
                 setYAxisList(list);
             } else {
@@ -128,15 +118,15 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             <Row gutter={24}>
                 <Col span={6}>
                     <label>Chart Type</label>
-                    <SelectField placeholder="Select Chart type" selectList={chartTypeList} value={axisValues.chartType} onChangeSelect={handleChartType} />
+                    <SelectField placeholder="Select Chart type" selectList={chartTypeList} selectedValue={axisValues.chartType} onChangeSelect={handleChartType} />
                 </Col>
                 <Col span={6}>
                     <label>X-axis</label>
-                    <SelectField placeholder="Select X-axis" selectList={xaxisList} value={axisValues.xaxis} onChangeSelect={(e) => setAxisValues({ ...axisValues, xaxis: e })} />
+                    <SelectField placeholder="Select X-axis" selectList={xaxisList} selectedValue={axisValues.xaxis} onChangeSelect={(e) => setAxisValues({ ...axisValues, xaxis: e })} />
                 </Col>
                 <Col span={6}>
                     <label>Y-axis</label>
-                    <SelectField placeholder="Select Y-axis" selectList={yaxisList} value={axisValues.yaxis} onChangeSelect={(e) => setAxisValues({ ...axisValues, yaxis: e })} />
+                    <SelectField placeholder="Select Y-axis" selectList={yaxisList} selectedValue={axisValues.yaxis} onChangeSelect={(e) => setAxisValues({ ...axisValues, yaxis: e })} />
                 </Col>
                 <Col span={6} style={{ marginTop: '22px' }}>
                     <Button className='custom-primary-btn' onClick={onApply} disabled={!axisValues.chartType || !axisValues.xaxis || !axisValues.yaxis} >Apply</Button>

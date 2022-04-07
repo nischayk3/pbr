@@ -19,14 +19,16 @@
                 "x": {},
                 "y": {}
             },
-            "data": {
-                "type": "",
-                "mode": "markers",
-                "marker": {
-                    "color": "#5B8FF9",
-                    "size": 15
+            "data": [
+                {
+                    "type": "scatter",
+                    "mode": "markers",
+                    "marker": {
+                        "color": "#5B8FF9",
+                        "size": 15
+                    }
                 }
-            },
+            ],
             "layout": {
                 "width": "900",
                 "height": "400",
@@ -36,45 +38,45 @@
                     "title": {
                         "text": "",
                         "font": {
-                            "color": "",
-                            "size": ""
+                            "color": "#000000",
+                            "size": 10
                         },
                         "side": ""
                     },
-                    "borderwidth": "",
-                    "bgcolor": "",
-                    "orientation": "",
-                    "bordercolor": ""
+                    "borderwidth": 2,
+                    "bgcolor": "#FFFFFF",
+                    "orientation": "v",
+                    "bordercolor": "#FFFFFF"
                 },
                 "xaxis": {
                     "type": "",
                     "title": {
                         "text": "",
                         "font": {
-                            "size": "",
-                            "color": ""
+                            "size": 15,
+                            "color": "#000000"
                         }
                     },
-                    "visible": "",
-                    "showticklabels": "",
-                    "showline": "",
-                    "gridcolor": "",
-                    "showgrid": ""
+                    "visible": true,
+                    "showticklabels": true,
+                    "showline": true,
+                    "gridcolor": "#00000026",
+                    "showgrid": true
                 },
                 "yaxis": {
                     "type": "",
                     "title": {
                         "text": "",
                         "font": {
-                            "size": "",
-                            "color": ""
+                            "size": 15,
+                            "color": "#000000"
                         }
                     },
-                    "visible": "",
-                    "showticklabels": "",
-                    "showline": "",
-                    "gridcolor": "",
-                    "showgrid": ""
+                    "visible": true,
+                    "showticklabels": true,
+                    "showline": true,
+                    "gridcolor": "#00000026",
+                    "showgrid": true
                 }
             },
             "exclusions": [],
