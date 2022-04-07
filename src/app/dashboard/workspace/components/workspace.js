@@ -18,6 +18,7 @@ import {
 } from '../../../../duck/actions/commonActions';
 import { getCountData } from '../../../../services/workFlowServices';
 import { getChartExceptionData, getUpdatedChartsViewsData } from '../../../../services/workSpaceServices';
+import {FaCircle} from "react-icons/fa";
 import './styles.scss';
 
 const { Search } = Input;
@@ -100,6 +101,19 @@ const Workspace = () => {
   const changeTab = activeKey => {
     setActiveTab(activeKey);
   };
+
+  //changing tiles color
+  const statusColor = (status) => {
+    if (status == 'APRD') {
+        return 'aprd'
+    }
+    if (status == 'DRFT') {
+        return 'drft'
+    }
+    if (status == 'AWAP') {
+        return 'awap'
+    }
+}
   return (
     <div className='custom-wrapper'>
       <div className='workspace-subheader'>
@@ -158,7 +172,7 @@ const Workspace = () => {
                   </span>
 
                   <Row gutter={4}>
-                    {tilesData.map((item, index) => {
+                    {tilesData?.filter(el=>el.item_count>0).map((item, index) => {
                       return (
                         <Col className='gutter-row' span={4}>
                           {item.item_count > 0 && (
@@ -315,6 +329,20 @@ const Workspace = () => {
               style={{ color: '#0CE7CC', fontSize: '15px' }}
             />
             <span className='deviation-text'>Recently Approved Creations</span>
+            <div className="workspace-legend">
+                <span>
+                  <FaCircle style={{ color: '#363636' }}/>  {" "}
+                  Draft
+                </span>
+                <span style={{margin:'0px 15px'}}>
+                  <FaCircle style={{ color: '#F7BB61' }}/>  {" "}
+                  Awaiting Approval
+                </span>
+                <span>
+                  <FaCircle style={{ color: '#A4F588' }}/>  {" "}
+                  Approved
+                </span>
+              </div>
             <Row>
               <Col span={11}>
                 <div className='workspace-processChart-main'>
@@ -325,6 +353,7 @@ const Workspace = () => {
                         <Col className='gutter-row' span={8}>
 
                           <div className='workspace-processChart-card' onClick={() => history.push(`/dashboard/chart_personalization?id=${j.chart_disp_id}&version=${j.chart_version}`)}>
+                          <div className={`tile-status ${statusColor(j.chart_status)}`} >{j.chart_status}</div>
                             <p className='workspace-processCharts-id'>
                               {j.chart_disp_id}
                             </p>
@@ -350,7 +379,7 @@ const Workspace = () => {
                 </div>
               </Col>
               <Col span={1}>
-                <Divider type="vertical" style={{ height: "100%", border: '1px solid #CACACA' }} />
+                <Divider type="vertical" style={{ height: "100%", border: '-0.9px solid #CACACA' }} />
               </Col>
               <Col span={11}>
                 <div className='workspace-processView-main'>
@@ -360,6 +389,7 @@ const Workspace = () => {
                       return (
                         <Col className='gutter-row' span={8}>
                           <div className='workspace-processView-card' onClick={() => history.push(`/dashboard/view_creation?id=${m.view_disp_id}&version=${m.view_version}`)}>
+                          <div className={`tile-status ${statusColor(m.view_status)}`} >{m.view_status}</div>
                             <p className='workspace-processView-id'>
                               {m.view_disp_id}
                             </p>

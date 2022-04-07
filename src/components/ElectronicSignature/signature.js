@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router';
-import { Modal, Input, Select, Button } from 'antd';
+import { Modal, Input, Select, Button, message } from 'antd';
 import './styles.scss'
-import { eSign, publishEvent, approveRecord } from '../../services/electronicSignatureService'
+import { eSign, publishEvent, approveRecord } from '../../services/electronicSignatureService';
+import { getAuthenticate } from '../../services/loginService';
 import { useDispatch } from 'react-redux';
-import { showNotification } from '../../duck/actions/commonActions'
+import {
+    showNotification, hideLoader,
+    showLoader,
+} from '../../duck/actions/commonActions'
 import queryString from 'query-string';
-import { loginUrl } from '../../services/loginService';
-import { adenabled } from '../../config/config';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+
 const { Option } = Select
-
-const onLogin = async () => {
-    window.open(`${loginUrl}?is_ui=true`, '_self')
-}
-
 
 function Signature(props) {
     const location = useLocation();
@@ -23,10 +20,34 @@ function Signature(props) {
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
     const [reason, setReason] = useState('')
-    const [next, setClickedNext] = useState(false);
+    const [isauth, setIsAuth] = useState('')
     const [primaryId, setPrimaryId] = useState()
     const dispatch = useDispatch();
 
+
+    const authenticateUser = async () => {
+        let req = {};
+        let header = {
+            username: username,
+            password: password
+
+        }
+        try {
+            dispatch(showLoader());
+            const res = await getAuthenticate(req, header);
+            console.log(res);
+            // if(res.status!=200){
+            //     setIsAuth('')
+            //     handleClose();
+            // }else{
+                setIsAuth(props.status)
+            // }
+            dispatch(hideLoader());
+        } catch (error) {
+            dispatch(hideLoader());
+            message.error('Unable to fetch coverages');
+        }
+    }
     const handleConfirm = async () => {
 
         var today = new Date();
@@ -44,7 +65,7 @@ function Signature(props) {
         req['date'] = date_today
         req['timestamp'] = time_today
         req['reason'] = reason
-        req['user_id'] = props.ad ? localStorage.getItem('username') : username
+        req['user_id'] = username
         req['screen'] = props.screenName
         req['first_name'] = "first_name"
         req['last_name'] = "last_name"
@@ -55,11 +76,12 @@ function Signature(props) {
             if (esign_response.statuscode == 200) {
                 setPrimaryId(esign_response.primary_id)
                 dispatch(showNotification('success', esign_response.message))
-                handleClose()
+                //handleClose()
                 let reqs = {}
                 let req1 = {}
-                let user_details = localStorage.getItem('user')
-                let user = user_details? user_details : ''
+                console.log(params.version)
+                let user_details = JSON.parse(localStorage.getItem('login_details'))
+                let user = user_details["email_id"] ? user_details["email_id"] : ''
 
                 reqs['application_type'] = props.appType
                 reqs['created_by'] = user
@@ -74,8 +96,7 @@ function Signature(props) {
                 if (params.version != 'undefined') {
                     req1['resourceVersion'] = parseInt(params.version)
                 }
-                //req1['status'] = props.status
-                req1['status'] = adenabled ? localStorage.getItem('status') : props.status
+                req1['status'] = props.status
 
                 let publish_response = Object.keys(params).length > 0 ? await approveRecord(req1) : await publishEvent(reqs)
 
@@ -100,60 +121,62 @@ function Signature(props) {
 
 
     }
-    const { TextArea } = Input;
     return (
         <div>
             <Modal
                 visible={isPublish}
-                title="Let's Confirm your action"
+                title="Enter details to confirm update"
                 width={500}
                 mask={true}
-                onCancel={handleClose}
-                footer={adenabled || next ? [<Button className="custom-secondary-btn" key="2" onClick={() => {handleClose(); setClickedNext(false)}}>Cancel</Button>, <Button className="custom-secondary-btn" key="1" onClick={() => handleConfirm()} >Confirm</Button>,] : [<Button  key="3" onClick={() => setClickedNext(true)}>Next</Button>]}
+                onCancel={()=>{handleClose(); setIsAuth('')}}
+                footer={isauth==='A' || isauth==='R' ? [<Button className="custom-secondary-btn" key="2" onClick={() => handleClose()}>Cancel</Button>, <Button className="custom-secondary-btn" key="1" onClick={() => handleConfirm()} >Confirm</Button>] : [<Button className="custom-secondary-btn" key="3" onClick={() => authenticateUser()} >Auth</Button>]}
                 mask={true}
             >
                 <div className="electronic-sig">
-                    { (!next && adenabled== false )  ? 
-                        <>
-                            <div>
-                                <p>User ID</p>
-                                <Input value={username} onChange={(e) => setUsername(e.target.value)} />
-                            </div>
-                            <div>
-                                <p>Password</p>
-                                <Input.Password  value={password} onChange={(e) => setPassword(e.target.value)} iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}/>
-                            </div>
-                        </> :
-                        <></>
-                    }
-                    {(adenabled || next) &&
+                    <div className='sign-cols'>
+                    <div>
+                        <p>User ID</p>
+                        <Input value={username} onChange={(e) => setUsername(e.target.value)} />
+                    </div>
+                    <div>
+                        <p>Password</p>
+                        <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    </div>
+                    </div>
+                    {(isauth ==='A' && props.status === 'A') && (
+                        <div>
+                            <p>Signing</p>
+                            <Select onChange={(e, value) => {
+                                let reason_value = value.value ? value.value : ''
+                                setReason(reason_value)
+                            }}
+                                className="sign-select"
+
+                            >
+                                <Option key="Signing on behalf of team mate">
+                                    Signing on behalf of team mate
+                                </Option>
+                                <Option key="I am an approver">
+                                    I am an approver
+                                </Option>
+                                <Option key="I am the author">
+                                    I am the author
+                                </Option>
+                                <Option key="Other Reason">
+                                    Other Reason
+                                </Option>
+                            </Select>
+                        </div>
+                    )}
+
+                    {(isauth==='R' && props.status === 'R') && (
                         <div>
                             <p>Comment</p>
-                            {/* <Select onChange={(e, value) => {
-                            let reason_value = value.value ? value.value : ''
-                            setReason(reason_value)
-                        }}
-                            className="sign-select"
-
-                        >
-                            <Option key="Signing on behalf of team mate">
-                                Signing on behalf of team mate
-                            </Option>
-                            <Option key="I am an approver">
-                                I am an approver
-                            </Option>
-                            <Option key="I am the author">
-                                I am the author
-                            </Option>
-                            <Option key="Other Reason">
-                                Other Reason
-                            </Option>
-                        </Select> */}
-                            <TextArea rows={3} value={reason} style={{ width: '450px' }} onChange={(e) => {
+                            <Input.TextArea rows={3} value={reason} style={{ width: '450px' }} onChange={(e) => {
                                 setReason(e.target.value);
                             }} />
-
-                        </div>}
+                        </div>
+                    )}
                 </div>
             </Modal>
         </div>
