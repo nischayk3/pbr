@@ -50,8 +50,9 @@ function ReportDesignerForm(props) {
     }
 
     return (
-        <div className="reportDesigner-gen bg-white" >
-            <div className="reportDesigner-block-left bg-white" >
+        // <div className="reportDesigner-gen bg-white" >
+        //     <div className="reportDesigner-block-left bg-white" >
+        <div className="generator-header">
                 <div>
                 Report ID : {reportId}
                 </div>
@@ -69,7 +70,7 @@ function ReportDesignerForm(props) {
                 </div>
 
             </div>
-        </div>
+        // </div>
     );
 }
 

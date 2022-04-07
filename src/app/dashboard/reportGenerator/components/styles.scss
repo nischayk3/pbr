@@ -233,6 +233,7 @@ height: 40px !important;
 background: #EAEAEA !important;
 align-items: center !important;
 margin-left: 10px;
+
 }
 .selected-day-buttons
 {
@@ -243,6 +244,7 @@ background: #486BC9 !important;
 align-items: center !important;
 font-size: 10px;
 margin-left: 10px;
+color: white !important;
 }
 
 .select-days
@@ -252,4 +254,13 @@ margin-left: 10px;
 .end-date
 {
   margin-left: 30%;
+}
+.generator-card
+{
+  min-height: 720px;
+  max-height: 720px;
+  width: 100%;
+  margin-left: 20px;
+  padding: 30px;
+  overflow: scroll;
 }
