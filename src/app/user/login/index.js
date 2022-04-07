@@ -38,14 +38,14 @@ const Login = () =>
     {
         if(localStorage.getItem('login_details'))
         {
-            history.push('/dashboard/genealogy');
+            history.push('/dashboard/workspace');
             dispatch(showNotification('success', "Logged In Success"));
         }
         else{
             if(localStorage.getItem("test_enabled")){
-                window.open(`${loginUrl}?is_ui=true`,'_self')
+                window.open(`${loginUrl}?is_ui=true&localhost=True`,'_self')
             }else{
-                window.open(`${loginUrl}?is_ui=true`,'_self')
+                window.open(`${loginUrl}?is_ui=true&localhost=True`,'_self')
             }
                 
         }
