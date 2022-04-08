@@ -58,6 +58,9 @@ export const BMS_PBR_URL = `${
 //BMS APP URL
 export const BMS_APP_URL = `${process.env.REACT_APP_UI_URL}`;
 
+//bms login-pass url
+export const BMS_APP_LOGIN_PASS ='/auth';
+
 //BMS APP PYTHON SERVICE V1
 export const BMS_APP_PYTHON_SERVICE = `${
   process.env.REACT_APP_PYTHON_SERVICES + '/v1'
@@ -67,6 +70,8 @@ export const BMS_APP_PYTHON_SERVICE = `${
 export const MDH_APP_PYTHON_SERVICE = 'https://bms-cpvdev.mareana.com';
 //BMS APP GOOGLE ANALYTICS TRACS ID
 export const GOOGLE_ANALYTICS_ID = `${process.env.REACT_APP_GOOGLE_ANALYTICS_ID}`;
+
+export const LOGIN_URL = '/auth';
 
 console.log('process env', process.env);
 

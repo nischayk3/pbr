@@ -96,6 +96,12 @@ const MENU = [
     title: 'Workspace',
     linkTo: '/dashboard/workspace',
   },
+  {
+    key: 'dashboard',
+    icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+    title: 'Dashboard',
+    linkTo: '/dashboard/dashboard',
+  },
 ];
 
 

@@ -123,6 +123,8 @@ function ReportDesignerNew() {
   const [mainJson, setMainJson] = useState({});
   const [isPublish, setIsPublish] = useState(false);
   const [params, setParams] = useState(false)
+  const [selectedSectionCharts, setSelectedSectionCharts] = useState([])
+  const [sectionCharts, setCharts] = useState([])
   const [publishResponse, setPublishResponse] = useState({});
   const [approveReject, setApproveReject] = useState('')
   const [ad, setAd] = useState(false)
@@ -140,8 +142,7 @@ function ReportDesignerNew() {
     if (Object.keys(params).length > 0) {
       dispatch(showLoader())
       unloadUrl(params)
-      if(Object.keys(params).includes('publish'))
-      { 
+      if (Object.keys(params).includes('publish')) {
         dispatch(showLoader())
         unloadUrl(params)
         setAd(true)
@@ -188,6 +189,12 @@ function ReportDesignerNew() {
 
   const onLogin = async () => {
     window.open(`${loginUrl}?is_ui=true&ui_type='sign`, '_self')
+  }
+
+  const setSectionCharts = (chartName, addedCharts) => {
+    selectedSectionCharts.push(chartName)
+    setSelectedSectionCharts(selectedSectionCharts)
+    setCharts(addedCharts)
   }
 
 
@@ -373,6 +380,8 @@ function ReportDesignerNew() {
       obj['view_version'] = viewVersion;
       obj['rep_name'] = reportName;
       obj['rep_status'] = status;
+      obj['selected_charts'] = [...new Set(selectedSectionCharts)];
+      obj['charts_layout'] = sectionCharts;
 
       if (saveType == 'save_as') {
         obj['rep_disp_id'] = '';
@@ -511,6 +520,7 @@ function ReportDesignerNew() {
     return rowObject.isActive ? true : false;
   }
 
+
   return (
     <div className='custom-wrapper'>
       <div className='sub-header'>
@@ -641,16 +651,6 @@ function ReportDesignerNew() {
               chartList={chartList}
               show={params}
             /> */}
-            {/* <Form
-              className="report-form"
-              name="report-generator-form"
-              form={form}
-              onValuesChange={handleValuesChange}
-              initialValues={formData}
-            >
-              <ReportDesignerDynamicSections formData={formData} show={params} />
-            </Form> */}
-
             <Form
               className="report-form"
               name="report-generator-form"
@@ -658,8 +658,18 @@ function ReportDesignerNew() {
               onValuesChange={handleValuesChange}
               initialValues={formData}
             >
-              <ReportDesigneTable formData={formData} show={params} />
+              <ReportDesignerDynamicSections formData={formData} show={params} list={selectedChartList} setSectionCharts={setSectionCharts} />
             </Form>
+
+            {/* <Form
+              className="report-form"
+              name="report-generator-form"
+              form={form}
+              onValuesChange={handleValuesChange}
+              initialValues={formData}
+            >
+              <ReportDesigneTable formData={formData} show={params} list={selectedChartList} />
+            </Form> */}
 
           </div> :
           <></>

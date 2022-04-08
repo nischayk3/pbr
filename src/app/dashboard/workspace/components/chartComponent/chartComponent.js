@@ -28,10 +28,10 @@ const chartComponent = (props) => {
         try {
             dispatch(showLoader());
             const chartResponse = await getChartPlotData(req);
-            setWorkSpaceChartData(chartResponse.data);
-            setWorkSpaceChartLayout(chartResponse.layout)
-            setWorkSpaceChartLayoutXAxis(chartResponse.layout.xaxis)
-            setWorkSpaceChartLayoutYAxis(chartResponse.layout.yaxis)
+            setWorkSpaceChartData(chartResponse.data[0].data);
+            setWorkSpaceChartLayout(chartResponse.data[0].layout)
+            setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
+            setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
@@ -43,22 +43,23 @@ const chartComponent = (props) => {
         yaxis: workspaceChartLayoutYAxis,
         autosize: false,
         width: 800,
-        height: 310,
-        margin: {
-            l: 50,
-            r: 50,
-            b: 75,
-            t: 30,
-            pad: 4
-        },
+        height: 300,
+        // margin: {
+        //     l: 50,
+        //     r: 50,
+        //     b: 75,
+        //     t: 30,
+        //     pad: 4
+        // },
         title: {
             text: ""
         }
     };
+    console.log(workspaceChartData);
     return (
         <div className='workspace-plot'>
             <Plot
-                data={[workspaceChartData]}
+                data={workspaceChartData}
                 layout={layout}
             />
             <Alert
