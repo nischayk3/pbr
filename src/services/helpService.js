@@ -1,3 +1,11 @@
+/**
+ * @author Fahad Siddiqui <fahad.siddiqui@mareana.com>
+ * @Mareana - CPV Product
+ * @version  1
+ * @Last Modified - 05 April, 2022
+ * @Last Changed By - Fahad
+ */
+
 import Service from './AjaxService';
 import { BMS_APP_PYTHON_SERVICE } from '../constants/apiBaseUrl';
 
