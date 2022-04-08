@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './style.scss';
 //antd imports
-import { Card, Row, Col, Button, Menu, Dropdown, message } from 'antd';
-import { ArrowLeftOutlined, CloudUploadOutlined, MoreOutlined } from '@ant-design/icons';
+import { Card, Row, Col, Button, Menu, Dropdown, message, Modal, Tabs } from 'antd';
+import { ArrowLeftOutlined, CloudUploadOutlined, MoreOutlined, DesktopOutlined, ArrowRightOutlined } from '@ant-design/icons';
 //components
 import LandingPage from './landingPage/LandingPage';
 import ViewPage from './viewPage/ViewPage';
@@ -13,12 +13,19 @@ import { saveChartPlotData } from '../../../../services/chartPersonalizationServ
 //react-redux
 import { useDispatch } from 'react-redux';
 import { showLoader, hideLoader } from '../../../../duck/actions/commonActions';
+//schedule-alert table
+import AlertTable from './scheduled-alerts/scheduledAlertsTable';
+//alert evaluation
+import AlertEvaluation from './scheduled-alerts/alertEvaluation';
 
 
+const { TabPane } = Tabs;
 //main component
 const ChartPersonal = () => {
     //state for showing view page or landing page
     const [showView, setShowView] = useState(false);
+    //for showing schedule alert modal
+    const [alertModal, setAlertModal] = useState(false);
     //state for chart json data
     const [postChartData, setPostChartData] = useState(chartJson);
 
@@ -81,6 +88,13 @@ const ChartPersonal = () => {
         </Menu>
     );
 
+    const handleOk = () => {
+
+    }
+    const handleCancel = () => {
+        setAlertModal(false)
+    }
+
     return (
         <div className='custom-wrapper'>
             <div className='sub-header'>
@@ -89,7 +103,7 @@ const ChartPersonal = () => {
                     <span className='header-title'>Process Control Charts</span>
                 </div>
                 {showView && <div className='btns'>
-                    <Button>Schedule Alert</Button>
+                    <Button onClick={() => setAlertModal(true)}>Schedule Alert</Button>
                     <Button>Save</Button>
                     <Button> <CloudUploadOutlined />
                         Publish</Button>
@@ -102,7 +116,40 @@ const ChartPersonal = () => {
                 {!showView && <LandingPage showView={showView} setShowView={setShowView} />}
                 {showView && <ViewPage showView={showView} setShowView={setShowView} postChartData={postChartData} setPostChartData={setPostChartData} />}
             </div>
+            <Modal title="Schedule Alert" className='schedule-modal' visible={alertModal} onCancel={handleCancel} footer={false} width={1300} >
+                <Tabs tabPosition='left' className='schedule-menu'>
+                    <TabPane tab={
+                        <span>
+                            <DesktopOutlined />
+                            Alerts
+                        </span>
+                    }
+                        key="1">
+                        <AlertEvaluation/>
+                    </TabPane>
+                    <TabPane tab={
+                        <span>
+                            <DesktopOutlined />
+                            Schedule Alerts
+                        </span>
+                    } key="2">
+                        <div className='schedule-alerts'>
+                            <div className='alerts-text'>
+                                <p className='alert-title'>Scheduled Alerts</p>
+                                <span className='alert-arrow'><a>View More Details</a><ArrowRightOutlined style={{ marginLeft: '10px', color: '#093185' }} /></span>
+                            </div>
+                            <div>
+                                <AlertTable />
+                            </div>
+                        </div>
+                    </TabPane>
+
+                </Tabs>
+
+
+            </Modal>
         </div>
+
     )
 }
 

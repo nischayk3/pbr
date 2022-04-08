@@ -175,9 +175,6 @@ function ReportDesignerForm(props) {
                                 value={selectedChartList}
                                 onChange={handleChange}
                                 style={{ width: '100%', minHeight: '50px', maxHeight: '200px' }}
-                                onMouseDown={drag}
-
-
                             >
                                 {chartsList.length > 0 ? chartsList.map(item => (
                                     <Option draggable="true" value={item} key={item}>

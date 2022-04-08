@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import './styles.scss';
 
+
 function ReportDesignerDynamicRow(props) {
     const { fieldKey } = props;
 
@@ -52,7 +53,7 @@ function ReportDesignerDynamicRow(props) {
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} style={{ width: '100px'}} placeholder="Enter Key" bordered={true} disabled={props.show} />
+                                                <Input.TextArea bordered allowClear autoSize={true} style={{ width: '100px', height: '20px' }} placeholder="Enter Key" bordered={true} disabled={props.show} />
                                             </Form.Item>
                                         )
                                     }}
@@ -113,6 +114,7 @@ function ReportDesignerDynamicRow(props) {
                     <Form.Item>
                         <PlusSquareOutlined style={{ color: '#093185' }} onClick={() => add()} />
                     </Form.Item>
+
                 </>
             )}
         </Form.List>

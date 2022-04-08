@@ -1,10 +1,15 @@
 .reportInfoCard{
   margin-bottom: 18px !important;
   margin-top: 16px !important;
-  height: 157px !important;
+  min-height: 157px !important;
+  max-height :fit-content;
+  // position: absolute;
+  // direction: ltr;
+  // height: auto;
+  // overflow: auto;
 }
 .reportDesigner-grid {
-  height: 120px;
+  height: 90px;
   .reportDesigner-block-design {
     display: grid;
     grid-template-columns: .2fr .2fr .2fr .4fr  ;
