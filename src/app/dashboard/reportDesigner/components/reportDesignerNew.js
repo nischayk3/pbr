@@ -123,8 +123,8 @@ function ReportDesignerNew() {
   const [mainJson, setMainJson] = useState({});
   const [isPublish, setIsPublish] = useState(false);
   const [params, setParams] = useState(false)
-  const [selectedSectionCharts,setSelectedSectionCharts] = useState([])
-  const [sectionCharts,setCharts] = useState([])
+  const [selectedSectionCharts, setSelectedSectionCharts] = useState([])
+  const [sectionCharts, setCharts] = useState([])
   const [publishResponse, setPublishResponse] = useState({});
   const [approveReject, setApproveReject] = useState('')
   const [ad, setAd] = useState(false)
@@ -191,12 +191,11 @@ function ReportDesignerNew() {
     window.open(`${loginUrl}?is_ui=true&ui_type='sign`, '_self')
   }
 
-  const setSectionCharts = (chartName,addedCharts) =>
-  {
+  const setSectionCharts = (chartName, addedCharts) => {
     selectedSectionCharts.push(chartName)
     setSelectedSectionCharts(selectedSectionCharts)
     setCharts(addedCharts)
-  } 
+  }
 
 
   const onApprove = (item) => {

@@ -5,6 +5,7 @@ import illustrations from '../../../../assets/images/landing_image.png';
 import { getReports } from '../../../../services/reportDesignerServices';
 import './style.scss';
 import StatusBlock from '../../../../components/StatusBlock/statusBlock';
+import { loadReport } from '../../../../services/reportDesignerServices';
 
 
 export default function Landing(props) {
@@ -115,6 +116,15 @@ export default function Landing(props) {
         });
     };
 
+    const getLoadReport = async (report_id) => {
+
+        console.log(report_id)
+        let req = { report_displ_id: report_id }
+        let data = await loadReport(req)
+
+        console.log(data)
+    }
+
     const statusColor = (status) => {
         if (status == 'APRD') {
             return 'aprd'
@@ -159,7 +169,16 @@ export default function Landing(props) {
                                     size="large"
                                     onSearch={search}
                                 />
-                                {searched ? <Table className="landing-table" columns={columns} dataSource={filterTable === null ? reportList : filterTable} /> : <></>}
+                                {searched ? <Table className="landing-table" columns={columns} dataSource={filterTable === null ? reportList : filterTable} onRow={record => ({
+                                    onClick: e => {
+                                        // record['color'] = '#D3D3D3'
+                                        // setReportId(record.rep_disp_id)
+                                        // getReportData(record.rep_disp_id, record.rep_status)
+                                        // dispatch(showLoader())
+                                        getLoadReport(record.rep_disp_id)
+                                        // onOk()
+                                    }
+                                })} /> : <></>}
                                 <div className='create-new' onClick={() => props.changeScreen()} >
                                     <PlusOutlined />
                                     <p>Design new report</p>
@@ -187,7 +206,16 @@ export default function Landing(props) {
                                 // onSearch={onSearch}
                                 />
 
-                                {searched ? <Table columns={columns} dataSource={filterTable === null ? reportList : filterTable} /> : <></>}
+                                {searched ? <Table columns={columns} dataSource={filterTable === null ? reportList : filterTable} onRow={record => ({
+                                    onClick: e => {
+                                        // record['color'] = '#D3D3D3'
+                                        // setReportId(record.rep_disp_id)
+                                        // getReportData(record.rep_disp_id, record.rep_status)
+                                        // dispatch(showLoader())
+                                        getLoadReport(record.rep_disp_id)
+                                        // onOk()
+                                    }
+                                })} /> : <></>}
                                 <div className='create-new' onClick={() => props.changeScreen()} >
                                     <PlusOutlined />
                                     <p>Generate new report</p>
