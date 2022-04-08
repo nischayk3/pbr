@@ -222,3 +222,19 @@ p {
     grid-template-rows: 1fr 1fr;
     row-gap:24px
   }
+
+  .chart-view{
+    background: #E2E8F2;
+    border-radius: 4px;
+    margin-top: 20px;
+    padding: 24px;
+  }
+  .chart-preview-text{
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 22px;
+color: #000000;
+margin-bottom:0px !important;
+  }
