@@ -93,7 +93,7 @@ class Uploader extends Component {
             'I am the author',
             'I do not want to insert duplicate record',
         ],
-        username: JSON.parse(localStorage.getItem('username')),
+        username: localStorage.getItem('username'),
     };
 
     componentDidMount = () => {};
