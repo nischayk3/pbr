@@ -15,7 +15,7 @@ import { showLoader, hideLoader, showNotification } from '../../../../../../duck
 //services
 import { getViewTable } from '../../../../../../services/commonService';
 import { postChartPlotData } from '../../../../../../services/chartPersonalizationService';
-//cjson
+//cjsonw
 import chartJson from '../chartObj.json';
 
 //unpacking antd components
