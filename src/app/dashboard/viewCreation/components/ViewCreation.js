@@ -854,6 +854,10 @@ function ViewCreation() {
     if (Object.keys(params).length > 0) {
       setParams(true);
       onOkHandler(params.id);
+      if(Object.keys(params).includes('fromScreen')){
+        setParams(false);
+        onOkHandler(params.id);
+      }
       if(Object.keys(params).includes('publish'))
       { setParams(true);
         setAd(true)
@@ -932,7 +936,7 @@ function ViewCreation() {
               <Button className='viewCreation-shareBtn'>Share</Button>
               <Button
                 className='viewCreation-publishBtn'
-                onClick={() => {setIsPublish(true); setAd(true)}}
+                onClick={() => {setIsPublish(true); setAd(true);setApproveReject('P');}}
               >
                 <CloudUploadOutlined />
                 Publish

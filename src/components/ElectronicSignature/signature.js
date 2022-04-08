@@ -14,6 +14,7 @@ import queryString from 'query-string';
 const { Option } = Select
 
 function Signature(props) {
+
     const location = useLocation();
     const params = queryString.parse(location.search)
     var { isPublish, handleClose } = props
@@ -36,12 +37,13 @@ function Signature(props) {
             dispatch(showLoader());
             const res = await getAuthenticate(req, header);
             console.log(res);
-            // if(res.status!=200){
-            //     setIsAuth('')
-            //     handleClose();
-            // }else{
+            if(res.Status!=200){
+                setIsAuth('')
+                dispatch(showNotification('error',"Incorrect credentials"))
+                handleClose();
+            }else{
                 setIsAuth(props.status)
-            // }
+             }
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
@@ -76,7 +78,7 @@ function Signature(props) {
             if (esign_response.statuscode == 200) {
                 setPrimaryId(esign_response.primary_id)
                 dispatch(showNotification('success', esign_response.message))
-                //handleClose()
+                handleClose()
                 let reqs = {}
                 let req1 = {}
                 console.log(params.version)
@@ -129,7 +131,7 @@ function Signature(props) {
                 width={500}
                 mask={true}
                 onCancel={()=>{handleClose(); setIsAuth('')}}
-                footer={isauth==='A' || isauth==='R' ? [<Button className="custom-secondary-btn" key="2" onClick={() => handleClose()}>Cancel</Button>, <Button className="custom-secondary-btn" key="1" onClick={() => handleConfirm()} >Confirm</Button>] : [<Button className="custom-secondary-btn" key="3" onClick={() => authenticateUser()} >Auth</Button>]}
+                footer={isauth==='A' || isauth==='R' || isauth==='P' ? [<Button className="custom-secondary-btn" key="2" onClick={() => handleClose()}>Cancel</Button>, <Button className="custom-secondary-btn" key="1" onClick={() => handleConfirm()} >Confirm</Button>] : [<Button className="custom-secondary-btn" key="3" onClick={() => authenticateUser()} >Authenticate</Button>]}
                 mask={true}
             >
                 <div className="electronic-sig">
@@ -143,7 +145,7 @@ function Signature(props) {
                         <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     </div>
-                    {(isauth ==='A' && props.status === 'A') && (
+                    {((isauth ==='A' && props.status === 'A') || ((isauth ==='P' && props.status === 'P'))) && (
                         <div>
                             <p>Signing</p>
                             <Select onChange={(e, value) => {
