@@ -9,7 +9,7 @@ import moment from 'moment';
 import './styles.scss';
 
 
-const ViewChart = () => {
+const ViewChart = (props) => {
     const { Text } = Typography;
     const { Search } = Input;
     const [visible, setVisible] = useState(false);
@@ -107,7 +107,7 @@ const ViewChart = () => {
     };
     return (
         <div>
-            <Card title="Dashboard Sample Name">
+            <Card title={props.dashboardName}>
                 {/* <Row>
                     <Col span={4}>
                         <div>
