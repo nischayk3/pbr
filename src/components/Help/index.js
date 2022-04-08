@@ -15,29 +15,6 @@ import './style.scss';
 const { Panel } = Collapse;
 const { Search } = Input;
 
-const jsondata =  [
-  {
-    "questions":"How to upload a file?",
-    "answer":"To upload file in click on upload file option and choose file."
-  },
-  {
-    "questions":"How to upload a file?",
-    "answer":"To upload file in click on upload file option and choose file."
-  },
-  {
-    "questions":"How to upload a file?",
-    "answer":"To upload file in click on upload file option and choose file."
-  },
-  {
-    "questions":"How to upload a file?",
-    "answer":"To upload file in click on upload file option and choose file."
-  },
-  {
-    "questions":"How to upload a file?",
-    "answer":"To upload file in click on upload file option and choose file."
-  }
-]
-
 const Help = () => {
 
     const [visible, setVisible] = useState(false);
