@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import ScreenHeader from '../../../../../components/screenHeader/screenHeader';
+import ScreenHeader from '../../../../../components/ScreenHeader/screenHeader';
 import illustrations from '../../../../../assets/images/Dashboard-Banner.svg';
 import Banner from '../../../../../assets/images/Popup-Side.svg';
 import { getDashboard } from '../../../../../services/dashboardServices';
