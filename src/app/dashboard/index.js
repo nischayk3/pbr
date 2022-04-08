@@ -5,10 +5,12 @@ import {
   Switch,
   useHistory,
   useRouteMatch,
+  useLocation,
 } from 'react-router-dom';
 import Auth from '../../utils/auth';
 import BreadCrumbWrapper from '../../components/BreadCrumbWrapper';
 import HeaderBar from '../../components/Header';
+import Help from '../../components/Help';
 import { Layout } from 'antd';
 import Sidebar from '../../components/Sidebar';
 import SuspenseWrapper from '../../components/SuspenseWrapper';
@@ -31,12 +33,14 @@ const ReportGenerator = lazy(() => import('./reportGenerator'));
 const Workflow = lazy(() => import('./wokflow'));
 const Workspace = lazy(() => import('./workspace'));
 const Genealogy = lazy(() => import('./genealogy'));
+const Faq = lazy(() => import('./faq'));
 const { Content } = Layout;
 
 const Dashboard = () => {
   const match = useRouteMatch();
+  const location = useLocation();
   const history = useHistory();
-
+  const screen = location.pathname.split('/')
   useEffect(() => {
     // if (!Auth.isAuthenticated()) {
     //   history.push('/user/login');
@@ -48,6 +52,7 @@ const Dashboard = () => {
         <HeaderBar />
         <Layout>
           <Sidebar />
+         {screen[2] !== 'faq' &&  <Help />}
           <Content>
             {/* <BreadCrumbWrapper /> */}
             <SuspenseWrapper>
@@ -111,6 +116,9 @@ const Dashboard = () => {
                 </Route>
                 <Route key='redirect_sign' path={`${match.url}/redirect_sign`}>
                   <RedirectSign />
+                </Route>
+                <Route key='faq' path={`${match.url}/faq`}>
+                  <Faq />
                 </Route>
               </Switch>
             </SuspenseWrapper>
