@@ -15,11 +15,10 @@ import { loginUrl } from '../../../services/loginService';
 import { adenabled } from '../../../config/config';
 
 
-const Login = () => 
-{
+const Login = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    
+
     const onFinish = async (values) => {
         try {
             dispatch(showLoader());
@@ -34,10 +33,8 @@ const Login = () =>
         }
     };
 
-    const onLogin = async () =>
-    {
-        if(localStorage.getItem('login_details'))
-        {
+    const onLogin = async () => {
+        if (localStorage.getItem('login_details')) {
             history.push('/dashboard/workspace');
             dispatch(showNotification('success', "Logged In Success"));
         }
@@ -47,9 +44,9 @@ const Login = () =>
             }else{
                 window.open(`${loginUrl}?is_ui=true`,'_self')
             }
-                
+
         }
-        
+
     }
 
     return (
@@ -80,34 +77,34 @@ const Login = () =>
                                 onFinish={adenabled ? onLogin : onFinish}
                             >
                                 {!adenabled ? <>
-                                <Form.Item
-                                    label='Username'
-                                    name='username'
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message:
-                                                'Please enter your username!',
-                                        },
-                                    ]}
-                                >
-                                    <Input id='username' />
-                                </Form.Item>
+                                    <Form.Item
+                                        label='Username'
+                                        name='username'
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Please enter your username!',
+                                            },
+                                        ]}
+                                    >
+                                        <Input id='username' />
+                                    </Form.Item>
 
-                                <Form.Item
-                                    label='Password'
-                                    name='password'
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message:
-                                                'Please enter your password!',
-                                        },
-                                    ]}
-                                >
-                                    <Input.Password id='password' />
-                                </Form.Item>
-                                </>: <></>}
+                                    <Form.Item
+                                        label='Password'
+                                        name='password'
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Please enter your password!',
+                                            },
+                                        ]}
+                                    >
+                                        <Input.Password id='password' />
+                                    </Form.Item>
+                                </> : <></>}
 
                                 <Form.Item
                                 //  {...tailLayout}

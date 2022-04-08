@@ -8,7 +8,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   ArrowLeftOutlined,
   CloudUploadOutlined,
@@ -93,7 +93,7 @@ function ViewCreation() {
   const molecule_Id = useSelector(
     (state) => state.viewCreationReducer.molecule_id
   );
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
   const location = useLocation();
   const [count, setCount] = useState(1);
   const [params, setParams] = useState(false);
@@ -192,7 +192,7 @@ function ViewCreation() {
       render: (text, record, index) => (
         <>
           {record.coverage_metric_percent === '100 %' ||
-          record.coverage_metric_percent === '100%' ? (
+            record.coverage_metric_percent === '100%' ? (
             <span className='statusIcon-summary'>
               <img src={StatusCorrect} />
             </span>
@@ -271,7 +271,7 @@ function ViewCreation() {
   };
   const [form] = Form.useForm();
 
-  const handleValuesChange = (changedValues, values) => {};
+  const handleValuesChange = (changedValues, values) => { };
 
   const updateData = () => {
     if (!functionChanged.current) {
@@ -371,6 +371,7 @@ function ViewCreation() {
     counter.current = 0;
   };
   const onOkHandler = async (viewId) => {
+
     setShowSpinner(true);
     setVisible(false);
     setViewSummaryTable([]);
@@ -381,7 +382,14 @@ function ViewCreation() {
     let files = [];
     let status = {};
     let req = { view_disp_id: viewId ? viewId : viewDisplayId };
-    getViewConfig(req)
+    let login_response = JSON.parse(localStorage.getItem('login_details'));
+
+    const headers = {
+      'content-type': 'application/json',
+      'x-access-token': login_response.token ? login_response.token : '',
+      'resource-name': 'VIEW',
+    };
+    getViewConfig(req, headers)
       .then((res) => {
         setMoleculeId(res.material_id);
         setViewStatus(res.view_status);
@@ -661,13 +669,12 @@ function ViewCreation() {
     });
   };
 
-  const onApprove = (item) =>
-  {
-    localStorage.setItem('status',item);
+  const onApprove = (item) => {
+    localStorage.setItem('status', item);
     //setApproveReject(item);
-    window.open(`${loginUrl}?is_ui=true&ui_type=sign`,'_self')
+    window.open(`${loginUrl}?is_ui=true&ui_type=sign`, '_self')
     dispatch(sendUrl(window.location.href));
-    localStorage.setItem('redirectUrl',window.location.href);
+    localStorage.setItem('redirectUrl', window.location.href);
   }
   const handleSaveFunc = async () => {
     if (!viewFunctionName.length) {
@@ -732,11 +739,18 @@ function ViewCreation() {
       view_disp_id: viewDisplayId,
       view_status: viewStatus,
     };
+    // const headers = {
+    //   username: 'user_mareana1',
+    //   password: 'mareana_pass1',
+    //   view_version: viewVersion,
+    //   view_disp_id: viewDisplayId,
+    // };
+    let login_response = JSON.parse(localStorage.getItem('login_details'));
+
     const headers = {
-      username: 'user_mareana1',
-      password: 'mareana_pass1',
-      view_version: viewVersion,
-      view_disp_id: viewDisplayId,
+      'content-type': 'application/json',
+      'x-access-token': login_response.token ? login_response.token : '',
+      'resource-name': 'VIEW',
     };
     setShowSpinner(true);
     try {
@@ -812,9 +826,16 @@ function ViewCreation() {
       view_status: 0,
       view_version: 1,
     };
+    // const headers = {
+    //   username: 'user_mareana1',
+    //   password: 'mareana_pass1',
+    // };
+    let login_response = JSON.parse(localStorage.getItem('login_details'));
+
     const headers = {
-      username: 'user_mareana1',
-      password: 'mareana_pass1',
+      'content-type': 'application/json',
+      'x-access-token': login_response.token ? login_response.token : '',
+      'resource-name': 'VIEW',
     };
     setShowSpinner(true);
     try {
@@ -854,8 +875,8 @@ function ViewCreation() {
     if (Object.keys(params).length > 0) {
       setParams(true);
       onOkHandler(params.id);
-      if(Object.keys(params).includes('publish'))
-      { setParams(true);
+      if (Object.keys(params).includes('publish')) {
+        setParams(true);
         setAd(true)
         onOkHandler(params.id);
         setIsPublish(true)
@@ -873,21 +894,21 @@ function ViewCreation() {
           <div className='viewCreation-btns'>
             <Button
               className='viewCreation-rejectBtn'
-              onClick={() => {
-                setIsPublish(true);
-                setApproveReject('R');
-              }}
-              //onClick={()=>{adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
+              // onClick={() => {
+              //   setIsPublish(true);
+              //   setApproveReject('R');
+              // }}
+              onClick={() => { adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
             >
               Reject
             </Button>
             <Button
               className='viewCreation-publishBtn'
-              onClick={() => {
-                setIsPublish(true);
-                setApproveReject('A');
-              }}
-              //onClick={()=>{adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
+              // onClick={() => {
+              //   setIsPublish(true);
+              //   setApproveReject('A');
+              // }}
+              onClick={() => { adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
             >
               Approve
             </Button>
@@ -932,7 +953,7 @@ function ViewCreation() {
               <Button className='viewCreation-shareBtn'>Share</Button>
               <Button
                 className='viewCreation-publishBtn'
-                onClick={() => {setIsPublish(true); setAd(true)}}
+                onClick={() => { setIsPublish(true); setAd(true) }}
               >
                 <CloudUploadOutlined />
                 Publish
