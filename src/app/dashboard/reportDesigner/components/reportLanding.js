@@ -118,11 +118,9 @@ export default function Landing(props) {
 
     const getLoadReport = async (report_id) => {
 
-        console.log(report_id)
         let req = { report_displ_id: report_id }
         let data = await loadReport(req)
 
-        console.log(data)
     }
 
     const statusColor = (status) => {

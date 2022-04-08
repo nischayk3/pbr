@@ -119,7 +119,6 @@ function ReportDesignerDynamicSections(props) {
         }
     }
 
-    console.log(showChart)
 
     return (
         <div className="reportDesigner-dynamicSections bg-white">
