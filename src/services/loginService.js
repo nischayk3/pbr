@@ -1,6 +1,7 @@
 import Service from './AjaxService';
 import {
-  BMS_APP_PYTHON_SERVICE
+  BMS_APP_PYTHON_SERVICE,
+  BMS_APP_LOGIN_PASS
 } from '../constants/apiBaseUrl';
 
 
@@ -19,3 +20,14 @@ export const getSession = (request) => {
     );
 };
 
+
+export const getAuthenticate = (request,header) => {
+    return Service.get(BMS_APP_LOGIN_PASS+ '/login-pass', request, header).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};

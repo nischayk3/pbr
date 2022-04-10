@@ -1,86 +1,217 @@
-import React from 'react';
-import { Form, Input, Space, Popconfirm,Card } from 'antd';
-import { PlusSquareTwoTone, DeleteTwoTone ,PlusSquareOutlined} from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Form, Input, Space, Popconfirm, Card } from 'antd';
+import { CheckCircleTwoTone, DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
+import Chart from '../reportChart/chartComponent/chartComponent'
+import { showLoader, hideLoader } from '../../../../../duck/actions/commonActions';
+import { useDispatch } from 'react-redux';
+
 
 function ReportDesignerDynamicSections(props) {
 
-    const { formData } = props;
+    // const convertListToObj = (arr) => {
+    //     let obj = []
+    //     for (let i = 0; i < arr.length; i++) {
+    //         let res = {}
+    //         res.value = arr[i]
+    //         res.clicked = false
+    //         obj.push(res)
+    //     }
+
+    //     return obj
+    // }
+
+    const dispatch = useDispatch();
+    const [addedCharts, setAddedCharts] = useState({})
+    const [addedKeys, setAddedKeys] = useState({})
+    const [chartList, setChartList] = useState([])
+    const [showChart, setShowChart] = useState({})
+
+    const { list } = props;
+
+    // const showCharts = (val) => {
+    //     if (val)
+    //         setShowChart(false)
+    //     else
+    //         setShowChart(true)
+    // }
+
+    const deleteChart = (chartName, section) => {
+
+        dispatch(showLoader())
+        section = section + 1
+        let chart_index = addedCharts[`${section}`].indexOf(chartName)
+        if (chart_index > -1) {
+            addedCharts[`${section}`].splice(chart_index, 1)  // 2nd parameter means remove one item only
+        }
+        dispatch(hideLoader())
+    }
+
+    const addChart = (chartName, section) => {
+
+        dispatch(showLoader())
+        section = section + 1
+        if (`${section}` in addedCharts) {
+            addedCharts[`${section}`].push(chartName)
+            setAddedCharts(addedCharts)
+            dispatch(hideLoader())
+        }
+        else {
+            if (addedCharts && !addedCharts[`${section}`]) {
+                addedCharts[`${section}`] = []
+                addedCharts[`${section}`].push(chartName)
+                setAddedCharts(addedCharts)
+                dispatch(hideLoader())
+            }
+            else {
+                addedCharts[`${section}`].push(chartName)
+                setAddedKeys(addedCharts)
+            }
+            dispatch(hideLoader())
+        }
+        props.setSectionCharts(chartName, addedCharts)
+
+    }
+
+    const sectionAddKey = (section) => {
+
+        dispatch(showLoader())
+        section = section - 1
+        if (`${section}` in addedKeys) {
+            if (addedKeys[`${section}`]) {
+                addedKeys[`${section}`] = false
+                setAddedKeys(addedKeys)
+                dispatch(hideLoader())
+            }
+            else {
+                addedKeys[`${section}`] = true
+                setAddedKeys(addedKeys)
+                dispatch(hideLoader())
+            }
+        }
+        else {
+            addedKeys[`${section}`] = true
+            setAddedKeys(addedKeys)
+            dispatch(hideLoader())
+        }
+    }
+
+    const trackCharts = (section) => {
+        dispatch(showLoader())
+
+        if (`${section}` in addedKeys) {
+            if (showChart[`${section}`]) {
+                showChart[`${section}`] = false
+                setShowChart(showChart)
+                dispatch(hideLoader())
+            }
+            else {
+                showChart[`${section}`] = true
+                setShowChart(showChart)
+                dispatch(hideLoader())
+            }
+        }
+        else {
+            showChart[`${section}`] = true
+            setShowChart(showChart)
+            dispatch(hideLoader())
+        }
+    }
+
 
     return (
         <div className="reportDesigner-dynamicSections bg-white">
-            {/* <h6 className="dynamicSections-noteHeadline">Note</h6>
-            <ul className="dynamicSections-ul">
-                <li>
-                    To Create multiple sections, Please click on Add Multiple Sections
-                </li>
-                <li style={{ marginTop: '10px' }}>To Create multiple rows, Please click on plus icon in the row</li>
-            </ul> */}
             <Card className="reportTableCard" title="Report Table" >
-            <div className="dynamicSections-container">
-                <div className="dynamicSections-section">
-                    <div className="dynamicSections-block">
-                        <Form.List name={["response"]}>
-                            {(fields, { add, remove }) => (
+                <div className="designer-block">
+                    <Form.List name={["response"]}>
+                        {(fields, { add, remove }) => (
+                            <>
+                                {fields.map(({ key, name, ...restField }) => (
+                                    <div style={{ border: "1px solid #486BC9", marginBottom: "30px", minHeight: "160px", borderRadius: "4px" }}>
+                                        {!addedKeys[name] ?
+                                            <center>
+                                                <div style={{ height: '90px', width: '100px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => sectionAddKey(name + 1)}> <PlusOutlined style={{ color: 'gray', marginTop: '10px' }} /> <br />Add Key and value</div>
+                                            </center> :
+                                            <></>
+                                        }
+                                        {addedKeys[name] ?
+                                            <>
+                                                <p className="section-name">Section {name + 1}
+                                                    <div >
+                                                        <div className="add-chart" onClick={() => trackCharts(name)} >+ Add Chart</div>
+                                                        <div style={{ marginLeft: '85%', marginTop: '10px' }}>
+                                                            <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
+                                                                <DeleteTwoTone twoToneColor="red" />
+                                                            </Popconfirm></div>
+                                                    </div>
+                                                </p>
 
-                                <>
-                                    {fields.map(({ key, name, ...restField }) => (
-                                        <div>
-                                            <Form.Item {...restField} name={[name, 'sectionName']}>
-                                                <Input placeholder="Section" style={{ marginLeft: '400px' }} className="input-section" disabled={props.show}/>
+                                                <Form.Item {...restField} name={[name, 'sectionName']}>
+                                                    <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px' }} className="input-section" disabled={props.show} />
                                                 </Form.Item>
-                                                    <span class="Legend-colorBox" style={{ backgroundColor: '#BAE7FF',marginRight:'10px' , marginLeft:'720px',fontSize:'12px' }}>
-                                                    </span>
-                                                    <span class="Legend-label" style={{marginBottom:'10px',fontSize:'12px'}}>
-                                                        Edit
-                                                    </span>
-                                                    <span class="Legend-colorBox" style={{ backgroundColor: '#F5F5F5' ,marginLeft:'20px',fontSize:'12px'}}>
-                                                    </span>
-                                                    <span class="Legend-label" style={{marginLeft:'10px',fontSize:'12px'}}>
-                                                        View Only
-                                                    </span>                                            
-                                            
-                                            <Space
-                                                className="dynamicSections-spaceSection"
-                                                key={key}
-                                                style={{ display: 'flex', justifyContent: 'center' }}
-                                                align="baseline"
-                                            >
-                                                <table className="dynamicSections-table" style={{ width: '800px' }}>
-                                                    <thead className="dynamicSections-thead">
-                                                        <tr>
-                                                        <th></th>
-                                                            <th>Key</th>
-                                                            <th>Value</th>
-                                                            <th>Action</th>
-                                                            <th></th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody className="dynamicSections-tbody">
-                                                        <tr><td></td></tr>
-                                                        <ReportDesignerDynamicRow fieldKey={name} show={props.show}/>
-                                                    </tbody>
-                                                </table>
-                                                <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
-                                                    <DeleteTwoTone twoToneColor="red" style={{marginBottom:'100px'}} />
-                                                </Popconfirm>
-                                            </Space>
-                                        </div>
-                                    ))}
-                                    <Form.Item >
-                                        <p disabled={props.show}>
-                                            <PlusSquareOutlined  style={{ fontSize: '16px', marginLeft: '10px' ,color:'#093185'}} onClick={() => add()} /> <u disabled={props.show}>Add Multiple Sections</u>
-                                        </p>
+                                                <Space
+                                                    className="dynamicSections-spaceSection"
+                                                    key={key}
+                                                    style={{ display: 'flex', justifyContent: 'center' }}
+                                                    align="baseline"
+                                                >
+                                                    <table className="dynamicSections-table" style={{ width: '1190px' }}>
+                                                        <thead className="dynamicSections-thead">
+                                                            <tr>
+                                                                <th>Action</th>
+                                                                <th>Key</th>
+                                                                <th>Value</th>
+                                                                <th>Editable ?</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody className="dynamicSections-tbody">
+                                                            <ReportDesignerDynamicRow fieldKey={name} show={props.show} />
+                                                        </tbody>
+                                                    </table>
+                                                </Space>
+                                                <center>
+                                                    <PlusOutlined style={{ color: 'gray' }} />
+                                                    <div>Click on add chart to add charts in the section</div>
+                                                </center></> : <></>
+                                        }
+                                        <div className="chart-block">
+                                            {showChart[name] ?
+                                                list.map((i) =>
+                                                (<Form.Item {...restField} name={[name, 'select']}>
+                                                    <div className='chart-tiless' onClick={(e) => addChart(e.target.innerHTML, name)}>
+                                                        {addedCharts[`${name + 1}`] && addedCharts[`${name + 1}`].map((j) => (j == i ? <div className="chart-tile"> <CheckCircleTwoTone twoToneColor="green" /></div> : <></>))}
+                                                        <p className="charttile-content">{i}</p>
+                                                    </div>
+                                                </Form.Item>
 
-                                    </Form.Item>
-                                </>
-                            )}
-                        </Form.List>
-                    </div>
+                                                )) : <></>
+                                            }
+                                            {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: 0, right: 0, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> <u disabled={props.show}></u> */}
+                                        </div>
+                                        {addedCharts[`${name + 1}`] && addedCharts[`${name + 1}`].map((i) =>
+                                        (
+                                            <div>
+                                                <p className="chart-name">{i} <Popconfirm title="Are you Sure you want to delete the chart?" onConfirm={() => deleteChart(i, name)} disabled={props.show}>
+                                                    <DeleteTwoTone twoToneColor="red" />
+                                                </Popconfirm></p>
+                                                <Chart />
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                                <Form.Item >
+                                    <p disabled={props.show}>
+                                        <center>
+                                            <div style={{ height: '90px', width: '100px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => add()}> <PlusOutlined twoToneColor="#eb2f96" style={{ marginTop: '10px' }} /> <br />Add Section</div>
+                                        </center>
+                                        {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: -10, right: -10, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> */}
+                                    </p>
+                                </Form.Item>
+                            </>
+                        )}
+                    </Form.List>
                 </div>
-            </div>
             </Card>
         </div>
     );
