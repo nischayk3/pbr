@@ -7,13 +7,13 @@
  */
 import './style.scss';
 
-const LabelTag = (props) => {
-  return (
-    <div>
-      <p>{props.labelName}</p>
-      <p>{props.labelValue}</p>
-    </div>
-  );
+const LabelTag = props => {
+	return (
+		<div className='lable-tag'>
+			<p>{props.lableName} :</p>
+			<p> {props.lableValue}</p>
+		</div>
+	);
 };
 
 export default LabelTag;
