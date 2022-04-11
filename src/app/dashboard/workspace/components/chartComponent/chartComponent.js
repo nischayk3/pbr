@@ -25,9 +25,15 @@ const chartComponent = (props) => {
 
     const getChartData = async () => {
         let req = { chartId: props.chartId }
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
+        let headers={
+                'content-type': 'application/json',
+                'x-access-token': login_response.token ? login_response.token : '',
+                'resource-name': 'WORKITEMS',
+        }
         try {
             dispatch(showLoader());
-            const chartResponse = await getChartPlotData(req);
+            const chartResponse = await getChartPlotData(req,headers);
             setWorkSpaceChartData(chartResponse.data[0].data);
             setWorkSpaceChartLayout(chartResponse.data[0].layout)
             setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
