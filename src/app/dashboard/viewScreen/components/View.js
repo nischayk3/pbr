@@ -762,6 +762,8 @@ const ViewCreation = () => {
 		}
 	}, [materialsList]);
 
+	console.log('materialsList', materialsList);
+
 	return (
 		<div className='reportDesigner-container viewCreation-container'>
 			<BreadCrumbWrapper>
@@ -836,12 +838,47 @@ const ViewCreation = () => {
 							</div>
 						)
 					)}
+					<div className='viewCreation-btns'>
+						<Button
+							type='text'
+							className='viewCreation-newBtn'
+							onClick={() => {
+								newButtonHandler();
+							}}>
+							New
+						</Button>
+						<Button
+							className='viewCreation-loadBtn'
+							onClick={() => {
+								setVisible(true);
+								setIsNew(false);
+							}}>
+							Load
+						</Button>
+						<Button
+							className='viewCreation-saveBtn'
+							disabled={!viewDisplayId}
+							onClick={handleSaveFunc}>
+							Save
+						</Button>
+						<Button
+							className='viewCreation-saveAsBtn'
+							onClick={handleSaveAsFunc}>
+							Save As
+						</Button>
+						<Button className='viewCreation-shareBtn'>Share</Button>
+						<Button
+							className='viewCreation-publishBtn'
+							onClick={() => {
+								setIsPublish(true);
+								setAd(true);
+							}}>
+							<CloudUploadOutlined />
+							Publish
+						</Button>
+					</div>
 				</>
 			</BreadCrumbWrapper>
-			{/* <div className='viewCreation-block'>
-       
-       
-       </div> */}
 
 			<div className='reportDesigner-gridBlocks viewCreation-grids'>
 				<div className='reportDesigner-grid-tables viewCreation-blocks'>
