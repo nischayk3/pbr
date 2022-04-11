@@ -66,6 +66,7 @@ const DashboardScreen = () => {
                 antdObj['chart_name'] = item.chart_name;
                 antdObj['chart_status'] = item.chart_status;
                 antdObj['chart_version'] = item.chart_version;
+                antdObj['chart_info'] = item.chart_info;
                 antdDataTable.push(antdObj);
             });
             searchData.current = JSON.parse(JSON.stringify(antdDataTable));
@@ -131,8 +132,15 @@ const DashboardScreen = () => {
         xaxis: landingChartLayoutX,
         yaxis: landingChartLayoutY,
         autosize: false,
-        width: 500,
-        height: 350,
+        width: 580,
+        height: 250,
+        margin: {
+            l: 60,
+            r: 50,
+            //b: 75,
+            t: 10,
+            pad: 4
+        }
     }
 
     return (
@@ -174,6 +182,13 @@ const DashboardScreen = () => {
                         dashboardName={dashboardName}
                         plotData={landingChartData}
                         plotLayout={chartLayout}
+                        viewData={viewData}
+                        searchTableData={searchTableData}
+                        setSearchTableData={setSearchTableData}
+                        searchTable={searchTable}
+                        onSearchChange={onSearchChange}
+                        searchData={searchData}
+                        setViewData={setViewData}
                     />}
             </div>
         </div>
