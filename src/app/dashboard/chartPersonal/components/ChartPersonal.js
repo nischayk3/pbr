@@ -58,7 +58,7 @@ const ChartPersonal = () => {
       <div className="custom-content-layout">
         <LandingPage />
       </div>
-      <Modal
+      {/* <Modal
         title="Schedule Alert"
         className="schedule-modal"
         visible={alertModal}
@@ -103,7 +103,7 @@ const ChartPersonal = () => {
             </div>
           </TabPane>
         </Tabs>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./viewPageStyles.scss";
 import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 //antd imports
-import { Row, Col, Tabs, Menu, Dropdown, message, Button } from "antd";
+import { Row, Col, Tabs, Menu, Dropdown, message, Button,Modal } from "antd";
 import {
   ControlOutlined,
   StarOutlined,
@@ -10,6 +10,8 @@ import {
   ArrowLeftOutlined,
   CloudUploadOutlined,
   MoreOutlined,
+  DesktopOutlined,
+  ArrowRightOutlined
 } from "@ant-design/icons";
 //components
 import ViewChart from "./viewChart/ViewChart";
@@ -31,6 +33,10 @@ import {
   saveChartPlotData,
   getChartPlotData,
 } from "../../../../../services/chartPersonalizationService";
+//alert evaluation
+import AlertEvaluation from "../scheduled-alerts/alertEvaluation";
+//schedule-alert table
+import AlertTable from "../scheduled-alerts/scheduledAlertsTable";
 
 const { TabPane } = Tabs;
 
@@ -41,9 +47,15 @@ const ViewPage = () => {
   const match = useRouteMatch();
   //state for chart json data
   const [postChartData, setPostChartData] = useState({});
+  const [alertModal, setAlertModal] = useState(false);
+
   const dispatch = useDispatch();
 
   const callback = (key) => {};
+
+  const handleCancel = () => {
+    setAlertModal(false);
+  };
 
   //function for saving chart data
   const saveAs = async () => {
@@ -132,7 +144,7 @@ const ViewPage = () => {
           <span className="header-title">Process Control Charts</span>
         </div>
         <div className="btns">
-          <Button>Schedule Alert</Button>
+          <Button onClick={()=>setAlertModal(true)}>Schedule Alert</Button>
           <Button>Save</Button>
           <Button>
             {" "}
@@ -185,6 +197,52 @@ const ViewPage = () => {
           </Col>
         </Row>
       </div>
+      <Modal
+        title="Schedule Alert"
+        className="schedule-modal"
+        visible={alertModal}
+        onCancel={handleCancel}
+        footer={false}
+        width={1300}
+      >
+        <Tabs tabPosition="left" className="schedule-menu">
+          <TabPane
+            tab={
+              <span>
+                <DesktopOutlined />
+                Alerts
+              </span>
+            }
+            key="1"
+          >
+            <AlertEvaluation />
+          </TabPane>
+          <TabPane
+            tab={
+              <span>
+                <DesktopOutlined />
+                Schedule Alerts
+              </span>
+            }
+            key="2"
+          >
+            <div className="schedule-alerts">
+              <div className="alerts-text">
+                <p className="alert-title">Scheduled Alerts</p>
+                <span className="alert-arrow">
+                  <a>View More Details</a>
+                  <ArrowRightOutlined
+                    style={{ marginLeft: "10px", color: "#093185" }}
+                  />
+                </span>
+              </div>
+              <div>
+                <AlertTable />
+              </div>
+            </div>
+          </TabPane>
+        </Tabs>
+      </Modal>
     </div>
   );
 };
