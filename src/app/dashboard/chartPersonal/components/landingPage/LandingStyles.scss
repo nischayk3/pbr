@@ -50,6 +50,9 @@ h1,h2,h3,h4,h5,h6,p {
 
 .landing-content {
     margin-top: 5px;
+    a{
+        color: #000000 !important;
+    }
     .ant-card-body {
         min-height: 65vh;
     }

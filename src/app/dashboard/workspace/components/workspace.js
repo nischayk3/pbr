@@ -388,7 +388,7 @@ const Workspace = () => {
                     {lastupdatedViews.length>0 ?lastupdatedViews.map((m, n) => {
                       return (
                         <Col className='gutter-row' span={8}>
-                          <div className='workspace-processView-card' onClick={() => history.push(`/dashboard/view_creation?id=${m.view_disp_id}&version=${m.view_version}`)}>
+                          <div className='workspace-processView-card' onClick={() => history.push(`/dashboard/view_creation?id=${m.view_disp_id}&version=${m.view_version}&fromScreen=Workspace`)}>
                           <div className={`tile-status ${statusColor(m.view_status)}`} >{m.view_status}</div>
                             <p className='workspace-processView-id'>
                               {m.view_disp_id}

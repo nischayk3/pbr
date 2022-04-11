@@ -99,3 +99,17 @@ export const saveChartPlotData = (_queryParam) => {
     }
   );
 };
+
+//get chart data
+export const getChartPlotData = (_queryParam) => {
+  return Service.get(BMS_APP_PYTHON_SERVICE + '/chart', _queryParam, {
+    'content-type': 'application/json',
+  }).then(
+    (response) => {
+      return response.data;
+    },
+    (error) => {
+      return error.response.data;
+    }
+  );
+};

@@ -30,7 +30,7 @@ const Chart = ({ postChartData, setPostChartData }) => {
     useEffect(() => {
         postChartData && postChartData.data && postChartData.data.forEach((ele) => {
             if (ele.chart_id) {
-                setChartValues({ ...chartValues, chartId: ele.chart_id, chartVersion: ele.chart_version, chartStatus: ele.chart_status });
+                setChartValues({ ...chartValues, chartId: ele.chart_id, chartVersion: ele.chart_version, chartStatus: ele.chart_status, chartName: ele.chart_name, chartdesc: ele.chart_description });
             }
         })
     }, [postChartData])
@@ -58,7 +58,7 @@ const Chart = ({ postChartData, setPostChartData }) => {
                             <p>Version</p>
                         </Col>
                         <Col span={8}>
-                            <p>: {chartValues.chartVersion ? chartValues.chartVersion : '-'}</p>
+                            <p>: {chartValues.chartVersion ? chartValues.chartVersion : ''}</p>
                         </Col>
                         <Col span={6} />
                     </Row>
@@ -67,7 +67,7 @@ const Chart = ({ postChartData, setPostChartData }) => {
                             <p>Status</p>
                         </Col>
                         <Col span={8}>
-                            <p>: {chartValues.chartStatus ? chartValues.chartStatus : '-'}</p>
+                            <p>: {chartValues.chartStatus ? chartValues.chartStatus : ''}</p>
                         </Col>
                         <Col span={6} />
                     </Row>
