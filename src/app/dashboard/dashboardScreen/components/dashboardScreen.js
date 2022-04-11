@@ -22,6 +22,8 @@ const DashboardScreen = () => {
     const searchData = useRef([]);
     const [landingChartData, setLandingChartData] = useState([]);
     const [landingChartLayout, setLandingChartLayout] = useState([]);
+    const [landingChartLayoutX, setLandingChartLayoutX] = useState([]);
+    const [landingChartLayoutY, setLandingChartLayoutY] = useState([]);
 
     //for creating new dashboard name
     const settingDashboardName=(value)=>{
@@ -96,18 +98,34 @@ const DashboardScreen = () => {
     //get chart data to plot 
     const getChartData = async () => {
         console.log(viewData);
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
         let req = { chartId: viewData.chartDispId }
+        let headers = {
+            'content-type': 'application/json',
+            'x-access-token': login_response.token ? login_response.token : '',
+            'resource-name': 'DASHBOARD',
+          };
         try {
             dispatch(showLoader());
-            const chartResponse = await getChartPlotData(req);
-            setLandingChartData(chartResponse.data.data);
-            setLandingChartLayout(chartResponse.data.layout)
+            const chartResponse = await getChartPlotData(req,headers);
+            setLandingChartData(chartResponse.data[0].data);
+            setLandingChartLayout(chartResponse.data[0].layout)
+            setLandingChartLayoutX(chartResponse.data[0].layout.xaxis)
+            setLandingChartLayoutY(chartResponse.data[0].layout.yaxis)
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
             dispatch(showNotification('error', error.Message));
         }
     }
+
+    const layout = {
+        xaxis: landingChartLayoutX,
+        yaxis: landingChartLayoutY,
+        autosize: false,
+        width: 150,
+        height: 50,
+    };
     
     return (
         <div className='custom-wrapper'>
@@ -138,6 +156,8 @@ const DashboardScreen = () => {
                searchData={searchData}
                viewData={viewData}
                setViewData={setViewData}
+               plotData={landingChartData}
+               plotLayout={layout}
 
                
                />} 
