@@ -38,6 +38,7 @@ import {
 } from "../../../../../../services/chartPersonalizationService";
 //cjson
 import chartJson from "../chartObj.json";
+import ViewTable from "./ViewTable";
 
 //unpacking antd components
 const { Search } = Input;
@@ -51,8 +52,10 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
   const [searchTableData, setSearchTableData] = useState([]);
   const [coverageTableData, setCoverageTableData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [deepSearch, setDeepSearch] = useState(false);
   const [versionList, setVersionList] = useState([0]);
   const [siteList, setSiteList] = useState([]);
+  const deepSearch1 = useRef(false);
   const searchViewData = useRef([]);
   const postChart = useRef();
   const postChartView = useRef({});
@@ -109,7 +112,9 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       ),
     },
   ];
-
+  const onDeepSearch = () => {
+    setDeepSearch(!deepSearch);
+  };
   //function for getting viewdata list
   const getViewTableData = async () => {
     let reqView = { vew_status: "APRD" };
@@ -160,8 +165,6 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       getSites(viewRes.data[0].view_id);
       setPostChartData({
         ...postChartData,
-        extras: viewRes.extras,
-        view_status: viewRes.view_status,
       });
       // setCoverageTableData(viewRes.extras.coverage)
       dispatch(hideLoader());
@@ -186,7 +189,12 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 
   //function for closing view table result on click of outside.
   const closeTableView = (e) => {
-    if (ref.current && !ref.current.contains(e.target)) {
+    if (
+      ref.current &&
+      !ref.current.contains(e.target) &&
+      !deepSearch1.current
+    ) {
+      console.log("inside");
       setViewSearch(false);
       setSearchTableData(searchViewData.current);
     }
@@ -226,12 +234,13 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     getViewTableData();
   }, []);
 
+  console.log(viewData, "viewData");
+
   useEffect(() => {
     console.log(postChartData, "data");
     postChartData &&
       postChartData.data &&
       postChartData.data.forEach((ele) => {
-        console.log(ele, "ele");
         setViewData({
           ...viewData,
           viewName: ele.view_name,
@@ -240,8 +249,8 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
           searchValue: ele.view_id,
           chartVersion: ele.view_version,
         });
+        setCoverageTableData(ele.extras.coverage);
       });
-    setCoverageTableData(postChartData.extras && postChartData.extras.coverage);
   }, [postChartData]);
 
   return (
@@ -269,6 +278,8 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
               searchTableData={searchTableData}
               viewData={viewData}
               setViewData={setViewData}
+              setDeepSearch={setDeepSearch}
+              deepSearch1={deepSearch1}
             />
           )}
         </Col>
@@ -354,6 +365,29 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
         </Col>
       </Row>
       <Modal isModalVisible={isModalVisible}>Modal</Modal>
+      <Modal
+        isModalVisible={deepSearch}
+        handleCancel={onDeepSearch}
+        width={700}
+        closable={false}
+        title={
+          <div className="header-title">
+            <h4>Views</h4>
+            <Input.Search
+              placeholder="Search by..."
+              onSearch={searchTable}
+              value={viewData.searchValue}
+              onChange={onSearchChange}
+            />
+          </div>
+        }
+      >
+        <ViewTable
+          searchTableData={searchTableData}
+          setDeepSearch={setDeepSearch}
+          deepSearch1={deepSearch1}
+        />
+      </Modal>
     </div>
   );
 };

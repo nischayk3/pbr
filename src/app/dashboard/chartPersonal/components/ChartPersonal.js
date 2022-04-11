@@ -1,34 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./style.scss";
 //antd imports
-import {
-  Card,
-  Row,
-  Col,
-  Button,
-  Menu,
-  Dropdown,
-  message,
-  Modal,
-  Tabs,
-} from "antd";
+import { Modal, Tabs } from "antd";
 import {
   ArrowLeftOutlined,
-  CloudUploadOutlined,
-  MoreOutlined,
   DesktopOutlined,
   ArrowRightOutlined,
 } from "@ant-design/icons";
 //components
 import LandingPage from "./landingPage/LandingPage";
-import ViewPage from "./viewPage/ViewPage";
-//cjson object
-import chartJson from "./viewPage/chartObj.json";
-//services
-import { saveChartPlotData } from "../../../../services/chartPersonalizationService";
 //react-redux
 import { useDispatch } from "react-redux";
-import { showLoader, hideLoader } from "../../../../duck/actions/commonActions";
 //schedule-alert table
 import AlertTable from "./scheduled-alerts/scheduledAlertsTable";
 //alert evaluation

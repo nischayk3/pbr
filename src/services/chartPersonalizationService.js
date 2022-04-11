@@ -1,9 +1,9 @@
-import Service from './AjaxService';
-import { BMS_APP_PYTHON_SERVICE } from '../constants/apiBaseUrl';
+import Service from "./AjaxService";
+import { BMS_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
 
 //get site id
 export const getSiteId = (_queryParam) => {
-  return Service.get(BMS_APP_PYTHON_SERVICE + '/site_ids', _queryParam).then(
+  return Service.get(BMS_APP_PYTHON_SERVICE + "/site_ids", _queryParam).then(
     (response) => {
       return response.data;
     },
@@ -15,7 +15,7 @@ export const getSiteId = (_queryParam) => {
 
 //get chart type
 export const getChartList = (request) => {
-  return Service.get(BMS_APP_PYTHON_SERVICE + '/chart-list', request).then(
+  return Service.get(BMS_APP_PYTHON_SERVICE + "/chart-list", request).then(
     (response) => {
       return response.data;
     },
@@ -27,7 +27,7 @@ export const getChartList = (request) => {
 
 //get chart obj
 export const getChartObj = (request) => {
-  return Service.get(BMS_APP_PYTHON_SERVICE + '/chart', request).then(
+  return Service.get(BMS_APP_PYTHON_SERVICE + "/chart", request).then(
     (response) => {
       return response.data;
     },
@@ -39,7 +39,7 @@ export const getChartObj = (request) => {
 
 //put chart obj
 export const putChartObj = (request) => {
-  return Service.put(BMS_APP_PYTHON_SERVICE + '/chart', request).then(
+  return Service.put(BMS_APP_PYTHON_SERVICE + "/chart", request).then(
     (response) => {
       return response.data;
     },
@@ -50,7 +50,7 @@ export const putChartObj = (request) => {
 };
 
 export const viewBatchData = (request) => {
-  return Service.post(BMS_APP_PYTHON_SERVICE + '/views', request).then(
+  return Service.post(BMS_APP_PYTHON_SERVICE + "/views", request).then(
     (response) => {
       return response.data;
     },
@@ -62,7 +62,7 @@ export const viewBatchData = (request) => {
 
 //get rule list
 export const getRuleList = (request) => {
-  return Service.get(BMS_APP_PYTHON_SERVICE + '/rules', request).then(
+  return Service.get(BMS_APP_PYTHON_SERVICE + "/rules", request).then(
     (response) => {
       return response.data;
     },
@@ -74,8 +74,8 @@ export const getRuleList = (request) => {
 
 //get chart plot data
 export const postChartPlotData = (_queryParam) => {
-  return Service.post(BMS_APP_PYTHON_SERVICE + '/chart', _queryParam, {
-    'content-type': 'application/json',
+  return Service.post(BMS_APP_PYTHON_SERVICE + "/chart-object", _queryParam, {
+    "content-type": "application/json",
   }).then(
     (response) => {
       return response.data;
@@ -88,8 +88,8 @@ export const postChartPlotData = (_queryParam) => {
 
 //save chart data
 export const saveChartPlotData = (_queryParam) => {
-  return Service.put(BMS_APP_PYTHON_SERVICE + '/chart', _queryParam, {
-    'content-type': 'application/json',
+  return Service.put(BMS_APP_PYTHON_SERVICE + "/chart", _queryParam, {
+    "content-type": "application/json",
   }).then(
     (response) => {
       return response.data;
@@ -102,8 +102,8 @@ export const saveChartPlotData = (_queryParam) => {
 
 //get chart data
 export const getChartPlotData = (_queryParam) => {
-  return Service.get(BMS_APP_PYTHON_SERVICE + '/chart', _queryParam, {
-    'content-type': 'application/json',
+  return Service.get(BMS_APP_PYTHON_SERVICE + "/chart", _queryParam, {
+    "content-type": "application/json",
   }).then(
     (response) => {
       return response.data;

@@ -8,6 +8,8 @@ const ModalComponent = ({
   handleCancel,
   footer,
   title,
+  width,
+  closable,
 }) => {
   return (
     <>
@@ -16,8 +18,9 @@ const ModalComponent = ({
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        closable
+        closable={closable}
         footer={footer ? footer : null}
+        width={width}
       >
         {children}
       </Modal>
