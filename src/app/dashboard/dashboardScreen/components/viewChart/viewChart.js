@@ -31,6 +31,7 @@ const ViewChart = (props) => {
         { key: 'Last 25 minutes', value: 25 },
         { key: 'Last 30 minutes', value: 30 },
     ];
+    const [filterObject,setFilterObject]=useState({main:{site:'', unapprovedData:'',explorationControl:'',startTime:'',endTime:''}})
     const options = range.map((item, i) => (
         <Option key={i} value={item.value}>
             {item.key}
@@ -309,8 +310,8 @@ const ViewChart = (props) => {
                                 )}
 
                                 <Plot
-                                    data={[]}
-                                    layout={layout}
+                                    data={props.plotData}
+                                    layout={props.plotLayout}
                                 />
                             </div>
                         </div>
