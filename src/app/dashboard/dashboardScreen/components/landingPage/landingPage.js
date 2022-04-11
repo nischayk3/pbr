@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import ScreenHeader from '../../../../../components/screenHeader/screenHeader';
+import ScreenHeader from '../../../../../components/ScreenHeader/screenHeader';
 import illustrations from '../../../../../assets/images/Dashboard-Banner.svg';
 import Banner from '../../../../../assets/images/Popup-Side.svg';
 import { getDashboard } from '../../../../../services/dashboardServices';
+import ScatterPlot from '../../../../../components/ScatterPlot/ScatterPlot';
 import {
     hideLoader,
     showLoader,
@@ -97,7 +98,7 @@ export default function landingPage(props) {
                 String(o[k]).toLowerCase().includes(value.toLowerCase())
             )
         );
-
+        console.log("filterTable",filterTable);
         setFilterTableLanding(filterTable)
     };
 
@@ -225,12 +226,11 @@ export default function landingPage(props) {
                                 <Divider />
                                 <Row gutter={40}>
                                     {dashboardData.map((el, index) => {
-                                        console.log(el)
                                         return (
                                             <Col className="gutter-row" span={6} style={{ marginTop: '10px' }} key={index}>
                                                 <div className='chart-tiles'>
-                                                    <p className='cid'>{el.dashboard_info.dashboard_id}</p>
-                                                    <p className='chartName'>{el.dashboard_info.dashboard_name}</p>
+                                                    <p className='cid'>{el.dashboard_id}</p>
+                                                    <p className='chartName'>{el.dashboard_name}</p>
                                                 </div>
                                             </Col>
                                         )
@@ -292,7 +292,12 @@ export default function landingPage(props) {
                                             </p>
                                         </Col>
                                         <Col span={12}>
-                                            <p>{props.viewData.chartName}</p>
+                                            <div style={{width: '146px',height: '84px'}}>
+                                            <ScatterPlot
+                                            data={props.plotData}
+                                            layout={props.plotLayout}/>
+                                            </div>
+                                            
                                         </Col>
 
                                     </Row>
