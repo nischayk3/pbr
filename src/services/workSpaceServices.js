@@ -46,10 +46,8 @@ export const getChartExceptionData = (_queryParam) => {
 
 
 //get chart plot data
-export const getChartPlotData = (_queryParam) => {
-    return Service.get(BMS_APP_PYTHON_SERVICE + '/chart', _queryParam,{
-        'content-type': 'application/json',
-    }).then(
+export const getChartPlotData = (_queryParam,headers) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/chart', _queryParam,headers).then(
         (response) => {
             return response.data;
         },

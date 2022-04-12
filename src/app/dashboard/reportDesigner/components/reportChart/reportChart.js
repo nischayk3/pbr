@@ -1,8 +1,8 @@
-import { Tabs } from 'antd'
+import { Tabs,Table } from 'antd'
 import React from 'react'
 import Chart from './chartComponent/chartComponent'
-import { Table } from 'antd'
 import './styles.scss'
+import { getChartPlotData } from '../../../../../services/workSpaceServices'
 
 const { TabPane } = Tabs;
 

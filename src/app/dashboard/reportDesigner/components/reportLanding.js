@@ -4,12 +4,15 @@ import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
 import illustrations from '../../../../assets/images/landing_image.png';
 import { getReports } from '../../../../services/reportDesignerServices';
 import './style.scss';
+import StatusBlock from '../../../../components/StatusBlock/statusBlock';
+import { loadReport } from '../../../../services/reportDesignerServices';
 
 export default function Landing(props) {
     const [resultDate, setResultDate] = useState('');
     const [searched, setSearched] = useState(false);
     const [reportList, setReportList] = useState([]);
     const [filterTable, setFilterTable] = useState(null);
+    const [screen, setScreen] = useState(false);
     const { TabPane } = Tabs;
 
     const columns = [
@@ -87,6 +90,7 @@ export default function Landing(props) {
         const resultDate = month + ' ' + latestDate + ',' + ' ' + year;
         setResultDate(resultDate);
     };
+
     const getRandomColor = (index) => {
         let colors = ['#56483F', '#728C69', '#c04000', '#c19578'];
         return colors[index % 4];
@@ -109,6 +113,11 @@ export default function Landing(props) {
         getReports(req).then((res) => {
             setReportList(res['Data']);
         });
+    };
+
+    const getLoadReport = async (report_id) => {
+        let req = { report_displ_id: report_id };
+        let data = await loadReport(req);
     };
 
     const statusColor = (status) => {
@@ -169,11 +178,26 @@ export default function Landing(props) {
                                                 ? reportList
                                                 : filterTable
                                         }
+                                        onRow={(record) => ({
+                                            onClick: (e) => {
+                                                // record['color'] = '#D3D3D3'
+                                                // setReportId(record.rep_disp_id)
+                                                // getReportData(record.rep_disp_id, record.rep_status)
+                                                // dispatch(showLoader())
+                                                getLoadReport(
+                                                    record.rep_disp_id
+                                                );
+                                                // onOk()
+                                            },
+                                        })}
                                     />
                                 ) : (
                                     <></>
                                 )}
-                                <div className='create-new'>
+                                <div
+                                    className='create-new'
+                                    onClick={() => props.changeScreen()}
+                                >
                                     <PlusOutlined />
                                     <p>Design new report</p>
                                 </div>
@@ -184,18 +208,21 @@ export default function Landing(props) {
                                 <Divider />
                                 <div>
                                     <div className='tile'>
-                                        {reportList.map((i) => (
-                                            <div className='chart-tiles'>
-                                                <div
-                                                    className={`tile-status ${statusColor(
-                                                        i.rep_status
-                                                    )}`}
-                                                >
-                                                    {i.rep_status}
-                                                </div>
-                                                {i.rep_disp_id}
-                                            </div>
-                                        ))}
+                                        {reportList.length > 0 ? (
+                                            reportList.map(
+                                                (i, index) =>
+                                                    index < 10 && (
+                                                        <StatusBlock
+                                                            id={i.rep_disp_id}
+                                                            status={
+                                                                i.rep_status
+                                                            }
+                                                        />
+                                                    )
+                                            )
+                                        ) : (
+                                            <></>
+                                        )}
                                     </div>
                                 </div>
                             </TabPane>
@@ -220,11 +247,26 @@ export default function Landing(props) {
                                                 ? reportList
                                                 : filterTable
                                         }
+                                        onRow={(record) => ({
+                                            onClick: (e) => {
+                                                // record['color'] = '#D3D3D3'
+                                                // setReportId(record.rep_disp_id)
+                                                // getReportData(record.rep_disp_id, record.rep_status)
+                                                // dispatch(showLoader())
+                                                getLoadReport(
+                                                    record.rep_disp_id
+                                                );
+                                                // onOk()
+                                            },
+                                        })}
                                     />
                                 ) : (
                                     <></>
                                 )}
-                                <div className='create-new'>
+                                <div
+                                    className='create-new'
+                                    onClick={() => props.changeScreen()}
+                                >
                                     <PlusOutlined />
                                     <p>Generate new report</p>
                                 </div>
@@ -234,18 +276,17 @@ export default function Landing(props) {
                                 </h3>
                                 <Divider />
                                 <div className='tile'>
-                                    {reportList.map((i) => (
-                                        <div className='chart-tiles'>
-                                            <div
-                                                className={`tile-status ${statusColor(
-                                                    i.rep_status
-                                                )}`}
-                                            >
-                                                {i.rep_status}
-                                            </div>
-                                            {i.rep_disp_id}
-                                        </div>
-                                    ))}
+                                    {reportList &&
+                                        reportList.length > 0 &&
+                                        reportList.map(
+                                            (i, index) =>
+                                                index < 10 && (
+                                                    <StatusBlock
+                                                        id={i.rep_disp_id}
+                                                        status={i.rep_status}
+                                                    />
+                                                )
+                                        )}
                                 </div>
                             </TabPane>
                         </Tabs>

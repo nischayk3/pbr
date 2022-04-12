@@ -98,6 +98,12 @@ const MENU = [
         linkTo: '/dashboard/workspace',
     },
     {
+        key: 'dashboard',
+        icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+        title: 'Dashboard',
+        linkTo: '/dashboard/dashboard',
+    },
+    {
         key: 'paper_batch_records',
         icon: <LinkOutlined style={{ fontSize: '23px' }} />,
         title: 'Paper Batch Records',

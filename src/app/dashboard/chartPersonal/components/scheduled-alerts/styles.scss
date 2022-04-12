@@ -1,0 +1,72 @@
+.evaluation-tabs{
+    .ant-tabs-nav-wrap{
+    height:50px;
+    padding: 24px 24px 0px 0px;;
+    background:none;
+    box-shadow: none;
+    }
+    .ant-tabs-tab-btn{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color: rgba(0, 0, 0, 0.85);
+    }
+    .ant-tabs-tab-btn:hover{
+        color: rgba(0, 0, 0, 0.85);
+    }
+    .ant-tabs-tab-active .ant-tabs-tab-btn{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color:#093185 !important;
+    }
+    .ant-tabs-ink-bar {
+        background: #093185;
+      }
+    
+ }
+ .alerts-radio{
+     font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #262626;
+ }
+
+ .share-to-workspace{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    text-decoration-line: underline;
+    color: #093185;
+    margin-top: 25px;
+    
+ }
+ .schedule-evalutaion-button{
+    background-color: #093185 ;
+    color: white;
+    border-radius: 4px ;
+    margin-right: 10px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+   
+ }
+ .clear-schedule{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    border:0px;
+    color: #262626;
+ }
