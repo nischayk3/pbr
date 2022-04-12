@@ -18,7 +18,7 @@ const DashboardScreen = () => {
     const [dashboardName, setdashboardName] = useState('');
     //serach table data
     const [searchTableData, setSearchTableData] = useState([]);
-    const [viewData, setViewData] = useState({ chartName: '', status: '', chartDispId: ' ', searchValue: '', chartVersion: 0 });
+    const [viewData, setViewData] = useState({ chartName: '', status: '', chartDispId: '', searchValue: '', chartVersion: 0 });
     const searchData = useRef([]);
     const [landingChartData, setLandingChartData] = useState([]);
     const [landingChartLayout, setLandingChartLayout] = useState([]);

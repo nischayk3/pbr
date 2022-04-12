@@ -353,7 +353,7 @@ const ViewChart = (props) => {
                     <Col className="gutter-row" span={12}>
                         <div className='chartCard'>
                             <div className='inner-chart-filters'>
-                                <span>PH</span>
+                                <span>{props.viewData.chartName}</span>
                                 <div style={{ float: 'right' }}>
                                     <span>Edit <EditOutlined style={{ color: '#486BC9' }} onClick={() => setIsEditable(true)} /></span>
                                     <span style={{ marginLeft: '10px' }}><CloseOutlined style={{ color: '#262626' }} /></span>
