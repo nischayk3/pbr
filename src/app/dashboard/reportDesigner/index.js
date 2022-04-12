@@ -9,6 +9,7 @@ function Report()
 {
     const screen = useSelector((state)=>state.reportDesignerReducer.screen)
     const [screenChange, setScreenChange] = useState(false)
+    const [getData,setData] = useState({})
 
     useEffect(()=>
     {
@@ -18,12 +19,17 @@ function Report()
     const changeScreen = () => {
         setScreenChange(true)
     }
+
+    const getReportData = (data) =>
+    {
+        setData(data)
+    }
     return (
         <div>
-           {!screenChange ? <Landing changeScreen={changeScreen} /> : 
+           {!screenChange ? <Landing changeScreen={changeScreen} getReportData={getReportData} /> : 
            <> {screen ?
            <div><ReportGenerator/></div> :
-          <div><DesignCharts/></div> 
+          <div><DesignCharts loadData={getData}/></div> 
 
             } </> }
             

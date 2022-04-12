@@ -95,6 +95,7 @@ function ReportDesignerDynamicSections(props) {
             setAddedKeys(addedKeys)
             dispatch(hideLoader())
         }
+        props.setSectionAddKey(addedKeys)
     }
 
     const trackCharts = (section) => {
@@ -117,6 +118,7 @@ function ReportDesignerDynamicSections(props) {
             setShowChart(showChart)
             dispatch(hideLoader())
         }
+        props.setSectionAddCharts(showChart)
     }
 
 
@@ -137,19 +139,20 @@ function ReportDesignerDynamicSections(props) {
                                         }
                                         {addedKeys[name] ?
                                             <>
-                                                <p className="section-name">Section {name + 1}
-                                                    <div >
-                                                        <div className="add-chart" onClick={() => trackCharts(name)} >+ Add Chart</div>
-                                                        <div style={{ marginLeft: '85%', marginTop: '10px' }}>
-                                                            <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
-                                                                <DeleteTwoTone twoToneColor="red" />
-                                                            </Popconfirm></div>
-                                                    </div>
-                                                </p>
+                                                <p className="section-name">Section {name + 1}</p>
 
-                                                <Form.Item {...restField} name={[name, 'sectionName']}>
-                                                    <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px' }} className="input-section" disabled={props.show} />
-                                                </Form.Item>
+                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '10px' }}>
+                                                    <Form.Item {...restField} name={[name, 'sectionName']}>
+                                                        <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px' }} className="input-section" disabled={props.show} />
+                                                    </Form.Item>
+                                                    <div className="add-chart" onClick={() => trackCharts(name)} >+ Add Chart </div>
+                                                    <div style={{ marginLeft: '15%' }}>
+                                                        <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
+                                                            <DeleteTwoTone twoToneColor="red" style={{ fontSize: '18px' }} />
+                                                        </Popconfirm>
+                                                    </div>
+
+                                                </div>
                                                 <Space
                                                     className="dynamicSections-spaceSection"
                                                     key={key}
@@ -170,10 +173,11 @@ function ReportDesignerDynamicSections(props) {
                                                         </tbody>
                                                     </table>
                                                 </Space>
-                                                <center>
+                                                {/* <center>
                                                     <PlusOutlined style={{ color: 'gray' }} />
                                                     <div>Click on add chart to add charts in the section</div>
-                                                </center></> : <></>
+                                                </center> */}
+                                                </> : <></>
                                         }
                                         <div className="chart-block">
                                             {showChart[name] ?
@@ -184,8 +188,8 @@ function ReportDesignerDynamicSections(props) {
                                                         <p className="charttile-content">{i}</p>
                                                     </div>
                                                 </Form.Item>
-
-                                                )) : <></>
+                                                )
+                                                ) : <></>
                                             }
                                             {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: 0, right: 0, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> <u disabled={props.show}></u> */}
                                         </div>
@@ -193,9 +197,9 @@ function ReportDesignerDynamicSections(props) {
                                         (
                                             <div>
                                                 <p className="chart-name">{i} <Popconfirm title="Are you Sure you want to delete the chart?" onConfirm={() => deleteChart(i, name)} disabled={props.show}>
-                                                    <DeleteTwoTone twoToneColor="red" />
+                                                    <DeleteTwoTone twoToneColor="red" style={{ marginLeft: '20px' }} />
                                                 </Popconfirm></p>
-                                                <Chart />
+                                                <Chart chartName={i} />
                                             </div>
                                         ))}
                                     </div>

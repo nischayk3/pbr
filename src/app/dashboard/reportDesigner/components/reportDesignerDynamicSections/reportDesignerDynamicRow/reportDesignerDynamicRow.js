@@ -2,7 +2,8 @@ import React from 'react';
 import { Form, Input, Popconfirm, Switch } from 'antd';
 import {
     PlusSquareOutlined,
-    DeleteTwoTone
+    DeleteTwoTone,
+    PlusOutlined
 } from '@ant-design/icons';
 import './styles.scss';
 
@@ -31,7 +32,7 @@ function ReportDesignerDynamicRow(props) {
                             key={key} >
                             <td >
                                 <Popconfirm title="Are you Sure you want to delete?" onConfirm={() => remove(name)} disabled={props.show} >
-                                    <DeleteTwoTone twoToneColor="red" disabled={props.show} />
+                                    <DeleteTwoTone twoToneColor="red" style={{ fontSize: '18px' }} disabled={props.show} />
                                 </Popconfirm>
                             </td>
                             <td >
@@ -52,7 +53,7 @@ function ReportDesignerDynamicRow(props) {
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} style={{ width: '100px'}} placeholder="Enter Key" bordered={true} disabled={props.show} />
+                                                <Input.TextArea bordered allowClear autoSize={true} style={{ width: '100px' }} placeholder="Enter Key" bordered={true} disabled={props.show} />
                                             </Form.Item>
                                         )
                                     }}
@@ -111,7 +112,7 @@ function ReportDesignerDynamicRow(props) {
                         </tr>
                     ))}
                     <Form.Item>
-                        <PlusSquareOutlined style={{ color: '#093185' }} onClick={() => add()} />
+                        <div className="add-row-btn" onClick={() => add()} > <PlusOutlined style={{ color: '#093185' }} /> Add row </div>
                     </Form.Item>
                 </>
             )}
