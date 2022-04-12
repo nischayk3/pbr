@@ -1,4 +1,4 @@
-import { Col, Collapse, Form, Input, Row, Select, Button } from 'antd';
+import { Col, Collapse, Form, Input, Row, Select, Button, Upload } from 'antd';
 import React, { useEffect, useState } from 'react';
 import './styles.scss';
 
@@ -7,6 +7,8 @@ import {
     EditOutlined,
     ArrowRightOutlined,
     EllipsisOutlined,
+    CaretDownOutlined,
+    PlusOutlined,
 } from '@ant-design/icons';
 import panelLeftImg from '../../../../assets/images/panel-leftIcon.svg';
 import panelRightImg from '../../../../assets/images/panel-rightIcon.svg';
@@ -14,18 +16,23 @@ import cropImg from '../../../../assets/images/cropImg.svg';
 import undoImg from '../../../../assets/images/undoImg.svg';
 import redoImg from '../../../../assets/images/redoImg.svg';
 import contrastImg from '../../../../assets/images/contrastImg.svg';
+import BatchRecordExample from '../../../../assets/images/BatchRecordImg.png';
 
 import InputField from '../../../../components/InputField/InputField';
 
 import Sider from 'antd/lib/layout/Sider';
+import SelectField from '../../../../components/SelectField/SelectField';
 
 const { Panel } = Collapse;
 const { Option } = Select;
+const { Dragger } = Upload;
 
 function paperBatchRecordsTemplate() {
     const [form] = Form.useForm();
     const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false);
     const [rightPanelCollapsed, setRightPanelCollapsed] = useState(true);
+    const [paramaterAdded, setParamaterAdded] = useState(false);
+    const [conditionList, setConditionList] = useState(['AND', 'OR', 'NOT']);
 
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
@@ -35,12 +42,28 @@ function paperBatchRecordsTemplate() {
         setRightPanelCollapsed(!rightPanelCollapsed);
     };
 
-    // useEffect(() => {
-    //     form.setFieldsValue({
-    //         pageId1: '1',
-    //         pageId: '111',
-    //     });
-    // }, []);
+    const parameterAddingHandler = () => {
+        setParamaterAdded(true);
+    };
+
+    const DraggerInputHandler = (e) => {
+        e.stopPropagation();
+    };
+
+    const onClickImage = (e) => {
+        var rect = e.target.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        console.log('Left? : ' + x + ' ; Top? : ' + y);
+    };
+
+    const onChangeChart = (e, field) => {
+        if (e.target.value !== null) {
+            if (field === 'pageId') {
+                console.log(e.target.value);
+            }
+        }
+    };
 
     return (
         <div className='pbr-container pbrTemplate-container'>
@@ -90,29 +113,27 @@ function paperBatchRecordsTemplate() {
                                             form={form}
                                             className='formNewTemplate'
                                         >
-                                            {/* <InputField
-                                                label='Page ID 1'
-                                                name='pageId1'
-                                                placeholder='Enter Page ID'
-                                            /> */}
-                                            <Form.Item
+                                            <InputField
                                                 label='Page ID'
-                                                name='pageId'
-                                            >
-                                                <Input placeholder='Enter Page ID' />
-                                            </Form.Item>
-                                            <Form.Item
+                                                placeholder='Enter Page ID'
+                                                onChangeInput={(e) => {
+                                                    onChangeChart(e, 'pageId');
+                                                }}
+                                            />
+                                            <InputField
                                                 label='Key 1'
-                                                name='key1'
-                                            >
-                                                <Input placeholder='Enter Key 1' />
-                                            </Form.Item>
-                                            <Form.Item
+                                                placeholder='Enter Key 1'
+                                                onChangeInput={(e) => {
+                                                    onChangeChart(e, 'Key1');
+                                                }}
+                                            />
+                                            <InputField
                                                 label='Key 2'
-                                                name='key2'
-                                            >
-                                                <Input placeholder='Enter Key 2' />
-                                            </Form.Item>
+                                                placeholder='Enter Key 2'
+                                                onChangeInput={(e) => {
+                                                    onChangeChart(e, 'Key2');
+                                                }}
+                                            />
                                             <Form.Item
                                                 label='Condition'
                                                 name='condition'
@@ -140,9 +161,135 @@ function paperBatchRecordsTemplate() {
                                 </Panel>
                                 <Panel header='Add Parameter' key='2'>
                                     <div className='addParameterBlock'>
-                                        <div className='firstParameter-para'>
-                                            <p>Add your first paramater</p>
-                                        </div>
+                                        {paramaterAdded ? (
+                                            <div className='parameterAdded-block'>
+                                                <InputField
+                                                    label='Name'
+                                                    placeholder='Enter name'
+                                                    onChangeInput={(e) => {
+                                                        onChangeChart(
+                                                            e,
+                                                            'parameterName'
+                                                        );
+                                                    }}
+                                                />
+                                                <div className='parameterAddingBlock parameterValueBlock'>
+                                                    <p>Value</p>
+                                                    <p></p>
+                                                    <Dragger className='draggerSnippet'>
+                                                        <p className='ant-upload-drag-icon'>
+                                                            <PlusOutlined />
+                                                        </p>
+                                                        <p className='ant-upload-text'>
+                                                            Drag and drop anchor
+                                                        </p>
+                                                    </Dragger>
+                                                    <Dragger className='draggerSnippet'>
+                                                        <p className='ant-upload-drag-icon'>
+                                                            <PlusOutlined />
+                                                        </p>
+                                                        <p className='ant-upload-text'>
+                                                            Drag and drop
+                                                            snippet
+                                                        </p>
+                                                        <p
+                                                            className='ant-upload-text-input'
+                                                            onClick={
+                                                                DraggerInputHandler
+                                                            }
+                                                        >
+                                                            <span>
+                                                                Or enter snippet
+                                                                number
+                                                            </span>
+                                                            <Input className='uploadSnippetInput' />
+                                                        </p>
+                                                    </Dragger>
+                                                    <Form.Item name='valueFormat'>
+                                                        <Select defaultValue='FORMAT'>
+                                                            <Option value='FORMAT'>
+                                                                FORMAT
+                                                            </Option>
+                                                        </Select>
+                                                    </Form.Item>
+                                                    <Form.Item name='valueTransformation'>
+                                                        <Input placeholder='Enter transformation' />
+                                                    </Form.Item>
+
+                                                    <Form.Item name='valueArea'>
+                                                        <Input placeholder='Enter area' />
+                                                    </Form.Item>
+                                                    <Form.Item name='valueAnchorDirection'>
+                                                        <Select defaultValue='AnchorDirection'>
+                                                            <Option value='AnchorDirection'>
+                                                                Anchor Direction
+                                                            </Option>
+                                                        </Select>
+                                                    </Form.Item>
+                                                </div>
+                                                <div className='parameterAddingBlock parameterDateBlock'>
+                                                    <p>Date</p>
+                                                    <p></p>
+                                                    <Dragger className='draggerSnippet'>
+                                                        <p className='ant-upload-drag-icon'>
+                                                            <PlusOutlined />
+                                                        </p>
+                                                        <p className='ant-upload-text'>
+                                                            Drag and drop anchor
+                                                        </p>
+                                                    </Dragger>
+                                                    <Dragger className='draggerSnippet'>
+                                                        <p className='ant-upload-drag-icon'>
+                                                            <PlusOutlined />
+                                                        </p>
+                                                        <p className='ant-upload-text'>
+                                                            Drag and drop
+                                                            snippet
+                                                        </p>
+                                                        <p
+                                                            className='ant-upload-text-input'
+                                                            onClick={
+                                                                DraggerInputHandler
+                                                            }
+                                                        >
+                                                            <span>
+                                                                Or enter snippet
+                                                                number
+                                                            </span>
+                                                            <Input className='uploadSnippetInput' />
+                                                        </p>
+                                                    </Dragger>
+                                                    <Form.Item name='dateFormat'>
+                                                        <Select defaultValue='FORMAT'>
+                                                            <Option value='FORMAT'>
+                                                                FORMAT
+                                                            </Option>
+                                                        </Select>
+                                                    </Form.Item>
+                                                    <Form.Item name='dateTransformation'>
+                                                        <Input placeholder='Enter transformation' />
+                                                    </Form.Item>
+
+                                                    <Form.Item name='dateArea'>
+                                                        <Input placeholder='Enter area' />
+                                                    </Form.Item>
+                                                    <Form.Item name='dateAnchorDirection'>
+                                                        <Select defaultValue='AnchorDirection'>
+                                                            <Option value='AnchorDirection'>
+                                                                Anchor Direction
+                                                            </Option>
+                                                        </Select>
+                                                    </Form.Item>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div
+                                                className='firstParameter-para'
+                                                onClick={parameterAddingHandler}
+                                            >
+                                                <p>Add your first paramater</p>
+                                            </div>
+                                        )}
                                     </div>
                                 </Panel>
                             </Collapse>
@@ -198,12 +345,19 @@ function paperBatchRecordsTemplate() {
                             </Row>
                         </div>
                         <div className='pbrCenterPdfBlock'>
-                            <h4>Pdf Content</h4>
-                            <iframe
-                                width='100%'
-                                height='500'
-                                src='http://www.africau.edu/images/default/sample.pdf'
-                            />
+                            <div className='pdfContent'>
+                                <div className='snippetsFound'></div>
+                                <div className='snippetsImg'></div>
+                            </div>
+                            <div
+                                className='pdfToImgBlock'
+                                onClick={onClickImage}
+                            >
+                                <img
+                                    src={BatchRecordExample}
+                                    className='pdfToImg'
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -232,41 +386,95 @@ function paperBatchRecordsTemplate() {
                                             form={form}
                                             className='formNewTemplate'
                                         >
-                                            <Form.Item
+                                            <InputField
                                                 label='Snippet ID'
-                                                name='snippetId'
-                                            >
-                                                <Input placeholder='Enter Snippet ID' />
-                                            </Form.Item>
-                                            <Form.Item
+                                                placeholder='Enter Snippet ID'
+                                                onChangeInput={(e) => {
+                                                    onChangeChart(
+                                                        e,
+                                                        'snippetId'
+                                                    );
+                                                }}
+                                            />
+                                            <InputField
                                                 label='Key 1'
-                                                name='key1'
-                                            >
-                                                <Input placeholder='Enter Key 1' />
-                                            </Form.Item>
+                                                placeholder='Enter Key 1'
+                                                onChangeInput={(e) => {
+                                                    onChangeChart(
+                                                        e,
+                                                        'snippetKey1'
+                                                    );
+                                                }}
+                                            />
                                             <div className='secondary-flexBox'>
-                                                <Form.Item label='X1' name='x1'>
-                                                    <Input placeholder='Enter Value' />
-                                                </Form.Item>
-                                                <Form.Item label='Y1' name='y1'>
-                                                    <Input placeholder='Enter Value' />
-                                                </Form.Item>
+                                                <InputField
+                                                    label='X1'
+                                                    placeholder='Enter Value'
+                                                    onChangeInput={(e) => {
+                                                        onChangeChart(e, 'x1');
+                                                    }}
+                                                />
+                                                <InputField
+                                                    label='Y1'
+                                                    placeholder='Enter Value'
+                                                    onChangeInput={(e) => {
+                                                        onChangeChart(e, 'y1');
+                                                    }}
+                                                />
                                             </div>
                                             <div className='secondary-flexBox'>
-                                                <Form.Item label='X2' name='x2'>
-                                                    <Input placeholder='Enter Value' />
-                                                </Form.Item>
-                                                <Form.Item label='Y2' name='y2'>
-                                                    <Input placeholder='Enter Value' />
-                                                </Form.Item>
+                                                <InputField
+                                                    label='X2'
+                                                    placeholder='Enter Value'
+                                                    onChangeInput={(e) => {
+                                                        onChangeChart(e, 'x2');
+                                                    }}
+                                                />
+                                                <InputField
+                                                    label='Y2'
+                                                    placeholder='Enter Value'
+                                                    onChangeInput={(e) => {
+                                                        onChangeChart(e, 'y2');
+                                                    }}
+                                                />
                                             </div>
                                             <div className='secondary-flexBox'>
-                                                <Form.Item
+                                                <InputField
                                                     label='Area'
-                                                    name='area'
+                                                    placeholder='Enter Value'
+                                                    onChangeInput={(e) => {
+                                                        onChangeChart(
+                                                            e,
+                                                            'area'
+                                                        );
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className='hierarchyBlock'>
+                                                <p>Hierarchy</p>
+                                                <div className='hierarchyDiv hierarchyDiv1'>
+                                                    <CaretDownOutlined />
+                                                    TemplateNew01
+                                                </div>
+                                                <div className='hierarchyDiv hierarchyDiv2'>
+                                                    <CaretDownOutlined />
+                                                    0001-6.0
+                                                </div>
+                                                <div className='hierarchyDiv hierarchyDiv3'>
+                                                    <CaretDownOutlined />8
+                                                </div>
+                                                <div className='hierarchyDiv hierarchyDiv4'>
+                                                    <CaretDownOutlined />
+                                                    ID001
+                                                </div>
+                                            </div>
+                                            <div className='saveSnippetsBlock'>
+                                                <Button
+                                                    type='default'
+                                                    className='saveSnippetsBtn'
                                                 >
-                                                    <Input placeholder='Enter Value' />
-                                                </Form.Item>
+                                                    Save
+                                                </Button>
                                             </div>
                                         </Form>
                                     </div>
