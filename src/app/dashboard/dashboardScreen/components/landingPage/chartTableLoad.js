@@ -23,9 +23,9 @@ const ChartSearchTable = (props) => {
             
         },
         {
-            title: 'Product Number',
-            key: 'product_num',
-            dataIndex: 'product_num',
+            title: 'Chart Version',
+            key: 'chart_version',
+            dataIndex: 'chart_version',
            
         }
     ]
@@ -35,31 +35,31 @@ const ChartSearchTable = (props) => {
             <Table
                 bordered={false}
                 columns={columns}
-                dataSource={[]}
+                dataSource={props.searchTableData}
                 pagination={false}
                 scroll={{ y: 150 ,x:350}}
                 rowKey='key'
-                // onRow={(record) => ({
-                //     onClick: () => {
-                //         let tempVersionList = [0];
-                //         searchViewData.current.forEach((ele) => {
-                //             if (ele.view_disp_id === record.view_disp_id) {
-                //                 tempVersionList.push(ele.view_version);
-                //                 tempVersionList = tempVersionList.sort((a, b) => a - b);
-                //                 setVersionList(tempVersionList);
-                //             }
-                //         })
-                //         setViewData({ ...viewData, viewName: record.view_name, viewDispId: record.view_disp_id, status: record.view_status, searchValue: record.view_disp_id, chartVersion: record.view_version });
-                //         let newArr = [...postChartData.data];
-                //         newArr.forEach((ele) => {
-                //             ele.view_id = record.view_disp_id,
-                //                 ele.view_name = record.view_name
-                //         })
-                //         setPostChartData({ ...postChartData, data: newArr })
-                //         setViewSearch(false);
-                //         setData();
-                //     },
-                // })}
+                onRow={(record) => ({
+                    onClick: () => {
+                        console.log(record)
+                        // let tempVersionList = [0];
+                        // props.searchData.current.forEach((ele) => {
+                        //     if (ele.view_disp_id === record.view_disp_id) {
+                        //         tempVersionList.push(ele.view_version);
+                        //         tempVersionList = tempVersionList.sort((a, b) => a - b);
+                        //         setVersionList(tempVersionList);
+                        //     }
+                        // })
+                        props.setViewData({ ...props.viewData, chartName: record.chart_name, chartDispId: record.chart_disp_id, status: record.chart_status, searchValue: record.chart_disp_id, chartVersion: record.chart_version,createdBy:record.created_by, viewId:record.chart_info[0].view_id });
+                        // let newArr = [...postChartData.data];
+                        // newArr.forEach((ele) => {
+                        //     ele.view_id = record.view_disp_id,
+                        //         ele.view_name = record.view_name
+                        // })
+                        props.setChartSearch(false);
+                        
+                    },
+                })}
             />
         </div>
     )

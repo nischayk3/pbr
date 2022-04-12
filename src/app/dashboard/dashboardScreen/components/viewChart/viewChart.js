@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Row, Col, Input, Button, Card, Select, Switch, Slider, DatePicker, Typography } from 'antd';
 import SelectField from '../../../../../components/SelectField/SelectField';
 import InputField from '../../../../../components/InputField/InputField';
 import ChartFilter from '../chartFilter/chartFilter';
+import { getSiteId } from '../../../../../services/chartPersonalizationService';
+import { showLoader, hideLoader, showNotification } from '../../../../../duck/actions/commonActions';
 import Plot from 'react-plotly.js';
 import { SyncOutlined, PlusOutlined, EditOutlined, CloseOutlined, CheckCircleOutlined, UndoOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './styles.scss';
 
 
-const ViewChart = () => {
+
+
+const ViewChart = (props) => {
     const { Text } = Typography;
     const { Search } = Input;
+    const dispatch = useDispatch();
     const [visible, setVisible] = useState(false);
     const [addNewChartFilter, setAddNewChartFilter] = useState(false);
     const [unapprovedData, setunapprovedData] = useState(false);
     const [unapprovedInnerData, setunapprovedInnerData] = useState(false);
+    const [siteList, setSiteList] = useState([]);
     const [isEditable, setIsEditable] = useState(false);
     const [isDisabled, setisDisabled] = useState(true);
     const [startTimeIso, setstartTimeIso] = useState('');
@@ -31,11 +38,32 @@ const ViewChart = () => {
         { key: 'Last 25 minutes', value: 25 },
         { key: 'Last 30 minutes', value: 30 },
     ];
+
+    const typeOfCharts = ['Analysis', 'Process Control', 'Grafana']
+    const [filterObject, setFilterObject] = useState({ main: { site: '', unapprovedData: '', explorationControl: '', startTime: '', endTime: '' } })
     const options = range.map((item, i) => (
         <Option key={i} value={item.value}>
             {item.key}
         </Option>
     ));
+
+    useEffect(() => {
+        getSiteIdHandler();
+    }, []);
+
+    const getSiteIdHandler = () => {
+        console.log(props.viewData.viewId);
+        let reqSite = { view_id: props.viewData.viewId };
+        getSiteId(reqSite).then((res) => {
+            if (res.Status === 200) {
+                setSiteList(res.Data[0]);
+            } else if (res.Status === 400) {
+                dispatch(showNotification('error', 'Site Error - ' + res.Message));
+            } else if (res === 'Internal Server Error') {
+                dispatch(showNotification('error', 'Site Error - ' + res));
+            }
+        });
+    };
 
     const onChangeCheckbox = (checked) => {
         const isChecked = checked;
@@ -57,12 +85,18 @@ const ViewChart = () => {
     };
     const onChangeStart = (date, dateString) => {
         console.log('setStartTime', date, dateString);
+        let obj = { ...filterObject };
+        obj.main.startTime = dateString;
+        setFilterObject(obj);
         console.log('forment', moment(date).toISOString());
         setStartTime(dateString);
         setstartTimeIso(moment(date).toISOString());
     };
     const onChangeEnd = (date, dateString) => {
         console.log('setEndTime', dateString);
+        let obj = { ...filterObject };
+        obj.main.endTime = dateString;
+        setFilterObject(obj);
         console.log('forment', moment(date).toISOString());
         setEndTime(dateString);
         setendTimeIso(moment(date).toISOString());
@@ -88,6 +122,25 @@ const ViewChart = () => {
         setSelectedDateRange(dateFormate);
         setVisible(false);
     };
+
+    const handleGlobalDropdownChange = (value, text) => {
+        console.log(value)
+        let obj = { ...filterObject }
+        switch (text) {
+            case 'Site': obj.main.site = value;
+                setFilterObject(obj);
+                break;
+            case 'Unapproved Data': obj.main.unapprovedData = value;
+                setFilterObject(obj);
+                break;
+            case 'Exploration Controls': obj.main.explorationControl = value;
+                setFilterObject(obj);
+                break;
+        }
+
+
+        setFilterObject(obj)
+    }
     const layout = {
         xaxis: {},
         yaxis: {},
@@ -105,9 +158,14 @@ const ViewChart = () => {
             text: ""
         }
     };
+
+    const onTypeChartsChange = (e) => {
+        console.log(e);
+    }
+    console.log(filterObject);
     return (
         <div>
-            <Card title="Dashboard Sample Name">
+            <Card title={props.dashboardName}>
                 {/* <Row>
                     <Col span={4}>
                         <div>
@@ -148,25 +206,28 @@ const ViewChart = () => {
                         <SyncOutlined />
                     </div>
                     <div>
-                        <Select defaultValue="lucy" style={{ width: 120 }}>
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
+                        <Select style={{ width: 120 }} onChange={(value) => handleGlobalDropdownChange(value, 'Site')}>
+                            {siteList.map((el, index) => {
+                                return (
+                                    <Option value={el}>{el}</Option>
+                                )
+                            })}
 
 
                         </Select>
                     </div>
                     <div className='show-data'>
                         <p>Show Unapproved data</p>
-                        <Switch type='primary' size='small' onChange={onChangeCheckbox} />
+                        <Switch type='primary' size='small' onChange={(value) => handleGlobalDropdownChange(value, 'Unapproved Data')} />
 
                     </div>
-                    <div style={{ width: '345px' }}>
-                        <InputField
+                    <div style={{ marginTop: '3px' }}>
+                        {/* <InputField
                             placeholder='Select Time Range'
                             onChangeClick={(e) => handleDateClick(e)}
 
-                        />
-                        {
+                        /> */}
+                        {/* {
                             visible && (
                                 <div className='dashboard-timerange'>
                                     <h4>Absolute Time Range</h4>
@@ -253,10 +314,17 @@ const ViewChart = () => {
                                     </div>
                                 </div>
 
-                            )}
+                            )} */}
+                        <DatePicker
+                            onChange={onChangeStart}
+
+                        />
+
+                        <DatePicker onChange={onChangeEnd} style={{ marginLeft: '22px' }} />
+
                     </div>
                     <div>
-                        <Select defaultValue="Exploration Controls" style={{ width: 230 }}>
+                        <Select defaultValue="Exploration Controls" style={{ width: 230 }} onChange={(value) => handleGlobalDropdownChange(value, 'Exploration Controls')}>
                             <Option value='Ph'>PH
                                 <Slider range defaultValue={[20, 50]} />
                             </Option>
@@ -305,12 +373,22 @@ const ViewChart = () => {
                                 {isEditable && (
                                     <ChartFilter
                                         checkboxChange={onChangeInnerCheckbox}
+                                        onChangeTypeCharts={(e) => onTypeChartsChange(e)}
+                                        typeOfChartsOptions={typeOfCharts}
+                                        siteOption={siteList}
+                                        viewData={props.viewData}
+                                        searchTableData={props.searchTableData}
+                                        setSearchTableData={props.setSearchTableData}
+                                        searchTable={props.searchTable}
+                                        onSearchChange={props.onSearchChange}
+                                        searchData={props.searchData}
+                                        setViewData={props.setViewData}
                                     />
                                 )}
 
                                 <Plot
-                                    data={[]}
-                                    layout={layout}
+                                    data={props.plotData}
+                                    layout={props.plotLayout}
                                 />
                             </div>
                         </div>
@@ -338,6 +416,16 @@ const ViewChart = () => {
                                     <div>
                                         <ChartFilter
                                             checkboxChange={onChangeInnerCheckbox}
+                                            onChangeTypeCharts={(e) => onTypeChartsChange(e)}
+                                            typeOfChartsOptions={typeOfCharts}
+                                            siteOption={siteList}
+                                            viewData={props.viewData}
+                                            searchTableData={props.searchTableData}
+                                            setSearchTableData={props.setSearchTableData}
+                                            searchTable={props.searchTable}
+                                            onSearchChange={props.onSearchChange}
+                                            searchData={props.searchData}
+                                            setViewData={props.setViewData}
                                         />
                                         <Plot
                                             data={[]}

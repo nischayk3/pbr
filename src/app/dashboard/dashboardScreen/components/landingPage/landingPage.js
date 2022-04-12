@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import ScreenHeader from '../../../../../components/screenHeader/screenHeader';
+import ScreenHeader from '../../../../../components/ScreenHeader/screenHeader';
 import illustrations from '../../../../../assets/images/Dashboard-Banner.svg';
 import Banner from '../../../../../assets/images/Popup-Side.svg';
 import { getDashboard } from '../../../../../services/dashboardServices';
+import ScatterPlot from '../../../../../components/ScatterPlot/ScatterPlot';
 import {
     hideLoader,
     showLoader,
     showNotification,
 } from '../../../../../duck/actions/commonActions';
-import { Card, Row, Col, Input, Space, Divider, message, Modal, Button,Avatar,Table } from 'antd';
+import { Card, Row, Col, Input, Space, Divider, message, Modal, Button, Avatar, Table } from 'antd';
 import ChartSearchTable from './chartTableLoad';
 import { PlusOutlined } from '@ant-design/icons';
 import './styles.scss';
@@ -97,7 +98,7 @@ export default function landingPage(props) {
                 String(o[k]).toLowerCase().includes(value.toLowerCase())
             )
         );
-
+        console.log("filterTable",filterTable);
         setFilterTableLanding(filterTable)
     };
 
@@ -146,12 +147,20 @@ export default function landingPage(props) {
     const onFocus = () => {
         setChartSearch(true);
     }
+    const onFocusRemove = (value) => {
+        setChartSearch(value);
+    }
     //function for closing view table result on click of outside.
     const closeTableView = (e) => {
         if (ref.current && !ref.current.contains(e.target)) {
             setChartSearch(false);
+            props.setSearchTableData(props.searchData.current);
 
         }
+    }
+
+    const handleDashboardName = (e) => {
+        props.dashboarNameFunction(e.target.value)
     }
 
     //on search value changes
@@ -195,7 +204,7 @@ export default function landingPage(props) {
                                     size="large"
                                     onSearch={landingSearch}
                                 />
-                                {searchedLanding ? <Table className="landing-table" columns={columns} dataSource={filterTableLanding === null ? dashboardData : filterTableLanding} /> : <></>}
+                                {searchedLanding ? <Table className="landing-table" columns={columns} dataSource={filterTableLanding === null ? dashboardData: filterTableLanding} /> : <></>}
 
                             </Col>
                             <Col span={6} />
@@ -216,17 +225,17 @@ export default function landingPage(props) {
                                 <h3>Recently created dashboard</h3>
                                 <Divider />
                                 <Row gutter={40}>
-                                    {/* {dashboardData.map((el,index)=>{
+                                    {dashboardData.map((el, index) => {
                                         return (
                                             <Col className="gutter-row" span={6} style={{ marginTop: '10px' }} key={index}>
-                                            <div className='chart-tiles'>
-                                                <p className='cid'>{el.dashboard_id}</p>
-                                                <p className='chartName'>{el.dashboard_name}</p>
-                                            </div>
-                                        </Col>
+                                                <div className='chart-tiles'>
+                                                    <p className='cid'>{el.dashboard_id}</p>
+                                                    <p className='chartName'>{el.dashboard_name}</p>
+                                                </div>
+                                            </Col>
                                         )
-                                    })} */}
-                                   
+                                    })}
+
                                 </Row>
                             </Col>
                             <Col span={6} />
@@ -258,13 +267,39 @@ export default function landingPage(props) {
                                         <p>Let's give your dashboard a name</p>
                                         <Input
                                             placeholder='Enter Dashboard Name'
+                                            onChange={handleDashboardName}
+                                            value={props.dashboardName}
 
                                         />
                                     </Row>
                                     <Row ref={ref}>
                                         <p>Add a chart to get started</p>
-                                        <Search placeholder="Search" onFocus={onFocus} />
-                                        {chartSearch && <ChartSearchTable />}
+                                        <Search
+                                            placeholder="Search"
+                                            onFocus={onFocus}
+                                            value={props.viewData.searchValue}
+                                            onChange={props.onSearchChange}
+                                            onSearch={props.searchTable} />
+                                        {chartSearch && <ChartSearchTable searchData={props.searchData} searchTableData={props.searchTableData} setViewData={props.setViewData} viewData={props.viewData} setChartSearch={onFocusRemove} searchData={props.searchData} />}
+                                    </Row>
+                                    <Row className='chart-view'>
+                                        <Col span={12}>
+                                            <p className='chart-preview-text'>{props.viewData.chartDispId}</p>
+                                            <p className='chart-preview-text'>{props.viewData.chartName}</p>
+                                            <p className='chart-preview-text'>
+                                                <Avatar className='avatar-icon' style={{backgroundColor:'#52679F'}} >{props.viewData.createdBy?.split("")[0].toUpperCase()} </Avatar>
+                                                <span>{props.viewData.createdBy}</span>
+                                            </p>
+                                        </Col>
+                                        <Col span={12}>
+                                            <div style={{width: '146px',height: '84px'}}>
+                                            <ScatterPlot
+                                            data={props.plotData}
+                                            layout={props.plotLayout}/>
+                                            </div>
+                                            
+                                        </Col>
+
                                     </Row>
                                 </Col>
                             </Row>
