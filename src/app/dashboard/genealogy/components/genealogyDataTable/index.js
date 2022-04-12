@@ -14,6 +14,8 @@ function GenealogyDataTable(props) {
   const [limsBatchData, setLimsBatchData] = useState([]);
   const [proInput, setProInput] = useState([]);
   const [proOutput, setProOutput] = useState([]);
+  const [purchaseData, setPurchaseData] = useState([]);
+
   const { Panel } = Collapse;
   const limsColumns = [
     { title: 'Batch', dataIndex: 'batch_num', key: '1' },
@@ -48,11 +50,15 @@ function GenealogyDataTable(props) {
     if (props && props.processOutput && props.processOutput.length > 0) {
       setProOutput(props.processOutput);
     }
+    if (props && props.purchaseInfo) {
+      setPurchaseData(props.purchaseInfo);
+    }
   }, [
     props.processInput,
     props.processOutput,
     props.batchInfo,
     props.limsBatchInfo,
+    props.purchaseInfo,
   ]);
 
   return (
@@ -141,18 +147,32 @@ function GenealogyDataTable(props) {
         <></>
       )}
 
-      {props.type === 'Material' ? (
+      {props.type === 'Purchase Order' ? (
         <Panel header='Purchase information' key='5'>
-          <Table
-            rowClassName={(record, index) =>
-              index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
-            }
-            size='small'
-            // columns={columns}
-            // dataSource={dataTable}
-            scroll={{ y: 350 }}
-            pagination={false}
-          />
+          <div className='batch-list'>
+            <ul>
+              <li>
+                <p>
+                  <span>Purchase Order</span> {purchaseData.purchase_id}
+                </p>
+              </li>
+              <li>
+                <p>
+                  <span>Vendor No</span> {purchaseData.vendor_no}
+                </p>
+              </li>
+              <li>
+                <p>
+                  <span>Plant</span> {purchaseData.plant}
+                </p>
+              </li>
+              <li>
+                <p>
+                  <span>Node Id</span> {purchaseData.node_id}
+                </p>
+              </li>
+            </ul>
+          </div>
         </Panel>
       ) : (
         <></>
