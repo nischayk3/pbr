@@ -131,7 +131,7 @@ function ReportDesignerDynamicSections(props) {
                             <>
                                 {fields.map(({ key, name, ...restField }) => (
                                     <div style={{ border: "1px solid #486BC9", marginBottom: "30px", minHeight: "160px", borderRadius: "4px" }}>
-                                       
+
 
                                         <p className="section-name">Section {name + 1}</p>
 
