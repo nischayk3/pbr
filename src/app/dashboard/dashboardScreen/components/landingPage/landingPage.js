@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import ScreenHeader from '../../../../../components/ScreenHeader/screenHeader';
 import illustrations from '../../../../../assets/images/Dashboard-Banner.svg';
@@ -26,6 +27,7 @@ export default function landingPage(props) {
     const [filterTableLanding, setFilterTableLanding] = useState(null)
     const ref = useRef(null);
     const dispatch = useDispatch();
+    const history=useHistory();
 
     const columns = [
         {
@@ -224,11 +226,11 @@ export default function landingPage(props) {
                             <Col span={12}>
                                 <h3>Recently created dashboard</h3>
                                 <Divider />
-                                {/* <Row gutter={40}>
+                                <Row gutter={40}>
                                     {dashboardData.map((el, index) => {
                                         return (
                                             <Col className="gutter-row" span={6} style={{ marginTop: '10px' }} key={index}>
-                                                <div className='chart-tiles'>
+                                                <div className='chart-tiles' onClick={()=>{history.push(`/dashboard/dashboard?id=${el.dashboard_id}`); window.location.reload()}}>
                                                     <p className='cid'>{el.dashboard_id}</p>
                                                     <p className='chartName'>{el.dashboard_name}</p>
                                                 </div>
@@ -236,7 +238,7 @@ export default function landingPage(props) {
                                         )
                                     })}
 
-                                </Row> */}
+                                </Row>
                             </Col>
                             <Col span={6} />
                         </Row>

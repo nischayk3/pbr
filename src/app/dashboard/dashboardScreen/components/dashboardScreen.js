@@ -1,25 +1,32 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { useDispatch } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../../duck/actions/commonActions';
 import { getChartList } from '../../../../services/chartPersonalizationService';
 import { getChartPlotData } from '../../../../services/workSpaceServices';
+import { saveDashboardData } from '../../../../services/dashboardServices';
 import { Button } from 'antd';
 import LandingPage from './landingPage/landingPage';
 import ChartPage from './viewChart/viewChart';
+import queryString from "query-string";
 import { ShareAltOutlined } from '@ant-design/icons';
 import './styles.scss';
 
 const DashboardScreen = () => {
     const dispatch = useDispatch();
+    const location = useLocation()
     //to show landing page
     const [showChartCard, setShowChartCard] = useState(false);
     //to create the dashboard name
     const [dashboardName, setdashboardName] = useState('');
+    const [dashboardId, setDashboardId] = useState('');
     //serach table data
     const [searchTableData, setSearchTableData] = useState([]);
+    const [rawTableData, setRawTableData] = useState([]);
     const [viewData, setViewData] = useState({ chartName: '', status: '', chartDispId: '', searchValue: '', chartVersion: 0 });
     const searchData = useRef([]);
+    const ref = useRef();
     const [landingChartData, setLandingChartData] = useState([]);
     const [landingChartLayout, setLandingChartLayout] = useState([]);
     const [landingChartLayoutX, setLandingChartLayoutX] = useState([]);
@@ -39,6 +46,7 @@ const DashboardScreen = () => {
 
     useEffect(() => {
         getTableData();
+        idFromUrl();
 
     }, [])
 
@@ -49,6 +57,7 @@ const DashboardScreen = () => {
         }
 
     }, [viewData.chartDispId])
+
 
     //get table data
     const getTableData = async () => {
@@ -71,6 +80,7 @@ const DashboardScreen = () => {
             });
             searchData.current = JSON.parse(JSON.stringify(antdDataTable));
             setSearchTableData(antdDataTable);
+            setRawTableData(JSON.parse(JSON.stringify(antdDataTable)));
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
@@ -120,6 +130,17 @@ const DashboardScreen = () => {
         }
     }
 
+    const idFromUrl = () => {
+        const params = queryString.parse(location.search);
+        if (params.id) {
+            setDashboardId(params.id);
+            setShowChartCard(true);
+        } else {
+            setDashboardId('')
+            setShowChartCard(false);
+        }
+
+    }
     const layout = {
         xaxis: landingChartLayoutX,
         yaxis: landingChartLayoutY,
@@ -128,7 +149,7 @@ const DashboardScreen = () => {
         height: 50,
     };
 
-    const chartLayout={
+    const chartLayout = {
         xaxis: landingChartLayoutX,
         yaxis: landingChartLayoutY,
         autosize: false,
@@ -143,6 +164,31 @@ const DashboardScreen = () => {
         }
     }
 
+    const handleSave = async () => {
+        console.log(ref.current.getChildState());
+        let json = ref.current.getChildState();
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
+        let headers = {
+            'content-type': 'application/json',
+            'x-access-token': login_response.token ? login_response.token : '',
+            'resource-name': 'DASHBOARD',
+        }
+        let req = {
+            json,
+            savetype: 'Save'
+        }
+        try {
+            dispatch(showLoader());
+            let res = await saveDashboardData(req, headers);
+            console.log(res);
+            dispatch(hideLoader());
+        } catch (error) {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', error.Message));
+        }
+        
+    }
+
     return (
         <div className='custom-wrapper'>
             {/* <BreadCrumbWrapper /> */}
@@ -154,7 +200,7 @@ const DashboardScreen = () => {
                 </div> */}
                 {showChartCard && <div className='btns'>
                     <Button>Save As</Button>
-                    <Button>Save</Button>
+                    <Button onClick={() => handleSave()}>Save</Button>
                     <ShareAltOutlined style={{ color: '#093185', fontSize: '18px' }} />
                 </div>}
             </div>
@@ -174,11 +220,13 @@ const DashboardScreen = () => {
                         setViewData={setViewData}
                         plotData={landingChartData}
                         plotLayout={layout}
+                        idFromUrl={idFromUrl}
 
 
                     />}
                 {showChartCard &&
                     <ChartPage
+                        ref={ref}
                         dashboardName={dashboardName}
                         plotData={landingChartData}
                         plotLayout={chartLayout}
@@ -189,6 +237,9 @@ const DashboardScreen = () => {
                         onSearchChange={onSearchChange}
                         searchData={searchData}
                         setViewData={setViewData}
+                        dashboardId={dashboardId}
+                        getChartData={getChartData}
+                        rawTableData={rawTableData}
                     />}
             </div>
         </div>
