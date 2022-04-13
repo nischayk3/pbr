@@ -119,7 +119,7 @@ const ChartPersonal = () => {
             <Modal title="Schedule Alert" className='schedule-modal' visible={alertModal} onCancel={handleCancel} footer={false} width={1300} >
                 <Tabs tabPosition='left' className='schedule-menu'>
                     <TabPane tab={
-                        <span>
+                        <span style={{color:'white'}}>
                             <DesktopOutlined />
                             Alerts
                         </span>
@@ -128,7 +128,7 @@ const ChartPersonal = () => {
                         <AlertEvaluation/>
                     </TabPane>
                     <TabPane tab={
-                        <span>
+                        <span style={{color:'white'}}>
                             <DesktopOutlined />
                             Schedule Alerts
                         </span>
