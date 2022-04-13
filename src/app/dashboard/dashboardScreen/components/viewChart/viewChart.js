@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef, forwardRef,useImperativeHandle} from 'react';
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { useDispatch, } from 'react-redux';
 import { Row, Col, Input, Button, Card, Select, Switch, Slider, DatePicker, Typography, message } from 'antd';
 import SelectField from '../../../../../components/SelectField/SelectField';
@@ -16,7 +16,8 @@ import './styles.scss';
 
 const dash_info = {
     "dashboard_id": "dashboard1", // text, generated
-    "dashboard_name": "Dashboard Test", // text, chart display name
+    "dashboard_name": "Dashboard Test", 
+    "dashboard_descr": "Test Dashboard Object",// text, chart display name
     "dashboard_description": "Test Dashboard Object", // text, chart detailed description
     "dashboard_version": 1, // integer
     "dashboard_status": 0, // integer, {0: unapproved, 1: pending, 2: approved}
@@ -55,7 +56,7 @@ const dash_info = {
             "data_filter": {
                 "date_range": "2007-03-01T13:00:00Z/2008-05-11T15:30:00Z", // ISO 8601 format <start>/<end> time interval
                 "unapproved_data": 1, // integer, {0: False, 1: True}
-                "site": "" // text
+                "site": "1255" // text
             }
         },
         {
@@ -73,7 +74,7 @@ const dash_info = {
             "data_filter": {
                 "date_range": "2007-03-01T13:00:00Z/2008-05-11T15:30:00Z", // ISO 8601 format <start>/<end> time interval
                 "unapproved_data": 0, // integer, {0: False, 1: True}
-                "site": "" // text
+                "site": "1234" // text
             }
         },
         {
@@ -91,7 +92,7 @@ const dash_info = {
             "data_filter": {
                 "date_range": "2007-03-01T13:00:00Z/2008-05-11T15:30:00Z", // ISO 8601 format <start>/<end> time interval
                 "unapproved_data": 1, // integer, {0: False, 1: True}
-                "site": "" // text
+                "site": "1255" // text
             }
         },
         {
@@ -109,32 +110,28 @@ const dash_info = {
             "data_filter": {
                 "date_range": "2007-03-01T13:00:00Z/2008-05-11T15:30:00Z", // ISO 8601 format <start>/<end> time interval
                 "unapproved_data": 0, // integer, {0: False, 1: True}
-                "site": "" // text
+                "site": "1234" // text
             }
         }
     ]
 }
 
 
-const ViewChart = (props,ref) => {
-    const { Text } = Typography;
-    const { Search } = Input;
+const ViewChart = (props, ref) => {
     const dispatch = useDispatch();
     const [dashboardInfo, setDashboardInfo] = useState({});
-    const [chartSearch, setChartSearch] = useState(false);
     const [visible, setVisible] = useState(false);
     const [addNewChartFilter, setAddNewChartFilter] = useState(false);
-    const [unapprovedData, setunapprovedData] = useState(false);
-    const [unapprovedInnerData, setunapprovedInnerData] = useState(false);
     const [siteList, setSiteList] = useState([]);
     const [tempPanels, setTempPanels] = useState([]);
+    const [tempCard, setTempCard] = useState({});
     const [isEditable, setIsEditable] = useState(null);
     const [startTimeIso, setstartTimeIso] = useState('');
     const [endTimeIso, setendTimeIso] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [selectedDateRange, setSelectedDateRange] = useState('');
-    useImperativeHandle(ref, () => ({getChildState: () => {return Object.assign({},dashboardInfo,{panels:tempPanels})}}), [dashboardInfo,tempPanels]);
+    useImperativeHandle(ref, () => ({ getChildState: () => { return Object.assign({}, dashboardInfo, { panels: tempPanels }) } }), [dashboardInfo, tempPanels]);
     const range = [
         { key: 'Last 5 minutes', value: 5 },
         { key: 'Last 10 minutes', value: 10 },
@@ -153,14 +150,13 @@ const ViewChart = (props,ref) => {
     ));
 
     useEffect(() => {
-        getSiteIdHandler();
         fetchDataFromUrl();
     }, []);
- 
 
-    const getChartData = (chartId,payload={}) => {
+
+    const getChartData = (chartId, payload = {}) => {
         let login_response = JSON.parse(localStorage.getItem('login_details'));
-        let req = { chartId: chartId,...payload }
+        let req = { chartId: chartId, ...payload }
         let headers = {
             'content-type': 'application/json',
             'x-access-token': login_response.token ? login_response.token : '',
@@ -177,16 +173,18 @@ const ViewChart = (props,ref) => {
         }
     }
 
-    const getSiteIdHandler = () => {
-        console.log(props.viewData.viewId);
-        let reqSite = { view_id: props.viewData.viewId };
-        getSiteId(reqSite).then((res) => {
+    const getSiteIdHandler = (id=props.viewData.viewId) => {
+        console.log(id);
+        let reqSite = { view_id: id };
+        return getSiteId(reqSite).then((res) => {
             if (res.Status === 200) {
-                setSiteList(res.Data[0]);
+                return res.Data[0];
             } else if (res.Status === 400) {
                 dispatch(showNotification('error', 'Site Error - ' + res.Message));
+                return []
             } else if (res === 'Internal Server Error') {
                 dispatch(showNotification('error', 'Site Error - ' + res));
+                return []
             }
         });
     };
@@ -199,12 +197,18 @@ const ViewChart = (props,ref) => {
                 dispatch(showLoader());
                 const dashboardRes = await getDashboard(req);
                 //setDashboardInfo(dashboardRes.data);
-                setTempPanels(dash_info.panels);
+                //setTempPanels(dash_info.panels);
                 dash_info.panels.map(async (el, i) => {
+                    // let data= props.rawTableData.find(x=>x.chart_disp_id==el.chart_id);
+                    // console.log(data);
+                    // if(data?.chart_info[0].view_id){
+                    //     let resp= await getSiteIdHandler(data?.chart_info[0].view_id);
+                    //     dash_info.panels[i].data_filter.site_list=resp;
+                    // }
                     let res = await getChartData(el.chart_id)
                     let chartLayout = {
-                        xaxis:res.data[0]?.layout.xaxis,
-                        yaxis:res.data[0]?.layout.yaxis,
+                        xaxis: res.data[0]?.layout.xaxis,
+                        yaxis: res.data[0]?.layout.yaxis,
                         autosize: false,
                         width: 580,
                         height: 250,
@@ -216,7 +220,7 @@ const ViewChart = (props,ref) => {
                             pad: 4
                         }
                     }
-                    dash_info.panels[i] = Object.assign({}, res, {chartLayout:chartLayout}, dash_info.panels[i]);
+                    dash_info.panels[i] = Object.assign({}, res, { chartLayout: chartLayout }, dash_info.panels[i]);
                     //setTempPanels(dash_info.panels);
 
                 })
@@ -227,19 +231,21 @@ const ViewChart = (props,ref) => {
                 dispatch(hideLoader());
                 message.error('Unable to fetch coverages');
             }
-        }else{
-            let newDummy={...dummy};
-            newDummy.dashboard_name=props.dashboardName;
-            newDummy.panels[0].chart_id=props.viewData.chartDispId;
-            newDummy.panels[0].chart_name=props.viewData.chartName;
-            setDashboardInfo(newDummy);
+        } else {
+            let newDummy = JSON.parse(JSON.stringify(dummy));
+            newDummy.dashboard_name = props.dashboardName;
+            newDummy.panels[0].chart_id = props.viewData.chartDispId;
+            newDummy.panels[0].chart_name = props.viewData.chartName;
+            //setDashboardInfo(newDummy);
             //setTempPanels(newDummy.panels);
             dispatch(showLoader())
+            let resp= await getSiteIdHandler();
+            newDummy.panels[0].data_filter.site_list=resp;
             newDummy.panels.map(async (el, i) => {
                 let res = await getChartData(el.chart_id)
                 let chartLayout = {
-                    xaxis:res.data[0]?.layout.xaxis,
-                    yaxis:res.data[0]?.layout.yaxis,
+                    xaxis: res.data[0]?.layout.xaxis,
+                    yaxis: res.data[0]?.layout.yaxis,
                     autosize: false,
                     width: 580,
                     height: 250,
@@ -251,10 +257,11 @@ const ViewChart = (props,ref) => {
                         pad: 4
                     }
                 }
-                newDummy.panels[i] = Object.assign({}, res, {chartLayout:chartLayout}, newDummy.panels[i]);
-                
+                newDummy.panels[i] = Object.assign({}, res, { chartLayout: chartLayout }, newDummy.panels[i]);
+
             })
             setTempPanels(newDummy.panels);
+            setDashboardInfo(newDummy);
             dispatch(hideLoader())
         }
 
@@ -262,16 +269,23 @@ const ViewChart = (props,ref) => {
 
     const onChangeCheckbox = (checked) => {
         const isChecked = checked;
-        setunapprovedData(isChecked);
-     
+
     };
 
-    const onChangeInnerCheckbox = (checked,index) => {
-        console.log("checked,index",checked,index)
-        const isChecked = checked?1:0;
-        let arr=[...tempPanels]
-        arr[index].data_filter.unapproved_data=isChecked;
-       setTempPanels(arr);
+    const onChangeInnerCheckbox = (checked, index) => {
+        console.log("checked,index", checked, index)
+        const isChecked = checked ? 1 : 0;
+        let arr = [...tempPanels]
+        arr[index].data_filter.unapproved_data = isChecked;
+        setTempPanels(arr);
+
+    };
+    const onChangeTempCheckbox = (checked) => {
+        console.log("checked,index", checked)
+        const isChecked = checked ? 1 : 0;
+        let obj = { ...tempCard }
+        obj.data_filter.unapproved_data = isChecked;
+        setTempCard(obj);
 
     };
     const showModal = () => {
@@ -279,7 +293,7 @@ const ViewChart = (props,ref) => {
     };
     const handleDateClick = () => {
         showModal();
-       
+
     };
     const onChangeStart = (date, dateString) => {
         console.log('setStartTime', date, dateString);
@@ -300,21 +314,37 @@ const ViewChart = (props,ref) => {
         setendTimeIso(moment(date).toISOString());
     };
 
-    const onInnerStart = (date,dateString,index) => {
+    const onInnerStart = (date, dateString, index) => {
         console.log('setStartTime', date, dateString);
         console.log('forment', moment(date).toISOString());
-        let arr =[...tempPanels];
-        arr[index].data_filter.date_range=`${moment(date).toISOString()}/${arr[index].data_filter.date_range.split("/")[1]}`;
+        let arr = [...tempPanels];
+        arr[index].data_filter.date_range = `${moment(date).toISOString()}/${arr[index].data_filter.date_range.split("/")[1]}`;
         setTempPanels(arr);
-        
-        
+
+
     };
-    const onInnerEnd = (date, dateString,index) => {
+    const onInnerEnd = (date, dateString, index) => {
         console.log('setStartTime', date, dateString);
         console.log('forment', moment(date).toISOString());
-        let arr =[...tempPanels];
-        arr[index].data_filter.date_range=`${arr[index].data_filter.date_range.split("/")[0]}/${moment(date).toISOString()}`;
+        let arr = [...tempPanels];
+        arr[index].data_filter.date_range = `${arr[index].data_filter.date_range.split("/")[0]}/${moment(date).toISOString()}`;
         setTempPanels(arr);
+    };
+    const onInnerTempStart = (date, dateString) => {
+        console.log('setStartTime', date, dateString);
+        console.log('forment', moment(date).toISOString());
+        let obj = { ...tempCard };
+        obj.data_filter.date_range = `${moment(date).toISOString()}/${obj.data_filter.date_range.split("/")[1]}`;
+        setTempCard(obj);
+
+
+    };
+    const onInnerTempEnd = (date, dateString) => {
+        console.log('setStartTime', date, dateString);
+        console.log('forment', moment(date).toISOString());
+        let obj = { ...tempCard };
+        obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]}/${moment(date).toISOString()}`;
+        setTempCard(obj);
     };
     const onClickTimeRange = () => {
         console.log(
@@ -374,16 +404,26 @@ const ViewChart = (props,ref) => {
         }
     };
 
-    const onTypeChartsChange = (e,index) => {
-       let arr=[...tempPanels];
-       tempPanels[index].source_type=e;
-       setTempPanels(arr);
+    const onTypeChartsChange = (e, index) => {
+        let arr = [...tempPanels];
+        tempPanels[index].source_type = e;
+        setTempPanels(arr);
+    }
+    const onTempChartsChange = (e) => {
+        let obj = { ...tempCard };
+        obj.source_type = e;
+        setTempCard(obj);
     }
 
-    const onSiteChange = (e,index) => {
-        let arr=[...tempPanels];
-        tempPanels[index].data_filter.site=e;
+    const onSiteChange = (e, index) => {
+        let arr = [...tempPanels];
+        tempPanels[index].data_filter.site = e;
         setTempPanels(arr);
+    }
+    const onTempSiteChange = (e) => {
+        let obj = { ...tempCard };
+        obj.data_filter.site = e;
+        setTempCard(obj);
     }
 
     const removeCard = (index) => {
@@ -396,49 +436,99 @@ const ViewChart = (props,ref) => {
 
     }
 
-    const showPreview=async(index)=>{
-        let arr=[...tempPanels]
-        let id=tempPanels[index].chart_id;
-       let payload={
-           site:[tempPanels[index].data_filter.site],
-           date_range:tempPanels[index].data_filter.date_range,
-           unapproved_data:tempPanels[index].data_filter.unapproved_data
-       }
-
-       let res= await getChartData(id,payload);
-       let chartLayout = {
-        xaxis:res.data[0]?.layout.xaxis,
-        yaxis:res.data[0]?.layout.yaxis,
-        autosize: false,
-        width: 580,
-        height: 250,
-        margin: {
-            l: 60,
-            r: 50,
-            //b: 75,
-            t: 10,
-            pad: 4
+    const showPreview = async (index) => {
+        let arr = [...tempPanels]
+        let id = tempPanels[index].chart_id;
+        let payload = {
+            site: [tempPanels[index].data_filter.site],
+            date_range: tempPanels[index].data_filter.date_range,
+            unapproved_data: tempPanels[index].data_filter.unapproved_data
         }
-    }
-   arr[index] = Object.assign({},arr[index],res,{chartLayout:chartLayout});
-    setTempPanels(arr); 
-    }
 
-    const searchCallback=(data,index)=>{
-        let arr=[...tempPanels];
-        arr[index].chart_id=data.chartDispId;
-        arr[index].chart_name=data.chartName;
+        let res = await getChartData(id, payload);
+        let chartLayout = {
+            xaxis: res.data[0]?.layout.xaxis,
+            yaxis: res.data[0]?.layout.yaxis,
+            autosize: false,
+            width: 580,
+            height: 250,
+            margin: {
+                l: 60,
+                r: 50,
+                //b: 75,
+                t: 10,
+                pad: 4
+            }
+        }
+        arr[index] = Object.assign({}, arr[index], res, { chartLayout: chartLayout });
         setTempPanels(arr);
     }
 
-    const addNewChart=()=>{
-        let newDummy={...dummy};
-            newDummy.dashboard_name=props.dashboardName;
-            setDashboardInfo(newDummy);
-           let mergePanels=[...tempPanels,...newDummy.panels]
-            setTempPanels(mergePanels);
+    const showPreviewTemp = async () => {
+        let obj = { ...tempCard }
+        let id = obj.chart_id;
+        let payload = {
+            site: [obj.data_filter.site],
+            date_range: obj.data_filter.date_range,
+            unapproved_data: obj.data_filter.unapproved_data
+        }
+
+        let res = await getChartData(id, payload);
+        let chartLayout = {
+            xaxis: res.data[0]?.layout.xaxis,
+            yaxis: res.data[0]?.layout.yaxis,
+            autosize: false,
+            width: 580,
+            height: 250,
+            margin: {
+                l: 60,
+                r: 50,
+                //b: 75,
+                t: 10,
+                pad: 4
+            }
+        }
+        obj = Object.assign({}, obj, res, { chartLayout: chartLayout });
+        setTempCard(obj);
     }
-   
+
+    const searchCallback = async(data, index) => {
+        let arr = [...tempPanels];
+        arr[index].chart_id = data.chartDispId;
+        arr[index].chart_name = data.chartName;
+        arr[index].view_id = data.viewId;
+        let res=await getSiteIdHandler(data.viewId);
+        console.log(res);
+        arr[index].data_filter.site_list = res;
+        setTempPanels(arr);
+    }
+
+    const searchTempCallback = async(data) => {
+        let obj = { ...tempCard }
+        obj.chart_id = data.chartDispId;
+        obj.chart_name = data.chartName;
+        obj.view_id = data.viewId;
+        let res=await getSiteIdHandler(data.viewId);
+        console.log(res);
+        obj.data_filter.site_list = res;
+        setTempCard(obj);
+    }
+
+    const addNewCard = () => {
+        let newDummy = { ...dummy }
+        setTempCard(newDummy.panels[0]);
+    }
+
+    const onTempApply=()=>{
+        let obj=JSON.parse(JSON.stringify(tempCard))
+        let arr=[...tempPanels,obj];
+        setTempPanels(arr);
+        let info={...dashboardInfo};
+        info.panels=[...dashboardInfo.panels,obj];
+        setDashboardInfo(info);
+        setTempCard({});
+    }
+
     console.log("temp", tempPanels)
     console.log(tempPanels[0]?.data_filter?.unapproved_data);
     return (
@@ -594,7 +684,7 @@ const ViewChart = (props,ref) => {
                 </div>
                 <Row gutter={[16, 24]} className='chart-row'>
                     {tempPanels.map((el, index) => {
-                        console.log("undefined",tempPanels[index]?.data)
+                        console.log("undefined", tempPanels[index]?.data)
                         return (
                             <Col className="gutter-row" span={12}>
                                 <div className='chartCard'>
@@ -606,7 +696,7 @@ const ViewChart = (props,ref) => {
                                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                                                         <div>< UndoOutlined style={{ color: '#486BC9' }} /></div>
                                                         <div>
-                                                            <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }}  onClick={() => setIsEditable(null)}/></span>
+                                                            <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }} onClick={() => setIsEditable(null)} /></span>
                                                             <span><CloseOutlined style={{ color: '#262626' }} onClick={() => removeCard(index)} /></span>
                                                         </div>
                                                     </div>
@@ -635,18 +725,18 @@ const ViewChart = (props,ref) => {
                                             <ChartFilter
                                                 checked={tempPanels[index].data_filter.unapproved_data}
                                                 typeChartValue={tempPanels[index].source_type}
-                                                checkboxChange={(value)=>onChangeInnerCheckbox(value,index)}
-                                                onChangeTypeCharts={(e) => onTypeChartsChange(e,index)}
+                                                checkboxChange={(value) => onChangeInnerCheckbox(value, index)}
+                                                onChangeTypeCharts={(e) => onTypeChartsChange(e, index)}
                                                 typeOfChartsOptions={typeOfCharts}
                                                 selectedTypeOfCharts={tempPanels[index].source_type}
                                                 dateRange={tempPanels[index].data_filter.date_range}
                                                 siteValue={tempPanels[index].data_filter.site}
                                                 chartName={tempPanels[index].chart_name}
                                                 chartId={tempPanels[index].chart_id}
-                                                siteOption={siteList}
-                                                onInnerStart={(date,dateString)=>onInnerStart(date,dateString,index)}
-                                                onInnerEnd={(date,dateString)=>onInnerEnd(date,dateString,index)}
-                                                onSiteChange={(e) => onSiteChange(e,index)}
+                                                siteOption={tempPanels[index].data_filter.site_list}
+                                                onInnerStart={(date, dateString) => onInnerStart(date, dateString, index)}
+                                                onInnerEnd={(date, dateString) => onInnerEnd(date, dateString, index)}
+                                                onSiteChange={(e) => onSiteChange(e, index)}
                                                 viewData={props.viewData}
                                                 searchTableData={props.searchTableData}
                                                 setSearchTableData={props.setSearchTableData}
@@ -654,9 +744,9 @@ const ViewChart = (props,ref) => {
                                                 onSearchChange={props.onSearchChange}
                                                 searchData={props.searchData}
                                                 setViewData={props.setViewData}
-                                                showPreview={()=>showPreview(index)}
+                                                showPreview={() => showPreview(index)}
                                                 rawTableData={props.rawTableData}
-                                                searchCallback={(data)=>searchCallback(data,index)}
+                                                searchCallback={(data) => searchCallback(data, index)}
                                             />
                                         )}
 
@@ -671,18 +761,18 @@ const ViewChart = (props,ref) => {
                     })}
                     <Col className="gutter-row" span={12}>
                         <div className='newCard'>
-                            {addNewChartFilter == false ? (
-                                <div className='before-new-card' onClick={() => addNewChart()}>
+                            {Object.keys(tempCard).length == 0 ? (
+                                <div className='before-new-card' onClick={() => addNewCard()}>
                                     <PlusOutlined />
                                     <p>Add new chart</p>
                                 </div>
                             ) :
                                 (<>
                                     <div className='inner-chart-filters'>
-                                        <span>Untitled</span>
+                                        <span>{tempCard.chart_name?tempCard.chart_name:'Untitled'}</span>
 
                                         <div style={{ float: 'right' }}>
-                                            <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }} /></span>
+                                            <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }} onClick={()=>onTempApply()}/></span>
                                             <span><CloseOutlined style={{ color: '#262626' }} /></span>
                                         </div>
 
@@ -691,21 +781,27 @@ const ViewChart = (props,ref) => {
                                     </div>
                                     <div>
                                         <ChartFilter
-                                            checkboxChange={onChangeInnerCheckbox}
-                                            onChangeTypeCharts={(e) => onTypeChartsChange(e)}
+                                            checked={tempCard.data_filter.unapproved_data}
+                                            typeChartValue={tempCard.source_type}
+                                            checkboxChange={(value) => onChangeTempCheckbox(value)}
+                                            onChangeTypeCharts={(e) => onTempChartsChange(e)}
                                             typeOfChartsOptions={typeOfCharts}
-                                            siteOption={siteList}
-                                            viewData={props.viewData}
-                                            searchTableData={props.searchTableData}
-                                            setSearchTableData={props.setSearchTableData}
-                                            searchTable={props.searchTable}
-                                            onSearchChange={props.onSearchChange}
-                                            searchData={props.searchData}
-                                            setViewData={props.setViewData}
+                                            selectedTypeOfCharts={tempCard.source_type}
+                                            dateRange={tempCard.data_filter.date_range}
+                                            siteValue={tempCard.data_filter.site}
+                                            chartName={tempCard.chart_name}
+                                            chartId={tempCard.chart_id}
+                                            siteOption={tempCard.data_filter.site_list}
+                                            onInnerStart={(date, dateString) => onInnerTempStart(date, dateString)}
+                                            onInnerEnd={(date, dateString) => onInnerTempEnd(date, dateString)}
+                                            onSiteChange={(e) => onTempSiteChange(e)}
+                                            showPreview={() => showPreviewTemp()}
+                                            rawTableData={props.rawTableData}
+                                            searchCallback={(data) => searchTempCallback(data)}
                                         />
                                         <Plot
-                                            data={[]}
-                                            layout={layout}
+                                             data={tempCard?.data && tempCard?.data[0]?.data}
+                                             layout={tempCard && tempCard?.chartLayout}
                                         />
                                     </div>
                                 </>

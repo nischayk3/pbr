@@ -174,7 +174,7 @@ const DashboardScreen = () => {
             'resource-name': 'DASHBOARD',
         }
         let req = {
-            json,
+            ...json,
             savetype: 'Save'
         }
         try {
