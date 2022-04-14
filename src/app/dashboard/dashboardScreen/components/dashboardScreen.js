@@ -6,11 +6,12 @@ import { showLoader, hideLoader, showNotification } from '../../../../duck/actio
 import { getChartList } from '../../../../services/chartPersonalizationService';
 import { getChartPlotData } from '../../../../services/workSpaceServices';
 import { saveDashboardData } from '../../../../services/dashboardServices';
-import { Button } from 'antd';
+import InputField from '../../../../components/InputField/InputField';
+import { Button,Modal } from 'antd';
 import LandingPage from './landingPage/landingPage';
 import ChartPage from './viewChart/viewChart';
 import queryString from "query-string";
-import { ShareAltOutlined } from '@ant-design/icons';
+import { ShareAltOutlined ,ExclamationCircleOutlined,CheckCircleOutlined} from '@ant-design/icons';
 import './styles.scss';
 
 const DashboardScreen = () => {
@@ -31,6 +32,8 @@ const DashboardScreen = () => {
     const [landingChartLayout, setLandingChartLayout] = useState([]);
     const [landingChartLayoutX, setLandingChartLayoutX] = useState([]);
     const [landingChartLayoutY, setLandingChartLayoutY] = useState([]);
+    const [showSaveModal, setShowSaveModal] = useState(false);
+    const [saveType, setSaveType] = useState('');
 
     //for creating new dashboard name
     const settingDashboardName = (value) => {
@@ -62,11 +65,17 @@ const DashboardScreen = () => {
     //get table data
     const getTableData = async () => {
         let req = { chart_status: 'ALL' };
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
+        let headers = {
+            'content-type': 'application/json',
+            'x-access-token': login_response.token ? login_response.token : '',
+            'resource-name': 'DASHBOARD',
+        };
         let antdDataTable = [];
 
         try {
             dispatch(showLoader());
-            const viewRes = await getChartList(req);
+            const viewRes = await getChartList(req,headers);
             viewRes.data.forEach((item, key) => {
                 let antdObj = {};
                 antdObj['key'] = key;
@@ -166,29 +175,50 @@ const DashboardScreen = () => {
 
     const handleSave = async () => {
         console.log(ref.current.getChildState());
-        let json = ref.current.getChildState();
-        let login_response = JSON.parse(localStorage.getItem('login_details'));
-        let headers = {
-            'content-type': 'application/json',
-            'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'DASHBOARD',
-        }
-        let req = {
-            ...json,
-            savetype: 'Save'
-        }
-        try {
-            dispatch(showLoader());
-            let res = await saveDashboardData(req, headers);
-            console.log(res);
-            dispatch(hideLoader());
-        } catch (error) {
-            dispatch(hideLoader());
-            dispatch(showNotification('error', error.Message));
-        }
+        // let json = ref.current.getChildState();
+        // let login_response = JSON.parse(localStorage.getItem('login_details'));
+        // let headers = {
+        //     'content-type': 'application/json',
+        //     'x-access-token': login_response.token ? login_response.token : '',
+        //     'resource-name': 'DASHBOARD',
+        // }
+        // let req = {
+        //     ...json,
+        //     savetype: 'Save'
+        // }
+        // try {
+        //     dispatch(showLoader());
+        //     let res = await saveDashboardData(req, headers);
+        //     console.log(res);
+        //     dispatch(hideLoader());
+        // } catch (error) {
+        //     dispatch(hideLoader());
+        //     dispatch(showNotification('error', error.Message));
+        // }
         
     }
+    const handleSavePopUp=(value)=>{
+        setShowSaveModal(true);
+        setSaveType(value);
+    }
 
+    const handleCancel = () => {
+        setShowSaveModal(false);
+    };
+    const onChangeInputSaveAs=(e)=>{
+        console.log(e.target.value);
+       let value= ref.current.getChildState();
+       value.dashboard_name=e.target.value;
+       setdashboardName(e.target.value);
+       
+    }
+    const onChangeInputSave=(e)=>{
+        console.log(e.target.value);
+    //    let value= ref.current.getChildState();
+    //    value.dashboard_name=e.target.value;
+    //    setdashboardName(e.target.value);
+       
+    }
     return (
         <div className='custom-wrapper'>
             {/* <BreadCrumbWrapper /> */}
@@ -199,8 +229,8 @@ const DashboardScreen = () => {
                     <span className='header-title'>Dashboard</span>
                 </div> */}
                 {showChartCard && <div className='btns'>
-                    <Button>Save As</Button>
-                    <Button onClick={() => handleSave()}>Save</Button>
+                    <Button onClick={()=>handleSavePopUp('saveAs')}>Save As</Button>
+                    <Button onClick={()=>handleSavePopUp('save')}>Save</Button>
                     <ShareAltOutlined style={{ color: '#093185', fontSize: '18px' }} />
                 </div>}
             </div>
@@ -241,6 +271,42 @@ const DashboardScreen = () => {
                         getChartData={getChartData}
                         rawTableData={rawTableData}
                     />}
+                        <Modal
+                        className='dashboard-save'
+                        title={<span><ExclamationCircleOutlined style={{ color: '#FAAD14', fontSize: '18px', marginRight:'15px' }}/>{saveType=='save'?'Save':'SaveAs'}</span>}
+                        visible={showSaveModal} 
+                        //onOk={handleOk} 
+                        onCancel={handleCancel}
+                        footer={[
+                            <Button style={{border:'none'}}onClick={() =>
+                                handleCancel()
+                            }>Cancel</Button>,
+                            <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() =>
+                                handleSave()
+                            }>Save</Button>
+                        ]}>
+                        {saveType=='save'?(
+                            <div>
+                            <InputField
+                                placeholder=''
+                                label='Confirm Dashboard Name'
+                                onChangeInput={(e) => onChangeInputSave(e)}
+                            />
+                            <p>Name available <CheckCircleOutlined style={{color:'#20A60A'}}/></p>
+                        </div>
+                        ):(
+                            <div>
+                               <InputField
+                                placeholder='Dashboard Name'
+                                label='Dashboard Name'
+                                onChangeInput={(e) => onChangeInputSaveAs(e)}
+                            /> 
+                            </div>
+                        )}
+                        
+                        
+                      </Modal>
+                
             </div>
         </div>
     )
