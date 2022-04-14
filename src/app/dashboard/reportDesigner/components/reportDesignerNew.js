@@ -35,6 +35,7 @@ import queryString from "query-string";
 import { loginUrl } from '../../../../services/loginService';
 import { adenabled } from '../../../../config/config';
 import { sendUrl } from '../../../../duck/actions/loginAction';
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 
 
 //Columns For The view Selection modal
@@ -643,8 +644,7 @@ function ReportDesignerNew(props) {
     <div className='custom-wrapper'>
       <div className='sub-header'>
         <div className='sub-header-title'>
-          <ArrowLeftOutlined className='header-icon' />
-          <span className='header-title'>Report Designer</span>
+         <BreadCrumbWrapper/>
         </div>
         <div className='sub-header-btns'>
           {isLoad || params ? <> </> : (

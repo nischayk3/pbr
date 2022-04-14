@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Form, Input, Space, Popconfirm, Card } from 'antd';
-import { CheckCircleOutlined, DeleteTwoTone, PlusOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, DeleteTwoTone, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
 import Chart from '../reportChart/chartComponent/chartComponent'
 import { showLoader, hideLoader } from '../../../../../duck/actions/commonActions';
 import { useDispatch } from 'react-redux';
+
 
 
 function ReportDesignerDynamicSections(props) {
@@ -21,12 +22,13 @@ function ReportDesignerDynamicSections(props) {
 
     //     return obj
     // }
-
     const dispatch = useDispatch();
     const [addedCharts, setAddedCharts] = useState({})
     const [addedKeys, setAddedKeys] = useState({})
     const [chartList, setChartList] = useState([])
     const [showChart, setShowChart] = useState({})
+    const [showAddSection, setShowAddSection] = useState(false)
+    const [editable, setEditable] = useState(false)
 
     const { list } = props;
 
@@ -46,6 +48,10 @@ function ReportDesignerDynamicSections(props) {
             addedCharts[`${section}`].splice(chart_index, 1)  // 2nd parameter means remove one item only
         }
         dispatch(hideLoader())
+    }
+
+    const handleEdit = (value) => {
+        setEditable(!value)
     }
 
     const addChart = (chartName, section) => {
@@ -132,14 +138,18 @@ function ReportDesignerDynamicSections(props) {
                                 {fields.map(({ key, name, ...restField }) => (
                                     <div style={{ border: "1px solid #486BC9", marginBottom: "30px", minHeight: "160px", borderRadius: "4px" }}>
 
-
-                                        <p className="section-name">Section {name + 1}</p>
+                                        {name >= 0 ? setShowAddSection(true) : setShowAddSection(false)}
+                                        <p className="section-name">Section {name + 1} </p>
 
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '10px' }}>
-                                            <Form.Item {...restField} name={[name, 'sectionName']}>
-                                                <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px' }} className="input-section" disabled={props.show} />
-                                            </Form.Item>
+                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+                                                <Form.Item {...restField} name={[name, 'sectionName']}>
+                                                   <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px' }} className="input-section" disabled={props.show} disabled={editable}/> 
+                                                </Form.Item>
+                                                <EditOutlined style={{ marginTop: '8px', marginLeft: '10px' }} onClick={() => handleEdit(editable)} /> </div>
+
                                             <div className="add-chart" onClick={() => trackCharts(name)} >+ Add Chart </div>
+
                                             <div style={{ marginLeft: '15%' }}>
                                                 <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
                                                     <DeleteTwoTone twoToneColor="red" style={{ fontSize: '18px' }} />
@@ -209,12 +219,14 @@ function ReportDesignerDynamicSections(props) {
                                     </div>
                                 ))}
                                 <Form.Item >
-                                    <p disabled={props.show}>
-                                        <center>
-                                            <div style={{ height: '90px', width: '100px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => add()}> <PlusOutlined twoToneColor="#eb2f96" style={{ marginTop: '10px' }} /> <br />Add Section</div>
-                                        </center>
-                                        {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: -10, right: -10, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> */}
-                                    </p>
+                                    {showAddSection ? <></> :
+                                        <p disabled={props.show}>
+                                            <center>
+                                                <div style={{ height: '60px', width: '80px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => add()}> <PlusOutlined twoToneColor="#eb2f96" style={{ marginTop: '10px' }} /> <br />Add Section</div>
+                                            </center>
+                                            {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: -10, right: -10, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> */}
+                                        </p>
+                                    }
                                 </Form.Item>
                             </>
                         )}

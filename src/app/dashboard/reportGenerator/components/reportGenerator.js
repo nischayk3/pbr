@@ -13,8 +13,6 @@ import {
     Collapse,
     Typography,
     Modal,
-    Radio,
-    Space,
     Select,
     message,
     Input,
@@ -24,7 +22,7 @@ import {
     Popconfirm,
     Tag
 } from 'antd';
-import { ArrowLeftOutlined, BlockOutlined, DeleteOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone, FileTextOutlined } from '@ant-design/icons';
+import {  BlockOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone, FileTextOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
@@ -39,7 +37,7 @@ import {
 import { Tabs } from 'antd';
 import Chart from '../../reportDesigner/components/reportChart/chartComponent/chartComponent'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-
+import JobSchedule from '../../../../components/JobSchedule';
 
 const { Panel } = Collapse;
 const { Text } = Typography;
@@ -113,6 +111,10 @@ function ReportGenerator() {
         update_object(checkedValues, i)
     }
 
+    const handleCancel = () => {
+        setAlertVisible(false)
+    }
+
     const [visible, setVisible] = useState(false)
     const [isvisible, setIsVisible] = useState(false)
     const [ReportData, setReportData] = useState(repotData)
@@ -144,6 +146,8 @@ function ReportGenerator() {
         Friday: false,
         Saturday: false,
     })
+
+    const [alertVisible, setAlertVisible] = useState(false)
     // const [ sectionCharts,setSectionCharts] = 
     const dispatch = useDispatch();
 
@@ -420,7 +424,7 @@ function ReportGenerator() {
                     <BreadCrumbWrapper />
                 </div>
                 <div className='sub-header-btns'>
-                    <Button className='custom-secondary-btn' onClick={() => { setOpenSchedule(true); }}>
+                    <Button className='custom-secondary-btn' onClick={() => { setAlertVisible(true); }}>
                         Notify Report
                     </Button>
                     {/* <Button className='custom-primary-btn' onClick={() => { setIsVisible(true); }}>
@@ -608,6 +612,7 @@ function ReportGenerator() {
 
 
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
+            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} />
         </div>
 
 
