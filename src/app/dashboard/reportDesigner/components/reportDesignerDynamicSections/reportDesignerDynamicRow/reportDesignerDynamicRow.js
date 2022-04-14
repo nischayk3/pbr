@@ -49,11 +49,11 @@ function ReportDesignerDynamicRow(props) {
 
                                         return value['editable'] === true ? (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea allowClear autoSize={true} style={{ width: '100px' }} placeholder="Enter Key" name={[name, 'keyName']} disabled />
+                                                <Input.TextArea allowClear autoSize={true} style={{ width: '150px' }} placeholder="Enter Key" name={[name, 'keyName']} disabled />
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} style={{ width: '100px' }} placeholder="Enter Key" bordered={true} disabled={props.show} />
+                                                <Input.TextArea bordered allowClear autoSize={true} style={{ width: '150px' }} placeholder="Enter Key" bordered={true} disabled={props.show} />
                                             </Form.Item>
                                         )
                                     }}

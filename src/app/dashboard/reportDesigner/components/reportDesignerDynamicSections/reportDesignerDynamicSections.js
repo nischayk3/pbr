@@ -144,7 +144,7 @@ function ReportDesignerDynamicSections(props) {
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '10px' }}>
                                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
                                                 <Form.Item {...restField} name={[name, 'sectionName']}>
-                                                   <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px' }} className="input-section" disabled={props.show} disabled={editable}/> 
+                                                    <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px' }} className="input-section" disabled={props.show} disabled={editable} />
                                                 </Form.Item>
                                                 <EditOutlined style={{ marginTop: '8px', marginLeft: '10px' }} onClick={() => handleEdit(editable)} /> </div>
 
@@ -174,10 +174,10 @@ function ReportDesignerDynamicSections(props) {
                                                     <table className="dynamicSections-table" style={{ width: '1190px' }}>
                                                         <thead className="dynamicSections-thead">
                                                             <tr>
-                                                                <th>Action</th>
-                                                                <th>Key</th>
-                                                                <th>Value</th>
-                                                                <th>Editable ?</th>
+                                                                <th className="action-clm">Action</th>
+                                                                <th className="key-clm">Key</th>
+                                                                <th className="value-clm">Value</th>
+                                                                <th className="edit-clm">Editable?</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody className="dynamicSections-tbody">
