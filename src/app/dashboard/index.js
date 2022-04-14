@@ -32,6 +32,7 @@ const Workflow = lazy(() => import('./wokflow'));
 const Workspace = lazy(() => import('./workspace'));
 const Genealogy = lazy(() => import('./genealogy'));
 const DashboardScreen = lazy(() => import('./dashboardScreen'));
+const ViewChart=lazy(() => import('./dashboardScreen/components/viewChart/viewChart'));
 const { Content } = Layout;
 
 const Dashboard = () => {
@@ -107,9 +108,19 @@ const Dashboard = () => {
                 <Route key='workspace' path={`${match.url}/workspace`}>
                   <Workspace />
                 </Route>
-                <Route key='dashboard' path={`${match.url}/dashboard`}>
+                <Route key='dashboard' path={`${match.url}/dashboard`}
+                >
                   <DashboardScreen />
                 </Route>
+                {/* <Route
+                  path={`${match.url}/dashboard`}
+                  render={({ match: { url } }) => (
+                    <>
+                      <Route path={`${url}/`} component={DashboardScreen} exact />
+                      <Route path={`${url}/:id`} component={ViewChart} />
+                    </>
+                  )}
+                /> */}
                 <Route key='redirect' path={`${match.url}/redirect`}>
                   <LoginRedirect />
                 </Route>

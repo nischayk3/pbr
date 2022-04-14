@@ -18,3 +18,15 @@ export const getDashboard = (_queryParam) => {
         }
     );
 };
+
+// save dashboard json
+export const saveDashboardData = (_queryParam,headers) => {
+    return Service.put(BMS_APP_PYTHON_SERVICE + '/dashboards?savetype=Save', _queryParam,headers).then(
+      (response) => {
+        return response.data;
+      },
+      (error) => {
+        return error.response.data;
+      }
+    );
+  };
