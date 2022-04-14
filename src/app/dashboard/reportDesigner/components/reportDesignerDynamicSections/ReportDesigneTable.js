@@ -79,10 +79,10 @@ function ReportDesigneTable(props) {
                                         <table className="designer-table">
                                             <thead className="designer-thead">
                                                 <tr>
-                                                    <th>Action</th>
-                                                    <th>Key</th>
-                                                    <th>Value</th>
-                                                    <th>Editable?</th>
+                                                    <th className="action-clm">Action</th>
+                                                    <th className="key-clm">Key</th>
+                                                    <th className="value-clm">Value</th>
+                                                    <th className="edit-clm">Editable?</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="designer-tbody">

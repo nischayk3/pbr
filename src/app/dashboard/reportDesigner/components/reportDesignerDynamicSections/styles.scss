@@ -345,6 +345,8 @@ opacity: 1px;
     // margin-right: right;
     position: relative;
     float: right;
+    bottom: 11%;
+    left: .7%;
     //  top: 0%; 
     // right: %;
     // // width: 3px;
@@ -360,12 +362,13 @@ opacity: 1px;
 }
 
 .chart-tiless
-{ height: 46px;
+{ 
+height: 46px;
 width: 200px;
 background: #FFFFFF;
 border: 1px solid #00F1C6;
 box-sizing: border-box;
-border-radius: 2px;
+border-radius: 2px 5px 2px 2px;
 border: 1px solid #00F1C6;
 // border-radius: 0px 4px;
 // display: flex;
@@ -373,12 +376,13 @@ border: 1px solid #00F1C6;
 align-items: center;
 // background: #E2E8F2;
 // position: relative;
+text-align: center;
 }
 .charttile-content
 {
-  margin-left: 33px;
+  // margin-left: 33px;
   margin-top: 10px;
-  width: 157px;
+  // width: 157px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -459,4 +463,16 @@ border-radius: 4px;
   width: 15px;
   height: 15px;
   justify-content: center;
+}
+.action-clm
+{
+  width: 10px;
+}
+.key-clm
+{
+  width: 150px;
+}
+.edit-clm
+{
+  width: 30px;
 }
