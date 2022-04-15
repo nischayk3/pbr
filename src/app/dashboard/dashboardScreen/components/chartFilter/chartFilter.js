@@ -93,15 +93,13 @@ export default function chartFilter(props) {
                 </Col>
                 <Col className="gutter-row" span={5}>
                     <DatePicker
-                        value={moment(props.dateRange.split("/")[0],"YYYY-MM-DD")}
-                        //defaultValue={moment(props.dateRange.split("/")[0],"YYYY-MM-DD")}
+                        value={props.dateRange.split("/")[0]?moment(props.dateRange.split("/")[0],"YYYY-MM-DD"):''}
                         onChange={props.onInnerStart}
                     />
                 </Col>
                 <Col className="gutter-row" span={5}>
                     <DatePicker 
-                    //defaultValue={moment(props.dateRange.split("/")[1],"YYYY-MM-DD")}
-                    value={moment(props.dateRange.split("/")[1],"YYYY-MM-DD")} 
+                    value={props.dateRange.split("/")[1]?moment(props.dateRange.split("/")[1],"YYYY-MM-DD"):''} 
                     onChange={props.onInnerEnd} />
                 </Col>
             </Row>

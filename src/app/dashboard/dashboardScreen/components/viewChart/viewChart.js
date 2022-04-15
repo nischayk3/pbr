@@ -153,8 +153,8 @@ const ViewChart = (props, ref) => {
         fetchDataFromUrl();
     }, []);
     useEffect(() => {
-        let info={...dashboardInfo};
-        info.dashboard_name=props.dashboardName;
+        let info = { ...dashboardInfo };
+        info.dashboard_name = props.dashboardName;
         setDashboardInfo(info)
     }, [props.dashboardName]);
 
@@ -196,7 +196,7 @@ const ViewChart = (props, ref) => {
     const fetchDataFromUrl = async () => {
         console.log("idd", props.dashboardId)
         if (props.dashboardId) {
-            let req = { dashboardId: props.dashboardId , version:props.dashboardVersion}
+            let req = { dashboardId: props.dashboardId, version: props.dashboardVersion }
             try {
                 dispatch(showLoader());
                 const dashboardRes = await getDashboard(req);
@@ -310,29 +310,41 @@ const ViewChart = (props, ref) => {
 
     };
     const onChangeStart = (date, dateString) => {
-        console.log('setStartTime', date, dateString);
-        let obj = { ...filterObject };
-        obj.startTime = dateString;
-        setFilterObject(obj);
+        console.log('setEndTime', dateString);
         console.log('forment', moment(date).toISOString());
-        setStartTime(dateString);
-        setstartTimeIso(moment(date).toISOString());
+        let obj = { ...dashboardInfo };
+        if (obj.data_filter.date_range == "") {
+            obj.data_filter.date_range = `${date?moment(date).toISOString():''}/`;
+        } else {
+            obj.data_filter.date_range = `${date?moment(date).toISOString():''}/${obj.data_filter.date_range.split("/")[1]}`;
+        }
+
+        setDashboardInfo(obj);
     };
     const onChangeEnd = (date, dateString) => {
         console.log('setEndTime', dateString);
-        let obj = { ...filterObject };
-        obj.endTime = dateString;
-        setFilterObject(obj);
         console.log('forment', moment(date).toISOString());
-        setEndTime(dateString);
-        setendTimeIso(moment(date).toISOString());
+        let obj = { ...dashboardInfo };
+        if (obj.data_filter.date_range == "") {
+            obj.data_filter.date_range = `/${date?moment(date).toISOString():''}`;
+        } else {
+            obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]}/${date?moment(date).toISOString():''}`;
+        }
+
+        setDashboardInfo(obj);
+
     };
 
     const onInnerStart = (date, dateString, index) => {
         console.log('setStartTime', date, dateString);
         console.log('forment', moment(date).toISOString());
         let arr = [...tempPanels];
-        arr[index].data_filter.date_range = `${moment(date).toISOString()}/${arr[index].data_filter.date_range.split("/")[1]}`;
+        if (arr[index].data_filter.date_range == "") {
+            arr[index].data_filter.date_range = `${date?moment(date).toISOString():''}/`
+        } else {
+            arr[index].data_filter.date_range = `${date?moment(date).toISOString():''}/${arr[index].data_filter.date_range.split("/")[1]}`;
+        }
+
         setTempPanels(arr);
 
 
@@ -341,14 +353,23 @@ const ViewChart = (props, ref) => {
         console.log('setStartTime', date, dateString);
         console.log('forment', moment(date).toISOString());
         let arr = [...tempPanels];
-        arr[index].data_filter.date_range = `${arr[index].data_filter.date_range.split("/")[0]}/${moment(date).toISOString()}`;
+        if (arr[index].data_filter.date_range == "") {
+            arr[index].data_filter.date_range = `/${date?moment(date).toISOString():''}`
+        } else {
+            arr[index].data_filter.date_range = `${arr[index].data_filter.date_range.split("/")[0]}/${date?moment(date).toISOString():''}`;
+        }
         setTempPanels(arr);
     };
     const onInnerTempStart = (date, dateString) => {
         console.log('setStartTime', date, dateString);
         console.log('forment', moment(date).toISOString());
         let obj = { ...tempCard };
-        obj.data_filter.date_range = `${moment(date).toISOString()}/${obj.data_filter.date_range.split("/")[1]}`;
+        if (obj.data_filter.date_range == "") {
+            obj.data_filter.date_range = `${date?moment(date).toISOString():''}/`
+        } else {
+            obj.data_filter.date_range = `${date?moment(date).toISOString():''}/${obj.data_filter.date_range.split("/")[1]}`;
+        }
+
         setTempCard(obj);
 
 
@@ -357,7 +378,12 @@ const ViewChart = (props, ref) => {
         console.log('setStartTime', date, dateString);
         console.log('forment', moment(date).toISOString());
         let obj = { ...tempCard };
-        obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]}/${moment(date).toISOString()}`;
+        if (obj.data_filter.date_range == "") {
+            obj.data_filter.date_range = `/${date?moment(date).toISOString():''}`
+        } else {
+            obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]}/${date?moment(date).toISOString():''}`;
+        }
+
         setTempCard(obj);
     };
     const onClickTimeRange = () => {
@@ -384,17 +410,18 @@ const ViewChart = (props, ref) => {
 
     const handleGlobalDropdownChange = (value, text) => {
         console.log(value)
-        let obj = { ...filterObject }
+        let obj = JSON.parse(JSON.stringify(dashboardInfo));
         switch (text) {
-            case 'Site': obj.site = value;
-                setFilterObject(obj);
+            case 'Site': obj.data_filter.site = '1255';
+                setDashboardInfo(obj);
                 break;
-            case 'Unapproved Data': obj.unapprovedData = value;
-                setFilterObject(obj);
+            case 'Unapproved Data':
+                obj.data_filter.unapproved_data = value ? 1 : 0;
+                setDashboardInfo(obj);
                 break;
-            case 'Exploration Controls': obj.explorationControl = value;
-                setFilterObject(obj);
-                break;
+            // case 'Exploration Controls': obj.explorationControl = value;
+            // setDashboardInfo(obj);
+            //     break;
         }
 
 
@@ -419,7 +446,7 @@ const ViewChart = (props, ref) => {
     };
 
     const onTypeChartsChange = (e, index) => {
-        console.log("source value",e)
+        console.log("source value", e)
         let arr = [...tempPanels];
         tempPanels[index].source_type = e;
         setTempPanels(arr);
@@ -544,6 +571,58 @@ const ViewChart = (props, ref) => {
         setTempCard({});
     }
 
+    const appliedGlobalFilters = async () => {
+        let arr = [...tempPanels];
+        let obj = JSON.parse(JSON.stringify(dashboardInfo));
+        let payload = {}
+        try {
+            dispatch(showLoader());
+            arr.map(async (el, i) => {
+                if (el.data_filter.site || el.data_filter.date_range || el.data_filter.unapproved_data) {
+                    payload = {
+                        site: [el.data_filter.site],
+                        date_range: el.data_filter.date_range,
+                        unapproved_data: el.data_filter.unapproved_data
+                    }
+                } else {
+                    payload = {
+                        site: [obj.data_filter.site],
+                        date_range: obj.data_filter.date_range,
+                        unapproved_data: obj.data_filter.unapproved_data
+                    }
+                }
+
+                let res = await getChartData(el.chart_id, payload)
+                let chartLayout = {
+                    xaxis: res.data[0]?.layout.xaxis,
+                    yaxis: res.data[0]?.layout.yaxis,
+                    autosize: false,
+                    width: 580,
+                    height: 210,
+                    margin: {
+                        l: 60,
+                        r: 50,
+                        //b: 75,
+                        t: 10,
+                        pad: 4
+                    }
+                }
+                //dash_info.panels[i] = Object.assign({}, res, { chartLayout: chartLayout }, dash_info.panels[i]);
+                el.chartLayout = chartLayout
+                el.data = res.data
+                //setTempPanels(dash_info.panels);
+
+            })
+            setTempPanels(arr);
+            setDashboardInfo(obj);
+            dispatch(hideLoader());
+        } catch (error) {
+            dispatch(hideLoader());
+            message.error('Unable to fetch data');
+        }
+
+    }
+
     console.log("temp", tempPanels)
     console.log("dashInfo", dashboardInfo)
     return (
@@ -663,12 +742,12 @@ const ViewChart = (props, ref) => {
                             )} */}
                         <DatePicker
                             onChange={onChangeStart}
-                        //value={moment(dashboardInfo?.data_filter?.date_range?.split("/")[0]).format("YYYY/MM/DD")}
+                            value={dashboardInfo?.data_filter?.date_range?.split("/")[0] ? moment(dashboardInfo?.data_filter?.date_range?.split("/")[0], "YYYY-MM-DD") : ''}
 
                         />
 
                         <DatePicker onChange={onChangeEnd}
-                            //value={dashboardInfo?.data_filter?.date_range.split("/")[1].join("").split("T")[1]}
+                            value={dashboardInfo?.data_filter?.date_range?.split("/")[1] ? moment(dashboardInfo?.data_filter?.date_range?.split("/")[1], "YYYY-MM-DD") : ''}
                             style={{ marginLeft: '22px' }} />
 
                     </div>
@@ -692,6 +771,7 @@ const ViewChart = (props, ref) => {
                         <Button
                             type='primary'
                             className='custom-secondary-btn'
+                            onClick={() => appliedGlobalFilters()}
                         >Apply
                         </Button>
                     </div>
@@ -766,9 +846,9 @@ const ViewChart = (props, ref) => {
                                         )}
                                         <div style={{ marginTop: isEditable == index ? '0px' : '70px' }}>
                                             <Plot
-                                            data={el.data && el?.data[0]?.data}
-                                            layout={el.chartLayout && el?.chartLayout}
-                                        />
+                                                data={el.data && el?.data[0]?.data}
+                                                layout={el.chartLayout && el?.chartLayout}
+                                            />
                                             {/* <Plot
                                                 data={tempPanels[index]?.data && tempPanels[index]?.data[0]?.data}
                                                 layout={tempPanels[index] && tempPanels[index]?.chartLayout}
@@ -823,10 +903,10 @@ const ViewChart = (props, ref) => {
                                             searchCallback={(data) => searchTempCallback(data)}
                                         />
                                         {tempCard?.data && (
-                                        <Plot
-                                            data={tempCard?.data && tempCard?.data[0]?.data}
-                                            layout={tempCard && tempCard?.chartLayout}
-                                        />
+                                            <Plot
+                                                data={tempCard?.data && tempCard?.data[0]?.data}
+                                                layout={tempCard && tempCard?.chartLayout}
+                                            />
                                         )}
                                     </div>
                                 </>
