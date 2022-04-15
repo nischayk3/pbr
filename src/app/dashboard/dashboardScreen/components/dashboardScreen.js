@@ -22,6 +22,7 @@ const DashboardScreen = () => {
     //to create the dashboard name
     const [dashboardName, setdashboardName] = useState('');
     const [dashboardId, setDashboardId] = useState('');
+    const [dashboardVersion, setDashboardVersion] = useState('');
     //serach table data
     const [searchTableData, setSearchTableData] = useState([]);
     const [rawTableData, setRawTableData] = useState([]);
@@ -143,6 +144,7 @@ const DashboardScreen = () => {
         const params = queryString.parse(location.search);
         if (params.id) {
             setDashboardId(params.id);
+            setDashboardVersion(params.version);
             setShowChartCard(true);
         } else {
             setDashboardId('')
@@ -173,28 +175,30 @@ const DashboardScreen = () => {
         }
     }
 
-    const handleSave = async () => {
+    const handleSave = async (value) => {
         console.log(ref.current.getChildState());
-        // let json = ref.current.getChildState();
-        // let login_response = JSON.parse(localStorage.getItem('login_details'));
-        // let headers = {
-        //     'content-type': 'application/json',
-        //     'x-access-token': login_response.token ? login_response.token : '',
-        //     'resource-name': 'DASHBOARD',
-        // }
-        // let req = {
-        //     ...json,
-        //     savetype: 'Save'
-        // }
-        // try {
-        //     dispatch(showLoader());
-        //     let res = await saveDashboardData(req, headers);
-        //     console.log(res);
-        //     dispatch(hideLoader());
-        // } catch (error) {
-        //     dispatch(hideLoader());
-        //     dispatch(showNotification('error', error.Message));
-        // }
+        let json = ref.current.getChildState();
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
+        let headers = {
+            'content-type': 'application/json',
+            'x-access-token': login_response.token ? login_response.token : '',
+            'resource-name': 'DASHBOARD',
+        }
+        let req = {
+            ...json,
+            savetype: value?value:saveType
+        }
+        try {
+            dispatch(showLoader());
+            let res = await saveDashboardData(req, headers);
+            console.log(res);
+            dispatch(hideLoader());
+            dispatch(showNotification('success', `${json.dashboard_name} has been successfully saved`));
+            setShowSaveModal(false);
+        } catch (error) {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', error.Message));
+        }
         
     }
     const handleSavePopUp=(value)=>{
@@ -207,16 +211,7 @@ const DashboardScreen = () => {
     };
     const onChangeInputSaveAs=(e)=>{
         console.log(e.target.value);
-       let value= ref.current.getChildState();
-       value.dashboard_name=e.target.value;
        setdashboardName(e.target.value);
-       
-    }
-    const onChangeInputSave=(e)=>{
-        console.log(e.target.value);
-    //    let value= ref.current.getChildState();
-    //    value.dashboard_name=e.target.value;
-    //    setdashboardName(e.target.value);
        
     }
     return (
@@ -230,7 +225,7 @@ const DashboardScreen = () => {
                 </div> */}
                 {showChartCard && <div className='btns'>
                     <Button onClick={()=>handleSavePopUp('saveAs')}>Save As</Button>
-                    <Button onClick={()=>handleSavePopUp('save')}>Save</Button>
+                    <Button onClick={()=> {setSaveType('save');handleSave('save')}}>Save</Button>
                     <ShareAltOutlined style={{ color: '#093185', fontSize: '18px' }} />
                 </div>}
             </div>
@@ -268,6 +263,7 @@ const DashboardScreen = () => {
                         searchData={searchData}
                         setViewData={setViewData}
                         dashboardId={dashboardId}
+                        dashboardVersion={dashboardVersion}
                         getChartData={getChartData}
                         rawTableData={rawTableData}
                     />}
@@ -285,21 +281,13 @@ const DashboardScreen = () => {
                                 handleSave()
                             }>Save</Button>
                         ]}>
-                        {saveType=='save'?(
-                            <div>
-                            <InputField
-                                placeholder=''
-                                label='Confirm Dashboard Name'
-                                onChangeInput={(e) => onChangeInputSave(e)}
-                            />
-                            <p>Name available <CheckCircleOutlined style={{color:'#20A60A'}}/></p>
-                        </div>
-                        ):(
+                        {saveType=='saveAs'&&(
                             <div>
                                <InputField
                                 placeholder='Dashboard Name'
                                 label='Dashboard Name'
                                 onChangeInput={(e) => onChangeInputSaveAs(e)}
+                                value={dashboardName}
                             /> 
                             </div>
                         )}

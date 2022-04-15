@@ -152,6 +152,11 @@ const ViewChart = (props, ref) => {
     useEffect(() => {
         fetchDataFromUrl();
     }, []);
+    useEffect(() => {
+        let info={...dashboardInfo};
+        info.dashboard_name=props.dashboardName;
+        setDashboardInfo(info)
+    }, [props.dashboardName]);
 
     const getChartData = (chartId, payload = {}) => {
         let login_response = JSON.parse(localStorage.getItem('login_details'));
@@ -191,13 +196,14 @@ const ViewChart = (props, ref) => {
     const fetchDataFromUrl = async () => {
         console.log("idd", props.dashboardId)
         if (props.dashboardId) {
-            let req = { dashboardId: props.dashboardId }
+            let req = { dashboardId: props.dashboardId , version:props.dashboardVersion}
             try {
                 dispatch(showLoader());
                 const dashboardRes = await getDashboard(req);
+                console.log(dashboardRes.data[0]);
                 //setDashboardInfo(dashboardRes.data);
                 //setTempPanels(dash_info.panels);
-                dash_info.panels.map(async (el, i) => {
+                dashboardRes.data[0].panels.map(async (el, i) => {
                     // let data= props.rawTableData.find(x=>x.chart_disp_id==el.chart_id);
                     // console.log(data);
                     // if(data?.chart_info[0].view_id){
@@ -225,8 +231,10 @@ const ViewChart = (props, ref) => {
                     //setTempPanels(dash_info.panels);
 
                 })
-                setTempPanels(dash_info.panels);
-                setDashboardInfo(dash_info);
+                //setTempPanels(dash_info.panels);
+                //setDashboardInfo(dash_info);
+                setTempPanels(dashboardRes.data[0].panels);
+                setDashboardInfo(dashboardRes.data[0]);
                 dispatch(hideLoader());
             } catch (error) {
                 dispatch(hideLoader());
