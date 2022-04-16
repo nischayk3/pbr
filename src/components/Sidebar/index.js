@@ -33,7 +33,7 @@ const MENU = [
 		key: 'view_creation',
 		icon: <FundOutlined style={{ fontSize: '23px' }} />,
 		title: 'View Creation',
-		linkTo: '/dashboard/view_creation',
+		linkTo: '/dashboard/view_creation_landing',
 	},
 	{
 		key: 'view_creation',

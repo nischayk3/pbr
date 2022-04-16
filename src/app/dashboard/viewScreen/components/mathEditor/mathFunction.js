@@ -47,7 +47,7 @@ const MathFunction = props => {
 		dispatch(saveViewFunction(true));
 		setIsModalVisible(false);
 	};
-	console.log('isFunctionVisible', isFunctionVisible);
+
 	return (
 		<>
 			<div className='function-editor'>

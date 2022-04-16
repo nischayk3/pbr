@@ -1,6 +1,6 @@
 .chart-tiles {
 	height: 84px;
-	width: 162px;
+
 	border-radius: 0px 4px;
 	display: flex;
 	justify-content: center;
@@ -14,7 +14,7 @@
 		position: absolute;
 		top: 0%;
 		right: 0%;
-		width: 52px;
+		padding: 0 6px;
 		align-content: center;
 		font-size: small;
 	}
@@ -22,7 +22,7 @@
 .tile {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-gap: 5px;
+	grid-gap: 13px 24px;
 	text-align: center;
 
 	.awap {

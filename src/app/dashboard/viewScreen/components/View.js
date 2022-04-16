@@ -9,22 +9,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { CloudUploadOutlined, BuildTwoTone } from '@ant-design/icons';
-import {
-	Button,
-	Collapse,
-	Form,
-	Modal,
-	Select,
-	Input,
-	Table,
-	message,
-} from 'antd';
-
+import { CloudUploadOutlined } from '@ant-design/icons';
+import { Button, Collapse, Form, message } from 'antd';
 import FileUpload from './fileUpload/FileUpload';
-
 import ParameterLookup from './parameterLookup/ParameterLookup';
-
 import './styles.scss';
 import {
 	getViewConfig,
@@ -48,42 +36,10 @@ import { adenabled } from '../../../../config/config';
 import MaterialTree from './materialTree';
 import MathEditor from './mathEditor';
 import ViewSummaryData from './viewSummary';
+import viewdatajson from './view.json';
+import LandingPage from '../components/landing/viewCreationLanding';
 const { Panel } = Collapse;
 
-const columns = [
-	{
-		title: 'Product Num',
-		dataIndex: 'product_num',
-		key: 'product_num',
-	},
-	{
-		title: 'View',
-		dataIndex: 'view',
-		key: 'view',
-	},
-	{
-		title: 'View Name',
-		dataIndex: 'view_name',
-		key: 'view_name',
-	},
-	{
-		title: 'View Status',
-		dataIndex: 'view_status',
-		key: 'view_status',
-	},
-	{
-		title: 'View Version',
-		dataIndex: 'view_version',
-		key: 'view_version',
-	},
-	{
-		title: 'Created By',
-		dataIndex: 'created_by',
-		key: 'created_by',
-	},
-];
-
-let paramType = '';
 const ViewCreation = () => {
 	const molecule_Id = useSelector(
 		state => state.viewCreationReducer.molecule_id
@@ -97,7 +53,7 @@ const ViewCreation = () => {
 	const mathFunDetails = useSelector(
 		state => state.viewCreationReducer.funDetails
 	);
-	const funName = useSelector(state => state.viewCreationReducer.functionName);
+	const viewState = useSelector(state => state.viewCreationReducer);
 	const viewTableData = useSelector(
 		state => state.viewCreationReducer.paramData
 	);
@@ -106,25 +62,22 @@ const ViewCreation = () => {
 	const location = useLocation();
 	const [count, setCount] = useState(1);
 	const [params, setParams] = useState(false);
-	const [id, setId] = useState();
+
 	const [moleculeList, setMoleculeList] = useState([]);
 	const [functionEditorRecord, setFunctionEditorRecord] = useState([]);
 	const [isPublish, setIsPublish] = useState(false);
 	const [moleculeId, setMoleculeId] = useState();
 	const [materialsList, setMaterialsList] = useState([]);
-	const [paramText, setParamText] = useState();
+
 	const text = useRef();
 	const getData = useRef();
+
 	const [filterdData, setFilterdData] = useState(null);
 	const [dataLoadingState, setDataLoadingState] = useState(false);
-	const [isNew, setIsNew] = useState(false);
 	const [visible, setVisible] = useState(false);
-	const [popvisible, setPopVisible] = useState(false);
 	const [isLoad, setIsLoad] = useState(false);
-	const [aggregationValue, setAggregationValue] = useState('');
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
 	const [parentBatches, setParentBatches] = useState([]);
-	const [functionName, setFunctionName] = useState('');
 	const [newBatchData, setNewBatchData] = useState([]);
 	const [viewList, setViewList] = useState([]);
 	const [viewDisplayId, setViewDisplayId] = useState('');
@@ -137,7 +90,6 @@ const ViewCreation = () => {
 	const [mathFunction, setMathFunction] = useState();
 	const tableData = useRef();
 	const [viewFunctionName, setViewFunctionName] = useState('');
-	const [materialIdName, setMaterialIdName] = useState({});
 	const newParameterData = useRef([]);
 	const [meanChange, setMeanChange] = useState('');
 	const functionId = useRef();
@@ -151,10 +103,11 @@ const ViewCreation = () => {
 	const [publishResponse, setPublishResponse] = useState({});
 	const [paramRadioValue, setParamRadioValue] = useState('');
 	const [primarySelect, setPrimarySelect] = useState(false);
-
 	const [viewSummaryTable, setViewSummaryTable] = useState([]);
 	const [viewSummaryTableData, setViewSummaryTableData] = useState([]);
 	const [paramTableData, setParamTableData] = useState([]);
+	const [viewJson, setViewJson] = useState(viewdatajson);
+	const [showLanding, setShowLanding] = useState(false);
 
 	useEffect(() => {
 		setParamTableData(selectedTableData);
@@ -224,41 +177,6 @@ const ViewCreation = () => {
 		});
 	};
 
-	const loadSearchHandler = value => {
-		const tableData = viewList;
-		const filterTable = tableData.filter(o =>
-			Object.keys(o).some(k =>
-				String(o[k]).toLowerCase().includes(value.toLowerCase())
-			)
-		);
-
-		setFilterTable(filterTable);
-	};
-
-	const ViewRowClicked = record => {
-		setViewDisplayId(record.view_disp_id);
-		message.success(`${record.view_disp_id} selected`);
-	};
-
-	const newButtonHandler = () => {
-		setMoleculeId();
-		setFunctionEditorRecord([]);
-		setFilterdData(null);
-		setViewSummaryTable([]);
-		setFunctionEditorViewState(false);
-		setMaterialsList([]);
-		setFilterdData(null);
-		form.setFieldsValue({
-			filters: null,
-		});
-		setDataLoadingState(false);
-		setViewDisplayId('');
-		setViewStatus();
-		setViewVersion();
-		setCount(1);
-		updateSaved.current = false;
-		counter.current = 0;
-	};
 	const onOkHandler = async viewId => {
 		setShowSpinner(true);
 		setVisible(false);
@@ -762,123 +680,91 @@ const ViewCreation = () => {
 		}
 	}, [materialsList]);
 
-	console.log('materialsList', materialsList);
+	const handleSaveView = async () => {
+		console.log('handle save function');
+		const viewData = JSON.parse(JSON.stringify(viewJson));
+		console.log('view Data', viewData);
+		viewData.forEach(element => {
+			(element.functions = viewState.functions),
+				(element.parameters = viewState.parameters),
+				(element.all_parameters = viewState.selectedParamData),
+				(element.material_id = moleculeId);
+		});
+		const headers = {
+			username: 'user_mareana1',
+			password: 'mareana_pass1',
+		};
+		try {
+			const response = await saveFunction(viewData, headers);
+			if (response.statuscode === 200) {
+				console.log('response', response);
+				// setViewDisplayId(response.view_disp_id);
+				// setViewStatus(response.view_status);
+				// setViewVersion(response.view_version);
+				message.success('Saved Successfully');
+				// updateSaved.current = true;
+			} else {
+				message.error(response);
+			}
+		} catch (err) {
+			message.error(err);
+		}
+	};
 
 	return (
 		<div className='reportDesigner-container viewCreation-container'>
-			<BreadCrumbWrapper>
-				<>
-					{params ? (
-						<div className='viewCreation-btns'>
-							<Button
-								className='viewCreation-rejectBtn'
-								// onClick={() => {
-								//   setIsPublish(true);
-								//   setApproveReject('R');
-								// }}
-								onClick={() => {
-									adenabled ? onApprove('R') : setIsPublish(true);
-									setApproveReject('R');
-								}}>
-								Reject
-							</Button>
-							<Button
-								className='viewCreation-publishBtn'
-								// onClick={() => {
-								//   setIsPublish(true);
-								//   setApproveReject('A');
-								// }}
-								onClick={() => {
-									adenabled ? onApprove('A') : setIsPublish(true);
-									setApproveReject('A');
-								}}>
-								Approve
-							</Button>
-						</div>
-					) : (
-						materialsList.length > 0 && (
-							<div className='viewCreation-btns'>
-								<Button
-									type='text'
-									className='viewCreation-newBtn'
-									onClick={() => {
-										newButtonHandler();
-									}}>
-									New
-								</Button>
-								<Button
-									className='viewCreation-loadBtn'
-									onClick={() => {
-										setVisible(true);
-										setIsNew(false);
-									}}>
-									Load
-								</Button>
-								<Button
-									className='viewCreation-saveBtn'
-									disabled={!viewDisplayId}
-									onClick={handleSaveFunc}>
-									Save
-								</Button>
-								<Button
-									className='viewCreation-saveAsBtn'
-									onClick={handleSaveAsFunc}>
-									Save As
-								</Button>
-								<Button className='viewCreation-shareBtn'>Share</Button>
-								<Button
-									className='viewCreation-publishBtn'
-									onClick={() => {
-										setIsPublish(true);
-										setAd(true);
-									}}>
-									<CloudUploadOutlined />
-									Publish
-								</Button>
-							</div>
-						)
-					)}
+			<BreadCrumbWrapper />
+			<div className='breadcrumbs-btn'>
+				{params ? (
 					<div className='viewCreation-btns'>
 						<Button
-							type='text'
-							className='viewCreation-newBtn'
+							className='viewCreation-rejectBtn'
+							// onClick={() => {
+							//   setIsPublish(true);
+							//   setApproveReject('R');
+							// }}
 							onClick={() => {
-								newButtonHandler();
+								adenabled ? onApprove('R') : setIsPublish(true);
+								setApproveReject('R');
 							}}>
-							New
+							Reject
 						</Button>
-						<Button
-							className='viewCreation-loadBtn'
-							onClick={() => {
-								setVisible(true);
-								setIsNew(false);
-							}}>
-							Load
-						</Button>
-						<Button
-							className='viewCreation-saveBtn'
-							disabled={!viewDisplayId}
-							onClick={handleSaveFunc}>
-							Save
-						</Button>
-						<Button
-							className='viewCreation-saveAsBtn'
-							onClick={handleSaveAsFunc}>
-							Save As
-						</Button>
-						<Button className='viewCreation-shareBtn'>Share</Button>
 						<Button
 							className='viewCreation-publishBtn'
+							// onClick={() => {
+							//   setIsPublish(true);
+							//   setApproveReject('A');
+							// }}
 							onClick={() => {
-								setIsPublish(true);
-								setAd(true);
+								adenabled ? onApprove('A') : setIsPublish(true);
+								setApproveReject('A');
 							}}>
-							<CloudUploadOutlined />
-							Publish
+							Approve
 						</Button>
 					</div>
-				</>
-			</BreadCrumbWrapper>
+				) : (
+					materialsList.length > 0 && (
+						<div className='viewCreation-btns'>
+							<Button
+								className='viewCreation-saveBtn'
+								// disabled={!viewDisplayId}
+								onClick={handleSaveView}>
+								Save
+							</Button>
+
+							<Button
+								className='viewCreation-publishBtn'
+								onClick={() => {
+									setIsPublish(true);
+									setAd(true);
+								}}>
+								<CloudUploadOutlined />
+								Publish
+							</Button>
+						</div>
+					)
+				)}
+			</div>
 
 			<div className='reportDesigner-gridBlocks viewCreation-grids'>
 				<div className='reportDesigner-grid-tables viewCreation-blocks'>
@@ -954,81 +840,16 @@ const ViewCreation = () => {
 								primarySelected={primarySelect}
 								newBatchData={newBatchData}
 								parentBatches={parentBatches}
+								viewJson={viewJson}
+								setViewJson={setViewJson}
 							/>
-							<ViewSummaryData />
+							<ViewSummaryData viewJson={viewJson} setViewJson={setViewJson} />
 						</div>
 					)}
 				</div>
 			</div>
 
-			<div>
-				<Modal
-					title='Select View'
-					visible={visible}
-					onOk={() => {
-						onOkHandler();
-					}}
-					onCancel={() => setVisible(false)}
-					width={500}
-					style={{ marginRight: '800px' }}>
-					<Select
-						className='filter-button'
-						style={{ width: '140px' }}
-						defaultValue={viewDisplayId}
-						onChange={(e, value) => {
-							let view_value = value.value ? value.value : '';
-							let split_view_id = view_value ? view_value.split('-') : [];
-							setViewDisplayId(split_view_id[0]);
-						}}
-						value={viewDisplayId}>
-						{viewList &&
-							viewList.map(item => {
-								return (
-									<Option value={item.view} key={item.view}>
-										{item.view}
-									</Option>
-								);
-							})}
-					</Select>
-					<Button onClick={() => setPopVisible(true)}>
-						<BuildTwoTone twoToneColor='#093185' />
-					</Button>
-				</Modal>
-				<Modal
-					visible={popvisible}
-					onOk={() => setPopVisible(false)}
-					onCancel={() => setPopVisible(false)}
-					title={
-						<span>
-							Select View
-							<Input.Search
-								className='table-search'
-								placeholder='Search by...'
-								enterButton
-								onSearch={loadSearchHandler}
-								style={{ marginBottom: '40px' }}
-							/>
-						</span>
-					}
-					centered
-					width={700}>
-					<Table
-						dataSource={filterTable === null ? viewList : filterTable}
-						columns={columns}
-						onRow={record => ({
-							onClick: e => {
-								ViewRowClicked(record);
-							},
-						})}
-						scroll={{ y: 200 }}
-						size='small'
-						pagination={false}
-						rowKey={record => record.view}
-					/>
-				</Modal>
-			</div>
-			<Loading show={showSpinner} />
-			<Signature
+			{/* <Signature
 				isPublish={isPublish}
 				handleClose={handleClose}
 				screenName='View Creation'
@@ -1038,7 +859,7 @@ const ViewCreation = () => {
 				version={viewVersion}
 				status={approveReject}
 				ad={ad}
-			/>
+			/> */}
 		</div>
 	);
 };

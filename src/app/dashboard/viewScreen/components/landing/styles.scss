@@ -124,19 +124,7 @@
 	box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
 	border-radius: 4px;
 }
-.create_new {
-	justify-content: center;
-	align-items: flex-start;
-	padding: 60px 16px 5px 35px;
-	width: 175px;
-	height: 137px;
-	background: #ffffff;
-	border: 1px dashed #d9d9d9;
-	box-sizing: border-box;
-	border-radius: 4px;
-	margin-top: 20px;
-	margin-right: 600px;
-}
+
 .create-new {
 	height: 137px;
 	width: 175px;
@@ -149,9 +137,9 @@
 	align-items: center;
 	justify-content: center;
 	gap: 10px;
-	margin-top: 13px;
+	margin-top: 40px;
 	margin-bottom: 10px;
-	margin-right: 430px;
+
 	svg {
 		cursor: pointer;
 		margin-top: 10px !important;
@@ -165,9 +153,7 @@
 		color: #494949;
 	}
 }
-.recent {
-	margin-right: 300px;
-}
+
 .recent-report {
 	margin-right: 350px;
 }
@@ -210,11 +196,7 @@
 		color: white;
 	}
 }
-.landing-card {
-	width: 784px;
-	margin-top: 21px;
-	margin-left: 200px;
-}
+
 .landing-table {
 	margin-top: 10px;
 }
@@ -232,4 +214,56 @@
 }
 .ant-tabs-ink-bar {
 	color: #093185 !important;
+}
+
+.landing-search-wrapper {
+	background: #fff;
+	.landing-card {
+		width: 784px;
+		margin: 24px auto;
+		overflow: hidden;
+		padding: 40px 0;
+	}
+}
+
+.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child {
+	left: 0;
+}
+.card-legends {
+	border-bottom: 1px solid #e2e2e2;
+	margin: 4px 0 10px 0;
+	display: flex;
+	justify-content: space-between;
+	.legends {
+		display: flex;
+		p {
+			padding: 0 10px 0 0;
+			display: flex;
+			margin: 0px;
+			.drft {
+				width: 14px;
+				height: 14px;
+				border-radius: 50px;
+				background: #363636;
+				display: block;
+				margin: 3px 6px;
+			}
+			.aprv {
+				width: 14px;
+				height: 14px;
+				border-radius: 50px;
+				background: #a4f588;
+				margin: 3px 6px;
+				display: block;
+			}
+			.await {
+				width: 14px;
+				height: 14px;
+				border-radius: 50px;
+				background: #f6ba60;
+				margin: 3px 6px;
+				display: block;
+			}
+		}
+	}
 }

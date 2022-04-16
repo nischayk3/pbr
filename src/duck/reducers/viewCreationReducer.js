@@ -11,6 +11,9 @@ import {
 	BATCH_COVERAGE_DATA,
 	SELECTED_VARIABLE,
 	SUMMARY_TABLE_DATA,
+	SELECTED_PARAM_TYPE,
+	VIEW_FUNCTION_MAP,
+	VIEW_PARAM_MAP,
 } from '../../constants/actionTypes';
 
 const initState = {
@@ -27,6 +30,9 @@ const initState = {
 	batchCoverageData: {},
 	selectedVariable: [],
 	summaryTableData: [],
+	selectedParamType: '',
+	functions: {},
+	parameters: {},
 };
 
 export default (state = initState, action) => {
@@ -57,6 +63,12 @@ export default (state = initState, action) => {
 			return { ...state, selectedVariable: action.payload };
 		case SUMMARY_TABLE_DATA:
 			return { ...state, summaryTableData: action.payload };
+		case SELECTED_PARAM_TYPE:
+			return { ...state, selectedParamType: action.payload };
+		case VIEW_FUNCTION_MAP:
+			return { ...state, functions: action.payload };
+		case VIEW_PARAM_MAP:
+			return { ...state, parameters: action.payload };
 		default:
 			return state;
 	}

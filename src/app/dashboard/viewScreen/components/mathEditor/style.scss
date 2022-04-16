@@ -23,6 +23,9 @@
 		color: #093185;
 	}
 }
+.add-var_block_bg {
+	background: #adc6ff;
+}
 .var_block_card {
 	background: #f0f5ff;
 	border: 1px dashed #adc6ff;
@@ -134,4 +137,19 @@ span.batchClosed,
 span.statusClosed {
 	color: #db0000;
 	font-size: 16px;
+}
+
+.custom-check {
+	> span {
+		background: #093185;
+		border-radius: 50px;
+		width: 18px;
+		height: 18px;
+		border: 1px solid #093185;
+
+		.ant-checkbox-inner {
+			background-color: transparent;
+			border-color: transparent;
+		}
+	}
 }

@@ -3,13 +3,13 @@ import './block.scss';
 import React from 'react';
 
 const statusColor = status => {
-	if (status == 'APRD') {
+	if (status == 'APRD' || status == 'approved') {
 		return 'aprd';
 	}
 	if (status == 'DRFT') {
 		return 'drft';
 	}
-	if (status == 'AWAP') {
+	if (status == 'AWAP' || status == 'unapproved') {
 		return 'awap';
 	}
 };

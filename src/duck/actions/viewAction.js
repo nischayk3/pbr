@@ -10,6 +10,9 @@ import {
 	BATCH_COVERAGE_DATA,
 	SELECTED_VARIABLE,
 	SUMMARY_TABLE_DATA,
+	SELECTED_PARAM_TYPE,
+	VIEW_FUNCTION_MAP,
+	VIEW_PARAM_MAP,
 } from '../../constants/actionTypes';
 
 export const saveViewFunction = payload => ({
@@ -64,5 +67,19 @@ export const createVariable = payload => ({
 
 export const createSummaryData = payload => ({
 	type: SUMMARY_TABLE_DATA,
+	payload,
+});
+
+export const selectParamType = payload => ({
+	type: SELECTED_PARAM_TYPE,
+	payload,
+});
+
+export const viewFunctionMap = payload => ({
+	type: VIEW_FUNCTION_MAP,
+	payload,
+});
+export const viewParamMap = payload => ({
+	type: VIEW_PARAM_MAP,
 	payload,
 });

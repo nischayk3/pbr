@@ -28,12 +28,11 @@ function ParameterLookup(props) {
 		materialsList,
 		setMaterialsList,
 		setFilterdData,
-		setDataLoadingState,
 		setParentBatches,
 		form,
 		params,
 	} = props;
-
+	console.log('propsssss parameter lookup', props);
 	const dispatch = useDispatch();
 	const logindetails = useSelector(state => state.loginReducer.loginDetails);
 
@@ -72,7 +71,6 @@ function ParameterLookup(props) {
 	}, []);
 
 	useEffect(() => {
-		// eslint-disable-next-line no-undef
 		form.setFieldsValue({
 			molecule: moleculeId,
 		});
@@ -94,11 +92,8 @@ function ParameterLookup(props) {
 			});
 
 			if (paramTreeRes.statuscode === 200) {
-				setDataLoadingState(false);
 				setMaterialsList(paramTreeRes.data.hierarchy);
-				setDataLoadingState(true);
 				setParentBatches(paramTreeRes.data.mol_batches);
-
 				dispatch(hideLoader());
 			} else if (paramTreeRes.statuscode === 401) {
 				dispatch(showNotification('error', 'Filter -', paramTreeRes.Message));

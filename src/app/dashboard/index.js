@@ -18,8 +18,7 @@ const ManualDataUpload = lazy(() => import('./manualDataUpload'));
 const ChartPersonal = lazy(() => import('./chartPersonal'));
 const SystemErrorReport = lazy(() => import('./systemErrorReport'));
 const ViewCreation = lazy(() => import('./viewCreation'));
-const View = lazy(() => import('./viewScreen'));
-
+const View = lazy(() => import('./viewScreen/components/View'));
 const DataLoad = lazy(() => import('./dataLoad'));
 const ReportDesigner = lazy(() => import('./reportDesigner'));
 const AuditTrial = lazy(() => import('./auditTrial'));
@@ -28,6 +27,7 @@ const Workflow = lazy(() => import('./wokflow'));
 const Workspace = lazy(() => import('./workspace'));
 const Genealogy = lazy(() => import('./genealogy'));
 const DashboardScreen = lazy(() => import('./dashboardScreen'));
+const ViewLanding = lazy(() => import('./viewScreen'));
 const { Content } = Layout;
 
 const Dashboard = () => {
@@ -57,8 +57,15 @@ const Dashboard = () => {
 									path={`${match.url}/manual_data_upload`}>
 									<ManualDataUpload />
 								</Route>
-								<Route key='view_creation' path={`${match.url}/view_creation`}>
+								<Route
+									key='view_creation'
+									path={`${match.url}/view_creation_view`}>
 									<View />
+								</Route>
+								<Route
+									key='view_creation_landing'
+									path={`${match.url}/view_creation_landing`}>
+									<ViewLanding />
 								</Route>
 								<Route
 									key='view_creation_old'

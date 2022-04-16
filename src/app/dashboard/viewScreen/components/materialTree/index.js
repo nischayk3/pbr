@@ -25,46 +25,7 @@ const MaterialTree = props => {
 	const dispatch = useDispatch();
 	const { materialsList, parentBatches } = props;
 
-	const onSelect = (keys, info) => {
-		// setSelectedKey(keys[0]);
-		// setKey.push(keys[0]);
-		// let tree = [...materialsList];
-		// let selectTree = tree.forEach(a => {
-		// 	let obj = {};
-		// 	a.children.forEach(b => {
-		// 		b.children.forEach(c => {
-		// 			if (c.key === keys[0]) {
-		// 				selectedData.push(c);
-		// 			}
-		// 		});
-		// 	});
-		// });
-		// const indexDuplicate = selectedData.findIndex(
-		// 	x => x.parameter_name == record.param
-		// );
-		// if (indexDuplicate === -1) {
-		// 	rowData = Object.assign(batchData);
-		// 	rowData.sourceType = 'material';
-		// 	rowData.mat_no = record.mat_no;
-		// 	rowData.id = batchData.id;
-		// 	rowData.param = record.param;
-		// 	rowData.primary = '';
-		// 	rowData.aggregation = '';
-		// 	//rowData.parameters = [rowData];
-		// 	getNewData(rowData);
-		// 	let data = [...viewSummaryTable];
-		// 	data.push(rowData);
-		// 	setNewBatchData(newBatchData);
-		// 	setViewSummaryTable([...data]);
-		// 	dispatch(sendViewParamData(data));
-		// 	setFunctionEditorViewState(true);
-		// 	console.log('dataaa', data);
-		// 	console.log('viewSummaryTable', viewSummaryTable);
-		// 	console.log('rowData', rowData);
-		// } else {
-		// 	message.error('Function already exists');
-		// }
-	};
+	const onSelect = (keys, info) => {};
 	const handleClickParam = (e, keys, param, record) => {
 		let rowData = {};
 		let batchData = {};
@@ -93,7 +54,7 @@ const MaterialTree = props => {
 			}
 		});
 		batchData['id'] = count;
-		console.log('coverage', molBatch, newBatchData);
+
 		setCount(count + 1);
 		const indexDuplicate = selectedData.findIndex(
 			x => x.parameter_name == param
@@ -102,23 +63,14 @@ const MaterialTree = props => {
 		if (indexDuplicate != -1) {
 			rowData = Object.assign(batchData);
 			rowData.sourceType = 'material';
-			// rowData.mat_no = record.mat_no;
-			rowData.id = batchData.id;
 			rowData.parameter_name = record.parameter_name;
 			rowData.coverage = record.coverage;
 			rowData.key = record.key;
-			rowData.primary = '';
+			rowData.primary = 0;
 			rowData.aggregation = '';
-			//rowData.mol_batch = molBatch;
-			//rowData.parameters = [rowData];
-			// getNewData(rowData);
+
 			let data = { ...rowData };
 			finalData.push(data);
-
-			// setNewBatchData(newBatchData);
-			// setViewSummaryTable([...data]);
-			// dispatch(sendViewParamData(data));
-			// setFunctionEditorViewState(true);
 
 			dispatch(batchCoverage(newBatchData));
 			dispatch(sendSelectedParamData(finalData));

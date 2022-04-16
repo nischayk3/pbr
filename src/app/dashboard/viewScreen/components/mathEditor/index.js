@@ -6,14 +6,17 @@ import './style.scss';
 import MathFunction from './mathFunction';
 import ParameterTable from './parameterTable';
 import VariableCard from './variableCard';
+import { truncate } from 'lodash';
 
 const variableData = [];
+
 const MathEditor = props => {
 	const [varData, setVarData] = useState([]);
 	const [count, setCount] = useState(1);
 	const [cardTitle, setCardTitle] = useState('Create Variable');
 	const [rowDisable, setRowDisable] = useState(true);
 	const [variableCreate, setVariableCreate] = useState(false);
+	const [ischeckBox, setIscheckBox] = useState(false);
 
 	const { Panel } = Collapse;
 
@@ -24,6 +27,7 @@ const MathEditor = props => {
 	const addVariable = () => {
 		setCardTitle('Select parameters');
 		setRowDisable(false);
+		setIscheckBox(true);
 	};
 
 	const createVariable = () => {
@@ -57,6 +61,7 @@ const MathEditor = props => {
 						addVariable={addVariable}
 						title={cardTitle}
 						createVariable={createVariable}
+						className={'add-var_block add-var_block_bg'}
 					/>
 					{varData.map((item, index) => (
 						<VariableCard key={index} variableName={item.variableName} />
@@ -67,10 +72,11 @@ const MathEditor = props => {
 					callbackCheckbox={callbackCheckbox}
 					rowDisable={rowDisable}
 					paramTableData={props.paramTableData}
-					viewSummaryColumns={props.viewSummaryColumns}
 					newBatchData={props.newBatchData}
-					setViewSummaryColumns={props.setViewSummaryColumns}
 					parentBatches={props.parentBatches}
+					ischeckBox={ischeckBox}
+					viewJson={props.viewJson}
+					setViewJson={props.setViewJson}
 				/>
 			</Panel>
 		</Collapse>
