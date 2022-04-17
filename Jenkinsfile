@@ -80,9 +80,9 @@ pipeline {
           }
           stage("Deploy to Dev") {
               steps {
-                  withAWS(credentials: 'AWS-eks-cred', region: 'us-east-2') {
+                  withAWS(credentials: 'AWS-eks-cred', region: 'us-east-1') {
                  sh 'aws --version'
-                 sh 'aws eks update-kubeconfig --name MareanaEks-ControlPlane --region us-east-2'
+                 sh 'aws eks update-kubeconfig --name eks-cluster --region us-east-1'
                  sh '''#!/bin/bash -x
                        echo "Changing Docker image in deployment yml file"
                        sed -i -e "s@IMAGE@\'"$DOCKER_IMAGE/mdh-cpv-ui-$BUILD_NUMBER"\'@g"  bms-k8s-dev-deployment.yml
