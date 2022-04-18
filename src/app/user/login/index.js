@@ -38,12 +38,12 @@ const Login = () => {
 		} else {
 			if (localStorage.getItem('test_enabled')) {
 				window.open(
-					`${loginUrl}?is_ui=True&base_url=https://bms-cpvdev.mareana.com&redirect_url=https://bms-cpvdev.mareana.com%2F%23%2Fdashboard%2Fredirect`,
+					`${loginUrl}?is_ui=True&base_url=http://localhost&redirect_url=http://localhost%2F%23%2Fdashboard%2Fredirect`,
 					'_self'
 				);
 			} else {
 				window.open(
-					`${loginUrl}?is_ui=True&base_url=https://bms-cpvdev.mareana.com&redirect_url=https://bms-cpvdev.mareana.com%2F%23%2Fdashboard%2Fredirect`,
+					`${loginUrl}?is_ui=True&base_url=http://localhost&redirect_url=http://localhost%2F%23%2Fdashboard%2Fredirect`,
 					'_self'
 				);
 			}

@@ -21,6 +21,7 @@ let finalData = [];
 const MaterialTree = props => {
 	const [selectedKey, setSelectedKey] = useState('');
 	const [count, setCount] = useState('');
+	const [selectedAllKey, setSelectedAllKey] = useState([]);
 
 	const dispatch = useDispatch();
 	const { materialsList, parentBatches } = props;
@@ -32,6 +33,7 @@ const MaterialTree = props => {
 		let newBatchData = {};
 		setSelectedKey(keys);
 		setKey.push(keys);
+		setSelectedAllKey[setKey];
 		let tree = [...materialsList];
 		let molBatch = [...parentBatches];
 
@@ -112,6 +114,20 @@ const MaterialTree = props => {
 																			b
 																		)
 																	}>
+																	{selectedAllKey &&
+																		selectedAllKey.map(ele => {
+																			console.log(
+																				'eleeeee',
+																				selectedAllKey,
+																				ele,
+																				b.key
+																			);
+																			if (ele === b.key) {
+																				return <CheckOutlined />;
+																			} else {
+																				return <PlusOutlined />;
+																			}
+																		})}
 																	{selectedKey === b.key ? (
 																		<CheckOutlined />
 																	) : (

@@ -53,6 +53,7 @@ const ParameterTable = props => {
 		ischeckBox,
 		viewJson,
 		setViewJson,
+		varClick,
 	} = props;
 	const dispatch = useDispatch();
 	const tableColumns = [
@@ -84,10 +85,6 @@ const ParameterTable = props => {
 			width: 150,
 			fixed: 'left',
 			render: (text, record) => {
-				// console.log('selectedParamType', selectedParamType);
-				// console.log('batchData radio', batchData);
-				// console.log('rowDisable radio', rowDisable);
-				// console.log('tableColumn radio', tableColumn);
 				return (
 					<Radio
 						checked={paramType === record.parameter_name}
@@ -165,6 +162,13 @@ const ParameterTable = props => {
 			setTableData(selectedTableData);
 		}
 	}, [selectedTableData]);
+	console.log('var click', varClick);
+	useEffect(() => {
+		if (varClick) {
+			setSelectedRowKeys([]);
+			setSelectedRow([]);
+		}
+	}, [varClick]);
 
 	useEffect(() => {
 		let variable = [];
@@ -249,9 +253,6 @@ const ParameterTable = props => {
 		console.log('value record', value, record, rowIndex, key);
 		let batchRecord = [...tableData];
 		batchRecord[rowIndex][key] = value;
-		console.log('b1', batchRecord);
-		console.log('b2', batchRecord[rowIndex]);
-		console.log('b3', batchRecord[rowIndex][key]);
 		setisBatchCheck(value);
 		setTableData(batchRecord);
 	};
@@ -266,35 +267,33 @@ const ParameterTable = props => {
 				dataIndex: key,
 				width: 100,
 				render: (value, record, rowIndex) => {
-					// console.log(
-					// 	'valueeeee',
-					// 	value,
-					// 	ischeckBox,
-					// 	isCheck,
-					// 	isBatchCheck,
-					// 	key
-					// );
-					if (isCheck === true) {
-						// console.log('if', isCheck);
-						if (value) {
+					console.log(
+						'...value, ...record, ...rowIndex',
+						value,
+						record,
+						rowIndex
+					);
+					console.log(isCheck, 'isCheck');
+					console.log(isBatchCheck, 'isBatchCheck');
+					if (value) {
+						if (isCheck) {
 							return (
 								<Checkbox
 									className='custom-check'
-									checked={isBatchCheck ? isBatchCheck : isCheck}
-									onChange={(e, value) =>
+									onChange={e =>
 										onChangeBatch(e.target.checked, record, rowIndex, key)
 									}
+									checked={isBatchCheck ? isBatchCheck : isCheck}
 								/>
 							);
 						} else {
 							return (
-								<span className='batchClosed'>
-									<CloseOutlined />
+								<span className='batchChecked'>
+									<CheckOutlined />
 								</span>
 							);
 						}
 					} else {
-						console.log('else');
 						return value ? (
 							<span className='batchChecked'>
 								<CheckOutlined />
@@ -312,21 +311,9 @@ const ParameterTable = props => {
 
 		if (tableColumns.length === 3) {
 			let data = [...tableColumns, ...columns];
-
 			setTableColumn(data);
 		}
 	};
-
-	// const selectRow = record => {
-	// 	console.log('select row', record);
-	// 	const selectedRowKey = [...selectedRowKeys];
-	// 	if (selectedRowKey.indexOf(record.key) >= 0) {
-	// 		selectedRowKey.splice(selectedRowKey.indexOf(record.key), 1);
-	// 	} else {
-	// 		selectedRowKey.push(record.key);
-	// 	}
-	// 	setSelectedRowKeys(selectedRowKey);
-	// };
 
 	return (
 		<>
@@ -349,6 +336,11 @@ const ParameterTable = props => {
 					rowSelection={{
 						selectedRowKeys,
 						onChange: (selectedRowKeys, selectedRows) => {
+							console.log(
+								'selectedRowKeys, selectedRows',
+								selectedRowKeys,
+								selectedRows
+							);
 							props.callbackCheckbox(true);
 							setSelectedRowKeys(selectedRowKeys);
 							setSelectedRow(selectedRows);

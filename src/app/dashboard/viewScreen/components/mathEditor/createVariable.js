@@ -4,12 +4,12 @@ import { Button } from 'antd';
 
 const CreateVariable = props => {
 	return (
-		<div className={props.className} onClick={props.addVariable}>
+		<div className={props.className}>
 			{props.title === 'Create Variable' && (
-				<>
+				<div onClick={props.addVariable}>
 					<PlusOutlined />
 					<p>Create Variable</p>
-				</>
+				</div>
 			)}
 			{props.title === 'Select parameters' && (
 				<>
@@ -20,7 +20,7 @@ const CreateVariable = props => {
 			{props.title === 'Done' && (
 				<Button
 					type='text'
-					onClick={props.createVariable}
+					onClick={props.createVar}
 					className='custom-primary-btn '>
 					Done
 				</Button>

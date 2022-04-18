@@ -9,8 +9,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { CloudUploadOutlined } from '@ant-design/icons';
-import { Button, Collapse, Form, message } from 'antd';
+import { CloudUploadOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Button, Collapse, Form, message, Modal } from 'antd';
 import FileUpload from './fileUpload/FileUpload';
 import ParameterLookup from './parameterLookup/ParameterLookup';
 import './styles.scss';
@@ -38,6 +38,7 @@ import MathEditor from './mathEditor';
 import ViewSummaryData from './viewSummary';
 import viewdatajson from './view.json';
 import LandingPage from '../components/landing/viewCreationLanding';
+import InputField from '../../../../components/InputField/InputField';
 const { Panel } = Collapse;
 
 const ViewCreation = () => {
@@ -107,7 +108,8 @@ const ViewCreation = () => {
 	const [viewSummaryTableData, setViewSummaryTableData] = useState([]);
 	const [paramTableData, setParamTableData] = useState([]);
 	const [viewJson, setViewJson] = useState(viewdatajson);
-	const [showLanding, setShowLanding] = useState(false);
+	const [isSaveVisible, setIsSaveVisible] = useState(false);
+	const [viewName, setViewName] = useState('');
 
 	useEffect(() => {
 		setParamTableData(selectedTableData);
@@ -680,6 +682,14 @@ const ViewCreation = () => {
 		}
 	}, [materialsList]);
 
+	const handleSaveVisible = () => {
+		setIsSaveVisible(true);
+	};
+
+	const handleCancel = () => {
+		setIsSaveVisible(false);
+	};
+
 	const handleSaveView = async () => {
 		console.log('handle save function');
 		const viewData = JSON.parse(JSON.stringify(viewJson));
@@ -695,7 +705,7 @@ const ViewCreation = () => {
 			password: 'mareana_pass1',
 		};
 		try {
-			const response = await saveFunction(viewData, headers);
+			const response = await saveFunction(viewData[0], headers);
 			if (response.statuscode === 200) {
 				console.log('response', response);
 				// setViewDisplayId(response.view_disp_id);
@@ -709,6 +719,19 @@ const ViewCreation = () => {
 		} catch (err) {
 			message.error(err);
 		}
+	};
+
+	const onChangeViewName = (e, value) => {
+		console.log('view json11111 ', viewJson);
+		const newArr = [...viewJson];
+
+		newArr.forEach(element => {
+			element.view_name = e.target.value;
+		});
+
+		setViewJson(newArr);
+
+		setViewName(e.target.value);
 	};
 
 	return (
@@ -748,7 +771,7 @@ const ViewCreation = () => {
 							<Button
 								className='viewCreation-saveBtn'
 								// disabled={!viewDisplayId}
-								onClick={handleSaveView}>
+								onClick={handleSaveVisible}>
 								Save
 							</Button>
 
@@ -860,6 +883,45 @@ const ViewCreation = () => {
 				status={approveReject}
 				ad={ad}
 			/> */}
+			<Modal
+				width={400}
+				visible={isSaveVisible}
+				onCancel={handleCancel}
+				footer={null}>
+				<div className='function-modal'>
+					<p className='heading'>
+						<InfoCircleOutlined className='heading-icon' /> Save
+					</p>
+					<div className='function-input'>
+						<InputField
+							label='Enter view name'
+							placeholder='E.g. View 1'
+							onChangeInput={e => onChangeViewName(e)}
+							value={viewName}
+						/>
+
+						<div className='function-btn'>
+							<Button
+								onClick={handleCancel}
+								type='link'
+								className='custom-secondary-btn-link '>
+								Cancel
+							</Button>
+							<Button type='text' className='custom-primary-btn '>
+								Save as a copy
+							</Button>
+							<Button
+								onClick={() => {
+									handleSaveView();
+								}}
+								type='text'
+								className='custom-secondary-btn '>
+								Save
+							</Button>
+						</div>
+					</div>
+				</div>
+			</Modal>
 		</div>
 	);
 };
