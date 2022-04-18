@@ -14,17 +14,15 @@ const BreadCrumbWrapper = () => {
 		const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
 		return (
 			<Breadcrumb.Item key={url}>
-				<Link to={url}>
-					{breadcrumbNameMap[url] == 'Dashboard' ? (
-						<HomeOutlined />
-					) : (
-						breadcrumbNameMap[url]
-					)}
-				</Link>
+				<Link to={url}>{breadcrumbNameMap[url]}</Link>
 			</Breadcrumb.Item>
 		);
 	});
-	const breadcrumbItems = [].concat(extraBreadcrumbItems);
+	const breadcrumbItems = [
+		<Link to='/dashboard/dashboard'>
+			<HomeOutlined />
+		</Link>,
+	].concat(extraBreadcrumbItems);
 	return (
 		<Breadcrumb className='bread-crumb-wrapper'>{breadcrumbItems}</Breadcrumb>
 	);

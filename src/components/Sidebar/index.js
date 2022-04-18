@@ -35,12 +35,7 @@ const MENU = [
 		title: 'View Creation',
 		linkTo: '/dashboard/view_creation_landing',
 	},
-	{
-		key: 'view_creation',
-		icon: <FundOutlined style={{ fontSize: '23px' }} />,
-		title: 'View Creation Old',
-		linkTo: '/dashboard/view_creation_old',
-	},
+
 	{
 		key: 'chart_personalization',
 		icon: <BarChartOutlined style={{ fontSize: '23px' }} />,
