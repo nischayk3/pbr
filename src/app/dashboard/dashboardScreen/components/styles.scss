@@ -14,6 +14,10 @@
         border-radius: 0px !important;
     }
     .ant-modal-content{
+        margin:150px;
         width:350px;
+    }
+    .ant-modal-footer{
+        border-top:0px !important;
     }
 }
