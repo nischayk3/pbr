@@ -85,9 +85,17 @@ export const getRuleList = (request) => {
 
 //get chart plot data
 export const postChartPlotData = (_queryParam) => {
-  return Service.post(BMS_APP_PYTHON_SERVICE + "/chart-object", _queryParam, {
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
+  const headers = {
     "content-type": "application/json",
-  }).then(
+    "x-access-token": login_response.token ? login_response.token : "",
+    "resource-name": "chart",
+  };
+  return Service.post(
+    BMS_APP_PYTHON_SERVICE + "/chart-object",
+    _queryParam,
+    headers
+  ).then(
     (response) => {
       return response.data;
     },
