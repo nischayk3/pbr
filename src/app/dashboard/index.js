@@ -1,9 +1,16 @@
 import "./dashboard.scss";
 import React, { lazy, useEffect } from "react";
-import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  useHistory,
+  useRouteMatch,
+  useLocation,
+} from "react-router-dom";
 import Auth from "../../utils/auth";
 import BreadCrumbWrapper from "../../components/BreadCrumbWrapper";
 import HeaderBar from "../../components/Header";
+import Help from "../../components/Help";
 import { Layout } from "antd";
 import Sidebar from "../../components/Sidebar";
 import SuspenseWrapper from "../../components/SuspenseWrapper";
@@ -32,11 +39,14 @@ const ViewLanding = lazy(() => import("./viewScreen"));
 const ViewChart = lazy(() =>
   import("./dashboardScreen/components/viewChart/viewChart")
 );
+const Faq = lazy(() => import("./faq"));
 const { Content } = Layout;
 
 const Dashboard = () => {
   const match = useRouteMatch();
   const history = useHistory();
+  const location = useLocation();
+  const screen = location.pathname.split("/");
 
   useEffect(() => {
     // if (!Auth.isAuthenticated()) {
@@ -49,6 +59,7 @@ const Dashboard = () => {
         <HeaderBar />
         <Layout>
           <Sidebar />
+          {screen[2] !== "faq" && <Help />}
           <Content>
             {/* <BreadCrumbWrapper /> */}
             <SuspenseWrapper>
@@ -133,6 +144,9 @@ const Dashboard = () => {
                 </Route>
                 <Route key="redirect_sign" path={`${match.url}/redirect_sign`}>
                   <RedirectSign />
+                </Route>
+                <Route key="faq" path={`${match.url}/faq`}>
+                  <Faq />
                 </Route>
               </Switch>
             </SuspenseWrapper>
