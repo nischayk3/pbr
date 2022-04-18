@@ -5,12 +5,12 @@ import {
 } from '../constants/apiBaseUrl';
 
 
-export const loginUrl = BMS_APP_PYTHON_SERVICE + '/login'
+export const loginUrl = BMS_APP_LOGIN_PASS + '/login'
 
-export const logoutUrl = BMS_APP_PYTHON_SERVICE + '/logout'
+export const logoutUrl = BMS_APP_LOGIN_PASS + '/logout'
 
 export const getSession = (request) => {
-    return Service.get(BMS_APP_PYTHON_SERVICE + '/get-session', request,{ withCredentials: true }).then(
+    return Service.get(BMS_APP_LOGIN_PASS + '/get-session', request,{ withCredentials: true }).then(
         (response) => {
             return response.data;
         },

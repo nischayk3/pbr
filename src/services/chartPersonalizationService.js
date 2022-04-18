@@ -14,8 +14,8 @@ export const getSiteId = (_queryParam) => {
 };
 
 //get chart type
-export const getChartList = (request) => {
-  return Service.get(BMS_APP_PYTHON_SERVICE + '/chart-list', request).then(
+export const getChartList = (request,headers) => {
+  return Service.get(BMS_APP_PYTHON_SERVICE + '/chart-list', request,headers).then(
     (response) => {
       return response.data;
     },

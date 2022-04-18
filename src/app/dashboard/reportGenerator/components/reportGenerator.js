@@ -13,8 +13,6 @@ import {
     Collapse,
     Typography,
     Modal,
-    Radio,
-    Space,
     Select,
     message,
     Input,
@@ -24,7 +22,7 @@ import {
     Popconfirm,
     Tag
 } from 'antd';
-import { ArrowLeftOutlined, BlockOutlined, DeleteOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone } from '@ant-design/icons';
+import {  BlockOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone, FileTextOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
@@ -38,7 +36,8 @@ import {
 } from '../../../../duck/actions/commonActions';
 import { Tabs } from 'antd';
 import Chart from '../../reportDesigner/components/reportChart/chartComponent/chartComponent'
-
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import JobSchedule from '../../../../components/JobSchedule';
 
 const { Panel } = Collapse;
 const { Text } = Typography;
@@ -112,6 +111,10 @@ function ReportGenerator() {
         update_object(checkedValues, i)
     }
 
+    const handleCancel = () => {
+        setAlertVisible(false)
+    }
+
     const [visible, setVisible] = useState(false)
     const [isvisible, setIsVisible] = useState(false)
     const [ReportData, setReportData] = useState(repotData)
@@ -143,6 +146,8 @@ function ReportGenerator() {
         Friday: false,
         Saturday: false,
     })
+
+    const [alertVisible, setAlertVisible] = useState(false)
     // const [ sectionCharts,setSectionCharts] = 
     const dispatch = useDispatch();
 
@@ -187,7 +192,6 @@ function ReportGenerator() {
             chart['violation'] = false
             chart['parameter'] = false
             chart['exclusion'] = false
-
             res.push(chart)
         })
         return res
@@ -234,7 +238,8 @@ function ReportGenerator() {
 
 
     const getTableData = (obj, rep_layout) => {
-
+        console.log(obj, rep_layout)
+        obj = obj.layout_info
         let headingList = []
         let allSections = []
         let titleHeading = obj['titlepage'] && obj['titlepage'].heading ? obj['titlepage'].heading : ''
@@ -252,19 +257,6 @@ function ReportGenerator() {
 
         return allSections
     }
-
-    // const convertToList =  (a) =>
-    // {   if(a.length > 0)
-    //     {
-    //     let b= a.replace("{",'')
-    //     b= b.replace("}",'')
-    //     b=b.split(',')
-    //     if(b.length>0)
-    //     return b
-    //     else
-    //     return []
-    //     }
-    // }
 
     const unloadTest = (ReportData) => {
 
@@ -331,6 +323,7 @@ function ReportGenerator() {
         obj['variant_name'] = user + '_variant'
         obj['chart_info'] = { charts: chart }
         obj['chart_layout'] = chartLayout
+        obj['days_layout'] = selectedDays
 
 
         let share_obj = {}
@@ -425,23 +418,23 @@ function ReportGenerator() {
     return (
 
         <div className='custom-wrapper'>
+
             <div className='sub-header'>
                 <div className='sub-header-title'>
-                    <ArrowLeftOutlined className='header-icon' />
-                    <span className='header-title'>Report Generator</span>
+                    <BreadCrumbWrapper />
                 </div>
                 <div className='sub-header-btns'>
-                    <Button className='custom-secondary-btn' onClick={() => { setOpenSchedule(true); }}>
+                    <Button className='custom-secondary-btn' onClick={() => { setAlertVisible(true); }}>
                         Notify Report
                     </Button>
-                    <Button className='custom-primary-btn' onClick={() => { setIsVisible(true); }}>
+                    {/* <Button className='custom-primary-btn' onClick={() => { setIsVisible(true); }}>
                         Load
-                    </Button>
+                    </Button> */}
                     <Button className='custom-primary-btn' onClick={() => prepareJson()}>
                         Save
                     </Button>
                     <Button className='custom-secondary-btn' onClick={() => dispatch(screenChange(false))}>
-                        Generate Report
+                        <FileTextOutlined />   Generate Report
                     </Button>
                 </div>
             </div>
@@ -450,7 +443,7 @@ function ReportGenerator() {
                     <ReportDesignerForm />
                     <div className="table-card">
                         {table.length > 0 && table.map((i) =>
-                            <Collapse key={i.heading} accordion className="collapse-generate">
+                            <Collapse key={i.heading} accordion className="collapse-generate" bordered={true}>
                                 <Panel header={<span className="chart-names">{i.heading} {i.charts && i.charts.length > 0 && i.charts.map((i) => (<span className="chart-tags">
                                     {i}
                                 </span>))}</span>} key={i.heading} className="chart-panel">
@@ -475,8 +468,8 @@ function ReportGenerator() {
                                     {i.charts && i.charts.length > 0 && i.charts.map((j) =>
                                     (
                                         <div>
-                                            <p className="chart-name">{j} <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'violation')}>Violation</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'exclusion')}>Exclusion</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'data_table')}>Data Table</Tag> </p>
-                                            <Chart />
+                                            <p className="chart-name">{j} <span className="tag-div"> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'violation')}>Violation</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'exclusion')}>Exclusion</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'data_table')}>Data Table</Tag></span> </p>
+                                            <Chart chartName={j} />
                                         </div>
                                     ))}
                                 </Panel>
@@ -619,6 +612,7 @@ function ReportGenerator() {
 
 
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
+            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} />
         </div>
 
 
