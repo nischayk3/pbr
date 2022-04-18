@@ -6,6 +6,8 @@ import { getReports } from '../../../../services/reportDesignerServices';
 import './style.scss';
 import StatusBlock from '../../../../components/StatusBlock/statusBlock';
 import { loadReport } from '../../../../services/reportDesignerServices';
+import { loadReportGen } from '../../../../services/reportGeneratorServices';
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 
 
 export default function Landing(props) {
@@ -125,6 +127,15 @@ export default function Landing(props) {
 
     }
 
+    const getLoadReportGenerator = async (report_id) => {
+        message.success(report_id + ' selected')
+        let req = { report_displ_id: report_id }
+        let data = await loadReportGen(req)
+        props.getReportData(data)
+        props.changeScreen()
+
+    }
+
     const statusColor = (status) => {
         if (status == 'APRD') {
             return 'aprd'
@@ -143,7 +154,7 @@ export default function Landing(props) {
                 <div className='sub-header'>
                     <div className='sub-header-title'>
                         <ArrowLeftOutlined className='header-icon' />
-                        <span className='header-title'>Report Designer</span>
+                        <BreadCrumbWrapper />
                     </div>
                 </div>
                 <div className='custom-content-layout'>
@@ -157,16 +168,19 @@ export default function Landing(props) {
 
                     </Card>
                     <Card className="landing-card">
+                    
+                        <div style={{width:'750px',marginLeft:'180px'}}>
+                        <Input.Search
+                            placeholder="Search by view ID, name, product number, creator, status"
+                            allowClear
+                            className="landing-btn"
+                            enterButton="Search"
+                            size="large"
+                            onSearch={search}
+                        />
                         <Tabs defaultActiveKey="1" >
                             <TabPane tab="Design Report Template" key="Design Report Template">
-                                <Input.Search
-                                    placeholder="Search by view ID, name, product number, creator, status"
-                                    allowClear
-                                    className="landing-btn"
-                                    enterButton="Search"
-                                    size="large"
-                                    onSearch={search}
-                                />
+
                                 {searched ? <Table className="landing-table" columns={columns} dataSource={filterTable === null ? reportList : filterTable} onRow={record => ({
                                     onClick: e => {
                                         // record['color'] = '#D3D3D3'
@@ -181,12 +195,12 @@ export default function Landing(props) {
                                     <PlusOutlined />
                                     <p>Design new report</p>
                                 </div><br />
-                                <h3 className="recent">Recently designer report templates</h3>
+                                <h3 className="recent">Recently designed report templates</h3>
                                 <Divider />
                                 <div>
                                     <div className="tile">
                                         {reportList.length > 0 ? reportList.map((i, index) => (
-                                            index < 10 &&
+                                            index < 8 &&
                                             <StatusBlock id={i.rep_disp_id} status={i.rep_status} />
                                         )) : <></>}
                                     </div>
@@ -195,14 +209,14 @@ export default function Landing(props) {
 
                             </TabPane>
                             <TabPane tab="Generate Report Variant" key="Generate Report Variant">
-                                <Input.Search
+                                {/* <Input.Search
                                     placeholder="Search by view ID, name, product number, creator, status"
                                     allowClear
                                     enterButton="Search"
                                     size="large"
                                     onSearch={search}
                                 // onSearch={onSearch}
-                                />
+                                /> */}
 
                                 {searched ? <Table columns={columns} dataSource={filterTable === null ? reportList : filterTable} onRow={record => ({
                                     onClick: e => {
@@ -210,7 +224,7 @@ export default function Landing(props) {
                                         // setReportId(record.rep_disp_id)
                                         // getReportData(record.rep_disp_id, record.rep_status)
                                         // dispatch(showLoader())
-                                        getLoadReport(record.rep_disp_id)
+                                        getLoadReportGenerator(record.rep_disp_id)
                                         // onOk()
                                     }
                                 })} /> : <></>}
@@ -222,13 +236,14 @@ export default function Landing(props) {
                                 <Divider />
                                 <div className="tile">
                                     {reportList && reportList.length > 0 && reportList.map((i, index) => (
-                                        index < 10 &&
+                                        index < 8 &&
                                         <StatusBlock id={i.rep_disp_id} status={i.rep_status} />
                                     ))}
                                 </div>
 
                             </TabPane>
                         </Tabs >
+                        </div>
                     </Card>
 
 

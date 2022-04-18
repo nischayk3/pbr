@@ -126,9 +126,9 @@ const chartComponent = (props) => {
             </div>
             <div>
                 <Tabs>
-                    <TabPane tab="Exclusion" key="Exclusion"><Table columns={exclusionColumns} dataSource={exclusion} size="small" pagination={{ pageSize: 5 }}  bordered={false}/></TabPane>
+                    <TabPane tab="Exclusion" key="Exclusion"><Table columns={exclusionColumns} dataSource={exclusion} size="small" pagination={{ pageSize: 5 }}  bordered={false} /></TabPane>
                     <TabPane tab="Violation" key="Violation"><Table columns={violationColumns} dataSource={violation} size="small" pagination={{ pageSize: 5 }}  bordered={false}/></TabPane>
-                    <TabPane tab="Data Table" key="Data Table"><Table columns={dataTableColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }}  bordered={false}/></TabPane>
+                    <TabPane tab="Data Table" key="Data Table"><Table columns={dataTableColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }}  bordered={false} /></TabPane>
                 </Tabs>
             </div>
         </div>

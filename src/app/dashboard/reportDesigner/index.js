@@ -10,12 +10,8 @@ function Report()
     const screen = useSelector((state)=>state.reportDesignerReducer.screen)
     const [screenChange, setScreenChange] = useState(false)
     const [getData,setData] = useState({})
-
-    useEffect(()=>
-    {
-
-    },[])
-
+    
+    
     const changeScreen = () => {
         setScreenChange(true)
     }

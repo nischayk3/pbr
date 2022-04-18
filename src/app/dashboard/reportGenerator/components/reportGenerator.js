@@ -22,7 +22,7 @@ import {
     Popconfirm,
     Tag
 } from 'antd';
-import {  BlockOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone, FileTextOutlined } from '@ant-design/icons';
+import { BlockOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone, FileTextOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
@@ -612,7 +612,7 @@ function ReportGenerator() {
 
 
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
-            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} />
+            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} id={reportId} />
         </div>
 
 
