@@ -153,9 +153,9 @@ const Workflow = () => {
                         //     </Tabs>
                         // </Card>
                         <div className='approval-table-block'>
-                            <div className={`card-arrow arrow-step-${indexCount}`}>
+                            {/* <div className={`card-arrow arrow-step-${indexCount}`}>
                                 {' '}
-                            </div>
+                            </div> */}
                             <Card
                                 className='table-cards '
                                 title={
