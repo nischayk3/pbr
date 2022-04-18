@@ -184,6 +184,25 @@ table {
   
   color: rgba(0, 0, 0, 0.85);
 }
+.chart-name
+{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  /* identical to box height */
+
+  
+  display: flex;
+  align-items: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  
+  /* Character/Primary .85 */
+  
+  color: rgba(0, 0, 0, 0.85);
+}
 .email-subject
 {
   font-family: 'Roboto';
@@ -282,4 +301,12 @@ color: white !important;
 {
 background: #FAFAFA;
 border: 1px solid #D9D9D9;
+}
+.tag-div
+{
+  margin-left: 25px;
+}
+.ant-card-head-title
+{
+  align-items: center;
 }

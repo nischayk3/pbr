@@ -336,6 +336,8 @@ tbody.dynamicSections-tbody {
 	// margin-right: right;
 	position: relative;
 	float: right;
+	bottom: 11%;
+	left: 0.7%;
 	//  top: 0%;
 	// right: %;
 	// // width: 3px;
@@ -355,19 +357,20 @@ tbody.dynamicSections-tbody {
 	background: #ffffff;
 	border: 1px solid #00f1c6;
 	box-sizing: border-box;
-	border-radius: 2px;
+	border-radius: 2px 5px 2px 2px;
 	border: 1px solid #00f1c6;
 	// border-radius: 0px 4px;
 	// display: flex;
-	justify-content: center;
+	// justify-content: center;
 	align-items: center;
 	// background: #E2E8F2;
 	// position: relative;
+	text-align: center;
 }
 .charttile-content {
-	margin-left: 33px;
+	// margin-left: 33px;
 	margin-top: 10px;
-	width: 157px;
+	// width: 157px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -376,11 +379,13 @@ tbody.dynamicSections-tbody {
 	align-items: center;
 	padding: 5px 16px;
 	position: inherit;
-	margin-left: 80%;
+	margin-left: 870px;
 	width: 108px;
 	height: 32px;
 	left: 1140px;
 	top: 109px;
+	color: #093185;
+
 	background: #ffffff;
 	border: 1px dashed #d9d9d9;
 	box-sizing: border-box;
@@ -434,4 +439,20 @@ tbody.dynamicSections-tbody {
 	border: 1px dashed #d9d9d9;
 	box-sizing: border-box;
 	border-radius: 4px;
+}
+.circle {
+	background: red;
+	border-radius: 50%;
+	width: 15px;
+	height: 15px;
+	justify-content: center;
+}
+.action-clm {
+	width: 10px;
+}
+.key-clm {
+	width: 150px;
+}
+.edit-clm {
+	width: 30px;
 }

@@ -28,6 +28,9 @@ const Workspace = lazy(() => import('./workspace'));
 const Genealogy = lazy(() => import('./genealogy'));
 const DashboardScreen = lazy(() => import('./dashboardScreen'));
 const ViewLanding = lazy(() => import('./viewScreen'));
+const ViewChart = lazy(() =>
+	import('./dashboardScreen/components/viewChart/viewChart')
+);
 const { Content } = Layout;
 
 const Dashboard = () => {

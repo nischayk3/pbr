@@ -1,17 +1,16 @@
-import { Tabs, Table } from 'antd';
 import React from 'react';
+import { Tabs, Table } from 'antd';
 import Chart from './chartComponent/chartComponent';
 import './styles.scss';
-import { getChartPlotData } from '../../../../../services/workSpaceServices';
 
 const { TabPane } = Tabs;
 
 function ChartTable(props) {
 	return (
 		<div className='chartTable'>
-			<div>
-				<Chart />
-			</div>
+			{/* <div >
+              <Chart />
+            </div> */}
 			<div>
 				<Tabs>
 					<TabPane tab='Exclusion' key='Exclusion'>

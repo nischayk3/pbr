@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Button, Menu, Dropdown, message, Modal, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table } from 'antd';
-import SelectField from '../../../../../components/SelectField/SelectField';
-import InputField from '../../../../../components/InputField/InputField';
+import SelectField from '../../SelectField/SelectField';
+import InputField from '../../InputField/InputField';
 import { ArrowRightOutlined, ReloadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { showLoader, hideLoader } from '../../../../../duck/actions/commonActions';
+import { showLoader, hideLoader } from '../../../duck/actions/commonActions';
 
 const { TabPane } = Tabs;
 const { Option } = Select
@@ -14,6 +14,7 @@ const { Option } = Select
 const alertList = ['Limits', 'Rules', 'Threshold']
 const scheduleList = ['Repeat Once', 'Daily', 'Weekly', 'Monthly']
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
+
 const alertEvaluation = () => {
     const [selectedAlert, setSelectedAlert] = useState('');
     const [selectedSchedule, setSelectedSchedule] = useState('');

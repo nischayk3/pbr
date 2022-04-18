@@ -1,52 +1,63 @@
-import React, { useEffect, useState,useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { useDispatch } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../../duck/actions/commonActions';
 import { getChartList } from '../../../../services/chartPersonalizationService';
 import { getChartPlotData } from '../../../../services/workSpaceServices';
-import {Button} from 'antd';
+import { saveDashboardData } from '../../../../services/dashboardServices';
+import { Button } from 'antd';
 import LandingPage from './landingPage/landingPage';
 import ChartPage from './viewChart/viewChart';
-import {ShareAltOutlined} from '@ant-design/icons';
+import queryString from "query-string";
+import { ShareAltOutlined } from '@ant-design/icons';
 import './styles.scss';
 
 const DashboardScreen = () => {
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
+    const location = useLocation()
     //to show landing page
-    const[showChartCard,setShowChartCard]=useState(false);
+    const [showChartCard, setShowChartCard] = useState(false);
     //to create the dashboard name
-    const[dashboardName,setdashboardName]=useState('');
+    const [dashboardName, setdashboardName] = useState('');
+    const [dashboardId, setDashboardId] = useState('');
     //serach table data
     const [searchTableData, setSearchTableData] = useState([]);
-    const [viewData, setViewData] = useState({ chartName: '', status: '', chartDispId: ' ', searchValue: '', chartVersion: 0 });
+    const [rawTableData, setRawTableData] = useState([]);
+    const [viewData, setViewData] = useState({ chartName: '', status: '', chartDispId: '', searchValue: '', chartVersion: 0 });
     const searchData = useRef([]);
+    const ref = useRef();
     const [landingChartData, setLandingChartData] = useState([]);
     const [landingChartLayout, setLandingChartLayout] = useState([]);
+    const [landingChartLayoutX, setLandingChartLayoutX] = useState([]);
+    const [landingChartLayoutY, setLandingChartLayoutY] = useState([]);
 
     //for creating new dashboard name
-    const settingDashboardName=(value)=>{
+    const settingDashboardName = (value) => {
         setdashboardName(value);
     }
     const onBackArrowClick = () => {
         //setShowDashboard(false);
     }
 
-    const chartCard=(value)=>{
+    const chartCard = (value) => {
         setShowChartCard(value)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getTableData();
-     
-    },[])
+        idFromUrl();
 
-    useEffect(()=>{
+    }, [])
+
+    useEffect(() => {
         console.log(viewData)
-        if(viewData.chartDispId!=''){
+        if (viewData.chartDispId != '') {
             getChartData();
         }
-        
-    },[viewData.chartDispId])
+
+    }, [viewData.chartDispId])
+
 
     //get table data
     const getTableData = async () => {
@@ -64,10 +75,12 @@ const DashboardScreen = () => {
                 antdObj['chart_name'] = item.chart_name;
                 antdObj['chart_status'] = item.chart_status;
                 antdObj['chart_version'] = item.chart_version;
+                antdObj['chart_info'] = item.chart_info;
                 antdDataTable.push(antdObj);
             });
             searchData.current = JSON.parse(JSON.stringify(antdDataTable));
             setSearchTableData(antdDataTable);
+            setRawTableData(JSON.parse(JSON.stringify(antdDataTable)));
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
@@ -75,8 +88,8 @@ const DashboardScreen = () => {
         }
     };
 
-     //function to handle search
-     const searchTable = (value) => {
+    //function to handle search
+    const searchTable = (value) => {
         const filterData = searchData.current.filter((o) =>
             Object.keys(o).some((k) =>
                 String(o[k]).toLowerCase().includes(viewData.searchValue.toLowerCase())
@@ -85,8 +98,8 @@ const DashboardScreen = () => {
         setSearchTableData(filterData)
     };
 
-     //on search value changes
-     const onSearchChange = (e) => {
+    //on search value changes
+    const onSearchChange = (e) => {
         if (e.target.value === '') {
             setSearchTableData(searchData.current);
         }
@@ -96,52 +109,138 @@ const DashboardScreen = () => {
     //get chart data to plot 
     const getChartData = async () => {
         console.log(viewData);
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
         let req = { chartId: viewData.chartDispId }
+        let headers = {
+            'content-type': 'application/json',
+            'x-access-token': login_response.token ? login_response.token : '',
+            'resource-name': 'DASHBOARD',
+        };
         try {
             dispatch(showLoader());
-            const chartResponse = await getChartPlotData(req);
-            setLandingChartData(chartResponse.data.data);
-            setLandingChartLayout(chartResponse.data.layout)
+            const chartResponse = await getChartPlotData(req, headers);
+            setLandingChartData(chartResponse.data[0].data);
+            setLandingChartLayout(chartResponse.data[0].layout)
+            setLandingChartLayoutX(chartResponse.data[0].layout.xaxis)
+            setLandingChartLayoutY(chartResponse.data[0].layout.yaxis)
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
             dispatch(showNotification('error', error.Message));
         }
     }
-    
+
+    const idFromUrl = () => {
+        const params = queryString.parse(location.search);
+        if (params.id) {
+            setDashboardId(params.id);
+            setShowChartCard(true);
+        } else {
+            setDashboardId('')
+            setShowChartCard(false);
+        }
+
+    }
+    const layout = {
+        xaxis: landingChartLayoutX,
+        yaxis: landingChartLayoutY,
+        autosize: false,
+        width: 150,
+        height: 50,
+    };
+
+    const chartLayout = {
+        xaxis: landingChartLayoutX,
+        yaxis: landingChartLayoutY,
+        autosize: false,
+        width: 580,
+        height: 250,
+        margin: {
+            l: 60,
+            r: 50,
+            //b: 75,
+            t: 10,
+            pad: 4
+        }
+    }
+
+    const handleSave = async () => {
+        console.log(ref.current.getChildState());
+        let json = ref.current.getChildState();
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
+        let headers = {
+            'content-type': 'application/json',
+            'x-access-token': login_response.token ? login_response.token : '',
+            'resource-name': 'DASHBOARD',
+        }
+        let req = {
+            ...json,
+            savetype: 'Save'
+        }
+        try {
+            dispatch(showLoader());
+            let res = await saveDashboardData(req, headers);
+            console.log(res);
+            dispatch(hideLoader());
+        } catch (error) {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', error.Message));
+        }
+        
+    }
+
     return (
         <div className='custom-wrapper'>
             {/* <BreadCrumbWrapper /> */}
             <div className='sub-header'>
-            <BreadCrumbWrapper />
+                <BreadCrumbWrapper />
                 {/* <div className='sub-header-title'>
                     <ArrowLeftOutlined className='header-icon' onClick={onBackArrowClick} /> &nbsp;
                     <span className='header-title'>Dashboard</span>
                 </div> */}
                 {showChartCard && <div className='btns'>
                     <Button>Save As</Button>
-                    <Button>Save</Button>
-                    <ShareAltOutlined style={{color:'#093185',fontSize:'18px'}}/>
+                    <Button onClick={() => handleSave()}>Save</Button>
+                    <ShareAltOutlined style={{ color: '#093185', fontSize: '18px' }} />
                 </div>}
             </div>
             <div className='custom-content-layout'>
 
-               {!showChartCard && 
-               <LandingPage 
-               chartCard={chartCard} 
-               dashboarNameFunction={settingDashboardName} 
-               dashboardName={dashboardName}
-               searchTableData={searchTableData}
-               setSearchTableData={setSearchTableData}
-               searchTable={searchTable}
-               onSearchChange={onSearchChange}
-               searchData={searchData}
-               viewData={viewData}
-               setViewData={setViewData}
+                {!showChartCard &&
+                    <LandingPage
+                        chartCard={chartCard}
+                        dashboarNameFunction={settingDashboardName}
+                        dashboardName={dashboardName}
+                        searchTableData={searchTableData}
+                        setSearchTableData={setSearchTableData}
+                        searchTable={searchTable}
+                        onSearchChange={onSearchChange}
+                        searchData={searchData}
+                        viewData={viewData}
+                        setViewData={setViewData}
+                        plotData={landingChartData}
+                        plotLayout={layout}
+                        idFromUrl={idFromUrl}
 
-               
-               />} 
-                {showChartCard && <ChartPage dashboardName={dashboardName}/>}
+
+                    />}
+                {showChartCard &&
+                    <ChartPage
+                        ref={ref}
+                        dashboardName={dashboardName}
+                        plotData={landingChartData}
+                        plotLayout={chartLayout}
+                        viewData={viewData}
+                        searchTableData={searchTableData}
+                        setSearchTableData={setSearchTableData}
+                        searchTable={searchTable}
+                        onSearchChange={onSearchChange}
+                        searchData={searchData}
+                        setViewData={setViewData}
+                        dashboardId={dashboardId}
+                        getChartData={getChartData}
+                        rawTableData={rawTableData}
+                    />}
             </div>
         </div>
     )
