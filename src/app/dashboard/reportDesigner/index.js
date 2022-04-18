@@ -7,37 +7,36 @@ import Landing from './components/reportLanding';
 function Report() {
 	const screen = useSelector(state => state.reportDesignerReducer.screen);
 	const [screenChange, setScreenChange] = useState(false);
+	const [getData, setData] = useState({});
 
-function Report()
-{
-    const screen = useSelector((state)=>state.reportDesignerReducer.screen)
-    const [screenChange, setScreenChange] = useState(false)
-    const [getData,setData] = useState({})
+	useEffect(() => {}, []);
 
-    useEffect(()=>
-    {
+	const changeScreen = () => {
+		setScreenChange(true);
+	};
 
-    },[])
-
-    const changeScreen = () => {
-        setScreenChange(true)
-    }
-
-    const getReportData = (data) =>
-    {
-        setData(data)
-    }
-    return (
-        <div>
-           {!screenChange ? <Landing changeScreen={changeScreen} getReportData={getReportData} /> : 
-           <> {screen ?
-           <div><ReportGenerator/></div> :
-          <div><DesignCharts loadData={getData}/></div> 
-
-            } </> }
-            
-
-        </div>
-    )
+	const getReportData = data => {
+		setData(data);
+	};
+	return (
+		<div>
+			{!screenChange ? (
+				<Landing changeScreen={changeScreen} getReportData={getReportData} />
+			) : (
+				<>
+					{' '}
+					{screen ? (
+						<div>
+							<ReportGenerator />
+						</div>
+					) : (
+						<div>
+							<DesignCharts loadData={getData} />
+						</div>
+					)}{' '}
+				</>
+			)}
+		</div>
+	);
 }
 export default Report;
