@@ -276,7 +276,7 @@ const DashboardScreen = () => {
                     />}
                         <Modal
                         className='dashboard-save'
-                        title={<span><ExclamationCircleOutlined style={{ color: '#FAAD14', fontSize: '18px', marginRight:'15px' }}/>{saveType=='save'?'Save':'SaveAs'}</span>}
+                        title={<span><ExclamationCircleOutlined style={{ color: '#FAAD14', fontSize: '18px', marginRight:'15px' }}/>{saveType=='save'?'Save':'Save As'}</span>}
                         visible={showSaveModal} 
                         //onOk={handleOk} 
                         onCancel={handleCancel}
