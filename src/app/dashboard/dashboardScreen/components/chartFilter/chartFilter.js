@@ -46,7 +46,7 @@ export default function chartFilter(props) {
         setViewData({ ...viewData, searchValue: e.target.value });
     }
 
-    console.log("chartFilter",viewData)
+    console.log("propssss",props.typeChartValue)
 
     return (
         <div style={{ padding: '12px 18px' }}>
@@ -55,8 +55,8 @@ export default function chartFilter(props) {
                     <SelectField
                         label='Type Of charts'
                         placeholder='Select Charts'
-                        value={props.typeChartValue}
-                        onChangeSelect={props.onTypeChartsChange}
+                        selectedValue={props.typeChartValue}
+                        onChangeSelect={props.onChangeTypeCharts}
                         selectList={props.typeOfChartsOptions} />
                 </Col>
                 <Col className="gutter-row" span={16} ref={ref}>
@@ -87,18 +87,20 @@ export default function chartFilter(props) {
                     <SelectField
                         placeholder='Site'
                         onChangeSelect={props.onSiteChange}
-                        value={props.siteValue}
+                        selectedValue={props.siteValue}
                         selectList={props.siteOption} />
 
                 </Col>
                 <Col className="gutter-row" span={5}>
                     <DatePicker
-                        value={moment(props.dateRange.split("/")[0],"YYYY-MM-DD")}
+                        value={props.dateRange.split("/")[0]?moment(props.dateRange.split("/")[0],"YYYY-MM-DD"):''}
                         onChange={props.onInnerStart}
                     />
                 </Col>
                 <Col className="gutter-row" span={5}>
-                    <DatePicker value={moment(props.dateRange.split("/")[1],"YYYY-MM-DD")} onChange={props.onInnerEnd} />
+                    <DatePicker 
+                    value={props.dateRange.split("/")[1]?moment(props.dateRange.split("/")[1],"YYYY-MM-DD"):''} 
+                    onChange={props.onInnerEnd} />
                 </Col>
             </Row>
             <Row style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
