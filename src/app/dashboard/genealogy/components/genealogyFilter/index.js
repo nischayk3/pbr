@@ -16,264 +16,386 @@ import { showNotification } from '../../../../../duck/actions/commonActions.js';
 import { useDispatch } from 'react-redux';
 
 function Filter(props) {
-  const [disabled, setDisabled] = useState(true);
-  const [isCheck, setisCheck] = useState(true);
-  const [isBackward, setisBackward] = useState(true);
-  const [isForward, setisForward] = useState(false);
-  const [selectParam, setselectParam] = useState({
-    plant: '',
-    productCode: '',
-    batchNum: '',
-  });
-  const [paramList, setParamList] = useState({
-    plantList: [],
-    produtList: [],
-    batchList: [],
-  });
-  const dispatch = useDispatch();
-  useEffect(() => {
-    getGenealogyFilterData();
-  }, []);
+	const [disabled, setDisabled] = useState(true);
+	const [isCheck, setisCheck] = useState(true);
+	const [isBackward, setisBackward] = useState(true);
+	const [isForward, setisForward] = useState(false);
+	const [isEmptyPlant, setIsEmptyPlant] = useState(false);
+	const [isEmptyProduct, setIsEmptyProduct] = useState(false);
+	const [isEmptyProductType, setIsEmptyProductType] = useState(false);
+	const [isEmptyBatch, setIsEmptyBatch] = useState(false);
 
-  const handleChangeToggle = (e) => {
-    setisCheck(typeof isCheck === 'boolean' ? !isCheck : e.target.value);
-  };
+	const [selectParam, setselectParam] = useState({
+		plant: '',
+		productCode: '',
+		batchNum: '',
+		productType: '',
+	});
+	const [paramList, setParamList] = useState({
+		plantList: [],
+		produtList: [],
+		batchList: [],
+		productTypeList: [],
+	});
+	const dispatch = useDispatch();
+	useEffect(() => {
+		getGenealogyFilterData();
+	}, []);
 
-  const onChangeParam = (value, field) => {
-    if (value != null) {
-      if (field === 'plant') {
-        getGenealogyFilterData(
-          value,
-          selectParam['batchNum'],
-          selectParam['productCode'],
-          '',
-          '',
-          ''
-        );
-        setselectParam((prevState) => {
-          return { ...prevState, plant: value };
-        });
-      } else if (field === 'product_code') {
-        getGenealogyFilterData(
-          selectParam['plant'],
-          selectParam['batchNum'],
-          value,
+	const handleChangeToggle = e => {
+		setisCheck(typeof isCheck === 'boolean' ? !isCheck : e.target.value);
+	};
 
-          '',
-          '',
-          ''
-        );
-        setselectParam((prevState) => {
-          return { ...prevState, productCode: value };
-        });
-      }
-      if (field === 'batch_num') {
-        getGenealogyFilterData(
-          selectParam['plant'],
-          selectParam['productCode'],
-          value,
+	const onChangeParam = (value, field) => {
+		console.log('valueeeeeee', value, field);
+		if (value != null) {
+			if (field === 'plant') {
+				getGenealogyFilterData(
+					value,
+					selectParam['batchNum'],
+					selectParam['productCode'],
+					selectParam['productType'],
+					'',
+					'',
+					'',
+					''
+				);
+				setselectParam(prevState => {
+					return { ...prevState, plant: value };
+				});
+			}
+			if (field === 'batch_num') {
+				getGenealogyFilterData(
+					selectParam['plant'],
+					value,
+					selectParam['productCode'],
+					selectParam['productType'],
+					'',
+					'',
+					'',
+					''
+				);
+				setselectParam(prevState => {
+					return { ...prevState, batchNum: value };
+				});
+			} else if (field === 'product_code') {
+				getGenealogyFilterData(
+					selectParam['plant'],
+					selectParam['batchNum'],
+					value,
+					selectParam['productType'],
+					'',
+					'',
+					'',
+					''
+				);
+				setselectParam(prevState => {
+					return { ...prevState, productCode: value };
+				});
+			} else if (field === 'product_type') {
+				getGenealogyFilterData(
+					selectParam['plant'],
+					selectParam['batchNum'],
+					selectParam['productCode'],
+					value,
+					'',
+					'',
+					'',
+					''
+				);
+				setselectParam(prevState => {
+					return { ...prevState, productType: value };
+				});
+			}
+			setDisabled(false);
+		}
+	};
 
-          '',
-          '',
-          ''
-        );
-        setselectParam((prevState) => {
-          return { ...prevState, batchNum: value };
-        });
-      }
-      setDisabled(false);
-    }
-  };
+	const clearSearch = (e, field) => {
+		if (field === 'plant') {
+			setselectParam(prevState => {
+				return { ...prevState, plant: '' };
+			});
+			getGenealogyFilterData(
+				'',
+				selectParam['batchNum'],
+				selectParam['productCode'],
+				selectParam['productType'],
+				'',
+				'',
+				'',
+				''
+			);
+		} else if (field === 'product') {
+			setselectParam(prevState => {
+				return { ...prevState, productCode: '' };
+			});
+			getGenealogyFilterData(
+				selectParam['plant'],
+				selectParam['batchNum'],
+				'',
+				selectParam['productType'],
+				'',
+				'',
+				'',
+				''
+			);
+		} else if (field === 'batch') {
+			setselectParam(prevState => {
+				return { ...prevState, batchNum: '' };
+			});
+			getGenealogyFilterData(
+				selectParam['plant'],
+				'',
+				selectParam['productCode'],
+				selectParam['productType'],
+				'',
+				'',
+				'',
+				''
+			);
+		}
+	};
 
-  const clearSearch = (e, field) => {
-    if (field === 'plant') {
-      setselectParam((prevState) => {
-        return { ...prevState, plant: '' };
-      });
-    } else if (field === 'product') {
-      setselectParam((prevState) => {
-        return { ...prevState, productCode: '' };
-      });
-    } else if (field === 'batch') {
-      setselectParam((prevState) => {
-        return { ...prevState, batchNum: '' };
-      });
-    }
-  };
+	const onSearchParam = (type, field) => {
+		console.log('typeeeeeeeee', type, field);
+		if (type != null) {
+			if (field === 'plant') {
+				getGenealogyFilterData(
+					selectParam['plant'],
+					selectParam['batchNum'],
+					selectParam['productCode'],
+					selectParam['productType'],
+					'',
+					type,
+					'',
+					''
+				);
+				setIsEmptyPlant(false);
+			} else if (field === 'product_code') {
+				getGenealogyFilterData(
+					selectParam['plant'],
+					selectParam['batchNum'],
+					selectParam['productCode'],
+					selectParam['productType'],
+					'',
+					'',
+					type,
+					''
+				);
 
-  const onSearchParam = (type, field) => {
-    if (type != null) {
-      if (field === 'plant') {
-        getGenealogyFilterData(
-          selectParam['plant'],
-          selectParam['batchNum'],
-          selectParam['productCode'],
-          '',
-          type,
-          ''
-        );
-      } else if (field === 'product_code') {
-        getGenealogyFilterData(
-          selectParam['plant'],
-          selectParam['batchNum'],
-          selectParam['productCode'],
-          '',
-          '',
-          type
-        );
-      }
-      if (field === 'batch_num') {
-        getGenealogyFilterData(
-          selectParam['plant'],
-          selectParam['batchNum'],
-          selectParam['productCode'],
-          type,
-          '',
-          ''
-        );
-      }
-    }
-  };
-  const getGenealogyFilterData = async (
-    selectedPlantValue,
-    selectedBatchValue,
-    selectedProductValue,
-    batchText,
-    plantText,
-    matText
-  ) => {
-    let reqFilter = {
-      batch_no: selectedBatchValue ? selectedBatchValue : '',
-      material: selectedProductValue ? selectedProductValue : '',
-      plant_no: selectedPlantValue ? selectedPlantValue : '',
-      batchText: batchText ? batchText : '',
-      plantText: plantText ? plantText : '',
-      matText: matText ? matText : '',
-    };
+				setIsEmptyProduct(false);
+			}
+			if (field === 'batch_num') {
+				getGenealogyFilterData(
+					selectParam['plant'],
+					selectParam['batchNum'],
+					selectParam['productCode'],
+					selectParam['productType'],
+					type,
+					'',
+					'',
+					''
+				);
 
-    try {
-      const filterRes = await getGeanealogyFilter(reqFilter);
+				setIsEmptyBatch(false);
+			}
+		}
+	};
+	const getGenealogyFilterData = async (
+		selectedPlantValue,
+		selectedBatchValue,
+		selectedProductValue,
+		selectedProductType,
+		batchText,
+		plantText,
+		matText,
+		productText
+	) => {
+		let reqFilter = {
+			batch_no: selectedBatchValue ? selectedBatchValue : '',
+			material: selectedProductValue ? selectedProductValue : '',
+			plant_no: selectedPlantValue ? selectedPlantValue : '',
+			product_type: selectedProductType ? selectedProductType : '',
+			batchText: batchText ? batchText : '',
+			plantText: plantText ? plantText : '',
+			matText: matText ? matText : '',
+			productText: productText ? productText : '',
+		};
 
-      if (filterRes.statuscode === 200) {
-        setParamList(() => {
-          return {
-            plantList: filterRes && filterRes.plant_no,
-            batchList: filterRes && filterRes.batch_no,
-            produtList: filterRes && filterRes.material,
-          };
-        });
-      } else if (filterRes.data.statuscode === 400) {
-        dispatch(showNotification('error', filterRes.data.message));
-      }
-    } catch (err) {
-      dispatch(showNotification('error', err));
-    }
-  };
+		try {
+			const filterRes = await getGeanealogyFilter(reqFilter);
+			console.log('filterRes', filterRes);
+			if (filterRes.statuscode === 200) {
+				setParamList(() => {
+					return {
+						plantList: filterRes && filterRes.plant_no,
+						batchList: filterRes && filterRes.batch_no,
+						produtList: filterRes && filterRes.material,
+						productTypeList: filterRes && filterRes.product_type,
+					};
+				});
+			} else if (filterRes.data.statuscode === 400) {
+				dispatch(showNotification('error', filterRes.data.message));
+			}
+		} catch (err) {
+			dispatch(showNotification('error', err));
+		}
+	};
 
-  const OnSearchTree = () => {
-    let paramDetail = {
-      plant: selectParam['plant'],
-      product: selectParam['productCode'],
-      batch: selectParam['batchNum'],
-      treeType: isCheck ? 'Backward' : 'Forward',
-    };
-    props.parameterDetails(paramDetail);
-    if (isCheck) {
-      setisBackward(true);
-      setisForward(false);
-    } else {
-      setisForward(true);
-      setisBackward(false);
-    }
-  };
+	const OnSearchTree = () => {
+		let paramDetail = {
+			plant: selectParam['plant'],
+			product: selectParam['productCode'],
+			batch: selectParam['batchNum'],
+			productType: selectParam['productType'],
+			treeType: isCheck ? 'Backward' : 'Forward',
+		};
 
-  const handleClear = () => {
-    setselectParam((prevState) => {
-      return { ...prevState, plant: '', productCode: '', batchNum: '' };
-    });
-    getGenealogyFilterData();
-  };
+		if (paramDetail.plant === '') {
+			setIsEmptyPlant(true);
+			setIsEmptyProduct(false);
+			setIsEmptyBatch(false);
+			setIsEmptyProductType(false);
+		} else if (paramDetail.product === '') {
+			setIsEmptyProduct(true);
+			setIsEmptyPlant(false);
+			setIsEmptyBatch(false);
+			setIsEmptyProductType(false);
+		} else if (paramDetail.batch === '') {
+			setIsEmptyBatch(true);
+			setIsEmptyPlant(false);
+			setIsEmptyProduct(false);
+			setIsEmptyProductType(false);
+		} else if (paramDetail.productType === '') {
+			setIsEmptyBatch(true);
+			setIsEmptyPlant(false);
+			setIsEmptyProduct(false);
+			setIsEmptyProductType(false);
+		} else {
+			props.parameterDetails(paramDetail);
+			setIsEmptyPlant(false);
+			setIsEmptyProduct(false);
+			setIsEmptyBatch(false);
+			setIsEmptyProductType(false);
+		}
 
-  const optionsPlant = paramList['plantList'].map((item, index) => (
-    <Select.Option key={index} value={item}>
-      {item}
-    </Select.Option>
-  ));
-  const optionsBatch = paramList['batchList'].map((item, index) => (
-    <Select.Option key={index} value={item}>
-      {item}
-    </Select.Option>
-  ));
-  const optionsProduct = paramList['produtList'].map((item, index) => (
-    <Select.Option key={index} value={item}>
-      {item}
-    </Select.Option>
-  ));
+		if (isCheck) {
+			setisBackward(true);
+			setisForward(false);
+		} else {
+			setisForward(true);
+			setisBackward(false);
+		}
+	};
 
-  return (
-    <div className='param-filter-wrap'>
-      <div className='param-filter'>
-        <SelectSearchField
-          showSearch
-          label='Plant'
-          placeholder='Select'
-          onChangeSelect={(value) => onChangeParam(value, 'plant')}
-          onSearchSelect={(type) => onSearchParam(type, 'plant')}
-          options={optionsPlant}
-          handleClearSearch={(e) => clearSearch(e, 'plant')}
-          //selectList={paramList['plantList']}
-          selectedValue={selectParam['plant']}
-        />
-        <SelectSearchField
-          showSearch
-          label='Product'
-          placeholder='Select'
-          onChangeSelect={(value) => onChangeParam(value, 'product_code')}
-          onSearchSelect={(type) => onSearchParam(type, 'product_code')}
-          options={optionsProduct}
-          handleClearSearch={(e) => clearSearch(e, 'product')}
-          // selectList={paramList['produtList']}
-          selectedValue={selectParam['productCode']}
-        />
-        <SelectSearchField
-          showSearch
-          label='Batch'
-          placeholder='Select'
-          onChangeSelect={(value) => onChangeParam(value, 'batch_num')}
-          onSearchSelect={(type) => onSearchParam(type, 'batch_num')}
-          handleClearSearch={(e) => clearSearch(e, 'batch')}
-          // selectList={paramList['batchList']}
-          options={optionsBatch}
-          selectedValue={selectParam['batchNum']}
-        />
+	const handleClear = () => {
+		setselectParam(prevState => {
+			return { ...prevState, plant: '', productCode: '', batchNum: '' };
+		});
+		setDisabled(true);
+		setIsEmptyPlant(false);
+		setIsEmptyProduct(false);
+		setIsEmptyBatch(false);
+		setIsEmptyProductType(false);
+		getGenealogyFilterData();
+	};
 
-        <Toggle
-          name='isChecked'
-          checked={isCheck}
-          inline={true}
-          labels={['Backward', 'Forward']}
-          handleChange={handleChangeToggle}
-        />
-      </div>
-      <div className='param-filter-btn'>
-        <Button
-          type='primary'
-          className='custom-secondary-btn'
-          onClick={OnSearchTree}
-          disabled={disabled}
-        >
-          Search
-        </Button>
-        <Button
-          type='link'
-          className='custom-secondary-btn-link'
-          onClick={handleClear}
-        >
-          Clear
-        </Button>
-      </div>
-    </div>
-  );
+	console.log('paramListv', paramList);
+
+	const optionsPlant = paramList['plantList'].map((item, index) => (
+		<Select.Option key={index} value={item}>
+			{item}
+		</Select.Option>
+	));
+	const optionsBatch = paramList['batchList'].map((item, index) => (
+		<Select.Option key={index} value={item}>
+			{item}
+		</Select.Option>
+	));
+	const optionsProduct = paramList['produtList'].map((item, index) => (
+		<Select.Option key={index} value={item}>
+			{item}
+		</Select.Option>
+	));
+	const optionsProductType = paramList['productTypeList'].map((item, index) => (
+		<Select.Option key={index} value={item}>
+			{item}
+		</Select.Option>
+	));
+
+	return (
+		<div className='param-filter-wrap'>
+			<div className='param-filter'>
+				<SelectSearchField
+					showSearch
+					label='Plant'
+					placeholder='Select'
+					onChangeSelect={value => onChangeParam(value, 'plant')}
+					onSearchSelect={type => onSearchParam(type, 'plant')}
+					options={optionsPlant}
+					handleClearSearch={e => clearSearch(e, 'plant')}
+					error={isEmptyPlant ? 'Please select plant' : null}
+					selectedValue={selectParam['plant']}
+				/>
+				<SelectSearchField
+					showSearch
+					label='Product'
+					placeholder='Select'
+					onChangeSelect={value => onChangeParam(value, 'product_code')}
+					onSearchSelect={type => onSearchParam(type, 'product_code')}
+					options={optionsProduct}
+					handleClearSearch={e => clearSearch(e, 'product')}
+					error={isEmptyProduct ? 'Please select product' : null}
+					selectedValue={selectParam['productCode']}
+				/>
+				<SelectSearchField
+					showSearch
+					label='Batch'
+					placeholder='Select'
+					onChangeSelect={value => onChangeParam(value, 'batch_num')}
+					onSearchSelect={type => onSearchParam(type, 'batch_num')}
+					handleClearSearch={e => clearSearch(e, 'batch')}
+					error={isEmptyBatch ? 'Please select batch' : null}
+					options={optionsBatch}
+					selectedValue={selectParam['batchNum']}
+				/>
+				<SelectSearchField
+					showSearch
+					label='Product Type'
+					placeholder='Select'
+					onChangeSelect={value => onChangeParam(value, 'product_type')}
+					onSearchSelect={type => onSearchParam(type, 'product_type')}
+					handleClearSearch={e => clearSearch(e, 'product_type')}
+					error={isEmptyProductType ? 'Please select product type' : null}
+					options={optionsProductType}
+					selectedValue={selectParam['productType']}
+				/>
+				<Toggle
+					name='isChecked'
+					checked={isCheck}
+					inline={true}
+					labels={['Backward', 'Forward']}
+					handleChange={handleChangeToggle}
+				/>
+			</div>
+			<div className='param-filter-btn'>
+				<Button
+					type='primary'
+					className='custom-secondary-btn'
+					onClick={OnSearchTree}
+					disabled={disabled}>
+					Search
+				</Button>
+				<Button
+					type='link'
+					className='custom-secondary-btn-link'
+					onClick={handleClear}>
+					Clear
+				</Button>
+			</div>
+		</div>
+	);
 }
 
 export default Filter;
