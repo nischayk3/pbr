@@ -40,52 +40,6 @@ const ChartPersonal = () => {
       <div className="custom-content-layout">
         <LandingPage />
       </div>
-      {/* <Modal
-        title="Schedule Alert"
-        className="schedule-modal"
-        visible={alertModal}
-        onCancel={handleCancel}
-        footer={false}
-        width={1300}
-      >
-        <Tabs tabPosition="left" className="schedule-menu">
-          <TabPane
-            tab={
-              <span>
-                <DesktopOutlined />
-                Alerts
-              </span>
-            }
-            key="1"
-          >
-            <AlertEvaluation />
-          </TabPane>
-          <TabPane
-            tab={
-              <span>
-                <DesktopOutlined />
-                Schedule Alerts
-              </span>
-            }
-            key="2"
-          >
-            <div className="schedule-alerts">
-              <div className="alerts-text">
-                <p className="alert-title">Scheduled Alerts</p>
-                <span className="alert-arrow">
-                  <a>View More Details</a>
-                  <ArrowRightOutlined
-                    style={{ marginLeft: "10px", color: "#093185" }}
-                  />
-                </span>
-              </div>
-              <div>
-                <AlertTable />
-              </div>
-            </div>
-          </TabPane>
-        </Tabs>
-      </Modal> */}
     </div>
   );
 };

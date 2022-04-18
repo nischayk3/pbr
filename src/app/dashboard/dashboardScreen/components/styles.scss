@@ -6,3 +6,14 @@
         border-radius: 4px; 
     }
 }
+
+.dashboard-save{
+    .ant-modal-header{
+        background: #FFFFFF;
+        border-bottom: 0px !important;
+        border-radius: 0px !important;
+    }
+    .ant-modal-content{
+        width:350px;
+    }
+}
