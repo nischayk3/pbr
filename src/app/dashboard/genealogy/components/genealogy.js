@@ -136,8 +136,7 @@ function Genealogy() {
 	const selectedParameter = param => {
 		const product = param && param.product.split('-');
 		const plant = param && param.plant.split('-');
-		const selectedValue =
-			plant[0] + '|' + product[0] + '|' + param.batch + '|' + param.productType;
+		const selectedValue = plant[0] + '|' + product[0] + '|' + param.batch;
 		setShowView(false);
 		setGenealogyData([]);
 		if (param.treeType === 'Backward') {
@@ -145,6 +144,7 @@ function Genealogy() {
 				levels: 5,
 				batch_id: selectedValue.replace(/\s/g, ''),
 				backward: true,
+				mat_type: param.productType,
 			};
 			//setActivateKey('2');
 			setisBackward(true);
@@ -157,6 +157,7 @@ function Genealogy() {
 				levels: 5,
 				batch_id: selectedValue.replace(/\s/g, ''),
 				backward: false,
+				mat_type: param.productType,
 			};
 			//setActivateKey('2');
 			setisBackward(false);
