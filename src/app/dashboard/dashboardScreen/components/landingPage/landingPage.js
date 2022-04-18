@@ -32,8 +32,8 @@ export default function landingPage(props) {
     const columns = [
         {
             title: 'Dashboard Id',
-            dataIndex: 'dashboard_id',
-            key: 'dashboard_id',
+            dataIndex: 'dashboard_disp_id',
+            key: 'dashboard_disp_id',
             render: (text, record) => {
                 return {
                     props: {
@@ -77,7 +77,7 @@ export default function landingPage(props) {
             render: (text, row, index) => {
                 return (
                     <div>
-                        <Avatar className='avatar-icon' style={{ backgroundColor: getRandomColor(index + 1) }} >{text.split("")[0].toUpperCase()} </Avatar>
+                        <Avatar className='avatar-icon' style={{ backgroundColor: getRandomColor(index + 1) }} >{text?.split("")[0]?.toUpperCase()} </Avatar>
                         <span className='avatar-text'>{text}</span>
                     </div>
                 );

@@ -55,7 +55,7 @@ export default function chartFilter(props) {
                     <SelectField
                         label='Type Of charts'
                         placeholder='Select Charts'
-                        value={props.typeChartValue}
+                        selectedValue={props.typeChartValue}
                         onChangeSelect={props.onChangeTypeCharts}
                         selectList={props.typeOfChartsOptions} />
                 </Col>
@@ -87,7 +87,7 @@ export default function chartFilter(props) {
                     <SelectField
                         placeholder='Site'
                         onChangeSelect={props.onSiteChange}
-                        value={props.siteValue}
+                        selectedValue={props.siteValue}
                         selectList={props.siteOption} />
 
                 </Col>

@@ -192,9 +192,16 @@ const DashboardScreen = () => {
             dispatch(showLoader());
             let res = await saveDashboardData(req, headers);
             console.log(res);
-            dispatch(hideLoader());
-            dispatch(showNotification('success', `${json.dashboard_name} has been successfully saved`));
-            setShowSaveModal(false);
+            if(res.statuscode==200){
+                dispatch(hideLoader());
+                dispatch(showNotification('success', `${json.dashboard_name} has been successfully saved`));
+                setShowSaveModal(false);
+            }else{
+                dispatch(hideLoader());
+                dispatch(showNotification('error', res.message));
+                setShowSaveModal(false);
+            }
+           
         } catch (error) {
             dispatch(hideLoader());
             dispatch(showNotification('error', error.Message));
@@ -225,7 +232,7 @@ const DashboardScreen = () => {
                 </div> */}
                 {showChartCard && <div className='btns'>
                     <Button onClick={()=>handleSavePopUp('saveAs')}>Save As</Button>
-                    <Button onClick={()=> {setSaveType('save');handleSave('save')}}>Save</Button>
+                    {dashboardId && <Button onClick={()=> {setSaveType('save');handleSave('save')}}>Save</Button>}
                     <ShareAltOutlined style={{ color: '#093185', fontSize: '18px' }} />
                 </div>}
             </div>

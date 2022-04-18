@@ -153,7 +153,7 @@ const ViewChart = (props, ref) => {
         fetchDataFromUrl();
     }, []);
     useEffect(() => {
-        let info = { ...dashboardInfo };
+        let info = JSON.parse(JSON.stringify(dashboardInfo));
         info.dashboard_name = props.dashboardName;
         setDashboardInfo(info)
     }, [props.dashboardName]);
@@ -201,6 +201,7 @@ const ViewChart = (props, ref) => {
                 dispatch(showLoader());
                 const dashboardRes = await getDashboard(req);
                 console.log(dashboardRes.data[0]);
+                dashboardRes.data[0].version=props.dashboardVersion
                 //setDashboardInfo(dashboardRes.data);
                 //setTempPanels(dash_info.panels);
                 dashboardRes.data[0].panels.map(async (el, i) => {
@@ -486,7 +487,7 @@ const ViewChart = (props, ref) => {
             date_range: tempPanels[index].data_filter.date_range,
             unapproved_data: tempPanels[index].data_filter.unapproved_data
         }
-
+        dispatch(showLoader());
         let res = await getChartData(id, payload);
         let chartLayout = {
             xaxis: res.data[0]?.layout.xaxis,
@@ -504,6 +505,7 @@ const ViewChart = (props, ref) => {
         }
         arr[index] = Object.assign({}, arr[index], res, { chartLayout: chartLayout });
         setTempPanels(arr);
+        dispatch(hideLoader());
     }
 
     const showPreviewTemp = async () => {
@@ -514,7 +516,7 @@ const ViewChart = (props, ref) => {
             date_range: obj.data_filter.date_range,
             unapproved_data: obj.data_filter.unapproved_data
         }
-
+        dispatch(showLoader());
         let res = await getChartData(id, payload);
         let chartLayout = {
             xaxis: res.data[0]?.layout.xaxis,
@@ -532,6 +534,7 @@ const ViewChart = (props, ref) => {
         }
         obj = Object.assign({}, obj, res, { chartLayout: chartLayout });
         setTempCard(obj);
+        dispatch(hideLoader());
     }
 
     const searchCallback = async (data, index) => {
@@ -576,7 +579,7 @@ const ViewChart = (props, ref) => {
         let obj = JSON.parse(JSON.stringify(dashboardInfo));
         let payload = {}
         try {
-            dispatch(showLoader());
+            dispatch(showLoader())
             arr.map(async (el, i) => {
                 if (el.data_filter.site || el.data_filter.date_range || el.data_filter.unapproved_data) {
                     payload = {
@@ -593,6 +596,7 @@ const ViewChart = (props, ref) => {
                 }
 
                 let res = await getChartData(el.chart_id, payload)
+                dispatch(hideLoader());
                 let chartLayout = {
                     xaxis: res.data[0]?.layout.xaxis,
                     yaxis: res.data[0]?.layout.yaxis,
@@ -615,7 +619,7 @@ const ViewChart = (props, ref) => {
             })
             setTempPanels(arr);
             setDashboardInfo(obj);
-            dispatch(hideLoader());
+            //dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
             message.error('Unable to fetch data');
@@ -634,11 +638,11 @@ const ViewChart = (props, ref) => {
                     </div>
                     <div>
                         <Select style={{ width: 120 }} value={dashboardInfo?.data_filter?.site} onChange={(value) => handleGlobalDropdownChange(value, 'Site')}>
-                            {siteList.map((el, index) => {
-                                return (
-                                    <Option value={el}>{el}</Option>
-                                )
-                            })}
+                            {/* {siteList.map((el, index) => {
+                                return ( */}
+                                    <Option value={'1255'}>{'1255'}</Option>
+                                {/* )
+                            })} */}
                         </Select>
                     </div>
                     <div className='show-data'>
