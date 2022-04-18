@@ -226,10 +226,10 @@ export default function landingPage(props) {
                             <Col span={12}>
                                 <h3>Recently created dashboard</h3>
                                 <Divider />
-                                <Row gutter={40}>
+                                <Row gutter={24}>
                                     {dashboardData.map((el, index) => {
                                         return (
-                                            <Col className="gutter-row" span={6} style={{ marginTop: '10px' }} key={index}>
+                                            <Col className="gutter-row" span={8} style={{ marginTop: '10px' }} key={index}>
                                                 <div className='chart-tiles' onClick={()=>{history.push(`/dashboard/dashboard?id=${el.dashboard_disp_id}&version=${el.dashboard_version}`); window.location.reload()}}>
                                                     <p className='cid'>{el.dashboard_disp_id}</p>
                                                     <p className='chartName'>{el.dashboard_name}</p>
