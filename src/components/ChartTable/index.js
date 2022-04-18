@@ -126,7 +126,6 @@ const ChartTable = (props) => {
           onRow={(record) => ({
             onClick: () => {
               setselectedViewId(record);
-
               message.success(`${record.chart_disp_id} Selected`);
               setisDisabled(false);
               const selectedRowKeys = [...selectedKeys];
@@ -139,7 +138,6 @@ const ChartTable = (props) => {
                 dispatch(sendChartId(record.chart_disp_id));
                 dispatch(sendChartVersion(record.chart_version));
               }
-
               setselectedKeys({ selectedRowKeys });
             },
           })}

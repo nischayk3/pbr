@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import ScreenHeader from '../../../../../components/ScreenHeader/screenHeader';
 import illustrations from '../../../../../assets/images/Dashboard-Banner.svg';
@@ -26,12 +27,13 @@ export default function landingPage(props) {
     const [filterTableLanding, setFilterTableLanding] = useState(null)
     const ref = useRef(null);
     const dispatch = useDispatch();
+    const history=useHistory();
 
     const columns = [
         {
             title: 'Dashboard Id',
-            dataIndex: 'dashboard_id',
-            key: 'dashboard_id',
+            dataIndex: 'dashboard_disp_id',
+            key: 'dashboard_disp_id',
             render: (text, record) => {
                 return {
                     props: {
@@ -75,7 +77,7 @@ export default function landingPage(props) {
             render: (text, row, index) => {
                 return (
                     <div>
-                        <Avatar className='avatar-icon' style={{ backgroundColor: getRandomColor(index + 1) }} >{text.split("")[0].toUpperCase()} </Avatar>
+                        <Avatar className='avatar-icon' style={{ backgroundColor: getRandomColor(index + 1) }} >{text?.split("")[0]?.toUpperCase()} </Avatar>
                         <span className='avatar-text'>{text}</span>
                     </div>
                 );
@@ -98,7 +100,7 @@ export default function landingPage(props) {
                 String(o[k]).toLowerCase().includes(value.toLowerCase())
             )
         );
-        console.log("filterTable",filterTable);
+        console.log("filterTable", filterTable);
         setFilterTableLanding(filterTable)
     };
 
@@ -204,7 +206,7 @@ export default function landingPage(props) {
                                     size="large"
                                     onSearch={landingSearch}
                                 />
-                                {searchedLanding ? <Table className="landing-table" columns={columns} dataSource={filterTableLanding === null ? dashboardData: filterTableLanding} /> : <></>}
+                                {searchedLanding ? <Table className="landing-table" columns={columns} dataSource={filterTableLanding === null ? dashboardData : filterTableLanding} /> : <></>}
 
                             </Col>
                             <Col span={6} />
@@ -224,12 +226,12 @@ export default function landingPage(props) {
                             <Col span={12}>
                                 <h3>Recently created dashboard</h3>
                                 <Divider />
-                                <Row gutter={40}>
+                                <Row gutter={24}>
                                     {dashboardData.map((el, index) => {
                                         return (
-                                            <Col className="gutter-row" span={6} style={{ marginTop: '10px' }} key={index}>
-                                                <div className='chart-tiles'>
-                                                    <p className='cid'>{el.dashboard_id}</p>
+                                            <Col className="gutter-row" span={8} style={{ marginTop: '10px' }} key={index}>
+                                                <div className='chart-tiles' onClick={()=>{history.push(`/dashboard/dashboard?id=${el.dashboard_disp_id}&version=${el.dashboard_version}`); window.location.reload()}}>
+                                                    <p className='cid'>{el.dashboard_disp_id}</p>
                                                     <p className='chartName'>{el.dashboard_name}</p>
                                                 </div>
                                             </Col>
@@ -282,25 +284,27 @@ export default function landingPage(props) {
                                             onSearch={props.searchTable} />
                                         {chartSearch && <ChartSearchTable searchData={props.searchData} searchTableData={props.searchTableData} setViewData={props.setViewData} viewData={props.viewData} setChartSearch={onFocusRemove} searchData={props.searchData} />}
                                     </Row>
-                                    <Row className='chart-view'>
-                                        <Col span={12}>
-                                            <p className='chart-preview-text'>{props.viewData.chartDispId}</p>
-                                            <p className='chart-preview-text'>{props.viewData.chartName}</p>
-                                            <p className='chart-preview-text'>
-                                                <Avatar className='avatar-icon' style={{backgroundColor:'#52679F'}} >{props.viewData.createdBy?.split("")[0].toUpperCase()} </Avatar>
-                                                <span>{props.viewData.createdBy}</span>
-                                            </p>
-                                        </Col>
-                                        <Col span={12}>
-                                            <div style={{width: '146px',height: '84px'}}>
-                                            <ScatterPlot
-                                            data={props.plotData}
-                                            layout={props.plotLayout}/>
-                                            </div>
-                                            
-                                        </Col>
+                                    {props.viewData.chartDispId && (
+                                        <Row className='chart-view'>
+                                            <Col span={12}>
+                                                <p className='chart-preview-text'>{props.viewData.chartDispId}</p>
+                                                <p className='chart-preview-text'>{props.viewData.chartName}</p>
+                                                <p className='chart-preview-text'>
+                                                    <Avatar className='avatar-icon' style={{ backgroundColor: '#52679F' }} >{props.viewData.createdBy?.split("")[0].toUpperCase()} </Avatar>
+                                                    <span>{props.viewData.createdBy}</span>
+                                                </p>
+                                            </Col>
+                                            <Col span={12}>
+                                                <div style={{ width: '146px', height: '84px' }}>
+                                                    <ScatterPlot
+                                                        data={props.plotData}
+                                                        layout={props.plotLayout} />
+                                                </div>
 
-                                    </Row>
+                                            </Col>
+
+                                        </Row>
+                                    )}
                                 </Col>
                             </Row>
                         </div>

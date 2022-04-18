@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import DesignCharts from './components/reportDesignerNew';
 import ReportGenerator from '../reportGenerator/components/reportGenerator';
-import {useSelector,useDispatch} from 'react-redux'
-import Landing from './components/reportLanding'
+import { useSelector, useDispatch } from 'react-redux';
+import Landing from './components/reportLanding';
+
 
 
 function Report()
