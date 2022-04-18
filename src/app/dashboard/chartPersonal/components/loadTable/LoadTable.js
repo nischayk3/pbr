@@ -16,9 +16,9 @@ const LoadTable = ({ chartList }) => {
   }
   const columns = [
     {
-      title: "Product No",
-      dataIndex: "chart_disp_id",
-      key: "chart_disp_id",
+      title: "Molecule",
+      dataIndex: "product_num",
+      key: "product_num",
       width: 100,
     },
     {

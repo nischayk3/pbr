@@ -41,7 +41,8 @@ const ExclusionPopup = ({
         dispatch(showLoader());
         const viewRes = await postChartPlotData(postChartData);
         let newdataArr = [...postChartData.data];
-        newdataArr[0].exclusions = viewRes.exclusions;
+        newdataArr[0].data = viewRes.data[0].data;
+        newdataArr[0].exclusions = viewRes.data[0].exclusions;
         setPostChartData({ ...postChartData, data: newdataArr });
         dispatch(hideLoader());
       } catch (error) {

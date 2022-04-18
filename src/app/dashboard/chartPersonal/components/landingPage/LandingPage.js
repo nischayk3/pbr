@@ -146,7 +146,7 @@ const LandingPage = () => {
               </Col>
               <Col span={6} />
             </Row>
-            {chartData.length !== 0 && (
+            {chartData && chartData.length !== 0 && (
               <Row className="recent-charts">
                 <Col span={6} />
                 <Col span={12} className="p36">

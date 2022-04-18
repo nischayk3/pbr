@@ -57,43 +57,39 @@ const Chart = ({ postChartData, setPostChartData }) => {
         </Col>
       </Row>
       <Row gutter={24} className="details-container">
-        {Number(id) !== 0 && (
-          <Col span={6}>
-            <Row gutter={16}>
-              <Col span={8}>
-                <p>Chart ID</p>
-              </Col>
-              <Col span={10}>
-                <p>
-                  : {chartValues.chartId ? chartValues.chartId : "Unassigned"}
-                </p>
-              </Col>
-              <Col span={6} />
-            </Row>
-            <Row gutter={16}>
-              <Col span={8}>
-                <p>Version</p>
-              </Col>
-              <Col span={8}>
-                <p>
-                  : {chartValues.chartVersion ? chartValues.chartVersion : ""}
-                </p>
-              </Col>
-              <Col span={6} />
-            </Row>
-            <Row gutter={16}>
-              <Col span={8}>
-                <p>Status</p>
-              </Col>
-              <Col span={8}>
-                <p>
-                  : {chartValues.chartStatus ? chartValues.chartStatus : ""}
-                </p>
-              </Col>
-              <Col span={6} />
-            </Row>
-          </Col>
-        )}
+        <Col span={6}>
+          <Row gutter={16}>
+            <Col span={8}>
+              <p>Chart ID</p>
+            </Col>
+            <Col span={10}>
+              <p>
+                : {chartValues.chartId ? chartValues.chartId : "Unassigned"}
+              </p>
+            </Col>
+            <Col span={6} />
+          </Row>
+          <Row gutter={16}>
+            <Col span={8}>
+              <p>Version</p>
+            </Col>
+            <Col span={8}>
+              <p>
+                : {chartValues.chartVersion ? chartValues.chartVersion : ""}
+              </p>
+            </Col>
+            <Col span={6} />
+          </Row>
+          <Row gutter={16}>
+            <Col span={8}>
+              <p>Status</p>
+            </Col>
+            <Col span={8}>
+              <p>: {chartValues.chartStatus ? chartValues.chartStatus : ""}</p>
+            </Col>
+            <Col span={6} />
+          </Row>
+        </Col>
         <Col span={6}>
           <label>Chart Name</label>
           <InputField

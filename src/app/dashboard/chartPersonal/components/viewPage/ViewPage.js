@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./viewPageStyles.scss";
 import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 //antd imports
-import { Row, Col, Tabs, Menu, Dropdown, message, Button,Modal } from "antd";
+import { Row, Col, Tabs, Menu, Dropdown, message, Button, Modal } from "antd";
 import {
   ControlOutlined,
   StarOutlined,
@@ -11,7 +11,7 @@ import {
   CloudUploadOutlined,
   MoreOutlined,
   DesktopOutlined,
-  ArrowRightOutlined
+  ArrowRightOutlined,
 } from "@ant-design/icons";
 //components
 import ViewChart from "./viewChart/ViewChart";
@@ -58,12 +58,30 @@ const ViewPage = () => {
   };
 
   //function for saving chart data
-  const saveAs = async () => {
-    const obj = {
-      ...postChartData,
-      savetype: "saveas",
-    };
+  const saveAs = async (type) => {
     const postData = JSON.parse(JSON.stringify(postChartData));
+    let obj = {};
+    if (id !== 0) {
+      if (type === "save") {
+        obj = {
+          ...postData,
+          savetype: "save",
+        };
+      } else {
+        (postData.data[0].chart_id = ""),
+          (postData.data[0].chart_version = ""),
+          (postData.data[0].chart_status = ""),
+          (obj = {
+            ...postData,
+            savetype: "saveas",
+          });
+      }
+    } else {
+      obj = {
+        ...postData,
+        savetype: "saveas",
+      };
+    }
     let access = false;
     postData.data.forEach((element) => {
       if (element.chart_name === "") {
@@ -85,15 +103,8 @@ const ViewPage = () => {
     try {
       dispatch(showLoader());
       const viewRes = await saveChartPlotData(obj);
-      const newArr = [...postChartData.data];
-      newArr.forEach((element) => {
-        element.chart_id = viewRes.chart_id;
-        element.chart_version = viewRes.chart_version;
-        element.chart_status = viewRes.chart_status;
-      });
-      setPostChartData({ ...postChartData, data: newArr });
+      history.push(`/dashboard/chart_personalization/${viewRes.chart_id}`);
       message.success("Chart created successfully");
-
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
@@ -115,7 +126,7 @@ const ViewPage = () => {
   //menu for dropdown
   const menu = (
     <Menu>
-      <Menu.Item key="1" onClick={saveAs}>
+      <Menu.Item key="1" onClick={() => saveAs("saveas")}>
         Save As
       </Menu.Item>
       <Menu.Item key="2">Share</Menu.Item>
@@ -144,8 +155,8 @@ const ViewPage = () => {
           <span className="header-title">Process Control Charts</span>
         </div>
         <div className="btns">
-          <Button onClick={()=>setAlertModal(true)}>Schedule Alert</Button>
-          <Button>Save</Button>
+          <Button onClick={() => setAlertModal(true)}>Schedule Alert</Button>
+          <Button onClick={() => saveAs("save")}>Save</Button>
           <Button>
             {" "}
             <CloudUploadOutlined />
@@ -185,7 +196,10 @@ const ViewPage = () => {
                 />
               </TabPane>
               <TabPane tab="Rule" key="5">
-                <Rules />
+                <Rules
+                  postChartData={postChartData}
+                  setPostChartData={setPostChartData}
+                />
               </TabPane>
             </Tabs>
           </Col>

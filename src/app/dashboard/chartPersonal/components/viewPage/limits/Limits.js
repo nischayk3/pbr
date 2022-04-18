@@ -379,10 +379,10 @@ const Limits = ({ postChartData, setPostChartData }) => {
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
-      console.log(viewRes, "view");
       let newdataArr = [...postChartData.data];
-      newdataArr[0].limits = JSON.parse(JSON.stringify(data));
-      newdataArr[0].violations = viewRes.violations;
+      newdataArr[0].limits = viewRes.data[0].limits;
+      newdataArr[0].violations = viewRes.data[0].violations;
+      newdataArr[0].data = viewRes.data[0].data;
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
     } catch (error) {
@@ -399,7 +399,6 @@ const Limits = ({ postChartData, setPostChartData }) => {
             <Button className="custom-primary-btn" onClick={onApplyClick}>
               Apply
             </Button>
-            {/* <Button onClick={onApplyClick}>Apply <ArrowRightOutlined /></Button> */}
           </div>
           <Table
             pagination={false}

@@ -19,6 +19,25 @@
   }
   .batch {
     margin-top: 22px;
+    p {
+      margin-bottom: 0px !important;
+      margin-top: 4px;
+    }
+    .arrow-right {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+      button {
+        border: none;
+        background: white;
+        color: #262626;
+      }
+      svg {
+        color: #093185;
+        font-size: 20px;
+      }
+    }
   }
   .ant-select {
     width: 100%;
@@ -33,7 +52,12 @@
         font-size: 19px !important;
         margin-top: 8px !important;
         margin-left: -3px !important;
-        color: rgba(0, 0, 0, 0.25) !important;
+        color: rgba(0, 0, 0, 0.25);
+      }
+    }
+    .date-active {
+      svg {
+        color: #093185 !important;
       }
     }
     .unapproved {
@@ -151,4 +175,43 @@
 
 .ant-modal-body {
   padding: 15px 24px !important;
+}
+
+.ant-popover {
+  width: 300px !important;
+  .date-filter {
+    .mt-row {
+      margin-top: 15px;
+      margin-bottom: 8px;
+      .clear {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      p {
+        font-family: "Roboto";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px;
+        margin-bottom: 0px !important;
+        cursor: pointer;
+      }
+      .apply {
+        color: white;
+        width: 100%;
+        padding: 5px 16px;
+        background: #093185;
+        border-radius: 4px;
+      }
+    }
+  }
+  .ant-popover-title {
+    padding: 8px 16px !important;
+    font-family: "Maven Pro";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+  }
 }

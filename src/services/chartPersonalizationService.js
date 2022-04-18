@@ -15,7 +15,18 @@ export const getSiteId = (_queryParam) => {
 
 //get chart type
 export const getChartList = (request) => {
-  return Service.get(BMS_APP_PYTHON_SERVICE + "/chart-list", request).then(
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
+
+  const headers = {
+    "content-type": "application/json",
+    "x-access-token": login_response.token ? login_response.token : "",
+    "resource-name": "VIEW",
+  };
+  return Service.get(
+    BMS_APP_PYTHON_SERVICE + "/chart-list",
+    request,
+    headers
+  ).then(
     (response) => {
       return response.data;
     },
@@ -88,9 +99,17 @@ export const postChartPlotData = (_queryParam) => {
 
 //save chart data
 export const saveChartPlotData = (_queryParam) => {
-  return Service.put(BMS_APP_PYTHON_SERVICE + "/chart", _queryParam, {
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
+  const headers = {
     "content-type": "application/json",
-  }).then(
+    "x-access-token": login_response.token ? login_response.token : "",
+    "resource-name": "chart",
+  };
+  return Service.put(
+    BMS_APP_PYTHON_SERVICE + "/chart-object",
+    _queryParam,
+    headers
+  ).then(
     (response) => {
       return response.data;
     },
@@ -102,9 +121,17 @@ export const saveChartPlotData = (_queryParam) => {
 
 //get chart data
 export const getChartPlotData = (_queryParam) => {
-  return Service.get(BMS_APP_PYTHON_SERVICE + "/chart", _queryParam, {
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
+  const headers = {
     "content-type": "application/json",
-  }).then(
+    "x-access-token": login_response.token ? login_response.token : "",
+    "resource-name": "VIEW",
+  };
+  return Service.get(
+    BMS_APP_PYTHON_SERVICE + "/chart-object",
+    _queryParam,
+    headers
+  ).then(
     (response) => {
       return response.data;
     },

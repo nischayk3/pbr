@@ -57,7 +57,25 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
   const [exclusionTable, setExclusionTable] = useState([]);
 
   const chartNodeClicked = (data) => {
-    setExclusionValues({ ...exclusionValues, batchId: data.text });
+    postChartData.data.forEach((ele) => {
+      ele.extras.data_table.forEach((el) => {
+        if (el.batch_num === data.text) {
+          setExclusionValues({
+            ...exclusionValues,
+            batchId: data.text,
+            parameterValue: `(${data.x},${data.y})`,
+            notes: "",
+            excludeRecord: false,
+            parameterName: `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
+            testDate: `(${new Date(
+              el["recorded_date_" + ele.chart_mapping.x.function_name]
+            ).toLocaleDateString()},${new Date(
+              el["recorded_date_" + ele.chart_mapping.y.function_name]
+            ).toLocaleDateString()})`,
+          });
+        }
+      });
+    });
     setIsModalVisible(true);
   };
   const handleCloseModal = () => {
@@ -72,7 +90,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
     let xAxis = {};
     let yAxis = {};
     const newCovArr = JSON.parse(JSON.stringify(postChartData));
-    newCovArr.extras.coverage.forEach((ele) => {
+    newCovArr.data[0].extras.coverage.forEach((ele) => {
       if (ele.function_name === axisValues.xaxis) {
         xAxis.function_name = ele.function_name;
         xAxis.function_id = ele.function_id;
@@ -89,9 +107,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       function_id: null,
     };
     newArr.forEach((ele) => {
-      if (axisValues.chartType === "process control") {
-        ele.data.mode = "markers+lines";
-      }
       ele.chart_type =
         axisValues.chartType === "Scatter Plot" ? "scatter" : "process control";
       ele.chart_mapping.x = Object.keys(xAxis).length !== 0 ? xAxis : obj;
@@ -109,16 +124,14 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
       let newdataArr = [...postChartData.data];
-      newdataArr.forEach((ele) => {
-        ele["data"] = viewRes.data;
-        ele["extras"] = viewRes.extras;
-      });
+      newdataArr[0].data = viewRes.data[0].data;
+      newdataArr[0].extras = viewRes.data[0].extras;
       setPostChartData({ ...postChartData, data: newdataArr });
       setShowChart(true);
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
-      dispatch(showNotification("error", error.message));
+      message.error("unable to plot chart");
     }
   };
   const handleChartType = (e) => {
@@ -129,6 +142,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
     newCovArr &&
       newCovArr.data &&
       newCovArr.data.forEach((ele) => {
+        console.log(ele.data, "ele");
         if (ele.data[0].x && ele.data[0].x.length >= 1) {
           const chart =
             ele.chart_type === "scatter" ? "Scatter Plot" : "Process Control";
@@ -158,11 +172,13 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       });
   }, [postChartData]);
 
+  //getting xaxis list and yaxis list
   useEffect(() => {
     let list = [];
-    postChartData.extras &&
-      postChartData.extras.coverage &&
-      postChartData.extras.coverage.forEach((ele) => {
+    postChartData &&
+      postChartData.data &&
+      postChartData.data[0].extras &&
+      postChartData.data[0].extras.coverage.forEach((ele) => {
         list.push(ele.function_name);
         if (axisValues.chartType === "Scatter Plot") {
           setXAxisList(list);
@@ -235,6 +251,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
                   setExclusionTable={setExclusionTable}
                   exclusionTable={exclusionTable}
                   postChartData={postChartData}
+                  setPostChartData={setPostChartData}
                 />
               </TabPane>
               <TabPane tab="Violation" key="2">

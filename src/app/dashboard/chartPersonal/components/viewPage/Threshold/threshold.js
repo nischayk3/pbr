@@ -44,20 +44,28 @@ const Threshold = ({ postChartData, setPostChartData }) => {
     if (thresValues.math === "Equal to") {
       operator = "=";
     }
+    const newArr = [...postChartData.data];
+    let functionId;
+    newArr[0].extras.coverage.forEach((ele) => {
+      if (ele.function_name === thresValues.parameter) {
+        functionId = ele.function_id;
+      }
+    });
     const obj = {
       window: "1D", // text of time interval, none for full duration of chart
-      parameter: thresValues.parameter,
+      parameter: Number(functionId),
       operator: operator,
       threshold: thresValues.valueNum,
     };
-    const newArr = [...postChartData.data];
+    newArr[0].thresholds = [];
     newArr[0].thresholds.push(obj);
     setPostChartData({ ...postChartData, data: newArr });
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
       let newdataArr = [...postChartData.data];
-      newdataArr[0].thresholds = viewRes.thresholds;
+      newdataArr[0].thresholds = viewRes.data[0].thresholds;
+      newdataArr[0].violations = viewRes.data[0].violations;
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
     } catch (error) {

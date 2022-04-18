@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "antd";
+import { message, Table, Popconfirm } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import {
+  showLoader,
+  hideLoader,
+} from "../../../../../../../duck/actions/commonActions";
+import { postChartPlotData } from "../../../../../../../services/chartPersonalizationService";
 
 const ExclusionTable = ({
   exclusionTable,
   setExclusionTable,
   postChartData,
+  setPostChartData,
 }) => {
+  const dispatch = useDispatch();
+
   let columns = [];
   const objkeys =
     exclusionTable !== undefined && exclusionTable.length > 0
@@ -22,6 +32,38 @@ const ExclusionTable = ({
       key: `${item}-${i}`,
     });
   });
+
+  const handleChange = async (id) => {
+    const newArr = [...postChartData.data];
+    newArr[0].exclusions = newArr[0].exclusions.filter(
+      (ele) => Number(ele.exclusion_id) !== Number(id)
+    );
+    const exclusionData = exclusionTable.filter(
+      (ele) => Number(ele.exclusion_id) !== Number(id)
+    );
+    setExclusionTable(exclusionData);
+    setPostChartData({ ...postChartData, data: newArr });
+    try {
+      dispatch(showLoader());
+      const viewRes = await postChartPlotData(postChartData);
+      setPostChartData({ ...postChartData, data: viewRes.data });
+      dispatch(hideLoader());
+    } catch (err) {
+      dispatch(hideLoader());
+      message.error("unable to exclude data");
+    }
+  };
+
+  const deleteColumn = {
+    title: "",
+    dataIndex: "delete",
+    render: (text, record) => (
+      <DeleteOutlined onClick={() => handleChange(record.exclusion_id)} />
+    ),
+    width: 50,
+  };
+
+  columns.push(deleteColumn);
 
   useEffect(() => {
     const newCovArr = JSON.parse(JSON.stringify(postChartData));

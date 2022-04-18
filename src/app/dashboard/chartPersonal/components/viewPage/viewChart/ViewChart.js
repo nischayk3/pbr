@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./viewChartStyles.scss";
+import { useParams } from "react-router-dom";
 //antd imports
 import {
   Row,
@@ -14,15 +15,17 @@ import {
   Button,
   message,
   DatePicker,
+  Popover,
 } from "antd";
 import { ArrowRightOutlined, FilterOutlined } from "@ant-design/icons";
 //components
-import InputField from "../../../../../../components/InputField/InputField";
 import SelectField from "../../../../../../components/SelectField/SelectField";
 import ViewSearchTable from "./viewSearchTable";
 import Modal from "../../../../../../components/Modal/Modal";
 import StatusWrong from "../../../../../../assets/statusWrong.svg";
 import StatusCorrect from "../../../../../../assets/statusCorrect.svg";
+import ViewTable from "./ViewTable";
+import DateFilter from "./DateFilter";
 //redux
 import { useDispatch } from "react-redux";
 import {
@@ -36,36 +39,43 @@ import {
   postChartPlotData,
   getSiteId,
 } from "../../../../../../services/chartPersonalizationService";
-//cjson
-import chartJson from "../chartObj.json";
-import ViewTable from "./ViewTable";
+import moment from "moment";
 
 //unpacking antd components
 const { Search } = Input;
-const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const ViewChart = ({ postChartData, setPostChartData }) => {
   //redux variables
   const dispatch = useDispatch();
+  const { id } = useParams();
   //state variables
   const [viewSearch, setViewSearch] = useState(false);
   const [searchTableData, setSearchTableData] = useState([]);
   const [coverageTableData, setCoverageTableData] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [deepSearch, setDeepSearch] = useState(false);
   const [versionList, setVersionList] = useState([0]);
   const [siteList, setSiteList] = useState([]);
+  const [isDatePopupVisible, setIsDatePopupVisible] = useState(false);
   const deepSearch1 = useRef(false);
   const searchViewData = useRef([]);
-  const postChart = useRef();
   const postChartView = useRef({});
   const ref = useRef(null);
+  const dateFormat = "YYYY-MM-DD";
   const [viewData, setViewData] = useState({
     viewName: "",
     status: "",
     viewDispId: " ",
     searchValue: "",
     chartVersion: 0,
+  });
+  const [batchFilters, setBatchFilters] = useState({
+    site: null,
+    startDate: null,
+    endDate: null,
+    time: "",
+    duration: null,
+    unApproved: 0,
   });
 
   const columns = [
@@ -163,10 +173,9 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
       getSites(viewRes.data[0].view_id);
-      setPostChartData({
-        ...postChartData,
-      });
-      // setCoverageTableData(viewRes.extras.coverage)
+      let newArr = [...postChartData.data];
+      newArr[0] = viewRes.data[0];
+      setPostChartData({ ...postChartData, data: newArr });
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
@@ -194,7 +203,6 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       !ref.current.contains(e.target) &&
       !deepSearch1.current
     ) {
-      console.log("inside");
       setViewSearch(false);
       setSearchTableData(searchViewData.current);
     }
@@ -226,26 +234,55 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     }
   };
 
-  const onAdvanceClick = () => {
-    setIsModalVisible(!isModalVisible);
+  const handledatechange = (e) => {
+    if (e) {
+      setBatchFilters({
+        ...batchFilters,
+        startDate: e[0].format("YYYY-MM-DD"),
+        endDate: e[1].format("YYYY-MM-DD"),
+      });
+    } else {
+      setBatchFilters({
+        ...batchFilters,
+        startDate: null,
+        endDate: null,
+      });
+    }
   };
+
+  const handleVisibleChange = (visible) => {
+    setIsDatePopupVisible(visible);
+  };
+
+  //function for handle batch filter change
+  const handleBatchFilterChange = () => {
+    const newArr = [...postChartData.data];
+    newArr.forEach((ele) => {
+      ele.data_filter.unapproved_data = batchFilters.unApproved;
+      ele.data_filter.date_range = batchFilters.startDate
+        ? new Date(batchFilters.startDate).toISOString() +
+          "/" +
+          new Date(batchFilters.endDate).toISOString()
+        : "";
+      ele.data_filter.site = batchFilters.site ? batchFilters.site : "";
+    });
+    setPostChartData({ ...postChartData, data: newArr });
+    setData();
+  };
+
   //useEffect for calling view list.
   useEffect(() => {
     getViewTableData();
   }, []);
 
-  console.log(viewData, "viewData");
-
   useEffect(() => {
-    console.log(postChartData, "data");
-    postChartData &&
-      postChartData.data &&
+    postChartData.data &&
       postChartData.data.forEach((ele) => {
         setViewData({
           ...viewData,
           viewName: ele.view_name,
           viewDispId: ele.view_id,
-          status: postChartData.view_status,
+          status: ele.view_status,
           searchValue: ele.view_id,
           chartVersion: ele.view_version,
         });
@@ -264,6 +301,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
             value={viewData.searchValue}
             onChange={onSearchChange}
             onSearch={searchTable}
+            disabled={Number(id) === 0 ? false : true}
           />
           {viewSearch && (
             <ViewSearchTable
@@ -307,51 +345,90 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
         <Col span={5} className="pb">
           <p>Version</p>
           <SelectField
-            placeholder="Select Chart type"
             selectList={versionList}
             selectedValue={viewData.chartVersion}
             onChangeSelect={handleVersionChange}
+            disabled={Number(id) === 0 ? false : true}
           />
         </Col>
       </Row>
       <Row className="batch">
-        <Col span={24} className="pb">
+        <Col span={12}>
           <p>Batch Coverage</p>
-          <Divider />
+        </Col>
+        <Col className="arrow-right" span={12}>
+          <Button onClick={handleBatchFilterChange}>Apply</Button>
+          <ArrowRightOutlined />
         </Col>
       </Row>
+      <Divider />
       <Row gutter={16} className="filter">
         <Col span={11}>
           <SelectField
             placeholder="Site"
-            // onChangeSelect={(e) => handleSelectChange(e)}
+            onChangeSelect={(e) =>
+              setBatchFilters({ ...batchFilters, site: e })
+            }
             selectList={siteList}
-            // selectedValue={selectedSite}
+            selectedValue={batchFilters.site}
+            allowClear
           />
         </Col>
         <Col span={13} className="unapproved">
           <label>Show Unapproved data</label>&emsp;&nbsp;
-          <Switch type="primary" size="small" />
+          <Switch
+            type="primary"
+            size="small"
+            onChange={(e) =>
+              setBatchFilters({
+                ...batchFilters,
+                unApproved: e === true ? 1 : 0,
+              })
+            }
+          />
         </Col>
       </Row>
       <Row gutter={16} className="filter">
-        <Col span={11}>
-          <DatePicker placeholder="From Date" />
+        <Col span={22}>
+          <RangePicker
+            value={
+              batchFilters.startDate
+                ? [
+                    moment(batchFilters.startDate, dateFormat),
+                    moment(batchFilters.endDate, dateFormat),
+                  ]
+                : ""
+            }
+            format={dateFormat}
+            onChange={(dateString) => handledatechange(dateString)}
+          />
         </Col>
-        <Col span={11}>
-          <DatePicker placeholder="To Date" />
-        </Col>
-        <Col span={1} className="date">
-          <Tooltip title="Advanced Filters">
-            <FilterOutlined onClick={onAdvanceClick} />
-          </Tooltip>
-        </Col>
-      </Row>
-      <Row gutter={24} className="filter">
-        <Col span={12} />
-        <Col className="arrow-right" span={12}>
-          <Button>Apply</Button>
-          <ArrowRightOutlined />
+        <Col
+          span={1}
+          className={
+            batchFilters.time || batchFilters.duration
+              ? "date date-active"
+              : "date"
+          }
+        >
+          <Popover
+            placement="bottomLeft"
+            title="Search quick time range"
+            visible={isDatePopupVisible}
+            onVisibleChange={handleVisibleChange}
+            content={
+              <DateFilter
+                batchFilters={batchFilters}
+                setBatchFilters={setBatchFilters}
+                setIsDatePopupVisible={setIsDatePopupVisible}
+              />
+            }
+            trigger="click"
+          >
+            <Tooltip title="Advanced Filters">
+              <FilterOutlined />
+            </Tooltip>
+          </Popover>
         </Col>
       </Row>
       <Row className="table-cont">
@@ -364,7 +441,6 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
           />
         </Col>
       </Row>
-      <Modal isModalVisible={isModalVisible}>Modal</Modal>
       <Modal
         isModalVisible={deepSearch}
         handleCancel={onDeepSearch}
