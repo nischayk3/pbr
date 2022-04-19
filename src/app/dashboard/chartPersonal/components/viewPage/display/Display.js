@@ -37,7 +37,6 @@ const Display = ({ setFigure, setLegend, setAxes, postChartData, setPostChartDat
         setPostChartData({ ...postChartData, data: newArr });
     }, [layoutData]);
 
-    console.log(layoutData, 'layout');
 
     return (
         <div className='display-section'>
