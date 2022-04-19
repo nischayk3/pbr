@@ -7,6 +7,7 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../duck/actions/commonActions';
 import { putJob } from '../../../services/jobScheduleService';
+import { PaperClipOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 const { Option } = Select
@@ -288,23 +289,24 @@ const alertEvaluation = (props) => {
                                 bordered={false}
                                 onChange={handleChange}
                             >
-
                                 <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
                                     mihir.bagga@mareana.com
                                 </Option>
                             </Select>
-                            <Divider />
+                            <Divider  />
+                            <div style={{display:'grid',gridTemplateColumns:'1fr 3fr'}}>
                             <span>
                                 <p className="email-subject">Subject <span className="email-sub">Update For  </span>  </p>
                             </span>
                             <div style={{ width: '150px', marginLeft: '80%' }}
                             >
                                 <SelectField
-                                    placeholder='Schedule'
+                                    placeholder='Pick Type of Alert'
                                     onChangeSelect={(e) => handleSelectEmailScheduleChange(e)}
                                     selectList={scheduleList}
                                     value={selectedSchedule}
                                 />
+                            </div>
                             </div>
                             <Divider />
                             <p className="email-content"> Hey,<br /><br />
@@ -317,6 +319,8 @@ const alertEvaluation = (props) => {
                                 [variant_username]</p>
 
                             <p className="email-subject">Select Attachment</p>
+                            <div className="attachment-report"> <span><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text"> Report_name.pdf</span></span></div>
+
                             {emailList.length > 0 && (
                                 <div style={{ marginTop: '50px' }}>
                                     <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule Evaluation</Button>
