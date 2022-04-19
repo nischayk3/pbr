@@ -57,9 +57,9 @@ const Help = () => {
   
   return (
     <>
-        <Popover className='help-popover' overlayClassName= "custom_style" placement="leftTop"  content={
+        <Popover className='help-popover' overlayClassName="custom_style" placement="leftTop"  content={
                 <>
-                    <div className="help_item" ><a onClick={showDrawers}>Help support</a></div>
+                    <div className="help_item" ><a onClick={showDrawers}>Help</a></div>
                     <div className="feedback_item" ><a onClick={showDrawers}>Feedback</a></div>
                 </>
                 
@@ -69,14 +69,14 @@ const Help = () => {
         </Popover>
 
           <Drawer
-            title=""
+            title="Help"
             placement="right"
             width={500}
             onClose={onClose}
             visible={visible}
         extra={
           <Space>
-            <a href='/#/dashboard/faq' target="_blank">Main FAQ Page </a>
+            <a href='/#/dashboard/faq' target="_blank">Go to main FAQ Page </a>
           </Space>
         }
       >
@@ -107,21 +107,7 @@ const Help = () => {
                         )
                     }
                     )}
-        {/* <Collapse className='panel-text-style'>
-            {data.length > 0 && data.map((value,index)=>{
-            return(
-                <>
-                    <Panel header={value.questions} key={index+1}>
-                        <p>{value.answer}</p>
-                    </Panel>
-                </>
-            )
-            }
-            )}
-        </Collapse> */}
-        
-        
-        
+                    
       </Drawer>
         
     </>
