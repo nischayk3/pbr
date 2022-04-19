@@ -691,9 +691,8 @@ const ViewCreation = () => {
 	};
 
 	const handleSaveView = async () => {
-		console.log('handle save function');
 		const viewData = JSON.parse(JSON.stringify(viewJson));
-		console.log('view Data', viewData);
+
 		viewData.forEach(element => {
 			(element.functions = viewState.functions),
 				(element.parameters = viewState.parameters),
@@ -707,7 +706,6 @@ const ViewCreation = () => {
 		try {
 			const response = await saveFunction(viewData[0], headers);
 			if (response.statuscode === 200) {
-				console.log('response', response);
 				// setViewDisplayId(response.view_disp_id);
 				// setViewStatus(response.view_status);
 				// setViewVersion(response.view_version);
@@ -722,7 +720,6 @@ const ViewCreation = () => {
 	};
 
 	const onChangeViewName = (e, value) => {
-		console.log('view json11111 ', viewJson);
 		const newArr = [...viewJson];
 
 		newArr.forEach(element => {

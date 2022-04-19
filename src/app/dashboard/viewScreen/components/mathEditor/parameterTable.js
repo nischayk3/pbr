@@ -15,7 +15,6 @@ let isCheck = '';
 let count = 0;
 let counter = 0;
 const ParameterTable = props => {
-	console.log('propsssss parameter table data', props);
 	const paramReducer = useSelector(state => state.viewCreationReducer);
 	const selectedTableData = useSelector(
 		state => state.viewCreationReducer.selectedParamData
@@ -140,7 +139,6 @@ const ParameterTable = props => {
 
 	useEffect(() => {
 		if (ischeckBox) {
-			console.log('ischeckBox', ischeckBox);
 			isCheck = ischeckBox;
 			setReloadTable(false);
 			setIsLoading(true);
@@ -162,7 +160,7 @@ const ParameterTable = props => {
 			setTableData(selectedTableData);
 		}
 	}, [selectedTableData]);
-	console.log('var click', varClick);
+
 	useEffect(() => {
 		if (varClick) {
 			setSelectedRowKeys([]);
@@ -193,7 +191,7 @@ const ParameterTable = props => {
 			viewDataJson.forEach(element => {
 				element.parameters = var1;
 			});
-			console.log('variable', variable, var1);
+
 			setViewJson(viewDataJson);
 			dispatch(createVariable(selectedRow));
 			dispatch(viewParamMap(var1));
@@ -223,7 +221,7 @@ const ParameterTable = props => {
 			primarySelectedData.parameter_name = functionName;
 			fun['name'] = functionName;
 			fun['definition'] = `${'V' + counter}`;
-			console.log('functionnnnnn', fun);
+
 			const varData = [...viewJson];
 			varData.forEach(element => {
 				element.functions = fun;
@@ -250,7 +248,6 @@ const ParameterTable = props => {
 	};
 
 	const onChangeBatch = (value, record, rowIndex, key) => {
-		console.log('value record', value, record, rowIndex, key);
 		let batchRecord = [...tableData];
 		batchRecord[rowIndex][key] = value;
 		setisBatchCheck(value);
@@ -267,14 +264,6 @@ const ParameterTable = props => {
 				dataIndex: key,
 				width: 100,
 				render: (value, record, rowIndex) => {
-					console.log(
-						'...value, ...record, ...rowIndex',
-						value,
-						record,
-						rowIndex
-					);
-					console.log(isCheck, 'isCheck');
-					console.log(isBatchCheck, 'isBatchCheck');
 					if (value) {
 						if (isCheck) {
 							return (
@@ -336,11 +325,6 @@ const ParameterTable = props => {
 					rowSelection={{
 						selectedRowKeys,
 						onChange: (selectedRowKeys, selectedRows) => {
-							console.log(
-								'selectedRowKeys, selectedRows',
-								selectedRowKeys,
-								selectedRows
-							);
 							props.callbackCheckbox(true);
 							setSelectedRowKeys(selectedRowKeys);
 							setSelectedRow(selectedRows);

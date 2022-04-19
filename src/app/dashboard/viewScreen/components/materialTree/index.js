@@ -114,21 +114,7 @@ const MaterialTree = props => {
 																			b
 																		)
 																	}>
-																	{selectedAllKey &&
-																		selectedAllKey.map(ele => {
-																			console.log(
-																				'eleeeee',
-																				selectedAllKey,
-																				ele,
-																				b.key
-																			);
-																			if (ele === b.key) {
-																				return <CheckOutlined />;
-																			} else {
-																				return <PlusOutlined />;
-																			}
-																		})}
-																	{selectedKey === b.key ? (
+																	{selectedKey != b.key ? (
 																		<CheckOutlined />
 																	) : (
 																		<PlusOutlined />

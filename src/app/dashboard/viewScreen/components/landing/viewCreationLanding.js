@@ -99,6 +99,17 @@ export default function Landing(props) {
 		});
 	};
 
+	const handleClickView = (e, element) => {
+		console.log('e,element', e, element);
+		history.push({
+			pathname:
+				'/dashboard/view_creation_view?view_disp_id=' +
+				element.view_disp_id +
+				'&view_version=' +
+				element.view_version,
+		});
+	};
+
 	return (
 		<div>
 			<ScreenHeader
@@ -163,7 +174,11 @@ export default function Landing(props) {
 								viewList.map(
 									(i, index) =>
 										index < 8 && (
-											<StatusBlock id={i.view} status={i.view_status} />
+											<StatusBlock
+												id={i.view}
+												status={i.view_status}
+												handleClickTiles={e => handleClickView(e, i)}
+											/>
 										)
 								)
 							) : (

@@ -16,7 +16,7 @@ const statusColor = status => {
 
 const StatusBlock = props => {
 	return (
-		<div className='chart-tiles'>
+		<div className='chart-tiles' onClick={props.handleClickTiles}>
 			<div className={`tile-status ${statusColor(props.status)}`}>
 				{props.status}
 			</div>

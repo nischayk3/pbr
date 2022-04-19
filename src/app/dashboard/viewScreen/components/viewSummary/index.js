@@ -17,8 +17,6 @@ const ViewSummaryData = props => {
 
 	const { saveResponseView, viewJson, setViewJson } = props;
 
-	console.log('view sum propsss', props);
-
 	useEffect(() => {
 		setFunTableData(summaryTableData);
 		setFunTableColumn(sumTableColumn);

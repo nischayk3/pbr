@@ -32,7 +32,7 @@ function ParameterLookup(props) {
 		form,
 		params,
 	} = props;
-	console.log('propsssss parameter lookup', props);
+
 	const dispatch = useDispatch();
 	const logindetails = useSelector(state => state.loginReducer.loginDetails);
 
