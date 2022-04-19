@@ -76,8 +76,6 @@ function ReportDesignerForm(props) {
             <div className="header-value">
                 Status : {reportStatus}
             </div>
-
-
         </div>
     );
 }
