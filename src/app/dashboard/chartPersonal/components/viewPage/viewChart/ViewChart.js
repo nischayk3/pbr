@@ -254,6 +254,33 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     setIsDatePopupVisible(visible);
   };
 
+  const onSelectedView = (record) => {
+    let tempVersionList = [0];
+    searchViewData.current.forEach((ele) => {
+      if (ele.view_disp_id === record.view_disp_id) {
+        tempVersionList.push(ele.view_version);
+        tempVersionList = tempVersionList.sort((a, b) => a - b);
+        setVersionList(tempVersionList);
+      }
+    });
+    setViewData({
+      ...viewData,
+      viewName: record.view_name,
+      viewDispId: record.view_disp_id,
+      status: record.view_status,
+      searchValue: record.view_disp_id,
+      chartVersion: record.view_version,
+    });
+    let newArr = [...postChartData.data];
+    newArr.forEach((ele) => {
+      (ele.view_id = record.view_disp_id), (ele.view_name = record.view_name);
+    });
+    setPostChartData({ ...postChartData, data: newArr });
+    setDeepSearch(false);
+    deepSearch1.current = false;
+    setData();
+  };
+
   //function for handle batch filter change
   const handleBatchFilterChange = () => {
     const newArr = [...postChartData.data];
@@ -412,6 +439,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
           }
         >
           <Popover
+            overlayClassName="cppopup-over"
             placement="bottomLeft"
             title="Search quick time range"
             visible={isDatePopupVisible}
@@ -462,6 +490,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
           searchTableData={searchTableData}
           setDeepSearch={setDeepSearch}
           deepSearch1={deepSearch1}
+          onSelectedView={onSelectedView}
         />
       </Modal>
     </div>

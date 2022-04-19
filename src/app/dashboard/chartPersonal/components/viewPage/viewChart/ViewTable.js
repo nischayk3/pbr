@@ -1,7 +1,13 @@
-import React from "react";
-import { Button, Table, Avatar } from "antd";
+import React, { useState } from "react";
+import { Button, Table, Avatar, message } from "antd";
 
-const ViewTable = ({ searchTableData, deepSearch1, setDeepSearch }) => {
+const ViewTable = ({
+  searchTableData,
+  deepSearch1,
+  setDeepSearch,
+  onSelectedView,
+}) => {
+  const [rowData, setRowdata] = useState({});
   function generateRandomColor() {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -71,12 +77,23 @@ const ViewTable = ({ searchTableData, deepSearch1, setDeepSearch }) => {
         pagination={false}
         dataSource={searchTableData}
         scroll={{ y: 250 }}
+        onRow={(record) => ({
+          onClick: () => {
+            setRowdata(record);
+            message.success(`${record.view_disp_id} is Selected`);
+          },
+        })}
       />
       <div className="footer-btns">
         <Button className="custom-primary-btn" onClick={onCancel}>
           Cancel
         </Button>
-        <Button className="custom-secondary-btn">Ok</Button>
+        <Button
+          className="custom-secondary-btn"
+          onClick={() => onSelectedView(rowData)}
+        >
+          Ok
+        </Button>
       </div>
     </div>
   );
