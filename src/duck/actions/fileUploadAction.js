@@ -3,6 +3,9 @@ import {
   API_PLOT_URL,
   BMS_APP_PYTHON_SERVICE,
 } from '../../constants/apiBaseUrl';
+
+let login_response = JSON.parse(localStorage.getItem('login_details'));
+
 export const uploadFile = (_queryParam) => {
   return Service.post('http://192.168.1.49:8084/fileUploadToFTP', _queryParam, {
     'Content-Type': 'multipart/form-data',
@@ -24,6 +27,8 @@ export const uploadFileExl = (_queryParam) => {
 export const uploadFileApi = (_queryParam) => {
   return Service.post(BMS_APP_PYTHON_SERVICE + '/upload-file', _queryParam, {
     'Content-Type': 'multipart/form-data',
+    'x-access-token': login_response.token ? login_response.token : '',
+    'resource-name': 'FILE_UPLOAD',
     Accept: '*/*',
   }).then(
     (response) => {
@@ -38,7 +43,10 @@ export const uploadFileApi = (_queryParam) => {
 export const cancelFileUpload = (request) => {
   return Service.post(
     BMS_APP_PYTHON_SERVICE + '/cancel-file-upload',
-    request
+    request,{
+      'x-access-token': login_response.token ? login_response.token : '',
+      'resource-name': 'FILE_UPLOAD'
+    }
   ).then(
     (response) => {
       return response.data;
@@ -50,7 +58,10 @@ export const cancelFileUpload = (request) => {
 };
 
 export const approvedData = (request) => {
-  return Service.post(BMS_APP_PYTHON_SERVICE + '/approve-data', request).then(
+  return Service.post(BMS_APP_PYTHON_SERVICE + '/approve-data', request,{
+    'x-access-token': login_response.token ? login_response.token : '',
+      'resource-name': 'FILE_UPLOAD'
+  }).then(
     (response) => {
       return response.data;
     },
@@ -63,7 +74,10 @@ export const approvedData = (request) => {
 export const updateApprovedData = (request) => {
   return Service.post(
     BMS_APP_PYTHON_SERVICE + '/update-approved-data',
-    request
+    request,{
+      'x-access-token': login_response.token ? login_response.token : '',
+      'resource-name': 'FILE_UPLOAD'
+    }
   ).then(
     (response) => {
       return response.data;
@@ -75,7 +89,10 @@ export const updateApprovedData = (request) => {
 };
 
 export const finalFileUpload = (request) => {
-  return Service.post(BMS_APP_PYTHON_SERVICE + '/final-upload', request).then(
+  return Service.post(BMS_APP_PYTHON_SERVICE + '/final-upload', request,{
+    'x-access-token': login_response.token ? login_response.token : '',
+      'resource-name': 'FILE_UPLOAD'
+  }).then(
     (response) => {
       return response.data;
     },

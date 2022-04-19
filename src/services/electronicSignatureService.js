@@ -4,8 +4,8 @@ import {
 import Service from './AjaxService';
 
 
-export const eSign = (request) => {
-    return Service.post(BMS_APP_PYTHON_SERVICE + '/digital-signature', request).then(
+export const eSign = (request,headers) => {
+    return Service.post(BMS_APP_PYTHON_SERVICE + '/digital-signature', request,headers).then(
         (response) => {
             return response.data;
         },
