@@ -95,7 +95,7 @@ const rules = ({ postChartData, setPostChartData }) => {
               <Panel
                 header={`${key} RULE`}
                 key={key}
-                extra={disabled ? "" : <Button onClick={onApply}>Apply</Button>}
+                // extra={disabled ? "" : <Button onClick={onApply}>Apply</Button>}
               >
                 <Collapse
                   expandIconPosition="left"
