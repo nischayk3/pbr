@@ -5,28 +5,25 @@ const DataTable = ({ postChartData }) => {
   const [dataTable, setDataTable] = useState([]);
 
   let columns = [];
-  const objkeys =
+  let objkeys =
     dataTable !== undefined && dataTable.length > 0
       ? Object.keys(dataTable[0])
       : [];
+  const first = "batch_num";
+  objkeys = objkeys.sort(function (x, y) {
+    return x == first ? -1 : y == first ? 1 : 0;
+  });
+
   const uniqueArr = (value, index, self) => {
     return self.indexOf(value) === index;
   };
   const filterColumn = objkeys.filter(uniqueArr);
   filterColumn.map((item, i) => {
-    if (item === "batch_num") {
-      columns.push({
-        title: item.toUpperCase().replace("_", " "),
-        dataIndex: item,
-        key: `${item}-${i}`,
-      });
-    } else {
-      columns.push({
-        title: item.toUpperCase().replace("_", " "),
-        dataIndex: item,
-        key: `${item}-${i}`,
-      });
-    }
+    columns.push({
+      title: item.toUpperCase().replace("_", " "),
+      dataIndex: item,
+      key: `${item}-${i}`,
+    });
   });
 
   useEffect(() => {
