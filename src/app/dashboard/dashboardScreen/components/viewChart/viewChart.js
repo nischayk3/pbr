@@ -16,7 +16,7 @@ import './styles.scss';
 
 const dash_info = {
     "dashboard_id": "dashboard1", // text, generated
-    "dashboard_name": "Dashboard Test", 
+    "dashboard_name": "Dashboard Test",
     "dashboard_descr": "Test Dashboard Object",// text, chart display name
     "dashboard_description": "Test Dashboard Object", // text, chart detailed description
     "dashboard_version": 1, // integer
@@ -40,25 +40,25 @@ const dash_info = {
         }
     ],
     "panels": [
-        {
-            "id": 1, // system incremental generated id
-            "position": {
-                "h": 1, // panel height default 1 unit
-                "w": 2, // panel width default 2 units
-                "x": 0, // panel horizontal position 0-indexed left to right
-                "y": 0  // panel vertical position 0-indexed top to bottom
-            },
-            "source_type": "chart", // panel source type current: {chart}; future: {6.0 analysis charts, grafana}
-            "source_id": "chart1",
-            "chart_id": "C192",
-            "chart_name": "Chart1",
-            // corresponding id for source
-            "data_filter": {
-                "date_range": "2007-03-01T13:00:00Z/2008-05-11T15:30:00Z", // ISO 8601 format <start>/<end> time interval
-                "unapproved_data": 1, // integer, {0: False, 1: True}
-                "site": "1255" // text
-            }
-        },
+        // {
+        //     "id": 1, // system incremental generated id
+        //     "position": {
+        //         "h": 1, // panel height default 1 unit
+        //         "w": 2, // panel width default 2 units
+        //         "x": 0, // panel horizontal position 0-indexed left to right
+        //         "y": 0  // panel vertical position 0-indexed top to bottom
+        //     },
+        //     "source_type": "chart", // panel source type current: {chart}; future: {6.0 analysis charts, grafana}
+        //     "source_id": "chart1",
+        //     "chart_id": "C192",
+        //     "chart_name": "Chart1",
+        //     // corresponding id for source
+        //     "data_filter": {
+        //         "date_range": "2007-03-01T13:00:00Z/2008-05-11T15:30:00Z", // ISO 8601 format <start>/<end> time interval
+        //         "unapproved_data": 1, // integer, {0: False, 1: True}
+        //         "site": "1255" // text
+        //     }
+        // },
         {
             "id": 2, // system incremental generated id
             "position": {
@@ -152,7 +152,11 @@ const ViewChart = (props, ref) => {
     useEffect(() => {
         fetchDataFromUrl();
     }, []);
-
+    useEffect(() => {
+        let info = JSON.parse(JSON.stringify(dashboardInfo));
+        info.dashboard_name = props.dashboardName;
+        setDashboardInfo(info)
+    }, [props.dashboardName]);
 
     const getChartData = (chartId, payload = {}) => {
         let login_response = JSON.parse(localStorage.getItem('login_details'));
@@ -173,7 +177,7 @@ const ViewChart = (props, ref) => {
         }
     }
 
-    const getSiteIdHandler = (id=props.viewData.viewId) => {
+    const getSiteIdHandler = (id = props.viewData.viewId) => {
         console.log(id);
         let reqSite = { view_id: id };
         return getSiteId(reqSite).then((res) => {
@@ -192,13 +196,15 @@ const ViewChart = (props, ref) => {
     const fetchDataFromUrl = async () => {
         console.log("idd", props.dashboardId)
         if (props.dashboardId) {
-            let req = { dashboardId: props.dashboardId }
+            let req = { dashboardId: props.dashboardId, version: props.dashboardVersion }
             try {
                 dispatch(showLoader());
                 const dashboardRes = await getDashboard(req);
+                console.log(dashboardRes.data[0]);
+                dashboardRes.data[0].version=props.dashboardVersion
                 //setDashboardInfo(dashboardRes.data);
                 //setTempPanels(dash_info.panels);
-                dash_info.panels.map(async (el, i) => {
+                dashboardRes.data[0].panels.map(async (el, i) => {
                     // let data= props.rawTableData.find(x=>x.chart_disp_id==el.chart_id);
                     // console.log(data);
                     // if(data?.chart_info[0].view_id){
@@ -211,7 +217,7 @@ const ViewChart = (props, ref) => {
                         yaxis: res.data[0]?.layout.yaxis,
                         autosize: false,
                         width: 580,
-                        height: 250,
+                        height: 210,
                         margin: {
                             l: 60,
                             r: 50,
@@ -220,16 +226,20 @@ const ViewChart = (props, ref) => {
                             pad: 4
                         }
                     }
-                    dash_info.panels[i] = Object.assign({}, res, { chartLayout: chartLayout }, dash_info.panels[i]);
+                    //dash_info.panels[i] = Object.assign({}, res, { chartLayout: chartLayout }, dash_info.panels[i]);
+                    el.chartLayout = chartLayout
+                    el.data = res.data
                     //setTempPanels(dash_info.panels);
 
                 })
-                setTempPanels(dash_info.panels);
-                setDashboardInfo(dash_info);
+                //setTempPanels(dash_info.panels);
+                //setDashboardInfo(dash_info);
+                setTempPanels(dashboardRes.data[0].panels);
+                setDashboardInfo(dashboardRes.data[0]);
                 dispatch(hideLoader());
             } catch (error) {
                 dispatch(hideLoader());
-                message.error('Unable to fetch coverages');
+                message.error('Unable to fetch data');
             }
         } else {
             let newDummy = JSON.parse(JSON.stringify(dummy));
@@ -238,17 +248,18 @@ const ViewChart = (props, ref) => {
             newDummy.panels[0].chart_name = props.viewData.chartName;
             //setDashboardInfo(newDummy);
             //setTempPanels(newDummy.panels);
-            dispatch(showLoader())
-            let resp= await getSiteIdHandler();
-            newDummy.panels[0].data_filter.site_list=resp;
-            newDummy.panels.map(async (el, i) => {
-                let res = await getChartData(el.chart_id)
+            try {
+                dispatch(showLoader())
+                let resp = await getSiteIdHandler();
+                newDummy.panels[0].data_filter.site_list = resp;
+                //newDummy.panels.map(async (el, i) => {
+                let res = await getChartData(newDummy.panels[0].chart_id)
                 let chartLayout = {
                     xaxis: res.data[0]?.layout.xaxis,
                     yaxis: res.data[0]?.layout.yaxis,
                     autosize: false,
                     width: 580,
-                    height: 250,
+                    height: 210,
                     margin: {
                         l: 60,
                         r: 50,
@@ -257,12 +268,16 @@ const ViewChart = (props, ref) => {
                         pad: 4
                     }
                 }
-                newDummy.panels[i] = Object.assign({}, res, { chartLayout: chartLayout }, newDummy.panels[i]);
+                newDummy.panels[0] = Object.assign({}, res, { chartLayout: chartLayout }, newDummy.panels[0]);
 
-            })
-            setTempPanels(newDummy.panels);
-            setDashboardInfo(newDummy);
-            dispatch(hideLoader())
+                //})
+                setTempPanels(newDummy.panels);
+                setDashboardInfo(newDummy);
+                dispatch(hideLoader())
+            } catch (error) {
+                dispatch(hideLoader());
+                message.error('Unable to fetch data');
+            }
         }
 
     }
@@ -296,29 +311,41 @@ const ViewChart = (props, ref) => {
 
     };
     const onChangeStart = (date, dateString) => {
-        console.log('setStartTime', date, dateString);
-        let obj = { ...filterObject };
-        obj.startTime = dateString;
-        setFilterObject(obj);
+        console.log('setEndTime', dateString);
         console.log('forment', moment(date).toISOString());
-        setStartTime(dateString);
-        setstartTimeIso(moment(date).toISOString());
+        let obj = { ...dashboardInfo };
+        if (obj.data_filter.date_range == "") {
+            obj.data_filter.date_range = `${date?moment(date).toISOString():''}/`;
+        } else {
+            obj.data_filter.date_range = `${date?moment(date).toISOString():''}/${obj.data_filter.date_range.split("/")[1]}`;
+        }
+
+        setDashboardInfo(obj);
     };
     const onChangeEnd = (date, dateString) => {
         console.log('setEndTime', dateString);
-        let obj = { ...filterObject };
-        obj.endTime = dateString;
-        setFilterObject(obj);
         console.log('forment', moment(date).toISOString());
-        setEndTime(dateString);
-        setendTimeIso(moment(date).toISOString());
+        let obj = { ...dashboardInfo };
+        if (obj.data_filter.date_range == "") {
+            obj.data_filter.date_range = `/${date?moment(date).toISOString():''}`;
+        } else {
+            obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]}/${date?moment(date).toISOString():''}`;
+        }
+
+        setDashboardInfo(obj);
+
     };
 
     const onInnerStart = (date, dateString, index) => {
         console.log('setStartTime', date, dateString);
         console.log('forment', moment(date).toISOString());
         let arr = [...tempPanels];
-        arr[index].data_filter.date_range = `${moment(date).toISOString()}/${arr[index].data_filter.date_range.split("/")[1]}`;
+        if (arr[index].data_filter.date_range == "") {
+            arr[index].data_filter.date_range = `${date?moment(date).toISOString():''}/`
+        } else {
+            arr[index].data_filter.date_range = `${date?moment(date).toISOString():''}/${arr[index].data_filter.date_range.split("/")[1]}`;
+        }
+
         setTempPanels(arr);
 
 
@@ -327,14 +354,23 @@ const ViewChart = (props, ref) => {
         console.log('setStartTime', date, dateString);
         console.log('forment', moment(date).toISOString());
         let arr = [...tempPanels];
-        arr[index].data_filter.date_range = `${arr[index].data_filter.date_range.split("/")[0]}/${moment(date).toISOString()}`;
+        if (arr[index].data_filter.date_range == "") {
+            arr[index].data_filter.date_range = `/${date?moment(date).toISOString():''}`
+        } else {
+            arr[index].data_filter.date_range = `${arr[index].data_filter.date_range.split("/")[0]}/${date?moment(date).toISOString():''}`;
+        }
         setTempPanels(arr);
     };
     const onInnerTempStart = (date, dateString) => {
         console.log('setStartTime', date, dateString);
         console.log('forment', moment(date).toISOString());
         let obj = { ...tempCard };
-        obj.data_filter.date_range = `${moment(date).toISOString()}/${obj.data_filter.date_range.split("/")[1]}`;
+        if (obj.data_filter.date_range == "") {
+            obj.data_filter.date_range = `${date?moment(date).toISOString():''}/`
+        } else {
+            obj.data_filter.date_range = `${date?moment(date).toISOString():''}/${obj.data_filter.date_range.split("/")[1]}`;
+        }
+
         setTempCard(obj);
 
 
@@ -343,7 +379,12 @@ const ViewChart = (props, ref) => {
         console.log('setStartTime', date, dateString);
         console.log('forment', moment(date).toISOString());
         let obj = { ...tempCard };
-        obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]}/${moment(date).toISOString()}`;
+        if (obj.data_filter.date_range == "") {
+            obj.data_filter.date_range = `/${date?moment(date).toISOString():''}`
+        } else {
+            obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]}/${date?moment(date).toISOString():''}`;
+        }
+
         setTempCard(obj);
     };
     const onClickTimeRange = () => {
@@ -370,17 +411,18 @@ const ViewChart = (props, ref) => {
 
     const handleGlobalDropdownChange = (value, text) => {
         console.log(value)
-        let obj = { ...filterObject }
+        let obj = JSON.parse(JSON.stringify(dashboardInfo));
         switch (text) {
-            case 'Site': obj.site = value;
-                setFilterObject(obj);
+            case 'Site': obj.data_filter.site = '1255';
+                setDashboardInfo(obj);
                 break;
-            case 'Unapproved Data': obj.unapprovedData = value;
-                setFilterObject(obj);
+            case 'Unapproved Data':
+                obj.data_filter.unapproved_data = value ? 1 : 0;
+                setDashboardInfo(obj);
                 break;
-            case 'Exploration Controls': obj.explorationControl = value;
-                setFilterObject(obj);
-                break;
+            // case 'Exploration Controls': obj.explorationControl = value;
+            // setDashboardInfo(obj);
+            //     break;
         }
 
 
@@ -405,6 +447,7 @@ const ViewChart = (props, ref) => {
     };
 
     const onTypeChartsChange = (e, index) => {
+        console.log("source value", e)
         let arr = [...tempPanels];
         tempPanels[index].source_type = e;
         setTempPanels(arr);
@@ -444,14 +487,14 @@ const ViewChart = (props, ref) => {
             date_range: tempPanels[index].data_filter.date_range,
             unapproved_data: tempPanels[index].data_filter.unapproved_data
         }
-
+        dispatch(showLoader());
         let res = await getChartData(id, payload);
         let chartLayout = {
             xaxis: res.data[0]?.layout.xaxis,
             yaxis: res.data[0]?.layout.yaxis,
             autosize: false,
             width: 580,
-            height: 250,
+            height: 210,
             margin: {
                 l: 60,
                 r: 50,
@@ -462,6 +505,7 @@ const ViewChart = (props, ref) => {
         }
         arr[index] = Object.assign({}, arr[index], res, { chartLayout: chartLayout });
         setTempPanels(arr);
+        dispatch(hideLoader());
     }
 
     const showPreviewTemp = async () => {
@@ -472,14 +516,14 @@ const ViewChart = (props, ref) => {
             date_range: obj.data_filter.date_range,
             unapproved_data: obj.data_filter.unapproved_data
         }
-
+        dispatch(showLoader());
         let res = await getChartData(id, payload);
         let chartLayout = {
             xaxis: res.data[0]?.layout.xaxis,
             yaxis: res.data[0]?.layout.yaxis,
             autosize: false,
             width: 580,
-            height: 250,
+            height: 210,
             margin: {
                 l: 60,
                 r: 50,
@@ -490,25 +534,26 @@ const ViewChart = (props, ref) => {
         }
         obj = Object.assign({}, obj, res, { chartLayout: chartLayout });
         setTempCard(obj);
+        dispatch(hideLoader());
     }
 
-    const searchCallback = async(data, index) => {
+    const searchCallback = async (data, index) => {
         let arr = [...tempPanels];
         arr[index].chart_id = data.chartDispId;
         arr[index].chart_name = data.chartName;
         arr[index].view_id = data.viewId;
-        let res=await getSiteIdHandler(data.viewId);
+        let res = await getSiteIdHandler(data.viewId);
         console.log(res);
         arr[index].data_filter.site_list = res;
         setTempPanels(arr);
     }
 
-    const searchTempCallback = async(data) => {
+    const searchTempCallback = async (data) => {
         let obj = { ...tempCard }
         obj.chart_id = data.chartDispId;
         obj.chart_name = data.chartName;
         obj.view_id = data.viewId;
-        let res=await getSiteIdHandler(data.viewId);
+        let res = await getSiteIdHandler(data.viewId);
         console.log(res);
         obj.data_filter.site_list = res;
         setTempCard(obj);
@@ -519,18 +564,71 @@ const ViewChart = (props, ref) => {
         setTempCard(newDummy.panels[0]);
     }
 
-    const onTempApply=()=>{
-        let obj=JSON.parse(JSON.stringify(tempCard))
-        let arr=[...tempPanels,obj];
+    const onTempApply = () => {
+        let obj = JSON.parse(JSON.stringify(tempCard))
+        let arr = [...tempPanels, obj];
         setTempPanels(arr);
-        let info={...dashboardInfo};
-        info.panels=[...dashboardInfo.panels,obj];
+        let info = { ...dashboardInfo };
+        info.panels = [...dashboardInfo.panels, obj];
         setDashboardInfo(info);
         setTempCard({});
     }
 
+    const appliedGlobalFilters = async () => {
+        let arr = [...tempPanels];
+        let obj = JSON.parse(JSON.stringify(dashboardInfo));
+        let payload = {}
+        try {
+            dispatch(showLoader())
+            arr.map(async (el, i) => {
+                if (el.data_filter.site || el.data_filter.date_range || el.data_filter.unapproved_data) {
+                    payload = {
+                        site: [el.data_filter.site],
+                        date_range: el.data_filter.date_range,
+                        unapproved_data: el.data_filter.unapproved_data
+                    }
+                } else {
+                    payload = {
+                        site: [obj.data_filter.site],
+                        date_range: obj.data_filter.date_range,
+                        unapproved_data: obj.data_filter.unapproved_data
+                    }
+                }
+
+                let res = await getChartData(el.chart_id, payload)
+                dispatch(hideLoader());
+                let chartLayout = {
+                    xaxis: res.data[0]?.layout.xaxis,
+                    yaxis: res.data[0]?.layout.yaxis,
+                    autosize: false,
+                    width: 580,
+                    height: 210,
+                    margin: {
+                        l: 60,
+                        r: 50,
+                        //b: 75,
+                        t: 10,
+                        pad: 4
+                    }
+                }
+                //dash_info.panels[i] = Object.assign({}, res, { chartLayout: chartLayout }, dash_info.panels[i]);
+                el.chartLayout = chartLayout
+                el.data = res.data
+                //setTempPanels(dash_info.panels);
+
+            })
+            setTempPanels(arr);
+            setDashboardInfo(obj);
+            //dispatch(hideLoader());
+        } catch (error) {
+            dispatch(hideLoader());
+            message.error('Unable to fetch data');
+        }
+
+    }
+
     console.log("temp", tempPanels)
-    console.log(tempPanels[0]?.data_filter?.unapproved_data);
+    console.log("dashInfo", dashboardInfo)
     return (
         <div>
             <Card title={props.dashboardName ? props.dashboardName : dashboardInfo.dashboard_name}>
@@ -540,11 +638,11 @@ const ViewChart = (props, ref) => {
                     </div>
                     <div>
                         <Select style={{ width: 120 }} value={dashboardInfo?.data_filter?.site} onChange={(value) => handleGlobalDropdownChange(value, 'Site')}>
-                            {siteList.map((el, index) => {
-                                return (
-                                    <Option value={el}>{el}</Option>
-                                )
-                            })}
+                            {/* {siteList.map((el, index) => {
+                                return ( */}
+                                    <Option value={'1255'}>{'1255'}</Option>
+                                {/* )
+                            })} */}
                         </Select>
                     </div>
                     <div className='show-data'>
@@ -648,12 +746,12 @@ const ViewChart = (props, ref) => {
                             )} */}
                         <DatePicker
                             onChange={onChangeStart}
-                        //value={moment(dashboardInfo?.data_filter?.date_range?.split("/")[0]).format("YYYY/MM/DD")}
+                            value={dashboardInfo?.data_filter?.date_range?.split("/")[0] ? moment(dashboardInfo?.data_filter?.date_range?.split("/")[0], "YYYY-MM-DD") : ''}
 
                         />
 
                         <DatePicker onChange={onChangeEnd}
-                            //value={dashboardInfo?.data_filter?.date_range.split("/")[1].join("").split("T")[1]}
+                            value={dashboardInfo?.data_filter?.date_range?.split("/")[1] ? moment(dashboardInfo?.data_filter?.date_range?.split("/")[1], "YYYY-MM-DD") : ''}
                             style={{ marginLeft: '22px' }} />
 
                     </div>
@@ -677,6 +775,7 @@ const ViewChart = (props, ref) => {
                         <Button
                             type='primary'
                             className='custom-secondary-btn'
+                            onClick={() => appliedGlobalFilters()}
                         >Apply
                         </Button>
                     </div>
@@ -684,7 +783,7 @@ const ViewChart = (props, ref) => {
                 </div>
                 <Row gutter={[16, 24]} className='chart-row'>
                     {tempPanels.map((el, index) => {
-                        console.log("undefined", tempPanels[index]?.data)
+                        console.log("undefined", el)
                         return (
                             <Col className="gutter-row" span={12}>
                                 <div className='chartCard'>
@@ -749,11 +848,19 @@ const ViewChart = (props, ref) => {
                                                 searchCallback={(data) => searchCallback(data, index)}
                                             />
                                         )}
+                                        <div style={{ marginTop: isEditable == index ? '0px' : '70px' }}>
+                                            <Plot
+                                                data={el.data && el?.data[0]?.data}
+                                                layout={el.chartLayout && el?.chartLayout}
+                                            />
+                                            {/* <Plot
+                                                data={tempPanels[index]?.data && tempPanels[index]?.data[0]?.data}
+                                                layout={tempPanels[index] && tempPanels[index]?.chartLayout}
 
-                                        <Plot
-                                            data={tempPanels[index]?.data && tempPanels[index]?.data[0]?.data}
-                                            layout={tempPanels[index] && tempPanels[index]?.chartLayout}
-                                        />
+                                            /> */}
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </Col>
@@ -769,10 +876,10 @@ const ViewChart = (props, ref) => {
                             ) :
                                 (<>
                                     <div className='inner-chart-filters'>
-                                        <span>{tempCard.chart_name?tempCard.chart_name:'Untitled'}</span>
+                                        <span>{tempCard.chart_name ? tempCard.chart_name : 'Untitled'}</span>
 
                                         <div style={{ float: 'right' }}>
-                                            <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }} onClick={()=>onTempApply()}/></span>
+                                            <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }} onClick={() => onTempApply()} /></span>
                                             <span><CloseOutlined style={{ color: '#262626' }} /></span>
                                         </div>
 
@@ -799,10 +906,12 @@ const ViewChart = (props, ref) => {
                                             rawTableData={props.rawTableData}
                                             searchCallback={(data) => searchTempCallback(data)}
                                         />
-                                        <Plot
-                                             data={tempCard?.data && tempCard?.data[0]?.data}
-                                             layout={tempCard && tempCard?.chartLayout}
-                                        />
+                                        {tempCard?.data && (
+                                            <Plot
+                                                data={tempCard?.data && tempCard?.data[0]?.data}
+                                                layout={tempCard && tempCard?.chartLayout}
+                                            />
+                                        )}
                                     </div>
                                 </>
                                 )}

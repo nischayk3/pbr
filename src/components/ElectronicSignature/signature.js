@@ -71,9 +71,15 @@ function Signature(props) {
         req['screen'] = props.screenName
         req['first_name'] = "first_name"
         req['last_name'] = "last_name"
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
+        let headers = {
+            'content-type': 'application/json',
+            'x-access-token': login_response.token ? login_response.token : '',
+            'resource-name': props.appType,
+        };
         try {
 
-            let esign_response = await eSign(req)
+            let esign_response = await eSign(req,headers)
 
             if (esign_response.statuscode == 200) {
                 setPrimaryId(esign_response.primary_id)

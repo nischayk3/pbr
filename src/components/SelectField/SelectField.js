@@ -1,20 +1,24 @@
-import './SelectFieldStyle.scss';
-
-import React from 'react';
-import { Select } from 'antd';
+import "./SelectFieldStyle.scss";
+import React from "react";
+import { Select } from "antd";
 
 const SelectField = (props) => {
   return (
-    <div className='select_field'>
-      {props.label || props.iconlabel && <p>
-        {props.label} {props.iconlabel}
-      </p>}
+    <div className="select_field">
+      {props.label ||
+        (props.iconlabel && (
+          <p>
+            {props.label} {props.iconlabel}
+          </p>
+        ))}
 
       <Select
         placeholder={props.placeholder}
         value={props.selectedValue}
         onChange={props.onChangeSelect}
-        style={{ width: '100%', margin: '0px' }}
+        style={{ width: "100%", margin: "0px" }}
+        allowClear={props.allowClear}
+        disabled={props.disabled}
       >
         {props.selectList &&
           props.selectList.map((item) => (

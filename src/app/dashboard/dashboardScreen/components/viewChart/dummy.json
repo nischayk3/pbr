@@ -1,5 +1,5 @@
 {
-    "dashboard_id": "",
+    "dashboard_disp_id": "",
     "dashboard_descr": "",
     "dashboard_info": "",
     "created_by": "",
@@ -8,7 +8,8 @@
     "changed_on": "",
     "dashboard_name": "",
     "dashboard_description": "",
-    "dashboard_version": 1,
+    "version": "",
+    "dashboard_version": "",
     "dashboard_status": 0,
     "data_filter": {
         "date_range": "",
@@ -35,12 +36,12 @@
                 "x": 0,
                 "y": 0
             },
-            "source_type": "chart",
-            "source_id": "chart1",
+            "source_type": "",
+            "source_id": "",
             "chart_id":"",
             "chart_name":"",
             "data_filter": {
-                "date_range": "2007-03-01T13:00:00Z/2008-05-11T15:30:00Z",
+                "date_range": "",
                 "unapproved_data": 0,
                 "site": "",
                 "site_list":[]
