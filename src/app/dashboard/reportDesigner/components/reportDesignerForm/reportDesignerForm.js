@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Input, Select, Typography, Modal, Table, Card } from 'antd';
-import { BlockOutlined } from '@ant-design/icons';
 import { getCharts } from '../../../../../services/reportDesignerServices';
 import './styles.scss';
 // import { getCharts } from '../../../../../services/reportDesignerServices';
-import ReactDragListView from "react-drag-listview";
 
 
 const { Option } = Select;
@@ -108,7 +106,7 @@ function ReportDesignerForm(props) {
             <div className='reportDesigner-grid'>
                 <div className='reportDesigner-block-design'>
                     <div>
-                        <Text className='filter-text'> Report ID : {reportId ? reportId : "Unassigned"}</Text> <br />
+                        <Text className='filter-text'> Report ID : {reportId ? reportId : "Unassigned"}</Text> <br /> <br />
                         <Text className='filter-text' >Status : {status}</Text><br />
                     </div>
                     <div>
@@ -131,6 +129,7 @@ function ReportDesignerForm(props) {
                                 className='filter-button'
                                 defaultValue={viewIdVersion}
                                 showArrow
+                                showSearch
                                 onChange={(e, value) => {
 
                                     let view_value = value.value;
@@ -147,7 +146,7 @@ function ReportDesignerForm(props) {
                                     <Option value={item.view} key={item.view}>{item.view}</Option>
                                 ))}
                             </Select>
-                            <Button
+                            {/* <Button
                                 disabled={isLoad}
                                 style={{ width: '40px' }}
                                 onClick={() => setVisible(true)}
@@ -156,17 +155,15 @@ function ReportDesignerForm(props) {
                                     style={{ marginRight: '5px' }}
                                     twoToneColor='#093185'
                                 />
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
                     <div>
                         <Text className='filter-text' >Chart ID</Text><br />
-                        <ReactDragListView
-                            nodeSelector=".ant-list-item.draggble"
-                            onDragEnd={onDragEnd}
-                        >
+
                             <Select
                                 row={1}
+                                className="filter-button"
                                 mode="multiple"
                                 allowClear
                                 dropdownStyle={{ border: '10' }}
@@ -174,7 +171,7 @@ function ReportDesignerForm(props) {
                                 placeholder="Select Multiple Charts"
                                 value={selectedChartList}
                                 onChange={handleChange}
-                                style={{ width: '100%', minHeight: '50px', maxHeight: '200px' }}
+                                style={{ width: '100%', minHeight: '70px', maxHeight: '200px',overflow:'auto' }}
                             >
                                 {chartsList.length > 0 ? chartsList.map(item => (
                                     <Option draggable="true" value={item} key={item}>
@@ -184,7 +181,6 @@ function ReportDesignerForm(props) {
 
                                 </Option>}
                             </Select>
-                        </ReactDragListView>
                     </div>
                     {/* <div>
                     <Text className='filter-text' >Status</Text><br />
