@@ -7,7 +7,7 @@ const ViolationTable = ({ postChartData }) => {
   let columns = [];
   const objkeys =
     violationsTable !== undefined && violationsTable.length > 0
-      ? Object.keys(violationsTable[0][0])
+      ? Object.keys(violationsTable[0])
       : [];
   const uniqueArr = (value, index, self) => {
     return self.indexOf(value) === index;
@@ -27,7 +27,7 @@ const ViolationTable = ({ postChartData }) => {
       newCovArr.data &&
       newCovArr.data.forEach((ele) => {
         if (ele.violations) {
-          const violation = ele.violations[0];
+          const violation = ele.violations;
           violation &&
             violation.forEach((ele) => {
               ele.recorded_date = new Date(
@@ -45,7 +45,7 @@ const ViolationTable = ({ postChartData }) => {
         columns={columns}
         pagination={false}
         scroll={{ y: 350 }}
-        dataSource={violationsTable[0]}
+        dataSource={violationsTable}
       />
     </div>
   );
