@@ -11,6 +11,7 @@ import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { sendReport } from '../../../../duck/actions/reportDesignerAction';
+import { showLoader,hideLoader } from '../../../../duck/actions/commonActions';
 
 
 export default function Landing(props) {
@@ -125,6 +126,7 @@ export default function Landing(props) {
 
     const getLoadReport = async (report_id) => {
         message.success(report_id + ' selected')
+        dispatch(showLoader())
         let req = { report_displ_id: report_id }
         let data = await loadReport(req)
         props.getReportData(data)
@@ -134,6 +136,7 @@ export default function Landing(props) {
 
     const getLoadReportGenerator = async (report_id) => {
         message.success(report_id + ' selected')
+        dispatch(showLoader())
         let req = { report_displ_id: report_id }
         let data = await loadReportGen(req)
         console.log(data)
@@ -212,7 +215,9 @@ export default function Landing(props) {
                                         <div className="tile">
                                             {reportList.length > 0 ? reportList.map((i, index) => (
                                                 index < 8 &&
-                                                <StatusBlock id={i.rep_disp_id} status={i.rep_status} />
+                                                <div onClick={()=>{getLoadReport(i.rep_disp_id)}} >
+                                                <StatusBlock id={i.rep_disp_id} status={i.rep_status}  />
+                                                </div>
                                             )) : <></>}
                                         </div>
 
@@ -252,7 +257,9 @@ export default function Landing(props) {
                                     <div className="tile">
                                         {reportList && reportList.length > 0 && reportList.map((i, index) => (
                                             index < 8 &&
+                                            <div onClick={()=>{getLoadReportGenerator(i.rep_disp_id)}} > 
                                             <StatusBlock id={i.rep_disp_id} status={i.rep_status} />
+                                            </div>
                                         ))}
                                     </div>
 

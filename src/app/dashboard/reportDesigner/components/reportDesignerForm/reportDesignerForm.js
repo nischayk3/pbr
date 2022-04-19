@@ -171,7 +171,7 @@ function ReportDesignerForm(props) {
                                 placeholder="Select Multiple Charts"
                                 value={selectedChartList}
                                 onChange={handleChange}
-                                style={{ width: '100%', minHeight: '70px', maxHeight: '200px',overflow:'auto' }}
+                                style={{ width: '100%', minHeight: '60px', maxHeight: '200px',overflow:'auto' }}
                             >
                                 {chartsList.length > 0 ? chartsList.map(item => (
                                     <Option draggable="true" value={item} key={item}>
