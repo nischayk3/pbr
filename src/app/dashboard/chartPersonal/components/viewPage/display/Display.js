@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.scss';
 //antd imports
 import { Collapse, Input, Switch, Checkbox, Select, Row, Col } from 'antd';
@@ -10,12 +10,34 @@ import { figure, legend, axes } from './displayObjects';
 //unpacking antd components
 const { Panel } = Collapse;
 const { Option } = Select;
+import { initialLayout } from './displayFunctions';
+import InputField from '../../../../../../components/InputField/InputField';
+import ColorPicker from '../../../../../../components/ColorPicker/ColorPicker';
+import SelectField from '../../../../../../components/SelectField/SelectField';
 
-const Display = ({ setFigure, setLegend, setAxes }) => {
+const Display = ({ setFigure, setLegend, setAxes, postChartData, setPostChartData }) => {
+    const [layoutData, setLayoutData] = useState(initialLayout);
+    const orientationList = ['Vertical', 'Horizontal'];
 
-    const onLegendChange = (e) => {
-        setLegend({ ...legend, options: { ...legend.options, show: e } })
-    }
+
+    useEffect(() => {
+        const newArr = [...postChartData.data];
+        const xvalue = newArr[0].layout.xaxis.title.text;
+        const yvalue = newArr[0].layout.yaxis.title.text;
+        const o = newArr[0].layout.legend.orientation === 'v' ? 'Vertical' : 'Horizontal'
+        setLayoutData({ ...layoutData, legend: { ...layoutData.legend, orientation: o }, xaxis: { ...layoutData.xaxis, title: { ...layoutData.xaxis.title, text: xvalue } }, yaxis: { ...layoutData.yaxis, title: { ...layoutData.yaxis.title, text: yvalue } } })
+    }, []);
+
+
+    useEffect(() => {
+        const newArr = [...postChartData.data];
+        newArr[0].layout = JSON.parse(JSON.stringify(layoutData));
+        const orientation = newArr[0].layout.legend.orientation;
+        newArr[0].layout.legend.orientation = orientation === 'Vertical' ? 'v' : 'h';
+        setPostChartData({ ...postChartData, data: newArr });
+    }, [layoutData]);
+
+    console.log(layoutData, 'layout');
 
     return (
         <div className='display-section'>
@@ -24,7 +46,7 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                 ghost
             >
                 {/* Figure */}
-                <Panel header="Figure" key='5' style={{ background: 'white !important' }}>
+                <Panel header="Figure" key='1' style={{ background: 'white !important' }}>
                     <div className='figure-container'>
                         <Row className="figure-inputs" gutter={24}>
                             <Col className="gutter-row" span={14}>
@@ -48,52 +70,26 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                         </Row>
                         <Row className="figure-inputs" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Stair Cases:</label>
+                                <label>Height:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={figure.stairCases} onChange={(e) => setFigure({ ...figure, stairCases: e })} />
-                            </Col>
-                        </Row>
-                        <Row className="figure-inputs select-top" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>Area Fill:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-
-                                <Select defaultValue="1" onChange={(e) => setFigure({ ...figure, areaFill: e })}>
-                                    <Option value="1">1</Option>
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
-                                </Select>
-                            </Col>
-                        </Row>
-                        <Row className="figure-inputs select-top" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>Area Gradient:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-
-                                <Select defaultValue="1" onChange={(e) => setFigure({ ...figure, areaGradient: e })}>
-                                    <Option value="1">1</Option>
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
-                                </Select>
+                                <InputField name='height' value={layoutData.height} onChangeInput={(e) => setLayoutData({ ...layoutData, height: e.target.value })} />
                             </Col>
                         </Row>
                         <Row className="figure-inputs" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Points:</label>
+                                <label>Width:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={figure.points} onChange={(e) => setFigure({ ...figure, points: e })} />
+                                <InputField name='height' value={layoutData.width} onChangeInput={(e) => setLayoutData({ ...layoutData, width: e.target.value })} />
                             </Col>
                         </Row>
-                        <Row className="figure-inputs" gutter={24}>
+                        <Row className="figure-inputs select-top" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Alert Treshold:</label>
+                                <label>Plot color:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={figure.alertTreshold} onChange={(e) => setFigure({ ...figure, alertTreshold: e })} />
+                                <ColorPicker value={layoutData.plot_bgcolor} onChange={(e) => setLayoutData({ ...layoutData, plot_bgcolor: e.target.value })} />
                             </Col>
                         </Row>
                         <div className='figure-inputs header'>
@@ -101,25 +97,29 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                         </div>
                         <div className='figure-inputs'>
                             <label>Title</label>
-                            <Input value={figure.panelOptions.title} onChange={(e) => setFigure({ ...figure, panelOptions: { ...figure.panelOptions, title: e.target.value } })} />
-                        </div>
-                        <div className='figure-inputs'>
-                            <label>Title Description</label>
-                            <Input.TextArea maxLength={100} value={figure.panelOptions.desc} onChange={(e) => setFigure({ ...figure, panelOptions: { ...figure.panelOptions, desc: e.target.value } })} />
+                            <InputField value={layoutData.title.text} onChangeInput={(e) => setLayoutData({ ...layoutData, title: { ...layoutData.title, text: e.target.value } })} />
                         </div>
                         <Row className="figure-inputs" gutter={24}>
-                            <Col className="gutter-row" span={24}>
-                                <label>Transparent Background:</label>
+                            <Col className="gutter-row" span={14}>
+                                <label>Font Size:</label>
                             </Col>
-                            <Col className="gutter-row" span={24}>
-                                <Switch size="small" checked={figure.panelOptions.transparentBackground} onChange={(e) => setFigure({ ...figure, panelOptions: { ...figure.panelOptions, transparentBackground: e } })} />
+                            <Col className="gutter-row" span={10}>
+                                <InputField value={layoutData.title.font.size} onChangeInput={(e) => setLayoutData({ ...layoutData, title: { ...layoutData.title, font: { ...layoutData.title.font, size: e.target.value } } })} />
+                            </Col>
+                        </Row>
+                        <Row className="figure-inputs" gutter={24}>
+                            <Col className="gutter-row" span={14}>
+                                <label>Font Color:</label>
+                            </Col>
+                            <Col className="gutter-row" span={10}>
+                                <ColorPicker value={layoutData.title.font.color} onChange={(e) => setLayoutData({ ...layoutData, title: { ...layoutData.title, font: { ...layoutData.title.font, color: e.target.value } } })} />
                             </Col>
                         </Row>
                     </div>
                 </Panel>
 
                 {/* Legend */}
-                <Panel header='Legend' key='6'>
+                <Panel header='Legend' key='2'>
                     <div className='figure-container'>
                         <div className="header option-header">Options</div>
                         <Row className="figure-inputs" gutter={24}>
@@ -127,103 +127,7 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                                 <label>Show:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={legend.options.show} onChange={onLegendChange} />
-                            </Col>
-                        </Row>
-                        <Row className="figure-inputs" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>At table:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={legend.options.atTable} onChange={(e) => setLegend({ ...legend, options: { ...legend.options, atTable: e } })} />
-                            </Col>
-                        </Row>
-                        <Row className="figure-inputs" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>To right:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={legend.options.toRight} onChange={(e) => setLegend({ ...legend, options: { ...legend.options, toRight: e } })} />
-                            </Col>
-                        </Row>
-                        <div className="header">Values</div>
-                        <Row className="figure-inputs" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>Min:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={legend.values.min} onChange={(e) => setLegend({ ...legend, values: { ...legend.values, min: e } })} />
-                            </Col>
-                        </Row>
-                        <Row className="figure-inputs" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>Max:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={legend.values.max} onChange={(e) => setLegend({ ...legend, values: { ...legend.values, max: e } })} />
-                            </Col>
-                        </Row>
-                        <Row className="figure-inputs" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>Avg:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={legend.values.avg} onChange={(e) => setLegend({ ...legend, values: { ...legend.values, avg: e } })} />
-                            </Col>
-                        </Row>
-                        <Row className="figure-inputs" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>Current:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={legend.values.current} onChange={(e) => setLegend({ ...legend, values: { ...legend.values, current: e } })} />
-                            </Col>
-                        </Row>
-                        <Row className="figure-inputs" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>Total:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={legend.values.total} onChange={(e) => setLegend({ ...legend, values: { ...legend.values, total: e } })} />
-                            </Col>
-                        </Row>
-                        <Row className="figure-inputs" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>Decimal:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={legend.values.decimal} onChange={(e) => setLegend({ ...legend, values: { ...legend.values, decimal: e } })} />
-                            </Col>
-                        </Row>
-                        <div className="header">Hide Series</div>
-                        <Row className="figure-inputs" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>With only null:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={legend.hideSeries.withOnlyNull} onChange={(e) => setLegend({ ...legend, hideSeries: { ...legend.hideSeries, withOnlyNull: e } })} />
-                            </Col>
-                        </Row>
-                        <Row className="figure-inputs" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>with only Zero:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={legend.hideSeries.withOnlyZero} onChange={(e) => setLegend({ ...legend, hideSeries: { ...legend.hideSeries, withOnlyZero: e } })} />
-                            </Col>
-                        </Row>
-                    </div>
-                </Panel>
-                {/* Axes */}
-                <Panel header='Axes' key='7'>
-                    <div className='figure-container'>
-                        <div className="header option-header">X-Axis</div>
-                        <Row className="figure-inputs" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>Show:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={axes.leftX.show} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, show: e } })} />
+                                <Switch size="small" checked={layoutData.showlegend} onChange={(e) => setLayoutData({ ...layoutData, showlegend: e })} />
                             </Col>
                         </Row>
                         <Row className="figure-inputs" gutter={24}>
@@ -231,30 +135,69 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                                 <label>Title:</label>
                             </Col>
                             <Col className="gutter-row select-top" span={10}>
-                                <Select defaultValue="Short" value={axes.leftX.unit} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, unit: e } })}>
-                                    <Option value="Short">Short</Option>
-                                    <Option value="Long">Long</Option>
-                                </Select>
+                                <InputField value={layoutData.legend.title.text} onChangeInput={(e) => setLayoutData({ ...layoutData, legend: { ...layoutData.legend, title: { ...layoutData.legend.title, text: e.target.value } } })} />
                             </Col>
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Title Size:</label>
+                                <label>Legend Size:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Select defaultValue="Linear" value={axes.leftX.scale} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, scale: e } })}>
-                                    <Option value="Linear">Linear</Option>
-                                </Select>
+                                <InputField value={layoutData.legend.title.font.size} onChangeInput={(e) => setLayoutData({ ...layoutData, legend: { ...layoutData.legend, title: { ...layoutData.legend.title, font: { ...layoutData.legend.title.font, size: e.target.value } } } })} />
                             </Col>
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Title color:</label>
+                                <label>Legend color:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Select defaultValue="Auto" value={axes.leftX.ymin} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, ymin: e } })}>
-                                    <Option value="Auto">Auto</Option>
-                                </Select>
+                                <ColorPicker value={layoutData.legend.title.font.color} onChange={(e) => setLayoutData({ ...layoutData, legend: { ...layoutData.legend, title: { ...layoutData.legend.title, font: { ...layoutData.legend.title.font, color: e.target.value } } } })} />
+                            </Col>
+                        </Row>
+                        <Row className="figure-inputs select-top" gutter={24}>
+                            <Col className="gutter-row" span={14}>
+                                <label>Border Width:</label>
+                            </Col>
+                            <Col className="gutter-row" span={10}>
+                                <InputField value={layoutData.legend.borderwidth} onChangeInput={(e) => setLayoutData({ ...layoutData, legend: { ...layoutData.legend, borderwidth: e.target.value } })} />
+                            </Col>
+                        </Row>
+                        <Row className="figure-inputs select-top" gutter={24}>
+                            <Col className="gutter-row" span={14}>
+                                <label>Border color:</label>
+                            </Col>
+                            <Col className="gutter-row" span={10}>
+                                <ColorPicker value={layoutData.legend.bordercolor} onChange={(e) => setLayoutData({ ...layoutData, legend: { ...layoutData.legend, bordercolor: e.target.value } })} />
+                            </Col>
+                        </Row>
+                        <Row className="figure-inputs select-top" gutter={24}>
+                            <Col className="gutter-row" span={14}>
+                                <label>Background color:</label>
+                            </Col>
+                            <Col className="gutter-row" span={10}>
+                                <ColorPicker value={layoutData.legend.bgcolor} onChange={(e) => setLayoutData({ ...layoutData, legend: { ...layoutData.legend, bgcolor: e.target.value } })} />
+                            </Col>
+                        </Row>
+                        <Row className="figure-inputs select-top" gutter={24}>
+                            <Col className="gutter-row" span={14}>
+                                <label>Orientation:</label>
+                            </Col>
+                            <Col className="gutter-row" span={10}>
+                                <SelectField selectedValue={layoutData.legend.orientation} selectList={orientationList} onChangeSelect={(e) => setLayoutData({ ...layoutData, legend: { ...layoutData.legend, orientation: e } })} />
+                            </Col>
+                        </Row>
+                    </div>
+                </Panel>
+                {/* Axes */}
+                <Panel header='Axes' key='3'>
+                    <div className='figure-container'>
+                        <div className="header option-header">X-Axis</div>
+                        <Row className="figure-inputs" gutter={24}>
+                            <Col className="gutter-row" span={14}>
+                                <label>Show:</label>
+                            </Col>
+                            <Col className="gutter-row" span={10}>
+                                <Switch size="small" checked={layoutData.xaxis.visible} onChange={(e) => setLayoutData({ ...layoutData, xaxis: { ...layoutData.xaxis, visible: e } })} />
                             </Col>
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
@@ -262,9 +205,7 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                                 <label>Show Tick Labels:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Select defaultValue="Auto" value={axes.leftX.ymax} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, ymax: e } })}>
-                                    <Option value="Auto">Auto</Option>
-                                </Select>
+                                <Switch size="small" checked={layoutData.xaxis.showticklabels} onChange={(e) => setLayoutData({ ...layoutData, xaxis: { ...layoutData.xaxis, showticklabels: e } })} />
                             </Col>
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
@@ -272,9 +213,7 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                                 <label>Show Line:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Select defaultValue="Auto" value={axes.leftX.decimal} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, decimal: e } })}>
-                                    <Option value="Auto">Auto</Option>
-                                </Select>
+                                <Switch size="small" checked={layoutData.xaxis.showline} onChange={(e) => setLayoutData({ ...layoutData, xaxis: { ...layoutData.xaxis, showline: e } })} />
                             </Col>
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
@@ -282,9 +221,31 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                                 <label>Show Grid:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Select defaultValue="Auto" value={axes.leftX.label} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, label: e } })}>
-                                    <Option value="Auto">Auto</Option>
-                                </Select>
+                                <Switch size="small" checked={layoutData.xaxis.showgrid} onChange={(e) => setLayoutData({ ...layoutData, xaxis: { ...layoutData.xaxis, showgrid: e } })} />
+                            </Col>
+                        </Row>
+                        <Row className="figure-inputs" gutter={24}>
+                            <Col className="gutter-row" span={14}>
+                                <label>Title:</label>
+                            </Col>
+                            <Col className="gutter-row select-top" span={10}>
+                                <InputField value={layoutData.xaxis.title.text} onChangeInput={(e) => setLayoutData({ ...layoutData, xaxis: { ...layoutData.xaxis, title: { ...layoutData.xaxis.title, text: e.target.value } } })} />
+                            </Col>
+                        </Row>
+                        <Row className="figure-inputs select-top" gutter={24}>
+                            <Col className="gutter-row" span={14}>
+                                <label>Title Size:</label>
+                            </Col>
+                            <Col className="gutter-row" span={10}>
+                                <InputField value={layoutData.xaxis.title.font.size} onChangeInput={(e) => setLayoutData({ ...layoutData, xaxis: { ...layoutData.xaxis, title: { ...layoutData.xaxis.title, font: { ...layoutData.xaxis.title.font, size: e.target.value } } } })} />
+                            </Col>
+                        </Row>
+                        <Row className="figure-inputs select-top" gutter={24}>
+                            <Col className="gutter-row" span={14}>
+                                <label>Title color:</label>
+                            </Col>
+                            <Col className="gutter-row" span={10}>
+                                <ColorPicker value={layoutData.xaxis.title.font.color} onChange={(e) => setLayoutData({ ...layoutData, xaxis: { ...layoutData.xaxis, title: { ...layoutData.xaxis.title, font: { ...layoutData.xaxis.title.font, color: e.target.value } } } })} />
                             </Col>
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
@@ -292,99 +253,72 @@ const Display = ({ setFigure, setLegend, setAxes }) => {
                                 <label>Grid Color:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Select defaultValue="Auto" value={axes.leftX.label} onChange={(e) => setAxes({ ...axes, leftX: { ...axes.leftX, label: e } })}>
-                                    <Option value="Auto">Auto</Option>
-                                </Select>
+                                <ColorPicker value={layoutData.xaxis.gridcolor} onChange={(e) => setLayoutData({ ...layoutData, xaxis: { ...layoutData.xaxis, gridcolor: e.target.value } })} />
                             </Col>
                         </Row>
-                        <div className="header">Right X</div>
+                        <div className="header">Y-Axis</div>
                         <Row className="figure-inputs" gutter={24}>
                             <Col className="gutter-row" span={14}>
                                 <label>Show:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={axes.rightX.show} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, show: e } })} />
+                                <Switch size="small" checked={layoutData.yaxis.visible} onChange={(e) => setLayoutData({ ...layoutData, yaxis: { ...layoutData.yaxis, visible: e } })} />
                             </Col>
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Unit:</label>
+                                <label>Show Tick Labels:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Select value={axes.rightX.unit} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, unit: e } })}>
-                                    <Option value="Short">Short</Option>
-                                    <Option value="Long">Long</Option>
-                                </Select>
+                                <Switch size="small" checked={layoutData.yaxis.showticklabels} onChange={(e) => setLayoutData({ ...layoutData, yaxis: { ...layoutData.yaxis, showticklabels: e } })} />
                             </Col>
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Scale:</label>
+                                <label>Show Line:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Select value={axes.rightX.scale} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, scale: e } })}>
-                                    <Option value="Linear">Linear</Option>
-                                </Select>
+                                <Switch size="small" checked={layoutData.yaxis.showline} onChange={(e) => setLayoutData({ ...layoutData, yaxis: { ...layoutData.yaxis, showline: e } })} />
                             </Col>
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Y Min:</label>
+                                <label>Show Grid:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Select value={axes.rightX.ymin} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, ymin: e } })}>
-                                    <Option value="Auto">Auto</Option>
-                                </Select>
+                                <Switch size="small" checked={layoutData.yaxis.showgrid} onChange={(e) => setLayoutData({ ...layoutData, yaxis: { ...layoutData.yaxis, showgrid: e } })} />
                             </Col>
                         </Row>
-                        <Row className="figure-inputs select-top" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>Y Max:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Select value={axes.rightX.ymax} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, ymax: e } })}>
-                                    <Option value="Auto">Auto</Option>
-                                </Select>
-                            </Col>
-                        </Row>
-                        <Row className="figure-inputs select-top" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>Decimal:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Select value={axes.rightX.decimal} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, decimal: e } })}>
-                                    <Option value="Auto">Auto</Option>
-                                </Select>
-                            </Col>
-                        </Row>
-                        <Row className="figure-inputs select-top" gutter={24}>
-                            <Col className="gutter-row" span={14}>
-                                <label>Label:</label>
-                            </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Select value={axes.rightX.label} onChange={(e) => setAxes({ ...axes, rightX: { ...axes.rightX, label: e } })}>
-                                    <Option value="Auto">Auto</Option>
-                                </Select>
-                            </Col>
-                        </Row>
-                        <div className="header">X - Axis</div>
                         <Row className="figure-inputs" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Show:</label>
+                                <label>Title:</label>
                             </Col>
-                            <Col className="gutter-row" span={10}>
-                                <Switch size="small" checked={axes.xaxis.show} onChange={(e) => setAxes({ ...axes, xaxis: { ...axes.xaxis, show: e } })} />
+                            <Col className="gutter-row select-top" span={10}>
+                                <InputField value={layoutData.yaxis.title.text} onChangeInput={(e) => setLayoutData({ ...layoutData, yaxis: { ...layoutData.yaxis, title: { ...layoutData.yaxis.title, text: e.target.value } } })} />
                             </Col>
                         </Row>
                         <Row className="figure-inputs select-top" gutter={24}>
                             <Col className="gutter-row" span={14}>
-                                <label>Unit:</label>
+                                <label>Title Size:</label>
                             </Col>
                             <Col className="gutter-row" span={10}>
-                                <Select value={axes.xaxis.unit} onChange={(e) => setAxes({ ...axes, xaxis: { ...axes.xaxis, unit: e } })}>
-                                    <Option value="Short">Short</Option>
-                                    <Option value="Long">Long</Option>
-                                </Select>
+                                <InputField value={layoutData.yaxis.title.font.size} onChangeInput={(e) => setLayoutData({ ...layoutData, yaxis: { ...layoutData.yaxis, title: { ...layoutData.yaxis.title, font: { ...layoutData.yaxis.title.font, size: e.target.value } } } })} />
+                            </Col>
+                        </Row>
+                        <Row className="figure-inputs select-top" gutter={24}>
+                            <Col className="gutter-row" span={14}>
+                                <label>Title color:</label>
+                            </Col>
+                            <Col className="gutter-row" span={10}>
+                                <ColorPicker value={layoutData.yaxis.title.font.color} onChange={(e) => setLayoutData({ ...layoutData, yaxis: { ...layoutData.yaxis, title: { ...layoutData.yaxis.title, font: { ...layoutData.yaxis.title.font, color: e.target.value } } } })} />
+                            </Col>
+                        </Row>
+                        <Row className="figure-inputs select-top" gutter={24}>
+                            <Col className="gutter-row" span={14}>
+                                <label>Grid Color:</label>
+                            </Col>
+                            <Col className="gutter-row" span={10}>
+                                <ColorPicker value={layoutData.yaxis.gridcolor} onChange={(e) => setLayoutData({ ...layoutData, yaxis: { ...layoutData.xaxis, gridcolor: e.target.value } })} />
                             </Col>
                         </Row>
                     </div>

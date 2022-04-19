@@ -88,8 +88,8 @@ pipeline {
                        sed -i -e "s@IMAGE@\'"$DOCKER_IMAGE/mdh-cpv-ui-$BUILD_NUMBER"\'@g"  bms-k8s-dev-deployment.yml
                        echo "Deploying the latest docker image to dev"
                        kubectl apply -f bms-k8s-dev-deployment.yml --record
-                       kubectl -n bms-dev get pods
-                       kubectl -n bms-dev rollout history deployments.v1.apps/cpv-nextgen-ui
+                       kubectl -n mdh-cpv-dev get pods
+                       kubectl -n mdh-cpv-dev rollout history deployments.v1.apps/cpv-nextgen-ui
                     '''
                  }
                  }
