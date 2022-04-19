@@ -186,21 +186,21 @@ function ReportDesignerDynamicSections(props) {
                                                 </center> */}
                                             </> : <></>
                                         }
-                                        <div className="chart-block-section">
-                                        <div className="chart-block">
-                                            {showChart[name] ?
-                                                list.map((i) =>
-                                                (<Form.Item {...restField} name={[name, 'select']}>
-                                                    <div className='chart-tiless' onClick={(e) => addChart(e.target.innerHTML, name)}>
-                                                        {addedCharts[`${name + 1}`] && addedCharts[`${name + 1}`].map((j) => (j == i ? <div className="chart-tile"> <CheckCircleOutlined style={{ color: 'green' }} /></div> : <></>))}
-                                                        <p className="charttile-content">{i}</p>
-                                                    </div>
-                                                </Form.Item>
-                                                )
-                                                ) : <></>
-                                            }
-                                            {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: 0, right: 0, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> <u disabled={props.show}></u> */}
-                                        </div>
+                                        <div >
+                                            <div className="chart-block">
+                                                {showChart[name] ?
+                                                    list.map((i) =>
+                                                    (<Form.Item {...restField} name={[name, 'select']}>
+                                                        <div className='chart-tiless' onClick={(e) => addChart(e.target.innerHTML, name)}>
+                                                            {addedCharts[`${name + 1}`] && addedCharts[`${name + 1}`].map((j) => (j == i ? <div className="chart-tile"> <CheckCircleOutlined style={{ color: 'green' }} /></div> : <></>))}
+                                                            <p className="charttile-content">{i}</p>
+                                                        </div>
+                                                    </Form.Item>
+                                                    )
+                                                    ) : <></>
+                                                }
+                                                {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: 0, right: 0, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> <u disabled={props.show}></u> */}
+                                            </div>
                                         </div>
                                         {props.charts_layout[`${name + 1}`] && props.charts_layout[`${name + 1}`].map((i) =>
                                         (

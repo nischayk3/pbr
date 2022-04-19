@@ -71,7 +71,8 @@
   .generator-header
   {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr  ;
+    grid-gap:5px
   }
   .header-value
   {
@@ -84,4 +85,5 @@ font-weight: 400;
 font-size: 14px;
 line-height: 22px;
 color: #262626;
+margin-left: 15px;
   }

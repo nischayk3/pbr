@@ -7,6 +7,7 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../duck/actions/commonActions';
 import { putJob } from '../../../services/jobScheduleService';
+import { PaperClipOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 const { Option } = Select
@@ -119,16 +120,16 @@ const ReportNotify = (props) => {
         email_config['scheduled_start'] = scheduleEmailStartDate
         email_config['scheduled_time'] = scheduleEmailTime
         email_config["frequency_unit"] = selectedSchedule,
-        email_config["email_list"] = emailList,
-        email_config['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
+            email_config["email_list"] = emailList,
+            email_config['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
 
         req['email_config'] = email_config
         req['frequency'] = 1
         req["frequency_unit"] = selectedSchedule,
-        req["job_status"] = "scheduled",
-        req["job_type"] = 'email',
-        req['notify_emails'] = emailList,
-        req["scheduled_end"] = '2030-12-31'
+            req["job_status"] = "scheduled",
+            req["job_type"] = 'email',
+            req['notify_emails'] = emailList,
+            req["scheduled_end"] = '2030-12-31'
         req["scheduled_start"] = scheduleEmailStartDate
 
         let res = await putJob(req)
@@ -203,16 +204,18 @@ const ReportNotify = (props) => {
                     <p className="email-content"> Hey,<br /><br />
 
                         This is to inform you of the recept update to [report variant name]. Check the attachment for details.<br />
-                        Visit www.cpv-mareana.com/alert-dashboard to know more.<br />
+                        Visit <a>www.cpv-mareana.com/alert-dashboard</a> to know more.<br />
                         <br />
                         Regards,<br />
                         [variant_username]</p>
-                    {emailList.length > 0 && (
-                        <div style={{ marginTop: '50px' }}>
-                            <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
-                            <Button className='clear-schedule'>Clear</Button>
-                        </div>
-                    )}
+
+                    <div className="attachment-report"> <span><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text"> Report_name.pdf</span></span></div>
+                    {/* {emailList.length > 0 && ( */}
+                    <div style={{ marginTop: '50px' }}>
+                        <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
+                        <Button className='clear-schedule'>Clear</Button>
+                    </div>
+                    {/* )} */}
                     <Divider />
                 </TabPane>
                 <TabPane tab='Email Schedule' key="email_schedule">
@@ -249,7 +252,6 @@ const ReportNotify = (props) => {
                                                     <Radio value={3} className='alerts-radio'>Every <span style={{ width: '100px', marginRight: '20px' }}>
                                                         <InputField className='alerts-radio' />
                                                     </span>
-
                                                         <SelectField
                                                             className='alerts-radio'
                                                             placeholder='Select HH/MM/SS'
@@ -266,16 +268,14 @@ const ReportNotify = (props) => {
                                 </div>
                             ) : ''}
                             {selectedSchedule == 'Weekly' ? (
-                                <div>
-                                    <div className="select-days">
-                                        <Button className={selectedDays['Sunday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Sunday')} >S</Button>
-                                        <Button className={selectedDays['Monday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Monday')} >M</Button>
-                                        <Button className={selectedDays['Tuesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Tuesday')}>T</Button>
-                                        <Button className={selectedDays['Wednesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Wednesday')} >W</Button>
-                                        <Button className={selectedDays['Thursday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Thursday')} >T</Button>
-                                        <Button className={selectedDays['Friday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Friday')} >F</Button>
-                                        <Button className={selectedDays['Saturday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Saturday')} >S</Button>
-                                    </div>
+                                <div className="select-days">
+                                    <Button className={selectedDays['Sunday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Sunday')} >S</Button>
+                                    <Button className={selectedDays['Monday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Monday')} >M</Button>
+                                    <Button className={selectedDays['Tuesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Tuesday')}>T</Button>
+                                    <Button className={selectedDays['Wednesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Wednesday')} >W</Button>
+                                    <Button className={selectedDays['Thursday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Thursday')} >T</Button>
+                                    <Button className={selectedDays['Friday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Friday')} >F</Button>
+                                    <Button className={selectedDays['Saturday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Saturday')} >S</Button>
                                 </div>
                             ) : ''}
 
@@ -311,6 +311,8 @@ const ReportNotify = (props) => {
                         )}
                     </div>
                 </TabPane>
+                <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
+                <Button className='clear-schedule'>Clear</Button>
             </Tabs>
         </div>
 

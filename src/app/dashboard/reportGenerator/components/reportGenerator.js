@@ -240,6 +240,7 @@ function ReportGenerator() {
     const getTableData = (obj, rep_layout) => {
         console.log(obj, rep_layout)
         obj = obj.layout_info
+        console.log(obj)
         let headingList = []
         let allSections = []
         let titleHeading = obj['titlepage'] && obj['titlepage'].heading ? obj['titlepage'].heading : ''
@@ -260,18 +261,18 @@ function ReportGenerator() {
 
     const unloadTest = (ReportData) => {
 
+        console.log(ReportData)
         dispatch(showLoader())
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setChartLayout(ReportData.charts_layout ? createChartRecord(ReportData.charts_layout) : {})
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setCharts(ReportData['chart_int_ids'] ? createArraObj(ReportData['chart_int_ids']) : [])
-        setTable(ReportData['layout_info'] ? getTableData(ReportData['layout_info'], ReportData.charts_layout ? ReportData.charts_layout : {}) : {})
+        setTable(ReportData['layout_info'] ? getTableData(ReportData['layout_info'], ReportData.layout_info.charts_layout ? ReportData.layout_info.charts_layout : {}) : {})
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
-        setEmailList(ReportData.share ? ReportData.share.email_list : [])
+        // setEmailList(ReportData.share ? ReportData.share.email_list : [])
         setSchedule(ReportData.share ? ReportData.share.frequency_unit : '')
-
         dispatch(hideLoader());
         // setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
     }
@@ -322,7 +323,7 @@ function ReportGenerator() {
         obj['user'] = user
         obj['variant_name'] = user + '_variant'
         obj['chart_info'] = { charts: chart }
-        obj['chart_layout'] = chartLayout
+        obj['charts_layout'] = chartLayout
         obj['days_layout'] = selectedDays
 
 

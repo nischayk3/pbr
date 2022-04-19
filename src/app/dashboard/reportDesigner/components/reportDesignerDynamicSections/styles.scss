@@ -70,15 +70,15 @@
   
 
 .Legend-colorBox {
-	width: 1rem;
-	height: 1rem;
-	display: inline-block;
-	background-color: blue;
-	border-radius: 50%;
-	font-size: 16px;
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  background-color: blue;
+  border-radius: 50%;
+  font-size: 16px;
 }
 .ant-card-head {
-	background-color: #f1f7ff !important;
+  background-color: #f1f7ff !important;
 }
 .reportDesigner-container {
   padding: 20px;
@@ -138,9 +138,9 @@
 }
 
 .reportDesigner-sharing {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-gap: 10px 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px 20px;
 }
 
 .bg-white {
@@ -179,15 +179,15 @@
   }
 }
 .reportDesigner-headerTableBlock {
-	table {
-		text-align: center;
+  table {
+    text-align: center;
 
-		thead.ant-table-thead {
-			th {
-				text-align: center;
-			}
-		}
-	}
+    thead.ant-table-thead {
+      th {
+        text-align: center;
+      }
+    }
+  }
 }
 
 // .ant-form-item-control {
@@ -330,9 +330,10 @@ opacity: 1px;
 .chart-block
 {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr ;
-  grid-gap: 5px;
-  margin-left: 10%;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;
+  grid-gap: 24px;
+  margin-left: 5%;
+  margin-right: 5%;
 }
   .chart-tile
 {
@@ -356,21 +357,21 @@ opacity: 1px;
   margin-bottom: 20px;
   margin-top: 10px;
 }
-// .chart-block-section
-// {
-//   background: #FFFFFF;
-//   align-items: flex-start;
-//   padding: 0px;
+.chart-block-section
+{
+  background: #FFFFFF;
+  align-items: flex-start;
+  padding: 0px;
 
-//   height: 201px;
-//   /* Gray / gray-5 */
-//   margin-left: 35px;
-//   margin-right: 35px;
+  height: 201px;
+  /* Gray / gray-5 */
+  margin-left: 35px;
+  margin-right: 35px;
   
-//   border: 1px dashed #D9D9D9;
-//   box-sizing: border-box;
-//   border-radius: 2px;
-// }
+  border: 1px dashed #D9D9D9;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
 
 .chart-tiless
 { 
@@ -399,69 +400,74 @@ text-align: center;
   overflow: hidden;
 }
 .add-chart {
-	align-items: center;
-	padding: 5px 16px;
-	position: inherit;
-	margin-left: 870px;
-	width: 108px;
-	height: 32px;
-	left: 1140px;
-	top: 109px;
-	color: #093185;
 
-	background: #ffffff;
-	border: 1px dashed #d9d9d9;
-	box-sizing: border-box;
-	border-radius: 2px;
-	margin-bottom: 25px;
-}
-.add-chart-btn {
-	padding: 5px 16px;
-	width: 93px;
-	height: 32px;
-	background: #f5f5f5;
-	border: 1px solid #afafaf;
-	border-radius: 2px;
-	margin-bottom: 20px;
-}
+align-items: center;
+padding: 5px 16px;
+position:inherit;
+margin-left: 870px;
+width: 108px;
+height: 32px;
+left: 1140px;
+top: 109px;
+color: #093185;
 
-.section-name {
-	font-family: 'Roboto';
-	font-style: normal;
-	color: #9b9b9b;
-	margin-left: 35px;
-	margin-top: 20px;
+background: #FFFFFF;
+border: 1px dashed #D9D9D9;
+box-sizing: border-box;
+border-radius: 2px;
+margin-bottom: 25px;
+  
+}
+.add-chart-btn
+{
+padding: 5px 16px;
+width: 93px;
+height: 32px;
+background: #F5F5F5;
+border: 1px solid #AFAFAF;
+border-radius: 2px;
+margin-bottom: 20px;
 }
 
-.chart-name {
-	font-family: 'Roboto';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 16px;
-	margin: 20px;
+.section-name
+{font-family: 'Roboto';
+  font-style: normal;
+  color : #9B9B9B;
+  margin-left: 35px;
+  margin-top: 20px;
 }
 
-.add-chart-box {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-	padding: 60px 16px 5px 56px;
+.chart-name
+{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  margin: 20px;
+}
 
-	position: absolute;
-	width: 194px;
-	height: 137px;
-	left: 460px;
-	top: 130px;
+.add-chart-box
+{
+  display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 60px 16px 5px 56px;
 
-	/* Gray / gray-1 */
+position: absolute;
+width: 194px;
+height: 137px;
+left: 460px;
+top: 130px;
 
-	background: #ffffff;
-	/* Gray / gray-5 */
+/* Gray / gray-1 */
 
-	border: 1px dashed #d9d9d9;
-	box-sizing: border-box;
-	border-radius: 4px;
+background: #FFFFFF;
+/* Gray / gray-5 */
+
+border: 1px dashed #D9D9D9;
+box-sizing: border-box;
+border-radius: 4px;
 }
 .circle {
   background: red;
