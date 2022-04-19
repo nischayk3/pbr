@@ -95,7 +95,7 @@ const chartComponent = (props) => {
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
-            dispatch(showNotification('error', 'No Data In Chart'));
+            // dispatch(showNotification('error', 'No Data In Chart'));
         }
     }
     const layout = {
