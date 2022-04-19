@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Popconfirm, Tag } from 'antd';
 import { DeleteOutlined, DeleteTwoTone } from '@ant-design/icons';
-import { getJob, putJob } from '../../../services/jobScheduleService';
+import { getJob, putJob, deleteJob } from '../../../services/jobScheduleService';
 import moment from 'moment';
 import { dispatch } from 'd3';
 import { showNotification } from '../../../duck/actions/commonActions';
@@ -25,6 +25,17 @@ export default function scheduledAlertsTable(props) {
         });
     };
 
+    const DeleteJob = async (jobId) => {
+        let req = {
+            job_id: jobId
+        }
+
+        let delete_response = await deleteJob(req)
+        if (delete_response.Status == 200) {
+            dispatch(showNotification('success', `${jobId} deleted successfully`))
+        }
+    }
+
     const columns = [
         {
             title: 'Action',
@@ -32,7 +43,7 @@ export default function scheduledAlertsTable(props) {
             dataIndex: 'action',
             render: (text) =>
             (
-                <Popconfirm>
+                <Popconfirm onConfirm={() => DeleteJob(text)}>
                     <DeleteTwoTone twoToneColor="red" />
                 </Popconfirm>
             )

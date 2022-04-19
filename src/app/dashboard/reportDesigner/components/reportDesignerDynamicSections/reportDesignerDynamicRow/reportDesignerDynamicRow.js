@@ -1,7 +1,6 @@
 import React from 'react';
 import { Form, Input, Popconfirm, Switch } from 'antd';
 import {
-    PlusSquareOutlined,
     DeleteTwoTone,
     PlusOutlined
 } from '@ant-design/icons';
@@ -111,9 +110,15 @@ function ReportDesignerDynamicRow(props) {
                             </td> */}
                         </tr>
                     ))}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
                     <Form.Item>
-                        <div className="add-row-btn" onClick={() => add()} > <PlusOutlined style={{ color: '#093185' }} /> Add row </div>
+                        <div className="add-row-btn" onClick={() => add()} > <PlusOutlined style={{ color: '#093185',marginLeft:'15px' }} /> Add new row </div>
                     </Form.Item>
+                    </td>
+                    </tr>
                 </>
             )}
         </Form.List>

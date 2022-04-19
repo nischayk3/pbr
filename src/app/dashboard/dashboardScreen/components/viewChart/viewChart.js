@@ -470,12 +470,14 @@ const ViewChart = (props, ref) => {
     }
 
     const removeCard = (index) => {
-        console.log(index);
-        let obj = { ...dashboardInfo };
+        let arr=[...tempPanels]
+        arr.splice(index,1);
+        let obj = JSON.parse(JSON.stringify(dashboardInfo));
         obj.panels = [...obj.panels];
         obj.panels.splice(index, 1);
         setDashboardInfo(obj);
-        setTempPanels(tempPanels.splice(index, 1));
+        setTempPanels(arr);
+
 
     }
 
