@@ -17,15 +17,13 @@ import './styles.scss';
 import {
 	getViewConfig,
 	getViews,
+	saveFunction,
 } from '../../../../services/viewCreationPublishing';
 import {
 	materialsParameterTree,
 	adHocFilesParameterTree,
 } from '../../../../duck/actions/fileUploadAction';
-import {
-	saveFunction,
-	updateFunction,
-} from '../../../../duck/actions/viewCreationAction';
+import { updateFunction } from '../../../../duck/actions/viewCreationAction';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Loading from '../../../../components/Loading';
 import Signature from '../../../../components/ElectronicSignature/signature';
@@ -39,9 +37,15 @@ import ViewSummaryData from './viewSummary';
 import viewdatajson from './view.json';
 import LandingPage from '../components/landing/viewCreationLanding';
 import InputField from '../../../../components/InputField/InputField';
+import {
+	hideLoader,
+	showLoader,
+	showNotification,
+} from '../../../../duck/actions/commonActions';
 const { Panel } = Collapse;
 
-const ViewCreation = () => {
+const ViewCreation = props => {
+	const location = useLocation();
 	const molecule_Id = useSelector(
 		state => state.viewCreationReducer.molecule_id
 	);
@@ -60,7 +64,7 @@ const ViewCreation = () => {
 	);
 
 	const dispatch = useDispatch();
-	const location = useLocation();
+
 	const [count, setCount] = useState(1);
 	const [params, setParams] = useState(false);
 
@@ -437,6 +441,7 @@ const ViewCreation = () => {
 			filters: null,
 		});
 	};
+
 	useEffect(() => {
 		if (saveMathFun === true) {
 			updateData();
@@ -682,6 +687,16 @@ const ViewCreation = () => {
 		}
 	}, [materialsList]);
 
+	useEffect(() => {
+		let pathString = queryString.parse(location.search);
+		console.log('pathString.......', pathString);
+		let _reqLoad = {
+			view_disp_id: pathString.view_disp_id,
+			view_version: pathString.view_version,
+		};
+		loadView(_reqLoad);
+	}, []);
+
 	const handleSaveVisible = () => {
 		setIsSaveVisible(true);
 	};
@@ -704,12 +719,12 @@ const ViewCreation = () => {
 			password: 'mareana_pass1',
 		};
 		try {
-			const response = await saveFunction(viewData[0], headers);
+			const response = await saveFunction(viewData, headers);
 			if (response.statuscode === 200) {
 				// setViewDisplayId(response.view_disp_id);
 				// setViewStatus(response.view_status);
 				// setViewVersion(response.view_version);
-				message.success('Saved Successfully');
+				//	message.success('Saved Successfully');
 				// updateSaved.current = true;
 			} else {
 				message.error(response);
@@ -729,6 +744,17 @@ const ViewCreation = () => {
 		setViewJson(newArr);
 
 		setViewName(e.target.value);
+	};
+
+	const loadView = async _reqLoad => {
+		try {
+			dispatch(showLoader());
+			const loadViewRes = await getViewConfig(_reqLoad);
+			console.log('loadViewRes', loadViewRes);
+		} catch (err) {
+			dispatch(hideLoader());
+			dispatch(showNotification('error', err));
+		}
 	};
 
 	return (

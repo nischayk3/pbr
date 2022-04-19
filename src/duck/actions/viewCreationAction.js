@@ -15,17 +15,6 @@ export const moleculeName = payload => ({
 	payload,
 });
 
-export const saveFunction = (request, headers) => {
-	return Service.post(BMS_APP_PYTHON_SERVICE + '/views', request, headers).then(
-		response => {
-			return response.data;
-		},
-		error => {
-			return error.response.data;
-		}
-	);
-};
-
 export const updateFunction = (request, dispid, version, headers) => {
 	return Service.put(
 		BMS_APP_PYTHON_SERVICE + `/views/1/${dispid}/${version}`,

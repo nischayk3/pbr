@@ -1,8 +1,18 @@
 import { BMS_APP_PYTHON_SERVICE } from '../constants/apiBaseUrl';
 import Service from './AjaxService';
+let login_response = JSON.parse(localStorage.getItem('login_details'));
+const request_headers = {
+	'content-type': 'application/json',
+	'x-access-token': login_response.token ? login_response.token : '',
+	'resource-name': 'VIEW',
+};
 
 export const getViews = request => {
-	return Service.get(BMS_APP_PYTHON_SERVICE + '/views-list', request).then(
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/views-list',
+		request,
+		request_headers
+	).then(
 		response => {
 			return response.data;
 		},
@@ -13,11 +23,11 @@ export const getViews = request => {
 };
 
 export const getViewConfig = request => {
-	return Service.get(BMS_APP_PYTHON_SERVICE + '/view-config', request, {
-		'content-type': 'application/json',
-		username: 'user_mareana1',
-		password: 'mareana_pass1',
-	}).then(
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/view-config',
+		request,
+		request_headers
+	).then(
 		response => {
 			return response.data;
 		},
@@ -33,6 +43,17 @@ export const getMoleculeList = (request, headers) => {
 		request,
 		headers
 	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
+
+export const saveFunction = (request, headers) => {
+	return Service.put(BMS_APP_PYTHON_SERVICE + '/views', request, headers).then(
 		response => {
 			return response.data;
 		},

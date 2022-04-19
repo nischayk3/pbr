@@ -173,7 +173,7 @@ export default function Landing(props) {
 							{viewList.length > 0 ? (
 								viewList.map(
 									(i, index) =>
-										index < 8 && (
+										index < 12 && (
 											<StatusBlock
 												id={i.view}
 												status={i.view_status}
