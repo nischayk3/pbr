@@ -42,6 +42,7 @@ const { TabPane } = Tabs;
 const ViewPage = () => {
   const { id } = useParams();
   const history = useHistory();
+  console.log(history);
   const match = useRouteMatch();
   //state for chart json data
   const [postChartData, setPostChartData] = useState({});
@@ -49,7 +50,7 @@ const ViewPage = () => {
 
   const dispatch = useDispatch();
 
-  const callback = (key) => { };
+  const callback = (key) => {};
 
   const handleCancel = () => {
     setAlertModal(false);
@@ -269,7 +270,12 @@ const ViewPage = () => {
           </TabPane>
         </Tabs>
       </Modal>
-      <JobSchedule visible={alertModal} app_type='Chart' handleCancel={handleCancel} id={'reportId'} />
+      <JobSchedule
+        visible={alertModal}
+        app_type="Chart"
+        handleCancel={handleCancel}
+        id={"reportId"}
+      />
     </div>
   );
 };

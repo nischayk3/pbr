@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./ScatterStyles.scss";
 //antd imports
 import { Row, Col, Button, message, Tabs } from "antd";
@@ -43,6 +43,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
   const [showChart, setShowChart] = useState(false);
   const [xaxisList, setXAxisList] = useState([]);
   const [yaxisList, setYAxisList] = useState([]);
+  const [tableKey, setTableKey] = useState("3");
+  const exclusionIdCounter = useRef(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [exclusionValues, setExclusionValues] = useState({
     productCode: "",
@@ -63,8 +65,10 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
           setExclusionValues({
             ...exclusionValues,
             batchId: data.text,
+            productCode: ele.view_name,
             parameterValue: `(${data.x},${data.y})`,
             notes: "",
+            unit: el.uom_code,
             excludeRecord: false,
             parameterName: `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
             testDate: `(${new Date(
@@ -134,6 +138,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       message.error("unable to plot chart");
     }
   };
+
+  const tabChange = (key) => {
+    setTableKey(key);
+  };
+
   const handleChartType = (e) => {
     setAxisValues({ ...axisValues, chartType: e });
   };
@@ -255,13 +264,18 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       {showChart && (
         <Row className="tabledata">
           <Col span={24}>
-            <Tabs defaultActiveKey="3">
+            <Tabs
+              defaultActiveKey="3"
+              activeKey={tableKey}
+              onChange={tabChange}
+            >
               <TabPane tab="Exclusion" key="1">
                 <ExclusionTable
                   setExclusionTable={setExclusionTable}
                   exclusionTable={exclusionTable}
                   postChartData={postChartData}
                   setPostChartData={setPostChartData}
+                  exclusionIdCounter={exclusionIdCounter}
                 />
               </TabPane>
               <TabPane tab="Violation" key="2">
@@ -289,6 +303,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
           exclusionTable={exclusionTable}
           postChartData={postChartData}
           setPostChartData={setPostChartData}
+          setTableKey={setTableKey}
+          exclusionIdCounter={exclusionIdCounter}
         />
       </Modal>
     </div>

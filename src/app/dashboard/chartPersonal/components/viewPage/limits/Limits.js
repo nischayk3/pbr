@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./limitsStyles.scss";
 //antd imports
 import {
@@ -30,9 +30,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
   const [controlSource, setControlSource] = useState([]);
   const [specificationSource, setSpecificationSource] = useState([]);
   const [warningSource, setWarningSource] = useState([]);
-  const [count, setCount] = useState(1);
-  const [specCount, setSpecCount] = useState(1);
-  const [warningCount, setWarningCount] = useState(1);
+  const count = useRef(0);
+  const specCount = useRef(0);
+  const warningCount = useRef(0);
 
   //function to change control limit input values
   const handleChange = (index, event, dateString) => {
@@ -303,54 +303,53 @@ const Limits = ({ postChartData, setPostChartData }) => {
   ];
 
   const handleAdd = () => {
+    count.current = count.current + 1;
     const newData = {
-      key: count,
+      key: count.current,
       upper: "",
       lower: "",
       valid_timestamp: "",
     };
     setControlSource([...controlSource, newData]);
-    setCount(count + 1);
   };
   const handleSpecAdd = () => {
+    specCount.current = specCount.current + 1;
     const newData = {
       key: specCount,
       upper: "",
       lower: "",
       valid_timestamp: "",
     };
-
     setSpecificationSource([...specificationSource, newData]);
-    setSpecCount(specCount + 1);
   };
 
   const handleWarnAdd = () => {
+    warningCount.current = warningCount.current + 1;
     const newData = {
-      key: warningCount,
+      key: warningCount.current,
       upper: "",
       lower: "",
       valid_timestamp: "",
     };
     setWarningSource([...warningSource, newData]);
-    setWarningCount(warningCount + 1);
   };
 
   const handleDelete = (key) => {
     const dataSource = [...controlSource];
     setControlSource(dataSource.filter((item) => item.key !== key));
-    setCount(count - 1);
+    count.current = count.current - 1;
   };
 
   const handleSpecifyDelete = (key) => {
     const dataSource = [...specificationSource];
     setSpecificationSource(dataSource.filter((item) => item.key !== key));
-    setSpecCount(specCount - 1);
+    specCount.current = specCount.current - 1;
   };
 
   const handleWarningDelete = (key) => {
     const dataSource = [...warningSource];
     setWarningSource(dataSource.filter((item) => item.key !== key));
-    setWarningCount(warningCount - 1);
+    warningCount.current = warningCount.current - 1;
   };
 
   const onApplyClick = async () => {
@@ -408,6 +407,30 @@ const Limits = ({ postChartData, setPostChartData }) => {
     newCovArr &&
       newCovArr.data &&
       newCovArr.data.forEach((ele) => {
+        let controlcount = 0;
+        let speccount = 0;
+        let warncount = 0;
+        if (ele.limits.control.length >= 1) {
+          ele.limits.control.forEach((el) => {
+            controlcount = controlcount + 1;
+            el.key = controlcount;
+            count.current = controlcount;
+          });
+        }
+        if (ele.limits.specification.length >= 1) {
+          ele.limits.specification.forEach((el) => {
+            speccount = speccount + 1;
+            el.key = speccount;
+            specCount.current = speccount;
+          });
+        }
+        if (ele.limits.warning.length >= 1) {
+          ele.limits.warning.forEach((el) => {
+            warncount = warncount + 1;
+            el.key = warncount;
+            warningCount.current = warncount;
+          });
+        }
         control = ele.limits.control;
         specify = ele.limits.specification;
         warn = ele.limits.warning;

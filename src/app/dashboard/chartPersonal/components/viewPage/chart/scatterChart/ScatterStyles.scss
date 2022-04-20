@@ -9,6 +9,11 @@
       padding: 7px;
       font-size: 12px;
     }
+    .ant-table-cell {
+      svg {
+        color: red !important;
+      }
+    }
     .ant-table-tbody > tr > th {
       background: #f2fbff;
       padding: 7px;
