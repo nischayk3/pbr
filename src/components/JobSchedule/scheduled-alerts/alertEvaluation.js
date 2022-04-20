@@ -18,6 +18,7 @@ const alertList = ['Limits', 'Rules', 'Threshold']
 const scheduleList = ['Repeat Once', 'Daily', 'Weekly', 'Monthly']
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
 
+
 // {
 //     "app_data": "Chart name",
 //     "app_id": "R158",
@@ -108,6 +109,14 @@ const alertEvaluation = (props) => {
 
     const SaveData = async () => {
         let req = {}
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
+
+        let request_headers = {
+            'content-type': 'application/json',
+            'x-access-token': login_response.token ? login_response.token : '',
+            'resource-name': 'JOB',
+        };
+
 
         req['app_data'] = props.appType
         req['dag_id'] = ''
@@ -134,7 +143,7 @@ const alertEvaluation = (props) => {
             req["scheduled_time"] = scheduleTime,
             req["scheduled_start"] = scheduleStartDate
 
-        let res = await putJob(req)
+        let res = await putJob(req, request_headers)
 
         if (res.Status == 200) {
             dispatch(showNotification('success', 'Saved'))
@@ -293,20 +302,20 @@ const alertEvaluation = (props) => {
                                     mihir.bagga@mareana.com
                                 </Option>
                             </Select>
-                            <Divider  />
-                            <div style={{display:'grid',gridTemplateColumns:'1fr 3fr'}}>
-                            <span>
-                                <p className="email-subject">Subject <span className="email-sub">Update For  </span>  </p>
-                            </span>
-                            <div style={{ width: '150px', marginLeft: '80%' }}
-                            >
-                                <SelectField
-                                    placeholder='Pick Type of Alert'
-                                    onChangeSelect={(e) => handleSelectEmailScheduleChange(e)}
-                                    selectList={scheduleList}
-                                    value={selectedSchedule}
-                                />
-                            </div>
+                            <Divider />
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr' }}>
+                                <span>
+                                    <p className="email-subject">Subject <span className="email-sub">Update For  </span>  </p>
+                                </span>
+                                <div style={{ width: '150px', marginLeft: '80%' }}
+                                >
+                                    <SelectField
+                                        placeholder='Pick Type of Alert'
+                                        onChangeSelect={(e) => handleSelectEmailScheduleChange(e)}
+                                        selectList={scheduleList}
+                                        value={selectedSchedule}
+                                    />
+                                </div>
                             </div>
                             <Divider />
                             <p className="email-content"> Hey,<br /><br />

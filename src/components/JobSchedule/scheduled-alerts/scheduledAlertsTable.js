@@ -6,6 +6,8 @@ import moment from 'moment';
 import { dispatch } from 'd3';
 import { showNotification } from '../../../duck/actions/commonActions';
 
+// 
+
 export default function scheduledAlertsTable(props) {
 
     const [data, setData] = useState([])
@@ -16,8 +18,15 @@ export default function scheduledAlertsTable(props) {
     );
 
     const getJobs = () => {
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
+
+        let request_headers = {
+            'content-type': 'application/json',
+            'x-access-token': login_response.token ? login_response.token : '',
+            'resource-name': 'JOB',
+        };
         let req = { app_type: props.app_type };
-        getJob(req).then((res) => {
+        getJob(req, request_headers).then((res) => {
             setData(res['Data']);
             if (res.Status == 401) {
                 dispatch(showNotification('error', 'Session TimeOut Login again'))
@@ -29,8 +38,15 @@ export default function scheduledAlertsTable(props) {
         let req = {
             job_id: jobId
         }
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
 
-        let delete_response = await deleteJob(req)
+        let request_headers = {
+            'content-type': 'application/json',
+            'x-access-token': login_response.token ? login_response.token : '',
+            'resource-name': 'JOB',
+        };
+
+        let delete_response = await deleteJob(req, request_headers)
         if (delete_response.Status == 200) {
             dispatch(showNotification('success', `${jobId} deleted successfully`))
         }

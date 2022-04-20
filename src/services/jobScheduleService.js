@@ -2,19 +2,13 @@ import Service from './AjaxService';
 import {
     BMS_APP_PYTHON_SERVICE,
 } from '../constants/apiBaseUrl';
+import { head } from 'lodash';
 
 
-let login_response = JSON.parse(localStorage.getItem('login_details'));
-
-const request_headers = {
-    'content-type': 'application/json',
-    'x-access-token': login_response.token ? login_response.token : '',
-    'resource-name': 'JOB',
-};
 
 
-export const getJob = (request) => {
-    return Service.get(BMS_APP_PYTHON_SERVICE + '/jobs', request, request_headers).then(
+export const getJob = (request,header) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/jobs', request,header).then(
         (response) => {
             return response.data;
         },
@@ -25,8 +19,8 @@ export const getJob = (request) => {
 };
 
 
-export const putJob = (request) => {
-    return Service.put(BMS_APP_PYTHON_SERVICE + '/jobs', request, request_headers).then(
+export const putJob = (request,header) => {
+    return Service.put(BMS_APP_PYTHON_SERVICE + '/jobs', request,header).then(
         (response) => {
             return response.data;
         },
@@ -36,8 +30,8 @@ export const putJob = (request) => {
     );
 };
 
-export const deleteJob = (request) => {
-    return Service.put(BMS_APP_PYTHON_SERVICE + '/jobs', request, request_headers).then(
+export const deleteJob = (request,header) => {
+    return Service.put(BMS_APP_PYTHON_SERVICE + '/jobs', request, header).then(
         (response) => {
             return response.data;
         },

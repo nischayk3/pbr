@@ -103,6 +103,12 @@ const MENU = [
 		title: 'Dashboard',
 		linkTo: '/dashboard/dashboard',
 	},
+	{
+		key: 'hierarchy',
+		icon: <AppstoreOutlined style={{ fontSize: '23px' }} />,
+		title: 'Hierarchy',
+		linkTo: '/dashboard/molecule_hierarchy_configuration',
+	},
 ];
 
 const { Sider } = Layout;
