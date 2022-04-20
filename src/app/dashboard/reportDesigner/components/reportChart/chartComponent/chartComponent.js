@@ -73,8 +73,8 @@ const chartComponent = (props) => {
             dispatch(showLoader());
             const chartResponse = await getChartPlotData(req, headers);
             if (chartResponse.data[0]) {
-                setWorkSpaceChartData(chartResponse.data[0].data[0]);
-                setWorkSpaceChartLayout(chartResponse.data[0].layout)
+                setWorkSpaceChartData(chartResponse.data[0].data);
+                // setWorkSpaceChartLayout(chartResponse.data[0].layout)
                 setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
                 setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
                 // if (chartResponse.data[0].violation.length > 0)
@@ -87,6 +87,22 @@ const chartComponent = (props) => {
                 // setExclusion(chartResponse.data[0].exclusion)
                 // setExclusionColumns(getColumns(chartResponse.data[0].exclusion))
                 // }
+                const layout = {
+                    xaxis: chartResponse.data[0].layout.xaxis,
+                    yaxis: chartResponse.data[0].layout.yaxis,
+                    autosize: false,
+                    width: 500,
+                    height: 310,
+                    margin: {
+                        l: 60,
+                        r: 50,
+                        b: 75,
+                        t: 30,
+                        pad: 4
+                    },
+                };
+                setWorkSpaceChartLayout(layout)
+
             }
             if (chartResponse.data[0].extras.data_table) {
                 setDataTable(chartResponse.data[0].extras.data_table)
@@ -98,30 +114,14 @@ const chartComponent = (props) => {
             // dispatch(showNotification('error', 'No Data In Chart'));
         }
     }
-    const layout = {
-        xaxis: workspaceChartLayoutXAxis,
-        yaxis: workspaceChartLayoutYAxis,
-        autosize: false,
-        width: 500,
-        height: 310,
-        margin: {
-            l: 50,
-            r: 50,
-            b: 75,
-            t: 30,
-            pad: 4
-        },
-        title: {
-            text: ""
-        }
-    };
+   
     return (
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridGap: '10px' }}>
             <div >
                 <Plot
-                    data={[workspaceChartData]}
-                    layout={layout}
+                    data={workspaceChartData}
+                    layout={workspaceChartLayout}
                 />
             </div>
             <div>
