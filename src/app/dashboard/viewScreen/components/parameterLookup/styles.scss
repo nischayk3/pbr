@@ -1,7 +1,7 @@
 .parameterLookup-FormBlock {
 	padding: 18px 25px 24px 25px;
 
-	.ant-form-item {
+	.param-select {
 		flex-direction: row;
 		display: grid;
 		grid-template-columns: 1fr 2fr;
@@ -14,6 +14,9 @@
 
 		.ant-col.ant-form-item-label {
 			padding-bottom: 0px;
+		}
+		p {
+			margin: 0;
 		}
 	}
 	.ant-col.ant-form-item-label {
