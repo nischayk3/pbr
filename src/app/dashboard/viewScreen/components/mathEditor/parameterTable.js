@@ -14,6 +14,7 @@ let paramType = '';
 let isCheck = '';
 let count = 0;
 let counter = 0;
+let batchExcArr = [];
 const ParameterTable = props => {
 	const paramReducer = useSelector(state => state.viewCreationReducer);
 	const selectedTableData = useSelector(
@@ -22,7 +23,6 @@ const ParameterTable = props => {
 	const batchData = useSelector(
 		state => state.viewCreationReducer.batchCoverageData
 	);
-
 	const saveFunction = useSelector(state => state.viewCreationReducer.save);
 	const saveAsFunction = useSelector(state => state.viewCreationReducer.saveAs);
 	const functionName = useSelector(
@@ -187,7 +187,7 @@ const ParameterTable = props => {
 
 			var1[`${'V' + count}`] = variable;
 
-			const viewDataJson = [...viewJson.data];
+			const viewDataJson = [...viewJson];
 			viewDataJson.forEach(element => {
 				element.parameters = var1;
 			});
@@ -246,10 +246,42 @@ const ParameterTable = props => {
 		setTableData(newAggrValue);
 		setAggregationValue(value.value);
 	};
-
+	console.log('outside function ', selectedRow, selectedPrimaryData);
 	const onChangeBatch = (value, record, rowIndex, key) => {
+		console.log('value, record, rowIndex, key', value, record, rowIndex, key);
+
+		let batchExcObj = {};
 		let batchRecord = [...tableData];
 		batchRecord[rowIndex][key] = value;
+
+		const selectedRowData = [...selectedRow];
+		// if (selectedRow.length > 0) {
+		// 	console.log(
+		// 		'selectedRow',
+
+		// 		selectedRow
+		// 	);
+		// }
+		// console.log(
+		// 	'viewJson',
+		// 	selectedRowData,
+		// 	selectedRow,
+		// 	tableData,
+		// 	selectedPrimaryData
+		// );
+		// selectedRow.forEach((item, index) => {
+		// 	console.log(
+		// 		'item.parameter_name ,record.parameter_name',
+		// 		item.parameter_name,
+		// 		record.parameter_name
+		// 	);
+		// 	if (item.parameter_name === record.parameter_name) {
+		// 		batchExcArr.push(key);
+		// 	}
+		// 	batchExcObj[record.parameter_name] = batchExcArr;
+		// 	console.log('batchExcArr', batchExcArr);
+		// 	console.log('batchExcObj', batchExcObj);
+		// });
 		setisBatchCheck(value);
 		setTableData(batchRecord);
 	};
