@@ -72,7 +72,6 @@ const chartComponent = (props) => {
         try {
             dispatch(showLoader());
             const chartResponse = await getChartPlotData(req, headers);
-            console.log(chartResponse.data[0].extras.data_table)
             if (chartResponse.data[0]) {
                 setWorkSpaceChartData(chartResponse.data[0].data[0]);
                 setWorkSpaceChartLayout(chartResponse.data[0].layout)
