@@ -49,12 +49,13 @@ function ParameterLookup(props) {
 			if (moleculeRes.statuscode === 200) {
 				setMoleculeList(moleculeRes.data);
 				dispatch(hideLoader());
-			}
-			if (moleculeRes.Status === 401) {
+			} else if (moleculeRes.Status === 401) {
 				dispatch(hideLoader());
 				dispatch(showNotification('error', moleculeRes.Message));
-			}
-			if (moleculeRes.Status === 400) {
+			} else if (moleculeRes.Status === 400) {
+				dispatch(hideLoader());
+				dispatch(showNotification('error', moleculeRes.Message));
+			} else {
 				dispatch(hideLoader());
 				dispatch(showNotification('error', moleculeRes.Message));
 			}

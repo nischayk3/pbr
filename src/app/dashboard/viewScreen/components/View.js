@@ -16,7 +16,6 @@ import ParameterLookup from './parameterLookup/ParameterLookup';
 import './styles.scss';
 import {
 	getViewConfig,
-	getViews,
 	saveFunction,
 } from '../../../../services/viewCreationPublishing';
 import {
@@ -37,6 +36,10 @@ import {
 	showLoader,
 	showNotification,
 } from '../../../../duck/actions/commonActions';
+import {
+	isLoadView,
+	sendSelectedParamData,
+} from '../../../../duck/actions/viewAction';
 const { Panel } = Collapse;
 
 const ViewCreation = props => {
@@ -90,14 +93,15 @@ const ViewCreation = props => {
 		});
 	}, [viewDisplayId, viewStatus, viewVersion]);
 
-	useEffect(() => {
-		onMoleculeIdChanged();
-	}, [moleculeId]);
+	// useEffect(() => {
+	// 	onMoleculeIdChanged();
+	// }, [moleculeId]);
 
 	useEffect(() => {
 		let pathString = queryString.parse(location.search);
 		console.log('pathString.......', pathString);
-		if (pathString.view_disp_id != '') {
+		if (pathString.view_disp_id != undefined) {
+			console.log('pathString showwwwwwwwwwwwwwww', pathString.view_disp_id);
 			let _reqLoad = {
 				view_disp_id: pathString.view_disp_id,
 				view_version: pathString.view_version,
@@ -111,29 +115,29 @@ const ViewCreation = props => {
 	};
 
 	const [form] = Form.useForm();
-	const onMoleculeIdChanged = () => {
-		let reqMaterial = { moleculeId: moleculeId, detailedCoverage: true };
-		materialsParameterTree(reqMaterial).then(res => {
-			{
-				res.map((item, index) => {
-					setDataLoadingState(false);
-					setParentBatches(item.batches);
-					setMaterialsList(item.children);
-					setDataLoadingState(true);
-				});
-			}
+	// const onMoleculeIdChanged = () => {
+	// 	let reqMaterial = { moleculeId: moleculeId, detailedCoverage: true };
+	// 	materialsParameterTree(reqMaterial).then(res => {
+	// 		{
+	// 			res.map((item, index) => {
+	// 				setDataLoadingState(false);
+	// 				setParentBatches(item.batches);
+	// 				setMaterialsList(item.children);
+	// 				setDataLoadingState(true);
+	// 			});
+	// 		}
 
-			if (res.Status === 401) {
-				message.error(res.Message);
-			}
-			if (res.Status === 400) {
-				message.error(res.Message);
-			}
-			if (res.Status === 404) {
-				message.error(res.Message);
-			}
-		});
-	};
+	// 		if (res.Status === 401) {
+	// 			message.error(res.Message);
+	// 		}
+	// 		if (res.Status === 400) {
+	// 			message.error(res.Message);
+	// 		}
+	// 		if (res.Status === 404) {
+	// 			message.error(res.Message);
+	// 		}
+	// 	});
+	// };
 
 	const onApprove = item => {
 		localStorage.setItem('status', item);
@@ -218,7 +222,7 @@ const ViewCreation = props => {
 		try {
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
-			console.log('loadViewRes', loadViewRes);
+			console.log('loadViewRes', loadViewRes['all_parameters']);
 			Object.entries(loadViewRes).forEach(([key, value], index) => {
 				if (key === 'view_version') {
 					setViewVersion(value);
@@ -231,19 +235,20 @@ const ViewCreation = props => {
 				}
 			});
 			setViewJson(loadViewRes);
-
+			dispatch(isLoadView(true));
+			dispatch(sendSelectedParamData(loadViewRes['all_parameters']));
 			dispatch(hideLoader());
 		} catch (err) {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', err));
 		}
 	};
-
+	console.log('viewwwwwwwwwwwww', materialsList, paramTableData);
 	return (
 		<div className='reportDesigner-container viewCreation-container'>
 			<BreadCrumbWrapper />
 			<div className='breadcrumbs-btn'>
-				{params ? (
+				{/* {params ? (
 					<div className='viewCreation-btns'>
 						<Button
 							className='viewCreation-rejectBtn'
@@ -272,27 +277,27 @@ const ViewCreation = props => {
 							Approve
 						</Button>
 					</div>
-				) : (
-					materialsList.length > 0 && (
-						<div className='viewCreation-btns'>
-							<Button
-								className='viewCreation-saveBtn'
-								// disabled={!viewDisplayId}
-								onClick={handleSaveVisible}>
-								Save
-							</Button>
+				) : */}
 
-							<Button
-								className='viewCreation-publishBtn'
-								onClick={() => {
-									setIsPublish(true);
-								}}>
-								<CloudUploadOutlined />
-								Publish
-							</Button>
-						</div>
-					)
-				)}
+				<div className='viewCreation-btns'>
+					<Button
+						className='viewCreation-saveBtn'
+						// disabled={!viewDisplayId}
+						// onClick={handleSaveVisible}
+					>
+						Save
+					</Button>
+
+					<Button
+						className='viewCreation-publishBtn'
+						// onClick={() => {
+						// 	setIsPublish(true);
+						// }}
+					>
+						<CloudUploadOutlined />
+						Publish
+					</Button>
+				</div>
 			</div>
 
 			<div className='reportDesigner-gridBlocks viewCreation-grids'>
@@ -372,7 +377,13 @@ const ViewCreation = props => {
 								viewJson={viewJson}
 								setViewJson={setViewJson}
 							/>
-							<ViewSummaryData viewJson={viewJson} setViewJson={setViewJson} />
+							<ViewSummaryData
+								viewJson={viewJson}
+								setViewJson={setViewJson}
+								viewDisplayId={viewDisplayId}
+								viewStatus={viewStatus}
+								viewVersion={viewVersion}
+							/>
 						</div>
 					)}
 				</div>

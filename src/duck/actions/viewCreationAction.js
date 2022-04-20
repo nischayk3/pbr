@@ -1,9 +1,6 @@
 import { FUNCTION_TEXT, MOLECULE_ID } from '../types/types';
 import Service from '../../services/AjaxService';
-import {
-	API_PLOT_URL,
-	BMS_APP_PYTHON_SERVICE,
-} from '../../constants/apiBaseUrl';
+import { BMS_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 
 export const functionTextName = payload => ({
 	type: FUNCTION_TEXT,
