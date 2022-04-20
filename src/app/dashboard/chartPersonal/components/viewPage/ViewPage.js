@@ -4,9 +4,6 @@ import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 //antd imports
 import { Row, Col, Tabs, Menu, Dropdown, message, Button, Modal } from "antd";
 import {
-  ControlOutlined,
-  StarOutlined,
-  AntDesignOutlined,
   ArrowLeftOutlined,
   CloudUploadOutlined,
   MoreOutlined,
