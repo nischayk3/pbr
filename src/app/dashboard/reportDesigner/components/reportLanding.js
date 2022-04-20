@@ -11,7 +11,7 @@ import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { sendReport } from '../../../../duck/actions/reportDesignerAction';
-import { showLoader,hideLoader } from '../../../../duck/actions/commonActions';
+import { showLoader, hideLoader, showNotification } from '../../../../duck/actions/commonActions';
 
 
 export default function Landing(props) {
@@ -119,6 +119,7 @@ export default function Landing(props) {
 
     const getReportList = () => {
         let req = { rep_status: 'all' };
+
         getReports(req).then((res) => {
             setReportList(res['Data']);
         });
@@ -129,8 +130,15 @@ export default function Landing(props) {
         dispatch(showLoader())
         let req = { report_displ_id: report_id }
         let data = await loadReport(req)
-        props.getReportData(data)
-        props.changeScreen()
+        if (data.Status == 200 || data.report_designer) 
+        {
+            props.getReportData(data)
+            props.changeScreen()
+        }
+        else {
+            dispatch(hideLoader())
+            dispatch(showNotification('error', data.Message))
+        }
 
     }
 
@@ -140,13 +148,18 @@ export default function Landing(props) {
         let req = { report_displ_id: report_id }
         let data = await loadReportGen(req)
         console.log(data)
-        dispatch(sendReport(data.report_generator.data))
-        props.getReportData(data)
-        props.changeScreen()
-        
-        history.push({
-            pathname: '/dashboard/report_generator',
-        });
+        if (data.report_generator)
+            dispatch(sendReport(data.report_generator.data))
+        if (data.Status == 200 || data.report_generator) {
+            history.push({
+                pathname: '/dashboard/report_generator',
+            });
+        }
+        else {
+            dispatch(hideLoader())
+            dispatch(showNotification('error', data.Message))
+        }
+
 
     }
 
@@ -167,7 +180,6 @@ export default function Landing(props) {
             <div className='custom-wrapper'>
                 <div className='sub-header'>
                     <div className='sub-header-title'>
-                        <ArrowLeftOutlined className='header-icon' />
                         <BreadCrumbWrapper />
                     </div>
                 </div>
@@ -215,8 +227,8 @@ export default function Landing(props) {
                                         <div className="tile">
                                             {reportList.length > 0 ? reportList.map((i, index) => (
                                                 index < 8 &&
-                                                <div onClick={()=>{getLoadReport(i.rep_disp_id)}} >
-                                                <StatusBlock id={i.rep_disp_id} status={i.rep_status}  />
+                                                <div onClick={() => { getLoadReport(i.rep_disp_id) }} >
+                                                    <StatusBlock id={i.rep_disp_id} status={i.rep_status} />
                                                 </div>
                                             )) : <></>}
                                         </div>
@@ -257,8 +269,8 @@ export default function Landing(props) {
                                     <div className="tile">
                                         {reportList && reportList.length > 0 && reportList.map((i, index) => (
                                             index < 8 &&
-                                            <div onClick={()=>{getLoadReportGenerator(i.rep_disp_id)}} > 
-                                            <StatusBlock id={i.rep_disp_id} status={i.rep_status} />
+                                            <div onClick={() => { getLoadReportGenerator(i.rep_disp_id) }} >
+                                                <StatusBlock id={i.rep_disp_id} status={i.rep_status} />
                                             </div>
                                         ))}
                                     </div>

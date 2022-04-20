@@ -39,6 +39,7 @@ import { loginUrl } from '../../../../services/loginService';
 import { adenabled } from '../../../../config/config';
 import { sendUrl } from '../../../../duck/actions/loginAction';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import { loadReport } from '../../../../services/reportDesignerServices';
 
 
 //Columns For The view Selection modal
@@ -154,18 +155,6 @@ function ReportDesignerNew(props) {
 
   useEffect(() => {
     const params = queryString.parse(location.search);
-
-    if (Object.keys(params).length > 0) {
-      dispatch(showLoader())
-      unloadUrl(params)
-      if (Object.keys(params).includes('publish')) {
-        dispatch(showLoader())
-        unloadUrl(params)
-        setAd(true)
-        setIsPublish(true)
-      }
-    }
-
     if (Object.keys(params).length > 0) {
       dispatch(showLoader())
       unloadUrl(params)
@@ -193,7 +182,7 @@ function ReportDesignerNew(props) {
       let data = await getReportData(params.id, 'AWAP')
       setReportId(params.id)
       if (data) {
-        unLoadJson(data)
+        LoadData(data)
         setTimeout(() => {
           setIsLoad(true);
           setVisible(false)
@@ -497,14 +486,11 @@ function ReportDesignerNew(props) {
       if (view_version) {
 
         let view_id = view_version[0].split('-')
-        console.log(view_id)
         setViewId(view_id[0])
         setViewIdVersion(view_version)
       }
 
-      console.log('json_data', json_data)
       let layout_data = json_data['layout_info']
-      console.log("layout", layout_data)
 
       if (layout_data) {
 
@@ -518,9 +504,6 @@ function ReportDesignerNew(props) {
 
         let res = []
         let layout_info = layout_data.layout_info ? layout_data.layout_info : {}
-
-        console.log(layout_info, 'layout_info')
-
         let chartList = layout_data['chart_details'] && layout_data['chart_details'].length > 0 ? layout_data['chart_details'] : []
         if (chartList.length > 0)
           setSelectedChartList(chartList)
@@ -582,10 +565,8 @@ function ReportDesignerNew(props) {
 
 
   const unLoadJson = async (json_data) => {
-    console.log(json_data)
     dispatch(showLoader())
     try {
-      console.log("data", json_data)
       let status = json_data['rep_status'] ? json_data['rep_status'] : ''
       if (status)
         setStatus(status)
