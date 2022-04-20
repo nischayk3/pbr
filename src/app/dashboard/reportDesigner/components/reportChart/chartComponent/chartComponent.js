@@ -72,6 +72,7 @@ const chartComponent = (props) => {
         try {
             dispatch(showLoader());
             const chartResponse = await getChartPlotData(req, headers);
+            console.log(chartResponse.data[0].extras.data_table)
             if (chartResponse.data[0]) {
                 setWorkSpaceChartData(chartResponse.data[0].data[0]);
                 setWorkSpaceChartLayout(chartResponse.data[0].layout)
@@ -88,9 +89,9 @@ const chartComponent = (props) => {
                 // setExclusionColumns(getColumns(chartResponse.data[0].exclusion))
                 // }
             }
-            if (chartResponse.extras.data_table) {
-                setDataTable(chartResponse.extras.data_table)
-                setDataTableColumns(getColumns(chartResponse.extras.data_table))
+            if (chartResponse.data[0].extras.data_table) {
+                setDataTable(chartResponse.data[0].extras.data_table)
+                setDataTableColumns(getColumns(chartResponse.data[0].extras.data_table))
             }
             dispatch(hideLoader());
         } catch (error) {
@@ -125,10 +126,10 @@ const chartComponent = (props) => {
                 />
             </div>
             <div>
-                <Tabs>
-                    <TabPane tab="Exclusion" key="Exclusion"><Table columns={exclusionColumns} dataSource={exclusion} size="small" pagination={{ pageSize: 5 }}  bordered={false} /></TabPane>
-                    <TabPane tab="Violation" key="Violation"><Table columns={violationColumns} dataSource={violation} size="small" pagination={{ pageSize: 5 }}  bordered={false}/></TabPane>
-                    <TabPane tab="Data Table" key="Data Table"><Table columns={dataTableColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }}  bordered={false} /></TabPane>
+                <Tabs activeKey="Data Table">
+                    <TabPane tab="Exclusion" key="Exclusion"><Table columns={exclusionColumns} dataSource={exclusion} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
+                    <TabPane tab="Violation" key="Violation"><Table columns={violationColumns} dataSource={violation} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
+                    <TabPane tab="Data Table" key="Data Table"><Table columns={dataTableColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
                 </Tabs>
             </div>
         </div>
