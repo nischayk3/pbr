@@ -103,6 +103,12 @@ const MENU = [
 		title: 'Dashboard',
 		linkTo: '/dashboard/dashboard',
 	},
+	{
+		key: 'hierarchy',
+		icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+		title: 'Dashboard',
+		linkTo: '/dashboard/molecule_hierarchy_configuration',
+	},
 ];
 
 const { Sider } = Layout;
