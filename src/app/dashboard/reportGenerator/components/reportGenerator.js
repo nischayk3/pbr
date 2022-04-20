@@ -146,7 +146,6 @@ function ReportGenerator() {
         Friday: false,
         Saturday: false,
     })
-
     const [alertVisible, setAlertVisible] = useState(false)
     // const [ sectionCharts,setSectionCharts] = 
     const dispatch = useDispatch();
@@ -238,9 +237,7 @@ function ReportGenerator() {
 
 
     const getTableData = (obj, rep_layout) => {
-        console.log(obj, rep_layout)
         obj = obj.layout_info
-        console.log(obj)
         let headingList = []
         let allSections = []
         let titleHeading = obj['titlepage'] && obj['titlepage'].heading ? obj['titlepage'].heading : ''
@@ -255,13 +252,11 @@ function ReportGenerator() {
         for (let i = 0; i < allSections.length; i++) {
             allSections[i].charts = rep_layout[i + 1]
         }
-
         return allSections
     }
 
     const unloadTest = (ReportData) => {
 
-        console.log(ReportData)
         dispatch(showLoader())
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setChartLayout(ReportData.charts_layout ? createChartRecord(ReportData.charts_layout) : {})
