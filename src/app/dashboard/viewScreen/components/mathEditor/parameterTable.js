@@ -17,6 +17,7 @@ let counter = 0;
 let batchExcArr = [];
 const ParameterTable = props => {
 	const paramReducer = useSelector(state => state.viewCreationReducer);
+	const isLoadView = useSelector(state => state.viewCreationReducer.isLoad);
 	const selectedTableData = useSelector(
 		state => state.viewCreationReducer.selectedParamData
 	);
@@ -162,6 +163,13 @@ const ParameterTable = props => {
 	}, [selectedTableData]);
 
 	useEffect(() => {
+		if (isLoadView) {
+			onChangeColumnsHandler();
+			setTableData(selectedTableData);
+		}
+	}, [isLoadView]);
+
+	useEffect(() => {
 		if (varClick) {
 			setSelectedRowKeys([]);
 			setSelectedRow([]);
@@ -186,8 +194,9 @@ const ParameterTable = props => {
 			});
 
 			var1[`${'V' + count}`] = variable;
-
+			console.log('viewJSOnnnnnnnnnnn', viewJson);
 			const viewDataJson = [...viewJson];
+
 			viewDataJson.forEach(element => {
 				element.parameters = var1;
 			});

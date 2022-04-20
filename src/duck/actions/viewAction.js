@@ -13,6 +13,7 @@ import {
 	SELECTED_PARAM_TYPE,
 	VIEW_FUNCTION_MAP,
 	VIEW_PARAM_MAP,
+	IS_LOAD_VIEW,
 } from '../../constants/actionTypes';
 
 export const saveViewFunction = payload => ({
@@ -81,5 +82,10 @@ export const viewFunctionMap = payload => ({
 });
 export const viewParamMap = payload => ({
 	type: VIEW_PARAM_MAP,
+	payload,
+});
+
+export const isLoadView = payload => ({
+	type: IS_LOAD_VIEW,
 	payload,
 });

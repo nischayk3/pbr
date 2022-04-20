@@ -1,14 +1,16 @@
 {
-  "/dashboard": "Dashboard",
-  "/dashboard/report_designer": "Report Designer",
-  "/dashboard/genealogy": "Genealogy",
-  "/dashboard/faq": "Frequently Asked Questions",
-  "/dashboard/dashboard": "Dashboards",
-  "/dashboard/appRegister/appList/appDetails": "App Details",
-  "/dashboard/tableRegister": "Table Register",
-  "/dashboard/tableRegister/tableList": "Table List",
-  "/dashboard/tableRegister/tableList/tableDetails": "Table Details",
-  "/dashboard/filterRegister": "Filter Register",
-  "/dashboard/filterRegister/filterList": "Filter List",
-  "/dashboard/filterRegister/filterList/filterDetails": "Filter Details"
+	"/dashboard/dashboard": "Dashboard",
+	"/dashboard/view_creation_landing": "View creation",
+	"/dashboard/view_creation_view": "View creation",
+	"/dashboard/workspace": "Workspace",
+	"/dashboard/report_designer": "Report Designer",
+	"/dashboard/genealogy": "Genealogy",
+	"/dashboard/faq": "Frequently Asked Questions",
+	"/dashboard/appRegister/appList/appDetails": "App Details",
+	"/dashboard/tableRegister": "Table Register",
+	"/dashboard/tableRegister/tableList": "Table List",
+	"/dashboard/tableRegister/tableList/tableDetails": "Table Details",
+	"/dashboard/filterRegister": "Filter Register",
+	"/dashboard/filterRegister/filterList": "Filter List",
+	"/dashboard/filterRegister/filterList/filterDetails": "Filter Details"
 }

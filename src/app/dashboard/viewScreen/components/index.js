@@ -9,7 +9,6 @@
 import React from 'react';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Landing from '../components/landing/viewCreationLanding';
-import View from '../components/View';
 
 const ViewPage = () => {
 	return (
