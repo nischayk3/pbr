@@ -7,9 +7,9 @@
  */
 
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import './styles.scss';
-import { Form, Select } from 'antd';
+import { Select } from 'antd';
 import { moleculeName } from '../../../../../duck/actions/viewCreationAction';
 import { getMoleculeList } from '../../../../../services/viewCreationPublishing';
 import {
@@ -19,6 +19,7 @@ import {
 } from '../../../../../duck/actions/commonActions';
 
 function ParameterLookup(props) {
+	console.log('propsssss', props);
 	const {
 		moleculeList,
 		setMoleculeList,
@@ -28,7 +29,6 @@ function ParameterLookup(props) {
 		setMaterialsList,
 		setFilterdData,
 		setParentBatches,
-		form,
 		params,
 	} = props;
 
