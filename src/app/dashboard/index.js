@@ -39,6 +39,7 @@ const ViewLanding = lazy(() => import('./viewScreen'));
 const ViewChart = lazy(() =>
 	import('./dashboardScreen/components/viewChart/viewChart')
 );
+const Hierarchy = lazy(() => import('./hierarchyConfig'));
 const Faq = lazy(() => import('./faq'));
 const { Content } = Layout;
 
@@ -72,18 +73,21 @@ const Dashboard = () => {
 									path={`${match.url}/manual_data_upload`}>
 									<ManualDataUpload />
 								</Route>
-
+								<Route
+									key='view_creation'
+									path={`${match.url}/view_creation_view`}>
+									<View />
+								</Route>
 								<Route
 									key='view_creation_landing'
 									path={`${match.url}/view_creation_landing`}>
 									<ViewLanding />
 								</Route>
 								<Route
-									key='view_creation'
-									path={`${match.url}/view_creation_view`}>
-									<View />
+									key='view_creation_old'
+									path={`${match.url}/view_creation_old`}>
+									<ViewCreation />
 								</Route>
-
 								<Route
 									path={`${match.url}/chart_personalization`}
 									render={({ match: { url } }) => (
@@ -136,6 +140,11 @@ const Dashboard = () => {
 								</Route>
 								<Route key='faq' path={`${match.url}/faq`}>
 									<Faq />
+								</Route>
+								<Route
+									key='hierarchy'
+									path={`${match.url}/molecule_hierarchy_configuration`}>
+									<Hierarchy />
 								</Route>
 							</Switch>
 						</SuspenseWrapper>
