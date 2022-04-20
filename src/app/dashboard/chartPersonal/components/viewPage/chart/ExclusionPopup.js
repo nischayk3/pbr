@@ -20,31 +20,32 @@ const ExclusionPopup = ({
   setExclusionValues,
   postChartData,
   setPostChartData,
+  setTableKey,
+  exclusionIdCounter,
 }) => {
   const dispatch = useDispatch();
-  const counter = useRef(0);
   const handleOk = async () => {
     if (exclusionValues.excludeRecord) {
-      counter.current = counter.current + 1;
+      exclusionIdCounter.current = exclusionIdCounter.current + 1;
       const obj = {
-        exclusion_id: counter.current,
+        exclusion_id: exclusionIdCounter.current,
         exclusion_value: { batch: exclusionValues.batchId },
         exclusion_description: exclusionValues.notes,
-        user: "demo",
+        user: localStorage.getItem("username"),
         timestamp: new Date().toISOString(),
       };
-      const newArr = [...postChartData.data];
-      newArr[0].exclusions.push(obj);
-      setPostChartData({ ...postChartData, data: newArr });
+      const newPost = JSON.parse(JSON.stringify(postChartData));
+      newPost.data[0].exclusions.push(obj);
       try {
         setIsModalVisible(false);
         dispatch(showLoader());
-        const viewRes = await postChartPlotData(postChartData);
+        const viewRes = await postChartPlotData(newPost);
         let newdataArr = [...postChartData.data];
         newdataArr[0].data = viewRes.data[0].data;
         newdataArr[0].exclusions = viewRes.data[0].exclusions;
         setPostChartData({ ...postChartData, data: newdataArr });
         dispatch(hideLoader());
+        setTableKey("1");
       } catch (error) {
         dispatch(hideLoader());
       }
@@ -67,7 +68,7 @@ const ExclusionPopup = ({
         <Col className="gutter-row" span={12}>
           <div>
             <InputField
-              label="Product Code"
+              label="Molecule Name"
               value={exclusionValues.productCode}
               disabled
             />
