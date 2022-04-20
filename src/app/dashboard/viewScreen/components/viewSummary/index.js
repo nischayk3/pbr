@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import LabelTag from '../../../../../components/LabelTag';
 import './styles.scss';
-import InputField from '../../../../../components/InputField/InputField';
+
 const ViewSummaryData = props => {
 	const summaryTableData = useSelector(
 		state => state.viewCreationReducer.summaryTableData
@@ -15,7 +15,8 @@ const ViewSummaryData = props => {
 	const [funTableColumn, setFunTableColumn] = useState([]);
 	const [funTableData, setFunTableData] = useState([]);
 
-	const { saveResponseView, viewJson, setViewJson } = props;
+	const { viewDisplayId, viewStatus, viewVersion, viewJson, setViewJson } =
+		props;
 
 	useEffect(() => {
 		setFunTableData(summaryTableData);
@@ -53,18 +54,9 @@ const ViewSummaryData = props => {
 	return (
 		<Card title='View Summary'>
 			<div className='view-summary_lable' style={{ paddingTop: '20px' }}>
-				<LabelTag
-					lableName='View ID'
-					lableValue={saveResponseView && saveResponseView.viewId}
-				/>
-				<LabelTag
-					lableName='Status'
-					lableValue={saveResponseView && saveResponseView.viewStatus}
-				/>
-				<LabelTag
-					lableName='Version'
-					lableValue={saveResponseView && saveResponseView.version}
-				/>
+				<LabelTag lableName='View ID' lableValue={viewDisplayId} />
+				<LabelTag lableName='Status' lableValue={viewStatus} />
+				<LabelTag lableName='Version' lableValue={viewVersion} />
 			</div>
 
 			<div className='summary-table_block'>
