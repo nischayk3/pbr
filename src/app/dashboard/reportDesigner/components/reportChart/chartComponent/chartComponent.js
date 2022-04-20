@@ -25,6 +25,7 @@ const chartComponent = (props) => {
     const [violationColumns, setViolationColumns] = useState([])
     const [exclusion, setExclusion] = useState([]);
     const [exclusionColumns, setExclusionColumns] = useState([])
+    const [activeTab, setActiveTab ] = useState('Data Table')
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -77,16 +78,16 @@ const chartComponent = (props) => {
                 // setWorkSpaceChartLayout(chartResponse.data[0].layout)
                 setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
                 setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
-                // if (chartResponse.data[0].violation.length > 0)
-                // {
-                // setViolation(chartResponse.data[0].violation)
-                // setViolationColumns(getColumns(chartResponse.data[0].violation))
-                // }
-                // if (chartResponse.data[0].exclusion.length > 0)
-                // {
-                // setExclusion(chartResponse.data[0].exclusion)
-                // setExclusionColumns(getColumns(chartResponse.data[0].exclusion))
-                // }
+                if (chartResponse.data[0].violations )
+                {
+                setViolation(chartResponse.data[0].violations)
+                setViolationColumns(getColumns(chartResponse.data[0].violations))
+                }
+                if (chartResponse.data[0].exclusion)
+                {
+                setExclusion(chartResponse.data[0].exclusion)
+                setExclusionColumns(getColumns(chartResponse.data[0].exclusion))
+                }
                 const layout = {
                     xaxis: chartResponse.data[0].layout.xaxis,
                     yaxis: chartResponse.data[0].layout.yaxis,
@@ -114,6 +115,9 @@ const chartComponent = (props) => {
             // dispatch(showNotification('error', 'No Data In Chart'));
         }
     }
+    const changeTab = activeKey => {
+        setActiveTab(activeKey);
+    };
    
     return (
 
@@ -125,7 +129,7 @@ const chartComponent = (props) => {
                 />
             </div>
             <div>
-                <Tabs activeKey="Data Table">
+                <Tabs activeKey={activeTab} onChange={changeTab} >
                     <TabPane tab="Exclusion" key="Exclusion"><Table columns={exclusionColumns} dataSource={exclusion} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
                     <TabPane tab="Violation" key="Violation"><Table columns={violationColumns} dataSource={violation} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
                     <TabPane tab="Data Table" key="Data Table"><Table columns={dataTableColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
