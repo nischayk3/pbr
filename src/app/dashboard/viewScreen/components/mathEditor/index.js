@@ -11,6 +11,7 @@ import { truncate } from 'lodash';
 const variableData = [];
 
 const MathEditor = props => {
+	console.log('props matheditor', props);
 	const [varData, setVarData] = useState([]);
 	const [count, setCount] = useState(1);
 	const [cardTitle, setCardTitle] = useState('Create Variable');
@@ -77,7 +78,6 @@ const MathEditor = props => {
 					callbackCheckbox={callbackCheckbox}
 					varClick={varClick}
 					rowDisable={rowDisable}
-					paramTableData={props.paramTableData}
 					newBatchData={props.newBatchData}
 					parentBatches={props.parentBatches}
 					ischeckBox={ischeckBox}

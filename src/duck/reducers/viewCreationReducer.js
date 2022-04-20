@@ -14,6 +14,7 @@ import {
 	SELECTED_PARAM_TYPE,
 	VIEW_FUNCTION_MAP,
 	VIEW_PARAM_MAP,
+	IS_LOAD_VIEW,
 } from '../../constants/actionTypes';
 
 const initState = {
@@ -33,6 +34,7 @@ const initState = {
 	selectedParamType: '',
 	functions: {},
 	parameters: {},
+	isLoad: false,
 };
 
 export default (state = initState, action) => {
@@ -69,6 +71,8 @@ export default (state = initState, action) => {
 			return { ...state, functions: action.payload };
 		case VIEW_PARAM_MAP:
 			return { ...state, parameters: action.payload };
+		case IS_LOAD_VIEW:
+			return { ...state, isload: action.payload };
 		default:
 			return state;
 	}
