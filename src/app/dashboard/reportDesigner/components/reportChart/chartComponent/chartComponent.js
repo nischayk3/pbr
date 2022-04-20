@@ -73,8 +73,8 @@ const chartComponent = (props) => {
             dispatch(showLoader());
             const chartResponse = await getChartPlotData(req, headers);
             if (chartResponse.data[0]) {
-                setWorkSpaceChartData(chartResponse.data[0].data[0]);
-                setWorkSpaceChartLayout(chartResponse.data[0].layout)
+                setWorkSpaceChartData(chartResponse.data[0].data);
+                // setWorkSpaceChartLayout(chartResponse.data[0].layout)
                 setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
                 setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
                 // if (chartResponse.data[0].violation.length > 0)
@@ -87,48 +87,48 @@ const chartComponent = (props) => {
                 // setExclusion(chartResponse.data[0].exclusion)
                 // setExclusionColumns(getColumns(chartResponse.data[0].exclusion))
                 // }
+                const layout = {
+                    xaxis: chartResponse.data[0].layout.xaxis,
+                    yaxis: chartResponse.data[0].layout.yaxis,
+                    autosize: false,
+                    width: 500,
+                    height: 310,
+                    margin: {
+                        l: 60,
+                        r: 50,
+                        b: 75,
+                        t: 30,
+                        pad: 4
+                    },
+                };
+                setWorkSpaceChartLayout(layout)
+
             }
-            if (chartResponse.extras.data_table) {
-                setDataTable(chartResponse.extras.data_table)
-                setDataTableColumns(getColumns(chartResponse.extras.data_table))
+            if (chartResponse.data[0].extras.data_table) {
+                setDataTable(chartResponse.data[0].extras.data_table)
+                setDataTableColumns(getColumns(chartResponse.data[0].extras.data_table))
             }
             dispatch(hideLoader());
         } catch (error) {
             dispatch(hideLoader());
-            dispatch(showNotification('error', 'No Data In Chart'));
+            // dispatch(showNotification('error', 'No Data In Chart'));
         }
     }
-    const layout = {
-        xaxis: workspaceChartLayoutXAxis,
-        yaxis: workspaceChartLayoutYAxis,
-        autosize: false,
-        width: 500,
-        height: 310,
-        margin: {
-            l: 50,
-            r: 50,
-            b: 75,
-            t: 30,
-            pad: 4
-        },
-        title: {
-            text: ""
-        }
-    };
+   
     return (
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridGap: '10px' }}>
             <div >
                 <Plot
-                    data={[workspaceChartData]}
-                    layout={layout}
+                    data={workspaceChartData}
+                    layout={workspaceChartLayout}
                 />
             </div>
             <div>
-                <Tabs>
-                    <TabPane tab="Exclusion" key="Exclusion"><Table columns={exclusionColumns} dataSource={exclusion} size="small" pagination={{ pageSize: 5 }}  bordered={false}/></TabPane>
-                    <TabPane tab="Violation" key="Violation"><Table columns={violationColumns} dataSource={violation} size="small" pagination={{ pageSize: 5 }}  bordered={false}/></TabPane>
-                    <TabPane tab="Data Table" key="Data Table"><Table columns={dataTableColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }}  bordered={false}/></TabPane>
+                <Tabs activeKey="Data Table">
+                    <TabPane tab="Exclusion" key="Exclusion"><Table columns={exclusionColumns} dataSource={exclusion} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
+                    <TabPane tab="Violation" key="Violation"><Table columns={violationColumns} dataSource={violation} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
+                    <TabPane tab="Data Table" key="Data Table"><Table columns={dataTableColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
                 </Tabs>
             </div>
         </div>

@@ -1,11 +1,13 @@
 .evaluation-tabs{
-    .ant-tabs-nav-wrap{
+    .ant-tabs-nav-wrap
+    {
     height:50px;
     padding: 24px 24px 0px 0px;;
     background:none;
     box-shadow: none;
     }
-    .ant-tabs-tab-btn{
+    .ant-tabs-tab-btn
+    {
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
@@ -13,10 +15,12 @@
     line-height: 22px;
     color: rgba(0, 0, 0, 0.85);
     }
-    .ant-tabs-tab-btn:hover{
-        color: rgba(0, 0, 0, 0.85);
+    .ant-tabs-tab-btn:hover
+    {
+      color: rgba(0, 0, 0, 0.85);
     }
-    .ant-tabs-tab-active .ant-tabs-tab-btn{
+    .ant-tabs-tab-active .ant-tabs-tab-btn
+    {
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
@@ -24,13 +28,15 @@
     line-height: 22px;
     color:#093185 !important;
     }
-    .ant-tabs-ink-bar {
-        background: #093185;
-      }
-    
+    .ant-tabs-ink-bar 
+    {
+      background: #093185;
+    }   
  }
- .alerts-radio{
-     font-family: 'Roboto';
+
+ .alerts-radio
+ {
+    font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -38,7 +44,8 @@
     color: #262626;
  }
 
- .share-to-workspace{
+ .share-to-workspace
+ {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
@@ -46,10 +53,11 @@
     line-height: 19px;
     text-decoration-line: underline;
     color: #093185;
-    margin-top: 25px;
-    
+    margin-top: 25px;    
  }
- .schedule-evalutaion-button{
+
+ .schedule-evalutaion-button
+ {
     background-color: #093185 ;
     color: white;
     border-radius: 4px ;
@@ -59,9 +67,10 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 22px;
-   
  }
- .clear-schedule{
+
+ .clear-schedule
+ {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
@@ -69,11 +78,13 @@
     line-height: 22px;
     border:0px;
     color: #262626;
- }
- .end-dates
+}
+
+.end-dates
 {
   color:#093185;
 }
+
 .day-buttons
 {
 border-radius: 50% !important;
@@ -83,11 +94,11 @@ background: #EAEAEA !important;
 align-items: center !important;
 margin-left: 10px;
 color: black !important;
-
 }
+
 .selected-day-buttons
 {
-  border-radius: 50% !important;
+border-radius: 50% !important;
 width: 40px !important;
 height: 40px !important;
 background: #486BC9  !important;
@@ -99,37 +110,37 @@ color: white !important;
 .select-days
 {
   margin-top: 30px;
+  // margin-left: 150px;
 }
+
 .end-date
 {
 //   margin-left: 30%;
 }
 .email-subject
 {
-  font-family: 'Roboto';
+font-family: 'Roboto';
 font-style: normal;
 font-weight: 300;
 font-size: 16px;
 line-height: 22px;
 /* identical to box height, or 138% */
 margin-left: 10px;
-
-
 color: #000000;
 }
+
 .email-sub
 {
-  font-family: 'Roboto';
+font-family: 'Roboto';
 font-style: normal;
 font-weight: 300;
 font-size: 16px;
 line-height: 22px;
 /* identical to box height, or 138% */
-
-
 color: #000000;
 margin-left: 30px;
 }
+
 .email-recipients
 {
   font-family: 'Roboto';
@@ -140,29 +151,32 @@ margin-left: 30px;
   /* identical to box height, or 138% */
   color: #000000;
 }
+
 .email-content
 {
-  font-family: 'Roboto';
+font-family: 'Roboto';
 font-style: normal;
 font-weight: 400;
 font-size: 16px;
 line-height: 19px;
-
 color: #343434;
 margin-left: 10px;
 }
+
 .email-freq
 {
   margin-left: 20%;
 }
+
 .tag-sch
 {
-  width: 93px;
+width: 93px;
 height: 27px;
 border: 1px solid #2D8007;
 box-sizing: border-box;
 border-radius: 4px;
 }
+
 .tag-text
 {
   font-family: 'Roboto';
@@ -170,20 +184,20 @@ border-radius: 4px;
   font-weight: 300;
   font-size: 16px;
   line-height: 15px;
-
   align-items: center;
-  margin-top: 5px;
-  
+  margin-top: 5px; 
   color: #2D8007;
 }
+
 .tag-new
 {
   width: 51px;
-height: 27px;
+  height: 27px;
   box-sizing: border-box;
   border-radius: 4px;
   border: 1px solid #DF980F
 }
+
 .tag-text-new
 {
   font-family: 'Roboto';
@@ -191,9 +205,25 @@ height: 27px;
   font-weight: 300;
   font-size: 16px;
   line-height: 15px;
-
   align-items: center;
   margin-top: 5px;
-  
   color: #DF980F;
+}
+.attachment-report
+{
+  background: #F1F1F1;
+border-radius: 80px;
+width: 188px;
+height: 29px;
+}
+
+.attachment-report-text
+{
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+/* identical to box height */
+color: #5B5B5B;
+margin-left: 10px;
 }

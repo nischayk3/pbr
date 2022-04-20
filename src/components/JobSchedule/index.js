@@ -12,6 +12,7 @@ import { showLoader, hideLoader } from '../../duck/actions/commonActions';
 import AlertTable from './scheduled-alerts/scheduledAlertsTable';
 //alert evaluation
 import AlertEvaluation from './scheduled-alerts/alertEvaluation';
+import ReportNotify from './scheduled-alerts/reportNotify';
 
 
 const { TabPane } = Tabs;
@@ -48,11 +49,15 @@ const JobSchedule = (props) => {
                 <TabPane tab={
                     <span style={{ color: 'white' }}>
                         <DesktopOutlined />
-                        Alerts
+                        { props.app_type=='REPORT' ? <>Notify</> : <>Alerts</> }
+
+                        
                     </span>
                 }
                     key="1">
-                    <AlertEvaluation />
+                        { props.app_type=='REPORT' ? <ReportNotify appType={props.app_type} /> :
+                    <AlertEvaluation appType={props.app_type} id={props.id} />
+                }
                 </TabPane>
                 <TabPane tab={
                     <span style={{ color: 'white' }}>
@@ -66,7 +71,7 @@ const JobSchedule = (props) => {
                             <span className='alert-arrow'><a>View More Details</a><ArrowRightOutlined style={{ marginLeft: '10px', color: '#093185' }} /></span>
                         </div>
                         <div>
-                            <AlertTable />
+                            <AlertTable appType={props.app_type} />
                         </div>
                     </div>
                 </TabPane>

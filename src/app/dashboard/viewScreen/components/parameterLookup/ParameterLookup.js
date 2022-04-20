@@ -7,10 +7,9 @@
  */
 
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import './styles.scss';
-import { Form, Select } from 'antd';
-import { materialsParameterTree } from '../../../../../duck/actions/fileUploadAction';
+import { Select } from 'antd';
 import { moleculeName } from '../../../../../duck/actions/viewCreationAction';
 import { getMoleculeList } from '../../../../../services/viewCreationPublishing';
 import {
@@ -20,6 +19,7 @@ import {
 } from '../../../../../duck/actions/commonActions';
 
 function ParameterLookup(props) {
+	console.log('propsssss', props);
 	const {
 		moleculeList,
 		setMoleculeList,
@@ -29,12 +29,10 @@ function ParameterLookup(props) {
 		setMaterialsList,
 		setFilterdData,
 		setParentBatches,
-		form,
 		params,
 	} = props;
-	console.log('propsssss parameter lookup', props);
+
 	const dispatch = useDispatch();
-	const logindetails = useSelector(state => state.loginReducer.loginDetails);
 
 	const onSelectMoleculeHandler = async () => {
 		let req = { user_id: 'demo' };
@@ -71,10 +69,11 @@ function ParameterLookup(props) {
 	}, []);
 
 	useEffect(() => {
-		form.setFieldsValue({
-			molecule: moleculeId,
-		});
-		dispatch(moleculeName(moleculeId));
+		if (moleculeId) {
+			console.log('moleculeId', moleculeId);
+			onChangeMoleculeHandler(moleculeId);
+			dispatch(moleculeName(moleculeId));
+		}
 	}, [moleculeId]);
 
 	const onChangeMoleculeHandler = async value => {
@@ -90,6 +89,8 @@ function ParameterLookup(props) {
 				'x-access-token': res.token ? res.token : '',
 				'resource-name': 'VIEW',
 			});
+
+			console.log('paramTreeRes', paramTreeRes);
 
 			if (paramTreeRes.statuscode === 200) {
 				setMaterialsList(paramTreeRes.data.hierarchy);
@@ -126,7 +127,8 @@ function ParameterLookup(props) {
 
 	return (
 		<div className='parameterLookup-FormBlock'>
-			<Form.Item label='Molecule' name='molecule'>
+			<div className='param-select'>
+				<p>Molecule</p>
 				<Select
 					placeholder='Select'
 					onChange={onChangeMoleculeHandler}
@@ -141,8 +143,9 @@ function ParameterLookup(props) {
 						);
 					})}
 				</Select>
-			</Form.Item>
-			<Form.Item label='Filters' name='filters'>
+			</div>
+			<div className='param-select'>
+				<p>Filters</p>
 				<Select
 					showSearch
 					optionFilterProp='children'
@@ -161,7 +164,7 @@ function ParameterLookup(props) {
 						);
 					})}
 				</Select>
-			</Form.Item>
+			</div>
 		</div>
 	);
 }

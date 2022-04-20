@@ -4,9 +4,6 @@ import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 //antd imports
 import { Row, Col, Tabs, Menu, Dropdown, message, Button, Modal } from "antd";
 import {
-  ControlOutlined,
-  StarOutlined,
-  AntDesignOutlined,
   ArrowLeftOutlined,
   CloudUploadOutlined,
   MoreOutlined,
@@ -37,6 +34,8 @@ import {
 import AlertEvaluation from "../scheduled-alerts/alertEvaluation";
 //schedule-alert table
 import AlertTable from "../scheduled-alerts/scheduledAlertsTable";
+import JobSchedule from "../../../../../components/JobSchedule";
+import Signature from '../../../../../components/ElectronicSignature/signature';
 
 const { TabPane } = Tabs;
 
@@ -48,10 +47,13 @@ const ViewPage = () => {
   //state for chart json data
   const [postChartData, setPostChartData] = useState({});
   const [alertModal, setAlertModal] = useState(false);
+  const [isPublish, setIsPublish] = useState(false);
+  const [publishResponse, setPublishResponse] = useState({});
+  const [approveReject, setApproveReject] = useState('');
 
   const dispatch = useDispatch();
 
-  const callback = (key) => {};
+  const callback = (key) => { };
 
   const handleCancel = () => {
     setAlertModal(false);
@@ -125,6 +127,16 @@ const ViewPage = () => {
     }
   };
 
+  const handleClose = () => {
+    setIsPublish(false);
+  };
+
+  const PublishResponse = res => {
+    console.log(res);
+    setPublishResponse(res);
+
+  };
+
   //function for getting chart data
   const getChart = async () => {
     const req = { chartId: id };
@@ -171,10 +183,29 @@ const ViewPage = () => {
         <div className="btns">
           <Button onClick={() => setAlertModal(true)}>Schedule Alert</Button>
           <Button onClick={() => saveAs("save")}>Save</Button>
-          <Button>
+          <Button onClick={() => {
+            setIsPublish(true);
+            setApproveReject('P');
+          }}>
             {" "}
             <CloudUploadOutlined />
             Publish
+          </Button>
+          <Button
+            onClick={() => {
+              setIsPublish(true);
+              setApproveReject('R');
+            }}
+          >
+            Reject
+          </Button>
+          <Button
+            onClick={() => {
+              setIsPublish(true);
+              setApproveReject('A');
+            }}
+          >
+            Approve
           </Button>
           <Dropdown overlay={menu}>
             <MoreOutlined />
@@ -271,6 +302,17 @@ const ViewPage = () => {
           </TabPane>
         </Tabs>
       </Modal>
+      <JobSchedule visible={alertModal} app_type='Chart' handleCancel={handleCancel} id={'reportId'} />
+      <Signature
+        isPublish={isPublish}
+        handleClose={handleClose}
+        screenName='Chart Personalization'
+        PublishResponse={PublishResponse}
+        appType='CHART'
+        dispId={postChartData.data && postChartData.data[0].chart_id}
+        version={postChartData.data && postChartData.data[0].chart_version}
+        status={approveReject}
+      />
     </div>
   );
 };

@@ -38,12 +38,10 @@ import ViewSummary from './viewSummary/ViewSummary';
 import './styles.scss';
 import {
 	getViewConfig,
+	saveFunction,
 	getViews,
 } from '../../../../services/viewCreationPublishing';
-import {
-	saveFunction,
-	updateFunction,
-} from '../../../../duck/actions/viewCreationAction';
+import { updateFunction } from '../../../../duck/actions/viewCreationAction';
 import {
 	adHocFilesParameterTree,
 	materialsParameterTree,

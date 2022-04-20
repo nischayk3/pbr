@@ -22,7 +22,7 @@ import {
     Popconfirm,
     Tag
 } from 'antd';
-import {  BlockOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone, FileTextOutlined } from '@ant-design/icons';
+import { BlockOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone, FileTextOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
@@ -146,7 +146,6 @@ function ReportGenerator() {
         Friday: false,
         Saturday: false,
     })
-
     const [alertVisible, setAlertVisible] = useState(false)
     // const [ sectionCharts,setSectionCharts] = 
     const dispatch = useDispatch();
@@ -238,7 +237,6 @@ function ReportGenerator() {
 
 
     const getTableData = (obj, rep_layout) => {
-        console.log(obj, rep_layout)
         obj = obj.layout_info
         let headingList = []
         let allSections = []
@@ -254,7 +252,6 @@ function ReportGenerator() {
         for (let i = 0; i < allSections.length; i++) {
             allSections[i].charts = rep_layout[i + 1]
         }
-
         return allSections
     }
 
@@ -265,13 +262,12 @@ function ReportGenerator() {
         setChartLayout(ReportData.charts_layout ? createChartRecord(ReportData.charts_layout) : {})
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setCharts(ReportData['chart_int_ids'] ? createArraObj(ReportData['chart_int_ids']) : [])
-        setTable(ReportData['layout_info'] ? getTableData(ReportData['layout_info'], ReportData.charts_layout ? ReportData.charts_layout : {}) : {})
+        setTable(ReportData['layout_info'] ? getTableData(ReportData['layout_info'], ReportData.layout_info.charts_layout ? ReportData.layout_info.charts_layout : {}) : {})
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
-        setEmailList(ReportData.share ? ReportData.share.email_list : [])
+        // setEmailList(ReportData.share ? ReportData.share.email_list : [])
         setSchedule(ReportData.share ? ReportData.share.frequency_unit : '')
-
         dispatch(hideLoader());
         // setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
     }
@@ -322,7 +318,7 @@ function ReportGenerator() {
         obj['user'] = user
         obj['variant_name'] = user + '_variant'
         obj['chart_info'] = { charts: chart }
-        obj['chart_layout'] = chartLayout
+        obj['charts_layout'] = chartLayout
         obj['days_layout'] = selectedDays
 
 
@@ -612,7 +608,7 @@ function ReportGenerator() {
 
 
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
-            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} />
+            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} id={reportId} />
         </div>
 
 
