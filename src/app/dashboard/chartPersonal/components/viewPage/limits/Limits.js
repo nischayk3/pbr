@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./limitsStyles.scss";
 //antd imports
 import {
@@ -21,6 +21,7 @@ import {
   hideLoader,
 } from "../../../../../../duck/actions/commonActions";
 import { useDispatch } from "react-redux";
+import moment from "moment";
 
 //main component
 const Limits = ({ postChartData, setPostChartData }) => {
@@ -77,7 +78,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
     {
       title: "Action",
       dataIndex: "action",
-      width: "100",
+      width: "20",
       render: (_, record) => (
         <Popconfirm
           title="Sure to delete?"
@@ -91,7 +92,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
       title: "Lower Limit",
       dataIndex: "Lower Limit",
       key: "Lower Limit",
-      width: "100",
+      width: "20",
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
@@ -110,7 +111,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
       title: "Upper Limit",
       dataIndex: "UL",
       key: "UL",
-      width: "100",
+      width: "20",
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
@@ -129,6 +130,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
       title: "Valid Until   ",
       dataIndex: "validuntill",
       key: "validuntill",
+      width: "180",
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
@@ -136,6 +138,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
               <DatePicker
                 type="text"
                 name="valid_timestamp"
+                defaultValue={
+                  data.valid_timestamp ? moment(data.valid_timestamp) : ""
+                }
                 onChange={(dateString) => handleChange(index, "", dateString)}
               />
             );
@@ -203,12 +208,14 @@ const Limits = ({ postChartData, setPostChartData }) => {
       key: "validuntill",
       render: (text, record) =>
         specificationSource.map((data, index) => {
-          console.log(record, "rec");
           if (record.key === data.key) {
             return (
               <DatePicker
                 type="text"
                 name="valid_timestamp"
+                defaultValue={
+                  data.valid_timestamp ? moment(data.valid_timestamp) : ""
+                }
                 onChange={(dateString) => handleChange(index, "", dateString)}
               />
             );
@@ -282,6 +289,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
               <DatePicker
                 type="text"
                 name="valid_timestamp"
+                defaultValue={
+                  data.valid_timestamp ? moment(data.valid_timestamp) : ""
+                }
                 onChange={(dateString) =>
                   handleWarnChange(index, "", dateString)
                 }
@@ -389,6 +399,23 @@ const Limits = ({ postChartData, setPostChartData }) => {
       dispatch(hideLoader());
     }
   };
+
+  useEffect(() => {
+    const newCovArr = JSON.parse(JSON.stringify(postChartData));
+    let control = [];
+    let specify = [];
+    let warn = [];
+    newCovArr &&
+      newCovArr.data &&
+      newCovArr.data.forEach((ele) => {
+        control = ele.limits.control;
+        specify = ele.limits.specification;
+        warn = ele.limits.warning;
+        setControlSource(control);
+        setSpecificationSource(specify);
+        setWarningSource(warn);
+      });
+  }, [postChartData]);
 
   return (
     <div className="limit-container">

@@ -4,9 +4,6 @@ import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 //antd imports
 import { Row, Col, Tabs, Menu, Dropdown, message, Button, Modal } from "antd";
 import {
-  ControlOutlined,
-  StarOutlined,
-  AntDesignOutlined,
   ArrowLeftOutlined,
   CloudUploadOutlined,
   MoreOutlined,
@@ -37,6 +34,7 @@ import {
 import AlertEvaluation from "../scheduled-alerts/alertEvaluation";
 //schedule-alert table
 import AlertTable from "../scheduled-alerts/scheduledAlertsTable";
+import JobSchedule from "../../../../../components/JobSchedule";
 
 const { TabPane } = Tabs;
 
@@ -51,7 +49,7 @@ const ViewPage = () => {
 
   const dispatch = useDispatch();
 
-  const callback = (key) => {};
+  const callback = (key) => { };
 
   const handleCancel = () => {
     setAlertModal(false);
@@ -61,7 +59,7 @@ const ViewPage = () => {
   const saveAs = async (type) => {
     const postData = JSON.parse(JSON.stringify(postChartData));
     let obj = {};
-    if (id !== 0) {
+    if (Number(id) !== 0) {
       if (type === "save") {
         obj = {
           ...postData,
@@ -103,8 +101,21 @@ const ViewPage = () => {
     try {
       dispatch(showLoader());
       const viewRes = await saveChartPlotData(obj);
-      history.push(`/dashboard/chart_personalization/${viewRes.chart_id}`);
-      message.success("Chart created successfully");
+      if (viewRes.statuscode === 200) {
+        if (Number(id) !== 0) {
+          if (type === "save") {
+            message.success("Chart updated successfully");
+          } else {
+            message.success("New Chart created successfully");
+            history.push(
+              `/dashboard/chart_personalization/${viewRes.chart_id}`
+            );
+          }
+        } else {
+          message.success("Chart created successfully");
+          history.push(`/dashboard/chart_personalization/${viewRes.chart_id}`);
+        }
+      }
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
@@ -140,7 +151,8 @@ const ViewPage = () => {
 
   useEffect(() => {
     if (Number(id) === 0) {
-      setPostChartData(chartJson);
+      const newObj = JSON.parse(JSON.stringify(chartJson));
+      setPostChartData(newObj);
     } else {
       getChart();
     }
@@ -257,6 +269,7 @@ const ViewPage = () => {
           </TabPane>
         </Tabs>
       </Modal>
+      <JobSchedule visible={alertModal} app_type='Chart' handleCancel={handleCancel} id={'reportId'} />
     </div>
   );
 };

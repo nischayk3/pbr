@@ -8,8 +8,9 @@
 import './stylesNew.scss';
 import React, { useEffect, useState } from 'react';
 import {
-  ArrowLeftOutlined,
-  BlockOutlined
+  BlockOutlined,
+  CloudUploadOutlined,
+  EllipsisOutlined
 } from '@ant-design/icons';
 import { useLocation } from 'react-router';
 import {
@@ -20,6 +21,8 @@ import {
   Table,
   Input,
   Empty,
+  Dropdown,
+  Menu
 } from 'antd';
 // import ChartSelector from './reportDesignerFilter/chartSelector';
 import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
@@ -105,7 +108,7 @@ function ReportDesignerNew(props) {
   const [isLoad, setIsLoad] = useState(false);
   const [isSave, setIsSave] = useState(false);
   const [reportName, setReportName] = useState('');
-  const [isNew, setIsNew] = useState(false);
+  const [isNew, setIsNew] = useState(true);
   const [visible, setVisible] = useState(false);
   const [popvisible, setPopVisible] = useState(false);
   const [filterTable, setFilterTable] = useState(null);
@@ -129,8 +132,19 @@ function ReportDesignerNew(props) {
   const [approveReject, setApproveReject] = useState('')
   const [sectionKeys, setSectionKeys] = useState({})
   const [sectionAddedCharts, setSectionAddedCharts] = useState({})
+  const [chartsLayout, setChartsLayout] = useState({})
   const [ad, setAd] = useState(false)
   const [form] = Form.useForm();
+
+  const menu = (
+    <Menu>
+      <Menu.Item onClick={() => {
+        PrepareJson(mainJson, 'save_as')
+      }}>
+        Save As
+      </Menu.Item>
+    </Menu>
+  );
 
 
   const dispatch = useDispatch();
@@ -414,7 +428,7 @@ function ReportDesignerNew(props) {
         obj['saveType'] = saveType
       }
 
-      obj['layout_info'] = { 'layout_info': formData, 'chart_details': selectedChartList, 'add_charts_layout': sectionAddedCharts, 'add_keys_layout': sectionKeys };
+      obj['layout_info'] = { 'layout_info': formData, 'chart_details': selectedChartList, 'add_charts_layout': sectionAddedCharts, 'add_keys_layout': sectionKeys, 'charts_layout': sectionCharts };
       let req = {}
       req['data'] = obj
 
@@ -494,10 +508,20 @@ function ReportDesignerNew(props) {
 
       if (layout_data) {
 
+        setChartsLayout(layout_data['charts_layout'] ? layout_data['charts_layout'] : {})
+
+        let section_keys = layout_data['add_keys_layout'] ? layout_data['add_keys_layout'] : {}
+        setSectionKeys(section_keys)
+
+        let section_added_charts = layout_data['add_charts_layout'] ? layout_data['add_charts_layout'] : {}
+        setSectionAddCharts(section_keys)
+
         let res = []
         let layout_info = layout_data.layout_info ? layout_data.layout_info : {}
 
-        let chartList = layout_info['chart_details'] && layout_info['chart_details'].length > 0 ? layout_info['chart_details'] : []
+        console.log(layout_info, 'layout_info')
+
+        let chartList = layout_data['chart_details'] && layout_data['chart_details'].length > 0 ? layout_data['chart_details'] : []
         if (chartList.length > 0)
           setSelectedChartList(chartList)
         else
@@ -551,7 +575,9 @@ function ReportDesignerNew(props) {
       dispatch(showNotification('error', 'Error in Loading Data'));
       dispatch(hideLoader())
     }
-    dispatch(hideLoader())
+    setTimeout(() => {
+      dispatch(hideLoader())
+    }, 3000);
   }
 
 
@@ -644,16 +670,16 @@ function ReportDesignerNew(props) {
     <div className='custom-wrapper'>
       <div className='sub-header'>
         <div className='sub-header-title'>
-         <BreadCrumbWrapper/>
+          <BreadCrumbWrapper />
         </div>
         <div className='sub-header-btns'>
-          {isLoad || params ? <> </> : (
+          {/* {isLoad || params ? <> </> : (
             <Button
               className='custom-primary-btn'
               onClick={() => OnNewClick()}
             >
               New
-            </Button>)}
+            </Button>)} */}
           {/* {!params ?
             <Button
               className='custom-primary-btn'
@@ -694,8 +720,12 @@ function ReportDesignerNew(props) {
                   className="custom-secondary-btn"
                   onClick={() => setIsPublish(true)}
                 >
+                  <CloudUploadOutlined />
                   Publish
-                </Button> </>
+                </Button>
+                <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
+                  <EllipsisOutlined style={{transform:'rotate(-90deg)',fontSize:'20px',marginLeft:'5px'}} />
+                </Dropdown> </>
               : <> </>
           }
           {
@@ -768,7 +798,7 @@ function ReportDesignerNew(props) {
               onValuesChange={handleValuesChange}
               initialValues={formData}
             >
-              <ReportDesignerDynamicSections formData={formData} show={params} list={selectedChartList} setSectionCharts={setSectionCharts} setSectionAddKey={setSectionAddKey} setSectionAddCharts={setSectionAddCharts} />
+              <ReportDesignerDynamicSections formData={formData} show={params} list={selectedChartList} setSectionCharts={setSectionCharts} sectionKeys={sectionKeys} sectionAddedCharts={sectionAddedCharts} setSectionAddKey={setSectionAddKey} setSectionAddCharts={setSectionAddCharts} charts_layout={chartsLayout} isLoad={isLoad} />
             </Form>
           </div> :
           <></>
@@ -843,7 +873,7 @@ function ReportDesignerNew(props) {
         <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
 
       </div>
-      <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT" dispId={reportId} version={0} status={approveReject} />
+      <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={PublishResponse} app_type="REPORT" dispId={reportId} version={0} status={approveReject} />
     </div>
   );
 }

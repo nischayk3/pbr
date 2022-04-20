@@ -66,6 +66,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
       let newdataArr = [...postChartData.data];
       newdataArr[0].thresholds = viewRes.data[0].thresholds;
       newdataArr[0].violations = viewRes.data[0].violations;
+      newdataArr[0].data = viewRes.data[0].data;
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
     } catch (error) {
@@ -86,6 +87,37 @@ const Threshold = ({ postChartData, setPostChartData }) => {
         } else {
           list.push(ele.chart_mapping.y.function_name);
         }
+        ele.thresholds &&
+          ele.thresholds.forEach((thres) => {
+            let parameterValue;
+            let operator;
+            ele.extras.coverage.forEach((extra) => {
+              if (thres.parameter === Number(extra.function_id)) {
+                parameterValue = extra.function_name;
+              }
+            });
+            if (thres.operator === "<") {
+              operator = "Lesser than";
+            }
+            if (thres.operator === ">") {
+              operator = "Greater than";
+            }
+            if (thres.operator === "<=") {
+              operator = "Lesser than or equal to";
+            }
+            if (thres.operator === ">=") {
+              operator = "Greater than or equal to";
+            }
+            if (thres.operator === "=") {
+              operator = "Equal to";
+            }
+            setThresvalues({
+              ...thresValues,
+              math: operator,
+              valueNum: thres.threshold,
+              parameter: parameterValue,
+            });
+          });
       });
     setParameterList(list);
   }, [postChartData]);

@@ -142,7 +142,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
     newCovArr &&
       newCovArr.data &&
       newCovArr.data.forEach((ele) => {
-        console.log(ele.data, "ele");
         if (ele.data[0].x && ele.data[0].x.length >= 1) {
           const chart =
             ele.chart_type === "scatter" ? "Scatter Plot" : "Process Control";
@@ -168,6 +167,16 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
           setShowChart(true);
           setChartData(ele.data);
           setLayoutData(ele.layout);
+        } else {
+          setShowChart(false);
+          setChartData([]);
+          setLayoutData({});
+          setAxisValues({
+            ...axisValues,
+            chartType: null,
+            xaxis: null,
+            yaxis: null,
+          });
         }
       });
   }, [postChartData]);
@@ -178,6 +187,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
     postChartData &&
       postChartData.data &&
       postChartData.data[0].extras &&
+      postChartData.data[0].extras.coverage &&
       postChartData.data[0].extras.coverage.forEach((ele) => {
         list.push(ele.function_name);
         if (axisValues.chartType === "Scatter Plot") {

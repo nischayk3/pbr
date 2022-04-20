@@ -94,6 +94,9 @@ const LandingPage = () => {
   };
   useEffect(() => {
     document.addEventListener("mousedown", closeTableView);
+    return () => {
+      document.removeEventListener("mousedown", closeTableView);
+    };
   }, []);
 
   useEffect(() => {

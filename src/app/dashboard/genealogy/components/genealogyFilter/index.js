@@ -47,7 +47,6 @@ function Filter(props) {
 	};
 
 	const onChangeParam = (value, field) => {
-		console.log('valueeeeeee', value, field);
 		if (value != null) {
 			if (field === 'plant') {
 				getGenealogyFilterData(
@@ -63,6 +62,7 @@ function Filter(props) {
 				setselectParam(prevState => {
 					return { ...prevState, plant: value };
 				});
+				setIsEmptyPlant(false);
 			}
 			if (field === 'batch_num') {
 				getGenealogyFilterData(
@@ -78,6 +78,7 @@ function Filter(props) {
 				setselectParam(prevState => {
 					return { ...prevState, batchNum: value };
 				});
+				setIsEmptyBatch(false);
 			} else if (field === 'product_code') {
 				getGenealogyFilterData(
 					selectParam['plant'],
@@ -92,6 +93,7 @@ function Filter(props) {
 				setselectParam(prevState => {
 					return { ...prevState, productCode: value };
 				});
+				setIsEmptyProduct(false);
 			} else if (field === 'product_type') {
 				getGenealogyFilterData(
 					selectParam['plant'],
@@ -106,6 +108,7 @@ function Filter(props) {
 				setselectParam(prevState => {
 					return { ...prevState, productType: value };
 				});
+				setIsEmptyProductType(false);
 			}
 			setDisabled(false);
 		}
@@ -154,11 +157,24 @@ function Filter(props) {
 				'',
 				''
 			);
+		} else if (field === 'product_type') {
+			setselectParam(prevState => {
+				return { ...prevState, productType: '' };
+			});
+			getGenealogyFilterData(
+				selectParam['plant'],
+				selectParam['batchNum'],
+				selectParam['productCode'],
+				'',
+				'',
+				'',
+				'',
+				''
+			);
 		}
 	};
 
 	const onSearchParam = (type, field) => {
-		console.log('typeeeeeeeee', type, field);
 		if (type != null) {
 			if (field === 'plant') {
 				getGenealogyFilterData(
@@ -185,8 +201,7 @@ function Filter(props) {
 				);
 
 				setIsEmptyProduct(false);
-			}
-			if (field === 'batch_num') {
+			} else if (field === 'batch_num') {
 				getGenealogyFilterData(
 					selectParam['plant'],
 					selectParam['batchNum'],
@@ -199,6 +214,19 @@ function Filter(props) {
 				);
 
 				setIsEmptyBatch(false);
+			} else if (field === 'product_type') {
+				getGenealogyFilterData(
+					selectParam['plant'],
+					selectParam['batchNum'],
+					selectParam['productCode'],
+					selectParam['productType'],
+					'',
+					'',
+					'',
+					type
+				);
+
+				setIsEmptyProductType(false);
 			}
 		}
 	};
@@ -225,7 +253,7 @@ function Filter(props) {
 
 		try {
 			const filterRes = await getGeanealogyFilter(reqFilter);
-			console.log('filterRes', filterRes);
+
 			if (filterRes.statuscode === 200) {
 				setParamList(() => {
 					return {
@@ -268,10 +296,10 @@ function Filter(props) {
 			setIsEmptyProduct(false);
 			setIsEmptyProductType(false);
 		} else if (paramDetail.productType === '') {
-			setIsEmptyBatch(true);
+			setIsEmptyBatch(false);
 			setIsEmptyPlant(false);
 			setIsEmptyProduct(false);
-			setIsEmptyProductType(false);
+			setIsEmptyProductType(true);
 		} else {
 			props.parameterDetails(paramDetail);
 			setIsEmptyPlant(false);
@@ -300,8 +328,6 @@ function Filter(props) {
 		setIsEmptyProductType(false);
 		getGenealogyFilterData();
 	};
-
-	console.log('paramListv', paramList);
 
 	const optionsPlant = paramList['plantList'].map((item, index) => (
 		<Select.Option key={index} value={item}>
