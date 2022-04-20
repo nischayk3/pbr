@@ -141,7 +141,7 @@ const ViewChart = (props, ref) => {
         { key: 'Last 30 minutes', value: 30 },
     ];
 
-    const typeOfCharts = ['Analysis', 'Process Control', 'Grafana']
+    const typeOfCharts = ['Analysis', 'Charts', 'Grafana']
     const [filterObject, setFilterObject] = useState({ site: '', unapprovedData: '', explorationControl: '', startTime: '', endTime: '' })
     const options = range.map((item, i) => (
         <Option key={i} value={item.value}>
