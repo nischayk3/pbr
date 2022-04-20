@@ -112,10 +112,8 @@ export default function Landing(props) {
 				element.view_disp_id +
 				'&view_version=' +
 				element.view_version,
-			state: {
-				response: '',
-			},
 		});
+		window.location.reload();
 	};
 
 	return (

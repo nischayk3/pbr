@@ -219,6 +219,19 @@ const ViewCreation = props => {
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
 			console.log('loadViewRes', loadViewRes);
+			Object.entries(loadViewRes).forEach(([key, value], index) => {
+				if (key === 'view_version') {
+					setViewVersion(value);
+				} else if (key === 'material_id') {
+					setMoleculeId(value);
+				} else if (key === 'view_status') {
+					setViewStatus(value);
+				} else if (key === 'view_name') {
+					setViewName(value);
+				}
+			});
+			setViewJson(loadViewRes);
+
 			dispatch(hideLoader());
 		} catch (err) {
 			dispatch(hideLoader());
