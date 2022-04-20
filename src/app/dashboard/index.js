@@ -39,6 +39,7 @@ const ViewLanding = lazy(() => import("./viewScreen"));
 const ViewChart = lazy(() =>
   import("./dashboardScreen/components/viewChart/viewChart")
 );
+const Hierarchy = lazy(() => import("./hierarchyConfig"));
 const Faq = lazy(() => import("./faq"));
 const { Content } = Layout;
 
@@ -147,6 +148,9 @@ const Dashboard = () => {
                 </Route>
                 <Route key="faq" path={`${match.url}/faq`}>
                   <Faq />
+                </Route>
+                <Route key="hierarchy" path={`${match.url}/molecule_hierarchy_configuration`}>
+                  <Hierarchy/>
                 </Route>
               </Switch>
             </SuspenseWrapper>

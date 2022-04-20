@@ -105,8 +105,8 @@ const MENU = [
 	},
 	{
 		key: 'hierarchy',
-		icon: <LinkOutlined style={{ fontSize: '23px' }} />,
-		title: 'Dashboard',
+		icon: <AppstoreOutlined style={{ fontSize: '23px' }} />,
+		title: 'Hierarchy',
 		linkTo: '/dashboard/molecule_hierarchy_configuration',
 	},
 ];

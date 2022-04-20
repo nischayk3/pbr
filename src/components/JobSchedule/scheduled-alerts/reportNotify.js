@@ -18,13 +18,7 @@ const alertList = ['Limits', 'Rules', 'Threshold']
 const scheduleList = ['Repeat Once', 'Daily', 'Weekly', 'Monthly']
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
 
-let login_response = JSON.parse(localStorage.getItem('login_details'));
 
-const request_headers = {
-    'content-type': 'application/json',
-    'x-access-token': login_response.token ? login_response.token : '',
-    'resource-name': 'JOB',
-};
 
 // {
 //     "app_data": "Chart name",
@@ -116,6 +110,13 @@ const ReportNotify = (props) => {
 
     const SaveData = async () => {
         let req = {}
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
+
+        let request_headers = {
+            'content-type': 'application/json',
+            'x-access-token': login_response.token ? login_response.token : '',
+            'resource-name': 'JOB',
+        };
 
         req['app_data'] = props.appType
         req['dag_id'] = ''
@@ -140,7 +141,7 @@ const ReportNotify = (props) => {
             req["scheduled_end"] = '2030-12-31'
         req["scheduled_start"] = scheduleEmailStartDate
 
-        let res = await putJob(req,request_headers)
+        let res = await putJob(req, request_headers)
 
         if (res.Status == 200) {
             dispatch(showNotification('success', 'Saved'))
