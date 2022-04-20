@@ -66,6 +66,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
       let newdataArr = [...postChartData.data];
       newdataArr[0].thresholds = viewRes.data[0].thresholds;
       newdataArr[0].violations = viewRes.data[0].violations;
+      newdataArr[0].data = viewRes.data[0].data;
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
     } catch (error) {
@@ -119,11 +120,6 @@ const Threshold = ({ postChartData, setPostChartData }) => {
           });
       });
     setParameterList(list);
-  }, [postChartData]);
-
-  useEffect(() => {
-    const newCovArr = JSON.parse(JSON.stringify(postChartData));
-    newCovArr.data[0].thresholds.forEach((ele) => {});
   }, [postChartData]);
 
   return (

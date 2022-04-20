@@ -305,6 +305,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
   useEffect(() => {
     postChartData.data &&
       postChartData.data.forEach((ele) => {
+        getSites(ele.view_id);
         setViewData({
           ...viewData,
           viewName: ele.view_name,
