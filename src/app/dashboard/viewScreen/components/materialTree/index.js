@@ -19,19 +19,24 @@ let setKey = [];
 let selectedData = [];
 let finalData = [];
 const MaterialTree = props => {
-	const [selectedKey, setSelectedKey] = useState('');
+	const [selectedKeys, setSelectedKeys] = useState([]);
 	const [count, setCount] = useState('');
+	const [selectedAllKey, setSelectedAllKey] = useState([]);
 
 	const dispatch = useDispatch();
 	const { materialsList, parentBatches } = props;
 
-	const onSelect = (keys, info) => {};
+	const onSelect = (keys, info) => {
+		console.log('setSelectedKey', keys, info);
+		setSelectedKeys(keys);
+	};
 	const handleClickParam = (e, keys, param, record) => {
 		let rowData = {};
 		let batchData = {};
 		let newBatchData = {};
-		setSelectedKey(keys);
+		//setSelectedKey(keys);
 		setKey.push(keys);
+		setSelectedAllKey[setKey];
 		let tree = [...materialsList];
 		let molBatch = [...parentBatches];
 
@@ -85,7 +90,7 @@ const MaterialTree = props => {
 			{treeMap &&
 				treeMap.map(item => {
 					return (
-						<Tree onSelect={onSelect}>
+						<Tree>
 							<TreeNode title={item.process_step} key={item.key}>
 								{item.children.map(a => {
 									return (
@@ -93,6 +98,8 @@ const MaterialTree = props => {
 											{a.children.map(b => {
 												return (
 													<TreeNode
+														onSelect={onSelect}
+														selectedKeys={selectedKeys}
 														title={
 															<div className='treenode-block'>
 																<div className='tree-block-param'>
@@ -112,7 +119,7 @@ const MaterialTree = props => {
 																			b
 																		)
 																	}>
-																	{selectedKey === b.key ? (
+																	{!selectedKeys ? (
 																		<CheckOutlined />
 																	) : (
 																		<PlusOutlined />

@@ -37,15 +37,15 @@ function ReportDesignerForm(props) {
         let user = user_details && user_details ? user_details : ''
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
-        setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
+        setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : 'DRFT')
 
-        if (ReportData['view_disp_id']) 
+        if (ReportData['view_id-version']) 
         {
             let view_version = ReportData['view_id-version'] ? ReportData['view_id-version'] : ''
             if (view_version) 
             {
-                let view_id = view_version[0].split('-')
-                setViewId(view_id[0])
+                let view_id = view_version[0]
+                setViewId(view_id)
             }
         }
         else 

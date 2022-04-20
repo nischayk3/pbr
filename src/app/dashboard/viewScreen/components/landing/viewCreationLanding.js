@@ -12,6 +12,8 @@ export default function Landing(props) {
 	const [searched, setSearched] = useState(false);
 	const [viewList, setViewList] = useState([]);
 	const [filterTable, setFilterTable] = useState(null);
+	const [lastEightView, setLastEightView] = useState([]);
+
 	const history = useHistory();
 	const columns = [
 		{
@@ -95,8 +97,23 @@ export default function Landing(props) {
 	const getViewsList = () => {
 		let req = {};
 		getViews(req).then(res => {
-			setViewList(res['Data']);
+			const viewRes = res['Data'];
+			const lastEight = viewRes.slice(Math.max(viewRes.length - 8, 1));
+			setViewList(viewRes);
+			setLastEightView(lastEight);
 		});
+	};
+
+	const handleClickView = (e, element) => {
+		console.log('e,element', e, element);
+		history.push({
+			pathname:
+				'/dashboard/view_creation_view?view_disp_id=' +
+				element.view_disp_id +
+				'&view_version=' +
+				element.view_version,
+		});
+		window.location.reload();
 	};
 
 	return (
@@ -159,13 +176,15 @@ export default function Landing(props) {
 
 					<div>
 						<div className='tile'>
-							{viewList.length > 0 ? (
-								viewList.map(
-									(i, index) =>
-										index < 8 && (
-											<StatusBlock id={i.view} status={i.view_status} />
-										)
-								)
+							{lastEightView.length > 0 ? (
+								lastEightView.map((i, index) => (
+									<StatusBlock
+										key={index}
+										id={i.view}
+										status={i.view_status}
+										handleClickTiles={e => handleClickView(e, i)}
+									/>
+								))
 							) : (
 								<></>
 							)}

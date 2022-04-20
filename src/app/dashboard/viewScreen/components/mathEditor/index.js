@@ -17,6 +17,7 @@ const MathEditor = props => {
 	const [rowDisable, setRowDisable] = useState(true);
 	const [variableCreate, setVariableCreate] = useState(false);
 	const [ischeckBox, setIscheckBox] = useState(false);
+	const [varClick, setVarClick] = useState(false);
 
 	const { Panel } = Collapse;
 
@@ -27,22 +28,26 @@ const MathEditor = props => {
 	const addVariable = () => {
 		setCardTitle('Select parameters');
 		setRowDisable(false);
+		setVarClick(true);
 		setIscheckBox(true);
 	};
 
-	const createVariable = () => {
+	const createVar = () => {
 		variableData.push({
 			variableName: `${'V' + count}`,
 			key: count,
 		});
-		setCardTitle('Select parameters');
+
 		setCount(count + 1);
 		setVarData(variableData);
 		setVariableCreate(true);
+		setVarClick(false);
+		setCardTitle('Create Variable');
 	};
 	const callbackCheckbox = val => {
 		if (val) {
 			setCardTitle('Done');
+			setVarClick(false);
 		}
 	};
 
@@ -60,7 +65,7 @@ const MathEditor = props => {
 					<CreateVariable
 						addVariable={addVariable}
 						title={cardTitle}
-						createVariable={createVariable}
+						createVar={createVar}
 						className={'add-var_block add-var_block_bg'}
 					/>
 					{varData.map((item, index) => (
@@ -70,6 +75,7 @@ const MathEditor = props => {
 				<ParameterTable
 					variableCreate={variableCreate}
 					callbackCheckbox={callbackCheckbox}
+					varClick={varClick}
 					rowDisable={rowDisable}
 					paramTableData={props.paramTableData}
 					newBatchData={props.newBatchData}
