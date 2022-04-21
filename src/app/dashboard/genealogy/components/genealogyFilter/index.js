@@ -295,11 +295,6 @@ function Filter(props) {
 			setIsEmptyPlant(false);
 			setIsEmptyProduct(false);
 			setIsEmptyProductType(false);
-		} else if (paramDetail.productType === '') {
-			setIsEmptyBatch(false);
-			setIsEmptyPlant(false);
-			setIsEmptyProduct(false);
-			setIsEmptyProductType(true);
 		} else {
 			props.parameterDetails(paramDetail);
 			setIsEmptyPlant(false);
@@ -319,7 +314,13 @@ function Filter(props) {
 
 	const handleClear = () => {
 		setselectParam(prevState => {
-			return { ...prevState, plant: '', productCode: '', batchNum: '' };
+			return {
+				...prevState,
+				plant: '',
+				productCode: '',
+				batchNum: '',
+				productType: '',
+			};
 		});
 		setDisabled(true);
 		setIsEmptyPlant(false);
@@ -355,7 +356,7 @@ function Filter(props) {
 			<div className='param-filter'>
 				<SelectSearchField
 					showSearch
-					label='Plant'
+					label='Plant *'
 					placeholder='Select'
 					onChangeSelect={value => onChangeParam(value, 'plant')}
 					onSearchSelect={type => onSearchParam(type, 'plant')}
@@ -366,7 +367,7 @@ function Filter(props) {
 				/>
 				<SelectSearchField
 					showSearch
-					label='Product'
+					label='Product *'
 					placeholder='Select'
 					onChangeSelect={value => onChangeParam(value, 'product_code')}
 					onSearchSelect={type => onSearchParam(type, 'product_code')}
@@ -377,7 +378,7 @@ function Filter(props) {
 				/>
 				<SelectSearchField
 					showSearch
-					label='Batch'
+					label='Batch *'
 					placeholder='Select'
 					onChangeSelect={value => onChangeParam(value, 'batch_num')}
 					onSearchSelect={type => onSearchParam(type, 'batch_num')}
@@ -388,12 +389,12 @@ function Filter(props) {
 				/>
 				<SelectSearchField
 					showSearch
-					label='Product Type'
+					label='Product Type '
 					placeholder='Select'
 					onChangeSelect={value => onChangeParam(value, 'product_type')}
 					onSearchSelect={type => onSearchParam(type, 'product_type')}
 					handleClearSearch={e => clearSearch(e, 'product_type')}
-					error={isEmptyProductType ? 'Please select product type' : null}
+					//error={isEmptyProductType ? 'Please select product type' : null}
 					options={optionsProductType}
 					selectedValue={selectParam['productType']}
 				/>

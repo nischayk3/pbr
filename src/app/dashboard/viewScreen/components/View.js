@@ -283,8 +283,7 @@ const ViewCreation = props => {
 					<Button
 						className='viewCreation-saveBtn'
 						// disabled={!viewDisplayId}
-						// onClick={handleSaveVisible}
-					>
+						onClick={handleSaveVisible}>
 						Save
 					</Button>
 
