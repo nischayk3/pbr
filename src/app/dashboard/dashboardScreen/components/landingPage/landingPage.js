@@ -193,14 +193,15 @@ export default function landingPage(props) {
                 source={illustrations}
                 sourceClass='dashboard-image'
             />
-            <Row className="landing-content">
+            <Row className="dashboard-landing-content">
                 <Col span={24}>
                     <Card bordered={false}>
                         <Row>
                             <Col span={6} />
                             <Col span={12} className='p36'>
                                 <Search
-                                    placeholder="Search by view ID, name, product number, creator, status"
+                                    className='dashboard-search'
+                                    placeholder="Search by dashboard ID or name"
                                     allowClear
                                     enterButton="Search"
                                     size="large"
@@ -221,9 +222,9 @@ export default function landingPage(props) {
                             </Col>
                             <Col span={6} />
                         </Row>
-                        <Row className='recent-charts'>
+                        <Row className='dashboard-recent-charts'>
                             <Col span={6} />
-                            <Col span={12}>
+                            <Col span={12} className='p36'>
                                 <h3>Recently created dashboard</h3>
                                 <Divider />
                                 <Row gutter={24}>

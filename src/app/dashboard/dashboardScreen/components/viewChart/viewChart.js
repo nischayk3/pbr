@@ -656,11 +656,11 @@ const ViewChart = (props, ref) => {
         <div>
             <Card title={props.dashboardName ? props.dashboardName : dashboardInfo.dashboard_name}>
                 <div className='global-filters'>
-                    <div>
+                    <div style={{fontSize:'18px'}}>
                         <SyncOutlined />
                     </div>
                     <div>
-                        <Select style={{ width: 120 }} value={dashboardInfo?.data_filter?.site} onChange={(value) => handleGlobalDropdownChange(value, 'Site')}>
+                        <Select style={{ width: 120 }} value={dashboardInfo?.data_filter?.site} onChange={(value) => handleGlobalDropdownChange(value, 'Site')} placeholder="Site">
                             {/* {siteList.map((el, index) => {
                                 return ( */}
                                     <Option value={'1255'}>{'1255'}</Option>
@@ -673,7 +673,7 @@ const ViewChart = (props, ref) => {
                         <Switch type='primary' size='small' checked={dashboardInfo?.data_filter?.unapproved_data} onChange={(value) => handleGlobalDropdownChange(value, 'Unapproved Data')} />
 
                     </div>
-                    <div style={{ marginTop: '3px' }}>
+                    <div>
                         {/* <InputField
                             placeholder='Select Time Range'
                             onChangeClick={(e) => handleDateClick(e)}
@@ -823,7 +823,7 @@ const ViewChart = (props, ref) => {
                             <Col className="gutter-row" span={12}>
                                 <div className='chartCard'>
                                     <div className='inner-chart-filters'>
-                                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between',margin:'5px 0px' }}>
                                             <div>{el.chart_name}</div>
                                             <div >
                                                 {isEditable == index ? (
@@ -836,7 +836,7 @@ const ViewChart = (props, ref) => {
                                                     </div>
                                                 ) : (
                                                     <>
-                                                        <span>Edit <EditOutlined style={{ color: '#486BC9' }} onClick={() => setIsEditable(index)} /></span>
+                                                        <span style={{ marginLeft: '20px', marginRight: '20px' }}>Edit <EditOutlined style={{ color: '#486BC9' }} onClick={() => setIsEditable(index)} /></span>
                                                         <span style={{ marginLeft: '10px' }}><CloseOutlined style={{ color: '#262626' }} onClick={() => removeCard(index)} /></span></>
                                                 )}
 
