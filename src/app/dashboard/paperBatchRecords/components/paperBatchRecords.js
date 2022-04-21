@@ -1,3 +1,11 @@
+/**
+ * @author Ranjith <ranjith.k@mareana.com>
+ * @Mareana - BMS PBR
+ * @version 1
+ * @Last Modified - 18 March, 2022
+ * @Last Changed By - @ranjith
+ */
+
 import React, { useEffect, useState } from 'react';
 import './styles.scss';
 
