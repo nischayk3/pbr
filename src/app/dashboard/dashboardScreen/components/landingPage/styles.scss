@@ -82,8 +82,9 @@ p {
 		gap: 10px;
 		margin-top: 13px;
 		margin-bottom: 10px;
+		cursor: pointer;
 		svg {
-			cursor: pointer;
+			//cursor: pointer;
 			margin-top: 10px !important;
 			font-size: 40px;
 			color: #cbcbcb;
@@ -152,6 +153,7 @@ p {
 		text-align: center;
 		border-radius: 4px;
 		background: #e2e8f2;
+		cursor: pointer;
 	}
 }
 

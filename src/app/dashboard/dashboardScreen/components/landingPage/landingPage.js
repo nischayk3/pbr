@@ -275,7 +275,7 @@ export default function landingPage(props) {
                                         />
                                     </Row>
                                     <Row ref={ref}>
-                                        <p>Add a chart to get started</p>
+                                        <p style={{marginTop:'15px'}}>Add a chart to get started</p>
                                         <Search
                                             placeholder="Search"
                                             onFocus={onFocus}
