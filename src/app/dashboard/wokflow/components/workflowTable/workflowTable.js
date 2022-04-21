@@ -206,10 +206,18 @@ function workflowTable(props) {
           if (i.field_name === "appl_url") {
             obj.fixed='left'
             obj.render = (text, row, index) => {
-              return (
-                <a onClick={() => history.push(`${text}?id=${row.Id}&version=${row.version}`)} className='review-submission'>Review Submission</a>
-
-              );
+              if(text=='/dashboard/chart_personalization'){
+                return (
+                  <a onClick={() => history.push(`${text}/${row.Id}?id=${row.Id}&version=${row.version}`)} className='review-submission'>Review Submission</a>
+  
+                );
+              }else{
+                return (
+                  <a onClick={() => history.push(`${text}?id=${row.Id}&version=${row.version}`)} className='review-submission'>Review Submission</a>
+  
+                );
+              }
+              
             }
           }
 
