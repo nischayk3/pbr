@@ -85,7 +85,7 @@ const MathEditor = props => {
 					viewJson={props.viewJson}
 					setViewJson={props.setViewJson}
 				/>
-				<DataTable />
+				{/* <DataTable /> */}
 			</Panel>
 		</Collapse>
 	);
