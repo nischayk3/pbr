@@ -23,6 +23,7 @@ import {
 	getBatchInfo,
 	getProcessInfo,
 	getForwardData,
+	downloadDataTable,
 } from '../../../../services/genealogyService';
 import popupicon from '../../../../assets/images/popup.png';
 import GenealogyDrawer from '../components/genealogyDrawer/index.js';
@@ -54,6 +55,7 @@ function Genealogy() {
 	const [limsBatchInfo, setLimsBatchInfo] = useState([]);
 	const [showView, setShowView] = useState(false);
 	const [nodeType, setNodeType] = useState('');
+	const [limsBatch, setLimsBatch] = useState('');
 
 	const dispatch = useDispatch();
 
@@ -100,6 +102,7 @@ function Genealogy() {
 					batch_id: nodeSplit[2],
 					// 'ABV4103',
 				};
+				setLimsBatch(nodeSplit[2]);
 				getNodeBatchInfo(_reqBatchInfo);
 			} else if (node.nodeType === 'Process Order') {
 				setNodeType(node.nodeType);
@@ -311,6 +314,30 @@ function Genealogy() {
 		remove(targetKey);
 	};
 
+	const downloadFile = async val => {
+		console.log('vallllllllllllll', val);
+		let uri =
+			'SELECT * FROM tran_product_params WHERE batch_num=' + `'${limsBatch}'`;
+		console.log('uriiii', uri);
+		console.log('encodeURIComponent(uri)', encodeURIComponent(uri));
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
+		let req = {
+			export_csv: true,
+			query: uri,
+			table_name: 'tran_product_params',
+			'x-access-token': login_response.token ? login_response.token : '',
+			'resource-name': 'GENEALOGY',
+		};
+		try {
+			dispatch(showLoader());
+			const download = await downloadDataTable(req);
+			console.log('download.......', download);
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification('error', 'No Data Found'));
+		}
+	};
 	const remove = targetKey => {
 		let newActiveKey = activateKey;
 		let lastIndex;
@@ -413,6 +440,7 @@ function Genealogy() {
 								batchInfo={batchInfo}
 								processInput={processInput}
 								processOutput={processOutput}
+								fileDownload={downloadFile}
 							/>
 						</>
 					</TabPane>
