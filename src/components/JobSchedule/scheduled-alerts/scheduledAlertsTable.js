@@ -43,7 +43,6 @@ export default function scheduledAlertsTable(props) {
     };
 
     const DeleteJob = async (jobId) => {
-        console.log(jobId.job_id)
         let req = {
             job_id: jobId.job_id
         }
