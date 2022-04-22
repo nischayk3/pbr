@@ -7,6 +7,7 @@ import MathFunction from './mathFunction';
 import ParameterTable from './parameterTable';
 import VariableCard from './variableCard';
 import { truncate } from 'lodash';
+import DataTable from './dataTable';
 
 const variableData = [];
 
@@ -84,6 +85,7 @@ const MathEditor = props => {
 					viewJson={props.viewJson}
 					setViewJson={props.setViewJson}
 				/>
+				{/* <DataTable /> */}
 			</Panel>
 		</Collapse>
 	);

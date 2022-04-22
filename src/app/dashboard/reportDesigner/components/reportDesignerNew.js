@@ -355,12 +355,13 @@ function ReportDesignerNew(props) {
         // let objj = {};
         let key_obj = {}
         key_obj['value'] = i.value
-        key_obj['editable'] = i.editable
+        key_obj['editable'] = i.editable==undefined ? false : i.editable
         key_obj['id'] = index + 1
         key_obj['key'] = i.keyName
 
         return key_obj;
       });
+      console.log(content_arr,'content_arr')
       obj['content'] = content_arr;
       obj['id'] = index;
 
@@ -699,7 +700,7 @@ function ReportDesignerNew(props) {
                 </Button>
                 <Button
                   className="custom-secondary-btn"
-                  onClick={() => setIsPublish(true)}
+                  onClick={() => {setIsPublish(true); setApproveReject('P')}}
                 >
                   <CloudUploadOutlined />
                   Publish
@@ -713,21 +714,21 @@ function ReportDesignerNew(props) {
             params ? <div>
               <Button
                 className='viewCreation-rejectBtn'
-                // onClick={() => {
-                //   setIsPublish(true);
-                //   setApproveReject('R');
-                // }}
-                onClick={() => { adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
+                onClick={() => {
+                  setIsPublish(true);
+                  setApproveReject('R');
+                }}
+                // onClick={() => { adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
               >
                 Reject
               </Button>
               <Button
                 className='viewCreation-publishBtn'
-                // onClick={() => {
-                //   setIsPublish(true);
-                //   setApproveReject('A');
-                // }}
-                onClick={() => { adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
+                onClick={() => {
+                  setIsPublish(true);
+                  setApproveReject('A');
+                }}
+                // onClick={() => { adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
               >
                 Approve
               </Button></div> : <></>
@@ -854,7 +855,7 @@ function ReportDesignerNew(props) {
         <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
 
       </div>
-      <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={PublishResponse} app_type="REPORT" dispId={reportId} version={0} status={approveReject} />
+      <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT_DESIGNER" dispId={reportId} version={0} status={approveReject} />
     </div>
   );
 }
