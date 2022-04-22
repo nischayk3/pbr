@@ -73,7 +73,7 @@
                     "visible": true,
                     "showticklabels": true,
                     "showline": true,
-                    "gridcolor": "#00000026",
+                    "gridcolor": "#000026",
                     "showgrid": true
                 }
             },
