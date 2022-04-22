@@ -9,6 +9,7 @@
       // // align-items: center;
       margin: 10px 0px;
       height: 100px;
+      // margin-left: 10px;
       background-color: white !important;
       
     }
@@ -71,8 +72,9 @@
   .generator-header
   {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr  ;
-    grid-gap:5px
+    grid-template-columns: .2fr .2fr .2fr .2fr .2fr;
+    grid-gap:5px;
+
   }
   .header-value
   {
@@ -82,8 +84,8 @@ height: 22px;
 font-family: 'Roboto';
 font-style: normal;
 font-weight: 400;
-font-size: 14px;
+font-size: 16px;
 line-height: 22px;
 color: #262626;
-margin-left: 15px;
+margin-left: 20px;
   }

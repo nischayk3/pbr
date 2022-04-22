@@ -7,7 +7,7 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../duck/actions/commonActions';
 import { putJob } from '../../../services/jobScheduleService';
-import { PaperClipOutlined } from '@ant-design/icons';
+import { PaperClipOutlined,RedoOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 const { Option } = Select
@@ -17,8 +17,6 @@ const { Option } = Select
 const alertList = ['Limits', 'Rules', 'Threshold']
 const scheduleList = ['Repeat Once', 'Daily', 'Weekly', 'Monthly']
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
-
-
 
 // {
 //     "app_data": "Chart name",
@@ -153,8 +151,6 @@ const ReportNotify = (props) => {
 
 
 
-        console.log(req)
-
     }
     const changeTab = activeKey => {
         setActiveTab(activeKey);
@@ -190,7 +186,10 @@ const ReportNotify = (props) => {
 
     return (
         <div>
-            <Tabs className='evaluation-tabs' onChange={changeTab} >
+            <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={<div >
+                <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
+                <Button className='clear-schedule'>Clear</Button>
+            </div>} >
                 <TabPane tab='Email Draft' key="email_draft">
                     <Select
                         mode="tags"
@@ -220,17 +219,14 @@ const ReportNotify = (props) => {
 
                     <div className="attachment-report"> <span><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text"> Report_name.pdf</span></span></div>
                     {/* {emailList.length > 0 && ( */}
-                    <div style={{ marginTop: '50px' }}>
-                        <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
-                        <Button className='clear-schedule'>Clear</Button>
-                    </div>
                     {/* )} */}
                     <Divider />
                 </TabPane>
                 <TabPane tab='Email Schedule' key="email_schedule">
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '200px' }}>
-                            <DatePicker placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} />
+                        <RedoOutlined />   <DatePicker placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} />
+                            <Divider />
                         </div>
                         <div style={{ marginTop: '40px' }}>
                             <Row gutter={[16, 24]}>
@@ -258,9 +254,10 @@ const ReportNotify = (props) => {
                                                 <Space direction="vertical" >
                                                     <Radio value='Every Day' className='alerts-radio'>Every Day</Radio>
                                                     <Radio value='Every WeekDay' className='alerts-radio'>Every WeekDay</Radio>
-                                                    <Radio value={3} className='alerts-radio'>Every <span style={{ width: '100px', marginRight: '20px' }}>
-                                                        <InputField className='alerts-radio' />
-                                                    </span>
+                                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '0px' }}>
+                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '100px', marginRight: '20px' }}>
+                                                            <InputField className='alerts-radio' />
+                                                        </span>
                                                         <SelectField
                                                             className='alerts-radio'
                                                             placeholder='Select HH/MM/SS'
@@ -268,7 +265,8 @@ const ReportNotify = (props) => {
                                                             value={selectedTimeRange}
                                                             onChangeSelect={(e) => handleSelectTimeChange(e)}
                                                         />
-                                                    </Radio>
+
+                                                    </div>
 
                                                 </Space>
                                             </Radio.Group>
@@ -312,16 +310,15 @@ const ReportNotify = (props) => {
                                 )
                             }
                         </div>
-                        {selectedSchedule && (
+                        {/* {selectedSchedule && (
                             <div style={{ marginTop: '40px' }}>
                                 <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
                                 <Button className='clear-schedule'>Clear</Button>
                             </div>
-                        )}
+                        )} */}
                     </div>
                 </TabPane>
-                <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
-                <Button className='clear-schedule'>Clear</Button>
+
             </Tabs>
         </div>
 

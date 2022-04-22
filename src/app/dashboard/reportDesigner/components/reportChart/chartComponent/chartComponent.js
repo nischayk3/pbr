@@ -43,7 +43,7 @@ const chartComponent = (props) => {
             let res_arr = []
             s.map((i) => {
                 let res = {
-                    title: i,
+                    title: i.toUpperCase().replace("_", " "),
                     dataIndex: i,
                     key: i,
                 }
@@ -130,9 +130,9 @@ const chartComponent = (props) => {
             </div>
             <div>
                 <Tabs activeKey={activeTab} onChange={changeTab} >
-                    <TabPane tab="Exclusion" key="Exclusion"><Table columns={exclusionColumns} dataSource={exclusion} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
-                    <TabPane tab="Violation" key="Violation"><Table columns={violationColumns} dataSource={violation} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
-                    <TabPane tab="Data Table" key="Data Table"><Table columns={dataTableColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
+                    <TabPane tab="Exclusion" key="Exclusion"><Table style={{height:'400px',width:'600px'}} scroll={{ x: 400}} columns={exclusionColumns} dataSource={exclusion} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
+                    <TabPane tab="Violation" key="Violation"><Table  style={{height:'400px',width:'600px'}} scroll={{ x: 400}} columns={violationColumns} dataSource={violation} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
+                    <TabPane tab="Data Table" key="Data Table"><Table style={{height:'400px',width:'600px'}} scroll={{ x: 400  }} columns={dataTableColumns} dataSource={dataTable} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
                 </Tabs>
             </div>
         </div>

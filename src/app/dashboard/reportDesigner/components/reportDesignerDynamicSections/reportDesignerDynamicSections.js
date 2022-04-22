@@ -28,13 +28,22 @@ function ReportDesignerDynamicSections(props) {
 
 
     const deleteChart = (chartName, section) => {
-
-        dispatch(showLoader())
+      
+        dispatch(showLoader())  
         section = section + 1
-        let chart_index = addedCharts[`${section}`].indexOf(chartName)
+        let chart_added = {...addedCharts}
+        let arr = [...chart_added[`${section}`]]
+        console.log(chart_added)
+        let chart_index = chart_added[`${section}`].indexOf(chartName)
         if (chart_index > -1) {
-            addedCharts[`${section}`].splice(chart_index, 1)  // 2nd parameter means remove one item only
+           let arrr =  arr.splice(chart_index, 1) 
+           chart_added[`${section}`] = arrr // 2nd parameter means remove one item only
         }
+        console.log('after',chart_added)
+        console.log(addedCharts)
+
+        setAddedCharts(chart_added)
+        
         dispatch(hideLoader())
     }
 
