@@ -40,6 +40,7 @@ const ViewChart = lazy(() =>
 	import('./dashboardScreen/components/viewChart/viewChart')
 );
 const Hierarchy = lazy(() => import('./hierarchyConfig'));
+const HierarchyMain = lazy(() => import('./hierarchyConfig/components/hierarchy/hierarchy'));
 const Faq = lazy(() => import('./faq'));
 const { Content } = Layout;
 
@@ -145,6 +146,11 @@ const Dashboard = () => {
 									key='hierarchy'
 									path={`${match.url}/molecule_hierarchy_configuration`}>
 									<Hierarchy />
+								</Route>
+								<Route
+									key='hierarchy_main'
+									path={`${match.url}/molecule_hierarchy_configurations/untilted_view`}>
+									<HierarchyMain />
 								</Route>
 							</Switch>
 						</SuspenseWrapper>
