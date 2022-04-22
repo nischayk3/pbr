@@ -101,10 +101,8 @@ const alertEvaluation = (props) => {
     }
 
     const onChangeTimePicker = (time, timeString) => {
-        console.log(time, timeString);
     }
     const onChangeRadioButton = (e) => {
-        console.log('radio checked', e.target.value);
         setRadioValue(e.target.value);
     };
     const handleSelectTimeChange = (e) => {
@@ -162,7 +160,6 @@ const alertEvaluation = (props) => {
 
 
 
-        console.log(req)
 
     }
     const changeTab = activeKey => {

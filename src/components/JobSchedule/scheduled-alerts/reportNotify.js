@@ -86,9 +86,7 @@ const ReportNotify = (props) => {
     const onChangeTimePicker = (time, timeString) => {
         console.log(time, timeString);
     }
-    const onChangeRadioButton = (e) => {
-        console.log('radio checked', e.target.value);
-        setRadioValue(e.target.value);
+    const onChangeRadioButton = (e) => {        setRadioValue(e.target.value);
     };
     const handleSelectTimeChange = (e) => {
         setSelectedTimeRange(e);
@@ -124,7 +122,6 @@ const ReportNotify = (props) => {
             email_config['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
         }
         if (selectedSchedule == "Daily") {
-            console.log(radioValue)
             if (radioValue == 3) {
                 email_config['daily_frequency'] = 'Every' + ' ' + everyDayValue + ' ' + selectedTimeRange
             }
@@ -185,12 +182,10 @@ const ReportNotify = (props) => {
     // };
 
 
-    console.log(activeTab)
     const handleChange = selectedItems => {
         setEmailList(selectedItems);
     };
 
-    console.log(everyDayValue)
     return (
         <div>
             <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={<div >
