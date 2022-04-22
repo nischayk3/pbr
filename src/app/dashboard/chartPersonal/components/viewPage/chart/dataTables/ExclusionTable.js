@@ -13,6 +13,7 @@ const ExclusionTable = ({
   setExclusionTable,
   postChartData,
   setPostChartData,
+  exclusionIdCounter,
 }) => {
   const dispatch = useDispatch();
 
@@ -42,6 +43,7 @@ const ExclusionTable = ({
       (ele) => Number(ele.exclusion_id) !== Number(id)
     );
     setExclusionTable(exclusionData);
+    exclusionIdCounter.current = exclusionIdCounter.current - 1;
     setPostChartData({ ...postChartData, data: newArr });
     try {
       dispatch(showLoader());
@@ -70,27 +72,23 @@ const ExclusionTable = ({
     newCovArr &&
       newCovArr.data &&
       newCovArr.data.forEach((ele) => {
-        if (ele.exclusions) {
-          const exclusions = ele.exclusions;
-          exclusions &&
-            exclusions.forEach((ele) => {
-              const excValue = ele.exclusion_value.batch;
-              const obj = {
-                exclusion_id: ele.exclusion_id,
-                exclusion_value: excValue,
-                exclusion_description: ele.exclusion_description,
-                user: "demo",
-                timestamp: new Date(ele.timestamp).toLocaleDateString(),
-              };
-              if (
-                !exclusionTable.some(
-                  (element) => element.exclusion_id === ele.exclusion_id
-                )
-              ) {
-                setExclusionTable([...exclusionTable, obj]);
-              }
-            });
-        }
+        let obj;
+        let table = [];
+        let count = 0;
+        ele.exclusions &&
+          ele.exclusions.forEach((item) => {
+            exclusionIdCounter.current = count + 1;
+            const excValue = item.exclusion_value.batch;
+            obj = {
+              exclusion_id: item.exclusion_id,
+              exclusion_value: excValue,
+              exclusion_description: item.exclusion_description,
+              user: item.user,
+              timestamp: new Date(item.timestamp).toLocaleDateString(),
+            };
+            table.push(obj);
+          });
+        setExclusionTable(table);
       });
   }, [postChartData]);
 
