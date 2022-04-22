@@ -249,8 +249,8 @@ export default function landingPage(props) {
             {
                 isModalVisible && (
                     <Modal
-                        className='landing-modal'
-                        title="Create New Dashboard"
+                        className='dashboard-landing-modal'
+                        title="Create new dashboard"
                         visible={isModalVisible}
                         //onOk={handleOk} 
                         onCancel={handleCancel}
@@ -290,9 +290,9 @@ export default function landingPage(props) {
                                             <Col span={12}>
                                                 <p className='chart-preview-text'>{props.viewData.chartDispId}</p>
                                                 <p className='chart-preview-text'>{props.viewData.chartName}</p>
-                                                <p className='chart-preview-text'>
+                                                <p className='chart-preview-text' style={{display:'inline-flex'}}>
                                                     <Avatar className='avatar-icon' style={{ backgroundColor: '#52679F' }} >{props.viewData.createdBy?.split("")[0].toUpperCase()} </Avatar>
-                                                    <span>{props.viewData.createdBy}</span>
+                                                    <span style={{marginLeft: '5px', marginTop: '6px'}}>{props.viewData.createdBy}</span>
                                                 </p>
                                             </Col>
                                             <Col span={12}>

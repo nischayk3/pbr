@@ -821,7 +821,7 @@ const ViewChart = (props, ref) => {
                         console.log("undefined", el)
                         return (
                             <Col className="gutter-row" span={12}>
-                                <div className='chartCard'>
+                                <div className='chartCard' style={{border:isEditable==index? '1px solid #486BC9': '1px solid #D9D9D9'}}>
                                     <div className='inner-chart-filters'>
                                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between',margin:'5px 0px' }}>
                                             <div>{el.chart_name}</div>
