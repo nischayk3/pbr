@@ -656,9 +656,9 @@ const ViewChart = (props, ref) => {
         <div>
             <Card title={props.dashboardName ? props.dashboardName : dashboardInfo.dashboard_name}>
                 <div className='global-filters'>
-                    <div style={{fontSize:'18px'}}>
+                    {/* <div style={{fontSize:'18px'}}>
                         <SyncOutlined />
-                    </div>
+                    </div> */}
                     <div>
                         <Select style={{ width: 120 }} value={dashboardInfo?.data_filter?.site} onChange={(value) => handleGlobalDropdownChange(value, 'Site')} placeholder="Site">
                             {/* {siteList.map((el, index) => {
@@ -790,7 +790,7 @@ const ViewChart = (props, ref) => {
                         /> */}
 
                     </div>
-                    <div>
+                    {/* <div>
                         <Select defaultValue="Exploration Controls" style={{ width: 230 }} onChange={(value) => handleGlobalDropdownChange(value, 'Exploration Controls')}>
                             <Option value='Ph'>PH
                                 <Slider range defaultValue={[20, 50]} />
@@ -805,7 +805,7 @@ const ViewChart = (props, ref) => {
 
 
                         </Select>
-                    </div>
+                    </div> */}
                     <div>
                         <Button
                             type='primary'
