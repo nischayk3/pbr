@@ -59,10 +59,9 @@ export default function scheduledAlertsTable(props) {
             dispatch(showNotification('success', `${jobId} deleted successfully`))
             getJobs()
         }
-        else
-        {
+        else {
             dispatch(showNotification('error', `${jobId} not deleted`))
- 
+
         }
     }
 
@@ -71,7 +70,7 @@ export default function scheduledAlertsTable(props) {
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
-            render: (text,record) =>
+            render: (text, record) =>
             (
                 <Popconfirm onConfirm={() => DeleteJob(record)}>
                     <DeleteTwoTone twoToneColor="red" />

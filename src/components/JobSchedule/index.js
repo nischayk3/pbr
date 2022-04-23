@@ -7,10 +7,10 @@
  */
 
 import React, { useState } from 'react';
-import './style.scss';
+import './modal.scss';
 //antd imports
 import { Modal, Tabs } from 'antd';
-import { DesktopOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import { DesktopOutlined, ArrowRightOutlined, ControlOutlined } from '@ant-design/icons';
 //components
 //services
 //react-redux
@@ -30,9 +30,14 @@ const JobSchedule = (props) => {
     const [showView, setShowView] = useState(false);
     //for showing schedule alert modal
     const [alertModal, setAlertModal] = useState(props.visible);
+    const [activeTab, setActiveTab] = useState('1')
     //state for chart json data
 
     const dispatch = useDispatch();
+
+    const changeActiveTab = (value) => {
+        setActiveTab(value)
+    }
     //function to back to landing page
 
     //menu for dropdown
@@ -52,30 +57,27 @@ const JobSchedule = (props) => {
     }
 
     return (
-        <Modal title={props.app_type!=="REPORT" ? "Schedule Alert" : "Notify Report"} className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300} >
-            <Tabs tabPosition='left' className='schedule-menu'>
+        <Modal title={props.app_type !== "REPORT" ? "Schedule alert" : "Notify Report"} className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300} >
+            <Tabs tabPosition='left' className='schedule-menu' activeKey={activeTab} onChange={changeActiveTab}>
                 <TabPane tab={
-                    <span style={{ color: 'white' }}>
-                        <DesktopOutlined />
-                        { props.app_type=='REPORT' ? <>Notify</> : <>Alerts</> }
-
-                        
+                    <span style={{ color: activeTab == '1' ? 'white' : 'grey' }}>
+                        <ControlOutlined />
+                        {props.app_type == 'REPORT' ? <>Notify</> : <>Alerts</>}
                     </span>
                 }
                     key="1">
-                        { props.app_type=='REPORT' ? <ReportNotify appType={props.app_type} /> :
-                    <AlertEvaluation appType={props.app_type} id={props.id} />
-                }
+                    {props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} /> :
+                        <AlertEvaluation appType={props.app_type} id={props.id} />
+                    }
                 </TabPane>
                 <TabPane tab={
-                    <span style={{ color: 'white' }}>
-                        <DesktopOutlined />
-                        Schedule Alerts
+                    <span style={{ color: activeTab == '2' ? 'white' : 'grey' }}>
+                        <ControlOutlined />                        Schedule alerts
                     </span>
                 } key="2">
                     <div className='schedule-alerts'>
                         <div className='alerts-text'>
-                            <p className='alert-title'>Scheduled Alerts</p>
+                            <p className='alert-title'>Scheduled alerts</p>
                             <span className='alert-arrow'><a>View More Details</a><ArrowRightOutlined style={{ marginLeft: '10px', color: '#093185' }} /></span>
                         </div>
                         <div>

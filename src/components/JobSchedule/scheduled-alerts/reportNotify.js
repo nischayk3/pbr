@@ -10,12 +10,11 @@ import React, { useState } from 'react';
 import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table } from 'antd';
 import SelectField from '../../SelectField/SelectField';
 import InputField from '../../InputField/InputField';
-import moment from 'moment';
-import './styles.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import './reportNotify.scss';
+import { useDispatch } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../duck/actions/commonActions';
 import { putJob } from '../../../services/jobScheduleService';
-import { PaperClipOutlined, RedoOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { PaperClipOutlined, ClockCircleOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 const { Option } = Select
@@ -29,7 +28,7 @@ const timeRange = ['Hour', 'Minutes', 'Seconds'];
 
 const ReportNotify = (props) => {
     const [selectedAlert, setSelectedAlert] = useState('');
-    const [selectedSchedule, setSelectedSchedule] = useState('');
+    const [selectedSchedule, setSelectedSchedule] = useState('Repeat Once');
     const [selectedEmailSchedule, setSelectedEmailSchedule] = useState('');
     const [selectedTimeRange, setSelectedTimeRange] = useState('');
     const [showReceipients, setShowReceipients] = useState(false);
@@ -86,7 +85,8 @@ const ReportNotify = (props) => {
     const onChangeTimePicker = (time, timeString) => {
         console.log(time, timeString);
     }
-    const onChangeRadioButton = (e) => {        setRadioValue(e.target.value);
+    const onChangeRadioButton = (e) => {
+        setRadioValue(e.target.value);
     };
     const handleSelectTimeChange = (e) => {
         setSelectedTimeRange(e);
@@ -116,7 +116,7 @@ const ReportNotify = (props) => {
         email_config['scheduled_start'] = scheduleEmailStartDate
         email_config['scheduled_time'] = scheduleEmailTime
         email_config["frequency_unit"] = selectedSchedule,
-        email_config["email_list"] = emailList
+            email_config["email_list"] = emailList
 
         if (selectedSchedule == 'Weekly') {
             email_config['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
@@ -133,10 +133,10 @@ const ReportNotify = (props) => {
         req['email_config'] = email_config
         req['frequency'] = 1
         req["frequency_unit"] = selectedSchedule,
-        req["job_status"] = "NEW",
-        req["job_type"] = 'email',
-        req['notify_emails'] = emailList,
-        req["scheduled_end"] = '2030-12-31'
+            req["job_status"] = "NEW",
+            req["job_type"] = 'email',
+            req['notify_emails'] = emailList,
+            req["scheduled_end"] = '2030-12-31'
         req["scheduled_start"] = scheduleEmailStartDate
 
         let res = await putJob(req, request_headers)
@@ -187,16 +187,16 @@ const ReportNotify = (props) => {
     };
 
     return (
-        <div>
-            <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={<div >
+        <div className="report-notify">
+            <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={<div className="tab-btns" >
                 <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
                 <Button className='clear-schedule'>Clear</Button>
             </div>} >
-                <TabPane tab='Email Draft' key="email_draft">
+                <TabPane tab='Email draft' key="email_draft">
                     <Select
                         mode="tags"
                         style={{ width: '90%', marginTop: '10px' }}
-                        placeholder={<span className="email-recipients">Recipients (Optional)</span>}
+                        placeholder={<span className="email-recipients">Recipients      (Optional)</span>}
                         optionLabelProp="label"
                         value={emailList}
                         bordered={false}
@@ -206,16 +206,17 @@ const ReportNotify = (props) => {
                             mihir.bagga@mareana.com
                         </Option>
                     </Select>
-                    <Divider />
+                    <hr style={{ backgroundColor: '#dbdbdb' }} />
                     <span>
                         <p className="email-subject">Subject <span className="email-sub">Update For  </span>  </p>
                     </span>
-                    <Divider />
+                    <hr style={{ backgroundColor: '#dbdbdb' }} />
+                    <br />
                     <p className="email-content"> Hey,<br /><br />
 
-                        This is to inform you of the recept update to [report variant name]. Check the attachment for details.<br />
+                        This is to inform you of the recept update to [report variant name]. Check the attachment for details.<br /><br />
                         Visit <a>www.cpv-mareana.com/alert-dashboard</a> to know more.<br />
-                        <br />
+                        <br /><br />
                         Regards,<br />
                         [variant_username]</p>
 
@@ -224,7 +225,7 @@ const ReportNotify = (props) => {
                     {/* )} */}
                     <Divider />
                 </TabPane>
-                <TabPane tab='Email Schedule' key="email_schedule">
+                <TabPane tab='Email schedule' key="email_schedule">
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '200px' }}>
                             <ClockCircleOutlined />  <DatePicker placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} />
@@ -233,7 +234,7 @@ const ReportNotify = (props) => {
                         <div style={{ marginTop: '40px' }}>
                             <Row gutter={[16, 24]}>
                                 <Col className='gutter-row' span={4}>
-                                    <div >
+                                    <div style={{ width: '187px' }} >
                                         <SelectField
                                             placeholder='Schedule'
                                             onChangeSelect={(e) => handleSelectScheduleChange(e)}
@@ -244,7 +245,7 @@ const ReportNotify = (props) => {
                                 </Col>
                                 <Col className='gutter-row' span={4}>
                                     <div >
-                                        <TimePicker onChange={onChangeEmailTime} />
+                                        <TimePicker style={{ width: '187px', marginLeft: '35px' }} onChange={onChangeEmailTime} />
                                     </div>
                                 </Col>
                             </Row>
