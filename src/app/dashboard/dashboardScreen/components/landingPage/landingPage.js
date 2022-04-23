@@ -193,14 +193,15 @@ export default function landingPage(props) {
                 source={illustrations}
                 sourceClass='dashboard-image'
             />
-            <Row className="landing-content">
+            <Row className="dashboard-landing-content">
                 <Col span={24}>
                     <Card bordered={false}>
                         <Row>
                             <Col span={6} />
                             <Col span={12} className='p36'>
                                 <Search
-                                    placeholder="Search by view ID, name, product number, creator, status"
+                                    className='dashboard-search'
+                                    placeholder="Search by dashboard ID or name"
                                     allowClear
                                     enterButton="Search"
                                     size="large"
@@ -221,9 +222,9 @@ export default function landingPage(props) {
                             </Col>
                             <Col span={6} />
                         </Row>
-                        <Row className='recent-charts'>
+                        <Row className='dashboard-recent-charts'>
                             <Col span={6} />
-                            <Col span={12}>
+                            <Col span={12} className='p36'>
                                 <h3>Recently created dashboard</h3>
                                 <Divider />
                                 <Row gutter={24}>
@@ -248,8 +249,8 @@ export default function landingPage(props) {
             {
                 isModalVisible && (
                     <Modal
-                        className='landing-modal'
-                        title="Create New Dashboard"
+                        className='dashboard-landing-modal'
+                        title="Create new dashboard"
                         visible={isModalVisible}
                         //onOk={handleOk} 
                         onCancel={handleCancel}
@@ -275,7 +276,7 @@ export default function landingPage(props) {
                                         />
                                     </Row>
                                     <Row ref={ref}>
-                                        <p>Add a chart to get started</p>
+                                        <p style={{marginTop:'15px'}}>Add a chart to get started</p>
                                         <Search
                                             placeholder="Search"
                                             onFocus={onFocus}
@@ -289,9 +290,9 @@ export default function landingPage(props) {
                                             <Col span={12}>
                                                 <p className='chart-preview-text'>{props.viewData.chartDispId}</p>
                                                 <p className='chart-preview-text'>{props.viewData.chartName}</p>
-                                                <p className='chart-preview-text'>
+                                                <p className='chart-preview-text' style={{display:'inline-flex'}}>
                                                     <Avatar className='avatar-icon' style={{ backgroundColor: '#52679F' }} >{props.viewData.createdBy?.split("")[0].toUpperCase()} </Avatar>
-                                                    <span>{props.viewData.createdBy}</span>
+                                                    <span style={{marginLeft: '5px', marginTop: '6px'}}>{props.viewData.createdBy}</span>
                                                 </p>
                                             </Col>
                                             <Col span={12}>

@@ -629,17 +629,38 @@ const ViewChart = (props, ref) => {
 
     }
 
+    const handleDateChangeGlobal=(e,date)=>{
+        let obj = { ...dashboardInfo };
+        obj.data_filter.date_range = `${date.length>0?moment(date[0]).toISOString():''}/${date.length>0?moment(date[1]).toISOString():''}`;
+        console.log(obj);
+        setDashboardInfo(obj);
+        
+    }
+
+    const handleDateChangeInner=(e,date,index)=>{
+        let arr = [...tempPanels];
+        arr[index].data_filter.date_range = `${date?moment(date[0]).toISOString():''}/${date?moment(date[1]).toISOString():''}`;
+        setTempPanels(arr);
+    }
+
+    const handleDateChangeTemp=(e,date)=>{
+        let obj = { ...tempCard };
+        obj.data_filter.date_range = `${date?moment(date[0]).toISOString():''}/${date?moment(date[1]).toISOString():''}`;
+        setTempCard(obj);
+    }
+
     console.log("temp", tempPanels)
     console.log("dashInfo", dashboardInfo)
+    const { RangePicker } = DatePicker;
     return (
         <div>
             <Card title={props.dashboardName ? props.dashboardName : dashboardInfo.dashboard_name}>
                 <div className='global-filters'>
-                    <div>
+                    <div style={{fontSize:'18px'}}>
                         <SyncOutlined />
                     </div>
                     <div>
-                        <Select style={{ width: 120 }} value={dashboardInfo?.data_filter?.site} onChange={(value) => handleGlobalDropdownChange(value, 'Site')}>
+                        <Select style={{ width: 120 }} value={dashboardInfo?.data_filter?.site} onChange={(value) => handleGlobalDropdownChange(value, 'Site')} placeholder="Site">
                             {/* {siteList.map((el, index) => {
                                 return ( */}
                                     <Option value={'1255'}>{'1255'}</Option>
@@ -652,7 +673,7 @@ const ViewChart = (props, ref) => {
                         <Switch type='primary' size='small' checked={dashboardInfo?.data_filter?.unapproved_data} onChange={(value) => handleGlobalDropdownChange(value, 'Unapproved Data')} />
 
                     </div>
-                    <div style={{ marginTop: '3px' }}>
+                    <div>
                         {/* <InputField
                             placeholder='Select Time Range'
                             onChangeClick={(e) => handleDateClick(e)}
@@ -756,6 +777,18 @@ const ViewChart = (props, ref) => {
                             value={dashboardInfo?.data_filter?.date_range?.split("/")[1] ? moment(dashboardInfo?.data_filter?.date_range?.split("/")[1], "YYYY-MM-DD") : ''}
                             style={{ marginLeft: '22px' }} />
 
+                        {/* <RangePicker onChange={(e,value)=>handleDateChangeGlobal(e,value)}
+                             value={
+                                
+                                  [
+                                    dashboardInfo?.data_filter?.date_range?.split("/")[0] ?moment(dashboardInfo?.data_filter?.date_range?.split("/")[0], "YYYY-MM-DD"):'',
+                                    dashboardInfo?.data_filter?.date_range?.split("/")[1] ?moment(dashboardInfo?.data_filter?.date_range?.split("/")[1], "YYYY-MM-DD"):'',
+                                    ]
+                                 
+                              }
+                        
+                        /> */}
+
                     </div>
                     <div>
                         <Select defaultValue="Exploration Controls" style={{ width: 230 }} onChange={(value) => handleGlobalDropdownChange(value, 'Exploration Controls')}>
@@ -788,9 +821,9 @@ const ViewChart = (props, ref) => {
                         console.log("undefined", el)
                         return (
                             <Col className="gutter-row" span={12}>
-                                <div className='chartCard'>
+                                <div className='chartCard' style={{border:isEditable==index? '1px solid #486BC9': '1px solid #D9D9D9'}}>
                                     <div className='inner-chart-filters'>
-                                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between',margin:'5px 0px' }}>
                                             <div>{el.chart_name}</div>
                                             <div >
                                                 {isEditable == index ? (
@@ -803,7 +836,7 @@ const ViewChart = (props, ref) => {
                                                     </div>
                                                 ) : (
                                                     <>
-                                                        <span>Edit <EditOutlined style={{ color: '#486BC9' }} onClick={() => setIsEditable(index)} /></span>
+                                                        <span style={{ marginLeft: '20px', marginRight: '20px' }}>Edit <EditOutlined style={{ color: '#486BC9' }} onClick={() => setIsEditable(index)} /></span>
                                                         <span style={{ marginLeft: '10px' }}><CloseOutlined style={{ color: '#262626' }} onClick={() => removeCard(index)} /></span></>
                                                 )}
 
