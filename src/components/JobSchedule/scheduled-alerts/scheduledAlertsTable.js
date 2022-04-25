@@ -1,3 +1,11 @@
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 1
+ * @Last Modified - 22 April, 2022
+ * @Last Changed By - @Mihir 
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Table, Popconfirm, Tag } from 'antd';
 import { DeleteOutlined, DeleteTwoTone } from '@ant-design/icons';
@@ -23,7 +31,7 @@ export default function scheduledAlertsTable(props) {
         let request_headers = {
             'content-type': 'application/json',
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'JOB',
+            'resource-name': 'DASHBOARD',
         };
         let req = { app_type: props.app_type };
         getJob(req, request_headers).then((res) => {
@@ -36,19 +44,25 @@ export default function scheduledAlertsTable(props) {
 
     const DeleteJob = async (jobId) => {
         let req = {
-            job_id: jobId
+            job_id: jobId.job_id
         }
         let login_response = JSON.parse(localStorage.getItem('login_details'));
 
         let request_headers = {
             'content-type': 'application/json',
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'JOB',
+            'resource-name': 'DASHBOARD',
         };
 
         let delete_response = await deleteJob(req, request_headers)
         if (delete_response.Status == 200) {
             dispatch(showNotification('success', `${jobId} deleted successfully`))
+            getJobs()
+        }
+        else
+        {
+            dispatch(showNotification('error', `${jobId} not deleted`))
+ 
         }
     }
 
@@ -57,9 +71,9 @@ export default function scheduledAlertsTable(props) {
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
-            render: (text) =>
+            render: (text,record) =>
             (
-                <Popconfirm onConfirm={() => DeleteJob(text)}>
+                <Popconfirm onConfirm={() => DeleteJob(record)}>
                     <DeleteTwoTone twoToneColor="red" />
                 </Popconfirm>
             )

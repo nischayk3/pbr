@@ -20,9 +20,11 @@ import {
     DatePicker,
     Divider,
     Popconfirm,
-    Tag
+    Tag,
+    Dropdown,
+    Menu
 } from 'antd';
-import { BlockOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone, FileTextOutlined } from '@ant-design/icons';
+import { BlockOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone, FileTextOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
@@ -110,6 +112,14 @@ function ReportGenerator() {
     function onChange(checkedValues, i) {
         update_object(checkedValues, i)
     }
+    
+    const menu = (
+        <Menu>
+          <Menu.Item >
+            Save As
+          </Menu.Item>
+        </Menu>
+      );
 
     const handleCancel = () => {
         setAlertVisible(false)
@@ -420,7 +430,7 @@ function ReportGenerator() {
                     <BreadCrumbWrapper />
                 </div>
                 <div className='sub-header-btns'>
-                    <Button className='custom-secondary-btn' onClick={() => { setAlertVisible(true); }}>
+                    <Button className='custom-primary-btn' onClick={() => { setAlertVisible(true); }}>
                         Notify Report
                     </Button>
                     {/* <Button className='custom-primary-btn' onClick={() => { setIsVisible(true); }}>
@@ -432,6 +442,9 @@ function ReportGenerator() {
                     <Button className='custom-secondary-btn' onClick={() => dispatch(screenChange(false))}>
                         <FileTextOutlined />   Generate Report
                     </Button>
+                    <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
+                  <EllipsisOutlined style={{transform:'rotate(-90deg)',fontSize:'20px',marginLeft:'5px'}} />
+                </Dropdown>
                 </div>
             </div>
             <div className='custom-content-layout'>
@@ -456,7 +469,7 @@ function ReportGenerator() {
                                             {i['content'] && i['content'].map((item, j) =>
                                                 <tr className="tr" >
                                                     <td className="td" >{item.key}</td>
-                                                    <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span style={{ width: '1000px' }}>{item.value}</span>} </td>
+                                                    <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea autoSize={true} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span>{item.value}</span>} </td>
                                                 </tr>
                                             )}
                                         </tbody>

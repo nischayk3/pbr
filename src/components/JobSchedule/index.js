@@ -1,3 +1,11 @@
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 1
+ * @Last Modified - 22 April, 2022
+ * @Last Changed By - @Mihir 
+ */
+
 import React, { useState } from 'react';
 import './style.scss';
 //antd imports
@@ -44,7 +52,7 @@ const JobSchedule = (props) => {
     }
 
     return (
-        <Modal title="Schedule Alert" className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300} >
+        <Modal title={props.app_type!=="REPORT" ? "Schedule Alert" : "Notify Report"} className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300} >
             <Tabs tabPosition='left' className='schedule-menu'>
                 <TabPane tab={
                     <span style={{ color: 'white' }}>

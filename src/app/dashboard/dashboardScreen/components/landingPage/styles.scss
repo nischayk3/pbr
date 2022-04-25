@@ -54,7 +54,7 @@ p {
 	}
 }
 
-.landing-content {
+.dashboard-landing-content {
 	margin-top: 5px;
 	.ant-card-body {
 		min-height: 65vh;
@@ -68,9 +68,17 @@ p {
 	.p36 {
 		padding: 12px 18px;
 	}
+	.dashboard-search{
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 22px;
+		color: #8C8C8C;
+	}
 	.create-new {
 		height: 137px;
-		width: 175px;
+		width: 230px;
 		border-radius: 4px;
 		background: #ffffff;
 		border: 1px dashed #d9d9d9;
@@ -82,8 +90,9 @@ p {
 		gap: 10px;
 		margin-top: 13px;
 		margin-bottom: 10px;
+		cursor: pointer;
 		svg {
-			cursor: pointer;
+			//cursor: pointer;
 			margin-top: 10px !important;
 			font-size: 40px;
 			color: #cbcbcb;
@@ -103,7 +112,7 @@ p {
 	}
 }
 
-.recent-charts {
+.dashboard-recent-charts {
 	.ant-divider-horizontal {
 		margin: 0px !important;
 		margin-bottom: 12px !important;
@@ -152,6 +161,7 @@ p {
 		text-align: center;
 		border-radius: 4px;
 		background: #e2e8f2;
+		cursor: pointer;
 	}
 }
 
@@ -200,7 +210,11 @@ p {
 	color: #666666;
 }
 
-.landing-modal {
+.dashboard-landing-modal {
+	.ant-modal-header{
+		background: #F1F7FF !important;
+		border-radius: 4px 4px 0px 0px;
+	}
 	.ant-modal-content {
 		width: 787px;
 		height: auto;
@@ -209,6 +223,7 @@ p {
 	}
 	.ant-modal-footer {
 		border-top: 0px;
+		padding: 10px 16px 25px 16px;
 	}
 }
 .dashboard-modal-layout {
@@ -232,8 +247,9 @@ p {
 	font-family: 'Roboto';
 	font-style: normal;
 	font-weight: 400;
-	font-size: 12px;
+	font-size: 14px !important;
 	line-height: 22px;
 	color: #000000;
+	font-size: 14px;
 	margin-bottom: 0px !important;
 }
