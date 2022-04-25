@@ -43,7 +43,6 @@ const { TabPane } = Tabs;
 const ViewPage = () => {
   const { id } = useParams();
   const history = useHistory();
-  console.log(history);
   const match = useRouteMatch();
   //state for chart json data
   const [postChartData, setPostChartData] = useState({});
@@ -133,7 +132,6 @@ const ViewPage = () => {
   };
 
   const PublishResponse = (res) => {
-    console.log(res);
     setPublishResponse(res);
   };
 
