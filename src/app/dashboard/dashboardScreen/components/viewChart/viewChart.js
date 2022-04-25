@@ -13,6 +13,7 @@ import dummy from './dummy.json';
 import { SyncOutlined, PlusOutlined, EditOutlined, CloseOutlined, CheckCircleOutlined, UndoOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './styles.scss';
+import { convertLegacyProps } from 'antd/lib/button/button';
 
 const dash_info = {
     "dashboard_id": "dashboard1", // text, generated
@@ -201,7 +202,7 @@ const ViewChart = (props, ref) => {
                 dispatch(showLoader());
                 const dashboardRes = await getDashboard(req);
                 console.log(dashboardRes.data[0]);
-                dashboardRes.data[0].version=props.dashboardVersion
+                dashboardRes.data[0].version = props.dashboardVersion
                 //setDashboardInfo(dashboardRes.data);
                 //setTempPanels(dash_info.panels);
                 dashboardRes.data[0].panels.map(async (el, i) => {
@@ -217,7 +218,7 @@ const ViewChart = (props, ref) => {
                         yaxis: res.data[0]?.layout.yaxis,
                         autosize: false,
                         width: 580,
-                        height: 210,
+                        height: 300,
                         margin: {
                             l: 60,
                             r: 50,
@@ -259,7 +260,7 @@ const ViewChart = (props, ref) => {
                     yaxis: res.data[0]?.layout.yaxis,
                     autosize: false,
                     width: 580,
-                    height: 210,
+                    height: 300,
                     margin: {
                         l: 60,
                         r: 50,
@@ -315,9 +316,9 @@ const ViewChart = (props, ref) => {
         console.log('forment', moment(date).toISOString());
         let obj = { ...dashboardInfo };
         if (obj.data_filter.date_range == "") {
-            obj.data_filter.date_range = `${date?moment(date).toISOString():''}/`;
+            obj.data_filter.date_range = `${date ? moment(date).toISOString() : ''}/`;
         } else {
-            obj.data_filter.date_range = `${date?moment(date).toISOString():''}/${obj.data_filter.date_range.split("/")[1]}`;
+            obj.data_filter.date_range = `${date ? moment(date).toISOString() : ''}/${obj.data_filter.date_range.split("/")[1]}`;
         }
 
         setDashboardInfo(obj);
@@ -327,9 +328,9 @@ const ViewChart = (props, ref) => {
         console.log('forment', moment(date).toISOString());
         let obj = { ...dashboardInfo };
         if (obj.data_filter.date_range == "") {
-            obj.data_filter.date_range = `/${date?moment(date).toISOString():''}`;
+            obj.data_filter.date_range = `/${date ? moment(date).toISOString() : ''}`;
         } else {
-            obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]}/${date?moment(date).toISOString():''}`;
+            obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]}/${date ? moment(date).toISOString() : ''}`;
         }
 
         setDashboardInfo(obj);
@@ -341,9 +342,9 @@ const ViewChart = (props, ref) => {
         console.log('forment', moment(date).toISOString());
         let arr = [...tempPanels];
         if (arr[index].data_filter.date_range == "") {
-            arr[index].data_filter.date_range = `${date?moment(date).toISOString():''}/`
+            arr[index].data_filter.date_range = `${date ? moment(date).toISOString() : ''}/`
         } else {
-            arr[index].data_filter.date_range = `${date?moment(date).toISOString():''}/${arr[index].data_filter.date_range.split("/")[1]}`;
+            arr[index].data_filter.date_range = `${date ? moment(date).toISOString() : ''}/${arr[index].data_filter.date_range.split("/")[1]}`;
         }
 
         setTempPanels(arr);
@@ -355,9 +356,9 @@ const ViewChart = (props, ref) => {
         console.log('forment', moment(date).toISOString());
         let arr = [...tempPanels];
         if (arr[index].data_filter.date_range == "") {
-            arr[index].data_filter.date_range = `/${date?moment(date).toISOString():''}`
+            arr[index].data_filter.date_range = `/${date ? moment(date).toISOString() : ''}`
         } else {
-            arr[index].data_filter.date_range = `${arr[index].data_filter.date_range.split("/")[0]}/${date?moment(date).toISOString():''}`;
+            arr[index].data_filter.date_range = `${arr[index].data_filter.date_range.split("/")[0]}/${date ? moment(date).toISOString() : ''}`;
         }
         setTempPanels(arr);
     };
@@ -366,9 +367,9 @@ const ViewChart = (props, ref) => {
         console.log('forment', moment(date).toISOString());
         let obj = { ...tempCard };
         if (obj.data_filter.date_range == "") {
-            obj.data_filter.date_range = `${date?moment(date).toISOString():''}/`
+            obj.data_filter.date_range = `${date ? moment(date).toISOString() : ''}/`
         } else {
-            obj.data_filter.date_range = `${date?moment(date).toISOString():''}/${obj.data_filter.date_range.split("/")[1]}`;
+            obj.data_filter.date_range = `${date ? moment(date).toISOString() : ''}/${obj.data_filter.date_range.split("/")[1]}`;
         }
 
         setTempCard(obj);
@@ -380,9 +381,9 @@ const ViewChart = (props, ref) => {
         console.log('forment', moment(date).toISOString());
         let obj = { ...tempCard };
         if (obj.data_filter.date_range == "") {
-            obj.data_filter.date_range = `/${date?moment(date).toISOString():''}`
+            obj.data_filter.date_range = `/${date ? moment(date).toISOString() : ''}`
         } else {
-            obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]}/${date?moment(date).toISOString():''}`;
+            obj.data_filter.date_range = `${obj.data_filter.date_range.split("/")[0]}/${date ? moment(date).toISOString() : ''}`;
         }
 
         setTempCard(obj);
@@ -470,8 +471,8 @@ const ViewChart = (props, ref) => {
     }
 
     const removeCard = (index) => {
-        let arr=[...tempPanels]
-        arr.splice(index,1);
+        let arr = [...tempPanels]
+        arr.splice(index, 1);
         let obj = JSON.parse(JSON.stringify(dashboardInfo));
         obj.panels = [...obj.panels];
         obj.panels.splice(index, 1);
@@ -568,6 +569,7 @@ const ViewChart = (props, ref) => {
 
     const onTempApply = () => {
         let obj = JSON.parse(JSON.stringify(tempCard))
+        obj.chartLayout.height = 300
         let arr = [...tempPanels, obj];
         setTempPanels(arr);
         let info = { ...dashboardInfo };
@@ -629,23 +631,23 @@ const ViewChart = (props, ref) => {
 
     }
 
-    const handleDateChangeGlobal=(e,date)=>{
+    const handleDateChangeGlobal = (e, date) => {
         let obj = { ...dashboardInfo };
-        obj.data_filter.date_range = `${date.length>0?moment(date[0]).toISOString():''}/${date.length>0?moment(date[1]).toISOString():''}`;
+        obj.data_filter.date_range = `${date.length > 0 ? moment(date[0]).toISOString() : ''}/${date.length > 0 ? moment(date[1]).toISOString() : ''}`;
         console.log(obj);
         setDashboardInfo(obj);
-        
+
     }
 
-    const handleDateChangeInner=(e,date,index)=>{
+    const handleDateChangeInner = (e, date, index) => {
         let arr = [...tempPanels];
-        arr[index].data_filter.date_range = `${date?moment(date[0]).toISOString():''}/${date?moment(date[1]).toISOString():''}`;
+        arr[index].data_filter.date_range = `${date ? moment(date[0]).toISOString() : ''}/${date ? moment(date[1]).toISOString() : ''}`;
         setTempPanels(arr);
     }
 
-    const handleDateChangeTemp=(e,date)=>{
+    const handleDateChangeTemp = (e, date) => {
         let obj = { ...tempCard };
-        obj.data_filter.date_range = `${date?moment(date[0]).toISOString():''}/${date?moment(date[1]).toISOString():''}`;
+        obj.data_filter.date_range = `${date ? moment(date[0]).toISOString() : ''}/${date ? moment(date[1]).toISOString() : ''}`;
         setTempCard(obj);
     }
 
@@ -663,8 +665,8 @@ const ViewChart = (props, ref) => {
                         <Select style={{ width: 120 }} value={dashboardInfo?.data_filter?.site} onChange={(value) => handleGlobalDropdownChange(value, 'Site')} placeholder="Site">
                             {/* {siteList.map((el, index) => {
                                 return ( */}
-                                    <Option value={'1255'}>{'1255'}</Option>
-                                {/* )
+                            <Option value={'1255'}>{'1255'}</Option>
+                            {/* )
                             })} */}
                         </Select>
                     </div>
@@ -790,7 +792,7 @@ const ViewChart = (props, ref) => {
                         /> */}
 
                     </div>
-                    {/* <div>
+                    <div>
                         <Select defaultValue="Exploration Controls" style={{ width: 230 }} onChange={(value) => handleGlobalDropdownChange(value, 'Exploration Controls')}>
                             <Option value='Ph'>PH
                                 <Slider range defaultValue={[20, 50]} />
@@ -805,7 +807,7 @@ const ViewChart = (props, ref) => {
 
 
                         </Select>
-                    </div> */}
+                    </div>
                     <div>
                         <Button
                             type='primary'
@@ -818,25 +820,50 @@ const ViewChart = (props, ref) => {
                 </div>
                 <Row gutter={[16, 24]} className='chart-row'>
                     {tempPanels.map((el, index) => {
-                        console.log("undefined", el)
                         return (
                             <Col className="gutter-row" span={12}>
-                                <div className='chartCard' style={{border:isEditable==index? '1px solid #486BC9': '1px solid #D9D9D9'}}>
+                                <div className='chartCard' style={{ border: isEditable == index ? '1px solid #486BC9' : '1px solid #D9D9D9' }}>
                                     <div className='inner-chart-filters'>
-                                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between',margin:'5px 0px' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: '5px 0px' }}>
                                             <div>{el.chart_name}</div>
                                             <div >
                                                 {isEditable == index ? (
                                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                                                         <div>< UndoOutlined style={{ color: '#486BC9' }} /></div>
                                                         <div>
-                                                            <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }} onClick={() => setIsEditable(null)} /></span>
+                                                            <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }}
+                                                                onClick={() => {
+                                                                    setIsEditable(null);
+                                                                    let panels = [...tempPanels]
+                                                                    panels[index] = { ...tempPanels[index] }
+                                                                    panels[index].chartLayout = { ...tempPanels[index].chartLayout }
+                                                                    panels[index].chartLayout.height = 300;
+                                                                    setIsEditable(null);
+                                                                    setTempPanels(panels)
+                                                                }} />
+                                                            </span>
                                                             <span><CloseOutlined style={{ color: '#262626' }} onClick={() => removeCard(index)} /></span>
                                                         </div>
                                                     </div>
                                                 ) : (
                                                     <>
-                                                        <span style={{ marginLeft: '20px', marginRight: '20px' }}>Edit <EditOutlined style={{ color: '#486BC9' }} onClick={() => setIsEditable(index)} /></span>
+                                                        <span style={{ marginLeft: '20px', marginRight: '20px' }}>Edit <EditOutlined style={{ color: '#486BC9' }}
+                                                            onClick={() => {
+
+                                                                let panels = [...tempPanels]
+                                                                if (isEditable != null) {
+                                                                    panels[isEditable] = { ...tempPanels[isEditable] }
+                                                                    panels[isEditable].chartLayout = { ...tempPanels[isEditable].chartLayout }
+                                                                    panels[isEditable].chartLayout.height = 300;
+                                                                }
+                                                                panels[index] = { ...tempPanels[index] }
+                                                                panels[index].chartLayout = { ...tempPanels[index].chartLayout }
+                                                                panels[index].chartLayout.height = 210;
+                                                                setIsEditable(index);
+                                                                setTempPanels(panels)
+
+                                                            }} />
+                                                        </span>
                                                         <span style={{ marginLeft: '10px' }}><CloseOutlined style={{ color: '#262626' }} onClick={() => removeCard(index)} /></span></>
                                                 )}
 
