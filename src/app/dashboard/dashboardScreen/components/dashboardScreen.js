@@ -291,7 +291,7 @@ const DashboardScreen = () => {
                         {saveType=='saveAs'&&(
                             <div>
                                <InputField
-                                placeholder='Dashboard Name'
+                                placeholder='Enter dashboard name'
                                 label='Dashboard Name'
                                 onChangeInput={(e) => onChangeInputSaveAs(e)}
                                 value={dashboardName}

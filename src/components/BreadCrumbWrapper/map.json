@@ -4,6 +4,7 @@
 	"/dashboard/view_creation_view": "View creation",
 	"/dashboard/workspace": "Workspace",
 	"/dashboard/report_designer": "Report Designer",
+	"/dashboard/report_generator": "Report Generator",
 	"/dashboard/genealogy": "Genealogy",
 	"/dashboard/faq": "Frequently Asked Questions",
 	"/dashboard/appRegister/appList/appDetails": "App Details",
@@ -12,5 +13,7 @@
 	"/dashboard/tableRegister/tableList/tableDetails": "Table Details",
 	"/dashboard/filterRegister": "Filter Register",
 	"/dashboard/filterRegister/filterList": "Filter List",
-	"/dashboard/filterRegister/filterList/filterDetails": "Filter Details"
+	"/dashboard/molecule_hierarchy_configuration": "Molecule Hierarchy Configuration",
+	"/dashboard/filterRegister/filterList/filterDetails": "Filter Details",
+	"/dashboard/molecule_hierarchy_configurations/untilted_view" :"Molecule Hierarchy Configuration / Untilted View"
 }

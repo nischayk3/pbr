@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from 'react-router';
 import "./viewPageStyles.scss";
 import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 //antd imports
@@ -36,6 +37,7 @@ import AlertEvaluation from "../scheduled-alerts/alertEvaluation";
 import AlertTable from "../scheduled-alerts/scheduledAlertsTable";
 import JobSchedule from "../../../../../components/JobSchedule";
 import Signature from "../../../../../components/ElectronicSignature/signature";
+import queryString from "query-string";
 
 const { TabPane } = Tabs;
 
@@ -52,8 +54,12 @@ const ViewPage = () => {
   const [approveReject, setApproveReject] = useState("");
 
   const dispatch = useDispatch();
+  const location = useLocation()
 
-  const callback = (key) => {};
+  const params = queryString.parse(location.search);
+  console.log("parametersss",params);
+
+  const callback = (key) => { };
 
   const handleCancel = () => {
     setAlertModal(false);
@@ -179,34 +185,42 @@ const ViewPage = () => {
           <span className="header-title">Process Control Charts</span>
         </div>
         <div className="btns">
-          <Button onClick={() => setAlertModal(true)}>Schedule Alert</Button>
-          <Button onClick={() => saveAs("save")}>Save</Button>
-          <Button
-            onClick={() => {
-              setIsPublish(true);
-              setApproveReject("P");
-            }}
-          >
-            {" "}
-            <CloudUploadOutlined />
-            Publish
-          </Button>
-          {/* <Button
-            onClick={() => {
-              setIsPublish(true);
-              setApproveReject('R');
-            }}
-          >
-            Reject
-          </Button>
-          <Button
-            onClick={() => {
-              setIsPublish(true);
-              setApproveReject('A');
-            }}
-          >
-            Approve
-          </Button> */}
+          {Object.keys(params).length > 0 ? (
+            <>
+              <Button
+                onClick={() => {
+                  setIsPublish(true);
+                  setApproveReject('R');
+                }}
+              >
+                Reject
+              </Button>
+              <Button
+                onClick={() => {
+                  setIsPublish(true);
+                  setApproveReject('A');
+                }}
+              >
+                Approve
+              </Button>
+            </>
+          ) :
+            (
+              <>
+                <Button onClick={() => setAlertModal(true)}>Schedule Alert</Button>
+                <Button onClick={() => saveAs("save")}>Save</Button>
+                <Button
+                  onClick={() => {
+                    setIsPublish(true);
+                    setApproveReject("P");
+                  }}
+                >
+                  {" "}
+                  <CloudUploadOutlined />
+                  Publish
+                </Button>
+              </>
+            )}
           <Dropdown overlay={menu}>
             <MoreOutlined />
           </Dropdown>
