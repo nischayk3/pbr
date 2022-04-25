@@ -1,3 +1,11 @@
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 1
+ * @Last Modified - 22 April, 2022
+ * @Last Changed By - @Mihir 
+ */
+
 import React, { useState } from 'react';
 import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table } from 'antd';
 import SelectField from '../../SelectField/SelectField';
@@ -7,7 +15,7 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../duck/actions/commonActions';
 import { putJob } from '../../../services/jobScheduleService';
-import { PaperClipOutlined } from '@ant-design/icons';
+import { PaperClipOutlined, RedoOutlined, ClockCircleOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 const { Option } = Select
@@ -18,25 +26,6 @@ const alertList = ['Limits', 'Rules', 'Threshold']
 const scheduleList = ['Repeat Once', 'Daily', 'Weekly', 'Monthly']
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
 
-
-
-// {
-//     "app_data": "Chart name",
-//     "app_id": "R158",
-//     "app_type": "VIEW",
-//     "created_by": "demo",
-//     "dag_id": "demo",
-//     "email_config": "{}",
-//     "frequency": "1",
-//     "frequency_unit": "Monthly",
-//     "job_status": "scheduled",
-//     "job_type": "demo",
-//     "notify_emails": [
-//       "sudeep.raj@mareana.com"
-//     ],
-//     "scheduled_end": "2022-03-24",
-//     "scheduled_start": "2022-03-24"
-//   }
 
 const ReportNotify = (props) => {
     const [selectedAlert, setSelectedAlert] = useState('');
@@ -97,9 +86,7 @@ const ReportNotify = (props) => {
     const onChangeTimePicker = (time, timeString) => {
         console.log(time, timeString);
     }
-    const onChangeRadioButton = (e) => {
-        console.log('radio checked', e.target.value);
-        setRadioValue(e.target.value);
+    const onChangeRadioButton = (e) => {        setRadioValue(e.target.value);
     };
     const handleSelectTimeChange = (e) => {
         setSelectedTimeRange(e);
@@ -115,7 +102,7 @@ const ReportNotify = (props) => {
         let request_headers = {
             'content-type': 'application/json',
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'JOB',
+            'resource-name': 'DASHBOARD',
         };
 
         req['app_data'] = props.appType
@@ -129,16 +116,27 @@ const ReportNotify = (props) => {
         email_config['scheduled_start'] = scheduleEmailStartDate
         email_config['scheduled_time'] = scheduleEmailTime
         email_config["frequency_unit"] = selectedSchedule,
-            email_config["email_list"] = emailList,
+        email_config["email_list"] = emailList
+
+        if (selectedSchedule == 'Weekly') {
             email_config['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
+        }
+        if (selectedSchedule == "Daily") {
+            if (radioValue == 3) {
+                email_config['daily_frequency'] = 'Every' + ' ' + everyDayValue + ' ' + selectedTimeRange
+            }
+            else {
+                email_config['daily_frequency'] = radioValue
+            }
+        }
 
         req['email_config'] = email_config
         req['frequency'] = 1
         req["frequency_unit"] = selectedSchedule,
-            req["job_status"] = "scheduled",
-            req["job_type"] = 'email',
-            req['notify_emails'] = emailList,
-            req["scheduled_end"] = '2030-12-31'
+        req["job_status"] = "NEW",
+        req["job_type"] = 'email',
+        req['notify_emails'] = emailList,
+        req["scheduled_end"] = '2030-12-31'
         req["scheduled_start"] = scheduleEmailStartDate
 
         let res = await putJob(req, request_headers)
@@ -152,8 +150,6 @@ const ReportNotify = (props) => {
         }
 
 
-
-        console.log(req)
 
     }
     const changeTab = activeKey => {
@@ -177,20 +173,25 @@ const ReportNotify = (props) => {
         setScheduleEmailTime(dateString);
         // setstartTimeIso(moment(date).toISOString());
     };
+    const setEveryDayValues = (value) => {
+        setEveryDayValue(value)
+    }
     // const onChangeEnd = (date, dateString) => {
     //     setScheduleEndDate(dateString);
     //     // setendTimeIso(moment(date).toISOString());
     // };
 
 
-    console.log(activeTab)
     const handleChange = selectedItems => {
         setEmailList(selectedItems);
     };
 
     return (
         <div>
-            <Tabs className='evaluation-tabs' onChange={changeTab} >
+            <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={<div >
+                <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
+                <Button className='clear-schedule'>Clear</Button>
+            </div>} >
                 <TabPane tab='Email Draft' key="email_draft">
                     <Select
                         mode="tags"
@@ -220,17 +221,14 @@ const ReportNotify = (props) => {
 
                     <div className="attachment-report"> <span><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text"> Report_name.pdf</span></span></div>
                     {/* {emailList.length > 0 && ( */}
-                    <div style={{ marginTop: '50px' }}>
-                        <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
-                        <Button className='clear-schedule'>Clear</Button>
-                    </div>
                     {/* )} */}
                     <Divider />
                 </TabPane>
                 <TabPane tab='Email Schedule' key="email_schedule">
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '200px' }}>
-                            <DatePicker placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} />
+                            <ClockCircleOutlined />  <DatePicker placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} />
+                            <Divider />
                         </div>
                         <div style={{ marginTop: '40px' }}>
                             <Row gutter={[16, 24]}>
@@ -258,9 +256,10 @@ const ReportNotify = (props) => {
                                                 <Space direction="vertical" >
                                                     <Radio value='Every Day' className='alerts-radio'>Every Day</Radio>
                                                     <Radio value='Every WeekDay' className='alerts-radio'>Every WeekDay</Radio>
-                                                    <Radio value={3} className='alerts-radio'>Every <span style={{ width: '100px', marginRight: '20px' }}>
-                                                        <InputField className='alerts-radio' />
-                                                    </span>
+                                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '0px' }}>
+                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '100px', marginRight: '20px' }}>
+                                                            <InputField value={everyDayValue} onChangeInput={(e) => setEveryDayValues(e.target.value)} className='alerts-radio' />
+                                                        </span>
                                                         <SelectField
                                                             className='alerts-radio'
                                                             placeholder='Select HH/MM/SS'
@@ -268,7 +267,8 @@ const ReportNotify = (props) => {
                                                             value={selectedTimeRange}
                                                             onChangeSelect={(e) => handleSelectTimeChange(e)}
                                                         />
-                                                    </Radio>
+
+                                                    </div>
 
                                                 </Space>
                                             </Radio.Group>
@@ -312,16 +312,15 @@ const ReportNotify = (props) => {
                                 )
                             }
                         </div>
-                        {selectedSchedule && (
+                        {/* {selectedSchedule && (
                             <div style={{ marginTop: '40px' }}>
                                 <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
                                 <Button className='clear-schedule'>Clear</Button>
                             </div>
-                        )}
+                        )} */}
                     </div>
                 </TabPane>
-                <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
-                <Button className='clear-schedule'>Clear</Button>
+
             </Tabs>
         </div>
 

@@ -76,7 +76,8 @@ const MaterialTree = props => {
 
 			let data = { ...rowData };
 			finalData.push(data);
-
+			console.log('finallll dataaaaaa', finalData);
+			console.log('newBatchData dataaaaaa', newBatchData);
 			dispatch(batchCoverage(newBatchData));
 			dispatch(sendSelectedParamData(finalData));
 		} else {
