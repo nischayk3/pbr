@@ -153,7 +153,21 @@ const LandingPage = () => {
               <Row className="recent-charts">
                 <Col span={6} />
                 <Col span={12} className="p36">
-                  <h3>Recently created charts</h3>
+                  <Row gutter={16} className="title">
+                    <Col span={8}>
+                      <h3>Recently created charts</h3>
+                    </Col>
+                    <Col span={14} className="title-legends">
+                      <dl>
+                        <dt className="grey"></dt>
+                        <dd>Draft</dd>
+                        <dt className="yellow"></dt>
+                        <dd>Awaiting Approval</dd>
+                        <dt className="green"></dt>
+                        <dd>Approved</dd>
+                      </dl>
+                    </Col>
+                  </Row>
                   <Divider />
                   <Row gutter={24}>
                     {chartData &&
@@ -180,10 +194,12 @@ const LandingPage = () => {
                                         : "#000000",
                                   }}
                                 >
-                                  <p className="legendP">{ele.chart_status}</p>
+                                  <p>{ele.chart_status}</p>
                                 </div>
-                                <p className="cid">{ele.chart_disp_id}</p>
-                                <p className="chartName">{ele.chart_name}</p>
+                                <div className="chart-info">
+                                  <p className="cid">{ele.chart_disp_id}</p>
+                                  <p className="chartName">{ele.chart_name}</p>
+                                </div>
                               </div>
                             </Col>
                           </Link>

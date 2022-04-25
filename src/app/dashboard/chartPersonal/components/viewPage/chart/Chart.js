@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import { useParams } from "react-router-dom";
 //antd imports
-import { Row, Col, Divider } from "antd";
+import { Row, Col, Divider, Input } from "antd";
 //components
 import InputField from "../../../../../../components/InputField/InputField";
 import ScatterChart from "./scatterChart/ScatterChart";
+const { TextArea } = Input;
 
 //main component
 const Chart = ({ postChartData, setPostChartData }) => {
@@ -91,19 +92,21 @@ const Chart = ({ postChartData, setPostChartData }) => {
           </Row>
         </Col>
         <Col span={6}>
-          <label>Chart Name</label>
           <InputField
+            label="Chart name"
             placeholder="Enter name"
             value={chartValues.chartName}
             onChangeInput={(e) => handleChange(e, "name")}
           />
         </Col>
-        <Col span={10}>
-          <label>Chart description</label>
-          <InputField
+        <Col span={12}>
+          <p>Chart description</p>
+          <TextArea
             placeholder="Enter description"
             value={chartValues.chartdesc}
-            onChangeInput={(e) => handleChange(e, "desc")}
+            onChange={(e) => handleChange(e, "desc")}
+            rows={1}
+            allowClear
           />
         </Col>
       </Row>
