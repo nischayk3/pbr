@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import './styles.scss';
 import { Select } from 'antd';
 import { moleculeName } from '../../../../../duck/actions/viewCreationAction';
+import { createSummaryData } from '../../../../../duck/actions/viewAction';
 import { getMoleculeList } from '../../../../../services/viewCreationPublishing';
 import {
 	hideLoader,
@@ -19,7 +20,6 @@ import {
 } from '../../../../../duck/actions/commonActions';
 
 function ParameterLookup(props) {
-	console.log('propsssss', props);
 	const {
 		moleculeList,
 		setMoleculeList,
@@ -29,6 +29,8 @@ function ParameterLookup(props) {
 		setMaterialsList,
 		setFilterdData,
 		setParentBatches,
+		viewSummaryBatch,
+		setViewSummaryBatch,
 		params,
 	} = props;
 
@@ -71,7 +73,6 @@ function ParameterLookup(props) {
 
 	useEffect(() => {
 		if (moleculeId) {
-			console.log('moleculeId', moleculeId);
 			onChangeMoleculeHandler(moleculeId);
 			dispatch(moleculeName(moleculeId));
 		}
@@ -79,24 +80,22 @@ function ParameterLookup(props) {
 
 	const onChangeMoleculeHandler = async value => {
 		setMoleculeId(value);
-		//	let req = { moleculeId: value, detailedCoverage: true };
+
 		let _req = { molecule_name: value };
 		let res = JSON.parse(localStorage.getItem('login_details'));
 		try {
 			dispatch(showLoader());
-			//	const paramTreeRes = await materialsParameterTree(_req);
+
 			const paramTreeRes = await getMoleculeList(_req, {
 				'content-type': 'application/json',
 				'x-access-token': res.token ? res.token : '',
 				'resource-name': 'VIEW',
 			});
 
-			console.log('paramTreeRes', paramTreeRes);
-
 			if (paramTreeRes.statuscode === 200) {
 				setMaterialsList(paramTreeRes.data.hierarchy);
 				setParentBatches(paramTreeRes.data.mol_batches);
-				dispatch(hideLoader());
+				setViewSummaryBatch(paramTreeRes.data.mol_batches);
 			} else if (paramTreeRes.statuscode === 401) {
 				dispatch(showNotification('error', 'Filter -', paramTreeRes.Message));
 				dispatch(hideLoader());
@@ -107,6 +106,7 @@ function ParameterLookup(props) {
 				dispatch(showNotification('error', 'Filter -', paramTreeRes.Message));
 				dispatch(hideLoader());
 			}
+			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', error));

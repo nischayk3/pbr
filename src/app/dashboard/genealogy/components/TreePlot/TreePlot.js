@@ -8,6 +8,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import * as _ from 'lodash';
 import * as d3 from 'd3';
 import Draggable from 'react-draggable';
+import { elementZoomLevel } from 'zoom-level';
 import { Select, Button } from 'antd';
 import {
 	EyeOutlined,
@@ -444,7 +445,6 @@ function TreePlot(props) {
 		let forwardNode = forwardTreeDiv.current;
 		let backwardNode = backwardTreeDiv.current;
 
-		let that = this;
 		var TreeViewObject = function (type) {
 			var THIS = this;
 			THIS.type = type;
@@ -521,18 +521,6 @@ function TreePlot(props) {
 					.attr('transform', 'translate(180,20)scale(0.6,0.6)')
 					.attr('class', 'viewport');
 
-				// add the links and the arrows
-				// if (json === null || json === 'null') {
-				//   d3.select('#results', '#loading').html(
-				//     '<span>This is new inner html.</span>'
-				//   );
-
-				//   d3.selection('#results').show = function () {
-				//     this.style('display', 'initial');
-				//     return this;
-				//   };
-				// }
-
 				d3.select('#results,#loading').html('');
 				THIS.root = json;
 				THIS.root.x0 = height / 2;
@@ -540,11 +528,11 @@ function TreePlot(props) {
 
 				d3.select('#wid-id-3, #wid-id-5, #wid-id-6').attr('hide', null);
 				/**
-				 * TODO: Tree Zoom layout
+				 * Tree Zoom layout
 				 */
 				var treeZoom = function (id) {
 					d3.select('#' + id).call(
-						d3.behavior.zoom().scaleExtent([0.5, 5]).on('zoom', zoom)
+						d3.behavior.zoom().scaleExtent([0.5, 2000]).on('zoom', zoom)
 					);
 					d3.select('#' + id)
 						.on('mousedown', function () {
@@ -574,6 +562,8 @@ function TreePlot(props) {
 						'transform',
 						'translate(' + translation + ')' + ' scale(' + scale + ')'
 					);
+
+					console.log('scaleeeeeeeeee', scale);
 				}
 
 				THIS.update(THIS.root);

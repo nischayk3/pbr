@@ -20,14 +20,11 @@ const MathFunction = props => {
 	const dispatch = useDispatch();
 
 	const showModal = () => {
+		dispatch(saveViewFunction(false));
 		setIsModalVisible(true);
 		let funDetails = mathEditorValue && mathEditorValue.split(/\W+/);
 
 		dispatch(sendFunDetails(funDetails));
-	};
-
-	const handleOk = () => {
-		setIsModalVisible(false);
 	};
 
 	const handleCancel = () => {
@@ -40,12 +37,13 @@ const MathFunction = props => {
 	};
 	const onChangeFunName = e => {
 		setFunctionName(e.target.value);
-		dispatch(sendFunctionName(e.target.value));
 	};
 
 	const handleSave = () => {
+		dispatch(sendFunctionName(functionName));
 		dispatch(saveViewFunction(true));
 		setIsModalVisible(false);
+		setFunctionName('');
 	};
 
 	return (
