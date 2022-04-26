@@ -1,35 +1,19 @@
-import { useHistory, useLocation } from 'react-router-dom';
 import { Collapse, Select } from 'antd';
-import { ArrowLeftOutlined, DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 
 import BreadCrumbWrapper from '../../../components/BreadCrumbWrapper/index'
+import GoBack from '../../../components/GoBack/GoBack';
 
 const { Panel } = Collapse;
 const { Option } = Select;
 
 const ScreenAccess = () => {
-    const history = useHistory()
-    const location = useLocation()
-
-    const goBackOnePage = () => {
-        const { pathname } = location
-        const path = pathname.substring(0, pathname.lastIndexOf('/'))
-        history.push(path)
-    }
-
     return (
         <div className='custom-wrapper'>
             <BreadCrumbWrapper />
-            <div className='sub-header' style={{ cursor: 'pointer' }} onClick={goBackOnePage}>
-                <div className='sub-header-title'>
-                    <ArrowLeftOutlined className='header-icon' /> &nbsp;
-                    <span className='header-title' style={{ textTransform: 'none' }}>Screen access</span>
-                </div>
-            </div>
+            <GoBack currentPage="Screen access" />
 
-            <Collapse
-                defaultActiveKey={['1']}
-                expandIconPosition="right">
+            <Collapse defaultActiveKey={['1']} expandIconPosition="right">
                 <Panel header="User" key="1">
                     <p>Screen</p>
                     <Select defaultValue="max" style={{ width: 120 }}>
@@ -43,7 +27,6 @@ const ScreenAccess = () => {
                     <p>Screen</p>
                 </Panel>
             </Collapse>
-            {/* expandIcon={({ isActive }) => isActive ? <DeleteOutlined /> : <DeleteOutlined />} */}
         </div>
     )
 }

@@ -4,6 +4,7 @@ import { Row, Col } from 'antd'
 import BreadCrumbWrapper from '../../components/BreadCrumbWrapper'
 import ScreenHeader from '../../components/ScreenHeader/screenHeader';
 import headerImage from '../../assets/images/ChartBanner.svg';
+import './UserRolesAndAccess.scss';
 
 const UserRolesAndAccess = () => {
     const history = useHistory()
@@ -40,37 +41,6 @@ const UserRolesAndAccess = () => {
                 </Col>
             </Row>
 
-            <style>{`
-                .create-new-row {
-                   display: flex;
-                   justify-content: center;
-                   align-items: center;
-                   margin-top: 2rem;
-                }
-                .create-new {
-                    height: 137px;
-                    width: 175px;
-                    border-radius: 4px;
-                    background: #ffffff;
-                    border: 1px dashed #d9d9d9;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    cursor: pointer;
-                }
-                svg {
-                    margin-top: 10px !important;
-                    font-size: 40px;
-                    color: #cbcbcb;
-                }
-                p {
-                    font-size: 14px;
-                    font-weight: 400;
-                    line-height: 22px;
-                    color: #494949;
-                }
-            `}</style>
         </>
     )
 }
