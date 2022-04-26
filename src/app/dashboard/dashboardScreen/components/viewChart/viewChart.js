@@ -13,7 +13,6 @@ import dummy from './dummy.json';
 import { SyncOutlined, PlusOutlined, EditOutlined, CloseOutlined, CheckCircleOutlined, UndoOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './styles.scss';
-import { convertLegacyProps } from 'antd/lib/button/button';
 
 const dash_info = {
     "dashboard_id": "dashboard1", // text, generated
@@ -125,6 +124,9 @@ const ViewChart = (props, ref) => {
     const [addNewChartFilter, setAddNewChartFilter] = useState(false);
     const [siteList, setSiteList] = useState([]);
     const [tempPanels, setTempPanels] = useState([]);
+    const [pointColors, setPointColors] = useState([]);
+    const [selectedBatches, setSelectedBatches] = useState([]);
+    const [scatterData, setScatterData] = useState([]);
     const [tempCard, setTempCard] = useState({});
     const [isEditable, setIsEditable] = useState(null);
     const [startTimeIso, setstartTimeIso] = useState('');
@@ -651,6 +653,7 @@ const ViewChart = (props, ref) => {
         setTempCard(obj);
     }
 
+
     console.log("temp", tempPanels)
     console.log("dashInfo", dashboardInfo)
     const { RangePicker } = DatePicker;
@@ -658,24 +661,26 @@ const ViewChart = (props, ref) => {
         <div>
             <Card className='dashboard-cards' title={props.dashboardName ? props.dashboardName : dashboardInfo.dashboard_name}>
                 <div className='global-filters'>
-                    <div style={{fontSize:'20px',paddingTop: '4px'}}>
-                        <SyncOutlined />
-                    </div>
-                    <div>
-                        <Select className='select-site' style={{ width: 120 }} value={dashboardInfo?.data_filter?.site || undefined} onChange={(value) => handleGlobalDropdownChange(value, 'Site')} placeholder="Site" className='global-filters-params'>
-                            {/* {siteList.map((el, index) => {
+                    <div className='dashboard-filters'>
+                        <div style={{ fontSize: '20px', paddingTop: '4px' }}>
+                            <SyncOutlined />
+                        </div>
+                        <div>
+                            <Select style={{ width: 120 }} value={dashboardInfo?.data_filter?.site || undefined} onChange={(value) => handleGlobalDropdownChange(value, 'Site')} placeholder="Site" className='global-filters-params select-site'>
+                                {/* {siteList.map((el, index) => {
                                 return ( */}
-                            <Option value={'1255'}>{'1255'}</Option>
-                            {/* )
+                                <Option value={'1255'}>{'1255'}</Option>
+                                {/* )
                             })} */}
-                        </Select>
-                    </div>
-                    <div className='show-data'>
-                        <p style={{paddingTop: '4px'}}>Show Unapproved data</p>
-                        <Switch type='primary' checked={dashboardInfo?.data_filter?.unapproved_data} onChange={(value) => handleGlobalDropdownChange(value, 'Unapproved Data')} />
+                            </Select>
+                        </div>
+                        <div className='show-data'>
+                            <p style={{ paddingTop: '4px' }}>Show Unapproved data</p>
+                            <Switch type='primary' checked={dashboardInfo?.data_filter?.unapproved_data} onChange={(value) => handleGlobalDropdownChange(value, 'Unapproved Data')} />
 
+                        </div>
                     </div>
-                    <div>
+                    <div className='dashboard-filters'>
                         {/* <InputField
                             placeholder='Select Time Range'
                             onChangeClick={(e) => handleDateClick(e)}
@@ -769,19 +774,21 @@ const ViewChart = (props, ref) => {
                                 </div>
 
                             )} */}
+
                         <DatePicker
-                            style={{height:'34px'}}
+                            style={{ height: '34px' }}
                             className='global-filters-params'
                             onChange={onChangeStart}
                             value={dashboardInfo?.data_filter?.date_range?.split("/")[0] ? moment(dashboardInfo?.data_filter?.date_range?.split("/")[0], "YYYY-MM-DD") : ''}
 
                         />
 
-                        <DatePicker 
-                        className='global-filters-params'
-                        onChange={onChangeEnd}
+                        <DatePicker
+                            className='global-filters-params'
+                            onChange={onChangeEnd}
                             value={dashboardInfo?.data_filter?.date_range?.split("/")[1] ? moment(dashboardInfo?.data_filter?.date_range?.split("/")[1], "YYYY-MM-DD") : ''}
-                            style={{ marginLeft: '22px',height:'34px' }} />
+                            style={{ height: '34px' }} 
+                            />
 
                         {/* <RangePicker onChange={(e,value)=>handleDateChangeGlobal(e,value)}
                              value={
@@ -795,9 +802,9 @@ const ViewChart = (props, ref) => {
                         
                         /> */}
 
-                    </div>
-                    <div>
-                        <Select defaultValue="Exploration controls" className='global-filters-params' style={{ width: 230 }} onChange={(value) => handleGlobalDropdownChange(value, 'Exploration Controls')}>
+
+
+                        <Select placeholder="Exploration controls" className='global-filters-params' style={{height:'34px'}}  onChange={(value) => handleGlobalDropdownChange(value, 'Exploration Controls')}>
                             <Option value='Ph'>PH
                                 <Slider range defaultValue={[20, 50]} />
                             </Option>
@@ -811,22 +818,24 @@ const ViewChart = (props, ref) => {
 
 
                         </Select>
-                    </div>
-                    <div>
+
+
                         <Button
                             type='primary'
                             className='custom-secondary-btn'
                             onClick={() => appliedGlobalFilters()}
-                            style={{height:'34px'}}
+                            style={{ height: '34px' }}
                         >Apply
                         </Button>
-                    </div>
 
+                    </div>
                 </div>
+
+
                 <Row gutter={[16, 24]} className='chart-row'>
                     {tempPanels.map((el, index) => {
                         return (
-                            <Col className="gutter-row" span={12} style={{padding: '1px 22px'}}>
+                            <Col className="gutter-row" span={12} style={{ padding: '1px 22px' }}>
                                 <div className='chartCard' style={{ border: isEditable == index ? '2px solid #486BC9' : '2px solid #D9D9D9' }}>
                                     <div className='inner-chart-filters'>
                                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: '5px 7px' }}>
@@ -834,7 +843,7 @@ const ViewChart = (props, ref) => {
                                             <div >
                                                 {isEditable == index ? (
                                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                        <div>< UndoOutlined style={{ color: '#486BC9',fontSize:'16px' }} /></div>
+                                                        <div>< UndoOutlined style={{ color: '#486BC9', fontSize: '16px' }} /></div>
                                                         <div>
                                                             <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }}
                                                                 onClick={() => {
@@ -847,7 +856,7 @@ const ViewChart = (props, ref) => {
                                                                     setTempPanels(panels)
                                                                 }} />
                                                             </span>
-                                                            <span><CloseOutlined style={{ color: '#262626',fontSize:'14px' }} onClick={() => removeCard(index)} /></span>
+                                                            <span><CloseOutlined style={{ color: '#262626', fontSize: '14px' }} onClick={() => removeCard(index)} /></span>
                                                         </div>
                                                     </div>
                                                 ) : (
@@ -869,7 +878,7 @@ const ViewChart = (props, ref) => {
 
                                                             }} />
                                                         </span>
-                                                        <span style={{ marginLeft: '10px' }}><CloseOutlined style={{ color: '#262626',fontSize:'14px' }} onClick={() => removeCard(index)} /></span></>
+                                                        <span style={{ marginLeft: '10px' }}><CloseOutlined style={{ color: '#262626', fontSize: '14px' }} onClick={() => removeCard(index)} /></span></>
                                                 )}
 
                                             </div></div>
@@ -915,10 +924,11 @@ const ViewChart = (props, ref) => {
                                                 searchCallback={(data) => searchCallback(data, index)}
                                             />
                                         )}
-                                        <div style={{ marginTop: isEditable == index ? '0px' : '50px', marginBottom: isEditable == index?'0px':'-10px',padding: '5px 11px'}}>
+                                        <div style={{ marginTop: isEditable == index ? '0px' : '50px', marginBottom: isEditable == index ? '0px' : '-10px', padding: '5px 11px' }}>
                                             <Plot
                                                 data={el.data && el?.data[0]?.data}
                                                 layout={el.chartLayout && el?.chartLayout}
+                                               
                                             />
                                             {/* <Plot
                                                 data={tempPanels[index]?.data && tempPanels[index]?.data[0]?.data}
@@ -933,7 +943,7 @@ const ViewChart = (props, ref) => {
                             </Col>
                         )
                     })}
-                    <Col className="gutter-row" span={12} style={{padding: '1px 22px'}}>
+                    <Col className="gutter-row" span={12} style={{ padding: '1px 22px' }}>
                         <div className='newCard'>
                             {Object.keys(tempCard).length == 0 ? (
                                 <div className='before-new-card' onClick={() => addNewCard()}>
@@ -947,7 +957,7 @@ const ViewChart = (props, ref) => {
 
                                         <div style={{ float: 'right' }}>
                                             <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }} onClick={() => onTempApply()} /></span>
-                                            <span><CloseOutlined style={{ color: '#262626' ,fontSize:'14px'}} /></span>
+                                            <span><CloseOutlined style={{ color: '#262626', fontSize: '14px' }} /></span>
                                         </div>
 
 

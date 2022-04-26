@@ -98,6 +98,15 @@ padding: 1px 14px;
     border: 1px solid #093185;
   box-sizing: border-box;
   border-radius: 2px;
+   .ant-select-selection-placeholder, .ant-picker-input input::placeholder{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color:#444444;
+  }
+  
   }
 
   .dashboard-chart-name{
@@ -110,8 +119,9 @@ color: #000000;
 
   }
 
-  .select-site{
-    .ant-select-selection__placeholder {
-      color: blue;
-    }
+  .dashboard-filters{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 35px;
   }
