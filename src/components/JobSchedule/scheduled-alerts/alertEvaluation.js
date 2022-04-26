@@ -159,7 +159,7 @@ const alertEvaluation = (props) => {
         req['frequency'] = 1
         req["frequency_unit"] = selectedSchedule=='Repeat Once' ? 'Once' : selectedSchedule
         req["job_status"] = "scheduled",
-        req["job_type"] = activeTab,
+        req["job_type"] = 'event',
         req['notify_emails'] = [],
         req["scheduled_time"] = scheduleTime,
         req["scheduled_start"] = scheduleStartDate
