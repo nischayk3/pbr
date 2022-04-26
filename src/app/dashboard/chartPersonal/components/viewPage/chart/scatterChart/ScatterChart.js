@@ -214,7 +214,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
     <div className="chartLayout-container">
       <Row gutter={24}>
         <Col span={6}>
-          <label>Chart Type</label>
+          <p>Chart Type</p>
           <SelectField
             placeholder="Select Chart type"
             selectList={chartTypeList}
@@ -223,7 +223,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
           />
         </Col>
         <Col span={6}>
-          <label>X-axis</label>
+          <p>X-axis</p>
           <SelectField
             placeholder="Select X-axis"
             selectList={xaxisList}
@@ -232,7 +232,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
           />
         </Col>
         <Col span={6}>
-          <label>Y-axis</label>
+          <p>Y-axis</p>
           <SelectField
             placeholder="Select Y-axis"
             selectList={yaxisList}
@@ -240,7 +240,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             onChangeSelect={(e) => setAxisValues({ ...axisValues, yaxis: e })}
           />
         </Col>
-        <Col span={6} style={{ marginTop: "22px" }}>
+        <Col span={6} className="button-visible">
+          <p>button</p>
           <Button
             className="custom-primary-btn"
             onClick={onApply}

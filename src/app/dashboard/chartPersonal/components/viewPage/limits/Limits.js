@@ -455,10 +455,12 @@ const Limits = ({ postChartData, setPostChartData }) => {
             dataSource={controlSource}
             columns={columns}
           />
-          <Button onClick={() => handleAdd()}>
-            <PlusOutlined />
-            Add new row
-          </Button>
+          <div className="add-button">
+            <Button onClick={() => handleAdd()}>
+              <PlusOutlined />
+              Add new row
+            </Button>
+          </div>
         </div>
         <div className="table-bottom">
           <p>Specification</p>
@@ -467,10 +469,12 @@ const Limits = ({ postChartData, setPostChartData }) => {
             dataSource={specificationSource}
             columns={specColumns}
           />
-          <Button onClick={() => handleSpecAdd()}>
-            <PlusOutlined />
-            Add new row
-          </Button>
+          <div className="add-button">
+            <Button onClick={() => handleSpecAdd()}>
+              <PlusOutlined />
+              Add new row
+            </Button>
+          </div>
         </div>
         <div className="table-bottom">
           <p>Warning</p>
@@ -479,10 +483,12 @@ const Limits = ({ postChartData, setPostChartData }) => {
             dataSource={warningSource}
             columns={warnColumns}
           />
-          <Button onClick={() => handleWarnAdd()}>
-            <PlusOutlined />
-            Add new row
-          </Button>
+          <div className="add-button">
+            <Button onClick={() => handleWarnAdd()}>
+              <PlusOutlined />
+              Add new row
+            </Button>
+          </div>
         </div>
       </div>
     </div>

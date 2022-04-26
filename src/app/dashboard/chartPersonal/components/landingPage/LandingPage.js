@@ -104,6 +104,7 @@ const LandingPage = () => {
 		getChartListSer();
 	}, []);
 
+<<<<<<< HEAD
 	return (
 		<div>
 			<Row>
@@ -197,6 +198,119 @@ const LandingPage = () => {
 			</Row>
 		</div>
 	);
+=======
+  return (
+    <div>
+      <Row>
+        <Col span={24} className="banner">
+          <Card bordered={false}>
+            <div className="card-body-div">
+              <div className="text-descp">
+                <h2>Howdy {localStorage.getItem("username")},</h2>
+                <p>Let's personalise some charts today!</p>
+              </div>
+              <img src={Banner} alt="banner" />
+              <h6>{date}</h6>
+            </div>
+          </Card>
+        </Col>
+      </Row>
+      <Row className="landing-content">
+        <Col span={24}>
+          <Card bordered={false}>
+            <Row>
+              <Col span={6} />
+              <Col span={12} className="p36 table-data" ref={ref}>
+                <Search
+                  placeholder="Search by view ID, name, product number, creator, status"
+                  allowClear
+                  enterButton="Search"
+                  size="large"
+                  onFocus={onFocus}
+                  onChange={onSearchChange}
+                  onSearch={searchTable}
+                />
+                {viewSearch && <LoadTable chartList={chartList} />}
+              </Col>
+              <Col span={6} />
+            </Row>
+            <Row>
+              <Col span={6} />
+              <Col span={12} className="p36">
+                <div className="create-new" onClick={onClickAdd}>
+                  <PlusOutlined />
+                  <p>Create new chart</p>
+                </div>
+              </Col>
+              <Col span={6} />
+            </Row>
+            {chartData && chartData.length !== 0 && (
+              <Row className="recent-charts">
+                <Col span={6} />
+                <Col span={12} className="p36">
+                  <Row gutter={16} className="title">
+                    <Col span={8}>
+                      <h3>Recently created charts</h3>
+                    </Col>
+                    <Col span={14} className="title-legends">
+                      <dl>
+                        <dt className="grey"></dt>
+                        <dd>Draft</dd>
+                        <dt className="yellow"></dt>
+                        <dd>Awaiting Approval</dd>
+                        <dt className="green"></dt>
+                        <dd>Approved</dd>
+                      </dl>
+                    </Col>
+                  </Row>
+                  <Divider />
+                  <Row gutter={24}>
+                    {chartData &&
+                      chartData.map((ele) => {
+                        return (
+                          <Link
+                            key={ele.chart_disp_id}
+                            to={`${match.url}/${ele.chart_disp_id}`}
+                          >
+                            <Col span={6} style={{ marginTop: "10px" }}>
+                              <div className="chart-tiles">
+                                <div
+                                  className="legend"
+                                  style={{
+                                    background:
+                                      ele.chart_status === "DRFT"
+                                        ? "#363636"
+                                        : ele.chart_status === "AWAP"
+                                        ? "#F6BB61"
+                                        : "#A4F588",
+                                    color:
+                                      ele.chart_status === "DRFT"
+                                        ? "#FFFFFF"
+                                        : "#000000",
+                                  }}
+                                >
+                                  <p>{ele.chart_status}</p>
+                                </div>
+                                <div className="chart-info">
+                                  <p className="cid">{ele.chart_disp_id}</p>
+                                  <p className="chartName">{ele.chart_name}</p>
+                                </div>
+                              </div>
+                            </Col>
+                          </Link>
+                        );
+                      })}
+                  </Row>
+                </Col>
+                <Col span={6} />
+              </Row>
+            )}
+          </Card>
+        </Col>
+      </Row>
+    </div>
+  );
+>>>>>>> 6b0c330ca8bbeb5013f06db42dd58f6edf6593ed
 };
 
 export default LandingPage;

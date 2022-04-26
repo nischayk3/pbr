@@ -31,7 +31,7 @@
                 }
             ],
             "layout": {
-                "width": 900,
+                "width": 930,
                 "height": 400,
                 "showlegend": true,
                 "plot_bgcolor": "white",
@@ -59,7 +59,7 @@
                     "visible": true,
                     "showticklabels": true,
                     "showline": true,
-                    "gridcolor": "#000026",
+                    "gridcolor": "#d9d9d9",
                     "showgrid": true
                 },
                 "yaxis": {
@@ -73,7 +73,7 @@
                     "visible": true,
                     "showticklabels": true,
                     "showline": true,
-                    "gridcolor": "#000026",
+                    "gridcolor": "#d9d9d9",
                     "showgrid": true
                 }
             },

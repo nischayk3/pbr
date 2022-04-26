@@ -1,5 +1,11 @@
 .chartLayout-container {
   padding: 0px 26px;
+  margin-top: 10px;
+  .button-visible {
+    p {
+      visibility: hidden;
+    }
+  }
   .scatter-chart {
     margin-top: 25px;
   }
