@@ -66,13 +66,13 @@ const JobSchedule = (props) => {
                     </span>
                 }
                     key="1">
-                    {props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} /> :
+                    {props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} id={props.id}  /> :
                         <AlertEvaluation appType={props.app_type} id={props.id} />
                     }
                 </TabPane>
                 <TabPane tab={
                     <span style={{ color: activeTab == '2' ? 'white' : 'grey' }}>
-                        <ControlOutlined />                        Schedule alerts
+                        <ControlOutlined />   Schedule alerts
                     </span>
                 } key="2">
                     <div className='schedule-alerts'>

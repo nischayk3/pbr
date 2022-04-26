@@ -6,7 +6,7 @@
  * @Last Changed By - @Mihir 
  */
 
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table, Modal } from 'antd';
 import SelectField from '../../SelectField/SelectField';
 import InputField from '../../InputField/InputField';
@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../duck/actions/commonActions';
 import { putJob } from '../../../services/jobScheduleService';
 import { PaperClipOutlined, ClockCircleOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
+import ChartNotify from './chartNotify';
 
 const { TabPane } = Tabs;
 const { Option } = Select
@@ -37,7 +38,8 @@ const alertEvaluation = (props) => {
     const [scheduleEmailStartDate, setScheduleEmailStartDate] = useState('')
     const [scheduleTime, setScheduleTime] = useState('')
     const [scheduleEndDate, setScheduleEndDate] = useState('')
-    const [modal,setModal] = useState(false)
+    const [modal, setModal] = useState(false)
+    const [isSame, setIsSame] = useState(false)
     const [selectedDays, setSelectedDays] = useState({
         Sunday: false,
         Monday: false,
@@ -64,13 +66,11 @@ const alertEvaluation = (props) => {
     const [selectedEmailTimeRange, setSelectedEmailTimeRange] = useState('');
 
 
-    useEffect(()=>
-    {
-        if(activeTab=='email')
-        {
+    useEffect(() => {
+        if (activeTab == 'email' && scheduleStartDate.length>0) {
             setModal(true)
         }
- 
+
     })
 
     const dispatch = useDispatch();
@@ -135,8 +135,7 @@ const alertEvaluation = (props) => {
     const setEveryEmailDayValues = (value) => {
         setEveryDayEmailValue(value)
     }
-    const handleModalClose = ()=>
-    {
+    const handleModalClose = () => {
         setModal(false)
         setActiveTab('')
     }
@@ -152,29 +151,20 @@ const alertEvaluation = (props) => {
 
 
         req['app_data'] = props.appType
-        req['dag_id'] = ''
+        req['dag_id'] = ' '
         req['created_by'] = localStorage.getItem('username') ? localStorage.getItem('username') : ''
         req['app_type'] = props.appType
         req['app_id'] = ''
 
-        let email_config = {}
-
-        email_config['subject'] = `Update For Report`
-        email_config['scheduled_start'] = scheduleEmailStartDate
-        email_config['scheduled_time'] = scheduleEmailTime
-        email_config["frequency_unit"] = selectedEmailSchedule,
-            email_config["email_list"] = emailList,
-            email_config["frequency_unit"] = selectedEmailSchedule,
-            email_config["selected_days"] = emailList,
-
-            req['email_config'] = email_config
-        req['frequency'] = radioValue
-        req["frequency_unit"] = selectedSchedule,
-            req["job_status"] = "scheduled",
-            req["job_type"] = activeTab,
-            req['notify_emails'] = emailList,
-            req["scheduled_time"] = scheduleTime,
-            req["scheduled_start"] = scheduleStartDate
+        req['email_config'] = {}
+        req['frequency'] = 1
+        req["frequency_unit"] = selectedSchedule=='Repeat Once' ? 'Once' : selectedSchedule
+        req["job_status"] = "scheduled",
+        req["job_type"] = 'event',
+        req['notify_emails'] = [],
+        req["scheduled_time"] = scheduleTime,
+        req["scheduled_start"] = scheduleStartDate
+        req["scheduled_end"] = "2030/12/12"
 
         let res = await putJob(req, request_headers)
 
@@ -217,10 +207,10 @@ const alertEvaluation = (props) => {
     // };
 
 
-    console.log(activeTab)
     const handleChange = selectedItems => {
         setEmailList(selectedItems);
     };
+
 
     return (
         <div className="chart-notify">
@@ -241,6 +231,7 @@ const alertEvaluation = (props) => {
                                             onChangeSelect={(e) => handleSelectScheduleChange(e)}
                                             selectList={scheduleList}
                                             value={selectedSchedule}
+                                            defaultValue={'Repeat Once'}
                                         />
                                     </div>
                                 </Col>
@@ -258,17 +249,18 @@ const alertEvaluation = (props) => {
                                                 <Space direction="vertical" >
                                                     <Radio value="Every Day" className='alerts-radio'>Every Day</Radio>
                                                     <Radio value="Every WeekDay" className='alerts-radio'>Every WeekDay</Radio>
-                                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '0px' }}>
-                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '100px', marginRight: '20px' }}>
-                                                            <InputField value={everyDayValue} onChangeInput={(e) => setEveryDayValues(e.target.value)} className='alerts-radio' />
-                                                        </span>
-                                                        <SelectField
-                                                            className='alerts-radio'
-                                                            placeholder='Select HH/MM/SS'
-                                                            selectList={timeRange}
-                                                            value={selectedTimeRange}
-                                                            onChangeSelect={(e) => handleSelectTimeChange(e)}
-                                                        />
+                                                    <div style={{ display: 'flex', flexDirection: 'row' }}>                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '100px', marginRight: '20px' }}>
+                                                        <InputField value={everyDayValue} onChangeInput={(e) => setEveryDayValues(e.target.value)} className='alerts-radio' />
+                                                    </span>
+                                                        <div style={{ width: '100px' }}>
+                                                            <SelectField
+                                                                className='alerts-radio'
+                                                                placeholder=''
+                                                                selectList={timeRange}
+                                                                value={selectedTimeRange}
+                                                                onChangeSelect={(e) => handleSelectTimeChange(e)}
+                                                            />
+                                                        </div>
 
                                                     </div>
                                                 </Space>
@@ -322,173 +314,23 @@ const alertEvaluation = (props) => {
                     </div>
                 </TabPane>
 
-                <TabPane tab='Email' key="email" onClick={()=>setModal(true)}>
-                    <Tabs tabBarExtraContent={<div>  <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
-                        <Button className='clear-schedule'>Clear</Button></div>} >
-                        <TabPane tab='Email Draft' key="email_draft">
-                            <Select
-                                mode="tags"
-                                style={{ width: '90%', marginTop: '10px' }}
-                                placeholder={<span className="email-recipients">Recipients <span className="email-recipients-opt">(Optional)</span></span>}
-                                optionLabelProp="label"
-                                value={emailList}
-                                bordered={false}
-                                onChange={handleChange}
-                            >
-                                <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
-                                    mihir.bagga@mareana.com
-                                </Option>
-                            </Select>
-                            <Divider />
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr' }}>
-                                <span>
-                                    <p className="email-subject">Subject <span className="email-sub">Update For  </span>  </p>
-                                    <Divider />
-                                </span>
-                                <div style={{ width: '200px', marginLeft: '70%' }}
-                                >
-                                    <SelectField
-                                        placeholder='Pick the type of alert'
-                                        onChangeSelect={(e) => handleSelectEmailScheduleChange(e)}
-                                        selectList={alertList}
-                                        value={selectedSchedule}
-                                    />
-                                </div>
-                            </div>
-
-                            <p className="email-content"> Hey,<br /><br />
-
-                                This is to inform you of the recept update to [report variant name]. Check the attachment for details.<br />
-                                Visit <a>www.cpv-mareana.com/alert-dashboard</a> to know more.<br />
-                                <br />
-                                <Table /> <br />
-                                Regards,<br />
-                                [variant_username]</p>
-
-                            <p className="email-attach">Select to Attach</p>
-                            <div className="attachment-report-chart"> <span><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text"> Report_name.pdf</span> </span></div>
-                            <div className="attachment-report-chart"> <span><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text"> Data_table</span> </span></div>
-
-
-                            {/* {emailList.length > 0 && (
-                                <div style={{ marginTop: '50px' }}>
-                                    <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule Evaluation</Button>
-                                    <Button className='clear-schedule'>Clear</Button>
-                                </div>
-                            )} */}
-                            <Divider />
-
-                        </TabPane>
-                        <TabPane tab='Email Schedule' key="email_schedule">
-                            <div style={{ margin: '24px' }}>
-                                <div style={{ width: '200px' }}>
-                                    <ClockCircleOutlined />   <DatePicker placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} />
-                                    <Divider />
-                                </div>
-                                <div style={{ marginTop: '40px' }}>
-                                    <Row gutter={[16, 24]}>
-                                        <Col className='gutter-row' span={4}>
-                                            <div >
-                                                <SelectField
-                                                    placeholder='Schedule'
-                                                    onChangeSelect={(e) => handleSelectScheduleChange(e)}
-                                                    selectList={scheduleList}
-                                                    value={selectedSchedule}
-                                                />
-                                            </div>
-                                        </Col>
-                                        <Col className='gutter-row' span={4}>
-                                            <div >
-                                                <TimePicker onChange={onChangeEmailTime} />
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    {selectedSchedule == 'Daily' ? (
-                                        <div style={{ marginTop: '30px' }}>
-                                            <Row>
-                                                <Col>
-                                                    <Radio.Group onChange={onChangeRadioButton} value={radioValue} >
-                                                        <Space direction="vertical" >
-                                                            <Radio value='Every Day' className='alerts-radio'>Every Day</Radio>
-                                                            <Radio value='Every WeekDay' className='alerts-radio'>Every WeekDay</Radio>
-                                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '0px' }}>
-                                                                <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '100px', marginRight: '20px' }}>
-                                                                    <InputField value={everyDayEmailValue} onChangeInput={(e) => setEveryEmailDayValues(e.target.value)} className='alerts-radio' />
-                                                                </span>
-                                                                <SelectField
-                                                                    className='alerts-radio'
-                                                                    placeholder='Select HH/MM/SS'
-                                                                    selectList={timeRange}
-                                                                    value={selectedEmailTimeRange}
-                                                                    onChangeSelect={(e) => handleEmailSelectTimeChange(e)}
-                                                                />
-
-                                                            </div>
-
-                                                        </Space>
-                                                    </Radio.Group>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    ) : ''}
-                                    {selectedSchedule == 'Weekly' ? (
-                                        <div>
-                                            <div className="select-days">
-                                                <Button className={selectedEmailDays['Sunday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Sunday')} >S</Button>
-                                                <Button className={selectedDays['Monday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Monday')} >M</Button>
-                                                <Button className={selectedDays['Tuesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Tuesday')}>T</Button>
-                                                <Button className={selectedDays['Wednesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Wednesday')} >W</Button>
-                                                <Button className={selectedDays['Thursday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Thursday')} >T</Button>
-                                                <Button className={selectedDays['Friday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Friday')} >F</Button>
-                                                <Button className={selectedDays['Saturday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Saturday')} >S</Button>
-                                            </div>
-                                        </div>
-                                    ) : ''}
-
-                                </div>
-                                <div>
-                                    {
-                                        showReceipients && (
-                                            <>
-                                                <Select
-                                                    mode="tags"
-                                                    style={{ width: '90%', marginTop: '10px' }}
-                                                    placeholder={<span style={{ fontSize: '16px' }}>Recipients</span>}
-                                                    optionLabelProp="label"
-                                                    value={emailList}
-                                                    bordered={false}
-                                                    onChange={handleReceipientsChange}
-                                                >
-
-                                                    <Option value="binkita.tiwari@mareana.com" label="binkita.tiwari@mareana.com">
-                                                        binkita.tiwari@mareana.com
-                                                    </Option>
-                                                </Select>
-                                                <Divider />
-                                            </>
-                                        )
-                                    }
-                                </div>
-                                {/* {selectedSchedule && (
-                                    <div style={{ marginTop: '40px' }}>
-                                        <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule Evaluation</Button>
-                                        <Button className='clear-schedule'>Clear</Button>
-                                    </div>
-                                )} */}
-                            </div>
-                        </TabPane>
-                    </Tabs>
+                <TabPane tab='Email' key="email" onClick={() => setModal(true)}>
+                    <ChartNotify appType={props.appType} />
                 </TabPane>
             </Tabs>
-            <Modal visible={modal} footer={false} onCancel={handleModalClose} >
+            <Modal visible={modal} footer={false} onCancel={handleModalClose} width="300px"  style={{marginTop:'250px'}}>
                 <div>
-                <ExclamationCircleTwoTone twoToneColor="red" />  Notify
+                    <div>
+                        <ExclamationCircleTwoTone twoToneColor="orange" style={{ marginRight: '20px',fontSize:'18px' }} />  Notify
+                    </div>
+                    <div style={{ marginTop: '10px' }}>
+                        Do you want to notify with same schedule or different ?
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', marginTop: '20px', marginLeft: '36%' }}>
+                        <Button className="custom-primary-btn" onClick={() => handleModalClose()}>Different</Button>
+                        <Button className="custom-primary-btn" onClick={() => handleModalClose()}>Same</Button>
+                    </div>
                 </div>
-                <div>
-                    Do you want to notify with same schedule or different ?
-                </div>
-                <Button className="custom-primary-btn">Different</Button>
-                <Button className="custom-primary-btn">Same</Button>
 
             </Modal>
         </div>

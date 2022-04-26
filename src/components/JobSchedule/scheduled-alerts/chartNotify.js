@@ -7,7 +7,7 @@
  */
 
 import React, { useState } from 'react';
-import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table } from 'antd';
+import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table, Avatar } from 'antd';
 import SelectField from '../../SelectField/SelectField';
 import InputField from '../../InputField/InputField';
 import './chartNotify.scss';
@@ -24,6 +24,73 @@ const { Option } = Select
 const alertList = ['Limits', 'Rules', 'Threshold']
 const scheduleList = ['Repeat Once', 'Daily', 'Weekly', 'Monthly']
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
+
+const tableColumns = [ 
+    {
+        title: 'Chart Name',
+        dataIndex: 'chart',
+        align : 'center',
+        render : (text,rcrd) => {
+            return {
+                children: <div className="email-contents">{text}</div>,
+            }
+        }
+    },
+    {
+        title: 'Event Name',
+        dataIndex: 'event',
+        align : 'center',
+
+        render : (text,rcrd) => {
+            return {
+                children: <div className="email-contents">{text}</div>,
+            }
+        }
+    },
+    {
+        title: 'Parameter ID',
+        dataIndex: 'id',
+        align : 'center',
+
+        render : (text,rcrd) => {
+            return {
+                children: <div className="email-contents">{text}</div>,
+            }
+        }
+    },
+    {
+        title: 'Date & time',
+        dataIndex: 'date',
+        align : 'center',
+
+        render : (text,rcrd) => {
+            return {
+                children: <div className="email-contents">{text}</div>,
+            }
+        }
+    },
+    {
+        title: 'Creator',
+        dataIndex: 'creator',
+        align : 'center',
+
+        render : (text,rcrd) => {
+            return {
+                children: <div className="email-contents"><Avatar style= {{backgroundColor: '#87d068'}}>S</Avatar> {text}</div>,
+            }
+        }
+    }
+]
+const data = [
+    {
+        chart :'Sample Chart',
+        event: 'Nelson Rule 1',
+        id : 'ID00001288',
+        date :' 11/4/2022 21:00',
+        creator:'Sharus'
+    }
+]
+
 
 
 const ChartNotify = (props) => {
@@ -81,9 +148,13 @@ const ChartNotify = (props) => {
     const handleSelectEmailScheduleChange = (e) => {
         setSelectedEmailSchedule(e);
     }
+    const handleSelectAlertChange = (e) => {
+        setSelectedAlert(e);
+    }
+
 
     const onChangeTimePicker = (time, timeString) => {
-        console.log(time, timeString);
+   
     }
     const onChangeRadioButton = (e) => {
         setRadioValue(e.target.value);
@@ -109,14 +180,16 @@ const ChartNotify = (props) => {
         req['dag_id'] = ' '
         req['created_by'] = localStorage.getItem('username') ? localStorage.getItem('username') : ''
         req['app_type'] = props.appType
-        req['app_id'] = props.id ? props.id : 'R262'
+        req['app_id'] = props.id ? props.id : 'C222'
 
         let email_config = {}
-        email_config['subject'] = `Update For Report`
+        email_config['subject'] = `Update For ${props.id}`
         email_config['scheduled_start'] = scheduleEmailStartDate
         email_config['scheduled_time'] = scheduleEmailTime
-        email_config["frequency_unit"] = selectedSchedule,
-            email_config["email_list"] = emailList
+        email_config["frequency_unit"] = selectedSchedule=='Repeat Once' ? 'Once' : selectedSchedule
+        email_config["email_list"] = emailList
+        email_config["selected_alert"] = selectedAlert
+        email_config["attachment"] = ''
 
         if (selectedSchedule == 'Weekly') {
             email_config['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
@@ -132,7 +205,7 @@ const ChartNotify = (props) => {
 
         req['email_config'] = email_config
         req['frequency'] = 1
-        req["frequency_unit"] = selectedSchedule,
+        req["frequency_unit"] = selectedSchedule=='Repeat Once' ? 'Once' : selectedSchedule
             req["job_status"] = "NEW",
             req["job_type"] = 'email',
             req['notify_emails'] = emailList,
@@ -196,7 +269,7 @@ const ChartNotify = (props) => {
                     <Select
                         mode="tags"
                         style={{ width: '90%', marginTop: '10px' }}
-                        placeholder={<span className="email-recipients">Recipients      (Optional)</span>}
+                        placeholder={<><span className="email-recipients">Recipients</span>   <span className="email-recipients-chart" >(Optional)</span></>}
                         optionLabelProp="label"
                         value={emailList}
                         bordered={false}
@@ -209,37 +282,37 @@ const ChartNotify = (props) => {
                     <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr' }}>
                         <span>
-                            <p className="email-subject">Subject <span className="email-sub">Update For  </span>  </p>
+                            <p className="email-subject">Subject <span className="email-sub">Update For {props.id}</span>  </p>
                             <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                         </span>
-                        <div style={{ width: '200px', marginLeft: '72%',marginTop:'30px' }}
+                        <div style={{ width: '200px', marginLeft: '72%', marginTop: '30px' }}
                         >
                             <SelectField
                                 placeholder='Pick the type of alert'
-                                onChangeSelect={(e) => handleSelectEmailScheduleChange(e)}
+                                onChangeSelect={(e) => handleSelectAlertChange(e)}
                                 selectList={alertList}
-                                value={selectedSchedule}
+                                value={selectedAlert}
                             />
                         </div>
                     </div>
-                   
+
                     <br />
                     <p className="email-content"> Hey,<br /><br />
 
                         This is to inform you of the recept chart.
                         Visit <a>www.cpv-mareana.com/alert-dashboard</a> to know more.<br /><br />
-                        <Table style={{ width: '98%' }} />
+                        <Table style={{ width: '98%' }} dataSource={data} columns={tableColumns} />
                         <br /><br />
                         Regards,<br />
                         [variant_username]
                     </p>
 
-                        <p className="email-attach-chart">Select to Attach</p>
+                    <p className="email-attach-chart">Select to Attach</p>
 
-                        <div style={{display:'flex',flexDirection:'row',justifyContent:'end',gap:'10px'}}>
-                            <div className="attachment-report-chart"><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text-chart"> Report_name.pdf</span> </div>
-                            <div className="attachment-report-chart"><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text-chart"> Data_table</span></div>
-                        </div>
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', gap: '10px',marginRight:'20px' }}>
+                        <div className="attachment-report-chart"><span><PaperClipOutlined style={{ marginLeft: '10px' }} /></span><span className="attachment-report-text-chart"> Report_name.pdf</span> </div>
+                        <div className="attachment-report-chart"><span><PaperClipOutlined style={{ marginLeft: '10px' }} /></span><span className="attachment-report-text-chart"> Data_table</span></div>
+                    </div>
                     {/* {emailList.length > 0 && ( */}
                     {/* )} */}
                     <Divider />
@@ -259,7 +332,7 @@ const ChartNotify = (props) => {
                                             onChangeSelect={(e) => handleSelectScheduleChange(e)}
                                             selectList={scheduleList}
                                             value={selectedSchedule}
-                                        />
+                                            defaultValue={'Repeat Once'}                                        />
                                     </div>
                                 </Col>
                                 <Col className='gutter-row' span={4}>
@@ -299,13 +372,13 @@ const ChartNotify = (props) => {
                             ) : ''}
                             {selectedSchedule == 'Weekly' ? (
                                 <div className="select-days">
-                                    <Button className={selectedDays['Sunday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Sunday')} >S</Button>
-                                    <Button className={selectedDays['Monday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Monday')} >M</Button>
-                                    <Button className={selectedDays['Tuesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Tuesday')}>T</Button>
-                                    <Button className={selectedDays['Wednesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Wednesday')} >W</Button>
-                                    <Button className={selectedDays['Thursday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Thursday')} >T</Button>
-                                    <Button className={selectedDays['Friday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Friday')} >F</Button>
-                                    <Button className={selectedDays['Saturday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Saturday')} >S</Button>
+                                    <Button className={selectedDays['Sunday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Sunday')} >S</Button>
+                                    <Button className={selectedDays['Monday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Monday')} >M</Button>
+                                    <Button className={selectedDays['Tuesday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Tuesday')}>T</Button>
+                                    <Button className={selectedDays['Wednesday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Wednesday')} >W</Button>
+                                    <Button className={selectedDays['Thursday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Thursday')} >T</Button>
+                                    <Button className={selectedDays['Friday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Friday')} >F</Button>
+                                    <Button className={selectedDays['Saturday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Saturday')} >S</Button>
                                 </div>
                             ) : ''}
 

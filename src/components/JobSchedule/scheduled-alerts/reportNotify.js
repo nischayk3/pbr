@@ -7,7 +7,7 @@
  */
 
 import React, { useState } from 'react';
-import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table } from 'antd';
+import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table,Avatar } from 'antd';
 import SelectField from '../../SelectField/SelectField';
 import InputField from '../../InputField/InputField';
 import './reportNotify.scss';
@@ -24,6 +24,7 @@ const { Option } = Select
 const alertList = ['Limits', 'Rules', 'Threshold']
 const scheduleList = ['Repeat Once', 'Daily', 'Weekly', 'Monthly']
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
+
 
 
 const ReportNotify = (props) => {
@@ -112,11 +113,12 @@ const ReportNotify = (props) => {
         req['app_id'] = props.id ? props.id : 'R262'
 
         let email_config = {}
-        email_config['subject'] = `Update For Report`
+        email_config['subject'] = `Update For ${props.id ? props.id : 'C222'}`
         email_config['scheduled_start'] = scheduleEmailStartDate
         email_config['scheduled_time'] = scheduleEmailTime
-        email_config["frequency_unit"] = selectedSchedule,
+        email_config["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule,
             email_config["email_list"] = emailList
+            email_config["attachment"] = ''
 
         if (selectedSchedule == 'Weekly') {
             email_config['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
@@ -132,8 +134,8 @@ const ReportNotify = (props) => {
 
         req['email_config'] = email_config
         req['frequency'] = 1
-        req["frequency_unit"] = selectedSchedule,
-            req["job_status"] = "NEW",
+        req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
+        req["job_status"] = "NEW",
             req["job_type"] = 'email',
             req['notify_emails'] = emailList,
             req["scheduled_end"] = '2030-12-31'
@@ -196,7 +198,7 @@ const ReportNotify = (props) => {
                     <Select
                         mode="tags"
                         style={{ width: '90%', marginTop: '10px' }}
-                        placeholder={<span className="email-recipients">Recipients      (Optional)</span>}
+                        placeholder={<><span className="email-recipients">Recipients</span>      <span className="email-recipients-report" >(Optional)</span></>}
                         optionLabelProp="label"
                         value={emailList}
                         bordered={false}
@@ -208,7 +210,7 @@ const ReportNotify = (props) => {
                     </Select>
                     <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                     <span>
-                        <p className="email-subject">Subject <span className="email-sub">Update For  </span>  </p>
+                        <p className="email-subject">Subject <span className="email-sub">Update For {props.id} </span>  </p>
                     </span>
                     <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                     <br />
@@ -240,6 +242,7 @@ const ReportNotify = (props) => {
                                             onChangeSelect={(e) => handleSelectScheduleChange(e)}
                                             selectList={scheduleList}
                                             value={selectedSchedule}
+                                            defaultValue="Repeat Once"
                                         />
                                     </div>
                                 </Col>
@@ -304,7 +307,6 @@ const ReportNotify = (props) => {
                                             bordered={false}
                                             onChange={handleReceipientsChange}
                                         >
-
                                             <Option value="binkita.tiwari@mareana.com" label="binkita.tiwari@mareana.com">
                                                 binkita.tiwari@mareana.com
                                             </Option>
