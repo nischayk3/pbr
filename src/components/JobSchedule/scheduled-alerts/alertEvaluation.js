@@ -207,12 +207,11 @@ const alertEvaluation = (props) => {
     // };
 
 
-    console.log(activeTab)
     const handleChange = selectedItems => {
         setEmailList(selectedItems);
     };
 
-    console.log(scheduleStartDate)
+
     return (
         <div className="chart-notify">
             <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={activeTab == 'schedule_evaluation' ? <div>  <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule Evaluation</Button>

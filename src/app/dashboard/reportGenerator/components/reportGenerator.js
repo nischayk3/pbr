@@ -266,7 +266,7 @@ function ReportGenerator() {
     }
 
     const unloadTest = (ReportData) => {
-        console.log(ReportData)
+
         dispatch(showLoader())
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setChartLayout(ReportData.charts_layout ? createChartRecord(ReportData.charts_layout) : {})
@@ -421,7 +421,7 @@ function ReportGenerator() {
         }
     }
 
-    console.log(reportId)
+
 
     return (
 

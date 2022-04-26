@@ -72,7 +72,7 @@ const JobSchedule = (props) => {
                 </TabPane>
                 <TabPane tab={
                     <span style={{ color: activeTab == '2' ? 'white' : 'grey' }}>
-                        <ControlOutlined />                        Schedule alerts
+                        <ControlOutlined />   Schedule alerts
                     </span>
                 } key="2">
                     <div className='schedule-alerts'>
