@@ -27,8 +27,8 @@ import queryString from 'query-string';
 import { sendUrl } from '../../../../duck/actions/loginAction';
 import { loginUrl } from '../../../../services/loginService';
 import MaterialTree from './materialTree';
-import MathEditor from './mathEditor';
-import ViewSummaryData from './viewSummary';
+import { MemoizedMathEditor } from './mathEditor';
+import { MemoizedViewSummaryData } from './viewSummary/index';
 import viewdatajson from './view.json';
 import InputField from '../../../../components/InputField/InputField';
 import {
@@ -65,6 +65,7 @@ const ViewCreation = props => {
 	const [dataLoadingState, setDataLoadingState] = useState(false);
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
 	const [parentBatches, setParentBatches] = useState([]);
+	const [viewSummaryBatch, setViewSummaryBatch] = useState([]);
 	const [newBatchData, setNewBatchData] = useState([]);
 	const [viewDisplayId, setViewDisplayId] = useState('');
 	const [viewStatus, setViewStatus] = useState();
@@ -98,13 +99,12 @@ const ViewCreation = props => {
 	// }, [moleculeId]);
 
 	useEffect(() => {
-		let pathString = queryString.parse(location.search);
-		console.log('pathString.......', pathString);
-		if (pathString.view_disp_id != undefined) {
-			console.log('pathString showwwwwwwwwwwwwwww', pathString.view_disp_id);
+		let pathString = location.state;
+		console.log('pathStringggggggg', pathString, location);
+		if (pathString && pathString.viewId !== undefined) {
 			let _reqLoad = {
-				view_disp_id: pathString.view_disp_id,
-				view_version: pathString.view_version,
+				view_disp_id: pathString.viewId,
+				view_version: pathString.viewVersion,
 			};
 			loadView(_reqLoad);
 		}
@@ -164,7 +164,7 @@ const ViewCreation = props => {
 				(element.all_parameters = viewState.selectedParamData),
 				(element.material_id = moleculeId);
 		});
-		console.log('view dataaaa', viewData, viewJson);
+
 		const _req = {
 			data: viewData[0],
 		};
@@ -182,7 +182,7 @@ const ViewCreation = props => {
 			element.view_status = viewStatus;
 			element.view_version = viewVersion;
 		});
-		console.log('view dataaaa', viewData, viewJson);
+
 		const _req = {
 			data: viewData[0],
 		};
@@ -193,7 +193,6 @@ const ViewCreation = props => {
 		try {
 			const response = await saveFunction(_reqView);
 			if (response.statuscode === 200) {
-				console.log('responseeeee', response);
 				setIsSaveVisible(false);
 				setViewDisplayId(response.view_disp_id);
 				setViewStatus(response.view_status);
@@ -222,7 +221,7 @@ const ViewCreation = props => {
 		try {
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
-			console.log('loadViewRes', loadViewRes['all_parameters']);
+
 			Object.entries(loadViewRes).forEach(([key, value], index) => {
 				if (key === 'view_version') {
 					setViewVersion(value);
@@ -243,7 +242,7 @@ const ViewCreation = props => {
 			dispatch(showNotification('error', err));
 		}
 	};
-	console.log('viewwwwwwwwwwwww', materialsList, paramTableData);
+
 	return (
 		<div className='reportDesigner-container viewCreation-container'>
 			<BreadCrumbWrapper />
@@ -318,6 +317,8 @@ const ViewCreation = props => {
 								setDataLoadingState={setDataLoadingState}
 								parentBatches={parentBatches}
 								setParentBatches={setParentBatches}
+								viewSummaryBatch={viewSummaryBatch}
+								setViewSummaryBatch={setViewSummaryBatch}
 								viewSummaryTable={viewSummaryTable}
 								setViewSummaryTable={setViewSummaryTable}
 								form={form}
@@ -368,15 +369,17 @@ const ViewCreation = props => {
 
 					{paramTableData.length > 0 && (
 						<div className='viewCreation-rightBlocks'>
-							<MathEditor
+							<MemoizedMathEditor
 								paramTableData={paramTableData}
 								//	primarySelected={primarySelect}
 								newBatchData={newBatchData}
 								parentBatches={parentBatches}
+								viewSummaryBatch={viewSummaryBatch}
+								setViewSummaryBatch={setViewSummaryBatch}
 								viewJson={viewJson}
 								setViewJson={setViewJson}
 							/>
-							<ViewSummaryData
+							<MemoizedViewSummaryData
 								viewJson={viewJson}
 								setViewJson={setViewJson}
 								viewDisplayId={viewDisplayId}
@@ -436,7 +439,6 @@ const ViewCreation = props => {
 									handleSaveView();
 								}}
 								type='text'
-								disabled={!viewDisplayId}
 								className='custom-secondary-btn '>
 								Save
 							</Button>

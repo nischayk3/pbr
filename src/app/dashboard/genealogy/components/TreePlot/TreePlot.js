@@ -8,6 +8,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import * as _ from 'lodash';
 import * as d3 from 'd3';
 import Draggable from 'react-draggable';
+
 import { Select, Button } from 'antd';
 import {
 	EyeOutlined,
@@ -68,10 +69,10 @@ function TreePlot(props) {
 					value: item.mat_type,
 					nodeId: item.id,
 				});
-				purOrder.push({
-					value: item.pur_ord_no,
-					nodeId: item.id,
-				});
+				// purOrder.push({
+				// 	value: item.pur_ord_no,
+				// 	nodeId: item.id,
+				// });
 			}
 		};
 		let loopChildrenMat = item => {
@@ -123,16 +124,16 @@ function TreePlot(props) {
 				}
 			});
 		};
-		let loopChildrenPurchase = item => {
-			item.forEach(i => {
-				if (i.pur_ord_no !== undefined) {
-					arrPurAdd.push(i.pur_ord_no);
-				}
-				if (i.children) {
-					loopChildrenPurchase(i.children);
-				}
-			});
-		};
+		// let loopChildrenPurchase = item => {
+		// 	item.forEach(i => {
+		// 		if (i.pur_ord_no !== undefined) {
+		// 			arrPurAdd.push(i.pur_ord_no);
+		// 		}
+		// 		if (i.children) {
+		// 			loopChildrenPurchase(i.children);
+		// 		}
+		// 	});
+		// };
 
 		chartDataRes &&
 			chartDataRes.forEach(item => {
@@ -144,9 +145,10 @@ function TreePlot(props) {
 					pushMaterial(item);
 				} else if (item.mat_type.length) {
 					pushMaterial(item);
-				} else if (item.pur_ord_no.length) {
-					pushMaterial(item);
 				}
+				//  else if (item.pur_ord_no.length) {
+				// 	pushMaterial(item);
+				// }
 				if (item.children) {
 					loopChildrenMat(item.children);
 					loopChildrenBatch(item.children);
@@ -161,8 +163,8 @@ function TreePlot(props) {
 			...arrMatDes,
 			...batch,
 			...arrBatch,
-			...purOrder,
-			...arrPurAdd,
+			// ...purOrder,
+			// ...arrPurAdd,
 		];
 		setsearchOptions(mergeArray);
 	};
@@ -191,20 +193,18 @@ function TreePlot(props) {
 			element[0].setAttribute('r', '10');
 		}
 		if (props.chartType === 'backward') {
-			let diagramLayout = d3.select('#backwardDiv');
+			let diagramLayout = d3.select('#treeviewidbackward');
 			let linkSvg = diagramLayout.selectAll('.link');
-			// let linkSvg1 = diagramLayout.selectAll('#treeviewidbackward');
-			// let linkSvg2 = diagramLayout.selectAll('#node-' + splitedvalue);
-			// let nodeCoords = d3.transform(linkSvg2.attr('transform'));
-			// let ntranslateX = nodeCoords.translate[0];
-			// let ntranslateY = nodeCoords.translate[1];
-			// let newTranslateX = ntranslateX - 600;
-			// let newtranslateY = ntranslateY - ntranslateY - 40;
-
-			// linkSvg1.attr(
-			//   'transform',
-			//   'translate(' + newTranslateX + ',' + newtranslateY + ')scale(1,1)'
-			// );
+			let linkSvg1 = diagramLayout.select('g');
+			let linkSvg2 = diagramLayout.selectAll('#node-' + selectedNodeId);
+			let nodeCoords = d3.transform(linkSvg2.attr('transform'));
+			let ntranslateX = nodeCoords.translate[0];
+			let ntranslateY = nodeCoords.translate[1];
+			let newTranslateX = ntranslateX - 960;
+			let newTranslateY = ntranslateY - ntranslateY - 70;
+			linkSvg1
+				.attr('transform', 'translate(' + -300 + ',' + 20 + ')scale(1,1)')
+				.attr('align', 'center');
 			linkSvg.style('stroke', isMaterialLink).style('stroke-width', '4');
 			let linkSearchMatch = linkSvg.filter(function (d) {
 				return d.source.id === selectedNodeId || d.target.id === selectedNodeId;
@@ -236,24 +236,19 @@ function TreePlot(props) {
 				highlightPathBackward(d.source, isMaterialLink);
 			});
 		} else if (props.chartType === 'forward') {
-			let diagramForward = d3.select('#forwardDiv');
+			let diagramForward = d3.select('#treeviewidforward');
 			let linkSvgFor = diagramForward.selectAll('.link');
-			// let linkSvg1For = diagramForward.selectAll('#treeviewidforward');
-			// let linkSvg2For = diagramForward.selectAll('#node-' + splitedvalue);
-			// let nodeCoordsFor = d3.transform(linkSvg2For.attr('transform'));
-			// let ntranslateXFor = nodeCoordsFor.translate[0];
-			// let ntranslateYFor = nodeCoordsFor.translate[1];
-			// let newTranslateXFor = ntranslateXFor - 600;
-			// let newtranslateYFor = ntranslateYFor - ntranslateYFor - 40;
+			let linkSvg1For = diagramForward.select('g');
+			let linkSvg2For = diagramForward.selectAll('#node-' + selectedNodeId);
+			let nodeCoordsFor = d3.transform(linkSvg2For.attr('transform'));
+			let ntranslateXFor = nodeCoordsFor.translate[0];
+			let ntranslateYFor = nodeCoordsFor.translate[1];
+			let newTranslateXFor = ntranslateXFor - 600;
+			let newtranslateYFor = ntranslateYFor - ntranslateYFor - 40;
 
-			// linkSvg1For.attr(
-			//   'transform',
-			//   'translate(' +
-			//     newTranslateXFor +
-			//     ',' +
-			//     newtranslateYFor +
-			//     ')scale(1,1)'
-			// );
+			linkSvg1For
+				.attr('transform', 'translate(' + 90 + ',' + 20 + ')scale(1,1)')
+				.attr('align', 'center');
 			linkSvgFor.style('stroke', isMaterialLink).style('stroke-width', '4');
 			let linkSearchMatchFor = linkSvgFor.filter(function (d) {
 				return d.source.id === selectedNodeId || d.target.id === selectedNodeId;
@@ -444,7 +439,6 @@ function TreePlot(props) {
 		let forwardNode = forwardTreeDiv.current;
 		let backwardNode = backwardTreeDiv.current;
 
-		let that = this;
 		var TreeViewObject = function (type) {
 			var THIS = this;
 			THIS.type = type;
@@ -507,7 +501,7 @@ function TreePlot(props) {
 					})
 					.attr('width', width + margin[1] + margin[3])
 					.attr('height', height)
-					.append('g')
+
 					.append('svg:g')
 					.attr('transform', function () {
 						if (graphHeight > 2000) return 'translate(530,100)scale(0.5,0.5)';
@@ -521,18 +515,6 @@ function TreePlot(props) {
 					.attr('transform', 'translate(180,20)scale(0.6,0.6)')
 					.attr('class', 'viewport');
 
-				// add the links and the arrows
-				// if (json === null || json === 'null') {
-				//   d3.select('#results', '#loading').html(
-				//     '<span>This is new inner html.</span>'
-				//   );
-
-				//   d3.selection('#results').show = function () {
-				//     this.style('display', 'initial');
-				//     return this;
-				//   };
-				// }
-
 				d3.select('#results,#loading').html('');
 				THIS.root = json;
 				THIS.root.x0 = height / 2;
@@ -540,11 +522,11 @@ function TreePlot(props) {
 
 				d3.select('#wid-id-3, #wid-id-5, #wid-id-6').attr('hide', null);
 				/**
-				 * TODO: Tree Zoom layout
+				 * Tree Zoom layout
 				 */
 				var treeZoom = function (id) {
 					d3.select('#' + id).call(
-						d3.behavior.zoom().scaleExtent([0.5, 5]).on('zoom', zoom)
+						d3.behavior.zoom().scaleExtent([0.5, 2000]).on('zoom', zoom)
 					);
 					d3.select('#' + id)
 						.on('mousedown', function () {
@@ -574,6 +556,14 @@ function TreePlot(props) {
 						'transform',
 						'translate(' + translation + ')' + ' scale(' + scale + ')'
 					);
+					const zommscale = (scale * 100) / 2;
+					if (zommscale !== '') {
+						d3.select('#zoomscale')
+							.style('box-shadow', '1px 1px 12px rgba(0, 0, 0, 0.24)')
+							.html(`${Math.round(zommscale)}%`);
+					} else {
+						console.log('zoom scale');
+					}
 				}
 
 				THIS.update(THIS.root);
@@ -1709,6 +1699,7 @@ function TreePlot(props) {
 						</ul>
 					</div>
 				</div>
+				<div id='zoomscale' class='zoomscale'></div>
 			</div>
 		</>
 	);
