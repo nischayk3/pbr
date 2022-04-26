@@ -191,8 +191,8 @@ function Genealogy() {
 			dispatch(showLoader());
 			const backwardRes = await getBackwardData(_reqBack);
 
-			if (backwardRes.length > 0) {
-				setGenealogyData(backwardRes);
+			if (backwardRes.statuscode === 200) {
+				setGenealogyData(backwardRes.data);
 				setisBackward(true);
 				setisForward(false);
 				setShowTree(true);
@@ -218,8 +218,8 @@ function Genealogy() {
 		try {
 			dispatch(showLoader());
 			const forwardRes = await getForwardData(_reqFor);
-			if (forwardRes.length > 0) {
-				setGenealogyData(forwardRes);
+			if (forwardRes.statuscode === 200) {
+				setGenealogyData(forwardRes.data);
 				setisBackward(false);
 				setisForward(true);
 				setShowTree(true);
@@ -315,11 +315,9 @@ function Genealogy() {
 	};
 
 	const downloadFile = async val => {
-		console.log('vallllllllllllll', val);
 		let uri =
 			'SELECT * FROM tran_product_params WHERE batch_num=' + `'${limsBatch}'`;
-		console.log('uriiii', uri);
-		console.log('encodeURIComponent(uri)', encodeURIComponent(uri));
+
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		let req = {
 			export_csv: true,
@@ -331,7 +329,7 @@ function Genealogy() {
 		try {
 			dispatch(showLoader());
 			const download = await downloadDataTable(req);
-			console.log('download.......', download);
+
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
