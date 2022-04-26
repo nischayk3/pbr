@@ -154,7 +154,7 @@ const ChartNotify = (props) => {
 
 
     const onChangeTimePicker = (time, timeString) => {
-        console.log(time, timeString);
+   
     }
     const onChangeRadioButton = (e) => {
         setRadioValue(e.target.value);
