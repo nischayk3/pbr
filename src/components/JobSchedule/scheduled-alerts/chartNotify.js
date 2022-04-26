@@ -81,6 +81,10 @@ const ChartNotify = (props) => {
     const handleSelectEmailScheduleChange = (e) => {
         setSelectedEmailSchedule(e);
     }
+    const handleSelectAlertChange = (e) => {
+        setSelectedAlert(e);
+    }
+
 
     const onChangeTimePicker = (time, timeString) => {
         console.log(time, timeString);
@@ -109,14 +113,15 @@ const ChartNotify = (props) => {
         req['dag_id'] = ' '
         req['created_by'] = localStorage.getItem('username') ? localStorage.getItem('username') : ''
         req['app_type'] = props.appType
-        req['app_id'] = props.id ? props.id : 'R262'
+        req['app_id'] = props.id ? props.id : 'C222'
 
         let email_config = {}
         email_config['subject'] = `Update For Report`
         email_config['scheduled_start'] = scheduleEmailStartDate
         email_config['scheduled_time'] = scheduleEmailTime
-        email_config["frequency_unit"] = selectedSchedule,
-            email_config["email_list"] = emailList
+        email_config["frequency_unit"] = selectedSchedule
+        email_config["email_list"] = emailList
+        email_config["selected_alert"] = selectedAlert
 
         if (selectedSchedule == 'Weekly') {
             email_config['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
@@ -212,17 +217,17 @@ const ChartNotify = (props) => {
                             <p className="email-subject">Subject <span className="email-sub">Update For  </span>  </p>
                             <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                         </span>
-                        <div style={{ width: '200px', marginLeft: '72%',marginTop:'30px' }}
+                        <div style={{ width: '200px', marginLeft: '72%', marginTop: '30px' }}
                         >
                             <SelectField
                                 placeholder='Pick the type of alert'
-                                onChangeSelect={(e) => handleSelectEmailScheduleChange(e)}
+                                onChangeSelect={(e) => handleSelectAlertChange(e)}
                                 selectList={alertList}
-                                value={selectedSchedule}
+                                value={selectedAlert}
                             />
                         </div>
                     </div>
-                   
+
                     <br />
                     <p className="email-content"> Hey,<br /><br />
 
@@ -234,12 +239,12 @@ const ChartNotify = (props) => {
                         [variant_username]
                     </p>
 
-                        <p className="email-attach-chart">Select to Attach</p>
+                    <p className="email-attach-chart">Select to Attach</p>
 
-                        <div style={{display:'flex',flexDirection:'row',justifyContent:'end',gap:'10px'}}>
-                            <div className="attachment-report-chart"><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text-chart"> Report_name.pdf</span> </div>
-                            <div className="attachment-report-chart"><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text-chart"> Data_table</span></div>
-                        </div>
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', gap: '10px' }}>
+                        <div className="attachment-report-chart"><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text-chart"> Report_name.pdf</span> </div>
+                        <div className="attachment-report-chart"><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text-chart"> Data_table</span></div>
+                    </div>
                     {/* {emailList.length > 0 && ( */}
                     {/* )} */}
                     <Divider />
@@ -259,7 +264,7 @@ const ChartNotify = (props) => {
                                             onChangeSelect={(e) => handleSelectScheduleChange(e)}
                                             selectList={scheduleList}
                                             value={selectedSchedule}
-                                        />
+                                            defaultValue={'Repeat Once'}                                        />
                                     </div>
                                 </Col>
                                 <Col className='gutter-row' span={4}>
@@ -299,13 +304,13 @@ const ChartNotify = (props) => {
                             ) : ''}
                             {selectedSchedule == 'Weekly' ? (
                                 <div className="select-days">
-                                    <Button className={selectedDays['Sunday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Sunday')} >S</Button>
-                                    <Button className={selectedDays['Monday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Monday')} >M</Button>
-                                    <Button className={selectedDays['Tuesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Tuesday')}>T</Button>
-                                    <Button className={selectedDays['Wednesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Wednesday')} >W</Button>
-                                    <Button className={selectedDays['Thursday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Thursday')} >T</Button>
-                                    <Button className={selectedDays['Friday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Friday')} >F</Button>
-                                    <Button className={selectedDays['Saturday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Saturday')} >S</Button>
+                                    <Button className={selectedDays['Sunday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Sunday')} >S</Button>
+                                    <Button className={selectedDays['Monday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Monday')} >M</Button>
+                                    <Button className={selectedDays['Tuesday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Tuesday')}>T</Button>
+                                    <Button className={selectedDays['Wednesday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Wednesday')} >W</Button>
+                                    <Button className={selectedDays['Thursday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Thursday')} >T</Button>
+                                    <Button className={selectedDays['Friday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Friday')} >F</Button>
+                                    <Button className={selectedDays['Saturday'] ? "selected-day-buttons-chart" : "day-buttons-chart"} onClick={() => updateDays('Saturday')} >S</Button>
                                 </div>
                             ) : ''}
 
