@@ -12,20 +12,23 @@ import { DeleteOutlined, DeleteTwoTone } from '@ant-design/icons';
 import { getJob, putJob, deleteJob } from '../../../services/jobScheduleService';
 import moment from 'moment';
 import { dispatch } from 'd3';
-import { showNotification } from '../../../duck/actions/commonActions';
+import { showNotification,showLoader,hideLoader } from '../../../duck/actions/commonActions';
+import { useDispatch } from 'react-redux';
 
 // 
 
 export default function scheduledAlertsTable(props) {
 
     const [data, setData] = useState([])
+    const dispatch = useDispatch()
 
     useEffect(() => {
         getJobs()
     }, []
     );
 
-    const getJobs = () => {
+    const getJobs = async () => {
+        dispatch(showLoader())
         let login_response = JSON.parse(localStorage.getItem('login_details'));
 
         let request_headers = {
@@ -34,12 +37,24 @@ export default function scheduledAlertsTable(props) {
             'resource-name': 'DASHBOARD',
         };
         let req = { app_type: props.app_type };
-        getJob(req, request_headers).then((res) => {
-            setData(res['Data']);
-            if (res.Status == 401) {
+        let get_response = await getJob(req, request_headers)
+        console.log(get_response)
+        try {
+            if (get_response.Data) {
+                setData(get_response.Data)
+            }
+
+            if (get_response.Status == 401) {
                 dispatch(showNotification('error', 'Session TimeOut Login again'))
             }
-        });
+
+            dispatch(hideLoader())
+        }
+        catch(error) {
+            dispatch(showNotification('error', error))
+            dispatch(hideLoader())
+        }
+
     };
 
     const DeleteJob = async (jobId) => {

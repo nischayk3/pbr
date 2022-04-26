@@ -228,14 +228,14 @@ const alertEvaluation = (props) => {
                 <Button className='clear-schedule'>Clear</Button></div> : <></>}>
                 <TabPane tab='Schedule evaluation' key="schedule_evaluation">
                     <div style={{ margin: '24px' }}>
-                        <div style={{ width: '200px' }}>
-                            <ClockCircleOutlined />  <DatePicker onChange={onChangeStart} bordered={false} />
-                            <Divider />
+                        <div style={{ width: '300px' }}>
+                            <ClockCircleOutlined />  <DatePicker style={{ width: '260px' }} onChange={onChangeStart} bordered={false} />
+                            <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                         </div>
                         <div style={{ marginTop: '40px' }}>
                             <Row gutter={[16, 24]}>
                                 <Col className='gutter-row' span={4}>
-                                    <div >
+                                    <div style={{ width: '187px' }} >
                                         <SelectField
                                             placeholder='Schedule'
                                             onChangeSelect={(e) => handleSelectScheduleChange(e)}
@@ -246,7 +246,7 @@ const alertEvaluation = (props) => {
                                 </Col>
                                 <Col className='gutter-row' span={4}>
                                     <div >
-                                        <TimePicker onChange={onChangeTime} />
+                                        <TimePicker style={{ width: '187px', marginLeft: '35px' }} onChange={onChangeTime} />
                                     </div>
                                 </Col>
                             </Row>
@@ -366,8 +366,8 @@ const alertEvaluation = (props) => {
                                 [variant_username]</p>
 
                             <p className="email-attach">Select to Attach</p>
-                            <div className="attachment-report"> <span><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text"> Report_name.pdf</span> </span></div>
-                            <div className="attachment-report"> <span><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text"> Data_table</span> </span></div>
+                            <div className="attachment-report-chart"> <span><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text"> Report_name.pdf</span> </span></div>
+                            <div className="attachment-report-chart"> <span><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text"> Data_table</span> </span></div>
 
 
                             {/* {emailList.length > 0 && (
@@ -487,10 +487,8 @@ const alertEvaluation = (props) => {
                 <div>
                     Do you want to notify with same schedule or different ?
                 </div>
-                <div>
                 <Button className="custom-primary-btn">Different</Button>
                 <Button className="custom-primary-btn">Same</Button>
-                </div>
 
             </Modal>
         </div>

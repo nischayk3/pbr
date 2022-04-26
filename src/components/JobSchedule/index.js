@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import './modal.scss';
 //antd imports
 import { Modal, Tabs } from 'antd';
-import { DesktopOutlined, ArrowRightOutlined, ControlOutlined } from '@ant-design/icons';
+import { DesktopOutlined, ArrowRightOutlined, ControlOutlined, CloseOutlined } from '@ant-design/icons';
 //components
 //services
 //react-redux
@@ -57,7 +57,7 @@ const JobSchedule = (props) => {
     }
 
     return (
-        <Modal title={props.app_type !== "REPORT" ? "Schedule alert" : "Notify Report"} className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300} >
+        <Modal title={props.app_type !== "REPORT" ? "Schedule alert" : "Notify Report"} className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300}  >
             <Tabs tabPosition='left' className='schedule-menu' activeKey={activeTab} onChange={changeActiveTab}>
                 <TabPane tab={
                     <span style={{ color: activeTab == '1' ? 'white' : 'grey' }}>
@@ -78,7 +78,7 @@ const JobSchedule = (props) => {
                     <div className='schedule-alerts'>
                         <div className='alerts-text'>
                             <p className='alert-title'>Scheduled alerts</p>
-                            <span className='alert-arrow'><a>View More Details</a><ArrowRightOutlined style={{ marginLeft: '10px', color: '#093185' }} /></span>
+                            <span className='alert-arrow'><a className="view-link">View More Details</a><ArrowRightOutlined style={{ marginLeft: '10px', color: '#093185' }} /></span>
                         </div>
                         <div>
                             <AlertTable appType={props.app_type} />
