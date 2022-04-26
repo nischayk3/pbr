@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table } from 'antd';
 import SelectField from '../../SelectField/SelectField';
 import InputField from '../../InputField/InputField';
-import './reportNotify.scss';
+import './chartNotify.scss';
 import { useDispatch } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../duck/actions/commonActions';
 import { putJob } from '../../../services/jobScheduleService';
@@ -26,7 +26,7 @@ const scheduleList = ['Repeat Once', 'Daily', 'Weekly', 'Monthly']
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
 
 
-const ReportNotify = (props) => {
+const ChartNotify = (props) => {
     const [selectedAlert, setSelectedAlert] = useState('');
     const [selectedSchedule, setSelectedSchedule] = useState('Repeat Once');
     const [selectedEmailSchedule, setSelectedEmailSchedule] = useState('');
@@ -187,7 +187,7 @@ const ReportNotify = (props) => {
     };
 
     return (
-        <div className="report-notify">
+        <div className="chart_notify-notify">
             <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={<div className="tab-btns" >
                 <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
                 <Button className='clear-schedule'>Clear</Button>
@@ -207,20 +207,39 @@ const ReportNotify = (props) => {
                         </Option>
                     </Select>
                     <hr style={{ borderTop: '1px solid #dbdbdb' }} />
-                    <span>
-                        <p className="email-subject">Subject <span className="email-sub">Update For  </span>  </p>
-                    </span>
-                    <hr style={{ borderTop: '1px solid #dbdbdb' }} />
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr' }}>
+                        <span>
+                            <p className="email-subject">Subject <span className="email-sub">Update For  </span>  </p>
+                            <hr style={{ borderTop: '1px solid #dbdbdb' }} />
+                        </span>
+                        <div style={{ width: '200px', marginLeft: '72%',marginTop:'30px' }}
+                        >
+                            <SelectField
+                                placeholder='Pick the type of alert'
+                                onChangeSelect={(e) => handleSelectEmailScheduleChange(e)}
+                                selectList={alertList}
+                                value={selectedSchedule}
+                            />
+                        </div>
+                    </div>
+                   
                     <br />
                     <p className="email-content"> Hey,<br /><br />
 
-                        This is to inform you of the recept update to [report variant name]. Check the attachment for details.<br /><br />
-                        Visit <a>www.cpv-mareana.com/alert-dashboard</a> to know more.<br />
+                        This is to inform you of the recept chart.
+                        Visit <a>www.cpv-mareana.com/alert-dashboard</a> to know more.<br /><br />
+                        <Table style={{ width: '98%' }} />
                         <br /><br />
                         Regards,<br />
-                        [variant_username]</p>
+                        [variant_username]
+                    </p>
 
-                    <div className="attachment-report-report"> <span><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text"> Report_name.pdf</span></span></div>
+                        <p className="email-attach-chart">Select to Attach</p>
+
+                        <div style={{display:'flex',flexDirection:'row',justifyContent:'end',gap:'10px'}}>
+                            <div className="attachment-report-chart"><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text-chart"> Report_name.pdf</span> </div>
+                            <div className="attachment-report-chart"><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text-chart"> Data_table</span></div>
+                        </div>
                     {/* {emailList.length > 0 && ( */}
                     {/* )} */}
                     <Divider />
@@ -323,4 +342,4 @@ const ReportNotify = (props) => {
     )
 }
 
-export default ReportNotify;
+export default ChartNotify;
