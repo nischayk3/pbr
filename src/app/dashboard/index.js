@@ -21,7 +21,7 @@ import ViewPage from './chartPersonal/components/viewPage/ViewPage';
 import UserRolesAndAccess from '../../pages/UserRolesAndAccess/UserRolesAndAccess';
 import UserConfiguration from '../../pages/UserRolesAndAccess/UserConfiguration/UserConfiguration';
 import RolesAndAccess from '../../pages/UserRolesAndAccess/RolesAndAccess/RolesAndAccess';
-import ScreenAccess from '../../pages/UserRolesAndAccess/ScreenAccess/ScreenAccess';
+import ScreenControls from '../../pages/UserRolesAndAccess/ScreenControls/ScreenControls';
 
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
@@ -154,7 +154,7 @@ const Dashboard = () => {
 								<Route key='userRolesAndAccess' path={`${match.url}/user-roles-and-access`} exact component={UserRolesAndAccess} />
 								<Route key='user-configuration' path={`${match.url}/user-roles-and-access/user-configuration`} component={UserConfiguration} />
 								<Route key='roles-and-access' path={`${match.url}/user-roles-and-access/roles-and-access`} component={RolesAndAccess} />
-								<Route key='screen-access' path={`${match.url}/user-roles-and-access/screen-access`} component={ScreenAccess} />
+								<Route key='screen-controls' path={`${match.url}/user-roles-and-access/screen-controls`} component={ScreenControls} />
 							</Switch>
 						</SuspenseWrapper>
 					</Content>

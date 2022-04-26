@@ -4,6 +4,9 @@ import { Row, Col } from 'antd'
 import BreadCrumbWrapper from '../../components/BreadCrumbWrapper'
 import ScreenHeader from '../../components/ScreenHeader/screenHeader';
 import headerImage from '../../assets/images/ChartBanner.svg';
+import ScreenAccessImage from '../../assets/images/Screen_Controls.svg'
+import RolesAndAccessImage from '../../assets/images/Roles_And_Access.svg'
+import UserConfigurationImage from '../../assets/images/User_Configuration.svg'
 import './UserRolesAndAccess.scss';
 
 const UserRolesAndAccess = () => {
@@ -26,18 +29,21 @@ const UserRolesAndAccess = () => {
             <Row className='create-new-row'>
                 <Col span={4} onClick={() => redirectTo('user-configuration')}>
                     <div className='create-new'>
-                        <p>User Configuration</p>
+                        <img src={UserConfigurationImage} alt="UserConfiguration" width="98%" />
                     </div>
+                    <p>User Configuration</p>
                 </Col>
                 <Col span={4} onClick={() => redirectTo('roles-and-access')}>
                     <div className='create-new'>
-                        <p>Roles And Access</p>
+                        <img src={RolesAndAccessImage} alt="RolesAndAccess" width="98%" />
                     </div>
+                    <p>Roles And Access</p>
                 </Col>
-                <Col span={4} onClick={() => redirectTo('screen-access')}>
+                <Col span={4} onClick={() => redirectTo('screen-controls')}>
                     <div className='create-new'>
-                        <p>Screen Access</p>
+                        <img src={ScreenAccessImage} alt="ScreenAccessControls" width="98%" />
                     </div>
+                    <p>Screen Controls</p>
                 </Col>
             </Row>
 

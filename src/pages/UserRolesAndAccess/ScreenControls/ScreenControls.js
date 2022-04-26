@@ -7,11 +7,11 @@ import GoBack from '../../../components/GoBack/GoBack';
 const { Panel } = Collapse;
 const { Option } = Select;
 
-const ScreenAccess = () => {
+const ScreenControls = () => {
     return (
         <div className='custom-wrapper'>
             <BreadCrumbWrapper />
-            <GoBack currentPage="Screen access" />
+            <GoBack currentPage="Screen controls" />
 
             <Collapse defaultActiveKey={['1']} expandIconPosition="right">
                 <Panel header="User" key="1">
@@ -31,4 +31,4 @@ const ScreenAccess = () => {
     )
 }
 
-export default ScreenAccess
+export default ScreenControls
