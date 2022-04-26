@@ -66,7 +66,7 @@ const JobSchedule = (props) => {
                     </span>
                 }
                     key="1">
-                    {props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} /> :
+                    {props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} id={props.id}  /> :
                         <AlertEvaluation appType={props.app_type} id={props.id} />
                     }
                 </TabPane>

@@ -119,7 +119,7 @@ const ChartNotify = (props) => {
         email_config['subject'] = `Update For Report`
         email_config['scheduled_start'] = scheduleEmailStartDate
         email_config['scheduled_time'] = scheduleEmailTime
-        email_config["frequency_unit"] = selectedSchedule
+        email_config["frequency_unit"] = selectedSchedule=='Repeat Once' ? 'Once' : selectedSchedule
         email_config["email_list"] = emailList
         email_config["selected_alert"] = selectedAlert
 
@@ -137,7 +137,7 @@ const ChartNotify = (props) => {
 
         req['email_config'] = email_config
         req['frequency'] = 1
-        req["frequency_unit"] = selectedSchedule,
+        req["frequency_unit"] = selectedSchedule=='Repeat Once' ? 'Once' : selectedSchedule
             req["job_status"] = "NEW",
             req["job_type"] = 'email',
             req['notify_emails'] = emailList,

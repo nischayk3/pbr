@@ -155,25 +155,14 @@ const alertEvaluation = (props) => {
         req['app_type'] = props.appType
         req['app_id'] = ''
 
-        let email_config = {}
-
-        email_config['subject'] = `Update For Report`
-        email_config['scheduled_start'] = scheduleEmailStartDate
-        email_config['scheduled_time'] = scheduleEmailTime
-        email_config["frequency_unit"] = selectedEmailSchedule,
-            email_config["email_list"] = emailList,
-
-            email_config["frequency_unit"] = selectedEmailSchedule,
-            email_config["selected_days"] = emailList,
-
-            req['email_config'] = email_config
+        req['email_config'] = {}
         req['frequency'] = 1
-        req["frequency_unit"] = selectedSchedule,
-            req["job_status"] = "scheduled",
-            req["job_type"] = activeTab,
-            req['notify_emails'] = emailList,
-            req["scheduled_time"] = scheduleTime,
-            req["scheduled_start"] = scheduleStartDate
+        req["frequency_unit"] = selectedSchedule=='Repeat Once' ? 'Once' : selectedSchedule
+        req["job_status"] = "scheduled",
+        req["job_type"] = activeTab,
+        req['notify_emails'] = emailList,
+        req["scheduled_time"] = scheduleTime,
+        req["scheduled_start"] = scheduleStartDate
         req["scheduled_end"] = "2030/12/12"
 
         let res = await putJob(req, request_headers)
@@ -328,10 +317,10 @@ const alertEvaluation = (props) => {
                     <ChartNotify appType={props.appType} />
                 </TabPane>
             </Tabs>
-            <Modal visible={modal} footer={false} onCancel={handleModalClose} width="300px" >
+            <Modal visible={modal} footer={false} onCancel={handleModalClose} width="300px"  style={{marginTop:'250px'}}>
                 <div>
                     <div>
-                        <ExclamationCircleTwoTone twoToneColor="orange" style={{ marginRight: '10px' }} />  Notify
+                        <ExclamationCircleTwoTone twoToneColor="orange" style={{ marginRight: '20px',fontSize:'18px' }} />  Notify
                     </div>
                     <div style={{ marginTop: '10px' }}>
                         Do you want to notify with same schedule or different ?
