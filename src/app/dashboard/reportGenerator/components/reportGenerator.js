@@ -112,14 +112,14 @@ function ReportGenerator() {
     function onChange(checkedValues, i) {
         update_object(checkedValues, i)
     }
-    
+
     const menu = (
         <Menu>
-          <Menu.Item >
-            Save As
-          </Menu.Item>
+            <Menu.Item >
+                Save As
+            </Menu.Item>
         </Menu>
-      );
+    );
 
     const handleCancel = () => {
         setAlertVisible(false)
@@ -266,7 +266,7 @@ function ReportGenerator() {
     }
 
     const unloadTest = (ReportData) => {
-
+        console.log(ReportData)
         dispatch(showLoader())
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setChartLayout(ReportData.charts_layout ? createChartRecord(ReportData.charts_layout) : {})
@@ -421,6 +421,8 @@ function ReportGenerator() {
         }
     }
 
+    console.log(reportId)
+
     return (
 
         <div className='custom-wrapper'>
@@ -443,8 +445,8 @@ function ReportGenerator() {
                         <FileTextOutlined />   Generate Report
                     </Button>
                     <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
-                  <EllipsisOutlined style={{transform:'rotate(-90deg)',fontSize:'20px',marginLeft:'5px'}} />
-                </Dropdown>
+                        <EllipsisOutlined style={{ transform: 'rotate(-90deg)', fontSize: '20px', marginLeft: '5px' }} />
+                    </Dropdown>
                 </div>
             </div>
             <div className='custom-content-layout'>

@@ -7,7 +7,7 @@
  */
 
 import React, { useState } from 'react';
-import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table } from 'antd';
+import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table,Avatar } from 'antd';
 import SelectField from '../../SelectField/SelectField';
 import InputField from '../../InputField/InputField';
 import './reportNotify.scss';
@@ -24,6 +24,7 @@ const { Option } = Select
 const alertList = ['Limits', 'Rules', 'Threshold']
 const scheduleList = ['Repeat Once', 'Daily', 'Weekly', 'Monthly']
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
+
 
 
 const ReportNotify = (props) => {
@@ -117,6 +118,7 @@ const ReportNotify = (props) => {
         email_config['scheduled_time'] = scheduleEmailTime
         email_config["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule,
             email_config["email_list"] = emailList
+            email_config["attachment"] = ''
 
         if (selectedSchedule == 'Weekly') {
             email_config['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);

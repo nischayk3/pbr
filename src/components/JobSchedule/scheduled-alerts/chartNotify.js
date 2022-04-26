@@ -7,7 +7,7 @@
  */
 
 import React, { useState } from 'react';
-import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table } from 'antd';
+import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table, Avatar } from 'antd';
 import SelectField from '../../SelectField/SelectField';
 import InputField from '../../InputField/InputField';
 import './chartNotify.scss';
@@ -24,6 +24,73 @@ const { Option } = Select
 const alertList = ['Limits', 'Rules', 'Threshold']
 const scheduleList = ['Repeat Once', 'Daily', 'Weekly', 'Monthly']
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
+
+const tableColumns = [ 
+    {
+        title: 'Chart Name',
+        dataIndex: 'chart',
+        align : 'center',
+        render : (text,rcrd) => {
+            return {
+                children: <div className="email-contents">{text}</div>,
+            }
+        }
+    },
+    {
+        title: 'Event Name',
+        dataIndex: 'event',
+        align : 'center',
+
+        render : (text,rcrd) => {
+            return {
+                children: <div className="email-contents">{text}</div>,
+            }
+        }
+    },
+    {
+        title: 'Parameter ID',
+        dataIndex: 'id',
+        align : 'center',
+
+        render : (text,rcrd) => {
+            return {
+                children: <div className="email-contents">{text}</div>,
+            }
+        }
+    },
+    {
+        title: 'Date & time',
+        dataIndex: 'date',
+        align : 'center',
+
+        render : (text,rcrd) => {
+            return {
+                children: <div className="email-contents">{text}</div>,
+            }
+        }
+    },
+    {
+        title: 'Creator',
+        dataIndex: 'creator',
+        align : 'center',
+
+        render : (text,rcrd) => {
+            return {
+                children: <div className="email-contents"><Avatar style= {{backgroundColor: '#87d068'}}>S</Avatar> {text}</div>,
+            }
+        }
+    }
+]
+const data = [
+    {
+        chart :'Sample Chart',
+        event: 'Nelson Rule 1',
+        id : 'ID00001288',
+        date :' 11/4/2022 21:00',
+        creator:'Sharus'
+    }
+]
+
 
 
 const ChartNotify = (props) => {
@@ -122,6 +189,7 @@ const ChartNotify = (props) => {
         email_config["frequency_unit"] = selectedSchedule=='Repeat Once' ? 'Once' : selectedSchedule
         email_config["email_list"] = emailList
         email_config["selected_alert"] = selectedAlert
+        email_config["attachment"] = ''
 
         if (selectedSchedule == 'Weekly') {
             email_config['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
@@ -233,7 +301,7 @@ const ChartNotify = (props) => {
 
                         This is to inform you of the recept chart.
                         Visit <a>www.cpv-mareana.com/alert-dashboard</a> to know more.<br /><br />
-                        <Table style={{ width: '98%' }} />
+                        <Table style={{ width: '98%' }} dataSource={data} columns={tableColumns} />
                         <br /><br />
                         Regards,<br />
                         [variant_username]

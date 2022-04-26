@@ -39,6 +39,7 @@ const alertEvaluation = (props) => {
     const [scheduleTime, setScheduleTime] = useState('')
     const [scheduleEndDate, setScheduleEndDate] = useState('')
     const [modal, setModal] = useState(false)
+    const [isSame, setIsSame] = useState(false)
     const [selectedDays, setSelectedDays] = useState({
         Sunday: false,
         Monday: false,
@@ -66,7 +67,7 @@ const alertEvaluation = (props) => {
 
 
     useEffect(() => {
-        if (activeTab == 'email') {
+        if (activeTab == 'email' && scheduleStartDate.length>0) {
             setModal(true)
         }
 
@@ -150,7 +151,7 @@ const alertEvaluation = (props) => {
 
 
         req['app_data'] = props.appType
-        req['dag_id'] = ''
+        req['dag_id'] = ' '
         req['created_by'] = localStorage.getItem('username') ? localStorage.getItem('username') : ''
         req['app_type'] = props.appType
         req['app_id'] = ''
@@ -211,6 +212,7 @@ const alertEvaluation = (props) => {
         setEmailList(selectedItems);
     };
 
+    console.log(scheduleStartDate)
     return (
         <div className="chart-notify">
             <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={activeTab == 'schedule_evaluation' ? <div>  <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule Evaluation</Button>
