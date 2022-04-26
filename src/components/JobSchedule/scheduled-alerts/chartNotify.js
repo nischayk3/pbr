@@ -116,7 +116,7 @@ const ChartNotify = (props) => {
         req['app_id'] = props.id ? props.id : 'C222'
 
         let email_config = {}
-        email_config['subject'] = `Update For Report`
+        email_config['subject'] = `Update For ${props.id}`
         email_config['scheduled_start'] = scheduleEmailStartDate
         email_config['scheduled_time'] = scheduleEmailTime
         email_config["frequency_unit"] = selectedSchedule=='Repeat Once' ? 'Once' : selectedSchedule
@@ -201,7 +201,7 @@ const ChartNotify = (props) => {
                     <Select
                         mode="tags"
                         style={{ width: '90%', marginTop: '10px' }}
-                        placeholder={<span className="email-recipients">Recipients      (Optional)</span>}
+                        placeholder={<><span className="email-recipients">Recipients</span>   <span className="email-recipients-chart" >(Optional)</span></>}
                         optionLabelProp="label"
                         value={emailList}
                         bordered={false}
@@ -214,7 +214,7 @@ const ChartNotify = (props) => {
                     <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr' }}>
                         <span>
-                            <p className="email-subject">Subject <span className="email-sub">Update For  </span>  </p>
+                            <p className="email-subject">Subject <span className="email-sub">Update For {props.id}</span>  </p>
                             <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                         </span>
                         <div style={{ width: '200px', marginLeft: '72%', marginTop: '30px' }}
@@ -241,9 +241,9 @@ const ChartNotify = (props) => {
 
                     <p className="email-attach-chart">Select to Attach</p>
 
-                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', gap: '10px' }}>
-                        <div className="attachment-report-chart"><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text-chart"> Report_name.pdf</span> </div>
-                        <div className="attachment-report-chart"><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text-chart"> Data_table</span></div>
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', gap: '10px',marginRight:'20px' }}>
+                        <div className="attachment-report-chart"><span><PaperClipOutlined style={{ marginLeft: '10px' }} /></span><span className="attachment-report-text-chart"> Report_name.pdf</span> </div>
+                        <div className="attachment-report-chart"><span><PaperClipOutlined style={{ marginLeft: '10px' }} /></span><span className="attachment-report-text-chart"> Data_table</span></div>
                     </div>
                     {/* {emailList.length > 0 && ( */}
                     {/* )} */}
