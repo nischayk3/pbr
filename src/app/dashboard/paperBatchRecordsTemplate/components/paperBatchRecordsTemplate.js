@@ -54,6 +54,86 @@ function paperBatchRecordsTemplate() {
     const [boundingBoxClicked, setBoundingBoxClicked] = useState(false);
     const [DraggerActive, setDraggerActive] = useState(true);
     const [showInputAnchor, setShowInputAnchor] = useState(false);
+    const [AREAS_MAP, setAREAS_MAP] = useState({
+        name: 'my-map',
+        areas: [
+            {
+                snippetID: '1',
+                areaValue: 'Document ID',
+                shape: 'rect',
+                coords: [110, 55, 200, 75],
+                preFillColor: 'transparent',
+                fillColor: 'transparent',
+                strokeColor: 'red',
+            },
+            {
+                snippetID: '2',
+                areaValue: 'MBR-0001',
+                shape: 'rect',
+                coords: [285, 100, 380, 65],
+                preFillColor: 'transparent',
+                fillColor: 'transparent',
+                strokeColor: 'red',
+            },
+            {
+                snippetID: '3',
+                areaValue: 'Drug Substance Name',
+                shape: 'rect',
+                coords: [152, 106, 380, 131],
+                preFillColor: 'transparent',
+                fillColor: 'transparent',
+                strokeColor: 'red',
+            },
+        ],
+    });
+
+    useEffect(()=>{
+        console.log("rightPanelCollapsed",rightPanelCollapsed)
+        console.log("leftPanelCollapsed",leftPanelCollapsed)
+        if((leftPanelCollapsed == false && !rightPanelCollapsed)||(leftPanelCollapsed == true && rightPanelCollapsed) ){
+            console.log("closed")
+            console.log("AREAS_MAP",AREAS_MAP)
+            let obj = {...AREAS_MAP}
+            obj.areas.forEach((item,key)=>{
+                if(key ===0){
+                    console.log("iem",item)
+                    item.coords = [152, 100, 276, 65]
+                } 
+                else if(key ===1){
+                    console.log("iem",item)
+                    item.coords = [285, 100, 380, 65]
+                }
+                else if(key ===2){
+                    console.log("iem",item)
+                    item.coords = [152, 106, 380, 131]
+                } 
+            })
+            console.log("obj",obj)
+            // AREAS_MAP = obj
+            setAREAS_MAP(obj)
+        }
+        else{
+            console.log("open")
+            let obj =  {...AREAS_MAP}
+            obj.areas.forEach((item,key)=>{
+                if(key ===0){
+                    item.coords = [110, 55, 200, 75]
+                } 
+                else if(key ===1){
+                    console.log("iem",item)
+                    item.coords = [210, 55, 300, 75]
+                }
+                else if(key ===2){
+                    console.log("iem",item)
+                    item.coords = [152, 106, 380, 131]
+                } 
+            })
+            console.log("obj",obj)
+            // AREAS_MAP = obj
+            setAREAS_MAP(obj)
+        }
+
+    },[leftPanelCollapsed,rightPanelCollapsed])
 
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
@@ -92,38 +172,40 @@ function paperBatchRecordsTemplate() {
         }
     };
 
-    var AREAS_MAP = {
-        name: 'my-map',
-        areas: [
-            {
-                snippetID: '1',
-                areaValue: 'Document ID',
-                shape: 'rect',
-                coords: [120, 90, 245, 65],
-                preFillColor: 'transparent',
-                fillColor: 'transparent',
-                strokeColor: 'red',
-            },
-            {
-                snippetID: '2',
-                areaValue: 'MBR-0001',
-                shape: 'rect',
-                coords: [250, 90, 340, 65],
-                preFillColor: 'transparent',
-                fillColor: 'transparent',
-                strokeColor: 'red',
-            },
-            {
-                snippetID: '3',
-                areaValue: 'Drug Substance Name',
-                shape: 'rect',
-                coords: [120, 90, 350, 120],
-                preFillColor: 'transparent',
-                fillColor: 'transparent',
-                strokeColor: 'red',
-            },
-        ],
-    };
+    // let AREAS_MAP = {
+    //     name: 'my-map',
+    //     areas: [
+    //         {
+    //             snippetID: '1',
+    //             areaValue: 'Document ID',
+    //             shape: 'rect',
+    //             coords: [110, 55, 200, 75],
+    //             preFillColor: 'transparent',
+    //             fillColor: 'transparent',
+    //             strokeColor: 'red',
+    //         },
+    //         {
+    //             snippetID: '2',
+    //             areaValue: 'MBR-0001',
+    //             shape: 'rect',
+    //             coords: [285, 100, 380, 65],
+    //             preFillColor: 'transparent',
+    //             fillColor: 'transparent',
+    //             strokeColor: 'red',
+    //         },
+    //         {
+    //             snippetID: '3',
+    //             areaValue: 'Drug Substance Name',
+    //             shape: 'rect',
+    //             coords: [152, 106, 380, 131],
+    //             preFillColor: 'transparent',
+    //             fillColor: 'transparent',
+    //             strokeColor: 'red',
+    //         },
+    //     ],
+    // };
+    
+    
 
     const load = () => {
         //alert('hello');
