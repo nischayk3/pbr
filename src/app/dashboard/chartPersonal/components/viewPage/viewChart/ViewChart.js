@@ -322,7 +322,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     <div className="view-container">
       <Row>
         <Col ref={ref} span={24} className="search-table">
-          <label>View ID</label>
+          <p>View ID</p>
           <Search
             placeholder="Search"
             onFocus={onFocus}
@@ -354,7 +354,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
         <Col span={19}>
           <Row gutter={16}>
             <Col span={8}>
-              <p>View Name</p>
+              <label>View name</label>
             </Col>
             <Col span={14}>
               <p>: {viewData.viewName}</p>
@@ -403,7 +403,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
           />
         </Col>
         <Col span={13} className="unapproved">
-          <label>Show Unapproved data</label>&emsp;&nbsp;
+          <label>Show unapproved data</label>&emsp;&nbsp;
           <Switch
             type="primary"
             size="small"

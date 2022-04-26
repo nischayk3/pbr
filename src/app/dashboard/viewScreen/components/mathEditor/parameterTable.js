@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Table, Empty, Radio, Select, Tooltip, Tag, Checkbox } from 'antd';
+import { Table, Empty, Radio, Select, Tag, Checkbox } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import {
 	createSummaryData,
@@ -29,7 +29,9 @@ const ParameterTable = props => {
 	const functionName = useSelector(
 		state => state.viewCreationReducer.functionName
 	);
-
+	const summaryTableData = useSelector(
+		state => state.viewCreationReducer.summaryTableData
+	);
 	const paramName = useSelector(
 		state => state.viewCreationReducer.selectedParamType
 	);
@@ -38,7 +40,7 @@ const ParameterTable = props => {
 	const [selectedRow, setSelectedRow] = useState([]);
 	const [aggregationValue, setAggregationValue] = useState('');
 	const [tableData, setTableData] = useState([]);
-	const [tableColumn, setTableColumn] = useState([]);
+
 	const [selectedPrimaryData, setSelectedPrimaryData] = useState([]);
 	const [selectedParamType, setSelectedParamType] = useState('');
 	//const [count, setCount] = useState('1');
@@ -50,93 +52,123 @@ const ParameterTable = props => {
 		rowDisable,
 		variableCreate,
 		parentBatches,
+		viewSummaryBatch,
+		setViewSummaryBatch,
 		ischeckBox,
 		viewJson,
 		setViewJson,
 		varClick,
+		setVarClick,
 	} = props;
-	const dispatch = useDispatch();
-	const tableColumns = [
-		{
-			title: 'Parameter',
-			key: 'parameter_name',
-			dataIndex: 'parameter_name',
-			width: 150,
-			fixed: 'left',
-			// render: (param, record, index) => (
-			// 	<Tooltip title={param}>
-			// 		<Tag
-			// 			color='geekblue'
-			// 			className='parameter-tag'
-			// 			// onClick={() => {
-			// 			// 	functionId.current = record.id;
-			// 			// 	functionPassHandler(record, index);
-			// 			// }}
-			// 		>
-			// 			{param}
-			// 		</Tag>
-			// 	</Tooltip>
-			// ),
-		},
-		{
-			title: 'Primary',
-			key: 'primary',
-			dataIndex: 'primary',
-			width: 150,
-			fixed: 'left',
-			render: (text, record) => {
-				return (
-					<Radio
-						checked={paramType === record.parameter_name}
-						onChange={e =>
-							onRadioChange({
-								checked: e.target.checked,
-								type: record.parameter_name,
-								primary: 'primary',
-								record: record,
-							})
-						}></Radio>
-				);
-			},
-		},
-		{
-			title: 'Aggregation',
-			key: 'aggregation',
-			dataIndex: 'aggregation',
-			width: 150,
-			fixed: 'left',
 
-			render: (text, record, index) => {
-				return (
-					<Select
-						// disabled={rowDisable}
-						style={{ width: '100px' }}
-						placeholder='Aggregation'
-						onChange={(e, value) => {
-							handleAggregationChange(record, value, index);
-						}}
-						//value={aggregationValue}
-					>
-						<Option key='1' value='Min'>
-							Min
-						</Option>
-						<Option key='2' value='Mean'>
-							Mean
-						</Option>
-						<Option key='3' value='Max'>
-							Max
-						</Option>
-						<Option key='4' value='First'>
-							First
-						</Option>
-						<Option key='5' value='last'>
-							last
-						</Option>
-					</Select>
-				);
-			},
-		},
-	];
+	console.log('param propssss', props);
+	const dispatch = useDispatch();
+
+	let columns = [];
+	const data =
+		tableData !== undefined && tableData.length > 0
+			? Object.keys(tableData[0])
+			: [];
+	const uniqueArr = (value, index, self) => {
+		return self.indexOf(value) === index;
+	};
+
+	const paramColumn = data && data.filter(uniqueArr);
+
+	paramColumn.map((item, i) => {
+		if (item === 'parameter_name') {
+			columns.push({
+				title: item.toUpperCase().replace('_', ' '),
+				dataIndex: item,
+				key: `${item}-${i}`,
+				width: 150,
+				fixed: 'left',
+			});
+		} else if (item === 'primary') {
+			columns.push({
+				title: item.toUpperCase().replace('_', ' '),
+				dataIndex: item,
+				key: `${item}-${i}`,
+				width: 80,
+				fixed: 'left',
+				render: (text, record) => {
+					return (
+						<Radio
+							checked={paramType === record.parameter_name}
+							onChange={e =>
+								onRadioChange({
+									checked: e.target.checked ? e.target.checked : false,
+									type: record.parameter_name,
+									primary: 'primary',
+									record: record,
+								})
+							}></Radio>
+					);
+				},
+			});
+		} else if (item === 'aggregation') {
+			columns.push({
+				title: item.toUpperCase().replace('_', ' '),
+				dataIndex: item,
+				key: `${item}-${i}`,
+				width: 150,
+				fixed: 'left',
+				render: (text, record, index) => {
+					return (
+						<Select
+							// disabled={rowDisable}
+							style={{ width: '100px' }}
+							placeholder='Aggregation'
+							onChange={(e, value) => {
+								handleAggregationChange(record, value, index);
+							}}
+							//	value={aggregationValue}
+						>
+							<Option key='1' value='Min'>
+								Min
+							</Option>
+							<Option key='2' value='Mean'>
+								Mean
+							</Option>
+							<Option key='3' value='Max'>
+								Max
+							</Option>
+							<Option key='4' value='First'>
+								First
+							</Option>
+							<Option key='5' value='last'>
+								last
+							</Option>
+						</Select>
+					);
+				},
+			});
+		} else if (
+			item === 'id' ||
+			item === 'key' ||
+			item === 'sourceType' ||
+			item === 'coverage'
+		) {
+			console.log('itemmmmmm');
+		} else {
+			columns.push({
+				title: item,
+				dataIndex: item,
+				key: `${item}-${i}`,
+				width: 100,
+				render: value =>
+					value ? (
+						<span className='batchChecked'>
+							<CheckOutlined />
+						</span>
+					) : (
+						<span className='batchClosed'>
+							<CloseOutlined />
+						</span>
+					),
+			});
+		}
+	});
 
 	useEffect(() => {
 		if (ischeckBox) {
@@ -152,25 +184,26 @@ const ParameterTable = props => {
 		}
 	}, [ischeckBox]);
 
-	useEffect(() => {
-		onChangeColumnsHandler();
-	}, [batchData]);
+	// useEffect(() => {
+	// 	onChangeColumnsHandler();
+	// }, [batchData]);
 
 	useEffect(() => {
-		if (selectedTableData) {
-			setTableData(selectedTableData);
+		if (paramReducer.selectedParamData) {
+			setTableData([...selectedTableData]);
 		}
-	}, [selectedTableData]);
+	}, [paramReducer]);
 
 	useEffect(() => {
 		if (isLoadView) {
-			onChangeColumnsHandler();
-			setTableData(selectedTableData);
+			//	onChangeColumnsHandler();
+			setTableData([...selectedTableData]);
 		}
 	}, [isLoadView]);
 
 	useEffect(() => {
 		if (varClick) {
+			console.log('var clickkkkkkkk', varClick);
 			setSelectedRowKeys([]);
 			setSelectedRow([]);
 		}
@@ -194,7 +227,7 @@ const ParameterTable = props => {
 			});
 
 			var1[`${'V' + count}`] = variable;
-			console.log('viewJSOnnnnnnnnnnn', viewJson);
+
 			const viewDataJson = [...viewJson];
 
 			viewDataJson.forEach(element => {
@@ -212,20 +245,24 @@ const ParameterTable = props => {
 			counter++;
 			let arr = [];
 			let fun = {};
-
 			let primarySelectedData = { ...selectedPrimaryData };
-			let functionTable = [...parentBatches];
+			let functionTable = [...viewSummaryBatch];
 			functionTable.forEach(item => {
 				let obj = {};
-				obj['year'] = item.batch_year;
-				obj['batch'] = item.batch;
-				Object.entries(primarySelectedData).forEach(([key, value], index) => {
+				Object.entries(primarySelectedData).forEach(([key, value]) => {
 					if (key === item.batch) {
 						obj[functionName] = value;
 					}
 				});
 				arr.push(obj);
 			});
+
+			const arr3 = functionTable.map((item, i) =>
+				Object.assign({}, item, arr[i])
+			);
+
+			setViewSummaryBatch(arr3);
+			dispatch(createSummaryData(arr3));
 
 			primarySelectedData.parameter_name = functionName;
 			fun['name'] = functionName;
@@ -235,7 +272,7 @@ const ParameterTable = props => {
 			varData.forEach(element => {
 				element.functions = fun;
 			});
-			dispatch(createSummaryData(arr));
+
 			dispatch(viewFunctionMap(fun));
 		}
 	}, [saveFunction]);
@@ -255,10 +292,8 @@ const ParameterTable = props => {
 		setTableData(newAggrValue);
 		setAggregationValue(value.value);
 	};
-	console.log('outside function ', selectedRow, selectedPrimaryData);
-	const onChangeBatch = (value, record, rowIndex, key) => {
-		console.log('value, record, rowIndex, key', value, record, rowIndex, key);
 
+	const onChangeBatch = (value, record, rowIndex, key) => {
 		let batchExcObj = {};
 		let batchRecord = [...tableData];
 		batchRecord[rowIndex][key] = value;
@@ -295,56 +330,6 @@ const ParameterTable = props => {
 		setTableData(batchRecord);
 	};
 
-	const onChangeColumnsHandler = () => {
-		let columns = [];
-
-		Object.entries(batchData && batchData).map(([key, value], index) => {
-			let obj = {
-				title: key,
-				key: index,
-				dataIndex: key,
-				width: 100,
-				render: (value, record, rowIndex) => {
-					if (value) {
-						if (isCheck) {
-							return (
-								<Checkbox
-									className='custom-check'
-									onChange={e =>
-										onChangeBatch(e.target.checked, record, rowIndex, key)
-									}
-									checked={isBatchCheck ? isBatchCheck : isCheck}
-								/>
-							);
-						} else {
-							return (
-								<span className='batchChecked'>
-									<CheckOutlined />
-								</span>
-							);
-						}
-					} else {
-						return value ? (
-							<span className='batchChecked'>
-								<CheckOutlined />
-							</span>
-						) : (
-							<span className='batchClosed'>
-								<CloseOutlined />
-							</span>
-						);
-					}
-				},
-			};
-			columns.push(obj);
-		});
-
-		if (tableColumns.length === 3) {
-			let data = [...tableColumns, ...columns];
-			setTableColumn(data);
-		}
-	};
-
 	return (
 		<>
 			{reloadTable && (
@@ -376,8 +361,8 @@ const ParameterTable = props => {
 							};
 						},
 					}}
-					columns={[...tableColumn]}
-					dataSource={[...tableData]}
+					columns={columns && columns.reverse()}
+					dataSource={tableData}
 					size='small'
 					scroll={{ y: 450 }}
 					pagination={false}
@@ -388,4 +373,4 @@ const ParameterTable = props => {
 	);
 };
 
-export default ParameterTable;
+export const MemoizedParameterTable = React.memo(ParameterTable);

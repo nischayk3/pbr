@@ -228,7 +228,7 @@ export default function landingPage(props) {
                                 <h3>Recently created dashboard</h3>
                                 <Divider />
                                 <Row gutter={24}>
-                                    {dashboardData.map((el, index) => {
+                                    {dashboardData.length>0 && dashboardData.map((el, index) => {
                                         return (
                                             <Col className="gutter-row" span={8} style={{ marginTop: '10px' }} key={index}>
                                                 <div className='chart-tiles' onClick={()=>{history.push(`/dashboard/dashboard?id=${el.dashboard_disp_id}&version=${el.dashboard_version}`); window.location.reload()}}>

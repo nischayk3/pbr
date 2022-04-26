@@ -27,6 +27,29 @@ const Threshold = ({ postChartData, setPostChartData }) => {
     valueNum: null,
   });
 
+  const onReset = async () => {
+    setThresvalues({
+      parameter: null,
+      math: null,
+      valueNum: null,
+    });
+    const newArr = JSON.parse(JSON.stringify(postChartData));
+    newArr.data[0].thresholds = [];
+    try {
+      dispatch(showLoader());
+      const viewRes = await postChartPlotData(newArr);
+      let newdataArr = [...postChartData.data];
+      newdataArr[0].thresholds = viewRes.data[0].thresholds;
+      newdataArr[0].violations = viewRes.data[0].violations;
+      newdataArr[0].data = viewRes.data[0].data;
+      setPostChartData({ ...postChartData, data: newdataArr });
+      dispatch(hideLoader());
+    } catch (error) {
+      dispatch(hideLoader());
+      message.error("Unable to calculate threshold");
+    }
+  };
+
   const onApply = async () => {
     let operator = "";
     if (thresValues.math === "Lesser than") {
@@ -52,7 +75,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
       }
     });
     const obj = {
-      window: "1D", // text of time interval, none for full duration of chart
+      window: "1D",
       parameter: Number(functionId),
       operator: operator,
       threshold: thresValues.valueNum,
@@ -160,13 +183,12 @@ const Threshold = ({ postChartData, setPostChartData }) => {
           />
         </Col>
       </Row>
-      <Row className="mt">
-        <Col span={12} />
-        <Col className="arrow-right" span={12}>
-          <Button onClick={onApply}>Apply</Button>
-          <ArrowRightOutlined />
-        </Col>
-      </Row>
+      <div className="apply-cont">
+        <p onClick={onReset}>Reset</p>
+        <Button className="custom-primary-btn" onClick={onApply}>
+          Apply
+        </Button>
+      </div>
     </div>
   );
 };

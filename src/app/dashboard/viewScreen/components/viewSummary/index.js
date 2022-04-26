@@ -1,55 +1,65 @@
 import { Card, Empty, Table } from 'antd';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import LabelTag from '../../../../../components/LabelTag';
 import './styles.scss';
 
 const ViewSummaryData = props => {
+	console.log('propsssss', props);
 	const summaryTableData = useSelector(
 		state => state.viewCreationReducer.summaryTableData
 	);
 	const functionName = useSelector(
 		state => state.viewCreationReducer.functionName
 	);
-	const [funTableColumn, setFunTableColumn] = useState([]);
+
 	const [funTableData, setFunTableData] = useState([]);
 
 	const { viewDisplayId, viewStatus, viewVersion, viewJson, setViewJson } =
 		props;
 
-	useEffect(() => {
-		setFunTableData(summaryTableData);
-		setFunTableColumn(sumTableColumn);
-	}, [summaryTableData]);
+	let columns = [];
+	const objKey =
+		funTableData !== undefined && funTableData.length > 0
+			? Object.keys(funTableData[0])
+			: [];
+	const uniqueArr = (value, index, self) => {
+		return self.indexOf(value) === index;
+	};
+	const summaryColumn = objKey.filter(uniqueArr);
 
-	const sumTableColumn = [
-		{
-			title: 'Year',
-			key: 'year',
-			dataIndex: 'year',
-		},
-		{
-			title: 'Batch',
-			key: 'batch',
-			dataIndex: 'batch',
-		},
-		{
-			title: functionName,
-			key: functionName,
-			dataIndex: functionName,
-			render: value =>
-				value ? (
-					<span className='batchChecked'>
-						<CheckOutlined />
-					</span>
-				) : (
-					<span className='batchClosed'>
-						<CloseOutlined />
-					</span>
-				),
-		},
-	];
+	summaryColumn.map((item, i) => {
+		if (item === 'batch' || item === 'batch_year') {
+			columns.push({
+				title: item.toUpperCase().replace('_', ' '),
+				dataIndex: item,
+				key: `${item}-${i}`,
+			});
+		} else {
+			columns.push({
+				title: item.toUpperCase().replace('_', ' '),
+				dataIndex: item,
+				key: `${item}-${i}`,
+				render: value =>
+					value ? (
+						<span className='batchChecked'>
+							<CheckOutlined />
+						</span>
+					) : (
+						<span className='batchClosed'>
+							<CloseOutlined />
+						</span>
+					),
+			});
+		}
+	});
+
+	useEffect(() => {
+		if (functionName !== '') {
+			setFunTableData(summaryTableData);
+		}
+	}, [summaryTableData]);
 
 	return (
 		<Card title='View Summary'>
@@ -74,8 +84,7 @@ const ViewSummaryData = props => {
 							/>
 						),
 					}}
-					rowKey='key'
-					columns={funTableColumn}
+					columns={columns}
 					dataSource={funTableData}
 					size='small'
 					scroll={{ y: 250 }}
@@ -86,4 +95,4 @@ const ViewSummaryData = props => {
 	);
 };
 
-export default ViewSummaryData;
+export const MemoizedViewSummaryData = React.memo(ViewSummaryData);

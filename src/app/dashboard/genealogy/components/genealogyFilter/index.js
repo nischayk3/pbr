@@ -22,7 +22,7 @@ function Filter(props) {
 	const [isForward, setisForward] = useState(false);
 	const [isEmptyPlant, setIsEmptyPlant] = useState(false);
 	const [isEmptyProduct, setIsEmptyProduct] = useState(false);
-	const [isEmptyProductType, setIsEmptyProductType] = useState(false);
+	const [isEmpty, setIsEmptyProductType] = useState(false);
 	const [isEmptyBatch, setIsEmptyBatch] = useState(false);
 
 	const [selectParam, setselectParam] = useState({
