@@ -15,7 +15,7 @@ const configureStore = (initialState = {}) => {
     const middlewares = [thunk, reactRouterMiddleware];
 
     if (process.env.NODE_ENV !== 'production') {
-        middlewares.push(logger); //(Use when required)
+        // middlewares.push(logger); //(Use when required)
     }
 
     return createStore(

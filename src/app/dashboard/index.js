@@ -18,6 +18,10 @@ import Uploader from './dataLoad/index';
 import LoginRedirect from '../user/login/redirect';
 import RedirectSign from '../user/login/redirectSign';
 import ViewPage from './chartPersonal/components/viewPage/ViewPage';
+import UserRolesAndAccess from '../../pages/UserRolesAndAccess/UserRolesAndAccess';
+import UserConfiguration from '../../pages/UserRolesAndAccess/UserConfiguration/UserConfiguration';
+import RolesAndAccess from '../../pages/UserRolesAndAccess/RolesAndAccess/RolesAndAccess';
+import ScreenAccess from '../../pages/UserRolesAndAccess/ScreenAccess/ScreenAccess';
 
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
@@ -42,6 +46,7 @@ const ViewChart = lazy(() =>
 const Hierarchy = lazy(() => import('./hierarchyConfig'));
 const Faq = lazy(() => import('./faq'));
 const { Content } = Layout;
+
 
 const Dashboard = () => {
 	const match = useRouteMatch();
@@ -146,6 +151,10 @@ const Dashboard = () => {
 									path={`${match.url}/molecule_hierarchy_configuration`}>
 									<Hierarchy />
 								</Route>
+								<Route key='userRolesAndAccess' path={`${match.url}/user-roles-and-access`} exact component={UserRolesAndAccess} />
+								<Route key='user-configuration' path={`${match.url}/user-roles-and-access/user-configuration`} component={UserConfiguration} />
+								<Route key='roles-and-access' path={`${match.url}/user-roles-and-access/roles-and-access`} component={RolesAndAccess} />
+								<Route key='screen-access' path={`${match.url}/user-roles-and-access/screen-access`} component={ScreenAccess} />
 							</Switch>
 						</SuspenseWrapper>
 					</Content>
