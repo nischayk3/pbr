@@ -1,6 +1,15 @@
 .chartLayout-container {
   padding: 0px 26px;
   margin-top: 10px;
+  .ant-select-selector {
+    border-radius: 4px !important;
+  }
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #093185;
+  }
+  .ant-tabs-ink-bar {
+    background: #093185;
+  }
   .button-visible {
     p {
       visibility: hidden;
@@ -12,17 +21,21 @@
   .tabledata {
     .ant-table-thead > tr > th {
       background: #f2fbff;
-      padding: 7px;
+      padding: 16px 8px;
       font-size: 12px;
+      font-weight: 600;
     }
     .ant-table-cell {
       svg {
         color: red !important;
       }
     }
-    .ant-table-tbody > tr > th {
-      background: #f2fbff;
-      padding: 7px;
+    .ant-table {
+      border: 2px solid #f0f0f0 !important;
+      border-radius: 4px !important;
+    }
+    .ant-table-tbody > tr > td {
+      padding: 16px 8px;
       font-size: 12px;
       svg {
         color: red;

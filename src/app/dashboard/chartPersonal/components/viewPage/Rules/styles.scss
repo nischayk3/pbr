@@ -91,5 +91,10 @@
     .rules {
       margin-top: 8px;
     }
+    .rules-selected {
+      span {
+        color: #093185 !important;
+      }
+    }
   }
 }

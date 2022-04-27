@@ -4,6 +4,8 @@
   border-radius: 4px;
   background: #ffffff;
   margin-left: 6px;
+  border-radius: 4px;
+  position: relative;
   .ant-divider {
     margin: 6px !important;
   }
@@ -25,5 +27,26 @@
   .details-container {
     padding: 0px 26px;
     margin-top: 16px;
+  }
+  .empty-chart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 4px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .ant-empty-description {
+      font-family: "Roboto";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 22px;
+      color: #8c8c8c;
+    }
   }
 }

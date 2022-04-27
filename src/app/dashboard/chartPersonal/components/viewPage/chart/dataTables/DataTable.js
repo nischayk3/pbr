@@ -23,6 +23,7 @@ const DataTable = ({ postChartData }) => {
       title: item.toUpperCase().replace("_", " "),
       dataIndex: item,
       key: `${item}-${i}`,
+      width: item === "uom_code" || item === first ? 150 : 250,
     });
   });
 
