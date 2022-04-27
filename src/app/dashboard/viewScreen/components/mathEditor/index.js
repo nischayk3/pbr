@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { useSelector, useDispatch } from 'react-redux';
 import CreateVariable from './createVariable';
 import { Collapse } from 'antd';
 import './style.scss';
@@ -10,6 +10,8 @@ import VariableCard from './variableCard';
 const variableData = [];
 
 const MathEditor = props => {
+	const isLoadView = useSelector(state => state.viewCreationReducer.isLoad);
+
 	const [varData, setVarData] = useState([]);
 	const [count, setCount] = useState(1);
 	const [cardTitle, setCardTitle] = useState('Create Variable');
@@ -19,10 +21,37 @@ const MathEditor = props => {
 	const [varClick, setVarClick] = useState(false);
 
 	const { Panel } = Collapse;
+	const {
+		newBatchData,
+		parentBatches,
+		viewJson,
+		setViewJson,
+		viewSummaryBatch,
+		setViewSummaryBatch,
+	} = props;
 
 	function callback(key) {
 		console.log(key);
 	}
+
+	useEffect(() => {
+		if (isLoadView) {
+			console.log('viewJson', viewJson);
+			let paramKey = [];
+			const viewJsonData = [...viewJson];
+			viewJsonData.forEach((element, index) => {
+				paramKey.push(Object.keys(element.parameters));
+			});
+			console.log('param key', paramKey);
+			paramKey.forEach((element, index) => {
+				variableData.push({
+					variableName: element,
+					key: index,
+				});
+			});
+			setVarData(variableData);
+		}
+	}, [isLoadView]);
 
 	const addVariable = () => {
 		setCardTitle('Select parameters');
@@ -32,6 +61,7 @@ const MathEditor = props => {
 	};
 
 	const createVar = () => {
+		console.log('create varrrrrrr');
 		variableData.push({
 			variableName: `${'V' + count}`,
 			key: count,
@@ -46,6 +76,7 @@ const MathEditor = props => {
 	const callbackCheckbox = val => {
 		if (val) {
 			setCardTitle('Done');
+
 			setVarClick(true);
 		}
 	};
@@ -77,13 +108,13 @@ const MathEditor = props => {
 					varClick={varClick}
 					setVarClick={setVarClick}
 					rowDisable={rowDisable}
-					newBatchData={props.newBatchData}
-					parentBatches={props.parentBatches}
+					newBatchData={newBatchData}
+					parentBatches={parentBatches}
 					ischeckBox={ischeckBox}
-					viewJson={props.viewJson}
-					setViewJson={props.setViewJson}
-					viewSummaryBatch={props.viewSummaryBatch}
-					setViewSummaryBatch={props.setViewSummaryBatch}
+					viewJson={viewJson}
+					setViewJson={setViewJson}
+					viewSummaryBatch={viewSummaryBatch}
+					setViewSummaryBatch={setViewSummaryBatch}
 				/>
 			</Panel>
 		</Collapse>
