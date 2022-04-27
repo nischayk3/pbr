@@ -13,6 +13,10 @@ import {
 	showLoader,
 	showNotification,
 } from '../../../../../duck/actions/commonActions';
+import {
+	isLoadView,
+	sendSelectedParamData,
+} from '../../../../../duck/actions/viewAction';
 
 export default function Landing(props) {
 	const [searched, setSearched] = useState(false);
@@ -153,6 +157,8 @@ export default function Landing(props) {
 						className='create-new'
 						onClick={() => {
 							history.push(`${match.url}/0`);
+							dispatch(isLoadView(false));
+							dispatch(sendSelectedParamData([]));
 						}}>
 						<PlusOutlined />
 						<p>Create new view</p>

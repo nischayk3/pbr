@@ -6,18 +6,24 @@ import LabelTag from '../../../../../components/LabelTag';
 import './styles.scss';
 
 const ViewSummaryData = props => {
-	console.log('propsssss', props);
 	const summaryTableData = useSelector(
 		state => state.viewCreationReducer.summaryTableData
 	);
 	const functionName = useSelector(
 		state => state.viewCreationReducer.functionName
 	);
+	const isLoadView = useSelector(state => state.viewCreationReducer.isLoad);
 
 	const [funTableData, setFunTableData] = useState([]);
 
-	const { viewDisplayId, viewStatus, viewVersion, viewJson, setViewJson } =
-		props;
+	const {
+		viewDisplayId,
+		viewStatus,
+		viewVersion,
+		viewJson,
+		setViewJson,
+		parentBatches,
+	} = props;
 
 	let columns = [];
 	const objKey =
@@ -60,6 +66,54 @@ const ViewSummaryData = props => {
 			setFunTableData(summaryTableData);
 		}
 	}, [summaryTableData]);
+
+	useEffect(() => {
+		if (isLoadView) {
+			let fun = [];
+			let funData = [];
+
+			const loadViewJson = [...viewJson];
+			loadViewJson.forEach(element => {
+				fun.push(element.functions.name);
+			});
+			if (parentBatches.length > 0) {
+				const loadTableData =
+					parentBatches !== undefined && parentBatches.length > 0
+						? parentBatches
+						: {};
+
+				loadTableData.forEach(element => {
+					let funObj = {};
+					funObj[fun[0]] = true;
+					funData.push(funObj);
+				});
+
+				const mergeArr = loadTableData.map((item, i) =>
+					Object.assign({}, item, funData[i])
+				);
+
+				const funKey =
+					mergeArr !== undefined && mergeArr.length > 0
+						? Object.keys(mergeArr[0])
+						: [];
+				const uniqueArr = (value, index, self) => {
+					return self.indexOf(value) === index;
+				};
+				const funColumn = funKey.filter(uniqueArr);
+
+				funColumn.map((item, i) => {
+					columns.push({
+						title: item.toUpperCase().replace('_', ' '),
+						dataIndex: item,
+						key: `${item}-${i}`,
+					});
+				});
+
+				setFunTableData(mergeArr);
+			}
+			// });
+		}
+	}, [isLoadView, parentBatches]);
 
 	return (
 		<Card title='View Summary'>

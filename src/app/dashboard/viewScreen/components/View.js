@@ -100,7 +100,7 @@ const ViewCreation = props => {
 
 	useEffect(() => {
 		let pathString = location.state;
-		console.log('pathStringggggggg', pathString, location);
+
 		if (pathString && pathString.viewId !== undefined) {
 			let _reqLoad = {
 				view_disp_id: pathString.viewId,
@@ -233,7 +233,7 @@ const ViewCreation = props => {
 					setViewName(value);
 				}
 			});
-			setViewJson(loadViewRes);
+			setViewJson([loadViewRes]);
 			dispatch(isLoadView(true));
 			dispatch(sendSelectedParamData(loadViewRes['all_parameters']));
 			dispatch(hideLoader());
@@ -382,6 +382,7 @@ const ViewCreation = props => {
 							<MemoizedViewSummaryData
 								viewJson={viewJson}
 								setViewJson={setViewJson}
+								parentBatches={parentBatches}
 								viewDisplayId={viewDisplayId}
 								viewStatus={viewStatus}
 								viewVersion={viewVersion}
