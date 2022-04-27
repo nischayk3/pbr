@@ -14,7 +14,7 @@ let paramType = '';
 let isCheck = '';
 let count = 0;
 let counter = 0;
-let batchExcArr = [];
+
 const ParameterTable = props => {
 	const paramReducer = useSelector(state => state.viewCreationReducer);
 	const isLoadView = useSelector(state => state.viewCreationReducer.isLoad);
@@ -40,7 +40,7 @@ const ParameterTable = props => {
 	const [selectedRow, setSelectedRow] = useState([]);
 	const [aggregationValue, setAggregationValue] = useState('');
 	const [tableData, setTableData] = useState([]);
-
+	const [variableRef, setVariableRef] = useState([]);
 	const [selectedPrimaryData, setSelectedPrimaryData] = useState([]);
 	const [selectedParamType, setSelectedParamType] = useState('');
 	//const [count, setCount] = useState('1');
@@ -61,10 +61,75 @@ const ParameterTable = props => {
 		setVarClick,
 	} = props;
 
-	console.log('param propssss', props);
 	const dispatch = useDispatch();
 
-	let columns = [];
+	let columns = [
+		{
+			title: 'PARAMETER NAME',
+			dataIndex: 'parameter_name',
+			key: 'parameter_name',
+			width: 200,
+			fixed: 'left',
+		},
+		{
+			title: 'PRIMARY',
+			dataIndex: 'primary',
+			key: 'primary',
+			width: 150,
+			fixed: 'left',
+			render: (text, record, index) => {
+				return (
+					<Radio
+						checked={paramType === record.parameter_name}
+						onChange={e =>
+							onRadioChange({
+								checked: e.target.checked ? e.target.checked : false,
+								type: record.parameter_name,
+								primary: 'primary',
+								record: record,
+								index: index,
+							})
+						}></Radio>
+				);
+			},
+		},
+		{
+			title: 'AGGREGATION',
+			dataIndex: 'aggregation',
+			key: 'aggregation',
+			width: 150,
+			fixed: 'left',
+			render: (text, record, index) => {
+				return (
+					<Select
+						// disabled={rowDisable}
+						style={{ width: '100px' }}
+						placeholder='Aggregation'
+						onChange={(e, value) => {
+							handleAggregationChange(record, value, index);
+						}}
+						//	value={aggregationValue}
+					>
+						<Option key='1' value='Min'>
+							Min
+						</Option>
+						<Option key='2' value='Mean'>
+							Mean
+						</Option>
+						<Option key='3' value='Max'>
+							Max
+						</Option>
+						<Option key='4' value='First'>
+							First
+						</Option>
+						<Option key='5' value='last'>
+							last
+						</Option>
+					</Select>
+				);
+			},
+		},
+	];
 	const data =
 		tableData !== undefined && tableData.length > 0
 			? Object.keys(tableData[0])
@@ -76,86 +141,22 @@ const ParameterTable = props => {
 	const paramColumn = data && data.filter(uniqueArr);
 
 	paramColumn.map((item, i) => {
-		if (item === 'parameter_name') {
-			columns.push({
-				title: item.toUpperCase().replace('_', ' '),
-				dataIndex: item,
-				key: `${item}-${i}`,
-				width: 150,
-				fixed: 'left',
-			});
-		} else if (item === 'primary') {
-			columns.push({
-				title: item.toUpperCase().replace('_', ' '),
-				dataIndex: item,
-				key: `${item}-${i}`,
-				width: 80,
-				fixed: 'left',
-				render: (text, record) => {
-					return (
-						<Radio
-							checked={paramType === record.parameter_name}
-							onChange={e =>
-								onRadioChange({
-									checked: e.target.checked ? e.target.checked : false,
-									type: record.parameter_name,
-									primary: 'primary',
-									record: record,
-								})
-							}></Radio>
-					);
-				},
-			});
-		} else if (item === 'aggregation') {
-			columns.push({
-				title: item.toUpperCase().replace('_', ' '),
-				dataIndex: item,
-				key: `${item}-${i}`,
-				width: 150,
-				fixed: 'left',
-				render: (text, record, index) => {
-					return (
-						<Select
-							// disabled={rowDisable}
-							style={{ width: '100px' }}
-							placeholder='Aggregation'
-							onChange={(e, value) => {
-								handleAggregationChange(record, value, index);
-							}}
-							//	value={aggregationValue}
-						>
-							<Option key='1' value='Min'>
-								Min
-							</Option>
-							<Option key='2' value='Mean'>
-								Mean
-							</Option>
-							<Option key='3' value='Max'>
-								Max
-							</Option>
-							<Option key='4' value='First'>
-								First
-							</Option>
-							<Option key='5' value='last'>
-								last
-							</Option>
-						</Select>
-					);
-				},
-			});
-		} else if (
+		if (
+			item === 'parameter_name' ||
+			item === 'primary' ||
+			item === 'aggregation' ||
 			item === 'id' ||
 			item === 'key' ||
 			item === 'sourceType' ||
 			item === 'coverage'
 		) {
-			console.log('itemmmmmm');
+			console.log('i');
 		} else {
 			columns.push({
 				title: item,
 				dataIndex: item,
-				key: `${item}-${i}`,
-				width: 100,
+				key: `${item}-4`,
+				width: 120,
 				render: value =>
 					value ? (
 						<span className='batchChecked'>
@@ -184,10 +185,6 @@ const ParameterTable = props => {
 		}
 	}, [ischeckBox]);
 
-	// useEffect(() => {
-	// 	onChangeColumnsHandler();
-	// }, [batchData]);
-
 	useEffect(() => {
 		if (paramReducer.selectedParamData) {
 			setTableData([...selectedTableData]);
@@ -203,7 +200,6 @@ const ParameterTable = props => {
 
 	useEffect(() => {
 		if (varClick) {
-			console.log('var clickkkkkkkk', varClick);
 			setSelectedRowKeys([]);
 			setSelectedRow([]);
 		}
@@ -251,7 +247,7 @@ const ParameterTable = props => {
 				let obj = {};
 				Object.entries(primarySelectedData).forEach(([key, value]) => {
 					if (key === item.batch) {
-						obj[functionName] = value;
+						obj[functionName] = true;
 					}
 				});
 				arr.push(obj);
@@ -280,10 +276,20 @@ const ParameterTable = props => {
 	useEffect(() => {
 		setSelectedParamType(paramName);
 	}, [paramName]);
-	const onRadioChange = ({ checked, type, primary, record }) => {
-		setSelectedPrimaryData(record);
-		dispatch(selectParamType(type));
-		paramType = type;
+
+	const onRadioChange = ({ checked, type, primary, record, index }) => {
+		if (checked) {
+			let newPrimaryData = [...tableData];
+			newPrimaryData[index].primary = 1;
+			let radioObj = [record];
+			radioObj.forEach(element => {
+				element.primary = 0;
+			});
+			setTableData(newPrimaryData);
+			setSelectedPrimaryData(radioObj[0]);
+			dispatch(selectParamType(type));
+			paramType = type;
+		}
 	};
 
 	const handleAggregationChange = (record, value, index) => {
@@ -347,7 +353,7 @@ const ParameterTable = props => {
 							/>
 						),
 					}}
-					rowKey='key'
+					//rowKey='key'
 					rowSelection={{
 						selectedRowKeys,
 						onChange: (selectedRowKeys, selectedRows) => {
@@ -361,7 +367,7 @@ const ParameterTable = props => {
 							};
 						},
 					}}
-					columns={columns && columns.reverse()}
+					columns={columns}
 					dataSource={tableData}
 					size='small'
 					scroll={{ y: 450 }}

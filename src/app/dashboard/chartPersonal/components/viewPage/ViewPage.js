@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from 'react-router';
+import { useLocation } from "react-router";
 import "./viewPageStyles.scss";
 import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 //antd imports
@@ -54,12 +54,11 @@ const ViewPage = () => {
   const [approveReject, setApproveReject] = useState("");
 
   const dispatch = useDispatch();
-  const location = useLocation()
+  const location = useLocation();
 
   const params = queryString.parse(location.search);
-  console.log("parametersss",params);
 
-  const callback = (key) => { };
+  const callback = (key) => {};
 
   const handleCancel = () => {
     setAlertModal(false);
@@ -190,7 +189,7 @@ const ViewPage = () => {
               <Button
                 onClick={() => {
                   setIsPublish(true);
-                  setApproveReject('R');
+                  setApproveReject("R");
                 }}
               >
                 Reject
@@ -198,29 +197,30 @@ const ViewPage = () => {
               <Button
                 onClick={() => {
                   setIsPublish(true);
-                  setApproveReject('A');
+                  setApproveReject("A");
                 }}
               >
                 Approve
               </Button>
             </>
-          ) :
-            (
-              <>
-                <Button onClick={() => setAlertModal(true)}>Schedule Alert</Button>
-                <Button onClick={() => saveAs("save")}>Save</Button>
-                <Button
-                  onClick={() => {
-                    setIsPublish(true);
-                    setApproveReject("P");
-                  }}
-                >
-                  {" "}
-                  <CloudUploadOutlined />
-                  Publish
-                </Button>
-              </>
-            )}
+          ) : (
+            <>
+              <Button onClick={() => setAlertModal(true)}>
+                Schedule Alert
+              </Button>
+              <Button onClick={() => saveAs("save")}>Save</Button>
+              <Button
+                onClick={() => {
+                  setIsPublish(true);
+                  setApproveReject("P");
+                }}
+              >
+                {" "}
+                <CloudUploadOutlined />
+                Publish
+              </Button>
+            </>
+          )}
           <Dropdown overlay={menu}>
             <MoreOutlined />
           </Dropdown>

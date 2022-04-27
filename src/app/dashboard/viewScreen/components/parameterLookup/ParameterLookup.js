@@ -6,12 +6,12 @@
  * @Last Changed By - Dinesh
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import './styles.scss';
 import { Select } from 'antd';
 import { moleculeName } from '../../../../../duck/actions/viewCreationAction';
-import { createSummaryData } from '../../../../../duck/actions/viewAction';
+
 import { getMoleculeList } from '../../../../../services/viewCreationPublishing';
 import {
 	hideLoader,
@@ -33,6 +33,10 @@ function ParameterLookup(props) {
 		setViewSummaryBatch,
 		params,
 	} = props;
+
+	const [expandKey, setExpandKey] = useState([]);
+	const [searchValue, setSearchValue] = useState('');
+	const [autoExpandParent, setAutoExpandParent] = useState();
 
 	const dispatch = useDispatch();
 
@@ -95,7 +99,9 @@ function ParameterLookup(props) {
 			if (paramTreeRes.statuscode === 200) {
 				setMaterialsList(paramTreeRes.data.hierarchy);
 				setParentBatches(paramTreeRes.data.mol_batches);
-				setViewSummaryBatch(paramTreeRes.data.mol_batches);
+				if (paramTreeRes.data.mol_batches.length > 0) {
+					setViewSummaryBatch(paramTreeRes.data.mol_batches);
+				}
 			} else if (paramTreeRes.statuscode === 401) {
 				dispatch(showNotification('error', 'Filter -', paramTreeRes.Message));
 				dispatch(hideLoader());
@@ -125,6 +131,36 @@ function ParameterLookup(props) {
 			setFilterdData(filterdDataArr);
 		}
 	}
+
+	const onChangeFilter = e => {
+		const { value } = e.target;
+		const expandedKeys = materialsList
+			.map(item => {
+				if (item.title.indexOf(value) > -1) {
+					return getParentKey(item.key);
+				}
+				return null;
+			})
+			.filter((item, i, self) => item && self.indexOf(item) === i);
+
+		setExpandKey(expandedKeys);
+		setSearchValue(value);
+		setAutoExpandParent(true);
+	};
+	const getParentKey = (key, tree) => {
+		let parentKey;
+		for (let i = 0; i < tree.length; i++) {
+			const node = tree[i];
+			if (node.children) {
+				if (node.children.some(item => item.key === key)) {
+					parentKey = node.key;
+				} else if (getParentKey(key, node.children)) {
+					parentKey = getParentKey(key, node.children);
+				}
+			}
+		}
+		return parentKey;
+	};
 
 	return (
 		<div className='parameterLookup-FormBlock'>
@@ -165,6 +201,11 @@ function ParameterLookup(props) {
 						);
 					})}
 				</Select>
+				{/* <Search
+					style={{ marginBottom: 8 }}
+					placeholder='Search'
+					onChange={onChangeFilter}
+				/> */}
 			</div>
 		</div>
 	);
