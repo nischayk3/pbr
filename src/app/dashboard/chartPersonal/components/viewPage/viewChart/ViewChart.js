@@ -16,8 +16,10 @@ import {
   message,
   DatePicker,
   Popover,
+  Empty,
 } from "antd";
 import { ArrowRightOutlined, FilterOutlined } from "@ant-design/icons";
+import EmptyImg from "../../../../../../assets/icons/empty.svg";
 //components
 import SelectField from "../../../../../../components/SelectField/SelectField";
 import ViewSearchTable from "./viewSearchTable";
@@ -380,96 +382,108 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
           />
         </Col>
       </Row>
-      <Row className="batch">
-        <Col span={12}>
-          <p>Batch Coverage</p>
-        </Col>
-        <Col className="arrow-right" span={12}>
-          <Button onClick={handleBatchFilterChange}>Apply</Button>
-          <ArrowRightOutlined />
-        </Col>
-      </Row>
+      {postChartData && postChartData.data && postChartData.data[0].view_id && (
+        <Row className="batch">
+          <Col span={12}>
+            <p>Batch Coverage</p>
+          </Col>
+          <Col className="arrow-right" span={12}>
+            <Button onClick={handleBatchFilterChange}>Apply</Button>
+            <ArrowRightOutlined />
+          </Col>
+        </Row>
+      )}
       <Divider />
-      <Row gutter={16} className="filter">
-        <Col span={11}>
-          <SelectField
-            placeholder="Site"
-            onChangeSelect={(e) =>
-              setBatchFilters({ ...batchFilters, site: e })
-            }
-            selectList={siteList}
-            selectedValue={batchFilters.site}
-            allowClear
-          />
-        </Col>
-        <Col span={13} className="unapproved">
-          <label>Show unapproved data</label>&emsp;&nbsp;
-          <Switch
-            type="primary"
-            size="small"
-            onChange={(e) =>
-              setBatchFilters({
-                ...batchFilters,
-                unApproved: e === true ? 1 : 0,
-              })
-            }
-          />
-        </Col>
-      </Row>
-      <Row gutter={16} className="filter">
-        <Col span={22}>
-          <RangePicker
-            value={
-              batchFilters.startDate
-                ? [
-                    moment(batchFilters.startDate, dateFormat),
-                    moment(batchFilters.endDate, dateFormat),
-                  ]
-                : ""
-            }
-            format={dateFormat}
-            onChange={(dateString) => handledatechange(dateString)}
-          />
-        </Col>
-        <Col
-          span={1}
-          className={
-            batchFilters.time || batchFilters.duration
-              ? "date date-active"
-              : "date"
-          }
-        >
-          <Popover
-            overlayClassName="cppopup-over"
-            placement="bottomLeft"
-            title="Search quick time range"
-            visible={isDatePopupVisible}
-            onVisibleChange={handleVisibleChange}
-            content={
-              <DateFilter
-                batchFilters={batchFilters}
-                setBatchFilters={setBatchFilters}
-                setIsDatePopupVisible={setIsDatePopupVisible}
+      {postChartData && postChartData.data && postChartData.data[0].view_id ? (
+        <>
+          <Row gutter={16} className="filter">
+            <Col span={11}>
+              <SelectField
+                placeholder="Site"
+                onChangeSelect={(e) =>
+                  setBatchFilters({ ...batchFilters, site: e })
+                }
+                selectList={siteList}
+                selectedValue={batchFilters.site}
+                allowClear
               />
-            }
-            trigger="click"
-          >
-            <Tooltip title="Advanced Filters">
-              <FilterOutlined />
-            </Tooltip>
-          </Popover>
-        </Col>
-      </Row>
-      <Row className="table-cont">
-        <Col span={24}>
-          <Table
-            pagination={false}
-            columns={columns}
-            dataSource={coverageTableData}
-            rowKey={(record) => record.function_name}
-          />
-        </Col>
-      </Row>
+            </Col>
+            <Col span={13} className="unapproved">
+              <label>Show unapproved data</label>&emsp;&nbsp;
+              <Switch
+                type="primary"
+                size="small"
+                onChange={(e) =>
+                  setBatchFilters({
+                    ...batchFilters,
+                    unApproved: e === true ? 1 : 0,
+                  })
+                }
+              />
+            </Col>
+          </Row>
+          <Row gutter={16} className="filter">
+            <Col span={22}>
+              <RangePicker
+                value={
+                  batchFilters.startDate
+                    ? [
+                        moment(batchFilters.startDate, dateFormat),
+                        moment(batchFilters.endDate, dateFormat),
+                      ]
+                    : ""
+                }
+                format={dateFormat}
+                onChange={(dateString) => handledatechange(dateString)}
+              />
+            </Col>
+            <Col
+              span={1}
+              className={
+                batchFilters.time || batchFilters.duration
+                  ? "date date-active"
+                  : "date"
+              }
+            >
+              <Popover
+                overlayClassName="cppopup-over"
+                placement="bottomLeft"
+                title="Search quick time range"
+                visible={isDatePopupVisible}
+                onVisibleChange={handleVisibleChange}
+                content={
+                  <DateFilter
+                    batchFilters={batchFilters}
+                    setBatchFilters={setBatchFilters}
+                    setIsDatePopupVisible={setIsDatePopupVisible}
+                  />
+                }
+                trigger="click"
+              >
+                <Tooltip title="Advanced Filters">
+                  <FilterOutlined />
+                </Tooltip>
+              </Popover>
+            </Col>
+          </Row>
+          <Row className="table-cont">
+            <Col span={24}>
+              <Table
+                pagination={false}
+                columns={columns}
+                dataSource={coverageTableData}
+                rowKey={(record) => record.function_name}
+              />
+            </Col>
+          </Row>
+        </>
+      ) : (
+        <Empty
+          className="empty-chart"
+          image={EmptyImg}
+          description={<span>Please select View ID to see this data</span>}
+        />
+      )}
       <Modal
         isModalVisible={deepSearch}
         handleCancel={onDeepSearch}

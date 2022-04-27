@@ -111,6 +111,7 @@ const rules = ({ postChartData, setPostChartData }) => {
 
   const onReset = async () => {
     setRuleList({});
+    setChecked([]);
     const newArr = JSON.parse(JSON.stringify(postChartData));
     newArr.data[0].rules = postChartClone.current.data[0].rules;
     try {
@@ -230,10 +231,16 @@ const rules = ({ postChartData, setPostChartData }) => {
                             {loadRuleList[ele].length >= 1 && `${ele} Rule`}
                           </p>
                         </Col>
-                        <Col span={14}>
-                          {loadRuleList[ele].map((item) => {
+                        <Col span={14} className="rules-selected">
+                          {/* {loadRuleList[ele].map((item) => {
                             return <span>{item.rule_disp_id}, </span>;
-                          })}
+                          })} */}
+                          {loadRuleList[ele].map((tag, i) => (
+                            <span key={i}>
+                              {i > 0 && ", "}
+                              {tag.rule_disp_id}
+                            </span>
+                          ))}
                         </Col>
                       </Row>
                     </div>
