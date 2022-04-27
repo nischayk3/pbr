@@ -653,6 +653,45 @@ const ViewChart = (props, ref) => {
         setTempCard(obj);
     }
 
+    const onPointSelected = (data,originalData,index) => {
+        let batch=''
+        let newPointColors = [...pointColors];
+      let newSelectedBatches = [...selectedBatches];
+      console.log("daataaaa", data);
+      console.log("original daataaaa", originalData);
+      data &&
+          data.points &&
+          data.points.forEach((item, index) => {
+              console.log("hellosoosss")
+              batch=item.text;
+              // newPointColors[item['pointIndex']] = "red";
+              // if (
+              //     newSelectedBatches.indexOf(
+              //         item.data["batchData"][item["pointIndex"]]
+              //     ) == -1
+              // )
+              // newSelectedBatches.push(item.data["batchData"][item["pointIndex"]]);
+          });
+
+      if(originalData && originalData.length > 0) {
+        originalData[0].data.forEach(item => {
+          if (item.mode === "markers") {
+              if(item.text.includes(batch)){
+                item["selectedpoints"] = null;
+                item["marker"]["color"] = "green";
+              }
+           
+          }
+        });
+      }
+       let panels=[...tempPanels];
+       panels[index].data=originalData
+       console.log(panels);
+        setTempPanels(panels);
+        console.log("scatter data 444", originalData)
+        
+
+    }
 
     console.log("temp", tempPanels)
     console.log("dashInfo", dashboardInfo)
@@ -787,8 +826,8 @@ const ViewChart = (props, ref) => {
                             className='global-filters-params'
                             onChange={onChangeEnd}
                             value={dashboardInfo?.data_filter?.date_range?.split("/")[1] ? moment(dashboardInfo?.data_filter?.date_range?.split("/")[1], "YYYY-MM-DD") : ''}
-                            style={{ height: '34px' }} 
-                            />
+                            style={{ height: '34px' }}
+                        />
 
                         {/* <RangePicker onChange={(e,value)=>handleDateChangeGlobal(e,value)}
                              value={
@@ -804,7 +843,7 @@ const ViewChart = (props, ref) => {
 
 
 
-                        <Select placeholder="Exploration controls" className='global-filters-params' style={{height:'34px'}}  onChange={(value) => handleGlobalDropdownChange(value, 'Exploration Controls')}>
+                        <Select placeholder="Exploration controls" className='global-filters-params' style={{ height: '34px' }} onChange={(value) => handleGlobalDropdownChange(value, 'Exploration Controls')}>
                             <Option value='Ph'>PH
                                 <Slider range defaultValue={[20, 50]} />
                             </Option>
@@ -928,7 +967,8 @@ const ViewChart = (props, ref) => {
                                             <Plot
                                                 data={el.data && el?.data[0]?.data}
                                                 layout={el.chartLayout && el?.chartLayout}
-                                               
+                                                onSelected={(data) => onPointSelected(data, el.data,index)}
+
                                             />
                                             {/* <Plot
                                                 data={tempPanels[index]?.data && tempPanels[index]?.data[0]?.data}
