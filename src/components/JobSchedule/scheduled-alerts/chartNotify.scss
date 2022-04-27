@@ -54,6 +54,7 @@
     font-size: 16px;
     line-height: 22px;
     color: #262626;
+    margin-top: 20px;
  }
 
  .share-to-workspace
@@ -104,7 +105,7 @@ width: 45px !important;
 height: 40px !important;
 background: #EAEAEA !important;
 align-items: center !important;
-margin-left: 10px;
+margin-left: 18px;
 color: black !important;
 }
 
@@ -115,7 +116,26 @@ width: 45px !important;
 height: 40px !important;
 background: #486BC9  !important;
 align-items: center !important;
-margin-left: 10px;
+margin-left: 18px;
+color: white !important;
+}
+.day-buttons-chart-one
+{
+border-radius: 50% !important;
+width: 45px !important;
+height: 40px !important;
+background: #EAEAEA !important;
+align-items: center !important;
+color: black !important;
+}
+
+.selected-day-buttons-chart-one
+{
+border-radius: 50% !important;
+width: 45px !important;
+height: 40px !important;
+background: #486BC9  !important;
+align-items: center !important;
 color: white !important;
 }
 
@@ -139,7 +159,7 @@ line-height: 22px;
 /* identical to box height, or 138% */
 margin-left: 10px;
 color: #000000;
-margin-top: 30px;
+margin-top: 15px;
 }
 
 .email-sub
@@ -174,6 +194,7 @@ margin-left: 30px;
   line-height: 22px;
   /* identical to box height, or 138% */
   color: #000000;
+  margin-left: 20px;
 }
 .email-recipients-opt
 {
@@ -276,9 +297,10 @@ font-weight: 300;
 font-size: 16px;
 line-height: 22px;
 /* identical to box height, or 138% */
-margin-left: 62%;
-// margin-left: 10px;
+// margin-left: 62%;
+margin-left: 10px;
 color: #000000;
+margin-top: 8px;
 }
 .attachment-report-text-chart
 {
@@ -336,5 +358,15 @@ margin-left: 10px;
 thead[class*="ant-table-thead"] th{
     background-color: white !important;
   }
+  .ant-table
+{
+    border: 1px #486BC9 solid;
+    border-radius: 4px ;
+}
+.ant-select-selector
+{
+    height: 36px;
+}
+  
 
 }
