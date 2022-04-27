@@ -72,7 +72,7 @@ export default (state = initState, action) => {
 		case VIEW_PARAM_MAP:
 			return { ...state, parameters: action.payload };
 		case IS_LOAD_VIEW:
-			return { ...state, isload: action.payload };
+			return { ...state, isLoad: action.payload };
 		default:
 			return state;
 	}

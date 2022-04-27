@@ -33,7 +33,7 @@ const MENU = [
 		key: 'view_creation',
 		icon: <FundOutlined style={{ fontSize: '23px' }} />,
 		title: 'View Creation',
-		linkTo: '/dashboard/view_creation_landing',
+		linkTo: '/dashboard/view_creation',
 	},
 
 	{
@@ -132,8 +132,8 @@ const Sidebar = () => {
 		const key = MENU.filter(item => {
 			return screen.length > 2
 				? screen[2]
-						.toLowerCase()
-						.includes(item.title.replace(/\s/g, '').toLowerCase())
+					.toLowerCase()
+					.includes(item.title.replace(/\s/g, '').toLowerCase())
 				: false;
 		})[0]?.['key'];
 		if (key) {

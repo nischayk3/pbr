@@ -74,7 +74,7 @@ const Dashboard = () => {
 									path={`${match.url}/manual_data_upload`}>
 									<ManualDataUpload />
 								</Route>
-								<Route
+								{/* <Route
 									key='view_creation'
 									path={`${match.url}/view_creation_view`}>
 									<View />
@@ -83,12 +83,17 @@ const Dashboard = () => {
 									key='view_creation_landing'
 									path={`${match.url}/view_creation_landing`}>
 									<ViewLanding />
-								</Route>
+								</Route> */}
 								<Route
-									key='view_creation_old'
-									path={`${match.url}/view_creation_old`}>
-									<ViewCreation />
-								</Route>
+									path={`${match.url}/view_creation`}
+									render={({ match: { url } }) => (
+										<>
+											<Route path={`${url}/`} component={ViewLanding} exact />
+											<Route path={`${url}/:id`} component={View} />
+										</>
+									)}
+								/>
+
 								<Route
 									path={`${match.url}/chart_personalization`}
 									render={({ match: { url } }) => (

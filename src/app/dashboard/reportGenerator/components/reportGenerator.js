@@ -112,14 +112,14 @@ function ReportGenerator() {
     function onChange(checkedValues, i) {
         update_object(checkedValues, i)
     }
-    
+
     const menu = (
         <Menu>
-          <Menu.Item >
-            Save As
-          </Menu.Item>
+            <Menu.Item >
+                Save As
+            </Menu.Item>
         </Menu>
-      );
+    );
 
     const handleCancel = () => {
         setAlertVisible(false)
@@ -421,6 +421,8 @@ function ReportGenerator() {
         }
     }
 
+
+
     return (
 
         <div className='custom-wrapper'>
@@ -443,8 +445,8 @@ function ReportGenerator() {
                         <FileTextOutlined />   Generate Report
                     </Button>
                     <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
-                  <EllipsisOutlined style={{transform:'rotate(-90deg)',fontSize:'20px',marginLeft:'5px'}} />
-                </Dropdown>
+                        <EllipsisOutlined style={{ transform: 'rotate(-90deg)', fontSize: '20px', marginLeft: '5px' }} />
+                    </Dropdown>
                 </div>
             </div>
             <div className='custom-content-layout'>
