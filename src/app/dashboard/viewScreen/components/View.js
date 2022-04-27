@@ -81,6 +81,8 @@ const ViewCreation = props => {
 	const [publishResponse, setPublishResponse] = useState({});
 	const [approveReject, setApproveReject] = useState("");
 
+	const parameters = queryString.parse(location.search);
+	console.log("parametersss", parameters);
 	useEffect(() => {
 		setParamTableData(selectedTableData);
 	}, [selectedTableData]);
@@ -258,56 +260,58 @@ const ViewCreation = props => {
 		<div className='reportDesigner-container viewCreation-container'>
 			<BreadCrumbWrapper />
 			<div className='breadcrumbs-btn'>
-				{/* {params ? (
-					<div className='viewCreation-btns'>
-						<Button
-							className='viewCreation-rejectBtn'
-							// onClick={() => {
-							//   setIsPublish(true);
-							//   setApproveReject('R');
-							// }}
+				{Object.keys(parameters).length > 0 ?
+					(
+						<div className='viewCreation-btns'>
+							<Button
+								className='viewCreation-rejectBtn'
+								onClick={() => {
+									setIsPublish(true);
+									setApproveReject('R');
+								}}
 							// onClick={() => {
 							// 	adenabled ? onApprove('R') : setIsPublish(true);
 							// 	setApproveReject('R');
 							// }}
-						>
-							Reject
-						</Button>
-						<Button
-							className='viewCreation-publishBtn'
-							// onClick={() => {
-							//   setIsPublish(true);
-							//   setApproveReject('A');
-							// }}
+							>
+								Reject
+							</Button>
+							<Button
+								className='viewCreation-publishBtn'
+								onClick={() => {
+									setIsPublish(true);
+									setApproveReject('A');
+								}}
 							// onClick={() => {
 							// 	adenabled ? onApprove('A') : setIsPublish(true);
 							// 	setApproveReject('A');
 							// }}
-						>
-							Approve
-						</Button>
-					</div>
-				) : */}
+							>
+								Approve
+							</Button>
+						</div>
+					) :
+					(
+						<div className='viewCreation-btns'>
+							<Button
+								className='viewCreation-saveBtn'
+								// disabled={!viewDisplayId}
+								onClick={handleSaveVisible}>
+								Save
+							</Button>
 
-				<div className='viewCreation-btns'>
-					<Button
-						className='viewCreation-saveBtn'
-						// disabled={!viewDisplayId}
-						onClick={handleSaveVisible}>
-						Save
-					</Button>
-
-					<Button
-						className='viewCreation-publishBtn'
-						onClick={() => {
-							setIsPublish(true);
-							setApproveReject("P");
-						}}
-					>
-						<CloudUploadOutlined />
-						Publish
-					</Button>
-				</div>
+							<Button
+								className='viewCreation-publishBtn'
+								onClick={() => {
+									setIsPublish(true);
+									setApproveReject("P");
+								}}
+							>
+								<CloudUploadOutlined />
+								Publish
+							</Button>
+						</div>
+					)}
 			</div>
 
 			<div className='reportDesigner-gridBlocks viewCreation-grids'>
