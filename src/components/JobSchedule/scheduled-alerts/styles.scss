@@ -104,6 +104,16 @@ align-items: center !important;
 margin-left: 10px;
 color: black !important;
 }
+.day-buttons-alert-one
+{
+border-radius: 50% !important;
+width: 45px !important;
+height: 45px !important;
+background: #EAEAEA !important;
+align-items: center !important;
+color: black !important;
+}
+
 
 .selected-day-buttons
 {
@@ -115,7 +125,15 @@ align-items: center !important;
 margin-left: 10px;
 color: white !important;
 }
-
+.selected-day-buttons-alert-one
+{
+border-radius: 50% !important;
+width: 45px !important;
+height: 45px !important;
+background: #486BC9  !important;
+align-items: center !important;
+color: white !important;
+}
 .select-days
 {
   margin-top: 30px;

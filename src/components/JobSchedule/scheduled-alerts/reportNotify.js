@@ -6,14 +6,15 @@
  * @Last Changed By - @Mihir 
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table, Avatar } from 'antd';
 import SelectField from '../../SelectField/SelectField';
 import InputField from '../../InputField/InputField';
 import './reportNotify.scss';
+import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../duck/actions/commonActions';
-import { putJob } from '../../../services/jobScheduleService';
+import { putJob, getJob } from '../../../services/jobScheduleService';
 import { PaperClipOutlined, ClockCircleOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
@@ -55,6 +56,13 @@ const ReportNotify = (props) => {
 
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (props.job) {
+            getJobs(props.job)
+        }
+    }, [props.job])
+
     const updateDays = (day) => {
         dispatch(showLoader())
         if (selectedDays[day]) {
@@ -73,6 +81,50 @@ const ReportNotify = (props) => {
         // setendTimeIso(moment(date).toISOString());
     };
 
+    const getJobs = async (job) => {
+        dispatch(showLoader())
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
+
+        let request_headers = {
+            'content-type': 'application/json',
+            'x-access-token': login_response.token ? login_response.token : '',
+            'resource-name': 'DASHBOARD',
+        };
+
+        let req = { app_type: props.appType, dag_id: job };
+        let get_response = await getJob(req, request_headers)
+        try {
+            if (get_response.Data) {
+                unLoad(get_response.Data)
+            }
+
+            if (get_response.Status == 401) {
+                dispatch(showNotification('error', 'Session TimeOut Login again'))
+            }
+
+            dispatch(hideLoader())
+        }
+        catch (error) {
+            dispatch(showNotification('error', error))
+            dispatch(hideLoader())
+        }
+
+    };
+
+    const unLoad = (data) => {
+        dispatch(showLoader())
+        data = data[0]
+        setEmailList(data.notify_emails)
+        setSelectedSchedule(data.frequency_unit)
+        setScheduleStartDate(data.email_config.scheduled_start)
+        setScheduleEmailTime(data.email_config.scheduled_time)
+    }
+
+    const onClear = () => {
+        setEmailList([])
+        setSelectedSchedule('')
+    }
+
     const handleSelectChange = (e) => {
         setSelectedAlert(e);
     }
@@ -84,7 +136,6 @@ const ReportNotify = (props) => {
     }
 
     const onChangeTimePicker = (time, timeString) => {
-        console.log(time, timeString);
     }
     const onChangeRadioButton = (e) => {
         setRadioValue(e.target.value);
@@ -192,7 +243,7 @@ const ReportNotify = (props) => {
         <div className="report-notify">
             <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={<div className="tab-btns" >
                 <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule</Button>
-                <Button className='clear-schedule'>Clear</Button>
+                <Button className='clear-schedule' onClick={() => onClear()}>Clear</Button>
             </div>} >
                 <TabPane tab='Email draft' key="email_draft">
                     <Select
@@ -230,7 +281,7 @@ const ReportNotify = (props) => {
                 <TabPane tab='Email schedule' key="email_schedule">
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '300px' }}>
-                            <ClockCircleOutlined style={{ color: "#093185" }} />  <DatePicker style={{ width: '260px' }} placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} />
+                            <ClockCircleOutlined style={{ color: "#093185" }} />  <DatePicker style={{ width: '260px' }} placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} defaultValue={moment(scheduleStartDate["Campaign-date"], "YYYY/MM/DD HH:mm")} />
                             <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                         </div>
                         <div style={{ marginTop: '40px' }}>
@@ -248,7 +299,7 @@ const ReportNotify = (props) => {
                                             placeholder='Schedule'
                                             value={selectedSchedule}
                                             onChange={(e) => handleSelectScheduleChange(e)}
-                                            style={{  width: "100%", margin: "0px" }}
+                                            style={{ width: "100%", margin: "0px" }}
                                             allowClear={true}
                                             defaultValue="Repeat Once"
                                             className="antd-selectors"

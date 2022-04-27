@@ -39,7 +39,6 @@ export default function scheduledAlertsTable(props) {
         };
         let req = { app_type: props.appType,app_id: props.id };
         let get_response = await getJob(req, request_headers)
-        console.log(get_response)
         try {
             if (get_response.Data) {
                 setData(get_response.Data)
@@ -99,7 +98,7 @@ export default function scheduledAlertsTable(props) {
             dataIndex: 'job_id',
             render: (text,record) =>
             (
-                <u><a onClick={()=>props.changeActiveTab('1',record.app_id)}>{text}</a></u>
+                <u><a onClick={()=>props.changeActiveTab('1',record.dag_id)}>{text}</a></u>
             )
         },
         {

@@ -13,7 +13,7 @@ import InputField from '../../InputField/InputField';
 import './styles.scss';
 import { useDispatch } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../duck/actions/commonActions';
-import { putJob,getJob } from '../../../services/jobScheduleService';
+import { putJob, getJob } from '../../../services/jobScheduleService';
 import { PaperClipOutlined, ClockCircleOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
 import ChartNotify from './chartNotify';
 
@@ -66,19 +66,16 @@ const alertEvaluation = (props) => {
     const [everyDayValue, setEveryDayValue] = useState('')
     const [everyDayEmailValue, setEveryDayEmailValue] = useState('')
     const [selectedEmailTimeRange, setSelectedEmailTimeRange] = useState('');
-    
 
 
-    useEffect(() => 
-    {
-        if (activeTab == 'email' && scheduleStartDate.length > 0) 
-        {
+
+    useEffect(() => {
+        if (activeTab == 'email' && scheduleStartDate.length > 0) {
             setModal(true)
         }
     })
 
-    const getJobs = async () => 
-    {
+    const getJobs = async () => {
         dispatch(showLoader())
         let login_response = JSON.parse(localStorage.getItem('login_details'));
 
@@ -88,12 +85,11 @@ const alertEvaluation = (props) => {
             'resource-name': 'DASHBOARD',
         };
 
-        let req = { app_type: props.appType,app_id: props.id };
+        let req = { app_type: props.appType, app_id: props.id };
         let get_response = await getJob(req, request_headers)
-        console.log(get_response)
         try {
             if (get_response.Data) {
-                console.log(get_response)
+                return
             }
 
             if (get_response.Status == 401) {
@@ -102,15 +98,14 @@ const alertEvaluation = (props) => {
 
             dispatch(hideLoader())
         }
-        catch(error) {
+        catch (error) {
             dispatch(showNotification('error', error))
             dispatch(hideLoader())
         }
 
     };
 
-    const unLoad = () =>
-    {
+    const unLoad = () => {
 
     }
 
@@ -183,35 +178,35 @@ const alertEvaluation = (props) => {
         let req = {}
         let login_response = JSON.parse(localStorage.getItem('login_details'));
 
-        let request_headers = 
-            {
+        let request_headers =
+        {
             'content-type': 'application/json',
             'x-access-token': login_response.token ? login_response.token : '',
             'resource-name': 'DASHBOARD',
-            };
-            req['app_data'] = props.appType
-            req['dag_id'] = ' '
-            req['created_by'] = localStorage.getItem('username') ? localStorage.getItem('username') : ''
-            req['app_type'] = props.appType
-            req['app_id'] = props.appType
-            req['email_config'] = {}
-            req['frequency'] = 1
-            req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
-            req["job_status"] = "scheduled",
+        };
+        req['app_data'] = props.appType
+        req['dag_id'] = ' '
+        req['created_by'] = localStorage.getItem('username') ? localStorage.getItem('username') : ''
+        req['app_type'] = props.appType
+        req['app_id'] = props.appType
+        req['email_config'] = {}
+        req['frequency'] = 1
+        req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
+        req["job_status"] = "scheduled",
             req["job_type"] = 'event',
             req['notify_emails'] = [],
             req["scheduled_time"] = scheduleTime,
             req["scheduled_start"] = scheduleStartDate
-            req["scheduled_end"] = "2030/12/12"
+        req["scheduled_end"] = "2030/12/12"
 
-            let res = await putJob(req, request_headers)
+        let res = await putJob(req, request_headers)
 
-            if (res.Status == 200) {
+        if (res.Status == 200) {
             dispatch(showNotification('success', 'Saved'))
-            }
-            else {
+        }
+        else {
             dispatch(showNotification('error', 'Unable to save'))
-            }
+        }
     }
     const changeTab = activeKey => {
         setActiveTab(activeKey);
@@ -306,7 +301,7 @@ const alertEvaluation = (props) => {
                             {selectedSchedule == 'Weekly' ? (
                                 <div>
                                     <div className="select-days">
-                                        <Button className={selectedDays['Sunday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Sunday')} >S</Button>
+                                        <Button className={selectedDays['Sunday'] ? "selected-day-buttons-alert-one" : "day-buttons-alert-one"} onClick={() => updateDays('Sunday')} >S</Button>
                                         <Button className={selectedDays['Monday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Monday')} >M</Button>
                                         <Button className={selectedDays['Tuesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Tuesday')}>T</Button>
                                         <Button className={selectedDays['Wednesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Wednesday')} >W</Button>
@@ -319,7 +314,7 @@ const alertEvaluation = (props) => {
                         </div>
                         <div>
                             {
-                              showReceipients && (
+                                showReceipients && (
                                     <>
                                         <Select
                                             mode="tags"
