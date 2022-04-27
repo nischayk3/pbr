@@ -232,6 +232,14 @@ const ViewChart = (props, ref) => {
                     //dash_info.panels[i] = Object.assign({}, res, { chartLayout: chartLayout }, dash_info.panels[i]);
                     el.chartLayout = chartLayout
                     el.data = res.data
+                    //el.data[0].data[0].marker.color=[...el.data[0].data[0].text].fill("green")
+                    el.data[0].data = el.data[0].data.map((item, index) => {
+                        if (item.mode === 'markers') {
+                            item.marker.defaultColor = item.marker.color;
+                            item.marker.color = [...item.text].fill(item.marker.color)
+                        }
+                        return item;
+                    })
                     //setTempPanels(dash_info.panels);
 
                 })
@@ -653,45 +661,36 @@ const ViewChart = (props, ref) => {
         setTempCard(obj);
     }
 
-    const onPointSelected = (data,originalData,index) => {
-        let batch=''
-        let newPointColors = [...pointColors];
-      let newSelectedBatches = [...selectedBatches];
-      console.log("daataaaa", data);
-      console.log("original daataaaa", originalData);
-      data &&
-          data.points &&
-          data.points.forEach((item, index) => {
-              console.log("hellosoosss")
-              batch=item.text;
-              // newPointColors[item['pointIndex']] = "red";
-              // if (
-              //     newSelectedBatches.indexOf(
-              //         item.data["batchData"][item["pointIndex"]]
-              //     ) == -1
-              // )
-              // newSelectedBatches.push(item.data["batchData"][item["pointIndex"]]);
-          });
+    const onPointSelected = (data) => {
+        console.log(data);
+        if (data && data.points) {
+            let points = data.points.map((item, index) => item.text);
+            let panels = JSON.parse(JSON.stringify(tempPanels));
+            points && points.map((point) => {
+                panels.map((el, i) => {
+                    el.data[0].data = el.data[0].data.map((item, k) => {
+                        if (item.mode === 'markers') {
+                            let pointIndex = item.text.findIndex(x => x == point);
+                            if (pointIndex >= 0) {
+                                item.marker.color[pointIndex] = 'green'
 
-      if(originalData && originalData.length > 0) {
-        originalData[0].data.forEach(item => {
-          if (item.mode === "markers") {
-              if(item.text.includes(batch)){
-                item["selectedpoints"] = null;
-                item["marker"]["color"] = "green";
-              }
-           
-          }
-        });
-      }
-       let panels=[...tempPanels];
-       panels[index].data=originalData
-       console.log(panels);
-        setTempPanels(panels);
-        console.log("scatter data 444", originalData)
-        
+                            }
+                            item.selectedpoints = null;
+
+                        }
+                        return item;
+                    })
+
+                })
+
+                setTempPanels(panels);
+
+            })
+        }
 
     }
+
+
 
     console.log("temp", tempPanels)
     console.log("dashInfo", dashboardInfo)
@@ -873,6 +872,7 @@ const ViewChart = (props, ref) => {
 
                 <Row gutter={[16, 24]} className='chart-row'>
                     {tempPanels.map((el, index) => {
+                        console.log("indise ", el)
                         return (
                             <Col className="gutter-row" span={12} style={{ padding: '1px 22px' }}>
                                 <div className='chartCard' style={{ border: isEditable == index ? '2px solid #486BC9' : '2px solid #D9D9D9' }}>
@@ -967,7 +967,7 @@ const ViewChart = (props, ref) => {
                                             <Plot
                                                 data={el.data && el?.data[0]?.data}
                                                 layout={el.chartLayout && el?.chartLayout}
-                                                onSelected={(data) => onPointSelected(data, el.data,index)}
+                                                onSelected={(data) => onPointSelected(data)}
 
                                             />
                                             {/* <Plot

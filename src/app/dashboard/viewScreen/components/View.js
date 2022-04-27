@@ -40,6 +40,7 @@ import {
 	isLoadView,
 	sendSelectedParamData,
 } from '../../../../duck/actions/viewAction';
+import Signature from "../../../../components/ElectronicSignature/signature";
 const { Panel } = Collapse;
 
 const ViewCreation = props => {
@@ -77,6 +78,8 @@ const ViewCreation = props => {
 	const [viewJson, setViewJson] = useState(viewdatajson);
 	const [isSaveVisible, setIsSaveVisible] = useState(false);
 	const [viewName, setViewName] = useState('');
+	const [publishResponse, setPublishResponse] = useState({});
+	const [approveReject, setApproveReject] = useState("");
 
 	useEffect(() => {
 		setParamTableData(selectedTableData);
@@ -242,6 +245,14 @@ const ViewCreation = props => {
 			dispatch(showNotification('error', err));
 		}
 	};
+	const handleClose = () => {
+		setIsPublish(false);
+	};
+
+	const PublishResponse = (res) => {
+		setPublishResponse(res);
+	};
+
 
 	return (
 		<div className='reportDesigner-container viewCreation-container'>
@@ -288,9 +299,10 @@ const ViewCreation = props => {
 
 					<Button
 						className='viewCreation-publishBtn'
-						// onClick={() => {
-						// 	setIsPublish(true);
-						// }}
+						onClick={() => {
+							setIsPublish(true);
+							setApproveReject("P");
+						}}
 					>
 						<CloudUploadOutlined />
 						Publish
@@ -391,7 +403,7 @@ const ViewCreation = props => {
 				</div>
 			</div>
 
-			{/* <Signature
+			<Signature
 				isPublish={isPublish}
 				handleClose={handleClose}
 				screenName='View Creation'
@@ -400,8 +412,8 @@ const ViewCreation = props => {
 				dispId={viewDisplayId}
 				version={viewVersion}
 				status={approveReject}
-				ad={ad}
-			/> */}
+
+			/>
 			<Modal
 				width={400}
 				visible={isSaveVisible}
