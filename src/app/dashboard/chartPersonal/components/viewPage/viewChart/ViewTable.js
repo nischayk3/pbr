@@ -33,13 +33,13 @@ const ViewTable = ({
       title: "View Name",
       key: "view_name",
       dataIndex: "view_name",
-      width: 130,
+      width: 220,
     },
     {
       title: "Creator",
       key: "created_by",
       dataIndex: "created_by",
-      width: 150,
+      width: 260,
       render: (text, record) => {
         return (
           <span>
