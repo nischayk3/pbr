@@ -1,13 +1,38 @@
-import { Collapse, Select } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { useState } from 'react'
+import { Collapse, Select, Button, Row, Col } from 'antd';
 
 import BreadCrumbWrapper from '../../../components/BreadCrumbWrapper/index'
 import GoBack from '../../../components/GoBack/GoBack';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
 const { Option } = Select;
 
+const INITIAL_USER_RESTRICTIONS = [
+    {
+        screens: ['a', 'c'],
+        widgets: ['d', 'e']
+    }
+]
+
 const ScreenControls = () => {
+
+    const [userRestrictions, setUserRestriction] = useState(INITIAL_USER_RESTRICTIONS)
+
+    const onAddRestriction = () => {
+        const newRestrictions = [{
+            screens: [],
+            widgets: []
+        }]
+        setUserRestriction([...userRestrictions, ...newRestrictions])
+    }
+
+    const onDeleteRestriction = index => {
+        const userRestrictionsCopy = [...userRestrictions]
+        userRestrictionsCopy.splice(index, 1)
+        setUserRestriction(userRestrictionsCopy)
+    }
+
     return (
         <div className='custom-wrapper'>
             <BreadCrumbWrapper />
@@ -15,10 +40,36 @@ const ScreenControls = () => {
 
             <Collapse defaultActiveKey={['1']} expandIconPosition="right">
                 <Panel header="User" key="1">
-                    <p>Screen</p>
-                    <Select defaultValue="max" style={{ width: 120 }}>
-                        <Option value="max">Max</Option>
-                    </Select>
+                    <Row style={{ position: 'relative'}}>
+                        <Col span={18}>
+                            <p>Restrict this role from</p>
+                            {userRestrictions.map((userRestriction, i) => {
+                                return (
+                                    <div key={i}>
+                                        <label>Screen</label>
+                                        <Select placeholder="Select" value={userRestriction.screens} mode="multiple" style={{ width: 220 }}>
+                                            <Option value="a">Screen A</Option>
+                                            <Option value="b">Screen B</Option>
+                                            <Option value="c">Screen C</Option>
+                                        </Select>
+                                        <label>Widget</label>
+                                        <Select placeholder="Select" value={userRestriction.widgets} mode="multiple" style={{ width: 220 }}>
+                                            <Option value="d">Widget D</Option>
+                                            <Option value="e">Widget E</Option>
+                                            <Option value="f">Widget F</Option>
+                                            <Option value="g">Widget G</Option>
+                                        </Select>
+                                        {userRestrictions.length > 1 && <DeleteOutlined style={{ color: 'red' }} onClick={() => onDeleteRestriction(i)} />}
+                                    </div>
+                                )
+                            })}
+                        </Col>
+                        <Button type="primary" style={{ position: 'absolute', right: 0, top: 0}}>Save</Button>
+                        <Col span={6} style={{ position: 'absolute', right: 0, bottom: 0}}>
+                            <Button type="dashed" block icon={<PlusOutlined />} onClick={onAddRestriction}>Add Control</Button>
+                        </Col>
+
+                    </Row>
                 </Panel>
                 <Panel header="Admin" key="2">
                     <p>Screen</p>

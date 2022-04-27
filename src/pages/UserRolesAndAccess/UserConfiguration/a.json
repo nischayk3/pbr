@@ -1,0 +1,85 @@
+{
+    "data": [
+        {
+            "input1": {
+                "type": "input",
+                "name": "user",
+                "label": "User",
+                "value": ""
+            },
+            "input2": {
+                "type": "select",
+                "name": "role",
+                "label": "Role",
+                "value": "cmo",
+                "options": [
+                    {
+                        "name": "cmo",
+                        "value": "CMO"
+                    },
+                    {
+                        "name": "super_user",
+                        "value": "Super User"
+                    },
+                    {
+                        "name": "admin",
+                        "value": "Admin"
+                    }
+                ],
+                "relationships": [
+                    {
+                        "child": "molecule",
+                        "mappings": [
+                            {
+                                "parentValue": "cmo",
+                                "childValues": [
+                                    {
+                                        "name": "molecule1",
+                                        "value": "Molecule Name 1"
+                                    },
+                                    {
+                                        "name": "molecule2",
+                                        "value": "Molecule Name 2"
+                                    }
+                                ]
+                            },
+                            {
+                                "parentValue": "admin",
+                                "childValues": [
+                                    {
+                                        "name": "molecule3",
+                                        "value": "Molecule Name 3"
+                                    },
+                                    {
+                                        "name": "molecule4",
+                                        "value": "Molecule Name 4"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "input3": {
+                "type": "select_multiple",
+                "name": "molecule",
+                "label": "Molecule",
+                "value": "molecule1",
+                "options": [
+                    {
+                        "name": "molecule1",
+                        "value": "Molecule Name 1"
+                    },
+                    {
+                        "name": "molecule2",
+                        "value": "Molecule Name 2"
+                    },
+                    {
+                        "name": "molecule3",
+                        "value": "Molecule Name 3"
+                    }
+                ]
+            }
+        }
+    ]
+}
