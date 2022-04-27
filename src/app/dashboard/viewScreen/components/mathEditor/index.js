@@ -4,15 +4,12 @@ import CreateVariable from './createVariable';
 import { Collapse } from 'antd';
 import './style.scss';
 import MathFunction from './mathFunction';
-import ParameterTable from './parameterTable';
+import { MemoizedParameterTable } from './parameterTable';
 import VariableCard from './variableCard';
-import { truncate } from 'lodash';
-import DataTable from './dataTable';
 
 const variableData = [];
 
 const MathEditor = props => {
-	console.log('props matheditor', props);
 	const [varData, setVarData] = useState([]);
 	const [count, setCount] = useState(1);
 	const [cardTitle, setCardTitle] = useState('Create Variable');
@@ -49,7 +46,7 @@ const MathEditor = props => {
 	const callbackCheckbox = val => {
 		if (val) {
 			setCardTitle('Done');
-			setVarClick(false);
+			setVarClick(true);
 		}
 	};
 
@@ -74,21 +71,23 @@ const MathEditor = props => {
 						<VariableCard key={index} variableName={item.variableName} />
 					))}
 				</div>
-				<ParameterTable
+				<MemoizedParameterTable
 					variableCreate={variableCreate}
 					callbackCheckbox={callbackCheckbox}
 					varClick={varClick}
+					setVarClick={setVarClick}
 					rowDisable={rowDisable}
 					newBatchData={props.newBatchData}
 					parentBatches={props.parentBatches}
 					ischeckBox={ischeckBox}
 					viewJson={props.viewJson}
 					setViewJson={props.setViewJson}
+					viewSummaryBatch={props.viewSummaryBatch}
+					setViewSummaryBatch={props.setViewSummaryBatch}
 				/>
-				{/* <DataTable /> */}
 			</Panel>
 		</Collapse>
 	);
 };
 
-export default MathEditor;
+export const MemoizedMathEditor = React.memo(MathEditor);

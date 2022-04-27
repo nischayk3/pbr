@@ -27,7 +27,6 @@ const MaterialTree = props => {
 	const { materialsList, parentBatches } = props;
 
 	const onSelect = (keys, info) => {
-		console.log('setSelectedKey', keys, info);
 		setSelectedKeys(keys);
 	};
 	const handleClickParam = (e, keys, param, record) => {
@@ -76,8 +75,7 @@ const MaterialTree = props => {
 
 			let data = { ...rowData };
 			finalData.push(data);
-			console.log('finallll dataaaaaa', finalData);
-			console.log('newBatchData dataaaaaa', newBatchData);
+
 			dispatch(batchCoverage(newBatchData));
 			dispatch(sendSelectedParamData(finalData));
 		} else {
