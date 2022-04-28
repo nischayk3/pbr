@@ -26,48 +26,50 @@ import cropImg from '../../../../assets/images/cropImg.svg';
 import undoImg from '../../../../assets/images/undoImg.svg';
 import redoImg from '../../../../assets/images/redoImg.svg';
 import contrastImg from '../../../../assets/images/contrastImg.svg';
-import BatchRecordExample from '../../../../assets/images/BatchRecordImg.png';
+// import BatchRecordExample from '../../../../assets/images/BatchRecordImg.png';
+import BatchRecordExample from '../../../../assets/images/BatchRecordExample2.jpg';
 
 import InputField from '../../../../components/InputField/InputField';
 
 import Sider from 'antd/lib/layout/Sider';
 import AddParameter from './addParameter/AddParameter';
+import { getBoundingBoxData } from '../../../../services/pbrService';
 
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Dragger } = Upload;
 
-function PaperBatchRecordsTemplate() {
+function MemorizedPaperBatchRecordsTemplate() {
     var AREAS_MAP = {
         name: 'my-map',
         areas: [
-            {
-                snippetID: '1',
-                areaValue: 'Document ID',
-                shape: 'rect',
-                coords: [120, 90, 245, 65],
-                preFillColor: 'transparent',
-                fillColor: 'transparent',
-                strokeColor: 'red',
-            },
-            {
-                snippetID: '2',
-                areaValue: 'MBR-0001',
-                shape: 'rect',
-                coords: [250, 90, 340, 65],
-                preFillColor: 'transparent',
-                fillColor: 'transparent',
-                strokeColor: 'red',
-            },
-            {
-                snippetID: '3',
-                areaValue: 'Drug Substance Name',
-                shape: 'rect',
-                coords: [120, 90, 350, 120],
-                preFillColor: 'transparent',
-                fillColor: 'transparent',
-                strokeColor: 'red',
-            },
+            // {
+            //     snippetID: '1',
+            //     areaValue: 'Document ID',
+            //     shape: 'rect',
+            //     coords: [120, 90, 245, 65],
+            //     preFillColor: 'transparent',
+            //     fillColor: 'transparent',
+            //     strokeColor: 'red',
+            // },
+            // {
+            //     snippetID: '2',
+            //     areaValue: 'MBR-0001',
+            //     shape: 'rect',
+            //     coords: [250, 90, 340, 65],
+            //     preFillColor: 'transparent',
+            //     fillColor: 'transparent',
+            //     strokeColor: 'red',
+            // },
+            // {
+            //     snippetID: '3',
+            //     areaValue: 'Drug Substance Name',
+            //     shape: 'rect',
+            //     coords: [120, 90, 350, 120],
+            //     preFillColor: 'transparent',
+            //     fillColor: 'transparent',
+            //     strokeColor: 'red',
+            // },
         ],
     };
 
@@ -90,7 +92,11 @@ function PaperBatchRecordsTemplate() {
         coords: [],
         preFillColor: 'transparent',
         fillColor: 'transparent',
-        strokeColor: 'red',
+        strokeColor: '',
+    });
+    const [boundingObject, setBoundingObject] = useState({
+        name: 'my-map',
+        areas: [],
     });
 
     const toggleLeftCollapsed = () => {
@@ -124,26 +130,40 @@ function PaperBatchRecordsTemplate() {
 
     const onChangeChart = (e, field) => {
         if (e.target.value !== null) {
+            let obj = {
+                snippetID: '',
+                areaValue: '',
+                shape: 'rect',
+                coords: [0, 0, 0, 0],
+                preFillColor: 'transparent',
+                fillColor: 'transparent',
+                strokeColor: '',
+            };
+
             if (field === 'anchorValue') {
                 setDraggerFirstAreaValue(e.target.value);
             } else if (field === 'snippetValue') {
                 setDraggerLastAreaValue(e.target.value);
             } else if (field === 'snippetId') {
+                obj.snippetID = e.target.value;
                 setAreasMapObject({
                     ...areasMapObject,
                     snippetID: e.target.value,
                 });
             } else if (field === 'snippetKey1') {
+                obj.areaValue = e.target.value;
                 setAreasMapObject({
                     ...areasMapObject,
                     areaValue: e.target.value,
                 });
             } else if (field === 'area') {
+                obj.areaValue = e.target.value;
                 setAreasMapObject({
                     ...areasMapObject,
                     areaValue: e.target.value,
                 });
             } else if (field === 'x1') {
+                obj.coords[0] = e.target.value;
                 let tempArr = [...areasMapObject.coords];
                 tempArr[0] = Number(e.target.value);
                 setAreasMapObject({
@@ -151,6 +171,7 @@ function PaperBatchRecordsTemplate() {
                     coords: tempArr,
                 });
             } else if (field === 'y1') {
+                obj.coords[1] = e.target.value;
                 let tempArr = [...areasMapObject.coords];
                 tempArr[1] = Number(e.target.value);
                 setAreasMapObject({
@@ -158,6 +179,7 @@ function PaperBatchRecordsTemplate() {
                     coords: tempArr,
                 });
             } else if (field === 'x2') {
+                obj.coords[2] = e.target.value;
                 let tempArr = [...areasMapObject.coords];
                 tempArr[2] = Number(e.target.value);
                 setAreasMapObject({
@@ -165,6 +187,7 @@ function PaperBatchRecordsTemplate() {
                     coords: tempArr,
                 });
             } else if (field === 'y2') {
+                obj.coords[3] = e.target.value;
                 let tempArr = [...areasMapObject.coords];
                 tempArr[3] = Number(e.target.value);
                 setAreasMapObject({
@@ -172,45 +195,128 @@ function PaperBatchRecordsTemplate() {
                     coords: tempArr,
                 });
             }
+
+            let newArr = [...areasMap.areas];
+            newArr.forEach((ele, i) => {
+                if (clickedSnippetId === ele.areaValue) {
+                    // (ele.snippetID = obj.snippetID),
+                    //     (ele.areaValue = obj.areaValue);
+                    if (field === 'x1') {
+                        console.log('e value', e.target.value);
+                        ele.coords[0] = e.target.value;
+                    } else if (field === 'y1') {
+                        ele.coords[1] = e.target.value;
+                    } else if (field === 'x2') {
+                        ele.coords[2] = e.target.value;
+                    } else if (field === 'y2') {
+                        ele.coords[3] = e.target.value;
+                    }
+                }
+            });
+            // console.log('newArr', newArr);
+            setAreasMap({ ...areasMap, areas: newArr });
         }
     };
 
-    console.log('changes', areasMapObject);
-    console.log('clickedSnippetId', clickedSnippetId);
-
-    useEffect(() => {
-        let newArr = [...areasMap.areas];
-        newArr.forEach((e, i) => {
-            if (clickedSnippetId === e.snippetID) {
-                (e.snippetID = areasMapObject.snippetID),
-                    (e.areaValue = areasMapObject.areaValue),
-                    (e.coords = areasMapObject.coords),
-                    (e.shape = areasMapObject.shape),
-                    (e.preFillColor = areasMapObject.preFillColor),
-                    (e.fillColor = areasMapObject.fillColor),
-                    (e.strokeColor = areasMapObject.strokeColor);
+    /**
+     * TODO: get boundingBoxData info
+     */
+    const getBoundingBoxDataInfo = async (_reqBatch) => {
+        try {
+            // dispatch(showLoader());
+            // let _reqBatch = {
+            //     fileId: 'Batch Record Example 2.pdf.json',
+            //     pageId: 0,
+            // };
+            const batchRes = await getBoundingBoxData(_reqBatch);
+            let areasArr = [];
+            if (batchRes.Data.length > 0) {
+                batchRes.Data.forEach((e) => {
+                    let x1 = e.key_left * 1032;
+                    let x2 = (e.key_left + e.key_width) * 1032;
+                    let y1 = e.key_top * 1336;
+                    let y2 = (e.key_top + e.key_height) * 1336;
+                    let obj = {
+                        snippetID: e.snippet_id,
+                        areaValue: e.key_text,
+                        shape: 'rect',
+                        coords: [x1, y1, x2, y2],
+                        preFillColor: 'transparent',
+                        fillColor: 'transparent',
+                        strokeColor: e.color,
+                    };
+                    let valuex1 = e.value_left * 1032;
+                    let valuex2 = (e.value_left + e.value_width) * 1032;
+                    let valuey1 = e.value_top * 1336;
+                    let valuey2 = (e.value_top + e.value_height) * 1336;
+                    let obj1 = {
+                        snippetID: e.snippet_id,
+                        areaValue: e.value_text,
+                        shape: 'rect',
+                        coords: [valuex1, valuey1, valuex2, valuey2],
+                        preFillColor: 'transparent',
+                        fillColor: 'transparent',
+                        strokeColor: e.color,
+                    };
+                    areasArr.push(obj);
+                    areasArr.push(obj1);
+                });
+                console.log('areasArr', areasArr);
+                setAreasMap({ ...areasMap, areas: areasArr });
+            } else if (batchRes.status === 404) {
+                setAreasMap();
+                // dispatch(showNotification('error', batchRes.detail));
             }
-            setAreasMap({ ...areasMap, areas: newArr });
-        });
-        console.log('newArr', newArr);
-    }, [areasMapObject]);
+            // dispatch(hideLoader());
+        } catch (error) {
+            // dispatch(hideLoader());
+            // dispatch(showNotification('error', 'No Data Found'));
+        }
+    };
+
+    console.log('setAreasMap', areasMap);
+
+    // useEffect(() => {
+    //     let newArr = [...areasMap.areas];
+    //     newArr.forEach((e, i) => {
+    //         if (clickedSnippetId === e.snippetID) {
+    //             (e.snippetID = areasMapObject.snippetID),
+    //                 (e.areaValue = areasMapObject.areaValue),
+    //                 (e.coords = areasMapObject.coords),
+    //                 (e.shape = areasMapObject.shape),
+    //                 (e.preFillColor = areasMapObject.preFillColor),
+    //                 (e.fillColor = areasMapObject.fillColor),
+    //                 (e.strokeColor = areasMapObject.strokeColor);
+    //         }
+    //         setAreasMap({ ...areasMap, areas: newArr });
+    //     });
+    //     console.log('newArr', newArr);
+    // }, [areasMapObject]);
 
     console.log('areasMAp', areasMap);
+
+    useEffect(() => {
+        getBoundingBoxDataInfo();
+    }, []);
     const load = () => {
-        //alert('hello');
+        console.log('load function');
     };
 
     const clicked = (area) => {
         console.log('cliked area', area);
         setBoundingBoxClicked(true);
-        setClickedSnippetId(area.snippetID);
+        setClickedSnippetId(area.areaValue);
 
-        setAreasMapObject({
-            ...areasMapObject,
+        let obj = {
             snippetID: area.snippetID,
             areaValue: area.areaValue,
+            shape: area.shape,
             coords: area.coords,
-        });
+            preFillColor: area.preFillColor,
+            fillColor: area.fillColor,
+            strokeColor: area.strokeColor,
+        };
+        setAreasMapObject(obj);
 
         if (DraggerActive) {
             setShowInputAnchor(true);
@@ -522,13 +628,15 @@ function PaperBatchRecordsTemplate() {
                                 className='pdfToImgBlock'
                                 onClick={onClickImage}
                             >
-                                <ImageMapper
-                                    className='pdfToImageWrapper'
-                                    src={BatchRecordExample}
-                                    map={areasMap}
-                                    onLoad={() => load()}
-                                    onClick={(area) => clicked(area)}
-                                />
+                                {areasMap.areas.length > 0 && (
+                                    <ImageMapper
+                                        className='pdfToImageWrapper'
+                                        src={BatchRecordExample}
+                                        map={areasMap}
+                                        onLoad={() => load()}
+                                        onClick={(area) => clicked(area)}
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>
@@ -579,6 +687,7 @@ function PaperBatchRecordsTemplate() {
                                                         'snippetKey1'
                                                     );
                                                 }}
+                                                disabled
                                             />
                                             <div className='secondary-flexBox'>
                                                 <InputField
@@ -637,6 +746,7 @@ function PaperBatchRecordsTemplate() {
                                                             'area'
                                                         );
                                                     }}
+                                                    disabled
                                                 />
                                             </div>
                                             <div className='hierarchyBlock'>
@@ -677,4 +787,6 @@ function PaperBatchRecordsTemplate() {
     );
 }
 
-export default PaperBatchRecordsTemplate;
+export const PaperBatchRecordsTemplate = React.memo(
+    MemorizedPaperBatchRecordsTemplate
+);

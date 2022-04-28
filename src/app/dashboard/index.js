@@ -11,7 +11,7 @@ import Uploader from './dataLoad/index';
 import LoginRedirect from '../user/login/redirect';
 import RedirectSign from '../user/login/redirectSign';
 import PaperBatchRecords from './paperBatchRecords/components/PaperBatchRecords';
-import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate/components/PaperBatchRecordsTemplate';
+import { PaperBatchRecordsTemplate } from './paperBatchRecordsTemplate/components/PaperBatchRecordsTemplate';
 
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
