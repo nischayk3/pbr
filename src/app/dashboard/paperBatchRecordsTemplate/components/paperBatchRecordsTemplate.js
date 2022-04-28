@@ -39,7 +39,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 const { Dragger } = Upload;
 
-function MemorizedPaperBatchRecordsTemplate() {
+function PaperBatchRecordsTemplate() {
     var AREAS_MAP = {
         name: 'my-map',
         areas: [
@@ -125,7 +125,6 @@ function MemorizedPaperBatchRecordsTemplate() {
         var rect = e.target.getBoundingClientRect();
         var x = e.clientX - rect.left;
         var y = e.clientY - rect.top;
-        console.log('Left? : ' + x + ' ; Top? : ' + y);
     };
 
     const onChangeChart = (e, field) => {
@@ -202,7 +201,6 @@ function MemorizedPaperBatchRecordsTemplate() {
                     // (ele.snippetID = obj.snippetID),
                     //     (ele.areaValue = obj.areaValue);
                     if (field === 'x1') {
-                        console.log('e value', e.target.value);
                         ele.coords[0] = e.target.value;
                     } else if (field === 'y1') {
                         ele.coords[1] = e.target.value;
@@ -213,7 +211,6 @@ function MemorizedPaperBatchRecordsTemplate() {
                     }
                 }
             });
-            // console.log('newArr', newArr);
             setAreasMap({ ...areasMap, areas: newArr });
         }
     };
@@ -261,7 +258,6 @@ function MemorizedPaperBatchRecordsTemplate() {
                     areasArr.push(obj);
                     areasArr.push(obj1);
                 });
-                console.log('areasArr', areasArr);
                 setAreasMap({ ...areasMap, areas: areasArr });
             } else if (batchRes.status === 404) {
                 setAreasMap();
@@ -274,36 +270,12 @@ function MemorizedPaperBatchRecordsTemplate() {
         }
     };
 
-    console.log('setAreasMap', areasMap);
-
-    // useEffect(() => {
-    //     let newArr = [...areasMap.areas];
-    //     newArr.forEach((e, i) => {
-    //         if (clickedSnippetId === e.snippetID) {
-    //             (e.snippetID = areasMapObject.snippetID),
-    //                 (e.areaValue = areasMapObject.areaValue),
-    //                 (e.coords = areasMapObject.coords),
-    //                 (e.shape = areasMapObject.shape),
-    //                 (e.preFillColor = areasMapObject.preFillColor),
-    //                 (e.fillColor = areasMapObject.fillColor),
-    //                 (e.strokeColor = areasMapObject.strokeColor);
-    //         }
-    //         setAreasMap({ ...areasMap, areas: newArr });
-    //     });
-    //     console.log('newArr', newArr);
-    // }, [areasMapObject]);
-
-    console.log('areasMAp', areasMap);
-
     useEffect(() => {
         getBoundingBoxDataInfo();
     }, []);
-    const load = () => {
-        console.log('load function');
-    };
+    const load = () => {};
 
     const clicked = (area) => {
-        console.log('cliked area', area);
         setBoundingBoxClicked(true);
         setClickedSnippetId(area.areaValue);
 
@@ -787,6 +759,4 @@ function MemorizedPaperBatchRecordsTemplate() {
     );
 }
 
-export const PaperBatchRecordsTemplate = React.memo(
-    MemorizedPaperBatchRecordsTemplate
-);
+export default PaperBatchRecordsTemplate;

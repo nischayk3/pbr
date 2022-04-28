@@ -426,22 +426,6 @@ function PaperBatchRecords() {
                                         </div>
                                     </Radio.Button>
                                 </Radio.Group>
-                                {/* <div className='pdfListBlock'>
-                                    <img src={pdfIcon} alt='pdfIcon' />
-                                    <span>loremipsum23.pdf</span>
-                                </div>
-                                <div className='pdfListBlock'>
-                                    <img src={pdfIcon} alt='pdfIcon' />
-                                    <span>loremipsum23.pdf</span>
-                                </div>
-                                <div className='pdfListBlock'>
-                                    <img src={pdfIcon} alt='pdfIcon' />
-                                    <span>loremipsum23.pdf</span>
-                                </div>
-                                <div className='pdfListBlock'>
-                                    <img src={pdfIcon} alt='pdfIcon' />
-                                    <span>loremipsum23.pdf</span>
-                                </div> */}
                             </Form>
                         </Col>
                     </Row>

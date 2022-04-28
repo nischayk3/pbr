@@ -50,7 +50,9 @@ const ChartSearchTable = (props) => {
                         //         setVersionList(tempVersionList);
                         //     }
                         // })
-                        props.setViewData({ ...props.viewData, chartName: record.chart_name, chartDispId: record.chart_disp_id, status: record.chart_status, searchValue: record.chart_disp_id, chartVersion: record.chart_version,createdBy:record.created_by, viewId:record.chart_info[0].view_id });
+                        props.setViewData?.({ ...props.viewData, chartName: record.chart_name, chartDispId: record.chart_disp_id, status: record.chart_status, searchValue: record.chart_disp_id, chartVersion: record.chart_version,createdBy:record.created_by, viewId:record.chart_info[0].view_id });
+                        props.parentCallback?.({ ...props.viewData, chartName: record.chart_name, chartDispId: record.chart_disp_id, status: record.chart_status, searchValue: record.chart_disp_id, chartVersion: record.chart_version,createdBy:record.created_by, viewId:record.chart_info[0].view_id });
+
                         // let newArr = [...postChartData.data];
                         // newArr.forEach((ele) => {
                         //     ele.view_id = record.view_disp_id,

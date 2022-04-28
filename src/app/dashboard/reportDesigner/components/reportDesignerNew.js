@@ -5,11 +5,12 @@
  * @Last Modified - 14 March, 2022
  * @Last Changed By - @Mihir 
  */
-
+import './stylesNew.scss';
 import React, { useEffect, useState } from 'react';
 import {
-  ArrowLeftOutlined,
-  BlockOutlined
+  BlockOutlined,
+  CloudUploadOutlined,
+  EllipsisOutlined
 } from '@ant-design/icons';
 import { useLocation } from 'react-router';
 import {
@@ -19,14 +20,14 @@ import {
   Modal,
   Table,
   Input,
-  message,
   Empty,
+  Dropdown,
+  Menu
 } from 'antd';
-import ChartSelector from './reportDesignerFilter/chartSelector';
+// import ChartSelector from './reportDesignerFilter/chartSelector';
 import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
 import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections'
-import ReportDesigneTable from './reportDesignerDynamicSections/ReportDesigneTable'
-import './stylesNew.scss';
+// import ReportDesigneTable from './reportDesignerDynamicSections/ReportDesigneTable'
 import { getViews, getCharts, saveReportDesign, getReports } from '../../../../services/reportDesignerServices';
 import SaveModal from '../../../../components/SaveModal/saveModal'
 import { useDispatch } from 'react-redux';
@@ -37,6 +38,8 @@ import queryString from "query-string";
 import { loginUrl } from '../../../../services/loginService';
 import { adenabled } from '../../../../config/config';
 import { sendUrl } from '../../../../duck/actions/loginAction';
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import { loadReport } from '../../../../services/reportDesignerServices';
 
 
 //Columns For The view Selection modal
@@ -96,8 +99,9 @@ const columns = [
   },
 ];
 
-function ReportDesignerNew() {
+function ReportDesignerNew(props) {
 
+  const { loadData } = props
   const { Option } = Select;
   const location = useLocation()
 
@@ -105,7 +109,7 @@ function ReportDesignerNew() {
   const [isLoad, setIsLoad] = useState(false);
   const [isSave, setIsSave] = useState(false);
   const [reportName, setReportName] = useState('');
-  const [isNew, setIsNew] = useState(false);
+  const [isNew, setIsNew] = useState(true);
   const [visible, setVisible] = useState(false);
   const [popvisible, setPopVisible] = useState(false);
   const [filterTable, setFilterTable] = useState(null);
@@ -127,8 +131,21 @@ function ReportDesignerNew() {
   const [sectionCharts, setCharts] = useState([])
   const [publishResponse, setPublishResponse] = useState({});
   const [approveReject, setApproveReject] = useState('')
+  const [sectionKeys, setSectionKeys] = useState({})
+  const [sectionAddedCharts, setSectionAddedCharts] = useState({})
+  const [chartsLayout, setChartsLayout] = useState({})
   const [ad, setAd] = useState(false)
   const [form] = Form.useForm();
+
+  const menu = (
+    <Menu>
+      <Menu.Item onClick={() => {
+        PrepareJson(mainJson, 'save_as')
+      }}>
+        Save As
+      </Menu.Item>
+    </Menu>
+  );
 
 
   const dispatch = useDispatch();
@@ -138,18 +155,6 @@ function ReportDesignerNew() {
 
   useEffect(() => {
     const params = queryString.parse(location.search);
-
-    if (Object.keys(params).length > 0) {
-      dispatch(showLoader())
-      unloadUrl(params)
-      if (Object.keys(params).includes('publish')) {
-        dispatch(showLoader())
-        unloadUrl(params)
-        setAd(true)
-        setIsPublish(true)
-      }
-    }
-
     if (Object.keys(params).length > 0) {
       dispatch(showLoader())
       unloadUrl(params)
@@ -160,6 +165,14 @@ function ReportDesignerNew() {
   }, []
   );
 
+  useEffect(() => {
+    if (loadData) {
+      let data = loadData.report_designer ? loadData.report_designer : {}
+      if (data.data)
+        LoadData(data.data)
+    }
+  }, []
+  );
   useEffect(() => { form.resetFields() }, [formData]);
 
   const unloadUrl = async (params) => {
@@ -169,7 +182,7 @@ function ReportDesignerNew() {
       let data = await getReportData(params.id, 'AWAP')
       setReportId(params.id)
       if (data) {
-        unLoadJson(data)
+        LoadData(data)
         setTimeout(() => {
           setIsLoad(true);
           setVisible(false)
@@ -195,6 +208,12 @@ function ReportDesignerNew() {
     selectedSectionCharts.push(chartName)
     setSelectedSectionCharts(selectedSectionCharts)
     setCharts(addedCharts)
+  }
+  const setSectionAddKey = (data) => {
+    setSectionKeys(data)
+  }
+  const setSectionAddCharts = (data) => {
+    setSectionAddedCharts(data)
   }
 
 
@@ -242,8 +261,6 @@ function ReportDesignerNew() {
     setStatus('NEW')
     setChartList([])
   }
-
-
 
   const onOk = async () => {
     const unloadResponse = await unLoadJson(reportData);
@@ -322,6 +339,7 @@ function ReportDesignerNew() {
 
   // Converting form json into layout info required by the report generator json
   const convertToJson = (json_data) => {
+
     let arr = {};
     let section_arr = [];
     json_data = json_data['response']
@@ -337,12 +355,13 @@ function ReportDesignerNew() {
         // let objj = {};
         let key_obj = {}
         key_obj['value'] = i.value
-        key_obj['editable'] = i.editable
+        key_obj['editable'] = i.editable==undefined ? false : i.editable
         key_obj['id'] = index + 1
         key_obj['key'] = i.keyName
 
         return key_obj;
       });
+      console.log(content_arr,'content_arr')
       obj['content'] = content_arr;
       obj['id'] = index;
 
@@ -382,6 +401,9 @@ function ReportDesignerNew() {
       obj['rep_status'] = status;
       obj['selected_charts'] = [...new Set(selectedSectionCharts)];
       obj['charts_layout'] = sectionCharts;
+      obj['chart_details'] = selectedChartList;
+      obj['add_charts_layout'] = sectionAddedCharts;
+      obj['add_keys_layout'] = sectionKeys;
 
       if (saveType == 'save_as') {
         obj['rep_disp_id'] = '';
@@ -396,7 +418,7 @@ function ReportDesignerNew() {
         obj['saveType'] = saveType
       }
 
-      obj['layout_info'] = formData;
+      obj['layout_info'] = { 'layout_info': formData, 'chart_details': selectedChartList, 'add_charts_layout': sectionAddedCharts, 'add_keys_layout': sectionKeys, 'charts_layout': sectionCharts };
       let req = {}
       req['data'] = obj
 
@@ -410,9 +432,7 @@ function ReportDesignerNew() {
           }
           else
             dispatch(showNotification('error', 'Not Saved'));
-
         })
-
         dispatch(sendReport(req['data']))
       }
       else {
@@ -444,21 +464,125 @@ function ReportDesignerNew() {
     return rows
   }
 
-  const unLoadJson = async (json_data) => {
+  const LoadData = (json_data) => {
     try {
-      json_data = json_data[0]
+      dispatch(showLoader())
+      setIsLoad(true);
 
       let status = json_data['rep_status'] ? json_data['rep_status'] : ''
-      setStatus(status)
+      if (status)
+        setStatus(status)
 
       let ReportName = json_data['rep_name'] ? json_data['rep_name'] : ''
-      setReportName(ReportName)
+      if (ReportName)
+        setReportName(ReportName)
+
+      let ReportID = json_data['rep_disp_id'] ? json_data['rep_disp_id'] : ''
+      if (ReportID)
+        setReportId(ReportID)
+
+
+      let view_version = json_data['view_id-version'] ? json_data['view_id-version'] : ''
+
+      if (view_version) {
+
+        let view_id = view_version[0].split('-')
+        setViewId(view_id[0])
+        setViewIdVersion(view_version)
+      }
+
+      let layout_data = json_data['layout_info']
+
+      if (layout_data) {
+
+        setChartsLayout(layout_data['charts_layout'] ? layout_data['charts_layout'] : {})
+
+        let section_keys = layout_data['add_keys_layout'] ? layout_data['add_keys_layout'] : {}
+        setSectionKeys(section_keys)
+
+        let section_added_charts = layout_data['add_charts_layout'] ? layout_data['add_charts_layout'] : {}
+        setSectionAddCharts(section_keys)
+
+        let res = []
+        let layout_info = layout_data.layout_info ? layout_data.layout_info : {}
+        let chartList = layout_data['chart_details'] && layout_data['chart_details'].length > 0 ? layout_data['chart_details'] : []
+        if (chartList.length > 0)
+          setSelectedChartList(chartList)
+        else
+          setSelectedChartList([])
+
+        let title_page = layout_info['titlepage'] ? layout_info['titlepage'] : {}
+        let title_section = title_page['heading'] ? title_page['heading'] : {}
+        let title_rows = title_page['content'] ? convertContent(title_page['content']) : {}
+
+        let title_obj = {}
+        title_obj['sectionName'] = title_section ? title_section : ''
+        title_obj['dymamic_rows'] = title_rows ? title_rows : []
+        res.push(title_obj)
+
+
+        let section_area = layout_info['sections'] ? layout_info['sections'] : ''
+        if (section_area) {
+          section_area.map((item) => {
+            let section_obj = {}
+            section_obj['sectionName'] = item['heading'] ? item['heading'] : ''
+            section_obj['dymamic_rows'] = item['content'] ? convertContent(item['content']) : []
+            res.push(section_obj)
+          })
+
+          let form_res = {}
+          form_res['response'] = res
+          setFormData(form_res)
+          form.setFieldsValue(form_res);
+          // return true
+        }
+        else {
+          setFormData({})
+          form.setFieldsValue({});
+          // return true
+        }
+      }
+      else {
+        setFormData({})
+        form.setFieldsValue({});
+        // setViewId('')
+        // setSelectedChartList([])
+        // setViewIdVersion('')
+        // setChartList([])
+        // return false
+      }
+
+
+    }
+    catch
+    {
+      dispatch(showNotification('error', 'Error in Loading Data'));
+      dispatch(hideLoader())
+    }
+    setTimeout(() => {
+      dispatch(hideLoader())
+    }, 3000);
+  }
+
+
+  const unLoadJson = async (json_data) => {
+    dispatch(showLoader())
+    try {
+      let status = json_data['rep_status'] ? json_data['rep_status'] : ''
+      if (status)
+        setStatus(status)
+
+      let ReportName = json_data['rep_name'] ? json_data['rep_name'] : ''
+      if (ReportName)
+        setReportName(ReportName)
 
       let view = json_data['view_disp_id'] ? json_data['view_disp_id'] : ''
-      setViewId(view)
+      if (view)
+        setViewId(view)
 
       let chartList = json_data['chart_details'].length > 0 ? json_data['chart_details'] : []
-      setSelectedChartList(chartList)
+      if (chartList.length > 0)
+        setSelectedChartList(chartList)
 
       let view_version = json_data['view_version'] ? json_data['view_version'].toString() : ''
       setViewVersion(view_version)
@@ -514,6 +638,7 @@ function ReportDesignerNew() {
     {
       dispatch(showNotification('error', 'Loading Data.....'));
     }
+    dispatch(hideLoader())
   }
 
   const isStyledDifferently = (rowObject, index) => {
@@ -521,29 +646,30 @@ function ReportDesignerNew() {
   }
 
 
+
+
   return (
     <div className='custom-wrapper'>
       <div className='sub-header'>
         <div className='sub-header-title'>
-          <ArrowLeftOutlined className='header-icon' />
-          <span className='header-title'>Report Designer</span>
+          <BreadCrumbWrapper />
         </div>
         <div className='sub-header-btns'>
-          {isLoad || params ? <> </> : (
+          {/* {isLoad || params ? <> </> : (
             <Button
               className='custom-primary-btn'
               onClick={() => OnNewClick()}
             >
               New
-            </Button>)}
-          {!params ?
+            </Button>)} */}
+          {/* {!params ?
             <Button
               className='custom-primary-btn'
               onClick={() => { setVisible(true); setIsNew(false); }}
             >
               Load
             </Button> : <></>
-          }
+          } */}
           {
             (isLoad || isNew) && !params ?
               <>
@@ -570,35 +696,39 @@ function ReportDesignerNew() {
                   className='custom-primary-btn'
                   onClick={() => dispatch(screenChange(true))}
                 >
-                  Test
+                  Preview
                 </Button>
                 <Button
                   className="custom-secondary-btn"
-                  onClick={() => setIsPublish(true)}
+                  onClick={() => {setIsPublish(true); setApproveReject('P')}}
                 >
+                  <CloudUploadOutlined />
                   Publish
-                </Button> </>
+                </Button>
+                <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
+                  <EllipsisOutlined style={{transform:'rotate(-90deg)',fontSize:'20px',marginLeft:'5px'}} />
+                </Dropdown> </>
               : <> </>
           }
           {
             params ? <div>
               <Button
                 className='viewCreation-rejectBtn'
-                // onClick={() => {
-                //   setIsPublish(true);
-                //   setApproveReject('R');
-                // }}
-                onClick={() => { adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
+                onClick={() => {
+                  setIsPublish(true);
+                  setApproveReject('R');
+                }}
+                // onClick={() => { adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
               >
                 Reject
               </Button>
               <Button
                 className='viewCreation-publishBtn'
-                // onClick={() => {
-                //   setIsPublish(true);
-                //   setApproveReject('A');
-                // }}
-                onClick={() => { adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
+                onClick={() => {
+                  setIsPublish(true);
+                  setApproveReject('A');
+                }}
+                // onClick={() => { adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
               >
                 Approve
               </Button></div> : <></>
@@ -643,14 +773,6 @@ function ReportDesignerNew() {
 
         {(isLoad || isNew) && loading == false && viewId !== '' ?
           <div className="reportDesigner-grid-tables">
-            {/* <ChartSelector
-              selectedChartList={selectedChartList}
-              setSelectedChartList={setSelectedChartList}
-              viewVersion={viewVersion}
-              viewID={viewId}
-              chartList={chartList}
-              show={params}
-            /> */}
             <Form
               className="report-form"
               name="report-generator-form"
@@ -658,19 +780,8 @@ function ReportDesignerNew() {
               onValuesChange={handleValuesChange}
               initialValues={formData}
             >
-              <ReportDesignerDynamicSections formData={formData} show={params} list={selectedChartList} setSectionCharts={setSectionCharts} />
+              <ReportDesignerDynamicSections formData={formData} show={params} list={selectedChartList} setSectionCharts={setSectionCharts} sectionKeys={sectionKeys} sectionAddedCharts={sectionAddedCharts} setSectionAddKey={setSectionAddKey} setSectionAddCharts={setSectionAddCharts} charts_layout={chartsLayout} isLoad={isLoad} />
             </Form>
-
-            {/* <Form
-              className="report-form"
-              name="report-generator-form"
-              form={form}
-              onValuesChange={handleValuesChange}
-              initialValues={formData}
-            >
-              <ReportDesigneTable formData={formData} show={params} list={selectedChartList} />
-            </Form> */}
-
           </div> :
           <></>
         }
@@ -683,13 +794,11 @@ function ReportDesignerNew() {
           footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() =>
             onOk()
           }>OK</Button>,]}
-
         >
           <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
             let view_value = value.value ? value.value : ''
             setReportId(view_value)
             getReportData(view_value)
-
           }}
             value={reportId}
             showSearch
@@ -700,8 +809,9 @@ function ReportDesignerNew() {
             {mapReportList.length >= 0 ? mapReportList.map((item) =>
 
               <Option value={item.rep_disp_id} key={item.rep_disp_id}>{item.rep_disp_id}</Option>
-            ) : <></>}
-
+            ) :
+              <></>
+            }
           </Select>
           <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
         </Modal>
@@ -735,7 +845,6 @@ function ReportDesignerNew() {
                 setReportId(record.rep_disp_id)
                 getReportData(record.rep_disp_id, record.rep_status)
                 dispatch(showLoader())
-                // onOk()
               }
             })}
             scroll={{ y: 200 }}
@@ -746,7 +855,7 @@ function ReportDesignerNew() {
         <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
 
       </div>
-      <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT" dispId={reportId} version={0} status={approveReject} />
+      <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT_DESIGNER" dispId={reportId} version={0} status={approveReject} />
     </div>
   );
 }

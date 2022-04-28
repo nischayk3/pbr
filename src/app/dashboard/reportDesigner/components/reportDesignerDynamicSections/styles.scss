@@ -1,13 +1,14 @@
 
-.reportDesigner-dynamicSections {
+.reportDesigner-dynamicSections 
+{
   min-height: 500px;
   max-height: 500px;
   // width: auto;
   overflow-y: auto;
   background-color: white !important;
 }
-
-  h6.dynamicSections-noteHeadline {
+  h6.dynamicSections-noteHeadline 
+  {
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
@@ -15,7 +16,8 @@
     line-height: 22px;
     margin: 26px;
   }
-  .dynamicSections-ul {
+  .dynamicSections-ul 
+  {
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
@@ -38,29 +40,30 @@
     margin-top: 30px;
     margin: 10px;
   }
-
     table.dynamicSections-table {
       border: 1px solid rgba(241, 247, 255, 0.73);
       text-align: center;
       margin-bottom: 30px;
     }
-
       thead.dynamicSections-thead {
         th {
-          background-color: rgba(241, 247, 255, 0.73);
+          background-color:  #F2FBFFBA;
           color: #000000;
           font-weight: 600;
           border: 1px solid rgba(241, 247, 255, 0.73);
-          padding: 5px 10px;
+          padding: 7px 15px;
+          margin: 4px;
+          
         }
       }
-
       tbody.dynamicSections-tbody {
         td {
           border: 1px solid #f2fbff;
           background-color: #ffffff;
           color: #121212;
-          padding: 5px 10px;
+          padding: 7px 20px;
+          border-left: 0px solid ;
+  border-right: 0px solid ;
         }
       }
     
@@ -87,11 +90,9 @@
     margin: 0px;
     padding: 0 4px;
   }
-
   .reportDesigner-gridBlocks {
     margin-bottom: 30px;
   }
-
   .reportDesigner-grid-tables {
     display: grid;
     grid-template-columns: 0.5fr 1.5fr;
@@ -145,23 +146,19 @@
 .bg-white {
   box-shadow: 1px 1px 14px #0000001a;
   border-radius: 4px;
-
   .ant-row.ant-form-item {
     margin: 0px;
-
     label {
       font-family: 'Roboto', sans-serif;
       font-weight: 400;
     }
   }
 }
-
 .reportDesigner-headerTableBlock,
 .reportDesigner-ChartTableBlock {
   table {
     font-weight: 600;
     font-size: 12px;
-
     thead.ant-table-thead {
       th {
         background-color: #d4d4d4;
@@ -171,7 +168,6 @@
         padding: 5px 10px;
       }
     }
-
     tbody.ant-table-tbody {
       td {
         border: 1px solid #363636;
@@ -182,7 +178,6 @@
     }
   }
 }
-
 .reportDesigner-headerTableBlock {
   table {
     text-align: center;
@@ -303,6 +298,7 @@ tbody.designer-tbody {
     background-color: #ffffff;
     color: #121212;
     padding: 5px 10px;
+    
   }
 }
 }
@@ -334,9 +330,10 @@ opacity: 1px;
 .chart-block
 {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr ;
-  grid-gap: 5px;
-  margin-left: 10%;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;
+  grid-gap: 24px;
+  margin-left: 5%;
+  margin-right: 5%;
 }
   .chart-tile
 {
@@ -345,6 +342,8 @@ opacity: 1px;
     // margin-right: right;
     position: relative;
     float: right;
+    bottom: 11%;
+    left: .7%;
     //  top: 0%; 
     // right: %;
     // // width: 3px;
@@ -358,27 +357,44 @@ opacity: 1px;
   margin-bottom: 20px;
   margin-top: 10px;
 }
+.chart-block-section
+{
+  background: #FFFFFF;
+  align-items: flex-start;
+  padding: 0px;
+
+  height: 201px;
+  /* Gray / gray-5 */
+  margin-left: 35px;
+  margin-right: 35px;
+  
+  border: 1px dashed #D9D9D9;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
 
 .chart-tiless
-{ height: 46px;
+{ 
+height: 46px;
 width: 200px;
 background: #FFFFFF;
 border: 1px solid #00F1C6;
 box-sizing: border-box;
-border-radius: 2px;
+border-radius: 2px 5px 2px 2px;
 border: 1px solid #00F1C6;
 // border-radius: 0px 4px;
 // display: flex;
-justify-content: center;
+// justify-content: center;
 align-items: center;
 // background: #E2E8F2;
 // position: relative;
+text-align: center;
 }
 .charttile-content
 {
-  margin-left: 33px;
+  // margin-left: 33px;
   margin-top: 10px;
-  width: 157px;
+  // width: 157px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -388,11 +404,13 @@ align-items: center;
 align-items: center;
 padding: 5px 16px;
 position:inherit;
-margin-left: 80%;
+margin-left: 870px;
 width: 108px;
 height: 32px;
 left: 1140px;
 top: 109px;
+color: #093185;
+
 background: #FFFFFF;
 border: 1px dashed #D9D9D9;
 box-sizing: border-box;
@@ -450,4 +468,30 @@ background: #FFFFFF;
 border: 1px dashed #D9D9D9;
 box-sizing: border-box;
 border-radius: 4px;
+}
+.circle {
+  background: red;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  justify-content: center;
+}
+.action-clm
+{
+  width: 10px;
+  align-items: center;
+  
+}
+.key-clm
+{
+  width: 150px;
+  align-items: center;
+
+}
+.edit-clm
+{
+  width: 30px;
+  border-bottom-style: hidden;
+  align-items: center;
+
 }

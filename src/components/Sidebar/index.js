@@ -17,7 +17,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import Auth from '../../utils/auth';
 import { useSelector } from 'react-redux';
-// import { useMsal } from '@azure/msal-react';
+import { useMsal } from '@azure/msal-react';
 // import { useSelector } from 'react-redux';
 
 // import { userLogout } from '../../api/login';
@@ -104,10 +104,10 @@ const MENU = [
         linkTo: '/dashboard/dashboard',
     },
     {
-        key: 'paper_batch_records',
-        icon: <LinkOutlined style={{ fontSize: '23px' }} />,
-        title: 'Paper Batch Records',
-        linkTo: '/dashboard/paper_batch_records',
+        key: 'hierarchy',
+        icon: <AppstoreOutlined style={{ fontSize: '23px' }} />,
+        title: 'Hierarchy',
+        linkTo: '/dashboard/molecule_hierarchy_configuration',
     },
 ];
 
@@ -119,7 +119,7 @@ function handleLogout(instance) {
 }
 
 const Sidebar = () => {
-    // const { instance } = useMsal();
+    const { instance } = useMsal();
 
     const [selectedKey, setSelectedKey] = useState('');
     const location = useLocation();

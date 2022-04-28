@@ -42,12 +42,14 @@
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.0",
+    "react-string-replace": "^1.0.0",
     "recoil": "^0.0.10",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "spectramicro-table": "^1.0.1",
-    "svg-pan-zoom": "^3.6.1"
+    "svg-pan-zoom": "^3.6.1",
+    "zoom-level": "^2.5.0"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -75,6 +77,7 @@
     "cypress": "^9.5.0",
     "cypress-localstorage-commands": "^1.2.1",
     "eslint-plugin-import": "^2.25.4",
+    "moment": "^2.29.2",
     "start-server-and-test": "^1.11.3"
   },
   "nyc": {

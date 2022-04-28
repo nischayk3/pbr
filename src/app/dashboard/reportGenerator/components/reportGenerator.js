@@ -13,8 +13,6 @@ import {
     Collapse,
     Typography,
     Modal,
-    Radio,
-    Space,
     Select,
     message,
     Input,
@@ -22,9 +20,11 @@ import {
     DatePicker,
     Divider,
     Popconfirm,
-    Tag
+    Tag,
+    Dropdown,
+    Menu
 } from 'antd';
-import { ArrowLeftOutlined, BlockOutlined, DeleteOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone } from '@ant-design/icons';
+import { BlockOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircleTwoTone, FileTextOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
@@ -38,7 +38,8 @@ import {
 } from '../../../../duck/actions/commonActions';
 import { Tabs } from 'antd';
 import Chart from '../../reportDesigner/components/reportChart/chartComponent/chartComponent'
-
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import JobSchedule from '../../../../components/JobSchedule';
 
 const { Panel } = Collapse;
 const { Text } = Typography;
@@ -112,6 +113,18 @@ function ReportGenerator() {
         update_object(checkedValues, i)
     }
 
+    const menu = (
+        <Menu>
+            <Menu.Item >
+                Save As
+            </Menu.Item>
+        </Menu>
+    );
+
+    const handleCancel = () => {
+        setAlertVisible(false)
+    }
+
     const [visible, setVisible] = useState(false)
     const [isvisible, setIsVisible] = useState(false)
     const [ReportData, setReportData] = useState(repotData)
@@ -143,6 +156,7 @@ function ReportGenerator() {
         Friday: false,
         Saturday: false,
     })
+    const [alertVisible, setAlertVisible] = useState(false)
     // const [ sectionCharts,setSectionCharts] = 
     const dispatch = useDispatch();
 
@@ -187,7 +201,6 @@ function ReportGenerator() {
             chart['violation'] = false
             chart['parameter'] = false
             chart['exclusion'] = false
-
             res.push(chart)
         })
         return res
@@ -234,7 +247,7 @@ function ReportGenerator() {
 
 
     const getTableData = (obj, rep_layout) => {
-
+        obj = obj.layout_info
         let headingList = []
         let allSections = []
         let titleHeading = obj['titlepage'] && obj['titlepage'].heading ? obj['titlepage'].heading : ''
@@ -249,22 +262,8 @@ function ReportGenerator() {
         for (let i = 0; i < allSections.length; i++) {
             allSections[i].charts = rep_layout[i + 1]
         }
-
         return allSections
     }
-
-    // const convertToList =  (a) =>
-    // {   if(a.length > 0)
-    //     {
-    //     let b= a.replace("{",'')
-    //     b= b.replace("}",'')
-    //     b=b.split(',')
-    //     if(b.length>0)
-    //     return b
-    //     else
-    //     return []
-    //     }
-    // }
 
     const unloadTest = (ReportData) => {
 
@@ -273,13 +272,12 @@ function ReportGenerator() {
         setChartLayout(ReportData.charts_layout ? createChartRecord(ReportData.charts_layout) : {})
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setCharts(ReportData['chart_int_ids'] ? createArraObj(ReportData['chart_int_ids']) : [])
-        setTable(ReportData['layout_info'] ? getTableData(ReportData['layout_info'], ReportData.charts_layout ? ReportData.charts_layout : {}) : {})
+        setTable(ReportData['layout_info'] ? getTableData(ReportData['layout_info'], ReportData.layout_info.charts_layout ? ReportData.layout_info.charts_layout : {}) : {})
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
-        setEmailList(ReportData.share ? ReportData.share.email_list : [])
+        // setEmailList(ReportData.share ? ReportData.share.email_list : [])
         setSchedule(ReportData.share ? ReportData.share.frequency_unit : '')
-
         dispatch(hideLoader());
         // setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
     }
@@ -330,7 +328,8 @@ function ReportGenerator() {
         obj['user'] = user
         obj['variant_name'] = user + '_variant'
         obj['chart_info'] = { charts: chart }
-        obj['chart_layout'] = chartLayout
+        obj['charts_layout'] = chartLayout
+        obj['days_layout'] = selectedDays
 
 
         let share_obj = {}
@@ -422,27 +421,32 @@ function ReportGenerator() {
         }
     }
 
+
+
     return (
 
         <div className='custom-wrapper'>
+
             <div className='sub-header'>
                 <div className='sub-header-title'>
-                    <ArrowLeftOutlined className='header-icon' />
-                    <span className='header-title'>Report Generator</span>
+                    <BreadCrumbWrapper />
                 </div>
                 <div className='sub-header-btns'>
-                    <Button className='custom-secondary-btn' onClick={() => { setOpenSchedule(true); }}>
+                    <Button className='custom-primary-btn' onClick={() => { setAlertVisible(true); }}>
                         Notify Report
                     </Button>
-                    <Button className='custom-primary-btn' onClick={() => { setIsVisible(true); }}>
+                    {/* <Button className='custom-primary-btn' onClick={() => { setIsVisible(true); }}>
                         Load
-                    </Button>
+                    </Button> */}
                     <Button className='custom-primary-btn' onClick={() => prepareJson()}>
                         Save
                     </Button>
                     <Button className='custom-secondary-btn' onClick={() => dispatch(screenChange(false))}>
-                        Generate Report
+                        <FileTextOutlined />   Generate Report
                     </Button>
+                    <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
+                        <EllipsisOutlined style={{ transform: 'rotate(-90deg)', fontSize: '20px', marginLeft: '5px' }} />
+                    </Dropdown>
                 </div>
             </div>
             <div className='custom-content-layout'>
@@ -450,7 +454,7 @@ function ReportGenerator() {
                     <ReportDesignerForm />
                     <div className="table-card">
                         {table.length > 0 && table.map((i) =>
-                            <Collapse key={i.heading} accordion className="collapse-generate">
+                            <Collapse key={i.heading} accordion className="collapse-generate" bordered={true}>
                                 <Panel header={<span className="chart-names">{i.heading} {i.charts && i.charts.length > 0 && i.charts.map((i) => (<span className="chart-tags">
                                     {i}
                                 </span>))}</span>} key={i.heading} className="chart-panel">
@@ -467,7 +471,7 @@ function ReportGenerator() {
                                             {i['content'] && i['content'].map((item, j) =>
                                                 <tr className="tr" >
                                                     <td className="td" >{item.key}</td>
-                                                    <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span style={{ width: '1000px' }}>{item.value}</span>} </td>
+                                                    <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea autoSize={true} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span>{item.value}</span>} </td>
                                                 </tr>
                                             )}
                                         </tbody>
@@ -475,8 +479,8 @@ function ReportGenerator() {
                                     {i.charts && i.charts.length > 0 && i.charts.map((j) =>
                                     (
                                         <div>
-                                            <p className="chart-name">{j} <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'violation')}>Violation</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'exclusion')}>Exclusion</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'data_table')}>Data Table</Tag> </p>
-                                            <Chart />
+                                            <p className="chart-name">{j} <span className="tag-div"> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'violation')}>Violation</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'exclusion')}>Exclusion</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'data_table')}>Data Table</Tag></span> </p>
+                                            <Chart chartName={j} />
                                         </div>
                                     ))}
                                 </Panel>
@@ -619,6 +623,7 @@ function ReportGenerator() {
 
 
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
+            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} id={reportId} />
         </div>
 
 
