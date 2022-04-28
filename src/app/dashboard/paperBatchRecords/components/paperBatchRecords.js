@@ -35,7 +35,7 @@ import { useHistory } from 'react-router-dom';
 
 const { Search } = Input;
 
-function paperBatchRecords() {
+function PaperBatchRecords() {
     let history = useHistory();
     const initialTableDataSource = [
         {
@@ -451,4 +451,4 @@ function paperBatchRecords() {
     );
 }
 
-export default paperBatchRecords;
+export default PaperBatchRecords;

@@ -86,7 +86,7 @@
             }
         }
 
-        p.ant-upload-text-input {
+        .ant-upload-text-input {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -94,10 +94,6 @@
             font-weight: 400;
             font-size: 11px;
             color: #575757;
-
-            .uploadSnippetInput {
-                width: 50px;
-            }
         }
     }
 }

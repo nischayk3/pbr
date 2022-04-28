@@ -1,3 +1,3 @@
-import PaperBatchRecords from './components/paperBatchRecords';
+import PaperBatchRecords from './components/PaperBatchRecords';
 
 export default PaperBatchRecords;

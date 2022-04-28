@@ -31,67 +31,13 @@ import BatchRecordExample from '../../../../assets/images/BatchRecordImg.png';
 import InputField from '../../../../components/InputField/InputField';
 
 import Sider from 'antd/lib/layout/Sider';
-import SelectField from '../../../../components/SelectField/SelectField';
+import AddParameter from './addParameter/AddParameter';
 
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Dragger } = Upload;
 
-function paperBatchRecordsTemplate() {
-    const [form] = Form.useForm();
-    const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false);
-    const [rightPanelCollapsed, setRightPanelCollapsed] = useState(true);
-    const [paramaterAdded, setParamaterAdded] = useState(false);
-    const [conditionList, setConditionList] = useState(['AND', 'OR', 'NOT']);
-    const [snippetId, setSnippetId] = useState('');
-    const [areaValue, setAreaValue] = useState('');
-    const [draggerFirstAreaValue, setDraggerFirstAreaValue] = useState('');
-    const [draggerLastAreaValue, setDraggerLastAreaValue] = useState('');
-    const [coordLeftX, setCoordLeftX] = useState(120);
-    const [coordLeftY, setCoordLeftY] = useState();
-    const [coordRightX, setCoordRightX] = useState();
-    const [coordRightY, setCoordRightY] = useState();
-    const [boundingBoxClicked, setBoundingBoxClicked] = useState(false);
-    const [DraggerActive, setDraggerActive] = useState(true);
-    const [showInputAnchor, setShowInputAnchor] = useState(false);
-
-    const toggleLeftCollapsed = () => {
-        setLeftPanelCollapsed(!leftPanelCollapsed);
-    };
-
-    const toggleRightCollapsed = () => {
-        setRightPanelCollapsed(!rightPanelCollapsed);
-    };
-
-    const parameterAddingHandler = () => {
-        setParamaterAdded(true);
-    };
-
-    const DraggerInputHandlerAnchor = (e) => {
-        e.stopPropagation();
-        setDraggerActive(true);
-    };
-
-    const DraggerInputHandlerSnippet = (e) => {
-        e.stopPropagation();
-        setDraggerActive(false);
-    };
-
-    const onClickImage = (e) => {
-        var rect = e.target.getBoundingClientRect();
-        var x = e.clientX - rect.left;
-        var y = e.clientY - rect.top;
-        console.log('Left? : ' + x + ' ; Top? : ' + y);
-    };
-
-    const onChangeChart = (e, field) => {
-        if (e.target.value !== null) {
-            if (field === 'pageId') {
-                console.log(e.target.value);
-            }
-        }
-    };
-
+function PaperBatchRecordsTemplate() {
     var AREAS_MAP = {
         name: 'my-map',
         areas: [
@@ -125,6 +71,131 @@ function paperBatchRecordsTemplate() {
         ],
     };
 
+    const [form] = Form.useForm();
+    const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false);
+    const [rightPanelCollapsed, setRightPanelCollapsed] = useState(true);
+    const [paramaterAdded, setParamaterAdded] = useState(false);
+    const [conditionList, setConditionList] = useState(['AND', 'OR', 'NOT']);
+    const [draggerFirstAreaValue, setDraggerFirstAreaValue] = useState('');
+    const [draggerLastAreaValue, setDraggerLastAreaValue] = useState('');
+    const [clickedSnippetId, setClickedSnippetId] = useState('');
+    const [boundingBoxClicked, setBoundingBoxClicked] = useState(false);
+    const [DraggerActive, setDraggerActive] = useState(true);
+    const [showInputAnchor, setShowInputAnchor] = useState(false);
+    const [areasMap, setAreasMap] = useState(AREAS_MAP);
+    const [areasMapObject, setAreasMapObject] = useState({
+        snippetID: '',
+        areaValue: '',
+        shape: 'rect',
+        coords: [],
+        preFillColor: 'transparent',
+        fillColor: 'transparent',
+        strokeColor: 'red',
+    });
+
+    const toggleLeftCollapsed = () => {
+        setLeftPanelCollapsed(!leftPanelCollapsed);
+    };
+
+    const toggleRightCollapsed = () => {
+        setRightPanelCollapsed(!rightPanelCollapsed);
+    };
+
+    const parameterAddingHandler = () => {
+        setParamaterAdded(true);
+    };
+
+    const DraggerInputHandlerAnchor = (e) => {
+        e.stopPropagation();
+        setDraggerActive(true);
+    };
+
+    const DraggerInputHandlerSnippet = (e) => {
+        e.stopPropagation();
+        setDraggerActive(false);
+    };
+
+    const onClickImage = (e) => {
+        var rect = e.target.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        console.log('Left? : ' + x + ' ; Top? : ' + y);
+    };
+
+    const onChangeChart = (e, field) => {
+        if (e.target.value !== null) {
+            if (field === 'anchorValue') {
+                setDraggerFirstAreaValue(e.target.value);
+            } else if (field === 'snippetValue') {
+                setDraggerLastAreaValue(e.target.value);
+            } else if (field === 'snippetId') {
+                setAreasMapObject({
+                    ...areasMapObject,
+                    snippetID: e.target.value,
+                });
+            } else if (field === 'snippetKey1') {
+                setAreasMapObject({
+                    ...areasMapObject,
+                    areaValue: e.target.value,
+                });
+            } else if (field === 'area') {
+                setAreasMapObject({
+                    ...areasMapObject,
+                    areaValue: e.target.value,
+                });
+            } else if (field === 'x1') {
+                let tempArr = [...areasMapObject.coords];
+                tempArr[0] = Number(e.target.value);
+                setAreasMapObject({
+                    ...areasMapObject,
+                    coords: tempArr,
+                });
+            } else if (field === 'y1') {
+                let tempArr = [...areasMapObject.coords];
+                tempArr[1] = Number(e.target.value);
+                setAreasMapObject({
+                    ...areasMapObject,
+                    coords: tempArr,
+                });
+            } else if (field === 'x2') {
+                let tempArr = [...areasMapObject.coords];
+                tempArr[2] = Number(e.target.value);
+                setAreasMapObject({
+                    ...areasMapObject,
+                    coords: tempArr,
+                });
+            } else if (field === 'y2') {
+                let tempArr = [...areasMapObject.coords];
+                tempArr[3] = Number(e.target.value);
+                setAreasMapObject({
+                    ...areasMapObject,
+                    coords: tempArr,
+                });
+            }
+        }
+    };
+
+    console.log('changes', areasMapObject);
+    console.log('clickedSnippetId', clickedSnippetId);
+
+    useEffect(() => {
+        let newArr = [...areasMap.areas];
+        newArr.forEach((e, i) => {
+            if (clickedSnippetId === e.snippetID) {
+                (e.snippetID = areasMapObject.snippetID),
+                    (e.areaValue = areasMapObject.areaValue),
+                    (e.coords = areasMapObject.coords),
+                    (e.shape = areasMapObject.shape),
+                    (e.preFillColor = areasMapObject.preFillColor),
+                    (e.fillColor = areasMapObject.fillColor),
+                    (e.strokeColor = areasMapObject.strokeColor);
+            }
+            setAreasMap({ ...areasMap, areas: newArr });
+        });
+        console.log('newArr', newArr);
+    }, [areasMapObject]);
+
+    console.log('areasMAp', areasMap);
     const load = () => {
         //alert('hello');
     };
@@ -132,21 +203,22 @@ function paperBatchRecordsTemplate() {
     const clicked = (area) => {
         console.log('cliked area', area);
         setBoundingBoxClicked(true);
-        setSnippetId(area.snippetID);
-        setAreaValue(area.areaValue);
-        setCoordLeftX(area.coords[0]);
-        setCoordLeftY(area.coords[1]);
-        setCoordRightX(area.coords[2]);
-        setCoordRightY(area.coords[3]);
+        setClickedSnippetId(area.snippetID);
+
+        setAreasMapObject({
+            ...areasMapObject,
+            snippetID: area.snippetID,
+            areaValue: area.areaValue,
+            coords: area.coords,
+        });
+
         if (DraggerActive) {
             setShowInputAnchor(true);
             setDraggerFirstAreaValue(area.areaValue);
         } else {
-            setDraggerLastAreaValue(area.areaValue);
+            setDraggerLastAreaValue(area.snippetID);
         }
     };
-
-    console.log('d0', draggerFirstAreaValue);
 
     return (
         <div className='pbr-container pbrTemplate-container'>
@@ -287,12 +359,12 @@ function paperBatchRecordsTemplate() {
                                                                     placeholder='Enter Anchor Value'
                                                                     onChangeInput={(
                                                                         e
-                                                                    ) => {
+                                                                    ) =>
                                                                         onChangeChart(
                                                                             e,
                                                                             'anchorValue'
-                                                                        );
-                                                                    }}
+                                                                        )
+                                                                    }
                                                                 />
                                                             </p>
                                                         )}
@@ -369,7 +441,25 @@ function paperBatchRecordsTemplate() {
                                                 <p>Add your first paramater</p>
                                             </div>
                                         )}
+                                        {paramaterAdded && (
+                                            <div className='firstParameter-para'>
+                                                <p>Add another paramater</p>
+                                            </div>
+                                        )}
                                     </div>
+
+                                    {/* <Form
+                                        layout='vertical'
+                                        form={form}
+                                        className='formNewTemplate'
+                                    >
+                                        <AddParameter
+                                            paramaterAdded={paramaterAdded}
+                                            setParamaterAdded={
+                                                setParamaterAdded
+                                            }
+                                        />
+                                    </Form> */}
                                 </Panel>
                             </Collapse>
                         </Sider>
@@ -435,7 +525,7 @@ function paperBatchRecordsTemplate() {
                                 <ImageMapper
                                     className='pdfToImageWrapper'
                                     src={BatchRecordExample}
-                                    map={AREAS_MAP}
+                                    map={areasMap}
                                     onLoad={() => load()}
                                     onClick={(area) => clicked(area)}
                                 />
@@ -469,7 +559,7 @@ function paperBatchRecordsTemplate() {
                                             className='formNewTemplate'
                                         >
                                             <InputField
-                                                value={snippetId}
+                                                value={areasMapObject.snippetID}
                                                 label='Snippet ID'
                                                 placeholder='Enter Snippet ID'
                                                 onChangeInput={(e) => {
@@ -480,7 +570,7 @@ function paperBatchRecordsTemplate() {
                                                 }}
                                             />
                                             <InputField
-                                                value={areaValue}
+                                                value={areasMapObject.areaValue}
                                                 label='Key 1'
                                                 placeholder='Enter Key 1'
                                                 onChangeInput={(e) => {
@@ -492,7 +582,9 @@ function paperBatchRecordsTemplate() {
                                             />
                                             <div className='secondary-flexBox'>
                                                 <InputField
-                                                    value={coordLeftX}
+                                                    value={
+                                                        areasMapObject.coords[0]
+                                                    }
                                                     label='X1'
                                                     placeholder='Enter Value'
                                                     onChangeInput={(e) => {
@@ -500,7 +592,9 @@ function paperBatchRecordsTemplate() {
                                                     }}
                                                 />
                                                 <InputField
-                                                    value={coordLeftY}
+                                                    value={
+                                                        areasMapObject.coords[1]
+                                                    }
                                                     label='Y1'
                                                     placeholder='Enter Value'
                                                     onChangeInput={(e) => {
@@ -510,7 +604,9 @@ function paperBatchRecordsTemplate() {
                                             </div>
                                             <div className='secondary-flexBox'>
                                                 <InputField
-                                                    value={coordRightX}
+                                                    value={
+                                                        areasMapObject.coords[2]
+                                                    }
                                                     label='X2'
                                                     placeholder='Enter Value'
                                                     onChangeInput={(e) => {
@@ -518,7 +614,9 @@ function paperBatchRecordsTemplate() {
                                                     }}
                                                 />
                                                 <InputField
-                                                    value={coordRightY}
+                                                    value={
+                                                        areasMapObject.coords[3]
+                                                    }
                                                     label='Y2'
                                                     placeholder='Enter Value'
                                                     onChangeInput={(e) => {
@@ -528,7 +626,9 @@ function paperBatchRecordsTemplate() {
                                             </div>
                                             <div className='secondary-flexBox'>
                                                 <InputField
-                                                    value={areaValue}
+                                                    value={
+                                                        areasMapObject.areaValue
+                                                    }
                                                     label='Area'
                                                     placeholder='Enter Value'
                                                     onChangeInput={(e) => {
@@ -577,4 +677,4 @@ function paperBatchRecordsTemplate() {
     );
 }
 
-export default paperBatchRecordsTemplate;
+export default PaperBatchRecordsTemplate;
