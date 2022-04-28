@@ -14,6 +14,7 @@ import moment from 'moment';
 import { dispatch } from 'd3';
 import { showNotification,showLoader,hideLoader } from '../../../duck/actions/commonActions';
 import { useDispatch } from 'react-redux';
+import './tableStyles.scss'
 
 // 
 
@@ -36,9 +37,8 @@ export default function scheduledAlertsTable(props) {
             'x-access-token': login_response.token ? login_response.token : '',
             'resource-name': 'DASHBOARD',
         };
-        let req = { app_type: props.app_type };
+        let req = { app_type: props.appType,app_id: props.id };
         let get_response = await getJob(req, request_headers)
-        console.log(get_response)
         try {
             if (get_response.Data) {
                 setData(get_response.Data)
@@ -87,7 +87,7 @@ export default function scheduledAlertsTable(props) {
             dataIndex: 'action',
             render: (text, record) =>
             (
-                <Popconfirm onConfirm={() => DeleteJob(record)}>
+                <Popconfirm  title={`Are you Sure you want to delete the ${record.dag_id}?`} onConfirm={() => DeleteJob(record)}>
                     <DeleteTwoTone twoToneColor="red" />
                 </Popconfirm>
             )
@@ -96,9 +96,9 @@ export default function scheduledAlertsTable(props) {
             title: 'Job ID',
             key: 'job_id',
             dataIndex: 'job_id',
-            render: (text) =>
+            render: (text,record) =>
             (
-                <u><a>{text}</a></u>
+                <u><a onClick={()=>props.changeActiveTab('1',record.dag_id)}>{text}</a></u>
             )
         },
         {
@@ -129,11 +129,13 @@ export default function scheduledAlertsTable(props) {
         },
     ]
     return (
+        <div className="schedule-table">
         <Table
             bordered={false}
             columns={columns}
             dataSource={data}
             pagination={{ pageSize: 5 }}
         />
+        </div>
     )
 }

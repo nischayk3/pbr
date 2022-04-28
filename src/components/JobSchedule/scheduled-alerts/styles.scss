@@ -44,6 +44,7 @@
     font-size: 16px;
     line-height: 22px;
     color: #262626;
+    margin-top: 20px;
  }
 
  .share-to-workspace
@@ -69,6 +70,7 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 22px;
+    height: 32px;
  }
 
  .clear-schedule
@@ -80,35 +82,58 @@
     line-height: 22px;
     border:0px;
     color: #262626;
+    height: 32px;
 }
 
 .end-dates
 {
   color:#093185;
 }
+.ant-radio-input
+{
+  color : #093185
+}
 
 .day-buttons
 {
 border-radius: 50% !important;
-width: 40px !important;
-height: 40px !important;
+width: 45px !important;
+height: 45px !important;
 background: #EAEAEA !important;
 align-items: center !important;
 margin-left: 10px;
 color: black !important;
 }
+.day-buttons-alert-one
+{
+border-radius: 50% !important;
+width: 45px !important;
+height: 45px !important;
+background: #EAEAEA !important;
+align-items: center !important;
+color: black !important;
+}
+
 
 .selected-day-buttons
 {
 border-radius: 50% !important;
-width: 40px !important;
-height: 40px !important;
+width: 45px !important;
+height: 45px !important;
 background: #486BC9  !important;
 align-items: center !important;
 margin-left: 10px;
 color: white !important;
 }
-
+.selected-day-buttons-alert-one
+{
+border-radius: 50% !important;
+width: 45px !important;
+height: 45px !important;
+background: #486BC9  !important;
+align-items: center !important;
+color: white !important;
+}
 .select-days
 {
   margin-top: 30px;
@@ -273,7 +298,7 @@ margin-left: 10px;
         font-weight:  300;
         font-size: 16px;
         line-height: 19px;
-        color: #343434;
+        color:  #093185;;
         margin-left: 10px;
     }
 }
@@ -339,5 +364,16 @@ font-size: 16px;
 /* identical to box height */
 color: #5B5B5B;
 margin-left: 10px;
-
 }
+.ant-picker-suffix
+{
+  color:#093185;
+  margin-bottom: 2px;
+  .ant-select-selector
+{
+    height: 36px;
+}
+}
+
+
+
