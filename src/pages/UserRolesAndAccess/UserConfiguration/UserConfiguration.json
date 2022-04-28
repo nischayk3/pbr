@@ -1,0 +1,45 @@
+[
+    {
+        "key": 0,
+        "user": "edward@mareana.com",
+        "role": "cmo",
+        "name": "molecule",
+        "value": ["molecule1"],
+        "options": [{"value":"molecule1","label":"MOLECULE 1"},{"value":"molecule2","label":"MOLECULE 2"},{"value":"molecule3","label":"MOLECULE 3"},{"value":"molecule4","label":"MOLECULE 4"}],
+        "site": ["111"],
+        "approved": true,
+        "unapproved": true,
+        "lock_user": true
+    },
+    {
+        "key": 1,
+        "user": "kristine@mareana.com",
+        "role": "admin",
+        "name": "molecule",
+        "value": ["molecule2"],
+        "options": [{"value":"molecule1","label":"MOLECULE 1"},{"value":"molecule2","label":"MOLECULE 2"},{"value":"molecule3","label":"MOLECULE 3"},{"value":"molecule4","label":"MOLECULE 4"}],
+        "site": [
+            "222"
+        ],
+        "approved": true,
+        "unapproved": true,
+        "lock_user": false
+    },
+    {
+        "key": 2,
+        "user": "jennie@mareana.com",
+        "role": "approvar",
+        "name": "molecule",
+        "value": [
+            "molecule3",
+            "molecule5"
+        ],
+        "options": [{"value":"molecule1","label":"MOLECULE 1"},{"value":"molecule2","label":"MOLECULE 2"},{"value":"molecule3","label":"MOLECULE 3"},{"value":"molecule4","label":"MOLECULE 4"}],
+        "site": [
+            "222"
+        ],
+        "approved": true,
+        "unapproved": true,
+        "lock_user": false
+    }
+]

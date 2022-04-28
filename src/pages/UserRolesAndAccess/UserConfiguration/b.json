@@ -1,0 +1,64 @@
+{
+    "data": {
+        "structure": [
+            {
+                "user": {
+                    "label": "User",
+                    "name": "user",
+                    "type": "input",
+                    "editable": true,
+                    "align": "center"
+                }
+            }
+        ],
+        "data": [
+            {
+                "user": {
+                    "type": "input",
+                    "name": "user",
+                    "label": "User",
+                    "value": "john@mareana.com"
+                },
+                "role": {
+                    "type": "select",
+                    "name": "role",
+                    "label": "Role",
+                    "value": "Admin"
+                },
+                "molecule": {
+                    "type": "select_multiple",
+                    "name": "molecule",
+                    "label": "Molecule",
+                    "value": ["Belatacept", "xyz"]
+                },
+                "site": {
+                    "type": "select_multiple",
+                    "name": "site",
+                    "label": "Site",
+                    "value": []
+                },
+                "dataAccess": {
+                    "type": "select_roller",
+                    "name": "dataaccess",
+                    "label": "Data access",
+                    "value": [
+                        {
+                            "name": "approved",
+                            "value": "true"
+                        },
+                        {
+                            "name": "unapproved",
+                            "value": "false"
+                        }
+                    ]
+                },
+                "locked": {
+                    "type": "select_roller",
+                    "name": "locked",
+                    "label": "Locked",
+                    "value": false
+                }
+            }
+        ]
+    }
+}

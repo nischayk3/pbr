@@ -83,3 +83,119 @@
         }
     ]
 }
+
+
+
+"role": {
+    "type": "select",
+    "name": "role",
+    "label": "Role",
+    "value": "cmo",
+    "options": [
+        {
+            "name": "cmo",
+            "value": "CMO"
+        },
+        {
+            "name": "super_user",
+            "value": "Super User"
+        },
+        {
+            "name": "admin",
+            "value": "Admin"
+        }
+    ],
+    "relationships": [
+        {
+            "child": "molecule",
+            "mappings": [
+                {
+                    "parentValue": "cmo",
+                    "childValues": [
+                        {
+                            "name": "molecule1",
+                            "value": "Molecule Name 1"
+                        },
+                        {
+                            "name": "molecule2",
+                            "value": "Molecule Name 2"
+                        }
+                    ]
+                },
+                {
+                    "parentValue": "admin",
+                    "childValues": [
+                        {
+                            "name": "molecule3",
+                            "value": "Molecule Name 3"
+                        },
+                        {
+                            "name": "molecule4",
+                            "value": "Molecule Name 4"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+},
+"molecule": {
+    "type": "select_multiple",
+    "name": "molecule",
+    "label": "Molecule",
+    "options": [
+        {
+            "name": "Belatacept",
+            "value": "Molecule Name 1"
+        },
+        {
+            "name": "xyz",
+            "value": "Molecule Name 2"
+        },
+        {
+            "name": "abc",
+            "value": "Molecule Name 3"
+        }
+    ]
+},
+"site": {
+    "type": "select_multiple",
+    "name": "site",
+    "label": "Site",
+    "value": [],
+    "options": [
+        {
+            "name": "1255",
+            "value": "1255"
+        },
+        {
+            "name": "1708",
+            "value": "1708"
+        },
+        {
+            "name": "1987",
+            "value": "1987"
+        }
+    ]
+},
+"dataAccess": {
+    "type": "select_roller",
+    "name": "dataaccess",
+    "label": "Data access",
+    "value": [
+        {
+            "name": "approved",
+            "value": "true"
+        },
+        {
+            "name": "unapproved",
+            "value": "false"
+        }
+    ]
+},
+"locked": {
+    "type": "select_roller",
+    "name": "locked",
+    "label": "Locked",
+    "value": false
+}
