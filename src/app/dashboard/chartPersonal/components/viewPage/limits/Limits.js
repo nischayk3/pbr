@@ -315,7 +315,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
   const handleSpecAdd = () => {
     specCount.current = specCount.current + 1;
     const newData = {
-      key: specCount,
+      key: specCount.current,
       upper: "",
       lower: "",
       valid_timestamp: "",
