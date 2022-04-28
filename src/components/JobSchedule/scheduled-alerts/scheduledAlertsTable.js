@@ -25,7 +25,7 @@ export default function scheduledAlertsTable(props) {
 
     useEffect(() => {
         getJobs()
-    }, []
+    }, [props.activeTab=='2']
     );
 
     const getJobs = async () => {

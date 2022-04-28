@@ -241,7 +241,7 @@ const alertEvaluation = (props) => {
 
     return (
         <div className="chart-notify">
-            <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={activeTab == 'schedule_evaluation' ? <div style={{ marginRight: '20px' }}>  <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule Evaluation</Button>
+            <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={activeTab == 'schedule_evaluation' ? <div style={{ marginRight: '20px',marginTop:'15px' }}>  <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule Evaluation</Button>
                 <Button className='clear-schedule'>Clear</Button></div> : <></>}>
                 <TabPane tab='Schedule evaluation' key="schedule_evaluation">
                     <div style={{ margin: '24px' }}>
@@ -252,14 +252,23 @@ const alertEvaluation = (props) => {
                         <div style={{ marginTop: '40px' }}>
                             <Row gutter={[16, 24]}>
                                 <Col className='gutter-row' span={4}>
-                                    <div style={{ width: '187px', height: '36px' }} >
-                                        <SelectField
+                                    <div className="select-report-antd" >
+                                    <Select
                                             placeholder='Schedule'
-                                            onChangeSelect={(e) => handleSelectScheduleChange(e)}
-                                            selectList={scheduleList}
                                             value={selectedSchedule}
-                                            defaultValue={'Repeat once'}
-                                        />
+                                            onChange={(e) => handleSelectScheduleChange(e)}
+                                            style={{ width: "100%", margin: "0px" }}
+                                            allowClear={true}
+                                            defaultValue="Repeat Once"
+                                            className="antd-selectors"
+                                        >
+                                            {scheduleList &&
+                                                scheduleList.map((item) => (
+                                                    <Select.Option key={item} value={item}>
+                                                        {item}
+                                                    </Select.Option>
+                                                ))}
+                                        </Select>
                                     </div>
                                 </Col>
                                 <Col className='gutter-row' span={4}>
@@ -344,7 +353,7 @@ const alertEvaluation = (props) => {
                 </TabPane>
 
                 <TabPane tab='Email' key="email" onClick={() => setModal(true)}>
-                    <ChartNotify appType={props.appType} />
+                    <ChartNotify appType={props.appType} id={props.id} />
                 </TabPane>
             </Tabs>
             <Modal visible={modal} footer={false} onCancel={handleModalClose} width="400px" style={{ marginTop: '250px' }}>

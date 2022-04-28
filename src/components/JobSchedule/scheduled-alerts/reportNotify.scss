@@ -14,7 +14,7 @@
     .ant-tabs-nav-wrap
     {
     height:50px;
-    padding: 24px 24px 0px 0px;;
+    padding: 5px 5px 0px 0px;;
     background:none;
     box-shadow: none;
     }
@@ -40,6 +40,10 @@
     line-height: 22px;
     color:#093185 !important;
     }
+    // .ant-tabs-tab .ant-tabs-tab-active
+    // {
+    //     margin-top: 6%;
+    // }
     .ant-tabs-ink-bar 
     {
       background: #093185;
