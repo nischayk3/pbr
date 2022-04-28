@@ -118,6 +118,17 @@ const ChartNotify = (props) => {
     const [scheduleEmailTime, setScheduleEmailTime] = useState('')
     const [frequency, setFrequency] = useState('')
     const [everyDayValue, setEveryDayValue] = useState('')
+    const [png, setPng] = useState(false)
+    const [pdf, setpdf] = useState(false)
+
+
+    const handlePng = (value) => {
+        setPng(!value)
+    }
+    const handlePdf = (value) => {
+        setpdf(!value)
+    }
+
 
 
     const dispatch = useDispatch();
@@ -305,17 +316,17 @@ const ChartNotify = (props) => {
                         <Table style={{ width: '98%' }} dataSource={data} columns={tableColumns} pagination={false} />
 
 
-                    </p>
+                    </p> <br />
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '350px' }}>
                         <p className="email-content">
                             Regards,<br />
                             [variant_username]
                         </p>
 
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', gap: '10px', marginRight: '20px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row', gap: '17px', marginRight: '20px' }}>
                             <p className="email-attach-chart">Select to Attach</p>
-                            <div className="attachment-report-chart"><span><PaperClipOutlined style={{ marginLeft: '20px' }} /></span><span className="attachment-report-text-chart"> Report_name.pdf</span> </div>
-                            <div className="attachment-report-chart"><span><PaperClipOutlined style={{ marginLeft: '40px' }} /></span><span className="attachment-report-text-chart"> Data_table</span></div>
+                            <div className={png ? "attachment-report-chart-select" : "attachment-report-chart"} onClick={() => handlePng(png)} ><span><PaperClipOutlined style={{ marginLeft: '20px', color: png ? 'white' : '' }} /></span><span className={png ? "attachment-report-text-chart-select" : "attachment-report-text-chart"}> Report_name.pdf</span> </div>
+                            <div className={pdf ? "attachment-report-chart-select" : "attachment-report-chart"} onClick={() => handlePdf(pdf)} ><span><PaperClipOutlined style={{ marginLeft: '40px', color: pdf ? 'white' : '' }} /></span><span className={pdf ? "attachment-report-text-chart-select" : "attachment-report-text-chart"}> Data_table</span></div>
                         </div>
                     </div>
                     {/* {emailList.length > 0 && ( */}
@@ -331,13 +342,23 @@ const ChartNotify = (props) => {
                         <div style={{ marginTop: '40px' }}>
                             <Row gutter={[16, 24]}>
                                 <Col className='gutter-row' span={4}>
-                                    <div style={{ width: '187px' }} >
-                                        <SelectField
+                                    <div className="select-report-antd" >
+                                        <Select
                                             placeholder='Schedule'
-                                            onChangeSelect={(e) => handleSelectScheduleChange(e)}
-                                            selectList={scheduleList}
                                             value={selectedSchedule}
-                                            defaultValue={'Repeat Once'} />
+                                            onChange={(e) => handleSelectScheduleChange(e)}
+                                            style={{ width: "100%", margin: "0px" }}
+                                            allowClear={true}
+                                            defaultValue="Repeat Once"
+                                            className="antd-selectors"
+                                        >
+                                            {scheduleList &&
+                                                scheduleList.map((item) => (
+                                                    <Select.Option key={item} value={item}>
+                                                        {item}
+                                                    </Select.Option>
+                                                ))}
+                                        </Select>
                                     </div>
                                 </Col>
                                 <Col className='gutter-row' span={4}>
@@ -355,10 +376,10 @@ const ChartNotify = (props) => {
                                                     <Radio value='Every Day' className='alerts-radio'>Every Day</Radio>
                                                     <Radio value='Every WeekDay' className='alerts-radio'>Every WeekDay</Radio>
                                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '40px', marginRight: '20px',marginTop: '18px' }}>
+                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '40px', marginRight: '20px', marginTop: '18px' }}>
                                                             <InputField value={everyDayValue} onChangeInput={(e) => setEveryDayValues(e.target.value)} className='alerts-radio' />
                                                         </span>
-                                                        <div style={{ width: '100px',marginTop: '18px' }}>
+                                                        <div style={{ width: '100px', marginTop: '18px' }}>
                                                             <SelectField
                                                                 className='alerts-radio'
                                                                 placeholder=''

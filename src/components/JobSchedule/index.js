@@ -58,6 +58,7 @@ const JobSchedule = (props) => {
         setAlertModal(false)
         
     }
+    
 
     return (
         <Modal title={props.app_type !== "REPORT" ? <span className="modal-title">Schedule alert</span> : <span className="modal-title">Notify Report</span>} className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300}  >
@@ -86,7 +87,7 @@ const JobSchedule = (props) => {
                             <a className="view-link" href="https://bms-cpvdev.mareana.com/airflow/login/?next=https%3A%2F%2Fbms-cpvdev.mareana.com%2Fairflow%2Fhome" target="_blank">View More Details</a> <span className='alert-arrow'><ArrowRightOutlined /></span>
                         </div>
                         <div>
-                            <AlertTable appType={props.app_type} id={props.id} changeActiveTab={changeActiveTab} />
+                            <AlertTable appType={props.app_type} id={props.id} changeActiveTab={changeActiveTab}  activeTab={activeTab}/>
                         </div>
                     </div>
                 </TabPane>

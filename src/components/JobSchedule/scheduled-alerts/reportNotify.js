@@ -118,11 +118,25 @@ const ReportNotify = (props) => {
         setSelectedSchedule(data.frequency_unit)
         setScheduleStartDate(data.email_config.scheduled_start)
         setScheduleEmailTime(data.email_config.scheduled_time)
+        setRadioValue(data.email_config.daily_frequency)
+        setSelectedDays(data.email_config.selected_days_obj)
     }
 
     const onClear = () => {
         setEmailList([])
         setSelectedSchedule('')
+        setScheduleStartDate('')
+        setScheduleEmailTime('')
+        setRadioValue('')
+        setSelectedDays({
+            Sunday: false,
+            Monday: false,
+            Tuesday: false,
+            Wednesday: false,
+            Thursday: false,
+            Friday: false,
+            Saturday: false,
+        })
     }
 
     const handleSelectChange = (e) => {
@@ -173,6 +187,8 @@ const ReportNotify = (props) => {
 
         if (selectedSchedule == 'Weekly') {
             email_config['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
+            email_config['selected_days_obj'] = selectedDays;
+
         }
         if (selectedSchedule == "Daily") {
             if (radioValue == 3) {
@@ -249,7 +265,8 @@ const ReportNotify = (props) => {
                     <Select
                         mode="tags"
                         style={{ width: '90%', marginTop: '10px' }}
-                        placeholder={<><span className="email-recipients">Recipients</span>      <span className="email-recipients-report" >(Optional)</span></>}
+                        placeholder={<><span className="email-recipients">Recipients</span>
+                            <span className="email-recipients-report" >(Optional)</span></>}
                         optionLabelProp="label"
                         value={emailList}
                         bordered={false}
@@ -281,7 +298,7 @@ const ReportNotify = (props) => {
                 <TabPane tab='Email schedule' key="email_schedule">
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '300px' }}>
-                            <ClockCircleOutlined style={{ color: "#093185" }} />  <DatePicker style={{ width: '260px' }} placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} defaultValue={moment(scheduleStartDate["Campaign-date"], "YYYY/MM/DD HH:mm")} />
+                            <ClockCircleOutlined style={{ color: "#093185" }} />  <DatePicker style={{ width: '260px' }} placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} defaultValue={scheduleStartDate.length > 0 ? moment(scheduleStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
                             <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                         </div>
                         <div style={{ marginTop: '40px' }}>
@@ -315,7 +332,7 @@ const ReportNotify = (props) => {
                                 </Col>
                                 <Col className='gutter-row' span={4}>
                                     <div >
-                                        <TimePicker style={{ width: '187px', marginLeft: '35px', height: '36px' }} onChange={onChangeEmailTime} />
+                                        <TimePicker style={{ width: '187px', marginLeft: '35px', height: '36px' }} onChange={onChangeEmailTime} defaultValue={scheduleEmailTime.length > 0 ? moment(scheduleEmailTime, "HH:mm:ss") : ''} />
                                     </div>
                                 </Col>
                             </Row>
