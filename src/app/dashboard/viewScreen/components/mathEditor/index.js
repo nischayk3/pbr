@@ -54,9 +54,10 @@ const MathEditor = props => {
 	}, [isLoadView]);
 
 	const addVariable = () => {
+		console.log('add variable');
 		setCardTitle('Select parameters');
 		setRowDisable(false);
-		setVarClick(true);
+
 		setIscheckBox(true);
 	};
 

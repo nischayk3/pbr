@@ -7,8 +7,12 @@
  */
 
 import React, { useState } from 'react';
-import { ArrowLeftOutlined, DownloadOutlined } from '@ant-design/icons';
-import { Tabs } from 'antd';
+import {
+	ArrowLeftOutlined,
+	DownloadOutlined,
+	InboxOutlined,
+} from '@ant-design/icons';
+import { Tabs, Modal, Upload, message, Button } from 'antd';
 import Filter from './genealogyFilter';
 import TreePlot from './TreePlot/TreePlot';
 import batchIcon from '../../../../assets/images/material.png';
@@ -33,6 +37,8 @@ import genealogyLanding from '../../../../assets/images/genealogy-landing.png';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 
 const { TabPane } = Tabs;
+const { Dragger } = Upload;
+
 let initialPanes = [
 	{ title: ' ', content: '', key: '1', closable: false, class: '' },
 ];
@@ -56,6 +62,7 @@ function Genealogy() {
 	const [showView, setShowView] = useState(false);
 	const [nodeType, setNodeType] = useState('');
 	const [limsBatch, setLimsBatch] = useState('');
+	const [isUploadVisible, setIsUploadVisible] = useState(false);
 
 	const dispatch = useDispatch();
 
@@ -133,6 +140,8 @@ function Genealogy() {
 				setIsDrawerRef(false);
 				setNodeType(node.nodeType);
 			}
+		} else if (node.clickType === 'upload_files') {
+			setIsUploadVisible(true);
 		}
 	};
 
@@ -372,6 +381,37 @@ function Genealogy() {
 		setActivateKey(newActiveKey);
 	};
 
+	const files = {
+		name: 'file',
+		multiple: true,
+		action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+		onChange(info) {
+			const { status } = info.file;
+			if (status !== 'uploading') {
+				console.log(info.file, info.fileList);
+			}
+			if (status === 'done') {
+				message.success(`${info.file.name} file uploaded successfully.`);
+			} else if (status === 'error') {
+				message.error(`${info.file.name} file upload failed.`);
+			}
+		},
+		progress: {
+			strokeColor: {
+				'0%': '#108ee9',
+				'100%': '#87d068',
+			},
+			strokeWidth: 3,
+			format: percent => `${parseFloat(percent.toFixed(2))}%`,
+		},
+		onDrop(e) {
+			console.log('Dropped files', e.dataTransfer.files);
+		},
+	};
+
+	const handleCancel = () => {
+		setIsUploadVisible(false);
+	};
 	return (
 		<div className='custom-wrapper'>
 			<BreadCrumbWrapper />
@@ -440,6 +480,33 @@ function Genealogy() {
 								processOutput={processOutput}
 								fileDownload={downloadFile}
 							/>
+							<Modal
+								width={520}
+								visible={isUploadVisible}
+								title='Select Upload file to 35735735'
+								className='file-upload-modal'
+								onCancel={handleCancel}
+								footer={null}>
+								<Dragger {...files}>
+									<p className='ant-upload-drag-icon'>
+										<InboxOutlined />
+									</p>
+									<p className='ant-upload-text'>
+										Click or drag file to this area to upload
+									</p>
+									<p className='ant-upload-hint'>
+										Upload files of PDF or PNG format. You may carry out single
+										or bulk upload. Strictly refrain from uploading company data
+										or other band files
+									</p>
+								</Dragger>
+								<div className='file-upload-section'>
+									<div className='upload-btn'>
+										<Button>Cancel</Button>
+										<Button>Upload</Button>
+									</div>
+								</div>
+							</Modal>
 						</>
 					</TabPane>
 					<TabPane

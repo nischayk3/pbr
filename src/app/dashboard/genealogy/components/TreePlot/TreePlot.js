@@ -1665,6 +1665,13 @@ function TreePlot(props) {
 						}}>
 						View Details
 					</Button>
+					<Button
+						type='primary'
+						onClick={() => {
+							onClickView('upload_files');
+						}}>
+						Upload Files
+					</Button>
 				</div>
 				<div className='genealogy-legends'>
 					<span className='genealogy-legends_icon'>

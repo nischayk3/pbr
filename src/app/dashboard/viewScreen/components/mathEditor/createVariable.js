@@ -3,6 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
 const CreateVariable = props => {
+	console.log('propps create', props);
 	return (
 		<div className={props.className}>
 			{props.title === 'Create Variable' && (

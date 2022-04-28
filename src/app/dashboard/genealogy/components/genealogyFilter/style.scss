@@ -93,3 +93,31 @@
 .popout-table {
 	padding: 24px 26px;
 }
+
+.file-upload-modal {
+	.ant-modal-content {
+		.ant-modal-body {
+			padding: 0px !important;
+		}
+	}
+	.ant-upload-drag-container {
+		padding: 0 16px;
+		.ant-upload-drag-icon {
+			span {
+				color: #093185 !important;
+			}
+		}
+	}
+	.ant-upload-list-item {
+		padding: 30px 75px !important;
+	}
+	.file-upload-section {
+		padding: 10px 15px;
+		.upload-btn {
+			display: flex;
+			flex-direction: row;
+			direction: rtl;
+			gap: 12px;
+		}
+	}
+}

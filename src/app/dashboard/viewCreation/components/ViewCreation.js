@@ -42,10 +42,14 @@ import {
 	getViews,
 } from '../../../../services/viewCreationPublishing';
 import { updateFunction } from '../../../../duck/actions/viewCreationAction';
+import { materialsParameterTree } from '../../../../duck/actions/fileUploadAction';
 import {
+	adHocFileUpload,
 	adHocFilesParameterTree,
-	materialsParameterTree,
-} from '../../../../duck/actions/fileUploadAction';
+	// deleteAdHocFile,
+	// downloadAdhocFile,
+} from '../../../../services/viewCreationPublishing';
+
 import Loading from '../../../../components/Loading';
 import Signature from '../../../../components/ElectronicSignature/signature';
 import queryString from 'query-string';
