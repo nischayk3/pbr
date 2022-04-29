@@ -4,21 +4,24 @@
 
     svg
     {
-        margin-bottom: 5px;
+        margin-bottom:1px;
     }
-    // .ant-tabs-tab 
-    // {
-    //     margin-top : 20px;
-    // }
+  
 .ant-modal-header
 {
 background-color: #F1F7FF !important;
 // border-radius: 4px;
 }
-// .ant-tabs-tab-btn
-// {
-//     margin-top: 10px;
-// }
+.ant-modal-title
+{
+    margin-top: 3px;
+}
+
+.ant-tabs-nav-list
+{
+    padding-top: 10px;
+}
+
 .ant-tabs-nav-wrap
 {
     width: 220px;
@@ -26,6 +29,7 @@ background-color: #F1F7FF !important;
 .view-link {
     color: #093185;
     text-align: center;
+    margin-left: 73%;
   }
   .ant-card-body {
     padding: 12px;
@@ -107,9 +111,24 @@ line-height: 22px;
 .alert-arrow{
 text-decoration-line:underline;
 color: #093185;
+margin-top: 2px;
 }
 
 
+}
+.ant-modal-header
+{
+    height: 50px;
+}
+.modal-title
+{
+    font-family: 'Maven Pro';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 22px;
+    color: rgba(0, 0, 0, 0.85);
+    margin-top: 14px;
 }
 
 }
