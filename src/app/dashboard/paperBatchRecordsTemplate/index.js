@@ -1,3 +1,3 @@
-import PaperBatchRecordsTemplate from './components/PaperBatchRecordsTemplate';
+import PaperBatchRecordsTemplate from './components/paperBatchRecordsTemplate';
 
 export default PaperBatchRecordsTemplate;
