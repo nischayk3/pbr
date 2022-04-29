@@ -1,8 +1,8 @@
-import { Component } from 'react';
-import { Table, Button, Popconfirm, Select, Switch } from 'antd';
-import { EditableRow, EditableCell, deleteRow, addRow, changeInput, changeSelectInput, changeToggleInput } from '../../utils/editableTable'
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-const { Option } = Select;
+import { Component } from 'react'
+import { Table, Button, Popconfirm, Select, Switch } from 'antd'
+import { EditableRow, EditableCell, deleteRow, addRow, changeInput, changeSelectInput, changeToggleInput } from '../../utils/editableTableHelper'
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+const { Option } = Select
 
 class EditableTable extends Component {
     state = {}
@@ -113,7 +113,7 @@ class EditableTable extends Component {
         }
         const columns = this.state.columns.map((column) => {
             if (!column.editable) {
-                return column;
+                return column
             }
 
             return {
@@ -125,7 +125,7 @@ class EditableTable extends Component {
                     title: column.title,
                     onChangeInput: this.onChangeInput,
                 }),
-            };
+            }
         })
 
         return (

@@ -4,6 +4,7 @@ import { Collapse, Select, Button, Row, Col } from 'antd';
 import BreadCrumbWrapper from '../../../components/BreadCrumbWrapper/index'
 import GoBackSubHeader from '../../../components/GoBackSubHeader/GoBackSubHeader';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import classes from '../UserRolesAndAccess.module.scss'
 
 const { Panel } = Collapse;
 const { Option } = Select;

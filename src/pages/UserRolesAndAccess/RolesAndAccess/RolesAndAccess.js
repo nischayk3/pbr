@@ -4,6 +4,7 @@ import BreadCrumbWrapper from '../../../components/BreadCrumbWrapper/index'
 import GoBackSubHeader from '../../../components/GoBackSubHeader/GoBackSubHeader';
 import EditableTable from '../../../components/EditableTable/EditableTable'
 import tableData from './RolesAndAccess.json'
+import classes from '../UserRolesAndAccess.module.scss'
 
 class RolesAndAccess extends React.Component {
     
@@ -13,7 +14,7 @@ class RolesAndAccess extends React.Component {
 
     render() {
         return (
-            <div className='custom-wrapper'>
+            <div className={classes['user-roles-and-access']}>
                 <BreadCrumbWrapper />
                 <GoBackSubHeader currentPage="Roles" />
                 <div style={{ position: 'relative' }}>
