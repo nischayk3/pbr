@@ -7,8 +7,12 @@
   .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
     color: #093185;
   }
+
   .ant-tabs-ink-bar {
     background: #093185;
+  }
+  .ant-tabs-tab:hover {
+    color: #486b69 !important;
   }
   .button-visible {
     p {
