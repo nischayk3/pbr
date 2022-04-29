@@ -40,7 +40,11 @@ class EditableTable extends Component {
                     }
                 case 'toggle':
                     return column.render = (_, record) => {
-                        return <Switch checked={record[column.name]} onChange={selectedValue => this.onChangeToggle(selectedValue, record, column)} />
+                        return <Switch 
+                            checked={record[column.name]} 
+                            checkedChildren={column.toggleTextTrue} 
+                            unCheckedChildren={column.toggleTextFalse}
+                            onChange={selectedValue => this.onChangeToggle(selectedValue, record, column)} />
                     }
                 case 'parent':
                     this.renderTable(column.children)
@@ -129,7 +133,7 @@ class EditableTable extends Component {
         })
 
         return (
-            <>
+            <div className="custom-table-wrapper">
                 <Button
                     onClick={this.onAddRow}
                     type="dashed"
@@ -138,7 +142,7 @@ class EditableTable extends Component {
                 >
                     Add new user
                 </Button>
-                <Button type="primary" onClick={() => this.props.onSaveTable(this.state.dataSource)} style={{ position: 'absolute', right: 0, top: 0 }}>Save</Button>
+                <Button type="primary" onClick={() => this.props.onSaveTable(this.state.dataSource)} style={{ float: 'right' }}>Save</Button>
                 <Table
                     components={components}
                     rowClassName={() => 'editable-row'}
@@ -147,7 +151,7 @@ class EditableTable extends Component {
                     columns={columns}
                     scroll={{ y: 300 }}
                 />
-            </>
+            </div>
         )
     }
 }

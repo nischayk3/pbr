@@ -12,7 +12,7 @@ const GoBackSubHeader = props => {
     }
 
     return (
-        <div className='sub-header' style={{ cursor: 'pointer' }} onClick={goBackOnePage}>
+        <div className='custom-user-roles-sub-header' onClick={goBackOnePage}>
             <div className='sub-header-title'>
                 <ArrowLeftOutlined className='header-icon' /> &nbsp;
                 <span className='header-title' style={{ textTransform: 'none' }}>{props.currentPage}</span>

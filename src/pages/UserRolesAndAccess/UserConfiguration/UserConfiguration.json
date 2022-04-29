@@ -104,7 +104,9 @@
                             "label": "Approved",
                             "align": "center",
                             "dataIndex": "approved",
-                            "title": "Approved"
+                            "title": "Approved",
+                            "toggleTextTrue": "",
+                            "toggleTextFalse": ""
                         },
                         {
                             "type": "toggle",
@@ -112,7 +114,9 @@
                             "label": "Unapproved",
                             "align": "center",
                             "dataIndex": "unapproved",
-                            "title": "Unapproved"
+                            "title": "Unapproved",
+                            "toggleTextTrue": "",
+                            "toggleTextFalse": ""
                         }
                     ]
                 }
@@ -124,7 +128,9 @@
             "label": "Lock User",
             "align": "center",
             "dataIndex": "lock_user",
-            "title": "Lock User"
+            "title": "Lock User",
+            "toggleTextTrue": "",
+            "toggleTextFalse": ""
         }
     ],
     "dataSource": [
