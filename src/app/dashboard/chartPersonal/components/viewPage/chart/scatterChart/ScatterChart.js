@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./ScatterStyles.scss";
 //antd imports
-import { Row, Col, Button, message, Tabs } from "antd";
+import { Row, Col, Button, message, Tabs, Empty } from "antd";
 //components
 import SelectField from "../../../../../../../components/SelectField/SelectField";
 import ScatterPlot from "../../../../../../../components/ScatterPlot/ScatterPlot";
@@ -271,13 +271,17 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
               onChange={tabChange}
             >
               <TabPane tab="Exclusion" key="1">
-                <ExclusionTable
-                  setExclusionTable={setExclusionTable}
-                  exclusionTable={exclusionTable}
-                  postChartData={postChartData}
-                  setPostChartData={setPostChartData}
-                  exclusionIdCounter={exclusionIdCounter}
-                />
+                {exclusionTable.length >= 1 ? (
+                  <ExclusionTable
+                    setExclusionTable={setExclusionTable}
+                    exclusionTable={exclusionTable}
+                    postChartData={postChartData}
+                    setPostChartData={setPostChartData}
+                    exclusionIdCounter={exclusionIdCounter}
+                  />
+                ) : (
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                )}
               </TabPane>
               <TabPane tab="Violation" key="2">
                 <ViolationTable postChartData={postChartData} />

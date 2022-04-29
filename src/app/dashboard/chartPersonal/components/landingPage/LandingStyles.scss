@@ -93,7 +93,7 @@ p {
     width: 230px;
     border-radius: 4px;
     background: #ffffff;
-    border: 1px dashed #d9d9d9;
+    border: 2px dashed #d9d9d9;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -116,7 +116,7 @@ p {
     }
   }
   .create-new:hover {
-    border: 1px dashed #40a9ff;
+    border: 2px dashed #40a9ff;
     p {
       color: #40a9ff;
     }

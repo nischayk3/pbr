@@ -1,20 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./limitsStyles.scss";
 //antd imports
-import {
-  Button,
-  Card,
-  Collapse,
-  Table,
-  Popconfirm,
-  DatePicker,
-  Input,
-} from "antd";
-import {
-  DeleteTwoTone,
-  PlusOutlined,
-  ArrowRightOutlined,
-} from "@ant-design/icons";
+import { Button, Table, Popconfirm, DatePicker, Input } from "antd";
+import { DeleteTwoTone, PlusOutlined } from "@ant-design/icons";
 import { postChartPlotData } from "../../../../../../services/chartPersonalizationService";
 import {
   showLoader,
@@ -78,7 +66,6 @@ const Limits = ({ postChartData, setPostChartData }) => {
     {
       title: "Action",
       dataIndex: "action",
-      width: "20",
       render: (_, record) => (
         <Popconfirm
           title="Sure to delete?"
@@ -92,7 +79,6 @@ const Limits = ({ postChartData, setPostChartData }) => {
       title: "Lower Limit",
       dataIndex: "Lower Limit",
       key: "Lower Limit",
-      width: "20",
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
@@ -111,7 +97,6 @@ const Limits = ({ postChartData, setPostChartData }) => {
       title: "Upper Limit",
       dataIndex: "UL",
       key: "UL",
-      width: "20",
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
@@ -130,7 +115,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
       title: "Valid Until   ",
       dataIndex: "validuntill",
       key: "validuntill",
-      width: "180",
+      // width: "180",
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {

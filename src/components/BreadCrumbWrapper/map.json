@@ -1,11 +1,12 @@
 {
 	"/dashboard/dashboard": "Dashboard",
-	"/dashboard/view_creation_landing": "View creation",
+	"/dashboard/view_creation": "View creation",
 	"/dashboard/view_creation_view": "View creation",
 	"/dashboard/workspace": "Workspace",
 	"/dashboard/report_designer": "Report Designer",
 	"/dashboard/report_generator": "Report Generator",
 	"/dashboard/genealogy": "Genealogy",
+	"/dashboard/chart_personalization": "Process Control Charts",
 	"/dashboard/faq": "Frequently Asked Questions",
 	"/dashboard/appRegister/appList/appDetails": "App Details",
 	"/dashboard/tableRegister": "Table Register",
