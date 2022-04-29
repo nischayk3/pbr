@@ -35,7 +35,7 @@ const ScreenControls = () => {
     }
 
     return (
-        <div className='custom-wrapper'>
+        <div className={classes['user-roles-and-access']}>
             <BreadCrumbWrapper />
             <GoBackSubHeader currentPage="Screen controls" />
 
