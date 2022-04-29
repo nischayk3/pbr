@@ -198,8 +198,8 @@ function PaperBatchRecordsTemplate() {
             let newArr = [...areasMap.areas];
             newArr.forEach((ele, i) => {
                 if (clickedSnippetId === ele.areaValue) {
-                    // (ele.snippetID = obj.snippetID),
-                    //     (ele.areaValue = obj.areaValue);
+                    (ele.snippetID = obj.snippetID),
+                        (ele.areaValue = obj.areaValue);
                     if (field === 'x1') {
                         ele.coords[0] = e.target.value;
                     } else if (field === 'y1') {
