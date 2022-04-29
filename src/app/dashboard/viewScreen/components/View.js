@@ -82,7 +82,7 @@ const ViewCreation = props => {
 	const [approveReject, setApproveReject] = useState("");
 
 	const parameters = queryString.parse(location.search);
-	console.log("parametersss", parameters);
+
 	useEffect(() => {
 		setParamTableData(selectedTableData);
 	}, [selectedTableData]);
@@ -111,6 +111,8 @@ const ViewCreation = props => {
 				view_disp_id: pathString.viewId,
 				view_version: pathString.viewVersion,
 			};
+			setViewDisplayId(pathString.viewId);
+			setViewVersion(pathString.viewVersion);
 			loadView(_reqLoad);
 		}
 	}, []);
@@ -226,17 +228,17 @@ const ViewCreation = props => {
 		try {
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
-
+			
 			Object.entries(loadViewRes).forEach(([key, value], index) => {
-				if (key === 'view_version') {
-					setViewVersion(value);
-				} else if (key === 'material_id') {
-					setMoleculeId(value);
-				} else if (key === 'view_status') {
-					setViewStatus(value);
-				} else if (key === 'view_name') {
-					setViewName(value);
-				}
+				// if (key === 'view_version') {
+				// 	setViewVersion(value);
+				// } else if (key === 'material_id') {
+				// 	setMoleculeId(value);
+				// } else if (key === 'view_status') {
+				// 	setViewStatus(value);
+				// } else if (key === 'view_name') {
+				// 	setViewName(value);
+				// }
 			});
 			setViewJson([loadViewRes]);
 			dispatch(isLoadView(true));
@@ -254,7 +256,7 @@ const ViewCreation = props => {
 	const PublishResponse = (res) => {
 		setPublishResponse(res);
 	};
-
+	
 
 	return (
 		<div className='reportDesigner-container viewCreation-container'>
