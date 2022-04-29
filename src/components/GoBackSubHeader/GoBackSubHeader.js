@@ -5,15 +5,16 @@ const GoBackSubHeader = props => {
     const history = useHistory()
     const location = useLocation()
 
-    const goBackOnePage = () => {
+    const goBackOnePage = e => {
+        e.stopPropagation()
         const { pathname } = location
         const path = pathname.substring(0, pathname.lastIndexOf('/'))
         history.push(path)
     }
 
     return (
-        <div className='custom-user-roles-sub-header' onClick={goBackOnePage}>
-            <div className='sub-header-title'>
+        <div className='custom-user-roles-sub-header'>
+            <div className='sub-header-title' onClick={goBackOnePage}>
                 <ArrowLeftOutlined className='header-icon' /> &nbsp;
                 <span className='header-title' style={{ textTransform: 'none' }}>{props.currentPage}</span>
             </div>

@@ -9,11 +9,8 @@ class EditableTable extends Component {
 
     static getDerivedStateFromProps(props, state) {
         if (!state.dataSource) {
-            return {
-                dataSource: props.tableData.dataSource,
-                count: props.tableData.dataSource.length,
-                rowInitialData: props.tableData.rowInitialData
-            }
+            const { rowInitialData, dataSource, deleteActionColumn } = props.tableData
+            return { rowInitialData, dataSource, count: dataSource.length, deleteActionColumn }
         }
         return null
     }
@@ -24,8 +21,7 @@ class EditableTable extends Component {
 
     initializeTableRender() {
         const columnsCopy = [...this.props.tableData.columns]
-        const columns = this.props.tableData.deleteActionColumn ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
-        console.log(columns)
+        const columns = this.state.deleteActionColumn ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
         adjustColumnWidths(columns)
         this.renderTable(columns)
         this.setState({ columns })

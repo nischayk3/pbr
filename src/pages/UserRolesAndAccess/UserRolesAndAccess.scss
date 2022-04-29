@@ -72,12 +72,16 @@
     background: #F1F7FF;
     margin: 15px 0 0;
     padding: 10px 15px;
+}
+
+.custom-user-roles-sub-header .sub-header-title {
+	width: 25%;
 	cursor: pointer;
 }
 
-.custom-user-roles-sub-header  .header-title {
+.custom-user-roles-sub-header .header-title {
     display: inline-block;
-    border-radius: 4px;
+	word-wrap: normal;
 }
 
 .custom-table-wrapper {

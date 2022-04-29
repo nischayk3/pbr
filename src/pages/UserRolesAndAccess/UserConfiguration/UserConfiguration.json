@@ -41,6 +41,29 @@
             ]
         },
         {
+            "type": "select",
+            "mode": "multiple",
+            "name": "approvar_resource",
+            "label": "Approvar Resource",
+            "align": "center",
+            "dataIndex": "approvar_resource",
+            "title": "Approvar Resource",
+            "options": [
+                {
+                    "label": "Chart",
+                    "value": "chart"
+                },
+                {
+                    "label": "View",
+                    "value": "view"
+                },
+                {
+                    "label": "All",
+                    "value": "all"
+                }
+            ]
+        },
+        {
             "title": "Allowed access to",
             "dataIndex": "allowed_access_to",
             "align": "center",
@@ -54,7 +77,6 @@
                     "align": "center",
                     "dataIndex": "molecule",
                     "title": "Molecule",
-                    "key": "molecule",
                     "options": [
                         {
                             "label": "Molecule 1",
@@ -139,6 +161,7 @@
             "key": 0,
             "user": "edward@mareana.com",
             "role": "cto",
+            "approvar_resource": ["chart", "view"],
             "molecule": [
                 "mol1",
                 "mol3"
@@ -154,6 +177,7 @@
             "key": 1,
             "user": "kristine@mareana.com",
             "role": "admin",
+            "approvar_resource": ["view"],
             "molecule": [
                 "mol2"
             ],
@@ -168,6 +192,7 @@
             "key": 2,
             "user": "jennie@mareana.com",
             "role": "approvar",
+            "approvar_resource": ["all"],
             "molecule": [
                 "mol4"
             ],
@@ -180,9 +205,10 @@
         }
     ],
     "rowInitialData": {
-        "key": 4,
-        "user": " ",
+        "key": null,
+        "user": "username@gmail.com",
         "role": "",
+        "approvar_resource": [],
         "molecule": [],
         "site": [],
         "approved": false,

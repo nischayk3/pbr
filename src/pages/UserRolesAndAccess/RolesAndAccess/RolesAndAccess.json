@@ -1,39 +1,13 @@
 {
     "columns": [
         {
-            "type": "select",
-            "mode": "single",
+            "type": "input",
             "name": "roles",
             "label": "Roles",
             "align": "center",
+            "editable": true,
             "dataIndex": "roles",
-            "title": "Roles",
-            "options": [
-                {
-                    "label": "CMO",
-                    "value": "cmo"
-                },
-                {
-                    "label": "CEO",
-                    "value": "ceo"
-                },
-                {
-                    "label": "CTO",
-                    "value": "cto"
-                },
-                {
-                    "label": "Admin",
-                    "value": "admin"
-                },
-                {
-                    "label": "Approvar",
-                    "value": "approvar"
-                },
-                {
-                    "label": "User",
-                    "value": "user"
-                }
-            ]
+            "title": "Roles"
         },
         {
             "type": "select",
@@ -100,29 +74,29 @@
     "dataSource": [
         {
             "key": 0,
-            "roles": "cmo",
+            "roles": "CMO",
             "resources": ["chart"],
             "visibility": ["approved"],
             "access": ["read"]
         },
         {
             "key": 1,
-            "roles": "admin",
+            "roles": "Admin",
             "resources": ["report"],
             "visibility": ["draft"],
             "access":["main"]
         },
         {
             "key": 2,
-            "roles": "user",
+            "roles": "User",
             "resources": ["chart"],
             "visibility":[ "awaiting_approval"],
             "access": ["read"]
         }
     ],
     "rowInitialData": {
-        "key": 4,
-        "roles": "",
+        "key": null,
+        "roles": "Dummy Role",
         "resources": [],
         "visibility": [],
         "access": []
