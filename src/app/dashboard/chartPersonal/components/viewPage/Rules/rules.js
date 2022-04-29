@@ -162,7 +162,12 @@ const rules = ({ postChartData, setPostChartData }) => {
       {Object.keys(ruleList).length === 0 && <Skeleton />}
       {Object.keys(ruleList).length !== 0 && (
         <>
-          <Collapse expandIconPosition="left" ghost className="collapse-rule">
+          <Collapse
+            expandIconPosition="left"
+            style={{ textTransform: "capitalize" }}
+            ghost
+            className="collapse-rule"
+          >
             {Object.entries(ruleList).map(([key, value]) => {
               return (
                 <Panel header={`${key} RULE`} key={key} className="panel-rule">
