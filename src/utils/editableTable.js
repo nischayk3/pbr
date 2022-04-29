@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Input, Form } from 'antd';
 
-const EditableContext = React.createContext(null);
+const EditableContext = React.createContext(null)
 
 export const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
@@ -90,10 +90,9 @@ export const deleteRow = (key, state) => {
   return { dataSource, count }
 }
 
-export const addRow = (newRowData, state) => {
-  let { count, dataSource } = state
-  newRowData.count = count
-  dataSource = [newRowData, ...dataSource]
+export const addRow = state => {
+  let { dataSource, rowInitialData, count } = JSON.parse(JSON.stringify(state))
+  dataSource.unshift(rowInitialData)
   count++
   return { dataSource, count }
 }
@@ -106,9 +105,18 @@ export const changeInput = (row, state) => {
   return dataSource
 }
 
-export const changeSelectInput = (value, record, type, state) => {
+export const changeSelectInput = (value, record, column, state) => {
   const dataSource = JSON.parse(JSON.stringify(state.dataSource))
   const index = dataSource.findIndex(item => record.key === item.key)
-  dataSource[index][type] = value
+  const name = column.name
+  dataSource[index][name] = value
+  return dataSource
+}
+
+export const changeToggleInput = (value, record, column, state) => {
+  const dataSource = JSON.parse(JSON.stringify(state.dataSource))
+  const index = dataSource.findIndex(item => record.key === item.key)
+  const name = column.name
+  dataSource[index][name] = value
   return dataSource
 }

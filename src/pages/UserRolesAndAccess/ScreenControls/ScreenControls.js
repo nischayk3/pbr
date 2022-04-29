@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Collapse, Select, Button, Row, Col } from 'antd';
 
 import BreadCrumbWrapper from '../../../components/BreadCrumbWrapper/index'
-import GoBack from '../../../components/GoBack/GoBack';
+import GoBackSubHeader from '../../../components/GoBackSubHeader/GoBackSubHeader';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
@@ -36,7 +36,7 @@ const ScreenControls = () => {
     return (
         <div className='custom-wrapper'>
             <BreadCrumbWrapper />
-            <GoBack currentPage="Screen controls" />
+            <GoBackSubHeader currentPage="Screen controls" />
 
             <Collapse defaultActiveKey={['1']} expandIconPosition="right">
                 <Panel header="User" key="1">

@@ -1,22 +1,51 @@
 import { Component } from 'react';
-import { Table, Button, Popconfirm } from 'antd';
-import { EditableRow, EditableCell, deleteRow, addRow, changeInput, changeSelectInput } from '../../utils/editableTable'
+import { Table, Button, Popconfirm, Select, Switch } from 'antd';
+import { EditableRow, EditableCell, deleteRow, addRow, changeInput, changeSelectInput, changeToggleInput } from '../../utils/editableTable'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Select } from 'antd';
+const { Option } = Select;
 
 class EditableTable extends Component {
     state = {}
 
     static getDerivedStateFromProps(props, state) {
         if (!state.dataSource) {
-            return { dataSource: props.dataSource, count: props.dataSource.length }
+            return {
+                dataSource: props.tableData.dataSource,
+                count: props.tableData.dataSource.length,
+                rowInitialData: props.tableData.rowInitialData
+            }
         }
         return null
     }
 
     componentDidMount() {
-        const columns = this.addDeleteActionColumn([...this.props.columns])
+       this.initializeTableRender()
+    }
+
+    initializeTableRender() {
+        const columnsCopy = [...this.props.tableData.columns]
+        const columns = this.props.tableData.deleteActionColumn ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
+        this.renderTable(columns)
         this.setState({ columns })
+    }
+
+    renderTable = (columns) => {
+        columns.forEach(column => {
+            switch (column.type) {
+                case 'select':
+                    return column.render = (_, record) => {
+                        return <Select value={record[column.name]} onChange={selectedValue => this.onChangeSelect(selectedValue, record, column)} style={{ width: 120 }} mode={column.mode}>
+                            {column.options.map(option => <Option key={option.value} value={option.value}>{option.label}</Option>)}
+                        </Select>
+                    }
+                case 'toggle':
+                    return column.render = (_, record) => {
+                        return <Switch checked={record[column.name]} onChange={selectedValue => this.onChangeToggle(selectedValue, record, column)} />
+                    }
+                case 'parent':
+                    this.renderTable(column.children)
+            }
+        })
     }
 
     addDeleteActionColumn = columns => {
@@ -50,22 +79,10 @@ class EditableTable extends Component {
     }
 
     onAddRow = () => {
-        const newRowData = {
-            user: 'not_edward@mareana.com',
-            role: 'cmo',
-            molecule: ['molecule1'],
-            site: ['111'],
-            approved: true,
-            unapproved: true,
-            lock_user: true
-        }
-        const { dataSource, count } = addRow(newRowData, this.state)
-        this.setState({ dataSource, count })
-    }
-
-    onChangeSelect = (selectedValue, record, type) => {
-        const dataSource = changeSelectInput(selectedValue, record, type, this.state)
-        this.setState({ dataSource })
+        const { dataSource, count } = addRow(this.state)
+        this.setState({ dataSource, count }, () => {
+            this.initializeTableRender()
+        })
     }
 
     onChangeInput = row => {
@@ -73,29 +90,39 @@ class EditableTable extends Component {
         this.setState({ dataSource })
     }
 
+    onChangeSelect = (selectedValue, record, column) => {
+        const dataSource = changeSelectInput(selectedValue, record, column, this.state)
+        this.setState({ dataSource })
+    }
+
+    onChangeToggle = (selectedValue, record, column) => {
+        const dataSource = changeToggleInput(selectedValue, record, column, this.state)
+        this.setState({ dataSource })
+    }
+
     render() {
         if (!this.state.dataSource || !this.state.columns) {
             return null
         }
-        const { dataSource } = this.state;
+        const { dataSource } = this.state
         const components = {
             body: {
                 row: EditableRow,
                 cell: EditableCell,
             },
         }
-        const columns = this.state.columns.map((col) => {
-            if (!col.editable) {
-                return col;
+        const columns = this.state.columns.map((column) => {
+            if (!column.editable) {
+                return column;
             }
 
             return {
-                ...col,
+                ...column,
                 onCell: (record) => ({
                     record,
-                    editable: col.editable,
-                    dataIndex: col.dataIndex,
-                    title: col.title,
+                    editable: column.editable,
+                    dataIndex: column.dataIndex,
+                    title: column.title,
                     onChangeInput: this.onChangeInput,
                 }),
             };
@@ -118,6 +145,7 @@ class EditableTable extends Component {
                     bordered
                     dataSource={dataSource}
                     columns={columns}
+                    scroll={{ y: 300 }}
                 />
             </>
         )

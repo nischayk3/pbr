@@ -1,45 +1,186 @@
-[
-    {
-        "key": 0,
-        "user": "edward@mareana.com",
-        "role": "cmo",
-        "name": "molecule",
-        "value": ["molecule1"],
-        "options": [{"value":"molecule1","label":"MOLECULE 1"},{"value":"molecule2","label":"MOLECULE 2"},{"value":"molecule3","label":"MOLECULE 3"},{"value":"molecule4","label":"MOLECULE 4"}],
-        "site": ["111"],
-        "approved": true,
-        "unapproved": true,
-        "lock_user": true
-    },
-    {
-        "key": 1,
-        "user": "kristine@mareana.com",
-        "role": "admin",
-        "name": "molecule",
-        "value": ["molecule2"],
-        "options": [{"value":"molecule1","label":"MOLECULE 1"},{"value":"molecule2","label":"MOLECULE 2"},{"value":"molecule3","label":"MOLECULE 3"},{"value":"molecule4","label":"MOLECULE 4"}],
-        "site": [
-            "222"
-        ],
-        "approved": true,
+{
+    "columns": [
+        {
+            "type": "input",
+            "name": "user",
+            "label": "User",
+            "align": "center",
+            "editable": true,
+            "dataIndex": "user",
+            "title": "User"
+        },
+        {
+            "type": "select",
+            "mode": "single",
+            "name": "role",
+            "label": "Role",
+            "align": "center",
+            "dataIndex": "role",
+            "title": "Role",
+            "options": [
+                {
+                    "label": "CMO",
+                    "value": "cmo"
+                },
+                {
+                    "label": "CEO",
+                    "value": "ceo"
+                },
+                {
+                    "label": "CTO",
+                    "value": "cto"
+                },
+                {
+                    "label": "Admin",
+                    "value": "admin"
+                },
+                {
+                    "label": "Approvar",
+                    "value": "approvar"
+                }
+            ]
+        },
+        {
+            "title": "Allowed access to",
+            "dataIndex": "allowed_access_to",
+            "align": "center",
+            "type": "parent",
+            "children": [
+                {
+                    "type": "select",
+                    "mode": "multiple",
+                    "name": "molecule",
+                    "label": "Molecule",
+                    "align": "center",
+                    "dataIndex": "molecule",
+                    "title": "Molecule",
+                    "key": "molecule",
+                    "options": [
+                        {
+                            "label": "Molecule 1",
+                            "value": "mol1"
+                        },
+                        {
+                            "label": "Molecule 2",
+                            "value": "mol2"
+                        },
+                        {
+                            "label": "Molecule 3",
+                            "value": "mol3"
+                        },
+                        {
+                            "label": "Molecule 4",
+                            "value": "mol4"
+                        }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "mode": "multiple",
+                    "name": "site",
+                    "label": "Site",
+                    "align": "center",
+                    "dataIndex": "site",
+                    "title": "Site",
+                    "options": [
+                        {
+                            "label": "Site 1",
+                            "value": "111"
+                        },
+                        {
+                            "label": "Site 2",
+                            "value": "222"
+                        }
+                    ]
+                },
+                {
+                    "title": "Data Access",
+                    "dataIndex": "data_access",
+                    "type": "parent",
+                    "children": [
+                        {
+                            "type": "toggle",
+                            "name": "approved",
+                            "label": "Approved",
+                            "align": "center",
+                            "dataIndex": "approved",
+                            "title": "Approved"
+                        },
+                        {
+                            "type": "toggle",
+                            "name": "unapproved",
+                            "label": "Unapproved",
+                            "align": "center",
+                            "dataIndex": "unapproved",
+                            "title": "Unapproved"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "toggle",
+            "name": "lock_user",
+            "label": "Lock User",
+            "align": "center",
+            "dataIndex": "lock_user",
+            "title": "Lock User"
+        }
+    ],
+    "dataSource": [
+        {
+            "key": 0,
+            "user": "edward@mareana.com",
+            "role": "cto",
+            "molecule": [
+                "mol1",
+                "mol3"
+            ],
+            "site": [
+                "111"
+            ],
+            "approved": false,
+            "unapproved": true,
+            "lock_user": false
+        },
+        {
+            "key": 1,
+            "user": "kristine@mareana.com",
+            "role": "admin",
+            "molecule": [
+                "mol2"
+            ],
+            "site": [
+                "222"
+            ],
+            "approved": true,
+            "unapproved": true,
+            "lock_user": false
+        },
+        {
+            "key": 2,
+            "user": "jennie@mareana.com",
+            "role": "approvar",
+            "molecule": [
+                "mol4"
+            ],
+            "site": [
+                "222"
+            ],
+            "approved": true,
+            "unapproved": true,
+            "lock_user": false
+        }
+    ],
+    "rowInitialData": {
+        "key": 4,
+        "user": "dummy@email.com",
+        "role": "",
+        "molecule": [],
+        "site": [],
+        "approved": false,
         "unapproved": true,
         "lock_user": false
     },
-    {
-        "key": 2,
-        "user": "jennie@mareana.com",
-        "role": "approvar",
-        "name": "molecule",
-        "value": [
-            "molecule3",
-            "molecule5"
-        ],
-        "options": [{"value":"molecule1","label":"MOLECULE 1"},{"value":"molecule2","label":"MOLECULE 2"},{"value":"molecule3","label":"MOLECULE 3"},{"value":"molecule4","label":"MOLECULE 4"}],
-        "site": [
-            "222"
-        ],
-        "approved": true,
-        "unapproved": true,
-        "lock_user": false
-    }
-]
+    "deleteActionColumn": true
+}

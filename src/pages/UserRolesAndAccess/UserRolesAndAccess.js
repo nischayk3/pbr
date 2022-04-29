@@ -7,7 +7,7 @@ import headerImage from '../../assets/images/ChartBanner.svg';
 import ScreenAccessImage from '../../assets/images/Screen_Controls.svg'
 import RolesAndAccessImage from '../../assets/images/Roles_And_Access.svg'
 import UserConfigurationImage from '../../assets/images/User_Configuration.svg'
-import './UserRolesAndAccess.scss';
+import classes from './UserRolesAndAccess.module.scss';
 
 const UserRolesAndAccess = () => {
     const history = useHistory()
@@ -26,21 +26,21 @@ const UserRolesAndAccess = () => {
                 sourceClass='dashboard-image'
             />
 
-            <Row className='create-new-row'>
+            <Row className={classes['create-new-row']}>
                 <Col span={4} onClick={() => redirectTo('user-configuration')}>
-                    <div className='create-new'>
+                    <div className={classes['create-new']}>
                         <img src={UserConfigurationImage} alt="UserConfiguration" width="98%" />
                     </div>
                     <p>User Configuration</p>
                 </Col>
                 <Col span={4} onClick={() => redirectTo('roles-and-access')}>
-                    <div className='create-new'>
+                    <div className={classes['create-new']}>
                         <img src={RolesAndAccessImage} alt="RolesAndAccess" width="98%" />
                     </div>
                     <p>Roles And Access</p>
                 </Col>
                 <Col span={4} onClick={() => redirectTo('screen-controls')}>
-                    <div className='create-new'>
+                    <div className={classes['create-new']}>
                         <img src={ScreenAccessImage} alt="ScreenAccessControls" width="98%" />
                     </div>
                     <p>Screen Controls</p>
