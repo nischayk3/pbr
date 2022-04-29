@@ -232,6 +232,14 @@ const ViewChart = (props, ref) => {
                     //dash_info.panels[i] = Object.assign({}, res, { chartLayout: chartLayout }, dash_info.panels[i]);
                     el.chartLayout = chartLayout
                     el.data = res.data
+                    //el.data[0].data[0].marker.color=[...el.data[0].data[0].text].fill("green")
+                    el.data[0].data = el.data[0].data.map((item, index) => {
+                        if (item.mode === 'markers') {
+                            item.marker.defaultColor = item.marker.color;
+                            item.marker.color = [...item.text].fill(item.marker.color)
+                        }
+                        return item;
+                    })
                     //setTempPanels(dash_info.panels);
 
                 })
@@ -653,6 +661,36 @@ const ViewChart = (props, ref) => {
         setTempCard(obj);
     }
 
+    const onPointSelected = (data) => {
+        console.log(data);
+        if (data && data.points) {
+            let points = data.points.map((item, index) => item.text);
+            let panels = JSON.parse(JSON.stringify(tempPanels));
+            points && points.map((point) => {
+                panels.map((el, i) => {
+                    el.data[0].data = el.data[0].data.map((item, k) => {
+                        if (item.mode === 'markers') {
+                            let pointIndex = item.text.findIndex(x => x == point);
+                            if (pointIndex >= 0) {
+                                item.marker.color[pointIndex] = 'green'
+
+                            }
+                            item.selectedpoints = null;
+
+                        }
+                        return item;
+                    })
+
+                })
+
+                setTempPanels(panels);
+
+            })
+        }
+
+    }
+
+
 
     console.log("temp", tempPanels)
     console.log("dashInfo", dashboardInfo)
@@ -787,8 +825,8 @@ const ViewChart = (props, ref) => {
                             className='global-filters-params'
                             onChange={onChangeEnd}
                             value={dashboardInfo?.data_filter?.date_range?.split("/")[1] ? moment(dashboardInfo?.data_filter?.date_range?.split("/")[1], "YYYY-MM-DD") : ''}
-                            style={{ height: '34px' }} 
-                            />
+                            style={{ height: '34px' }}
+                        />
 
                         {/* <RangePicker onChange={(e,value)=>handleDateChangeGlobal(e,value)}
                              value={
@@ -804,7 +842,7 @@ const ViewChart = (props, ref) => {
 
 
 
-                        <Select placeholder="Exploration controls" className='global-filters-params' style={{height:'34px'}}  onChange={(value) => handleGlobalDropdownChange(value, 'Exploration Controls')}>
+                        <Select placeholder="Exploration controls" className='global-filters-params' style={{ height: '34px' }} onChange={(value) => handleGlobalDropdownChange(value, 'Exploration Controls')}>
                             <Option value='Ph'>PH
                                 <Slider range defaultValue={[20, 50]} />
                             </Option>
@@ -834,6 +872,7 @@ const ViewChart = (props, ref) => {
 
                 <Row gutter={[16, 24]} className='chart-row'>
                     {tempPanels.map((el, index) => {
+                        console.log("indise ", el)
                         return (
                             <Col className="gutter-row" span={12} style={{ padding: '1px 22px' }}>
                                 <div className='chartCard' style={{ border: isEditable == index ? '2px solid #486BC9' : '2px solid #D9D9D9' }}>
@@ -928,7 +967,8 @@ const ViewChart = (props, ref) => {
                                             <Plot
                                                 data={el.data && el?.data[0]?.data}
                                                 layout={el.chartLayout && el?.chartLayout}
-                                               
+                                                onSelected={(data) => onPointSelected(data)}
+
                                             />
                                             {/* <Plot
                                                 data={tempPanels[index]?.data && tempPanels[index]?.data[0]?.data}

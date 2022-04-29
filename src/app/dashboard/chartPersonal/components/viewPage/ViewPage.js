@@ -58,6 +58,7 @@ const ViewPage = () => {
   const location = useLocation();
 
   const params = queryString.parse(location.search);
+  console.log("parametersss", params);
 
   const callback = (key) => {};
 
@@ -259,7 +260,7 @@ const ViewPage = () => {
       <Modal
         title="Schedule Alert"
         className="schedule-modal"
-        visible={alertModal}
+        visible={false}
         onCancel={handleCancel}
         footer={false}
         width={1300}
@@ -304,9 +305,9 @@ const ViewPage = () => {
       </Modal>
       <JobSchedule
         visible={alertModal}
-        app_type="Chart"
+        app_type="CHART"
         handleCancel={handleCancel}
-        id={"reportId"}
+        id={postChartData.data && postChartData.data[0].chart_id}
       />
       <Signature
         isPublish={isPublish}
