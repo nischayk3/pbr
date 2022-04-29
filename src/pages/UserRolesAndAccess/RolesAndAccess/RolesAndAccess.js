@@ -7,8 +7,8 @@ import tableData from './RolesAndAccess.json'
 
 class RolesAndAccess extends React.Component {
 
-    onSaveRolesAndAccess = () => {
-        console.log(this.state)
+    onSaveRolesAndAccess = data => {
+        console.log(data)
     }
 
     render() {
