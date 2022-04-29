@@ -40,7 +40,7 @@ class EditableTable extends Component {
                                     value={record[column.name]} 
                                     mode={column.mode}
                                     style={{ width: '100%' }} 
-                                    onChange={selectedValue => this.onChangeSelect(selectedValue, record, column)} >
+                                    onChange={selectedValue => this.onChangeSelect(selectedValue, record, column)}>
                             {column.options.map(option => <Option key={option.value} value={option.value}>{option.label}</Option>)}
                         </Select>
                     }
@@ -127,7 +127,7 @@ class EditableTable extends Component {
                     editable: column.editable,
                     dataIndex: column.dataIndex,
                     title: column.title,
-                    onChangeInput: this.onChangeInput,
+                    onChangeInput: this.onChangeInput
                 }),
             }
         })

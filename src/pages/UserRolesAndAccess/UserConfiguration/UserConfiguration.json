@@ -181,7 +181,7 @@
     ],
     "rowInitialData": {
         "key": 4,
-        "user": "dummy@email.com",
+        "user": " ",
         "role": "",
         "molecule": [],
         "site": [],
