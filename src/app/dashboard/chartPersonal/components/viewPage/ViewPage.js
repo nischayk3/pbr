@@ -12,6 +12,7 @@ import {
   ArrowRightOutlined,
 } from "@ant-design/icons";
 //components
+import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import ViewChart from "./viewChart/ViewChart";
 import Limits from "./limits/Limits";
 import Display from "./display/Display";
@@ -151,16 +152,6 @@ const ViewPage = () => {
     }
   };
 
-  //menu for dropdown
-  const menu = (
-    <Menu>
-      <Menu.Item key="1" onClick={() => saveAs("saveas")}>
-        Save As
-      </Menu.Item>
-      <Menu.Item key="2">Share</Menu.Item>
-    </Menu>
-  );
-
   const backToLanding = () => {
     const url = match.url.substring(0, match.url.length - 2);
     history.push(url);
@@ -178,11 +169,7 @@ const ViewPage = () => {
   return (
     <div className="custom-wrapper">
       <div className="sub-header">
-        <div className="sub-header-title">
-          <ArrowLeftOutlined className="header-icon" onClick={backToLanding} />{" "}
-          &nbsp;
-          <span className="header-title">Process Control Charts</span>
-        </div>
+        <BreadCrumbWrapper />
         <div className="btns">
           {Object.keys(params).length > 0 ? (
             <>
@@ -204,10 +191,12 @@ const ViewPage = () => {
               </Button>
             </>
           ) : (
-            <>
+            <div>
+              <Button>Share</Button>
               <Button onClick={() => setAlertModal(true)}>
                 Schedule Alert
               </Button>
+              <Button onClick={() => saveAs("saveas")}>Save As</Button>
               <Button onClick={() => saveAs("save")}>Save</Button>
               <Button
                 onClick={() => {
@@ -219,11 +208,8 @@ const ViewPage = () => {
                 <CloudUploadOutlined />
                 Publish
               </Button>
-            </>
+            </div>
           )}
-          <Dropdown overlay={menu}>
-            <MoreOutlined />
-          </Dropdown>
         </div>
       </div>
       <div className="custom-content-layout">

@@ -45,6 +45,7 @@ const DataTable = ({ postChartData }) => {
         pagination={false}
         scroll={{ y: 350 }}
         dataSource={dataTable}
+        rowKey={(record) => record.batch_num}
       />
     </div>
   );
