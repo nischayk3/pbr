@@ -104,6 +104,12 @@ const MENU = [
         linkTo: '/dashboard/dashboard',
     },
     {
+        key: 'paper batch records',
+        icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+        title: 'Paper Batch Records',
+        linkTo: '/dashboard/paper_batch_records',
+    },
+    {
         key: 'hierarchy',
         icon: <AppstoreOutlined style={{ fontSize: '23px' }} />,
         title: 'Hierarchy',
