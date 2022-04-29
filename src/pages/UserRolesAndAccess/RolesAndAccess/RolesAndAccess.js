@@ -17,12 +17,7 @@ class RolesAndAccess extends React.Component {
                 <BreadCrumbWrapper />
                 <div className='custom-user-roles-wrapper'>
                     <GoBackSubHeader currentPage="Roles" />
-                    <div style={{ position: 'relative' }}>
-                        <EditableTable
-                            tableData={tableData}
-                            onSaveTable={this.onSaveRolesAndAccess}
-                        />
-                    </div>
+                    <EditableTable tableData={tableData} onSaveTable={this.onSaveRolesAndAccess} />
                 </div>
             </>
         );

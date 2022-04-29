@@ -17,12 +17,7 @@ class UserConfiguration extends React.Component {
         <BreadCrumbWrapper />
         <div className="custom-user-roles-wrapper">
           <GoBackSubHeader currentPage="User configuration" />
-          <div style={{ position: 'relative' }}>
-            <EditableTable
-              tableData={tableData}
-              onSaveTable={this.onSaveUserConfiguration}
-            />
-          </div>
+          <EditableTable tableData={tableData} onSaveTable={this.onSaveUserConfiguration} />
         </div>
       </>
     );
