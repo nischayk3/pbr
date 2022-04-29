@@ -9,10 +9,13 @@ import { HomeOutlined } from "@ant-design/icons";
 
 const BreadCrumbWrapper = (props) => {
   const location = useLocation();
-  const { id } = useParams();
-  if (props.screenName === "chart_personalization") {
-    breadcrumbNameMap[`/dashboard/chart_personalization/${id}`] =
-      Number(id) === 0 ? "Untitled" : id;
+  if (props.urlName) {
+    breadcrumbNameMap[props.urlName] =
+      Number(props.value) === 0
+        ? props.data
+          ? props.data
+          : "Untitled"
+        : props.value;
   }
   const pathSnippets = location.pathname.split("/").filter((i) => i);
   const extraBreadcrumbItems = pathSnippets.map((_, index) => {

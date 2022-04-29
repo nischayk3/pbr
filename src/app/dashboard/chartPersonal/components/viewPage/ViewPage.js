@@ -168,9 +168,13 @@ const ViewPage = () => {
   }, [id]);
 
   return (
-    <div className="custom-wrapper">
+    <div className="custom-wrapper bread-wrapper">
       <div className="sub-header">
-        <BreadCrumbWrapper />
+        <BreadCrumbWrapper
+          urlName={`/dashboard/chart_personalization/${id}`}
+          value={id}
+          data="Untitled"
+        />
         <div className="btns">
           {Object.keys(params).length > 0 ? (
             <>

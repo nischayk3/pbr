@@ -23,7 +23,7 @@ const DataTable = ({ postChartData }) => {
       title: item.toUpperCase().replace("_", " "),
       dataIndex: item,
       key: `${item}-${i}`,
-      width: item === "uom_code" || item === first ? 150 : 250,
+      // width: item === "uom_code" || item === first ? 150 : 250,
     });
   });
 
@@ -41,6 +41,7 @@ const DataTable = ({ postChartData }) => {
   return (
     <div>
       <Table
+        style={{ width: "fit-content" }}
         columns={columns}
         pagination={false}
         scroll={{ y: 350 }}

@@ -31,7 +31,7 @@ const ChartPersonal = () => {
   };
 
   return (
-    <div className="custom-wrapper">
+    <div className="custom-wrapper bread-wrap">
       <div className="sub-header">
         <BreadCrumbWrapper />
       </div>
