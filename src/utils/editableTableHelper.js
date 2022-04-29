@@ -120,3 +120,15 @@ export const changeToggleInput = (value, record, column, state) => {
   dataSource[index][name] = value
   return dataSource
 }
+
+export const adjustColumnWidths = columns => {
+  columns.forEach(column => {
+    if (column.type === 'toggle') {
+      column.width = '8%'
+    } else if (column.type === 'action_delete') {
+      column.width = '8%'
+    } else if (column.type === 'parent') {
+      adjustColumnWidths(column.children)
+    }
+  })
+}

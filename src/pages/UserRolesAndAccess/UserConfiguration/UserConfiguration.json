@@ -107,6 +107,7 @@
                             "title": "Approved",
                             "toggleTextTrue": "",
                             "toggleTextFalse": ""
+                         
                         },
                         {
                             "type": "toggle",

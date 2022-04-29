@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import { Table, Button, Popconfirm, Select, Switch } from 'antd'
-import { EditableRow, EditableCell, deleteRow, addRow, changeInput, changeSelectInput, changeToggleInput } from '../../utils/editableTableHelper'
+import { EditableRow, EditableCell, adjustColumnWidths, deleteRow, addRow, changeInput, changeSelectInput, changeToggleInput } from '../../utils/editableTableHelper'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 const { Option } = Select
 
@@ -19,12 +19,14 @@ class EditableTable extends Component {
     }
 
     componentDidMount() {
-       this.initializeTableRender()
+        this.initializeTableRender()
     }
 
     initializeTableRender() {
         const columnsCopy = [...this.props.tableData.columns]
         const columns = this.props.tableData.deleteActionColumn ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
+        console.log(columns)
+        adjustColumnWidths(columns)
         this.renderTable(columns)
         this.setState({ columns })
     }
@@ -34,15 +36,19 @@ class EditableTable extends Component {
             switch (column.type) {
                 case 'select':
                     return column.render = (_, record) => {
-                        return <Select value={record[column.name]} onChange={selectedValue => this.onChangeSelect(selectedValue, record, column)} style={{ width: 120 }} mode={column.mode}>
+                        return <Select 
+                                    value={record[column.name]} 
+                                    mode={column.mode}
+                                    style={{ width: '100%' }} 
+                                    onChange={selectedValue => this.onChangeSelect(selectedValue, record, column)} >
                             {column.options.map(option => <Option key={option.value} value={option.value}>{option.label}</Option>)}
                         </Select>
                     }
                 case 'toggle':
                     return column.render = (_, record) => {
-                        return <Switch 
-                            checked={record[column.name]} 
-                            checkedChildren={column.toggleTextTrue} 
+                        return <Switch
+                            checked={record[column.name]}
+                            checkedChildren={column.toggleTextTrue}
                             unCheckedChildren={column.toggleTextFalse}
                             onChange={selectedValue => this.onChangeToggle(selectedValue, record, column)} />
                     }
@@ -57,6 +63,7 @@ class EditableTable extends Component {
             title: 'Action',
             dataIndex: 'action',
             align: 'center',
+            type: 'action_delete',
             render: (_, record) =>
                 this.state.dataSource.length >= 1 ? (
                     <Popconfirm title="Sure to delete?" onConfirm={() => this.onDeleteRow(record.key)}>
@@ -66,15 +73,8 @@ class EditableTable extends Component {
                 ) : null,
         }
         columns.unshift(actionColumn)
+        adjustColumnWidths(columns)
         return columns
-    }
-
-    createSelect = (record, type, mode) => {
-        return (
-            <Select value={record.value} onChange={selectedValue => this.onChangeSelect(selectedValue, record, type)} mode={mode} style={{ width: 180 }}>
-                {record.options.map(rec => <Option value={rec.value} key={rec.value}>{rec.label}</Option>)}
-            </Select>
-        )
     }
 
     onDeleteRow = (key) => {
@@ -135,14 +135,20 @@ class EditableTable extends Component {
         return (
             <div className="custom-table-wrapper">
                 <Button
-                    onClick={this.onAddRow}
                     type="dashed"
+                    onClick={this.onAddRow}
                     icon={<PlusOutlined />}
                     style={{ marginBottom: 16 }}
                 >
                     Add new user
                 </Button>
-                <Button type="primary" onClick={() => this.props.onSaveTable(this.state.dataSource)} style={{ float: 'right' }}>Save</Button>
+                <Button
+                    type="primary"
+                    onClick={() => this.props.onSaveTable(this.state.dataSource)}
+                    style={{ float: 'right' }}
+                >
+                    Save
+                </Button>
                 <Table
                     components={components}
                     rowClassName={() => 'editable-row'}
