@@ -91,9 +91,17 @@
 }
 
 .popout-table {
-	padding: 24px 26px;
+	border: 1px solid #eaeaea;
+	margin: 8px 26px;
+	border-radius: 4px;
+	.drawer-title {
+		padding: 15px 27px;
+		border-bottom: 1px solid #eaeaea;
+		p {
+			margin: 0px;
+		}
+	}
 }
-
 .file-upload-modal {
 	.ant-modal-content {
 		.ant-modal-body {

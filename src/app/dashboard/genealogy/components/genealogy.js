@@ -479,6 +479,8 @@ function Genealogy() {
 								processInput={processInput}
 								processOutput={processOutput}
 								fileDownload={downloadFile}
+								productCode={productCode}
+								productType={chartType}
 							/>
 							<Modal
 								width={520}

@@ -21,19 +21,11 @@ const ParameterTable = props => {
 	const selectedTableData = useSelector(
 		state => state.viewCreationReducer.selectedParamData
 	);
-	const batchData = useSelector(
-		state => state.viewCreationReducer.batchCoverageData
-	);
+
 	const saveFunction = useSelector(state => state.viewCreationReducer.save);
-	const saveAsFunction = useSelector(state => state.viewCreationReducer.saveAs);
+
 	const functionName = useSelector(
 		state => state.viewCreationReducer.functionName
-	);
-	const summaryTableData = useSelector(
-		state => state.viewCreationReducer.summaryTableData
-	);
-	const paramName = useSelector(
-		state => state.viewCreationReducer.selectedParamType
 	);
 
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -41,7 +33,6 @@ const ParameterTable = props => {
 	const [aggregationValue, setAggregationValue] = useState('');
 	const [tableData, setTableData] = useState([]);
 	const [selectedPrimaryData, setSelectedPrimaryData] = useState([]);
-	const [selectedParamType, setSelectedParamType] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 	const [reloadTable, setReloadTable] = useState(true);
 	const [checked, setChecked] = useState(null);
@@ -98,7 +89,7 @@ const ParameterTable = props => {
 			key: 'aggregation',
 			width: 120,
 			fixed: 'left',
-			render: (text, record, index) => {
+			render: (record, index) => {
 				return (
 					<Select
 						// disabled={rowDisable}
@@ -157,6 +148,7 @@ const ParameterTable = props => {
 				key: `${item}-4`,
 				width: 80,
 				render: (value, record, rowIndex) => {
+					console.log('value', value);
 					if (value) {
 						if (!rowDisable) {
 							return (
@@ -166,14 +158,8 @@ const ParameterTable = props => {
 									checked={value}
 								/>
 							);
-						} else {
-							return (
-								<span className='batchChecked'>
-									<CheckOutlined />
-								</span>
-							);
 						}
-					} else {
+					} else if (!value) {
 						return value ? (
 							<span className='batchChecked'>
 								<CheckOutlined />
@@ -182,6 +168,13 @@ const ParameterTable = props => {
 							<span className='batchClosed'>
 								<CloseOutlined />
 							</span>
+						);
+					} else if (value === '') {
+						return (
+							<Checkbox
+								className='custom-check'
+								onChange={e => onChangeBatch(e, record, rowIndex, item)}
+							/>
 						);
 					}
 				},
@@ -297,10 +290,6 @@ const ParameterTable = props => {
 		}
 	}, [saveFunction]);
 
-	useEffect(() => {
-		setSelectedParamType(paramName);
-	}, [paramName]);
-
 	const onRadioChange = ({ checked, type, primary, record, index }) => {
 		if (checked) {
 			const newPrimaryData = [...tableData];
@@ -333,17 +322,18 @@ const ParameterTable = props => {
 	const onChangeBatch = (e, record, rowIndex, key) => {
 		console.log('value, record, rowIndex', record, rowIndex);
 		setChecked(e.target.checked);
-		let batchExc = [];
+
 		const batchRecord = [...tableData];
 		const viewJsonBatch = [...viewJson];
 
-		batchRecord[rowIndex][key] = e.target.checked;
+		batchRecord[rowIndex][key] =
+			e.target.checked == false ? '' : e.target.checked;
 
 		const batchExcludeJson = [...parameters];
 		batchExcludeJson.forEach((element, index) => {
 			if (element.parameter_name === record.parameter_name) {
-				batchExc.push(key);
-				element.batch_exclude = batchExc;
+				//batchExc.push(key);
+				element.batch_exclude.push(key);
 			}
 		});
 
