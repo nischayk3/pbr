@@ -136,7 +136,7 @@ const ChartPersonal = () => {
                         <div className='schedule-alerts'>
                             <div className='alerts-text'>
                                 <p className='alert-title'>Scheduled Alerts</p>
-                                <span className='alert-arrow'><a>View More Details</a><ArrowRightOutlined style={{ marginLeft: '10px', color: '#093185' }} /></span>
+                                <span className='alert-arrow'><p ><a style={{backgroundColor:'#093185'}}>View More Details</a></p><ArrowRightOutlined style={{ marginLeft: '10px', color: '#093185' }} /></span>
                             </div>
                             <div>
                                 <AlertTable />

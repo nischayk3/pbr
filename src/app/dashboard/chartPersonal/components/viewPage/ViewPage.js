@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from 'react-router';
+import { useLocation } from "react-router";
 import "./viewPageStyles.scss";
 import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 //antd imports
@@ -12,6 +12,7 @@ import {
   ArrowRightOutlined,
 } from "@ant-design/icons";
 //components
+import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import ViewChart from "./viewChart/ViewChart";
 import Limits from "./limits/Limits";
 import Display from "./display/Display";
@@ -54,12 +55,12 @@ const ViewPage = () => {
   const [approveReject, setApproveReject] = useState("");
 
   const dispatch = useDispatch();
-  const location = useLocation()
+  const location = useLocation();
 
   const params = queryString.parse(location.search);
-  console.log("parametersss",params);
+  console.log("parametersss", params);
 
-  const callback = (key) => { };
+  const callback = (key) => {};
 
   const handleCancel = () => {
     setAlertModal(false);
@@ -152,16 +153,6 @@ const ViewPage = () => {
     }
   };
 
-  //menu for dropdown
-  const menu = (
-    <Menu>
-      <Menu.Item key="1" onClick={() => saveAs("saveas")}>
-        Save As
-      </Menu.Item>
-      <Menu.Item key="2">Share</Menu.Item>
-    </Menu>
-  );
-
   const backToLanding = () => {
     const url = match.url.substring(0, match.url.length - 2);
     history.push(url);
@@ -177,20 +168,20 @@ const ViewPage = () => {
   }, [id]);
 
   return (
-    <div className="custom-wrapper">
+    <div className="custom-wrapper bread-wrapper">
       <div className="sub-header">
-        <div className="sub-header-title">
-          <ArrowLeftOutlined className="header-icon" onClick={backToLanding} />{" "}
-          &nbsp;
-          <span className="header-title">Process Control Charts</span>
-        </div>
+        <BreadCrumbWrapper
+          urlName={`/dashboard/chart_personalization/${id}`}
+          value={id}
+          data="Untitled"
+        />
         <div className="btns">
           {Object.keys(params).length > 0 ? (
             <>
               <Button
                 onClick={() => {
                   setIsPublish(true);
-                  setApproveReject('R');
+                  setApproveReject("R");
                 }}
               >
                 Reject
@@ -198,32 +189,32 @@ const ViewPage = () => {
               <Button
                 onClick={() => {
                   setIsPublish(true);
-                  setApproveReject('A');
+                  setApproveReject("A");
                 }}
               >
                 Approve
               </Button>
             </>
-          ) :
-            (
-              <>
-                <Button onClick={() => setAlertModal(true)}>Schedule Alert</Button>
-                <Button onClick={() => saveAs("save")}>Save</Button>
-                <Button
-                  onClick={() => {
-                    setIsPublish(true);
-                    setApproveReject("P");
-                  }}
-                >
-                  {" "}
-                  <CloudUploadOutlined />
-                  Publish
-                </Button>
-              </>
-            )}
-          <Dropdown overlay={menu}>
-            <MoreOutlined />
-          </Dropdown>
+          ) : (
+            <div>
+              <Button>Share</Button>
+              <Button onClick={() => setAlertModal(true)}>
+                Schedule Alert
+              </Button>
+              <Button onClick={() => saveAs("saveas")}>Save As</Button>
+              <Button onClick={() => saveAs("save")}>Save</Button>
+              <Button
+                onClick={() => {
+                  setIsPublish(true);
+                  setApproveReject("P");
+                }}
+              >
+                {" "}
+                <CloudUploadOutlined />
+                Publish
+              </Button>
+            </div>
+          )}
         </div>
       </div>
       <div className="custom-content-layout">
@@ -273,7 +264,7 @@ const ViewPage = () => {
       <Modal
         title="Schedule Alert"
         className="schedule-modal"
-        visible={alertModal}
+        visible={false}
         onCancel={handleCancel}
         footer={false}
         width={1300}
@@ -318,9 +309,9 @@ const ViewPage = () => {
       </Modal>
       <JobSchedule
         visible={alertModal}
-        app_type="Chart"
+        app_type="CHART"
         handleCancel={handleCancel}
-        id={"reportId"}
+        id={postChartData.data && postChartData.data[0].chart_id}
       />
       <Signature
         isPublish={isPublish}

@@ -7,7 +7,6 @@ class Service {
 	}
 
 	get(url, params, headers) {
-		console.log('params', params);
 		return this.service({
 			method: 'GET',
 			url: url,

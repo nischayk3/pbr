@@ -57,12 +57,16 @@
       .rules {
         display: flex;
         flex-direction: row;
-        input {
+        input[type="number"] {
           border: 1px solid #d9d9d9;
           border-radius: 4px;
           width: 50px;
           margin-left: 2px;
           margin-right: 2px;
+        }
+        .ant-checkbox-checked .ant-checkbox-inner {
+          background-color: #093185 !important;
+          border-color: #093185 !important;
         }
         .input_field {
           display: inline !important;
@@ -90,6 +94,11 @@
     }
     .rules {
       margin-top: 8px;
+    }
+    .rules-selected {
+      span {
+        color: #093185 !important;
+      }
     }
   }
 }

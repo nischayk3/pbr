@@ -111,6 +111,7 @@ const rules = ({ postChartData, setPostChartData }) => {
 
   const onReset = async () => {
     setRuleList({});
+    setChecked([]);
     const newArr = JSON.parse(JSON.stringify(postChartData));
     newArr.data[0].rules = postChartClone.current.data[0].rules;
     try {
@@ -161,7 +162,12 @@ const rules = ({ postChartData, setPostChartData }) => {
       {Object.keys(ruleList).length === 0 && <Skeleton />}
       {Object.keys(ruleList).length !== 0 && (
         <>
-          <Collapse expandIconPosition="left" ghost className="collapse-rule">
+          <Collapse
+            expandIconPosition="left"
+            style={{ textTransform: "capitalize" }}
+            ghost
+            className="collapse-rule"
+          >
             {Object.entries(ruleList).map(([key, value]) => {
               return (
                 <Panel header={`${key} RULE`} key={key} className="panel-rule">
@@ -230,10 +236,16 @@ const rules = ({ postChartData, setPostChartData }) => {
                             {loadRuleList[ele].length >= 1 && `${ele} Rule`}
                           </p>
                         </Col>
-                        <Col span={14}>
-                          {loadRuleList[ele].map((item) => {
+                        <Col span={14} className="rules-selected">
+                          {/* {loadRuleList[ele].map((item) => {
                             return <span>{item.rule_disp_id}, </span>;
-                          })}
+                          })} */}
+                          {loadRuleList[ele].map((tag, i) => (
+                            <span key={i}>
+                              {i > 0 && ", "}
+                              {tag.rule_disp_id}
+                            </span>
+                          ))}
                         </Col>
                       </Row>
                     </div>
