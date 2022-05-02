@@ -149,8 +149,8 @@ const ParameterTable = props => {
 				width: 80,
 				render: (value, record, rowIndex) => {
 					console.log('value', value);
-					if (value) {
-						if (!rowDisable) {
+					if (!rowDisable) {
+						if (value) {
 							return (
 								<Checkbox
 									className='custom-check'
@@ -158,25 +158,36 @@ const ParameterTable = props => {
 									checked={value}
 								/>
 							);
+						} else {
+							return (
+								<span className='batchClosed'>
+									<CloseOutlined />
+								</span>
+							);
 						}
-					} else if (!value) {
-						return value ? (
-							<span className='batchChecked'>
-								<CheckOutlined />
-							</span>
-						) : (
-							<span className='batchClosed'>
-								<CloseOutlined />
-							</span>
-						);
-					} else if (value === '') {
-						return (
-							<Checkbox
-								className='custom-check'
-								onChange={e => onChangeBatch(e, record, rowIndex, item)}
-							/>
-						);
+					} else {
+						if (value) {
+							return (
+								<span className='batchChecked'>
+									<CheckOutlined />
+								</span>
+							);
+						} else {
+							return (
+								<span className='batchClosed'>
+									<CloseOutlined />
+								</span>
+							);
+						}
 					}
+					// else if (value === '') {
+					// 	return (
+					// 		<Checkbox
+					// 			className='custom-check'
+					// 			onChange={e => onChangeBatch(e, record, rowIndex, item)}
+					// 		/>
+					// 	);
+					// }
 				},
 			});
 		}
@@ -272,15 +283,18 @@ const ParameterTable = props => {
 			setViewSummaryBatch(arr3);
 			dispatch(createSummaryData(arr3));
 
-			primarySelectedData.parameter_name = functionName;
-			let fun = {
-				name: functionName,
-				defination: `{${'V' + counter}}`,
-			};
-			// fun['name'] = functionName;
-			//defObj = `${'V' + counter}`;
-			// fun['definition'] = { defObj };
-			console.log('definition.....', fun, defObj);
+			// primarySelectedData.parameter_name = functionName;
+			let funObj1 = {};
+			let fun = {};
+			funObj1['name'] = functionName;
+			funObj1['defination'] = `{${'V' + counter}}`;
+			fun[counter] = funObj1;
+			// let fun = {
+			// 	name: functionName,
+			// 	defination: `{${'V' + counter}}`,
+			// };
+
+			console.log('definition.....', fun, funObj1);
 			const varData = [...viewJson];
 			varData.forEach(element => {
 				element.functions = fun;
