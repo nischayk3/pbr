@@ -11,7 +11,7 @@ import {
 } from '../../../../../duck/actions/viewAction';
 
 let paramType = '';
-let isCheck = '';
+
 let count = 0;
 let counter = 0;
 
@@ -21,32 +21,22 @@ const ParameterTable = props => {
 	const selectedTableData = useSelector(
 		state => state.viewCreationReducer.selectedParamData
 	);
-	const batchData = useSelector(
-		state => state.viewCreationReducer.batchCoverageData
-	);
+
 	const saveFunction = useSelector(state => state.viewCreationReducer.save);
-	const saveAsFunction = useSelector(state => state.viewCreationReducer.saveAs);
+
 	const functionName = useSelector(
 		state => state.viewCreationReducer.functionName
-	);
-	const summaryTableData = useSelector(
-		state => state.viewCreationReducer.summaryTableData
-	);
-	const paramName = useSelector(
-		state => state.viewCreationReducer.selectedParamType
 	);
 
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [selectedRow, setSelectedRow] = useState([]);
 	const [aggregationValue, setAggregationValue] = useState('');
 	const [tableData, setTableData] = useState([]);
-	const [variableRef, setVariableRef] = useState([]);
 	const [selectedPrimaryData, setSelectedPrimaryData] = useState([]);
-	const [selectedParamType, setSelectedParamType] = useState('');
-	//const [count, setCount] = useState('1');
-	const [isBatchCheck, setisBatchCheck] = useState();
 	const [isLoading, setIsLoading] = useState(false);
 	const [reloadTable, setReloadTable] = useState(true);
+	const [checked, setChecked] = useState(null);
+	const [parameters, setParameters] = useState({});
 
 	const {
 		rowDisable,
@@ -68,14 +58,14 @@ const ParameterTable = props => {
 			title: 'PARAMETER NAME',
 			dataIndex: 'parameter_name',
 			key: 'parameter_name',
-			width: 200,
+			width: 150,
 			fixed: 'left',
 		},
 		{
 			title: 'PRIMARY',
 			dataIndex: 'primary',
 			key: 'primary',
-			width: 150,
+			width: 100,
 			fixed: 'left',
 			render: (text, record, index) => {
 				return (
@@ -97,9 +87,9 @@ const ParameterTable = props => {
 			title: 'AGGREGATION',
 			dataIndex: 'aggregation',
 			key: 'aggregation',
-			width: 150,
+			width: 120,
 			fixed: 'left',
-			render: (text, record, index) => {
+			render: (record, index) => {
 				return (
 					<Select
 						// disabled={rowDisable}
@@ -156,24 +146,54 @@ const ParameterTable = props => {
 				title: item,
 				dataIndex: item,
 				key: `${item}-4`,
-				width: 120,
-				render: value =>
-					value ? (
-						<span className='batchChecked'>
-							<CheckOutlined />
-						</span>
-					) : (
-						<span className='batchClosed'>
-							<CloseOutlined />
-						</span>
-					),
+				width: 80,
+				render: (value, record, rowIndex) => {
+					if (!rowDisable) {
+						if (value) {
+							return (
+								<Checkbox
+									className='custom-check'
+									onChange={e => onChangeBatch(e, record, rowIndex, item)}
+									checked={value}
+								/>
+							);
+						} else {
+							return (
+								<span className='batchClosed'>
+									<CloseOutlined />
+								</span>
+							);
+						}
+					} else {
+						if (value) {
+							return (
+								<span className='batchChecked'>
+									<CheckOutlined />
+								</span>
+							);
+						} else {
+							return (
+								<span className='batchClosed'>
+									<CloseOutlined />
+								</span>
+							);
+						}
+					}
+					// else if (value === '') {
+					// 	return (
+					// 		<Checkbox
+					// 			className='custom-check'
+					// 			onChange={e => onChangeBatch(e, record, rowIndex, item)}
+					// 		/>
+					// 	);
+					// }
+				},
 			});
 		}
 	});
 
 	useEffect(() => {
 		if (ischeckBox) {
-			isCheck = ischeckBox;
 			setReloadTable(false);
 			setIsLoading(true);
 			if (ischeckBox) {
@@ -199,7 +219,7 @@ const ParameterTable = props => {
 	}, [isLoadView]);
 
 	useEffect(() => {
-		if (varClick) {
+		if (!varClick) {
 			setSelectedRowKeys([]);
 			setSelectedRow([]);
 		}
@@ -240,7 +260,8 @@ const ParameterTable = props => {
 		if (saveFunction === true) {
 			counter++;
 			let arr = [];
-			let fun = {};
+
+			let defObj = {};
 			let primarySelectedData = { ...selectedPrimaryData };
 			let functionTable = [...viewSummaryBatch];
 			functionTable.forEach(item => {
@@ -260,9 +281,12 @@ const ParameterTable = props => {
 			setViewSummaryBatch(arr3);
 			dispatch(createSummaryData(arr3));
 
-			primarySelectedData.parameter_name = functionName;
-			fun['name'] = functionName;
-			fun['definition'] = `${'V' + counter}`;
+			// primarySelectedData.parameter_name = functionName;
+			let funObj1 = {};
+			let fun = {};
+			funObj1['name'] = functionName;
+			funObj1['defination'] = `{${'V' + counter}}`;
+			fun[counter] = funObj1;
 
 			const varData = [...viewJson];
 			varData.forEach(element => {
@@ -273,18 +297,16 @@ const ParameterTable = props => {
 		}
 	}, [saveFunction]);
 
-	useEffect(() => {
-		setSelectedParamType(paramName);
-	}, [paramName]);
-
 	const onRadioChange = ({ checked, type, primary, record, index }) => {
 		if (checked) {
-			let newPrimaryData = [...tableData];
+			const newPrimaryData = [...tableData];
+			const primaryJson = [...parameters];
 			newPrimaryData[index].primary = 1;
 			let radioObj = [record];
 			radioObj.forEach(element => {
 				element.primary = 0;
 			});
+
 			setTableData(newPrimaryData);
 			setSelectedPrimaryData(radioObj[0]);
 			dispatch(selectParamType(type));
@@ -295,44 +317,34 @@ const ParameterTable = props => {
 	const handleAggregationChange = (record, value, index) => {
 		let newAggrValue = [...tableData];
 		newAggrValue[index].aggregation = value.value;
+
+		const aggJson = [...parameters];
+		aggJson[index].aggregation = value.value;
+
+		setParameters(aggJson);
 		setTableData(newAggrValue);
 		setAggregationValue(value.value);
 	};
 
-	const onChangeBatch = (value, record, rowIndex, key) => {
-		let batchExcObj = {};
-		let batchRecord = [...tableData];
-		batchRecord[rowIndex][key] = value;
+	const onChangeBatch = (e, record, rowIndex, key) => {
+		setChecked(e.target.checked);
 
-		const selectedRowData = [...selectedRow];
-		// if (selectedRow.length > 0) {
-		// 	console.log(
-		// 		'selectedRow',
+		const batchRecord = [...tableData];
+		const viewJsonBatch = [...viewJson];
 
-		// 		selectedRow
-		// 	);
-		// }
-		// console.log(
-		// 	'viewJson',
-		// 	selectedRowData,
-		// 	selectedRow,
-		// 	tableData,
-		// 	selectedPrimaryData
-		// );
-		// selectedRow.forEach((item, index) => {
-		// 	console.log(
-		// 		'item.parameter_name ,record.parameter_name',
-		// 		item.parameter_name,
-		// 		record.parameter_name
-		// 	);
-		// 	if (item.parameter_name === record.parameter_name) {
-		// 		batchExcArr.push(key);
-		// 	}
-		// 	batchExcObj[record.parameter_name] = batchExcArr;
-		// 	console.log('batchExcArr', batchExcArr);
-		// 	console.log('batchExcObj', batchExcObj);
-		// });
-		setisBatchCheck(value);
+		batchRecord[rowIndex][key] =
+			e.target.checked == false ? '' : e.target.checked;
+
+		const batchExcludeJson = [...parameters];
+		batchExcludeJson.forEach((element, index) => {
+			if (element.parameter_name === record.parameter_name) {
+				//batchExc.push(key);
+				element.batch_exclude.push(key);
+			}
+		});
+
+		setParameters(batchExcludeJson);
+
 		setTableData(batchRecord);
 	};
 
@@ -357,6 +369,22 @@ const ParameterTable = props => {
 					rowSelection={{
 						selectedRowKeys,
 						onChange: (selectedRowKeys, selectedRows) => {
+							let paramArr = [];
+							const rowData = [...selectedRows];
+							rowData.forEach((element, index) => {
+								let paramsObj = {};
+								const materialKey = element.key.split('-');
+								paramsObj['source_type'] = element.sourceType;
+								paramsObj['material_id'] = materialKey[1];
+								paramsObj['parameter_name'] = element.parameter_name;
+								paramsObj['batch_exclude'] = [];
+								paramsObj['priority'] = index;
+								paramsObj['aggregation'] = element.aggregation;
+								paramArr.push(paramsObj);
+							});
+
+							setParameters(paramArr);
+
 							props.callbackCheckbox(true);
 							setSelectedRowKeys(selectedRowKeys);
 							setSelectedRow(selectedRows);

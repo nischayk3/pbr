@@ -40,7 +40,7 @@ import {
 	isLoadView,
 	sendSelectedParamData,
 } from '../../../../duck/actions/viewAction';
-import Signature from "../../../../components/ElectronicSignature/signature";
+import Signature from '../../../../components/ElectronicSignature/signature';
 const { Panel } = Collapse;
 
 const ViewCreation = props => {
@@ -79,10 +79,10 @@ const ViewCreation = props => {
 	const [isSaveVisible, setIsSaveVisible] = useState(false);
 	const [viewName, setViewName] = useState('');
 	const [publishResponse, setPublishResponse] = useState({});
-	const [approveReject, setApproveReject] = useState("");
+	const [approveReject, setApproveReject] = useState('');
 
 	const parameters = queryString.parse(location.search);
-	console.log("parametersss", parameters);
+
 	useEffect(() => {
 		setParamTableData(selectedTableData);
 	}, [selectedTableData]);
@@ -111,6 +111,8 @@ const ViewCreation = props => {
 				view_disp_id: pathString.viewId,
 				view_version: pathString.viewVersion,
 			};
+			setViewDisplayId(pathString.viewId);
+			setViewVersion(pathString.viewVersion);
 			loadView(_reqLoad);
 		}
 	}, []);
@@ -228,15 +230,15 @@ const ViewCreation = props => {
 			const loadViewRes = await getViewConfig(_reqLoad);
 
 			Object.entries(loadViewRes).forEach(([key, value], index) => {
-				if (key === 'view_version') {
-					setViewVersion(value);
-				} else if (key === 'material_id') {
-					setMoleculeId(value);
-				} else if (key === 'view_status') {
-					setViewStatus(value);
-				} else if (key === 'view_name') {
-					setViewName(value);
-				}
+				// if (key === 'view_version') {
+				// 	setViewVersion(value);
+				// } else if (key === 'material_id') {
+				// 	setMoleculeId(value);
+				// } else if (key === 'view_status') {
+				// 	setViewStatus(value);
+				// } else if (key === 'view_name') {
+				// 	setViewName(value);
+				// }
 			});
 			setViewJson([loadViewRes]);
 			dispatch(isLoadView(true));
@@ -251,67 +253,63 @@ const ViewCreation = props => {
 		setIsPublish(false);
 	};
 
-	const PublishResponse = (res) => {
+	const PublishResponse = res => {
 		setPublishResponse(res);
 	};
-
 
 	return (
 		<div className='reportDesigner-container viewCreation-container'>
 			<BreadCrumbWrapper />
 			<div className='breadcrumbs-btn'>
-				{Object.keys(parameters).length > 0 ?
-					(
-						<div className='viewCreation-btns'>
-							<Button
-								className='viewCreation-rejectBtn'
-								onClick={() => {
-									setIsPublish(true);
-									setApproveReject('R');
-								}}
+				{Object.keys(parameters).length > 0 ? (
+					<div className='viewCreation-btns'>
+						<Button
+							className='viewCreation-rejectBtn'
+							onClick={() => {
+								setIsPublish(true);
+								setApproveReject('R');
+							}}
 							// onClick={() => {
 							// 	adenabled ? onApprove('R') : setIsPublish(true);
 							// 	setApproveReject('R');
 							// }}
-							>
-								Reject
-							</Button>
-							<Button
-								className='viewCreation-publishBtn'
-								onClick={() => {
-									setIsPublish(true);
-									setApproveReject('A');
-								}}
+						>
+							Reject
+						</Button>
+						<Button
+							className='viewCreation-publishBtn'
+							onClick={() => {
+								setIsPublish(true);
+								setApproveReject('A');
+							}}
 							// onClick={() => {
 							// 	adenabled ? onApprove('A') : setIsPublish(true);
 							// 	setApproveReject('A');
 							// }}
-							>
-								Approve
-							</Button>
-						</div>
-					) :
-					(
-						<div className='viewCreation-btns'>
-							<Button
-								className='viewCreation-saveBtn'
-								// disabled={!viewDisplayId}
-								onClick={handleSaveVisible}>
-								Save
-							</Button>
+						>
+							Approve
+						</Button>
+					</div>
+				) : (
+					<div className='viewCreation-btns'>
+						<Button
+							className='viewCreation-saveBtn'
+							// disabled={!viewDisplayId}
+							onClick={handleSaveVisible}>
+							Save
+						</Button>
 
-							<Button
-								className='viewCreation-publishBtn'
-								onClick={() => {
-									setIsPublish(true);
-									setApproveReject("P");
-								}}
-							>
-								<CloudUploadOutlined />
-								Publish
-							</Button>
-						</div>
-					)}
+						<Button
+							className='viewCreation-publishBtn'
+							onClick={() => {
+								setIsPublish(true);
+								setApproveReject('P');
+							}}>
+							<CloudUploadOutlined />
+							Publish
+						</Button>
+					</div>
+				)}
 			</div>
 
 			<div className='reportDesigner-gridBlocks viewCreation-grids'>
@@ -417,7 +415,6 @@ const ViewCreation = props => {
 				dispId={viewDisplayId}
 				version={viewVersion}
 				status={approveReject}
-
 			/>
 			<Modal
 				width={400}

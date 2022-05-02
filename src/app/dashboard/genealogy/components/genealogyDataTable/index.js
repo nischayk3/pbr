@@ -6,8 +6,7 @@
  * @Last Changed By - Dinesh Kumar
  */
 import React, { useEffect, useState } from 'react';
-import { Collapse, List, Table } from 'antd';
-import { tableColumns } from '../../../../../utils/TableColumns';
+import { Collapse, Button, Table } from 'antd';
 
 function GenealogyDataTable(props) {
 	const [batchData, setbatchData] = useState({});
@@ -77,7 +76,19 @@ function GenealogyDataTable(props) {
 			defaultActiveKey={['1']}
 			className={props.className}>
 			{props.type === 'Material' ? (
-				<Panel header='Batch details' key='1'>
+				<Panel
+					header={
+						<div className='panel-header'>
+							<p>Batch details</p>
+							<Button
+								type='primary'
+								className='custom-primary-btn'
+								size='small'>
+								Download
+							</Button>
+						</div>
+					}
+					key='1'>
 					<div className='batch-list'>
 						<ul>
 							<li>
@@ -107,7 +118,19 @@ function GenealogyDataTable(props) {
 				<></>
 			)}
 			{props.type === 'Material' ? (
-				<Panel header='LIMS details' key='2'>
+				<Panel
+					header={
+						<div className='panel-header'>
+							<p>LIMS details</p>
+							<Button
+								type='primary'
+								className='custom-primary-btn'
+								size='small'>
+								Download
+							</Button>
+						</div>
+					}
+					key='2'>
 					<Table
 						rowClassName={(record, index) =>
 							index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
@@ -123,7 +146,19 @@ function GenealogyDataTable(props) {
 				<></>
 			)}
 			{props.type === 'Process Order' ? (
-				<Panel header='Into process order' key='3'>
+				<Panel
+					header={
+						<div className='panel-header'>
+							<p>Into process order</p>
+							<Button
+								type='primary'
+								className='custom-primary-btn'
+								size='small'>
+								Download
+							</Button>
+						</div>
+					}
+					key='3'>
 					<Table
 						rowClassName={(record, index) =>
 							index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
@@ -140,7 +175,19 @@ function GenealogyDataTable(props) {
 			)}
 
 			{props.type === 'Process Order' ? (
-				<Panel header='From process order' key='4'>
+				<Panel
+					header={
+						<div className='panel-header'>
+							<p>From process order</p>
+							<Button
+								type='primary'
+								className='custom-primary-btn'
+								size='small'>
+								Download
+							</Button>
+						</div>
+					}
+					key='4'>
 					<Table
 						rowClassName={(record, index) =>
 							index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
@@ -157,7 +204,19 @@ function GenealogyDataTable(props) {
 			)}
 
 			{props.type === 'Purchase Order' ? (
-				<Panel header='Purchase information' key='5'>
+				<Panel
+					header={
+						<div className='panel-header'>
+							<p>Purchase information</p>
+							<Button
+								type='primary'
+								className='custom-primary-btn'
+								size='small'>
+								Download
+							</Button>
+						</div>
+					}
+					key='5'>
 					<div className='batch-list'>
 						<ul>
 							<li>
@@ -188,7 +247,19 @@ function GenealogyDataTable(props) {
 			)}
 
 			{props.type === 'Material' ? (
-				<Panel header='Component details' key='6'>
+				<Panel
+					header={
+						<div className='panel-header'>
+							<p>Component details</p>
+							<Button
+								type='primary'
+								className='custom-primary-btn'
+								size='small'>
+								Download
+							</Button>
+						</div>
+					}
+					key='6'>
 					<Table
 						rowClassName={(record, index) =>
 							index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
