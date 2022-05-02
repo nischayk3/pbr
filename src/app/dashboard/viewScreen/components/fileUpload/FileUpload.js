@@ -226,13 +226,9 @@ function FileUpload(props) {
 	};
 
 	const onChange = info => {
-		console.log('fileeeeeeee', info, info.file.type);
 		var today = new Date();
 		today.setDate(today.getDate());
 		const nextState = {};
-		// if (info.file.type !== ' text/csv') {
-		// 	message.error(`${info.file.name} is not excel or csv file`);
-		// } else
 
 		if (info.file.status === 'uploading') {
 			setSelectedAdHocFileList([info.file]);

@@ -148,7 +148,6 @@ const ParameterTable = props => {
 				key: `${item}-4`,
 				width: 80,
 				render: (value, record, rowIndex) => {
-					console.log('value', value);
 					if (!rowDisable) {
 						if (value) {
 							return (
@@ -220,7 +219,6 @@ const ParameterTable = props => {
 	}, [isLoadView]);
 
 	useEffect(() => {
-		console.log('varClickvarClick', varClick);
 		if (!varClick) {
 			setSelectedRowKeys([]);
 			setSelectedRow([]);
@@ -289,12 +287,7 @@ const ParameterTable = props => {
 			funObj1['name'] = functionName;
 			funObj1['defination'] = `{${'V' + counter}}`;
 			fun[counter] = funObj1;
-			// let fun = {
-			// 	name: functionName,
-			// 	defination: `{${'V' + counter}}`,
-			// };
 
-			console.log('definition.....', fun, funObj1);
 			const varData = [...viewJson];
 			varData.forEach(element => {
 				element.functions = fun;
@@ -327,14 +320,13 @@ const ParameterTable = props => {
 
 		const aggJson = [...parameters];
 		aggJson[index].aggregation = value.value;
-		console.log('aggJson', aggJson);
+
 		setParameters(aggJson);
 		setTableData(newAggrValue);
 		setAggregationValue(value.value);
 	};
 
 	const onChangeBatch = (e, record, rowIndex, key) => {
-		console.log('value, record, rowIndex', record, rowIndex);
 		setChecked(e.target.checked);
 
 		const batchRecord = [...tableData];
@@ -352,9 +344,6 @@ const ParameterTable = props => {
 		});
 
 		setParameters(batchExcludeJson);
-
-		console.log('batchRecord', batchExcludeJson, key);
-		console.log('viewJsonBatch', viewJsonBatch);
 
 		setTableData(batchRecord);
 	};
@@ -393,7 +382,7 @@ const ParameterTable = props => {
 								paramsObj['aggregation'] = element.aggregation;
 								paramArr.push(paramsObj);
 							});
-							console.log('paramArr', paramArr);
+
 							setParameters(paramArr);
 
 							props.callbackCheckbox(true);

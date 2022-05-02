@@ -90,8 +90,6 @@ const MaterialTree = props => {
 	};
 	const treeMap = materialsList;
 
-	console.log('tree mapppppp', searchValue);
-
 	const loop = data =>
 		data.map(item => {
 			const index = item.title.indexOf(searchValue);

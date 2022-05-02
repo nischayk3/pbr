@@ -36,13 +36,12 @@ const MathEditor = props => {
 
 	useEffect(() => {
 		if (isLoadView) {
-			console.log('viewJson', viewJson);
 			let paramKey = [];
 			const viewJsonData = [...viewJson];
 			viewJsonData.forEach((element, index) => {
 				paramKey.push(Object.keys(element.parameters));
 			});
-			console.log('param key', paramKey);
+
 			paramKey.forEach((element, index) => {
 				variableData.push({
 					variableName: element,
@@ -54,7 +53,6 @@ const MathEditor = props => {
 	}, [isLoadView]);
 
 	const addVariable = () => {
-		console.log('add variable');
 		setCardTitle('Select parameters');
 		setRowDisable(false);
 
@@ -62,7 +60,6 @@ const MathEditor = props => {
 	};
 
 	const createVar = () => {
-		console.log('create varrrrrrr');
 		variableData.push({
 			variableName: `${'V' + count}`,
 			key: count,
