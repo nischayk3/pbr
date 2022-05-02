@@ -18,14 +18,14 @@ import Uploader from './dataLoad/index';
 import LoginRedirect from '../user/login/redirect';
 import RedirectSign from '../user/login/redirectSign';
 import ViewPage from './chartPersonal/components/viewPage/ViewPage';
+import PaperBatchRecords from './paperBatchRecords';
+import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate';
 
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
-// const ChartPersonalization = lazy(() => import('./chartPersonalization'));
 const ChartPersonal = lazy(() => import('./chartPersonal'));
 const SystemErrorReport = lazy(() => import('./systemErrorReport'));
-const ViewCreation = lazy(() => import('./viewCreation'));
 const View = lazy(() => import('./viewScreen/components/View'));
 const DataLoad = lazy(() => import('./dataLoad'));
 const ReportDesigner = lazy(() => import('./reportDesigner'));
@@ -40,7 +40,9 @@ const ViewChart = lazy(() =>
 	import('./dashboardScreen/components/viewChart/viewChart')
 );
 const Hierarchy = lazy(() => import('./hierarchyConfig'));
-const HierarchyMain = lazy(() => import('./hierarchyConfig/components/hierarchy/hierarchy'));
+const HierarchyMain = lazy(() =>
+	import('./hierarchyConfig/components/hierarchy/hierarchy')
+);
 const Faq = lazy(() => import('./faq'));
 const { Content } = Layout;
 
@@ -137,6 +139,16 @@ const Dashboard = () => {
 								</Route>
 								<Route key='dashboard' path={`${match.url}/dashboard`}>
 									<DashboardScreen />
+								</Route>
+								<Route
+									key='paper_batch_records'
+									path={`${match.url}/paper_batch_records`}>
+									<PaperBatchRecords />
+								</Route>
+								<Route
+									key='paper_batch_records_template'
+									path={`${match.url}/pbr_template`}>
+									<PaperBatchRecordsTemplate />
 								</Route>
 								<Route key='redirect' path={`${match.url}/redirect`}>
 									<LoginRedirect />

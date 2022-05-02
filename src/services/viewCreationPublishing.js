@@ -66,3 +66,37 @@ export const saveFunction = request => {
 		}
 	);
 };
+
+export const adHocFileUpload = _queryParam => {
+	return Service.post(
+		BMS_APP_PYTHON_SERVICE + '/adhoc-files',
+		_queryParam,
+		request_headers,
+		{
+			'Content-Type': 'multipart/form-data',
+			Accept: '*/*',
+		}
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
+
+export const adHocFilesParameterTree = request => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/adhoc-files/parameter-tree',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};

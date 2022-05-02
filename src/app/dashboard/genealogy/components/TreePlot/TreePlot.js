@@ -180,7 +180,6 @@ function TreePlot(props) {
 			setsearchValue(splitvalue[0]);
 		} else if (value === null && value === undefined) {
 			let diagramLayoutBack = d3.select('#backwardDiv');
-
 			let linkSvgBack = diagramLayoutBack.selectAll('.link');
 			linkSvgBack.style('stroke', isMaterialLink).style('stroke-width', '4');
 		}
@@ -195,6 +194,7 @@ function TreePlot(props) {
 		if (props.chartType === 'backward') {
 			let diagramLayout = d3.select('#treeviewidbackward');
 			let linkSvg = diagramLayout.selectAll('.link');
+			let linkNotMatchValue = diagramLayout.selectAll('.value-match');
 			let linkSvg1 = diagramLayout.select('g');
 			let linkSvg2 = diagramLayout.selectAll('#node-' + selectedNodeId);
 			let nodeCoords = d3.transform(linkSvg2.attr('transform'));
@@ -202,6 +202,7 @@ function TreePlot(props) {
 			let ntranslateY = nodeCoords.translate[1];
 			let newTranslateX = ntranslateX - 960;
 			let newTranslateY = ntranslateY - ntranslateY - 70;
+			linkNotMatchValue.attr('class', 'link').style('stroke', isMaterialLink);
 			linkSvg1
 				.attr('transform', 'translate(' + -300 + ',' + 20 + ')scale(1,1)')
 				.attr('align', 'center');
@@ -216,6 +217,7 @@ function TreePlot(props) {
 			let parentLink = diagramLayout.selectAll('.additionalParentLink');
 			linkMatch.style('stroke', '#ddd');
 			parentLink.style('stroke', '#ddd');
+
 			let highlightPathBackward = function (d, displayColor) {
 				linkMatch
 					.filter(function (e) {
@@ -228,7 +230,7 @@ function TreePlot(props) {
 					})
 					.transition(0)
 					.duration(300)
-					// .attr('class', 'value-match')
+					.attr('class', 'value-match')
 					.style('stroke', isMaterialLink);
 			};
 
@@ -238,6 +240,7 @@ function TreePlot(props) {
 		} else if (props.chartType === 'forward') {
 			let diagramForward = d3.select('#treeviewidforward');
 			let linkSvgFor = diagramForward.selectAll('.link');
+			let linkNotMatchValueFor = diagramForward.selectAll('.value-match');
 			let linkSvg1For = diagramForward.select('g');
 			let linkSvg2For = diagramForward.selectAll('#node-' + selectedNodeId);
 			let nodeCoordsFor = d3.transform(linkSvg2For.attr('transform'));
@@ -245,7 +248,9 @@ function TreePlot(props) {
 			let ntranslateYFor = nodeCoordsFor.translate[1];
 			let newTranslateXFor = ntranslateXFor - 600;
 			let newtranslateYFor = ntranslateYFor - ntranslateYFor - 40;
-
+			linkNotMatchValueFor
+				.attr('class', 'link')
+				.style('stroke', isMaterialLink);
 			linkSvg1For
 				.attr('transform', 'translate(' + 90 + ',' + 20 + ')scale(1,1)')
 				.attr('align', 'center');
@@ -812,9 +817,20 @@ function TreePlot(props) {
 				nodeEnter
 					.append('svg:text')
 					.attr('x', function (d) {
-						return d.traceability === 'backward' ? 80 : 20;
+						if (d.matNo === firstNode) {
+							return d.traceability === 'backward' ? 80 : 20; // 80 20
+						} else {
+							return d.traceability === 'backward' ? 25 : -25; // 80
+						}
 					})
-					.attr('dy', '0.35em')
+
+					.attr('dy', function (d) {
+						if (d.matNo === firstNode) {
+							return '0.35em'; //0.35em
+						} else {
+							return '-1.5em'; //0.35em
+						}
+					})
 					.attr('text-anchor', function (d) {
 						return d.traceability === 'backward' ? 'end' : 'start';
 					})
@@ -1664,6 +1680,13 @@ function TreePlot(props) {
 							onClickView('view');
 						}}>
 						View Details
+					</Button>
+					<Button
+						type='primary'
+						onClick={() => {
+							onClickView('upload_files');
+						}}>
+						Upload Files
 					</Button>
 				</div>
 				<div className='genealogy-legends'>

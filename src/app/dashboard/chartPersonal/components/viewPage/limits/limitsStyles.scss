@@ -10,6 +10,22 @@
   }
   .ant-table-thead > tr > th {
     background: #f0f7fa;
+    padding: 12px 8px;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+  }
+  .ant-table-tbody > tr > td {
+    padding: 12px 8px;
+    input {
+      width: 74px;
+    }
+  }
+  td:nth-child(1) {
+    text-align: center;
+    font-size: 16px;
   }
   tr:nth-child(even) {
     background-color: #f9f9f9 !important;

@@ -211,7 +211,13 @@ function workflowTable(props) {
                   <a onClick={() => history.push(`${text}/${row.Id}?id=${row.Id}&version=${row.version}`)} className='review-submission'>Review Submission</a>
   
                 );
-              }else{
+              }else if(text=='/dashboard/view_creation'){
+                return (
+                  <a onClick={() => history.push(`${text}/${row.Id}&${row.version}?id=${row.Id}&version=${row.version}`)} className='review-submission'>Review Submission</a>
+  
+                );
+              }
+              else{
                 return (
                   <a onClick={() => history.push(`${text}?id=${row.Id}&version=${row.version}`)} className='review-submission'>Review Submission</a>
   

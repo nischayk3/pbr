@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { Card, Input, Space, Avatar, Row, Col, Tabs, Divider,Empty } from 'antd';
+import { Card, Input, Space, Avatar, Row, Col, Tabs, Divider, Empty } from 'antd';
 import illustrations from '../../../../assets/images/Group 33808.svg';
 import DeviationTable from './deviationTable/deviationTable';
 import DataQuality from './dataQuality/dataQuality';
@@ -18,7 +18,7 @@ import {
 } from '../../../../duck/actions/commonActions';
 import { getCountData } from '../../../../services/workFlowServices';
 import { getChartExceptionData, getUpdatedChartsViewsData } from '../../../../services/workSpaceServices';
-import {FaCircle} from "react-icons/fa";
+import { FaCircle } from "react-icons/fa";
 import './styles.scss';
 
 const { Search } = Input;
@@ -105,15 +105,15 @@ const Workspace = () => {
   //changing tiles color
   const statusColor = (status) => {
     if (status == 'APRD') {
-        return 'aprd'
+      return 'aprd'
     }
     if (status == 'DRFT') {
-        return 'drft'
+      return 'drft'
     }
     if (status == 'AWAP') {
-        return 'awap'
+      return 'awap'
     }
-}
+  }
   return (
     <div className='custom-wrapper'>
       <div className='workspace-subheader'>
@@ -172,7 +172,7 @@ const Workspace = () => {
                   </span>
 
                   <Row gutter={4}>
-                    {tilesData?.filter(el=>el.item_count>0).map((item, index) => {
+                    {tilesData?.filter(el => el.item_count > 0).map((item, index) => {
                       return (
                         <Col className='gutter-row' span={4}>
                           {item.item_count > 0 && (
@@ -300,6 +300,58 @@ const Workspace = () => {
                 </div>
               </div>
             </div>
+            <div className='workspace-innerColumn'>
+              <div className='workspace-card2'>
+                <div className='innercard'>
+                  <LayoutOutlined
+                    style={{ color: '#0CE7CC', fontSize: '15px' }}
+                  />
+                  <span className='deviation-text'>Report Alerts</span>
+                  <span style={{ float: 'right' }}>
+                    <ArrowRightOutlined
+                      style={{ color: '#0CE7CC', fontSize: '15px' }}
+                    />
+                    <a
+                      onClick={() => console.log('PBR')}
+                      className='workspace-review'
+                    >
+                      View All
+                    </a>
+                  </span>
+                  <div className='paper-batch-card'>
+                    <p className='paper-batch-count'>6</p>
+                    <p className='paper-batch-desc'>
+                      of your report alerts configured
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className='workspace-card2'>
+                <div className='innercard'>
+                  <LayoutOutlined
+                    style={{ color: '#0CE7CC', fontSize: '15px' }}
+                  />
+                  <span className='deviation-text'>Process Control Chart Alerts</span>
+                  <span style={{ float: 'right' }}>
+                    <ArrowRightOutlined
+                      style={{ color: '#0CE7CC', fontSize: '15px' }}
+                    />
+                    <a
+                      onClick={() => console.log('PBR')}
+                      className='workspace-review'
+                    >
+                      View All
+                    </a>
+                  </span>
+                  <div className='paper-batch-card'>
+                    <p className='paper-batch-count'>2</p>
+                    <p className='paper-batch-desc'>
+                      charts configured with alerts
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className='workspace-outerColumn'>
@@ -330,19 +382,19 @@ const Workspace = () => {
             />
             <span className='deviation-text'>Recently Approved Creations</span>
             <div className="workspace-legend">
-                <span>
-                  <FaCircle style={{ color: '#363636' }}/>  {" "}
-                  Draft
-                </span>
-                <span style={{margin:'0px 15px'}}>
-                  <FaCircle style={{ color: '#F7BB61' }}/>  {" "}
-                  Awaiting Approval
-                </span>
-                <span>
-                  <FaCircle style={{ color: '#A4F588' }}/>  {" "}
-                  Approved
-                </span>
-              </div>
+              <span>
+                <FaCircle style={{ color: '#363636' }} />  {" "}
+                Draft
+              </span>
+              <span style={{ margin: '0px 15px' }}>
+                <FaCircle style={{ color: '#F7BB61' }} />  {" "}
+                Awaiting Approval
+              </span>
+              <span>
+                <FaCircle style={{ color: '#A4F588' }} />  {" "}
+                Approved
+              </span>
+            </div>
             <Row>
               <Col span={11}>
                 <div className='workspace-processChart-main'>
@@ -353,7 +405,7 @@ const Workspace = () => {
                         <Col className='gutter-row' span={8}>
 
                           <div className='workspace-processChart-card' onClick={() => history.push(`/dashboard/chart_personalization?id=${j.chart_disp_id}&version=${j.chart_version}`)}>
-                          <div className={`tile-status ${statusColor(j.chart_status)}`} >{j.chart_status}</div>
+                            <div className={`tile-status ${statusColor(j.chart_status)}`} >{j.chart_status}</div>
                             <p className='workspace-processCharts-id'>
                               {j.chart_disp_id}
                             </p>
@@ -385,11 +437,11 @@ const Workspace = () => {
                 <div className='workspace-processView-main'>
                   <p className='workspace-processView'>Views</p>
                   <Row gutter={[6, 12]}>
-                    {lastupdatedViews.length>0 ?lastupdatedViews.map((m, n) => {
+                    {lastupdatedViews.length > 0 ? lastupdatedViews.map((m, n) => {
                       return (
                         <Col className='gutter-row' span={8}>
                           <div className='workspace-processView-card' onClick={() => history.push(`/dashboard/view_creation?id=${m.view_disp_id}&version=${m.view_version}&fromScreen=Workspace`)}>
-                          <div className={`tile-status ${statusColor(m.view_status)}`} >{m.view_status}</div>
+                            <div className={`tile-status ${statusColor(m.view_status)}`} >{m.view_status}</div>
                             <p className='workspace-processView-id'>
                               {m.view_disp_id}
                             </p>
@@ -401,14 +453,14 @@ const Workspace = () => {
 
                         </Col>
                       )
-                    }):(
+                    }) : (
                       <Empty
-                          className='empty-workspace'
-                          description={
-                            <span>
-                              Nothing to see here
-                            </span>
-                          } />
+                        className='empty-workspace'
+                        description={
+                          <span>
+                            Nothing to see here
+                          </span>
+                        } />
                     )}
 
                   </Row>

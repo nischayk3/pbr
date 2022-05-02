@@ -387,7 +387,7 @@ div.popup {
 .genealogy-legends {
 	position: fixed;
 	left: 140px;
-	bottom: 100px;
+	bottom: 60px;
 }
 // #treeWrapper {
 //   position: relative;
@@ -426,7 +426,7 @@ div.popup {
 
 .popup-div {
 	position: absolute;
-	width: 215px;
+	width: 160px;
 	padding: 12px;
 	background: #ffffff;
 	box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.24);
@@ -442,7 +442,7 @@ div.popup {
 		border: 0;
 		text-align: left;
 	}
-	> button:nth-child(3) {
+	> button:nth-child(4) {
 		border: 0 !important;
 		box-shadow: none;
 	}
@@ -503,5 +503,5 @@ div.headerattribute {
 	padding: 10px 0;
 	position: fixed;
 	right: 100px;
-	bottom: 100px;
+	bottom: 60px;
 }

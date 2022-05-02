@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { Card, Input, Divider, Table, Tabs, Avatar, message } from 'antd';
 import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
 import illustrations from '../../../../assets/images/landing_image.png';
@@ -11,19 +11,21 @@ import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { sendReport } from '../../../../duck/actions/reportDesignerAction';
-import { showLoader, hideLoader, showNotification } from '../../../../duck/actions/commonActions';
-
+import {
+    showLoader,
+    hideLoader,
+    showNotification,
+} from '../../../../duck/actions/commonActions';
 
 export default function Landing(props) {
-
     const [resultDate, setResultDate] = useState('');
     const [searched, setSearched] = useState(false);
-    const [reportList, setReportList] = useState([])
-    const [filterTable, setFilterTable] = useState(null)
-    const [screen, setScreen] = useState(false)
+    const [reportList, setReportList] = useState([]);
+    const [filterTable, setFilterTable] = useState(null);
+    const [screen, setScreen] = useState(false);
     const { TabPane } = Tabs;
     const history = useHistory();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const columns = [
         {
@@ -51,7 +53,6 @@ export default function Landing(props) {
                     children: <div>{text}</div>,
                 };
             },
-
         },
         {
             title: 'Report Status',
@@ -73,7 +74,14 @@ export default function Landing(props) {
             render: (text, row, index) => {
                 return (
                     <div>
-                        <Avatar className='avatar-icon' style={{ backgroundColor: getRandomColor(index + 1) }} >{text.split("")[0].toUpperCase()} </Avatar>
+                        <Avatar
+                            className='avatar-icon'
+                            style={{
+                                backgroundColor: getRandomColor(index + 1),
+                            }}
+                        >
+                            {text.split('')[0].toUpperCase()}{' '}
+                        </Avatar>
                         <span className='avatar-text'>{text}</span>
                     </div>
                 );
@@ -81,38 +89,35 @@ export default function Landing(props) {
         },
     ];
 
-
-
     useEffect(() => {
         updateDate();
         getReportList();
     }, []);
-
-
 
     const updateDate = () => {
         const date = new Date();
         const month = date.toLocaleString('default', { month: 'long' });
         const latestDate = date.getDate();
         const year = date.getFullYear();
-        const resultDate = month + ' ' + latestDate + ',' + ' ' + year
+        const resultDate = month + ' ' + latestDate + ',' + ' ' + year;
         setResultDate(resultDate);
-    }
+    };
 
     const getRandomColor = (index) => {
-        let colors = ['#56483F', '#728C69', '#c04000', '#c19578']
+        let colors = ['#56483F', '#728C69', '#c04000', '#c19578'];
         return colors[index % 4];
-    }
+    };
 
     const search = (value) => {
-        setSearched(true)
-        const tableData = reportList
+        setSearched(true);
+        const tableData = reportList;
         const filterTable = tableData.filter((o) =>
             Object.keys(o).some((k) =>
                 String(o[k]).toLowerCase().includes(value.toLowerCase())
             )
         );
-        setFilterTable(filterTable)
+
+        setFilterTable(filterTable);
     };
 
     const getReportList = () => {
@@ -123,38 +128,48 @@ export default function Landing(props) {
     };
 
     const getLoadReport = async (report_id) => {
-        message.success(report_id + ' selected')
-        dispatch(showLoader())
-        let req = { report_displ_id: report_id }
-        let data = await loadReport(req)
+        message.success(report_id + ' selected');
+        dispatch(showLoader());
+        let req = { report_displ_id: report_id };
+        let data = await loadReport(req);
         if (data.Status == 200 || data.report_designer) {
-            props.getReportData(data)
-            props.changeScreen()
+            props.getReportData(data);
+            props.changeScreen();
+        } else {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', data.Message));
         }
-        else {
-            dispatch(hideLoader())
-            dispatch(showNotification('error', data.Message))
-        }
-    }
+    };
 
     const getLoadReportGenerator = async (report_id) => {
-        message.success(report_id + ' selected')
-        dispatch(showLoader())
-        let req = { report_displ_id: report_id }
-        let data = await loadReportGen(req)
-        console.log(data)
+        message.success(report_id + ' selected');
+        dispatch(showLoader());
+        let req = { report_displ_id: report_id };
+        let data = await loadReportGen(req);
+        console.log(data);
         if (data.report_generator)
-            dispatch(sendReport(data.report_generator.data))
+            dispatch(sendReport(data.report_generator.data));
         if (data.Status == 200 || data.report_generator) {
             history.push({
                 pathname: '/dashboard/report_generator',
             });
+        } else {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', data.Message));
         }
-        else {
-            dispatch(hideLoader())
-            dispatch(showNotification('error', data.Message))
+    };
+
+    const statusColor = (status) => {
+        if (status == 'APRD') {
+            return 'aprd';
         }
-    }
+        if (status == 'DRFT') {
+            return 'drft';
+        }
+        if (status == 'AWAP') {
+            return 'awap';
+        }
+    };
 
     return (
         <div className="report-landing">
@@ -167,106 +182,186 @@ export default function Landing(props) {
                 <div className='custom-content-layout'>
                     <Card className='workflow_head'>
                         <div>
-                            <p className='dash-username'>Howdy {(localStorage.getItem('username'))}!</p>
-                            <p className='dash-text'>Let's get designing some report templates!</p>
+                            <p className='dash-username'>
+                                Howdy {localStorage.getItem('username')}!
+                            </p>
+                            <p className='dash-text'>
+                                Let's get designing some report templates!
+                            </p>
                         </div>
                         <img src={illustrations} className='illustration' />
                         <span className='resultdate'>{resultDate}</span>
                     </Card>
-                    <Card className="landing-card">
-                        <div style={{ width: '870px', marginLeft: '180px' }}>
+                    <Card className='landing-card'>
+                        <div style={{ width: '750px', marginLeft: '180px' }}>
                             <Input.Search
-                                placeholder="Search by view ID, name, product number, creator, status"
+                                placeholder='Search by view ID, name, product number, creator, status'
                                 allowClear
-                                className="landing-btn"
-                                enterButton="Search"
-                                size="large"
+                                className='landing-btn'
+                                enterButton='Search'
+                                size='large'
                                 onSearch={search}
                             />
-                            <Tabs className="report-landing-card" defaultActiveKey="1" >
-                                <TabPane tab="Design Report Template" key="Design Report Template">
-                                    {searched ? <Table className="landing-table" columns={columns} dataSource={filterTable === null ? reportList : filterTable} onRow={record => ({
-                                        onClick: e => {
-                                            getLoadReport(record.rep_disp_id)
-                                        }
-                                    })} /> : <></>}
-                                    <div className='create-new' onClick={() => props.changeScreen()} >
+                            <Tabs
+                                className='report-landing-card'
+                                defaultActiveKey='1'
+                            >
+                                <TabPane
+                                    tab='Design Report Template'
+                                    key='Design Report Template'
+                                >
+                                    {searched ? (
+                                        <Table
+                                            className='landing-table'
+                                            columns={columns}
+                                            dataSource={
+                                                filterTable === null
+                                                    ? reportList
+                                                    : filterTable
+                                            }
+                                            onRow={(record) => ({
+                                                onClick: (e) => {
+                                                    // record['color'] = '#D3D3D3'
+                                                    // setReportId(record.rep_disp_id)
+                                                    // getReportData(record.rep_disp_id, record.rep_status)
+                                                    // dispatch(showLoader())
+                                                    getLoadReport(
+                                                        record.rep_disp_id
+                                                    );
+                                                    // onOk()
+                                                },
+                                            })}
+                                        />
+                                    ) : (
+                                        <></>
+                                    )}
+                                    <div
+                                        className='create-new'
+                                        onClick={() => props.changeScreen()}
+                                    >
                                         <PlusOutlined />
                                         <p>Design new report</p>
-                                    </div><br />
-                                    {/* <h3 className="recent">Recently designed report templates</h3>
-                                    <Divider /> */}
-                                    <div className='card-legends'>
-                                        <h3 className='recent'>Recently designed report templates</h3>
-                                        <div className='legends'>
-                                            <p>
-                                                <span className='drft'></span>Draft
-                                            </p>
-                                            <p>
-                                                <span className='await'></span>Awaiting approval
-                                            </p>
-                                            <p>
-                                                <span className='aprv'></span>Approved
-                                            </p>
-                                        </div>
                                     </div>
+                                    <br />
+                                    <h3 className='recent'>
+                                        Recently designed report templates
+                                    </h3>
+                                    <Divider />
                                     <div>
-                                        <div className="tile">
-                                            {reportList.length > 0 ? reportList.map((i, index) => (
-                                                index < 8 &&
-                                                <div onClick={() => { getLoadReport(i.rep_disp_id) }} >
-                                                    <StatusBlock id={i.rep_disp_id} status={i.rep_status} name={i.rep_name} />
-                                                </div>
-                                            )) : <></>}
+                                        <div className='tile'>
+                                            {reportList.length > 0 ? (
+                                                reportList.map(
+                                                    (i, index) =>
+                                                        index < 8 && (
+                                                            <div
+                                                                onClick={() => {
+                                                                    getLoadReport(
+                                                                        i.rep_disp_id
+                                                                    );
+                                                                }}
+                                                            >
+                                                                <StatusBlock
+                                                                    id={
+                                                                        i.rep_disp_id
+                                                                    }
+                                                                    status={
+                                                                        i.rep_status
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        )
+                                                )
+                                            ) : (
+                                                <></>
+                                            )}
                                         </div>
                                     </div>
                                 </TabPane>
-                                <TabPane tab="Generate Report Variant" key="Generate Report Variant">
-                                    {searched ? <Table columns={columns} dataSource={filterTable === null ? reportList : filterTable} onRow={record => ({
-                                        onClick: e => {
-                                            getLoadReportGenerator(record.rep_disp_id)
-                                        }
-                                    })} /> : <></>}
-                                    <div className='create-new' onClick={() => {
-                                        history.push({
-                                            pathname: '/dashboard/report_generator',
-                                        });
-                                    }} >
+                                <TabPane
+                                    tab='Generate Report Variant'
+                                    key='Generate Report Variant'
+                                >
+                                    {/* <Input.Search
+                                    placeholder="Search by view ID, name, product number, creator, status"
+                                    allowClear
+                                    enterButton='Search'
+                                    size='large'
+                                    onSearch={search}
+                                // onSearch={onSearch}
+                                /> */}
+
+                                    {searched ? (
+                                        <Table
+                                            columns={columns}
+                                            dataSource={
+                                                filterTable === null
+                                                    ? reportList
+                                                    : filterTable
+                                            }
+                                            onRow={(record) => ({
+                                                onClick: (e) => {
+                                                    // record['color'] = '#D3D3D3'
+                                                    // setReportId(record.rep_disp_id)
+                                                    // getReportData(record.rep_disp_id, record.rep_status)
+                                                    // dispatch(showLoader())
+                                                    getLoadReportGenerator(
+                                                        record.rep_disp_id
+                                                    );
+                                                    // onOk()
+                                                },
+                                            })}
+                                        />
+                                    ) : (
+                                        <></>
+                                    )}
+                                    <div
+                                        className='create-new'
+                                        onClick={() => {
+                                            history.push({
+                                                pathname:
+                                                    '/dashboard/report_generator',
+                                            });
+                                        }}
+                                    >
                                         <PlusOutlined />
                                         <p>Generate new report</p>
-                                    </div><br />
-                                    {/* <h3 className="recent-report">Recently created reports</h3>
-                                    <Divider /> */}
-                                                                        <div className='card-legends'>
-                                        <h3 className='recent'>Recently created reports</h3>
-                                        <div className='legends'>
-                                            <p>
-                                                <span className='drft'></span>Draft
-                                            </p>
-                                            <p>
-                                                <span className='await'></span>Awaiting approval
-                                            </p>
-                                            <p>
-                                                <span className='aprv'></span>Approved
-                                            </p>
-                                        </div>
                                     </div>
-                                    <div className="tile">
-                                        {reportList && reportList.length > 0 && reportList.map((i, index) => (
-                                            index < 8 &&
-                                            <div onClick={() => { getLoadReportGenerator(i.rep_disp_id) }} >
-                                                <StatusBlock id={i.rep_disp_id} status={i.rep_status} name={i.rep_name} />
-                                            </div>
-                                        ))}
+                                    <br />
+                                    <h3 className='recent-report'>
+                                        Recently created reports
+                                    </h3>
+                                    <Divider />
+                                    <div className='tile'>
+                                        {reportList &&
+                                            reportList.length > 0 &&
+                                            reportList.map(
+                                                (i, index) =>
+                                                    index < 8 && (
+                                                        <div
+                                                            onClick={() => {
+                                                                getLoadReportGenerator(
+                                                                    i.rep_disp_id
+                                                                );
+                                                            }}
+                                                        >
+                                                            <StatusBlock
+                                                                id={
+                                                                    i.rep_disp_id
+                                                                }
+                                                                status={
+                                                                    i.rep_status
+                                                                }
+                                                            />
+                                                        </div>
+                                                    )
+                                            )}
                                     </div>
                                 </TabPane>
-                            </Tabs >
+                            </Tabs>
                         </div>
                     </Card>
-
-
                 </div>
             </div>
         </div>
-    )
+    );
 }
