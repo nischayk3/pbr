@@ -71,7 +71,7 @@ export default function scheduledAlertsTable(props) {
 
         let delete_response = await deleteJob(req, request_headers)
         if (delete_response.Status == 200) {
-            dispatch(showNotification('success', `${jobId} deleted successfully`))
+            dispatch(showNotification('success', `${jobId.job_id} deleted successfully`))
             getJobs()
         }
         else {

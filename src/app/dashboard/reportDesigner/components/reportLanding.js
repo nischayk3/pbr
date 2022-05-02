@@ -3,7 +3,7 @@ import { Card, Input, Divider, Table, Tabs, Avatar, message } from 'antd';
 import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
 import illustrations from '../../../../assets/images/landing_image.png';
 import { getReports } from '../../../../services/reportDesignerServices';
-import './style.scss';
+import './landing.scss';
 import StatusBlock from '../../../../components/StatusBlock/statusBlock';
 import { loadReport } from '../../../../services/reportDesignerServices';
 import { loadReportGen } from '../../../../services/reportGeneratorServices';
@@ -24,7 +24,6 @@ export default function Landing(props) {
     const { TabPane } = Tabs;
     const history = useHistory();
     const dispatch = useDispatch()
-
 
     const columns = [
         {
@@ -83,6 +82,7 @@ export default function Landing(props) {
     ];
 
 
+
     useEffect(() => {
         updateDate();
         getReportList();
@@ -102,7 +102,6 @@ export default function Landing(props) {
     const getRandomColor = (index) => {
         let colors = ['#56483F', '#728C69', '#c04000', '#c19578']
         return colors[index % 4];
-
     }
 
     const search = (value) => {
@@ -113,13 +112,11 @@ export default function Landing(props) {
                 String(o[k]).toLowerCase().includes(value.toLowerCase())
             )
         );
-
         setFilterTable(filterTable)
     };
 
     const getReportList = () => {
         let req = { rep_status: 'all' };
-
         getReports(req).then((res) => {
             setReportList(res['Data']);
         });
@@ -130,8 +127,7 @@ export default function Landing(props) {
         dispatch(showLoader())
         let req = { report_displ_id: report_id }
         let data = await loadReport(req)
-        if (data.Status == 200 || data.report_designer) 
-        {
+        if (data.Status == 200 || data.report_designer) {
             props.getReportData(data)
             props.changeScreen()
         }
@@ -139,7 +135,6 @@ export default function Landing(props) {
             dispatch(hideLoader())
             dispatch(showNotification('error', data.Message))
         }
-
     }
 
     const getLoadReportGenerator = async (report_id) => {
@@ -159,24 +154,10 @@ export default function Landing(props) {
             dispatch(hideLoader())
             dispatch(showNotification('error', data.Message))
         }
-
-
-    }
-
-    const statusColor = (status) => {
-        if (status == 'APRD') {
-            return 'aprd'
-        }
-        if (status == 'DRFT') {
-            return 'drft'
-        }
-        if (status == 'AWAP') {
-            return 'awap'
-        }
     }
 
     return (
-        <div>
+        <div className="report-landing">
             <div className='custom-wrapper'>
                 <div className='sub-header'>
                     <div className='sub-header-title'>
@@ -191,11 +172,9 @@ export default function Landing(props) {
                         </div>
                         <img src={illustrations} className='illustration' />
                         <span className='resultdate'>{resultDate}</span>
-
                     </Card>
                     <Card className="landing-card">
-
-                        <div style={{ width: '750px', marginLeft: '180px' }}>
+                        <div style={{ width: '870px', marginLeft: '180px' }}>
                             <Input.Search
                                 placeholder="Search by view ID, name, product number, creator, status"
                                 allowClear
@@ -206,54 +185,46 @@ export default function Landing(props) {
                             />
                             <Tabs className="report-landing-card" defaultActiveKey="1" >
                                 <TabPane tab="Design Report Template" key="Design Report Template">
-
                                     {searched ? <Table className="landing-table" columns={columns} dataSource={filterTable === null ? reportList : filterTable} onRow={record => ({
                                         onClick: e => {
-                                            // record['color'] = '#D3D3D3'
-                                            // setReportId(record.rep_disp_id)
-                                            // getReportData(record.rep_disp_id, record.rep_status)
-                                            // dispatch(showLoader())
                                             getLoadReport(record.rep_disp_id)
-                                            // onOk()
                                         }
                                     })} /> : <></>}
                                     <div className='create-new' onClick={() => props.changeScreen()} >
                                         <PlusOutlined />
                                         <p>Design new report</p>
                                     </div><br />
-                                    <h3 className="recent">Recently designed report templates</h3>
-                                    <Divider />
+                                    {/* <h3 className="recent">Recently designed report templates</h3>
+                                    <Divider /> */}
+                                    <div className='card-legends'>
+                                        <h3 className='recent'>Recently designed report templates</h3>
+                                        <div className='legends'>
+                                            <p>
+                                                <span className='drft'></span>Draft
+                                            </p>
+                                            <p>
+                                                <span className='await'></span>Awaiting approval
+                                            </p>
+                                            <p>
+                                                <span className='aprv'></span>Approved
+                                            </p>
+                                        </div>
+                                    </div>
                                     <div>
                                         <div className="tile">
                                             {reportList.length > 0 ? reportList.map((i, index) => (
                                                 index < 8 &&
                                                 <div onClick={() => { getLoadReport(i.rep_disp_id) }} >
-                                                    <StatusBlock id={i.rep_disp_id} status={i.rep_status} />
+                                                    <StatusBlock id={i.rep_disp_id} status={i.rep_status} name={i.rep_name} />
                                                 </div>
                                             )) : <></>}
                                         </div>
-
                                     </div>
-
                                 </TabPane>
                                 <TabPane tab="Generate Report Variant" key="Generate Report Variant">
-                                    {/* <Input.Search
-                                    placeholder="Search by view ID, name, product number, creator, status"
-                                    allowClear
-                                    enterButton="Search"
-                                    size="large"
-                                    onSearch={search}
-                                // onSearch={onSearch}
-                                /> */}
-
                                     {searched ? <Table columns={columns} dataSource={filterTable === null ? reportList : filterTable} onRow={record => ({
                                         onClick: e => {
-                                            // record['color'] = '#D3D3D3'
-                                            // setReportId(record.rep_disp_id)
-                                            // getReportData(record.rep_disp_id, record.rep_status)
-                                            // dispatch(showLoader())
                                             getLoadReportGenerator(record.rep_disp_id)
-                                            // onOk()
                                         }
                                     })} /> : <></>}
                                     <div className='create-new' onClick={() => {
@@ -264,17 +235,30 @@ export default function Landing(props) {
                                         <PlusOutlined />
                                         <p>Generate new report</p>
                                     </div><br />
-                                    <h3 className="recent-report">Recently created reports</h3>
-                                    <Divider />
+                                    {/* <h3 className="recent-report">Recently created reports</h3>
+                                    <Divider /> */}
+                                                                        <div className='card-legends'>
+                                        <h3 className='recent'>Recently created reports</h3>
+                                        <div className='legends'>
+                                            <p>
+                                                <span className='drft'></span>Draft
+                                            </p>
+                                            <p>
+                                                <span className='await'></span>Awaiting approval
+                                            </p>
+                                            <p>
+                                                <span className='aprv'></span>Approved
+                                            </p>
+                                        </div>
+                                    </div>
                                     <div className="tile">
                                         {reportList && reportList.length > 0 && reportList.map((i, index) => (
                                             index < 8 &&
                                             <div onClick={() => { getLoadReportGenerator(i.rep_disp_id) }} >
-                                                <StatusBlock id={i.rep_disp_id} status={i.rep_status} />
+                                                <StatusBlock id={i.rep_disp_id} status={i.rep_status} name={i.rep_name} />
                                             </div>
                                         ))}
                                     </div>
-
                                 </TabPane>
                             </Tabs >
                         </div>

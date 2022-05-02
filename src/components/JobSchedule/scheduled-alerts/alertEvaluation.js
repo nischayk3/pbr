@@ -11,6 +11,7 @@ import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider,
 import SelectField from '../../SelectField/SelectField';
 import InputField from '../../InputField/InputField';
 import './styles.scss';
+import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../duck/actions/commonActions';
 import { putJob, getJob } from '../../../services/jobScheduleService';
@@ -51,21 +52,12 @@ const alertEvaluation = (props) => {
         Friday: false,
         Saturday: false,
     })
-    const [selectedEmailDays, setSelectedEmailDays] = useState({
-        Sunday: false,
-        Monday: false,
-        Tuesday: false,
-        Wednesday: false,
-        Thursday: false,
-        Friday: false,
-        Saturday: false,
-    })
     const [activeTab, setActiveTab] = useState("schedule_evaluation");
     const [scheduleEmailTime, setScheduleEmailTime] = useState('')
-    const [frequency, setFrequency] = useState('')
     const [everyDayValue, setEveryDayValue] = useState('')
     const [everyDayEmailValue, setEveryDayEmailValue] = useState('')
     const [selectedEmailTimeRange, setSelectedEmailTimeRange] = useState('');
+    const [emailLoad, setEmailLoad] = useState({})
 
 
 
@@ -75,21 +67,43 @@ const alertEvaluation = (props) => {
         }
     })
 
-    const getJobs = async () => {
+    useEffect(() => {
+        if (props.job) {
+            getJobs(props.job)
+        }
+    }, [props.job])
+
+    const onClear = () => {
+        setEmailList([])
+        setSelectedSchedule('')
+        setScheduleStartDate('')
+        setScheduleEmailTime('')
+        setRadioValue('')
+        setSelectedDays({
+            Sunday: false,
+            Monday: false,
+            Tuesday: false,
+            Wednesday: false,
+            Thursday: false,
+            Friday: false,
+            Saturday: false,
+        })
+    }
+
+    const getJobs = async (job) => {
         dispatch(showLoader())
         let login_response = JSON.parse(localStorage.getItem('login_details'));
-
         let request_headers = {
             'content-type': 'application/json',
             'x-access-token': login_response.token ? login_response.token : '',
             'resource-name': 'DASHBOARD',
         };
 
-        let req = { app_type: props.appType, app_id: props.id };
+        let req = { app_type: props.appType, dag_id: job };
         let get_response = await getJob(req, request_headers)
         try {
             if (get_response.Data) {
-                return
+                unLoad(get_response.Data)
             }
 
             if (get_response.Status == 401) {
@@ -105,22 +119,30 @@ const alertEvaluation = (props) => {
 
     };
 
-    const unLoad = () => {
+    const unLoad = (data) => {
 
-    }
-
-    const updateEmailDays = (day) => {
         dispatch(showLoader())
-        if (selectedDays[day]) {
-            selectedDays[day] = false
-            setSelectedDays(selectedDays)
+        data = data[0]
+
+        if (data.job_type == "email") 
+        {
+            setActiveTab("email")
+            setEmailLoad(data)
         }
         else {
-            selectedDays[day] = true
-            setSelectedDays(selectedDays)
+            if(data.email_config.selected_days_obj)
+            setSelectedDays(data.email_config.selected_days_obj)
+
+            setSelectedSchedule(data.frequency_unit)
+            setScheduleStartDate(data.scheduled_start)
+            setScheduleTime(data.email_config.scheduled_time)
         }
+        // setRadioValue(data.email_config.daily_frequency)
+        // setSelectedDays(data.email_config.selected_days_obj)
         dispatch(hideLoader())
     }
+
+
 
     const updateDays = (day) => {
         dispatch(showLoader())
@@ -188,14 +210,20 @@ const alertEvaluation = (props) => {
         req['dag_id'] = ' '
         req['created_by'] = localStorage.getItem('username') ? localStorage.getItem('username') : ''
         req['app_type'] = props.appType
-        req['app_id'] = props.appType
-        req['email_config'] = {}
+        req['app_id'] = props.id
+
+        let email_config = {}
+        email_config["scheduled_time"] = scheduleTime
+        email_config["selected_days_obj"] = selectedDays
+
+
+
+        req['email_config'] = email_config
         req['frequency'] = 1
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
         req["job_status"] = "scheduled",
             req["job_type"] = 'event',
             req['notify_emails'] = [],
-            req["scheduled_time"] = scheduleTime,
             req["scheduled_start"] = scheduleStartDate
         req["scheduled_end"] = "2030/12/12"
 
@@ -205,7 +233,7 @@ const alertEvaluation = (props) => {
             dispatch(showNotification('success', 'Saved'))
         }
         else {
-            dispatch(showNotification('error', 'Unable to save'))
+            dispatch(showNotification('error', res.Message))
         }
     }
     const changeTab = activeKey => {
@@ -238,22 +266,22 @@ const alertEvaluation = (props) => {
     const handleChange = selectedItems => {
         setEmailList(selectedItems);
     };
-
+    console.log(emailLoad,activeTab)
     return (
         <div className="chart-notify">
-            <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={activeTab == 'schedule_evaluation' ? <div style={{ marginRight: '20px',marginTop:'15px' }}>  <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule Evaluation</Button>
-                <Button className='clear-schedule'>Clear</Button></div> : <></>}>
+            <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={activeTab == 'schedule_evaluation' ? <div style={{ marginRight: '20px', marginTop: '15px' }}>  <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule Evaluation</Button>
+                <Button className='clear-schedule' onClick={() => onClear()}>Clear</Button></div> : <></>}>
                 <TabPane tab='Schedule evaluation' key="schedule_evaluation">
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '300px' }}>
-                            <ClockCircleOutlined style={{ color: "#093185" }} />  <DatePicker placeholder="Start Date" style={{ width: '260px' }} onChange={onChangeStart} bordered={false} />
+                            <ClockCircleOutlined style={{ color: "#093185",fontSize:'18px'  }} />  <DatePicker placeholder="Start Date" style={{ width: '260px' }} onChange={onChangeStart} bordered={false} value={scheduleStartDate.length > 0 ? moment(scheduleStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
                             <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                         </div>
                         <div style={{ marginTop: '40px' }}>
                             <Row gutter={[16, 24]}>
                                 <Col className='gutter-row' span={4}>
                                     <div className="select-report-antd" >
-                                    <Select
+                                        <Select
                                             placeholder='Schedule'
                                             value={selectedSchedule}
                                             onChange={(e) => handleSelectScheduleChange(e)}
@@ -273,7 +301,7 @@ const alertEvaluation = (props) => {
                                 </Col>
                                 <Col className='gutter-row' span={4}>
                                     <div >
-                                        <TimePicker style={{ width: '187px', marginLeft: '35px', height: '36px' }} onChange={onChangeTime} />
+                                        <TimePicker style={{ width: '187px', marginLeft: '35px', height: '36px' }} onChange={onChangeTime} value={scheduleTime.length > 0 ? moment(scheduleTime, "HH:mm:ss") : ''} />
                                     </div>
                                 </Col>
                             </Row>
@@ -343,17 +371,11 @@ const alertEvaluation = (props) => {
                                 )
                             }
                         </div>
-                        {/* {selectedSchedule && (
-                            <div style={{ marginTop: '40px' }}>
-                                <Button className='schedule-evalutaion-button' onClick={() => SaveData()} >Schedule Evaluation</Button>
-                                <Button className='clear-schedule'>Clear</Button>
-                            </div>
-                        )} */}
                     </div>
                 </TabPane>
 
                 <TabPane tab='Email' key="email" onClick={() => setModal(true)}>
-                    <ChartNotify appType={props.appType} id={props.id} />
+                    <ChartNotify appType={props.appType} id={props.id} data={emailLoad} />
                 </TabPane>
             </Tabs>
             <Modal visible={modal} footer={false} onCancel={handleModalClose} width="400px" style={{ marginTop: '250px' }}>
