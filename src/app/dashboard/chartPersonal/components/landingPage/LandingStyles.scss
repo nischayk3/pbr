@@ -15,6 +15,7 @@ p {
 
 .banner {
   padding-bottom: 4px;
+  margin: 0px !important;
   .ant-card-body {
     height: 168px;
     background: linear-gradient(180deg, #d8e7ff 0%, #9bd0ee 100%);
@@ -29,7 +30,7 @@ p {
       margin-top: -80px;
     }
     img {
-      margin-top: 8px;
+      margin-top: -9px;
     }
     h6 {
       font-size: 16px;
@@ -184,14 +185,14 @@ p {
       margin-bottom: 0px !important;
     }
     .legend {
-      padding: 0px 12px;
+      padding: 4px 12px;
       height: 17px;
-      float: right;
       border-radius: 0px 4px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      margin-right: right;
+      position: absolute;
+      top: 0%;
+      right: 0%;
+      align-content: center;
       p {
         font-family: "Roboto";
         font-style: normal;
@@ -225,45 +226,4 @@ p {
 }
 .ant-card-body {
   border-radius: 4px;
-}
-
-.banner {
-  padding-bottom: 4px;
-  .ant-card-body {
-    height: 168px;
-    background: linear-gradient(180deg, #d8e7ff 0%, #9bd0ee 100%);
-  }
-  .card-body-div {
-    padding-left: 6px;
-    padding-right: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    :nth-child(3) {
-      margin-top: -80px;
-    }
-    img {
-      margin-top: 8px;
-    }
-    h6 {
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 22px;
-    }
-    .text-descp {
-      h2 {
-        font-size: 24px;
-        font-weight: 400;
-        line-height: 22px;
-      }
-      h6 {
-        color: #666666 !important;
-      }
-      p {
-        font-size: 18px;
-        font-weight: 300;
-        line-height: 22px;
-      }
-    }
-  }
 }
