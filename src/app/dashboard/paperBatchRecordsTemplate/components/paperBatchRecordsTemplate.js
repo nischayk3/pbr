@@ -33,7 +33,10 @@ import InputField from '../../../../components/InputField/InputField';
 
 import Sider from 'antd/lib/layout/Sider';
 import AddParameter from './addParameter/AddParameter';
-import { getBoundingBoxData } from '../../../../services/pbrService';
+import {
+    getBoundingBoxData,
+    savePbrTemplate,
+} from '../../../../services/pbrService';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -198,8 +201,8 @@ function PaperBatchRecordsTemplate() {
             let newArr = [...areasMap.areas];
             newArr.forEach((ele, i) => {
                 if (clickedSnippetId === ele.areaValue) {
-                    (ele.snippetID = obj.snippetID),
-                        (ele.areaValue = obj.areaValue);
+                    // (ele.snippetID = obj.snippetID),
+                    //     (ele.areaValue = obj.areaValue);
                     if (field === 'x1') {
                         ele.coords[0] = e.target.value;
                     } else if (field === 'y1') {
@@ -298,6 +301,66 @@ function PaperBatchRecordsTemplate() {
         }
     };
 
+    const savePbrTemplateDataInfo = async () => {
+        try {
+            // dispatch(showLoader());
+            let _reqBatch = {
+                pbrTemplateName: 'filename_datetime',
+                custKey: 'PBR',
+                pbrTemplateVersion: '1',
+                pbrTemplateStatus: 'DRFT',
+                createdBy: 'demo',
+                changedBy: null,
+                pbrTemplateInfo: [
+                    {
+                        parameterId: '1',
+                        parameterName: 'param1',
+                        anchorKey: {
+                            snippetId: 1,
+                            value: 'Document ID',
+                            coords: [100, 90, 56, 78],
+                        },
+                        anchorValue: {
+                            snippetId: 2,
+                            value: 'BR-001',
+                            coords: [120, 190, 76, 98],
+                        },
+                    },
+                    {
+                        parameterId: '2',
+                        parameterName: 'param2',
+                        anchorKey: {
+                            snippetId: 1,
+                            value: '',
+                            coords: [100, 90, 56, 78],
+                        },
+                        anchorValue: {
+                            snippetId: 2,
+                            value: 'BR-001',
+                            coords: [120, 190, 76, 98],
+                        },
+                    },
+                ],
+            };
+            const batchRes = await savePbrTemplate(_reqBatch);
+            console.log('batchRes', batchRes);
+            if (batchRes.length > 0) {
+                console.log('batchRes.length', batchRes.length);
+            } else if (batchRes.status === 404) {
+                console.log('batchRes.status', batchRes.status);
+                // dispatch(showNotification('error', batchRes.detail));
+            }
+            // dispatch(hideLoader());
+        } catch (error) {
+            // dispatch(hideLoader());
+            // dispatch(showNotification('error', 'No Data Found'));
+        }
+    };
+    const saveTemplateHandler = () => {
+        savePbrTemplateDataInfo();
+    };
+
+    console.log('areasMap', areasMap);
     return (
         <div className='pbr-container pbrTemplate-container'>
             <div className='custom-wrapper pbr-wrapper'>
@@ -743,6 +806,9 @@ function PaperBatchRecordsTemplate() {
                                                 <Button
                                                     type='default'
                                                     className='saveSnippetsBtn'
+                                                    onClick={
+                                                        saveTemplateHandler
+                                                    }
                                                 >
                                                     Save
                                                 </Button>
