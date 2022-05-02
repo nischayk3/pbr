@@ -19,6 +19,7 @@ import {
 	showNotification,
 } from '../../../../../duck/actions/commonActions';
 
+const dataList = [];
 function ParameterLookup(props) {
 	const {
 		moleculeList,
@@ -37,6 +38,7 @@ function ParameterLookup(props) {
 	const [expandKey, setExpandKey] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
 	const [autoExpandParent, setAutoExpandParent] = useState();
+	const [filterList, setFilterList] = useState([]);
 
 	const dispatch = useDispatch();
 
@@ -132,21 +134,71 @@ function ParameterLookup(props) {
 		}
 	}
 
-	const onChangeFilter = e => {
-		const { value } = e.target;
-		const expandedKeys = materialsList
-			.map(item => {
-				if (item.title.indexOf(value) > -1) {
-					return getParentKey(item.key);
-				}
-				return null;
-			})
-			.filter((item, i, self) => item && self.indexOf(item) === i);
+	// const generateList = data => {
+	// 	data.forEach((item, i) => {
+	// 		const node = item;
+	// 		console.log('node', node);
+	// 		const { key } = node;
+	// 		console.log('keyyyyy', key);
 
-		setExpandKey(expandedKeys);
-		setSearchValue(value);
-		setAutoExpandParent(true);
-	};
+	// 		if (typeof node.product_description !== 'undefined') {
+	// 			dataList.push({
+	// 				key,
+	// 				title: node.parameter_name,
+	// 			});
+	// 		} else if (typeof node.parameter_name !== 'undefined') {
+	// 			dataList.push({
+	// 				key,
+	// 				title: node.parameter_name,
+	// 			});
+	// 		}
+
+	// 		if (node.children) {
+	// 			generateList(node.children);
+	// 		}
+	// 	});
+
+	// 	// for (let i = 0; i < data.length; i++) {
+	// 	// 	const node = data[i];
+	// 	// 	console.log('node', data, data[i]);
+	// 	// 	const { key } = node.key;
+	// 	// 	console.log('key', key);
+	// 	// 	dataList.push({
+	// 	// 		key,
+	// 	// 		title:
+	// 	// 			typeof node.parameter_name !== 'undefined' ? node.parameter_name : '',
+	// 	// 	});
+
+	// 	// 	if (node.children) {
+	// 	// 		generateList(node.children);
+	// 	// 	}
+	// 	// }
+	// };
+	// generateList(materialsList);
+	// if (dataList.length > 0) {
+	// 	console.log(
+	// 		'dataList.length  === materialsList.length',
+	// 		dataList.length,
+	// 		materialsList.length
+	// 	);
+	// 	setFilterList(dataList);
+	// }
+
+	// const onChangeFilter = e => {
+	// 	const { value } = e.target;
+	// 	const expandedKey = dataList
+	// 		.map(item => {
+	// 			if (item.title.indexOf(value) > -1) {
+	// 				return getParentKey(item.key, materialsList);
+	// 			}
+	// 			return null;
+	// 		})
+	// 		.filter((item, i, self) => item && self.indexOf(item) === i);
+
+	// 	//	setExpandedKeys(expandedKey);
+	// 	setSearchValue(value);
+	// 	setAutoExpandParent(true);
+	// };
 	const getParentKey = (key, tree) => {
 		let parentKey;
 		for (let i = 0; i < tree.length; i++) {
@@ -193,10 +245,10 @@ function ParameterLookup(props) {
 					placeholder='Select'
 					allowClear={true}
 					disabled={params}>
-					{materialsList.map((item, index) => {
+					{filterList.map((item, index) => {
 						return (
-							<Option value={item.product} key={index}>
-								{item.product}
+							<Option value={item.title} key={index}>
+								{item.title}
 							</Option>
 						);
 					})}

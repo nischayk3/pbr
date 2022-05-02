@@ -7,7 +7,7 @@
  */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Tree, message } from 'antd';
+import { Tree, message, Input } from 'antd';
 import { PlusOutlined, CheckOutlined } from '@ant-design/icons';
 import {
 	batchCoverage,
@@ -15,6 +15,8 @@ import {
 } from '../../../../../duck/actions/viewAction';
 
 const { TreeNode } = Tree;
+const { Search } = Input;
+
 let setKey = [];
 let selectedData = [];
 let finalData = [];
@@ -22,8 +24,12 @@ const MaterialTree = props => {
 	const [selectedKeys, setSelectedKeys] = useState([]);
 	const [count, setCount] = useState('');
 	const [selectedAllKey, setSelectedAllKey] = useState([]);
+	const [expandedKeys, setExpandedKeys] = useState([]);
+	const [searchValue, setSearchValue] = useState('');
+	const [autoExpandParent, setAutoExpandParent] = useState();
 
 	const dispatch = useDispatch();
+
 	const { materialsList, parentBatches } = props;
 
 	const onSelect = (keys, info) => {
@@ -84,8 +90,38 @@ const MaterialTree = props => {
 	};
 	const treeMap = materialsList;
 
+	const loop = data =>
+		data.map(item => {
+			const index = item.title.indexOf(searchValue);
+			const beforeStr = item.title.substring(0, index);
+			const afterStr = item.title.slice(index + searchValue.length);
+			const title =
+				index > -1 ? (
+					<span>
+						{beforeStr}
+						<span className='site-tree-search-value'>{searchValue}</span>
+						{afterStr}
+					</span>
+				) : (
+					<span>{item.title}</span>
+				);
+			if (item.children) {
+				return { title, key: item.key, children: loop(item.children) };
+			}
+
+			return {
+				title,
+				key: item.key,
+			};
+		});
 	return (
 		<>
+			{/* <Tree
+				//	onExpand={this.onExpand}
+				expandedKeys={expandedKeys}
+				autoExpandParent={autoExpandParent}
+				treeData={loop(treeMap)}
+			/> */}
 			{treeMap &&
 				treeMap.map(item => {
 					return (

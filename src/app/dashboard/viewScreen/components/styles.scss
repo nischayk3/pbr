@@ -90,7 +90,7 @@
 	}
 
 	.reportDesigner-grid-tables.viewCreation-blocks {
-		grid-template-columns: 29% 70%;
+		grid-template-columns: 34% 66%;
 		grid-gap: 0 24px;
 		padding: 7px 20px;
 		height: calc(100vh - 120px);
@@ -331,7 +331,7 @@ a.deleteTableAction {
 .treenode-block {
 	display: flex;
 	margin-bottom: 10px;
-	width: 300px;
+	width: 270px;
 	justify-content: space-between;
 	.tree-block-param {
 		display: flex;
