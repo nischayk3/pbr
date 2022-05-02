@@ -279,6 +279,7 @@ const ViewChart = (props, ref) => {
                         pad: 4
                     }
                 }
+
                 newDummy.panels[0] = Object.assign({}, res, { chartLayout: chartLayout }, newDummy.panels[0]);
 
                 //})
@@ -1024,10 +1025,13 @@ const ViewChart = (props, ref) => {
                                             searchCallback={(data) => searchTempCallback(data)}
                                         />
                                         {tempCard?.data && (
+                                            <div style={{padding: '5px 11px'}}>
                                             <Plot
                                                 data={tempCard?.data && tempCard?.data[0]?.data}
                                                 layout={tempCard && tempCard?.chartLayout}
+                                                
                                             />
+                                            </div>
                                         )}
                                     </div>
                                 </>
