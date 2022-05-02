@@ -111,6 +111,8 @@ const ViewCreation = props => {
 				view_disp_id: pathString.viewId,
 				view_version: pathString.viewVersion,
 			};
+			setViewDisplayId(pathString.viewId);
+			setViewVersion(pathString.viewVersion);
 			loadView(_reqLoad);
 		}
 	}, []);
@@ -228,15 +230,15 @@ const ViewCreation = props => {
 			const loadViewRes = await getViewConfig(_reqLoad);
 
 			Object.entries(loadViewRes).forEach(([key, value], index) => {
-				if (key === 'view_version') {
-					setViewVersion(value);
-				} else if (key === 'material_id') {
-					setMoleculeId(value);
-				} else if (key === 'view_status') {
-					setViewStatus(value);
-				} else if (key === 'view_name') {
-					setViewName(value);
-				}
+				// if (key === 'view_version') {
+				// 	setViewVersion(value);
+				// } else if (key === 'material_id') {
+				// 	setMoleculeId(value);
+				// } else if (key === 'view_status') {
+				// 	setViewStatus(value);
+				// } else if (key === 'view_name') {
+				// 	setViewName(value);
+				// }
 			});
 			setViewJson([loadViewRes]);
 			dispatch(isLoadView(true));

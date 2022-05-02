@@ -60,7 +60,7 @@
   }
   .workspace-main-block {
     display: grid;
-    grid-template-rows:auto auto;
+    grid-template-rows:auto auto auto;
     gap: 24px;
   }
   .workspace-innerColumn {
@@ -90,7 +90,7 @@
     //width: 853px;
     display: flex;
     flex:1;
-    height: 510px;
+    height: 545px;
     background: #ffffff;
     box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
@@ -120,6 +120,7 @@
   .workspace-table2 {
     //width: 455px;
     //max-height: 407px;
+    height: 743px;
     overflow-y: hidden;
     background: #ffffff;
     box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);

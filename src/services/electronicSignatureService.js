@@ -16,8 +16,8 @@ export const eSign = (request,headers) => {
 };
 
 
-export const publishEvent = (request) => {
-    return Service.put(BMS_APP_PYTHON_SERVICE + '/workflow-publish-event', request).then(
+export const publishEvent = (request,headers) => {
+    return Service.put(BMS_APP_PYTHON_SERVICE + '/workflow-publish-event', request,headers).then(
         (response) => {
             return response.data;
         },
