@@ -153,7 +153,6 @@ const alertEvaluation = (props) => {
         let time_split = time.split(':')
         let date_split = date.split('-')
 
-        console.log(date, time, frequency, radio, f, days, everyDayValue)
 
         if (frequency == 'Daily') {
             if (radio == 'Every Day') {
@@ -188,7 +187,6 @@ const alertEvaluation = (props) => {
                     str = str + days_obj[days[i]]
                 }
             }
-            console.log(str)
             cron_string = time_split[1] + ' ' + time_split[2] + ` * * ${str}`
         }
 
