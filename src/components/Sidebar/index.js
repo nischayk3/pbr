@@ -73,12 +73,12 @@ const MENU = [
         title: 'Report Designer',
         linkTo: '/dashboard/report_designer',
     },
-    {
-        key: 'report_generator',
-        icon: <FileFilled style={{ fontSize: '23px' }} />,
-        title: 'Report Generator',
-        linkTo: '/dashboard/report_generator',
-    },
+    // {
+    //     key: 'report_generator',
+    //     icon: <FileFilled style={{ fontSize: '23px' }} />,
+    //     title: 'Report Generator',
+    //     linkTo: '/dashboard/report_generator',
+    // },
     {
         key: 'workflow',
         icon: <LinkOutlined style={{ fontSize: '26px' }} />,

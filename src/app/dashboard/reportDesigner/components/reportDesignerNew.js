@@ -179,7 +179,12 @@ function ReportDesignerNew(props) {
     try {
       dispatch(showLoader())
       setParams(true);
-      let data = await getReportData(params.id, 'AWAP')
+      let req = { report_displ_id: params.id}
+      let data = await loadReport(req)
+      data = data.report_designer
+      data = data.data
+
+      console.log(data)
       setReportId(params.id)
       if (data) {
         LoadData(data)
@@ -855,7 +860,7 @@ function ReportDesignerNew(props) {
         <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
 
       </div>
-      <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT_DESIGNER" dispId={reportId} version={0} status={approveReject} />
+      <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT" dispId={reportId} version={0} status={approveReject} />
     </div>
   );
 }
