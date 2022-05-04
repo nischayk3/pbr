@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { v1 as uuidv1 } from 'uuid'
+import { v1 as uuid } from 'uuid'
 import { Table, Button, Popconfirm, Select, Switch } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { 
@@ -32,7 +32,7 @@ class EditableTable extends Component {
     }
 
     initializeTableRender() {
-        this.state.dataSource.map(data => data.key = uuidv1())
+        this.state.dataSource.map(data => data.key = uuid())
         const columnsCopy = [...this.props.tableData.columns]
         const columns = this.state.deleteActionColumn ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
         adjustColumnWidths(columns)
@@ -50,7 +50,7 @@ class EditableTable extends Component {
                                     mode={column.mode}
                                     style={{ width: '100%' }} 
                                     onChange={selectedValue => this.onChangeSelect(selectedValue, record, column)}>
-                            {column.options.map(option => <Option key={uuidv1()} value={option.value}>{option.label}</Option>)}
+                            {column.options.map(option => <Option key={uuid()} value={option.value}>{option.label}</Option>)}
                         </Select>
                     }
                 case 'toggle':
