@@ -42,7 +42,6 @@ class EditableTable extends Component {
 
     renderTable = (columns) => {
         columns.forEach(column => {
-            console.log(column)
             switch (column.type) {
                 case 'select':
                     return column.render = (_, record) => {
