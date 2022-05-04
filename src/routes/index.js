@@ -14,6 +14,8 @@ import BreadCrumbWrapper from '../../components/BreadCrumbWrapper';
 import './dashboard.scss';
 import Auth from '../../utils/auth';
 
+import UserAdminConfig from '../pages/UserAdminConfig/UserAdminConfig';
+
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
@@ -40,6 +42,7 @@ const Dashboard = () => {
                         <BreadCrumbWrapper />
                         <SuspenseWrapper>
                             <Switch>
+                            <Route path="/user-admin-config" to={UserAdminConfig} />
                                 <Route key='home' path={`${match.url}/home`}>
                                     <Home />
                                 </Route>
