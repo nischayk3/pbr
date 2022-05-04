@@ -6,14 +6,25 @@ import './styles.scss';
 import StatusBlock from '../../../../../components/StatusBlock/statusBlock';
 import { getViews } from '../../../../../services/viewCreationPublishing';
 import ScreenHeader from '../../../../../components/ScreenHeader/screenHeader';
-import { useHistory } from 'react-router';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {
+	hideLoader,
+	showLoader,
+	showNotification,
+} from '../../../../../duck/actions/commonActions';
+import {
+	isLoadView,
+	sendSelectedParamData,
+} from '../../../../../duck/actions/viewAction';
 
 export default function Landing(props) {
 	const [searched, setSearched] = useState(false);
 	const [viewList, setViewList] = useState([]);
 	const [filterTable, setFilterTable] = useState(null);
 	const [lastEightView, setLastEightView] = useState([]);
-
+	const dispatch = useDispatch();
+	const match = useRouteMatch();
 	const history = useHistory();
 	const columns = [
 		{
@@ -94,26 +105,20 @@ export default function Landing(props) {
 		setFilterTable(filterTable);
 	};
 
-	const getViewsList = () => {
+	const getViewsList = async () => {
 		let req = {};
-		getViews(req).then(res => {
-			const viewRes = res['Data'];
+		try {
+			dispatch(showLoader());
+			const getViewRes = await getViews(req);
+			const viewRes = getViewRes['Data'];
 			const lastEight = viewRes.slice(Math.max(viewRes.length - 8, 1));
 			setViewList(viewRes);
 			setLastEightView(lastEight);
-		});
-	};
-
-	const handleClickView = (e, element) => {
-		console.log('e,element', e, element);
-		history.push({
-			pathname:
-				'/dashboard/view_creation_view?view_disp_id=' +
-				element.view_disp_id +
-				'&view_version=' +
-				element.view_version,
-		});
-		window.location.reload();
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification('error', error));
+		}
 	};
 
 	return (
@@ -151,9 +156,9 @@ export default function Landing(props) {
 					<div
 						className='create-new'
 						onClick={() => {
-							history.push({
-								pathname: '/dashboard/view_creation_view',
-							});
+							history.push(`${match.url}/0`);
+							dispatch(isLoadView(false));
+							dispatch(sendSelectedParamData([]));
 						}}>
 						<PlusOutlined />
 						<p>Create new view</p>
@@ -178,12 +183,23 @@ export default function Landing(props) {
 						<div className='tile'>
 							{lastEightView.length > 0 ? (
 								lastEightView.map((i, index) => (
-									<StatusBlock
-										key={index}
-										id={i.view}
-										status={i.view_status}
-										handleClickTiles={e => handleClickView(e, i)}
-									/>
+									<Link
+										key={i.view_disp_id}
+										to={{
+											pathname: `${match.url}/${i.view_disp_id}&${i.view_version}`,
+											state: {
+												viewId: i.view_disp_id,
+												viewVersion: i.view_version,
+											},
+										}}
+										//	to={`${match.url}/${i.view_disp_id}&${i.view_version}`}
+									>
+										<StatusBlock
+											key={index}
+											id={i.view}
+											status={i.view_status}
+										/>
+									</Link>
 								))
 							) : (
 								<></>

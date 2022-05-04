@@ -1,20 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./limitsStyles.scss";
 //antd imports
-import {
-  Button,
-  Card,
-  Collapse,
-  Table,
-  Popconfirm,
-  DatePicker,
-  Input,
-} from "antd";
-import {
-  DeleteTwoTone,
-  PlusOutlined,
-  ArrowRightOutlined,
-} from "@ant-design/icons";
+import { Button, Table, Popconfirm, DatePicker, Input } from "antd";
+import { DeleteTwoTone, PlusOutlined } from "@ant-design/icons";
 import { postChartPlotData } from "../../../../../../services/chartPersonalizationService";
 import {
   showLoader,
@@ -78,7 +66,6 @@ const Limits = ({ postChartData, setPostChartData }) => {
     {
       title: "Action",
       dataIndex: "action",
-      width: "20",
       render: (_, record) => (
         <Popconfirm
           title="Sure to delete?"
@@ -92,7 +79,6 @@ const Limits = ({ postChartData, setPostChartData }) => {
       title: "Lower Limit",
       dataIndex: "Lower Limit",
       key: "Lower Limit",
-      width: "20",
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
@@ -111,7 +97,6 @@ const Limits = ({ postChartData, setPostChartData }) => {
       title: "Upper Limit",
       dataIndex: "UL",
       key: "UL",
-      width: "20",
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
@@ -130,7 +115,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
       title: "Valid Until   ",
       dataIndex: "validuntill",
       key: "validuntill",
-      width: "180",
+      // width: "180",
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
@@ -315,7 +300,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
   const handleSpecAdd = () => {
     specCount.current = specCount.current + 1;
     const newData = {
-      key: specCount,
+      key: specCount.current,
       upper: "",
       lower: "",
       valid_timestamp: "",
@@ -455,10 +440,12 @@ const Limits = ({ postChartData, setPostChartData }) => {
             dataSource={controlSource}
             columns={columns}
           />
-          <Button onClick={() => handleAdd()}>
-            <PlusOutlined />
-            Add new row
-          </Button>
+          <div className="add-button">
+            <Button onClick={() => handleAdd()}>
+              <PlusOutlined />
+              Add new row
+            </Button>
+          </div>
         </div>
         <div className="table-bottom">
           <p>Specification</p>
@@ -467,10 +454,12 @@ const Limits = ({ postChartData, setPostChartData }) => {
             dataSource={specificationSource}
             columns={specColumns}
           />
-          <Button onClick={() => handleSpecAdd()}>
-            <PlusOutlined />
-            Add new row
-          </Button>
+          <div className="add-button">
+            <Button onClick={() => handleSpecAdd()}>
+              <PlusOutlined />
+              Add new row
+            </Button>
+          </div>
         </div>
         <div className="table-bottom">
           <p>Warning</p>
@@ -479,10 +468,12 @@ const Limits = ({ postChartData, setPostChartData }) => {
             dataSource={warningSource}
             columns={warnColumns}
           />
-          <Button onClick={() => handleWarnAdd()}>
-            <PlusOutlined />
-            Add new row
-          </Button>
+          <div className="add-button">
+            <Button onClick={() => handleWarnAdd()}>
+              <PlusOutlined />
+              Add new row
+            </Button>
+          </div>
         </div>
       </div>
     </div>

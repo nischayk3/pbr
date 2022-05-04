@@ -75,7 +75,7 @@ function Signature(props) {
         let headers = {
             'content-type': 'application/json',
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': props.appType,
+            'resource-name': props.appType=='REPORT' ? 'REPORT_DESIGNER' : props.appType,
         };
         try {
 
@@ -106,7 +106,7 @@ function Signature(props) {
                 }
                 req1['status'] = props.status
 
-                let publish_response = Object.keys(params).length > 0 ? await approveRecord(req1) : await publishEvent(reqs)
+                let publish_response = Object.keys(params).length > 0 ? await approveRecord(req1) : await publishEvent(reqs,headers)
 
                 if (publish_response.status_code == 200) {
                     dispatch(showNotification('success', publish_response.msg))
@@ -129,6 +129,7 @@ function Signature(props) {
 
 
     }
+    
     return (
         <div>
             <Modal

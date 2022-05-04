@@ -1,55 +1,158 @@
 import { Card, Empty, Table } from 'antd';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import {
+	CheckOutlined,
+	CloseOutlined,
+	DeleteOutlined,
+} from '@ant-design/icons';
 import LabelTag from '../../../../../components/LabelTag';
 import './styles.scss';
 
 const ViewSummaryData = props => {
+	let columns = [];
 	const summaryTableData = useSelector(
 		state => state.viewCreationReducer.summaryTableData
 	);
 	const functionName = useSelector(
 		state => state.viewCreationReducer.functionName
 	);
-	const [funTableColumn, setFunTableColumn] = useState([]);
+	const isLoadView = useSelector(state => state.viewCreationReducer.isLoad);
+	const [tableColumn, setTableColumn] = useState(columns);
+
 	const [funTableData, setFunTableData] = useState([]);
 
-	const { viewDisplayId, viewStatus, viewVersion, viewJson, setViewJson } =
-		props;
+	const {
+		viewDisplayId,
+		viewStatus,
+		viewVersion,
+		viewJson,
+		setViewJson,
+		parentBatches,
+	} = props;
 
 	useEffect(() => {
-		setFunTableData(summaryTableData);
-		setFunTableColumn(sumTableColumn);
+		if (functionName !== '') {
+			setFunTableData(summaryTableData);
+		}
 	}, [summaryTableData]);
 
-	const sumTableColumn = [
-		{
-			title: 'Year',
-			key: 'year',
-			dataIndex: 'year',
-		},
-		{
-			title: 'Batch',
-			key: 'batch',
-			dataIndex: 'batch',
-		},
-		{
-			title: functionName,
-			key: functionName,
-			dataIndex: functionName,
-			render: value =>
-				value ? (
-					<span className='batchChecked'>
-						<CheckOutlined />
-					</span>
-				) : (
-					<span className='batchClosed'>
-						<CloseOutlined />
-					</span>
-				),
-		},
-	];
+	useEffect(() => {
+		if (funTableData.length > 0) {
+			const objKey =
+				funTableData !== undefined && funTableData.length > 0
+					? Object.keys(funTableData[0])
+					: [];
+
+			const uniqueArr = (value, index, self) => {
+				return self.indexOf(value) === index;
+			};
+
+			const summaryColumn = objKey.filter(uniqueArr);
+
+			summaryColumn.map((item, i) => {
+				if (item === 'batch' || item === 'batch_year') {
+					columns.push({
+						title: item.toUpperCase().replace('_', ' '),
+						dataIndex: item,
+						key: `${item}-${i}`,
+						width: 100,
+					});
+				} else {
+					columns.push({
+						title: (
+							<div className='summary-column'>
+								<p>{item.toUpperCase().replace('_', ' ')}</p>
+								<span onClick={() => handleRemoveColumn(item)}>
+									<DeleteOutlined className='delete' />
+								</span>
+							</div>
+						),
+						dataIndex: item,
+						key: `${item}-${i}`,
+						render: value =>
+							value ? (
+								<span className='batchChecked'>
+									<CheckOutlined />
+								</span>
+							) : (
+								<span className='batchClosed'>
+									<CloseOutlined />
+								</span>
+							),
+						width: 100,
+					});
+				}
+			});
+
+			const tableColumns = [...columns];
+			setTableColumn(tableColumns);
+		}
+	}, [funTableData]);
+
+	useEffect(() => {
+		if (isLoadView) {
+			let fun = [];
+			let funData = [];
+
+			const loadViewJson = [...viewJson];
+			loadViewJson.forEach(element => {
+				fun.push(element.functions.name);
+			});
+			if (parentBatches.length > 0) {
+				const loadTableData =
+					parentBatches !== undefined && parentBatches.length > 0
+						? parentBatches
+						: {};
+
+				loadTableData.forEach(element => {
+					let funObj = {};
+					funObj[fun[0]] = true;
+					funData.push(funObj);
+				});
+
+				const mergeArr = loadTableData.map((item, i) =>
+					Object.assign({}, item, funData[i])
+				);
+
+				const funKey =
+					mergeArr !== undefined && mergeArr.length > 0
+						? Object.keys(mergeArr[0])
+						: [];
+				const uniqueArr = (value, index, self) => {
+					return self.indexOf(value) === index;
+				};
+				const funColumn = funKey.filter(uniqueArr);
+
+				funColumn.map((item, i) => {
+					columns.push({
+						title: item.toUpperCase().replace('_', ' '),
+						dataIndex: item,
+						key: `${item}-${i}`,
+					});
+				});
+				setTableColumn(columns);
+				setFunTableData(mergeArr);
+			}
+			// });
+		}
+	}, [isLoadView, parentBatches]);
+
+	const handleRemoveColumn = item => {
+		let newColumns = [];
+		const tableColumns = tableColumn.filter(ele => {
+			return ele.dataIndex !== item;
+		});
+
+		const column = columns.filter(ele => {
+			return ele.dataIndex !== item;
+		});
+
+		columns = column;
+		newColumns = tableColumns;
+
+		setTableColumn(newColumns);
+	};
 
 	return (
 		<Card title='View Summary'>
@@ -74,8 +177,7 @@ const ViewSummaryData = props => {
 							/>
 						),
 					}}
-					rowKey='key'
-					columns={funTableColumn}
+					columns={tableColumn}
 					dataSource={funTableData}
 					size='small'
 					scroll={{ y: 250 }}
@@ -86,4 +188,4 @@ const ViewSummaryData = props => {
 	);
 };
 
-export default ViewSummaryData;
+export const MemoizedViewSummaryData = React.memo(ViewSummaryData);

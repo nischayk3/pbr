@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "antd";
+import { Table, Empty } from "antd";
 
 const ViolationTable = ({ postChartData }) => {
   const [violationsTable, setViolationTable] = useState([]);
@@ -41,12 +41,16 @@ const ViolationTable = ({ postChartData }) => {
 
   return (
     <div>
-      <Table
-        columns={columns}
-        pagination={false}
-        scroll={{ y: 350 }}
-        dataSource={violationsTable}
-      />
+      {violationsTable.length >= 1 ? (
+        <Table
+          columns={columns}
+          pagination={false}
+          scroll={{ y: 350 }}
+          dataSource={violationsTable}
+        />
+      ) : (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+      )}
     </div>
   );
 };

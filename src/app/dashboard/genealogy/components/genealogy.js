@@ -7,8 +7,12 @@
  */
 
 import React, { useState } from 'react';
-import { ArrowLeftOutlined, DownloadOutlined } from '@ant-design/icons';
-import { Tabs } from 'antd';
+import {
+	ArrowLeftOutlined,
+	DownloadOutlined,
+	InboxOutlined,
+} from '@ant-design/icons';
+import { Tabs, Modal, Upload, message, Button } from 'antd';
 import Filter from './genealogyFilter';
 import TreePlot from './TreePlot/TreePlot';
 import batchIcon from '../../../../assets/images/material.png';
@@ -23,6 +27,7 @@ import {
 	getBatchInfo,
 	getProcessInfo,
 	getForwardData,
+	downloadDataTable,
 } from '../../../../services/genealogyService';
 import popupicon from '../../../../assets/images/popup.png';
 import GenealogyDrawer from '../components/genealogyDrawer/index.js';
@@ -32,6 +37,8 @@ import genealogyLanding from '../../../../assets/images/genealogy-landing.png';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 
 const { TabPane } = Tabs;
+const { Dragger } = Upload;
+
 let initialPanes = [
 	{ title: ' ', content: '', key: '1', closable: false, class: '' },
 ];
@@ -54,6 +61,8 @@ function Genealogy() {
 	const [limsBatchInfo, setLimsBatchInfo] = useState([]);
 	const [showView, setShowView] = useState(false);
 	const [nodeType, setNodeType] = useState('');
+	const [limsBatch, setLimsBatch] = useState('');
+	const [isUploadVisible, setIsUploadVisible] = useState(false);
 
 	const dispatch = useDispatch();
 
@@ -100,6 +109,7 @@ function Genealogy() {
 					batch_id: nodeSplit[2],
 					// 'ABV4103',
 				};
+				setLimsBatch(nodeSplit[2]);
 				getNodeBatchInfo(_reqBatchInfo);
 			} else if (node.nodeType === 'Process Order') {
 				setNodeType(node.nodeType);
@@ -130,6 +140,8 @@ function Genealogy() {
 				setIsDrawerRef(false);
 				setNodeType(node.nodeType);
 			}
+		} else if (node.clickType === 'upload_files') {
+			setIsUploadVisible(true);
 		}
 	};
 
@@ -188,8 +200,8 @@ function Genealogy() {
 			dispatch(showLoader());
 			const backwardRes = await getBackwardData(_reqBack);
 
-			if (backwardRes.length > 0) {
-				setGenealogyData(backwardRes);
+			if (backwardRes.statuscode === 200) {
+				setGenealogyData(backwardRes.data);
 				setisBackward(true);
 				setisForward(false);
 				setShowTree(true);
@@ -215,8 +227,8 @@ function Genealogy() {
 		try {
 			dispatch(showLoader());
 			const forwardRes = await getForwardData(_reqFor);
-			if (forwardRes.length > 0) {
-				setGenealogyData(forwardRes);
+			if (forwardRes.statuscode === 200) {
+				setGenealogyData(forwardRes.data);
 				setisBackward(false);
 				setisForward(true);
 				setShowTree(true);
@@ -311,6 +323,28 @@ function Genealogy() {
 		remove(targetKey);
 	};
 
+	const downloadFile = async val => {
+		let uri =
+			'SELECT * FROM tran_product_params WHERE batch_num=' + `'${limsBatch}'`;
+
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
+		let req = {
+			export_csv: true,
+			query: uri,
+			table_name: 'tran_product_params',
+			'x-access-token': login_response.token ? login_response.token : '',
+			'resource-name': 'GENEALOGY',
+		};
+		try {
+			dispatch(showLoader());
+			const download = await downloadDataTable(req);
+
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification('error', 'No Data Found'));
+		}
+	};
 	const remove = targetKey => {
 		let newActiveKey = activateKey;
 		let lastIndex;
@@ -347,6 +381,37 @@ function Genealogy() {
 		setActivateKey(newActiveKey);
 	};
 
+	const files = {
+		name: 'file',
+		multiple: true,
+		action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+		onChange(info) {
+			const { status } = info.file;
+			if (status !== 'uploading') {
+				console.log(info);
+			}
+			if (status === 'done') {
+				message.success(`${info.file.name} file uploaded successfully.`);
+			} else if (status === 'error') {
+				message.error(`${info.file.name} file upload failed.`);
+			}
+		},
+		progress: {
+			strokeColor: {
+				'0%': '#108ee9',
+				'100%': '#87d068',
+			},
+			strokeWidth: 3,
+			format: percent => `${parseFloat(percent.toFixed(2))}%`,
+		},
+		onDrop(e) {
+			console.log('Dropped files', e.dataTransfer.files);
+		},
+	};
+
+	const handleCancel = () => {
+		setIsUploadVisible(false);
+	};
 	return (
 		<div className='custom-wrapper'>
 			<BreadCrumbWrapper />
@@ -413,7 +478,37 @@ function Genealogy() {
 								batchInfo={batchInfo}
 								processInput={processInput}
 								processOutput={processOutput}
+								fileDownload={downloadFile}
+								productCode={productCode}
+								productType={chartType}
 							/>
+							<Modal
+								width={520}
+								visible={isUploadVisible}
+								title='Select Upload file to 35735735'
+								className='file-upload-modal'
+								onCancel={handleCancel}
+								footer={null}>
+								<Dragger {...files}>
+									<p className='ant-upload-drag-icon'>
+										<InboxOutlined />
+									</p>
+									<p className='ant-upload-text'>
+										Click or drag file to this area to upload
+									</p>
+									<p className='ant-upload-hint'>
+										Upload files of PDF or PNG format. You may carry out single
+										or bulk upload. Strictly refrain from uploading company data
+										or other band files
+									</p>
+								</Dragger>
+								<div className='file-upload-section'>
+									<div className='upload-btn'>
+										<Button>Cancel</Button>
+										<Button>Upload</Button>
+									</div>
+								</div>
+							</Modal>
 						</>
 					</TabPane>
 					<TabPane

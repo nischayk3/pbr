@@ -6,11 +6,12 @@
  * @Last Changed By - Dinesh
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import './styles.scss';
-import { Select } from 'antd';
+import { Select, Input } from 'antd';
 import { moleculeName } from '../../../../../duck/actions/viewCreationAction';
+
 import { getMoleculeList } from '../../../../../services/viewCreationPublishing';
 import {
 	hideLoader,
@@ -19,7 +20,7 @@ import {
 } from '../../../../../duck/actions/commonActions';
 
 function ParameterLookup(props) {
-	console.log('propsssss', props);
+	const { Search } = Input;
 	const {
 		moleculeList,
 		setMoleculeList,
@@ -29,8 +30,15 @@ function ParameterLookup(props) {
 		setMaterialsList,
 		setFilterdData,
 		setParentBatches,
+		viewSummaryBatch,
+		setViewSummaryBatch,
 		params,
 	} = props;
+
+	const [expandKey, setExpandKey] = useState([]);
+	const [searchValue, setSearchValue] = useState('');
+	const [autoExpandParent, setAutoExpandParent] = useState();
+	const [filterList, setFilterList] = useState([]);
 
 	const dispatch = useDispatch();
 
@@ -71,7 +79,6 @@ function ParameterLookup(props) {
 
 	useEffect(() => {
 		if (moleculeId) {
-			console.log('moleculeId', moleculeId);
 			onChangeMoleculeHandler(moleculeId);
 			dispatch(moleculeName(moleculeId));
 		}
@@ -79,24 +86,24 @@ function ParameterLookup(props) {
 
 	const onChangeMoleculeHandler = async value => {
 		setMoleculeId(value);
-		//	let req = { moleculeId: value, detailedCoverage: true };
+
 		let _req = { molecule_name: value };
 		let res = JSON.parse(localStorage.getItem('login_details'));
 		try {
 			dispatch(showLoader());
-			//	const paramTreeRes = await materialsParameterTree(_req);
+
 			const paramTreeRes = await getMoleculeList(_req, {
 				'content-type': 'application/json',
 				'x-access-token': res.token ? res.token : '',
 				'resource-name': 'VIEW',
 			});
 
-			console.log('paramTreeRes', paramTreeRes);
-
 			if (paramTreeRes.statuscode === 200) {
 				setMaterialsList(paramTreeRes.data.hierarchy);
 				setParentBatches(paramTreeRes.data.mol_batches);
-				dispatch(hideLoader());
+				if (paramTreeRes.data.mol_batches.length > 0) {
+					setViewSummaryBatch(paramTreeRes.data.mol_batches);
+				}
 			} else if (paramTreeRes.statuscode === 401) {
 				dispatch(showNotification('error', 'Filter -', paramTreeRes.Message));
 				dispatch(hideLoader());
@@ -107,6 +114,7 @@ function ParameterLookup(props) {
 				dispatch(showNotification('error', 'Filter -', paramTreeRes.Message));
 				dispatch(hideLoader());
 			}
+			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', error));
@@ -125,6 +133,25 @@ function ParameterLookup(props) {
 			setFilterdData(filterdDataArr);
 		}
 	}
+
+	const onSearchChange = e => {
+		if (e.target.value === '') {
+			setMaterialsList(materialsList.current);
+		}
+		setSearchValue(e.target.value);
+	};
+
+	const searchTable = () => {
+		const newArr = materialsList.filter(ele =>
+			ele.children.some(element =>
+				element.product_description.toLowerCase().search(searchValue)
+			)
+		);
+
+		if (newArr.length) {
+			setMaterialsList(newArr);
+		}
+	};
 
 	return (
 		<div className='parameterLookup-FormBlock'>
@@ -147,7 +174,7 @@ function ParameterLookup(props) {
 			</div>
 			<div className='param-select'>
 				<p>Filters</p>
-				<Select
+				{/* <Select
 					showSearch
 					optionFilterProp='children'
 					onChange={onChange}
@@ -157,14 +184,20 @@ function ParameterLookup(props) {
 					placeholder='Select'
 					allowClear={true}
 					disabled={params}>
-					{materialsList.map((item, index) => {
+					{filterList.map((item, index) => {
 						return (
-							<Option value={item.product} key={index}>
-								{item.product}
+							<Option value={item.title} key={index}>
+								{item.title}
 							</Option>
 						);
 					})}
-				</Select>
+				</Select> */}
+				<Search
+					style={{ marginBottom: 8 }}
+					placeholder='Search'
+					onChange={onSearchChange}
+					onEnter={searchTable}
+				/>
 			</div>
 		</div>
 	);

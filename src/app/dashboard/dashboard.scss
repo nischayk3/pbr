@@ -8,6 +8,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
       height: 50px;
       .sub-header-title {
         display: flex;
@@ -31,7 +32,7 @@
           // display: flex;
           // align-items: center;
           // margin: 0;
-          font-family: 'Roboto', sans-serif !important;
+          font-family: "Roboto", sans-serif !important;
           font-style: normal;
           font-weight: 400;
           font-size: 16px;
@@ -68,7 +69,7 @@
   border-bottom: 1px solid #d9d9d9 !important;
   padding: 8px 12px;
   .ant-card-head-title {
-    font-family: 'Maven Pro', sans-serif;
+    font-family: "Maven Pro", sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -87,7 +88,7 @@
   margin: 0;
   font-variant: tabular-nums;
   list-style: none;
-  font-feature-settings: 'tnum';
+  font-feature-settings: "tnum";
   position: relative;
   display: inline-block;
   width: 100%;
@@ -111,7 +112,7 @@
 // cpv custom buttons
 
 .custom-primary-btn {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-size: 14px;
   color: #262626;
@@ -125,7 +126,7 @@
 }
 
 .custom-secondary-btn {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-size: 14px;
   color: #fff;
@@ -232,24 +233,26 @@
   background-color: #f9f9f9;
 }
 .ant-table-small .ant-table-thead > tr > th {
-  background-color: rgba(242, 251, 255, 0.73);
-  font-family: 'Roboto';
+  background-color: #f1f7ff;
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 500;
   line-height: 22px;
   align-items: center;
   color: #262626;
+  //padding: 12px 24px !important;
 }
 
 .ant-table-tbody > tr > td {
   border-bottom: 1px solid #f0f0f0;
   transition: background 0.3s;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
   color: #202020;
+  //	padding: 6px 24px !important;
 }
 .ant-table {
   border: 1px solid #f0f0f0;

@@ -7,7 +7,7 @@
  */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Tree, message } from 'antd';
+import { Tree, message, Input } from 'antd';
 import { PlusOutlined, CheckOutlined } from '@ant-design/icons';
 import {
 	batchCoverage,
@@ -15,20 +15,29 @@ import {
 } from '../../../../../duck/actions/viewAction';
 
 const { TreeNode } = Tree;
+const { Search } = Input;
+
 let setKey = [];
 let selectedData = [];
 let finalData = [];
 const MaterialTree = props => {
 	const [selectedKeys, setSelectedKeys] = useState([]);
+	const [checkedKeys, setCheckedKeys] = useState([]);
 	const [count, setCount] = useState('');
 	const [selectedAllKey, setSelectedAllKey] = useState([]);
+	const [expandedKeys, setExpandedKeys] = useState([]);
+	const [searchValue, setSearchValue] = useState('');
+	const [autoExpandParent, setAutoExpandParent] = useState();
 
 	const dispatch = useDispatch();
+
 	const { materialsList, parentBatches } = props;
 
 	const onSelect = (keys, info) => {
-		console.log('setSelectedKey', keys, info);
 		setSelectedKeys(keys);
+	};
+	const onCheck = checkedKeys => {
+		setCheckedKeys(checkedKeys);
 	};
 	const handleClickParam = (e, keys, param, record) => {
 		let rowData = {};
@@ -90,7 +99,13 @@ const MaterialTree = props => {
 			{treeMap &&
 				treeMap.map(item => {
 					return (
-						<Tree>
+						<Tree
+							// checkable
+							onSelect={onSelect}
+							onCheck={onCheck}
+							checkedKeys={checkedKeys}
+							selectedKeys={selectedKeys}
+							className='custom-treenode'>
 							<TreeNode title={item.process_step} key={item.key}>
 								{item.children.map(a => {
 									return (
@@ -98,8 +113,6 @@ const MaterialTree = props => {
 											{a.children.map(b => {
 												return (
 													<TreeNode
-														onSelect={onSelect}
-														selectedKeys={selectedKeys}
 														title={
 															<div className='treenode-block'>
 																<div className='tree-block-param'>

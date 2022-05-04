@@ -83,9 +83,11 @@ const ViewSearchTable = ({
           },
         })}
       />
-      <p onClick={onDeepSearch}>
-        Deep search &nbsp; <SearchOutlined />
-      </p>
+      <div className="deep-search">
+        <p onClick={onDeepSearch}>
+          Deep search &nbsp; <SearchOutlined />
+        </p>
+      </div>
     </div>
   );
 };

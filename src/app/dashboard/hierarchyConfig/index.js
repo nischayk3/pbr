@@ -1,12 +1,5 @@
-import React from 'react'
+import Landing from './components/index'
+import Hierarchy from './components/hierarchy/hierarchy'
+import Display from './components/display/display'
 
-function Hierarchy()
-{
-    return (
-        <div>
-            Hello
-        </div>
-    )
-}
-
-export default Hierarchy
+export default Landing

@@ -22,14 +22,14 @@ import UserRolesAndAccess from '../../pages/UserRolesAndAccess/UserRolesAndAcces
 import UserConfiguration from '../../pages/UserRolesAndAccess/UserConfiguration/UserConfiguration';
 import RolesAndAccess from '../../pages/UserRolesAndAccess/RolesAndAccess/RolesAndAccess';
 import ScreenControls from '../../pages/UserRolesAndAccess/ScreenControls/ScreenControls';
+import PaperBatchRecords from './paperBatchRecords';
+import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate';
 
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
-// const ChartPersonalization = lazy(() => import('./chartPersonalization'));
 const ChartPersonal = lazy(() => import('./chartPersonal'));
 const SystemErrorReport = lazy(() => import('./systemErrorReport'));
-const ViewCreation = lazy(() => import('./viewCreation'));
 const View = lazy(() => import('./viewScreen/components/View'));
 const DataLoad = lazy(() => import('./dataLoad'));
 const ReportDesigner = lazy(() => import('./reportDesigner'));
@@ -44,6 +44,9 @@ const ViewChart = lazy(() =>
 	import('./dashboardScreen/components/viewChart/viewChart')
 );
 const Hierarchy = lazy(() => import('./hierarchyConfig'));
+const HierarchyMain = lazy(() =>
+	import('./hierarchyConfig/components/hierarchy/hierarchy')
+);
 const Faq = lazy(() => import('./faq'));
 const { Content } = Layout;
 
@@ -78,7 +81,7 @@ const Dashboard = () => {
 									path={`${match.url}/manual_data_upload`}>
 									<ManualDataUpload />
 								</Route>
-								<Route
+								{/* <Route
 									key='view_creation'
 									path={`${match.url}/view_creation_view`}>
 									<View />
@@ -87,12 +90,17 @@ const Dashboard = () => {
 									key='view_creation_landing'
 									path={`${match.url}/view_creation_landing`}>
 									<ViewLanding />
-								</Route>
+								</Route> */}
 								<Route
-									key='view_creation_old'
-									path={`${match.url}/view_creation_old`}>
-									<ViewCreation />
-								</Route>
+									path={`${match.url}/view_creation`}
+									render={({ match: { url } }) => (
+										<>
+											<Route path={`${url}/`} component={ViewLanding} exact />
+											<Route path={`${url}/:id`} component={View} />
+										</>
+									)}
+								/>
+
 								<Route
 									path={`${match.url}/chart_personalization`}
 									render={({ match: { url } }) => (
@@ -137,6 +145,16 @@ const Dashboard = () => {
 								<Route key='dashboard' path={`${match.url}/dashboard`}>
 									<DashboardScreen />
 								</Route>
+								<Route
+									key='paper_batch_records'
+									path={`${match.url}/paper_batch_records`}>
+									<PaperBatchRecords />
+								</Route>
+								<Route
+									key='paper_batch_records_template'
+									path={`${match.url}/pbr_template`}>
+									<PaperBatchRecordsTemplate />
+								</Route>
 								<Route key='redirect' path={`${match.url}/redirect`}>
 									<LoginRedirect />
 								</Route>
@@ -155,6 +173,11 @@ const Dashboard = () => {
 								<Route key='user-configuration' path={`${match.url}/user-roles-and-access/user-configuration`} component={UserConfiguration} />
 								<Route key='roles-and-access' path={`${match.url}/user-roles-and-access/roles-and-access`} component={RolesAndAccess} />
 								<Route key='screen-controls' path={`${match.url}/user-roles-and-access/screen-controls`} component={ScreenControls} />
+								<Route
+									key='hierarchy_main'
+									path={`${match.url}/molecule_hierarchy_configurations/untilted_view`}>
+									<HierarchyMain />
+								</Route>
 							</Switch>
 						</SuspenseWrapper>
 					</Content>

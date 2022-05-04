@@ -31,7 +31,7 @@ export const putJob = (request,header) => {
 };
 
 export const deleteJob = (request,header) => {
-    return Service.put(BMS_APP_PYTHON_SERVICE + '/jobs', request, header).then(
+    return Service.del(BMS_APP_PYTHON_SERVICE + '/jobs', request, header).then(
         (response) => {
             return response.data;
         },

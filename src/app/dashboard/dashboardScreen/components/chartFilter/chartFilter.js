@@ -53,14 +53,14 @@ export default function chartFilter(props) {
             <Row gutter={[16, 24]}>
                 <Col className="gutter-row" span={8}>
                     <SelectField
-                        label='Type Of charts'
+                        label='Type of Charts'
                         placeholder='Select Charts'
                         selectedValue={props.typeChartValue}
                         onChangeSelect={props.onChangeTypeCharts}
                         selectList={props.typeOfChartsOptions} />
                 </Col>
                 <Col className="gutter-row" span={16} ref={ref}>
-                    <p className='import-chart'>Import Chart</p>
+                    <p className='import-chart'>Import chart</p>
                     <Search placeholder="Search"
                         onFocus={focus}
                         value={viewData.searchValue}
@@ -105,8 +105,8 @@ export default function chartFilter(props) {
             </Row>
             <Row style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
                 <Col>
-                    <Button onClick={props.showPreview}
-                    >Show Preview
+                    <Button className= 'show-preview-btns'onClick={props.showPreview}
+                    >Show preview
                     </Button>
                 </Col>
             </Row>

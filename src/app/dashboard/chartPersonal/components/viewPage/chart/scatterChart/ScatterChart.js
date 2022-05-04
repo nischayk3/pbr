@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./ScatterStyles.scss";
 //antd imports
-import { Row, Col, Button, message, Tabs } from "antd";
+import { Row, Col, Button, message, Tabs, Empty } from "antd";
 //components
 import SelectField from "../../../../../../../components/SelectField/SelectField";
 import ScatterPlot from "../../../../../../../components/ScatterPlot/ScatterPlot";
@@ -214,7 +214,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
     <div className="chartLayout-container">
       <Row gutter={24}>
         <Col span={6}>
-          <label>Chart Type</label>
+          <p>Chart Type</p>
           <SelectField
             placeholder="Select Chart type"
             selectList={chartTypeList}
@@ -223,7 +223,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
           />
         </Col>
         <Col span={6}>
-          <label>X-axis</label>
+          <p>X-axis</p>
           <SelectField
             placeholder="Select X-axis"
             selectList={xaxisList}
@@ -232,7 +232,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
           />
         </Col>
         <Col span={6}>
-          <label>Y-axis</label>
+          <p>Y-axis</p>
           <SelectField
             placeholder="Select Y-axis"
             selectList={yaxisList}
@@ -240,7 +240,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             onChangeSelect={(e) => setAxisValues({ ...axisValues, yaxis: e })}
           />
         </Col>
-        <Col span={6} style={{ marginTop: "22px" }}>
+        <Col span={6} className="button-visible">
+          <p>button</p>
           <Button
             className="custom-primary-btn"
             onClick={onApply}
@@ -270,13 +271,17 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
               onChange={tabChange}
             >
               <TabPane tab="Exclusion" key="1">
-                <ExclusionTable
-                  setExclusionTable={setExclusionTable}
-                  exclusionTable={exclusionTable}
-                  postChartData={postChartData}
-                  setPostChartData={setPostChartData}
-                  exclusionIdCounter={exclusionIdCounter}
-                />
+                {exclusionTable.length >= 1 ? (
+                  <ExclusionTable
+                    setExclusionTable={setExclusionTable}
+                    exclusionTable={exclusionTable}
+                    postChartData={postChartData}
+                    setPostChartData={setPostChartData}
+                    exclusionIdCounter={exclusionIdCounter}
+                  />
+                ) : (
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                )}
               </TabPane>
               <TabPane tab="Violation" key="2">
                 <ViolationTable postChartData={postChartData} />

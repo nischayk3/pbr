@@ -1,54 +1,82 @@
+/**
+ * @author Mihir Bagga <mihir.bagga@mareana.com>
+ * @Mareana - CPV Product
+ * @version 1
+ * @Last Modified - 22 April, 2022
+ * @Last Changed By - @Mihir 
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Table, Popconfirm, Tag } from 'antd';
 import { DeleteOutlined, DeleteTwoTone } from '@ant-design/icons';
 import { getJob, putJob, deleteJob } from '../../../services/jobScheduleService';
 import moment from 'moment';
 import { dispatch } from 'd3';
-import { showNotification } from '../../../duck/actions/commonActions';
+import { showNotification, showLoader, hideLoader } from '../../../duck/actions/commonActions';
+import { useDispatch } from 'react-redux';
+import './tableStyles.scss'
 
 // 
 
 export default function scheduledAlertsTable(props) {
 
     const [data, setData] = useState([])
+    const dispatch = useDispatch()
 
     useEffect(() => {
         getJobs()
-    }, []
+    }, [props.activeTab == '2']
     );
 
-    const getJobs = () => {
+    const getJobs = async () => {
+        dispatch(showLoader())
         let login_response = JSON.parse(localStorage.getItem('login_details'));
 
         let request_headers = {
             'content-type': 'application/json',
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'JOB',
+            'resource-name': 'DASHBOARD',
         };
-        let req = { app_type: props.app_type };
-        getJob(req, request_headers).then((res) => {
-            setData(res['Data']);
-            if (res.Status == 401) {
+        let req = { app_type: props.appType, app_id: props.id };
+        let get_response = await getJob(req, request_headers)
+        try {
+            if (get_response.Data) {
+                setData(get_response.Data)
+            }
+
+            if (get_response.Status == 401) {
                 dispatch(showNotification('error', 'Session TimeOut Login again'))
             }
-        });
+
+            dispatch(hideLoader())
+        }
+        catch (error) {
+            dispatch(showNotification('error', error))
+            dispatch(hideLoader())
+        }
+
     };
 
     const DeleteJob = async (jobId) => {
         let req = {
-            job_id: jobId
+            job_id: jobId.job_id
         }
         let login_response = JSON.parse(localStorage.getItem('login_details'));
 
         let request_headers = {
             'content-type': 'application/json',
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'JOB',
+            'resource-name': 'DASHBOARD',
         };
 
         let delete_response = await deleteJob(req, request_headers)
         if (delete_response.Status == 200) {
-            dispatch(showNotification('success', `${jobId} deleted successfully`))
+            dispatch(showNotification('success', `${jobId.job_id} deleted successfully`))
+            getJobs()
+        }
+        else {
+            dispatch(showNotification('error', `${jobId} not deleted`))
+
         }
     }
 
@@ -57,9 +85,9 @@ export default function scheduledAlertsTable(props) {
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
-            render: (text) =>
+            render: (text, record) =>
             (
-                <Popconfirm onConfirm={() => DeleteJob(text)}>
+                <Popconfirm title={`Are you Sure you want to delete the ${record.dag_id}?`} onConfirm={() => DeleteJob(record)}>
                     <DeleteTwoTone twoToneColor="red" />
                 </Popconfirm>
             )
@@ -68,9 +96,9 @@ export default function scheduledAlertsTable(props) {
             title: 'Job ID',
             key: 'job_id',
             dataIndex: 'job_id',
-            render: (text) =>
+            render: (text, record) =>
             (
-                <u><a>{text}</a></u>
+                <u><a onClick={() => props.changeActiveTab('1', record.dag_id)}>{text}</a></u>
             )
         },
         {
@@ -78,11 +106,11 @@ export default function scheduledAlertsTable(props) {
             key: 'dag_id',
             dataIndex: 'dag_id',
         },
-        {
-            title: 'Job Description',
-            key: 'frequency_unit',
-            dataIndex: 'frequency_unit',
-        },
+        // {
+        //     title: 'Job Description',
+        //     key: 'frequency_unit',
+        //     dataIndex: 'frequency_unit',
+        // },
         {
             title: 'Schedule',
             key: 'created_on',
@@ -101,11 +129,13 @@ export default function scheduledAlertsTable(props) {
         },
     ]
     return (
-        <Table
-            bordered={false}
-            columns={columns}
-            dataSource={data}
-            pagination={{ pageSize: 5 }}
-        />
+        <div className="schedule-table">
+            <Table
+                bordered={false}
+                columns={columns}
+                dataSource={data}
+                pagination={{ pageSize: 5 }}
+            />
+        </div>
     )
 }
