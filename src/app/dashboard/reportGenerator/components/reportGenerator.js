@@ -421,7 +421,6 @@ function ReportGenerator(props) {
         }
     }
 
-    console.log(props)
 
 
 
