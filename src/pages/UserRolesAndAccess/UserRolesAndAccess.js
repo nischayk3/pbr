@@ -1,3 +1,11 @@
+/**
+ * @author Bhanu Thareja <bhanu.thareja@mareana.com>
+ * @Mareana - Release 3.5
+ * @version  1
+ * @Last Modified - 04 May, 2022
+ * @Last Changed By - Bhanu Thareja
+ */
+
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { Row, Col } from 'antd'
 
