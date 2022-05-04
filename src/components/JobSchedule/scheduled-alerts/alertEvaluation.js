@@ -124,14 +124,13 @@ const alertEvaluation = (props) => {
         dispatch(showLoader())
         data = data[0]
 
-        if (data.job_type == "email") 
-        {
+        if (data.job_type == "email") {
             setActiveTab("email")
             setEmailLoad(data)
         }
         else {
-            if(data.email_config.selected_days_obj)
-            setSelectedDays(data.email_config.selected_days_obj)
+            if (data.email_config.selected_days_obj)
+                setSelectedDays(data.email_config.selected_days_obj)
 
             setSelectedSchedule(data.frequency_unit)
             setScheduleStartDate(data.scheduled_start)
@@ -141,7 +140,56 @@ const alertEvaluation = (props) => {
         // setSelectedDays(data.email_config.selected_days_obj)
         dispatch(hideLoader())
     }
+    const convertExpresion = (date, time, frequency, radio, f, days, everyDayValue) => {
 
+        let cron_string = ''
+        let time_split = time.split(':')
+        let date_split = date.split('-')
+
+        if (frequency == 'Daily') {
+            if (radio == 'Every Day') {
+                cron_string = time_split[1] + ' ' + time_split[0] + ' * * *'
+            }
+            if (radio == 'Every WeekDay') {
+                cron_string = time_split[1] + ' ' + time_split[0] + ' * * 1-5'
+            }
+            if (radio == 3) {
+                if (f == 'Minutes') {
+                    cron_string = `*/${time_split[1]}  * * * *`
+
+                }
+                if (f == 'Seconds') {
+                    cron_string = `*/${everyDayValue}  * * * *`
+                }
+                if (f == 'Hour') {
+                    cron_string = '*' + ' ' + time_split[0] + ' * * *'
+                }
+            }
+        }
+
+        if (frequency == 'Weekly') {
+            let str = ''
+            for (let i = 0; i < days.length; i++) {
+                if (i > 0) {
+                    str = str + ',' + days_obj[days[i]]
+                }
+                else {
+                    str = str + days_obj[days[i]]
+                }
+            }
+            cron_string = time_split[1] + ' ' + time_split[2] + ` * * ${str}`
+        }
+
+        if (frequency == 'Monthly') {
+            cron_string = time_split[1] + ' ' + time_split[2] + " " + date_split[2] + " " + '* *'
+        }
+        if (frequency == 'Once') {
+            cron_string = 'once'
+        }
+
+        return cron_string
+
+    }
 
 
     const updateDays = (day) => {
@@ -215,11 +263,13 @@ const alertEvaluation = (props) => {
         let email_config = {}
         email_config["scheduled_time"] = scheduleTime
         email_config["selected_days_obj"] = selectedDays
+        email_config['frequency'] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, selectedDays, everyDayValue)
+
 
 
 
         req['email_config'] = email_config
-        req['frequency'] = 1
+        req['frequency'] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, selectedDays, everyDayValue)
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
         req["job_status"] = "scheduled",
             req["job_type"] = 'event',
@@ -266,7 +316,7 @@ const alertEvaluation = (props) => {
     const handleChange = selectedItems => {
         setEmailList(selectedItems);
     };
-    console.log(emailLoad,activeTab)
+    console.log(emailLoad, activeTab)
     return (
         <div className="chart-notify">
             <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={activeTab == 'schedule_evaluation' ? <div style={{ marginRight: '20px', marginTop: '15px' }}>  <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule Evaluation</Button>
@@ -274,7 +324,7 @@ const alertEvaluation = (props) => {
                 <TabPane tab='Schedule evaluation' key="schedule_evaluation">
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '300px' }}>
-                            <ClockCircleOutlined style={{ color: "#093185",fontSize:'18px'  }} />  <DatePicker placeholder="Start Date" style={{ width: '260px' }} onChange={onChangeStart} bordered={false} value={scheduleStartDate.length > 0 ? moment(scheduleStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
+                            <ClockCircleOutlined style={{ color: "#093185", fontSize: '18px' }} />  <DatePicker placeholder="Start Date" style={{ width: '260px' }} onChange={onChangeStart} bordered={false} value={scheduleStartDate.length > 0 ? moment(scheduleStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
                             <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                         </div>
                         <div style={{ marginTop: '40px' }}>
