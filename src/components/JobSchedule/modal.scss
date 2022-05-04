@@ -1,12 +1,12 @@
+
 .schedule-modal
 {
     margin-left: 100px;
+svg
+{
+    margin-bottom:1px;
+}
 
-    svg
-    {
-        margin-bottom:1px;
-    }
-  
 .ant-modal-header
 {
 background-color: #F1F7FF !important;
@@ -55,12 +55,11 @@ background-color: #F1F7FF !important;
     }
 }
 
-.schedule-modal{
+
     .ant-modal-body{
         padding:0px !important;
     }
     
-}
 .schedule-menu{
     .ant-tabs-nav-wrap{     
 padding: 4px 0px;

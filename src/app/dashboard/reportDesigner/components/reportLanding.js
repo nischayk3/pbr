@@ -21,6 +21,7 @@ import Banner from '../../../../assets/images/Popup-Side.svg';
 export default function Landing(props) {
     const [resultDate, setResultDate] = useState('');
     const [searched, setSearched] = useState(false);
+    const [newsearched, setNewSearched] = useState(false);
     const [reportList, setReportList] = useState([]);
     const [filterTable, setFilterTable] = useState(null);
     const [screen, setScreen] = useState(false);
@@ -122,7 +123,17 @@ export default function Landing(props) {
 
         setFilterTable(filterTable);
     };
+    const onSearch = (value) => {
+        setNewSearched(true);
+        const tableData = reportList;
+        const filterTable = tableData.filter((o) =>
+            Object.keys(o).some((k) =>
+                String(o[k]).toLowerCase().includes(value.toLowerCase())
+            )
+        );
 
+        setFilterTable(filterTable);
+    };
     const handleCancel = () => {
         setIsModalVisible(false);
     };
@@ -167,6 +178,21 @@ export default function Landing(props) {
             dispatch(showNotification('error', data.Message));
         }
     };
+    const NewReportGenerator = async (report_id) => {
+        message.success(report_id + ' selected');
+        dispatch(showLoader());
+        let req = { report_displ_id: report_id };
+        let data = await loadReportGen(req);
+        console.log(data);
+        if (data.report_generator)
+            dispatch(sendReport(data.report_generator.data));
+        if (data.Status == 200 || data.report_generator) {
+            dispatch(hideLoader());
+        } else {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', data.Message));
+        }
+    };
 
     const statusColor = (status) => {
         if (status == 'APRD') {
@@ -185,7 +211,7 @@ export default function Landing(props) {
             <div className='custom-wrapper'>
                 <div className='sub-header'>
                     <div className='sub-header-title'>
-                        {/* <BreadCrumbWrapper /> */}
+                        <BreadCrumbWrapper />
                     </div>
                 </div>
                 <div className='custom-content-layout'>
@@ -400,15 +426,16 @@ export default function Landing(props) {
                                     <Row>
                                         <p>Select a report to get started</p>
                                         <Input.Search
-                                            onSearch={search}
+                                            onSearch={onSearch}
                                             placeholder='Search by report ID or name'
                                         // onChange={(e) => setHierarchyName(e.target.value)}
                                         // value={hierarchyName}
                                         />
-                                        {searched ? (
+                                        {newsearched ? (
                                             <Table
                                                 columns={columns}
-                                                style={{ width: '150px', height: '100px' }}
+                                                scroll={{ y: 150 ,x:350}}
+                                                // style={{  height: 'auto' }}
                                                 dataSource={
                                                     filterTable === null
                                                         ? reportList
@@ -421,7 +448,7 @@ export default function Landing(props) {
                                                         // setReportId(record.rep_disp_id)
                                                         // getReportData(record.rep_disp_id, record.rep_status)
                                                         // dispatch(showLoader())
-                                                        getLoadReportGenerator(
+                                                        NewReportGenerator(
                                                             record.rep_disp_id
                                                         );
                                                         // onOk()
