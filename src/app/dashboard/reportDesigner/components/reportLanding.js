@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Input, Divider, Table, Tabs, Avatar, message } from 'antd';
+import { Card, Input, Divider, Table, Tabs, Avatar, message, Row, Col, Modal, Button } from 'antd';
 import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
 import illustrations from '../../../../assets/images/landing_image.png';
 import { getReports } from '../../../../services/reportDesignerServices';
@@ -16,6 +16,7 @@ import {
     hideLoader,
     showNotification,
 } from '../../../../duck/actions/commonActions';
+import Banner from '../../../../assets/images/Popup-Side.svg';
 
 export default function Landing(props) {
     const [resultDate, setResultDate] = useState('');
@@ -23,6 +24,8 @@ export default function Landing(props) {
     const [reportList, setReportList] = useState([]);
     const [filterTable, setFilterTable] = useState(null);
     const [screen, setScreen] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
     const { TabPane } = Tabs;
     const history = useHistory();
     const dispatch = useDispatch();
@@ -120,6 +123,12 @@ export default function Landing(props) {
         setFilterTable(filterTable);
     };
 
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
     const getReportList = () => {
         let req = { rep_status: 'all' };
         getReports(req).then((res) => {
@@ -176,7 +185,7 @@ export default function Landing(props) {
             <div className='custom-wrapper'>
                 <div className='sub-header'>
                     <div className='sub-header-title'>
-                        <BreadCrumbWrapper />
+                        {/* <BreadCrumbWrapper /> */}
                     </div>
                 </div>
                 <div className='custom-content-layout'>
@@ -316,12 +325,13 @@ export default function Landing(props) {
                                     )}
                                     <div
                                         className='create-new'
-                                        onClick={() => {
-                                            history.push({
-                                                pathname:
-                                                    '/dashboard/report_generator',
-                                            });
-                                        }}
+                                        // onClick={() => {
+                                        //     history.push({
+                                        //         pathname:
+                                        //             '/dashboard/report_generator',
+                                        //     });
+                                        // }}
+                                        onClick={() => setIsModalVisible(true)}
                                     >
                                         <PlusOutlined />
                                         <p>Generate new report</p>
@@ -360,8 +370,86 @@ export default function Landing(props) {
                             </Tabs>
                         </div>
                     </Card>
+                    <Modal
+                        className='landing-modal'
+                        title="Create New Dashboard"
+                        visible={isModalVisible}
+                        //onOk={handleOk} 
+                        onCancel={handleCancel}
+                        // footer={[
+                        //     <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() =>
+                        //         handleOk()
+                        //     }>Let's Go!</Button>
+                        // ]}
+                        footer={false}
+                    >
+                        <div>
+                            <Row>
+                                <Col span={12}>
+                                    <img src={Banner} />
+                                </Col>
+                                <Col span={12}>
+                                    <Row>
+                                        <p>What can we call your report variant?</p>
+                                        <Input
+                                            placeholder='Enter report variant name'
+                                        // onChange={(e) => setHierarchyName(e.target.value)}
+                                        // value={hierarchyName}
+                                        />
+                                    </Row><br />
+                                    <Row>
+                                        <p>Select a report to get started</p>
+                                        <Input.Search
+                                            onSearch={search}
+                                            placeholder='Search by report ID or name'
+                                        // onChange={(e) => setHierarchyName(e.target.value)}
+                                        // value={hierarchyName}
+                                        />
+                                        {searched ? (
+                                            <Table
+                                                columns={columns}
+                                                style={{ width: '150px', height: '100px' }}
+                                                dataSource={
+                                                    filterTable === null
+                                                        ? reportList
+                                                        : filterTable
+                                                }
+                                                pagination={false}
+                                                onRow={(record) => ({
+                                                    onClick: (e) => {
+                                                        // record['color'] = '#D3D3D3'
+                                                        // setReportId(record.rep_disp_id)
+                                                        // getReportData(record.rep_disp_id, record.rep_status)
+                                                        // dispatch(showLoader())
+                                                        getLoadReportGenerator(
+                                                            record.rep_disp_id
+                                                        );
+                                                        // onOk()
+                                                    },
+                                                })}
+                                            />
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </Row>
+
+                                </Col>
+
+                                <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px', marginLeft: '88%', marginTop: '70px' }}
+                                    onClick={() => {
+                                        history.push({
+                                            pathname:
+                                                '/dashboard/report_generator',
+                                        });
+                                    }}
+                                >Let's Go!</Button>
+                            </Row>
+                        </div>
+
+                    </Modal>
                 </div>
             </div>
+
         </div>
     );
 }

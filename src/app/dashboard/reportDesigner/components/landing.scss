@@ -1,6 +1,6 @@
 .report-landing
 {
-
+   
         .ant-tabs-nav-wrap
         {
         height:50px;
@@ -350,3 +350,17 @@
        
     
 }
+ .landing-modal {
+    //  margin-right: 210px;
+    margin-right: 550px;
+    margin-top: 100px;
+        .ant-modal-content {
+            width: 787px;
+            height: 400px;
+            background: #ffffff;
+            border-radius: 4px;
+        }
+        .ant-modal-footer {
+            border-top: 0px;
+        }
+    }

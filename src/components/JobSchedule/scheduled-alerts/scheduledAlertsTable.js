@@ -12,7 +12,7 @@ import { DeleteOutlined, DeleteTwoTone } from '@ant-design/icons';
 import { getJob, putJob, deleteJob } from '../../../services/jobScheduleService';
 import moment from 'moment';
 import { dispatch } from 'd3';
-import { showNotification,showLoader,hideLoader } from '../../../duck/actions/commonActions';
+import { showNotification, showLoader, hideLoader } from '../../../duck/actions/commonActions';
 import { useDispatch } from 'react-redux';
 import './tableStyles.scss'
 
@@ -25,7 +25,7 @@ export default function scheduledAlertsTable(props) {
 
     useEffect(() => {
         getJobs()
-    }, [props.activeTab=='2']
+    }, [props.activeTab == '2']
     );
 
     const getJobs = async () => {
@@ -37,7 +37,7 @@ export default function scheduledAlertsTable(props) {
             'x-access-token': login_response.token ? login_response.token : '',
             'resource-name': 'DASHBOARD',
         };
-        let req = { app_type: props.appType,app_id: props.id };
+        let req = { app_type: props.appType, app_id: props.id };
         let get_response = await getJob(req, request_headers)
         try {
             if (get_response.Data) {
@@ -50,7 +50,7 @@ export default function scheduledAlertsTable(props) {
 
             dispatch(hideLoader())
         }
-        catch(error) {
+        catch (error) {
             dispatch(showNotification('error', error))
             dispatch(hideLoader())
         }
@@ -87,7 +87,7 @@ export default function scheduledAlertsTable(props) {
             dataIndex: 'action',
             render: (text, record) =>
             (
-                <Popconfirm  title={`Are you Sure you want to delete the ${record.dag_id}?`} onConfirm={() => DeleteJob(record)}>
+                <Popconfirm title={`Are you Sure you want to delete the ${record.dag_id}?`} onConfirm={() => DeleteJob(record)}>
                     <DeleteTwoTone twoToneColor="red" />
                 </Popconfirm>
             )
@@ -96,9 +96,9 @@ export default function scheduledAlertsTable(props) {
             title: 'Job ID',
             key: 'job_id',
             dataIndex: 'job_id',
-            render: (text,record) =>
+            render: (text, record) =>
             (
-                <u><a onClick={()=>props.changeActiveTab('1',record.dag_id)}>{text}</a></u>
+                <u><a onClick={() => props.changeActiveTab('1', record.dag_id)}>{text}</a></u>
             )
         },
         {
@@ -106,11 +106,11 @@ export default function scheduledAlertsTable(props) {
             key: 'dag_id',
             dataIndex: 'dag_id',
         },
-        {
-            title: 'Job Description',
-            key: 'frequency_unit',
-            dataIndex: 'frequency_unit',
-        },
+        // {
+        //     title: 'Job Description',
+        //     key: 'frequency_unit',
+        //     dataIndex: 'frequency_unit',
+        // },
         {
             title: 'Schedule',
             key: 'created_on',
@@ -130,12 +130,12 @@ export default function scheduledAlertsTable(props) {
     ]
     return (
         <div className="schedule-table">
-        <Table
-            bordered={false}
-            columns={columns}
-            dataSource={data}
-            pagination={{ pageSize: 5 }}
-        />
+            <Table
+                bordered={false}
+                columns={columns}
+                dataSource={data}
+                pagination={{ pageSize: 5 }}
+            />
         </div>
     )
 }

@@ -3,11 +3,11 @@
  * @Mareana - CPV Product
  * @version 1
  * @Last Modified - 22 April, 2022
- * @Last Changed By - @Mihir 
+ * @Last Changed By - @Mihir
  */
 
 import React, { useState, useEffect } from 'react';
-import { Input,Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table, Avatar } from 'antd';
+import { Input, Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table, Avatar } from 'antd';
 import SelectField from '../../SelectField/SelectField';
 import InputField from '../../InputField/InputField';
 import './chartNotify.scss';
@@ -124,6 +124,16 @@ const ChartNotify = (props) => {
     const [subject, setSubject] = useState('')
     const [subjectContent, setSubjectContent] = useState('')
 
+    let days_obj = {
+        'Sunday': 0,
+        'Monday': 1,
+        'Tuesday': 2,
+        'Wednesday': 3,
+        'Thursday': 4,
+        'Friday': 5,
+        'Saturday': 6
+    }
+
 
 
     const handlePng = (value) => {
@@ -161,25 +171,24 @@ const ChartNotify = (props) => {
             setEmailList(data.notify_emails)
             setSelectedSchedule(data.frequency_unit)
 
-            if(data.email_config)
-            {
+            if (data.email_config) {
 
-            if (data.email_config.scheduled_start)
-                setScheduleStartDate(data.email_config.scheduled_start)
-            if (data.email_config.scheduled_time)
-                setScheduleEmailTime(data.email_config.scheduled_time)
-            setRadioValue(data.email_config.daily_frequency)
-            if (data.email_config.selected_days_obj)
-                setSelectedDays(data.email_config.selected_days_obj)
-            if (data.email_config.data_table)
-                setpdf(data.email_config.data_table)
-            if (data.email_config.selected_alert)
-                setSelectedAlert(data.email_config.selected_alert)
-            if (data.email_config.scheduled_start)
-                setScheduleEmailStartDate(data.email_config.scheduled_start)
-            if (data.email_config.selected_days_obj)
-                setSelectedDays(data.email_config.selected_days_obj)
-            }    
+                if (data.email_config.scheduled_start)
+                    setScheduleStartDate(data.email_config.scheduled_start)
+                if (data.email_config.scheduled_time)
+                    setScheduleEmailTime(data.email_config.scheduled_time)
+                setRadioValue(data.email_config.daily_frequency)
+                if (data.email_config.selected_days_obj)
+                    setSelectedDays(data.email_config.selected_days_obj)
+                if (data.email_config.data_table)
+                    setpdf(data.email_config.data_table)
+                if (data.email_config.selected_alert)
+                    setSelectedAlert(data.email_config.selected_alert)
+                if (data.email_config.scheduled_start)
+                    setScheduleEmailStartDate(data.email_config.scheduled_start)
+                if (data.email_config.selected_days_obj)
+                    setSelectedDays(data.email_config.selected_days_obj)
+            }
         }
     }
 
@@ -201,6 +210,57 @@ const ChartNotify = (props) => {
     const handleReceipientsChange = (value) => {
         setEmailList(value);
     }
+    const convertExpresion = (date, time, frequency, radio, f, days, everyDayValue) => {
+
+        let cron_string = ''
+        let time_split = time.split(':')
+        let date_split = date.split('-')
+
+        if (frequency == 'Daily') {
+            if (radio == 'Every Day') {
+                cron_string = time_split[1] + ' ' + time_split[0] + ' * * *'
+            }
+            if (radio == 'Every WeekDay') {
+                cron_string = time_split[1] + ' ' + time_split[0] + ' * * 1-5'
+            }
+            if (radio == 3) {
+                if (f == 'Minutes') {
+                    cron_string = `*/${time_split[1]}  * * * *`
+
+                }
+                if (f == 'Seconds') {
+                    cron_string = `*/${everyDayValue}  * * * *`
+                }
+                if (f == 'Hour') {
+                    cron_string = '*' + ' ' + time_split[0] + ' * * *'
+                }
+            }
+        }
+
+        if (frequency == 'Weekly') {
+            let str = ''
+            for (let i = 0; i < days.length; i++) {
+                if (i > 0) {
+                    str = str + ',' + days_obj[days[i]]
+                }
+                else {
+                    str = str + days_obj[days[i]]
+                }
+            }
+            cron_string = time_split[1] + ' ' + time_split[2] + ` * * ${str}`
+        }
+
+        if (frequency == 'Monthly') {
+            cron_string = time_split[1] + ' ' + time_split[2] + " " + date_split[2] + " " + '* *'
+        }
+        if (frequency == 'Once') {
+            cron_string = 'once'
+        }
+
+        return cron_string
+
+    }
+
     const onClear = () => {
         setEmailList([])
         setSelectedSchedule('')
@@ -236,7 +296,7 @@ const ChartNotify = (props) => {
         req['app_id'] = props.id ? props.id : 'C222'
 
         let email_config = {}
-        email_config['subject'] = subjectContent.length >0  ? subjectContent :   `Update For ${props.id}`
+        email_config['subject'] = subjectContent.length > 0 ? subjectContent : `Update For ${props.id}`
         email_config['scheduled_start'] = scheduleEmailStartDate
         email_config['scheduled_time'] = scheduleEmailTime
         email_config["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
@@ -262,13 +322,16 @@ const ChartNotify = (props) => {
         }
 
         req['email_config'] = email_config
-        req['frequency'] = 1
+        req['frequency'] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, selectedDays, everyDayValue)
+
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
         req["job_status"] = "NEW",
-        req["job_type"] = 'email',
-        req['notify_emails'] = emailList,
-        req["scheduled_end"] = '2030-12-31'
+            req["job_type"] = 'email',
+            req['notify_emails'] = emailList,
+            req["scheduled_end"] = '2030-12-31'
         req["scheduled_start"] = scheduleEmailStartDate
+        req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, selectedDays, everyDayValue)
+
 
         let res = await putJob(req, request_headers)
 
@@ -342,7 +405,7 @@ const ChartNotify = (props) => {
                     <hr style={{ borderTop: '0.5px solid #d9d9d9' }} />
                     <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr' }}>
                         <span>
-                        <p onDoubleClick={()=>handleSubject(subject)} className="email-subject">Subject {subject ? <Input.TextArea  style={{width:'500px',marginLeft:'30px'}}  autoSize={true} defaultValue={subjectContent} onChange={(e)=>setSubjectContent(e.target.value)} onSubmit={()=>handleSubject(subject)}/> : <><span className="email-sub">{subjectContent.length > 0 ? subjectContent :<> Update For {props.id}</> }</span> </>} </p>
+                            <p onDoubleClick={() => handleSubject(subject)} className="email-subject">Subject {subject ? <Input.TextArea style={{ width: '500px', marginLeft: '30px' }} autoSize={true} defaultValue={subjectContent} onChange={(e) => setSubjectContent(e.target.value)} onSubmit={() => handleSubject(subject)} /> : <><span className="email-sub">{subjectContent.length > 0 ? subjectContent : <> Update For {props.id}</>}</span> </>} </p>
                             <hr style={{ borderTop: '0.5px solid #d9d9d9' }} />
                         </span>
                         <div style={{ width: '200px', marginTop: '22px', marginLeft: '90px', borderRadius: '4px' }}>
@@ -394,7 +457,7 @@ const ChartNotify = (props) => {
                 <TabPane tab='Email schedule' key="email_schedule">
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '300px' }}>
-                            <ClockCircleOutlined style={{ color: "#093185",fontSize:'18px' }} />  <DatePicker style={{ width: '260px' }} placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} value={scheduleEmailStartDate.length > 0 ? moment(scheduleEmailStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
+                            <ClockCircleOutlined style={{ color: "#093185", fontSize: '18px' }} />  <DatePicker style={{ width: '260px' }} placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} value={scheduleEmailStartDate.length > 0 ? moment(scheduleEmailStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
                             <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                         </div>
                         <div style={{ marginTop: '40px' }}>

@@ -860,7 +860,7 @@ function ReportDesignerNew(props) {
         <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
 
       </div>
-      <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT_DESIGNER" dispId={reportId} version={0} status={approveReject} />
+      <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT" dispId={reportId} version={0} status={approveReject} />
     </div>
   );
 }
