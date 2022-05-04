@@ -1,3 +1,7 @@
+body {
+	overflow: visible;
+}
+
 .create-new-row {
 	display: flex;
 	justify-content: space-evenly;
@@ -87,4 +91,44 @@
 .custom-table-wrapper {
     background: #fff;
     padding: 15px 20px;
+}
+
+.panel-delete-button {
+	width: 5%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.custom-panel p {
+    display: inline-block;
+    min-width: 20%;
+    vertical-align: top;
+    margin: 11px 0 0 0;
+}
+
+custom-panel .panel-repeat {
+    display: inline-block;
+    min-width: 80%;
+}
+
+.custom-panel .panel-repeat {
+    display: inline-block;
+    min-width: 80%;
+    vertical-align: top;
+}
+
+.ant-col.ant-col-18.custom-panel {
+    max-width: 80%;
+    flex: 0 0 80%;
+}
+
+.panel-repeat > div > span label {display: inline-block;margin: 0 10px 0;}
+
+.panel-repeat > div {
+    margin: 0 0 15px;
+}
+
+.panel-repeat > div > span .ant-select.ant-select-multiple {
+    margin-right: 20px !important;
 }

@@ -37,7 +37,7 @@ class EditableTable extends Component {
                                     mode={column.mode}
                                     style={{ width: '100%' }} 
                                     onChange={selectedValue => this.onChangeSelect(selectedValue, record, column)}>
-                            {column.options.map(option => <Option key={option.value} value={option.value}>{option.label}</Option>)}
+                            {column.options.map(option => <Option key={record.key} value={option.value}>{option.label}</Option>)}
                         </Select>
                     }
                 case 'toggle':

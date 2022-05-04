@@ -75,57 +75,65 @@ const ScreenControls = () => {
         <>
             <BreadCrumbWrapper />
             <div className='custom-user-roles-wrapper'>
-                <GoBackSubHeader currentPage="Screen controls" />
+                <GoBackSubHeader currentPage="Application controls" />
+                <div className='custom-table-wrapper'>
+                    <p>Set application and widget level controls pertaining to each role.</p>
 
+                    <Collapse defaultActiveKey={['0']} expandIconPosition="right">
+                        {usersAndRestrictions.length && usersAndRestrictions.map((usersAndRestriction, i) => {
+                            return (
+                                <Panel header={<span className="panel-delete-button" onClick={e => onDeletePanel(e, i)}>{usersAndRestriction.userType.toUpperCase()} <DeleteTwoTone twoToneColor="red" /></span>} key={i}>
+                                    <Row style={{ position: 'relative' }}>
+                                        <Col span={18} className="custom-panel">
+                                            <p>Restrict this role from</p>
+                                            <div className="panel-repeat">
+                                                {usersAndRestriction.restrictions && usersAndRestriction.restrictions.map((restriction, j) => {
+                                                    return (
+                                                        <div key={j} >
+                                                            <span>
+                                                                <label>Application</label>
+                                                                <Select
+                                                                    placeholder="Select"
+                                                                    value={restriction.screens}
+                                                                    mode="multiple"
+                                                                    style={{ width: '25%' }}
+                                                                    onChange={selectedValue => onChangeSelect(selectedValue, i, j, 'screens')}>
+                                                                    <Option value="a">Screen A</Option>
+                                                                    <Option value="b">Screen B</Option>
+                                                                    <Option value="c">Screen C</Option>
+                                                                </Select>
+                                                            </span>
+                                                            <span>
+                                                                <label>Widgets</label>
+                                                                <Select placeholder="Select"
+                                                                    value={restriction.widgets}
+                                                                    mode="multiple"
+                                                                    style={{ width: '25%' }}
+                                                                    onChange={selectedValue => onChangeSelect(selectedValue, i, j, 'widgets')}>
+                                                                    <Option value="d">Widget D</Option>
+                                                                    <Option value="e">Widget E</Option>
+                                                                    <Option value="f">Widget F</Option>
+                                                                    <Option value="g">Widget G</Option>
+                                                                </Select>
+                                                            </span>
+                                                            {usersAndRestriction.restrictions && usersAndRestriction.restrictions.length > 1 &&
+                                                                <DeleteOutlined style={{ color: 'red' }} onClick={() => onDeleteRestriction(i, j)} />}
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </Col>
+                                        <Button type="primary" style={{ position: 'absolute', right: 0, top: 0 }}>Save</Button>
+                                        <Col span={6} style={{ position: 'absolute', right: 0, bottom: 0 }}>
+                                            <Button type="dashed" block icon={<PlusOutlined />} onClick={() => onAddRestriction(i)}>Add Control</Button>
+                                        </Col>
 
-                <Collapse defaultActiveKey={['0']} expandIconPosition="right">
-                    {usersAndRestrictions.length && usersAndRestrictions.map((usersAndRestriction, i) => {
-                        return (
-                            <Panel header={<span className="panel-delete-button" onClick={e => onDeletePanel(e, i)}>{usersAndRestriction.userType.toUpperCase()} <DeleteTwoTone twoToneColor="red" /></span>} key={i}>
-                                <Row style={{ position: 'relative' }}>
-                                    <Col span={18}>
-                                        <p>Restrict this role from</p>
-                                        {usersAndRestriction.restrictions && usersAndRestriction.restrictions.map((restriction, j) => {
-                                            return (
-                                                <div key={j}>
-                                                    <label>Screens</label>
-                                                    <Select
-                                                        placeholder="Select"
-                                                        value={restriction.screens}
-                                                        mode="multiple"
-                                                        style={{ width: '40%' }}
-                                                        onChange={selectedValue => onChangeSelect(selectedValue, i, j, 'screens')}>
-                                                        <Option value="a">Screen A</Option>
-                                                        <Option value="b">Screen B</Option>
-                                                        <Option value="c">Screen C</Option>
-                                                    </Select>
-                                                    <label>Widgets</label>
-                                                    <Select placeholder="Select"
-                                                        value={restriction.widgets}
-                                                        mode="multiple"
-                                                        style={{ width: '40%' }}
-                                                        onChange={selectedValue => onChangeSelect(selectedValue, i, j, 'widgets')}>
-                                                        <Option value="d">Widget D</Option>
-                                                        <Option value="e">Widget E</Option>
-                                                        <Option value="f">Widget F</Option>
-                                                        <Option value="g">Widget G</Option>
-                                                    </Select>
-                                                    {usersAndRestriction.restrictions && usersAndRestriction.restrictions.length > 1 && 
-                                                    <DeleteOutlined style={{ color: 'red' }} onClick={() => onDeleteRestriction(i, j)} />}
-                                                </div>
-                                            )
-                                        })}
-                                    </Col>
-                                    <Button type="primary" style={{ position: 'absolute', right: 0, top: 0 }}>Save</Button>
-                                    <Col span={6} style={{ position: 'absolute', right: 0, bottom: 0 }}>
-                                        <Button type="dashed" block icon={<PlusOutlined />} onClick={() => onAddRestriction(i)}>Add Control</Button>
-                                    </Col>
-
-                                </Row>
-                            </Panel>
-                        )
-                    })}
-                </Collapse>
+                                    </Row>
+                                </Panel>
+                            )
+                        })}
+                    </Collapse>
+                </div>
             </div>
         </>
     )
