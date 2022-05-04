@@ -354,7 +354,7 @@ function ReportDesignerNew(props) {
       if (index == 0)
         obj['numbered'] = true;
       else
-        obj['numbered'] = false;
+        obj['numbered'] = true;
       let content_arr = [];
       content_arr = item.dymamic_rows.map((i, index) => {
         // let objj = {};

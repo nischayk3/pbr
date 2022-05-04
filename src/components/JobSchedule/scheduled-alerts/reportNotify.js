@@ -271,10 +271,10 @@ const ReportNotify = (props) => {
         req['email_config'] = email_config
         req['frequency'] = 1
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
-        req["job_status"] = "NEW",
-            req["job_type"] = 'email',
-            req['notify_emails'] = emailList,
-            req["scheduled_end"] = '2030-12-31'
+        req["job_status"] = "NEW"
+        req["job_type"] = 'email'
+        req['notify_emails'] = emailList
+        req["scheduled_end"] = '2030-12-31'
         req["scheduled_start"] = scheduleEmailStartDate
         req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, selectedDays, everyDayValue)
 
@@ -418,7 +418,7 @@ const ReportNotify = (props) => {
                                                     <Radio value='Every Day' className='alerts-radio'>Every Day</Radio>
                                                     <Radio value='Every WeekDay' className='alerts-radio'>Every WeekDay</Radio>
                                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '72px', marginRight: '20px', marginTop: '18px' }}>
+                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '72px', marginRight: '20px', marginTop: '12px' }}>
                                                             <InputField value={everyDayValue} onChangeInput={(e) => setEveryDayValues(e.target.value)} className='alerts-radio' placeholder="4" />
                                                         </span>
                                                         <div style={{ width: '100px', marginTop: '18px' }}>

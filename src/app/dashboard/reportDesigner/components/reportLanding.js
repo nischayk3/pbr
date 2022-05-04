@@ -432,6 +432,31 @@ export default function Landing(props) {
                                         // onChange={(e) => setHierarchyName(e.target.value)}
                                         // value={hierarchyName}
                                         />
+                                        <div className='tile'>
+                                            {reportList &&
+                                                reportList.length > 0 &&
+                                                reportList.map(
+                                                    (i, index) =>
+                                                        index < 4 && (
+                                                            <div
+                                                                onClick={() => {
+                                                                    getLoadReportGenerator(
+                                                                        i.rep_disp_id
+                                                                    );
+                                                                }}
+                                                            >
+                                                                <StatusBlock
+                                                                    id={
+                                                                        i.rep_disp_id
+                                                                    }
+                                                                    status={
+                                                                        i.rep_status
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        )
+                                                )}
+                                        </div>
                                         {newsearched ? (
                                             <Table
                                                 columns={columns}

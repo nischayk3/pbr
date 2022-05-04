@@ -148,6 +148,12 @@ const ChartNotify = (props) => {
         }
     }, [props.data])
 
+    useEffect(() => {
+        if (props.same) {
+            UnloadSame(props)
+        }
+    }, [props.same])
+
 
 
     const dispatch = useDispatch();
@@ -165,6 +171,19 @@ const ChartNotify = (props) => {
     }
     const handleSubject = (subject) => {
         setSubject(!subject)
+    }
+
+    const UnloadSame = (props_data) =>
+    {
+        console.log(props_data)
+        if(props_data.schedule)
+        setSelectedSchedule(props_data.schedule)
+        if(props_data.start_time)
+        setScheduleEmailTime(props_data.start_time)
+        if(props_data.start_date)
+        setScheduleEmailStartDate(props_data.start_date)
+        if(props_data.radio)
+        setRadioValue(props_data.radio)
     }
     const unLoad = (data) => {
         if (data) {
@@ -216,6 +235,8 @@ const ChartNotify = (props) => {
         let time_split = time.split(':')
         let date_split = date.split('-')
 
+        console.log(date, time, frequency, radio, f, days, everyDayValue)
+
         if (frequency == 'Daily') {
             if (radio == 'Every Day') {
                 cron_string = time_split[1] + ' ' + time_split[0] + ' * * *'
@@ -225,14 +246,16 @@ const ChartNotify = (props) => {
             }
             if (radio == 3) {
                 if (f == 'Minutes') {
-                    cron_string = `*/${time_split[1]}  * * * *`
+                    cron_string = `*/${everyDayValue}  * * * *`
 
                 }
                 if (f == 'Seconds') {
                     cron_string = `*/${everyDayValue}  * * * *`
                 }
                 if (f == 'Hour') {
-                    cron_string = '*' + ' ' + time_split[0] + ' * * *'
+                    // cron_string = '*' + ' ' + time_split[0] + ' * * *'
+                    cron_string = `* */${everyDayValue}  * * *`
+
                 }
             }
         }
@@ -247,9 +270,10 @@ const ChartNotify = (props) => {
                     str = str + days_obj[days[i]]
                 }
             }
+            console.log(str)
             cron_string = time_split[1] + ' ' + time_split[2] + ` * * ${str}`
         }
-
+        
         if (frequency == 'Monthly') {
             cron_string = time_split[1] + ' ' + time_split[2] + " " + date_split[2] + " " + '* *'
         }
@@ -294,6 +318,7 @@ const ChartNotify = (props) => {
         req['created_by'] = localStorage.getItem('username') ? localStorage.getItem('username') : ''
         req['app_type'] = props.appType
         req['app_id'] = props.id ? props.id : 'C222'
+        
 
         let email_config = {}
         email_config['subject'] = subjectContent.length > 0 ? subjectContent : `Update For ${props.id}`
@@ -322,15 +347,14 @@ const ChartNotify = (props) => {
         }
 
         req['email_config'] = email_config
-        req['frequency'] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, selectedDays, everyDayValue)
-
+        req['frequency'] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
         req["job_status"] = "NEW",
             req["job_type"] = 'email',
-            req['notify_emails'] = emailList,
+            req['notify_emails'] = emailList ? emailList : [] ,
             req["scheduled_end"] = '2030-12-31'
         req["scheduled_start"] = scheduleEmailStartDate
-        req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, selectedDays, everyDayValue)
+        req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
 
 
         let res = await putJob(req, request_headers)
@@ -350,19 +374,13 @@ const ChartNotify = (props) => {
         setActiveTab(activeKey);
     };
 
-    const onChangeStart = (date, dateString) => {
-        setScheduleStartDate(dateString);
-        // setstartTimeIso(moment(date).toISOString());
-    };
+
 
     const onChangeEmailStart = (date, dateString) => {
         setScheduleEmailStartDate(dateString);
         // setstartTimeIso(moment(date).toISOString());
     };
-    const onChangeTime = (date, dateString) => {
-        setScheduleTime(dateString);
-        // setstartTimeIso(moment(date).toISOString());
-    };
+
     const onChangeEmailTime = (date, dateString) => {
         setScheduleEmailTime(dateString);
         // setstartTimeIso(moment(date).toISOString());
@@ -380,7 +398,6 @@ const ChartNotify = (props) => {
         setEmailList(selectedItems);
     };
 
-    console.log(props.data)
 
     return (
         <div className="chart_notify-notify">
@@ -465,12 +482,12 @@ const ChartNotify = (props) => {
                                 <Col className='gutter-row' span={4}>
                                     <div className="select-report-antd" >
                                         <Select
-                                            placeholder='Schedule'
+                                            placeholder=''
                                             value={selectedSchedule}
                                             onChange={(e) => handleSelectScheduleChange(e)}
                                             style={{ width: "100%", margin: "0px" }}
                                             allowClear={true}
-                                            defaultValue="Repeat Once"
+                                            defaultValue = {selectedSchedule}
                                             className="antd-selectors"
                                         >
                                             {scheduleList &&
@@ -497,7 +514,7 @@ const ChartNotify = (props) => {
                                                     <Radio value='Every Day' className='alerts-radio'>Every Day</Radio>
                                                     <Radio value='Every WeekDay' className='alerts-radio'>Every WeekDay</Radio>
                                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '40px', marginRight: '20px', marginTop: '18px' }}>
+                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '40px', marginRight: '20px', marginTop: '12px' }}>
                                                             <InputField value={everyDayValue} onChangeInput={(e) => setEveryDayValues(e.target.value)} className='alerts-radio' />
                                                         </span>
                                                         <div style={{ width: '100px', marginTop: '18px' }}>

@@ -315,6 +315,79 @@ function ReportGenerator(props) {
         //      });
 
     }
+    const generateReportObject = (object) =>
+    {
+        let title_object = {}
+        title_object['heading'] = object['heading']
+        title_object['numbered'] = true
+        let title_content = []
+        let title_heading = {}
+        title_heading['type'] = "table"
+        title_heading['table'] = {
+            "header":[
+                {
+                    "fieldName":"key",
+                    "displayName":"",
+                    "display":true,
+                    "sortOrder":1,
+                    "dataType":"text"
+                },
+                {
+                    "fieldName":"value",
+                    "displayName":"",
+                    "display":true,
+                    "sortOrder":1,
+                    "dataType":"text"
+                }
+            ],
+            "content":object.content
+        }
+        title_content.push(title_heading)
+
+        let charts_arr = object.charts
+
+        for(let i=0;i<charts_arr.length;i++)
+        {
+         let obj =  {
+            type: "figure",
+            figure: {
+                "caption": charts_arr[i],
+                "type": "svg",
+                "image": "https://merck-cpvpoc.mareana.com/charts/snippet_POC_ABV4297_reduced_nocomments_222.png"                    }
+        }
+        title_content.push(obj)
+        }
+
+        title_object['content'] = title_content
+
+        return title_object
+    }
+ 
+    const generateReport = () =>
+    {
+        let generate_obj = {}
+        let title_page = table[0] ? table[0] : {}
+        let sections = table.length > 0 ? table.filter((item, index) => index > 0) : []
+
+        generate_obj['titlepage'] = generateReportObject(title_page)
+
+        let sections_arr = []
+
+        for (let i=0;i<sections.length;i++)
+        {
+            let obj = generateReportObject(sections[i])
+            sections_arr.push(obj)
+        }
+
+        generate_obj['sections'] = sections_arr
+        let final_obj = {}
+        final_obj['layout_info'] = generate_obj
+        final_obj['chart_layout'] = chartLayout
+
+
+        console.log(JSON.stringify(final_obj))
+
+    }
 
     const prepareJson = () => {
 
@@ -422,6 +495,8 @@ function ReportGenerator(props) {
     }
 
 
+    console.log(table)
+
 
 
     return (
@@ -445,7 +520,7 @@ function ReportGenerator(props) {
                             </Button>
                         </> : <></>
                     }
-                    <Button className='custom-secondary-btn' onClick={() => dispatch(screenChange(false))}>
+                    <Button className='custom-secondary-btn' onClick={() => generateReport()}>
                         <FileTextOutlined />   Generate Report
                     </Button>
                     <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
