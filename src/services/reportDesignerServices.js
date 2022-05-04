@@ -13,7 +13,7 @@ const request_headers = {
 };
 
 export const getViews = (request) => {
-    return Service.get(BMS_APP_PYTHON_SERVICE + '/views-list', request).then(
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/views-list', request,request_headers).then(
         (response) => {
             return response.data;
         },

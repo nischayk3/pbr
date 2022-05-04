@@ -20,7 +20,8 @@ const StatusBlock = props => {
 			<div className={`tile-status ${statusColor(props.status)}`}>
 				{props.status}
 			</div>
-			{props.id}
+			{props.id}<br/>
+			{props.name}
 		</div>
 	);
 };

@@ -8,42 +8,38 @@ import { useLocation } from 'react-router';
 
 
 
-function Report()
-{
-    const screen = useSelector((state)=>state.reportDesignerReducer.screen)
+function Report() {
+    const screen = useSelector((state) => state.reportDesignerReducer.screen)
     const [screenChange, setScreenChange] = useState(false)
-    const [getData,setData] = useState({})
-    const [isParam,setIsParam] = useState(false)
+    const [getData, setData] = useState({})
+    const [isParam, setIsParam] = useState(false)
     const location = useLocation()
-    
-    
+
+
     const changeScreen = () => {
         setScreenChange(true)
     }
 
-    const getReportData = (data) =>
-    {
+    const getReportData = (data) => {
         setData(data)
     }
-    useEffect(()=>
-    {
+    useEffect(() => {
         const params = queryString.parse(location.search);
-
         if (Object.keys(params).length > 0) {
-         {
-            setIsParam(true)
-          }
+            {
+                setIsParam(true)
+            }
         }
-    },[])
+    }, [])
     return (
         <div>
-           {!screenChange && !isParam ? <Landing changeScreen={changeScreen} getReportData={getReportData} /> : 
-           <> {screen ?
-           <div><ReportGenerator/></div> :
-          <div><DesignCharts loadData={getData}/></div> 
+            {!screenChange && !isParam ? <Landing changeScreen={changeScreen} getReportData={getReportData} /> :
+                <> {screen ?
+                    <div><ReportGenerator /></div> :
+                    <div><DesignCharts loadData={getData} /></div>
 
-            } </> }
-            
+                } </>}
+
 
         </div>
     )
