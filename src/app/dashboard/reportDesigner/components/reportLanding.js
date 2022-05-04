@@ -188,6 +188,7 @@ export default function Landing(props) {
             dispatch(sendReport(data.report_generator.data));
         if (data.Status == 200 || data.report_generator) {
             dispatch(hideLoader());
+            dispatch(showNotification('success', `Loaded ${report_id}`));
         } else {
             dispatch(hideLoader());
             dispatch(showNotification('error', data.Message));
@@ -434,7 +435,7 @@ export default function Landing(props) {
                                         {newsearched ? (
                                             <Table
                                                 columns={columns}
-                                                scroll={{ y: 150 ,x:350}}
+                                                scroll={{ y: 150, x: 350 }}
                                                 // style={{  height: 'auto' }}
                                                 dataSource={
                                                     filterTable === null

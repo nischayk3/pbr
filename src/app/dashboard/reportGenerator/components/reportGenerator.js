@@ -103,7 +103,7 @@ const columns = [
 ];
 
 
-function ReportGenerator() {
+function ReportGenerator(props) {
 
     const repotData = useSelector(
         (state) => state.reportDesignerReducer.reportData
@@ -421,26 +421,31 @@ function ReportGenerator() {
         }
     }
 
+    console.log(props)
+
 
 
     return (
 
         <div className='custom-wrapper'>
-
             <div className='sub-header'>
                 <div className='sub-header-title'>
                     <BreadCrumbWrapper />
                 </div>
                 <div className='sub-header-btns'>
-                    <Button className='custom-primary-btn' onClick={() => { setAlertVisible(true); }}>
-                        Notify Report
-                    </Button>
-                    {/* <Button className='custom-primary-btn' onClick={() => { setIsVisible(true); }}>
+                    {!props.screenChange ?
+                        <>
+                            <Button className='custom-primary-btn' onClick={() => { setAlertVisible(true); }}>
+                                Notify Report
+                            </Button>
+                            {/* <Button className='custom-primary-btn' onClick={() => { setIsVisible(true); }}>
                         Load
                     </Button> */}
-                    <Button className='custom-primary-btn' onClick={() => prepareJson()}>
-                        Save
-                    </Button>
+                            <Button className='custom-primary-btn' onClick={() => prepareJson()}>
+                                Save
+                            </Button>
+                        </> : <></>
+                    }
                     <Button className='custom-secondary-btn' onClick={() => dispatch(screenChange(false))}>
                         <FileTextOutlined />   Generate Report
                     </Button>

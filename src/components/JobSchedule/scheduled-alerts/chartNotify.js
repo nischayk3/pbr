@@ -408,10 +408,10 @@ const ChartNotify = (props) => {
                             <p onDoubleClick={() => handleSubject(subject)} className="email-subject">Subject {subject ? <Input.TextArea style={{ width: '500px', marginLeft: '30px' }} autoSize={true} defaultValue={subjectContent} onChange={(e) => setSubjectContent(e.target.value)} onSubmit={() => handleSubject(subject)} /> : <><span className="email-sub">{subjectContent.length > 0 ? subjectContent : <> Update For {props.id}</>}</span> </>} </p>
                             <hr style={{ borderTop: '0.5px solid #d9d9d9' }} />
                         </span>
-                        <div style={{ width: '200px', marginTop: '22px', marginLeft: '90px', borderRadius: '4px' }}>
+                        <div style={{ width: '200px', marginTop: '22px', marginLeft: '90px' }}>
                             <Select
                                 row={1}
-                                className="filter-button"
+                                // className="filter-button"
                                 mode="multiple"
                                 allowClear
                                 dropdownStyle={{ border: '10' }}
@@ -419,7 +419,7 @@ const ChartNotify = (props) => {
                                 placeholder="Pick the type of alert"
                                 value={selectedAlert}
                                 onChange={handleSelectAlertChange}
-                                style={{ width: '100%', borderRadius: '4px' }}
+                                style={{ width: '100%',overflow:'auto' }}
                             >
                                 {alertList.length > 0 ? alertList.map(item => (
                                     <Option draggable="true" value={item} key={item}>
@@ -444,9 +444,9 @@ const ChartNotify = (props) => {
                             {localStorage.getItem('username') ? localStorage.getItem('username') + '_variant' : ''}
                         </p>
 
-                        <div style={{ display: 'flex', flexDirection: 'row', gap: '17px', marginRight: '20px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row', gap: '17px',marginLeft:'40px' }}>
                             <p className="email-attach-chart">Select to Attach</p>
-                            <div className={png ? "attachment-report-chart-select" : "attachment-report-chart"} onClick={() => handlePng(png)} ><span><PaperClipOutlined style={{ marginLeft: '20px', marginTop: '5px', color: png ? 'white' : '' }} /></span><span className={png ? "attachment-report-text-chart-select" : "attachment-report-text-chart"}>Chartname</span> </div>
+                            <div className={png ? "attachment-report-chart-select" : "attachment-report-chart"} onClick={() => handlePng(png)} ><span><PaperClipOutlined style={{ marginLeft: '40px', marginTop: '5px', color: png ? 'white' : '' }} /></span><span className={png ? "attachment-report-text-chart-select" : "attachment-report-text-chart"}>Chartname</span> </div>
                             <div className={pdf ? "attachment-report-chart-select" : "attachment-report-chart"} onClick={() => handlePdf(pdf)} ><span><PaperClipOutlined style={{ marginLeft: '40px', marginTop: '5px', color: pdf ? 'white' : '' }} /></span><span className={pdf ? "attachment-report-text-chart-select" : "attachment-report-text-chart"}> Datatable</span></div>
                         </div>
                     </div>
@@ -502,7 +502,7 @@ const ChartNotify = (props) => {
                                                         </span>
                                                         <div style={{ width: '100px', marginTop: '18px' }}>
                                                             <SelectField
-                                                                className='alerts-radio'
+                                                                className='alert-radio'
                                                                 placeholder=''
                                                                 selectList={timeRange}
                                                                 value={selectedTimeRange}

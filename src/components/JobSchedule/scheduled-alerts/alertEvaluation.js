@@ -374,7 +374,7 @@ const alertEvaluation = (props) => {
                                                     <Radio value="Every WeekDay" className='alerts-radio'>Every WeekDay</Radio>
                                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                                                         <Radio value={3} className='alerts-radio'>Every</Radio>
-                                                        <span style={{ width: '73px', marginRight: '20px', marginTop: '18px', height: '32px' }}>
+                                                        <span style={{ width: '73px', marginRight: '20px', marginTop: '12px', height: '32px' }}>
                                                             <InputField value={everyDayValue} onChangeInput={(e) => setEveryDayValues(e.target.value)} style={{ height: '36px' }} placeholder="4" />
                                                         </span>
                                                         <div style={{ width: '102px', marginTop: '18px' }}>
