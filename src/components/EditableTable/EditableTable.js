@@ -1,7 +1,19 @@
 import { Component } from 'react'
+import { v1 as uuidv1 } from 'uuid'
 import { Table, Button, Popconfirm, Select, Switch } from 'antd'
-import { EditableRow, EditableCell, adjustColumnWidths, deleteRow, addRow, changeInput, changeSelectInput, changeToggleInput } from '../../utils/editableTableHelper'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { 
+    EditableRow, 
+    EditableCell, 
+    adjustColumnWidths,
+    deleteRow, 
+    addRow, 
+    changeInput, 
+    changeSelectInput, 
+    changeToggleInput
+} from '../../utils/editableTableHelper'
+
+
 const { Option } = Select
 
 class EditableTable extends Component {
@@ -20,6 +32,7 @@ class EditableTable extends Component {
     }
 
     initializeTableRender() {
+        this.state.dataSource.map(data => data.key = uuidv1())
         const columnsCopy = [...this.props.tableData.columns]
         const columns = this.state.deleteActionColumn ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
         adjustColumnWidths(columns)
@@ -29,6 +42,7 @@ class EditableTable extends Component {
 
     renderTable = (columns) => {
         columns.forEach(column => {
+            console.log(column)
             switch (column.type) {
                 case 'select':
                     return column.render = (_, record) => {
@@ -37,7 +51,7 @@ class EditableTable extends Component {
                                     mode={column.mode}
                                     style={{ width: '100%' }} 
                                     onChange={selectedValue => this.onChangeSelect(selectedValue, record, column)}>
-                            {column.options.map(option => <Option key={record.key} value={option.value}>{option.label}</Option>)}
+                            {column.options.map(option => <Option key={uuidv1()} value={option.value}>{option.label}</Option>)}
                         </Select>
                     }
                 case 'toggle':
