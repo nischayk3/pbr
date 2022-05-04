@@ -326,7 +326,6 @@ const alertEvaluation = (props) => {
     const handleChange = selectedItems => {
         setEmailList(selectedItems);
     };
-    console.log(emailLoad, activeTab)
     return (
         <div className="chart-notify">
             <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={activeTab == 'schedule_evaluation' ? <div style={{ marginRight: '20px', marginTop: '15px' }}>  <Button className='schedule-evalutaion-button' onClick={() => SaveData()}>Schedule Evaluation</Button>
