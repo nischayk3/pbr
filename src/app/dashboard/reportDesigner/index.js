@@ -35,7 +35,7 @@ function Report() {
         <div>
             {!screenChange && !isParam ? <Landing changeScreen={changeScreen} getReportData={getReportData} /> :
                 <> {screen ?
-                    <div><ReportGenerator /></div> :
+                    <div><ReportGenerator  screenChange={screenChange}/></div> :
                     <div><DesignCharts loadData={getData} /></div>
 
                 } </>}

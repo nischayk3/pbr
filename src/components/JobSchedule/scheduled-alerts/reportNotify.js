@@ -104,6 +104,8 @@ const ReportNotify = (props) => {
         let time_split = time.split(':')
         let date_split = date.split('-')
 
+        console.log(date, time, frequency, radio, f, days, everyDayValue)
+
         if (frequency == 'Daily') {
             if (radio == 'Every Day') {
                 cron_string = time_split[1] + ' ' + time_split[0] + ' * * *'
@@ -113,14 +115,16 @@ const ReportNotify = (props) => {
             }
             if (radio == 3) {
                 if (f == 'Minutes') {
-                    cron_string = `*/${time_split[1]}  * * * *`
+                    cron_string = `*/${everyDayValue}  * * * *`
 
                 }
                 if (f == 'Seconds') {
                     cron_string = `*/${everyDayValue}  * * * *`
                 }
                 if (f == 'Hour') {
-                    cron_string = '*' + ' ' + time_split[0] + ' * * *'
+                    // cron_string = '*' + ' ' + time_split[0] + ' * * *'
+                    cron_string = `* */${everyDayValue}  * * *`
+
                 }
             }
         }
@@ -135,9 +139,10 @@ const ReportNotify = (props) => {
                     str = str + days_obj[days[i]]
                 }
             }
+            console.log(str)
             cron_string = time_split[1] + ' ' + time_split[2] + ` * * ${str}`
         }
-
+        
         if (frequency == 'Monthly') {
             cron_string = time_split[1] + ' ' + time_split[2] + " " + date_split[2] + " " + '* *'
         }
@@ -148,7 +153,6 @@ const ReportNotify = (props) => {
         return cron_string
 
     }
-
     const getJobs = async (job) => {
         dispatch(showLoader())
         let login_response = JSON.parse(localStorage.getItem('login_details'));
@@ -271,12 +275,12 @@ const ReportNotify = (props) => {
         req['email_config'] = email_config
         req['frequency'] = 1
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
-        req["job_status"] = "NEW",
-            req["job_type"] = 'email',
-            req['notify_emails'] = emailList,
-            req["scheduled_end"] = '2030-12-31'
+        req["job_status"] = "NEW"
+        req["job_type"] = 'email'
+        req['notify_emails'] = emailList
+        req["scheduled_end"] = '2030-12-31'
         req["scheduled_start"] = scheduleEmailStartDate
-        req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, selectedDays, everyDayValue)
+        req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
 
 
         let res = await putJob(req, request_headers)
@@ -418,7 +422,7 @@ const ReportNotify = (props) => {
                                                     <Radio value='Every Day' className='alerts-radio'>Every Day</Radio>
                                                     <Radio value='Every WeekDay' className='alerts-radio'>Every WeekDay</Radio>
                                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '72px', marginRight: '20px', marginTop: '18px' }}>
+                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '72px', marginRight: '20px', marginTop: '12px' }}>
                                                             <InputField value={everyDayValue} onChangeInput={(e) => setEveryDayValues(e.target.value)} className='alerts-radio' placeholder="4" />
                                                         </span>
                                                         <div style={{ width: '100px', marginTop: '18px' }}>
