@@ -32,3 +32,18 @@ export const savePbrTemplate = (request) => {
         }
     );
 };
+
+export const getPbrReviewerData = (_queryParam) => {
+    return Service.get(
+        MDH_APP_PYTHON_SERVICE +
+            '/pbr/udh/get_cpv_pbr_data',
+        _queryParam
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
