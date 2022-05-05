@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Input, Modal } from 'antd';
+import { Button, Input, Modal, Alert } from 'antd';
 import FunctionKey from '../../../../../assets/images/key1.png';
 import InputField from '../../../../../components/InputField/InputField';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import {
 	saveAsViewFunction,
 	saveViewFunction,
@@ -15,15 +15,14 @@ const MathFunction = props => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [isFunctionVisible, setIsFunctionVisible] = useState(false);
 	const [functionName, setFunctionName] = useState('');
-	const [mathEditorValue, setmathEditorValue] = useState('');
-
+	const [mathEditorValue, setMathEditorValue] = useState('');
+	const [isAlertFunction, setIsAlertFunction] = useState(false);
 	const dispatch = useDispatch();
-
 	const showModal = () => {
 		dispatch(saveViewFunction(false));
 		setIsModalVisible(true);
-		let funDetails = mathEditorValue && mathEditorValue.split(/\W+/);
-
+		let funDetails = mathEditorValue;
+		// mathEditorValue && mathEditorValue.split(/\W+/);
 		dispatch(sendFunDetails(funDetails));
 	};
 
@@ -32,7 +31,7 @@ const MathFunction = props => {
 	};
 
 	const handleChangeFunction = e => {
-		setmathEditorValue(e.target.value);
+		setMathEditorValue(e.target.value);
 		setIsFunctionVisible(true);
 	};
 	const onChangeFunName = e => {
@@ -43,35 +42,47 @@ const MathFunction = props => {
 		dispatch(sendFunctionName(functionName));
 		dispatch(saveViewFunction(true));
 		setIsModalVisible(false);
-		setFunctionName('');
+		setIsAlertFunction(true);
+		setTimeout(() => {
+			setFunctionName('');
+			setIsAlertFunction(false);
+		}, 1000);
 	};
 
 	return (
 		<>
 			<div className='function-editor'>
-				<Input
-					onChange={e => handleChangeFunction(e)}
-					placeholder='Create variables using parameters below to use them here'
-					suffix={
+				{isAlertFunction ? (
+					<div className='function-alert'>
+						<p>{`Function '${functionName}' created `}</p>
 						<span>
-							{isFunctionVisible && (
-								<Button
-									onClick={showModal}
-									type='text'
-									className='custom-primary-btn '>
-									Create Function
-								</Button>
-							)}
-							<img src={FunctionKey} />
+							<CheckCircleOutlined />
 						</span>
-					}
-				/>
+					</div>
+				) : (
+					<Input
+						onChange={e => handleChangeFunction(e)}
+						placeholder='Create variables using parameters below to use them here'
+						suffix={
+							<span>
+								{isFunctionVisible && (
+									<Button
+										onClick={showModal}
+										type='text'
+										className='custom-primary-btn '>
+										Create Function
+									</Button>
+								)}
+								<img src={FunctionKey} />
+							</span>
+						}
+						value={mathEditorValue}
+					/>
+				)}
 			</div>
 			<Modal
 				width={400}
-				// title='Basic Modal'
 				visible={isModalVisible}
-				// onOk={handleOk}
 				onCancel={handleCancel}
 				footer={null}>
 				<div className='function-modal'>

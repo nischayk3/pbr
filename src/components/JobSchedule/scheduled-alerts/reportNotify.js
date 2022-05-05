@@ -7,7 +7,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table, Avatar } from 'antd';
+import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table, Avatar, Input } from 'antd';
 import SelectField from '../../SelectField/SelectField';
 import InputField from '../../InputField/InputField';
 import './reportNotify.scss';
@@ -53,6 +53,19 @@ const ReportNotify = (props) => {
     const [scheduleEmailTime, setScheduleEmailTime] = useState('')
     const [frequency, setFrequency] = useState('')
     const [everyDayValue, setEveryDayValue] = useState('')
+    const [subject, setSubject] = useState('')
+    const [subjectContent, setSubjectContent] = useState('')
+
+
+    let days_obj = {
+        'Sunday': 0,
+        'Monday': 1,
+        'Tuesday': 2,
+        'Wednesday': 3,
+        'Thursday': 4,
+        'Friday': 5,
+        'Saturday': 6
+    }
 
 
     const dispatch = useDispatch();
@@ -76,11 +89,70 @@ const ReportNotify = (props) => {
         dispatch(hideLoader())
     }
 
+    const handleSubject = (subject) => {
+        setSubject(!subject)
+    }
+
     const onChangeEnd = (date, dateString) => {
         setScheduleEndDate(dateString);
         // setendTimeIso(moment(date).toISOString());
     };
 
+    const convertExpresion = (date, time, frequency, radio, f, days, everyDayValue) => {
+
+        let cron_string = ''
+        let time_split = time.split(':')
+        let date_split = date.split('-')
+
+        console.log(date, time, frequency, radio, f, days, everyDayValue)
+
+        if (frequency == 'Daily') {
+            if (radio == 'Every Day') {
+                cron_string = time_split[1] + ' ' + time_split[0] + ' * * *'
+            }
+            if (radio == 'Every WeekDay') {
+                cron_string = time_split[1] + ' ' + time_split[0] + ' * * 1-5'
+            }
+            if (radio == 3) {
+                if (f == 'Minutes') {
+                    cron_string = `*/${everyDayValue}  * * * *`
+
+                }
+                if (f == 'Seconds') {
+                    cron_string = `*/${everyDayValue}  * * * *`
+                }
+                if (f == 'Hour') {
+                    // cron_string = '*' + ' ' + time_split[0] + ' * * *'
+                    cron_string = `* */${everyDayValue}  * * *`
+
+                }
+            }
+        }
+
+        if (frequency == 'Weekly') {
+            let str = ''
+            for (let i = 0; i < days.length; i++) {
+                if (i > 0) {
+                    str = str + ',' + days_obj[days[i]]
+                }
+                else {
+                    str = str + days_obj[days[i]]
+                }
+            }
+            console.log(str)
+            cron_string = time_split[1] + ' ' + time_split[2] + ` * * ${str}`
+        }
+        
+        if (frequency == 'Monthly') {
+            cron_string = time_split[1] + ' ' + time_split[2] + " " + date_split[2] + " " + '* *'
+        }
+        if (frequency == 'Once') {
+            cron_string = 'once'
+        }
+
+        return cron_string
+
+    }
     const getJobs = async (job) => {
         dispatch(showLoader())
         let login_response = JSON.parse(localStorage.getItem('login_details'));
@@ -112,7 +184,6 @@ const ReportNotify = (props) => {
     };
 
     const unLoad = (data) => {
-        dispatch(showLoader())
         data = data[0]
         setEmailList(data.notify_emails)
         setSelectedSchedule(data.frequency_unit)
@@ -178,12 +249,14 @@ const ReportNotify = (props) => {
         req['app_id'] = props.id ? props.id : 'R262'
 
         let email_config = {}
-        email_config['subject'] = `Update For ${props.id ? props.id : 'C222'}`
+        email_config['subject'] = subjectContent.length > 0 ? subjectContent : `Update For ${props.id}`
         email_config['scheduled_start'] = scheduleEmailStartDate
         email_config['scheduled_time'] = scheduleEmailTime
         email_config["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule,
             email_config["email_list"] = emailList
         email_config["attachment"] = ''
+        email_config['created_by'] = localStorage.getItem('username') ? localStorage.getItem('username') : ''
+
 
         if (selectedSchedule == 'Weekly') {
             email_config['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
@@ -202,11 +275,13 @@ const ReportNotify = (props) => {
         req['email_config'] = email_config
         req['frequency'] = 1
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
-        req["job_status"] = "NEW",
-            req["job_type"] = 'email',
-            req['notify_emails'] = emailList,
-            req["scheduled_end"] = '2030-12-31'
+        req["job_status"] = "NEW"
+        req["job_type"] = 'email'
+        req['notify_emails'] = emailList
+        req["scheduled_end"] = '2030-12-31'
         req["scheduled_start"] = scheduleEmailStartDate
+        req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
+
 
         let res = await putJob(req, request_headers)
 
@@ -214,7 +289,7 @@ const ReportNotify = (props) => {
             dispatch(showNotification('success', 'Saved'))
         }
         else {
-            dispatch(showNotification('error', 'Unable to save'))
+            dispatch(showNotification('error', res.Message ? res.Message : res.detail))
         }
 
 
@@ -278,17 +353,19 @@ const ReportNotify = (props) => {
                     </Select>
                     <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                     <span>
-                        <p className="email-subject">Subject <span className="email-sub">Update For {props.id} </span>  </p>
+                        <p onDoubleClick={() => handleSubject(subject)} className="email-subject">Subject {subject ? <Input.TextArea style={{ width: '800px', marginLeft: '30px' }} autoSize={true} defaultValue={subjectContent} onChange={(e) => setSubjectContent(e.target.value)} onSubmit={() => handleSubject(subject)} /> : <><span className="email-sub">{subjectContent.length > 0 ? subjectContent : <> Update For {props.id}</>}</span> </>} </p>
                     </span>
                     <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                     <br />
                     <p className="email-content"> Hey,<br /><br />
-
-                        This is to inform you of the recept update to [report variant name]. Check the attachment for details.<br /><br />
-                        Visit <a>www.cpv-mareana.com/alert-dashboard</a> to know more.<br />
+                        <p >
+                            This is to inform you of the recent update to [report variant name]. Check the attachment for details.<br /><br />
+                            Visit <a>www.cpv-mareana.com/alert-dashboard</a> to know more.<br />
+                        </p>
                         <br />
                         Regards,<br />
-                        [variant_username]</p>
+                        {localStorage.getItem('username') ? localStorage.getItem('username') + '_variant' : ''}
+                    </p>
 
                     <div className="attachment-report-report"> <span><PaperClipOutlined style={{ marginLeft: '10px' }} /><span className="attachment-report-text"> Report_name.pdf</span></span></div>
                     {/* {emailList.length > 0 && ( */}
@@ -298,7 +375,7 @@ const ReportNotify = (props) => {
                 <TabPane tab='Email schedule' key="email_schedule">
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '300px' }}>
-                            <ClockCircleOutlined style={{ color: "#093185" }} />  <DatePicker style={{ width: '260px' }} placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} defaultValue={scheduleStartDate.length > 0 ? moment(scheduleStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
+                            <ClockCircleOutlined style={{ color: "#093185", fontSize: '18px' }} />  <DatePicker style={{ width: '260px' }} placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} defaultValue={scheduleStartDate.length > 0 ? moment(scheduleStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
                             <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                         </div>
                         <div style={{ marginTop: '40px' }}>
@@ -345,7 +422,7 @@ const ReportNotify = (props) => {
                                                     <Radio value='Every Day' className='alerts-radio'>Every Day</Radio>
                                                     <Radio value='Every WeekDay' className='alerts-radio'>Every WeekDay</Radio>
                                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '72px', marginRight: '20px', marginTop: '18px' }}>
+                                                        <Radio value={3} className='alerts-radio'>Every</Radio> <span style={{ width: '72px', marginRight: '20px', marginTop: '12px' }}>
                                                             <InputField value={everyDayValue} onChangeInput={(e) => setEveryDayValues(e.target.value)} className='alerts-radio' placeholder="4" />
                                                         </span>
                                                         <div style={{ width: '100px', marginTop: '18px' }}>

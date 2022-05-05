@@ -64,7 +64,7 @@ const JobSchedule = (props) => {
         <Modal title={props.app_type !== "REPORT" ? <span className="modal-title">Schedule alert</span> : <span className="modal-title">Notify Report</span>} className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300}  >
             <Tabs tabPosition='left' className='schedule-menu' activeKey={activeTab} onChange={changeActiveTab} >
                 <TabPane tab={
-                    <span style={{ color: activeTab == '1' ? 'white' : 'grey' }}>
+                    <span style={{ color: activeTab == '1' ? 'white' : 'grey',fontFamily:'Roboto',fontStyle:'normal',fontWeight:'400',fontSize:'16px' }}>
                         <ControlOutlined />
                         {props.app_type == 'REPORT' ? <>Notify</> : <>Alerts</>}
                     </span>
@@ -77,8 +77,8 @@ const JobSchedule = (props) => {
                     }
                 </TabPane>
                 <TabPane tab={
-                    <span style={{ color: activeTab == '2' ? 'white' : 'grey' }}>
-                        <ControlOutlined />   Schedule alerts
+                    <span style={{ color: activeTab == '2' ? 'white' : 'grey',fontFamily:'Roboto',fontStyle:'normal',fontWeight:'400',fontSize:'16px' }}>
+                        <ControlOutlined />   Scheduled alerts
                     </span>
                 } key="2">
                     <div className='schedule-alerts'>
