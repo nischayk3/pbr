@@ -193,7 +193,7 @@ const alertEvaluation = (props) => {
         if (frequency == 'Monthly') {
             cron_string = time_split[1] + ' ' + time_split[2] + " " + date_split[2] + " " + '* *'
         }
-        if (frequency == 'Once') {
+        if (frequency == 'Repeat Once') {
             cron_string = 'once'
         }
 
@@ -262,7 +262,7 @@ const alertEvaluation = (props) => {
         email_config["selected_days_obj"] = selectedDays
         email_config['frequency'] = convertExpresion(scheduleStartDate, scheduleTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
         req['email_config'] = email_config
-        req['frequency'] = convertExpresion(scheduleStartDate, scheduleTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
+        req['frequency'] = selectedSchedule == 'Repeat Once' ? 'Once'  : convertExpresion(scheduleStartDate, scheduleTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
         req["job_status"] = "scheduled"
         req["job_type"] = 'event'
@@ -417,7 +417,7 @@ const alertEvaluation = (props) => {
                 </TabPane>
 
                 <TabPane tab='Email' key="email" onClick={() => setModal(true)}>
-                    <ChartNotify appType={props.appType} id={props.id} data={emailLoad} same={isSame} schedule={selectedSchedule} start_date={scheduleStartDate} start_time={scheduleTime} radio={radioValue}/>
+                    <ChartNotify appType={props.appType} id={props.id} data={emailLoad} same={isSame} schedule={selectedSchedule} start_date={scheduleStartDate} start_time={scheduleTime} radio={radioValue} days={selectedDays} day={everyDayValue}/>
                 </TabPane>
             </Tabs>
             <Modal visible={modal} footer={false} onCancel={handleModalClose} width="400px" style={{ marginTop: '250px' }}>
