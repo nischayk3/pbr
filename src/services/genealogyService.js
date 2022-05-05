@@ -2,12 +2,18 @@ import Service from './AjaxService';
 import {
 	BMS_APP_PYTHON_SERVICE,
 	MDH_APP_PYTHON_SERVICE,
+	BMS_PBR_URL,
 } from '../constants/apiBaseUrl';
 let login_response = JSON.parse(localStorage.getItem('login_details'));
 const request_headers = {
 	'content-type': 'application/json',
 	'x-access-token': login_response.token ? login_response.token : '',
 	'resource-name': 'GENEALOGY',
+};
+
+const request_header_file = {
+	'content-type': 'application/json',
+	'Content-Type': 'multipart/form-data',
 };
 //geanealogy plant/product/batch
 
@@ -100,6 +106,21 @@ export const downloadDataTable = request => {
 		BMS_APP_PYTHON_SERVICE + '/download-data',
 		request,
 		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
+
+export const pbrFileUpload = request => {
+	return Service.post(
+		MDH_APP_PYTHON_SERVICE + '/pbr/udh/ocr_extraction',
+		request,
+		request_header_file
 	).then(
 		response => {
 			return response.data;
