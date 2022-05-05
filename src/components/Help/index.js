@@ -76,7 +76,7 @@ const Help = () => {
             visible={visible}
         extra={
           <Space>
-            <a href='/#/dashboard/faq' target="_blank">Go to main FAQ page </a>
+            <a href='/#/dashboard/faq' target="_blank">View all FAQs</a>
           </Space>
         }
       >

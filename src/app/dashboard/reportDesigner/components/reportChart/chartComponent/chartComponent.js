@@ -61,7 +61,7 @@ const chartComponent = (props) => {
 
     const getChartData = async () => {
         let chart_id = props.chartName.split('-')
-        let req = { chartId: chart_id[0] }
+        let req = { chartId: chart_id[0],save_image:true }
         let login_response = JSON.parse(localStorage.getItem('login_details'));
 
         const headers = {

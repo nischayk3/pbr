@@ -22,6 +22,7 @@ let selectedData = [];
 let finalData = [];
 const MaterialTree = props => {
 	const [selectedKeys, setSelectedKeys] = useState([]);
+	const [checkedKeys, setCheckedKeys] = useState([]);
 	const [count, setCount] = useState('');
 	const [selectedAllKey, setSelectedAllKey] = useState([]);
 	const [expandedKeys, setExpandedKeys] = useState([]);
@@ -34,6 +35,9 @@ const MaterialTree = props => {
 
 	const onSelect = (keys, info) => {
 		setSelectedKeys(keys);
+	};
+	const onCheck = checkedKeys => {
+		setCheckedKeys(checkedKeys);
 	};
 	const handleClickParam = (e, keys, param, record) => {
 		let rowData = {};
@@ -90,42 +94,18 @@ const MaterialTree = props => {
 	};
 	const treeMap = materialsList;
 
-	const loop = data =>
-		data.map(item => {
-			const index = item.title.indexOf(searchValue);
-			const beforeStr = item.title.substring(0, index);
-			const afterStr = item.title.slice(index + searchValue.length);
-			const title =
-				index > -1 ? (
-					<span>
-						{beforeStr}
-						<span className='site-tree-search-value'>{searchValue}</span>
-						{afterStr}
-					</span>
-				) : (
-					<span>{item.title}</span>
-				);
-			if (item.children) {
-				return { title, key: item.key, children: loop(item.children) };
-			}
-
-			return {
-				title,
-				key: item.key,
-			};
-		});
 	return (
 		<>
-			{/* <Tree
-				//	onExpand={this.onExpand}
-				expandedKeys={expandedKeys}
-				autoExpandParent={autoExpandParent}
-				treeData={loop(treeMap)}
-			/> */}
 			{treeMap &&
 				treeMap.map(item => {
 					return (
-						<Tree>
+						<Tree
+							// checkable
+							onSelect={onSelect}
+							onCheck={onCheck}
+							checkedKeys={checkedKeys}
+							selectedKeys={selectedKeys}
+							className='custom-treenode'>
 							<TreeNode title={item.process_step} key={item.key}>
 								{item.children.map(a => {
 									return (
@@ -133,8 +113,6 @@ const MaterialTree = props => {
 											{a.children.map(b => {
 												return (
 													<TreeNode
-														onSelect={onSelect}
-														selectedKeys={selectedKeys}
 														title={
 															<div className='treenode-block'>
 																<div className='tree-block-param'>

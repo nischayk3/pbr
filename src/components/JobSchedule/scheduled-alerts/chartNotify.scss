@@ -55,6 +55,10 @@
     line-height: 22px;
     color: #262626;
     margin-top: 20px;
+    .ant-select-selection-item
+{
+    margin-top:1px;
+}
  }
 
  .share-to-workspace
@@ -385,6 +389,6 @@ thead[class*="ant-table-thead"] th{
 {
     height: 36px;
 }
-  
+
 
 }

@@ -1,12 +1,12 @@
+
 .schedule-modal
 {
     margin-left: 100px;
+svg
+{
+    margin-bottom:1px;
+}
 
-    svg
-    {
-        margin-bottom:1px;
-    }
-  
 .ant-modal-header
 {
 background-color: #F1F7FF !important;
@@ -55,12 +55,11 @@ background-color: #F1F7FF !important;
     }
 }
 
-.schedule-modal{
+
     .ant-modal-body{
         padding:0px !important;
     }
     
-}
 .schedule-menu{
     .ant-tabs-nav-wrap{     
 padding: 4px 0px;
@@ -124,7 +123,7 @@ margin-top: 2px;
 {
     font-family: 'Maven Pro';
     font-style: normal;
-    font-weight: normal;
+    font-weight: 500;
     font-size: 18px;
     line-height: 22px;
     color: rgba(0, 0, 0, 0.85);
