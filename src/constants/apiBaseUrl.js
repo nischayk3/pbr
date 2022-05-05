@@ -71,8 +71,6 @@ export const GOOGLE_ANALYTICS_ID = `${process.env.REACT_APP_GOOGLE_ANALYTICS_ID}
 
 export const LOGIN_URL = '/auth';
 
-console.log('process env', process.env);
-
 // export const API_PLOT_URL = "https://apigateway.mareana.com/cpv-python/";
 // export const API_AUTHENTICATION_URL = "https://apigateway.mareana.com/prismmicro-authentication";
 // export const API_RESULTSET_URL = "https://apigateway.mareana.com/prismmicro-resultset";

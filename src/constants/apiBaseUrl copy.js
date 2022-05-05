@@ -49,8 +49,6 @@ export const BMS_APP_PYTHON_SERVICE_IP = `${process.env.REACT_APP_PYTHON_SERVICE
 //BMS APP GOOGLE ANALYTICS TRACS ID
 export const GOOGLE_ANALYTICS_ID = `${process.env.REACT_APP_GOOGLE_ANALYTICS_ID}`;
 
-console.log('process env', process.env);
-
 
 
 // export const API_PLOT_URL = "https://apigateway.mareana.com/cpv-python/";

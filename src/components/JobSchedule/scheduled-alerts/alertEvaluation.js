@@ -7,7 +7,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Table, Modal } from 'antd';
+import { Row, Col, Button, Tabs, DatePicker, TimePicker, Radio, Select, Divider, Space, Modal } from 'antd';
 import SelectField from '../../SelectField/SelectField';
 import InputField from '../../InputField/InputField';
 import './styles.scss';
@@ -15,13 +15,12 @@ import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { showLoader, hideLoader, showNotification } from '../../../duck/actions/commonActions';
 import { putJob, getJob } from '../../../services/jobScheduleService';
-import { PaperClipOutlined, ClockCircleOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
+import { ClockCircleOutlined, ExclamationCircleTwoTone } from '@ant-design/icons';
 import ChartNotify from './chartNotify';
 
 const { TabPane } = Tabs;
 const { Option } = Select
 
-const alertList = ['Limits', 'Rules', 'Threshold']
 const scheduleList = ['Repeat once', 'Daily', 'Weekly', 'Monthly']
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
 
@@ -33,7 +32,7 @@ const alertEvaluation = (props) => {
     const [selectedAlert, setSelectedAlert] = useState('');
     const [selectedSchedule, setSelectedSchedule] = useState('Repeat Once');
     const [selectedEmailSchedule, setSelectedEmailSchedule] = useState('');
-    const [selectedTimeRange, setSelectedTimeRange] = useState('');
+    const [selectedTimeRange, setSelectedTimeRange] = useState('Hour');
     const [showReceipients, setShowReceipients] = useState(false);
     const [radioValue, setRadioValue] = useState(null);
     const [emailList, setEmailList] = useState([])
@@ -55,8 +54,6 @@ const alertEvaluation = (props) => {
     const [activeTab, setActiveTab] = useState("schedule_evaluation");
     const [scheduleEmailTime, setScheduleEmailTime] = useState('')
     const [everyDayValue, setEveryDayValue] = useState('')
-    const [everyDayEmailValue, setEveryDayEmailValue] = useState('')
-    const [selectedEmailTimeRange, setSelectedEmailTimeRange] = useState('');
     const [emailLoad, setEmailLoad] = useState({})
 
     let days_obj = {
@@ -156,6 +153,7 @@ const alertEvaluation = (props) => {
         let time_split = time.split(':')
         let date_split = date.split('-')
 
+
         if (frequency == 'Daily') {
             if (radio == 'Every Day') {
                 cron_string = time_split[1] + ' ' + time_split[0] + ' * * *'
@@ -165,14 +163,16 @@ const alertEvaluation = (props) => {
             }
             if (radio == 3) {
                 if (f == 'Minutes') {
-                    cron_string = `*/${time_split[1]}  * * * *`
+                    cron_string = `*/${everyDayValue}  * * * *`
 
                 }
                 if (f == 'Seconds') {
                     cron_string = `*/${everyDayValue}  * * * *`
                 }
                 if (f == 'Hour') {
-                    cron_string = '*' + ' ' + time_split[0] + ' * * *'
+                    // cron_string = '*' + ' ' + time_split[0] + ' * * *'
+                    cron_string = `* */${everyDayValue}  * * *`
+
                 }
             }
         }
@@ -215,44 +215,30 @@ const alertEvaluation = (props) => {
         dispatch(hideLoader())
     }
 
-    const onChangeEnd = (date, dateString) => {
-        setScheduleEndDate(dateString);
-        // setendTimeIso(moment(date).toISOString());
-    };
 
-    const handleSelectChange = (e) => {
-        setSelectedAlert(e);
-    }
     const handleSelectScheduleChange = (e) => {
         setSelectedSchedule(e);
     }
-    const handleSelectEmailScheduleChange = (e) => {
-        setSelectedEmailSchedule(e);
-    }
 
-    const onChangeTimePicker = (time, timeString) => {
-    }
+
     const onChangeRadioButton = (e) => {
         setRadioValue(e.target.value);
     };
     const handleSelectTimeChange = (e) => {
         setSelectedTimeRange(e);
     }
-    const handleEmailSelectTimeChange = (e) => {
-        setSelectedEmailTimeRange(e);
-    }
+
     const handleReceipientsChange = (value) => {
         setEmailList(value);
     }
     const setEveryDayValues = (value) => {
         setEveryDayValue(value)
     }
-    const setEveryEmailDayValues = (value) => {
-        setEveryDayEmailValue(value)
-    }
-    const handleModalClose = () => {
+
+    const handleModalClose = (value) => {
         setModal(false)
         setActiveTab('')
+        setIsSame(value)
     }
     const SaveData = async () => {
         let req = {}
@@ -264,6 +250,7 @@ const alertEvaluation = (props) => {
             'x-access-token': login_response.token ? login_response.token : '',
             'resource-name': 'DASHBOARD',
         };
+
         req['app_data'] = props.appType
         req['dag_id'] = ' '
         req['created_by'] = localStorage.getItem('username') ? localStorage.getItem('username') : ''
@@ -273,18 +260,14 @@ const alertEvaluation = (props) => {
         let email_config = {}
         email_config["scheduled_time"] = scheduleTime
         email_config["selected_days_obj"] = selectedDays
-        email_config['frequency'] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, selectedDays, everyDayValue)
-
-
-
-
+        email_config['frequency'] = convertExpresion(scheduleStartDate, scheduleTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
         req['email_config'] = email_config
-        req['frequency'] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, selectedDays, everyDayValue)
+        req['frequency'] = convertExpresion(scheduleStartDate, scheduleTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
-        req["job_status"] = "scheduled",
-            req["job_type"] = 'event',
-            req['notify_emails'] = [],
-            req["scheduled_start"] = scheduleStartDate
+        req["job_status"] = "scheduled"
+        req["job_type"] = 'event'
+        req['notify_emails'] = []
+        req["scheduled_start"] = scheduleStartDate
         req["scheduled_end"] = "2030/12/12"
 
         let res = await putJob(req, request_headers)
@@ -346,7 +329,7 @@ const alertEvaluation = (props) => {
                                             onChange={(e) => handleSelectScheduleChange(e)}
                                             style={{ width: "100%", margin: "0px" }}
                                             allowClear={true}
-                                            defaultValue="Repeat Once"
+                                            defaultValue={selectedSchedule}
                                             className="antd-selectors"
                                         >
                                             {scheduleList &&
@@ -374,13 +357,13 @@ const alertEvaluation = (props) => {
                                                     <Radio value="Every WeekDay" className='alerts-radio'>Every WeekDay</Radio>
                                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                                                         <Radio value={3} className='alerts-radio'>Every</Radio>
-                                                        <span style={{ width: '73px', marginRight: '20px', marginTop: '18px', height: '32px' }}>
+                                                        <span style={{ width: '73px', marginRight: '20px', marginTop: '12px', height: '32px' }}>
                                                             <InputField value={everyDayValue} onChangeInput={(e) => setEveryDayValues(e.target.value)} style={{ height: '36px' }} placeholder="4" />
                                                         </span>
                                                         <div style={{ width: '102px', marginTop: '18px' }}>
                                                             <SelectField
                                                                 className='alerts-radio'
-                                                                defaultValue="Hour"
+                                                                defaultValue={selectedTimeRange}
                                                                 selectList={timeRange}
                                                                 value={selectedTimeRange}
                                                                 onChangeSelect={(e) => handleSelectTimeChange(e)}
@@ -434,7 +417,7 @@ const alertEvaluation = (props) => {
                 </TabPane>
 
                 <TabPane tab='Email' key="email" onClick={() => setModal(true)}>
-                    <ChartNotify appType={props.appType} id={props.id} data={emailLoad} />
+                    <ChartNotify appType={props.appType} id={props.id} data={emailLoad} same={isSame} schedule={selectedSchedule} start_date={scheduleStartDate} start_time={scheduleTime} radio={radioValue}/>
                 </TabPane>
             </Tabs>
             <Modal visible={modal} footer={false} onCancel={handleModalClose} width="400px" style={{ marginTop: '250px' }}>
@@ -446,8 +429,8 @@ const alertEvaluation = (props) => {
                         Do you want to notify with same schedule or different ?
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', marginTop: '20px', marginLeft: '40%' }}>
-                        <Button className="custom-secondary-btn" onClick={() => handleModalClose()}>Different</Button>
-                        <Button className="custom-secondary-btn" onClick={() => handleModalClose()}>Same</Button>
+                        <Button className="custom-secondary-btn" onClick={() => handleModalClose(false)}>Different</Button>
+                        <Button className="custom-secondary-btn" onClick={() => handleModalClose(true)}>Same</Button>
                     </div>
                 </div>
 
