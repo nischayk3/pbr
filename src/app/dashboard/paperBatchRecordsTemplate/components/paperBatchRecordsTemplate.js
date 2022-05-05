@@ -538,6 +538,11 @@ function PaperBatchRecordsTemplate() {
                                                                                                                 }
                                                                                                             >
                                                                                                                 <InputField
+                                                                                                                    value={
+                                                                                                                        parameterValue
+                                                                                                                            .param1
+                                                                                                                            .anchorValue
+                                                                                                                    }
                                                                                                                     // value={
                                                                                                                     //     parameterValue[
                                                                                                                     //         `param${key}`
@@ -588,6 +593,11 @@ function PaperBatchRecordsTemplate() {
                                                                                                                 number
                                                                                                             </span>
                                                                                                             <InputField
+                                                                                                                value={
+                                                                                                                    parameterValue
+                                                                                                                        .param1
+                                                                                                                        .anchorId
+                                                                                                                }
                                                                                                                 // value={
                                                                                                                 //     parameterValue[
                                                                                                                 //         `param${key}`
