@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CreateVariable from './createVariable';
 import { Collapse } from 'antd';
 import './style.scss';
@@ -7,12 +7,11 @@ import MathFunction from './mathFunction';
 import { MemoizedParameterTable } from './parameterTable';
 import VariableCard from './variableCard';
 
-const variableData = [];
+let variableData = [];
 
 const MathEditor = props => {
 	const isLoadView = useSelector(state => state.viewCreationReducer.isLoad);
-
-	const [varData, setVarData] = useState([]);
+	const [varData, setVarData] = useState(variableData);
 	const [count, setCount] = useState(1);
 	const [cardTitle, setCardTitle] = useState('Create Variable');
 	const [rowDisable, setRowDisable] = useState(true);
@@ -45,7 +44,7 @@ const MathEditor = props => {
 			paramKey.forEach((element, index) => {
 				variableData.push({
 					variableName: element,
-					key: index,
+					id: index,
 				});
 			});
 			setVarData(variableData);
@@ -55,14 +54,13 @@ const MathEditor = props => {
 	const addVariable = () => {
 		setCardTitle('Select parameters');
 		setRowDisable(false);
-
 		setIscheckBox(true);
 	};
 
 	const createVar = () => {
 		variableData.push({
 			variableName: `${'V' + count}`,
-			key: count,
+			id: count,
 		});
 
 		setCount(count + 1);
@@ -74,9 +72,31 @@ const MathEditor = props => {
 	const callbackCheckbox = val => {
 		if (val) {
 			setCardTitle('Done');
-
 			setVarClick(true);
 		}
+	};
+
+	const deleteVariable = param => {
+		let lastIndex;
+		varData.forEach((item, i) => {
+			if (item.variableName === param) {
+				lastIndex = i - 1;
+			}
+		});
+		variableData.forEach((item, i) => {
+			if (item.variableName === param) {
+				lastIndex = i - 1;
+			}
+		});
+		const varArr = varData.filter(ele => {
+			return ele.variableName !== param;
+		});
+		const varDataArr = variableData.filter(ele => {
+			return ele.variableName !== param;
+		});
+
+		variableData = varDataArr;
+		setVarData(varArr);
 	};
 
 	return (
@@ -96,12 +116,19 @@ const MathEditor = props => {
 						createVar={createVar}
 						className={'add-var_block add-var_block_bg'}
 					/>
-					{varData.map((item, index) => (
-						<VariableCard key={index} variableName={item.variableName} />
-					))}
+					{varData.map((item, index) => {
+						return (
+							<VariableCard
+								item={item}
+								variableName={item.variableName}
+								deleteVariable={deleteVariable}
+							/>
+						);
+					})}
 				</div>
 				<MemoizedParameterTable
 					variableCreate={variableCreate}
+					setVariableCreate={setVariableCreate}
 					callbackCheckbox={callbackCheckbox}
 					varClick={varClick}
 					setVarClick={setVarClick}

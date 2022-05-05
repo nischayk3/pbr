@@ -163,3 +163,13 @@
 .summary-table_block {
 	padding-top: 20px;
 }
+
+.summary-column {
+	display: flex;
+	gap: 12px;
+	width: 100px;
+	span > span {
+		color: #ff2828;
+		cursor: pointer;
+	}
+}

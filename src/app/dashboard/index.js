@@ -18,6 +18,10 @@ import Uploader from './dataLoad/index';
 import LoginRedirect from '../user/login/redirect';
 import RedirectSign from '../user/login/redirectSign';
 import ViewPage from './chartPersonal/components/viewPage/ViewPage';
+import UserRolesAndAccess from '../../pages/UserRolesAndAccess/UserRolesAndAccess';
+import UserConfiguration from '../../pages/UserRolesAndAccess/UserConfiguration/UserConfiguration';
+import RolesAndAccess from '../../pages/UserRolesAndAccess/RolesAndAccess/RolesAndAccess';
+import ScreenControls from '../../pages/UserRolesAndAccess/ScreenControls/ScreenControls';
 import PaperBatchRecords from './paperBatchRecords';
 import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate';
 
@@ -45,6 +49,7 @@ const HierarchyMain = lazy(() =>
 );
 const Faq = lazy(() => import('./faq'));
 const { Content } = Layout;
+
 
 const Dashboard = () => {
 	const match = useRouteMatch();
@@ -164,6 +169,10 @@ const Dashboard = () => {
 									path={`${match.url}/molecule_hierarchy_configuration`}>
 									<Hierarchy />
 								</Route>
+								<Route key='userRolesAndAccess' path={`${match.url}/user-roles-and-access`} exact component={UserRolesAndAccess} />
+								<Route key='user-configuration' path={`${match.url}/user-roles-and-access/user-configuration`} component={UserConfiguration} />
+								<Route key='roles-and-access' path={`${match.url}/user-roles-and-access/roles-and-access`} component={RolesAndAccess} />
+								<Route key='screen-controls' path={`${match.url}/user-roles-and-access/screen-controls`} component={ScreenControls} />
 								<Route
 									key='hierarchy_main'
 									path={`${match.url}/molecule_hierarchy_configurations/untilted_view`}>
