@@ -77,7 +77,7 @@ const tableColumns = [
 
         render: (text, rcrd) => {
             return {
-                children: <div className="email-contents"><Avatar style={{ backgroundColor: '#87d068' }}>S</Avatar> {text}</div>,
+                children: <div className="email-contents"><Avatar style={{ backgroundColor: '#87d068',marginRight:'3px' }}>S</Avatar> {text}</div>,
             }
         }
     }
@@ -349,10 +349,10 @@ const ChartNotify = (props) => {
         req['email_config'] = email_config
         req['frequency'] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
-        req["job_status"] = "NEW",
-            req["job_type"] = 'email',
-            req['notify_emails'] = emailList ? emailList : [] ,
-            req["scheduled_end"] = '2030-12-31'
+        req["job_status"] = "NEW"
+        req["job_type"] = 'email'
+        req['notify_emails'] = emailList ? emailList : [] 
+        req["scheduled_end"] = selectedSchedule == 'Repeat Once' ? scheduleStartDate :  "2030/12/12"
         req["scheduled_start"] = scheduleEmailStartDate
         req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
 
@@ -422,7 +422,7 @@ const ChartNotify = (props) => {
                     <hr style={{ borderTop: '0.5px solid #d9d9d9' }} />
                     <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr' }}>
                         <span>
-                            <p onDoubleClick={() => handleSubject(subject)} className="email-subject">Subject {subject ? <Input.TextArea style={{ width: '500px', marginLeft: '30px' }} autoSize={true} defaultValue={subjectContent} onChange={(e) => setSubjectContent(e.target.value)} onSubmit={() => handleSubject(subject)} /> : <><span className="email-sub">{subjectContent.length > 0 ? subjectContent : <> Update For {props.id}</>}</span> </>} </p>
+                            <p onDoubleClick={() => handleSubject(subject)} className="email-subject">Subject {subject ? <Input.TextArea style={{ width: '500px', marginLeft: '30px' }} autoSize={true} defaultValue={subjectContent} onChange={(e) => setSubjectContent(e.target.value)} onSubmit={() => handleSubject(subject)} /> : <><span className="email-sub">{subjectContent.length > 0 ? subjectContent : <> Update for {props.id}</>}</span> </>} </p>
                             <hr style={{ borderTop: '0.5px solid #d9d9d9' }} />
                         </span>
                         <div style={{ width: '200px', marginTop: '22px', marginLeft: '90px' }}>
@@ -451,8 +451,8 @@ const ChartNotify = (props) => {
                     <br />
                     <p className="email-content"> Hey,<br /><br />
 
-                        This is to inform you of the recept chart.
-                        Visit <a>www.cpv-mareana.com/alert-dashboard</a> to know more.<br /><br />
+                        This is to inform you of the recent chart.
+                       <br /><br />
                         <Table style={{ width: '98%' }} dataSource={data} columns={tableColumns} pagination={false} />
                     </p> <br />
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '350px' }}>
@@ -475,7 +475,7 @@ const ChartNotify = (props) => {
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '300px' }}>
                             <ClockCircleOutlined style={{ color: "#093185", fontSize: '18px' }} />  <DatePicker style={{ width: '260px' }} placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} value={scheduleEmailStartDate.length > 0 ? moment(scheduleEmailStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
-                            <hr style={{ borderTop: '1px solid #dbdbdb' }} />
+                            <hr style={{ borderTop: '1px solid #dbdbdb' ,width:'90%',marginRight:'30px'}} />
                         </div>
                         <div style={{ marginTop: '40px' }}>
                             <Row gutter={[16, 24]}>
@@ -485,9 +485,9 @@ const ChartNotify = (props) => {
                                             placeholder=''
                                             value={selectedSchedule}
                                             onChange={(e) => handleSelectScheduleChange(e)}
-                                            style={{ width: "100%", margin: "0px" }}
-                                            allowClear={true}
-                                            defaultValue = {selectedSchedule}
+                                            style={{ width: "100%", margin: "0px",borderRadius:'4px' }}
+                                            // allowClear={true}
+                                            defaultValue ={'Repeat Once'}
                                             className="antd-selectors"
                                         >
                                             {scheduleList &&
@@ -501,7 +501,7 @@ const ChartNotify = (props) => {
                                 </Col>
                                 <Col className='gutter-row' span={4}>
                                     <div >
-                                        <TimePicker style={{ width: '187px', marginLeft: '35px', height: '36px' }} onChange={onChangeEmailTime} value={scheduleEmailTime.length > 0 ? moment(scheduleEmailTime, "HH:mm:ss") : ''} />
+                                        <TimePicker style={{ width: '187px', marginLeft: '35px', height: '36px',borderRadius:'4px'  }} onChange={onChangeEmailTime} value={scheduleEmailTime.length > 0 ? moment(scheduleEmailTime, "HH:mm:ss") : ''} />
                                     </div>
                                 </Col>
                             </Row>

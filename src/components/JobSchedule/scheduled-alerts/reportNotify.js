@@ -142,7 +142,7 @@ const ReportNotify = (props) => {
             console.log(str)
             cron_string = time_split[1] + ' ' + time_split[2] + ` * * ${str}`
         }
-        
+
         if (frequency == 'Monthly') {
             cron_string = time_split[1] + ' ' + time_split[2] + " " + date_split[2] + " " + '* *'
         }
@@ -278,7 +278,7 @@ const ReportNotify = (props) => {
         req["job_status"] = "NEW"
         req["job_type"] = 'email'
         req['notify_emails'] = emailList
-        req["scheduled_end"] = '2030-12-31'
+        req["scheduled_end"] = selectedSchedule == 'Repeat Once' ? scheduleStartDate : "2030/12/12"
         req["scheduled_start"] = scheduleEmailStartDate
         req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
 
@@ -353,14 +353,14 @@ const ReportNotify = (props) => {
                     </Select>
                     <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                     <span>
-                        <p onDoubleClick={() => handleSubject(subject)} className="email-subject">Subject {subject ? <Input.TextArea style={{ width: '800px', marginLeft: '30px' }} autoSize={true} defaultValue={subjectContent} onChange={(e) => setSubjectContent(e.target.value)} onSubmit={() => handleSubject(subject)} /> : <><span className="email-sub">{subjectContent.length > 0 ? subjectContent : <> Update For {props.id}</>}</span> </>} </p>
+                        <p onDoubleClick={() => handleSubject(subject)} className="email-subject">Subject {subject ? <Input.TextArea style={{ width: '800px', marginLeft: '30px' }} autoSize={true} defaultValue={subjectContent} onChange={(e) => setSubjectContent(e.target.value)} onSubmit={() => handleSubject(subject)} /> : <><span className="email-sub">{subjectContent.length > 0 ? subjectContent : <> Update for {props.id}</>}</span> </>} </p>
                     </span>
                     <hr style={{ borderTop: '1px solid #dbdbdb' }} />
                     <br />
                     <p className="email-content"> Hey,<br /><br />
                         <p >
-                            This is to inform you of the recent update to [report variant name]. Check the attachment for details.<br /><br />
-                            Visit <a>www.cpv-mareana.com/alert-dashboard</a> to know more.<br />
+                            This is to inform you of the recent update to {localStorage.getItem('username') + '_variant'}. Check the attachment for details.<br />
+                            <br />
                         </p>
                         <br />
                         Regards,<br />
@@ -376,7 +376,7 @@ const ReportNotify = (props) => {
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '300px' }}>
                             <ClockCircleOutlined style={{ color: "#093185", fontSize: '18px' }} />  <DatePicker style={{ width: '260px' }} placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} defaultValue={scheduleStartDate.length > 0 ? moment(scheduleStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
-                            <hr style={{ borderTop: '1px solid #dbdbdb' }} />
+                            <hr style={{ borderTop: '1px solid #dbdbdb',width:'90%',marginRight:'30px' }} />
                         </div>
                         <div style={{ marginTop: '40px' }}>
                             <Row gutter={[16, 24]}>
@@ -394,8 +394,7 @@ const ReportNotify = (props) => {
                                             value={selectedSchedule}
                                             onChange={(e) => handleSelectScheduleChange(e)}
                                             style={{ width: "100%", margin: "0px" }}
-                                            allowClear={true}
-                                            defaultValue="Repeat Once"
+                                            defaultValue={selectedSchedule}
                                             className="antd-selectors"
                                         >
                                             {scheduleList &&
@@ -427,7 +426,7 @@ const ReportNotify = (props) => {
                                                         </span>
                                                         <div style={{ width: '100px', marginTop: '18px' }}>
                                                             <SelectField
-                                                                className='alerts-radio'
+                                                                // className='alerts-radio'
                                                                 placeholder=''
                                                                 selectList={timeRange}
                                                                 value={selectedTimeRange}

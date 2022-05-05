@@ -268,7 +268,7 @@ const alertEvaluation = (props) => {
         req["job_type"] = 'event'
         req['notify_emails'] = []
         req["scheduled_start"] = scheduleStartDate
-        req["scheduled_end"] = "2030/12/12"
+        req["scheduled_end"] = selectedSchedule == 'Repeat Once' ? scheduleStartDate :  "2030/12/12"
 
         let res = await putJob(req, request_headers)
 
@@ -316,8 +316,8 @@ const alertEvaluation = (props) => {
                 <TabPane tab='Schedule evaluation' key="schedule_evaluation">
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '300px' }}>
-                            <ClockCircleOutlined style={{ color: "#093185", fontSize: '18px' }} />  <DatePicker placeholder="Start Date" style={{ width: '260px' }} onChange={onChangeStart} bordered={false} value={scheduleStartDate.length > 0 ? moment(scheduleStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
-                            <hr style={{ borderTop: '1px solid #dbdbdb' }} />
+                            <ClockCircleOutlined style={{ color: "#093185", fontSize: '18px'}} />  <DatePicker placeholder="Start Date" style={{ width: '260px' }} onChange={onChangeStart} bordered={false} value={scheduleStartDate.length > 0 ? moment(scheduleStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
+                            <hr style={{ borderTop: '1px solid #dbdbdb',width:'90%',marginRight:'30px' }} />
                         </div>
                         <div style={{ marginTop: '40px' }}>
                             <Row gutter={[16, 24]}>
@@ -328,7 +328,7 @@ const alertEvaluation = (props) => {
                                             value={selectedSchedule}
                                             onChange={(e) => handleSelectScheduleChange(e)}
                                             style={{ width: "100%", margin: "0px" }}
-                                            allowClear={true}
+                                            // onClear={()=>setSelectedSchedule('Repeat Once')}
                                             defaultValue={selectedSchedule}
                                             className="antd-selectors"
                                         >

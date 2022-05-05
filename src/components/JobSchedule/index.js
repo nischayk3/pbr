@@ -10,12 +10,12 @@ import React, { useState } from 'react';
 import './modal.scss';
 //antd imports
 import { Modal, Tabs } from 'antd';
-import { DesktopOutlined, ArrowRightOutlined, ControlOutlined, CloseOutlined } from '@ant-design/icons';
+import {  ArrowRightOutlined, ControlOutlined, CloseOutlined } from '@ant-design/icons';
 //components
 //services
 //react-redux
 import { useDispatch } from 'react-redux';
-import { showLoader, hideLoader } from '../../duck/actions/commonActions';
+// import { showLoader, hideLoader } from '../../duck/actions/commonActions';
 //schedule-alert table
 import AlertTable from './scheduled-alerts/scheduledAlertsTable';
 //alert evaluation
@@ -64,7 +64,7 @@ const JobSchedule = (props) => {
         <Modal title={props.app_type !== "REPORT" ? <span className="modal-title">Schedule alert</span> : <span className="modal-title">Notify Report</span>} className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300}  >
             <Tabs tabPosition='left' className='schedule-menu' activeKey={activeTab} onChange={changeActiveTab} >
                 <TabPane tab={
-                    <span style={{ color: activeTab == '1' ? 'white' : 'grey',fontFamily:'Roboto',fontStyle:'normal',fontWeight:'400',fontSize:'16px' }}>
+                    <span style={{ color: activeTab == '1' ? 'white' : 'grey',fontFamily:'Roboto',fontWeight:'400',fontSize:'16px' }}>
                         <ControlOutlined />
                         {props.app_type == 'REPORT' ? <>Notify</> : <>Alerts</>}
                     </span>
