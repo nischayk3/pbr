@@ -2,7 +2,7 @@
  * @author Ranjith <ranjith.k@mareana.com>
  * @Mareana - BMS PBR
  * @version 1
- * @Last Modified - 18 March, 2022
+ * @Last Modified - 05 MAy, 2022
  * @Last Changed By - @ranjith
  */
 
@@ -90,7 +90,6 @@ function PaperBatchRecords() {
         setTableDataSource(initialTableDataSource);
     }, []);
 
-    ////////////////////////
     function getColumnSearchProps(dataIndex) {
         return {
             filterDropdown: ({
@@ -194,7 +193,6 @@ function PaperBatchRecords() {
         clearFilters();
         setSearchText('');
     }
-    //////////////////////
 
     const columns = [
         {
