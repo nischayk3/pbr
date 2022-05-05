@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import './modal.scss';
 //antd imports
 import { Modal, Tabs } from 'antd';
-import {  ArrowRightOutlined, ControlOutlined, CloseOutlined } from '@ant-design/icons';
+import {  ArrowRightOutlined, ControlOutlined } from '@ant-design/icons';
 //components
 //services
 //react-redux
@@ -32,13 +32,15 @@ const JobSchedule = (props) => {
     const [alertModal, setAlertModal] = useState(props.visible);
     const [activeTab, setActiveTab] = useState('1')
     const [selectedJob ,setSelectedJob] = useState('')
+    const [dagId ,setDagId] = useState('')
     //state for chart json data
 
     const dispatch = useDispatch();
 
-    const changeActiveTab = (value,job_value) => {
+    const changeActiveTab = (value,job_value,dag_id) => {
         setActiveTab(value)
         setSelectedJob(job_value)
+        setDagId(dag_id)
     }
     //function to back to landing page
 
@@ -72,8 +74,8 @@ const JobSchedule = (props) => {
                 }
                     key="1"
                 >
-                    {props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} id={props.id} job={selectedJob} /> :
-                        <AlertEvaluation appType={props.app_type} id={props.id} job={selectedJob}  />
+                    {props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId}  /> :
+                        <AlertEvaluation appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId}  />
                     }
                 </TabPane>
                 <TabPane tab={

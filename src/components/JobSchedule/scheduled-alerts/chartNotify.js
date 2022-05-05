@@ -172,7 +172,6 @@ const ChartNotify = (props) => {
 
     const UnloadSame = (props_data) => {
 
-        console.log(props_data)
         if (props_data.schedule)
             setSelectedSchedule(props_data.schedule)
         if (props_data.start_time)
@@ -270,7 +269,6 @@ const ChartNotify = (props) => {
                     str = str + days_obj[days[i]]
                 }
             }
-            console.log(str)
             cron_string = time_split[1] + ' ' + time_split[2] + ` * * ${str}`
         }
 
@@ -355,6 +353,7 @@ const ChartNotify = (props) => {
         req["scheduled_end"] = selectedSchedule == 'Repeat Once' ? scheduleEmailStartDate : "2030/12/12"
         req["scheduled_start"] = scheduleEmailStartDate
         req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
+        req['job_id'] = props.job_id
 
 
         let res = await putJob(req, request_headers)
@@ -394,7 +393,6 @@ const ChartNotify = (props) => {
         setEmailList(selectedItems);
     };
 
-    console.log(selectedSchedule)
 
     return (
         <div className="chart_notify-notify">

@@ -104,7 +104,6 @@ const ReportNotify = (props) => {
         let time_split = time.split(':')
         let date_split = date.split('-')
 
-        console.log(date, time, frequency, radio, f, days, everyDayValue)
 
         if (frequency == 'Daily') {
             if (radio == 'Every Day') {
@@ -139,7 +138,6 @@ const ReportNotify = (props) => {
                     str = str + days_obj[days[i]]
                 }
             }
-            console.log(str)
             cron_string = time_split[1] + ' ' + time_split[2] + ` * * ${str}`
         }
 
@@ -281,6 +279,8 @@ const ReportNotify = (props) => {
         req["scheduled_end"] = selectedSchedule == 'Repeat Once' ? scheduleStartDate : "2030/12/12"
         req["scheduled_start"] = scheduleEmailStartDate
         req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
+        req['job_id'] = props.job_id
+
 
 
         let res = await putJob(req, request_headers)

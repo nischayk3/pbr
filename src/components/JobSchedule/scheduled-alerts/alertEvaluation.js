@@ -269,6 +269,7 @@ const alertEvaluation = (props) => {
         req['notify_emails'] = []
         req["scheduled_start"] = scheduleStartDate
         req["scheduled_end"] = selectedSchedule == 'Repeat Once' ? scheduleStartDate :  "2030/12/12"
+        req['job_id'] = props.job_id
 
         let res = await putJob(req, request_headers)
 
