@@ -99,7 +99,7 @@ const ParameterTable = props => {
 						onChange={(e, value) => {
 							handleAggregationChange(text, record, value, index);
 						}}
-						//	value={aggregationValue}
+					//	value={aggregationValue}
 					>
 						<Option key='1' value='Min'>
 							Min
@@ -158,7 +158,16 @@ const ParameterTable = props => {
 									checked={value}
 								/>
 							);
-						} else {
+						} 
+						else if (value === '') {
+							return (
+								<Checkbox
+									className='custom-check'
+									onChange={e => onChangeBatch(e, record, rowIndex, item)}
+								/>
+							);
+						}
+						else {
 							return (
 								<span className='batchClosed'>
 									<CloseOutlined />
