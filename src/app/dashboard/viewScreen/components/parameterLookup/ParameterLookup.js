@@ -6,12 +6,11 @@
  * @Last Changed By - Dinesh
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import './styles.scss';
 import { Select, Input } from 'antd';
 import { moleculeName } from '../../../../../duck/actions/viewCreationAction';
-
 import { getMoleculeList } from '../../../../../services/viewCreationPublishing';
 import {
 	hideLoader,
@@ -41,6 +40,7 @@ function ParameterLookup(props) {
 	const [filterList, setFilterList] = useState([]);
 
 	const dispatch = useDispatch();
+	const tempMaterialList = useRef();
 
 	const onSelectMoleculeHandler = async () => {
 		let req = { user_id: 'demo' };
@@ -72,6 +72,10 @@ function ParameterLookup(props) {
 			dispatch(showNotification('error', error));
 		}
 	};
+
+	useEffect(() => {
+		tempMaterialList.current = JSON.parse(JSON.stringify(materialsList));
+	}, [materialsList]);
 
 	useEffect(() => {
 		onSelectMoleculeHandler();
@@ -135,8 +139,9 @@ function ParameterLookup(props) {
 	}
 
 	const onSearchChange = e => {
+		console.log('eeeeeeeeee', tempMaterialList.current);
 		if (e.target.value === '') {
-			setMaterialsList(materialsList.current);
+			setMaterialsList(tempMaterialList.current);
 		}
 		setSearchValue(e.target.value);
 	};
@@ -147,7 +152,7 @@ function ParameterLookup(props) {
 				element.product_description.toLowerCase().search(searchValue)
 			)
 		);
-
+		console.log('newArr', newArr);
 		if (newArr.length) {
 			setMaterialsList(newArr);
 		}
@@ -196,7 +201,7 @@ function ParameterLookup(props) {
 					style={{ marginBottom: 8 }}
 					placeholder='Search'
 					onChange={onSearchChange}
-					onEnter={searchTable}
+					onSearch={searchTable}
 				/>
 			</div>
 		</div>
