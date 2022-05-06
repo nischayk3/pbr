@@ -418,7 +418,7 @@ const alertEvaluation = (props) => {
                 </TabPane>
 
                 <TabPane tab='Email' key="email" onClick={() => setModal(true)}>
-                    <ChartNotify appType={props.appType} id={props.id} data={emailLoad} same={isSame} schedule={selectedSchedule} start_date={scheduleStartDate} start_time={scheduleTime} radio={radioValue} days={selectedDays} day={everyDayValue}/>
+                    <ChartNotify appType={props.appType} id={props.id} data={emailLoad} same={isSame} schedule={selectedSchedule} start_date={scheduleStartDate} start_time={scheduleTime} radio={radioValue} days={selectedDays} day={everyDayValue} job_id={props.job_id}/>
                 </TabPane>
             </Tabs>
             <Modal visible={modal} footer={false} onCancel={handleModalClose} width="400px" style={{ marginTop: '250px' }}>

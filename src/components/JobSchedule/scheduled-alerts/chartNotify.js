@@ -393,7 +393,6 @@ const ChartNotify = (props) => {
         setEmailList(selectedItems);
     };
 
-
     return (
         <div className="chart_notify-notify">
             <Tabs className='evaluation-tabs' onChange={changeTab} tabBarExtraContent={<div className="tab-btns" >
