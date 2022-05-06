@@ -193,7 +193,7 @@ const alertEvaluation = (props) => {
         if (frequency == 'Monthly') {
             cron_string = time_split[1] + ' ' + time_split[2] + " " + date_split[2] + " " + '* *'
         }
-        if (frequency == 'Once') {
+        if (frequency == 'Repeat Once') {
             cron_string = 'once'
         }
 
@@ -262,13 +262,14 @@ const alertEvaluation = (props) => {
         email_config["selected_days_obj"] = selectedDays
         email_config['frequency'] = convertExpresion(scheduleStartDate, scheduleTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
         req['email_config'] = email_config
-        req['frequency'] = convertExpresion(scheduleStartDate, scheduleTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
+        req['frequency'] = selectedSchedule == 'Repeat Once' ? 'Once'  : convertExpresion(scheduleStartDate, scheduleTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
         req["job_status"] = "scheduled"
         req["job_type"] = 'event'
         req['notify_emails'] = []
         req["scheduled_start"] = scheduleStartDate
-        req["scheduled_end"] = "2030/12/12"
+        req["scheduled_end"] = selectedSchedule == 'Repeat Once' ? scheduleStartDate :  "2030/12/12"
+        req['job_id'] = props.job_id
 
         let res = await putJob(req, request_headers)
 
@@ -316,8 +317,8 @@ const alertEvaluation = (props) => {
                 <TabPane tab='Schedule evaluation' key="schedule_evaluation">
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '300px' }}>
-                            <ClockCircleOutlined style={{ color: "#093185", fontSize: '18px' }} />  <DatePicker placeholder="Start Date" style={{ width: '260px' }} onChange={onChangeStart} bordered={false} value={scheduleStartDate.length > 0 ? moment(scheduleStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
-                            <hr style={{ borderTop: '1px solid #dbdbdb' }} />
+                            <ClockCircleOutlined style={{ color: "#093185", fontSize: '18px'}} />  <DatePicker placeholder="Start Date" style={{ width: '260px' }} onChange={onChangeStart} bordered={false} value={scheduleStartDate.length > 0 ? moment(scheduleStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
+                            <hr style={{ borderTop: '1px solid #dbdbdb',width:'90%',marginRight:'30px' }} />
                         </div>
                         <div style={{ marginTop: '40px' }}>
                             <Row gutter={[16, 24]}>
@@ -328,7 +329,7 @@ const alertEvaluation = (props) => {
                                             value={selectedSchedule}
                                             onChange={(e) => handleSelectScheduleChange(e)}
                                             style={{ width: "100%", margin: "0px" }}
-                                            allowClear={true}
+                                            // onClear={()=>setSelectedSchedule('Repeat Once')}
                                             defaultValue={selectedSchedule}
                                             className="antd-selectors"
                                         >
@@ -417,7 +418,7 @@ const alertEvaluation = (props) => {
                 </TabPane>
 
                 <TabPane tab='Email' key="email" onClick={() => setModal(true)}>
-                    <ChartNotify appType={props.appType} id={props.id} data={emailLoad} same={isSame} schedule={selectedSchedule} start_date={scheduleStartDate} start_time={scheduleTime} radio={radioValue}/>
+                    <ChartNotify appType={props.appType} id={props.id} data={emailLoad} same={isSame} schedule={selectedSchedule} start_date={scheduleStartDate} start_time={scheduleTime} radio={radioValue} days={selectedDays} day={everyDayValue}/>
                 </TabPane>
             </Tabs>
             <Modal visible={modal} footer={false} onCancel={handleModalClose} width="400px" style={{ marginTop: '250px' }}>

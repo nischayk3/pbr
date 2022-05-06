@@ -166,7 +166,6 @@ export default function Landing(props) {
         dispatch(showLoader());
         let req = { report_displ_id: report_id };
         let data = await loadReportGen(req);
-        console.log(data);
         if (data.report_generator)
             dispatch(sendReport(data.report_generator.data));
         if (data.Status == 200 || data.report_generator) {
@@ -183,7 +182,6 @@ export default function Landing(props) {
         dispatch(showLoader());
         let req = { report_displ_id: report_id };
         let data = await loadReportGen(req);
-        console.log(data);
         if (data.report_generator)
             dispatch(sendReport(data.report_generator.data));
         if (data.Status == 200 || data.report_generator) {
@@ -206,6 +204,7 @@ export default function Landing(props) {
             return 'awap';
         }
     };
+
 
     return (
         <div className="report-landing">
@@ -417,14 +416,6 @@ export default function Landing(props) {
                                 </Col>
                                 <Col span={12}>
                                     <Row>
-                                        <p>What can we call your report variant?</p>
-                                        <Input
-                                            placeholder='Enter report variant name'
-                                        // onChange={(e) => setHierarchyName(e.target.value)}
-                                        // value={hierarchyName}
-                                        />
-                                    </Row><br />
-                                    <Row>
                                         <p>Select a report to get started</p>
                                         <Input.Search
                                             onSearch={onSearch}
@@ -432,7 +423,8 @@ export default function Landing(props) {
                                         // onChange={(e) => setHierarchyName(e.target.value)}
                                         // value={hierarchyName}
                                         />
-                                        <div className='tile'>
+                                         </Row>
+                                         <div className="landing-tiles">
                                             {reportList &&
                                                 reportList.length > 0 &&
                                                 reportList.map(
@@ -445,18 +437,16 @@ export default function Landing(props) {
                                                                     );
                                                                 }}
                                                             >
-                                                                <StatusBlock
-                                                                    id={
-                                                                        i.rep_disp_id
-                                                                    }
-                                                                    status={
-                                                                        i.rep_status
-                                                                    }
-                                                                />
+                                                                <div className="landing-tile" >
+                                                                  <div className="landing-report-id"> {i.rep_disp_id}</div><br/>
+                                                                  <span className="landing-report-name">{i.rep_name}</span>
+                                                                    {/* {i.id}<br />
+                                                                     */}
+                                                                </div>
                                                             </div>
                                                         )
                                                 )}
-                                        </div>
+                                                </div>
                                         {newsearched ? (
                                             <Table
                                                 columns={columns}
@@ -484,7 +474,7 @@ export default function Landing(props) {
                                         ) : (
                                             <></>
                                         )}
-                                    </Row>
+                                   
 
                                 </Col>
 

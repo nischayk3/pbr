@@ -184,7 +184,6 @@ function ReportDesignerNew(props) {
       data = data.report_designer
       data = data.data
 
-      console.log(data)
       setReportId(params.id)
       if (data) {
         LoadData(data)
@@ -366,7 +365,6 @@ function ReportDesignerNew(props) {
 
         return key_obj;
       });
-      console.log(content_arr,'content_arr')
       obj['content'] = content_arr;
       obj['id'] = index;
 
