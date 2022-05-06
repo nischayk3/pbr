@@ -369,7 +369,7 @@ const Workspace = () => {
                       View All
                     </a>
                   </span>
-                  <div className='paper-batch-card'>
+                  <div className='paper-batch-card' style={{marginTop:'50px'}}>
                     <p className='paper-batch-count' style={{marginBottom:'7px'}}>{scheduleReportAlerts.length>0?scheduleReportAlerts.length:0}</p>
                     <p className='paper-batch-desc'>
                       of your report alerts configured
@@ -395,7 +395,7 @@ const Workspace = () => {
                       View All
                     </a>
                   </span>
-                  <div className='paper-batch-card'>
+                  <div className='paper-batch-card' style={{marginTop:'50px'}}>
                     <p className='paper-batch-count' style={{marginBottom:'7px'}}>{scheduleChartAlerts.length>0?scheduleChartAlerts.length:0}</p>
                     <p className='paper-batch-desc'>
                       charts configured with alerts
