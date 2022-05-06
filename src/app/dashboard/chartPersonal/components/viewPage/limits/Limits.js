@@ -447,7 +447,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
             </Button>
           </div>
         </div>
-        <div className="table-bottom">
+        <div className="table-bottom p-b">
           <p>Specification</p>
           <Table
             pagination={false}
@@ -461,7 +461,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
             </Button>
           </div>
         </div>
-        <div className="table-bottom">
+        <div className="table-bottom p-b">
           <p>Warning</p>
           <Table
             pagination={false}
