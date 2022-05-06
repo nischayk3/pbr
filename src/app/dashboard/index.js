@@ -24,6 +24,7 @@ import RolesAndAccess from '../../pages/UserRolesAndAccess/RolesAndAccess/RolesA
 import ScreenControls from '../../pages/UserRolesAndAccess/ScreenControls/ScreenControls';
 import PaperBatchRecords from './paperBatchRecords';
 import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate';
+import PbrReviewer from './pbrReviewer';
 
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
@@ -149,6 +150,11 @@ const Dashboard = () => {
 									key='paper_batch_records'
 									path={`${match.url}/paper_batch_records`}>
 									<PaperBatchRecords />
+								</Route>
+								<Route
+									key='pbr_reviewer'
+									path={`${match.url}/pbr_reviewer`}>
+									<PbrReviewer />
 								</Route>
 								<Route
 									key='paper_batch_records_template'

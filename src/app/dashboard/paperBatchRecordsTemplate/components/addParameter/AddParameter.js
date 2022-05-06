@@ -2,23 +2,24 @@
  * @author Ranjith <ranjith.k@mareana.com>
  * @Mareana - BMS PBR
  * @version 1
- * @Last Modified - 18 March, 2022
+ * @Last Modified - 05 May, 2022
  * @Last Changed By - @ranjith
  */
 
 import { Input, Select, Form, Space, Button, Collapse } from 'antd';
 import Dragger from 'antd/lib/upload/Dragger';
-import React from 'react';
+import React, { useEffect } from 'react';
 import InputField from '../../../../../components/InputField/InputField';
 import './styles.scss';
 
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 const { Panel } = Collapse;
 
 function AddParameter(props) {
     const { paramaterAdded, setParamaterAdded } = props;
+    const [form] = Form.useForm();
 
     const parameterAddingHandler = () => {
         setParamaterAdded(true);

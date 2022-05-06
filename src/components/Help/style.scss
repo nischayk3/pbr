@@ -57,3 +57,13 @@
 	color: rgba(0, 0, 0, 0.85);
 	margin-top: 20px !important;
 }
+
+.search-button{
+    background: #093185 !important;
+    border-radius: 4px !important;
+    .ant-input-search-button{
+        background: #093185 !important;
+        border: #093185 !important;
+    }
+}
+

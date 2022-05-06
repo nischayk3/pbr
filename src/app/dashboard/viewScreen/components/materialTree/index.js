@@ -13,7 +13,7 @@ import {
 	batchCoverage,
 	sendSelectedParamData,
 } from '../../../../../duck/actions/viewAction';
-
+import './style.scss';
 const { TreeNode } = Tree;
 const { Search } = Input;
 
@@ -100,7 +100,7 @@ const MaterialTree = props => {
 				treeMap.map(item => {
 					return (
 						<Tree
-							// checkable
+							//	checkable
 							onSelect={onSelect}
 							onCheck={onCheck}
 							checkedKeys={checkedKeys}

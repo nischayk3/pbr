@@ -227,7 +227,7 @@ const ViewPage = () => {
                   setPostChartData={setPostChartData}
                 />
               </TabPane>
-              <TabPane tab="Limits" key="2">
+              <TabPane tab="Limit" key="2">
                 <Limits
                   postChartData={postChartData}
                   setPostChartData={setPostChartData}

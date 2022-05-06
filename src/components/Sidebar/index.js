@@ -110,6 +110,12 @@ const MENU = [
         linkTo: '/dashboard/paper_batch_records',
     },
     {
+        key: 'pbr_reviewer',
+        icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+        title: 'Pbr Reviewer',
+        linkTo: '/dashboard/pbr_reviewer',
+    },
+    {
         key: 'hierarchy',
         icon: <AppstoreOutlined style={{ fontSize: '23px' }} />,
         title: 'Hierarchy',
