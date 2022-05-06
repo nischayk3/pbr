@@ -37,10 +37,12 @@ const ParameterTable = props => {
 	const [reloadTable, setReloadTable] = useState(true);
 	const [checked, setChecked] = useState(null);
 	const [parameters, setParameters] = useState({});
+	const [variableParam, setVariableParam] = useState({});
 
 	const {
 		rowDisable,
 		variableCreate,
+		setVariableCreate,
 		parentBatches,
 		viewSummaryBatch,
 		setViewSummaryBatch,
@@ -89,16 +91,15 @@ const ParameterTable = props => {
 			key: 'aggregation',
 			width: 120,
 			fixed: 'left',
-			render: (record, index) => {
+			render: (text, record, index) => {
 				return (
 					<Select
-						// disabled={rowDisable}
 						style={{ width: '100px' }}
 						placeholder='Aggregation'
 						onChange={(e, value) => {
-							handleAggregationChange(record, value, index);
+							handleAggregationChange(text, record, value, index);
 						}}
-						//	value={aggregationValue}
+					//	value={aggregationValue}
 					>
 						<Option key='1' value='Min'>
 							Min
@@ -157,7 +158,16 @@ const ParameterTable = props => {
 									checked={value}
 								/>
 							);
-						} else {
+						} 
+						else if (value === '') {
+							return (
+								<Checkbox
+									className='custom-check'
+									onChange={e => onChangeBatch(e, record, rowIndex, item)}
+								/>
+							);
+						}
+						else {
 							return (
 								<span className='batchClosed'>
 									<CloseOutlined />
@@ -226,42 +236,38 @@ const ParameterTable = props => {
 	}, [varClick]);
 
 	useEffect(() => {
-		let variable = [];
-		let var1 = {};
-		if (variableCreate) {
+		let varArr = [];
+		let varObj = {};
+		let variableObj = {};
+		if (variableCreate === true) {
 			count++;
-			let row = [...selectedRow];
-			row.forEach((item, index) => {
-				let paramObj = {};
-				let materialId = item.key.split('-');
-				paramObj['source_type'] = item.sourceType;
-				paramObj['material_id'] = materialId[1];
-				paramObj['parameter_name'] = item.parameter_name;
-				paramObj['batch_exclude'] = [];
-				paramObj['aggregation'] = item.aggregation;
-				variable.push(paramObj);
+
+			const varParameter = [...parameters];
+
+			varParameter.forEach(element => {
+				varArr.push(element);
 			});
 
-			var1[`${'V' + count}`] = variable;
+			variableParam[`${'V' + count}`] = varParameter;
+			setVariableParam(variableParam);
 
 			const viewDataJson = [...viewJson];
-
-			viewDataJson.forEach(element => {
-				element.parameters = var1;
+			viewDataJson.forEach((element, index) => {
+				return (element.parameters = variableParam);
 			});
 
 			setViewJson(viewDataJson);
-			dispatch(createVariable(selectedRow));
-			dispatch(viewParamMap(var1));
+			dispatch(createVariable(variableParam));
+			dispatch(viewParamMap(variableParam));
+			setVariableCreate(false);
 		}
 	}, [variableCreate]);
 
 	useEffect(() => {
-		if (saveFunction === true) {
+		if (saveFunction) {
 			counter++;
 			let arr = [];
 
-			let defObj = {};
 			let primarySelectedData = { ...selectedPrimaryData };
 			let functionTable = [...viewSummaryBatch];
 			functionTable.forEach(item => {
@@ -281,11 +287,12 @@ const ParameterTable = props => {
 			setViewSummaryBatch(arr3);
 			dispatch(createSummaryData(arr3));
 
-			// primarySelectedData.parameter_name = functionName;
+			primarySelectedData.parameter_name = functionName;
 			let funObj1 = {};
 			let fun = {};
 			funObj1['name'] = functionName;
-			funObj1['defination'] = `{${'V' + counter}}`;
+			funObj1['defination'] = paramReducer.funDetails;
+			//`{${'V' + counter}}`;
 			fun[counter] = funObj1;
 
 			const varData = [...viewJson];
@@ -314,23 +321,20 @@ const ParameterTable = props => {
 		}
 	};
 
-	const handleAggregationChange = (record, value, index) => {
+	const handleAggregationChange = (text, record, value, index) => {
 		let newAggrValue = [...tableData];
-		newAggrValue[index].aggregation = value.value;
-
+		newAggrValue[index].aggregation =
+			value.value !== undefined ? value.value : '';
 		const aggJson = [...parameters];
-		aggJson[index].aggregation = value.value;
-
+		aggJson[index].aggregation = value.value !== undefined ? value.value : '';
 		setParameters(aggJson);
 		setTableData(newAggrValue);
-		setAggregationValue(value.value);
+		setAggregationValue(value.value !== undefined ? value.value : '');
 	};
 
 	const onChangeBatch = (e, record, rowIndex, key) => {
 		setChecked(e.target.checked);
-
 		const batchRecord = [...tableData];
-		const viewJsonBatch = [...viewJson];
 
 		batchRecord[rowIndex][key] =
 			e.target.checked == false ? '' : e.target.checked;
@@ -342,9 +346,7 @@ const ParameterTable = props => {
 				element.batch_exclude.push(key);
 			}
 		});
-
 		setParameters(batchExcludeJson);
-
 		setTableData(batchRecord);
 	};
 
@@ -382,9 +384,7 @@ const ParameterTable = props => {
 								paramsObj['aggregation'] = element.aggregation;
 								paramArr.push(paramsObj);
 							});
-
 							setParameters(paramArr);
-
 							props.callbackCheckbox(true);
 							setSelectedRowKeys(selectedRowKeys);
 							setSelectedRow(selectedRows);

@@ -2,7 +2,6 @@ import Service from './AjaxService';
 import {
     BMS_APP_PYTHON_SERVICE,
 } from '../constants/apiBaseUrl';
-import { head } from 'lodash';
 
 
 

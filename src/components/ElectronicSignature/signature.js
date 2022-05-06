@@ -75,7 +75,7 @@ function Signature(props) {
         let headers = {
             'content-type': 'application/json',
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': props.appType,
+            'resource-name': props.appType=='REPORT' ? 'REPORT_DESIGNER' : props.appType,
         };
         try {
 

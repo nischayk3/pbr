@@ -27,6 +27,7 @@ import {
 	getBatchInfo,
 	getProcessInfo,
 	getForwardData,
+	pbrFileUpload,
 	downloadDataTable,
 } from '../../../../services/genealogyService';
 import popupicon from '../../../../assets/images/popup.png';
@@ -63,10 +64,14 @@ function Genealogy() {
 	const [nodeType, setNodeType] = useState('');
 	const [limsBatch, setLimsBatch] = useState('');
 	const [isUploadVisible, setIsUploadVisible] = useState(false);
+	const [selectedFileList, setSelectedFileList] = useState([]);
+	const [selectedFile, setSelectedFile] = useState(null);
+	const [type, setType] = useState('');
 
 	const dispatch = useDispatch();
 
 	const onClickNode = node => {
+		console.log('nodeeeeeeeeeeeeeee', node);
 		if (node.clickType === 'backward') {
 			setGenealogyData([]);
 			let _reqBackward = {
@@ -97,6 +102,7 @@ function Genealogy() {
 					product_desc: node.nodeData.matDesc,
 					node_id: node.nodeData.nodeId,
 				};
+				setType(node.nodeData.type);
 				setBatchInfo(batchInfoDetails);
 				setIsDrawerOpen(true);
 				setIsDrawerRef(false);
@@ -345,6 +351,20 @@ function Genealogy() {
 			dispatch(showNotification('error', 'No Data Found'));
 		}
 	};
+
+	const fileUpload = async _fileRequest => {
+		console.log('_fileRequest dinesh', _fileRequest);
+		try {
+			dispatch(showLoader());
+			const fileResponse = await pbrFileUpload(_fileRequest);
+			console.log('fileResponse', fileResponse);
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification('error', 'No Data Found'));
+		}
+	};
+
 	const remove = targetKey => {
 		let newActiveKey = activateKey;
 		let lastIndex;
@@ -380,33 +400,52 @@ function Genealogy() {
 		setPanes(newPanes);
 		setActivateKey(newActiveKey);
 	};
+	const onChangeFile = info => {
+		console.log('file status', info, info.file.status);
+		const nextState = {};
+		if (info.file.status === 'uploading') {
+			nextState.selectedFileList = [info.file];
+			console.log('uploading', info);
+		} else if (info.file.status === 'done') {
+			nextState.selectedFileList = [info.file];
+			nextState.selectedFile = info.file;
+			console.log('done', info.file.originFileObj);
+			var formData = new FormData();
+			formData.append('file', info.file.originFileObj);
+			formData.append('method', 'aws');
+			console.log('methoddddd', formData);
+			message.success(`${info.file.name} file uploaded successfully.`);
+			fileUpload(formData);
+		} else if (info.file.status === 'error') {
+			nextState.selectedFileList = [];
+			nextState.selectedFile = null;
+			console.log('error', info);
+			message.error(`${info.file.name} file upload failed.`);
+		}
+
+		setSelectedFile(nextState.selectedFile);
+		setSelectedFileList(nextState.selectedFileList);
+	};
 
 	const files = {
-		name: 'file',
-		multiple: true,
-		action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-		onChange(info) {
-			const { status } = info.file;
-			if (status !== 'uploading') {
-				console.log(info);
-			}
-			if (status === 'done') {
-				message.success(`${info.file.name} file uploaded successfully.`);
-			} else if (status === 'error') {
-				message.error(`${info.file.name} file upload failed.`);
-			}
-		},
 		progress: {
 			strokeColor: {
 				'0%': '#108ee9',
 				'100%': '#87d068',
 			},
-			strokeWidth: 3,
+			strokeWidth: 8,
+			showInfo: true,
 			format: percent => `${parseFloat(percent.toFixed(2))}%`,
 		},
 		onDrop(e) {
 			console.log('Dropped files', e.dataTransfer.files);
 		},
+	};
+
+	const dummyRequest = ({ onSuccess }) => {
+		setTimeout(() => {
+			onSuccess('ok');
+		}, 0);
 	};
 
 	const handleCancel = () => {
@@ -450,7 +489,7 @@ function Genealogy() {
 							genealogyData.length > 0 && (
 								<p className='tab-label'>
 									<img className='tree-type-icon' src={batchIcon} />
-									{productCode} - {chartType}
+									{productCode}-{chartType}
 								</p>
 							)
 						}
@@ -469,10 +508,10 @@ function Genealogy() {
 								/>
 							)}
 							<GenealogyDrawer
+								type={type}
 								drawerVisible={isDrawerOpen}
 								isDrawer={isDrawerVisible}
 								drawerClose={onCloseDrawer}
-								type={nodeType}
 								limsBatchInfo={limsBatchInfo}
 								purchaseInfo={purchaseInfo}
 								batchInfo={batchInfo}
@@ -489,7 +528,11 @@ function Genealogy() {
 								className='file-upload-modal'
 								onCancel={handleCancel}
 								footer={null}>
-								<Dragger {...files}>
+								<Dragger
+									{...files}
+									onChange={onChangeFile}
+									customRequest={dummyRequest}
+									fileList={selectedFileList}>
 									<p className='ant-upload-drag-icon'>
 										<InboxOutlined />
 									</p>
@@ -525,7 +568,9 @@ function Genealogy() {
 						<div className='popout-table'>
 							<div className='drawer-title'>
 								<img className='tree-type-icon' src={batchIcon} />
-								<p>35735735 - Material</p>
+								<p>
+									{productCode}-{type}
+								</p>
 								<span className='download-file'>
 									<DownloadOutlined />
 								</span>

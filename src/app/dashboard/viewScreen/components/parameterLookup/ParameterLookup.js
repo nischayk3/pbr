@@ -6,12 +6,11 @@
  * @Last Changed By - Dinesh
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import './styles.scss';
-import { Select } from 'antd';
+import { Select, Input } from 'antd';
 import { moleculeName } from '../../../../../duck/actions/viewCreationAction';
-
 import { getMoleculeList } from '../../../../../services/viewCreationPublishing';
 import {
 	hideLoader,
@@ -19,8 +18,8 @@ import {
 	showNotification,
 } from '../../../../../duck/actions/commonActions';
 
-const dataList = [];
 function ParameterLookup(props) {
+	const { Search } = Input;
 	const {
 		moleculeList,
 		setMoleculeList,
@@ -41,6 +40,7 @@ function ParameterLookup(props) {
 	const [filterList, setFilterList] = useState([]);
 
 	const dispatch = useDispatch();
+	const tempMaterialList = useRef();
 
 	const onSelectMoleculeHandler = async () => {
 		let req = { user_id: 'demo' };
@@ -72,6 +72,10 @@ function ParameterLookup(props) {
 			dispatch(showNotification('error', error));
 		}
 	};
+
+	useEffect(() => {
+		tempMaterialList.current = JSON.parse(JSON.stringify(materialsList));
+	}, [materialsList]);
 
 	useEffect(() => {
 		onSelectMoleculeHandler();
@@ -134,84 +138,24 @@ function ParameterLookup(props) {
 		}
 	}
 
-	// const generateList = data => {
-	// 	data.forEach((item, i) => {
-	// 		const node = item;
-	// 		console.log('node', node);
-	// 		const { key } = node;
-	// 		console.log('keyyyyy', key);
-
-	// 		if (typeof node.product_description !== 'undefined') {
-	// 			dataList.push({
-	// 				key,
-	// 				title: node.parameter_name,
-	// 			});
-	// 		} else if (typeof node.parameter_name !== 'undefined') {
-	// 			dataList.push({
-	// 				key,
-	// 				title: node.parameter_name,
-	// 			});
-	// 		}
-
-	// 		if (node.children) {
-	// 			generateList(node.children);
-	// 		}
-	// 	});
-
-	// 	// for (let i = 0; i < data.length; i++) {
-	// 	// 	const node = data[i];
-	// 	// 	console.log('node', data, data[i]);
-	// 	// 	const { key } = node.key;
-	// 	// 	console.log('key', key);
-	// 	// 	dataList.push({
-	// 	// 		key,
-	// 	// 		title:
-	// 	// 			typeof node.parameter_name !== 'undefined' ? node.parameter_name : '',
-	// 	// 	});
-
-	// 	// 	if (node.children) {
-	// 	// 		generateList(node.children);
-	// 	// 	}
-	// 	// }
-	// };
-	// generateList(materialsList);
-	// if (dataList.length > 0) {
-	// 	console.log(
-	// 		'dataList.length  === materialsList.length',
-	// 		dataList.length,
-	// 		materialsList.length
-	// 	);
-	// 	setFilterList(dataList);
-	// }
-
-	// const onChangeFilter = e => {
-	// 	const { value } = e.target;
-	// 	const expandedKey = dataList
-	// 		.map(item => {
-	// 			if (item.title.indexOf(value) > -1) {
-	// 				return getParentKey(item.key, materialsList);
-	// 			}
-	// 			return null;
-	// 		})
-	// 		.filter((item, i, self) => item && self.indexOf(item) === i);
-
-	// 	//	setExpandedKeys(expandedKey);
-	// 	setSearchValue(value);
-	// 	setAutoExpandParent(true);
-	// };
-	const getParentKey = (key, tree) => {
-		let parentKey;
-		for (let i = 0; i < tree.length; i++) {
-			const node = tree[i];
-			if (node.children) {
-				if (node.children.some(item => item.key === key)) {
-					parentKey = node.key;
-				} else if (getParentKey(key, node.children)) {
-					parentKey = getParentKey(key, node.children);
-				}
-			}
+	const onSearchChange = e => {
+		console.log('eeeeeeeeee', tempMaterialList.current);
+		if (e.target.value === '') {
+			setMaterialsList(tempMaterialList.current);
 		}
-		return parentKey;
+		setSearchValue(e.target.value);
+	};
+
+	const searchTable = () => {
+		const newArr = materialsList.filter(ele =>
+			ele.children.some(element =>
+				element.product_description.toLowerCase().search(searchValue)
+			)
+		);
+		console.log('newArr', newArr);
+		if (newArr.length) {
+			setMaterialsList(newArr);
+		}
 	};
 
 	return (
@@ -235,7 +179,7 @@ function ParameterLookup(props) {
 			</div>
 			<div className='param-select'>
 				<p>Filters</p>
-				<Select
+				{/* <Select
 					showSearch
 					optionFilterProp='children'
 					onChange={onChange}
@@ -252,12 +196,13 @@ function ParameterLookup(props) {
 							</Option>
 						);
 					})}
-				</Select>
-				{/* <Search
+				</Select> */}
+				<Search
 					style={{ marginBottom: 8 }}
 					placeholder='Search'
-					onChange={onChangeFilter}
-				/> */}
+					onChange={onSearchChange}
+					onSearch={searchTable}
+				/>
 			</div>
 		</div>
 	);
