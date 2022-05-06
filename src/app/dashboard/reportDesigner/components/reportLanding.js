@@ -423,58 +423,58 @@ export default function Landing(props) {
                                         // onChange={(e) => setHierarchyName(e.target.value)}
                                         // value={hierarchyName}
                                         />
-                                         </Row>
-                                         <div className="landing-tiles">
-                                            {reportList &&
-                                                reportList.length > 0 &&
-                                                reportList.map(
-                                                    (i, index) =>
-                                                        index < 4 && (
-                                                            <div
-                                                                onClick={() => {
-                                                                    getLoadReportGenerator(
-                                                                        i.rep_disp_id
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <div className="landing-tile" >
-                                                                  <div className="landing-report-id"> {i.rep_disp_id}</div><br/>
-                                                                  <span className="landing-report-name">{i.rep_name}</span>
-                                                                    {/* {i.id}<br />
+                                    </Row>
+                                    <div className="landing-tiles">
+                                        {reportList &&
+                                            reportList.length > 0 &&
+                                            reportList.map(
+                                                (i, index) =>
+                                                    index < 4 && (
+                                                        <div
+                                                            onClick={() => {
+                                                                getLoadReportGenerator(
+                                                                    i.rep_disp_id
+                                                                );
+                                                            }}
+                                                        >
+                                                            <div className="landing-tile" >
+                                                                <div className="landing-report-id"> {i.rep_disp_id}</div><br />
+                                                                <span className="landing-report-name">{i.rep_name}</span>
+                                                                {/* {i.id}<br />
                                                                      */}
-                                                                </div>
                                                             </div>
-                                                        )
-                                                )}
-                                                </div>
-                                        {newsearched ? (
-                                            <Table
-                                                columns={columns}
-                                                scroll={{ y: 150, x: 350 }}
-                                                // style={{  height: 'auto' }}
-                                                dataSource={
-                                                    filterTable === null
-                                                        ? reportList
-                                                        : filterTable
-                                                }
-                                                pagination={false}
-                                                onRow={(record) => ({
-                                                    onClick: (e) => {
-                                                        // record['color'] = '#D3D3D3'
-                                                        // setReportId(record.rep_disp_id)
-                                                        // getReportData(record.rep_disp_id, record.rep_status)
-                                                        // dispatch(showLoader())
-                                                        NewReportGenerator(
-                                                            record.rep_disp_id
-                                                        );
-                                                        // onOk()
-                                                    },
-                                                })}
-                                            />
-                                        ) : (
-                                            <></>
-                                        )}
-                                   
+                                                        </div>
+                                                    )
+                                            )}
+                                    </div>
+                                    {newsearched ? (
+                                        <Table
+                                            columns={columns}
+                                            scroll={{ y: 150, x: 350 }}
+                                            // style={{  height: 'auto' }}
+                                            dataSource={
+                                                filterTable === null
+                                                    ? reportList
+                                                    : filterTable
+                                            }
+                                            pagination={false}
+                                            onRow={(record) => ({
+                                                onClick: (e) => {
+                                                    // record['color'] = '#D3D3D3'
+                                                    // setReportId(record.rep_disp_id)
+                                                    // getReportData(record.rep_disp_id, record.rep_status)
+                                                    // dispatch(showLoader())
+                                                    NewReportGenerator(
+                                                        record.rep_disp_id
+                                                    );
+                                                    // onOk()
+                                                },
+                                            })}
+                                        />
+                                    ) : (
+                                        <></>
+                                    )}
+
 
                                 </Col>
 
