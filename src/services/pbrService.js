@@ -7,7 +7,7 @@ import {
 export const getBoundingBoxData = (_queryParam) => {
     return Service.get(
         'http://localhost' +
-            '/pbr/udh/get_data?fileId=Batch Record Example 2.pdf.json&pageId=0',
+            '/pbr/udh/get_data?fileId=BatchRecordExample2Pfd_page-0.jpeg.json&pageId=1',
         _queryParam
     ).then(
         (response) => {
@@ -35,8 +35,7 @@ export const savePbrTemplate = (request) => {
 
 export const getPbrReviewerData = (_queryParam) => {
     return Service.get(
-        MDH_APP_PYTHON_SERVICE +
-            '/pbr/udh/get_cpv_pbr_data',
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr_data',
         _queryParam
     ).then(
         (response) => {

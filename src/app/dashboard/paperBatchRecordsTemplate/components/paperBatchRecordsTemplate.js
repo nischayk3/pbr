@@ -88,6 +88,7 @@ function PaperBatchRecordsTemplate() {
             anchorId: '',
         },
     });
+    const [activeNumber, setActiveNumber] = useState(0);
 
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
@@ -98,10 +99,19 @@ function PaperBatchRecordsTemplate() {
     };
 
     const parameterAddingHandler = () => {
-        let key = Object.keys(parameterValue).length;
         setParamaterAdded(true);
-        // let param = { anchorValue: '', anchorId: '' };
-        // setParameterValue({ ...parameterValue, ['param' + key]: param });
+        let key = Object.keys(parameterValue).length;
+        let param = { anchorValue: '', anchorId: '' };
+        let val = `param${key}`;
+        let obj = { ...parameterValue };
+        if (activeNumber === 0) {
+            setParameterValue({ ...parameterValue, param1: param });
+            setActiveNumber(activeNumber + 1);
+        } else {
+            obj[`param${activeNumber + 1}`] = param;
+            setParameterValue(obj);
+            setActiveNumber(activeNumber + 1);
+        }
     };
 
     const DraggerInputHandlerAnchor = (e) => {
@@ -225,26 +235,26 @@ function PaperBatchRecordsTemplate() {
                     let y1 = e.key_top * 1336;
                     let y2 = (e.key_top + e.key_height) * 1336;
                     let obj = {
-                        snippetID: e.snippet_id,
+                        snippetID: e.key_snippet_id,
                         areaValue: e.key_text,
                         shape: 'rect',
                         coords: [x1, y1, x2, y2],
                         preFillColor: 'transparent',
                         fillColor: 'transparent',
-                        strokeColor: e.color,
+                        strokeColor: 'blue',
                     };
                     let valuex1 = e.value_left * 1032;
                     let valuex2 = (e.value_left + e.value_width) * 1032;
                     let valuey1 = e.value_top * 1336;
                     let valuey2 = (e.value_top + e.value_height) * 1336;
                     let obj1 = {
-                        snippetID: e.snippet_id,
+                        snippetID: e.key_snippet_id,
                         areaValue: e.value_text,
                         shape: 'rect',
                         coords: [valuex1, valuey1, valuex2, valuey2],
                         preFillColor: 'transparent',
                         fillColor: 'transparent',
-                        strokeColor: e.color,
+                        strokeColor: 'blue',
                     };
                     areasArr.push(obj);
                     areasArr.push(obj1);
@@ -284,28 +294,27 @@ function PaperBatchRecordsTemplate() {
         if (DraggerActive) {
             setShowInputAnchor(true);
             setDraggerFirstAreaValue(area.areaValue);
-            setParameterValue({
-                ...parameterValue,
-                param1: {
-                    ...parameterValue.param1,
-                    anchorValue: area.areaValue,
-                },
-            });
+            let obj = { ...parameterValue };
+            obj[`param${activeNumber}`] = {
+                ...obj[`param${activeNumber}`],
+                anchorValue: area.areaValue,
+            };
+            setParameterValue(obj);
         } else {
             setDraggerLastAreaValue(area.snippetID);
-            setParameterValue({
-                ...parameterValue,
-                param1: {
-                    ...parameterValue.param1,
-                    anchorId: area.snippetID,
-                },
-            });
+            let obj = { ...parameterValue };
+            obj[`param${activeNumber}`] = {
+                ...obj[`param${activeNumber}`],
+                anchorId: area.snippetID,
+            };
+            setParameterValue(obj);
         }
         form.setFieldsValue({
             anchorValue: area.snippetID,
         });
     };
 
+    console.log('parameterValue', parameterValue);
     const savePbrTemplateDataInfo = async () => {
         try {
             // dispatch(showLoader());
@@ -539,17 +548,15 @@ function PaperBatchRecordsTemplate() {
                                                                                                             >
                                                                                                                 <InputField
                                                                                                                     value={
-                                                                                                                        parameterValue
-                                                                                                                            .param1
-                                                                                                                            .anchorValue
+                                                                                                                        parameterValue[
+                                                                                                                            `param${
+                                                                                                                                key +
+                                                                                                                                1
+                                                                                                                            }`
+                                                                                                                        ][
+                                                                                                                            `anchorValue`
+                                                                                                                        ]
                                                                                                                     }
-                                                                                                                    // value={
-                                                                                                                    //     parameterValue[
-                                                                                                                    //         `param${key}`
-                                                                                                                    //     ][
-                                                                                                                    //         `anchorValue`
-                                                                                                                    //     ]
-                                                                                                                    // }
                                                                                                                     className='uploadSnippetInput'
                                                                                                                     placeholder='Enter Anchor Value'
                                                                                                                     onChangeInput={(
@@ -594,17 +601,15 @@ function PaperBatchRecordsTemplate() {
                                                                                                             </span>
                                                                                                             <InputField
                                                                                                                 value={
-                                                                                                                    parameterValue
-                                                                                                                        .param1
-                                                                                                                        .anchorId
+                                                                                                                    parameterValue[
+                                                                                                                        `param${
+                                                                                                                            key +
+                                                                                                                            1
+                                                                                                                        }`
+                                                                                                                    ][
+                                                                                                                        `anchorId`
+                                                                                                                    ]
                                                                                                                 }
-                                                                                                                // value={
-                                                                                                                //     parameterValue[
-                                                                                                                //         `param${key}`
-                                                                                                                //     ][
-                                                                                                                //         `anchorId`
-                                                                                                                //     ]
-                                                                                                                // }
                                                                                                                 className='uploadSnippetInput'
                                                                                                                 placeholder='Enter Snippet Value'
                                                                                                                 onChangeInput={(
@@ -747,7 +752,7 @@ function PaperBatchRecordsTemplate() {
                                         className='pdfToImageWrapper'
                                         src={BatchRecordExample}
                                         map={areasMap}
-                                        onLoad={() => load()}
+                                        // onLoad={() => load()}
                                         onClick={(area) => clicked(area)}
                                     />
                                 )}
