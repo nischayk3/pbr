@@ -258,7 +258,7 @@ const ViewCreation = props => {
 	};
 
 	return (
-		<div className='reportDesigner-container viewCreation-container'>
+		<div className=' viewCreation-container'>
 			<BreadCrumbWrapper />
 			<div className='breadcrumbs-btn'>
 				{Object.keys(parameters).length > 0 ? (
@@ -296,11 +296,17 @@ const ViewCreation = props => {
 							className='viewCreation-saveBtn'
 							// disabled={!viewDisplayId}
 							onClick={handleSaveVisible}>
+							Share
+						</Button>
+						<Button
+							className='viewCreation-saveBtn'
+							// disabled={!viewDisplayId}
+							onClick={handleSaveVisible}>
 							Save
 						</Button>
 
 						<Button
-							className='viewCreation-publishBtn'
+							className='view-publish-btn'
 							onClick={() => {
 								setIsPublish(true);
 								setApproveReject('P');
@@ -312,8 +318,8 @@ const ViewCreation = props => {
 				)}
 			</div>
 
-			<div className='reportDesigner-gridBlocks viewCreation-grids'>
-				<div className='reportDesigner-grid-tables viewCreation-blocks'>
+			<div className='viewCreation-grids'>
+				<div className=' viewCreation-blocks'>
 					<div className='viewCreation-leftBlocks bg-white'>
 						<div className='viewCreation-parameterLookup'>
 							<h4 className='viewCreation-blockHeader'>Parameter Lookup</h4>
