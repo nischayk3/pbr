@@ -89,6 +89,7 @@ function PaperBatchRecordsTemplate() {
         },
     });
     const [activeNumber, setActiveNumber] = useState(0);
+    const [areasMapFilteredArr, setAreasMapFilteredArr] = useState([]);
 
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
@@ -198,6 +199,7 @@ function PaperBatchRecordsTemplate() {
                 });
             }
 
+            let filteredArr = [...areasMapFilteredArr];
             let newArr = [...areasMap.areas];
             newArr.forEach((ele, i) => {
                 if (clickedSnippetId === ele.areaValue) {
@@ -210,9 +212,16 @@ function PaperBatchRecordsTemplate() {
                     } else if (field === 'y2') {
                         ele.coords[3] = e.target.value;
                     }
+                    filteredArr = filteredArr.filter(
+                        (item) => item.areaValue !== clickedSnippetId
+                    );
+                    filteredArr.push(ele);
                 }
             });
+
+            console.log('filteredArr', filteredArr);
             setAreasMap({ ...areasMap, areas: newArr });
+            setAreasMapFilteredArr(filteredArr);
         }
     };
 
@@ -294,27 +303,41 @@ function PaperBatchRecordsTemplate() {
         if (DraggerActive) {
             setShowInputAnchor(true);
             setDraggerFirstAreaValue(area.areaValue);
-            let obj = { ...parameterValue };
-            obj[`param${activeNumber}`] = {
-                ...obj[`param${activeNumber}`],
+            let obj1 = { ...parameterValue };
+            obj1[`param${activeNumber}`] = {
+                ...obj1[`param${activeNumber}`],
                 anchorValue: area.areaValue,
             };
-            setParameterValue(obj);
+            setParameterValue(obj1);
+            let filteredArr = [...areasMapFilteredArr];
+            filteredArr = filteredArr.filter(
+                (item) => item.areaValue !== obj.areaValue
+            );
+            filteredArr.push(obj);
+            console.log('filteredArr', filteredArr);
+            setAreasMapFilteredArr(filteredArr);
         } else {
             setDraggerLastAreaValue(area.snippetID);
-            let obj = { ...parameterValue };
-            obj[`param${activeNumber}`] = {
-                ...obj[`param${activeNumber}`],
+            let obj2 = { ...parameterValue };
+            obj2[`param${activeNumber}`] = {
+                ...obj2[`param${activeNumber}`],
                 anchorId: area.snippetID,
             };
-            setParameterValue(obj);
+            setParameterValue(obj2);
+            let filteredArr1 = [...areasMapFilteredArr];
+            filteredArr1 = filteredArr1.filter(
+                (item) => item.areaValue !== obj.areaValue
+            );
+            filteredArr1.push(obj);
+            console.log('filteredArr1', filteredArr1);
+            setAreasMapFilteredArr(filteredArr1);
         }
         form.setFieldsValue({
             anchorValue: area.snippetID,
         });
     };
 
-    console.log('parameterValue', parameterValue);
+    console.log('areasMapFilteredArr', areasMapFilteredArr);
     const savePbrTemplateDataInfo = async () => {
         try {
             // dispatch(showLoader());
@@ -328,7 +351,7 @@ function PaperBatchRecordsTemplate() {
                 pbrTemplateInfo: [],
             };
             let arr = [];
-            areasMap.areas.forEach((ele) => {
+            areasMapFilteredArr.forEach((ele) => {
                 let obj = {
                     color: ele.strokeColor,
                     filename: 'Batch Record Example 2.pdf.json',
