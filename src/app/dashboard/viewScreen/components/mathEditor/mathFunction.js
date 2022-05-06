@@ -17,6 +17,11 @@ const MathFunction = props => {
 	const [functionName, setFunctionName] = useState('');
 	const [mathEditorValue, setMathEditorValue] = useState('');
 	const [isAlertFunction, setIsAlertFunction] = useState(false);
+	const [isFunction, setIsFunction] = useState(false);
+	const [isEvaluatingFun, setIsEvaluatingFun] = useState(false);
+	const [isFunValidate, setIsFunValidate] = useState(false);
+	const [isFunctionInvalid, setIsFunctionInvalid] = useState(false);
+
 	const dispatch = useDispatch();
 	const showModal = () => {
 		dispatch(saveViewFunction(false));
@@ -49,6 +54,17 @@ const MathFunction = props => {
 		}, 1000);
 	};
 
+	const functionEvaluate = () => {
+		setIsFunction(true);
+		//setIsEvaluatingFun(true);
+		//	setIsFunctionInvalid(true);
+	};
+
+	const handleCloseError = () => {
+		setIsFunctionInvalid(false);
+		setIsEvaluatingFun(false);
+	};
+
 	return (
 		<>
 			<div className='function-editor'>
@@ -59,6 +75,32 @@ const MathFunction = props => {
 							<CheckCircleOutlined />
 						</span>
 					</div>
+				) : isEvaluatingFun ? (
+					<Alert message='Evaluating function...' type='info' />
+				) : isFunValidate ? (
+					<Alert
+						closable
+						afterClose={handleCloseError}
+						message='Function valid!'
+						type='success'
+						showIcon
+					/>
+				) : isFunctionInvalid ? (
+					<Alert
+						closable
+						afterClose={handleCloseError}
+						message='Invalid function! Please use one of the functions below:'
+						type='error'
+						description={
+							<div className='fun-error-list'>
+								<ul>
+									<li>1. round</li>
+									<li>2. union</li>
+								</ul>
+							</div>
+						}
+						showIcon
+					/>
 				) : (
 					<Input
 						onChange={e => handleChangeFunction(e)}
@@ -66,13 +108,25 @@ const MathFunction = props => {
 						suffix={
 							<span>
 								{isFunctionVisible && (
-									<Button
-										onClick={showModal}
-										type='text'
-										className='custom-primary-btn '>
-										Create Function
-									</Button>
+									<>
+										{isFunction ? (
+											<Button
+												onClick={showModal}
+												type='text'
+												className='custom-primary-btn '>
+												Create Function
+											</Button>
+										) : (
+											<Button
+												onClick={functionEvaluate}
+												type='text'
+												className='custom-primary-btn '>
+												Function Evaluate
+											</Button>
+										)}
+									</>
 								)}
+
 								<img src={FunctionKey} />
 							</span>
 						}
