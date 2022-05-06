@@ -148,7 +148,7 @@ function ParameterLookup(props) {
 	const searchTable = () => {
 		const newArr = materialsList.filter(ele =>
 			ele.children.some(element =>
-				element.product_description.toLowerCase().search(searchValue)
+				element.product_description.toLowerCase().includes(searchValue)
 			)
 		);
 
