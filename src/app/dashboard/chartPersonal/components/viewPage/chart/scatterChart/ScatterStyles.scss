@@ -19,30 +19,34 @@
       visibility: hidden;
     }
   }
-  .scatter-chart {
-    margin-top: 25px;
-  }
-  .tabledata {
-    .ant-table-thead > tr > th {
-      background: #f2fbff;
-      padding: 16px 8px;
-      font-size: 12px;
-      font-weight: 600;
+  .chart-table {
+    max-height: 50vh;
+    overflow: auto;
+    .scatter-chart {
+      margin-top: 25px;
     }
-    .ant-table-cell {
-      svg {
-        color: red !important;
+    .tabledata {
+      .ant-table-thead > tr > th {
+        background: #f2fbff;
+        padding: 16px 8px;
+        font-size: 12px;
+        font-weight: 600;
       }
-    }
-    .ant-table {
-      border: 2px solid #f0f0f0 !important;
-      border-radius: 4px !important;
-    }
-    .ant-table-tbody > tr > td {
-      padding: 16px 8px;
-      font-size: 12px;
-      svg {
-        color: red;
+      .ant-table-cell {
+        svg {
+          color: red !important;
+        }
+      }
+      .ant-table {
+        border: 2px solid #f0f0f0 !important;
+        border-radius: 4px !important;
+      }
+      .ant-table-tbody > tr > td {
+        padding: 16px 8px;
+        font-size: 12px;
+        svg {
+          color: red;
+        }
       }
     }
   }

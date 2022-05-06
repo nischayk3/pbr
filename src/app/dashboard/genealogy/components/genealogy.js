@@ -66,12 +66,15 @@ function Genealogy() {
 	const [isUploadVisible, setIsUploadVisible] = useState(false);
 	const [selectedFileList, setSelectedFileList] = useState([]);
 	const [selectedFile, setSelectedFile] = useState(null);
+	const [uploadFile, setUploadFile] = useState();
+	const [uploading, setUploading] = useState(false);
+	const [uploadId, setUploadId] = useState('');
+
 	const [type, setType] = useState('');
 
 	const dispatch = useDispatch();
 
 	const onClickNode = node => {
-		console.log('nodeeeeeeeeeeeeeee', node);
 		if (node.clickType === 'backward') {
 			setGenealogyData([]);
 			let _reqBackward = {
@@ -147,7 +150,17 @@ function Genealogy() {
 				setNodeType(node.nodeType);
 			}
 		} else if (node.clickType === 'upload_files') {
+			const uploadNodeId =
+				node.nodeType === 'Purchase Order'
+					? node.nodeId
+					: node.nodeType === 'Material'
+					? node.product
+					: node.nodeType === 'Process Order'
+					? node.nodeData.poNo
+					: '';
+			setUploadId(uploadNodeId);
 			setIsUploadVisible(true);
+			setSelectedFileList([]);
 		}
 	};
 
@@ -348,21 +361,30 @@ function Genealogy() {
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
-			dispatch(showNotification('error', 'No Data Found'));
+			dispatch(showNotification('error', 'error'));
 		}
 	};
 
 	const fileUpload = async _fileRequest => {
-		console.log('_fileRequest dinesh', _fileRequest);
 		try {
-			dispatch(showLoader());
+			setUploading(true);
 			const fileResponse = await pbrFileUpload(_fileRequest);
-			console.log('fileResponse', fileResponse);
+			if (fileResponse.Status === 202) {
+				dispatch(showNotification('success', fileResponse.Message));
+				setUploading(false);
+			} else {
+				dispatch(showNotification('error', fileResponse.Message));
+			}
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
-			dispatch(showNotification('error', 'No Data Found'));
+			dispatch(showNotification('error', error));
 		}
+	};
+
+	const handleClickUpload = () => {
+		const file = uploadFile;
+		fileUpload(file);
 	};
 
 	const remove = targetKey => {
@@ -400,26 +422,24 @@ function Genealogy() {
 		setPanes(newPanes);
 		setActivateKey(newActiveKey);
 	};
+
 	const onChangeFile = info => {
-		console.log('file status', info, info.file.status);
 		const nextState = {};
 		if (info.file.status === 'uploading') {
 			nextState.selectedFileList = [info.file];
-			console.log('uploading', info);
 		} else if (info.file.status === 'done') {
 			nextState.selectedFileList = [info.file];
 			nextState.selectedFile = info.file;
-			console.log('done', info.file.originFileObj);
+
 			var formData = new FormData();
 			formData.append('file', info.file.originFileObj);
 			formData.append('method', 'aws');
-			console.log('methoddddd', formData);
-			message.success(`${info.file.name} file uploaded successfully.`);
-			fileUpload(formData);
+
+			setUploadFile(formData);
 		} else if (info.file.status === 'error') {
 			nextState.selectedFileList = [];
 			nextState.selectedFile = null;
-			console.log('error', info);
+
 			message.error(`${info.file.name} file upload failed.`);
 		}
 
@@ -450,7 +470,9 @@ function Genealogy() {
 
 	const handleCancel = () => {
 		setIsUploadVisible(false);
+		setUploading(false);
 	};
+
 	return (
 		<div className='custom-wrapper'>
 			<BreadCrumbWrapper />
@@ -524,7 +546,7 @@ function Genealogy() {
 							<Modal
 								width={520}
 								visible={isUploadVisible}
-								title='Select Upload file to 35735735'
+								title={'Upload file to ' + uploadId}
 								className='file-upload-modal'
 								onCancel={handleCancel}
 								footer={null}>
@@ -545,12 +567,19 @@ function Genealogy() {
 										or other band files
 									</p>
 								</Dragger>
-								<div className='file-upload-section'>
-									<div className='upload-btn'>
-										<Button>Cancel</Button>
-										<Button>Upload</Button>
+								{selectedFileList.length > 0 ? (
+									<div className='file-upload-section'>
+										<div className='upload-btn'>
+											<Button
+												disabled={selectedFileList.length === 0}
+												loading={uploading}
+												onClick={() => handleClickUpload()}>
+												{uploading ? 'Uploading' : 'Upload'}
+											</Button>
+											<Button onClick={handleCancel}>Cancel</Button>
+										</div>
 									</div>
-								</div>
+								) : null}
 							</Modal>
 						</>
 					</TabPane>

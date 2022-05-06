@@ -54,7 +54,7 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
 
   return (
     <div className="display-section">
-      <Collapse expandIconPosition="right" ghost>
+      <Collapse expandIconPosition="right" ghost accordion>
         {/* Figure */}
         <Panel
           header="Figure"
@@ -63,10 +63,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
         >
           <div className="figure-container">
             {/* <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Lines </label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <Switch
                   size="small"
                   name="lines"
@@ -76,10 +76,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Line Width </label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <Select
                   defaultValue="1"
                   onChange={(e) => setFigure({ ...figure, lineWidth: e })}
@@ -91,10 +91,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row> */}
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Height </label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <InputField
                   name="height"
                   value={layoutData.height}
@@ -105,10 +105,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Width </label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <InputField
                   name="width"
                   value={layoutData.width}
@@ -119,10 +119,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Plot color </label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <ColorPicker
                   value={layoutData.plot_bgcolor}
                   onChange={(e) =>
@@ -136,10 +136,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
             </Row>
             <div className="figure-inputs header">Panel Options</div>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Title </label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <InputField
                   value={layoutData.title.text}
                   onChangeInput={(e) =>
@@ -152,10 +152,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Font size </label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <InputField
                   value={layoutData.title.font.size}
                   onChangeInput={(e) =>
@@ -174,10 +174,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Font color </label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <ColorPicker
                   value={layoutData.title.font.color}
                   onChange={(e) =>
@@ -203,10 +203,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
           <div className="figure-container">
             <div className="header option-header">Options</div>
             <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Show</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <Switch
                   size="small"
                   checked={layoutData.showlegend}
@@ -217,7 +217,7 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Title</label>
               </Col>
               <Col className="gutter-row select-top" span={16}>
@@ -239,10 +239,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Legend size</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <InputField
                   value={layoutData.legend.title.font.size}
                   onChangeInput={(e) =>
@@ -264,10 +264,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Legend color</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <ColorPicker
                   value={layoutData.legend.title.font.color}
                   onChange={(e) =>
@@ -289,10 +289,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Border width</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <InputField
                   value={layoutData.legend.borderwidth}
                   onChangeInput={(e) =>
@@ -308,10 +308,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Border color</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <ColorPicker
                   value={layoutData.legend.bordercolor}
                   onChange={(e) =>
@@ -327,10 +327,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Background color</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <ColorPicker
                   value={layoutData.legend.bgcolor}
                   onChange={(e) =>
@@ -343,10 +343,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Orientation</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <SelectField
                   selectedValue={layoutData.legend.orientation}
                   selectList={orientationList}
@@ -366,10 +366,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
           <div className="figure-container">
             <div className="header option-header">X-Axis</div>
             <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Show</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <Switch
                   size="small"
                   checked={layoutData.xaxis.visible}
@@ -383,10 +383,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Show tick labels</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <Switch
                   size="small"
                   checked={layoutData.xaxis.showticklabels}
@@ -400,10 +400,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Show line</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <Switch
                   size="small"
                   checked={layoutData.xaxis.showline}
@@ -417,10 +417,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Show grid</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <Switch
                   size="small"
                   checked={layoutData.xaxis.showgrid}
@@ -434,7 +434,7 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Title</label>
               </Col>
               <Col className="gutter-row select-top" span={16}>
@@ -456,10 +456,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Title size</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <InputField
                   value={layoutData.xaxis.title.font.size}
                   onChangeInput={(e) =>
@@ -481,10 +481,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Title color</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <ColorPicker
                   value={layoutData.xaxis.title.font.color}
                   onChange={(e) =>
@@ -506,10 +506,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Grid color</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <ColorPicker
                   value={layoutData.xaxis.gridcolor}
                   onChange={(e) =>
@@ -523,10 +523,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
             </Row>
             <div className="header">Y-Axis</div>
             <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Show</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <Switch
                   size="small"
                   checked={layoutData.yaxis.visible}
@@ -540,10 +540,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Show tick labels</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <Switch
                   size="small"
                   checked={layoutData.yaxis.showticklabels}
@@ -557,10 +557,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Show line</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <Switch
                   size="small"
                   checked={layoutData.yaxis.showline}
@@ -574,10 +574,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Show grid</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <Switch
                   size="small"
                   checked={layoutData.yaxis.showgrid}
@@ -591,7 +591,7 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Title</label>
               </Col>
               <Col className="gutter-row select-top" span={16}>
@@ -613,10 +613,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Title size</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <InputField
                   value={layoutData.yaxis.title.font.size}
                   onChangeInput={(e) =>
@@ -638,10 +638,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Title color</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <ColorPicker
                   value={layoutData.yaxis.title.font.color}
                   onChange={(e) =>
@@ -663,10 +663,10 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col span={8}>
                 <label>Grid color</label>
               </Col>
-              <Col className="gutter-row" span={16}>
+              <Col span={16}>
                 <ColorPicker
                   value={layoutData.yaxis.gridcolor}
                   onChange={(e) =>
