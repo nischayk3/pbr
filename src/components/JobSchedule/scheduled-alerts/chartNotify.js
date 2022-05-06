@@ -269,11 +269,11 @@ const ChartNotify = (props) => {
                     str = str + days_obj[days[i]]
                 }
             }
-            cron_string = time_split[1] + ' ' + time_split[2] + ` * * ${str}`
+            cron_string = time_split[1] + ' ' + time_split[0] + ` * * ${str}`
         }
 
         if (frequency == 'Monthly') {
-            cron_string = time_split[1] + ' ' + time_split[2] + " " + date_split[2] + " " + '* *'
+            cron_string = time_split[1] + ' ' + time_split[0] + " " + date_split[2] + " " + '* *'
         }
         if (frequency == 'Once') {
             cron_string = 'once'
@@ -323,7 +323,7 @@ const ChartNotify = (props) => {
         email_config['scheduled_start'] = scheduleEmailStartDate
         email_config['scheduled_time'] = scheduleEmailTime
         email_config["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
-        email_config["email_list"] = emailList
+        email_config["email_list"] = emailList.length > 0 ? emailList : []
         email_config["selected_alert"] = selectedAlert
         email_config["attachment"] = ''
         email_config["data_table"] = pdf
@@ -353,6 +353,7 @@ const ChartNotify = (props) => {
         req["scheduled_end"] = selectedSchedule == 'Repeat Once' ? scheduleEmailStartDate : "2030/12/12"
         req["scheduled_start"] = scheduleEmailStartDate
         req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
+        if(props.job_id)
         req['job_id'] = props.job_id
 
 

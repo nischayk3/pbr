@@ -187,11 +187,11 @@ const alertEvaluation = (props) => {
                     str = str + days_obj[days[i]]
                 }
             }
-            cron_string = time_split[1] + ' ' + time_split[2] + ` * * ${str}`
+            cron_string = time_split[1] + ' ' + time_split[0] + ` * * ${str}`
         }
 
         if (frequency == 'Monthly') {
-            cron_string = time_split[1] + ' ' + time_split[2] + " " + date_split[2] + " " + '* *'
+            cron_string = time_split[1] + ' ' + time_split[0] + " " + date_split[2] + " " + '* *'
         }
         if (frequency == 'Repeat Once') {
             cron_string = 'once'
@@ -261,6 +261,9 @@ const alertEvaluation = (props) => {
         email_config["scheduled_time"] = scheduleTime
         email_config["selected_days_obj"] = selectedDays
         email_config['frequency'] = convertExpresion(scheduleStartDate, scheduleTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
+        email_config["email_list"] = []
+        email_config["selected_alert"] = []
+
         req['email_config'] = email_config
         req['frequency'] = selectedSchedule == 'Repeat Once' ? 'Once'  : convertExpresion(scheduleStartDate, scheduleTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
@@ -269,6 +272,7 @@ const alertEvaluation = (props) => {
         req['notify_emails'] = []
         req["scheduled_start"] = scheduleStartDate
         req["scheduled_end"] = selectedSchedule == 'Repeat Once' ? scheduleStartDate :  "2030/12/12"
+        if(props.job_id)
         req['job_id'] = props.job_id
 
         let res = await putJob(req, request_headers)
