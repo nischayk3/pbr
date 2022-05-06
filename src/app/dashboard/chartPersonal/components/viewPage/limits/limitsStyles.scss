@@ -30,8 +30,13 @@
   tr:nth-child(even) {
     background-color: #f9f9f9 !important;
   }
+  .p-b {
+   p {
+     margin-bottom: 6px !important;
+   }
+  }
   .table-bottom {
-    margin-bottom: 20px;
+    margin-bottom: 28px;
     display: flex;
     flex-direction: column;
     .control-header {
