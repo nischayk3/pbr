@@ -24,6 +24,8 @@ import RolesAndAccess from '../../pages/UserRolesAndAccess/RolesAndAccess/RolesA
 import ScreenControls from '../../pages/UserRolesAndAccess/ScreenControls/ScreenControls';
 import PaperBatchRecords from './paperBatchRecords';
 import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate';
+import Analysis from '../../pages/Analysis/Analysis';
+import AnalysisModel from '../../pages/Analysis/AnalysisModel/AnalysisModel'
 
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
@@ -173,6 +175,8 @@ const Dashboard = () => {
 								<Route key='user-configuration' path={`${match.url}/user-roles-and-access/user-configuration`} component={UserConfiguration} />
 								<Route key='roles-and-access' path={`${match.url}/user-roles-and-access/roles-and-access`} component={RolesAndAccess} />
 								<Route key='screen-controls' path={`${match.url}/user-roles-and-access/screen-controls`} component={ScreenControls} />
+								<Route key={'analysis'} path={`${match.url}/analysis`} component={Analysis} exact />
+								<Route key={'analysis-model'} path={`${match.url}/analysis/:id`} component={AnalysisModel} />
 								<Route
 									key='hierarchy_main'
 									path={`${match.url}/molecule_hierarchy_configurations/untilted_view`}>
