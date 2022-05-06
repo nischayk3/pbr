@@ -3,13 +3,15 @@
 
 	.param-select {
 		flex-direction: row;
-		display: grid;
-		grid-template-columns: 1fr 4fr;
-		grid-gap: 20px;
-		align-items: center;
+		display: flex;
+		justify-content: space-between;
+		// display: grid;
+		// grid-template-columns: 1fr 4fr;
+		// grid-gap: 20px;
+		// align-items: center;
 
 		&:first-of-type {
-			margin-bottom: 20px !important;
+			margin-bottom: 36px !important;
 		}
 
 		.ant-col.ant-form-item-label {
@@ -17,6 +19,7 @@
 		}
 		p {
 			margin: 0;
+			width: 100px;
 		}
 	}
 	.ant-col.ant-form-item-label {

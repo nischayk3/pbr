@@ -29,7 +29,7 @@
 
 .figure-container {
   .figure-inputs {
-    margin: 10px 0px;
+    margin: 18px 0px;
   }
   .ant-select {
     width: 100% !important;
@@ -45,7 +45,9 @@
   }
   .select-top {
     .ant-col-8 {
-      padding-top: 5px !important;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
   }
   label {

@@ -77,7 +77,7 @@ const tableColumns = [
 
         render: (text, rcrd) => {
             return {
-                children: <div className="email-contents"><Avatar style={{ backgroundColor: '#87d068' }}>S</Avatar> {text}</div>,
+                children: <div className="email-contents"><Avatar style={{ backgroundColor: '#87d068', marginRight: '3px' }}>S</Avatar> {text}</div>,
             }
         }
     }
@@ -97,16 +97,12 @@ const data = [
 const ChartNotify = (props) => {
 
     const [selectedAlert, setSelectedAlert] = useState(['Limits']);
-    const [selectedSchedule, setSelectedSchedule] = useState('Repeat Once');
-    const [selectedEmailSchedule, setSelectedEmailSchedule] = useState('');
     const [selectedTimeRange, setSelectedTimeRange] = useState('');
     const [showReceipients, setShowReceipients] = useState(false);
     const [radioValue, setRadioValue] = useState(null);
     const [emailList, setEmailList] = useState([])
     const [scheduleStartDate, setScheduleStartDate] = useState('')
     const [scheduleEmailStartDate, setScheduleEmailStartDate] = useState('')
-    const [scheduleTime, setScheduleTime] = useState('')
-    const [scheduleEndDate, setScheduleEndDate] = useState('')
     const [selectedDays, setSelectedDays] = useState({
         Sunday: false,
         Monday: false,
@@ -123,8 +119,8 @@ const ChartNotify = (props) => {
     const [pdf, setpdf] = useState(false)
     const [subject, setSubject] = useState('')
     const [subjectContent, setSubjectContent] = useState('')
-
-    let days_obj = {
+    const [selectedSchedule, setSelectedSchedule] = useState("Repeat Once");
+    const [days_obj, setDays] = useState({
         'Sunday': 0,
         'Monday': 1,
         'Tuesday': 2,
@@ -132,7 +128,7 @@ const ChartNotify = (props) => {
         'Thursday': 4,
         'Friday': 5,
         'Saturday': 6
-    }
+    })
 
 
 
@@ -157,6 +153,7 @@ const ChartNotify = (props) => {
 
 
     const dispatch = useDispatch();
+
     const updateDays = (day) => {
         dispatch(showLoader())
         if (selectedDays[day]) {
@@ -173,25 +170,30 @@ const ChartNotify = (props) => {
         setSubject(!subject)
     }
 
-    const UnloadSame = (props_data) =>
-    {
-        console.log(props_data)
-        if(props_data.schedule)
-        setSelectedSchedule(props_data.schedule)
-        if(props_data.start_time)
-        setScheduleEmailTime(props_data.start_time)
-        if(props_data.start_date)
-        setScheduleEmailStartDate(props_data.start_date)
-        if(props_data.radio)
-        setRadioValue(props_data.radio)
+    const UnloadSame = (props_data) => {
+
+        if (props_data.schedule)
+            setSelectedSchedule(props_data.schedule)
+        if (props_data.start_time)
+            setScheduleEmailTime(props_data.start_time)
+        if (props_data.start_date)
+            setScheduleEmailStartDate(props_data.start_date)
+        if (props_data.radio)
+            setRadioValue(props_data.radio)
+        if (props_data.days)
+            setSelectedDays(props_data.days)
+        if (props_data.day)
+            setEveryDayValue(props_data.day)
     }
+
     const unLoad = (data) => {
         if (data) {
-            setEmailList(data.notify_emails)
-            setSelectedSchedule(data.frequency_unit)
+            if (data.notify_emails)
+                setEmailList(data.notify_emails)
+            if (data.frequency_unit)
+                setSelectedSchedule(data.frequency_unit)
 
             if (data.email_config) {
-
                 if (data.email_config.scheduled_start)
                     setScheduleStartDate(data.email_config.scheduled_start)
                 if (data.email_config.scheduled_time)
@@ -234,9 +236,6 @@ const ChartNotify = (props) => {
         let cron_string = ''
         let time_split = time.split(':')
         let date_split = date.split('-')
-
-        console.log(date, time, frequency, radio, f, days, everyDayValue)
-
         if (frequency == 'Daily') {
             if (radio == 'Every Day') {
                 cron_string = time_split[1] + ' ' + time_split[0] + ' * * *'
@@ -270,10 +269,9 @@ const ChartNotify = (props) => {
                     str = str + days_obj[days[i]]
                 }
             }
-            console.log(str)
             cron_string = time_split[1] + ' ' + time_split[2] + ` * * ${str}`
         }
-        
+
         if (frequency == 'Monthly') {
             cron_string = time_split[1] + ' ' + time_split[2] + " " + date_split[2] + " " + '* *'
         }
@@ -318,7 +316,7 @@ const ChartNotify = (props) => {
         req['created_by'] = localStorage.getItem('username') ? localStorage.getItem('username') : ''
         req['app_type'] = props.appType
         req['app_id'] = props.id ? props.id : 'C222'
-        
+
 
         let email_config = {}
         email_config['subject'] = subjectContent.length > 0 ? subjectContent : `Update For ${props.id}`
@@ -347,14 +345,15 @@ const ChartNotify = (props) => {
         }
 
         req['email_config'] = email_config
-        req['frequency'] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
+        req['frequency'] = selectedSchedule == 'Repeat Once' ? 'Once' : convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
         req["frequency_unit"] = selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule
-        req["job_status"] = "NEW",
-            req["job_type"] = 'email',
-            req['notify_emails'] = emailList ? emailList : [] ,
-            req["scheduled_end"] = '2030-12-31'
+        req["job_status"] = "NEW"
+        req["job_type"] = 'email'
+        req['notify_emails'] = emailList ? emailList : []
+        req["scheduled_end"] = selectedSchedule == 'Repeat Once' ? scheduleEmailStartDate : "2030/12/12"
         req["scheduled_start"] = scheduleEmailStartDate
         req["cron_exp"] = convertExpresion(scheduleEmailStartDate, scheduleEmailTime, selectedSchedule == 'Repeat Once' ? 'Once' : selectedSchedule, radioValue, selectedTimeRange, Object.keys(selectedDays).filter(k => selectedDays[k] === true), everyDayValue)
+        req['job_id'] = props.job_id
 
 
         let res = await putJob(req, request_headers)
@@ -388,10 +387,6 @@ const ChartNotify = (props) => {
     const setEveryDayValues = (value) => {
         setEveryDayValue(value)
     }
-    // const onChangeEnd = (date, dateString) => {
-    //     setScheduleEndDate(dateString);
-    //     // setendTimeIso(moment(date).toISOString());
-    // };
 
 
     const handleChange = selectedItems => {
@@ -422,7 +417,7 @@ const ChartNotify = (props) => {
                     <hr style={{ borderTop: '0.5px solid #d9d9d9' }} />
                     <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr' }}>
                         <span>
-                            <p onDoubleClick={() => handleSubject(subject)} className="email-subject">Subject {subject ? <Input.TextArea style={{ width: '500px', marginLeft: '30px' }} autoSize={true} defaultValue={subjectContent} onChange={(e) => setSubjectContent(e.target.value)} onSubmit={() => handleSubject(subject)} /> : <><span className="email-sub">{subjectContent.length > 0 ? subjectContent : <> Update For {props.id}</>}</span> </>} </p>
+                            <p onDoubleClick={() => handleSubject(subject)} className="email-subject">Subject {subject ? <Input.TextArea style={{ width: '500px', marginLeft: '30px' }} autoSize={true} defaultValue={subjectContent} onChange={(e) => setSubjectContent(e.target.value)} onSubmit={() => handleSubject(subject)} /> : <><span className="email-sub">{subjectContent.length > 0 ? subjectContent : <> Update for {props.id}</>}</span> </>} </p>
                             <hr style={{ borderTop: '0.5px solid #d9d9d9' }} />
                         </span>
                         <div style={{ width: '200px', marginTop: '22px', marginLeft: '90px' }}>
@@ -436,7 +431,7 @@ const ChartNotify = (props) => {
                                 placeholder="Pick the type of alert"
                                 value={selectedAlert}
                                 onChange={handleSelectAlertChange}
-                                style={{ width: '100%',overflow:'auto' }}
+                                style={{ width: '100%', overflow: 'auto' }}
                             >
                                 {alertList.length > 0 ? alertList.map(item => (
                                     <Option draggable="true" value={item} key={item}>
@@ -451,8 +446,8 @@ const ChartNotify = (props) => {
                     <br />
                     <p className="email-content"> Hey,<br /><br />
 
-                        This is to inform you of the recept chart.
-                        Visit <a>www.cpv-mareana.com/alert-dashboard</a> to know more.<br /><br />
+                        This is to inform you of the recent update of this chart.
+                        <br /><br />
                         <Table style={{ width: '98%' }} dataSource={data} columns={tableColumns} pagination={false} />
                     </p> <br />
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '350px' }}>
@@ -461,7 +456,7 @@ const ChartNotify = (props) => {
                             {localStorage.getItem('username') ? localStorage.getItem('username') + '_variant' : ''}
                         </p>
 
-                        <div style={{ display: 'flex', flexDirection: 'row', gap: '17px',marginLeft:'40px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row', gap: '17px', marginLeft: '40px' }}>
                             <p className="email-attach-chart">Select to Attach</p>
                             <div className={png ? "attachment-report-chart-select" : "attachment-report-chart"} onClick={() => handlePng(png)} ><span><PaperClipOutlined style={{ marginLeft: '40px', marginTop: '5px', color: png ? 'white' : '' }} /></span><span className={png ? "attachment-report-text-chart-select" : "attachment-report-text-chart"}>Chartname</span> </div>
                             <div className={pdf ? "attachment-report-chart-select" : "attachment-report-chart"} onClick={() => handlePdf(pdf)} ><span><PaperClipOutlined style={{ marginLeft: '40px', marginTop: '5px', color: pdf ? 'white' : '' }} /></span><span className={pdf ? "attachment-report-text-chart-select" : "attachment-report-text-chart"}> Datatable</span></div>
@@ -475,7 +470,7 @@ const ChartNotify = (props) => {
                     <div style={{ margin: '24px' }}>
                         <div style={{ width: '300px' }}>
                             <ClockCircleOutlined style={{ color: "#093185", fontSize: '18px' }} />  <DatePicker style={{ width: '260px' }} placeholder="Start Date" bordered={false} onChange={onChangeEmailStart} value={scheduleEmailStartDate.length > 0 ? moment(scheduleEmailStartDate, "YYYY/MM/DD HH:mm:ss") : ''} />
-                            <hr style={{ borderTop: '1px solid #dbdbdb' }} />
+                            <hr style={{ borderTop: '1px solid #dbdbdb', width: '90%', marginRight: '30px' }} />
                         </div>
                         <div style={{ marginTop: '40px' }}>
                             <Row gutter={[16, 24]}>
@@ -485,9 +480,9 @@ const ChartNotify = (props) => {
                                             placeholder=''
                                             value={selectedSchedule}
                                             onChange={(e) => handleSelectScheduleChange(e)}
-                                            style={{ width: "100%", margin: "0px" }}
-                                            allowClear={true}
-                                            defaultValue = {selectedSchedule}
+                                            style={{ width: "100%", margin: "0px", borderRadius: '4px' }}
+                                            // allowClear={true}
+                                            defaultValue={selectedSchedule}
                                             className="antd-selectors"
                                         >
                                             {scheduleList &&
@@ -501,7 +496,7 @@ const ChartNotify = (props) => {
                                 </Col>
                                 <Col className='gutter-row' span={4}>
                                     <div >
-                                        <TimePicker style={{ width: '187px', marginLeft: '35px', height: '36px' }} onChange={onChangeEmailTime} value={scheduleEmailTime.length > 0 ? moment(scheduleEmailTime, "HH:mm:ss") : ''} />
+                                        <TimePicker style={{ width: '187px', marginLeft: '35px', height: '36px', borderRadius: '4px' }} onChange={onChangeEmailTime} value={scheduleEmailTime.length > 0 ? moment(scheduleEmailTime, "HH:mm:ss") : ''} />
                                     </div>
                                 </Col>
                             </Row>

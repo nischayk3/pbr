@@ -253,46 +253,48 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
           </Button>
         </Col>
       </Row>
-      <Row className="scatter-chart">
-        {showChart && (
-          <ScatterPlot
-            data={chartData}
-            layout={layoutData}
-            nodeClicked={chartNodeClicked}
-          />
-        )}
-      </Row>
-      {showChart && (
-        <Row className="tabledata">
-          <Col span={24}>
-            <Tabs
-              defaultActiveKey="3"
-              activeKey={tableKey}
-              onChange={tabChange}
-            >
-              <TabPane tab="Exclusion" key="1">
-                {exclusionTable.length >= 1 ? (
-                  <ExclusionTable
-                    setExclusionTable={setExclusionTable}
-                    exclusionTable={exclusionTable}
-                    postChartData={postChartData}
-                    setPostChartData={setPostChartData}
-                    exclusionIdCounter={exclusionIdCounter}
-                  />
-                ) : (
-                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                )}
-              </TabPane>
-              <TabPane tab="Violation" key="2">
-                <ViolationTable postChartData={postChartData} />
-              </TabPane>
-              <TabPane tab="Data Table" key="3">
-                <DataTable postChartData={postChartData} />
-              </TabPane>
-            </Tabs>
-          </Col>
+      <div className="chart-table">
+        <Row className="scatter-chart">
+          {showChart && (
+            <ScatterPlot
+              data={chartData}
+              layout={layoutData}
+              nodeClicked={chartNodeClicked}
+            />
+          )}
         </Row>
-      )}
+        {showChart && (
+          <Row className="tabledata">
+            <Col span={24}>
+              <Tabs
+                defaultActiveKey="3"
+                activeKey={tableKey}
+                onChange={tabChange}
+              >
+                <TabPane tab="Exclusion" key="1">
+                  {exclusionTable.length >= 1 ? (
+                    <ExclusionTable
+                      setExclusionTable={setExclusionTable}
+                      exclusionTable={exclusionTable}
+                      postChartData={postChartData}
+                      setPostChartData={setPostChartData}
+                      exclusionIdCounter={exclusionIdCounter}
+                    />
+                  ) : (
+                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                  )}
+                </TabPane>
+                <TabPane tab="Violation" key="2">
+                  <ViolationTable postChartData={postChartData} />
+                </TabPane>
+                <TabPane tab="Data Table" key="3">
+                  <DataTable postChartData={postChartData} />
+                </TabPane>
+              </Tabs>
+            </Col>
+          </Row>
+        )}
+      </div>
       <Modal
         title="Batch Parameter"
         isModalVisible={isModalVisible}

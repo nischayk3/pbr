@@ -22,7 +22,7 @@
     {
     font-family: Roboto;
     font-style: normal;
-    font-weight: normal;
+    font-weight: 400;
     font-size: 16px;
     line-height: 22px;
     color: rgba(0, 0, 0, 0.85);
@@ -35,7 +35,7 @@
     {
     font-family: Roboto;
     font-style: normal;
-    font-weight: normal;
+    font-weight: 500;
     font-size: 16px;
     line-height: 22px;
     color:#093185 !important;
@@ -119,6 +119,8 @@ background: #EAEAEA !important;
 align-items: center !important;
 margin-left: 10px;
 color: black !important;
+border: none;
+
 }
 .day-buttons-one
 {
@@ -128,6 +130,7 @@ height: 45px !important;
 background: #EAEAEA !important;
 align-items: center !important;
 color: black !important;
+border: none;
 }
 
 
@@ -140,6 +143,8 @@ background: #486BC9  !important;
 align-items: center !important;
 margin-left: 18px;
 color: white !important;
+border: none;
+
 }
 .selected-day-buttons-one
 {
@@ -149,6 +154,8 @@ height: 45px !important;
 background: #486BC9  !important;
 align-items: center !important;
 color: white !important;
+border: none;
+
 }
 
 .select-days

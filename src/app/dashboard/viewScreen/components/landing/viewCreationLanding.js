@@ -16,6 +16,7 @@ import {
 import {
 	isLoadView,
 	sendSelectedParamData,
+	resetView,
 } from '../../../../../duck/actions/viewAction';
 
 export default function Landing(props) {
@@ -157,6 +158,7 @@ export default function Landing(props) {
 						className='create-new'
 						onClick={() => {
 							history.push(`${match.url}/0`);
+							dispatch(resetView());
 							dispatch(isLoadView(false));
 							dispatch(sendSelectedParamData([]));
 						}}>
