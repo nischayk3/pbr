@@ -1,4 +1,3 @@
-import './dashboard.scss';
 import React, { lazy, useEffect } from 'react';
 import {
 	Route,
@@ -25,7 +24,7 @@ import ScreenControls from '../../pages/UserRolesAndAccess/ScreenControls/Screen
 import PaperBatchRecords from './paperBatchRecords';
 import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate';
 import PbrReviewer from './pbrReviewer';
-
+import './dashboard.scss';
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
@@ -50,7 +49,6 @@ const HierarchyMain = lazy(() =>
 );
 const Faq = lazy(() => import('./faq'));
 const { Content } = Layout;
-
 
 const Dashboard = () => {
 	const match = useRouteMatch();
@@ -151,9 +149,7 @@ const Dashboard = () => {
 									path={`${match.url}/paper_batch_records`}>
 									<PaperBatchRecords />
 								</Route>
-								<Route
-									key='pbr_reviewer'
-									path={`${match.url}/pbr_reviewer`}>
+								<Route key='pbr_reviewer' path={`${match.url}/pbr_reviewer`}>
 									<PbrReviewer />
 								</Route>
 								<Route
@@ -175,10 +171,27 @@ const Dashboard = () => {
 									path={`${match.url}/molecule_hierarchy_configuration`}>
 									<Hierarchy />
 								</Route>
-								<Route key='userRolesAndAccess' path={`${match.url}/user-roles-and-access`} exact component={UserRolesAndAccess} />
-								<Route key='user-configuration' path={`${match.url}/user-roles-and-access/user-configuration`} component={UserConfiguration} />
-								<Route key='roles-and-access' path={`${match.url}/user-roles-and-access/roles-and-access`} component={RolesAndAccess} />
-								<Route key='screen-controls' path={`${match.url}/user-roles-and-access/screen-controls`} component={ScreenControls} />
+								<Route
+									key='userRolesAndAccess'
+									path={`${match.url}/user-roles-and-access`}
+									exact
+									component={UserRolesAndAccess}
+								/>
+								<Route
+									key='user-configuration'
+									path={`${match.url}/user-roles-and-access/user-configuration`}
+									component={UserConfiguration}
+								/>
+								<Route
+									key='roles-and-access'
+									path={`${match.url}/user-roles-and-access/roles-and-access`}
+									component={RolesAndAccess}
+								/>
+								<Route
+									key='screen-controls'
+									path={`${match.url}/user-roles-and-access/screen-controls`}
+									component={ScreenControls}
+								/>
 								<Route
 									key='hierarchy_main'
 									path={`${match.url}/molecule_hierarchy_configurations/untilted_view`}>
