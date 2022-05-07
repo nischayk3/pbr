@@ -1,5 +1,4 @@
 import { useState } from 'react'
-
 import BreadCrumbWrapper from '../../../components/BreadCrumbWrapper'
 import StoryLine from '../../../components/Analysis/StoryLine/StoryLine'
 import Summary from '../../../components/Analysis/Summary/Summary'
@@ -62,14 +61,16 @@ const parameterDetails = [
 
 const storyLineParameters = ['Temperature Combined', 'Pressure Altered']
 
+
 const AnalysisModel = () => {
     const [parameters] = useState(parameterDetails)
-    const [storyLine] = useState(storyLineParameters)
+    const [storyLine, setStoryLine] = useState(storyLineParameters)
+    
 
     return (
         <>
             <BreadCrumbWrapper />
-            <StoryLine storyLine={storyLine} />
+            <StoryLine storyLine={storyLine} setStoryLine={setStoryLine} />
             <Summary />
             <AnalysisData parameters={parameters} />
         </>
