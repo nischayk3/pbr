@@ -166,7 +166,6 @@ const ViewCreation = props => {
 
 	const handleSaveView = () => {
 		const viewData = JSON.parse(JSON.stringify(viewJson));
-       console.log(viewData)
 		viewData.forEach(element => {
 			(element.functions = viewState.functions),
 				(element.parameters = viewState.parameters),
