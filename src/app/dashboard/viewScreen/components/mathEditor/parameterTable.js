@@ -38,6 +38,7 @@ const ParameterTable = props => {
 	const [checked, setChecked] = useState(null);
 	const [parameters, setParameters] = useState({});
 	const [variableParam, setVariableParam] = useState({});
+	const [ fun,setFun] = useState({})
 
 	const {
 		rowDisable,
@@ -289,8 +290,8 @@ const ParameterTable = props => {
 			dispatch(createSummaryData(arr3));
 
 			primarySelectedData.parameter_name = functionName;
+			
 			let funObj1 = {};
-			let fun = {};
 			funObj1['name'] = functionName;
 			funObj1['defination'] = paramReducer.funDetails;
 			//`{${'V' + counter}}`;

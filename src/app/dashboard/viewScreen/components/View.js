@@ -41,6 +41,7 @@ import {
 	sendSelectedParamData,
 } from '../../../../duck/actions/viewAction';
 import Signature from '../../../../components/ElectronicSignature/signature';
+
 const { Panel } = Collapse;
 
 const ViewCreation = props => {
@@ -111,6 +112,7 @@ const ViewCreation = props => {
 				view_disp_id: pathString.viewId,
 				view_version: pathString.viewVersion,
 			};
+			
 			setViewDisplayId(pathString.viewId);
 			setViewVersion(pathString.viewVersion);
 			loadView(_reqLoad);
@@ -164,7 +166,7 @@ const ViewCreation = props => {
 
 	const handleSaveView = () => {
 		const viewData = JSON.parse(JSON.stringify(viewJson));
-
+       console.log(viewData)
 		viewData.forEach(element => {
 			(element.functions = viewState.functions),
 				(element.parameters = viewState.parameters),
@@ -225,6 +227,7 @@ const ViewCreation = props => {
 	};
 
 	const loadView = async _reqLoad => {
+		
 		try {
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
