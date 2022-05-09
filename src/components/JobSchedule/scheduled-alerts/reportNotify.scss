@@ -1,5 +1,22 @@
 .report-notify
 {
+  .ant-picker {
+    border-radius: 4px !important;
+  }
+ .ant-select-selector {
+    border-radius: 4px !important;
+  }
+  input::placeholder {
+    font-family: Roboto !important;
+  }
+  .radio-daily {
+    span {
+      font-family: 'Roboto';
+font-style: normal;
+font-weight: 300;
+font-size: 16px;
+    }
+  }
     .tab-btns
     {
         margin-top: 10%;
@@ -11,6 +28,10 @@
    margin-left: 10%;
 }
     .evaluation-tabs{
+      button:first-child:hover {
+        background-color: #486BC9 !important ;
+        color: white;
+      }
     .ant-tabs-nav-wrap
     {
     height:50px;
@@ -95,6 +116,9 @@
     line-height: 22px;
     border:0px;
     color: #262626;
+    :hover{
+      color: #486BC9;
+    }
 }
 
 .end-dates
@@ -113,11 +137,10 @@
 .day-buttons-report
 {
 border-radius: 50% !important;
-width: 45px !important;
-height: 45px !important;
+width: 35px !important;
+height: 35px !important;
 background: #EAEAEA !important;
 align-items: center !important;
-margin-left: 10px;
 color: black !important;
 border: none;
 
@@ -125,8 +148,8 @@ border: none;
 .day-buttons-one
 {
 border-radius: 50% !important;
-width: 45px !important;
-height: 45px !important;
+width: 35px !important;
+height: 35px !important;
 background: #EAEAEA !important;
 align-items: center !important;
 color: black !important;
@@ -137,11 +160,10 @@ border: none;
 .selected-day-buttons-report
 {
 border-radius: 50% !important;
-width: 45px !important;
-height: 45px !important;
+width: 35px !important;
+height: 35px !important;
 background: #486BC9  !important;
 align-items: center !important;
-margin-left: 18px;
 color: white !important;
 border: none;
 
@@ -149,13 +171,12 @@ border: none;
 .selected-day-buttons-one
 {
 border-radius: 50% !important;
-width: 45px !important;
-height: 45px !important;
+width: 35px !important;
+height: 35px !important;
 background: #486BC9  !important;
 align-items: center !important;
 color: white !important;
 border: none;
-
 }
 
 .select-days
@@ -163,6 +184,10 @@ border: none;
   margin-top: 30px;
   display: flex;
   flex-direction: row;
+  button {
+    padding: 0px !important;
+    margin-right: 20px !important;
+  }
 }
 
 .end-date
@@ -276,6 +301,8 @@ border-radius: 4px;
 }
 .attachment-report-report
 {
+  display: flex;
+  align-items: center;
   background: #F1F1F1;
 border-radius: 80px;
 width: 188px;
