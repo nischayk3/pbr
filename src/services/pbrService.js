@@ -7,7 +7,7 @@ import {
 export const getBoundingBoxData = (_queryParam) => {
     return Service.get(
         MDH_APP_PYTHON_SERVICE +
-            '/pbr/udh/get_data?fileId=BatchRecordExample2Pfd_page-0.jpeg.json&pageId=1',
+            '/pbr/udh/get_data?fileId=Batch Record Example 2_page-0.jpeg.json&pageId=1',
         _queryParam
     ).then(
         (response) => {

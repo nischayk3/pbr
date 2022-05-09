@@ -1,5 +1,11 @@
 .chart_notify-notify
 {
+  .ant-picker {
+    border-radius: 4px !important;
+  }
+ .ant-select-selector {
+    border-radius: 4px !important;
+  }
   .ant-table-thead
   {
     font-size: 16px;
@@ -19,6 +25,9 @@
    margin-left: 10%;
 }
     .evaluation-tabs{
+      button:first-child:hover {
+        background-color: #486BC9 !important ;
+      }
     .ant-tabs-nav-wrap
     {
     height:50px;
@@ -403,6 +412,7 @@ thead[class*="ant-table-thead"] th{
 .ant-select-selector
 {
     height: 36px;
+    border-radius: 4px !important;
 }
 
 
