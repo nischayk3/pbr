@@ -141,7 +141,7 @@ const ParameterTable = props => {
 			item === 'sourceType' ||
 			item === 'coverage'
 		) {
-			console.log('i');
+			// console.log('i');
 		} else {
 			columns.push({
 				title: item,
@@ -260,6 +260,7 @@ const ParameterTable = props => {
 			dispatch(createVariable(variableParam));
 			dispatch(viewParamMap(variableParam));
 			setVariableCreate(false);
+			props.getParamData(variableParam)
 		}
 	}, [variableCreate]);
 
@@ -349,6 +350,8 @@ const ParameterTable = props => {
 		setParameters(batchExcludeJson);
 		setTableData(batchRecord);
 	};
+
+
 
 	return (
 		<>
