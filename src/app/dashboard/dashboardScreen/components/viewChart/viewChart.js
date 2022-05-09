@@ -876,7 +876,7 @@ const ViewChart = (props, ref) => {
                         console.log("indise ", el)
                         return (
                             <Col className="gutter-row" span={12} style={{ padding: '1px 22px' }}>
-                                <div className='chartCard' style={{ border: isEditable == index ? '2px solid #486BC9' : '2px solid #D9D9D9' }}>
+                                <div className='chartCard' style={{ border: isEditable == index ? '1px solid #486BC9' : '2px solid #D9D9D9' }}>
                                     <div className='inner-chart-filters'>
                                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: '5px 7px' }}>
                                             <div className='dashboard-chart-name'>{el.chart_name}</div>

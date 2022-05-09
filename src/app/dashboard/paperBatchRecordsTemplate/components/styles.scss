@@ -41,13 +41,14 @@ canvas {
     .ant-form-item {
         margin-bottom: 10px;
     }
+    .input_field {
+    p, input {
+        margin-bottom: 6px !important;
+    }
+}
 }
 
-// .input_field {
-//     p {
-//         margin-bottom: 6px !important;
-//     }
-// }
+
 
 
 .parameterAddingBlock {
