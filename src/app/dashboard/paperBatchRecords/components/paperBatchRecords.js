@@ -109,8 +109,9 @@ function PaperBatchRecords() {
         try {
             dispatch(showLoader());
             const tableResponse = await getPbrTemplateData(req);
-            const tableColumn = tableColumns(tableResponse?.Data[0])
+            const tableColumn = tableColumns(tableResponse?.Data)
             const newArray1 = tableColumn.filter(item => item.dataIndex != 'changed_by' && item.dataIndex != 'changed_on' && item.dataIndex != 'created_by' && item.dataIndex != 'created_on' && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
+            console.log("newArray1", tableColumn)
             console.log("newArray1", newArray1)
             if (tableResponse['status-code'] === 200) {
                 setTemplateColumns(newArray1)
@@ -442,11 +443,11 @@ function PaperBatchRecords() {
 
                                 <Radio.Group
                                     // onChange={onChange}
-                                    defaultValue='a'
+                                    defaultValue='0'
                                     className='radioPdfBlock'
                                 >
-                                    {dataView.map(item => (
-                                        <Radio.Button value={item.filename}>
+                                    {dataView.map((item,index)=> (
+                                        <Radio.Button value={`${index}`}>
                                             <div className='pdfListBlock'>
                                                 <img src={pdfIcon} alt='pdfIcon' />
                                                 <span>{item.filename.substring(0, 15) + '...'}</span>

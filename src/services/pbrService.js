@@ -35,7 +35,7 @@ export const savePbrTemplate = (request) => {
 
 export const getPbrReviewerData = (_queryParam) => {
     return Service.get(
-        MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr_data',
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr_template',
         _queryParam
     ).then(
         (response) => {
