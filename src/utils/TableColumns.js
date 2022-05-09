@@ -1,6 +1,6 @@
 export const tableColumns = (item) => {
   let objkeys =
-    item !== undefined && item.length > 0 ? Object.keys(item[0]) : [];
+    item !== undefined && Object.keys(item).length > 0 ? Object.keys(item) : [];
 
   let column = [];
   objkeys &&

@@ -6,7 +6,7 @@ import {
 
 export const getBoundingBoxData = (_queryParam) => {
     return Service.get(
-        'http://localhost' +
+        MDH_APP_PYTHON_SERVICE +
             '/pbr/udh/get_data?fileId=BatchRecordExample2Pfd_page-0.jpeg.json&pageId=1',
         _queryParam
     ).then(
@@ -21,7 +21,7 @@ export const getBoundingBoxData = (_queryParam) => {
 
 export const savePbrTemplate = (request) => {
     return Service.put(
-        'http://localhost' + '/pbr/udh/save_records',
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/save_records',
         request
     ).then(
         (response) => {
@@ -36,6 +36,48 @@ export const savePbrTemplate = (request) => {
 export const getPbrReviewerData = (_queryParam) => {
     return Service.get(
         MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr_data',
+        _queryParam
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+export const processBatchRecord = (_queryParam) => {
+    return Service.get(
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/extract_from_template',
+        _queryParam
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+export const getPbrTemplateData = (_queryParam) => {
+    return Service.get(
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/pbr_template',
+        _queryParam
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+export const getDataView = (_queryParam) => {
+    return Service.get(
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_data_view',
         _queryParam
     ).then(
         (response) => {
