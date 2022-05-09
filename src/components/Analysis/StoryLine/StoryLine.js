@@ -20,7 +20,8 @@ const StoryLine = props => {
                 position: { x: i * 200 + 50, y: 25 },
                 sourcePosition: 'right',
                 targetPosition: 'left',
-                type: i ? '' : 'input'
+                type: i ? '' : 'input',
+                style: { backgroundColor: '#fff', color: '#000' }
             }
             nodes.push(node)
         })
@@ -35,7 +36,7 @@ const StoryLine = props => {
                 target: `node-${i + 1}`,
                 type: 'smoothstep',
                 markerEnd: { type: MarkerType.ArrowClosed },
-                style: { stroke: '#000' }
+                style: { stroke: '#72370A' }
             }
             setEdges(edges => [...edges, edge])
         }
@@ -47,7 +48,7 @@ const StoryLine = props => {
     }
 
     return (
-        <div style={{ width: '100%', height: '20%' }}>
+        <div className="storyline">
             <ReactFlow
                 panOnScroll={false}
                 panOnDrag={false}
@@ -56,10 +57,11 @@ const StoryLine = props => {
                 zoomOnDoubleClick={false}
                 nodes={nodes}
                 edges={edges}
-                defaultMarkerColor="#000"
+                defaultMarkerColor="#72370A"
                 onNodesChange={onNodesChange}
+                className="react-flow__storyline"
             />
-            <Button onClick={addNode}>Add Node</Button>
+            <Button onClick={addNode} className="button-solid__primary">Add Node</Button>
         </div>
     )
 }

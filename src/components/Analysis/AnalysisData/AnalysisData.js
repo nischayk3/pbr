@@ -8,16 +8,15 @@ const { Panel } = Collapse
 
 const AnalysisData = props => {
     return (
-        <div>
-            <DatabaseOutlined />
-            <p>Data</p>
+        <>
+            <p className='cstm-txt'><DatabaseOutlined className="icon-primary" /> Data</p>
             <Collapse accordion expandIconPosition="right">
-                <Panel header={<div><span>{'Temperature Combined'}</span>{['Input', 'Output', 'Ignore'].map(opt => <span>{opt}</span>)}</div>} key={1}>
+                <Panel className='cstm-twocol-panel' header={<div><span className='cstm-txt'>{'Temperature Combined'}</span>{['Input', 'Output', 'Ignore'].map(opt => <span className='cstm-btns'>{opt}</span>)}</div>} key={1}>
                     <SideView />
                     <DerivedParameterDetails parameters={props.parameters} />
                 </Panel>
             </Collapse>
-        </div>
+        </>
     )
 }
 

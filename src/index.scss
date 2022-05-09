@@ -2,8 +2,11 @@
 @import "./assets/styles/sass/variables";
 @import url("https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700;800;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
-//font-family: 'Maven Pro', sans-serif;
-//font-family: 'Roboto', sans-serif;
+:root {
+  --primary-color: #093185;
+  --border-color: #40a9ff;
+}
+
 
 body {
   margin: 0;
@@ -48,4 +51,23 @@ input[type="number"]::-webkit-outer-spin-button {
 // }
 #logo-small {
   display: none;
+}
+
+.custom-table-wrapper .button-dashed__primary {
+ color: var(--primary-color);
+ border: 1px dashed var(--primary-color);
+}
+
+button.button-solid__primary {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+button.button-bordered__primary {
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.icon-primary {
+  color: var(--primary-color) !important;
 }

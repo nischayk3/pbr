@@ -8,7 +8,7 @@ const Summary = () => {
     const getPanels = () => {
         if (![].length) {
             return (
-                <Panel header={<div><span>{'Temperature Combined'}</span> <span><EditOutlined /> Edit transformation</span></div>} key="1">
+                <Panel header={<div><span className='cstm-bordered-txt'>{'Temperature Combined'}</span> <span className='cstm-icn-txt'><EditOutlined /> Edit transformation</span></div>} key="1">
                     <p>{'text'}</p>
                 </Panel>
             )
@@ -20,14 +20,13 @@ const Summary = () => {
     }
 
     return (
-        <div>
-            <FileTextOutlined />
-            <p>Summary</p>
-            <Button>Preview</Button>
+        <>
+            <p><FileTextOutlined className="icon-primary" /> Summary</p>
+            <Button className='button-bordered__primary'>Preview</Button>
             <Collapse expandIconPosition="right">
                 {getPanels()}
             </Collapse>
-        </div>
+        </>
     )
 }
 

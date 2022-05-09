@@ -235,3 +235,93 @@ p {
 .react-flow__attribution {
   display: none;
 }
+
+.react-flow__storyline {
+  max-width: 90%;
+  top: 5px;
+  overflow-x: auto !important;
+  max-height: 80px;
+}
+
+.react-flow__storyline .selectable {
+  background: #B08968 !important;
+  border: none;
+  color: #fff !important;
+  padding: 5px 10px;
+}
+
+.storyline {
+  margin-bottom: 15px;
+  width: 100%;
+  height: 120px;
+  position: relative;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
+  background: #fff;
+}
+
+.storyline button.ant-btn {
+  position: absolute;
+  right: 20px;
+  top: 30%;
+}
+
+.cstm-txt {
+  margin-top: 20px;
+}
+
+.cstm-bordered-txt {
+  border: 1px solid #2F54EB;
+  padding: 3px 10px;
+  color: #2F54EB;
+  display: inline-block;
+  font-size: 12px;
+  line-height: 17px;
+  margin-right: 50px;
+}
+
+.cstm-icn-txt .anticon-edit {
+  color: #093185;
+  display: inline-block;
+  margin-right: 3px;
+}
+
+.cstm-icn-txt {
+  color: #093185;
+  font-size: 14px;
+}
+
+.custom-table-wrapper .ant-collapse-header {
+  background: #F1F7FF;
+}
+
+.cstm-icn-txt .anticon-edit {
+  color: #093185;
+  display: inline-block;
+  margin-right: 3px;
+}
+
+.cstm-icn-txt {
+  color: #093185;
+  font-size: 14px;
+}
+
+.custom-table-wrapper .ant-collapse-header {
+  background: #F1F7FF;
+}
+
+.ant-collapse-header span.cstm-txt {
+  color: #000;
+  font-size: 16px;
+  display: inline-block;
+  margin: 0 50px 0 0;
+}
+
+.ant-collapse-header .cstm-btns {
+  background: #EFEFEF;
+  padding: 3px 12px;
+  font-size: 14px;
+  display: inline-block;
+  line-height: 20px;
+  border-radius: 25px;
+  margin: 0 14px 0 0;
+}

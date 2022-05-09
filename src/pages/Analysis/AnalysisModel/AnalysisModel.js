@@ -63,16 +63,20 @@ const storyLineParameters = ['Temperature Combined', 'Pressure Altered']
 
 
 const AnalysisModel = () => {
-    const [parameters] = useState(parameterDetails)
+    const [parameters] = useState([])
     const [storyLine, setStoryLine] = useState(storyLineParameters)
-    
+
 
     return (
         <>
             <BreadCrumbWrapper />
             <StoryLine storyLine={storyLine} setStoryLine={setStoryLine} />
-            <Summary />
-            <AnalysisData parameters={parameters} />
+            <div className="custom-user-roles-wrapper">
+                <div className="custom-table-wrapper">
+                    <Summary />
+                    <AnalysisData parameters={parameters} />
+                </div>
+            </div>
         </>
     )
 }
