@@ -100,3 +100,18 @@ export const adHocFilesParameterTree = request => {
 		}
 	);
 };
+
+export const viewEvaluate = request => {
+	return Service.post(
+		BMS_APP_PYTHON_SERVICE + '/view-evaluate',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};

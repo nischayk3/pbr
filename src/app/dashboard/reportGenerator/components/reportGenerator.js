@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
 import { sendReport, screenChange } from '../../../../duck/actions/reportDesignerAction';
-import { saveReportGenerator, getReportGenerator } from '../../../../services/reportGeneratorServices';
+import { saveReportGenerator, getReportGenerator,latexReport,latexBuilder } from '../../../../services/reportGeneratorServices';
 import SaveModal from '../../../../components/SaveModal/saveModal'
 import {
     hideLoader,
@@ -269,7 +269,10 @@ function ReportGenerator(props) {
 
         dispatch(showLoader())
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
-        setChartLayout(ReportData.charts_layout ? createChartRecord(ReportData.charts_layout) : {})
+        if(ReportData.layout_info &&  ReportData.layout_info.charts_layout)
+        setChartLayout(ReportData.layout_info.charts_layout ? createChartRecord(ReportData.layout_info.charts_layout) : {})
+        else
+        setChartLayout(ReportData.charts_layout ? ReportData.charts_layout : {})
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setCharts(ReportData['chart_int_ids'] ? createArraObj(ReportData['chart_int_ids']) : [])
         setTable(ReportData['layout_info'] ? getTableData(ReportData['layout_info'], ReportData.layout_info.charts_layout ? ReportData.layout_info.charts_layout : {}) : {})
@@ -315,76 +318,106 @@ function ReportGenerator(props) {
         //      });
 
     }
-    const generateReportObject = (object) => {
-        let title_object = {}
-        title_object['heading'] = object['heading']
-        title_object['numbered'] = true
-        let title_content = []
-        let title_heading = {}
-        title_heading['type'] = "table"
-        title_heading['table'] = {
-            "header": [
-                {
-                    "fieldName": "key",
-                    "displayName": "",
-                    "display": true,
-                    "sortOrder": 1,
-                    "dataType": "text"
-                },
-                {
-                    "fieldName": "value",
-                    "displayName": "",
-                    "display": true,
-                    "sortOrder": 1,
-                    "dataType": "text"
-                }
-            ],
-            "content": object.content
-        }
-        title_content.push(title_heading)
+    // const generateReportObject = (object) => {
+    //     let title_object = {}
+    //     title_object['heading'] = object['heading']
+    //     title_object['numbered'] = true
+    //     let title_content = []
+    //     let title_heading = {}
+    //     title_heading['type'] = "table"
+    //     title_heading['table'] = {
+    //         "header": [
+    //             {
+    //                 "fieldName": "key",
+    //                 "displayName": "",
+    //                 "display": true,
+    //                 "sortOrder": 1,
+    //                 "dataType": "text"
+    //             },
+    //             {
+    //                 "fieldName": "value",
+    //                 "displayName": "",
+    //                 "display": true,
+    //                 "sortOrder": 1,
+    //                 "dataType": "text"
+    //             }
+    //         ],
+    //         "content": object.content
+    //     }
+    //     title_content.push(title_heading)
 
-        let charts_arr = object.charts
+    //     let charts_arr = object.charts
 
-        for (let i = 0; i < charts_arr.length; i++) {
-            let obj = {
-                type: "figure",
-                figure: {
-                    "caption": charts_arr[i],
-                    "type": "svg",
-                    "image": "https://merck-cpvpoc.mareana.com/charts/snippet_POC_ABV4297_reduced_nocomments_222.png"
-                }
-            }
-            title_content.push(obj)
-        }
+    //     for (let i = 0; i < charts_arr.length; i++) {
+    //         let obj = {
+    //             type: "figure",
+    //             figure: {
+    //                 "caption": charts_arr[i],
+    //                 "type": "svg",
+    //                 "image": "https://merck-cpvpoc.mareana.com/charts/snippet_POC_ABV4297_reduced_nocomments_222.png"
+    //             }
+    //         }
+    //         title_content.push(obj)
+    //     }
 
-        title_object['content'] = title_content
+    //     title_object['content'] = title_content
 
-        return title_object
-    }
+    //     return title_object
+    // }
+    
 
-    const generateReport = () => {
+    // const generateReport = () => {
+    //     let generate_obj = {}
+    //     let title_page = table[0] ? table[0] : {}
+    //     let sections = table.length > 0 ? table.filter((item, index) => index > 0) : []
+
+    //     generate_obj['titlepage'] = generateReportObject(title_page)
+
+    //     let sections_arr = []
+
+    //     for (let i = 0; i < sections.length; i++) {
+    //         let obj = generateReportObject(sections[i])
+    //         sections_arr.push(obj)
+    //     }
+
+    //     generate_obj['sections'] = sections_arr
+    //     let final_obj = {}
+    //     final_obj['layout_info'] = generate_obj
+    //     final_obj['chart_layout'] = chartLayout
+
+
+    //     console.log(JSON.stringify(final_obj))
+
+    // }
+
+   const generateReport = async () => 
+    {
+        // {
+        //     "rjson": {
+        //         "data": {
         let generate_obj = {}
         let title_page = table[0] ? table[0] : {}
         let sections = table.length > 0 ? table.filter((item, index) => index > 0) : []
 
-        generate_obj['titlepage'] = generateReportObject(title_page)
+        generate_obj['titlepage'] = title_page
+        generate_obj['sections'] = sections
 
-        let sections_arr = []
-
-        for (let i = 0; i < sections.length; i++) {
-            let obj = generateReportObject(sections[i])
-            sections_arr.push(obj)
-        }
-
-        generate_obj['sections'] = sections_arr
         let final_obj = {}
         final_obj['layout_info'] = generate_obj
-        final_obj['chart_layout'] = chartLayout
+        final_obj['charts_layout'] = chartLayout
 
+        let rjson = {}
+        rjson['data'] = final_obj
 
-        console.log(JSON.stringify(final_obj))
-
+        let data = {rjson:rjson}
+        
+        let json_response = await latexBuilder(data)
+        if(json_response.statuscode==200)
+        {
+           let latex_response = await latexReport(json_response.latex_json)
+        }
     }
+
 
     const prepareJson = () => {
 
@@ -480,9 +513,9 @@ function ReportGenerator(props) {
 
 
 
-    const handleEdit = (value, heading, k) => {
+    const handleEdit = (value, heading, k) => 
+    {
         let objIndex = table.findIndex((t => t.heading == heading));
-
         if (objIndex >= 0) {
             if (table[objIndex].content.length > 0) {
                 let cntnt_Index = table[objIndex].content.findIndex((t => t.key == k));
@@ -490,10 +523,6 @@ function ReportGenerator(props) {
             }
         }
     }
-
-
-    console.log(table)
-
 
 
     return (

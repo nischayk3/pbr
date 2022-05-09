@@ -10,6 +10,8 @@ import {
 	sendFunctionName,
 	sendFunDetails,
 } from '../../../../../duck/actions/viewAction';
+import { viewEvaluate } from '../../../../../services/viewCreationPublishing';
+import { showNotification } from '../../../../../duck/actions/commonActions';
 
 const MathFunction = props => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
@@ -54,8 +56,25 @@ const MathFunction = props => {
 		}, 1000);
 	};
 
-	const functionEvaluate = () => {
-		setIsFunction(true);
+	const functionEvaluate = async () => {
+		let req = {
+			material_id: "BELATACEPT",
+			functions: { 1: { defination: mathEditorValue, name: 'function-1' } },
+			parameters: props.data ? props.data : {}
+		}
+
+		let evaluate_respone = await viewEvaluate({ data: req })
+
+		if (evaluate_respone.view_status == "") 
+		{
+			dispatch(showNotification('success', 'Evaluated'))
+			setIsFunction(true);
+		}
+		else
+			dispatch(showNotification('error', 'Not Evaluated'))
+
+		// if()
+
 		//setIsEvaluatingFun(true);
 		//	setIsFunctionInvalid(true);
 	};
@@ -64,6 +83,8 @@ const MathFunction = props => {
 		setIsFunctionInvalid(false);
 		setIsEvaluatingFun(false);
 	};
+
+	console.log(props)
 
 	return (
 		<>

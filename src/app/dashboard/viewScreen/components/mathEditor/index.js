@@ -18,6 +18,7 @@ const MathEditor = props => {
 	const [variableCreate, setVariableCreate] = useState(false);
 	const [ischeckBox, setIscheckBox] = useState(false);
 	const [varClick, setVarClick] = useState(false);
+	const [paramData,setParamData] = useState({})
 
 	const { Panel } = Collapse;
 	const {
@@ -69,12 +70,18 @@ const MathEditor = props => {
 		setVarClick(false);
 		setCardTitle('Create Variable');
 	};
+
 	const callbackCheckbox = val => {
 		if (val) {
 			setCardTitle('Done');
 			setVarClick(true);
 		}
 	};
+
+	const getParamData = (data) =>
+	{
+		setParamData(data)
+	}
 
 	const deleteVariable = param => {
 		let lastIndex;
@@ -108,7 +115,7 @@ const MathEditor = props => {
 				className='viewCreation-materialsPanel'
 				header='Math Editor'
 				key='1'>
-				<MathFunction />
+				<MathFunction data={paramData} />
 				<div className='variable-wrapper'>
 					<CreateVariable
 						addVariable={addVariable}
@@ -140,6 +147,7 @@ const MathEditor = props => {
 					setViewJson={setViewJson}
 					viewSummaryBatch={viewSummaryBatch}
 					setViewSummaryBatch={setViewSummaryBatch}
+					getParamData={getParamData}
 				/>
 			</Panel>
 		</Collapse>
