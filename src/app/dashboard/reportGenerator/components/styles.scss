@@ -11,35 +11,57 @@ thead[class*="ant-table-thead"] th{
   background-color: #F2FBFF !important;
 }
 
-tr:nth-child(odd){ 
-  background: #F9F9F9;
+.report-card
+{
+  .ant-card-head .ant-card-head-title {
+    font-family: "Maven Pro", sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    padding: 1px 18px;
+    margin-left: 12px;
 }
+}
+
+// tr:nth-child(odd){ 
+//   background: #F9F9F9;
+// }
 table {
-  font-family: arial, sans-serif;
-  border: 1px solid #dddddd;
-  // border-collapse: collapse;
+  border-collapse: collapse;
   width: 100%;
-  // border: none;
-  
 }
 
+td{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    border: none;
+    color: #262626;
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    margin:10px;
+    padding-left: 30px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
  th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-  background: #F2FBFFBA;
-  border-left:none;
-  border-right:none;
-  border-bottom:none
-
-}
- td {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-  border-left:none;
-  border-right:none
-
+   
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    color: #262626;
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    margin:10px;
+    padding-left: 30px;
+    background: #F2FBFFBA;
 }
 
 // .table {
@@ -198,6 +220,7 @@ table {
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
+  margin-left: 0px !important;
   /* identical to box height */
 
   

@@ -60,22 +60,24 @@ function ReportDesignerForm(props) {
     }
 
     return (
-        <div className="generator-header">
-            <div className="header-value">
-                Report ID : {reportId}
+        <div className="reportDesigner-gen ">
+        <div style={{width:'100%',marginLeft:'22px'}}>
+            <div style={{width:'auto',float:'left'}}>
+            <span className="report-heading"> Report ID <span style={{marginRight:'10px',marginLeft:'10px'}} >:</span> {reportId} </span>
             </div>
-            <div className="header-value">
-                Report Name : {reportName}
+            <div style={{width:'auto',float:'left',marginLeft:'55px'}}>
+               <span className="report-heading"> Report Name <span style={{marginRight:'10px',marginLeft:'10px'}} > :</span> {reportName}</span>
             </div>
-            <div className="header-value">
-                Variant : {variantname}
+            <div style={{width:'auto',float:'left',marginLeft:'55px'}}>
+            <span className="report-heading">   Variant <span style={{marginRight:'10px',marginLeft:'10px'}} >:</span> {variantname} </span>
             </div>
-            <div className="header-value">
-                View : {viewId}
+            <div style={{width:'auto',float:'left',marginLeft:'55px'}}>
+             <span className="report-heading">  View <span style={{marginRight:'10px',marginLeft:'10px'}} >:</span> {viewId}</span> 
             </div>
-            <div className="header-value">
-                Status : {reportStatus}
+            <div style={{width:'auto',float:'left',marginLeft:'55px'}}>
+            <span className="report-heading">   Status <span style={{marginRight:'10px',marginLeft:'10px'}} >:</span> {reportStatus}</span> 
             </div>
+        </div>
         </div>
     );
 }

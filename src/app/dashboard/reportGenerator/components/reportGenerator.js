@@ -315,8 +315,7 @@ function ReportGenerator(props) {
         //      });
 
     }
-    const generateReportObject = (object) =>
-    {
+    const generateReportObject = (object) => {
         let title_object = {}
         title_object['heading'] = object['heading']
         title_object['numbered'] = true
@@ -324,47 +323,46 @@ function ReportGenerator(props) {
         let title_heading = {}
         title_heading['type'] = "table"
         title_heading['table'] = {
-            "header":[
+            "header": [
                 {
-                    "fieldName":"key",
-                    "displayName":"",
-                    "display":true,
-                    "sortOrder":1,
-                    "dataType":"text"
+                    "fieldName": "key",
+                    "displayName": "",
+                    "display": true,
+                    "sortOrder": 1,
+                    "dataType": "text"
                 },
                 {
-                    "fieldName":"value",
-                    "displayName":"",
-                    "display":true,
-                    "sortOrder":1,
-                    "dataType":"text"
+                    "fieldName": "value",
+                    "displayName": "",
+                    "display": true,
+                    "sortOrder": 1,
+                    "dataType": "text"
                 }
             ],
-            "content":object.content
+            "content": object.content
         }
         title_content.push(title_heading)
 
         let charts_arr = object.charts
 
-        for(let i=0;i<charts_arr.length;i++)
-        {
-         let obj =  {
-            type: "figure",
-            figure: {
-                "caption": charts_arr[i],
-                "type": "svg",
-                "image": "https://merck-cpvpoc.mareana.com/charts/snippet_POC_ABV4297_reduced_nocomments_222.png"                    }
-        }
-        title_content.push(obj)
+        for (let i = 0; i < charts_arr.length; i++) {
+            let obj = {
+                type: "figure",
+                figure: {
+                    "caption": charts_arr[i],
+                    "type": "svg",
+                    "image": "https://merck-cpvpoc.mareana.com/charts/snippet_POC_ABV4297_reduced_nocomments_222.png"
+                }
+            }
+            title_content.push(obj)
         }
 
         title_object['content'] = title_content
 
         return title_object
     }
- 
-    const generateReport = () =>
-    {
+
+    const generateReport = () => {
         let generate_obj = {}
         let title_page = table[0] ? table[0] : {}
         let sections = table.length > 0 ? table.filter((item, index) => index > 0) : []
@@ -373,8 +371,7 @@ function ReportGenerator(props) {
 
         let sections_arr = []
 
-        for (let i=0;i<sections.length;i++)
-        {
+        for (let i = 0; i < sections.length; i++) {
             let obj = generateReportObject(sections[i])
             sections_arr.push(obj)
         }
@@ -529,175 +526,177 @@ function ReportGenerator(props) {
                 </div>
             </div>
             <div className='custom-content-layout'>
-                <Card title="Generate new report variant" className="generator-card">
-                    <ReportDesignerForm />
-                    <div className="table-card">
-                        {table.length > 0 && table.map((i) =>
-                            <Collapse key={i.heading} accordion className="collapse-generate" bordered={true}>
-                                <Panel header={<span className="chart-names">{i.heading} {i.charts && i.charts.length > 0 && i.charts.map((i) => (<span className="chart-tags">
-                                    {i}
-                                </span>))}</span>} key={i.heading} className="chart-panel">
-                                    <table className="table">
-                                        <tr className="tr" >
-                                            <th className="th-key">
-                                                Key
-                                            </th>
-                                            <th className="th-value">
-                                                Value
-                                            </th>
-                                        </tr>
-                                        <tbody>
-                                            {i['content'] && i['content'].map((item, j) =>
-                                                <tr className="tr" >
-                                                    <td className="td" >{item.key}</td>
-                                                    <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea autoSize={true} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span>{item.value}</span>} </td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
-                                    {i.charts && i.charts.length > 0 && i.charts.map((j) =>
-                                    (
-                                        <div>
-                                            <p className="chart-name">{j} <span className="tag-div"> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'violation')}>Violation</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'exclusion')}>Exclusion</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'data_table')}>Data Table</Tag></span> </p>
-                                            <Chart chartName={j} />
-                                        </div>
-                                    ))}
-                                </Panel>
-                            </Collapse>
-                        )}
-                    </div>
-                    <Modal
-                        title="Select Report"
-                        visible={isvisible}
-                        onCancel={() => setIsVisible(false)}
-                        width={500}
-                        style={{ marginRight: '800px' }}
-                        footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => setIsVisible(false)} key="1">OK</Button>,]}
-                    >
-                        <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
-                            let view_value = value.value ? value.value : ''
-                            setReportId(view_value)
-                            getReportData(view_value)
-
-                        }}
-                            value={reportId}
-                            showSearch
-                            showArrow
-                            style={{ backgroundColor: 'white', borderRadius: '4px' }}
-                        >
-                            {mapReportList && mapReportList.length >= 0 ? mapReportList.map((item) =>
-
-                                <Option value={item.rep_disp_id} key={item.rep_disp_id}>{item.rep_disp_id}</Option>
-                            ) : <></>}
-
-                        </Select>
-                        <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
-                    </Modal>
-                    <Modal
-                        title="Select Report"
-                        visible={popvisible}
-                        onCancel={() => setPopVisible(false)}
-                        width={600}
-                        title={<p>Select Report Variant  <Input.Search
-                            className='table-search'
-                            placeholder='Search by...'
-                            enterButton
-                            onSearch={search}
-                            style={{ borderRadius: '4px' }}
-                        /></p>}
-                        centered
-                        width={500}
-                        footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setIsVisible(false); setPopVisible(false) }} key="1">OK</Button>,]}
-                    >
-                        <Table
-                            // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
-                            // rowHighlightTest={isStyledDifferently}
-                            dataSource={filterTable === null ? reportList : filterTable}
-                            columns={columns}
-                            onRow={record => ({
-                                onClick: e => {
-                                    record['color'] = '#D3D3D3'
-                                    setReportId(record.rep_disp_id)
-                                    getReportData(record.rep_disp_id, record.rep_status)
-                                    // onOk()
-                                }
-                            })}
-                            scroll={{ y: 200 }}
-                            size='small'
-                            pagination={false}
-                        />
-                    </Modal>
-                    <Modal
-                        title={<span >Notify Report  <span style={{ marginLeft: '70%' }}><Popconfirm title="Sure to delete?" >
-                            <DeleteTwoTone twoToneColor="red" />
-                        </Popconfirm> <Button style={{ backgroundColor: emailList.length > 0 ? '#093185' : '#F5F5F5', color: emailList.length > 0 ? 'white' : 'black' }} disabled={emailList.length > 0 ? false : true} onClick={() => setOpenSchedule(false)}><SendOutlined />Schedule</Button></span></span>}
-                        visible={openSchedule}
-                        onCancel={() => setOpenSchedule(false)}
-                        footer={false}
-                        // footer={[<Button className="schedule-btn" onClick={() => { setOpenSchedule(false) }} key="1">  <SendOutlined />Schedule</Button>, <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setOpenSchedule(false) }} key="1">  <DeleteOutlined />Discard</Button>,]}
-                        width="60%"
-
-                    >
-                        <Select
-                            mode="tags"
-                            style={{ width: '90%', marginTop: '10px' }}
-                            placeholder={<span className="email-recipients">Recipients</span>}
-                            optionLabelProp="label"
-                            value={emailList}
-                            bordered={false}
-                            onChange={handleChange}
-                        >
-
-                            <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
-                                mihir.bagga@mareana.com
-                            </Option>
-                        </Select>
-                        <Divider />
-                        <p className="email-subject">Subject <span className="email-sub">Update For </span>{reportName}</p>
-                        <Divider />
-                        <p className="email-content"> Hey,<br /><br />
-
-                            This is to inform you of the recept update to [report variant name]. Check the attachment for details.<br />
-                            Visit www.cpv-mareana.com/alert-dashboard to know more.<br />
-                            <br />
-                            Regards,<br />
-                            [variant_username]</p>
-                        <Divider />
-                        <span>
-                            <DatePicker bordered={false} onChange={onChangeStart} prefixIcon={<ClockCircleTwoTone />} />
-                            <span className="email-freq">
-                                <ReloadOutlined />
-                                <Select defaultValue="1" style={{ width: 60 }} bordered={false} onChange={(value) => setRepeat(value)}>
-                                    <Option value="1">1</Option>
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
-                                    <Option value="4">4</Option>
-                                </Select>
-                                <Select defaultValue="week" style={{ width: 100 }} bordered={false} onChange={(value) => setFrequency(value)}>
-                                    <Option value="week">week</Option>
-                                    <Option value="monthly">monthly</Option>
-                                    <Option value="daily">daily</Option>
-                                </Select>
-                            </span>
-                        </span><br />
-                        <div>
-                            <div className="select-days">
-                                <Button className={selectedDays['Sunday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Sunday')} >S</Button>
-                                <Button className={selectedDays['Monday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Monday')} >M</Button>
-                                <Button className={selectedDays['Tuesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Tuesday')}>T</Button>
-                                <Button className={selectedDays['Wednesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Wednesday')} >W</Button>
-                                <Button className={selectedDays['Thursday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Thursday')} >T</Button>
-                                <Button className={selectedDays['Friday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Friday')} >F</Button>
-                                <Button className={selectedDays['Saturday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Saturday')} >S</Button>
-                            </div>
-                            <div className="end-date">
-                                Occures every {Object.keys(selectedDays).filter(k => selectedDays[k] === true).map((i) => (<span>,{i} </span>))}
-                                <p className="end-dates" >Choose an end date  <DatePicker bordered={false} onChange={onChangeEnd} /></p>
-                                {scheduleEndDate.length > 0 ? <><span className="end-dates" onClick={() => setScheduleEndDate('')}>Remove end date </span> <span>{scheduleEndDate}</span></> : <></>}
-                            </div>
+                <div className="report-card">
+                    <Card title="Generate new report variant" className="generator-card">
+                        <ReportDesignerForm />
+                        <div className="table-card">
+                            {table.length > 0 && table.map((i) =>
+                                <Collapse key={i.heading} accordion className="collapse-generate" bordered={true}>
+                                    <Panel header={<span className="chart-names">{i.heading} {i.charts && i.charts.length > 0 && i.charts.map((i) => (<span className="chart-tags">
+                                        {i}
+                                    </span>))}</span>} key={i.heading} className="chart-panel">
+                                        <table className="table" cellspacing="0" cellpadding="0">
+                                            <tr className="tr" >
+                                                <th className="th-key">
+                                                    Key
+                                                </th>
+                                                <th className="th-value">
+                                                    Value
+                                                </th>
+                                            </tr>
+                                            <tbody>
+                                                {i['content'] && i['content'].map((item, j) =>
+                                                    <tr className="tr" >
+                                                        <td className="td" >{item.key}</td>
+                                                        <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea autoSize={true} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span>{item.value}</span>} </td>
+                                                    </tr>
+                                                )}
+                                            </tbody>
+                                        </table>
+                                        {i.charts && i.charts.length > 0 && i.charts.map((j) =>
+                                        (
+                                            <div >
+                                                <p className="chart-name">{j} <span className="tag-div"> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'violation')}>Violation</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'exclusion')}>Exclusion</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'data_table')}>Data Table</Tag></span> </p>
+                                                <Chart chartName={j} />
+                                            </div>
+                                        ))}
+                                    </Panel>
+                                </Collapse>
+                            )}
                         </div>
-                    </Modal>
-                </Card>
+                        <Modal
+                            title="Select Report"
+                            visible={isvisible}
+                            onCancel={() => setIsVisible(false)}
+                            width={500}
+                            style={{ marginRight: '800px' }}
+                            footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => setIsVisible(false)} key="1">OK</Button>,]}
+                        >
+                            <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
+                                let view_value = value.value ? value.value : ''
+                                setReportId(view_value)
+                                getReportData(view_value)
+
+                            }}
+                                value={reportId}
+                                showSearch
+                                showArrow
+                                style={{ backgroundColor: 'white', borderRadius: '4px' }}
+                            >
+                                {mapReportList && mapReportList.length >= 0 ? mapReportList.map((item) =>
+
+                                    <Option value={item.rep_disp_id} key={item.rep_disp_id}>{item.rep_disp_id}</Option>
+                                ) : <></>}
+
+                            </Select>
+                            <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
+                        </Modal>
+                        <Modal
+                            title="Select Report"
+                            visible={popvisible}
+                            onCancel={() => setPopVisible(false)}
+                            width={600}
+                            title={<p>Select Report Variant  <Input.Search
+                                className='table-search'
+                                placeholder='Search by...'
+                                enterButton
+                                onSearch={search}
+                                style={{ borderRadius: '4px' }}
+                            /></p>}
+                            centered
+                            width={500}
+                            footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setIsVisible(false); setPopVisible(false) }} key="1">OK</Button>,]}
+                        >
+                            <Table
+                                // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
+                                // rowHighlightTest={isStyledDifferently}
+                                dataSource={filterTable === null ? reportList : filterTable}
+                                columns={columns}
+                                onRow={record => ({
+                                    onClick: e => {
+                                        record['color'] = '#D3D3D3'
+                                        setReportId(record.rep_disp_id)
+                                        getReportData(record.rep_disp_id, record.rep_status)
+                                        // onOk()
+                                    }
+                                })}
+                                scroll={{ y: 200 }}
+                                size='small'
+                                pagination={false}
+                            />
+                        </Modal>
+                        <Modal
+                            title={<span >Notify Report  <span style={{ marginLeft: '70%' }}><Popconfirm title="Sure to delete?" >
+                                <DeleteTwoTone twoToneColor="red" />
+                            </Popconfirm> <Button style={{ backgroundColor: emailList.length > 0 ? '#093185' : '#F5F5F5', color: emailList.length > 0 ? 'white' : 'black' }} disabled={emailList.length > 0 ? false : true} onClick={() => setOpenSchedule(false)}><SendOutlined />Schedule</Button></span></span>}
+                            visible={openSchedule}
+                            onCancel={() => setOpenSchedule(false)}
+                            footer={false}
+                            // footer={[<Button className="schedule-btn" onClick={() => { setOpenSchedule(false) }} key="1">  <SendOutlined />Schedule</Button>, <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => { setOpenSchedule(false) }} key="1">  <DeleteOutlined />Discard</Button>,]}
+                            width="60%"
+
+                        >
+                            <Select
+                                mode="tags"
+                                style={{ width: '90%', marginTop: '10px' }}
+                                placeholder={<span className="email-recipients">Recipients</span>}
+                                optionLabelProp="label"
+                                value={emailList}
+                                bordered={false}
+                                onChange={handleChange}
+                            >
+
+                                <Option value="mihir.bagga@mareana.com" label="mihir.bagga@mareana.com">
+                                    mihir.bagga@mareana.com
+                                </Option>
+                            </Select>
+                            <Divider />
+                            <p className="email-subject">Subject <span className="email-sub">Update For </span>{reportName}</p>
+                            <Divider />
+                            <p className="email-content"> Hey,<br /><br />
+
+                                This is to inform you of the recept update to [report variant name]. Check the attachment for details.<br />
+                                Visit www.cpv-mareana.com/alert-dashboard to know more.<br />
+                                <br />
+                                Regards,<br />
+                                [variant_username]</p>
+                            <Divider />
+                            <span>
+                                <DatePicker bordered={false} onChange={onChangeStart} prefixIcon={<ClockCircleTwoTone />} />
+                                <span className="email-freq">
+                                    <ReloadOutlined />
+                                    <Select defaultValue="1" style={{ width: 60 }} bordered={false} onChange={(value) => setRepeat(value)}>
+                                        <Option value="1">1</Option>
+                                        <Option value="2">2</Option>
+                                        <Option value="3">3</Option>
+                                        <Option value="4">4</Option>
+                                    </Select>
+                                    <Select defaultValue="week" style={{ width: 100 }} bordered={false} onChange={(value) => setFrequency(value)}>
+                                        <Option value="week">week</Option>
+                                        <Option value="monthly">monthly</Option>
+                                        <Option value="daily">daily</Option>
+                                    </Select>
+                                </span>
+                            </span><br />
+                            <div>
+                                <div className="select-days">
+                                    <Button className={selectedDays['Sunday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Sunday')} >S</Button>
+                                    <Button className={selectedDays['Monday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Monday')} >M</Button>
+                                    <Button className={selectedDays['Tuesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Tuesday')}>T</Button>
+                                    <Button className={selectedDays['Wednesday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Wednesday')} >W</Button>
+                                    <Button className={selectedDays['Thursday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Thursday')} >T</Button>
+                                    <Button className={selectedDays['Friday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Friday')} >F</Button>
+                                    <Button className={selectedDays['Saturday'] ? "selected-day-buttons" : "day-buttons"} onClick={() => updateDays('Saturday')} >S</Button>
+                                </div>
+                                <div className="end-date">
+                                    Occures every {Object.keys(selectedDays).filter(k => selectedDays[k] === true).map((i) => (<span>,{i} </span>))}
+                                    <p className="end-dates" >Choose an end date  <DatePicker bordered={false} onChange={onChangeEnd} /></p>
+                                    {scheduleEndDate.length > 0 ? <><span className="end-dates" onClick={() => setScheduleEndDate('')}>Remove end date </span> <span>{scheduleEndDate}</span></> : <></>}
+                                </div>
+                            </div>
+                        </Modal>
+                    </Card>
+                </div>
             </div>
 
 
