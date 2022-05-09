@@ -84,7 +84,6 @@ const MathFunction = props => {
 		setIsEvaluatingFun(false);
 	};
 
-	console.log(props)
 
 	return (
 		<>

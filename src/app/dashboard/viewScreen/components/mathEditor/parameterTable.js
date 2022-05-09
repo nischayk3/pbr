@@ -141,7 +141,7 @@ const ParameterTable = props => {
 			item === 'sourceType' ||
 			item === 'coverage'
 		) {
-			console.log('i');
+			// console.log('i');
 		} else {
 			columns.push({
 				title: item,
