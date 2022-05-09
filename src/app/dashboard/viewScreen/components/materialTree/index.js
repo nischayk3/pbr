@@ -43,7 +43,7 @@ const MaterialTree = props => {
 		let rowData = {};
 		let batchData = {};
 		let newBatchData = {};
-		//setSelectedKey(keys);
+
 		setKey.push(keys);
 		setSelectedAllKey[setKey];
 		let tree = [...materialsList];

@@ -6,8 +6,8 @@ import {
 
 export const getBoundingBoxData = (_queryParam) => {
     return Service.get(
-        'http://localhost' +
-            '/pbr/udh/get_data?fileId=Batch Record Example 2.pdf.json&pageId=0',
+        MDH_APP_PYTHON_SERVICE +
+            '/pbr/udh/get_data?fileId=Batch Record Example 2_page-0.jpeg.json&pageId=1',
         _queryParam
     ).then(
         (response) => {
@@ -21,7 +21,7 @@ export const getBoundingBoxData = (_queryParam) => {
 
 export const savePbrTemplate = (request) => {
     return Service.put(
-        'http://localhost' + '/pbr/udh/save_records',
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/save_records',
         request
     ).then(
         (response) => {
@@ -35,8 +35,49 @@ export const savePbrTemplate = (request) => {
 
 export const getPbrReviewerData = (_queryParam) => {
     return Service.get(
-        MDH_APP_PYTHON_SERVICE +
-            '/pbr/udh/get_cpv_pbr_data',
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr_template',
+        _queryParam
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+export const processBatchRecord = (_queryParam) => {
+    return Service.get(
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/extract_from_template',
+        _queryParam
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+export const getPbrTemplateData = (_queryParam) => {
+    return Service.get(
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/pbr_template',
+        _queryParam
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+export const getDataView = (_queryParam) => {
+    return Service.get(
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_data_view',
         _queryParam
     ).then(
         (response) => {

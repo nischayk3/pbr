@@ -82,9 +82,10 @@ const Help = () => {
       >
         <Search
             placeholder="Search"
-              allowClear
-              enterButton="Search"
-              size="large"
+            allowClear
+            enterButton="Search"
+            size="large"
+            className="search-button"
             onSearch={onSearch}
         />
 
