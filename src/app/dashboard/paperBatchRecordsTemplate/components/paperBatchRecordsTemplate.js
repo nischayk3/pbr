@@ -45,6 +45,7 @@ import AddParameter from './addParameter/AddParameter';
 import {
     getBoundingBoxData,
     savePbrTemplate,
+    processBatchRecord
 } from '../../../../services/pbrService';
 
 const { Panel } = Collapse;
@@ -230,6 +231,7 @@ function PaperBatchRecordsTemplate() {
      */
     const getBoundingBoxDataInfo = async (_reqBatch) => {
         try {
+
             // dispatch(showLoader());
             // let _reqBatch = {
             //     fileId: 'Batch Record Example 2.pdf.json',
@@ -237,12 +239,17 @@ function PaperBatchRecordsTemplate() {
             // };
             const batchRes = await getBoundingBoxData(_reqBatch);
             let areasArr = [];
+            // const list = document.getElementsByTagName("canvas")[0]
+            // console.log("listlistlist", list)
+            // // // let rect = list.getBoundingClientRect();
+            // console.log("height: ", list.height, list.width);
             if (batchRes.Data.length > 0) {
+
                 batchRes.Data.forEach((e) => {
-                    let x1 = e.key_left * 1032;
-                    let x2 = (e.key_left + e.key_width) * 1032;
-                    let y1 = e.key_top * 1336;
-                    let y2 = (e.key_top + e.key_height) * 1336;
+                    let x1 = e.key_left * 868;
+                    let x2 = (e.key_left + e.key_width) * 868;
+                    let y1 = e.key_top * 1123;
+                    let y2 = (e.key_top + e.key_height) * 1123;
                     let obj = {
                         snippetID: e.key_snippet_id,
                         areaValue: e.key_text,
@@ -252,10 +259,10 @@ function PaperBatchRecordsTemplate() {
                         fillColor: 'transparent',
                         strokeColor: 'blue',
                     };
-                    let valuex1 = e.value_left * 1032;
-                    let valuex2 = (e.value_left + e.value_width) * 1032;
-                    let valuey1 = e.value_top * 1336;
-                    let valuey2 = (e.value_top + e.value_height) * 1336;
+                    let valuex1 = e.value_left * 868;
+                    let valuex2 = (e.value_left + e.value_width) * 868;
+                    let valuey1 = e.value_top * 1123;
+                    let valuey2 = (e.value_top + e.value_height) * 1123;
                     let obj1 = {
                         snippetID: e.key_snippet_id,
                         areaValue: e.value_text,
@@ -283,7 +290,13 @@ function PaperBatchRecordsTemplate() {
     useEffect(() => {
         getBoundingBoxDataInfo();
     }, []);
-    const load = () => {};
+
+    // useEffect(() => {
+    //     getBoundingBoxDataInfo();
+    // }, [areasMap]);
+
+
+    const load = () => { };
 
     const clicked = (area) => {
         setBoundingBoxClicked(true);
@@ -299,7 +312,7 @@ function PaperBatchRecordsTemplate() {
             strokeColor: area.strokeColor,
         };
         setAreasMapObject(obj);
-
+        let filteredArr = [...areasMapFilteredArr];
         if (DraggerActive) {
             setShowInputAnchor(true);
             setDraggerFirstAreaValue(area.areaValue);
@@ -309,7 +322,7 @@ function PaperBatchRecordsTemplate() {
                 anchorValue: area.areaValue,
             };
             setParameterValue(obj1);
-            let filteredArr = [...areasMapFilteredArr];
+
             filteredArr = filteredArr.filter(
                 (item) => item.areaValue !== obj.areaValue
             );
@@ -324,13 +337,20 @@ function PaperBatchRecordsTemplate() {
                 anchorId: area.snippetID,
             };
             setParameterValue(obj2);
-            let filteredArr1 = [...areasMapFilteredArr];
-            filteredArr1 = filteredArr1.filter(
-                (item) => item.areaValue !== obj.areaValue
-            );
-            filteredArr1.push(obj);
-            console.log('filteredArr1', filteredArr1);
-            setAreasMapFilteredArr(filteredArr1);
+            filteredArr.forEach(item => {
+                if (item.snippetID === obj.snippetID) {
+                    item['areaValue2'] = obj.areaValue
+                    item['coords2'] = obj.coords
+                }
+            })
+            console.log("arrrrr", filteredArr)
+            // let filteredArr1 = [...areasMapFilteredArr];
+            // filteredArr1 = filteredArr1.filter(
+            //     (item) => item.areaValue !== obj.areaValue
+            // );
+            // filteredArr1.push(obj);
+            // console.log('filteredArr1', filteredArr1);
+            setAreasMapFilteredArr(filteredArr);
         }
         form.setFieldsValue({
             anchorValue: area.snippetID,
@@ -362,11 +382,11 @@ function PaperBatchRecordsTemplate() {
                     key_width: (ele.coords[2] - ele.coords[0]) / 1032,
                     page: 0,
                     snippet_id: ele.snippetID,
-                    value_height: (ele.coords[3] - ele.coords[1]) / 1336,
-                    value_left: ele.coords[0] / 1032,
-                    value_text: ele.areaValue,
-                    value_top: ele.coords[1] / 1336,
-                    value_width: (ele.coords[2] - ele.coords[0]) / 1032,
+                    value_height: (ele.coords2[3] - ele.coords2[1]) / 1336,
+                    value_left: ele.coords2[0] / 1032,
+                    value_text: ele.areaValue2,
+                    value_top: ele.coords2[1] / 1336,
+                    value_width: (ele.coords2[2] - ele.coords2[0]) / 1032,
                 };
                 arr.push(obj);
             });
@@ -389,6 +409,13 @@ function PaperBatchRecordsTemplate() {
     const saveTemplateHandler = () => {
         savePbrTemplateDataInfo();
     };
+    const batchProcess = async () => {
+        let req = ""
+        let res = await processBatchRecord(req)
+        console.log("res",res)
+
+
+    };
 
     return (
         <div className='pbr-container pbrTemplate-container'>
@@ -406,6 +433,9 @@ function PaperBatchRecordsTemplate() {
                     <div className='sub-header-title'>
                         <Button type='primary' className='defineTableBtn'>
                             <ArrowRightOutlined /> Define Table
+                        </Button>
+                        <Button type='primary' className='defineTableBtn' onClick={batchProcess}>
+                            <ArrowRightOutlined /> Batch Process
                         </Button>
                         <EllipsisOutlined className='ellipseIconMenu' />
                     </div>
@@ -520,10 +550,9 @@ function PaperBatchRecordsTemplate() {
                                                                                 className='paramererAddingCollapse'
                                                                             >
                                                                                 <Panel
-                                                                                    header={`Parameter ${
-                                                                                        key +
+                                                                                    header={`Parameter ${key +
                                                                                         1
-                                                                                    } created`}
+                                                                                        } created`}
                                                                                     key='1'
                                                                                 >
                                                                                     <div className='addParameterBlock'>
@@ -547,11 +576,10 @@ function PaperBatchRecordsTemplate() {
                                                                                                     </p>
                                                                                                     <p></p>
                                                                                                     <Dragger
-                                                                                                        className={`draggerSnippet ${
-                                                                                                            DraggerActive
-                                                                                                                ? 'activeBorder'
-                                                                                                                : 'inActiveBorder'
-                                                                                                        }`}
+                                                                                                        className={`draggerSnippet ${DraggerActive
+                                                                                                            ? 'activeBorder'
+                                                                                                            : 'inActiveBorder'
+                                                                                                            }`}
                                                                                                     >
                                                                                                         <p className='ant-upload-drag-icon'>
                                                                                                             <PlusOutlined />
@@ -572,12 +600,11 @@ function PaperBatchRecordsTemplate() {
                                                                                                                 <InputField
                                                                                                                     value={
                                                                                                                         parameterValue[
-                                                                                                                            `param${
-                                                                                                                                key +
-                                                                                                                                1
-                                                                                                                            }`
+                                                                                                                        `param${key +
+                                                                                                                        1
+                                                                                                                        }`
                                                                                                                         ][
-                                                                                                                            `anchorValue`
+                                                                                                                        `anchorValue`
                                                                                                                         ]
                                                                                                                     }
                                                                                                                     className='uploadSnippetInput'
@@ -595,11 +622,10 @@ function PaperBatchRecordsTemplate() {
                                                                                                         )}
                                                                                                     </Dragger>
                                                                                                     <Dragger
-                                                                                                        className={`draggerSnippet ${
-                                                                                                            DraggerActive
-                                                                                                                ? 'inActiveBorder'
-                                                                                                                : 'activeBorder'
-                                                                                                        }`}
+                                                                                                        className={`draggerSnippet ${DraggerActive
+                                                                                                            ? 'inActiveBorder'
+                                                                                                            : 'activeBorder'
+                                                                                                            }`}
                                                                                                     >
                                                                                                         <p className='ant-upload-drag-icon'>
                                                                                                             <PlusOutlined />
@@ -625,12 +651,11 @@ function PaperBatchRecordsTemplate() {
                                                                                                             <InputField
                                                                                                                 value={
                                                                                                                     parameterValue[
-                                                                                                                        `param${
-                                                                                                                            key +
-                                                                                                                            1
-                                                                                                                        }`
+                                                                                                                    `param${key +
+                                                                                                                    1
+                                                                                                                    }`
                                                                                                                     ][
-                                                                                                                        `anchorId`
+                                                                                                                    `anchorId`
                                                                                                                     ]
                                                                                                                 }
                                                                                                                 className='uploadSnippetInput'
@@ -770,15 +795,16 @@ function PaperBatchRecordsTemplate() {
                                 className='pdfToImgBlock'
                                 onClick={onClickImage}
                             >
-                                {areasMap.areas.length > 0 && (
+                                {areasMap.areas.length > 0 && 
                                     <ImageMapper
+                                        id="imageMApper"
                                         className='pdfToImageWrapper'
                                         src={BatchRecordExample}
                                         map={areasMap}
                                         // onLoad={() => load()}
                                         onClick={(area) => clicked(area)}
                                     />
-                                )}
+                                }
                             </div>
                         </div>
                     </div>
