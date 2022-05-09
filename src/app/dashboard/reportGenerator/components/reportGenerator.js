@@ -28,7 +28,7 @@ import { BlockOutlined, SendOutlined, ReloadOutlined, DeleteTwoTone, ClockCircle
 import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
-import { sendReport, screenChange } from '../../../../duck/actions/reportDesignerAction';
+import { sendReport } from '../../../../duck/actions/reportDesignerAction';
 import { saveReportGenerator, getReportGenerator,latexReport,latexBuilder } from '../../../../services/reportGeneratorServices';
 import SaveModal from '../../../../components/SaveModal/saveModal'
 import {

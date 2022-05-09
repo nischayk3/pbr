@@ -50,6 +50,7 @@ const MathFunction = props => {
 		dispatch(saveViewFunction(true));
 		setIsModalVisible(false);
 		setIsAlertFunction(true);
+		setIsFunction(false);
 		setTimeout(() => {
 			setFunctionName('');
 			setIsAlertFunction(false);
@@ -71,7 +72,7 @@ const MathFunction = props => {
 			setIsFunction(true);
 		}
 		else
-			dispatch(showNotification('error', 'Not Evaluated'))
+			dispatch(showNotification('error', evaluate_respone.message))
 
 		// if()
 
