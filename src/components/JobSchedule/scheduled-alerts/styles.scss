@@ -1,5 +1,22 @@
 .chart-notify
 {
+  .ant-picker {
+    border-radius: 4px !important;
+  }
+ .ant-select-selector {
+    border-radius: 4px !important;
+  }
+  .radio-daily {
+    span {
+      font-family: 'Roboto';
+font-style: normal;
+font-weight: 300;
+font-size: 16px;
+    }
+  }
+  input::placeholder {
+    font-family: Roboto !important;
+  }
 .evaluation-tabs{
     .ant-tabs-nav-wrap
     {
@@ -58,7 +75,11 @@
     color: #093185;
     margin-top: 25px;    
  }
-
+ .evaluation {
+  button:first-child:hover {
+    background-color: #486BC9 !important ;
+  }
+}
  .schedule-evalutaion-button
  {
     background-color: #093185 ;
@@ -75,6 +96,9 @@
 
  .clear-schedule
  {
+   :hover{
+     color: #486BC9;
+   }
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
@@ -97,8 +121,8 @@
 .day-buttons
 {
 border-radius: 50% !important;
-width: 45px !important;
-height: 45px !important;
+width: 35px !important;
+height: 35px !important;
 background: #EAEAEA !important;
 align-items: center !important;
 margin-left: 10px;
@@ -109,8 +133,8 @@ border: none;
 .day-buttons-alert-one
 {
 border-radius: 50% !important;
-width: 45px !important;
-height: 45px !important;
+width: 35px !important;
+height: 35px !important;
 background: #EAEAEA !important;
 align-items: center !important;
 color: black !important;
@@ -122,11 +146,10 @@ border: none;
 .selected-day-buttons
 {
 border-radius: 50% !important;
-width: 45px !important;
-height: 45px !important;
+width: 35px !important;
+height: 35px !important;
 background: #486BC9  !important;
 align-items: center !important;
-margin-left: 10px;
 color: white !important;
 border: none;
 
@@ -134,8 +157,8 @@ border: none;
 .selected-day-buttons-alert-one
 {
 border-radius: 50% !important;
-width: 45px !important;
-height: 45px !important;
+width: 35px !important;
+height: 35px !important;
 background: #486BC9  !important;
 align-items: center !important;
 color: white !important;
@@ -145,6 +168,10 @@ border: none;
 .select-days
 {
   margin-top: 30px;
+  button {
+    padding: 0px !important;
+    margin-right: 10px !important;
+  }
   // margin-left: 150px;
 }
 .select-report-antd
@@ -153,6 +180,7 @@ border: none;
   .ant-select-selector
 {
     height: 36px !important;
+    border-radius: 4px !important;
 }
 }
 
@@ -284,7 +312,11 @@ height: 29px;
 margin-left: 70%;
 margin-top: 10px;
 }
-
+.attachment-report-chart {
+  display: flex;
+  align-items: center;
+  gap:5px
+}
 .attachment-report-text
 {
 font-family: 'Roboto';
@@ -309,6 +341,7 @@ margin-left: 10px;
 {
     input
     {
+      border-radius: 4px !important;
         font-family: 'Roboto';
         font-style: normal;
         font-weight:  300;
