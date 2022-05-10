@@ -6,12 +6,11 @@
  * @Last Changed By - Dinesh
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import './styles.scss';
 import { Select, Input } from 'antd';
 import { moleculeName } from '../../../../../duck/actions/viewCreationAction';
-
 import { getMoleculeList } from '../../../../../services/viewCreationPublishing';
 import {
 	hideLoader,
@@ -41,6 +40,7 @@ function ParameterLookup(props) {
 	const [filterList, setFilterList] = useState([]);
 
 	const dispatch = useDispatch();
+	const tempMaterialList = useRef();
 
 	const onSelectMoleculeHandler = async () => {
 		let req = { user_id: 'demo' };
@@ -72,6 +72,10 @@ function ParameterLookup(props) {
 			dispatch(showNotification('error', error));
 		}
 	};
+
+	useEffect(() => {
+		tempMaterialList.current = JSON.parse(JSON.stringify(materialsList));
+	}, [materialsList]);
 
 	useEffect(() => {
 		onSelectMoleculeHandler();
@@ -136,7 +140,7 @@ function ParameterLookup(props) {
 
 	const onSearchChange = e => {
 		if (e.target.value === '') {
-			setMaterialsList(materialsList.current);
+			setMaterialsList(tempMaterialList.current);
 		}
 		setSearchValue(e.target.value);
 	};
@@ -144,7 +148,7 @@ function ParameterLookup(props) {
 	const searchTable = () => {
 		const newArr = materialsList.filter(ele =>
 			ele.children.some(element =>
-				element.product_description.toLowerCase().search(searchValue)
+				element.product_description.toLowerCase().includes(searchValue)
 			)
 		);
 
@@ -159,6 +163,7 @@ function ParameterLookup(props) {
 				<p>Molecule</p>
 				<Select
 					placeholder='Select'
+					style={{ width: '100%' }}
 					onChange={onChangeMoleculeHandler}
 					defaultValue={moleculeId}
 					value={moleculeId}
@@ -193,10 +198,9 @@ function ParameterLookup(props) {
 					})}
 				</Select> */}
 				<Search
-					style={{ marginBottom: 8 }}
 					placeholder='Search'
 					onChange={onSearchChange}
-					onEnter={searchTable}
+					onSearch={searchTable}
 				/>
 			</div>
 		</div>

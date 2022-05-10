@@ -39,7 +39,7 @@ function GenealogyDrawer(props) {
 					<div className='drawer-title'>
 						<img className='tree-type-icon' src={batchIcon} />
 						<p>
-							{props.productCode} - {props.productType}
+							{props.productCode} - {props.type}
 						</p>
 						<span onClick={downloadFile}>
 							<DownloadOutlined />

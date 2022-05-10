@@ -1,5 +1,19 @@
 .chart_notify-notify
 {
+  .ant-picker {
+    border-radius: 4px !important;
+  }
+ .ant-select-selector {
+    border-radius: 4px !important;
+  }
+  .ant-table-thead
+  {
+    font-size: 16px;
+    .ant-table-cell
+    {
+    border-bottom: 1px solid #486BC9;
+    }
+  }
     .tab-btns
     {
         margin-top: 8%;
@@ -11,6 +25,9 @@
    margin-left: 10%;
 }
     .evaluation-tabs{
+      button:first-child:hover {
+        background-color: #486BC9 !important ;
+      }
     .ant-tabs-nav-wrap
     {
     height:50px;
@@ -22,7 +39,7 @@
     {
     font-family: Roboto;
     font-style: normal;
-    font-weight: normal;
+    font-weight: 400;
     font-size: 16px;
     line-height: 22px;
     color: rgba(0, 0, 0, 0.85);
@@ -35,7 +52,7 @@
     {
     font-family: Roboto;
     font-style: normal;
-    font-weight: normal;
+    font-weight: 500;
     font-size: 16px;
     line-height: 22px;
     color:#093185 !important;
@@ -55,6 +72,10 @@
     line-height: 22px;
     color: #262626;
     margin-top: 20px;
+    .ant-select-selection-item
+{
+    margin-top:1px;
+}
  }
 
  .share-to-workspace
@@ -102,41 +123,48 @@
 {
 border-radius: 50% !important;
 width: 45px !important;
-height: 40px !important;
+height: 45px !important;
 background: #EAEAEA !important;
 align-items: center !important;
 margin-left: 18px;
 color: black !important;
+border: none;
+
 }
 
 .selected-day-buttons-chart
 {
 border-radius: 50% !important;
 width: 45px !important;
-height: 40px !important;
+height: 45px !important;
 background: #486BC9  !important;
 align-items: center !important;
 margin-left: 18px;
 color: white !important;
+border: none;
 }
 .day-buttons-chart-one
 {
 border-radius: 50% !important;
 width: 45px !important;
-height: 40px !important;
+height: 45px !important;
 background: #EAEAEA !important;
 align-items: center !important;
 color: black !important;
+border: none;
+
 }
 
 .selected-day-buttons-chart-one
 {
 border-radius: 50% !important;
 width: 45px !important;
-height: 40px !important;
+height: 45px !important;
 background: #486BC9  !important;
 align-items: center !important;
 color: white !important;
+border: none;
+
 }
 
 .select-days
@@ -384,7 +412,8 @@ thead[class*="ant-table-thead"] th{
 .ant-select-selector
 {
     height: 36px;
+    border-radius: 4px !important;
 }
-  
+
 
 }

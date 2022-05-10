@@ -18,6 +18,7 @@ import {
 } from '../../../../duck/actions/commonActions';
 import { getCountData } from '../../../../services/workFlowServices';
 import { getChartExceptionData, getUpdatedChartsViewsData } from '../../../../services/workSpaceServices';
+import {getJob} from '../../../../services/jobScheduleService';
 import { FaCircle } from "react-icons/fa";
 import './styles.scss';
 
@@ -31,6 +32,8 @@ const Workspace = () => {
   const [chartIdException, setChartIdException] = useState([]);
   const [lastupdatedCharts, setLastUpdatedCharts] = useState([]);
   const [lastupdatedViews, setLastUpdatedViews] = useState([]);
+  const [scheduleChartAlerts, setScheduleChartAlerts] = useState([]);
+  const [scheduleReportAlerts, setScheduleReportAlerts] = useState([]);
   const [activeTab, setActiveTab] = useState('');
   const dispatch = useDispatch();
   const history = useHistory();
@@ -40,6 +43,8 @@ const Workspace = () => {
     getTilesData();
     getChartId();
     lastUpdatedChartsViews();
+    getScheduleChartAlertsData();
+    getScheduleReportAlertsData();
   }, []);
 
   //get todays date
@@ -66,6 +71,51 @@ const Workspace = () => {
       dispatch(showNotification('error', error.message));
     }
   };
+
+  //job scheduling chart alert counts
+  const getScheduleChartAlertsData = async () => {
+    let login_response = JSON.parse(localStorage.getItem('login_details'));
+    let req = {
+      app_type:'CHART'
+    };
+    let headers = {
+      'content-type': 'application/json',
+      'x-access-token': login_response.token ? login_response.token : '',
+      'resource-name': 'WORKITEMS',
+  };
+    try {
+      dispatch(showLoader());
+      const alertResponse = await getJob(req,headers);
+      setScheduleChartAlerts(alertResponse.Data)
+      dispatch(hideLoader());
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', error.message));
+    }
+  };
+
+   //job scheduling chart alert counts
+   const getScheduleReportAlertsData = async () => {
+    let login_response = JSON.parse(localStorage.getItem('login_details'));
+    let req = {
+      app_type:'REPORT'
+    };
+    let headers = {
+      'content-type': 'application/json',
+      'x-access-token': login_response.token ? login_response.token : '',
+      'resource-name': 'WORKITEMS',
+  };
+    try {
+      dispatch(showLoader());
+      const alertResponse = await getJob(req,headers);
+      setScheduleReportAlerts(alertResponse.Data)
+      dispatch(hideLoader());
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', error.message));
+    }
+  };
+
 
   //top 5 charts with exception function
   const getChartId = async () => {
@@ -312,14 +362,15 @@ const Workspace = () => {
                       style={{ color: '#0CE7CC', fontSize: '15px' }}
                     />
                     <a
-                      onClick={() => console.log('PBR')}
+                      href="https://bms-cpvdev.mareana.com/airflow/login/?next=https%3A%2F%2Fbms-cpvdev.mareana.com%2Fairflow%2Fhome"
+                      target="_blank"
                       className='workspace-review'
                     >
                       View All
                     </a>
                   </span>
-                  <div className='paper-batch-card'>
-                    <p className='paper-batch-count'>6</p>
+                  <div className='paper-batch-card' style={{marginTop:'50px'}}>
+                    <p className='paper-batch-count' style={{marginBottom:'7px'}}>{scheduleReportAlerts.length>0?scheduleReportAlerts.length:0}</p>
                     <p className='paper-batch-desc'>
                       of your report alerts configured
                     </p>
@@ -337,14 +388,15 @@ const Workspace = () => {
                       style={{ color: '#0CE7CC', fontSize: '15px' }}
                     />
                     <a
-                      onClick={() => console.log('PBR')}
+                      href="https://bms-cpvdev.mareana.com/airflow/login/?next=https%3A%2F%2Fbms-cpvdev.mareana.com%2Fairflow%2Fhome"
+                      target="_blank"
                       className='workspace-review'
                     >
                       View All
                     </a>
                   </span>
-                  <div className='paper-batch-card'>
-                    <p className='paper-batch-count'>2</p>
+                  <div className='paper-batch-card' style={{marginTop:'50px'}}>
+                    <p className='paper-batch-count' style={{marginBottom:'7px'}}>{scheduleChartAlerts.length>0?scheduleChartAlerts.length:0}</p>
                     <p className='paper-batch-desc'>
                       charts configured with alerts
                     </p>
@@ -404,7 +456,7 @@ const Workspace = () => {
                       return (
                         <Col className='gutter-row' span={8}>
 
-                          <div className='workspace-processChart-card' onClick={() => history.push(`/dashboard/chart_personalization?id=${j.chart_disp_id}&version=${j.chart_version}`)}>
+                          <div className='workspace-processChart-card' onClick={() => history.push(`/dashboard/chart_personalization/${j.chart_disp_id}?id=${j.chart_disp_id}&version=${j.chart_version}&fromScreen=Workspace`)}>
                             <div className={`tile-status ${statusColor(j.chart_status)}`} >{j.chart_status}</div>
                             <p className='workspace-processCharts-id'>
                               {j.chart_disp_id}
@@ -440,7 +492,7 @@ const Workspace = () => {
                     {lastupdatedViews.length > 0 ? lastupdatedViews.map((m, n) => {
                       return (
                         <Col className='gutter-row' span={8}>
-                          <div className='workspace-processView-card' onClick={() => history.push(`/dashboard/view_creation?id=${m.view_disp_id}&version=${m.view_version}&fromScreen=Workspace`)}>
+                          <div className='workspace-processView-card' onClick={() => history.push(`/dashboard/view_creation/${m.view_disp_id}&${m.view_version}?id=${m.view_disp_id}&version=${m.view_version}&fromScreen=Workspace`)}>
                             <div className={`tile-status ${statusColor(m.view_status)}`} >{m.view_status}</div>
                             <p className='workspace-processView-id'>
                               {m.view_disp_id}

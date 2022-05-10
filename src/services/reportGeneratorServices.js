@@ -55,3 +55,25 @@ export const loadReportGen = (request, headers) => {
         }
     );
 };
+
+export const latexBuilder = (request, headers) => {
+    return Service.post(BMS_APP_PYTHON_SERVICE + '/latex-json-builder', request, request_headers).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+export const latexReport = (request, headers) => {
+    return Service.post('/latex_report', request, request_headers).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};

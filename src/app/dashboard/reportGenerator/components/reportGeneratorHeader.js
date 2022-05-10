@@ -5,7 +5,7 @@
  * @Last Modified - 14 March, 2022
  * @Last Changed By - @Mihir 
  */
-import './style.scss';
+import './headerstyle.scss';
 import React, { useState, useEffect } from 'react';
 import {
     Typography
@@ -60,21 +60,21 @@ function ReportDesignerForm(props) {
     }
 
     return (
-        <div className="generator-header">
-            <div className="header-value">
-                Report ID : {reportId}
+        <div className="reportDesignergen">
+            <div style={{width:'auto',float:'left'}}>
+            <span className="report-heading"> Report ID <span className="colon">:</span> {reportId} </span>
             </div>
-            <div className="header-value">
-                Report Name : {reportName}
+            <div className="report-name">
+               <span className="report-heading"> Report Name <span className="colon" > :</span> {reportName}</span>
             </div>
-            <div className="header-value">
-                Variant : {variantname}
+            <div className="report-name">
+            <span className="report-heading">   Variant <span className="colon" >:</span> {variantname} </span>
             </div>
-            <div className="header-value">
-                View : {viewId}
+            <div className="report-name">
+             <span className="report-heading">  View <span className="colon" >:</span> {viewId}</span> 
             </div>
-            <div className="header-value">
-                Status : {reportStatus}
+            <div className="report-name">
+            <span className="report-heading">   Status <span className="colon">:</span> {reportStatus}</span> 
             </div>
         </div>
     );

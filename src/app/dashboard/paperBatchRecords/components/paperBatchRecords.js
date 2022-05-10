@@ -2,7 +2,7 @@
  * @author Ranjith <ranjith.k@mareana.com>
  * @Mareana - BMS PBR
  * @version 1
- * @Last Modified - 18 March, 2022
+ * @Last Modified - 05 MAy, 2022
  * @Last Changed By - @ranjith
  */
 
@@ -14,6 +14,11 @@ import {
     PlusOutlined,
     SearchOutlined,
 } from '@ant-design/icons';
+import {
+    hideLoader,
+    showLoader,
+    showNotification,
+} from '../../../../duck/actions/commonActions';
 import {
     Card,
     Col,
@@ -27,16 +32,20 @@ import {
     Space,
     Radio,
 } from 'antd';
+import { useDispatch } from 'react-redux';
 import Highlighter from 'react-highlight-words';
 import illustrations from '../../../../assets/images/banner-pbr.svg';
 import newTemplateModal from '../../../../assets/images/newTemplateModal.svg';
 import pdfIcon from '../../../../assets/images/pdfIcon.svg';
+import { getPbrTemplateData, getDataView } from '../../../../services/pbrService';
+import { tableColumns } from '../../../../utils/TableColumns'
 import { useHistory } from 'react-router-dom';
 
 const { Search } = Input;
 
 function PaperBatchRecords() {
     let history = useHistory();
+    const dispatch = useDispatch();
     const initialTableDataSource = [
         {
             key: '1',
@@ -84,13 +93,49 @@ function PaperBatchRecords() {
     const [tableDataSourceFiltered, setTableDataSourceFiltered] =
         useState(null);
     const [form] = Form.useForm();
+    const [templateData, setTemplateData] = useState([])
+    const [templateColumns, setTemplateColumns] = useState([])
+    const [dataView, setDataView] = useState([])
 
     useEffect(() => {
         updateDate();
+        getTemplateData();
+        getViewData();
         setTableDataSource(initialTableDataSource);
     }, []);
 
-    ////////////////////////
+    const getTemplateData = async () => {
+        let req = ``
+        try {
+            dispatch(showLoader());
+            const tableResponse = await getPbrTemplateData(req);
+            const tableColumn = tableColumns(tableResponse?.Data)
+            const newArray1 = tableColumn.filter(item => item.dataIndex != 'changed_by' && item.dataIndex != 'changed_on' && item.dataIndex != 'created_by' && item.dataIndex != 'created_on' && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
+            console.log("newArray1", tableColumn)
+            console.log("newArray1", newArray1)
+            if (tableResponse['status-code'] === 200) {
+                setTemplateColumns(newArray1)
+                setTemplateData(tableResponse.Data);
+                dispatch(hideLoader());
+            }
+            else if (tableResponse['status-code'] === 404) {
+                setTemplateData(tableResponse.Data);
+                dispatch(hideLoader());
+                dispatch(showNotification('error', tableResponse.Message));
+            }
+        }
+        catch (error) {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', error.Message));
+        }
+    }
+
+    const getViewData = async () => {
+        let res = await getDataView()
+        setDataView(res.Data)
+
+    }
+
     function getColumnSearchProps(dataIndex) {
         return {
             filterDropdown: ({
@@ -194,7 +239,6 @@ function PaperBatchRecords() {
         clearFilters();
         setSearchText('');
     }
-    //////////////////////
 
     const columns = [
         {
@@ -321,23 +365,24 @@ function PaperBatchRecords() {
                             <Col span={6} />
                         </Row>
                         <Row className='recent-charts'>
-                            <Col span={6} />
-                            <Col span={12} className='p36'>
+                            {/* <Col span={6} /> */}
+                            <Col span={24} className='p36'>
                                 <h3>Recently created templates</h3>
                                 <Divider />
                                 <div className='pbrTemplates-tableBlock'>
                                     <Table
                                         className='pbrTemplates-table'
-                                        columns={columns}
+                                        columns={templateColumns}
                                         dataSource={
-                                            tableDataSourceFiltered === null
-                                                ? tableDataSource
-                                                : tableDataSourceFiltered
+                                            // tableDataSourceFiltered === null
+                                            //     ? tableDataSource
+                                            //     : tableDataSourceFiltered
+                                            templateData
                                         }
                                     />
                                 </div>
                             </Col>
-                            <Col span={6} />
+                            {/* <Col span={6} /> */}
                         </Row>
                     </Card>
                 </Col>
@@ -398,10 +443,18 @@ function PaperBatchRecords() {
 
                                 <Radio.Group
                                     // onChange={onChange}
-                                    defaultValue='a'
+                                    defaultValue='0'
                                     className='radioPdfBlock'
                                 >
-                                    <Radio.Button value='a'>
+                                    {dataView.map((item,index)=> (
+                                        <Radio.Button value={`${index}`}>
+                                            <div className='pdfListBlock'>
+                                                <img src={pdfIcon} alt='pdfIcon' />
+                                                <span>{item.filename.substring(0, 15) + '...'}</span>
+                                            </div>
+                                        </Radio.Button>
+                                    ))}
+                                    {/* <Radio.Button value='a'>
                                         <div className='pdfListBlock'>
                                             <img src={pdfIcon} alt='pdfIcon' />
                                             <span>loremipsum23.pdf</span>
@@ -424,7 +477,7 @@ function PaperBatchRecords() {
                                             <img src={pdfIcon} alt='pdfIcon' />
                                             <span>loremipsum23.pdf</span>
                                         </div>
-                                    </Radio.Button>
+                                    </Radio.Button> */}
                                 </Radio.Group>
                             </Form>
                         </Col>

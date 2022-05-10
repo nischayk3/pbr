@@ -54,6 +54,7 @@
 }
 .param-filter-wrap {
 	padding: 32px 26px 32px 26px;
+	height: 300px;
 	.param-filter {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -97,8 +98,18 @@
 	.drawer-title {
 		padding: 15px 27px;
 		border-bottom: 1px solid #eaeaea;
-		p {
+		> p {
 			margin: 0px;
+			font-family: 'Roboto';
+			font-style: normal;
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 24px;
+			/* identical to box height, or 150% */
+			display: flex;
+			align-items: center;
+			/* Character/Title .85 */
+			color: rgba(0, 0, 0, 0.85);
 		}
 	}
 }

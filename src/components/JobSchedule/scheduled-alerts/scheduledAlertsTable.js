@@ -98,7 +98,7 @@ export default function scheduledAlertsTable(props) {
             dataIndex: 'job_id',
             render: (text, record) =>
             (
-                <u><a onClick={() => props.changeActiveTab('1', record.dag_id)}>{text}</a></u>
+                <u><a onClick={() => props.changeActiveTab('1', record.dag_id,record.job_id)}>{text}</a></u>
             )
         },
         {
