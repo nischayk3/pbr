@@ -110,6 +110,18 @@ const MENU = [
         linkTo: '/dashboard/paper_batch_records',
     },
     {
+        key: 'pbr_reviewer',
+        icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+        title: 'Pbr Reviewer',
+        linkTo: '/dashboard/pbr_reviewer',
+    },
+    {
+        key: 'user-roles-and-access',
+        icon: <BarChartOutlined style={{ fontSize: '23px' }} />,
+        title: 'User Roles',
+        linkTo: '/dashboard/user-roles-and-access',
+    },
+    {
         key: 'hierarchy',
         icon: <AppstoreOutlined style={{ fontSize: '23px' }} />,
         title: 'Hierarchy',

@@ -1,7 +1,7 @@
 //CI-CD script---
 pipeline {
     environment {
-        DOCKER_IMAGE = 'registry.mareana.com/bms/dev'
+        DOCKER_IMAGE = 'registry.cloud.mareana.com/mdh-cpv/dev'
     }
     agent { label 'cpv_node' } 
     stages {
@@ -32,7 +32,7 @@ pipeline {
                   sh '''#!/bin/bash -x
                         npm install 
                         npm install cypress --save-dev
-                        npm run e2e
+                        npm run cy:build
                         ls coverage
                  '''       
                 }
@@ -67,14 +67,14 @@ pipeline {
            }
           stage("Build Docker Image") {
             steps {
-                sh 'sudo docker build -t  $DOCKER_IMAGE/mdh-cpv-ui-$BUILD_NUMBER:latest --no-cache .'
+                sh 'sudo docker build -t  $DOCKER_IMAGE/mdh-cpv-ui:$BUILD_NUMBER --no-cache .'
                 }
               }
           stage("Push Docker Image to Docker Registry") {
             steps {
-                withDockerRegistry(credentialsId: 'docker-registry-mareana', url: 'https://registry.mareana.com') {
-                sh 'docker push $DOCKER_IMAGE/mdh-cpv-ui-$BUILD_NUMBER:latest'
-                sh 'docker rmi $DOCKER_IMAGE/mdh-cpv-ui-$BUILD_NUMBER:latest'
+                withDockerRegistry(credentialsId: 'docker-registry-mareana', url: 'https://registry.cloud.mareana.com') {
+                sh 'docker push $DOCKER_IMAGE/mdh-cpv-ui:$BUILD_NUMBER'
+                sh 'docker rmi $DOCKER_IMAGE/mdh-cpv-ui:$BUILD_NUMBER'
                 }
             }
           }
@@ -85,7 +85,7 @@ pipeline {
                  sh 'aws eks update-kubeconfig --name eks-cluster --region us-east-1'
                  sh '''#!/bin/bash -x
                        echo "Changing Docker image in deployment yml file"
-                       sed -i -e "s@IMAGE@\'"$DOCKER_IMAGE/mdh-cpv-ui-$BUILD_NUMBER"\'@g"  bms-k8s-dev-deployment.yml
+                       sed -i -e "s@IMAGE@\'"$DOCKER_IMAGE/mdh-cpv-ui:$BUILD_NUMBER"\'@g"  bms-k8s-dev-deployment.yml
                        echo "Deploying the latest docker image to dev"
                        kubectl apply -f bms-k8s-dev-deployment.yml --record
                        kubectl -n mdh-cpv-dev get pods

@@ -1,5 +1,31 @@
 .reportDesigner-gen {
-    height: 105px;
+
+    .report-heading
+    {
+     font-family: 'Roboto';
+     font-style: normal;
+     font-weight: 400;
+     font-size: 14px;
+     line-height: 22px;    
+     color: #262626;
+     }
+ 
+     .head-main
+     {
+         width: 100% ;
+         margin-left:22px;
+     }
+     .colon
+     {
+         margin-right: 10px;
+         margin-left: 10px;
+     }
+     .report-name
+     {
+         width:auto;
+         float:left;
+         margin-left:55px;
+     }
    
     .reportDesigner-block-left {
       display: grid;

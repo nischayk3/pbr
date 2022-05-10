@@ -166,7 +166,6 @@ export default function Landing(props) {
         dispatch(showLoader());
         let req = { report_displ_id: report_id };
         let data = await loadReportGen(req);
-        console.log(data);
         if (data.report_generator)
             dispatch(sendReport(data.report_generator.data));
         if (data.Status == 200 || data.report_generator) {
@@ -183,11 +182,11 @@ export default function Landing(props) {
         dispatch(showLoader());
         let req = { report_displ_id: report_id };
         let data = await loadReportGen(req);
-        console.log(data);
         if (data.report_generator)
             dispatch(sendReport(data.report_generator.data));
         if (data.Status == 200 || data.report_generator) {
             dispatch(hideLoader());
+            dispatch(showNotification('success', `Loaded ${report_id}`));
         } else {
             dispatch(hideLoader());
             dispatch(showNotification('error', data.Message));
@@ -205,6 +204,7 @@ export default function Landing(props) {
             return 'awap';
         }
     };
+
 
     return (
         <div className="report-landing">
@@ -327,6 +327,7 @@ export default function Landing(props) {
 
                                     {searched ? (
                                         <Table
+                                        className='landing-table'
                                             columns={columns}
                                             dataSource={
                                                 filterTable === null
@@ -416,14 +417,6 @@ export default function Landing(props) {
                                 </Col>
                                 <Col span={12}>
                                     <Row>
-                                        <p>What can we call your report variant?</p>
-                                        <Input
-                                            placeholder='Enter report variant name'
-                                        // onChange={(e) => setHierarchyName(e.target.value)}
-                                        // value={hierarchyName}
-                                        />
-                                    </Row><br />
-                                    <Row>
                                         <p>Select a report to get started</p>
                                         <Input.Search
                                             onSearch={onSearch}
@@ -431,34 +424,59 @@ export default function Landing(props) {
                                         // onChange={(e) => setHierarchyName(e.target.value)}
                                         // value={hierarchyName}
                                         />
-                                        {newsearched ? (
-                                            <Table
-                                                columns={columns}
-                                                scroll={{ y: 150 ,x:350}}
-                                                // style={{  height: 'auto' }}
-                                                dataSource={
-                                                    filterTable === null
-                                                        ? reportList
-                                                        : filterTable
-                                                }
-                                                pagination={false}
-                                                onRow={(record) => ({
-                                                    onClick: (e) => {
-                                                        // record['color'] = '#D3D3D3'
-                                                        // setReportId(record.rep_disp_id)
-                                                        // getReportData(record.rep_disp_id, record.rep_status)
-                                                        // dispatch(showLoader())
-                                                        NewReportGenerator(
-                                                            record.rep_disp_id
-                                                        );
-                                                        // onOk()
-                                                    },
-                                                })}
-                                            />
-                                        ) : (
-                                            <></>
-                                        )}
                                     </Row>
+                                    <div className="landing-tiles">
+                                        {reportList &&
+                                            reportList.length > 0 &&
+                                            reportList.map(
+                                                (i, index) =>
+                                                    index < 4 && (
+                                                        <div
+                                                            onClick={() => {
+                                                                getLoadReportGenerator(
+                                                                    i.rep_disp_id
+                                                                );
+                                                            }}
+                                                        >
+                                                            <div className="landing-tile" >
+                                                                <div className="landing-report-id"> {i.rep_disp_id}</div><br />
+                                                                <span className="landing-report-name">{i.rep_name}</span>
+                                                                {/* {i.id}<br />
+                                                                     */}
+                                                            </div>
+                                                        </div>
+                                                    )
+                                            )}
+                                    </div>
+                                    {newsearched ? (
+                                        <Table
+                                        className='landing-table'
+                                            columns={columns}
+                                            scroll={{ y: 150, x: 350 }}
+                                            // style={{  height: 'auto' }}
+                                            dataSource={
+                                                filterTable === null
+                                                    ? reportList
+                                                    : filterTable
+                                            }
+                                            pagination={false}
+                                            onRow={(record) => ({
+                                                onClick: (e) => {
+                                                    // record['color'] = '#D3D3D3'
+                                                    // setReportId(record.rep_disp_id)
+                                                    // getReportData(record.rep_disp_id, record.rep_status)
+                                                    // dispatch(showLoader())
+                                                    NewReportGenerator(
+                                                        record.rep_disp_id
+                                                    );
+                                                    // onOk()
+                                                },
+                                            })}
+                                        />
+                                    ) : (
+                                        <></>
+                                    )}
+
 
                                 </Col>
 

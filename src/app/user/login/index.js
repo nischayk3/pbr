@@ -13,42 +13,40 @@ import { useHistory } from 'react-router-dom';
 import Icon from '../../../assets/mareana_logo.png';
 import { loginUrl } from '../../../services/loginService';
 import { adenabled } from '../../../config/config';
+import { MDH_APP_PYTHON_SERVICE } from '../../../constants/apiBaseUrl';
 
 const Login = () => {
-	const dispatch = useDispatch();
-	const history = useHistory();
+    const dispatch = useDispatch();
+    const history = useHistory();
 
-	const onFinish = async values => {
-		try {
-			dispatch(showLoader());
-			const response = await userLogin(values);
-			Auth.login({ ...response, username: values.username });
-			history.push('/dashboard/view_creation');
-			dispatch(hideLoader());
-		} catch (err) {
-			dispatch(hideLoader());
-			dispatch(showNotification('error', err.message));
-		}
-	};
+    const onFinish = async (values) => {
+        try {
+            dispatch(showLoader());
+            const response = await userLogin(values);
+            Auth.login({ ...response, username: values.username });
+            history.push('/dashboard/view_creation');
+            dispatch(hideLoader());
+          } 
+          catch (err) 
+          {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', err.message));
+          }
+    };
 
-	const onLogin = async () => {
-		if (localStorage.getItem('login_details')) {
-			history.push('/dashboard/workspace');
-			dispatch(showNotification('success', 'Logged In Success'));
-		} else {
-			if (localStorage.getItem('test_enabled')) {
-				window.open(
-					`${loginUrl}?is_ui=True&base_url=https://bms-cpvdev.mareana.com&redirect_url=https://bms-cpvdev.mareana.com%2F%23%2Fdashboard%2Fredirect`,
-					'_self'
-				);
-			} else {
-				window.open(
-					`${loginUrl}?is_ui=True&base_url=https://bms-cpvdev.mareana.com&redirect_url=https://bms-cpvdev.mareana.com%2F%23%2Fdashboard%2Fredirect`,
-					'_self'
-				);
-			}
-		}
-	};
+    const onLogin = async () => {
+        if (localStorage.getItem('login_details')) {
+            history.push('/dashboard/workspace');
+            dispatch(showNotification('success', "Logged In Success"));
+        }
+        else {
+            if (localStorage.getItem("test_enabled")) {
+                window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
+            } else {
+                window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
+            }
+        }
+    }
 
 	return (
 		<div className='page-login bg-img'>

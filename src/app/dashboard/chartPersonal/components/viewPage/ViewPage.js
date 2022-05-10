@@ -176,7 +176,9 @@ const ViewPage = () => {
           data="Untitled"
         />
         <div className="btns">
-          {Object.keys(params).length > 0 ? (
+          {Object.keys(params).length > 0 && 
+            params.fromScreen!=='Workspace'?
+            (
             <>
               <Button
                 onClick={() => {
@@ -227,7 +229,7 @@ const ViewPage = () => {
                   setPostChartData={setPostChartData}
                 />
               </TabPane>
-              <TabPane tab="Limits" key="2">
+              <TabPane tab="Limit" key="2">
                 <Limits
                   postChartData={postChartData}
                   setPostChartData={setPostChartData}
