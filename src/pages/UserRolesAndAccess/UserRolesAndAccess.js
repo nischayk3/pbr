@@ -30,7 +30,7 @@ const UserRolesAndAccess = () => {
 
                 <ScreenHeader
                     bannerbg={{ background: 'linear-gradient(180deg, #F5EBEB 100%, #FBC2BD 4%)' }}
-                    title={`Howdy, ${'<<User Name>>'}`}
+                    title={`Howdy ${localStorage.getItem('username')}!`}
                     description="Let's personalize some charts today!"
                     source={headerImage}
                     sourceClass='dashboard-image'
