@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Input, Modal, Alert } from 'antd';
+import { Button, Input, Modal, Alert, Table } from 'antd';
 import FunctionKey from '../../../../../assets/images/key1.png';
 import InputField from '../../../../../components/InputField/InputField';
 import { InfoCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
@@ -13,6 +13,37 @@ import {
 import { viewEvaluate } from '../../../../../services/viewCreationPublishing';
 import { showNotification } from '../../../../../duck/actions/commonActions';
 
+const DataColumns = [
+	{
+		title: 'Batch Num',
+		dataIndex: 'batch_num',
+		key: 'batch_num',
+		width: 150,
+		fixed: 'left',
+	},
+	{
+		title: 'PARAMETER',
+		dataIndex: 'parameter',
+		key: 'parameter',
+		width: 150,
+		fixed: 'left',
+	},
+	{
+		title: 'Recorded Date',
+		dataIndex: 'recorded_date',
+		key: 'recorded_date',
+		width: 150,
+		fixed: 'left',
+	},
+	{
+		title: 'Value',
+		dataIndex: 'value',
+		key: 'value',
+		width: 150,
+		fixed: 'left',
+	},
+]
+
 const MathFunction = props => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [isFunctionVisible, setIsFunctionVisible] = useState(false);
@@ -23,6 +54,8 @@ const MathFunction = props => {
 	const [isEvaluatingFun, setIsEvaluatingFun] = useState(false);
 	const [isFunValidate, setIsFunValidate] = useState(false);
 	const [isFunctionInvalid, setIsFunctionInvalid] = useState(false);
+	const [isTabelVisible, setIsTableVisible] = useState(false)
+	const [evalTable, setEvalTable] = useState([])
 
 	const dispatch = useDispatch();
 	const showModal = () => {
@@ -35,6 +68,10 @@ const MathFunction = props => {
 
 	const handleCancel = () => {
 		setIsModalVisible(false);
+	};
+
+	const handleTableCancel = () => {
+		setIsTableVisible(false);
 	};
 
 	const handleChangeFunction = e => {
@@ -50,6 +87,7 @@ const MathFunction = props => {
 		dispatch(saveViewFunction(true));
 		setIsModalVisible(false);
 		setIsAlertFunction(true);
+		setIsFunction(false);
 		setTimeout(() => {
 			setFunctionName('');
 			setIsAlertFunction(false);
@@ -65,13 +103,14 @@ const MathFunction = props => {
 
 		let evaluate_respone = await viewEvaluate({ data: req })
 
-		if (evaluate_respone.view_status == "") 
-		{
+		if (evaluate_respone.view_status == "") {
+			setIsTableVisible(true)
+			setEvalTable(evaluate_respone.functions)
 			dispatch(showNotification('success', 'Evaluated'))
 			setIsFunction(true);
 		}
 		else
-			dispatch(showNotification('error', 'Not Evaluated'))
+			dispatch(showNotification('error', evaluate_respone.message))
 
 		// if()
 
@@ -192,6 +231,14 @@ const MathFunction = props => {
 						</div>
 					</div>
 				</div>
+			</Modal>
+			<Modal
+				width={500}
+				visible={isTabelVisible}
+				onCancel={handleTableCancel}
+				footer={null}>
+				<Table className="eval-table" columns={DataColumns} dataSource={evalTable} />
+
 			</Modal>
 		</>
 	);

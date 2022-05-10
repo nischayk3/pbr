@@ -41,6 +41,7 @@ import {
 	sendSelectedParamData,
 } from '../../../../duck/actions/viewAction';
 import Signature from '../../../../components/ElectronicSignature/signature';
+
 const { Panel } = Collapse;
 
 const ViewCreation = props => {
@@ -104,16 +105,20 @@ const ViewCreation = props => {
 	// }, [moleculeId]);
 
 	useEffect(() => {
+		
 		let pathString = location.state;
-
 		if (pathString && pathString.viewId !== undefined) {
 			let _reqLoad = {
 				view_disp_id: pathString.viewId,
 				view_version: pathString.viewVersion,
 			};
+			
 			setViewDisplayId(pathString.viewId);
 			setViewVersion(pathString.viewVersion);
 			loadView(_reqLoad);
+		}else{
+			setViewDisplayId(parameters.id);
+			setViewVersion(parameters.version);
 		}
 	}, []);
 
@@ -164,7 +169,6 @@ const ViewCreation = props => {
 
 	const handleSaveView = () => {
 		const viewData = JSON.parse(JSON.stringify(viewJson));
-
 		viewData.forEach(element => {
 			(element.functions = viewState.functions),
 				(element.parameters = viewState.parameters),
@@ -225,6 +229,7 @@ const ViewCreation = props => {
 	};
 
 	const loadView = async _reqLoad => {
+		
 		try {
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
@@ -261,7 +266,9 @@ const ViewCreation = props => {
 		<div className=' viewCreation-container'>
 			<BreadCrumbWrapper />
 			<div className='breadcrumbs-btn'>
-				{Object.keys(parameters).length > 0 ? (
+				{Object.keys(parameters).length > 0 && 
+					parameters.fromScreen!=='Workspace' ?
+					(
 					<div className='viewCreation-btns'>
 						<Button
 							className='viewCreation-rejectBtn'

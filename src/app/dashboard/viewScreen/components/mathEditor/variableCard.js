@@ -9,7 +9,7 @@ const VariableCard = props => {
 				<p>{props.variableName}</p>
 				<div className='var-btn'>
 					<Button>
-						<EditOutlined className='edit' />
+						<EditOutlined className='edit' onClick={()=>props.setVariable(props.variableName)} />
 					</Button>
 					<Button onClick={e => props.deleteVariable(props.variableName)}>
 						<DeleteOutlined className='delete' />

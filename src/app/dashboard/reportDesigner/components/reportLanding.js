@@ -327,6 +327,7 @@ export default function Landing(props) {
 
                                     {searched ? (
                                         <Table
+                                        className='landing-table'
                                             columns={columns}
                                             dataSource={
                                                 filterTable === null
@@ -449,6 +450,7 @@ export default function Landing(props) {
                                     </div>
                                     {newsearched ? (
                                         <Table
+                                        className='landing-table'
                                             columns={columns}
                                             scroll={{ y: 150, x: 350 }}
                                             // style={{  height: 'auto' }}

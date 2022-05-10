@@ -13,7 +13,7 @@ body {
 	width: 175px;
 	border-radius: 4px;
 	background-color: #ffffff;
-	border: 1px dashed #d9d9d9;
+	border: 2px solid #486BC9;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
@@ -45,10 +45,10 @@ body {
 }
 
 .create-new:hover {
-	border: 1px dashed #40a9ff;
+	border: 2px solid var(--border-color);
 
 	p {
-		color: #40a9ff;
+		color: var(--border-color); 
 	}
 }
 
@@ -90,7 +90,8 @@ body {
 
 .custom-table-wrapper {
     background: #fff;
-    padding: 15px 20px;
+    padding: 20px;
+	position: relative;
 }
 
 .panel-delete-button {
@@ -123,7 +124,21 @@ custom-panel .panel-repeat {
     flex: 0 0 80%;
 }
 
-.panel-repeat > div > span label {display: inline-block;margin: 0 10px 0;}
+.panel-repeat > div > span {
+    display: inline-block;
+    min-width: 40%;
+}
+
+.panel-repeat > div > span:first-child {
+    min-width: 220px;
+}
+
+.panel-repeat > div > span.anticon.anticon-delete {
+    display: inline-block;
+    min-width: auto;
+}
+
+.panel-repeat > div > span label {display: block;margin: 0 10px 0 0;}
 
 .panel-repeat > div {
     margin: 0 0 15px;
@@ -131,4 +146,32 @@ custom-panel .panel-repeat {
 
 .panel-repeat > div > span .ant-select.ant-select-multiple {
     margin-right: 20px !important;
+	display: block;
+}
+
+.custom-user-roles-wrapper .ant-row.create-new-row {
+    text-align: center;
+    display: block;
+}
+
+.create-new-row .ant-col.ant-col-4 {
+    display: inline-block;
+    margin: 10px 15px 0;
+}
+
+.custom-table-wrapper p ~ button  {
+    position: absolute;
+    right: 20px;
+    top: 12px;
+}
+
+.custom-row {
+    display: block;
+    flex: 0 0 100%;
+    text-align: right;
+    max-width: 100%;
+}
+
+.custom-row button.button-dashed__primary {
+    max-width: 200px;
 }

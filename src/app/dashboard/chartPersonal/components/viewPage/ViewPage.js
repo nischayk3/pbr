@@ -176,7 +176,9 @@ const ViewPage = () => {
           data="Untitled"
         />
         <div className="btns">
-          {Object.keys(params).length > 0 ? (
+          {Object.keys(params).length > 0 && 
+            params.fromScreen!=='Workspace'?
+            (
             <>
               <Button
                 onClick={() => {
