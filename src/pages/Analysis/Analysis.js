@@ -54,7 +54,6 @@ const Analysis = () => {
   };
 
   const onClickAdd = () => {
-    console.log(match.url)
     history.push(`${match.url}/1`);
   };
 

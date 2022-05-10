@@ -1,16 +1,36 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Button } from 'antd'
 import ReactFlow, { MarkerType } from 'react-flow-renderer'
 
 const StoryLine = props => {
+    const storyRef = useRef()
     const [nodes, setNodes] = useState([])
     const [edges, setEdges] = useState([])
+    const [horizontalScrollEnabled, setHorizontalScrollEnabled] = useState(false)
 
     useEffect(() => {
-        initializeNodes()
+        renderNodes()
     }, [props.storyLine])
 
-    const initializeNodes = () => {
+    useEffect(() => {
+        const scrollContainer = storyRef.current.getElementsByClassName("react-flow__storyline")[0]
+
+        if (!horizontalScrollEnabled && scrollContainer) {
+            scrollContainer.addEventListener('wheel', e => handleHorizontalScroll(scrollContainer, e))
+            setHorizontalScrollEnabled(true)
+        }
+
+        return () => {
+            scrollContainer.removeEventListener('wheel', e => handleHorizontalScroll(scrollContainer, e))
+        }
+    }, [])
+
+    const handleHorizontalScroll = (scrollContainer, e) => {
+        e.preventDefault()
+        scrollContainer.scrollLeft += e.deltaY
+    }
+
+    const renderNodes = () => {
         const nodes = []
         props.storyLine.forEach((label, i) => {
             const node = {
@@ -20,7 +40,7 @@ const StoryLine = props => {
                 position: { x: i * 200 + 50, y: 25 },
                 sourcePosition: 'right',
                 targetPosition: 'left',
-                type: i ? '' : 'input',
+                type: i ? i !== props.storyLine.length - 1 ? '' : 'output' : 'input',
                 style: { backgroundColor: '#fff', color: '#000' }
             }
             nodes.push(node)
@@ -29,6 +49,7 @@ const StoryLine = props => {
     }
 
     const onNodesChange = () => {
+        const edges = []
         for (let i = 0; i < nodes.length - 1; i++) {
             const edge = {
                 id: `edge-${i}-${i + 1}`,
@@ -38,17 +59,17 @@ const StoryLine = props => {
                 markerEnd: { type: MarkerType.ArrowClosed },
                 style: { stroke: '#72370A' }
             }
-            setEdges(edges => [...edges, edge])
+            edges.push(edge)
         }
+        setEdges(edges)
     }
 
-    const addNode = () => {
-        console.log('adding node')
+    const onExecute = () => {
         props.setStoryLine(nodes => [...nodes, 'new node'])
     }
 
     return (
-        <div className="storyline">
+        <div className="storyline" ref={storyRef}>
             <ReactFlow
                 panOnScroll={false}
                 panOnDrag={false}
@@ -60,8 +81,9 @@ const StoryLine = props => {
                 defaultMarkerColor="#72370A"
                 onNodesChange={onNodesChange}
                 className="react-flow__storyline"
+
             />
-            <Button onClick={addNode} className="button-solid__primary">Add Node</Button>
+            <Button onClick={onExecute} className="button-solid__primary">Execute</Button>
         </div>
     )
 }

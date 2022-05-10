@@ -59,6 +59,43 @@ const parameterDetails = [
     },
 ]
 
+const summaryParametersDetails = [
+    {
+        label: 'Temperature Combined',
+        data: [
+            {
+                label: 'N',
+                value: 150.00000
+            },
+            {
+                label: 'Missing',
+                value: 23.67474848
+            },
+            {
+                label: 'Unique',
+                value: 1.00000000
+            }
+        ]
+    },
+    {
+        label: 'pH Combined',
+        data: [
+            {
+                label: 'N',
+                value: 150.00000
+            },
+            {
+                label: 'Missing',
+                value: 23.67474848
+            },
+            {
+                label: 'Unique',
+                value: 1.00000000
+            }
+        ]
+    }
+]
+
 const storyLineParameters = ['Temperature Combined', 'Pressure Altered']
 
 
@@ -73,7 +110,7 @@ const AnalysisModel = () => {
             <StoryLine storyLine={storyLine} setStoryLine={setStoryLine} />
             <div className="custom-user-roles-wrapper">
                 <div className="custom-table-wrapper">
-                    <Summary />
+                    <Summary summaryParametersDetails={summaryParametersDetails} />
                     <AnalysisData parameters={parameters} />
                 </div>
             </div>

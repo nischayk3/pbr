@@ -1,22 +1,30 @@
+import { Fragment } from 'react'
 import { Collapse, Button } from 'antd'
-import { FileTextOutlined, InfoCircleOutlined, EditOutlined } from '@ant-design/icons';
+import { FileTextOutlined, EditOutlined } from '@ant-design/icons';
+
+import NoData from '../NoData/NoData'
+import SummaryDetails from '../SummaryDetails/SummaryDetails'
 
 const { Panel } = Collapse
 
-const Summary = () => {
+const Summary = props => {
 
     const getPanels = () => {
-        if (![].length) {
+        if ([].length) {
             return (
-                <Panel header={<div><span className='cstm-bordered-txt'>{'Temperature Combined'}</span> <span className='cstm-icn-txt'><EditOutlined /> Edit transformation</span></div>} key="1">
-                    <p>{'text'}</p>
+                <Panel header={<div>{props.summaryParametersDetails.map((summaryParameters, i) => {
+                    return <Fragment key={i}>
+                        <span className='cstm-bordered-txt'>{summaryParameters.label}</span>
+                        <span className='cstm-icn-txt'><EditOutlined /> Edit transformation</span>
+                    </Fragment>
+                })}</div>} key="1">
+                    {props.summaryParametersDetails.map((summaryParameters, i) => {
+                        return <SummaryDetails summaryParametersData={summaryParameters.data} key={i} />
+                    })}
                 </Panel>
             )
         }
-        return <div>
-            <InfoCircleOutlined />
-            <p>You will see th summary of the functions you added here.</p>
-        </div>
+        return <NoData text="You will see the summary of the functions you added here." />
     }
 
     return (
