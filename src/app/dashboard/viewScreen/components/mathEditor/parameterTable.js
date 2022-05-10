@@ -9,6 +9,7 @@ import {
 	viewFunctionMap,
 	viewParamMap,
 } from '../../../../../duck/actions/viewAction';
+import { hideLoader, showLoader } from '../../../../../duck/actions/commonActions';
 
 let paramType = '';
 
@@ -38,7 +39,8 @@ const ParameterTable = props => {
 	const [checked, setChecked] = useState(null);
 	const [parameters, setParameters] = useState({});
 	const [variableParam, setVariableParam] = useState({});
-	const [ fun,setFun] = useState({})
+	const [fun, setFun] = useState({})
+	const [filterTable, setFilterTable] = useState([])
 
 	const {
 		rowDisable,
@@ -159,7 +161,7 @@ const ParameterTable = props => {
 									checked={value}
 								/>
 							);
-						} 
+						}
 						else if (value === '') {
 							return (
 								<Checkbox
@@ -265,6 +267,11 @@ const ParameterTable = props => {
 		}
 	}, [variableCreate]);
 
+
+	useEffect(() => {
+		sortArray(props.selectedVar, props.selectedData)
+	}, [props.selectedVar])
+
 	useEffect(() => {
 		if (saveFunction) {
 			counter++;
@@ -290,7 +297,7 @@ const ParameterTable = props => {
 			dispatch(createSummaryData(arr3));
 
 			primarySelectedData.parameter_name = functionName;
-			
+
 			let funObj1 = {};
 			funObj1['name'] = functionName;
 			funObj1['defination'] = paramReducer.funDetails;
@@ -323,6 +330,22 @@ const ParameterTable = props => {
 		}
 	};
 
+	const sortArray = (selectedVar, selectedData) => {
+		let filterData = [...tableData]
+		var parameterArray = selectedData && selectedData[selectedVar] && selectedData[selectedVar].map(function (el) { return el.parameter_name; });
+		if (parameterArray && parameterArray.length > 0) {
+			for (let i = 0; i < parameterArray.length; i++) {
+				let itemToFind = parameterArray[i]
+				let foundIdx = filterData.findIndex(el => el.parameter_name == itemToFind)
+				let itemToInsert = filterData[foundIdx]
+				filterData.splice(foundIdx, 1)
+				filterData.unshift(itemToInsert)
+			}
+		}
+			setFilterTable(filterData)
+			dispatch(hideLoader())
+	}
+
 	const handleAggregationChange = (text, record, value, index) => {
 		let newAggrValue = [...tableData];
 		newAggrValue[index].aggregation =
@@ -351,7 +374,6 @@ const ParameterTable = props => {
 		setParameters(batchExcludeJson);
 		setTableData(batchRecord);
 	};
-
 
 
 	return (
@@ -400,7 +422,7 @@ const ParameterTable = props => {
 						},
 					}}
 					columns={columns}
-					dataSource={tableData}
+					dataSource={filterTable.length > 0 ? filterTable :  tableData}
 					size='small'
 					scroll={{ y: 450 }}
 					pagination={false}

@@ -5,7 +5,7 @@
  * @Last Modified - 14 March, 2022
  * @Last Changed By - @Mihir 
  */
-import './style.scss';
+import './headerstyle.scss';
 import React, { useState, useEffect } from 'react';
 import {
     Typography
@@ -60,24 +60,22 @@ function ReportDesignerForm(props) {
     }
 
     return (
-        <div className="reportDesigner-gen ">
-        <div style={{width:'100%',marginLeft:'22px'}}>
+        <div className="reportDesignergen">
             <div style={{width:'auto',float:'left'}}>
-            <span className="report-heading"> Report ID <span style={{marginRight:'10px',marginLeft:'10px'}} >:</span> {reportId} </span>
+            <span className="report-heading"> Report ID <span className="colon">:</span> {reportId} </span>
             </div>
-            <div style={{width:'auto',float:'left',marginLeft:'55px'}}>
-               <span className="report-heading"> Report Name <span style={{marginRight:'10px',marginLeft:'10px'}} > :</span> {reportName}</span>
+            <div className="report-name">
+               <span className="report-heading"> Report Name <span className="colon" > :</span> {reportName}</span>
             </div>
-            <div style={{width:'auto',float:'left',marginLeft:'55px'}}>
-            <span className="report-heading">   Variant <span style={{marginRight:'10px',marginLeft:'10px'}} >:</span> {variantname} </span>
+            <div className="report-name">
+            <span className="report-heading">   Variant <span className="colon" >:</span> {variantname} </span>
             </div>
-            <div style={{width:'auto',float:'left',marginLeft:'55px'}}>
-             <span className="report-heading">  View <span style={{marginRight:'10px',marginLeft:'10px'}} >:</span> {viewId}</span> 
+            <div className="report-name">
+             <span className="report-heading">  View <span className="colon" >:</span> {viewId}</span> 
             </div>
-            <div style={{width:'auto',float:'left',marginLeft:'55px'}}>
-            <span className="report-heading">   Status <span style={{marginRight:'10px',marginLeft:'10px'}} >:</span> {reportStatus}</span> 
+            <div className="report-name">
+            <span className="report-heading">   Status <span className="colon">:</span> {reportStatus}</span> 
             </div>
-        </div>
         </div>
     );
 }
