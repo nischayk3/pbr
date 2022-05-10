@@ -154,6 +154,8 @@ const ViewSummaryData = props => {
 		setTableColumn(newColumns);
 	};
 
+
+
 	return (
 		<Card title='View Summary'>
 			<div className='view-summary_lable' style={{ paddingTop: '20px' }}>
