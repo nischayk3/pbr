@@ -92,7 +92,7 @@ const chartComponent = (props) => {
                     xaxis: chartResponse.data[0].layout.xaxis,
                     yaxis: chartResponse.data[0].layout.yaxis,
                     autosize: false,
-                    width: 600,
+                    width: 550,
                     height: 410,
                     margin: {
                         l: 60,
@@ -126,6 +126,7 @@ const chartComponent = (props) => {
                 <Plot
                     data={workspaceChartData}
                     layout={workspaceChartLayout}
+                    style={{marginLeft:'10px'}}
                 />
             </div>
             <div>

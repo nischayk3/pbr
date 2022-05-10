@@ -36,6 +36,7 @@ import {
 	adHocFileUpload,
 	adHocFilesParameterTree,
 } from '../../../../../services/viewCreationPublishing';
+import { MDH_APP_PYTHON_SERVICE } from '../../../../../constants/apiBaseUrl';
 const { Panel } = Collapse;
 const { Dragger } = Upload;
 let finalData = [];
@@ -162,7 +163,7 @@ function FileUpload(props) {
 			<span className='fileUpload-download'>
 				<a
 					href={
-						'https://bms-cpvdev.mareana.com/services/v1/download_file?file_id=' +
+						`${MDH_APP_PYTHON_SERVICE}/services/v1/download_file?file_id=` +
 						`${File_id}`
 					}>
 					<DownloadOutlined />

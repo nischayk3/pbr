@@ -6,6 +6,7 @@ import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerD
 import Chart from '../reportChart/chartComponent/chartComponent'
 import { showLoader, hideLoader } from '../../../../../duck/actions/commonActions';
 import { useDispatch } from 'react-redux';
+import checkIcon from  '../../../../../assets/images/checkbox.svg'
 
 
 
@@ -192,7 +193,7 @@ function ReportDesignerDynamicSections(props) {
                                                     list.map((i) =>
                                                     (<Form.Item {...restField} name={[name, 'select']}>
                                                         <div className='chart-tiless' onClick={(e) => addChart(e.target.innerHTML, name)}>
-                                                            {addedCharts[`${name + 1}`] && addedCharts[`${name + 1}`].map((j) => (j == i ? <div className="chart-tile"> <CheckCircleOutlined style={{ color: 'green' }} /></div> : <></>))}
+                                                            {addedCharts[`${name + 1}`] && addedCharts[`${name + 1}`].map((j) => (j == i ? <div className="chart-tile"> <img src={checkIcon}  /></div> : <></>))}
                                                             <p className="charttile-content">{i}</p>
                                                         </div>
                                                     </Form.Item>
@@ -204,8 +205,8 @@ function ReportDesignerDynamicSections(props) {
                                         </div>
                                         {props.charts_layout[`${name + 1}`] && props.charts_layout[`${name + 1}`].map((i) =>
                                         (
-                                            <div>
-                                                <p className="chart-name">{i} <Popconfirm title="Are you Sure you want to delete the chart?" onConfirm={() => deleteChart(i, name)} disabled={props.show}>
+                                            <div className="chart-sections" >
+                                                <p className="chart-name" >{i} <Popconfirm title="Are you Sure you want to delete the chart?" onConfirm={() => deleteChart(i, name)} disabled={props.show}>
                                                     <DeleteTwoTone twoToneColor="red" style={{ marginLeft: '20px' }} />
                                                 </Popconfirm></p>
                                                 <Chart chartName={i} />
