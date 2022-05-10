@@ -116,6 +116,12 @@ const MENU = [
         linkTo: '/dashboard/pbr_reviewer',
     },
     {
+        key: 'user-roles-and-access',
+        icon: <BarChartOutlined style={{ fontSize: '23px' }} />,
+        title: 'User Roles',
+        linkTo: '/dashboard/user-roles-and-access',
+    },
+    {
         key: 'hierarchy',
         icon: <AppstoreOutlined style={{ fontSize: '23px' }} />,
         title: 'Hierarchy',
