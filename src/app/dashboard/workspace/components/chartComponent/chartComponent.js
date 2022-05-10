@@ -34,11 +34,17 @@ const chartComponent = (props) => {
         try {
             dispatch(showLoader());
             const chartResponse = await getChartPlotData(req,headers);
-            setWorkSpaceChartData(chartResponse.data[0].data);
-            setWorkSpaceChartLayout(chartResponse.data[0].layout)
-            setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
-            setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
-            dispatch(hideLoader());
+            if(chartResponse.statuscode==200){
+                setWorkSpaceChartData(chartResponse.data[0].data);
+                setWorkSpaceChartLayout(chartResponse.data[0].layout)
+                setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
+                setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
+                dispatch(hideLoader());
+            }else{
+                dispatch(hideLoader());
+                dispatch(showNotification('error', 'There is no data'));
+            }
+            
         } catch (error) {
             dispatch(hideLoader());
             dispatch(showNotification('error', error.Message));

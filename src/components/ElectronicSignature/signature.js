@@ -106,7 +106,7 @@ function Signature(props) {
                 }
                 req1['status'] = props.status
 
-                let publish_response = Object.keys(params).length > 0 ? await approveRecord(req1) : await publishEvent(reqs,headers)
+                let publish_response = Object.keys(params).length > 0 && params.fromScreen!=='Workspace'? await approveRecord(req1) : await publishEvent(reqs,headers)
 
                 if (publish_response.status_code == 200) {
                     dispatch(showNotification('success', publish_response.msg))

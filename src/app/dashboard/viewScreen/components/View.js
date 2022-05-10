@@ -105,8 +105,8 @@ const ViewCreation = props => {
 	// }, [moleculeId]);
 
 	useEffect(() => {
+		
 		let pathString = location.state;
-
 		if (pathString && pathString.viewId !== undefined) {
 			let _reqLoad = {
 				view_disp_id: pathString.viewId,
@@ -116,6 +116,9 @@ const ViewCreation = props => {
 			setViewDisplayId(pathString.viewId);
 			setViewVersion(pathString.viewVersion);
 			loadView(_reqLoad);
+		}else{
+			setViewDisplayId(parameters.id);
+			setViewVersion(parameters.version);
 		}
 	}, []);
 
@@ -263,7 +266,9 @@ const ViewCreation = props => {
 		<div className=' viewCreation-container'>
 			<BreadCrumbWrapper />
 			<div className='breadcrumbs-btn'>
-				{Object.keys(parameters).length > 0 ? (
+				{Object.keys(parameters).length > 0 && 
+					parameters.fromScreen!=='Workspace' ?
+					(
 					<div className='viewCreation-btns'>
 						<Button
 							className='viewCreation-rejectBtn'
