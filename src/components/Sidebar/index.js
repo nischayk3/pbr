@@ -122,6 +122,12 @@ const MENU = [
         linkTo: '/dashboard/user-roles-and-access',
     },
     {
+        key: 'analysis',
+        icon: <BarChartOutlined style={{ fontSize: '23px' }} />,
+        title: 'Analysis',
+        linkTo: '/dashboard/analysis',
+    },
+    {
         key: 'hierarchy',
         icon: <AppstoreOutlined style={{ fontSize: '23px' }} />,
         title: 'Hierarchy',
