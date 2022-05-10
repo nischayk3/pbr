@@ -367,7 +367,7 @@ function ReportDesignerNew(props) {
         }
         section_arr.push(obj);
         }
-      if (item !== undefined && index > 0 ) {
+      if (item !== undefined) {
 
         obj['heading'] = item.sectionName ? item.sectionName : '';
         if (index == 0)

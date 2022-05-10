@@ -18,7 +18,7 @@ const MathEditor = props => {
 	const [variableCreate, setVariableCreate] = useState(false);
 	const [ischeckBox, setIscheckBox] = useState(false);
 	const [varClick, setVarClick] = useState(false);
-	const [paramData,setParamData] = useState({})
+	const [paramData, setParamData] = useState({})
 	const [selectedVar, setSelectedVar] = useState('')
 
 	const { Panel } = Collapse;
@@ -42,14 +42,18 @@ const MathEditor = props => {
 			viewJsonData.forEach((element, index) => {
 				paramKey.push(Object.keys(element.parameters));
 			});
-
-			paramKey.forEach((element, index) => {
-				variableData.push({
-					variableName: element,
-					id: index,
-				});
-			});
-			setVarData(variableData);
+			let var_data = []
+			paramKey = paramKey[0]
+			if (paramKey.length > 0) {
+				for (let i = 0; i < paramKey.length; i++) 
+				{
+                    let obj ={}
+					obj['variableName'] = paramKey[i]
+					obj['id'] = i
+					var_data.push(obj)
+				}
+			}
+			setVarData(var_data);
 		}
 	}, [isLoadView]);
 
@@ -79,13 +83,11 @@ const MathEditor = props => {
 		}
 	};
 
-	const getParamData = (data) =>
-	{
+	const getParamData = (data) => {
 		setParamData(data)
 	}
-    
-	const setVariable = (data) =>
-	{
+
+	const setVariable = (data) => {
 		setSelectedVar(data)
 	}
 	const deleteVariable = param => {
@@ -110,7 +112,6 @@ const MathEditor = props => {
 		variableData = varDataArr;
 		setVarData(varArr);
 	};
-
 
 	return (
 		<Collapse
@@ -155,7 +156,7 @@ const MathEditor = props => {
 					viewSummaryBatch={viewSummaryBatch}
 					setViewSummaryBatch={setViewSummaryBatch}
 					getParamData={getParamData}
-					selectedData={paramData} 
+					selectedData={paramData}
 					selectedVar={selectedVar}
 				/>
 			</Panel>
