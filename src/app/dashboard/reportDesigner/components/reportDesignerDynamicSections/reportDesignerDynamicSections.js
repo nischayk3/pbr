@@ -143,7 +143,7 @@ function ReportDesignerDynamicSections(props) {
                                                 <EditOutlined style={{ marginTop: '8px', marginLeft: '10px' }} onClick={() => handleEdit(editable)} />
                                             </div>
 
-                                            <div className="add-chart" onClick={() => trackCharts(name)} >{!showChart[name] ? <span>+ Add Chart </span> : <span> - Remove  </span>} </div>
+                                            <div className="add-chart" onClick={() => trackCharts(name)} >{!showChart[name] ? <span>+ Add Chart </span> : <span> -  <span>Remove</span>  </span>} </div>
 
                                             <div style={{ marginLeft: '15%' }}>
                                                 <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
@@ -166,7 +166,7 @@ function ReportDesignerDynamicSections(props) {
                                                     style={{ display: 'flex', justifyContent: 'center' }}
                                                     align="baseline"
                                                 >
-                                                    <table className="dynamicSections-table" style={{ width: '1210px' }}>
+                                                    <table className="dynamicSections-table" style={{ width: '1200px' }}>
                                                         <thead className="dynamicSections-thead">
                                                             <tr>
                                                                 <th className="action-clm">Action</th>

@@ -19,6 +19,7 @@ const MathEditor = props => {
 	const [ischeckBox, setIscheckBox] = useState(false);
 	const [varClick, setVarClick] = useState(false);
 	const [paramData,setParamData] = useState({})
+	const [selectedVar, setSelectedVar] = useState('')
 
 	const { Panel } = Collapse;
 	const {
@@ -82,7 +83,11 @@ const MathEditor = props => {
 	{
 		setParamData(data)
 	}
-
+    
+	const setVariable = (data) =>
+	{
+		setSelectedVar(data)
+	}
 	const deleteVariable = param => {
 		let lastIndex;
 		varData.forEach((item, i) => {
@@ -105,6 +110,7 @@ const MathEditor = props => {
 		variableData = varDataArr;
 		setVarData(varArr);
 	};
+
 
 	return (
 		<Collapse
@@ -129,6 +135,7 @@ const MathEditor = props => {
 								item={item}
 								variableName={item.variableName}
 								deleteVariable={deleteVariable}
+								setVariable={setVariable}
 							/>
 						);
 					})}
@@ -148,6 +155,8 @@ const MathEditor = props => {
 					viewSummaryBatch={viewSummaryBatch}
 					setViewSummaryBatch={setViewSummaryBatch}
 					getParamData={getParamData}
+					selectedData={paramData} 
+					selectedVar={selectedVar}
 				/>
 			</Panel>
 		</Collapse>

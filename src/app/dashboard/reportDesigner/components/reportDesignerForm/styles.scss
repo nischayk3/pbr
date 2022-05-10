@@ -7,7 +7,7 @@
   // direction: ltr;
   // height: auto;
   // overflow: auto;
-}
+
 .reportDesigner-grid {
   height: 90px;
   .reportDesigner-block-design {
@@ -66,14 +66,27 @@
 {
 font-family: Roboto;
 font-style: normal;
-font-weight: normal;
+font-weight: 400;
 font-size: 14px;
 line-height: 30px;
 background: #FFFFFF;
-box-sizing: border-box;
-border-radius: 4px;
+margin-top: 10px;
+position: relative;
 }
+
 .table-search
 {
   margin-bottom: 5px;
+}
+.colon
+{
+  margin-left: 5px;
+  margin-right: 5px;
+
+}
+.status-colon
+{
+  margin-left: 22px;
+  margin-right: 5px;
+}
 }

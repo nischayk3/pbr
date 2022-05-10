@@ -203,11 +203,11 @@ class AuditTrials extends React.Component {
   componentDidMount() {
     this.setState({ initialColumns: this.state.columns });
     this.auditHighlight();
-    this.loadEventFilter('audit_activity_filter')
+    this.loadEventFilter('audit_event_filter')
 
     let userReq = {
       //appId: "CPV",
-      appId: "MDH_APP",
+      appId: "BMS",
       filterId: "bms_user_filter",
       q: ""
     };
@@ -265,7 +265,9 @@ class AuditTrials extends React.Component {
       myUrlWithParams.searchParams.append('export_csv', true);
     }
 
+
     let url = myUrlWithParams.href;
+    console.log(url)
     window.open(url);
   };
 
@@ -352,7 +354,7 @@ class AuditTrials extends React.Component {
   };
   loadEventFilter = (_filterId, _filter) => {
     let _req = {
-      appId: 'MDH_APP',
+      appId: 'BMS',
       filterId: _filterId,
       q: '',
       filters: _filter ? _filter : [],
@@ -468,7 +470,7 @@ class AuditTrials extends React.Component {
     // this.auditDateTable();
     let userReq = {
       //appId: "CPV",
-      appId: 'MDH_APP',
+      appId: 'BMS',
       filterId: 'bms_user_filter',
       q: '',
     };

@@ -179,7 +179,7 @@ function ReportDesignerNew(props) {
     try {
       dispatch(showLoader())
       setParams(true);
-      let req = { report_displ_id: params.id}
+      let req = { report_displ_id: params.id }
       let data = await loadReport(req)
       data = data.report_designer
       data = data.data
@@ -282,6 +282,7 @@ function ReportDesignerNew(props) {
 
   // Get form values
   const handleValuesChange = (changedValues, values) => {
+    console.log(changedValues, values)
     setMainJson(convertToJson(values));
   };
 
@@ -347,31 +348,53 @@ function ReportDesignerNew(props) {
     let arr = {};
     let section_arr = [];
     json_data = json_data['response']
+    console.log(json_data)
     json_data.map((item, index) => {
       let obj = {};
-      obj['heading'] = item.sectionName;
-      if (index == 0)
-        obj['numbered'] = true;
-      else
-        obj['numbered'] = true;
-      let content_arr = [];
-      content_arr = item.dymamic_rows.map((i, index) => {
-        // let objj = {};
-        let key_obj = {}
-        key_obj['value'] = i.value
-        key_obj['editable'] = i.editable==undefined ? false : i.editable
-        key_obj['id'] = index + 1
-        key_obj['key'] = i.keyName
-
-        return key_obj;
-      });
-      obj['content'] = content_arr;
-      obj['id'] = index;
-
-      if (index == 0)
-        arr['titlepage'] = obj;
-      else
+      if (item == undefined && index <= 0) {
+        let obj = {
+          content: [],
+          heading: " ",
+          id: 1,
+          numbered: true
+        }
+        arr['titlepage'] = obj
+      }
+      if (item == undefined && index > 0) {
+        let obj = {
+          content: [],
+          heading: " ",
+          id: 1,
+          numbered: true
+        }
         section_arr.push(obj);
+        }
+      if (item !== undefined && index > 0 ) {
+
+        obj['heading'] = item.sectionName ? item.sectionName : '';
+        if (index == 0)
+          obj['numbered'] = true;
+        else
+          obj['numbered'] = true;
+        let content_arr = [];
+        content_arr = item.dymamic_rows ? item.dymamic_rows.map((i, index) => {
+          // let objj = {};
+          let key_obj = {}
+          key_obj['value'] = i.value
+          key_obj['editable'] = i.editable == undefined ? false : i.editable
+          key_obj['id'] = index + 1
+          key_obj['key'] = i.keyName
+
+          return key_obj;
+        }) : []
+        obj['content'] = content_arr ? content_arr : [];
+        obj['id'] = index;
+
+        if (index == 0)
+          arr['titlepage'] = obj;
+        else
+          section_arr.push(obj);
+      }
     });
     arr['sections'] = section_arr;
 
@@ -648,6 +671,7 @@ function ReportDesignerNew(props) {
     return rowObject.isActive ? true : false;
   }
 
+  console.log(mainJson)
 
 
 
@@ -703,13 +727,13 @@ function ReportDesignerNew(props) {
                 </Button>
                 <Button
                   className="custom-secondary-btn"
-                  onClick={() => {setIsPublish(true); setApproveReject('P')}}
+                  onClick={() => { setIsPublish(true); setApproveReject('P') }}
                 >
                   <CloudUploadOutlined />
                   Publish
                 </Button>
                 <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
-                  <EllipsisOutlined style={{transform:'rotate(-90deg)',fontSize:'20px',marginLeft:'5px'}} />
+                  <EllipsisOutlined style={{ transform: 'rotate(-90deg)', fontSize: '20px', marginLeft: '5px' }} />
                 </Dropdown> </>
               : <> </>
           }
@@ -721,7 +745,7 @@ function ReportDesignerNew(props) {
                   setIsPublish(true);
                   setApproveReject('R');
                 }}
-                // onClick={() => { adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
+              // onClick={() => { adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
               >
                 Reject
               </Button>
@@ -731,7 +755,7 @@ function ReportDesignerNew(props) {
                   setIsPublish(true);
                   setApproveReject('A');
                 }}
-                // onClick={() => { adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
+              // onClick={() => { adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
               >
                 Approve
               </Button></div> : <></>
