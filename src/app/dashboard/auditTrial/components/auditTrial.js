@@ -267,7 +267,6 @@ class AuditTrials extends React.Component {
 
 
     let url = myUrlWithParams.href;
-    console.log(url)
     window.open(url);
   };
 
