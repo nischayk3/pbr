@@ -456,7 +456,7 @@ const Workspace = () => {
                       return (
                         <Col className='gutter-row' span={8}>
 
-                          <div className='workspace-processChart-card' onClick={() => history.push(`/dashboard/chart_personalization?id=${j.chart_disp_id}&version=${j.chart_version}`)}>
+                          <div className='workspace-processChart-card' onClick={() => history.push(`/dashboard/chart_personalization/${j.chart_disp_id}?id=${j.chart_disp_id}&version=${j.chart_version}&fromScreen=Workspace`)}>
                             <div className={`tile-status ${statusColor(j.chart_status)}`} >{j.chart_status}</div>
                             <p className='workspace-processCharts-id'>
                               {j.chart_disp_id}
@@ -492,7 +492,7 @@ const Workspace = () => {
                     {lastupdatedViews.length > 0 ? lastupdatedViews.map((m, n) => {
                       return (
                         <Col className='gutter-row' span={8}>
-                          <div className='workspace-processView-card' onClick={() => history.push(`/dashboard/view_creation?id=${m.view_disp_id}&version=${m.view_version}&fromScreen=Workspace`)}>
+                          <div className='workspace-processView-card' onClick={() => history.push(`/dashboard/view_creation/${m.view_disp_id}&${m.view_version}?id=${m.view_disp_id}&version=${m.view_version}&fromScreen=Workspace`)}>
                             <div className={`tile-status ${statusColor(m.view_status)}`} >{m.view_status}</div>
                             <p className='workspace-processView-id'>
                               {m.view_disp_id}
