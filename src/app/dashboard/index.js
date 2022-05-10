@@ -23,14 +23,11 @@ import RolesAndAccess from '../../pages/UserRolesAndAccess/RolesAndAccess/RolesA
 import ScreenControls from '../../pages/UserRolesAndAccess/ScreenControls/ScreenControls';
 import PaperBatchRecords from './paperBatchRecords';
 import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate';
-<<<<<<< HEAD
 import Analysis from '../../pages/Analysis/Analysis';
 import AnalysisModel from '../../pages/Analysis/AnalysisModel/AnalysisModel'
 
-=======
 import PbrReviewer from './pbrReviewer';
 import './dashboard.scss';
->>>>>>> origin/master
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
