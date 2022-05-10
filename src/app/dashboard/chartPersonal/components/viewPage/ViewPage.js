@@ -58,7 +58,6 @@ const ViewPage = () => {
   const location = useLocation();
 
   const params = queryString.parse(location.search);
-  console.log("parametersss", params);
 
   const callback = (key) => {};
 
@@ -176,9 +175,8 @@ const ViewPage = () => {
           data="Untitled"
         />
         <div className="btns">
-          {Object.keys(params).length > 0 && 
-            params.fromScreen!=='Workspace'?
-            (
+          {Object.keys(params).length > 0 &&
+          params.fromScreen !== "Workspace" ? (
             <>
               <Button
                 onClick={() => {
