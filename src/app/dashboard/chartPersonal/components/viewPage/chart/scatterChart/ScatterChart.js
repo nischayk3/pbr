@@ -61,21 +61,33 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
   const chartNodeClicked = (data) => {
     postChartData.data.forEach((ele) => {
       ele.extras.data_table.forEach((el) => {
+        console.log(el);
         if (el.batch_num === data.text) {
           setExclusionValues({
             ...exclusionValues,
             batchId: data.text,
             productCode: ele.view_name,
-            parameterValue: `(${data.x},${data.y})`,
+            parameterValue:
+              ele.chart_type === "process control"
+                ? data.y
+                : `(${data.x},${data.y})`,
             notes: "",
             unit: el.uom_code,
             excludeRecord: false,
-            parameterName: `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
-            testDate: `(${new Date(
-              el["recorded_date_" + ele.chart_mapping.x.function_name]
-            ).toLocaleDateString()},${new Date(
-              el["recorded_date_" + ele.chart_mapping.y.function_name]
-            ).toLocaleDateString()})`,
+            parameterName:
+              ele.chart_type === "process control"
+                ? ele.chart_mapping.y.function_name
+                : `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
+            testDate:
+              ele.chart_type === "process control"
+                ? new Date(
+                    el["recorded_date_" + ele.chart_mapping.y.function_name]
+                  ).toLocaleDateString()
+                : `(${new Date(
+                    el["recorded_date_" + ele.chart_mapping.x.function_name]
+                  ).toLocaleDateString()},${new Date(
+                    el["recorded_date_" + ele.chart_mapping.y.function_name]
+                  ).toLocaleDateString()})`,
           });
         }
       });
@@ -151,6 +163,23 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
     newCovArr &&
       newCovArr.data &&
       newCovArr.data.forEach((ele) => {
+        let obj;
+        let table = [];
+        let count = 0;
+        ele.exclusions &&
+          ele.exclusions.forEach((item) => {
+            exclusionIdCounter.current = count + 1;
+            const excValue = item.exclusion_value.batch;
+            obj = {
+              exclusion_id: item.exclusion_id,
+              exclusion_value: excValue,
+              exclusion_description: item.exclusion_description,
+              user: item.user,
+              timestamp: new Date(item.timestamp).toLocaleDateString(),
+            };
+            table.push(obj);
+          });
+        setExclusionTable(table);
         if (ele.data[0].x && ele.data[0].x.length >= 1) {
           const chart =
             ele.chart_type === "scatter" ? "Scatter Plot" : "Process Control";
@@ -209,7 +238,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
         }
       });
   }, [axisValues.chartType]);
-
   return (
     <div className="chartLayout-container">
       <Row gutter={24}>
