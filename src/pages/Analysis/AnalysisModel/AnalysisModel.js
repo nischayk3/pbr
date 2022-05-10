@@ -93,7 +93,8 @@ const summaryParametersDetails = [
                 value: 1.00000000
             }
         ]
-    }
+    },
+    
 ]
 
 const storyLineParameters = ['Temperature Combined', 'Pressure Altered']

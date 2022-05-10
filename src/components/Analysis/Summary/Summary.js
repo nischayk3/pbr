@@ -10,7 +10,7 @@ const { Panel } = Collapse
 const Summary = props => {
 
     const getPanels = () => {
-        if ([].length) {
+        if (![].length) {
             return (
                 <Panel header={<div>{props.summaryParametersDetails.map((summaryParameters, i) => {
                     return <Fragment key={i}>
