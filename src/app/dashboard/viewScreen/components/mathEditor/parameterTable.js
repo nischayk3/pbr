@@ -375,7 +375,6 @@ const ParameterTable = props => {
 		setTableData(batchRecord);
 	};
 
-	console.log(filterTable,tableData)
 
 	return (
 		<>

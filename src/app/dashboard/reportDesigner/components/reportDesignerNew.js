@@ -282,7 +282,6 @@ function ReportDesignerNew(props) {
 
   // Get form values
   const handleValuesChange = (changedValues, values) => {
-    console.log(changedValues, values)
     setMainJson(convertToJson(values));
   };
 
@@ -348,7 +347,6 @@ function ReportDesignerNew(props) {
     let arr = {};
     let section_arr = [];
     json_data = json_data['response']
-    console.log(json_data)
     json_data.map((item, index) => {
       let obj = {};
       if (item == undefined && index <= 0) {
@@ -671,7 +669,6 @@ function ReportDesignerNew(props) {
     return rowObject.isActive ? true : false;
   }
 
-  console.log(mainJson)
 
 
 
