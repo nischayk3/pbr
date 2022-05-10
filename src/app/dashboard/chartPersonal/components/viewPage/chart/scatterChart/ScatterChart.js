@@ -61,7 +61,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
   const chartNodeClicked = (data) => {
     postChartData.data.forEach((ele) => {
       ele.extras.data_table.forEach((el) => {
-        console.log(el);
         if (el.batch_num === data.text) {
           setExclusionValues({
             ...exclusionValues,
