@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { Card, Input, Space, Avatar, Row, Col, Tabs, Divider, Empty } from 'antd';
 import illustrations from '../../../../assets/images/Group 33808.svg';
+import emptyImage from '../../../../assets/images/empty-image.png';
 import DeviationTable from './deviationTable/deviationTable';
 import DataQuality from './dataQuality/dataQuality';
 import Chart from './chartComponent/chartComponent';
@@ -18,7 +19,7 @@ import {
 } from '../../../../duck/actions/commonActions';
 import { getCountData } from '../../../../services/workFlowServices';
 import { getChartExceptionData, getUpdatedChartsViewsData } from '../../../../services/workSpaceServices';
-import {getJob} from '../../../../services/jobScheduleService';
+import { getJob } from '../../../../services/jobScheduleService';
 import { FaCircle } from "react-icons/fa";
 import './styles.scss';
 import { MDH_AIRFLOW } from '../../../../constants/apiBaseUrl';
@@ -64,9 +65,12 @@ const Workspace = () => {
     try {
       dispatch(showLoader());
       const tilesResponse = await getCountData(req);
-      setTilesData(tilesResponse['Data']);
-      setUserApproval(tilesResponse['counts'])
-      dispatch(hideLoader());
+      if (tilesResponse['status-code'] == 200) {
+        setTilesData(tilesResponse['Data']);
+        setUserApproval(tilesResponse['counts'])
+        dispatch(hideLoader());
+      }
+
     } catch (error) {
       dispatch(hideLoader());
       dispatch(showNotification('error', error.message));
@@ -77,16 +81,16 @@ const Workspace = () => {
   const getScheduleChartAlertsData = async () => {
     let login_response = JSON.parse(localStorage.getItem('login_details'));
     let req = {
-      app_type:'CHART'
+      app_type: 'CHART'
     };
     let headers = {
       'content-type': 'application/json',
       'x-access-token': login_response.token ? login_response.token : '',
       'resource-name': 'WORKITEMS',
-  };
+    };
     try {
       dispatch(showLoader());
-      const alertResponse = await getJob(req,headers);
+      const alertResponse = await getJob(req, headers);
       setScheduleChartAlerts(alertResponse.Data)
       dispatch(hideLoader());
     } catch (error) {
@@ -95,20 +99,20 @@ const Workspace = () => {
     }
   };
 
-   //job scheduling chart alert counts
-   const getScheduleReportAlertsData = async () => {
+  //job scheduling chart alert counts
+  const getScheduleReportAlertsData = async () => {
     let login_response = JSON.parse(localStorage.getItem('login_details'));
     let req = {
-      app_type:'REPORT'
+      app_type: 'REPORT'
     };
     let headers = {
       'content-type': 'application/json',
       'x-access-token': login_response.token ? login_response.token : '',
       'resource-name': 'WORKITEMS',
-  };
+    };
     try {
       dispatch(showLoader());
-      const alertResponse = await getJob(req,headers);
+      const alertResponse = await getJob(req, headers);
       setScheduleReportAlerts(alertResponse.Data)
       dispatch(hideLoader());
     } catch (error) {
@@ -223,22 +227,30 @@ const Workspace = () => {
                   </span>
 
                   <Row gutter={4}>
-                    {tilesData?.filter(el => el.item_count > 0).map((item, index) => {
-                      return (
-                        <Col className='gutter-row' span={4}>
-                          {item.item_count > 0 && (
-                            <div style={{ marginTop: '15px' }} key={index}>
-                              <p className='approval-text'>
-                                {item.text.split(' ')[0]}
-                              </p>
-                              <p className='approval-count'>
-                                {item.item_count}
-                              </p>
-                            </div>
-                          )}
-                        </Col>
-                      );
-                    })}
+                    {tilesData && tilesData.length > 0 ?
+                      (
+                        tilesData?.filter(el => el.item_count > 0).map((item, index) => {
+                          return (
+                            <Col className='gutter-row' span={4}>
+                              {item.item_count > 0 && (
+                                <div style={{ marginTop: '15px' }} key={index}>
+                                  <p className='approval-text'>
+                                    {item.text.split(' ')[0]}
+                                  </p>
+                                  <p className='approval-count'>
+                                    {item.item_count}
+                                  </p>
+                                </div>
+                              )}
+                            </Col>
+                          );
+                        })
+                      ) : (
+                        <div style={{ display: 'flex' }}>
+                          <div><img src={emptyImage} /></div>
+                          <p className='no-approval'>Nothing to approve!</p>
+                        </div>
+                      )}
                   </Row>
                 </div>
                 <div className='avatar-block'>
@@ -370,8 +382,8 @@ const Workspace = () => {
                       View All
                     </a>
                   </span>
-                  <div className='paper-batch-card' style={{marginTop:'50px'}}>
-                    <p className='paper-batch-count' style={{marginBottom:'7px'}}>{scheduleReportAlerts.length>0?scheduleReportAlerts.length:0}</p>
+                  <div className='paper-batch-card' style={{ marginTop: '50px' }}>
+                    <p className='paper-batch-count' style={{ marginBottom: '7px' }}>{scheduleReportAlerts && scheduleReportAlerts.length > 0 ? scheduleReportAlerts.length : 0}</p>
                     <p className='paper-batch-desc'>
                       of your report alerts configured
                     </p>
@@ -396,8 +408,8 @@ const Workspace = () => {
                       View All
                     </a>
                   </span>
-                  <div className='paper-batch-card' style={{marginTop:'50px'}}>
-                    <p className='paper-batch-count' style={{marginBottom:'7px'}}>{scheduleChartAlerts.length>0?scheduleChartAlerts.length:0}</p>
+                  <div className='paper-batch-card' style={{ marginTop: '50px' }}>
+                    <p className='paper-batch-count' style={{ marginBottom: '7px' }}>{scheduleChartAlerts && scheduleChartAlerts.length > 0 ? scheduleChartAlerts.length : 0}</p>
                     <p className='paper-batch-desc'>
                       charts configured with alerts
                     </p>
