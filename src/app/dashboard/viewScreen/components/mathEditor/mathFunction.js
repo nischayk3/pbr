@@ -82,7 +82,8 @@ const MathFunction = props => {
 		setFunctionName(e.target.value);
 	};
 
-	const handleSave = () => {
+	const handleSave = () => 
+	{
 		dispatch(sendFunctionName(functionName));
 		dispatch(saveViewFunction(true));
 		setIsModalVisible(false);

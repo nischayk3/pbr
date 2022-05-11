@@ -54,6 +54,11 @@ const MathEditor = props => {
 				}
 			}
 			setVarData(var_data);
+
+			if(viewJsonData[0] && Object.keys(viewJsonData[0].parameters).length >0)
+			{
+                setParamData(viewJsonData[0].parameters)
+			}
 		}
 	}, [isLoadView]);
 
@@ -112,6 +117,7 @@ const MathEditor = props => {
 		variableData = varDataArr;
 		setVarData(varArr);
 	};
+
 
 	return (
 		<Collapse
