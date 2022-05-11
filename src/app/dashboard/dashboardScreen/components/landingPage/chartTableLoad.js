@@ -41,7 +41,6 @@ const ChartSearchTable = (props) => {
                 rowKey='key'
                 onRow={(record) => ({
                     onClick: () => {
-                        console.log(record)
                         // let tempVersionList = [0];
                         // props.searchData.current.forEach((ele) => {
                         //     if (ele.view_disp_id === record.view_disp_id) {
