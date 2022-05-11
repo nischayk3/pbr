@@ -16,9 +16,12 @@ import {
 import {
 	isLoadView,
 	sendSelectedParamData,
+	resetView,
 } from '../../../../../duck/actions/viewAction';
+import { useLocation } from 'react-router';
 
 export default function Landing(props) {
+	const location = useLocation()
 	const [searched, setSearched] = useState(false);
 	const [viewList, setViewList] = useState([]);
 	const [filterTable, setFilterTable] = useState(null);
@@ -110,7 +113,8 @@ export default function Landing(props) {
 		try {
 			dispatch(showLoader());
 			const getViewRes = await getViews(req);
-			const viewRes = getViewRes['Data'];
+			let viewRes = getViewRes['Data'];
+			viewRes = viewRes.reverse()
 			const lastEight = viewRes.slice(Math.max(viewRes.length - 8, 1));
 			setViewList(viewRes);
 			setLastEightView(lastEight);
@@ -149,6 +153,14 @@ export default function Landing(props) {
 							className='landing-table'
 							columns={columns}
 							dataSource={filterTable === null ? viewList : filterTable}
+							onRow={(record) => ({
+								onClick: (e) => {
+									history.push({pathname:`${match.url}/${record.view_disp_id}&${record.view_version}`,state:{
+										viewId: record.view_disp_id,
+										viewVersion: record.view_version,
+									}})
+								},
+							})}
 						/>
 					) : (
 						<></>
@@ -157,6 +169,7 @@ export default function Landing(props) {
 						className='create-new'
 						onClick={() => {
 							history.push(`${match.url}/0`);
+							dispatch(resetView());
 							dispatch(isLoadView(false));
 							dispatch(sendSelectedParamData([]));
 						}}>

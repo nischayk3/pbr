@@ -3,7 +3,7 @@
 // Version 1
 // Last modified - 08 March, 2022
 import React, { useEffect, useState } from 'react';
-
+import { useDispatch } from 'react-redux';
 import './styles.scss';
 import {
 	DeleteOutlined,
@@ -29,14 +29,17 @@ import {
 	downloadAdhocFile,
 } from '../../../../../duck/actions/fileUploadAction';
 import {
+	batchCoverage,
+	sendSelectedParamData,
+} from '../../../../../duck/actions/viewAction';
+import {
 	adHocFileUpload,
 	adHocFilesParameterTree,
-	// deleteAdHocFile,
-	// downloadAdhocFile,
 } from '../../../../../services/viewCreationPublishing';
+import { MDH_APP_PYTHON_SERVICE } from '../../../../../constants/apiBaseUrl';
 const { Panel } = Collapse;
 const { Dragger } = Upload;
-
+let finalData = [];
 function FileUpload(props) {
 	const {
 		viewSummaryTable,
@@ -58,6 +61,8 @@ function FileUpload(props) {
 	const [uploadBtnDisabled, setUploadBtnDisabled] = useState(true);
 	const [selectedAdHocFileList, setSelectedAdHocFileList] = useState([]);
 	const [selectedFileId, setSelectedFileId] = useState('');
+
+	const dispatch = useDispatch();
 
 	const columns = [
 		{
@@ -104,14 +109,14 @@ function FileUpload(props) {
 		let rowData = {};
 		let batchData = {};
 		let newBatchData = [];
-
-		parentBatches.map((el, index) => {
-			if (record.coverage_list.includes(el)) {
-				batchData[el] = true;
-				newBatchData[el] = true;
+		let molBatch = [...parentBatches];
+		molBatch.map((el, index) => {
+			if (record.coverage_list.includes(el.batch)) {
+				batchData[el.batch] = true;
+				newBatchData[el.batch] = true;
 			} else {
-				batchData[el] = false;
-				newBatchData[el] = false;
+				batchData[el.batch] = false;
+				newBatchData[el.batch] = false;
 			}
 		});
 
@@ -123,16 +128,28 @@ function FileUpload(props) {
 			x => x.param == record.param
 		);
 		if (indexDuplicate === -1) {
-			rowData = Object.assign(record, batchData);
+			// rowData = Object.assign(record, batchData);
+			// rowData.sourceType = 'file';
+			// rowData.file_id = record.File_id;
+			// rowData.parameters = [rowData];
+			rowData = Object.assign(batchData);
 			rowData.sourceType = 'file';
-			rowData.file_id = record.File_id;
-			rowData.parameters = [rowData];
-			getNewData(rowData);
-			let data = [...viewSummaryTable];
-			data.push(rowData);
+			//rowData.file_id = record.File_id;
+			rowData.parameter_name = record.param;
+			rowData.coverage =
+				`${record.coverage_metric_percent}` + `(${record.coverage_metric})`;
+			rowData.key = `${record.product_num}-${record.param}`;
+			rowData.primary = 0;
+			rowData.aggregation = '';
+
+			//	getNewData(rowData);
+			let data = { ...rowData };
+			finalData.push(data);
 			setNewBatchData(newBatchData);
-			setViewSummaryTable([...data]);
+			//setViewSummaryTable([...finalData]);
 			setFunctionEditorViewState(true);
+			dispatch(batchCoverage(newBatchData));
+			dispatch(sendSelectedParamData(finalData));
 		} else {
 			message.error('Function already exists');
 		}
@@ -146,7 +163,7 @@ function FileUpload(props) {
 			<span className='fileUpload-download'>
 				<a
 					href={
-						'https://bms-cpvdev.mareana.com/services/v1/download_file?file_id=' +
+						`${MDH_APP_PYTHON_SERVICE}/services/v1/download_file?file_id=` +
 						`${File_id}`
 					}>
 					<DownloadOutlined />

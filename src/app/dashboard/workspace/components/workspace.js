@@ -22,6 +22,7 @@ import { getChartExceptionData, getUpdatedChartsViewsData } from '../../../../se
 import { getJob } from '../../../../services/jobScheduleService';
 import { FaCircle } from "react-icons/fa";
 import './styles.scss';
+import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -374,7 +375,7 @@ const Workspace = () => {
                       style={{ color: '#0CE7CC', fontSize: '15px' }}
                     />
                     <a
-                      href="https://bms-cpvdev.mareana.com/airflow/login/?next=https%3A%2F%2Fbms-cpvdev.mareana.com%2Fairflow%2Fhome"
+                      href={`${MDH_APP_PYTHON_SERVICE}/airflow/login/?next=https%3A%2F%2Fbms-cpvdev.mareana.com%2Fairflow%2Fhome`}
                       target="_blank"
                       className='workspace-review'
                     >
@@ -400,7 +401,7 @@ const Workspace = () => {
                       style={{ color: '#0CE7CC', fontSize: '15px' }}
                     />
                     <a
-                      href="https://bms-cpvdev.mareana.com/airflow/login/?next=https%3A%2F%2Fbms-cpvdev.mareana.com%2Fairflow%2Fhome"
+                      href={`${MDH_APP_PYTHON_SERVICE}/airflow/login/?next=https%3A%2F%2Fbms-cpvdev.mareana.com%2Fairflow%2Fhome`}
                       target="_blank"
                       className='workspace-review'
                     >

@@ -28,12 +28,12 @@ function PbrReviewer() {
         try {
             dispatch(showLoader());
             const tableResponse = await getPbrReviewerData(req);
-            if (tableResponse['status'] === 200) {
+            if (tableResponse['status-code'] === 200) {
                 // setTemplateColumns(newArray1)
                 setTemplateData(tableResponse.Data);
                 dispatch(hideLoader());
             }
-            else if (tableResponse['status'] === 404) {
+            else if (tableResponse['status-code'] === 404) {
                 dispatch(hideLoader());
                 setTemplateData(tableResponse.Data);
                 dispatch(showNotification('error', tableResponse.Message));

@@ -139,7 +139,6 @@ function ParameterLookup(props) {
 	}
 
 	const onSearchChange = e => {
-		console.log('eeeeeeeeee', tempMaterialList.current);
 		if (e.target.value === '') {
 			setMaterialsList(tempMaterialList.current);
 		}
@@ -149,10 +148,10 @@ function ParameterLookup(props) {
 	const searchTable = () => {
 		const newArr = materialsList.filter(ele =>
 			ele.children.some(element =>
-				element.product_description.toLowerCase().search(searchValue)
+				element.product_description.toLowerCase().includes(searchValue)
 			)
 		);
-		console.log('newArr', newArr);
+
 		if (newArr.length) {
 			setMaterialsList(newArr);
 		}
@@ -164,6 +163,7 @@ function ParameterLookup(props) {
 				<p>Molecule</p>
 				<Select
 					placeholder='Select'
+					style={{ width: '100%' }}
 					onChange={onChangeMoleculeHandler}
 					defaultValue={moleculeId}
 					value={moleculeId}
@@ -198,7 +198,6 @@ function ParameterLookup(props) {
 					})}
 				</Select> */}
 				<Search
-					style={{ marginBottom: 8 }}
 					placeholder='Search'
 					onChange={onSearchChange}
 					onSearch={searchTable}

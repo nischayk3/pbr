@@ -145,6 +145,7 @@ class EditableTable extends Component {
             <div className="custom-table-wrapper">
                 <Button
                     type="dashed"
+                    className="button-dashed__primary"
                     onClick={this.onAddRow}
                     icon={<PlusOutlined />}
                     style={{ marginBottom: 16 }}
@@ -155,6 +156,7 @@ class EditableTable extends Component {
                     type="primary"
                     onClick={() => this.props.onSaveTable(this.state.dataSource)}
                     style={{ float: 'right' }}
+                    className="button-solid__primary"
                 >
                     Save
                 </Button>

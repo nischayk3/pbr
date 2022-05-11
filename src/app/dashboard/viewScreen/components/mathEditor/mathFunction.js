@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Input, Modal, Alert } from 'antd';
+import { Button, Input, Modal, Alert, Table } from 'antd';
 import FunctionKey from '../../../../../assets/images/key1.png';
 import InputField from '../../../../../components/InputField/InputField';
 import { InfoCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
@@ -10,6 +10,39 @@ import {
 	sendFunctionName,
 	sendFunDetails,
 } from '../../../../../duck/actions/viewAction';
+import { viewEvaluate } from '../../../../../services/viewCreationPublishing';
+import { showNotification } from '../../../../../duck/actions/commonActions';
+
+const DataColumns = [
+	{
+		title: 'Batch Num',
+		dataIndex: 'batch_num',
+		key: 'batch_num',
+		width: 150,
+		fixed: 'left',
+	},
+	{
+		title: 'PARAMETER',
+		dataIndex: 'parameter',
+		key: 'parameter',
+		width: 150,
+		fixed: 'left',
+	},
+	{
+		title: 'Recorded Date',
+		dataIndex: 'recorded_date',
+		key: 'recorded_date',
+		width: 150,
+		fixed: 'left',
+	},
+	{
+		title: 'Value',
+		dataIndex: 'value',
+		key: 'value',
+		width: 150,
+		fixed: 'left',
+	},
+]
 
 const MathFunction = props => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
@@ -17,6 +50,13 @@ const MathFunction = props => {
 	const [functionName, setFunctionName] = useState('');
 	const [mathEditorValue, setMathEditorValue] = useState('');
 	const [isAlertFunction, setIsAlertFunction] = useState(false);
+	const [isFunction, setIsFunction] = useState(false);
+	const [isEvaluatingFun, setIsEvaluatingFun] = useState(false);
+	const [isFunValidate, setIsFunValidate] = useState(false);
+	const [isFunctionInvalid, setIsFunctionInvalid] = useState(false);
+	const [isTabelVisible, setIsTableVisible] = useState(false)
+	const [evalTable, setEvalTable] = useState([])
+
 	const dispatch = useDispatch();
 	const showModal = () => {
 		dispatch(saveViewFunction(false));
@@ -28,6 +68,10 @@ const MathFunction = props => {
 
 	const handleCancel = () => {
 		setIsModalVisible(false);
+	};
+
+	const handleTableCancel = () => {
+		setIsTableVisible(false);
 	};
 
 	const handleChangeFunction = e => {
@@ -43,11 +87,42 @@ const MathFunction = props => {
 		dispatch(saveViewFunction(true));
 		setIsModalVisible(false);
 		setIsAlertFunction(true);
+		setIsFunction(false);
 		setTimeout(() => {
 			setFunctionName('');
 			setIsAlertFunction(false);
 		}, 1000);
 	};
+
+	const functionEvaluate = async () => {
+		let req = {
+			material_id: "BELATACEPT",
+			functions: { 1: { defination: mathEditorValue, name: 'function-1' } },
+			parameters: props.data ? props.data : {}
+		}
+
+		let evaluate_respone = await viewEvaluate({ data: req })
+
+		if (evaluate_respone.view_status == "") {
+			setIsTableVisible(true)
+			setEvalTable(evaluate_respone.functions)
+			dispatch(showNotification('success', 'Evaluated'))
+			setIsFunction(true);
+		}
+		else
+			dispatch(showNotification('error', evaluate_respone.message))
+
+		// if()
+
+		//setIsEvaluatingFun(true);
+		//	setIsFunctionInvalid(true);
+	};
+
+	const handleCloseError = () => {
+		setIsFunctionInvalid(false);
+		setIsEvaluatingFun(false);
+	};
+
 
 	return (
 		<>
@@ -59,6 +134,32 @@ const MathFunction = props => {
 							<CheckCircleOutlined />
 						</span>
 					</div>
+				) : isEvaluatingFun ? (
+					<Alert message='Evaluating function...' type='info' />
+				) : isFunValidate ? (
+					<Alert
+						closable
+						afterClose={handleCloseError}
+						message='Function valid!'
+						type='success'
+						showIcon
+					/>
+				) : isFunctionInvalid ? (
+					<Alert
+						closable
+						afterClose={handleCloseError}
+						message='Invalid function! Please use one of the functions below:'
+						type='error'
+						description={
+							<div className='fun-error-list'>
+								<ul>
+									<li>1. round</li>
+									<li>2. union</li>
+								</ul>
+							</div>
+						}
+						showIcon
+					/>
 				) : (
 					<Input
 						onChange={e => handleChangeFunction(e)}
@@ -66,13 +167,25 @@ const MathFunction = props => {
 						suffix={
 							<span>
 								{isFunctionVisible && (
-									<Button
-										onClick={showModal}
-										type='text'
-										className='custom-primary-btn '>
-										Create Function
-									</Button>
+									<>
+										{isFunction ? (
+											<Button
+												onClick={showModal}
+												type='text'
+												className='custom-primary-btn '>
+												Create Function
+											</Button>
+										) : (
+											<Button
+												onClick={functionEvaluate}
+												type='text'
+												className='custom-primary-btn '>
+												Function Evaluate
+											</Button>
+										)}
+									</>
 								)}
+
 								<img src={FunctionKey} />
 							</span>
 						}
@@ -118,6 +231,14 @@ const MathFunction = props => {
 						</div>
 					</div>
 				</div>
+			</Modal>
+			<Modal
+				width={500}
+				visible={isTabelVisible}
+				onCancel={handleTableCancel}
+				footer={null}>
+				<Table className="eval-table" columns={DataColumns} dataSource={evalTable} />
+
 			</Modal>
 		</>
 	);

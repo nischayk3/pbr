@@ -18,6 +18,8 @@ const MathEditor = props => {
 	const [variableCreate, setVariableCreate] = useState(false);
 	const [ischeckBox, setIscheckBox] = useState(false);
 	const [varClick, setVarClick] = useState(false);
+	const [paramData, setParamData] = useState({})
+	const [selectedVar, setSelectedVar] = useState('')
 
 	const { Panel } = Collapse;
 	const {
@@ -30,7 +32,7 @@ const MathEditor = props => {
 	} = props;
 
 	function callback(key) {
-		console.log(key);
+		// console.log(key);
 	}
 
 	useEffect(() => {
@@ -40,14 +42,18 @@ const MathEditor = props => {
 			viewJsonData.forEach((element, index) => {
 				paramKey.push(Object.keys(element.parameters));
 			});
-
-			paramKey.forEach((element, index) => {
-				variableData.push({
-					variableName: element,
-					id: index,
-				});
-			});
-			setVarData(variableData);
+			let var_data = []
+			paramKey = paramKey[0]
+			if (paramKey.length > 0) {
+				for (let i = 0; i < paramKey.length; i++) 
+				{
+                    let obj ={}
+					obj['variableName'] = paramKey[i]
+					obj['id'] = i
+					var_data.push(obj)
+				}
+			}
+			setVarData(var_data);
 		}
 	}, [isLoadView]);
 
@@ -69,6 +75,7 @@ const MathEditor = props => {
 		setVarClick(false);
 		setCardTitle('Create Variable');
 	};
+
 	const callbackCheckbox = val => {
 		if (val) {
 			setCardTitle('Done');
@@ -76,6 +83,13 @@ const MathEditor = props => {
 		}
 	};
 
+	const getParamData = (data) => {
+		setParamData(data)
+	}
+
+	const setVariable = (data) => {
+		setSelectedVar(data)
+	}
 	const deleteVariable = param => {
 		let lastIndex;
 		varData.forEach((item, i) => {
@@ -108,7 +122,7 @@ const MathEditor = props => {
 				className='viewCreation-materialsPanel'
 				header='Math Editor'
 				key='1'>
-				<MathFunction />
+				<MathFunction data={paramData} />
 				<div className='variable-wrapper'>
 					<CreateVariable
 						addVariable={addVariable}
@@ -122,6 +136,7 @@ const MathEditor = props => {
 								item={item}
 								variableName={item.variableName}
 								deleteVariable={deleteVariable}
+								setVariable={setVariable}
 							/>
 						);
 					})}
@@ -140,6 +155,9 @@ const MathEditor = props => {
 					setViewJson={setViewJson}
 					viewSummaryBatch={viewSummaryBatch}
 					setViewSummaryBatch={setViewSummaryBatch}
+					getParamData={getParamData}
+					selectedData={paramData}
+					selectedVar={selectedVar}
 				/>
 			</Panel>
 		</Collapse>

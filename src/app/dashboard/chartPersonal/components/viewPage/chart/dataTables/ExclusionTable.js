@@ -67,31 +67,6 @@ const ExclusionTable = ({
 
   columns.push(deleteColumn);
 
-  useEffect(() => {
-    const newCovArr = JSON.parse(JSON.stringify(postChartData));
-    newCovArr &&
-      newCovArr.data &&
-      newCovArr.data.forEach((ele) => {
-        let obj;
-        let table = [];
-        let count = 0;
-        ele.exclusions &&
-          ele.exclusions.forEach((item) => {
-            exclusionIdCounter.current = count + 1;
-            const excValue = item.exclusion_value.batch;
-            obj = {
-              exclusion_id: item.exclusion_id,
-              exclusion_value: excValue,
-              exclusion_description: item.exclusion_description,
-              user: item.user,
-              timestamp: new Date(item.timestamp).toLocaleDateString(),
-            };
-            table.push(obj);
-          });
-        setExclusionTable(table);
-      });
-  }, [postChartData]);
-
   return (
     <div>
       <Table
