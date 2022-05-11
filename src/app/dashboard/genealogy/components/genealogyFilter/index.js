@@ -8,7 +8,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button, Select } from 'antd';
-import { getGeanealogyFilter } from '../../../../../services/genealogyService.js';
+import { getGeanealogyFilter, getGenealogyProductType } from '../../../../../services/genealogyService.js';
 import './style.scss';
 import SelectSearchField from '../../../../../components/SelectSearchField/SelectSearchField';
 import Toggle from '../../../../../components/Toggle';
@@ -253,14 +253,18 @@ function Filter(props) {
 
 		try {
 			const filterRes = await getGeanealogyFilter(reqFilter);
-
-			if (filterRes.statuscode === 200) {
+			const getProductType = await getGenealogyProductType()
+			if (filterRes.statuscode === 200 && getProductType.statuscode == 200) {
+				let productList = []
+				getProductType.Data.map((product) => {
+					productList.push(product.prod_type_cd)
+				})
 				setParamList(() => {
 					return {
 						plantList: filterRes && filterRes.plant_no,
 						batchList: filterRes && filterRes.batch_no,
 						produtList: filterRes && filterRes.material,
-						productTypeList: filterRes && filterRes.product_type,
+						productTypeList: productList,
 					};
 				});
 			} else if (filterRes.data.statuscode === 400) {
@@ -272,11 +276,12 @@ function Filter(props) {
 	};
 
 	const OnSearchTree = () => {
+		
 		let paramDetail = {
 			plant: selectParam['plant'],
 			product: selectParam['productCode'],
 			batch: selectParam['batchNum'],
-			productType: selectParam['productType'],
+			productType: selectParam['productType'].join(),
 			treeType: isCheck ? 'Backward' : 'Forward',
 		};
 
@@ -389,6 +394,7 @@ function Filter(props) {
 				/>
 				<SelectSearchField
 					showSearch
+					mode="multiple"
 					label='Product Type '
 					placeholder='Select'
 					onChangeSelect={value => onChangeParam(value, 'product_type')}
