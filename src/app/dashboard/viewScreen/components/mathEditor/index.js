@@ -29,6 +29,7 @@ const MathEditor = props => {
 		setViewJson,
 		viewSummaryBatch,
 		setViewSummaryBatch,
+		materialId,
 	} = props;
 
 	function callback(key) {
@@ -128,7 +129,7 @@ const MathEditor = props => {
 				className='viewCreation-materialsPanel'
 				header='Math Editor'
 				key='1'>
-				<MathFunction data={paramData} />
+				<MathFunction data={paramData} materialId={materialId} />
 				<div className='variable-wrapper'>
 					<CreateVariable
 						addVariable={addVariable}

@@ -97,7 +97,7 @@ const MathFunction = props => {
 
 	const functionEvaluate = async () => {
 		let req = {
-			material_id: "BELATACEPT",
+			material_id: props.materialId,
 			functions: { 1: { defination: mathEditorValue, name: 'function-1' } },
 			parameters: props.data ? props.data : {}
 		}
@@ -234,6 +234,7 @@ const MathFunction = props => {
 				</div>
 			</Modal>
 			<Modal
+			title="Function Data"
 				width={500}
 				visible={isTabelVisible}
 				onCancel={handleTableCancel}
