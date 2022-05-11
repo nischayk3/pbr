@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
 import { sendReport } from '../../../../duck/actions/reportDesignerAction';
-import { saveReportGenerator, getReportGenerator,latexReport,latexBuilder } from '../../../../services/reportGeneratorServices';
+import { saveReportGenerator, getReportGenerator, latexReport, latexBuilder } from '../../../../services/reportGeneratorServices';
 import SaveModal from '../../../../components/SaveModal/saveModal'
 import {
     hideLoader,
@@ -270,10 +270,10 @@ function ReportGenerator(props) {
 
         dispatch(showLoader())
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
-        if(ReportData.layout_info &&  ReportData.layout_info.charts_layout)
-        setChartLayout(ReportData.layout_info.charts_layout ? createChartRecord(ReportData.layout_info.charts_layout) : {})
+        if (ReportData.layout_info && ReportData.layout_info.charts_layout)
+            setChartLayout(ReportData.layout_info.charts_layout ? createChartRecord(ReportData.layout_info.charts_layout) : {})
         else
-        setChartLayout(ReportData.charts_layout ? ReportData.charts_layout : {})
+            setChartLayout(ReportData.charts_layout ? ReportData.charts_layout : {})
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setCharts(ReportData['chart_int_ids'] ? createArraObj(ReportData['chart_int_ids']) : [])
         setTable(ReportData['layout_info'] ? getTableData(ReportData['layout_info'], ReportData.layout_info.charts_layout ? ReportData.layout_info.charts_layout : {}) : {})
@@ -365,7 +365,7 @@ function ReportGenerator(props) {
 
     //     return title_object
     // }
-    
+
 
     // const generateReport = () => {
     //     let generate_obj = {}
@@ -391,8 +391,7 @@ function ReportGenerator(props) {
 
     // }
 
-   const generateReport = async () => 
-    {
+    const generateReport = async () => {
         // {
         //     "rjson": {
         //         "data": {
@@ -410,12 +409,16 @@ function ReportGenerator(props) {
         let rjson = {}
         rjson['data'] = final_obj
 
-        let data = {rjson:rjson}
-        
+        let data = { rjson: rjson }
+
         let json_response = await latexBuilder(data)
-        if(json_response.statuscode==200)
-        {
-           let latex_response = await latexReport(json_response.latex_json)
+        if (json_response.statuscode == 200) {
+            let latex_response = await latexReport(json_response.latex_json)
+            const blob = new Blob([latex_response], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `pdf-${+new Date()}.pdf`;
+            link.click();
         }
     }
 
@@ -514,8 +517,7 @@ function ReportGenerator(props) {
 
 
 
-    const handleEdit = (value, heading, k) => 
-    {
+    const handleEdit = (value, heading, k) => {
         let objIndex = table.findIndex((t => t.heading == heading));
         if (objIndex >= 0) {
             if (table[objIndex].content.length > 0) {
@@ -586,7 +588,7 @@ function ReportGenerator(props) {
                                         {i.charts && i.charts.length > 0 && i.charts.map((j) =>
                                         (
                                             <div >
-                                                <p className="chart-name">{j} <span className="tag-div"> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'violation')}>Violation</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'exclusion')}>Exclusion</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'data_table')}>Data Table</Tag></span> </p>
+                                                <p className="chart-name-rep">{j} <span className="tag-div"> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'violation')}>Violation</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'exclusion')}>Exclusion</Tag> <Tag className="chart-tag" closable onClose={() => updateChartLayout(j, i.id, 'data_table')}>Data Table</Tag></span> </p>
                                                 <Chart chartName={j} />
                                             </div>
                                         ))}

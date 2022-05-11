@@ -57,7 +57,7 @@ function Display(props) {
                 //onOk={handleOk} 
                 onCancel={handleCancel}
                 footer={[
-                    <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() =>
+                    <Button className="custom-secondary-button"  onClick={() =>
                         props.handleNew(hierarchyName)
                     }>Let's Go!</Button>
                 ]}>

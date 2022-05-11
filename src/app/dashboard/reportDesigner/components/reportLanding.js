@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Input, Divider, Table, Tabs, Avatar, message, Row, Col, Modal, Button } from 'antd';
-import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import illustrations from '../../../../assets/images/landing_image.png';
 import { getReports } from '../../../../services/reportDesignerServices';
 import './landing.scss';
@@ -17,6 +17,7 @@ import {
     showNotification,
 } from '../../../../duck/actions/commonActions';
 import Banner from '../../../../assets/images/Popup-Side.svg';
+import checkIcon from '../../../../assets/images/checkbox.svg'
 
 export default function Landing(props) {
     const [resultDate, setResultDate] = useState('');
@@ -26,6 +27,7 @@ export default function Landing(props) {
     const [filterTable, setFilterTable] = useState(null);
     const [screen, setScreen] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedReportId, setSelectedReportId] = useState('');
 
     const { TabPane } = Tabs;
     const history = useHistory();
@@ -106,6 +108,10 @@ export default function Landing(props) {
         const resultDate = month + ' ' + latestDate + ',' + ' ' + year;
         setResultDate(resultDate);
     };
+
+    const setReportId = (value) => {
+        setSelectedReportId(value)
+    }
 
     const getRandomColor = (index) => {
         let colors = ['#56483F', '#728C69', '#c04000', '#c19578'];
@@ -228,7 +234,7 @@ export default function Landing(props) {
                         <span className='resultdate'>{resultDate}</span>
                     </Card>
                     <Card className='landing-card'>
-                        <div style={{ width: '750px', marginLeft: '180px' }}>
+                        <div style={{ width: '900px', marginLeft: '180px' }}>
                             <Input.Search
                                 placeholder='Search by view ID, name, product number, creator, status'
                                 allowClear
@@ -256,14 +262,9 @@ export default function Landing(props) {
                                             }
                                             onRow={(record) => ({
                                                 onClick: (e) => {
-                                                    // record['color'] = '#D3D3D3'
-                                                    // setReportId(record.rep_disp_id)
-                                                    // getReportData(record.rep_disp_id, record.rep_status)
-                                                    // dispatch(showLoader())
                                                     getLoadReport(
                                                         record.rep_disp_id
                                                     );
-                                                    // onOk()
                                                 },
                                             })}
                                         />
@@ -278,10 +279,21 @@ export default function Landing(props) {
                                         <p>Design new report</p>
                                     </div>
                                     <br />
-                                    <h3 className='recent'>
-                                        Recently designed report templates
-                                    </h3>
-                                    <Divider />
+                                    
+                                    <div className='card-legends'>
+                                        <h3 className='recent'>Recently designed report templates</h3>
+                                        <div className='legends'>
+                                            <p>
+                                                <span className='drft'></span>Draft
+                                            </p>
+                                            <p>
+                                                <span className='await'></span>Awaiting approval
+                                            </p>
+                                            <p>
+                                                <span className='aprv'></span>Approved
+                                            </p>
+                                        </div>
+                                    </div>
                                     <div>
                                         <div className='tile'>
                                             {reportList.length > 0 ? (
@@ -327,7 +339,7 @@ export default function Landing(props) {
 
                                     {searched ? (
                                         <Table
-                                        className='landing-table'
+                                            className='landing-table'
                                             columns={columns}
                                             dataSource={
                                                 filterTable === null
@@ -352,22 +364,26 @@ export default function Landing(props) {
                                     )}
                                     <div
                                         className='create-new'
-                                        // onClick={() => {
-                                        //     history.push({
-                                        //         pathname:
-                                        //             '/dashboard/report_generator',
-                                        //     });
-                                        // }}
                                         onClick={() => setIsModalVisible(true)}
                                     >
                                         <PlusOutlined />
                                         <p>Generate new report</p>
                                     </div>
                                     <br />
-                                    <h3 className='recent-report'>
-                                        Recently created reports
-                                    </h3>
-                                    <Divider />
+                                    <div className='card-legends'>
+                                        <h3 className='recent'>Recently created reports</h3>
+                                        <div className='legends'>
+                                            <p>
+                                                <span className='drft'></span>Draft
+                                            </p>
+                                            <p>
+                                                <span className='await'></span>Awaiting approval
+                                            </p>
+                                            <p>
+                                                <span className='aprv'></span>Approved
+                                            </p>
+                                        </div>
+                                    </div>
                                     <div className='tile'>
                                         {reportList &&
                                             reportList.length > 0 &&
@@ -401,13 +417,7 @@ export default function Landing(props) {
                         className='landing-modal'
                         title="Create New Dashboard"
                         visible={isModalVisible}
-                        //onOk={handleOk} 
                         onCancel={handleCancel}
-                        // footer={[
-                        //     <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() =>
-                        //         handleOk()
-                        //     }>Let's Go!</Button>
-                        // ]}
                         footer={false}
                     >
                         <div>
@@ -421,8 +431,6 @@ export default function Landing(props) {
                                         <Input.Search
                                             onSearch={onSearch}
                                             placeholder='Search by report ID or name'
-                                        // onChange={(e) => setHierarchyName(e.target.value)}
-                                        // value={hierarchyName}
                                         />
                                     </Row>
                                     <div className="landing-tiles">
@@ -436,11 +444,13 @@ export default function Landing(props) {
                                                                 getLoadReportGenerator(
                                                                     i.rep_disp_id
                                                                 );
+                                                                setReportId(i.rep_disp_id)
                                                             }}
                                                         >
-                                                            <div className="landing-tile" >
+                                                            <div className={selectedReportId == i.rep_disp_id ? "landing-tile-check" : "landing-tile"}  >
                                                                 <div className="landing-report-id"> {i.rep_disp_id}</div><br />
-                                                                <span className="landing-report-name">{i.rep_name}</span>
+                                                                {/* <span className="landing-report-name">{i.rep_name}</span> */}
+                                                                {selectedReportId == i.rep_disp_id ? <img className="landing-checkicon" src={checkIcon} /> : <></>}
                                                                 {/* {i.id}<br />
                                                                      */}
                                                             </div>
@@ -450,7 +460,7 @@ export default function Landing(props) {
                                     </div>
                                     {newsearched ? (
                                         <Table
-                                        className='landing-table'
+                                            className='landing-table'
                                             columns={columns}
                                             scroll={{ y: 150, x: 350 }}
                                             // style={{  height: 'auto' }}
@@ -462,14 +472,9 @@ export default function Landing(props) {
                                             pagination={false}
                                             onRow={(record) => ({
                                                 onClick: (e) => {
-                                                    // record['color'] = '#D3D3D3'
-                                                    // setReportId(record.rep_disp_id)
-                                                    // getReportData(record.rep_disp_id, record.rep_status)
-                                                    // dispatch(showLoader())
                                                     NewReportGenerator(
                                                         record.rep_disp_id
                                                     );
-                                                    // onOk()
                                                 },
                                             })}
                                         />

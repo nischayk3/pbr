@@ -113,7 +113,8 @@ export default function Landing(props) {
 		try {
 			dispatch(showLoader());
 			const getViewRes = await getViews(req);
-			const viewRes = getViewRes['Data'];
+			let viewRes = getViewRes['Data'];
+			viewRes = viewRes.reverse()
 			const lastEight = viewRes.slice(Math.max(viewRes.length - 8, 1));
 			setViewList(viewRes);
 			setLastEightView(lastEight);
