@@ -10,6 +10,7 @@ const SelectSearchField = props => {
 			</p>
 			<div className='search-block'>
 				<Select
+					mode={props.mode}
 					showSearch={props.showSearch}
 					placeholder={props.placeholder}
 					value={props.selectedValue}
