@@ -5,26 +5,8 @@ import { SearchOutlined } from "@ant-design/icons";
 //import cjson from './chartObj2.json';
 
 const ChartSearchTable = (props) => {
+  
   const columns = [
-    {
-      title: "Name",
-      key: "chart_name",
-      dataIndex: "chart_name",
-    },
-    {
-      title: "Chart",
-      key: "chart_disp_id",
-      dataIndex: "chart_disp_id",
-      width: "100px",
-    },
-    {
-      title: "Chart Version",
-      key: "chart_version",
-      dataIndex: "chart_version",
-    },
-  ];
-
-    const columns = [
         {
             title: 'Name',
             key: 'chart_name',
