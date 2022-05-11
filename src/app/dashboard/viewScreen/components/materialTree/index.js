@@ -40,7 +40,6 @@ const MaterialTree = props => {
 		setCheckedKeys(checkedKeys);
 	};
 	const handleClickParam = (e, keys, param, record) => {
-		console.log( keys, param)
 		let rowData = {};
 		let batchData = {};
 		let newBatchData = {};
