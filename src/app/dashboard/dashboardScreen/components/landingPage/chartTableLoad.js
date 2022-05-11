@@ -37,7 +37,8 @@ const ChartSearchTable = (props) => {
                 columns={columns}
                 dataSource={props.searchTableData}
                 pagination={false}
-                scroll={{ y: 150 ,x:350}}
+                style={{width:'100%',maxHeight:'150px',overflow:'scroll'}}
+                //scroll={{y: 150}}
                 rowKey='key'
                 onRow={(record) => ({
                     onClick: () => {
