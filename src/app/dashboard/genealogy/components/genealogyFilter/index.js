@@ -276,12 +276,12 @@ function Filter(props) {
 	};
 
 	const OnSearchTree = () => {
-		
+
 		let paramDetail = {
 			plant: selectParam['plant'],
 			product: selectParam['productCode'],
 			batch: selectParam['batchNum'],
-			productType: selectParam['productType'].join(),
+			productType: selectParam['productType'].map(d =>`'${d}'`).join(','),
 			treeType: isCheck ? 'Backward' : 'Forward',
 		};
 

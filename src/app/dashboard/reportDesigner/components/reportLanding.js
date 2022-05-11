@@ -140,12 +140,15 @@ export default function Landing(props) {
 
         setFilterTable(filterTable);
     };
+    
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+
     const handleOk = () => {
         setIsModalVisible(false);
     };
+
     const getReportList = () => {
         let req = { rep_status: 'all' };
         getReports(req).then((res) => {
@@ -296,7 +299,7 @@ export default function Landing(props) {
                                     </div>
                                     <div>
                                         <div className='tile'>
-                                            {reportList.length > 0 ? (
+                                            {reportList && reportList.length > 0 ? (
                                                 reportList.map(
                                                     (i, index) =>
                                                         index < 8 && (

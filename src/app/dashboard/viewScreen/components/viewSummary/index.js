@@ -96,9 +96,18 @@ const ViewSummaryData = props => {
 			let funData = [];
 
 			const loadViewJson = [...viewJson];
-			loadViewJson.forEach(element => {
-				fun.push(element.functions.name);
-			});
+			let functions_name = loadViewJson[0] && loadViewJson[0].functions ? loadViewJson[0].functions : 0
+
+			// loadViewJson.forEach(element => {
+			// 	fun.push(element.functions.name);
+			// });
+			if (functions_name) 
+			{
+				functions_name=Object.values(functions_name)
+				functions_name.map(element => {
+					fun.push(element.name);
+				});
+			}
 			if (parentBatches.length > 0) {
 				const loadTableData =
 					parentBatches !== undefined && parentBatches.length > 0
@@ -107,8 +116,12 @@ const ViewSummaryData = props => {
 
 				loadTableData.forEach(element => {
 					let funObj = {};
-					funObj[fun[0]] = true;
+					for(let i=0;i<fun.length;i++)
+					{
+					funObj[fun[i]] = true;
+					}
 					funData.push(funObj);
+
 				});
 
 				const mergeArr = loadTableData.map((item, i) =>
@@ -131,6 +144,7 @@ const ViewSummaryData = props => {
 						key: `${item}-${i}`,
 					});
 				});
+
 				setTableColumn(columns);
 				setFunTableData(mergeArr);
 			}
