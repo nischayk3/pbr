@@ -11,6 +11,10 @@ const request_headers = {
     'x-access-token': login_response.token ? login_response.token : '',
     'resource-name': 'REPORT_GENERATOR',
 };
+const request_headers_latex = {
+    'responseType': 'arraybuffer',
+    'content-type': 'application/json',
+};
 
 export const saveReportGenerator = (request) => {
     return Service.put(BMS_APP_PYTHON_SERVICE + '/report-variant', request, request_headers).then(
@@ -68,7 +72,7 @@ export const latexBuilder = (request, headers) => {
 };
 
 export const latexReport = (request, headers) => {
-    return Service.post('/latex_report', request, request_headers).then(
+    return Service.post('/latex_report', request, request_headers_latex).then(
         (response) => {
             return response.data;
         },

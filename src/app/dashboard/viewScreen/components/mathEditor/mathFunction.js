@@ -69,12 +69,23 @@ const MathFunction = props => {
 	const handleCancel = () => {
 		setIsModalVisible(false);
 	};
+	const handleCreateCancel = () =>
+	{
+		dispatch(saveAsViewFunction(true));
+		setIsModalVisible(false);
+		setIsFunction(false);
+
+	}
 
 	const handleTableCancel = () => {
 		setIsTableVisible(false);
 	};
 
 	const handleChangeFunction = e => {
+		if(e.target.value=='')
+		{
+			setIsFunction(false);
+		}
 		setMathEditorValue(e.target.value);
 		setIsFunctionVisible(true);
 	};
@@ -123,6 +134,8 @@ const MathFunction = props => {
 		setIsFunctionInvalid(false);
 		setIsEvaluatingFun(false);
 	};
+
+
 
 
 	return (
@@ -213,7 +226,7 @@ const MathFunction = props => {
 
 						<div className='function-btn'>
 							<Button
-								onClick={() => dispatch(saveAsViewFunction(true))}
+								onClick={() => handleCreateCancel()}
 								type='link'
 								className='custom-secondary-btn-link '>
 								Cancel

@@ -33,22 +33,28 @@ const ViewSummaryData = props => {
 
 	useEffect(() => {
 		if (functionName !== '') {
+
 			setFunTableData(summaryTableData);
 		}
 	}, [summaryTableData]);
 
 	useEffect(() => {
 		if (funTableData.length > 0) {
+
+			
 			const objKey =
 				funTableData !== undefined && funTableData.length > 0
 					? Object.keys(funTableData[0])
 					: [];
 
+
 			const uniqueArr = (value, index, self) => {
 				return self.indexOf(value) === index;
 			};
 
+
 			const summaryColumn = objKey.filter(uniqueArr);
+
 
 			summaryColumn.map((item, i) => {
 				if (item === 'batch' || item === 'batch_year') {
@@ -167,7 +173,6 @@ const ViewSummaryData = props => {
 
 		setTableColumn(newColumns);
 	};
-
 
 
 	return (
