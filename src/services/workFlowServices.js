@@ -8,7 +8,7 @@ export const getCountData = (_queryParam) => {
     return Service.get(BMS_APP_PYTHON_SERVICE + '/workflow-count', _queryParam,{
         'content-type': 'application/json',
         'x-access-token': login_response.token ? login_response.token : '',
-         'resource-name': 'WORKITEM',
+         'resource-name': 'WORKITEMS',
         'username': localStorage.getItem('user'),
     }).then(
         (response) => {
