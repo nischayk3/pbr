@@ -323,7 +323,7 @@
     {
     .ant-tabs-nav-list
     {
-        margin-left: 31%;
+        margin-left: 28%;
     }
     .ant-tabs-tab-btn 
     {
@@ -382,7 +382,7 @@
     margin-right: 550px;
     margin-top: 100px;
         .ant-modal-content {
-            width: 787px;
+            width: 907px;
             height: auto;
             background: #ffffff;
             border-radius: 4px;
@@ -402,6 +402,19 @@
             width: 165px;
             height: 57px;
             border: 0.5px solid #C2C2C2;
+            cursor: pointer;
+            border-radius:4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            
+          
+        }
+        .landing-tile-check{
+            width: 165px;
+            height: 57px;
+            border: 0.5px solid #093185;
             cursor: pointer;
             border-radius:4px;
             display: flex;
@@ -431,6 +444,13 @@
             
             
             color: #093185;
+        }
+        .landing-checkicon
+        {
+            position: relative;
+            float: right;
+            bottom: 40%;
+            left: 39%;
         }
         
     }

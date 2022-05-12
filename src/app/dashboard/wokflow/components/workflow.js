@@ -129,7 +129,7 @@ const Workflow = () => {
                 <div className='workflow_items' style={{ width: '305px' }}>
                     {
                         <div className='approve-wrapper'>
-                            {tilesData.map((item, index) => {
+                            {tilesData && tilesData.map((item, index) => {
                                 return (
 
                                     <div onClick={() => tilesClicked(item, index)} style={{ cursor: 'pointer' }}>

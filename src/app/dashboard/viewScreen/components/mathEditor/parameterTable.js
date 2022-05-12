@@ -94,7 +94,8 @@ const ParameterTable = props => {
 			key: 'aggregation',
 			width: 120,
 			fixed: 'left',
-			render: (text, record, index) => {
+			render: (text, record, index) => {				
+
 				return (
 					<Select
 						style={{ width: '100px' }}
@@ -102,7 +103,7 @@ const ParameterTable = props => {
 						onChange={(e, value) => {
 							handleAggregationChange(text, record, value, index);
 						}}
-					//	value={aggregationValue}
+						{...(text  && { value: text })}
 					>
 						<Option key='1' value='Min'>
 							Min

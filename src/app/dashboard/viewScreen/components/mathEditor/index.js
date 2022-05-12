@@ -29,6 +29,7 @@ const MathEditor = props => {
 		setViewJson,
 		viewSummaryBatch,
 		setViewSummaryBatch,
+		materialId,
 	} = props;
 
 	function callback(key) {
@@ -54,6 +55,11 @@ const MathEditor = props => {
 				}
 			}
 			setVarData(var_data);
+
+			if(viewJsonData[0] && Object.keys(viewJsonData[0].parameters).length >0)
+			{
+                setParamData(viewJsonData[0].parameters)
+			}
 		}
 	}, [isLoadView]);
 
@@ -113,6 +119,7 @@ const MathEditor = props => {
 		setVarData(varArr);
 	};
 
+
 	return (
 		<Collapse
 			className='viewCreation-accordian '
@@ -122,7 +129,7 @@ const MathEditor = props => {
 				className='viewCreation-materialsPanel'
 				header='Math Editor'
 				key='1'>
-				<MathFunction data={paramData} />
+				<MathFunction data={paramData} materialId={materialId} />
 				<div className='variable-wrapper'>
 					<CreateVariable
 						addVariable={addVariable}

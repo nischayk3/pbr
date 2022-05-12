@@ -413,6 +413,7 @@ const ViewCreation = props => {
 								setViewSummaryBatch={setViewSummaryBatch}
 								viewJson={viewJson}
 								setViewJson={setViewJson}
+								materialId={moleculeId}
 							/>
 							<MemoizedViewSummaryData
 								viewJson={viewJson}
