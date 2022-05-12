@@ -46,8 +46,6 @@ export default function chartFilter(props) {
         setViewData({ ...viewData, searchValue: e.target.value });
     }
 
-    console.log("propssss", props.typeChartValue)
-
     return (
         <div style={{ padding: '12px 18px' }}>
             <Row gutter={[16, 24]}>
