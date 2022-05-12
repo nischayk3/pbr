@@ -18,6 +18,7 @@ import {
 	sendSelectedParamData,
 	resetView,
 } from '../../../../../duck/actions/viewAction';
+import { isNewView } from '../../../../../duck/actions/viewAction';
 import { useLocation } from 'react-router';
 
 export default function Landing(props) {
@@ -90,6 +91,8 @@ export default function Landing(props) {
 
 	useEffect(() => {
 		getViewsList();
+		dispatch(isNewView(true))
+
 	}, []);
 
 	const getRandomColor = index => {

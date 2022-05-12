@@ -260,7 +260,7 @@ const alertEvaluation = (props) => {
       "resource-name": "DASHBOARD",
     };
 
-    req["app_data"] = props.appType;
+    req["app_data"] = props.name ? props.name : props.appType;
     req["dag_id"] = " ";
     req["created_by"] = localStorage.getItem("username")
       ? localStorage.getItem("username")
@@ -301,7 +301,8 @@ const alertEvaluation = (props) => {
     req["scheduled_start"] = scheduleStartDate;
     req["scheduled_end"] =
       selectedSchedule == "Repeat Once" ? scheduleStartDate : "2030/12/12";
-    req["job_id"] = props.job_id;
+    if(props.job_id)
+    req["job_id"] = props.job_id ? props.job_id : ' ';
 
     let res = await putJob(req, request_headers);
 
@@ -613,6 +614,7 @@ const alertEvaluation = (props) => {
             radio={radioValue}
             days={selectedDays}
             day={everyDayValue}
+            name={props.name}
           />
         </TabPane>
       </Tabs>

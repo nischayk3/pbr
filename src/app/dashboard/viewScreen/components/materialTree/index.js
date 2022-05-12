@@ -95,7 +95,7 @@ const MaterialTree = props => {
 	const treeMap = materialsList;
 
 	return (
-		<>
+		<div className='custom-treenode'>
 			{treeMap &&
 				treeMap.map((item,index) => {
 					return (
@@ -105,7 +105,7 @@ const MaterialTree = props => {
 							onCheck={onCheck}
 							checkedKeys={checkedKeys}
 							selectedKeys={selectedKeys}
-							className='custom-treenode'>
+							>
 							<TreeNode title={item.process_step} key={item.key+index}>
 								{item.children.map((a,index) => {
 									return (
@@ -151,7 +151,7 @@ const MaterialTree = props => {
 						</Tree>
 					);
 				})}
-		</>
+		</div>
 	);
 };
 

@@ -320,7 +320,7 @@ const ChartNotify = (props) => {
       "resource-name": "DASHBOARD",
     };
 
-    req["app_data"] = props.appType;
+    req["app_data"] = props.name ? props.name : props.appType;
     req["dag_id"] = " ";
     req["created_by"] = localStorage.getItem("username")
       ? localStorage.getItem("username")
@@ -333,8 +333,7 @@ const ChartNotify = (props) => {
       subjectContent.length > 0 ? subjectContent : `Update For ${props.id}`;
     email_config["scheduled_start"] = scheduleEmailStartDate;
     email_config["scheduled_time"] = scheduleEmailTime;
-    email_config["frequency_unit"] =
-      selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule;
+    email_config["frequency_unit"] = selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule;
     email_config["email_list"] = emailList;
     email_config["selected_alert"] = selectedAlert;
     email_config["attachment"] = "";
@@ -363,14 +362,14 @@ const ChartNotify = (props) => {
       selectedSchedule == "Repeat Once"
         ? "Once"
         : convertExpresion(
-            scheduleEmailStartDate,
-            scheduleEmailTime,
-            selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
-            radioValue,
-            selectedTimeRange,
-            Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
-            everyDayValue
-          );
+          scheduleEmailStartDate,
+          scheduleEmailTime,
+          selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
+          radioValue,
+          selectedTimeRange,
+          Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
+          everyDayValue
+        );
     req["frequency_unit"] =
       selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule;
     req["job_status"] = "NEW";
@@ -388,7 +387,8 @@ const ChartNotify = (props) => {
       Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
       everyDayValue
     );
-    req["job_id"] = props.job_id;
+    if(props.job_id)
+    req["job_id"] = props.job_id ? props.job_id : ' ';
 
     let res = await putJob(req, request_headers);
 

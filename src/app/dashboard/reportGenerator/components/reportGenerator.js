@@ -12,7 +12,6 @@ import {
     Button,
     Card,
     Collapse,
-    message,
     Input,
     Tag,
     Dropdown,
@@ -33,6 +32,8 @@ import {
 import Chart from '../../reportDesigner/components/reportChart/chartComponent/chartComponent'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import JobSchedule from '../../../../components/JobSchedule';
+import FileSaver from 'file-saver';
+import axios from 'axios';
 
 const { Panel } = Collapse;
 
@@ -118,21 +119,12 @@ function ReportGenerator(props) {
     const [ReportData, setReportData] = useState(repotData)
     const [chart, setCharts] = useState([])
     const [table, setTable] = useState([])
-    const [schedule, setSchedule] = useState('')
-    const [emailList, setEmailList] = useState([])
-    const [isSave, setIsSave] = useState(false);  
+    const [isSave, setIsSave] = useState(false);
     const [reportId, setReportId] = useState('')
     const [reportName, setReportName] = useState('')
     const [reportStatus, setReportStatus] = useState('')
     const [reportList, setReportList] = useState('')
-    const [filterTable, setFilterTable] = useState(null);
-    const [openSchedule, setOpenSchedule] = useState(false);
     const [chartLayout, setChartLayout] = useState({});
-    const [viewId, setViewId] = useState('')
-    const [repeat, setRepeat] = useState('')
-    const [frequency, setFrequency] = useState('')
-    const [scheduleStartDate, setScheduleStartDate] = useState('')
-    const [scheduleEndDate, setScheduleEndDate] = useState('')
     const [selectedDays, setSelectedDays] = useState({
         Sunday: false,
         Monday: false,
@@ -243,10 +235,7 @@ function ReportGenerator(props) {
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
-        // setEmailList(ReportData.share ? ReportData.share.email_list : [])
-        setSchedule(ReportData.share ? ReportData.share.frequency_unit : '')
         dispatch(hideLoader());
-        // setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
     }
 
     const update_object = (arr, i) => {
@@ -272,17 +261,9 @@ function ReportGenerator(props) {
         let object = chart
         setCharts(object)
 
-        // obj.forEach((item, i) => {
-        //     let res=[]
-        //         for(let key in item) {
-        //           if(item[key]==true)
-        //             res.push(key)
-        //         }
-        //     item['default']=res
-        //      });
-
     }
     const generateReport = async () => {
+        dispatch(showNotification('success','Generating Report'))
         let generate_obj = {}
         let title_page = table[0] ? table[0] : {}
         let sections = table.length > 0 ? table.filter((item, index) => index > 0) : []
@@ -300,16 +281,21 @@ function ReportGenerator(props) {
         let data = { rjson: rjson }
 
         let json_response = await latexBuilder(data)
-        if (json_response.statuscode == 200) {
-            let latex_response = await latexReport(json_response.latex_json)
-            const blob = new Blob([latex_response], { type: 'application/pdf' });
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = `pdf-${+new Date()}.pdf`;
-            link.click();
+        if (json_response.statuscode == 200) 
+        {
+            dispatch(showNotification('success','Downloading Report'))
+
+            axios.post('/latex_report', json_response.latex_json, { responseType: 'arraybuffer' })
+                .then((response) => {
+                    var blob = new Blob([response.data], { type: 'application/pdf' });
+                    FileSaver.saveAs(blob, `${reportId}.pdf`);
+                });
+        }
+        else
+        {
+            dispatch(showNotification('error','Failed to generate report'))
         }
     }
-
 
     const prepareJson = () => {
 
@@ -326,23 +312,11 @@ function ReportGenerator(props) {
         obj['charts_layout'] = chartLayout
         obj['days_layout'] = selectedDays
 
-
-        let share_obj = {}
-        share_obj['email_list'] = emailList
-        share_obj['scheduled_start'] = scheduleStartDate
-        share_obj['scheduled_end'] = scheduleEndDate
-        share_obj['subject'] = `Update for ${reportName}`
-        share_obj['frequency_unit'] = repeat
-        share_obj['frequency'] = frequency
-        share_obj['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
-
-
         let layout_obj = {}
         layout_obj['titlepage'] = table[0] ? table[0] : {}
         layout_obj['sections'] = table.length > 0 ? table.filter((item, index) => index > 0) : []
 
         obj['layout_info'] = layout_obj
-        obj['share'] = share_obj
 
         let req = {}
         req['data'] = obj
@@ -356,51 +330,6 @@ function ReportGenerator(props) {
                 dispatch(showNotification('error', 'Not Saved'))
             }
         })
-    }
-    const onChangeStart = (date, dateString) => {
-        setScheduleStartDate(dateString);
-        // setstartTimeIso(moment(date).toISOString());
-    };
-    const onChangeEnd = (date, dateString) => {
-        setScheduleEndDate(dateString);
-        // setendTimeIso(moment(date).toISOString());
-    };
-    const search = (value) => {
-        const tableData = reportList;
-        const filterTable = tableData.filter((o) =>
-            Object.keys(o).some((k) =>
-                String(o[k]).toLowerCase().includes(value.toLowerCase())
-            )
-        );
-        setFilterTable(filterTable);
-    };
-
-
-    const getReportData = async (rep_id) => {
-
-        message.success(`${rep_id} selected`)
-        dispatch(showLoader());
-        let user_details = JSON.parse(localStorage.getItem('user_details'))
-        let user = user_details["username"] ? user_details["username"] : ''
-        let req = { username: user, report_id: rep_id };
-        try {
-
-            let response = await getReportGenerator(req)
-            if (response.Status == 404) {
-                dispatch(showNotification("error", 'No Data for this variant'))
-                dispatch(hideLoader());
-            }
-            else {
-                dispatch(sendReport(response))
-                unloadTest(response)
-                dispatch(hideLoader());
-            }
-
-        }
-        catch (err) {
-            dispatch(hideLoader());
-            dispatch(showNotification('error', err));
-        }
     }
 
 
@@ -485,7 +414,7 @@ function ReportGenerator(props) {
                 </div>
             </div>
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
-            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} id={reportId} />
+            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} id={reportId} name={reportName} />
         </div>
 
 

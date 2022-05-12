@@ -47,8 +47,6 @@ const HeaderBar = () => {
 			<div id='hamburger' className='inline'>
 				<div className='header-logo'>
 					<img src={mareanaLogo} height='40' alt='menu' />
-					<span></span>
-					<img src={cpvLogo} alt='cpv' />
 				</div>
 			</div>
 			<div

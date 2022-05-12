@@ -76,8 +76,8 @@ const JobSchedule = (props) => {
                 }
                     key="1"
                 >
-                    {props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId}  /> :
-                        <AlertEvaluation appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId}  />
+                    {props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId}  name={props.name} /> :
+                        <AlertEvaluation appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId}  name={props.name} />
                     }
                 </TabPane>
                 <TabPane tab={

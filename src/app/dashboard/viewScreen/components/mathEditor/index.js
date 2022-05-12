@@ -165,6 +165,7 @@ const MathEditor = props => {
 					getParamData={getParamData}
 					selectedData={paramData}
 					selectedVar={selectedVar}
+					materialId={materialId}
 				/>
 			</Panel>
 		</Collapse>
