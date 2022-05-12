@@ -9,7 +9,7 @@ import './styles.scss';
 export default function chartFilter(props) {
     const { Search } = Input;
     const [chartSearch, setChartSearch] = useState(false);
-    const[searchTableData,setSearchTableData]=useState(props.rawTableData);
+    const [searchTableData, setSearchTableData] = useState(props.rawTableData);
     const [viewData, setViewData] = useState({ chartName: '', status: '', chartDispId: '', searchValue: props?.chartId, chartVersion: 0 });
     const ref = useRef(null);
     useEffect(() => {
@@ -28,8 +28,8 @@ export default function chartFilter(props) {
         }
     }
 
-       //function to handle search
-       const searchTable = (value) => {
+    //function to handle search
+    const searchTable = (value) => {
         const filterData = props.rawTableData.filter((o) =>
             Object.keys(o).some((k) =>
                 String(o[k]).toLowerCase().includes(viewData.searchValue.toLowerCase())
@@ -46,7 +46,7 @@ export default function chartFilter(props) {
         setViewData({ ...viewData, searchValue: e.target.value });
     }
 
-    console.log("propssss",props.typeChartValue)
+    console.log("propssss", props.typeChartValue)
 
     return (
         <div style={{ padding: '12px 18px' }}>
@@ -58,6 +58,7 @@ export default function chartFilter(props) {
                         selectedValue={props.typeChartValue}
                         onChangeSelect={props.onChangeTypeCharts}
                         selectList={props.typeOfChartsOptions} />
+
                 </Col>
                 <Col className="gutter-row" span={16} ref={ref}>
                     <p className='import-chart'>Import chart</p>
@@ -72,7 +73,7 @@ export default function chartFilter(props) {
                         setViewData={setViewData}
                         setChartSearch={onFocusRemove}
                         parentCallback={props.searchCallback}
-                     />}
+                    />}
                 </Col>
             </Row>
             <Row gutter={[16, 24]} style={{ marginTop: '20px' }}>
@@ -84,28 +85,45 @@ export default function chartFilter(props) {
                     </div>
                 </Col>
                 <Col className="gutter-row" span={6}>
-                    <SelectField
+                    {/* <SelectField
                         placeholder='Site'
                         onChangeSelect={props.onSiteChange}
                         selectedValue={props.siteValue}
-                        selectList={props.siteOption} />
+                        selectList={props.siteOption} /> */}
+
+                    <Select
+                        placeholder="Site"
+                        value={props.siteValue}
+                        onChange={props.onSiteChange}
+                        style={{ width: "100%", margin: "0px" }}
+                        allowClear
+                    >
+                        {props.siteOption &&
+                            props.siteOption.map((ele, index) => {
+                                return (
+                                    <Select.Option key={index} value={Object.values(ele)[0]}>
+                                        {Object.keys(ele)[0]}
+                                    </Select.Option>
+                                );
+                            })}
+                    </Select>
 
                 </Col>
                 <Col className="gutter-row" span={5}>
                     <DatePicker
-                        value={props.dateRange.split("/")[0]?moment(props.dateRange.split("/")[0],"YYYY-MM-DD"):''}
+                        value={props.dateRange.split("/")[0] ? moment(props.dateRange.split("/")[0], "YYYY-MM-DD") : ''}
                         onChange={props.onInnerStart}
                     />
                 </Col>
                 <Col className="gutter-row" span={5}>
-                    <DatePicker 
-                    value={props.dateRange.split("/")[1]?moment(props.dateRange.split("/")[1],"YYYY-MM-DD"):''} 
-                    onChange={props.onInnerEnd} />
+                    <DatePicker
+                        value={props.dateRange.split("/")[1] ? moment(props.dateRange.split("/")[1], "YYYY-MM-DD") : ''}
+                        onChange={props.onInnerEnd} />
                 </Col>
             </Row>
             <Row style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
                 <Col>
-                    <Button className= 'show-preview-btns'onClick={props.showPreview}
+                    <Button className='show-preview-btns' onClick={props.showPreview}
                     >Show preview
                     </Button>
                 </Col>
