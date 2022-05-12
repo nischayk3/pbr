@@ -154,6 +154,7 @@ const ViewChart = (props, ref) => {
 
     useEffect(() => {
         fetchDataFromUrl();
+        getSiteGlobalFilter();
     }, []);
     useEffect(() => {
         let info = JSON.parse(JSON.stringify(dashboardInfo));
@@ -185,7 +186,7 @@ const ViewChart = (props, ref) => {
         let reqSite = { view_id: id };
         return getSiteId(reqSite).then((res) => {
             if (res.Status === 200) {
-                return res.Data[0];
+                return res.Data;
             } else if (res.Status === 400) {
                 dispatch(showNotification('error', 'Site Error - ' + res.Message));
                 return []
@@ -195,6 +196,22 @@ const ViewChart = (props, ref) => {
             }
         });
     };
+
+    const getSiteGlobalFilter = async () => {
+        dispatch(showLoader());
+        let req = {};
+        try {
+            let res = await getSiteId(req);
+            setSiteList(res.Data)
+            dispatch(hideLoader());
+        } catch (error) {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', 'There is no data'));
+        }
+
+
+
+    }
 
     const fetchDataFromUrl = async () => {
         console.log("idd", props.dashboardId)
@@ -425,7 +442,7 @@ const ViewChart = (props, ref) => {
         console.log(value)
         let obj = JSON.parse(JSON.stringify(dashboardInfo));
         switch (text) {
-            case 'Site': obj.data_filter.site = '1255';
+            case 'Site': obj.data_filter.site = value;
                 setDashboardInfo(obj);
                 break;
             case 'Unapproved Data':
@@ -502,24 +519,29 @@ const ViewChart = (props, ref) => {
             unapproved_data: tempPanels[index].data_filter.unapproved_data
         }
         dispatch(showLoader());
-        let res = await getChartData(id, payload);
-        let chartLayout = {
-            xaxis: res.data[0]?.layout.xaxis,
-            yaxis: res.data[0]?.layout.yaxis,
-            autosize: false,
-            width: 580,
-            height: 250,
-            margin: {
-                l: 60,
-                r: 50,
-                //b: 75,
-                t: 40,
-                pad: 4
+        try {
+            let res = await getChartData(id, payload);
+            let chartLayout = {
+                xaxis: res.data[0]?.layout.xaxis,
+                yaxis: res.data[0]?.layout.yaxis,
+                autosize: false,
+                width: 580,
+                height: 250,
+                margin: {
+                    l: 60,
+                    r: 50,
+                    //b: 75,
+                    t: 40,
+                    pad: 4
+                }
             }
+            arr[index] = Object.assign({}, arr[index], res, { chartLayout: chartLayout });
+            setTempPanels(arr);
+            dispatch(hideLoader());
+        } catch (error) {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', 'There is no data'));
         }
-        arr[index] = Object.assign({}, arr[index], res, { chartLayout: chartLayout });
-        setTempPanels(arr);
-        dispatch(hideLoader());
     }
 
     const showPreviewTemp = async () => {
@@ -531,24 +553,29 @@ const ViewChart = (props, ref) => {
             unapproved_data: obj.data_filter.unapproved_data
         }
         dispatch(showLoader());
-        let res = await getChartData(id, payload);
-        let chartLayout = {
-            xaxis: res.data[0]?.layout.xaxis,
-            yaxis: res.data[0]?.layout.yaxis,
-            autosize: false,
-            width: 580,
-            height: 250,
-            margin: {
-                l: 60,
-                r: 50,
-                //b: 75,
-                t: 40,
-                pad: 4
+        try {
+            let res = await getChartData(id, payload);
+            let chartLayout = {
+                xaxis: res.data[0]?.layout.xaxis,
+                yaxis: res.data[0]?.layout.yaxis,
+                autosize: false,
+                width: 580,
+                height: 250,
+                margin: {
+                    l: 60,
+                    r: 50,
+                    //b: 75,
+                    t: 40,
+                    pad: 4
+                }
             }
+            obj = Object.assign({}, obj, res, { chartLayout: chartLayout });
+            setTempCard(obj);
+            dispatch(hideLoader());
+        } catch (error) {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', 'There is no data'));
         }
-        obj = Object.assign({}, obj, res, { chartLayout: chartLayout });
-        setTempCard(obj);
-        dispatch(hideLoader());
     }
 
     const searchCallback = async (data, index) => {
@@ -705,12 +732,14 @@ const ViewChart = (props, ref) => {
                             <SyncOutlined />
                         </div>
                         <div>
-                            <Select style={{ width: 120 }} value={dashboardInfo?.data_filter?.site || undefined} onChange={(value) => handleGlobalDropdownChange(value, 'Site')} placeholder="Site" className='global-filters-params select-site'>
-                                {/* {siteList.map((el, index) => {
-                                return ( */}
-                                <Option value={'1255'}>{'1255'}</Option>
-                                {/* )
-                            })} */}
+                            <Select style={{ width: 120 }} value={dashboardInfo?.data_filter?.site || undefined} onChange={(value) => handleGlobalDropdownChange(value, 'Site')} placeholder="Site" className='global-filters-params select-site' allowClear>
+                                {siteList && siteList.map((ele, index) => {
+                                    return (
+                                        <Option key={index} value={Object.values(ele)[0]}>
+                                            {Object.keys(ele)[0]}
+                                        </Option>
+                                    );
+                                })}
                             </Select>
                         </div>
                         <div className='show-data'>
@@ -1025,12 +1054,12 @@ const ViewChart = (props, ref) => {
                                             searchCallback={(data) => searchTempCallback(data)}
                                         />
                                         {tempCard?.data && (
-                                            <div style={{padding: '5px 11px'}}>
-                                            <Plot
-                                                data={tempCard?.data && tempCard?.data[0]?.data}
-                                                layout={tempCard && tempCard?.chartLayout}
-                                                
-                                            />
+                                            <div style={{ padding: '5px 11px' }}>
+                                                <Plot
+                                                    data={tempCard?.data && tempCard?.data[0]?.data}
+                                                    layout={tempCard && tempCard?.chartLayout}
+
+                                                />
                                             </div>
                                         )}
                                     </div>
