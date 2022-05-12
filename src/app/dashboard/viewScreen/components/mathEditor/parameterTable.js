@@ -241,7 +241,6 @@ const ParameterTable = props => {
 	useEffect(() => {
 		if (!isNew) {
 			//	onChangeColumnsHandler();
-			console.log('here')
 			setTableData([]);
 			setFilterTable([])
 			dispatch(isNewView(true))
