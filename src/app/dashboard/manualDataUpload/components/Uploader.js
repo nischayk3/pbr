@@ -676,13 +676,7 @@ class Uploader extends Component {
 		}
 		const res = await getAuthenticate(req, header);
 		if (res.Status != 200) {
-			this.setState(
-				{
-					toastOpen: true,
-					showLoader: false,
-					toastMessage: res,
-					toastVariant: 'error',
-				})
+			this.props.showNotification('error', res.Message);
 			this.closeModel();
 			this.closeModelSignature1();
 		} else {
