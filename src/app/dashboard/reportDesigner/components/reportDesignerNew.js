@@ -513,10 +513,10 @@ function ReportDesignerNew(props) {
       let view_version = json_data['view_id-version'] ? json_data['view_id-version'] : ''
 
       if (view_version) {
-
         let view_id = view_version[0].split('-')
-        setViewId(view_id[0])
-        setViewIdVersion(view_version)
+        setViewId(view_id[0]?view_id[0]:'')
+        setViewIdVersion(view_id[1]?view_id[1]:'')
+        setViewVersion(view_id[1]?view_id[1]:'')
       }
 
       let layout_data = json_data['layout_info']
@@ -616,6 +616,7 @@ function ReportDesignerNew(props) {
 
       let view_version = json_data['view_version'] ? json_data['view_version'].toString() : ''
       setViewVersion(view_version)
+    
       getChartsList(view + '-' + view_version)
       setViewIdVersion(view + '-' + view_version)
       json_data = json_data['layout_info']
@@ -674,6 +675,7 @@ function ReportDesignerNew(props) {
   const isStyledDifferently = (rowObject, index) => {
     return rowObject.isActive ? true : false;
   }
+
 
   return (
     <div className='custom-wrapper'>
