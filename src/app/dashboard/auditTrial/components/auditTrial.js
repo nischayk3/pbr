@@ -1,5 +1,6 @@
 // eslint-disable-next-line
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   Table,
   Input,
@@ -14,11 +15,13 @@ import {
 import {
   loadFilter,
   auditDataChange,
+  auditFilter
 } from '../../../../duck/actions/auditTrialAction';
 
 import './styles.scss';
 import moment from 'moment';
 import { BMS_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
+import { showNotification } from '../../../../duck/actions/commonActions';
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -203,20 +206,45 @@ class AuditTrials extends React.Component {
   componentDidMount() {
     this.setState({ initialColumns: this.state.columns });
     this.auditHighlight();
-    this.loadEventFilter('audit_event_filter')
+    this.onAuditUserAndEventFilter();
+    //this.loadEventFilter('audit_event_filter')
 
-    let userReq = {
-      //appId: "CPV",
-      appId: "BMS",
-      filterId: "bms_user_filter",
-      q: ""
-    };
-    loadFilter(userReq).then(res => {
-      let userList = res.data;
+    // let userReq = {
+    //   //appId: "CPV",
+    //   appId: "BMS",
+    //   filterId: "bms_user_filter",
+    //   q: ""
+    // };
+    // loadFilter(userReq).then(res => {
+    //   let userList = res.data;
+    //   this.setState({
+    //     userList: userList
+    //   });
+    // });
+  }
+
+
+  onAuditUserAndEventFilter = async () => {
+    let login_response = JSON.parse(localStorage.getItem('login_details'));
+    let req = {};
+    let headers = {
+      'content-type': 'application/json',
+      //'x-access-token': login_response.token ? login_response.token : '',
+      'x-access-token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IlJhbWFhICBSYW8iLCJ1bml4X3RpbWVzdGFtcCI6MTY0OTQwODU2OS42OTc3NDEsInRpbWVzdGFtcCI6IjA4LzA0LzIwMjIgMTQ6MzI6NDkiLCJleHAiOjQ4MDMwMjgzNjksImFkX3JvbGUiOmZhbHNlLCJtZGhfcm9sZSI6IkFETUlOIiwiZW1haWxfaWQiOiJyYW1hYS5yYW9AbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.fwGhtSVoFvMrMhUOIHJZe-5C8Nyo0vQLfEn_rM7XvMg',
+      'resource-name': 'AUDIT_REPORT',
+    }
+
+    let res = await auditFilter(req, headers);
+    console.log(res);
+    if (res.statuscode != 200) {
+      this.props.showNotification('error', res.Message);
+    }else{
       this.setState({
-        userList: userList
-      });
-    });
+        userList:res.data[0].userid,
+        eventList:res.data[0].activity
+      })
+    }
+
   }
 
   loadData = (column) => {
@@ -264,7 +292,6 @@ class AuditTrials extends React.Component {
     if (value == 'csv') {
       myUrlWithParams.searchParams.append('export_csv', true);
     }
-
 
     let url = myUrlWithParams.href;
     window.open(url);
@@ -467,18 +494,18 @@ class AuditTrials extends React.Component {
     );
 
     // this.auditDateTable();
-    let userReq = {
-      //appId: "CPV",
-      appId: 'BMS',
-      filterId: 'bms_user_filter',
-      q: '',
-    };
-    loadFilter(userReq).then((res) => {
-      let userList = res.data;
-      this.setState({
-        userList: userList,
-      });
-    });
+    // let userReq = {
+    //   //appId: "CPV",
+    //   appId: 'BMS',
+    //   filterId: 'bms_user_filter',
+    //   q: '',
+    // };
+    // loadFilter(userReq).then((res) => {
+    //   let userList = res.data;
+    //   this.setState({
+    //     userList: userList,
+    //   });
+    // });
   };
 
   handleClearPkg = () => {
@@ -503,6 +530,7 @@ class AuditTrials extends React.Component {
   };
 
   render() {
+    console.log(this.state.eventList,this.state.userList);
     const { RangePicker } = DatePicker;
     const { filterTable, tableData, columns, columnConfig } = this.state;
 
@@ -559,7 +587,8 @@ class AuditTrials extends React.Component {
                   }}
                   value={this.state.user}
                 >
-                  {this.state.userList.map((item, i) => {
+                  {this.state.userList && this.state.userList.map((item, i) => {
+                    console.log("itemsss",item)
                     return (
                       <Option value={item.value}>
                         {item.value}
@@ -579,7 +608,7 @@ class AuditTrials extends React.Component {
                   }}
                   value={this.state.eventType}
                 >
-                  {this.state.eventList.map((item, i) => {
+                  {this.state.eventList && this.state.eventList.map((item, i) => {
                     return (
                       <Option value={item.value}>
                         {item.value}
@@ -683,4 +712,8 @@ class AuditTrials extends React.Component {
   }
 }
 
-export default AuditTrials;
+const mapDispatchToProps = {
+  showNotification,
+};
+
+export default connect(null, mapDispatchToProps)(AuditTrials);
