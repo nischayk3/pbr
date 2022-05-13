@@ -521,6 +521,8 @@ function ReportDesignerNew(props) {
         setViewId(view_id[0]?view_id[0]:'')
         setViewIdVersion(view_version[0])
         setViewVersion(view_id[1]?view_id[1]:'')
+        getChartsList(view_version[0])
+
       }
 
       let layout_data = json_data['layout_info']
