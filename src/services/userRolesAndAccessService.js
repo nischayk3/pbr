@@ -21,7 +21,6 @@ export const saveRoleConfiguartions = data => {
 }
 
 export const deleteRoleConfiguartions = role_name => {
-    console.log('role_name: ', role_name)
     return axios.delete('/services/v1/role-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
