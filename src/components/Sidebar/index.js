@@ -8,8 +8,13 @@ import {
     LinkOutlined,
     LogoutOutlined,
     PartitionOutlined,
+    ClusterOutlined,
     TeamOutlined,
     FileFilled,
+    SolutionOutlined,
+    FileDoneOutlined,
+    AppstoreAddOutlined,
+    UserAddOutlined
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { Link, useHistory, useLocation } from 'react-router-dom';
@@ -29,10 +34,10 @@ const MENU = [
     //     title: 'Home',
     //     linkTo: '/dashboard/home',
     // },
-
+    
     {
         key: 'view_creation',
-        icon: <FundOutlined style={{ fontSize: '23px' }} />,
+        icon: <ClusterOutlined style={{ fontSize: '23px' }} />,
         title: 'View Creation',
         linkTo: '/dashboard/view_creation',
     },
@@ -57,7 +62,7 @@ const MENU = [
     },
     {
         key: 'data_load',
-        icon: <PartitionOutlined style={{ fontSize: '23px' }} />,
+        icon: <FileFilled style={{ fontSize: '23px' }} />,
         title: 'Data Load',
         linkTo: '/dashboard/data_load',
     },
@@ -69,7 +74,7 @@ const MENU = [
     },
     {
         key: 'report_designer',
-        icon: <TeamOutlined style={{ fontSize: '23px' }} />,
+        icon: <AppstoreAddOutlined style={{ fontSize: '23px' }} />,
         title: 'Report Designer',
         linkTo: '/dashboard/report_designer',
     },
@@ -81,31 +86,31 @@ const MENU = [
     // },
     {
         key: 'workflow',
-        icon: <LinkOutlined style={{ fontSize: '26px' }} />,
+        icon: <FileDoneOutlined style={{ fontSize: '26px' }} />,
         title: 'Workflow',
         linkTo: '/dashboard/workflow',
     },
     {
         key: 'genealogy',
-        icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+        icon: <PartitionOutlined style={{ fontSize: '23px' }} />,
         title: 'Genealogy',
         linkTo: '/dashboard/genealogy',
     },
     {
         key: 'workspace',
-        icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+        icon: <TeamOutlined style={{ fontSize: '23px' }} />,
         title: 'Workspace',
         linkTo: '/dashboard/workspace',
     },
     {
         key: 'dashboard',
-        icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+        icon: <FundOutlined style={{ fontSize: '23px' }} />,
         title: 'Dashboard',
         linkTo: '/dashboard/dashboard',
     },
     {
         key: 'paper batch records',
-        icon: <LinkOutlined style={{ fontSize: '23px' }} />,
+        icon: <SolutionOutlined style={{ fontSize: '23px' }} />,
         title: 'Paper Batch Records',
         linkTo: '/dashboard/paper_batch_records',
     },
@@ -117,7 +122,7 @@ const MENU = [
     },
     {
         key: 'user-roles-and-access',
-        icon: <BarChartOutlined style={{ fontSize: '23px' }} />,
+        icon: <UserAddOutlined style={{ fontSize: '23px' }} />,
         title: 'User Roles',
         linkTo: '/dashboard/user-roles-and-access',
     },
