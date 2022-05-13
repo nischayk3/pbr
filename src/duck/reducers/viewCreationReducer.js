@@ -16,7 +16,8 @@ import {
 	VIEW_PARAM_MAP,
 	IS_LOAD_VIEW,
 	RESET_VIEW,
-	IS_NEW_VIEW
+	IS_NEW_VIEW,
+	NEW_COLUMN
 } from '../../constants/actionTypes';
 
 const initState = {
@@ -38,6 +39,7 @@ const initState = {
 	parameters: {},
 	isLoad: false,
 	isNew: false,
+	newColumn:[],
 
 };
 
@@ -79,6 +81,8 @@ export default (state = initState, action) => {
 			return { ...state, isLoad: action.payload };
 		case IS_NEW_VIEW:
 			return { ...state, isNew: action.payload };
+		case NEW_COLUMN:
+			return { ...state, newColumn: action.payload };
 		case RESET_VIEW:
 			return initState;
 		default:

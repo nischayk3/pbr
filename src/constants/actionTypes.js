@@ -73,3 +73,4 @@ export const VIEW_PARAM_MAP = 'VIEW_PARAM_MAP';
 export const IS_LOAD_VIEW = 'IS_LOAD_VIEW';
 export const IS_NEW_VIEW = 'IS_NEW_VIEW';
 export const RESET_VIEW = 'RESET_VIEW';
+export const NEW_COLUMN = 'NEW_COLUMN';
