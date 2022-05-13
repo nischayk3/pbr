@@ -27,6 +27,10 @@ const ParameterTable = props => {
 		state => state.viewCreationReducer.isNew
 	);
 
+	const newColumnData = useSelector(
+		state => state.viewCreationReducer.newColumn
+	);
+
 
 	const saveFunction = useSelector(state => state.viewCreationReducer.save);
 
@@ -46,6 +50,7 @@ const ParameterTable = props => {
 	const [variableParam, setVariableParam] = useState({});
 	const [fun, setFun] = useState({})
 	const [filterTable, setFilterTable] = useState([])
+	
 
 	const {
 		rowDisable,
@@ -262,9 +267,7 @@ const ParameterTable = props => {
 		let variableObj = {};
 		if (variableCreate === true) {
 			count++;
-
 			const varParameter = [...parameters];
-
 			varParameter.forEach(element => {
 				varArr.push(element);
 			});
@@ -297,11 +300,19 @@ const ParameterTable = props => {
 
 			let primarySelectedData = { ...selectedPrimaryData };
 			let functionTable = [...viewSummaryBatch];
+
+
+			let new_column_data = newColumnData.map((e)=>e.batch_num)
 			functionTable.forEach(item => {
 				let obj = {};
 				Object.entries(primarySelectedData).forEach(([key, value]) => {
+					
 					if (key === item.batch) {
+						if(new_column_data.includes(key))
 						obj[functionName] = true;
+						else
+						obj[functionName] = false;
+
 					}
 				});
 				arr.push(obj);

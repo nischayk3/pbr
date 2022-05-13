@@ -33,7 +33,6 @@ const ViewSummaryData = props => {
 
 	useEffect(() => {
 		if (functionName !== '') {
-
 			setFunTableData(summaryTableData);
 		}
 	}, [summaryTableData]);

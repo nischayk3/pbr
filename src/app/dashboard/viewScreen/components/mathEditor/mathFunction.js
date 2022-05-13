@@ -9,6 +9,7 @@ import {
 	saveViewFunction,
 	sendFunctionName,
 	sendFunDetails,
+	setNewColumn
 } from '../../../../../duck/actions/viewAction';
 import { viewEvaluate } from '../../../../../services/viewCreationPublishing';
 import { showNotification } from '../../../../../duck/actions/commonActions';
@@ -82,12 +83,10 @@ const MathFunction = props => {
 	};
 
 	const handleChangeFunction = e => {
-		if(e.target.value=='')
-		{
-			setIsFunction(false);
-		}
 		setMathEditorValue(e.target.value);
 		setIsFunctionVisible(true);
+		setIsFunction(false);
+
 	};
 	const onChangeFunName = e => {
 		setFunctionName(e.target.value);
@@ -117,7 +116,11 @@ const MathFunction = props => {
 
 		if (evaluate_respone.view_status == "") {
 			setIsTableVisible(true)
+			if(evaluate_respone.functions)
+			{
 			setEvalTable(evaluate_respone.functions)
+			dispatch(setNewColumn(evaluate_respone.functions))
+			}
 			dispatch(showNotification('success', 'Evaluated'))
 			setIsFunction(true);
 		}
@@ -182,21 +185,20 @@ const MathFunction = props => {
 							<span>
 								{isFunctionVisible && (
 									<>
-										{isFunction ? (
-											<Button
-												onClick={showModal}
-												type='text'
-												className='custom-primary-btn '>
-												Create Function
-											</Button>
-										) : (
+										{/* {isFunction ? ( */}
 											<Button
 												onClick={functionEvaluate}
 												type='text'
-												className='custom-primary-btn '>
+												className='custom-eval-btn'>
 												Function Evaluate
+											</Button>										
+											<Button
+												onClick={showModal}
+												type='text'
+												disabled={!isFunction}
+												className={!isFunction ? "custom-eval-btn-disable" :'custom-secondary-btn'}>
+												Create
 											</Button>
-										)}
 									</>
 								)}
 
