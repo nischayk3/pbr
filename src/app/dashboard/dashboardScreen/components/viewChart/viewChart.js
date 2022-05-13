@@ -718,6 +718,16 @@ const ViewChart = (props, ref) => {
 
     }
 
+    const onResetFilters = (index) => {
+        console.log(index);
+        let arr = [...tempPanels]
+        arr[index].data_filter.date_range = ""
+        arr[index].data_filter.site=""
+        arr[index].data_filter.unapproved_data=false
+
+         setTempPanels(arr);
+    }
+
 
 
     console.log("temp", tempPanels)
@@ -912,7 +922,7 @@ const ViewChart = (props, ref) => {
                                             <div >
                                                 {isEditable == index ? (
                                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                        <div>< UndoOutlined style={{ color: '#486BC9', fontSize: '16px' }} /></div>
+                                                        <div>< UndoOutlined style={{ color: '#486BC9', fontSize: '16px' }} onClick={() => onResetFilters(index)} /></div>
                                                         <div>
                                                             <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }}
                                                                 onClick={() => {

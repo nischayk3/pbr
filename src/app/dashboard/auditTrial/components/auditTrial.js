@@ -1,5 +1,6 @@
 // eslint-disable-next-line
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   Table,
   Input,
@@ -14,11 +15,13 @@ import {
 import {
   loadFilter,
   auditDataChange,
+  auditFilter
 } from '../../../../duck/actions/auditTrialAction';
 
 import './styles.scss';
 import moment from 'moment';
 import { BMS_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
+import { showNotification } from '../../../../duck/actions/commonActions';
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -203,20 +206,43 @@ class AuditTrials extends React.Component {
   componentDidMount() {
     this.setState({ initialColumns: this.state.columns });
     this.auditHighlight();
-    this.loadEventFilter('audit_event_filter')
+    this.onAuditUserAndEventFilter();
+    //this.loadEventFilter('audit_event_filter')
 
-    let userReq = {
-      //appId: "CPV",
-      appId: "BMS",
-      filterId: "bms_user_filter",
-      q: ""
-    };
-    loadFilter(userReq).then(res => {
-      let userList = res.data;
+    // let userReq = {
+    //   //appId: "CPV",
+    //   appId: "BMS",
+    //   filterId: "bms_user_filter",
+    //   q: ""
+    // };
+    // loadFilter(userReq).then(res => {
+    //   let userList = res.data;
+    //   this.setState({
+    //     userList: userList
+    //   });
+    // });
+  }
+
+
+  onAuditUserAndEventFilter = async () => {
+    let login_response = JSON.parse(localStorage.getItem('login_details'));
+    let req = {};
+    let headers = {
+      'content-type': 'application/json',
+      'x-access-token': login_response.token ? login_response.token : '',
+      'resource-name': 'AUDIT_REPORT',
+    }
+
+    let res = await auditFilter(req, headers);
+    if (res.statuscode != 200) {
+      this.props.showNotification('error', res.Message);
+    }else{
       this.setState({
-        userList: userList
-      });
-    });
+        userList:res.data[0].userid,
+        eventList:res.data[0].activity
+      })
+    }
+
   }
 
   loadData = (column) => {
@@ -264,7 +290,6 @@ class AuditTrials extends React.Component {
     if (value == 'csv') {
       myUrlWithParams.searchParams.append('export_csv', true);
     }
-
 
     let url = myUrlWithParams.href;
     window.open(url);
@@ -372,7 +397,6 @@ class AuditTrials extends React.Component {
   };
 
   search = (value) => {
-    console.log(value);
     const { tableData } = this.state;
     const filterTable = tableData.filter((o) =>
       Object.keys(o).some((k) =>
@@ -467,18 +491,18 @@ class AuditTrials extends React.Component {
     );
 
     // this.auditDateTable();
-    let userReq = {
-      //appId: "CPV",
-      appId: 'BMS',
-      filterId: 'bms_user_filter',
-      q: '',
-    };
-    loadFilter(userReq).then((res) => {
-      let userList = res.data;
-      this.setState({
-        userList: userList,
-      });
-    });
+    // let userReq = {
+    //   //appId: "CPV",
+    //   appId: 'BMS',
+    //   filterId: 'bms_user_filter',
+    //   q: '',
+    // };
+    // loadFilter(userReq).then((res) => {
+    //   let userList = res.data;
+    //   this.setState({
+    //     userList: userList,
+    //   });
+    // });
   };
 
   handleClearPkg = () => {
@@ -559,7 +583,8 @@ class AuditTrials extends React.Component {
                   }}
                   value={this.state.user}
                 >
-                  {this.state.userList.map((item, i) => {
+                  {this.state.userList && this.state.userList.map((item, i) => {
+                   
                     return (
                       <Option value={item.value}>
                         {item.value}
@@ -579,7 +604,7 @@ class AuditTrials extends React.Component {
                   }}
                   value={this.state.eventType}
                 >
-                  {this.state.eventList.map((item, i) => {
+                  {this.state.eventList && this.state.eventList.map((item, i) => {
                     return (
                       <Option value={item.value}>
                         {item.value}
@@ -683,4 +708,8 @@ class AuditTrials extends React.Component {
   }
 }
 
-export default AuditTrials;
+const mapDispatchToProps = {
+  showNotification,
+};
+
+export default connect(null, mapDispatchToProps)(AuditTrials);
