@@ -239,7 +239,6 @@ function ReportDesignerNew(props) {
     json_data = json_data['layout_info'] ? json_data['layout_info'] : {}
     json_data = json_data['layout_info'] ? json_data['layout_info'] : {}
 
-    console.log(chartsLayoutCompare,chartsLayout)
 
     if (Object.keys(json_data).length > 0 && Object.keys(jayson).length > 0) {
       return true
@@ -419,7 +418,11 @@ function ReportDesignerNew(props) {
 
   // Saving the json
   const PrepareJson = (formData, saveType) => {
-    let check = checkChanges(reportData, formData)
+    let check = false
+    if(isLoad)
+    check = checkChanges(reportData, formData)
+    else
+    check=true
 
     if (check) {
       let obj = {}
