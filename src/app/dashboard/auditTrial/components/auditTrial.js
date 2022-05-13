@@ -229,13 +229,11 @@ class AuditTrials extends React.Component {
     let req = {};
     let headers = {
       'content-type': 'application/json',
-      //'x-access-token': login_response.token ? login_response.token : '',
-      'x-access-token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IlJhbWFhICBSYW8iLCJ1bml4X3RpbWVzdGFtcCI6MTY0OTQwODU2OS42OTc3NDEsInRpbWVzdGFtcCI6IjA4LzA0LzIwMjIgMTQ6MzI6NDkiLCJleHAiOjQ4MDMwMjgzNjksImFkX3JvbGUiOmZhbHNlLCJtZGhfcm9sZSI6IkFETUlOIiwiZW1haWxfaWQiOiJyYW1hYS5yYW9AbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.fwGhtSVoFvMrMhUOIHJZe-5C8Nyo0vQLfEn_rM7XvMg',
+      'x-access-token': login_response.token ? login_response.token : '',
       'resource-name': 'AUDIT_REPORT',
     }
 
     let res = await auditFilter(req, headers);
-    console.log(res);
     if (res.statuscode != 200) {
       this.props.showNotification('error', res.Message);
     }else{
@@ -399,7 +397,6 @@ class AuditTrials extends React.Component {
   };
 
   search = (value) => {
-    console.log(value);
     const { tableData } = this.state;
     const filterTable = tableData.filter((o) =>
       Object.keys(o).some((k) =>
@@ -530,7 +527,6 @@ class AuditTrials extends React.Component {
   };
 
   render() {
-    console.log(this.state.eventList,this.state.userList);
     const { RangePicker } = DatePicker;
     const { filterTable, tableData, columns, columnConfig } = this.state;
 
@@ -588,7 +584,7 @@ class AuditTrials extends React.Component {
                   value={this.state.user}
                 >
                   {this.state.userList && this.state.userList.map((item, i) => {
-                    console.log("itemsss",item)
+                   
                     return (
                       <Option value={item.value}>
                         {item.value}

@@ -43,7 +43,7 @@ const dummyRequest = ({ onSuccess }) => {
 const currentDate = moment().toDate();
 const currentDateFormat = moment(currentDate).format('YYYY-MM-DD');
 const currentTimestamp = moment(currentDate).format('h:mm:ss');
-console.log('currentTimestamp', currentTimestamp);
+
 class Uploader extends Component {
 	state = {
 		openPopup: false,
@@ -209,7 +209,7 @@ class Uploader extends Component {
 				`${info.file.name} is not excel or csv file`
 			);
 		} else {
-			console.log('info.file.status', info.file.status, info);
+			
 			if (info.file.status === 'uploading') {
 				nextState.selectedFileList = [info.file];
 			} else if (info.file.status === 'done') {
@@ -675,7 +675,6 @@ class Uploader extends Component {
 
 		}
 		const res = await getAuthenticate(req, header);
-		console.log(res);
 		if (res.Status != 200) {
 			this.setState(
 				{
