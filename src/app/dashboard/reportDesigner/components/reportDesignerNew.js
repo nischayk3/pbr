@@ -108,6 +108,7 @@ function ReportDesignerNew(props) {
   const [loading, setLoading] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [isSave, setIsSave] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const [reportName, setReportName] = useState('');
   const [isNew, setIsNew] = useState(true);
   const [visible, setVisible] = useState(false);
@@ -461,6 +462,7 @@ function ReportDesignerNew(props) {
             req.data['rep_disp_id'] = res['rep_disp_id']
             setStatus(res['rep_stauts'])
             setIsSave(true)
+            setIsSaved(true)
           }
           else
             dispatch(showNotification('error', 'Not Saved'));
@@ -727,7 +729,7 @@ function ReportDesignerNew(props) {
                 <Button
                   className='custom-primary-btn'
                   onClick={() => dispatch(screenChange(true))}
-                  disabled={!isSave}
+                  disabled={!isSaved}
                 >
                   Preview
                 </Button>
