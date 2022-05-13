@@ -110,3 +110,15 @@ export const getChartType = (request) => {
         }
     );
 };
+
+
+export const auditFilter = (request,headers) => {
+    return Service.get(BMS_APP_PYTHON_SERVICE + '/audit-filter', request,headers).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
