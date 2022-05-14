@@ -6,30 +6,66 @@
  * @Last Changed By - Bhanu Thareja
  */
 
-import { Component } from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import BreadCrumbWrapper from '../../../components/BreadCrumbWrapper/index'
 import GoBackSubHeader from '../../../components/GoBackSubHeader/GoBackSubHeader'
 import EditableTable from '../../../components/EditableTable/EditableTable'
-import tableData from './UserConfiguration.json'
+import { showLoader, hideLoader } from '../../../duck/actions/commonActions'
 
-class UserConfiguration extends Component {
+import { getUserConfiguartions, saveUserConfigurationws, deleteUserConfiguartions } from '../../../services/userRolesAndAccessService'
 
-  onSaveUserConfiguration = data => {
-    console.log(data)
+const UserConfiguration = () => {
+  const dispatch = useDispatch()
+  const [tableData, setTableData] = useState(null)
+
+  useEffect(() => {
+    loadUserConfiguartions()
+  }, [])
+
+  const loadUserConfiguartions = async () => {
+    dispatch(showLoader())
+    try {
+      const response = await getUserConfiguartions()
+      const { message } = response.data
+      setTableData(message)
+      dispatch(hideLoader())
+    } catch (err) {
+      console.log('err: ', err)
+      dispatch(hideLoader())
+    }
   }
 
-  render() {
-    return (
-      <>
-        <BreadCrumbWrapper />
-        <div className="custom-user-roles-wrapper">
-          <GoBackSubHeader currentPage="User configuration" />
-          <EditableTable tableData={tableData} onSaveTable={this.onSaveUserConfiguration} />
-        </div>
-      </>
-    )
+  const onSaveUserConfigurations = async tableData => {
+    tableData.forEach(obj => delete obj.key)
+    dispatch(showLoader())
+    try {
+      await saveUserConfigurationws(tableData)
+      dispatch(hideLoader())
+    } catch (err) {
+      console.log('err: ', err)
+      dispatch(hideLoader())
+    }
   }
+
+  if (!tableData) {
+    return null
+  }
+
+  return (
+    <>
+      <BreadCrumbWrapper />
+      <div className="custom-user-roles-wrapper">
+        <GoBackSubHeader currentPage="User configuration" />
+        <EditableTable 
+          tableData={tableData} 
+          onSaveTable={onSaveUserConfigurations}
+          onDeleteTableRow={deleteUserConfiguartions}
+        />
+      </div>
+    </>
+  )
 }
 
 export default UserConfiguration

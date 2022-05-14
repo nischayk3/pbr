@@ -4,6 +4,21 @@ class Service {
 	constructor() {
 		let service = axios.create();
 		this.service = service;
+		this.service.interceptors.request.use(function (config) {
+			return config;
+		}, function (error) {
+			return Promise.reject(error);
+		});
+
+		this.service.interceptors.response.use(function (response) {
+			return response;
+		}, function (error) {
+			if (error.response.status === 401) {
+				const tokenExpiredEvent = new Event('tokenExpired')
+				document.dispatchEvent(tokenExpiredEvent)
+			}
+			return Promise.reject(error);
+		});
 	}
 
 	get(url, params, headers) {

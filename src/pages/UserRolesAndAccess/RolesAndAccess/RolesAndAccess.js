@@ -41,7 +41,7 @@ const RolesAndAccess = () => {
         tableData.forEach(obj => delete obj.key)
         dispatch(showLoader())
         try {
-            const response = await saveRoleConfiguartions(tableData)
+            await saveRoleConfiguartions(tableData)
             dispatch(hideLoader())
         } catch (err) {
             console.log('err: ', err)
