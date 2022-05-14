@@ -2,14 +2,14 @@ import { Component } from 'react'
 import { v1 as uuid } from 'uuid'
 import { Table, Button, Popconfirm, Select, Switch } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
-import { 
-    EditableRow, 
-    EditableCell, 
+import {
+    EditableRow,
+    EditableCell,
     adjustColumnWidths,
-    deleteRow, 
-    addRow, 
-    changeInput, 
-    changeSelectInput, 
+    deleteRow,
+    addRow,
+    changeInput,
+    changeSelectInput,
     changeToggleInput
 } from '../../utils/editableTableHelper'
 
@@ -45,11 +45,11 @@ class EditableTable extends Component {
             switch (column.type) {
                 case 'select':
                     return column.render = (_, record) => {
-                        return <Select 
-                                    value={record[column.name]} 
-                                    mode={column.mode}
-                                    style={{ width: '100%' }} 
-                                    onChange={selectedValue => this.onChangeSelect(selectedValue, record, column)}>
+                        return <Select
+                            value={record[column.name]}
+                            mode={column.mode}
+                            style={{ width: '100%' }}
+                            onChange={selectedValue => this.onChangeSelect(selectedValue, record, column)}>
                             {column.options.map(option => <Option key={uuid()} value={option.value}>{option.label}</Option>)}
                         </Select>
                     }
@@ -86,9 +86,21 @@ class EditableTable extends Component {
         return columns
     }
 
-    onDeleteRow = (key) => {
-        const { dataSource, count } = deleteRow(key, this.state)
-        this.setState({ dataSource, count })
+    onDeleteRow = async key => {
+        let roleToDelete = ''
+        this.state.dataSource.forEach(data => {
+            if (key === data.key) {
+                roleToDelete = data.roles
+            }
+        })
+
+        try {
+            await this.props.onDeleteTableRow(roleToDelete)
+            const { dataSource, count } = deleteRow(key, this.state)
+            this.setState({ dataSource, count })
+        } catch (err) {
+            console.log('delete err: ', err)
+        }
     }
 
     onAddRow = () => {
