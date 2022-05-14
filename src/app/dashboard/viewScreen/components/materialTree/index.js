@@ -5,7 +5,7 @@
  * @Last Modified - 4 April, 2022
  * @Last Changed By - Dinesh
  */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Tree, message, Input } from "antd";
 import { PlusOutlined, CheckOutlined } from "@ant-design/icons";
@@ -108,6 +108,11 @@ const MaterialTree = (props) => {
     }
   };
   const treeMap = materialsList;
+
+  useEffect(() => {
+    finalData = [];
+    selectedData = [];
+  });
 
   return (
     <div className="custom-treenode">
