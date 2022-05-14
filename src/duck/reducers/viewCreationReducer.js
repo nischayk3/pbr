@@ -17,7 +17,9 @@ import {
 	IS_LOAD_VIEW,
 	RESET_VIEW,
 	IS_NEW_VIEW,
-	NEW_COLUMN
+	NEW_COLUMN,
+	VIEW_FUNCTION_NAME,
+	MATH_VALUE,
 } from '../../constants/actionTypes';
 
 const initState = {
@@ -40,6 +42,8 @@ const initState = {
 	isLoad: false,
 	isNew: false,
 	newColumn:[],
+	viewFunctionName:'',
+	mathValue:'',
 
 };
 
@@ -83,6 +87,10 @@ export default (state = initState, action) => {
 			return { ...state, isNew: action.payload };
 		case NEW_COLUMN:
 			return { ...state, newColumn: action.payload };
+		case VIEW_FUNCTION_NAME:
+			return { ...state, viewFunctionName: action.payload };
+		case MATH_VALUE:
+			return { ...state, mathValue: action.payload };
 		case RESET_VIEW:
 			return initState;
 		default:
