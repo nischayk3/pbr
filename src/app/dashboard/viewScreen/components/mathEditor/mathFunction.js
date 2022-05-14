@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input, Modal, Alert, Table } from 'antd';
 import FunctionKey from '../../../../../assets/images/key1.png';
@@ -9,7 +9,7 @@ import {
 	saveViewFunction,
 	sendFunctionName,
 	sendFunDetails,
-	setNewColumn
+	setNewColumn,
 } from '../../../../../duck/actions/viewAction';
 import { viewEvaluate } from '../../../../../services/viewCreationPublishing';
 import { showNotification } from '../../../../../duck/actions/commonActions';
@@ -59,6 +59,17 @@ const MathFunction = props => {
 	const [evalTable, setEvalTable] = useState([])
 
 	const dispatch = useDispatch();
+
+	const mathValue = useSelector(
+		(state) => state.viewCreationReducer.mathValue
+	);
+
+	useEffect(()=>
+	{   if(mathValue)
+		setMathEditorValue(mathValue)
+	},[mathValue])
+	
+
 	const showModal = () => {
 		dispatch(saveViewFunction(false));
 		setIsModalVisible(true);
@@ -138,6 +149,7 @@ const MathFunction = props => {
 		setIsEvaluatingFun(false);
 	};
 
+	console.log(mathEditorValue)
 
 
 

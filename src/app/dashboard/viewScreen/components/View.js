@@ -39,6 +39,8 @@ import {
 import {
   isLoadView,
   sendSelectedParamData,
+  viewFunctionMap,
+  viewParamMap
 } from "../../../../duck/actions/viewAction";
 import Signature from "../../../../components/ElectronicSignature/signature";
 
@@ -233,11 +235,21 @@ const ViewCreation = (props) => {
     try {
       dispatch(showLoader());
       const loadViewRes = await getViewConfig(_reqLoad);
+	console.log(loadViewRes)
 
       if (loadViewRes.material_id) setMoleculeId(loadViewRes.material_id);
       if (loadViewRes.view_status) {
         setViewStatus(loadViewRes.view_status);
       }
+		if(loadViewRes.functions)
+		{
+			dispatch(viewFunctionMap(loadViewRes.functions))
+		}
+		if(loadViewRes.parameters)
+		{
+			dispatch(viewParamMap(loadViewRes.parameters))
+		}
+
 
       Object.entries(loadViewRes).forEach(([key, value], index) => {
         // if (key === 'view_version') {
@@ -265,7 +277,10 @@ const ViewCreation = (props) => {
 
   const PublishResponse = (res) => {
     setPublishResponse(res);
+	setViewStatus(res.rep_stauts)
   };
+
+  console.log(viewStatus)
 
   return (
     <div className=" viewCreation-container">
