@@ -166,10 +166,10 @@ custom-panel .panel-repeat {
 }
 
 .custom-row {
-    display: block;
-    flex: 0 0 100%;
+	display: flex;
+	align-items: flex-end;
     text-align: right;
-    max-width: 100%;
+    margin-bottom: 15px;
 }
 
 .custom-row button.button-dashed__primary {
