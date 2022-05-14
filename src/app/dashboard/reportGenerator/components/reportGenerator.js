@@ -308,7 +308,7 @@ function ReportGenerator(props) {
         obj['rep_status'] = reportStatus
         obj['user'] = user
         obj['variant_name'] = user + '_variant'
-        obj['chart_info'] = { charts: chart }
+        obj['chart_info'] = chartLayout
         obj['charts_layout'] = chartLayout
         obj['days_layout'] = selectedDays
 
@@ -414,7 +414,7 @@ function ReportGenerator(props) {
                 </div>
             </div>
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
-            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} id={reportId} name={reportName} />
+            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} id={reportId} name={} />
         </div>
 
 
