@@ -42,7 +42,6 @@ const RolesAndAccess = () => {
         dispatch(showLoader())
         try {
             const response = await saveRoleConfiguartions(tableData)
-            console.log('resp: ', response)
             dispatch(hideLoader())
         } catch (err) {
             console.log('err: ', err)
