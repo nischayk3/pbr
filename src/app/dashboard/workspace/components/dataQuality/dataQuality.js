@@ -35,8 +35,8 @@ const QualityTable = () => {
         },
         {
             title: 'Product Name',
-            key: 'product_descr',
-            dataIndex: 'product_descr',
+            key: 'product_num',
+            dataIndex: 'product_num',
             sorter:(a, b)=>a.product_descr.localeCompare(b.product_descr)
            
         }
