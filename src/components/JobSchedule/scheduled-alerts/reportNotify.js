@@ -154,14 +154,14 @@ const ReportNotify = (props) => {
           str = str + days_obj[days[i]];
         }
       }
-      cron_string = time_split[1] + " " + time_split[2] + ` * * ${str}`;
+      cron_string = time_split[1] + " " + time_split[0] + ` * * ${str}`;
     }
 
     if (frequency == "Monthly") {
       cron_string =
-        time_split[1] + " " + time_split[2] + " " + date_split[2] + " " + "* *";
+        time_split[1] + " " + time_split[0] + " " + date_split[2] + " " + "* *";
     }
-    if (frequency == "Once") {
+    if (frequency == "Repeat Once") {
       cron_string = "once";
     }
 
@@ -310,15 +310,15 @@ const ReportNotify = (props) => {
       selectedSchedule == "Repeat Once" ? scheduleEmailStartDate : "2030-12-12";
     req["scheduled_start"] = scheduleEmailStartDate;
 
-    req["cron_exp"] = convertExpresion(
-      scheduleEmailStartDate,
-      scheduleEmailTime,
-      selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
-      radioValue,
-      selectedTimeRange,
-      Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
-      everyDayValue
-    );
+    // req["cron_exp"] = convertExpresion(
+    //   scheduleEmailStartDate,
+    //   scheduleEmailTime,
+    //   selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
+    //   radioValue,
+    //   selectedTimeRange,
+    //   Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
+    //   everyDayValue
+    // );
     if(props.job_id)
     req["job_id"] = props.job_id ? props.job_id : ' ';
 

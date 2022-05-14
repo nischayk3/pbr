@@ -201,12 +201,12 @@ const alertEvaluation = (props) => {
           str = str + days_obj[days[i]];
         }
       }
-      cron_string = time_split[1] + " " + time_split[2] + ` * * ${str}`;
+      cron_string = time_split[1] + " " + time_split[0] + ` * * ${str}`;
     }
 
     if (frequency == "Monthly") {
       cron_string =
-        time_split[1] + " " + time_split[2] + " " + date_split[2] + " " + "* *";
+        time_split[1] + " " + time_split[0] + " " + date_split[2] + " " + "* *";
     }
     if (frequency == "Repeat Once") {
       cron_string = "once";
@@ -615,6 +615,7 @@ const alertEvaluation = (props) => {
             days={selectedDays}
             day={everyDayValue}
             name={props.name}
+            job_id={props.job_id}
           />
         </TabPane>
       </Tabs>
