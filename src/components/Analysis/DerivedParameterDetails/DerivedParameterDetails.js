@@ -11,10 +11,12 @@ const DerivedParameterDetails = props => {
                                                     description={<span>Select a parameter from the views</span>}
                                                 /> : <>
 
-        <div>
-            <p>Details - </p>
-            <span>Temprature combined</span>
-            <p>Type</p>
+        <>
+            <p className='cstm-txt'>Details - 
+                <span className="cstm-bordered-txt">Temprature combined</span>
+            </p>
+            
+            <p className='cstm-lable'>Type</p>
 
             <Select defaultValue="jack" style={{ width: 120 }}>
                 <Option value="jack">A</Option>
@@ -27,11 +29,11 @@ const DerivedParameterDetails = props => {
             <ul className="transformation-parameters-ul">
                 {parameters.map((parameter, i) => {
                     return (
-                        <li key={i}>{parameter.label} {parameter.value}</li>
+                        <li key={i}><label>{parameter.label}</label> <span>{parameter.value}</span></li>
                     )
                 })}
             </ul>
-        </div>
+        </>
 
     </>
 

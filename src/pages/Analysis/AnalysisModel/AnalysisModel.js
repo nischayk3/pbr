@@ -112,7 +112,7 @@ const AnalysisModel = () => {
             <div className="custom-user-roles-wrapper">
                 <div className="custom-table-wrapper">
                     <Summary summaryParametersDetails={summaryParametersDetails} />
-                    <AnalysisData parameters={parameters} />
+                    <AnalysisData parameters={parameterDetails} />
                 </div>
             </div>
         </>

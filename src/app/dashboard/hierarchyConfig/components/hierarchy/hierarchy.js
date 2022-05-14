@@ -62,6 +62,8 @@ function Hierarchy() {
                                     name="Molecule"
                                     value={data.Molecule}
                                     onChange={(e) => handleChange(index, e)}
+                                    bordered={false}
+
                                 />
                             );
                         }
@@ -81,6 +83,8 @@ function Hierarchy() {
                                     name="Plant"
                                     value={data.Plant}
                                     onChange={(e) => handleChange(index, e)}
+                                    bordered={false}
+
                                 />
                             );
                         }
@@ -117,6 +121,8 @@ function Hierarchy() {
                                     name="Sequence"
                                     value={data.Molecule}
                                     onChange={(e) => handleStepChange(index, e)}
+                                    bordered={false}
+
                                 />
                             );
                         }
@@ -136,6 +142,7 @@ function Hierarchy() {
                                     name="Step"
                                     value={data.Plant}
                                     onChange={(e) => handleStepChange(index, e)}
+                                    bordered={false}
                                 />
                             );
                         }
@@ -312,7 +319,7 @@ function Hierarchy() {
                 //onOk={handleOk} 
                 onCancel={handleCancel}
                 footer={[
-                    <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() =>
+                    <Button className="custom-secondary-button" onClick={() =>
                         handleOk()
                     }>Let's Go!</Button>
                 ]}>

@@ -39,16 +39,21 @@ const ViewSummaryData = props => {
 
 	useEffect(() => {
 		if (funTableData.length > 0) {
+
+			
 			const objKey =
 				funTableData !== undefined && funTableData.length > 0
 					? Object.keys(funTableData[0])
 					: [];
 
+
 			const uniqueArr = (value, index, self) => {
 				return self.indexOf(value) === index;
 			};
 
+
 			const summaryColumn = objKey.filter(uniqueArr);
+
 
 			summaryColumn.map((item, i) => {
 				if (item === 'batch' || item === 'batch_year') {
@@ -96,9 +101,18 @@ const ViewSummaryData = props => {
 			let funData = [];
 
 			const loadViewJson = [...viewJson];
-			loadViewJson.forEach(element => {
-				fun.push(element.functions.name);
-			});
+			let functions_name = loadViewJson[0] && loadViewJson[0].functions ? loadViewJson[0].functions : 0
+
+			// loadViewJson.forEach(element => {
+			// 	fun.push(element.functions.name);
+			// });
+			if (functions_name) 
+			{
+				functions_name=Object.values(functions_name)
+				functions_name.map(element => {
+					fun.push(element.name);
+				});
+			}
 			if (parentBatches.length > 0) {
 				const loadTableData =
 					parentBatches !== undefined && parentBatches.length > 0
@@ -107,8 +121,12 @@ const ViewSummaryData = props => {
 
 				loadTableData.forEach(element => {
 					let funObj = {};
-					funObj[fun[0]] = true;
+					for(let i=0;i<fun.length;i++)
+					{
+					funObj[fun[i]] = true;
+					}
 					funData.push(funObj);
+
 				});
 
 				const mergeArr = loadTableData.map((item, i) =>
@@ -131,6 +149,7 @@ const ViewSummaryData = props => {
 						key: `${item}-${i}`,
 					});
 				});
+
 				setTableColumn(columns);
 				setFunTableData(mergeArr);
 			}
@@ -153,6 +172,7 @@ const ViewSummaryData = props => {
 
 		setTableColumn(newColumns);
 	};
+
 
 	return (
 		<Card title='View Summary'>

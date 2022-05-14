@@ -1,6 +1,5 @@
-import { Fragment } from 'react'
 import { Collapse, Button } from 'antd'
-import { FileTextOutlined, EditOutlined } from '@ant-design/icons';
+import { FileTextOutlined } from '@ant-design/icons';
 
 import NoData from '../NoData/NoData'
 import SummaryDetails from '../SummaryDetails/SummaryDetails'
@@ -12,15 +11,12 @@ const Summary = props => {
     const getPanels = () => {
         if (![].length) {
             return (
-                <Panel header={<div>{props.summaryParametersDetails.map((summaryParameters, i) => {
-                    return <Fragment key={i}>
-                        <span className='cstm-bordered-txt'>{summaryParameters.label}</span>
-                        <span className='cstm-icn-txt'><EditOutlined /> Edit transformation</span>
-                    </Fragment>
-                })}</div>} key="1">
-                    {props.summaryParametersDetails.map((summaryParameters, i) => {
-                        return <SummaryDetails summaryParametersData={summaryParameters.data} key={i} />
-                    })}
+                <Panel header={<div>Summary</div>} key="1">
+                    <div className="cstm-summary-wrapper">
+                        {props.summaryParametersDetails.map((summaryParameters, i) => {
+                            return <SummaryDetails summaryParameters={summaryParameters} key={i} />
+                        })}
+                    </div>
                 </Panel>
             )
         }
@@ -31,7 +27,7 @@ const Summary = props => {
         <>
             <p><FileTextOutlined className="icon-primary" /> Summary</p>
             <Button className='button-bordered__primary'>Preview</Button>
-            <Collapse expandIconPosition="right">
+            <Collapse expandIconPosition="right" accordion>
                 {getPanels()}
             </Collapse>
         </>

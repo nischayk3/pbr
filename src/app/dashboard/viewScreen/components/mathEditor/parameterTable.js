@@ -10,6 +10,7 @@ import {
 	viewParamMap,
 } from '../../../../../duck/actions/viewAction';
 import { hideLoader, showLoader } from '../../../../../duck/actions/commonActions';
+import { isNewView } from '../../../../../duck/actions/viewAction' 
 
 let paramType = '';
 
@@ -22,6 +23,14 @@ const ParameterTable = props => {
 	const selectedTableData = useSelector(
 		state => state.viewCreationReducer.selectedParamData
 	);
+	const isNew = useSelector(
+		state => state.viewCreationReducer.isNew
+	);
+
+	const newColumnData = useSelector(
+		state => state.viewCreationReducer.newColumn
+	);
+
 
 	const saveFunction = useSelector(state => state.viewCreationReducer.save);
 
@@ -41,6 +50,7 @@ const ParameterTable = props => {
 	const [variableParam, setVariableParam] = useState({});
 	const [fun, setFun] = useState({})
 	const [filterTable, setFilterTable] = useState([])
+	
 
 	const {
 		rowDisable,
@@ -54,6 +64,7 @@ const ParameterTable = props => {
 		setViewJson,
 		varClick,
 		setVarClick,
+		materialId
 	} = props;
 
 	const dispatch = useDispatch();
@@ -95,6 +106,7 @@ const ParameterTable = props => {
 			width: 120,
 			fixed: 'left',
 			render: (text, record, index) => {
+
 				return (
 					<Select
 						style={{ width: '100px' }}
@@ -102,7 +114,7 @@ const ParameterTable = props => {
 						onChange={(e, value) => {
 							handleAggregationChange(text, record, value, index);
 						}}
-					//	value={aggregationValue}
+						{...(text && { defaultValue: text })}
 					>
 						<Option key='1' value='Min'>
 							Min
@@ -232,6 +244,17 @@ const ParameterTable = props => {
 	}, [isLoadView]);
 
 	useEffect(() => {
+		if (!isNew) {
+			//	onChangeColumnsHandler();
+			setTableData([]);
+			setFilterTable([])
+			dispatch(isNewView(true))
+		}
+	}, [!isNew]);
+
+
+
+	useEffect(() => {
 		if (!varClick) {
 			setSelectedRowKeys([]);
 			setSelectedRow([]);
@@ -244,9 +267,7 @@ const ParameterTable = props => {
 		let variableObj = {};
 		if (variableCreate === true) {
 			count++;
-
 			const varParameter = [...parameters];
-
 			varParameter.forEach(element => {
 				varArr.push(element);
 			});
@@ -279,11 +300,19 @@ const ParameterTable = props => {
 
 			let primarySelectedData = { ...selectedPrimaryData };
 			let functionTable = [...viewSummaryBatch];
+
+
+			let new_column_data = newColumnData.map((e)=>e.batch_num)
 			functionTable.forEach(item => {
 				let obj = {};
 				Object.entries(primarySelectedData).forEach(([key, value]) => {
+					
 					if (key === item.batch) {
+						if(new_column_data.includes(key))
 						obj[functionName] = true;
+						else
+						obj[functionName] = false;
+
 					}
 				});
 				arr.push(obj);
@@ -334,16 +363,20 @@ const ParameterTable = props => {
 		let filterData = [...tableData]
 		var parameterArray = selectedData && selectedData[selectedVar] && selectedData[selectedVar].map(function (el) { return el.parameter_name; });
 		if (parameterArray && parameterArray.length > 0) {
+			let selected_row = []
 			for (let i = 0; i < parameterArray.length; i++) {
 				let itemToFind = parameterArray[i]
 				let foundIdx = filterData.findIndex(el => el.parameter_name == itemToFind)
 				let itemToInsert = filterData[foundIdx]
+				selected_row.push(itemToInsert.key)
 				filterData.splice(foundIdx, 1)
 				filterData.unshift(itemToInsert)
 			}
+			setSelectedRowKeys(selected_row);
+
 		}
-			setFilterTable(filterData)
-			dispatch(hideLoader())
+		setFilterTable(filterData)
+		dispatch(hideLoader())
 	}
 
 	const handleAggregationChange = (text, record, value, index) => {
@@ -374,6 +407,7 @@ const ParameterTable = props => {
 		setParameters(batchExcludeJson);
 		setTableData(batchRecord);
 	};
+
 
 
 	return (
@@ -422,7 +456,7 @@ const ParameterTable = props => {
 						},
 					}}
 					columns={columns}
-					dataSource={filterTable.length > 0 ? filterTable :  tableData}
+					dataSource={filterTable.length > 0 ? filterTable : tableData}
 					size='small'
 					scroll={{ y: 450 }}
 					pagination={false}

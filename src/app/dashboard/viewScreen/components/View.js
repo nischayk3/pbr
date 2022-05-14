@@ -234,6 +234,14 @@ const ViewCreation = props => {
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
 
+
+			if(loadViewRes.material_id)
+			setMoleculeId(loadViewRes.material_id);
+			if(loadViewRes.view_status >=0)
+			{
+			setViewStatus(loadViewRes.view_status);
+			}
+
 			Object.entries(loadViewRes).forEach(([key, value], index) => {
 				// if (key === 'view_version') {
 				// 	setViewVersion(value);
@@ -405,6 +413,7 @@ const ViewCreation = props => {
 								setViewSummaryBatch={setViewSummaryBatch}
 								viewJson={viewJson}
 								setViewJson={setViewJson}
+								materialId={moleculeId}
 							/>
 							<MemoizedViewSummaryData
 								viewJson={viewJson}

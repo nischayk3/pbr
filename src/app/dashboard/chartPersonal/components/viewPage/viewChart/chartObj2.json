@@ -14,71 +14,72 @@
                 "unapproved_data": 1,
                 "site": ""
             },
+            "extras":{},
             "chart_type": "",
             "chart_mapping": {
                 "x": {},
                 "y": {}
             },
-            "data": {
-                "type": "",
-                "mode": "markers",
-                "marker": {
-                    "color": "#5B8FF9",
-                    "size": 15
+            "data": [
+                {
+                    "type": "scatter",
+                    "mode": "markers",
+                    "marker": {
+                        "color": "#D4E2FD",
+                        "size": 15
+                    }
                 }
-            },
+            ],
             "layout": {
-                "width": "900",
-                "height": "",
-                "showlegend": "",
-                "plot_bgcolor": "",
+                "width": 930,
+                "height": 400,
+                "showlegend": true,
+                "plot_bgcolor": "white",
                 "legend": {
                     "title": {
                         "text": "",
                         "font": {
-                            "color": "",
-                            "size": ""
-                        },
-                        "side": ""
+                            "color": "#000000",
+                            "size": 10
+                        }
                     },
-                    "borderwidth": "",
-                    "bgcolor": "",
-                    "orientation": "",
-                    "bordercolor": ""
+                    "borderwidth": 2,
+                    "bgcolor": "#FFFFFF",
+                    "orientation": "v",
+                    "bordercolor": "#FFFFFF"
                 },
                 "xaxis": {
-                    "type": "",
                     "title": {
                         "text": "",
                         "font": {
-                            "size": "",
-                            "color": ""
+                            "size": 15,
+                            "color": "#000000"
                         }
                     },
                     "visible": true,
-                    "showticklabels": "",
-                    "showline": "",
-                    "gridcolor": "",
-                    "showgrid": ""
+                    "showticklabels": true,
+                    "showline": true,
+                    "gridcolor": "#d9d9d9",
+                    "showgrid": true
                 },
                 "yaxis": {
-                    "type": "",
                     "title": {
                         "text": "",
                         "font": {
-                            "size": "",
-                            "color": ""
+                            "size": 15,
+                            "color": "#000000"
                         }
                     },
-                    "visible": "",
-                    "showticklabels": "",
-                    "showline": "",
-                    "gridcolor": "",
-                    "showgrid": ""
+                    "visible": true,
+                    "showticklabels": true,
+                    "showline": true,
+                    "gridcolor": "#d9d9d9",
+                    "showgrid": true
                 }
             },
             "exclusions": [],
             "violations": [],
+            "thresholds" : [],
             "limits": {
                 "control": [],
                 "warning": [],
@@ -86,6 +87,5 @@
             },
             "alerts": []
         }
-    ],
-    "extras": {}
+    ]
 }

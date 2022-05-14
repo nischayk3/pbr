@@ -9,6 +9,7 @@ import {
 	saveViewFunction,
 	sendFunctionName,
 	sendFunDetails,
+	setNewColumn
 } from '../../../../../duck/actions/viewAction';
 import { viewEvaluate } from '../../../../../services/viewCreationPublishing';
 import { showNotification } from '../../../../../duck/actions/commonActions';
@@ -69,6 +70,13 @@ const MathFunction = props => {
 	const handleCancel = () => {
 		setIsModalVisible(false);
 	};
+	const handleCreateCancel = () =>
+	{
+		dispatch(saveAsViewFunction(true));
+		setIsModalVisible(false);
+		setIsFunction(false);
+
+	}
 
 	const handleTableCancel = () => {
 		setIsTableVisible(false);
@@ -77,12 +85,15 @@ const MathFunction = props => {
 	const handleChangeFunction = e => {
 		setMathEditorValue(e.target.value);
 		setIsFunctionVisible(true);
+		setIsFunction(false);
+
 	};
 	const onChangeFunName = e => {
 		setFunctionName(e.target.value);
 	};
 
-	const handleSave = () => {
+	const handleSave = () => 
+	{
 		dispatch(sendFunctionName(functionName));
 		dispatch(saveViewFunction(true));
 		setIsModalVisible(false);
@@ -96,7 +107,7 @@ const MathFunction = props => {
 
 	const functionEvaluate = async () => {
 		let req = {
-			material_id: "BELATACEPT",
+			material_id: props.materialId,
 			functions: { 1: { defination: mathEditorValue, name: 'function-1' } },
 			parameters: props.data ? props.data : {}
 		}
@@ -105,7 +116,11 @@ const MathFunction = props => {
 
 		if (evaluate_respone.view_status == "") {
 			setIsTableVisible(true)
+			if(evaluate_respone.functions)
+			{
 			setEvalTable(evaluate_respone.functions)
+			dispatch(setNewColumn(evaluate_respone.functions))
+			}
 			dispatch(showNotification('success', 'Evaluated'))
 			setIsFunction(true);
 		}
@@ -122,6 +137,8 @@ const MathFunction = props => {
 		setIsFunctionInvalid(false);
 		setIsEvaluatingFun(false);
 	};
+
+
 
 
 	return (
@@ -168,21 +185,20 @@ const MathFunction = props => {
 							<span>
 								{isFunctionVisible && (
 									<>
-										{isFunction ? (
-											<Button
-												onClick={showModal}
-												type='text'
-												className='custom-primary-btn '>
-												Create Function
-											</Button>
-										) : (
+										{/* {isFunction ? ( */}
 											<Button
 												onClick={functionEvaluate}
 												type='text'
-												className='custom-primary-btn '>
+												className='custom-eval-btn'>
 												Function Evaluate
+											</Button>										
+											<Button
+												onClick={showModal}
+												type='text'
+												disabled={!isFunction}
+												className={!isFunction ? "custom-eval-btn-disable" :'custom-secondary-btn'}>
+												Create
 											</Button>
-										)}
 									</>
 								)}
 
@@ -212,7 +228,7 @@ const MathFunction = props => {
 
 						<div className='function-btn'>
 							<Button
-								onClick={() => dispatch(saveAsViewFunction(true))}
+								onClick={() => handleCreateCancel()}
 								type='link'
 								className='custom-secondary-btn-link '>
 								Cancel
@@ -233,6 +249,7 @@ const MathFunction = props => {
 				</div>
 			</Modal>
 			<Modal
+			title="Function Data"
 				width={500}
 				visible={isTabelVisible}
 				onCancel={handleTableCancel}

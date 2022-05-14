@@ -4,6 +4,8 @@ import {
 	MDH_APP_PYTHON_SERVICE,
 	BMS_PBR_URL,
 } from '../constants/apiBaseUrl';
+
+
 let login_response = JSON.parse(localStorage.getItem('login_details'));
 const request_headers = {
 	'content-type': 'application/json',
@@ -31,6 +33,21 @@ export const getGeanealogyFilter = _queryParam => {
 		}
 	);
 };
+
+export const getGenealogyProductType = _queryParam => {
+		return Service.get(
+			BMS_APP_PYTHON_SERVICE + '/product-type-genealogy',
+			_queryParam,
+			request_headers
+		).then(
+			response => {
+				return response.data;
+		},
+			error => {
+				return error.response.data;
+		}
+	);
+	};
 
 export const getBackwardData = _queryParam => {
 	return Service.get(

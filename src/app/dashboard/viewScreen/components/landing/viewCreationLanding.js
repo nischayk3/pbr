@@ -18,6 +18,7 @@ import {
 	sendSelectedParamData,
 	resetView,
 } from '../../../../../duck/actions/viewAction';
+import { isNewView } from '../../../../../duck/actions/viewAction';
 import { useLocation } from 'react-router';
 
 export default function Landing(props) {
@@ -90,6 +91,8 @@ export default function Landing(props) {
 
 	useEffect(() => {
 		getViewsList();
+		dispatch(isNewView(true))
+
 	}, []);
 
 	const getRandomColor = index => {
@@ -113,10 +116,11 @@ export default function Landing(props) {
 		try {
 			dispatch(showLoader());
 			const getViewRes = await getViews(req);
-			const viewRes = getViewRes['Data'];
+			let viewRes = getViewRes['Data'];
+			viewRes = viewRes.reverse()
 			const lastEight = viewRes.slice(Math.max(viewRes.length - 8, 1));
 			setViewList(viewRes);
-			setLastEightView(lastEight);
+			setLastEightView(viewRes);
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
@@ -194,7 +198,7 @@ export default function Landing(props) {
 					<div>
 						<div className='tile'>
 							{lastEightView.length > 0 ? (
-								lastEightView.map((i, index) => (
+								lastEightView.map((i, index) => index < 8 && (
 									<Link
 										key={i.view_disp_id}
 										to={{

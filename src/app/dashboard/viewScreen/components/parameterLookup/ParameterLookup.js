@@ -43,7 +43,7 @@ function ParameterLookup(props) {
 	const tempMaterialList = useRef();
 
 	const onSelectMoleculeHandler = async () => {
-		let req = { user_id: 'demo' };
+		let req = { user_id: localStorage.user }
 		let res = JSON.parse(localStorage.getItem('login_details'));
 
 		try {

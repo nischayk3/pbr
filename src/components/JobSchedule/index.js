@@ -21,6 +21,8 @@ import AlertTable from './scheduled-alerts/scheduledAlertsTable';
 //alert evaluation
 import AlertEvaluation from './scheduled-alerts/alertEvaluation';
 import ReportNotify from './scheduled-alerts/reportNotify';
+import { MDH_AIRFLOW } from '../../constants/apiBaseUrl';
+
 
 
 const { TabPane } = Tabs;
@@ -74,8 +76,8 @@ const JobSchedule = (props) => {
                 }
                     key="1"
                 >
-                    {props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId}  /> :
-                        <AlertEvaluation appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId}  />
+                    {props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId}  name={props.name} /> :
+                        <AlertEvaluation appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId}  name={props.name} />
                     }
                 </TabPane>
                 <TabPane tab={
@@ -86,7 +88,7 @@ const JobSchedule = (props) => {
                     <div className='schedule-alerts'>
                         <div className='alerts-text'>
                             <p className='alert-title'>Scheduled alerts</p>
-                            <a className="view-link" href="https://bms-cpvdev.mareana.com/airflow/login/?next=https%3A%2F%2Fbms-cpvdev.mareana.com%2Fairflow%2Fhome" target="_blank">View More Details</a> <span className='alert-arrow'><ArrowRightOutlined /></span>
+                            <a className="view-link" href={MDH_AIRFLOW} target="_blank">View More Details</a> <span className='alert-arrow'><ArrowRightOutlined /></span>
                         </div>
                         <div>
                             <AlertTable appType={props.app_type} id={props.id} changeActiveTab={changeActiveTab}  activeTab={activeTab}/>

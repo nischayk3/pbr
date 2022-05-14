@@ -12,6 +12,7 @@ import Auth from '../../utils/auth';
 import { useHistory } from 'react-router-dom';
 import { adenabled } from '../../config/config';
 import { logoutUrl } from '../../services/loginService';
+import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -34,7 +35,7 @@ const HeaderBar = () => {
 	const adLogout = () => {
 		//  window.open(`${logoutUrl}`,'_self')
 		window.open(
-			`${logoutUrl}?redirect_url=https://bms-cpvdev.mareana.com/%2F%23%2Fuser%2Flogin`,
+			`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}/%2F%23%2Fuser%2Flogin`,
 
 			'_self'
 		);
@@ -46,8 +47,6 @@ const HeaderBar = () => {
 			<div id='hamburger' className='inline'>
 				<div className='header-logo'>
 					<img src={mareanaLogo} height='40' alt='menu' />
-					<span></span>
-					<img src={cpvLogo} alt='cpv' />
 				</div>
 			</div>
 			<div
