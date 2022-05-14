@@ -1,4 +1,4 @@
-import { FUNCTION_TEXT, MOLECULE_ID } from '../types/types';
+import { FUNCTION_TEXT, MOLECULE_ID } from "../types/types";
 import {
 	SAVE_FUNCTIONS,
 	SAVE_AS_FUNCTIONS,
