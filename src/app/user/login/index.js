@@ -41,9 +41,9 @@ const Login = () => {
         }
         else {
             if (localStorage.getItem("test_enabled")) {
-                window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
+				window.open(`${loginUrl}?is_ui=True&base_url=http://localhost&redirect_url=http://localhost%2F%23%2Fdashboard%2Fredirect`, '_self')
             } else {
-                window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
+                window.open(`${loginUrl}?is_ui=True&base_url=http://localhost&redirect_url=http://localhost%2F%23%2Fdashboard%2Fredirect`, '_self')
             }
         }
     }
