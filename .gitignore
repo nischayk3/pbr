@@ -61,4 +61,4 @@ package-lock.json
 .cypress.json
 
 # js
-src/app/user/login/index.js
+# src/app/user/login/index.js
