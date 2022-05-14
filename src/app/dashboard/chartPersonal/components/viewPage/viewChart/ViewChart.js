@@ -194,10 +194,12 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 
   const getFilterData = async () => {
     try {
+      dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
       let newArr = [...postChartData.data];
       newArr[0] = viewRes.data[0];
       setPostChartData({ ...postChartData, data: newArr });
+      dispatch(hideLoader());
     } catch {
       dispatch(hideLoader());
       message.error("Unable to fetch coverages");
@@ -305,7 +307,27 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
   //function for handle batch filter change
   const handleBatchFilterChange = () => {
     const newArr = [...postChartData.data];
+    const annotations = [
+      {
+        text: "This chart contains unapproved data",
+        font: {
+          size: 13,
+          color: "rgb(116, 101, 130)",
+        },
+        showarrow: false,
+        align: "left",
+        x: 0,
+        y: 1.16,
+        xref: "paper",
+        yref: "paper",
+      },
+    ];
     newArr.forEach((ele) => {
+      if (batchFilters.unApproved === 1) {
+        ele.layout.annotations = annotations;
+      } else {
+        ele.layout.annotations = [];
+      }
       ele.data_filter.unapproved_data = batchFilters.unApproved;
       ele.data_filter.date_range = batchFilters.startDate
         ? new Date(batchFilters.startDate).toISOString() +
