@@ -12,7 +12,8 @@ export const getRoleConfiguartions = () => {
 }
 
 export const saveRoleConfiguartions = data => {
-    return axios.put('/services/v1/role-config', data, {
+    const body = { data }
+    return axios.put('/services/v1/role-config', body, {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
             'resource-name': 'VIEW'
