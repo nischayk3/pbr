@@ -16,6 +16,7 @@ import {
 import "./style.scss";
 const { TreeNode } = Tree;
 const { Search } = Input;
+import { useSelector } from "react-redux";
 
 let setKey = [];
 let selectedData = [];
@@ -28,6 +29,9 @@ const MaterialTree = (props) => {
   const [expandedKeys, setExpandedKeys] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [autoExpandParent, setAutoExpandParent] = useState();
+  const selectedTableData = useSelector(
+    (state) => state.viewCreationReducer.selectedParamData
+  );
 
   const dispatch = useDispatch();
 
@@ -85,8 +89,15 @@ const MaterialTree = (props) => {
         rowData.aggregation = "";
 
         let data = { ...rowData };
+        if (selectedTableData && selectedTableData.length !== 0) {
+          selectedTableData.forEach((ele) => {
+            const tempObj = finalData.find((item) => item.key === ele.key);
+            if (tempObj === undefined) {
+              finalData.push(ele);
+            }
+          });
+        }
         finalData.push(data);
-        console.log(finalData, "finalData");
         dispatch(batchCoverage(newBatchData));
         dispatch(sendSelectedParamData(finalData));
       } else {
