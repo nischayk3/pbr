@@ -10,6 +10,7 @@ export const initialLayout = {
       color: "#000000",
     },
   },
+  annotations: [],
   legend: {
     title: {
       text: "",

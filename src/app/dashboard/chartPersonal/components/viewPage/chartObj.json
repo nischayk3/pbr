@@ -35,6 +35,7 @@
                 "height": 400,
                 "showlegend": true,
                 "plot_bgcolor": "white",
+                "annotations":[],
                 "legend": {
                     "title": {
                         "text": "",
