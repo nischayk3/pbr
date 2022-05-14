@@ -98,7 +98,6 @@ const MaterialTree = (props) => {
           });
         }
         finalData.push(data);
-        console.log(finalData, "finalData");
         dispatch(batchCoverage(newBatchData));
         dispatch(sendSelectedParamData(finalData));
       } else {
