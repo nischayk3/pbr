@@ -414,7 +414,7 @@ function ReportGenerator(props) {
                 </div>
             </div>
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
-            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} id={reportId} name={} />
+            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} id={reportId} name={reportName} />
         </div>
 
 
