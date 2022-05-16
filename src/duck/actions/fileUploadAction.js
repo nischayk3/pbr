@@ -25,6 +25,7 @@ export const uploadFileExl = (_queryParam) => {
 };
 
 export const uploadFileApi = (_queryParam) => {
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
   return Service.post(BMS_APP_PYTHON_SERVICE + "/upload-file", _queryParam, {
     "Content-Type": "multipart/form-data",
     "x-access-token": login_response.token ? login_response.token : "",
