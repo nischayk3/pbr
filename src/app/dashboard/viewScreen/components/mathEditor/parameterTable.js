@@ -503,7 +503,7 @@ const ParameterTable = (props) => {
 								let paramsObj = {};
 								const materialKey = element.key.split("-");
 								paramsObj["source_type"] = element.sourceType;
-								paramsObj["material_id"] = materialKey[1];
+								paramsObj["material_id"] = element.sourceType=='file' ? element.material_id :  materialKey[1];
 								paramsObj["parameter_name"] = element.parameter_name;
 								paramsObj["batch_exclude"] = [];
 								paramsObj["priority"] = index;

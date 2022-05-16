@@ -156,6 +156,7 @@ function FileUpload(props) {
         rowData.key = `${record.product_num}-${record.param}`;
         rowData.primary = 0;
         rowData.aggregation = "";
+        rowData.material_id = selectedFileId
 
         //	getNewData(rowData);
         let data = { ...rowData };
