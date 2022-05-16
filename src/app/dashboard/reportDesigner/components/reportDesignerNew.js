@@ -383,10 +383,10 @@ function ReportDesignerNew(props) {
         content_arr = item.dymamic_rows ? item.dymamic_rows.map((i, index) => {
           // let objj = {};
           let key_obj = {}
-          key_obj['value'] = i.value
+          key_obj['value'] = i.value ? i.value : ''
           key_obj['editable'] = i.editable == undefined ? false : i.editable
           key_obj['id'] = index + 1
-          key_obj['key'] = i.keyName
+          key_obj['key'] = i.keyName ? i.keyName : ''
 
           return key_obj;
         }) : []
