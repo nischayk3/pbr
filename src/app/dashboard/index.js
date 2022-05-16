@@ -28,6 +28,7 @@ import AnalysisModel from '../../pages/Analysis/AnalysisModel/AnalysisModel'
 
 import PbrReviewer from './pbrReviewer';
 import './dashboard.scss';
+import PythonNotebook from './pythonNotebook/pythonNotebook';
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import('./home'));
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
@@ -206,6 +207,11 @@ const Dashboard = () => {
 									path={`${match.url}/molecule_hierarchy_configurations/untilted_view`}>
 									<HierarchyMain />
 								</Route>
+								<Route
+									key='data_science_studio'
+									path={`${match.url}/pythonNoteBook`}
+									component={PythonNotebook}
+								/>
 							</Switch>
 						</SuspenseWrapper>
 					</Content>
