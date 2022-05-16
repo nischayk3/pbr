@@ -28,8 +28,8 @@ const UserConfiguration = () => {
     dispatch(showLoader())
     try {
       const response = await getUserConfiguartions()
-      const { data } = response.data
-      setTableData(data)
+      const { message } = response.data
+      setTableData(message)
       dispatch(hideLoader())
     } catch (err) {
       console.log('err: ', err)

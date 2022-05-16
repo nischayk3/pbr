@@ -101,6 +101,7 @@ export const changeInput = (row, state) => {
   const dataSource = [...state.dataSource];
   const index = dataSource.findIndex((item) => row.key === item.key)
   const item = dataSource[index]
+  item.updated = true
   dataSource.splice(index, 1, { ...item, ...row })
   return dataSource
 }
@@ -109,6 +110,7 @@ export const changeSelectInput = (value, record, column, state) => {
   const dataSource = JSON.parse(JSON.stringify(state.dataSource))
   const index = dataSource.findIndex(item => record.key === item.key)
   const name = column.name
+  dataSource[index].updated = true
   dataSource[index][name] = value
   return dataSource
 }

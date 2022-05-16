@@ -209,7 +209,8 @@
         "site": [],
         "approved": false,
         "unapproved": true,
-        "lock_user": false
+        "lock_user": false,
+        "updated": true
     },
     "deleteActionColumn": true
 }
