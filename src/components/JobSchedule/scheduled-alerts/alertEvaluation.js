@@ -368,7 +368,7 @@ const alertEvaluation = (props) => {
           )
         }
       >
-        <TabPane tab="Schedule evaluation" key="schedule_evaluation">
+        <TabPane tab="Schedule Alert" key="schedule_evaluation">
           <div style={{ margin: "24px" }}>
             <div style={{ width: "300px" }}>
               <ClockCircleOutlined
