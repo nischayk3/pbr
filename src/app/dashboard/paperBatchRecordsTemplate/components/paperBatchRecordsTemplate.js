@@ -989,7 +989,6 @@ function PaperBatchRecordsTemplate() {
         }
 
     }
-    console.log("areas.map",params)
     return (
         <div className='pbr-container pbrTemplate-container'>
             <div className='custom-wrapper pbr-wrapper'>
