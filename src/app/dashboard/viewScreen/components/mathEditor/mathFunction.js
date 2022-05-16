@@ -23,20 +23,6 @@ const DataColumns = [
 		fixed: 'left',
 	},
 	{
-		title: 'PARAMETER',
-		dataIndex: 'parameter',
-		key: 'parameter',
-		width: 150,
-		fixed: 'left',
-	},
-	{
-		title: 'Recorded Date',
-		dataIndex: 'recorded_date',
-		key: 'recorded_date',
-		width: 150,
-		fixed: 'left',
-	},
-	{
 		title: 'Value',
 		dataIndex: 'value',
 		key: 'value',
@@ -149,7 +135,6 @@ const MathFunction = props => {
 		setIsEvaluatingFun(false);
 	};
 
-	console.log(mathEditorValue)
 
 
 
