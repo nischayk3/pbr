@@ -25,7 +25,7 @@ const HeaderBar = () => {
 	useEffect(() => {
 		document.addEventListener('tokenExpired', () => {
 			if(localStorage.getItem('login_details')) {
-				adLogout()
+				adLogout('tokenExpired')
 			}
 		})
 	}, [])
@@ -43,14 +43,16 @@ const HeaderBar = () => {
 			history.push('/');
 		});
 	};
-	const adLogout = () => {
+	const adLogout = (tokenExpired) => {
 		//  window.open(`${logoutUrl}`,'_self')
 		// window.open(
 		// 	`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}/%2F%23%2Fuser%2Flogin`,
 
 		// 	'_self'
 		// );
-		dispatch(showNotification("error", 'Signature Expired! Please login again.'))
+		if(tokenExpired) {
+			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
+		}
 		localStorage.clear()
 		history.push('/user/login')
 	};
