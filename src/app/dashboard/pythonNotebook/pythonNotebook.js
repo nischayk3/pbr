@@ -6,7 +6,7 @@ const PythonNotebook=()=> {
         <div>
            
         <iframe
-          src={`${MDH_APP_PYTHON_SERVICE}/jupyter`}
+          src="https://mi-demo.mareana.com/jupyter"
           width="1300"
           height="900"
           frameborder="0"
