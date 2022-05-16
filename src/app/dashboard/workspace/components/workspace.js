@@ -246,7 +246,7 @@ const Workspace = () => {
                           );
                         })
                       ) : (
-                        <div style={{ display: 'flex',padding:'0px 15px' }}>
+                        <div style={{ display: 'flex',padding:'0px 10px' }}>
                           <div><img src={emptyImage} /></div>
                           <p className='no-approval'>Nothing to approve!</p>
                         </div>

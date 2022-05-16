@@ -31,6 +31,7 @@ import {
     Form,
     Space,
     Radio,
+    notification
 } from 'antd';
 import { useDispatch } from 'react-redux';
 import Highlighter from 'react-highlight-words';
@@ -96,6 +97,8 @@ function PaperBatchRecords() {
     const [templateData, setTemplateData] = useState([])
     const [templateColumns, setTemplateColumns] = useState([])
     const [dataView, setDataView] = useState([])
+    const [fileName, setFileName] = useState("")
+    const [templateName, seTemplateName] = useState("")
 
     useEffect(() => {
         updateDate();
@@ -110,11 +113,36 @@ function PaperBatchRecords() {
             dispatch(showLoader());
             const tableResponse = await getPbrTemplateData(req);
             const tableColumn = tableColumns(tableResponse?.Data)
-            const newArray1 = tableColumn.filter(item => item.dataIndex != 'changed_by' && item.dataIndex != 'changed_on' && item.dataIndex != 'created_by' && item.dataIndex != 'created_on' && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
+            let newArray1 = tableColumn.filter(item => item.dataIndex != 'changed_by' && item.dataIndex != 'changed_on' && item.dataIndex != 'created_by' && item.dataIndex != 'created_on' && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
+            let columns = [];
+            newArray1.map(item => {
+                let { title, dataIndex } = item;
+                let obj = {
+                    title: title,
+                    dataIndex: dataIndex,
+                    key: dataIndex,
+                    // ...getColumnSearchProps(dataIndex, refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
+                    sorter: (a, b) => {
+
+                        return a.dataIndex === null || a.dataIndex === undefined || a.dataIndex === "" ? -1 : b.dataIndex == null || b.dataIndex == undefined || b.dataIndex == "" ? 1 : a.dataIndex.toString().localeCompare(b.dataIndex)
+
+                    },
+
+                };
+                if (item.dataIndex === "pbr_template_disp_id") {
+                    obj.render = (text, row, index) => {
+                        return (
+                            <a onClick={() => history.push(`/dashboard/pbr_template`)} className='review-submission'>{text}</a>
+                        )
+
+                    }
+                }
+                columns.push(obj)
+            })
             console.log("newArray1", tableColumn)
-            console.log("newArray1", newArray1)
+            console.log("newArray1", columns)
             if (tableResponse['status-code'] === 200) {
-                setTemplateColumns(newArray1)
+                setTemplateColumns(columns)
                 setTemplateData(tableResponse.Data);
                 dispatch(hideLoader());
             }
@@ -133,6 +161,7 @@ function PaperBatchRecords() {
     const getViewData = async () => {
         let res = await getDataView()
         setDataView(res.Data)
+        setFileName(res?.Data[0]?.filename)
 
     }
 
@@ -293,7 +322,12 @@ function PaperBatchRecords() {
     };
 
     const handleTemplateSubmit = () => {
-        history.push('/dashboard/pbr_template');
+        if (templateName == "") {
+            openNotification()
+        } else {
+            history.push(`/dashboard/pbr_template?file=${fileName}&tempalteName=${templateName}`);
+        }
+
     };
 
     function globalTemplateSearch(value) {
@@ -304,6 +338,41 @@ function PaperBatchRecords() {
         );
         setTableDataSourceFiltered(filterdDataArr);
     }
+    console.log("form", form.getFieldValue())
+    const handleValuesChange = (changedValues, values) => {
+
+        // setMainJson(convertToJson(values));
+        console.log("changedValues", changedValues, values)
+        seTemplateName(changedValues?.templateName)
+
+    };
+    const onFinish = (values) => {
+        console.log('Success:', values);
+    };
+    const close = () => {
+        console.log(
+            'Notification was closed. Either the close button was clicked or duration time elapsed.',
+        );
+    };
+    const openNotification = () => {
+        const key = `open${Date.now()}`;
+        const btn = (
+            <Button type="primary" size="small" onClick={() => notification.close(key)}>
+                Confirm
+            </Button>
+        );
+        notification.open({
+            message: 'Error',
+            description:
+                'Please Enter Template Name.',
+            btn,
+            key,
+            type: "error",
+            placement: "top",
+            onClose: close,
+        });
+    };
+    
 
     return (
         <div className='pbr-container'>
@@ -400,6 +469,7 @@ function PaperBatchRecords() {
                         type='primary'
                         className='templateSubmitBtn'
                         onClick={handleTemplateSubmit}
+                        onValuesChange={handleValuesChange}
                     >
                         Lets Go!
                     </Button>,
@@ -409,18 +479,28 @@ function PaperBatchRecords() {
                 <div className='newTemplate-modalBody'>
                     <Row className='recent-charts'>
                         <Col span={12} className='newTemplate-imgBlock'>
-                            <img src={newTemplateModal} alt='banner' />
+                            <img src={newTemplateModal} alt='banner' style={{ height: 150 }} />
                         </Col>
                         <Col span={12} className='newTemplate-contentBlock'>
                             <Form
                                 layout='vertical'
                                 form={form}
                                 className='formNewTemplate'
+                                name="basic"
+                                onValuesChange={handleValuesChange}
+                                onFinish={onFinish}
                             >
                                 <div className='formNewTemplateDiv'>
                                     <Form.Item
                                         label='Template name'
                                         name='templateName'
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: 'Please input your password!',
+                                            },
+                                        ]}
+
                                     >
                                         <Input />
                                     </Form.Item>
@@ -441,20 +521,21 @@ function PaperBatchRecords() {
                                     </Form.Item>
                                 </div>
 
-                                <Radio.Group
+                                {/* <Radio.Group
                                     // onChange={onChange}
-                                    defaultValue='0'
+                                    defaultValue={dataView[0]?.filename}
                                     className='radioPdfBlock'
+                                    onChange={(e) => setFileName(e.target.value)}
                                 >
-                                    {dataView.map((item,index)=> (
-                                        <Radio.Button value={`${index}`}>
+                                    {dataView.map((item, index) => (
+                                        <Radio.Button value={`${item.filename}`} >
                                             <div className='pdfListBlock'>
                                                 <img src={pdfIcon} alt='pdfIcon' />
                                                 <span>{item.filename.substring(0, 15) + '...'}</span>
                                             </div>
                                         </Radio.Button>
-                                    ))}
-                                    {/* <Radio.Button value='a'>
+                                    ))} */}
+                                {/* <Radio.Button value='a'>
                                         <div className='pdfListBlock'>
                                             <img src={pdfIcon} alt='pdfIcon' />
                                             <span>loremipsum23.pdf</span>
@@ -478,10 +559,31 @@ function PaperBatchRecords() {
                                             <span>loremipsum23.pdf</span>
                                         </div>
                                     </Radio.Button> */}
-                                </Radio.Group>
+                                {/* </Radio.Group> */}
                             </Form>
                         </Col>
                     </Row>
+
+                    <Row>
+                        <Col span={24} className='newTemplate-contentBlock'>
+                            <Radio.Group
+                                // onChange={onChange}
+                                defaultValue={dataView[0]?.filename}
+                                className='radioPdfBlock'
+                                onChange={(e) => setFileName(e.target.value)}
+                            >
+                                {dataView.map((item, index) => (
+                                    <Radio.Button value={`${item.filename}`} >
+                                        <div className='pdfListBlock'>
+                                            <img src={pdfIcon} alt='pdfIcon' />
+                                            <span>{item.filename.split('_')[0]}</span>
+                                        </div>
+                                    </Radio.Button>
+                                ))}
+                            </Radio.Group>
+                        </Col>
+                    </Row>
+
                 </div>
             </Modal>
         </div>

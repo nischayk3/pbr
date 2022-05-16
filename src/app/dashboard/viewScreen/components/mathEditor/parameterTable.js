@@ -13,7 +13,7 @@ import {
 	hideLoader,
 	showLoader,
 } from "../../../../../duck/actions/commonActions";
-import { isNewView,setMathValue } from "../../../../../duck/actions/viewAction";
+import { isNewView, setMathValue } from "../../../../../duck/actions/viewAction";
 
 let paramType = "";
 
@@ -448,9 +448,9 @@ const ParameterTable = (props) => {
 		let newAggrValue = [...tableData];
 		newAggrValue[index].aggregation =
 			value.value !== undefined ? value.value : "";
-		const aggJson = [...parameters];
-		aggJson[index].aggregation = value.value !== undefined ? value.value : "";
-		setParameters(aggJson);
+		// const aggJson = [...parameters];
+		// aggJson[index].aggregation = value.value !== undefined ? value.value : "";
+		// setParameters(aggJson);
 		setTableData(newAggrValue);
 		setAggregationValue(value.value !== undefined ? value.value : "");
 	};
