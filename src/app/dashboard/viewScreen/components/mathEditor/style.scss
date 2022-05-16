@@ -215,4 +215,18 @@ span.statusClosed {
 	border: 1px solid grey !important;
 	background:rgb(235, 235, 228) !important;
 }
+.variable-name-popup {
+	p{
+		margin-bottom: 4px !important;
+	}
+	button {
+		margin-top: 15px;
+	}
+}
+.variable-cancel-button {
+	button {
+		margin-top: 15px;
+		border: none !important;
+	}
+}
 

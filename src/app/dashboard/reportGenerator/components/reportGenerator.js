@@ -173,6 +173,8 @@ function ReportGenerator(props) {
 
     const makeArrayOfObject = (ar) => {
         let res = []
+        if(ar && ar.length > 0)
+        {
         for (let i = 0; i < ar.length; i++) {
             let res_obj = {}
             res_obj['chart'] = ar[i]
@@ -185,6 +187,9 @@ function ReportGenerator(props) {
             res.push(res_obj)
         }
         return res
+    }
+    else
+    return res
     }
     const createChartRecord = (arr) => {
         let res = {}
@@ -308,7 +313,7 @@ function ReportGenerator(props) {
         obj['rep_status'] = reportStatus
         obj['user'] = user
         obj['variant_name'] = user + '_variant'
-        obj['chart_info'] = { charts: chart }
+        obj['chart_info'] = chartLayout
         obj['charts_layout'] = chartLayout
         obj['days_layout'] = selectedDays
 

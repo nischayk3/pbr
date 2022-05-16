@@ -22,6 +22,7 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
       const newArr = JSON.parse(JSON.stringify(postChartData));
       const xvalue = newArr.data[0].layout.xaxis.title.text;
       const yvalue = newArr.data[0].layout.yaxis.title.text;
+      const annotations = newArr.data[0].layout.annotations;
       const o =
         newArr.data[0].layout.legend.orientation === "v"
           ? "Vertical"
@@ -33,6 +34,7 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
           ...layoutData.xaxis,
           title: { ...layoutData.xaxis.title, text: xvalue },
         },
+        annotations: annotations,
         yaxis: {
           ...layoutData.yaxis,
           title: { ...layoutData.yaxis.title, text: yvalue },
