@@ -69,6 +69,7 @@ function Genealogy() {
   const [uploadFile, setUploadFile] = useState();
   const [uploading, setUploading] = useState(false);
   const [uploadId, setUploadId] = useState("");
+  const [collapseKey, setCollapseKey] = useState("0");
 
   const [type, setType] = useState("");
 
@@ -98,6 +99,7 @@ function Genealogy() {
       setchartType("forward");
       setProductCode(node.product);
     } else if (node.clickType === "view") {
+      setCollapseKey("0");
       if (node.nodeType === "Material") {
         let batchInfoDetails = {
           product: node.nodeData.matNo,
@@ -543,6 +545,8 @@ function Genealogy() {
                 fileDownload={downloadFile}
                 productCode={productCode}
                 productType={chartType}
+                collapseKey={collapseKey}
+                setCollapseKey={setCollapseKey}
               />
               <Modal
                 width={520}
@@ -617,6 +621,8 @@ function Genealogy() {
                 batchInfo={batchInfo}
                 processInput={processInput}
                 processOutput={processOutput}
+                collapseKey={collapseKey}
+                setCollapseKey={setCollapseKey}
               />
             </div>
           </TabPane>
