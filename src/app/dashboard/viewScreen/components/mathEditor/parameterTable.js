@@ -146,10 +146,12 @@ const ParameterTable = (props) => {
 			},
 		},
 	];
+
 	const data =
 		tableData !== undefined && tableData.length > 0
-			? Object.keys(tableData[0])
+			? Object.keys(tableData[tableData.length-1])
 			: [];
+
 	const uniqueArr = (value, index, self) => {
 		return self.indexOf(value) === index;
 	};
