@@ -7,7 +7,7 @@
  */
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Tree, message, Input } from "antd";
+import { Tree, message, Input, Tag } from "antd";
 import { PlusOutlined, CheckOutlined } from "@ant-design/icons";
 import {
   batchCoverage,
@@ -136,9 +136,7 @@ const MaterialTree = (props) => {
                             title={
                               <div className="treenode-block">
                                 <div className="tree-block-param">
-                                  <p className="treenode-param">
-                                    {b.parameter_name}
-                                  </p>
+                                  <Tag color="geekblue">{b.parameter_name}</Tag>
                                   <p className="treenode-coverage">
                                     {b.coverage}
                                   </p>
@@ -162,6 +160,7 @@ const MaterialTree = (props) => {
                               </div>
                             }
                             key={b.key + index}
+                            className="tree-index"
                           />
                         );
                       })}

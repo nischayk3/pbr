@@ -176,6 +176,7 @@ const ViewCreation = (props) => {
 			(element.functions = viewState.functions),
 				(element.parameters = viewState.parameters),
 				(element.all_parameters = viewState.selectedParamData),
+				(element.view_disp_id = viewDisplayId),
 				(element.material_id = moleculeId);
 		});
 
@@ -235,7 +236,6 @@ const ViewCreation = (props) => {
 		try {
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
-			console.log(loadViewRes)
 
 			if (loadViewRes.material_id) setMoleculeId(loadViewRes.material_id);
 			if (loadViewRes.view_status) {
@@ -278,7 +278,6 @@ const ViewCreation = (props) => {
 		setViewStatus(res.rep_stauts)
 	};
 
-	console.log(viewStatus)
 
 	return (
 		<div className=" viewCreation-container">
