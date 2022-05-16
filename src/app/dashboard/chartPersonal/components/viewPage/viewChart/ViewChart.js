@@ -42,6 +42,7 @@ import {
   getSiteId,
 } from "../../../../../../services/chartPersonalizationService";
 import moment from "moment";
+import CJson from "../chartObj.json";
 
 //unpacking antd components
 const { Search } = Input;
@@ -173,13 +174,44 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
   const setData = async () => {
     try {
       dispatch(showLoader());
-      const viewRes = await postChartPlotData(postChartData);
+      const req = JSON.parse(JSON.stringify(postChartData));
+      const selectedId = req.data[0].view_id;
+      const selectedViewName = req.data[0].view_name;
+      const reqBody = JSON.parse(JSON.stringify(CJson));
+      reqBody.data[0].view_id = selectedId;
+      reqBody.data[0].view_name = selectedViewName;
+      const viewRes = await postChartPlotData(reqBody);
       getSites(viewRes.data[0].view_id);
       let newArr = [...postChartData.data];
       newArr[0] = viewRes.data[0];
       setPostChartData({ ...postChartData, data: newArr });
       dispatch(hideLoader());
     } catch (error) {
+      dispatch(hideLoader());
+      message.error("Unable to fetch coverages");
+    }
+  };
+
+  const getFilterData = async () => {
+    try {
+      dispatch(showLoader());
+      const viewRes = await postChartPlotData(postChartData);
+      if (viewRes.data && viewRes.data.length > 0) {
+        let newArr = [...postChartData.data];
+        newArr[0] = viewRes.data[0];
+        setPostChartData({ ...postChartData, data: newArr });
+      } else {
+        message.error(viewRes.Message);
+        let newArr = [...postChartData.data];
+        newArr[0].data_filter = {
+          date_range: "",
+          unapproved_data: 1,
+          site: "",
+        };
+        setPostChartData({ ...postChartData, data: newArr });
+      }
+      dispatch(hideLoader());
+    } catch {
       dispatch(hideLoader());
       message.error("Unable to fetch coverages");
     }
@@ -230,7 +262,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     const obj = { view_id: id };
     try {
       const siteRes = await getSiteId(obj);
-      setSiteList(siteRes.Data[0]);
+      setSiteList(siteRes.Data);
     } catch (error) {
       message.error("Unable to fetch sites");
     }
@@ -286,7 +318,27 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
   //function for handle batch filter change
   const handleBatchFilterChange = () => {
     const newArr = [...postChartData.data];
+    const annotations = [
+      {
+        text: "This chart contains unapproved data",
+        font: {
+          size: 13,
+          color: "rgb(116, 101, 130)",
+        },
+        showarrow: false,
+        align: "left",
+        x: 0,
+        y: 1.16,
+        xref: "paper",
+        yref: "paper",
+      },
+    ];
     newArr.forEach((ele) => {
+      if (batchFilters.unApproved === 1) {
+        ele.layout.annotations = annotations;
+      } else {
+        ele.layout.annotations = [];
+      }
       ele.data_filter.unapproved_data = batchFilters.unApproved;
       ele.data_filter.date_range = batchFilters.startDate
         ? new Date(batchFilters.startDate).toISOString() +
@@ -296,7 +348,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       ele.data_filter.site = batchFilters.site ? batchFilters.site : "";
     });
     setPostChartData({ ...postChartData, data: newArr });
-    setData();
+    getFilterData();
   };
 
   //useEffect for calling view list.
@@ -307,7 +359,6 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
   useEffect(() => {
     postChartData.data &&
       postChartData.data.forEach((ele) => {
-        getSites(ele.view_id);
         setViewData({
           ...viewData,
           viewName: ele.view_name,
@@ -319,6 +370,10 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
         setCoverageTableData(ele.extras.coverage);
       });
   }, [postChartData]);
+
+  useEffect(() => {
+    getSites(viewData.viewDispId);
+  }, [viewData.viewDispId]);
 
   return (
     <div className="view-container">
@@ -398,15 +453,22 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
         <>
           <Row gutter={16} className="filter">
             <Col span={11}>
-              <SelectField
+              <Select
                 placeholder="Site"
-                onChangeSelect={(e) =>
-                  setBatchFilters({ ...batchFilters, site: e })
-                }
-                selectList={siteList}
-                selectedValue={batchFilters.site}
+                value={batchFilters.site}
+                onChange={(e) => setBatchFilters({ ...batchFilters, site: e })}
+                style={{ width: "100%", margin: "0px" }}
                 allowClear
-              />
+              >
+                {siteList &&
+                  siteList.map((ele, index) => {
+                    return (
+                      <Select.Option key={index} value={Object.values(ele)[0]}>
+                        {Object.keys(ele)[0]}
+                      </Select.Option>
+                    );
+                  })}
+              </Select>
             </Col>
             <Col span={13} className="unapproved">
               <label>Show unapproved data</label>&emsp;&nbsp;

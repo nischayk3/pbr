@@ -1,4 +1,4 @@
-import { Card, Empty, Table } from 'antd';
+import { Card, Empty, Table,message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
@@ -8,8 +8,12 @@ import {
 } from '@ant-design/icons';
 import LabelTag from '../../../../../components/LabelTag';
 import './styles.scss';
+import { useDispatch } from 'react-redux';
+import { setViewFunctionName,sendFunctionName } from '../../../../../duck/actions/viewAction';
 
 const ViewSummaryData = props => {
+
+	const dispatch = useDispatch()
 	let columns = [];
 	const summaryTableData = useSelector(
 		state => state.viewCreationReducer.summaryTableData
@@ -39,16 +43,21 @@ const ViewSummaryData = props => {
 
 	useEffect(() => {
 		if (funTableData.length > 0) {
+
+			
 			const objKey =
 				funTableData !== undefined && funTableData.length > 0
 					? Object.keys(funTableData[0])
 					: [];
 
+
 			const uniqueArr = (value, index, self) => {
 				return self.indexOf(value) === index;
 			};
 
+
 			const summaryColumn = objKey.filter(uniqueArr);
+
 
 			summaryColumn.map((item, i) => {
 				if (item === 'batch' || item === 'batch_year') {
@@ -70,6 +79,16 @@ const ViewSummaryData = props => {
 						),
 						dataIndex: item,
 						key: `${item}-${i}`,
+						onHeaderCell: (record, rowIndex) => {
+							return {
+								onClick: (ev) => {
+									dispatch(setViewFunctionName(record.dataIndex));
+									message.success(`${record.dataIndex} function selected`)
+
+									// dispatch(setViewFunctionName(record.dataIndex));
+								},
+							};
+						},
 						render: value =>
 							value ? (
 								<span className='batchChecked'>
@@ -167,7 +186,6 @@ const ViewSummaryData = props => {
 
 		setTableColumn(newColumns);
 	};
-
 
 
 	return (

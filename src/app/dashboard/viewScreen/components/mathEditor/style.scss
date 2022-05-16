@@ -191,3 +191,42 @@ span.statusClosed {
 {
 	height :400px;
 }
+.custom-eval-btn {
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: 400 !important;
+	font-size: 14px !important;
+	color: #262626 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 4px !important;
+	border: 1px solid #093185 !important;
+	background: #fff !important;
+}
+.custom-eval-btn-disable {
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: 400 !important;
+	font-size: 14px !important;
+	color:rgb(84, 84, 84) !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 4px !important;
+	border: 1px solid grey !important;
+	background:rgb(235, 235, 228) !important;
+}
+.variable-name-popup {
+	p{
+		margin-bottom: 4px !important;
+	}
+	button {
+		margin-top: 15px;
+	}
+}
+.variable-cancel-button {
+	button {
+		margin-top: 15px;
+		border: none !important;
+	}
+}
+

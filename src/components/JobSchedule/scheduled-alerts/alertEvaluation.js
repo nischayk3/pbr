@@ -201,12 +201,12 @@ const alertEvaluation = (props) => {
           str = str + days_obj[days[i]];
         }
       }
-      cron_string = time_split[1] + " " + time_split[2] + ` * * ${str}`;
+      cron_string = time_split[1] + " " + time_split[0] + ` * * ${str}`;
     }
 
     if (frequency == "Monthly") {
       cron_string =
-        time_split[1] + " " + time_split[2] + " " + date_split[2] + " " + "* *";
+        time_split[1] + " " + time_split[0] + " " + date_split[2] + " " + "* *";
     }
     if (frequency == "Repeat Once") {
       cron_string = "once";
@@ -260,7 +260,7 @@ const alertEvaluation = (props) => {
       "resource-name": "DASHBOARD",
     };
 
-    req["app_data"] = props.appType;
+    req["app_data"] = props.name ? props.name : props.appType;
     req["dag_id"] = " ";
     req["created_by"] = localStorage.getItem("username")
       ? localStorage.getItem("username")
@@ -301,7 +301,8 @@ const alertEvaluation = (props) => {
     req["scheduled_start"] = scheduleStartDate;
     req["scheduled_end"] =
       selectedSchedule == "Repeat Once" ? scheduleStartDate : "2030/12/12";
-    req["job_id"] = props.job_id;
+    if(props.job_id)
+    req["job_id"] = props.job_id ? props.job_id : ' ';
 
     let res = await putJob(req, request_headers);
 
@@ -367,7 +368,7 @@ const alertEvaluation = (props) => {
           )
         }
       >
-        <TabPane tab="Schedule evaluation" key="schedule_evaluation">
+        <TabPane tab="Schedule Alert" key="schedule_evaluation">
           <div style={{ margin: "24px" }}>
             <div style={{ width: "300px" }}>
               <ClockCircleOutlined
@@ -613,6 +614,8 @@ const alertEvaluation = (props) => {
             radio={radioValue}
             days={selectedDays}
             day={everyDayValue}
+            name={props.name}
+            job_id={props.job_id}
           />
         </TabPane>
       </Tabs>

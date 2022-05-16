@@ -155,7 +155,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
   };
 
   const handleChartType = (e) => {
-    setAxisValues({ ...axisValues, chartType: e });
+    setAxisValues({ ...axisValues, chartType: e, xaxis: null, yaxis: null });
   };
   useEffect(() => {
     const newCovArr = JSON.parse(JSON.stringify(postChartData));

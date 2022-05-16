@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input, Modal, Alert, Table } from 'antd';
 import FunctionKey from '../../../../../assets/images/key1.png';
@@ -9,6 +9,7 @@ import {
 	saveViewFunction,
 	sendFunctionName,
 	sendFunDetails,
+	setNewColumn,
 } from '../../../../../duck/actions/viewAction';
 import { viewEvaluate } from '../../../../../services/viewCreationPublishing';
 import { showNotification } from '../../../../../duck/actions/commonActions';
@@ -18,20 +19,6 @@ const DataColumns = [
 		title: 'Batch Num',
 		dataIndex: 'batch_num',
 		key: 'batch_num',
-		width: 150,
-		fixed: 'left',
-	},
-	{
-		title: 'PARAMETER',
-		dataIndex: 'parameter',
-		key: 'parameter',
-		width: 150,
-		fixed: 'left',
-	},
-	{
-		title: 'Recorded Date',
-		dataIndex: 'recorded_date',
-		key: 'recorded_date',
 		width: 150,
 		fixed: 'left',
 	},
@@ -58,6 +45,17 @@ const MathFunction = props => {
 	const [evalTable, setEvalTable] = useState([])
 
 	const dispatch = useDispatch();
+
+	const mathValue = useSelector(
+		(state) => state.viewCreationReducer.mathValue
+	);
+
+	useEffect(()=>
+	{   if(mathValue)
+		setMathEditorValue(mathValue)
+	},[mathValue])
+	
+
 	const showModal = () => {
 		dispatch(saveViewFunction(false));
 		setIsModalVisible(true);
@@ -69,6 +67,13 @@ const MathFunction = props => {
 	const handleCancel = () => {
 		setIsModalVisible(false);
 	};
+	const handleCreateCancel = () =>
+	{
+		dispatch(saveAsViewFunction(true));
+		setIsModalVisible(false);
+		setIsFunction(false);
+
+	}
 
 	const handleTableCancel = () => {
 		setIsTableVisible(false);
@@ -77,6 +82,8 @@ const MathFunction = props => {
 	const handleChangeFunction = e => {
 		setMathEditorValue(e.target.value);
 		setIsFunctionVisible(true);
+		setIsFunction(false);
+
 	};
 	const onChangeFunName = e => {
 		setFunctionName(e.target.value);
@@ -106,7 +113,11 @@ const MathFunction = props => {
 
 		if (evaluate_respone.view_status == "") {
 			setIsTableVisible(true)
+			if(evaluate_respone.functions)
+			{
 			setEvalTable(evaluate_respone.functions)
+			dispatch(setNewColumn(evaluate_respone.functions))
+			}
 			dispatch(showNotification('success', 'Evaluated'))
 			setIsFunction(true);
 		}
@@ -123,6 +134,8 @@ const MathFunction = props => {
 		setIsFunctionInvalid(false);
 		setIsEvaluatingFun(false);
 	};
+
+
 
 
 	return (
@@ -169,21 +182,20 @@ const MathFunction = props => {
 							<span>
 								{isFunctionVisible && (
 									<>
-										{isFunction ? (
-											<Button
-												onClick={showModal}
-												type='text'
-												className='custom-primary-btn '>
-												Create Function
-											</Button>
-										) : (
+										{/* {isFunction ? ( */}
 											<Button
 												onClick={functionEvaluate}
 												type='text'
-												className='custom-primary-btn '>
+												className='custom-eval-btn'>
 												Function Evaluate
+											</Button>										
+											<Button
+												onClick={showModal}
+												type='text'
+												disabled={!isFunction}
+												className={!isFunction ? "custom-eval-btn-disable" :'custom-secondary-btn'}>
+												Create
 											</Button>
-										)}
 									</>
 								)}
 
@@ -213,7 +225,7 @@ const MathFunction = props => {
 
 						<div className='function-btn'>
 							<Button
-								onClick={() => dispatch(saveAsViewFunction(true))}
+								onClick={() => handleCreateCancel()}
 								type='link'
 								className='custom-secondary-btn-link '>
 								Cancel

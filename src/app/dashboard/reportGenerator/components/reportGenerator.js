@@ -12,7 +12,6 @@ import {
     Button,
     Card,
     Collapse,
-    message,
     Input,
     Tag,
     Dropdown,
@@ -33,6 +32,8 @@ import {
 import Chart from '../../reportDesigner/components/reportChart/chartComponent/chartComponent'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import JobSchedule from '../../../../components/JobSchedule';
+import FileSaver from 'file-saver';
+import axios from 'axios';
 
 const { Panel } = Collapse;
 
@@ -118,21 +119,12 @@ function ReportGenerator(props) {
     const [ReportData, setReportData] = useState(repotData)
     const [chart, setCharts] = useState([])
     const [table, setTable] = useState([])
-    const [schedule, setSchedule] = useState('')
-    const [emailList, setEmailList] = useState([])
-    const [isSave, setIsSave] = useState(false);  
+    const [isSave, setIsSave] = useState(false);
     const [reportId, setReportId] = useState('')
     const [reportName, setReportName] = useState('')
     const [reportStatus, setReportStatus] = useState('')
     const [reportList, setReportList] = useState('')
-    const [filterTable, setFilterTable] = useState(null);
-    const [openSchedule, setOpenSchedule] = useState(false);
     const [chartLayout, setChartLayout] = useState({});
-    const [viewId, setViewId] = useState('')
-    const [repeat, setRepeat] = useState('')
-    const [frequency, setFrequency] = useState('')
-    const [scheduleStartDate, setScheduleStartDate] = useState('')
-    const [scheduleEndDate, setScheduleEndDate] = useState('')
     const [selectedDays, setSelectedDays] = useState({
         Sunday: false,
         Monday: false,
@@ -181,18 +173,22 @@ function ReportGenerator(props) {
 
     const makeArrayOfObject = (ar) => {
         let res = []
-        for (let i = 0; i < ar.length; i++) {
-            let res_obj = {}
-            res_obj['chart'] = ar[i]
-            res_obj['violation'] = true
-            res_obj['exclusion'] = true
-            res_obj['data_table'] = true
-            res_obj['layout'] = {}
-            res_obj['data'] = {}
-            res_obj['chartType'] = ''
-            res.push(res_obj)
+        if (ar && ar.length > 0) {
+            for (let i = 0; i < ar.length; i++) {
+                let res_obj = {}
+                res_obj['chart'] = ar[i]
+                res_obj['violation'] = true
+                res_obj['exclusion'] = true
+                res_obj['data_table'] = true
+                res_obj['layout'] = {}
+                res_obj['data'] = {}
+                res_obj['chartType'] = ''
+                res.push(res_obj)
+            }
+            return res
         }
-        return res
+        else
+            return res
     }
     const createChartRecord = (arr) => {
         let res = {}
@@ -222,9 +218,10 @@ function ReportGenerator(props) {
         let headingSection = obj['sections'] ? obj['sections'] : []
         allSections = [...allSections, ...headingSection]
 
+        console.log(rep_layout)
 
         for (let i = 0; i < allSections.length; i++) {
-            allSections[i].charts = rep_layout[i + 1]
+            allSections[i].charts = rep_layout[i + 1] ? rep_layout[i + 1] : []
         }
         return allSections
     }
@@ -243,10 +240,7 @@ function ReportGenerator(props) {
         setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
         setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')
         setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '')
-        // setEmailList(ReportData.share ? ReportData.share.email_list : [])
-        setSchedule(ReportData.share ? ReportData.share.frequency_unit : '')
         dispatch(hideLoader());
-        // setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
     }
 
     const update_object = (arr, i) => {
@@ -272,17 +266,9 @@ function ReportGenerator(props) {
         let object = chart
         setCharts(object)
 
-        // obj.forEach((item, i) => {
-        //     let res=[]
-        //         for(let key in item) {
-        //           if(item[key]==true)
-        //             res.push(key)
-        //         }
-        //     item['default']=res
-        //      });
-
     }
     const generateReport = async () => {
+        dispatch(showNotification('success', 'Generating Report'))
         let generate_obj = {}
         let title_page = table[0] ? table[0] : {}
         let sections = table.length > 0 ? table.filter((item, index) => index > 0) : []
@@ -301,15 +287,18 @@ function ReportGenerator(props) {
 
         let json_response = await latexBuilder(data)
         if (json_response.statuscode == 200) {
-            let latex_response = await latexReport(json_response.latex_json)
-            const blob = new Blob([latex_response], { type: 'application/pdf' });
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = `pdf-${+new Date()}.pdf`;
-            link.click();
+            dispatch(showNotification('success', 'Downloading Report'))
+
+            axios.post('/latex_report', json_response.latex_json, { responseType: 'arraybuffer' })
+                .then((response) => {
+                    var blob = new Blob([response.data], { type: 'application/pdf' });
+                    FileSaver.saveAs(blob, `${reportId}.pdf`);
+                });
+        }
+        else {
+            dispatch(showNotification('error', 'Failed to generate report'))
         }
     }
-
 
     const prepareJson = () => {
 
@@ -322,27 +311,15 @@ function ReportGenerator(props) {
         obj['rep_status'] = reportStatus
         obj['user'] = user
         obj['variant_name'] = user + '_variant'
-        obj['chart_info'] = { charts: chart }
+        obj['chart_info'] = chartLayout
         obj['charts_layout'] = chartLayout
         obj['days_layout'] = selectedDays
-
-
-        let share_obj = {}
-        share_obj['email_list'] = emailList
-        share_obj['scheduled_start'] = scheduleStartDate
-        share_obj['scheduled_end'] = scheduleEndDate
-        share_obj['subject'] = `Update for ${reportName}`
-        share_obj['frequency_unit'] = repeat
-        share_obj['frequency'] = frequency
-        share_obj['selected_days'] = Object.keys(selectedDays).filter(k => selectedDays[k] === true);
-
 
         let layout_obj = {}
         layout_obj['titlepage'] = table[0] ? table[0] : {}
         layout_obj['sections'] = table.length > 0 ? table.filter((item, index) => index > 0) : []
 
         obj['layout_info'] = layout_obj
-        obj['share'] = share_obj
 
         let req = {}
         req['data'] = obj
@@ -356,51 +333,6 @@ function ReportGenerator(props) {
                 dispatch(showNotification('error', 'Not Saved'))
             }
         })
-    }
-    const onChangeStart = (date, dateString) => {
-        setScheduleStartDate(dateString);
-        // setstartTimeIso(moment(date).toISOString());
-    };
-    const onChangeEnd = (date, dateString) => {
-        setScheduleEndDate(dateString);
-        // setendTimeIso(moment(date).toISOString());
-    };
-    const search = (value) => {
-        const tableData = reportList;
-        const filterTable = tableData.filter((o) =>
-            Object.keys(o).some((k) =>
-                String(o[k]).toLowerCase().includes(value.toLowerCase())
-            )
-        );
-        setFilterTable(filterTable);
-    };
-
-
-    const getReportData = async (rep_id) => {
-
-        message.success(`${rep_id} selected`)
-        dispatch(showLoader());
-        let user_details = JSON.parse(localStorage.getItem('user_details'))
-        let user = user_details["username"] ? user_details["username"] : ''
-        let req = { username: user, report_id: rep_id };
-        try {
-
-            let response = await getReportGenerator(req)
-            if (response.Status == 404) {
-                dispatch(showNotification("error", 'No Data for this variant'))
-                dispatch(hideLoader());
-            }
-            else {
-                dispatch(sendReport(response))
-                unloadTest(response)
-                dispatch(hideLoader());
-            }
-
-        }
-        catch (err) {
-            dispatch(hideLoader());
-            dispatch(showNotification('error', err));
-        }
     }
 
 
@@ -452,24 +384,26 @@ function ReportGenerator(props) {
                                     <Panel header={<span className="chart-names">{i.heading} {i.charts && i.charts.length > 0 && i.charts.map((i) => (<span className="chart-tags">
                                         {i}
                                     </span>))}</span>} key={i.heading} className="chart-panel">
-                                        <table className="table" cellspacing="0" cellpadding="0">
-                                            <tr className="tr" >
-                                                <th className="th-key">
-                                                    Key
-                                                </th>
-                                                <th className="th-value">
-                                                    Value
-                                                </th>
-                                            </tr>
-                                            <tbody>
-                                                {i['content'] && i['content'].map((item, j) =>
-                                                    <tr className="tr" >
-                                                        <td className="td" >{item.key}</td>
-                                                        <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea autoSize={true} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span>{item.value}</span>} </td>
-                                                    </tr>
-                                                )}
-                                            </tbody>
-                                        </table>
+                                        {i['content'] && i['content'].length > 0  ?
+                                            <table className="table" cellspacing="0" cellpadding="0">
+                                                <tr className="tr" >
+                                                    <th className="th-key">
+                                                        Key
+                                                    </th>
+                                                    <th className="th-value">
+                                                        Value
+                                                    </th>
+                                                </tr>
+                                                <tbody>
+                                                    {i['content'] && i['content'].map((item, j) =>
+                                                        <tr className="tr" >
+                                                            <td className="td" >{item.key}</td>
+                                                            <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea autoSize={true} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span>{item.value}</span>} </td>
+                                                        </tr>
+                                                    )}
+                                                </tbody>
+                                            </table> : <></>
+                                        }
                                         {i.charts && i.charts.length > 0 && i.charts.map((j) =>
                                         (
                                             <div >
@@ -485,7 +419,7 @@ function ReportGenerator(props) {
                 </div>
             </div>
             <SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
-            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} id={reportId} />
+            <JobSchedule visible={alertVisible} app_type='REPORT' handleCancel={handleCancel} id={reportId} name={reportName} />
         </div>
 
 

@@ -6,7 +6,7 @@ import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerD
 import Chart from '../reportChart/chartComponent/chartComponent'
 import { showLoader, hideLoader } from '../../../../../duck/actions/commonActions';
 import { useDispatch } from 'react-redux';
-import checkIcon from  '../../../../../assets/images/checkbox.svg'
+import checkIcon from '../../../../../assets/images/checkbox.svg'
 
 
 
@@ -42,8 +42,34 @@ function ReportDesignerDynamicSections(props) {
     const handleEdit = (value) => {
         setEditable(!value)
     }
+    const extract = (str) => {
+        let s = str.length - 1
+        let chart_name = ''
+        function reverse(s) {
+            var o = '';
+            for (var i = s.length - 1; i >= 0; i--)
+                o += s[i];
+            return o;
+        }
+
+        let b = false
+        for (let i = s - 1; i >= 0; i--) {
+            if (str[i] == '>') {
+                b = false
+                return reverse(chart_name)
+            }
+            if (b) {
+                chart_name = chart_name + str[i]
+            }
+            if (str[i] == '<')
+                b = true
+        }
+    }
 
     const addChart = (chartName, section) => {
+        if (chartName && chartName[0] == '<') {
+            chartName = extract(chartName)
+        }
 
         dispatch(showLoader())
         section = section + 1
@@ -167,7 +193,7 @@ function ReportDesignerDynamicSections(props) {
                                                     style={{ display: 'flex', justifyContent: 'center' }}
                                                     align="baseline"
                                                 >
-                                                    <table className="dynamicSections-table" style={{ width: '1200px' }}>
+                                                    <table className="dynamicSections-table" style={{ width: '1180px' }}>
                                                         <thead className="dynamicSections-thead">
                                                             <tr>
                                                                 <th className="action-clm">Action</th>
@@ -193,7 +219,7 @@ function ReportDesignerDynamicSections(props) {
                                                     list.map((i) =>
                                                     (<Form.Item {...restField} name={[name, 'select']}>
                                                         <div className='chart-tiless' onClick={(e) => addChart(e.target.innerHTML, name)}>
-                                                            {addedCharts[`${name + 1}`] && addedCharts[`${name + 1}`].map((j) => (j == i ? <div className="chart-tile"> <img src={checkIcon}  /></div> : <></>))}
+                                                            {addedCharts[`${name + 1}`] && addedCharts[`${name + 1}`].map((j) => (j == i ? <div className="chart-tile"> <img src={checkIcon} /></div> : <></>))}
                                                             <p className="charttile-content">{i}</p>
                                                         </div>
                                                     </Form.Item>

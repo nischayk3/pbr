@@ -6,30 +6,66 @@
  * @Last Changed By - Bhanu Thareja
  */
 
-import { Component } from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import BreadCrumbWrapper from '../../../components/BreadCrumbWrapper/index'
 import GoBackSubHeader from '../../../components/GoBackSubHeader/GoBackSubHeader'
 import EditableTable from '../../../components/EditableTable/EditableTable'
-import tableData from './RolesAndAccess.json'
+import { showLoader, hideLoader } from '../../../duck/actions/commonActions'
 
-class RolesAndAccess extends Component {
+import { getRoleConfiguartions, saveRoleConfiguartions, deleteRoleConfiguartions } from '../../../services/userRolesAndAccessService'
 
-    onSaveRolesAndAccess = data => {
-        console.log(data)
+const RolesAndAccess = () => {
+    const dispatch = useDispatch()
+    const [tableData, setTableData] = useState(null)
+
+    useEffect(() => {
+        loadRoleConfiguartions()
+    }, [])
+
+    const loadRoleConfiguartions = async () => {
+        dispatch(showLoader())
+        try {
+            const response = await getRoleConfiguartions()
+            const { message } = response.data
+            setTableData(message)
+            dispatch(hideLoader())
+        } catch (err) {
+            console.log('err: ', err)
+            dispatch(hideLoader())
+        }
     }
 
-    render() {
-        return (
-            <>
-                <BreadCrumbWrapper />
-                <div className='custom-user-roles-wrapper'>
-                    <GoBackSubHeader currentPage="Roles" />
-                    <EditableTable tableData={tableData} onSaveTable={this.onSaveRolesAndAccess} />
-                </div>
-            </>
-        )
+    const onSaveRolesAndAccess = async tableData => {
+        tableData.forEach(obj => delete obj.key)
+        dispatch(showLoader())
+        try {
+            const response = await saveRoleConfiguartions(tableData)
+            dispatch(hideLoader())
+        } catch (err) {
+            console.log('err: ', err)
+            dispatch(hideLoader())
+        }
     }
+
+    if (!tableData) {
+        return null
+    }
+
+    return (
+        <>
+            <BreadCrumbWrapper />
+            <div className='custom-user-roles-wrapper'>
+                <GoBackSubHeader currentPage="Roles" />
+                <EditableTable
+                    tableData={tableData}
+                    onSaveTable={onSaveRolesAndAccess}
+                    onDeleteTableRow={deleteRoleConfiguartions}
+                />
+            </div>
+        </>
+    )
 }
 
 export default RolesAndAccess

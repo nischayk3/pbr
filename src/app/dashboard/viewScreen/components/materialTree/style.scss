@@ -63,3 +63,21 @@
 // 	background-color: transparent;
 // 	border-color: transparent;
 // }
+.custom-treenode
+{
+    .ant-tree-switcher{
+        width: 10px !important;
+    }
+    .ant-tag-geekblue{
+        word-break: break-all;
+        white-space: break-spaces;
+    }
+    .tree-index {
+        .ant-tree-indent {
+            width: 40px !important;
+        }
+    }
+    max-height: 500px;
+    overflow: auto;
+    
+}

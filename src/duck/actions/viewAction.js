@@ -15,6 +15,10 @@ import {
 	VIEW_PARAM_MAP,
 	IS_LOAD_VIEW,
 	RESET_VIEW,
+	IS_NEW_VIEW,
+	NEW_COLUMN,
+	VIEW_FUNCTION_NAME,
+	MATH_VALUE,
 } from '../../constants/actionTypes';
 
 export const saveViewFunction = payload => ({
@@ -91,7 +95,28 @@ export const isLoadView = payload => ({
 	payload,
 });
 
+export const isNewView = payload => ({
+	type: IS_NEW_VIEW,
+	payload,
+});
+
+export const setNewColumn = payload => ({
+	type: NEW_COLUMN,
+	payload,
+});
+
 export const resetView = payload => ({
 	type: RESET_VIEW,
 	payload,
 });
+
+export const setViewFunctionName = payload => ({
+	type: VIEW_FUNCTION_NAME,
+	payload,
+});
+
+export const setMathValue = payload => ({
+	type: MATH_VALUE,
+	payload,
+});
+

@@ -108,6 +108,7 @@ function ReportDesignerNew(props) {
   const [loading, setLoading] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [isSave, setIsSave] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const [reportName, setReportName] = useState('');
   const [isNew, setIsNew] = useState(true);
   const [visible, setVisible] = useState(false);
@@ -134,6 +135,8 @@ function ReportDesignerNew(props) {
   const [sectionKeys, setSectionKeys] = useState({})
   const [sectionAddedCharts, setSectionAddedCharts] = useState({})
   const [chartsLayout, setChartsLayout] = useState({})
+  const [chartsLayoutCompare, setChartsLayoutCompare] = useState({})
+
   const [ad, setAd] = useState(false)
   const [form] = Form.useForm();
 
@@ -170,6 +173,7 @@ function ReportDesignerNew(props) {
       let data = loadData.report_designer ? loadData.report_designer : {}
       if (data.data)
         LoadData(data.data)
+        setReportData(data.data)
     }
   }, []
   );
@@ -233,8 +237,9 @@ function ReportDesignerNew(props) {
     let json_data = reportData
     let jayson = mainJson
 
-    json_data = json_data[0] ? json_data[0] : []
     json_data = json_data['layout_info'] ? json_data['layout_info'] : {}
+    json_data = json_data['layout_info'] ? json_data['layout_info'] : {}
+
 
     if (Object.keys(json_data).length > 0 && Object.keys(jayson).length > 0) {
       return true
@@ -378,10 +383,10 @@ function ReportDesignerNew(props) {
         content_arr = item.dymamic_rows ? item.dymamic_rows.map((i, index) => {
           // let objj = {};
           let key_obj = {}
-          key_obj['value'] = i.value
+          key_obj['value'] = i.value ? i.value : ''
           key_obj['editable'] = i.editable == undefined ? false : i.editable
           key_obj['id'] = index + 1
-          key_obj['key'] = i.keyName
+          key_obj['key'] = i.keyName ? i.keyName : ''
 
           return key_obj;
         }) : []
@@ -414,7 +419,11 @@ function ReportDesignerNew(props) {
 
   // Saving the json
   const PrepareJson = (formData, saveType) => {
-    let check = checkChanges(reportData, formData)
+    let check = false
+    if(isLoad)
+    check = checkChanges(reportData, formData)
+    else
+    check=true
 
     if (check) {
       let obj = {}
@@ -445,7 +454,7 @@ function ReportDesignerNew(props) {
       obj['layout_info'] = { 'layout_info': formData, 'chart_details': selectedChartList, 'add_charts_layout': sectionAddedCharts, 'add_keys_layout': sectionKeys, 'charts_layout': sectionCharts };
       let req = {}
       req['data'] = obj
-
+      
       if (reportName.length > 0) {
         saveReportDesign(req).then((res) => {
           if (res && res['msg'] && res['msg'] == 'success') {
@@ -453,6 +462,7 @@ function ReportDesignerNew(props) {
             req.data['rep_disp_id'] = res['rep_disp_id']
             setStatus(res['rep_stauts'])
             setIsSave(true)
+            setIsSaved(true)
           }
           else
             dispatch(showNotification('error', 'Not Saved'));
@@ -467,7 +477,6 @@ function ReportDesignerNew(props) {
       dispatch(showNotification('error', 'No Changes To Save'));
       dispatch(sendReport(mainJson))
     }
-
   }
 
   // unloading the json into component readable form 
@@ -507,12 +516,13 @@ function ReportDesignerNew(props) {
 
 
       let view_version = json_data['view_id-version'] ? json_data['view_id-version'] : ''
-
       if (view_version) {
-
         let view_id = view_version[0].split('-')
-        setViewId(view_id[0])
-        setViewIdVersion(view_version)
+        setViewId(view_id[0]?view_id[0]:'')
+        setViewIdVersion(view_version[0])
+        setViewVersion(view_id[1]?view_id[1]:'')
+        getChartsList(view_version[0])
+
       }
 
       let layout_data = json_data['layout_info']
@@ -520,6 +530,8 @@ function ReportDesignerNew(props) {
       if (layout_data) {
 
         setChartsLayout(layout_data['charts_layout'] ? layout_data['charts_layout'] : {})
+        setCharts(layout_data['charts_layout'] ? layout_data['charts_layout'] : {})
+        setChartsLayoutCompare(layout_data['charts_layout'] ? layout_data['charts_layout'] : {})
 
         let section_keys = layout_data['add_keys_layout'] ? layout_data['add_keys_layout'] : {}
         setSectionKeys(section_keys)
@@ -610,6 +622,7 @@ function ReportDesignerNew(props) {
 
       let view_version = json_data['view_version'] ? json_data['view_version'].toString() : ''
       setViewVersion(view_version)
+    
       getChartsList(view + '-' + view_version)
       setViewIdVersion(view + '-' + view_version)
       json_data = json_data['layout_info']
@@ -670,8 +683,6 @@ function ReportDesignerNew(props) {
   }
 
 
-
-
   return (
     <div className='custom-wrapper'>
       <div className='sub-header'>
@@ -719,6 +730,7 @@ function ReportDesignerNew(props) {
                 <Button
                   className='custom-primary-btn'
                   onClick={() => dispatch(screenChange(true))}
+                  disabled={!isSaved}
                 >
                   Preview
                 </Button>

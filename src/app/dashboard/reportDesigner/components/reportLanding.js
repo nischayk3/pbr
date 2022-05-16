@@ -152,7 +152,12 @@ export default function Landing(props) {
     const getReportList = () => {
         let req = { rep_status: 'all' };
         getReports(req).then((res) => {
+            if(res['status-code']==200)
             setReportList(res['Data']);
+            else
+            setReportList([]);
+
+
         });
     };
 

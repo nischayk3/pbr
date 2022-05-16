@@ -154,14 +154,14 @@ const ReportNotify = (props) => {
           str = str + days_obj[days[i]];
         }
       }
-      cron_string = time_split[1] + " " + time_split[2] + ` * * ${str}`;
+      cron_string = time_split[1] + " " + time_split[0] + ` * * ${str}`;
     }
 
     if (frequency == "Monthly") {
       cron_string =
-        time_split[1] + " " + time_split[2] + " " + date_split[2] + " " + "* *";
+        time_split[1] + " " + time_split[0] + " " + date_split[2] + " " + "* *";
     }
-    if (frequency == "Once") {
+    if (frequency == "Repeat Once") {
       cron_string = "once";
     }
 
@@ -232,7 +232,7 @@ const ReportNotify = (props) => {
     setSelectedEmailSchedule(e);
   };
 
-  const onChangeTimePicker = (time, timeString) => {};
+  const onChangeTimePicker = (time, timeString) => { };
   const onChangeRadioButton = (e) => {
     setRadioValue(e.target.value);
   };
@@ -253,7 +253,7 @@ const ReportNotify = (props) => {
       "resource-name": "DASHBOARD",
     };
 
-    req["app_data"] = props.appType;
+    req["app_data"] = props.name ? props.name : props.appType;
     req["dag_id"] = " ";
     req["created_by"] = localStorage.getItem("username")
       ? localStorage.getItem("username")
@@ -290,25 +290,37 @@ const ReportNotify = (props) => {
     }
 
     req["email_config"] = email_config;
-    req["frequency"] = 1;
+    req["frequency"] = selectedSchedule == "Repeat Once"
+      ? "Once"
+      : convertExpresion(
+        scheduleEmailStartDate,
+        scheduleEmailTime,
+        selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
+        radioValue,
+        selectedTimeRange,
+        Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
+        everyDayValue
+      );
     req["frequency_unit"] =
       selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule;
     req["job_status"] = "NEW";
     req["job_type"] = "email";
     req["notify_emails"] = emailList;
     req["scheduled_end"] =
-      selectedSchedule == "Repeat Once" ? scheduleStartDate : "2030/12/12";
+      selectedSchedule == "Repeat Once" ? scheduleEmailStartDate : "2030-12-12";
     req["scheduled_start"] = scheduleEmailStartDate;
-    req["cron_exp"] = convertExpresion(
-      scheduleEmailStartDate,
-      scheduleEmailTime,
-      selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
-      radioValue,
-      selectedTimeRange,
-      Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
-      everyDayValue
-    );
-    req["job_id"] = props.job_id;
+
+    // req["cron_exp"] = convertExpresion(
+    //   scheduleEmailStartDate,
+    //   scheduleEmailTime,
+    //   selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
+    //   radioValue,
+    //   selectedTimeRange,
+    //   Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
+    //   everyDayValue
+    // );
+    if(props.job_id)
+    req["job_id"] = props.job_id ? props.job_id : ' ';
 
     let res = await putJob(req, request_headers);
 

@@ -246,7 +246,7 @@ const Workspace = () => {
                           );
                         })
                       ) : (
-                        <div style={{ display: 'flex' }}>
+                        <div style={{ display: 'flex',padding:'0px 10px' }}>
                           <div><img src={emptyImage} /></div>
                           <p className='no-approval'>Nothing to approve!</p>
                         </div>
@@ -349,7 +349,7 @@ const Workspace = () => {
                     activeKey={activeTab}
                     onChange={changeTab}
                   >
-                    {chartIdException.map((el, i) => {
+                    {chartIdException && chartIdException.map((el, i) => {
                       return (
                         <TabPane tab={el.chart_disp_id} key={`${el.chart_disp_id}_${el.chart_version}`}>
                           <Chart chartId={el.chart_disp_id} chartVersion={el.chart_version} activeTab={activeTab} current_tab={`${el.chart_disp_id}_${el.chart_version}`} />
@@ -465,7 +465,7 @@ const Workspace = () => {
                 <div className='workspace-processChart-main'>
                   <p className='workspace-processCharts'>Process Control Charts</p>
                   <Row gutter={[6, 12]}>
-                    {lastupdatedCharts.length > 0 ? lastupdatedCharts.map((j, k) => {
+                    {lastupdatedCharts && lastupdatedCharts.length > 0 ? lastupdatedCharts.map((j, k) => {
                       return (
                         <Col className='gutter-row' span={8}>
 
@@ -502,7 +502,7 @@ const Workspace = () => {
                 <div className='workspace-processView-main'>
                   <p className='workspace-processView'>Views</p>
                   <Row gutter={[6, 12]}>
-                    {lastupdatedViews.length > 0 ? lastupdatedViews.map((m, n) => {
+                    {lastupdatedViews && lastupdatedViews.length > 0 ? lastupdatedViews.map((m, n) => {
                       return (
                         <Col className='gutter-row' span={8}>
                           <div className='workspace-processView-card' onClick={() => history.push(`/dashboard/view_creation/${m.view_disp_id}&${m.view_version}?id=${m.view_disp_id}&version=${m.view_version}&fromScreen=Workspace`)}>
