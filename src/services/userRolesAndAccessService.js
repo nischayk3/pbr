@@ -37,7 +37,7 @@ export const getUserConfiguartions = () => {
     return axios.get('/services/v1/user-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'REPORT_DESIGNER'
+            'resource-name': 'ANALYTICS'
         }
     })
 }
@@ -48,7 +48,7 @@ export const saveUserConfigurationws = data => {
     return axios.put('/services/v1/user-config', body, {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'REPORT_DESIGNER'
+            'resource-name': 'ANALYTICS'
         }
     })
 }
@@ -58,7 +58,7 @@ export const deleteUserConfiguartions = role_name => {
     return axios.delete('/services/v1/user-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'REPORT_DESIGNER'
+            'resource-name': 'ANALYTICS'
         },
         params: { role_name }
     })
