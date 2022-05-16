@@ -32,7 +32,7 @@ function Filter(props) {
     plant: "",
     productCode: "",
     batchNum: "",
-    productType: [],
+    productType: "",
   });
   const [paramList, setParamList] = useState({
     plantList: [],
@@ -326,7 +326,7 @@ function Filter(props) {
         plant: "",
         productCode: "",
         batchNum: "",
-        productType: [],
+        productType: "",
       };
     });
     setDisabled(true);
