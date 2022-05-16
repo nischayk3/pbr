@@ -210,7 +210,7 @@
         "approved": false,
         "unapproved": true,
         "lock_user": false,
-        "updated": true
+        "updated": false
     },
     "deleteActionColumn": true
 }
