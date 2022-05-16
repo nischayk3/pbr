@@ -4,11 +4,15 @@ import {
     MDH_APP_PYTHON_SERVICE,
 } from '../constants/apiBaseUrl';
 
+const request_header_file = {
+	'content-type': 'application/json',
+};
+
 export const getBoundingBoxData = (_queryParam) => {
-    return Service.get(
+    return Service.post(
         MDH_APP_PYTHON_SERVICE +
-            '/pbr/udh/get_data?fileId=Batch Record Example 2_page-0.jpeg.json&pageId=1',
-        _queryParam
+            '/pbr/udh/ocr-json-extraction',
+        _queryParam,
     ).then(
         (response) => {
             return response.data;
@@ -49,7 +53,7 @@ export const getPbrReviewerData = (_queryParam) => {
 
 export const processBatchRecord = (_queryParam) => {
     return Service.get(
-        MDH_APP_PYTHON_SERVICE + '/pbr/udh/extract_from_template',
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/extract_from_template?save_db=true',
         _queryParam
     ).then(
         (response) => {
@@ -78,6 +82,20 @@ export const getPbrTemplateData = (_queryParam) => {
 export const getDataView = (_queryParam) => {
     return Service.get(
         MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_data_view',
+        _queryParam
+    ).then(
+        (response) => {
+            return response.data;
+        },
+        (error) => {
+            return error.response.data;
+        }
+    );
+};
+
+export const findParameter = (_queryParam) => {
+    return Service.post(
+        MDH_APP_PYTHON_SERVICE + '/pbr/udh/extract_from_template_find',
         _queryParam
     ).then(
         (response) => {
