@@ -196,9 +196,20 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
-      let newArr = [...postChartData.data];
-      newArr[0] = viewRes.data[0];
-      setPostChartData({ ...postChartData, data: newArr });
+      if (viewRes.data && viewRes.data.length > 0) {
+        let newArr = [...postChartData.data];
+        newArr[0] = viewRes.data[0];
+        setPostChartData({ ...postChartData, data: newArr });
+      } else {
+        message.error(viewRes.Message);
+        let newArr = [...postChartData.data];
+        newArr[0].data_filter = {
+          date_range: "",
+          unapproved_data: 1,
+          site: "",
+        };
+        setPostChartData({ ...postChartData, data: newArr });
+      }
       dispatch(hideLoader());
     } catch {
       dispatch(hideLoader());

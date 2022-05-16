@@ -3,18 +3,20 @@ import {
   AppstoreOutlined,
   BarChartOutlined,
   FileSearchOutlined,
-  FundOutlined,
-  HistoryOutlined,
-  LinkOutlined,
-  LogoutOutlined,
   PartitionOutlined,
   ClusterOutlined,
   TeamOutlined,
-  FileFilled,
   SolutionOutlined,
   FileDoneOutlined,
   AppstoreAddOutlined,
-  UserAddOutlined,
+  HomeOutlined,
+  FundProjectionScreenOutlined,
+  UploadOutlined,
+  FileProtectOutlined,
+  AreaChartOutlined,
+  CodeOutlined,
+  DeploymentUnitOutlined,
+  LayoutOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link, useHistory, useLocation } from "react-router-dom";
@@ -23,11 +25,18 @@ import React, { useCallback, useEffect, useState } from "react";
 import Auth from "../../utils/auth";
 import { useSelector } from "react-redux";
 import { useMsal } from "@azure/msal-react";
+import {JUPYTER_NOTEBOOK} from '../../constants/apiBaseUrl'
 // import { useSelector } from 'react-redux';
 
 // import { userLogout } from '../../api/login';
 
 const MENU = [
+  {
+    key: "workspace",
+    icon: <HomeOutlined style={{ fontSize: "23px" }} />,
+    title: "Workspace",
+    linkTo: "/dashboard/workspace",
+  },
   {
     key: "view_creation",
     icon: <ClusterOutlined style={{ fontSize: "23px" }} />,
@@ -40,30 +49,11 @@ const MENU = [
     title: "Chart Personalization",
     linkTo: "/dashboard/chart_personalization",
   },
-
   {
-    key: "manual_data_upload",
-    icon: <HistoryOutlined style={{ fontSize: "23px" }} />,
-    title: "Manual Data Upload",
-    linkTo: "/dashboard/manual_data_upload",
-  },
-  {
-    key: "system_error_report",
-    icon: <AppstoreOutlined style={{ fontSize: "23px" }} />,
-    title: "System Error Report",
-    linkTo: "/dashboard/system_error_report",
-  },
-  {
-    key: "data_load",
-    icon: <FileFilled style={{ fontSize: "23px" }} />,
-    title: "Data Load",
-    linkTo: "/dashboard/data_load",
-  },
-  {
-    key: "audit_trail_report",
-    icon: <FileSearchOutlined style={{ fontSize: "23px" }} />,
-    title: "Audit Trail Report",
-    linkTo: "/dashboard/audit_trail_report",
+    key: "dashboard",
+    icon: <FundProjectionScreenOutlined style={{ fontSize: "23px" }} />,
+    title: "Dashboard",
+    linkTo: "/dashboard/dashboard",
   },
   {
     key: "report_designer",
@@ -71,12 +61,6 @@ const MENU = [
     title: "Report Designer",
     linkTo: "/dashboard/report_designer",
   },
-  // {
-  //     key: 'report_generator',
-  //     icon: <FileFilled style={{ fontSize: '23px' }} />,
-  //     title: 'Report Generator',
-  //     linkTo: '/dashboard/report_generator',
-  // },
   {
     key: "workflow",
     icon: <FileDoneOutlined style={{ fontSize: "26px" }} />,
@@ -89,48 +73,80 @@ const MENU = [
     title: "Genealogy",
     linkTo: "/dashboard/genealogy",
   },
+
   {
-    key: "workspace",
-    icon: <TeamOutlined style={{ fontSize: "23px" }} />,
-    title: "Workspace",
-    linkTo: "/dashboard/workspace",
+    key: "manual_data_upload",
+    icon: <UploadOutlined style={{ fontSize: "23px" }} />,
+    title: "Manual Data Upload",
+    linkTo: "/dashboard/manual_data_upload",
   },
   {
-    key: "dashboard",
-    icon: <FundOutlined style={{ fontSize: "23px" }} />,
-    title: "Dashboard",
-    linkTo: "/dashboard/dashboard",
+    key: "audit_trail_report",
+    icon: <FileSearchOutlined style={{ fontSize: "23px" }} />,
+    title: "Audit Trail Report",
+    linkTo: "/dashboard/audit_trail_report",
   },
   {
     key: "paper batch records",
-    icon: <SolutionOutlined style={{ fontSize: "23px" }} />,
+    icon: <FileProtectOutlined style={{ fontSize: "23px" }} />,
     title: "Paper Batch Records",
     linkTo: "/dashboard/paper_batch_records",
   },
   {
     key: "pbr_reviewer",
-    icon: <LinkOutlined style={{ fontSize: "23px" }} />,
+    icon: <LayoutOutlined style={{ fontSize: "23px" }} />,
     title: "Pbr Reviewer",
     linkTo: "/dashboard/pbr_reviewer",
   },
   {
-    key: "user-roles-and-access",
-    icon: <UserAddOutlined style={{ fontSize: "23px" }} />,
-    title: "User Roles",
-    linkTo: "/dashboard/user-roles-and-access",
+    key: "data_science_studio",
+    icon: <CodeOutlined style={{ fontSize: "23px" }} />,
+    title: "Data Science Studio",
+    linkTo: "/dashboard/pythonNoteBook",
   },
   {
     key: "analysis",
-    icon: <BarChartOutlined style={{ fontSize: "23px" }} />,
+    icon: <AreaChartOutlined style={{ fontSize: "23px" }} />,
     title: "Analysis",
     linkTo: "/dashboard/analysis",
   },
   {
+    key: "user-roles-and-access",
+    icon: <TeamOutlined style={{ fontSize: "23px" }} />,
+    title: "User Roles",
+    linkTo: "/dashboard/user-roles-and-access",
+  },
+  {
     key: "hierarchy",
-    icon: <AppstoreOutlined style={{ fontSize: "23px" }} />,
+    icon: <DeploymentUnitOutlined  style={{ fontSize: "23px" }} />,
     title: "Hierarchy",
     linkTo: "/dashboard/molecule_hierarchy_configuration",
   },
+  {
+    key: "data_load",
+    icon: <SolutionOutlined style={{ fontSize: "23px" }} />,
+    title: "Data Load",
+    linkTo: "/dashboard/data_load",
+  },
+  {
+    key: "system_error_report",
+    icon: <AppstoreOutlined style={{ fontSize: "23px" }} />,
+    title: "System Error Report",
+    linkTo: "/dashboard/system_error_report",
+  },
+  
+ 
+  // {
+  //     key: 'report_generator',
+  //     icon: <FileFilled style={{ fontSize: '23px' }} />,
+  //     title: 'Report Generator',
+  //     linkTo: '/dashboard/report_generator',
+  // },
+ 
+ 
+  
+ 
+  
 ];
 
 const { Sider } = Layout;
