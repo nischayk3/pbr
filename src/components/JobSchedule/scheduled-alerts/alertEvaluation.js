@@ -357,7 +357,7 @@ const alertEvaluation = (props) => {
                 className="schedule-evalutaion-button"
                 onClick={() => SaveData()}
               >
-                Schedule Evaluation
+                Schedule alert
               </Button>
               <Button className="clear-schedule" onClick={() => onClear()}>
                 Clear
@@ -368,7 +368,7 @@ const alertEvaluation = (props) => {
           )
         }
       >
-        <TabPane tab="Schedule Alert" key="schedule_evaluation">
+        <TabPane tab="Schedule evaluation" key="schedule_evaluation">
           <div style={{ margin: "24px" }}>
             <div style={{ width: "300px" }}>
               <ClockCircleOutlined
