@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CreateVariable from "./createVariable";
-import { Button, Col, Collapse, Row } from "antd";
+import { Button, Col, Collapse, Row, Popover } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import "./style.scss";
 import MathFunction from "./mathFunction";
 import { MemoizedParameterTable } from "./parameterTable";
@@ -40,6 +41,39 @@ const MathEditor = (props) => {
     // console.log(key);
   }
 
+  const content = (
+    <div className="script-info">
+      <p className="script-help">All variables are dataframes with batch_num and parameter_value.<br />
+        batch_num as index and parameter_value is the value for the variable for given batch.<br /><br />
+        e.g:1 : isnull and fillna will fill null data with given values.<br />
+if V1.isnull().sum().sum() > 0:<br />
+        V1.fillna(0)<br />
+if V2.isnull().sum().sum() > 0:<br />
+        V2.fillna(0)<br />
+        result = V1 + V2<br /><br />
+        e.g:2 To replace some values of V1 with the values of V2.<br />
+        a = V1<br />
+        b = V2<br />
+a[V1 > 0.0235] = b[V1 > 0.0235] <br />
+        result = a<br /><br />
+        e.g:3: To find any power of values<br />
+        pow(V2, 1.2)<br /><br />
+        e.g: 4: To find log<br />
+        np.log(V2)<br /><br />
+        e.g: 5<br />
+        np.round_(V2)<br /><br />
+        e.g: add<br />
+        V1 + V2 <br /><br />
+        e.g: sub<br />
+        V1 - V2<br /><br />
+        e.g: multiply<br />
+        V1 * V2<br /><br />
+        e.g: divide<br />
+        V1 / V2<br /><br />
+        e.g polynomial<br />
+        V1**2 + V1*2 + 10</p>
+    </div>
+  );
   const isNew = useSelector(
     (state) => state.viewCreationReducer.isNew
   );
@@ -147,8 +181,9 @@ const MathEditor = (props) => {
       >
         <Panel
           className="viewCreation-materialsPanel"
-          header="Script Editor"
+          header={<span>Script Editor <Popover content={content} title={false} trigger="hover"> <InfoCircleOutlined /> </Popover></span>}
           key="1"
+
         >
           <MathFunction data={paramData} materialId={materialId} />
           <div className="variable-wrapper">
