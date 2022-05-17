@@ -38,6 +38,7 @@ const UserConfiguration = () => {
   }
 
   const onSaveUserConfigurations = async tableData => {
+    console.log(tableData)
     tableData.forEach(obj => delete obj.key)
     dispatch(showLoader())
     try {
@@ -58,8 +59,8 @@ const UserConfiguration = () => {
       <BreadCrumbWrapper />
       <div className="custom-user-roles-wrapper">
         <GoBackSubHeader currentPage="User configuration" />
-        <EditableTable 
-          tableData={tableData} 
+        <EditableTable
+          tableData={tableData}
           onSaveTable={onSaveUserConfigurations}
           onDeleteTableRow={deleteUserConfiguartions}
         />

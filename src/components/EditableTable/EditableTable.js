@@ -17,7 +17,9 @@ import {
 const { Option } = Select
 
 class EditableTable extends Component {
-    state = {}
+    state = {
+        tableDataChanged: false
+    }
 
     static getDerivedStateFromProps(props, state) {
         if (!state.dataSource) {
@@ -97,7 +99,7 @@ class EditableTable extends Component {
         try {
             await this.props.onDeleteTableRow(roleToDelete)
             const { dataSource, count } = deleteRow(key, this.state)
-            this.setState({ dataSource, count })
+            this.setState({ dataSource, count, tableDataChanged: true })
         } catch (err) {
             console.log('delete err: ', err)
         }
@@ -107,22 +109,23 @@ class EditableTable extends Component {
         const { dataSource, count } = addRow(this.state)
         this.setState({ dataSource, count }, () => {
             this.initializeTableRender()
+            this.setState({ tableDataChanged: true })
         })
     }
 
     onChangeInput = row => {
         const dataSource = changeInput(row, this.state)
-        this.setState({ dataSource })
+        this.setState({ dataSource, tableDataChanged: true })
     }
 
     onChangeSelect = (selectedValue, record, column) => {
         const dataSource = changeSelectInput(selectedValue, record, column, this.state)
-        this.setState({ dataSource })
+        this.setState({ dataSource, tableDataChanged: true })
     }
 
     onChangeToggle = (selectedValue, record, column) => {
         const dataSource = changeToggleInput(selectedValue, record, column, this.state)
-        this.setState({ dataSource })
+        this.setState({ dataSource, tableDataChanged: true })
     }
 
     render() {
@@ -169,6 +172,7 @@ class EditableTable extends Component {
                     onClick={() => this.props.onSaveTable(this.state.dataSource)}
                     style={{ float: 'right' }}
                     className="button-solid__primary"
+                    disabled={!this.state.tableDataChanged}
                 >
                     Save
                 </Button>

@@ -110,8 +110,8 @@ export const changeSelectInput = (value, record, column, state) => {
   const dataSource = JSON.parse(JSON.stringify(state.dataSource))
   const index = dataSource.findIndex(item => record.key === item.key)
   const name = column.name
-  dataSource[index].updated = true
   dataSource[index][name] = value
+  dataSource[index].updated = true
   return dataSource
 }
 
@@ -120,6 +120,7 @@ export const changeToggleInput = (value, record, column, state) => {
   const index = dataSource.findIndex(item => record.key === item.key)
   const name = column.name
   dataSource[index][name] = value
+  dataSource[index].updated = true
   return dataSource
 }
 
