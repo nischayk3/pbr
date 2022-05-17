@@ -124,7 +124,6 @@ function FileUpload(props) {
       let rowData = {};
       let batchData = {};
       let newBatchData = [];
-      console.log(parentBatches)
       let molBatch = [...parentBatches,...coverage_lists];
       setParentBatches(molBatch)
 
