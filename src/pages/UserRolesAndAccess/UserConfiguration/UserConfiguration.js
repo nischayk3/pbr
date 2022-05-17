@@ -38,7 +38,6 @@ const UserConfiguration = () => {
   }
 
   const onSaveUserConfigurations = async tableData => {
-    console.log(tableData)
     tableData.forEach(obj => delete obj.key)
     dispatch(showLoader())
     try {

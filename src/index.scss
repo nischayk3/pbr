@@ -46,12 +46,11 @@ input[type="number"]::-webkit-outer-spin-button {
   appearance: none;
   margin: 0;
 }
+
 ::-webkit-scrollbar {
-  display: none;  /* Optional: just make scrollbar invisible */
+  display: none;  
 }
-// .ant-layout-sider {
-//   margin-top: 58px;
-// }
+
 #logo-small {
   display: none;
 }
@@ -82,15 +81,11 @@ button.button-solid__primary:hover {
   color: var(--primary-color) !important;
 }
 
-.ant-switch {
-  background-color: var(--primary-color) !important;
-}
-
-.ant-switch-checked {
-  background-color: var(--primary-color) !important;
-}
-
 .custom-table-wrapper .button-dashed__primary .anticon {
 	font-size: large !important;
 	vertical-align: middle !important;
+}
+
+.ant-table-header > table{
+  border: none !important;
 }
