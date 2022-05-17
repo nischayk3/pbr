@@ -536,6 +536,13 @@ const ViewChart = (props, ref) => {
                 }
             }
             arr[index] = Object.assign({}, arr[index], res, { chartLayout: chartLayout });
+            arr[index].data[0].data = arr[index].data[0].data.map((item, index) => {
+                if (item.mode === 'markers') {
+                    item.marker.defaultColor = item.marker.color;
+                    item.marker.color = [...item.text].fill(item.marker.color)
+                }
+                return item;
+            })
             setTempPanels(arr);
             dispatch(hideLoader());
         } catch (error) {
