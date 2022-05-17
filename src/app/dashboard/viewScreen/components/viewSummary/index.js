@@ -79,6 +79,7 @@ const ViewSummaryData = props => {
 						),
 						dataIndex: item,
 						key: `${item}-${i}`,
+						
 						onHeaderCell: (record, rowIndex) => {
 							return {
 								onClick: (ev) => {
@@ -87,8 +88,11 @@ const ViewSummaryData = props => {
 
 									// dispatch(setViewFunctionName(record.dataIndex));
 								},
+								
 							};
+	
 						},
+						
 						render: value =>
 							value ? (
 								<span className='batchChecked'>
