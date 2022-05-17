@@ -1500,6 +1500,6 @@ const mapDispatchToProps = {
 	showNotification,
 };
 
-Uploader = connect(mapStateToProps, mapDispatchToProps)(Uploader);
+Uploader = connect(null, mapDispatchToProps)(Uploader);
 
 export default Uploader;

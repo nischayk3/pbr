@@ -20,7 +20,7 @@ import {
 
 import './styles.scss';
 import moment from 'moment';
-import { BMS_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
+import { BMS_APP_PYTHON_SERVICE, MDH_APP_PYTHON_SERVICE} from '../../../../constants/apiBaseUrl';
 import { showNotification } from '../../../../duck/actions/commonActions';
 
 const { Option } = Select;
@@ -253,8 +253,8 @@ class AuditTrials extends React.Component {
     var today = new Date();
     today.setDate(today.getDate() + 1);
 
-    let endPoint = '/audit-information?';
-    let baseUrl = BMS_APP_PYTHON_SERVICE + endPoint;
+    let endPoint = '/services/v1/audit-information?';
+    let baseUrl = MDH_APP_PYTHON_SERVICE + endPoint;
 
     let startDate =
       this.state.selectedDate.length > 0
