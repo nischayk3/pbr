@@ -25,6 +25,7 @@ const ViewSummaryData = props => {
 	const [tableColumn, setTableColumn] = useState(columns);
 
 	const [funTableData, setFunTableData] = useState([]);
+	const [selectedColumn, setSelectedColumn] = useState('')
 
 	const {
 		viewDisplayId,
@@ -40,6 +41,11 @@ const ViewSummaryData = props => {
 			setFunTableData(summaryTableData);
 		}
 	}, [summaryTableData]);
+
+	const setSelectedClmn = (val) =>
+	{
+		setSelectedColumn(val)
+	}
 
 	useEffect(() => {
 		if (funTableData.length > 0) {
@@ -85,10 +91,10 @@ const ViewSummaryData = props => {
 								onClick: (ev) => {
 									dispatch(setViewFunctionName(record.dataIndex));
 									message.success(`${record.dataIndex} function selected`)
+									setSelectedClmn(record.dataIndex)
 
 									// dispatch(setViewFunctionName(record.dataIndex));
-								},
-								
+								},	
 							};
 	
 						},
@@ -215,6 +221,23 @@ const ViewSummaryData = props => {
 							/>
 						),
 					}}
+					// onHeaderRow={(columns, index) => {
+					// 	return {
+					// 		onClick: () => {console.log(columns,index)}, // click header row
+					// 	};
+					// 	}}
+					onHeaderRow={(record,index,a) => ({
+					onClick: e => {
+						console.log(record,e.target.innerHTML)		
+						record.map((i)=>
+						{
+							if(i.dataIndex==e.target.innerHTML)
+							{
+								i.style={backgroundColor:'red !important'}
+							}
+						})				
+					}
+					})}
 					columns={tableColumn}
 					dataSource={funTableData}
 					size='small'
