@@ -118,6 +118,10 @@ a[V1 > 0.0235] = b[V1 > 0.0235] <br />
   };
 
   const createVar = () => {
+    if(varData && varData.length > 0)
+    {
+      variableData=[...varData]
+    }
     variableData.push({
       variableName: variableName,
       id: count,
@@ -171,6 +175,8 @@ a[V1 > 0.0235] = b[V1 > 0.0235] <br />
     setVariableName("");
     setCreateNameModal(!createNameModal);
   };
+
+  console.log(varData)
 
   return (
     <>
