@@ -124,7 +124,10 @@ function FileUpload(props) {
       let rowData = {};
       let batchData = {};
       let newBatchData = [];
+      console.log(parentBatches)
       let molBatch = [...parentBatches,...coverage_lists];
+      setParentBatches(molBatch)
+
       molBatch.map((el, index) => {
         if (record.coverage_list.includes(el.batch)) {
           batchData[el.batch] = true;
