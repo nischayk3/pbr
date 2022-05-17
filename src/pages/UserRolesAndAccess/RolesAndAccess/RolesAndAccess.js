@@ -39,14 +39,15 @@ const RolesAndAccess = () => {
 
     const onSaveRolesAndAccess = async tableData => {
         tableData.forEach(obj => delete obj.key)
-        dispatch(showLoader())
-        try {
-            await saveRoleConfiguartions(tableData)
-            dispatch(hideLoader())
-        } catch (err) {
-            console.log('err: ', err)
-            dispatch(hideLoader())
-        }
+        console.log(tableData)
+        // dispatch(showLoader())
+        // try {
+        //     await saveRoleConfiguartions(tableData)
+        //     dispatch(hideLoader())
+        // } catch (err) {
+        //     console.log('err: ', err)
+        //     dispatch(hideLoader())
+        // }
     }
 
     if (!tableData) {

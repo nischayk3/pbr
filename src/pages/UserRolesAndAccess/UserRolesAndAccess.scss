@@ -84,9 +84,15 @@ body {
 	cursor: pointer;
 }
 
+.custom-user-roles-sub-header .sub-header-title > .go-back--header-icon {
+	font-size: 16px;
+	vertical-align: middle;
+}
+
 .custom-user-roles-sub-header .header-title {
 	display: inline-block;
 	word-wrap: normal;
+	vertical-align: middle;
 }
 
 .custom-table-wrapper {
@@ -100,7 +106,7 @@ body {
 }
 
 .panel-delete-button {
-	width: 5%;
+	width: 6%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

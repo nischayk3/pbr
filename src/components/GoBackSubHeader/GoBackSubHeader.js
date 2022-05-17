@@ -19,9 +19,9 @@ const GoBackSubHeader = props => {
                 <span className='header-title' style={{ textTransform: 'none' }}>{props.currentPage}</span>
             </div>
             <style>{`
-                .go-back--header-icon {
-                    font-size: 16px;
-                }
+                // .go-back--header-icon {
+                //     font-size: 16px;
+                // }
             `}</style>
         </div>
     )
