@@ -89,15 +89,15 @@ class EditableTable extends Component {
     }
 
     onDeleteRow = async key => {
-        let roleToDelete = ''
-        this.state.dataSource.forEach(data => {
-            if (key === data.key) {
-                roleToDelete = data.roles
+        const data = []
+        this.state.dataSource.forEach(row => {
+            if (key === row.key) {
+               data.push(row)
             }
         })
 
         try {
-            await this.props.onDeleteTableRow(roleToDelete)
+            await this.props.onDeleteTableRow(data)
             const { dataSource, count } = deleteRow(key, this.state)
             this.setState({ dataSource, count, tableDataChanged: true })
         } catch (err) {

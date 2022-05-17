@@ -34,6 +34,7 @@ body {
 .search-secondary.ant-input-search-enter-button input {
   border-radius: 10px;
 }
+
 .search-secondary.ant-input-search-enter-button input:focus,
 .search-secondary.ant-input-search-enter-button input:hover {
   border-color: transparent !important;
@@ -48,7 +49,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 ::-webkit-scrollbar {
-  display: none;  
+  display: none;
 }
 
 #logo-small {
@@ -56,13 +57,18 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .custom-table-wrapper .button-dashed__primary {
- color: var(--primary-color);
- border: 1px dashed #486BC9;
+  color: var(--primary-color);
+  border: 1px dashed #486BC9;
 }
 
 .custom-table-wrapper .button-dashed__primary:hover {
   background-color: #486BC9;
   color: #fff;
+}
+
+.custom-table-wrapper .button-dashed__primary:focus {
+  color: var(--primary-color);
+  border: 1px dashed #486BC9;
 }
 
 button.button-solid__primary {
@@ -75,17 +81,19 @@ button.button-solid__primary:hover {
   background: #486BC9;
 }
 
-
-
 .icon-primary {
   color: var(--primary-color) !important;
 }
 
 .custom-table-wrapper .button-dashed__primary .anticon {
-	font-size: large !important;
-	vertical-align: middle !important;
+  font-size: large !important;
+  vertical-align: middle !important;
 }
 
-.ant-table-header > table{
+.ant-table-header {
+  background-color: red;
+}
+
+.ant-table-header>table {
   border: none !important;
 }

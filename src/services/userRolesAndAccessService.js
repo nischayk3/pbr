@@ -53,13 +53,13 @@ export const saveUserConfigurationws = data => {
     })
 }
 
-export const deleteUserConfiguartions = role_name => {
+export const deleteUserConfiguartions = data => {
     let login_response = JSON.parse(localStorage.getItem('login_details'));
     return axios.delete('/services/v1/user-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
             'resource-name': 'ANALYTICS'
         },
-        params: { role_name }
+        data: { data }
     })
 }

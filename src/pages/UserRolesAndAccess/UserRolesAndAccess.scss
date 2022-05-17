@@ -93,6 +93,10 @@ body {
 	background: #fff;
 	padding: 20px;
 	position: relative;
+
+	thead > tr > th {
+		background-color: #F0F7FA;
+	  }
 }
 
 .panel-delete-button {
@@ -141,7 +145,7 @@ custom-panel .panel-repeat {
 
 .panel-repeat>div>span label {
 	display: block;
-	margin: 0 10px 0 0;
+	margin: 0 10px 4px 0;
 }
 
 .panel-repeat>div {
@@ -179,4 +183,8 @@ custom-panel .panel-repeat {
 	align-items: flex-end;
 	text-align: right;
 	margin-bottom: 15px;
+}
+
+.custom-table-wrapper .ant-collapse-header {
+	background-color: #FAFAFA !important;
 }
