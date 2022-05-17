@@ -40,6 +40,17 @@ const MathEditor = (props) => {
     // console.log(key);
   }
 
+  const isNew = useSelector(
+		(state) => state.viewCreationReducer.isNew
+	);
+	
+	useEffect(()=>
+	{
+		if(isNew)
+		{
+		setVarData([])
+		}
+	},[isNew])
   useEffect(() => {
     if (isLoadView) {
       let paramKey = [];
@@ -138,7 +149,7 @@ const MathEditor = (props) => {
       >
         <Panel
           className="viewCreation-materialsPanel"
-          header="Math Editor"
+          header="Script Editor"
           key="1"
         >
           <MathFunction data={paramData} materialId={materialId} />
