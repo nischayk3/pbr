@@ -41,16 +41,14 @@ const MathEditor = (props) => {
   }
 
   const isNew = useSelector(
-		(state) => state.viewCreationReducer.isNew
-	);
-	
-	useEffect(()=>
-	{
-		if(isNew)
-		{
-		setVarData([])
-		}
-	},[isNew])
+    (state) => state.viewCreationReducer.isNew
+  );
+
+  useEffect(() => {
+    if (isNew) {
+      setVarData([])
+    }
+  }, [isNew])
   useEffect(() => {
     if (isLoadView) {
       let paramKey = [];

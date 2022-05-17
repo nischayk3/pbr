@@ -166,6 +166,7 @@ const ParameterTable = (props) => {
 			item === "id" ||
 			item === "key" ||
 			item === "sourceType" ||
+			item === "material_id" ||
 			item === "coverage"
 		) {
 			// console.log('i');
