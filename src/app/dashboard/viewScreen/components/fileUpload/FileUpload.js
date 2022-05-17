@@ -113,11 +113,18 @@ function FileUpload(props) {
     const selectedParam = finalData.current.find(
       (item) => String(item.parameter_name) === String(record.param)
     );
+
+    let coverage_lists = record.coverage_list
+    coverage_lists = coverage_lists.map((i)=>{
+      return {batch:i}
+    })
+
+
     if (selectedParam === undefined) {
       let rowData = {};
       let batchData = {};
       let newBatchData = [];
-      let molBatch = [...parentBatches];
+      let molBatch = [...parentBatches,...coverage_lists];
       molBatch.map((el, index) => {
         if (record.coverage_list.includes(el.batch)) {
           batchData[el.batch] = true;
@@ -149,6 +156,7 @@ function FileUpload(props) {
         rowData.key = `${record.product_num}-${record.param}`;
         rowData.primary = 0;
         rowData.aggregation = "";
+        rowData.material_id = selectedFileId
 
         //	getNewData(rowData);
         let data = { ...rowData };
