@@ -8,12 +8,13 @@ body {
 	margin-top: 2rem;
 }
 
+
 .create-new {
-	height: 137px;
-	width: 175px;
+	height: 168px;
+	width: 217px;
 	border-radius: 4px;
 	background-color: #ffffff;
-	border: 2px solid #486BC9;
+	border: 1px solid #486BC9;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
@@ -36,11 +37,11 @@ body {
 		font-weight: 400;
 		line-height: 22px;
 		color: #494949;
-		
+
 	}
 }
 
-.create-new ~ p {
+.create-new~p {
 	text-align: center;
 }
 
@@ -48,13 +49,13 @@ body {
 	border: 2px solid var(--border-color);
 
 	p {
-		color: var(--border-color); 
+		color: var(--border-color);
 	}
 }
 
 .dashboard-image img {
-    position: relative;
-    top: 19px;
+	position: relative;
+	top: 19px;
 }
 
 .custom-user-roles-wrapper .ant-card.ant-card-bordered.screen_header_wrap {
@@ -62,20 +63,20 @@ body {
 }
 
 .custom-user-roles-wrapper {
-    padding: 0 30px;
+	padding: 0 30px;
 }
 
 .custom-user-roles-wrapper .ant-row {
-    background: #fff;
-    padding: 20px 15px;
-    margin-top: 15px;
+	background: #fff;
+	padding: 20px 15px;
+	margin-top: 15px;
 	border-radius: 5px;
 }
 
 .custom-user-roles-sub-header {
-    background: #F1F7FF;
-    margin: 15px 0 0;
-    padding: 10px 15px;
+	background: #F1F7FF;
+	margin: 15px 0 0;
+	padding: 10px 15px;
 }
 
 .custom-user-roles-sub-header .sub-header-title {
@@ -84,13 +85,13 @@ body {
 }
 
 .custom-user-roles-sub-header .header-title {
-    display: inline-block;
+	display: inline-block;
 	word-wrap: normal;
 }
 
 .custom-table-wrapper {
-    background: #fff;
-    padding: 20px;
+	background: #fff;
+	padding: 20px;
 	position: relative;
 }
 
@@ -102,76 +103,80 @@ body {
 }
 
 .custom-panel p {
-    display: inline-block;
-    min-width: 20%;
-    vertical-align: top;
-    margin: 11px 0 0 0;
+	display: inline-block;
+	min-width: 20%;
+	vertical-align: top;
+	margin: 11px 0 0 0;
 }
 
 custom-panel .panel-repeat {
-    display: inline-block;
-    min-width: 80%;
+	display: inline-block;
+	min-width: 80%;
 }
 
 .custom-panel .panel-repeat {
-    display: inline-block;
-    min-width: 80%;
-    vertical-align: top;
+	display: inline-block;
+	min-width: 80%;
+	vertical-align: top;
 }
 
 .ant-col.ant-col-18.custom-panel {
-    max-width: 80%;
-    flex: 0 0 80%;
+	max-width: 80%;
+	flex: 0 0 80%;
 }
 
-.panel-repeat > div > span {
-    display: inline-block;
-    min-width: 40%;
+.panel-repeat>div>span {
+	display: inline-block;
+	min-width: 40%;
 }
 
-.panel-repeat > div > span:first-child {
-    min-width: 220px;
+.panel-repeat>div>span:first-child {
+	min-width: 220px;
 }
 
-.panel-repeat > div > span.anticon.anticon-delete {
-    display: inline-block;
-    min-width: auto;
+.panel-repeat>div>span.anticon.anticon-delete {
+	display: inline-block;
+	min-width: auto;
 }
 
-.panel-repeat > div > span label {display: block;margin: 0 10px 0 0;}
-
-.panel-repeat > div {
-    margin: 0 0 15px;
+.panel-repeat>div>span label {
+	display: block;
+	margin: 0 10px 0 0;
 }
 
-.panel-repeat > div > span .ant-select.ant-select-multiple {
-    margin-right: 20px !important;
+.panel-repeat>div {
+	margin: 0 0 15px;
+}
+
+.panel-repeat>div>span .ant-select.ant-select-multiple {
+	margin-right: 20px !important;
 	display: block;
 }
 
 .custom-user-roles-wrapper .ant-row.create-new-row {
-    text-align: center;
-    display: block;
+	text-align: center;
+	display: block;
 }
 
 .create-new-row .ant-col.ant-col-4 {
-    display: inline-block;
-    margin: 10px 15px 0;
+	display: inline-block;
+	margin: 10px 15px 0;
+
 }
 
-.custom-table-wrapper p ~ button  {
-    position: absolute;
-    right: 20px;
-    top: 12px;
+.create-new-row .ant-col.ant-col-4 p {
+	font-weight: 300;
+}
+
+.custom-table-wrapper p~button {
+	position: absolute;
+	right: 20px;
+	top: 12px;
 }
 
 .custom-row {
 	display: flex;
 	align-items: flex-end;
-    text-align: right;
-    margin-bottom: 15px;
-}
-
-.custom-row button.button-dashed__primary {
-    max-width: 200px;
+	text-align: right;
+	margin-bottom: 15px;
 }
