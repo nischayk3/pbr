@@ -17,7 +17,9 @@ import {
     Upload,
     message,
     Space,
-    notification
+    notification,
+    Modal,
+    Table
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -33,6 +35,12 @@ import {
     MinusCircleOutlined,
     MonitorOutlined
 } from '@ant-design/icons';
+import {
+    hideLoader,
+    showLoader,
+    showNotification,
+} from '../../../../duck/actions/commonActions';
+import { useDispatch } from 'react-redux';
 import panelLeftImg from '../../../../assets/images/panel-leftIcon.svg';
 import panelRightImg from '../../../../assets/images/panel-rightIcon.svg';
 import cropImg from '../../../../assets/images/cropImg.svg';
@@ -63,6 +71,7 @@ function PaperBatchRecordsTemplate() {
         areas: [],
     };
     const location = useLocation()
+    const dispatch = useDispatch();
     const params = QueryString.parse(location.search)
     const [form] = Form.useForm();
     const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false);
@@ -120,9 +129,13 @@ function PaperBatchRecordsTemplate() {
         dateSnippet: false,
     });
     const [fileList, setFileList] = useState([]);
+    const [modalData, setModalData] = useState([]);
     const [imageWidth, setImageWidth] = useState(868);
     const [imageHeight, setimageHeight] = useState(1123);
     const [origianalResponse, setOrigianalResponse] = useState({});
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [tableLoading, setTableLoading] = useState(false);
+    const [searchedFileList, setSearchedFileList] = useState("");
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
     };
@@ -529,7 +542,7 @@ function PaperBatchRecordsTemplate() {
     /**
      * TODO: get boundingBoxData info
      */
-    const getBoundingBoxDataInfo = async (_reqBatch) => {
+    const getBoundingBoxDataInfo = async (width, height) => {
         try {
 
             // dispatch(showLoader());
@@ -540,6 +553,8 @@ function PaperBatchRecordsTemplate() {
             const batchRes = await getBoundingBoxData(_reqBatch);
             setOrigianalResponse(batchRes)
             let areasArr = [];
+            let width1 = width ? width : 856
+            let height1 = height ? height : 1108
             // const list = document.getElementsByTagName("canvas")[0]
             // console.log("listlistlist", list)
             // // // let rect = list.getBoundingClientRect();
@@ -547,10 +562,10 @@ function PaperBatchRecordsTemplate() {
             if (batchRes.Data.length > 0) {
 
                 batchRes.Data.forEach((e) => {
-                    let x1 = e.key_left * 868;
-                    let x2 = (e.key_left + e.key_width) * 868;
-                    let y1 = e.key_top * 1123;
-                    let y2 = (e.key_top + e.key_height) * 1123;
+                    let x1 = e.key_left * width1;
+                    let x2 = (e.key_left + e.key_width) * width1;
+                    let y1 = e.key_top * height1;
+                    let y2 = (e.key_top + e.key_height) * height1;
                     let obj = {
                         snippetID: e.key_snippet_id,
                         areaValue: e.key_text,
@@ -560,10 +575,10 @@ function PaperBatchRecordsTemplate() {
                         fillColor: 'transparent',
                         strokeColor: 'blue',
                     };
-                    let valuex1 = e.value_left * 868;
-                    let valuex2 = (e.value_left + e.value_width) * 868;
-                    let valuey1 = e.value_top * 1123;
-                    let valuey2 = (e.value_top + e.value_height) * 1123;
+                    let valuex1 = e.value_left * width1;
+                    let valuex2 = (e.value_left + e.value_width) * width1;
+                    let valuey1 = e.value_top * height1;
+                    let valuey2 = (e.value_top + e.value_height) * height1;
                     let obj1 = {
                         snippetID: e.key_snippet_id,
                         areaValue: e.value_text,
@@ -591,6 +606,7 @@ function PaperBatchRecordsTemplate() {
     useEffect(() => {
         getImage()
         getBoundingBoxDataInfo();
+
     }, []);
 
     const getImage = async () => {
@@ -611,55 +627,23 @@ function PaperBatchRecordsTemplate() {
             .catch((error) => console.log("error", error));
 
         let res = await response.blob();
-        
+
         setDisplayImage(window.webkitURL.createObjectURL(res))
     }
 
 
-    // useEffect(() => {
-    //     // setTimeout(() => {
-    //     if (Object.keys(origianalResponse).length>0) {
-    //         const list = document.getElementsByTagName("canvas")[0]
-    //         console.log("height: ", list?.height, list?.width);
-    //         let areasArr = [];
-    //         // setImageWidth(list.width)
-    //         // setimageHeight(list.height)
-    //         origianalResponse.Data.forEach((e) => {
-    //             let x1 = e.key_left * list?.width;
-    //             let x2 = (e.key_left + e.key_width) * list?.width;
-    //             let y1 = e.key_top * list?.height;
-    //             let y2 = (e.key_top + e.key_height) * list?.height;
-    //             let obj = {
-    //                 snippetID: e.key_snippet_id,
-    //                 areaValue: e.key_text,
-    //                 shape: 'rect',
-    //                 coords: [x1, y1, x2, y2],
-    //                 preFillColor: 'transparent',
-    //                 fillColor: 'transparent',
-    //                 strokeColor: 'blue',
-    //             };
-    //             let valuex1 = e.value_left * list?.width;
-    //             let valuex2 = (e.value_left + e.value_width) * list?.width;
-    //             let valuey1 = e.value_top * list?.height;
-    //             let valuey2 = (e.value_top + e.value_height) * list?.height;
-    //             let obj1 = {
-    //                 snippetID: e.key_snippet_id,
-    //                 areaValue: e.value_text,
-    //                 shape: 'rect',
-    //                 coords: [valuex1, valuey1, valuex2, valuey2],
-    //                 preFillColor: 'transparent',
-    //                 fillColor: 'transparent',
-    //                 strokeColor: 'blue',
-    //             };
-    //             areasArr.push(obj);
-    //             areasArr.push(obj1);
-    //         });
-    //         setAreasMap({ ...areasMap, areas: areasArr });
+    useEffect(() => {
+        setTimeout(() => {
+            const list = document.getElementsByTagName("canvas")[0]
+            console.log("height: ", list?.height, list?.width);
+            console.log("height: ", list);
+            getBoundingBoxDataInfo(list?.width, list?.height);
+            setImageWidth(list?.width)
+            setimageHeight(list?.height)
+        }, 3000)
 
-    //     }
-    //     // }, 10000)
-
-    // }, [leftPanelCollapsed, rightPanelCollapsed]);
+    }, [document.getElementsByTagName("canvas")[0]]);
+    console.log("areas.map", areasMap)
 
     const load = () => { };
 
@@ -767,7 +751,7 @@ function PaperBatchRecordsTemplate() {
     const savePbrTemplateDataInfo = async () => {
         if (formValues.length > 0) {
             try {
-                // dispatch(showLoader());
+                dispatch(showLoader());
                 let _reqBatch = {
                     pbrTemplateName: params.tempalteName,
                     custKey: 'PBR',
@@ -857,10 +841,10 @@ function PaperBatchRecordsTemplate() {
                     message.error(batchRes.Message);
                     // dispatch(showNotification('error', batchRes.detail));
                 }
-                // dispatch(hideLoader());
+                dispatch(hideLoader());
             } catch (error) {
-                // dispatch(hideLoader());
-                // dispatch(showNotification('error', 'No Data Found'));
+                dispatch(hideLoader());
+                dispatch(showNotification('error', 'No Data Found'));
             }
         } else {
             openNotification('Please Create Template Before Save')
@@ -915,6 +899,8 @@ function PaperBatchRecordsTemplate() {
     const findTemplate = async () => {
 
         let req = {
+            extraction_type: "all",
+            extraction_filename: params?.file,
             template_list: []
         }
         let obj = {
@@ -923,11 +909,96 @@ function PaperBatchRecordsTemplate() {
         }
         if (formValues[activeKey]?.values) {
             obj['color'] = "blue",
+                obj['param_key_height'] = (formValues[activeKey]?.values?.anchorCoords[3] - formValues[activeKey]?.values?.anchorCoords[1]) / imageHeight
+            obj['param_key_left'] = formValues[activeKey]?.values?.anchorCoords[0] / imageWidth
+            obj['param_key_text'] = formValues[activeKey]?.values?.anchorValue
+            obj['param_key_top'] = formValues[activeKey]?.values?.anchorCoords[1] / imageHeight
+            obj['param_key_width'] = (formValues[activeKey]?.values?.anchorCoords[2] - formValues[activeKey]?.values?.anchorCoords[0])
+            obj['param_page'] = 1
+            obj['param_snippet_id'] = formValues[activeKey]?.values?.snippetID
+            obj['param_value_height'] = (formValues[activeKey]?.values?.valueCoords[3] - formValues[activeKey]?.values?.valueCoords[1]) / imageHeight
+            obj['param_value_left'] = formValues[activeKey]?.values?.valueCoords[0] / imageWidth
+            obj['param_value_text'] = formValues[activeKey]?.values?.anchorId
+            obj['param_value_top'] = formValues[activeKey]?.values?.valueCoords[1] / imageHeight
+            obj['param_value_width'] = (formValues[activeKey]?.values?.valueCoords[2] - formValues[activeKey]?.values?.valueCoords[0]) / imageWidth
+        }
+        if (formValues[activeKey]?.unitValues) {
+            obj['uom_key_height'] = (formValues[activeKey]?.unitValues?.coords[3] - formValues[activeKey]?.unitValues?.coords[1]) / imageHeight
+            obj['uom_key_left'] = formValues[activeKey]?.unitValues?.coords[0] / imageWidth
+            obj['uom_key_text'] = formValues[activeKey]?.unitValues?.unitAnchor
+            obj['uom_key_top'] = formValues[activeKey]?.unitValues?.coords[1] / imageHeight
+            obj['uom_key_width'] = (formValues[activeKey]?.unitValues?.coords[2] - formValues[activeKey]?.unitValues?.coords[0])
+            obj['uom_page'] = 1
+            obj['uom_snippet_id'] = formValues[activeKey]?.unitValues?.snippetID
+            obj['uom_value_height'] = (formValues[activeKey]?.unitValues?.valueCoords[3] - formValues[activeKey]?.unitValues?.valueCoords[1]) / imageHeight
+            obj['uom_value_left'] = formValues[activeKey]?.unitValues?.valueCoords[0] / imageWidth
+            obj['uom_value_text'] = formValues[activeKey]?.unitValues?.unitId
+            obj['uom_value_top'] = formValues[activeKey]?.unitValues?.valueCoords[1] / imageHeight
+            obj['uom_value_width'] = (formValues[activeKey]?.unitValues?.valueCoords[2] - formValues[activeKey]?.unitValues?.valueCoords[0]) / imageWidth
+        }
+        if (formValues[activeKey]?.timeValues) {
+            obj['time_key_height'] = (formValues[activeKey]?.timeValues?.coords[3] - formValues[activeKey]?.timeValues?.coords[1]) / imageHeight
+            obj['time_key_left'] = formValues[activeKey]?.timeValues?.coords[0] / imageWidth
+            obj['time_key_text'] = formValues[activeKey]?.timeValues?.timeAnchor
+            obj['time_key_top'] = formValues[activeKey]?.timeValues?.coords[1] / imageHeight
+            obj['time_key_width'] = (formValues[activeKey]?.timeValues?.coords[2] - formValues[activeKey]?.timeValues?.coords[0])
+            obj['time_page'] = 1
+            obj['time_snippet_id'] = formValues[activeKey]?.timeValues?.snippetID
+            obj['time_value_height'] = (formValues[activeKey]?.timeValues?.valueCoords[3] - formValues[activeKey]?.timeValues?.valueCoords[1]) / imageHeight
+            obj['time_value_left'] = formValues[activeKey]?.timeValues?.valueCoords[0] / imageWidth
+            obj['time_value_text'] = formValues[activeKey]?.timeValues?.timeId
+            obj['time_value_top'] = formValues[activeKey]?.timeValues?.valueCoords[1] / imageHeight
+            obj['time_value_width'] = (formValues[activeKey]?.timeValues?.valueCoords[2] - formValues[activeKey]?.timeValues?.valueCoords[0]) / imageWidth
+        }
+        if (formValues[activeKey]?.dateValues) {
+            obj['date_key_height'] = (formValues[activeKey]?.dateValues?.coords[3] - formValues[activeKey]?.dateValues?.coords[1]) / imageHeight
+            obj['date_key_left'] = formValues[activeKey]?.dateValues?.coords[0] / imageWidth
+            obj['date_key_text'] = formValues[activeKey]?.dateValues?.dateAnchor
+            obj['date_key_top'] = formValues[activeKey]?.dateValues?.coords[1] / imageHeight
+            obj['date_key_width'] = (formValues[activeKey]?.dateValues?.coords[2] - formValues[activeKey]?.dateValues?.coords[0])
+            obj['date_page'] = 1
+            obj['date_snippet_id'] = formValues[activeKey]?.dateValues?.snippetID
+            obj['date_value_height'] = (formValues[activeKey]?.dateValues?.valueCoords[3] - formValues[activeKey]?.dateValues?.valueCoords[1]) / imageHeight
+            obj['date_value_left'] = formValues[activeKey]?.dateValues?.valueCoords[0] / imageWidth
+            obj['date_value_text'] = formValues[activeKey]?.dateValues?.dateId
+            obj['date_value_top'] = formValues[activeKey]?.dateValues?.valueCoords[1] / imageHeight
+            obj['date_value_width'] = (formValues[activeKey]?.dateValues?.valueCoords[2] - formValues[activeKey]?.dateValues?.valueCoords[0]) / 868
+        }
+        req.template_list.push(obj)
+        let res = await findParameter(req)
+        if (res?.Found_file_list?.length > 0) {
+            console.log("ress", res)
+            message.success(res.Message);
+            setFileList(res.Found_file_list)
+            setSearchedFileList(res.Searched_file_list)
+        } else {
+            message.error(res.Message);
+            // dispatch(showNotification('error', batchRes.detail));
+        }
+
+    }
+    const showModal = async () => {
+        setIsModalVisible(true);
+        setTableLoading(true)
+        let req1 = {
+            extraction_type: "custom",
+            template_list: [],
+            extraction_filename: params?.file,
+        }
+        console.log("re1", req1)
+        let arr = []
+        let obj = {
+
+            filename: params.file,
+            method: formValues[activeKey]?.method
+        }
+        if (formValues[activeKey]?.values) {
+            obj['color'] = "blue",
                 obj['param_key_height'] = (formValues[activeKey]?.values?.anchorCoords[3] - formValues[activeKey]?.values?.anchorCoords[1]) / 1123
             obj['param_key_left'] = formValues[activeKey]?.values?.anchorCoords[0] / 868
             obj['param_key_text'] = formValues[activeKey]?.values?.anchorValue
             obj['param_key_top'] = formValues[activeKey]?.values?.anchorCoords[1] / 1123
-            obj['param_key_width'] = (formValues[activeKey]?.values?.anchorCoords[2] - formValues[activeKey]?.values?.anchorCoords[0])
+            obj['param_key_width'] = (formValues[activeKey]?.values?.anchorCoords[2] - formValues[activeKey]?.values?.anchorCoords[0]) / 868
             obj['param_page'] = 1
             obj['param_snippet_id'] = formValues[activeKey]?.values?.snippetID
             obj['param_value_height'] = (formValues[activeKey]?.values?.valueCoords[3] - formValues[activeKey]?.values?.valueCoords[1]) / 1123
@@ -941,7 +1012,7 @@ function PaperBatchRecordsTemplate() {
             obj['uom_key_left'] = formValues[activeKey]?.unitValues?.coords[0] / 868
             obj['uom_key_text'] = formValues[activeKey]?.unitValues?.unitAnchor
             obj['uom_key_top'] = formValues[activeKey]?.unitValues?.coords[1] / 1123
-            obj['uom_key_width'] = (formValues[activeKey]?.unitValues?.coords[2] - formValues[activeKey]?.unitValues?.coords[0])
+            obj['uom_key_width'] = (formValues[activeKey]?.unitValues?.coords[2] - formValues[activeKey]?.unitValues?.coords[0]) / 868
             obj['uom_page'] = 1
             obj['uom_snippet_id'] = formValues[activeKey]?.unitValues?.snippetID
             obj['uom_value_height'] = (formValues[activeKey]?.unitValues?.valueCoords[3] - formValues[activeKey]?.unitValues?.valueCoords[1]) / 1123
@@ -955,7 +1026,7 @@ function PaperBatchRecordsTemplate() {
             obj['time_key_left'] = formValues[activeKey]?.timeValues?.coords[0] / 868
             obj['time_key_text'] = formValues[activeKey]?.timeValues?.timeAnchor
             obj['time_key_top'] = formValues[activeKey]?.timeValues?.coords[1] / 1123
-            obj['time_key_width'] = (formValues[activeKey]?.timeValues?.coords[2] - formValues[activeKey]?.timeValues?.coords[0])
+            obj['time_key_width'] = (formValues[activeKey]?.timeValues?.coords[2] - formValues[activeKey]?.timeValues?.coords[0]) / 868
             obj['time_page'] = 1
             obj['time_snippet_id'] = formValues[activeKey]?.timeValues?.snippetID
             obj['time_value_height'] = (formValues[activeKey]?.timeValues?.valueCoords[3] - formValues[activeKey]?.timeValues?.valueCoords[1]) / 1123
@@ -969,7 +1040,7 @@ function PaperBatchRecordsTemplate() {
             obj['date_key_left'] = formValues[activeKey]?.dateValues?.coords[0] / 868
             obj['date_key_text'] = formValues[activeKey]?.dateValues?.dateAnchor
             obj['date_key_top'] = formValues[activeKey]?.dateValues?.coords[1] / 1123
-            obj['date_key_width'] = (formValues[activeKey]?.dateValues?.coords[2] - formValues[activeKey]?.dateValues?.coords[0])
+            obj['date_key_width'] = (formValues[activeKey]?.dateValues?.coords[2] - formValues[activeKey]?.dateValues?.coords[0]) / 868
             obj['date_page'] = 1
             obj['date_snippet_id'] = formValues[activeKey]?.dateValues?.snippetID
             obj['date_value_height'] = (formValues[activeKey]?.dateValues?.valueCoords[3] - formValues[activeKey]?.dateValues?.valueCoords[1]) / 1123
@@ -978,17 +1049,61 @@ function PaperBatchRecordsTemplate() {
             obj['date_value_top'] = formValues[activeKey]?.dateValues?.valueCoords[1] / 1123
             obj['date_value_width'] = (formValues[activeKey]?.dateValues?.valueCoords[2] - formValues[activeKey]?.dateValues?.valueCoords[0]) / 868
         }
-        req.template_list.push(obj)
-        let res = await findParameter(req)
-        if (res?.File_list?.length > 0) {
+        req1.template_list.push(obj)
+        console.log("req1", req1)
+        let res = await findParameter(req1)
+        if (res?.Found_file_list?.length > 0) {
             message.success(res.Message);
-            setFileList(res.File_list)
+            setModalData(res.Extraction)
         } else {
             message.error(res.Message);
             // dispatch(showNotification('error', batchRes.detail));
         }
+        setTableLoading(false)
+    };
 
-    }
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+
+    };
+    const modalColumns = [
+        {
+            title: 'File Name',
+            dataIndex: 'file_path',
+            key: 'name',
+            render: (text) => text.split('_')[0]
+        },
+        {
+            title: 'Key',
+            dataIndex: 'key_',
+            key: 'key',
+        },
+        {
+            title: 'Value',
+            dataIndex: 'value',
+            key: 'value',
+        },
+        {
+            title: 'Product',
+            dataIndex: 'product',
+            key: 'product',
+        },
+        {
+            title: 'Batch',
+            dataIndex: 'batch',
+            key: 'batch',
+        },
+        {
+            title: 'Site',
+            dataIndex: 'site',
+            key: 'site',
+        },
+    ];
+    
     return (
         <div className='pbr-container pbrTemplate-container'>
             <div className='custom-wrapper pbr-wrapper'>
@@ -1090,6 +1205,7 @@ function PaperBatchRecordsTemplate() {
                                     <Form
                                         layout='vertical'
                                         form={form}
+                                        initialValue={{dymamic_sections:[{name:"asdf",method:"absolute_coordinate"},{name:"zxcv",method:"absolute_coordinate"}]}}
                                         className='formNewTemplate'
                                         onFinish={onFinish}
                                         onValuesChange={handleValuesChange}
@@ -1097,7 +1213,7 @@ function PaperBatchRecordsTemplate() {
                                         <div className='addParameterContainer'>
                                             <div className='addParameterBlock'>
                                                 <div className='singleParameterBlock'>
-                                                    <Form.List name='dymamic-sections'>
+                                                    <Form.List name='dymamic_sections' >
                                                         {(
                                                             fields,
                                                             { add, remove }
@@ -1114,7 +1230,7 @@ function PaperBatchRecordsTemplate() {
 
                                                                             <Panel header={`Parameter ${key + 1} created`} key={`${key}`}>
                                                                                 <div className='addParameterBlock'>
-                                                                                    {paramaterAdded ? (
+                                                                                    {/* {paramaterAdded ? ( */}
                                                                                         <div className='parameterAdded-block'>
                                                                                             <Form.Item {...restField} name={[name, 'name']} label="Name">
                                                                                                 <Input
@@ -1139,7 +1255,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     <Option value='regex'>
                                                                                                         Get By Regex
                                                                                                     </Option>
-                                                                                                    <Option value='form_key_value'>
+                                                                                                    <Option value='key_value_form'>
                                                                                                         Get By Form Key Value
                                                                                                     </Option>
                                                                                                     <Option value='relative_direction '>
@@ -1668,14 +1784,15 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Button type='primary' className='defineTableBtn' onClick={findTemplate}>
                                                                                                     <MonitorOutlined /> Find
                                                                                                 </Button>
+                                                                                                <p>Found in {`${fileList.length}/${searchedFileList.length}`} files</p>
                                                                                             </div>
                                                                                             <div>{fileList.map(item => (
                                                                                                 <p>{item?.split('_')[0]}</p>
                                                                                             ))}</div>
                                                                                         </div>
-                                                                                    ) : (
-                                                                                        ''
-                                                                                    )}
+                                                                                    {/* ) : (
+                                                                                        '' */}
+                                                                                    {/* )} */}
                                                                                 </div>
                                                                             </Panel>
                                                                         )
@@ -1739,7 +1856,7 @@ function PaperBatchRecordsTemplate() {
                                     span={12}
                                     className='pbrCenterPanelCol pbrCenterBlockLeft'
                                 >
-                                    <p className='pbrCenterPanelHeader-para'>
+                                    <p className='pbrCenterPanelHeader-para' onClick={showModal}>
                                         Preview
                                         <span>{params?.file?.split('_')[0]}</span>
                                     </p>
@@ -1801,6 +1918,16 @@ function PaperBatchRecordsTemplate() {
                             </div>
                         </div>
                     </div>
+                    <Modal title="Preview" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={null} >
+                        <Table
+                            loading={tableLoading}
+                            className='pbrTemplates-table'
+                            columns={modalColumns}
+                            dataSource={modalData}
+                            pagination={false}
+
+                        />
+                    </Modal>
                 </div>
                 <div className='pbrTemplateRight'>
                     <div className='pbrPanel pbrRightPanel'>
