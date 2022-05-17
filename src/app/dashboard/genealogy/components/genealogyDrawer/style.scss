@@ -21,7 +21,7 @@
 	}
 }
 .drawer-title {
-	grid-template-columns: 20px 150px 22px;
+	grid-template-columns: 220px auto 22px;
 	display: grid;
 	grid-gap: 4px;
 	img {
@@ -35,7 +35,7 @@
 	justify-content: space-between;
 
 	.drawer-title {
-		grid-template-columns: 20px 160px 22px;
+		grid-template-columns: 20px auto 22px;
 		display: grid;
 		grid-gap: 4px;
 		.download-file {
