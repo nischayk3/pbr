@@ -399,7 +399,7 @@ function Filter(props) {
 					handleClearSearch={e => clearSearch(e, 'batch')}
 					error={isEmptyBatch ? 'Please select batch' : null}
 					options={optionsBatch}
-					selectedValue={selectParam['batchNum']}
+					selectedValue={selectParam['batchNum'] !== ''}
 				/>
 				<SelectSearchField
 					showSearch
@@ -411,7 +411,9 @@ function Filter(props) {
 					handleClearSearch={e => clearSearch(e, 'product_type')}
 					//error={isEmptyProductType ? 'Please select product type' : null}
 					options={optionsProductType}
-					selectedValue={selectParam['productType']}
+					selectedValue={
+						selectParam['productType'] !== '' ? selectParam['productType'] : []
+					}
 				/>
 				<Toggle
 					name='isChecked'
