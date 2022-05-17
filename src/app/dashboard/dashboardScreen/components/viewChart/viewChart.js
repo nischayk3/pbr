@@ -622,7 +622,7 @@ const ViewChart = (props, ref) => {
         let payload = {}
         try {
             dispatch(showLoader())
-            arr.map(async (el, i) => {
+            await Promise.all(arr.map(async (el, i) => {
                 if (el.data_filter.site || el.data_filter.date_range || el.data_filter.unapproved_data) {
                     payload = {
                         site: el.data_filter.site,
@@ -658,7 +658,7 @@ const ViewChart = (props, ref) => {
                 el.data = res.data
                 //setTempPanels(dash_info.panels);
 
-            })
+            }))
             setTempPanels(arr);
             setDashboardInfo(obj);
             //dispatch(hideLoader());
