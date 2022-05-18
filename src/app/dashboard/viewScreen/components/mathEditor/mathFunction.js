@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input, Modal, Alert, Table } from 'antd';
 import FunctionKey from '../../../../../assets/images/key1.png';
@@ -9,30 +9,17 @@ import {
 	saveViewFunction,
 	sendFunctionName,
 	sendFunDetails,
-	setNewColumn
+	setNewColumn,
 } from '../../../../../duck/actions/viewAction';
 import { viewEvaluate } from '../../../../../services/viewCreationPublishing';
 import { showNotification } from '../../../../../duck/actions/commonActions';
+import CodeEditor from '@uiw/react-textarea-code-editor';
 
 const DataColumns = [
 	{
 		title: 'Batch Num',
 		dataIndex: 'batch_num',
 		key: 'batch_num',
-		width: 150,
-		fixed: 'left',
-	},
-	{
-		title: 'PARAMETER',
-		dataIndex: 'parameter',
-		key: 'parameter',
-		width: 150,
-		fixed: 'left',
-	},
-	{
-		title: 'Recorded Date',
-		dataIndex: 'recorded_date',
-		key: 'recorded_date',
 		width: 150,
 		fixed: 'left',
 	},
@@ -59,6 +46,26 @@ const MathFunction = props => {
 	const [evalTable, setEvalTable] = useState([])
 
 	const dispatch = useDispatch();
+
+	const mathValue = useSelector(
+		(state) => state.viewCreationReducer.mathValue
+	);
+	const isNew = useSelector(
+		(state) => state.viewCreationReducer.isNew
+	);
+
+	useEffect(() => {
+		if (isNew) {
+			setMathEditorValue(mathValue)
+		}
+	}, [isNew])
+
+	useEffect(() => {
+		if (mathValue)
+			setMathEditorValue(mathValue)
+	}, [mathValue])
+
+
 	const showModal = () => {
 		dispatch(saveViewFunction(false));
 		setIsModalVisible(true);
@@ -70,8 +77,7 @@ const MathFunction = props => {
 	const handleCancel = () => {
 		setIsModalVisible(false);
 	};
-	const handleCreateCancel = () =>
-	{
+	const handleCreateCancel = () => {
 		dispatch(saveAsViewFunction(true));
 		setIsModalVisible(false);
 		setIsFunction(false);
@@ -92,8 +98,7 @@ const MathFunction = props => {
 		setFunctionName(e.target.value);
 	};
 
-	const handleSave = () => 
-	{
+	const handleSave = () => {
 		dispatch(sendFunctionName(functionName));
 		dispatch(saveViewFunction(true));
 		setIsModalVisible(false);
@@ -116,10 +121,9 @@ const MathFunction = props => {
 
 		if (evaluate_respone.view_status == "") {
 			setIsTableVisible(true)
-			if(evaluate_respone.functions)
-			{
-			setEvalTable(evaluate_respone.functions)
-			dispatch(setNewColumn(evaluate_respone.functions))
+			if (evaluate_respone.functions) {
+				setEvalTable(evaluate_respone.functions)
+				dispatch(setNewColumn(evaluate_respone.functions))
 			}
 			dispatch(showNotification('success', 'Evaluated'))
 			setIsFunction(true);
@@ -137,8 +141,6 @@ const MathFunction = props => {
 		setIsFunctionInvalid(false);
 		setIsEvaluatingFun(false);
 	};
-
-
 
 
 	return (
@@ -178,35 +180,49 @@ const MathFunction = props => {
 						showIcon
 					/>
 				) : (
-					<Input
-						onChange={e => handleChangeFunction(e)}
-						placeholder='Create variables using parameters below to use them here'
-						suffix={
-							<span>
-								{isFunctionVisible && (
-									<>
-										{/* {isFunction ? ( */}
-											<Button
-												onClick={functionEvaluate}
-												type='text'
-												className='custom-eval-btn'>
-												Function Evaluate
-											</Button>										
-											<Button
-												onClick={showModal}
-												type='text'
-												disabled={!isFunction}
-												className={!isFunction ? "custom-eval-btn-disable" :'custom-secondary-btn'}>
-												Create
-											</Button>
-									</>
-								)}
+					<div>
+						<CodeEditor
+							value={mathEditorValue}
+							language="py"
+							placeholder="Please enter the script"
+							onChange={e => handleChangeFunction(e)}
+							padding={15}
+							style={{
+								fontSize: 12,
+								backgroundColor: "#f5f5f5",
+								fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+								color:'black',
+								border:'.5px solid black'
+							}}
+						/>
+						{/* <Input.TextArea
+							onChange={e => handleChangeFunction(e)}
+							placeholder='Create variables using parameters below to use them here'
+							value={mathEditorValue}
+							autoSize={true}
+						/> */}
+						<span >
+							{/* {isFunctionVisible && ( */}
+							<>
+								{/* {isFunction ? ( */}
+								<Button
+									onClick={functionEvaluate}
+									type='text'
+									className='custom-eval-btn'>
+									Function Evaluate
+								</Button>
+								<Button
+									onClick={showModal}
+									type='text'
+									disabled={!isFunction}
+									className={!isFunction ? "custom-eval-btn-disable" : 'custom-secondary-eval-btn'}>
+									Create
+								</Button>
+							</>
 
-								<img src={FunctionKey} />
-							</span>
-						}
-						value={mathEditorValue}
-					/>
+							<img className="keyboard-icon" src={FunctionKey} />
+						</span>
+					</div>
 				)}
 			</div>
 			<Modal
@@ -249,7 +265,7 @@ const MathFunction = props => {
 				</div>
 			</Modal>
 			<Modal
-			title="Function Data"
+				title="Function Data"
 				width={500}
 				visible={isTabelVisible}
 				onCancel={handleTableCancel}

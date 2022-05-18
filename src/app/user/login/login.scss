@@ -1,5 +1,5 @@
 .bg-img {
-	background-image: url('../../../assets/login-background.jpg');
+	background-image: url('../../../assets/images/login_avatars.png');
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -9,7 +9,7 @@
 	padding-top: 5px;
 }
 .body {
-	padding-top: 80px;
+	//padding-top: 80px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -17,12 +17,12 @@
 .card-changes {
 	// left: 315px;
 	// top: -30px;
-	min-width: 600px;
+	min-width: 540px;
 	background: #fff;
 	// border-radius: 15px;
 }
 .card-action-new {
-	padding: 45px 0px !important;
+	//padding: 45px 0px !important;
 	border-top: 0px !important;
 	button {
 		background: rgb(60, 78, 158) !important;
@@ -33,7 +33,7 @@
 	}
 }
 .card-container-change {
-	padding: 20px 40px !important;
+	// padding: 20px 40px !important;
 }
 .group-feilds {
 	margin-top: 34px !important;
@@ -76,6 +76,7 @@
 }
 .page-login {
 	padding: 0px !important;
+	padding: 25px 50px;
 }
 .cpv-logo {
 	height: 100px;
@@ -83,4 +84,78 @@
 
 .page-login {
 	min-height: 100vh;
+}
+
+.login-head{
+margin: 0px;
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 32px;
+line-height: 24px;
+/* identical to box height, or 75% */
+
+display: flex;
+align-items: center;
+
+color: #000000;
+
+}
+
+.login-desc{
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 300;
+	font-size: 16px;
+	line-height: 24px;
+	/* identical to box height, or 150% */
+	
+	display: flex;
+	align-items: center;
+	
+	color: #A0A0A0;
+	margin:5px 0px;
+	
+}
+
+.forgot-pwd{
+	span{
+		font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 24px;
+/* identical to box height, or 150% */
+
+	text-align: center;
+
+	color: #093185;
+
+	}
+}
+.login-btn{
+	width: 100%;
+    margin: 20px 0px 10px 0px;
+	background: #093185;
+	border-radius: 4px;
+	color: #ffffff;
+}
+.signup-text{
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 22px;
+color: rgba(0, 0, 0, 0.85);
+
+.sign-up{
+	font-size: 16px;
+	text-align: center;
+	color: #093185;
+}
+}
+
+.microsoft-btn{
+	width: 100%;
+	margin: 20px 0px;
 }

@@ -34,16 +34,16 @@ const chartComponent = (props) => {
         try {
             dispatch(showLoader());
             const chartResponse = await getChartPlotData(req,headers);
-            if(chartResponse.statuscode==200){
+            //if(chartResponse.statuscode==200){
                 setWorkSpaceChartData(chartResponse.data[0].data);
                 setWorkSpaceChartLayout(chartResponse.data[0].layout)
                 setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
                 setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
                 dispatch(hideLoader());
-            }else{
-                dispatch(hideLoader());
-                dispatch(showNotification('error', 'There is no data'));
-            }
+            // }else{
+            //     dispatch(hideLoader());
+            //     dispatch(showNotification('error', 'There is no data'));
+            // }
             
         } catch (error) {
             dispatch(hideLoader());
@@ -67,7 +67,6 @@ const chartComponent = (props) => {
             text: ""
         }
     };
-    console.log(workspaceChartData);
     return (
         <div className='workspace-plot'>
             <Plot
@@ -77,7 +76,7 @@ const chartComponent = (props) => {
             <Alert
                 style={{marginTop:'-10px'}}
                 message="Alert"
-                description={`The voilation of [action] has triggered an alert for Chart ID ${props.chartId}`}
+                description={`Voilation  has triggered an alert for Chart ID ${props.chartId}`}
                 type="warning"
                 showIcon
             />

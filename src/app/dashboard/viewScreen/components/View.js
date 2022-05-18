@@ -6,53 +6,55 @@
  * @Last Changed By - Dinesh
  */
 
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router';
-import { useSelector, useDispatch } from 'react-redux';
-import { CloudUploadOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import { Button, Collapse, Form, message, Modal } from 'antd';
-import FileUpload from './fileUpload/FileUpload';
-import ParameterLookup from './parameterLookup/ParameterLookup';
-import './styles.scss';
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useParams } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
+import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { Button, Collapse, Form, message, Modal } from "antd";
+import FileUpload from "./fileUpload/FileUpload";
+import ParameterLookup from "./parameterLookup/ParameterLookup";
+import "./styles.scss";
 import {
 	getViewConfig,
 	saveFunction,
-} from '../../../../services/viewCreationPublishing';
+} from "../../../../services/viewCreationPublishing";
 import {
 	materialsParameterTree,
 	adHocFilesParameterTree,
-} from '../../../../duck/actions/fileUploadAction';
-import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-import queryString from 'query-string';
-import { sendUrl } from '../../../../duck/actions/loginAction';
-import { loginUrl } from '../../../../services/loginService';
-import MaterialTree from './materialTree';
-import { MemoizedMathEditor } from './mathEditor';
-import { MemoizedViewSummaryData } from './viewSummary/index';
-import viewdatajson from './view.json';
-import InputField from '../../../../components/InputField/InputField';
+} from "../../../../duck/actions/fileUploadAction";
+import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
+import queryString from "query-string";
+import { sendUrl } from "../../../../duck/actions/loginAction";
+import { loginUrl } from "../../../../services/loginService";
+import MaterialTree from "./materialTree";
+import { MemoizedMathEditor } from "./mathEditor";
+import { MemoizedViewSummaryData } from "./viewSummary/index";
+import viewdatajson from "./view.json";
+import InputField from "../../../../components/InputField/InputField";
 import {
 	hideLoader,
 	showLoader,
 	showNotification,
-} from '../../../../duck/actions/commonActions';
+} from "../../../../duck/actions/commonActions";
 import {
 	isLoadView,
 	sendSelectedParamData,
-} from '../../../../duck/actions/viewAction';
-import Signature from '../../../../components/ElectronicSignature/signature';
+	viewFunctionMap,
+	viewParamMap
+} from "../../../../duck/actions/viewAction";
+import Signature from "../../../../components/ElectronicSignature/signature";
 
 const { Panel } = Collapse;
 
-const ViewCreation = props => {
+const ViewCreation = (props) => {
 	const location = useLocation();
 
 	const selectedTableData = useSelector(
-		state => state.viewCreationReducer.selectedParamData
+		(state) => state.viewCreationReducer.selectedParamData
 	);
-	const viewState = useSelector(state => state.viewCreationReducer);
+	const viewState = useSelector((state) => state.viewCreationReducer);
 	const viewTableData = useSelector(
-		state => state.viewCreationReducer.paramData
+		(state) => state.viewCreationReducer.paramData
 	);
 	const dispatch = useDispatch();
 	const [count, setCount] = useState(1);
@@ -69,7 +71,7 @@ const ViewCreation = props => {
 	const [parentBatches, setParentBatches] = useState([]);
 	const [viewSummaryBatch, setViewSummaryBatch] = useState([]);
 	const [newBatchData, setNewBatchData] = useState([]);
-	const [viewDisplayId, setViewDisplayId] = useState('');
+	const [viewDisplayId, setViewDisplayId] = useState("");
 	const [viewStatus, setViewStatus] = useState();
 	const [viewVersion, setViewVersion] = useState();
 	const [filesListTree, setFilesListTree] = useState([]);
@@ -78,9 +80,11 @@ const ViewCreation = props => {
 	const [paramTableData, setParamTableData] = useState([]);
 	const [viewJson, setViewJson] = useState(viewdatajson);
 	const [isSaveVisible, setIsSaveVisible] = useState(false);
-	const [viewName, setViewName] = useState('');
+	const [viewName, setViewName] = useState("");
+	const [selectedFiles,setSelectedFiles] = useState({})
 	const [publishResponse, setPublishResponse] = useState({});
-	const [approveReject, setApproveReject] = useState('');
+	const [approveReject, setApproveReject] = useState("");
+	const { id } = useParams();
 
 	const parameters = queryString.parse(location.search);
 
@@ -105,24 +109,24 @@ const ViewCreation = props => {
 	// }, [moleculeId]);
 
 	useEffect(() => {
-		
 		let pathString = location.state;
-		if (pathString && pathString.viewId !== undefined) {
+		if (Number(id) !== 0) {
+			const tempId = id.slice(0, id.indexOf("&"));
+			const version = id.slice(id.indexOf("&") + 1);
 			let _reqLoad = {
-				view_disp_id: pathString.viewId,
-				view_version: pathString.viewVersion,
+				view_disp_id: tempId,
+				view_version: version,
 			};
-			
-			setViewDisplayId(pathString.viewId);
-			setViewVersion(pathString.viewVersion);
+			setViewDisplayId(tempId);
+			setViewVersion(version);
 			loadView(_reqLoad);
-		}else{
+		} else {
 			setViewDisplayId(parameters.id);
 			setViewVersion(parameters.version);
 		}
 	}, []);
 
-	const getNewData = el => {
+	const getNewData = (el) => {
 		getData.current = el;
 	};
 
@@ -151,12 +155,12 @@ const ViewCreation = props => {
 	// 	});
 	// };
 
-	const onApprove = item => {
-		localStorage.setItem('status', item);
+	const onApprove = (item) => {
+		localStorage.setItem("status", item);
 		//setApproveReject(item);
-		window.open(`${loginUrl}?is_ui=true&ui_type=sign`, '_self');
+		window.open(`${loginUrl}?is_ui=true&ui_type=sign`, "_self");
 		dispatch(sendUrl(window.location.href));
-		localStorage.setItem('redirectUrl', window.location.href);
+		localStorage.setItem("redirectUrl", window.location.href);
 	};
 
 	const handleSaveVisible = () => {
@@ -169,11 +173,14 @@ const ViewCreation = props => {
 
 	const handleSaveView = () => {
 		const viewData = JSON.parse(JSON.stringify(viewJson));
-		viewData.forEach(element => {
+		viewData.forEach((element) => {
 			(element.functions = viewState.functions),
 				(element.parameters = viewState.parameters),
 				(element.all_parameters = viewState.selectedParamData),
+				(element.view_disp_id = viewDisplayId),
 				(element.material_id = moleculeId);
+				(element.files = selectedFiles);
+
 		});
 
 		const _req = {
@@ -183,12 +190,12 @@ const ViewCreation = props => {
 	};
 	const handleSaveAsView = () => {
 		const viewData = JSON.parse(JSON.stringify(viewJson));
-
-		viewData.forEach(element => {
+		viewData.forEach((element) => {
 			(element.functions = viewState.functions),
 				(element.parameters = viewState.parameters),
 				(element.all_parameters = viewState.selectedParamData),
 				(element.material_id = moleculeId);
+				(element.files = selectedFiles);
 			element.view_disp_id = viewDisplayId;
 			element.view_status = viewStatus;
 			element.view_version = viewVersion;
@@ -200,7 +207,7 @@ const ViewCreation = props => {
 		viewCreate(_req);
 	};
 
-	const viewCreate = async _reqView => {
+	const viewCreate = async (_reqView) => {
 		try {
 			const response = await saveFunction(_reqView);
 			if (response.statuscode === 200) {
@@ -221,26 +228,32 @@ const ViewCreation = props => {
 
 	const onChangeViewName = (e, value) => {
 		const newArr = [...viewJson];
-		newArr.forEach(element => {
+		newArr.forEach((element) => {
 			element.view_name = e.target.value;
 		});
 		setViewJson(newArr);
 		setViewName(e.target.value);
 	};
 
-	const loadView = async _reqLoad => {
-		
+	const loadView = async (_reqLoad) => {
 		try {
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
 
-
-			if(loadViewRes.material_id)
-			setMoleculeId(loadViewRes.material_id);
-			if(loadViewRes.view_status >=0)
-			{
-			setViewStatus(loadViewRes.view_status);
+			if (loadViewRes.material_id) setMoleculeId(loadViewRes.material_id);
+			if (loadViewRes.view_status) {
+				setViewStatus(loadViewRes.view_status);
 			}
+			if (loadViewRes.functions) {
+				dispatch(viewFunctionMap(loadViewRes.functions))
+			}
+			if (loadViewRes.parameters) {
+				dispatch(viewParamMap(loadViewRes.parameters))
+			}
+			if (loadViewRes.files) {
+				setSelectedFiles(loadViewRes.files)
+			}
+
 
 			Object.entries(loadViewRes).forEach(([key, value], index) => {
 				// if (key === 'view_version') {
@@ -255,77 +268,82 @@ const ViewCreation = props => {
 			});
 			setViewJson([loadViewRes]);
 			dispatch(isLoadView(true));
-			dispatch(sendSelectedParamData(loadViewRes['all_parameters']));
+			dispatch(sendSelectedParamData(loadViewRes["all_parameters"]));
 			dispatch(hideLoader());
 		} catch (err) {
 			dispatch(hideLoader());
-			dispatch(showNotification('error', err));
+			dispatch(showNotification("error", err));
 		}
 	};
 	const handleClose = () => {
 		setIsPublish(false);
 	};
 
-	const PublishResponse = res => {
+	const PublishResponse = (res) => {
 		setPublishResponse(res);
+		setViewStatus(res.rep_stauts)
 	};
 
+
 	return (
-		<div className=' viewCreation-container'>
+		<div className=" viewCreation-container">
 			<BreadCrumbWrapper />
-			<div className='breadcrumbs-btn'>
-				{Object.keys(parameters).length > 0 && 
-					parameters.fromScreen!=='Workspace' ?
-					(
-					<div className='viewCreation-btns'>
+			<div className="breadcrumbs-btn">
+				{Object.keys(parameters) &&
+					Object.keys(parameters).length > 0 &&
+					parameters.fromScreen !== "Workspace" ? (
+					<div className="viewCreation-btns">
 						<Button
-							className='viewCreation-rejectBtn'
+							className="viewCreation-rejectBtn"
 							onClick={() => {
 								setIsPublish(true);
-								setApproveReject('R');
+								setApproveReject("R");
 							}}
-							// onClick={() => {
-							// 	adenabled ? onApprove('R') : setIsPublish(true);
-							// 	setApproveReject('R');
-							// }}
+						// onClick={() => {
+						// 	adenabled ? onApprove('R') : setIsPublish(true);
+						// 	setApproveReject('R');
+						// }}
 						>
 							Reject
 						</Button>
 						<Button
-							className='viewCreation-publishBtn'
+							className="viewCreation-publishBtn"
 							onClick={() => {
 								setIsPublish(true);
-								setApproveReject('A');
+								setApproveReject("A");
 							}}
-							// onClick={() => {
-							// 	adenabled ? onApprove('A') : setIsPublish(true);
-							// 	setApproveReject('A');
-							// }}
+						// onClick={() => {
+						// 	adenabled ? onApprove('A') : setIsPublish(true);
+						// 	setApproveReject('A');
+						// }}
 						>
 							Approve
 						</Button>
 					</div>
 				) : (
-					<div className='viewCreation-btns'>
+					<div className="viewCreation-btns">
 						<Button
-							className='viewCreation-saveBtn'
+							className="viewCreation-saveBtn"
 							// disabled={!viewDisplayId}
-							onClick={handleSaveVisible}>
+							onClick={handleSaveVisible}
+						>
 							Share
 						</Button>
 						<Button
-							className='viewCreation-saveBtn'
+							className="viewCreation-saveBtn"
 							// disabled={!viewDisplayId}
-							onClick={handleSaveVisible}>
+							onClick={handleSaveVisible}
+						>
 							Save
 						</Button>
 
 						<Button
-							className='view-publish-btn'
+							className="view-publish-btn"
 							onClick={() => {
 								setIsPublish(true);
-								setApproveReject('P');
-							}}>
+								setApproveReject("P");
+							}}
+						>
 							<CloudUploadOutlined />
 							Publish
 						</Button>
@@ -333,11 +351,11 @@ const ViewCreation = props => {
 				)}
 			</div>
 
-			<div className='viewCreation-grids'>
-				<div className=' viewCreation-blocks'>
-					<div className='viewCreation-leftBlocks bg-white'>
-						<div className='viewCreation-parameterLookup'>
-							<h4 className='viewCreation-blockHeader'>Parameter Lookup</h4>
+			<div className="viewCreation-grids">
+				<div className=" viewCreation-blocks">
+					<div className="viewCreation-leftBlocks bg-white">
+						<div className="viewCreation-parameterLookup">
+							<h4 className="viewCreation-blockHeader">Parameter Lookup</h4>
 
 							<ParameterLookup
 								moleculeList={moleculeList}
@@ -360,26 +378,29 @@ const ViewCreation = props => {
 								params={params}
 							/>
 						</div>
-						<div className='viewCreation-materials'>
+						<div className="viewCreation-materials">
 							<Collapse
-								className='viewCreation-accordian '
-								defaultActiveKey={['1']}
-								expandIconPosition='right'>
+								className="viewCreation-accordian "
+								defaultActiveKey={["1"]}
+								expandIconPosition="right"
+							>
 								{moleculeId && (
 									<>
 										<Panel
-											className='viewCreation-materialsPanel'
-											header='Process hierarchy'
-											key='1'>
+											className="viewCreation-materialsPanel"
+											header="Process hierarchy"
+											key="1"
+										>
 											<MaterialTree
 												materialsList={materialsList}
 												parentBatches={parentBatches}
 											/>
 										</Panel>
 										<Panel
-											className='viewCreation-accordian viewCreation-filesPanel'
-											header='Files'
-											key='2'>
+											className="viewCreation-accordian viewCreation-filesPanel"
+											header="Files"
+											key="2"
+										>
 											<FileUpload
 												viewSummaryTable={viewSummaryTable}
 												setViewSummaryTable={setViewSummaryTable}
@@ -389,11 +410,13 @@ const ViewCreation = props => {
 												setNewBatchData={setNewBatchData}
 												functionEditorViewState={functionEditorViewState}
 												setFunctionEditorViewState={setFunctionEditorViewState}
+												selectedFiles={selectedFiles}
+												setSelectedFiles={setSelectedFiles}
 												filesListTree={filesListTree}
 												setFilesListTree={setFilesListTree}
 												count={count}
 												setCount={setCount}
-												getNewData={el => getNewData(el)}
+												getNewData={(el) => getNewData(el)}
 											/>
 										</Panel>
 									</>
@@ -402,8 +425,8 @@ const ViewCreation = props => {
 						</div>
 					</div>
 
-					{paramTableData.length > 0 && (
-						<div className='viewCreation-rightBlocks'>
+					{paramTableData && paramTableData.length > 0 && (
+						<div className="viewCreation-rightBlocks">
 							<MemoizedMathEditor
 								paramTableData={paramTableData}
 								//	primarySelected={primarySelect}
@@ -431,9 +454,9 @@ const ViewCreation = props => {
 			<Signature
 				isPublish={isPublish}
 				handleClose={handleClose}
-				screenName='View Creation'
+				screenName="View Creation"
 				PublishResponse={PublishResponse}
-				appType='VIEW'
+				appType="VIEW"
 				dispId={viewDisplayId}
 				version={viewVersion}
 				status={approveReject}
@@ -442,40 +465,44 @@ const ViewCreation = props => {
 				width={400}
 				visible={isSaveVisible}
 				onCancel={handleCancel}
-				footer={null}>
-				<div className='function-modal'>
-					<p className='heading'>
-						<InfoCircleOutlined className='heading-icon' /> Save
+				footer={null}
+			>
+				<div className="function-modal">
+					<p className="heading">
+						<InfoCircleOutlined className="heading-icon" /> Save
 					</p>
-					<div className='function-input'>
+					<div className="function-input">
 						<InputField
-							label='Enter view name'
-							placeholder='E.g. View 1'
-							onChangeInput={e => onChangeViewName(e)}
+							label="Enter view name"
+							placeholder="E.g. View 1"
+							onChangeInput={(e) => onChangeViewName(e)}
 							value={viewName}
 						/>
 
-						<div className='function-btn'>
+						<div className="function-btn">
 							<Button
 								onClick={handleCancel}
-								type='link'
-								className='custom-secondary-btn-link '>
+								type="link"
+								className="custom-secondary-btn-link "
+							>
 								Cancel
 							</Button>
 							<Button
 								onClick={() => {
 									handleSaveAsView();
 								}}
-								type='text'
-								className='custom-primary-btn '>
+								type="text"
+								className="custom-primary-btn "
+							>
 								Save as a copy
 							</Button>
 							<Button
 								onClick={() => {
 									handleSaveView();
 								}}
-								type='text'
-								className='custom-secondary-btn '>
+								type="text"
+								className="custom-secondary-btn "
+							>
 								Save
 							</Button>
 						</div>

@@ -173,18 +173,22 @@ function ReportGenerator(props) {
 
     const makeArrayOfObject = (ar) => {
         let res = []
-        for (let i = 0; i < ar.length; i++) {
-            let res_obj = {}
-            res_obj['chart'] = ar[i]
-            res_obj['violation'] = true
-            res_obj['exclusion'] = true
-            res_obj['data_table'] = true
-            res_obj['layout'] = {}
-            res_obj['data'] = {}
-            res_obj['chartType'] = ''
-            res.push(res_obj)
+        if (ar && ar.length > 0) {
+            for (let i = 0; i < ar.length; i++) {
+                let res_obj = {}
+                res_obj['chart'] = ar[i]
+                res_obj['violation'] = true
+                res_obj['exclusion'] = true
+                res_obj['data_table'] = true
+                res_obj['layout'] = {}
+                res_obj['data'] = {}
+                res_obj['chartType'] = ''
+                res.push(res_obj)
+            }
+            return res
         }
-        return res
+        else
+            return res
     }
     const createChartRecord = (arr) => {
         let res = {}
@@ -214,9 +218,10 @@ function ReportGenerator(props) {
         let headingSection = obj['sections'] ? obj['sections'] : []
         allSections = [...allSections, ...headingSection]
 
+        console.log(rep_layout)
 
         for (let i = 0; i < allSections.length; i++) {
-            allSections[i].charts = rep_layout[i + 1]
+            allSections[i].charts = rep_layout[i + 1] ? rep_layout[i + 1] : []
         }
         return allSections
     }
@@ -263,7 +268,7 @@ function ReportGenerator(props) {
 
     }
     const generateReport = async () => {
-        dispatch(showNotification('success','Generating Report'))
+        dispatch(showNotification('success', 'Generating Report'))
         let generate_obj = {}
         let title_page = table[0] ? table[0] : {}
         let sections = table.length > 0 ? table.filter((item, index) => index > 0) : []
@@ -281,9 +286,8 @@ function ReportGenerator(props) {
         let data = { rjson: rjson }
 
         let json_response = await latexBuilder(data)
-        if (json_response.statuscode == 200) 
-        {
-            dispatch(showNotification('success','Downloading Report'))
+        if (json_response.statuscode == 200) {
+            dispatch(showNotification('success', 'Downloading Report'))
 
             axios.post('/latex_report', json_response.latex_json, { responseType: 'arraybuffer' })
                 .then((response) => {
@@ -291,9 +295,8 @@ function ReportGenerator(props) {
                     FileSaver.saveAs(blob, `${reportId}.pdf`);
                 });
         }
-        else
-        {
-            dispatch(showNotification('error','Failed to generate report'))
+        else {
+            dispatch(showNotification('error', 'Failed to generate report'))
         }
     }
 
@@ -308,7 +311,7 @@ function ReportGenerator(props) {
         obj['rep_status'] = reportStatus
         obj['user'] = user
         obj['variant_name'] = user + '_variant'
-        obj['chart_info'] = { charts: chart }
+        obj['chart_info'] = chartLayout
         obj['charts_layout'] = chartLayout
         obj['days_layout'] = selectedDays
 
@@ -381,24 +384,26 @@ function ReportGenerator(props) {
                                     <Panel header={<span className="chart-names">{i.heading} {i.charts && i.charts.length > 0 && i.charts.map((i) => (<span className="chart-tags">
                                         {i}
                                     </span>))}</span>} key={i.heading} className="chart-panel">
-                                        <table className="table" cellspacing="0" cellpadding="0">
-                                            <tr className="tr" >
-                                                <th className="th-key">
-                                                    Key
-                                                </th>
-                                                <th className="th-value">
-                                                    Value
-                                                </th>
-                                            </tr>
-                                            <tbody>
-                                                {i['content'] && i['content'].map((item, j) =>
-                                                    <tr className="tr" >
-                                                        <td className="td" >{item.key}</td>
-                                                        <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea autoSize={true} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span>{item.value}</span>} </td>
-                                                    </tr>
-                                                )}
-                                            </tbody>
-                                        </table>
+                                        {i['content'] && i['content'].length > 0  ?
+                                            <table className="table" cellspacing="0" cellpadding="0">
+                                                <tr className="tr" >
+                                                    <th className="th-key">
+                                                        Key
+                                                    </th>
+                                                    <th className="th-value">
+                                                        Value
+                                                    </th>
+                                                </tr>
+                                                <tbody>
+                                                    {i['content'] && i['content'].map((item, j) =>
+                                                        <tr className="tr" >
+                                                            <td className="td" >{item.key}</td>
+                                                            <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea autoSize={true} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span>{item.value}</span>} </td>
+                                                        </tr>
+                                                    )}
+                                                </tbody>
+                                            </table> : <></>
+                                        }
                                         {i.charts && i.charts.length > 0 && i.charts.map((j) =>
                                         (
                                             <div >

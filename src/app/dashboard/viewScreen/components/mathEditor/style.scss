@@ -202,6 +202,22 @@ span.statusClosed {
 	border-radius: 4px !important;
 	border: 1px solid #093185 !important;
 	background: #fff !important;
+	margin-top: 10px;
+
+}
+.custom-secondary-eval-btn {
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: 400 !important;
+	font-size: 14px !important;
+	color: #fff !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 4px !important;
+	border: 1px solid #093185 !important;
+	background: #093185 !important;
+	margin-left: 10px;
+
 }
 .custom-eval-btn-disable {
 	font-family: 'Roboto', sans-serif !important;
@@ -214,5 +230,43 @@ span.statusClosed {
 	border-radius: 4px !important;
 	border: 1px solid grey !important;
 	background:rgb(235, 235, 228) !important;
+	margin-top: 10px;
+	margin-left: 10px;
+
+}
+.keyboard-icon
+{
+	margin-left: 69%;
+}
+.variable-name-popup {
+	p{
+		margin-bottom: 4px !important;
+	}
+	button {
+		margin-top: 15px;
+	}
+}
+.variable-cancel-button {
+	button {
+		margin-top: 15px;
+		border: none !important;
+	}
 }
 
+.script-help
+{
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: 300 !important;
+	font-size: 16px !important;
+}
+.script-help-heading
+{
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: 500 !important;
+	font-size: 16px !important;
+}
+.script-info
+{
+overflow-y: scroll; 
+height:400px;
+}

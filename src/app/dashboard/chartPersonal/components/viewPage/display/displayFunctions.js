@@ -10,6 +10,7 @@ export const initialLayout = {
       color: "#000000",
     },
   },
+  annotations: [],
   legend: {
     title: {
       text: "",
@@ -17,7 +18,6 @@ export const initialLayout = {
         color: "#000000",
         size: 12,
       },
-      side: "",
     },
     borderwidth: 2,
     bgcolor: "#FFFFFF",
@@ -25,7 +25,6 @@ export const initialLayout = {
     bordercolor: "#FFFFFF",
   },
   xaxis: {
-    type: "",
     title: {
       text: "",
       font: {
@@ -40,7 +39,6 @@ export const initialLayout = {
     showgrid: true,
   },
   yaxis: {
-    type: "",
     title: {
       text: "",
       font: {

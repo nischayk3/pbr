@@ -46,6 +46,45 @@ function GenealogyDataTable(props) {
 		{ title: 'Unit', dataIndex: 'unit', key: '8', width: 70 },
 		{ title: 'Qty', dataIndex: 'qty', key: '9', width: 70 },
 	];
+
+	const batchEquColumn = [
+		{ title: 'Process Order', dataIndex: 'po_no', key: '1', width: 80 },
+		{
+			title: 'Referenced Element',
+			dataIndex: 'referenced',
+			key: '2',
+			width: 80,
+			render: text => {
+				return (
+					<a
+						href='https://mdh-dashboard.mareana.com/d/trqNakk7z/live-sensor-monitor?orgId=1&from=1515646800000&to=1516770000000'
+						target='_blank'>
+						{text}
+					</a>
+				);
+			},
+		},
+		{ title: 'Start Time', dataIndex: 'start_time', key: '3', width: 80 },
+		{ title: 'End Time', dataIndex: 'end_time', key: '4', width: 80 },
+	];
+
+	//	https://mdh-dashboard.mareana.com/d/trqNakk7z/live-sensor-monitor?orgId=1&from=1515646800000&to=1516770000000
+
+	const batchEquData = [
+		{
+			po_no: '102250832',
+			referenced: 'CELL_CULTURECC_PRODSTR271',
+			start_time: '3/3/20 23:35',
+			end_time: '3/19/20 12:11',
+		},
+		{
+			po_no: '102250832',
+			referenced: 'CENTRIFUGECENTRIFUGE_PCCE40110',
+			start_time: '3/19/20 12:05',
+			end_time: '3/19/20 12:06',
+		},
+	];
+
 	useEffect(() => {
 		if (props && props.batchInfo) {
 			setbatchData(props.batchInfo);
@@ -70,11 +109,17 @@ function GenealogyDataTable(props) {
 		props.purchaseInfo,
 	]);
 
+	const callback = key => {
+		props.setCollapseKey(key);
+	};
+
 	return (
 		<Collapse
 			bordered={false}
 			defaultActiveKey={['1']}
-			className={props.className}>
+			className={props.className}
+			activeKey={props.collapseKey}
+			onChange={callback}>
 			{props.type === 'Material' ? (
 				<Panel
 					header={
@@ -195,6 +240,35 @@ function GenealogyDataTable(props) {
 						size='small'
 						columns={processColumns}
 						dataSource={proOutput}
+						scroll={{ x: 1200, y: 350 }}
+						pagination={false}
+					/>
+				</Panel>
+			) : (
+				<></>
+			)}
+
+			{props.type === 'Process Order' ? (
+				<Panel
+					header={
+						<div className='panel-header'>
+							<p>Batch Equipment</p>
+							<Button
+								type='primary'
+								className='custom-primary-btn'
+								size='small'>
+								Download
+							</Button>
+						</div>
+					}
+					key='7'>
+					<Table
+						rowClassName={(record, index) =>
+							index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+						}
+						size='small'
+						columns={batchEquColumn}
+						dataSource={batchEquData}
 						scroll={{ x: 1200, y: 350 }}
 						pagination={false}
 					/>

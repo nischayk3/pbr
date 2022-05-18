@@ -514,7 +514,7 @@ const ViewChart = (props, ref) => {
         let arr = [...tempPanels]
         let id = tempPanels[index].chart_id;
         let payload = {
-            site: [tempPanels[index].data_filter.site],
+            site: tempPanels[index].data_filter.site,
             date_range: tempPanels[index].data_filter.date_range,
             unapproved_data: tempPanels[index].data_filter.unapproved_data
         }
@@ -536,6 +536,13 @@ const ViewChart = (props, ref) => {
                 }
             }
             arr[index] = Object.assign({}, arr[index], res, { chartLayout: chartLayout });
+            arr[index].data[0].data = arr[index].data[0].data.map((item, index) => {
+                if (item.mode === 'markers') {
+                    item.marker.defaultColor = item.marker.color;
+                    item.marker.color = [...item.text].fill(item.marker.color)
+                }
+                return item;
+            })
             setTempPanels(arr);
             dispatch(hideLoader());
         } catch (error) {
@@ -548,7 +555,7 @@ const ViewChart = (props, ref) => {
         let obj = { ...tempCard }
         let id = obj.chart_id;
         let payload = {
-            site: [obj.data_filter.site],
+            site: obj.data_filter.site,
             date_range: obj.data_filter.date_range,
             unapproved_data: obj.data_filter.unapproved_data
         }
@@ -622,16 +629,16 @@ const ViewChart = (props, ref) => {
         let payload = {}
         try {
             dispatch(showLoader())
-            arr.map(async (el, i) => {
+            await Promise.all(arr.map(async (el, i) => {
                 if (el.data_filter.site || el.data_filter.date_range || el.data_filter.unapproved_data) {
                     payload = {
-                        site: [el.data_filter.site],
+                        site: el.data_filter.site,
                         date_range: el.data_filter.date_range,
                         unapproved_data: el.data_filter.unapproved_data
                     }
                 } else {
                     payload = {
-                        site: [obj.data_filter.site],
+                        site: obj.data_filter.site,
                         date_range: obj.data_filter.date_range,
                         unapproved_data: obj.data_filter.unapproved_data
                     }
@@ -657,8 +664,15 @@ const ViewChart = (props, ref) => {
                 el.chartLayout = chartLayout
                 el.data = res.data
                 //setTempPanels(dash_info.panels);
+                el.data[0].data = el.data[0].data.map((item, index) => {
+                    if (item.mode === 'markers') {
+                        item.marker.defaultColor = item.marker.color;
+                        item.marker.color = [...item.text].fill(item.marker.color)
+                    }
+                    return item;
+                })
 
-            })
+            }))
             setTempPanels(arr);
             setDashboardInfo(obj);
             //dispatch(hideLoader());
@@ -700,7 +714,7 @@ const ViewChart = (props, ref) => {
                         if (item.mode === 'markers') {
                             let pointIndex = item.text.findIndex(x => x == point);
                             if (pointIndex >= 0) {
-                                item.marker.color[pointIndex] = 'green'
+                                item.marker.color[pointIndex] = 'orange'
 
                             }
                             item.selectedpoints = null;
