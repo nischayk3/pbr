@@ -81,6 +81,7 @@ const ViewCreation = (props) => {
 	const [viewJson, setViewJson] = useState(viewdatajson);
 	const [isSaveVisible, setIsSaveVisible] = useState(false);
 	const [viewName, setViewName] = useState("");
+	const [selectedFiles,setSelectedFiles] = useState({})
 	const [publishResponse, setPublishResponse] = useState({});
 	const [approveReject, setApproveReject] = useState("");
 	const { id } = useParams();
@@ -178,6 +179,8 @@ const ViewCreation = (props) => {
 				(element.all_parameters = viewState.selectedParamData),
 				(element.view_disp_id = viewDisplayId),
 				(element.material_id = moleculeId);
+				(element.files = selectedFiles);
+
 		});
 
 		const _req = {
@@ -187,12 +190,12 @@ const ViewCreation = (props) => {
 	};
 	const handleSaveAsView = () => {
 		const viewData = JSON.parse(JSON.stringify(viewJson));
-        console.log(viewDisplayId)
 		viewData.forEach((element) => {
 			(element.functions = viewState.functions),
 				(element.parameters = viewState.parameters),
 				(element.all_parameters = viewState.selectedParamData),
 				(element.material_id = moleculeId);
+				(element.files = selectedFiles);
 			element.view_disp_id = viewDisplayId;
 			element.view_status = viewStatus;
 			element.view_version = viewVersion;
@@ -246,6 +249,9 @@ const ViewCreation = (props) => {
 			}
 			if (loadViewRes.parameters) {
 				dispatch(viewParamMap(loadViewRes.parameters))
+			}
+			if (loadViewRes.files) {
+				setSelectedFiles(loadViewRes.files)
 			}
 
 
@@ -404,6 +410,8 @@ const ViewCreation = (props) => {
 												setNewBatchData={setNewBatchData}
 												functionEditorViewState={functionEditorViewState}
 												setFunctionEditorViewState={setFunctionEditorViewState}
+												selectedFiles={selectedFiles}
+												setSelectedFiles={setSelectedFiles}
 												filesListTree={filesListTree}
 												setFilesListTree={setFilesListTree}
 												count={count}
