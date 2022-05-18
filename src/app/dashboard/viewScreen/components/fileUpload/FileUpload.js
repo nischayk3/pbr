@@ -37,6 +37,7 @@ import {
   adHocFilesParameterTree,
 } from "../../../../../services/viewCreationPublishing";
 import { MDH_APP_PYTHON_SERVICE } from "../../../../../constants/apiBaseUrl";
+import { hideLoader, showLoader } from "../../../../../duck/actions/commonActions";
 const { Panel } = Collapse;
 const { Dragger } = Upload;
 function FileUpload(props) {
@@ -54,6 +55,8 @@ function FileUpload(props) {
     count,
     setCount,
     getNewData,
+    selectedFiles,
+    setSelectedFiles
   } = props;
 
   const [uploadModalVisible, setUploadModalVisible] = useState(false);
@@ -64,6 +67,7 @@ function FileUpload(props) {
     (state) => state.viewCreationReducer.selectedParamData
   );
   const finalData = useRef([]);
+  const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
 
   const dispatch = useDispatch();
 
@@ -108,6 +112,35 @@ function FileUpload(props) {
       ),
     },
   ];
+
+  useEffect(()=>
+  {   if(isLoadView)
+    {
+      let selected_keys = Object.keys(selectedFiles)
+      dispatch(showLoader())
+      if(selected_keys && selected_keys.length > 0)
+      {
+        selected_keys.map((i)=>
+        adHocFilesParameterTree({file_id: parseInt(i), detailedCoverage: true}).then((res) => {
+        const date = new Date();
+        res.timeStamp = date.toISOString();
+        filesListTree.push(res)
+        setFilesListTree(filesListTree); 
+        if (res.Status === 404) {
+          message.error('Unable to Load Files');
+        }
+        if (res.Status === 401) {
+          message.error("UnAuthorized User");
+        }
+      }));
+    }
+    setTimeout(() => {
+      dispatch(hideLoader())
+    }, 1000);
+  }
+
+  
+  },[isLoadView])
 
   const parameterPassHandler = (record, index) => {
     const selectedParam = finalData.current.find(
@@ -297,6 +330,8 @@ function FileUpload(props) {
           message.success(res.Message);
           setUploadBtnDisabled(false);
           setSelectedFileId(res.File_id);
+          selectedFiles[`${res.File_id}`]=true
+          setSelectedFiles(selectedFiles)
         }
         if (res.Status === 400) {
           message.error(res.Message);
@@ -356,7 +391,7 @@ function FileUpload(props) {
         className="materials-accordion fileUpload-accordion"
         expandIconPosition="right"
       >
-        {filesListTree.map((item, index) => {
+        {filesListTree && filesListTree.map((item, index) => {
           item.Data.forEach((ele) => {
             ele.file_id = item.File_id;
           });
