@@ -108,6 +108,7 @@ export const changeInput = (row, state) => {
 
 export const changeSelectInput = (value, record, column, state) => {
   const dataSource = JSON.parse(JSON.stringify(state.dataSource))
+  if(column.mode === 'single') value = [`${value}`]
   const index = dataSource.findIndex(item => record.key === item.key)
   const name = column.name
   dataSource[index][name] = value
@@ -134,4 +135,8 @@ export const adjustColumnWidths = columns => {
       adjustColumnWidths(column.children)
     }
   })
+}
+
+export const singleSelectArray = dataSource => {
+  
 }

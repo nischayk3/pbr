@@ -26,6 +26,7 @@ class EditableTable extends Component {
             const { rowInitialData, dataSource, deleteActionColumn } = props.tableData
             return { rowInitialData, dataSource, count: dataSource.length, deleteActionColumn }
         }
+        
         return null
     }
 
@@ -61,6 +62,7 @@ class EditableTable extends Component {
                             checked={record[column.name]}
                             checkedChildren={column.toggleTextTrue}
                             unCheckedChildren={column.toggleTextFalse}
+                            className="editable-table--switch__color"
                             onChange={selectedValue => this.onChangeToggle(selectedValue, record, column)} />
                     }
                 case 'parent':
@@ -96,12 +98,10 @@ class EditableTable extends Component {
             }
         })
 
-        console.log(data)
-
         try {
             await this.props.onDeleteTableRow(data)
             const { dataSource, count } = deleteRow(key, this.state)
-            this.setState({ dataSource, count, tableDataChanged: true })
+            this.setState({ dataSource, count })
         } catch (err) {
             console.log('delete err: ', err)
         }
@@ -128,6 +128,11 @@ class EditableTable extends Component {
     onChangeToggle = (selectedValue, record, column) => {
         const dataSource = changeToggleInput(selectedValue, record, column, this.state)
         this.setState({ dataSource, tableDataChanged: true })
+    }
+
+    onSaveTable = () => {
+        this.setState({ tableDataChanged: false })
+        this.props.onSaveTableData(this.state.dataSource)
     }
 
     render() {
@@ -171,7 +176,7 @@ class EditableTable extends Component {
                 </Button>
                 <Button
                     type="primary"
-                    onClick={() => this.props.onSaveTable(this.state.dataSource)}
+                    onClick={this.onSaveTable}
                     style={{ float: 'right' }}
                     className="button-solid__primary"
                     disabled={!this.state.tableDataChanged}

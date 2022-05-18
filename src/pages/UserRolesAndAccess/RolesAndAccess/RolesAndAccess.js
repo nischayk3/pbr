@@ -40,7 +40,6 @@ const RolesAndAccess = () => {
 
     const onSaveRolesAndAccess = async tableData => {
         tableData.forEach(obj => delete obj.key)
-        console.log(tableData)
         dispatch(showLoader())
         try {
             await saveRoleConfiguartions(tableData)
@@ -62,7 +61,7 @@ const RolesAndAccess = () => {
                 <GoBackSubHeader currentPage="Roles" />
                 <EditableTable
                     tableData={tableData}
-                    onSaveTable={onSaveRolesAndAccess}
+                    onSaveTableData={onSaveRolesAndAccess}
                     onDeleteTableRow={deleteRoleConfiguartions}
                 />
             </div>

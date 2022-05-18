@@ -84,7 +84,7 @@ body {
 	cursor: pointer;
 }
 
-.custom-user-roles-sub-header .sub-header-title > .go-back--header-icon {
+.custom-user-roles-sub-header .sub-header-title>.go-back--header-icon {
 	font-size: 16px;
 	vertical-align: middle;
 }
@@ -100,9 +100,9 @@ body {
 	padding: 20px;
 	position: relative;
 
-	thead > tr > th {
+	thead>tr>th {
 		background-color: #F0F7FA;
-	  }
+	}
 }
 
 .panel-delete-button {
@@ -193,4 +193,8 @@ custom-panel .panel-repeat {
 
 .custom-table-wrapper .ant-collapse-header {
 	background-color: #FAFAFA !important;
+}
+
+button[role="switch"][aria-checked="true"] {
+	background-color: #083185;
 }

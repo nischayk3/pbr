@@ -19,6 +19,7 @@ import { getUserConfiguartions, saveUserConfigurationws, deleteUserConfiguartion
 const UserConfiguration = () => {
   const dispatch = useDispatch()
   const [tableData, setTableData] = useState(null)
+  const [savingTableData, setSavingTableData] = useState(false)
 
   useEffect(() => {
     loadUserConfiguartions()
@@ -60,7 +61,7 @@ const UserConfiguration = () => {
         <GoBackSubHeader currentPage="User configuration" />
         <EditableTable
           tableData={tableData}
-          onSaveTable={onSaveUserConfigurations}
+          onSaveTableData={onSaveUserConfigurations}
           onDeleteTableRow={deleteUserConfiguartions}
         />
       </div>
