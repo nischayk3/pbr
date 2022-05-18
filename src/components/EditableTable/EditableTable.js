@@ -39,8 +39,7 @@ class EditableTable extends Component {
         this.props.showLoader()
         try {
             const response = await this.props.getTableData()
-            const { message } = response.data
-            const { rowInitialData, dataSource, deleteActionColumn, columns } = message
+            const { rowInitialData, dataSource, deleteActionColumn, columns } = response.data.message
             this.setState({ rowInitialData, dataSource, count: dataSource.length, deleteActionColumn, columns }, () => {
                 this.initializeTableRender()
             })
@@ -56,11 +55,11 @@ class EditableTable extends Component {
         const columnsCopy = [...this.state.columns]
         const columns = this.state.deleteActionColumn ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
         adjustColumnWidths(columns)
-        this.renderTable(columns)
+        this.renderTableColumns(columns)
         this.setState({ columns })
     }
 
-    renderTable = (columns) => {
+    renderTableColumns = (columns) => {
         columns.forEach(column => {
             switch (column.type) {
                 case 'select':
