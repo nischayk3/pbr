@@ -57,7 +57,7 @@ const ParameterTable = (props) => {
 	const [reloadTable, setReloadTable] = useState(true);
 	const [checked, setChecked] = useState(null);
 	const [parameters, setParameters] = useState({});
-	const [variableParam, setVariableParam] = useState({});
+	const [variableParam, setVariableParam] = useState(parameter_obj ? parameter_obj :{});
 	const [fun, setFun] = useState({});
 	const [filterTable, setFilterTable] = useState([]);
 
@@ -277,6 +277,7 @@ const ParameterTable = (props) => {
 		if (variableCreate === true) {
 			count++;
 			const varParameter = [...parameters];
+			console.log(varParameter)
 			varParameter.forEach((element) => {
 				varArr.push(element);
 			});
@@ -289,6 +290,7 @@ const ParameterTable = (props) => {
 			});
 			setViewJson(viewDataJson);
 			dispatch(createVariable(variableParam));
+			console.log(variableParam)
 			dispatch(viewParamMap(variableParam));
 			setVariableCreate(false);
 			props.getParamData(variableParam);
