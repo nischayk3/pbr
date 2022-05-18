@@ -399,7 +399,7 @@ function Filter(props) {
 					handleClearSearch={e => clearSearch(e, 'batch')}
 					error={isEmptyBatch ? 'Please select batch' : null}
 					options={optionsBatch}
-					selectedValue={selectParam['batchNum'] !== ''}
+					selectedValue={selectParam['batchNum']}
 				/>
 				<SelectSearchField
 					showSearch
