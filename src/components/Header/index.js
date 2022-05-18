@@ -1,10 +1,12 @@
+import React from 'react';
+
 import { Button, Input, Layout } from 'antd';
 import { useDispatch } from 'react-redux';
 import { LogoutOutlined } from '@ant-design/icons';
 import cpvLogo from '../../assets/cpv-logo.png';
 import hamburgerIcon from '../../assets/icons/hamburger.svg';
 import mareanaLogo from '../../assets/mareana_logo.png';
-import { showNotification, toggleMenu } from '../../duck/actions/commonActions';
+import { toggleMenu } from '../../duck/actions/commonActions';
 import './style.scss';
 import Auth from '../../utils/auth';
 import { useHistory } from 'react-router-dom';
@@ -13,20 +15,16 @@ import { logoutUrl } from '../../services/loginService';
 import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 
 const { Header } = Layout;
-
-
+const { Search } = Input;
 const HeaderBar = () => {
-
 	const dispatch = useDispatch();
 	const history = useHistory();
-
 
 	const toggleCollapsed = () => {
 		dispatch(toggleMenu());
 	};
 
 	const Logout = () => {
-
 		// LOGOUT API NOT WORKING
 		// const jwt = localStorage.getItem('user_token');
 		// await userLogout(jwt);
@@ -41,8 +39,7 @@ const HeaderBar = () => {
 
 			'_self'
 		);
-		localStorage.clear()
-		history.push('/user/login')
+		localStorage.clear();
 	};
 
 	return (
@@ -54,7 +51,7 @@ const HeaderBar = () => {
 			</div>
 			<div
 				className='logout-btn'
-				onClick={adenabled ? () =>  adLogout() : () => Logout()}>
+				onClick={() => (adenabled ? adLogout() : Logout())}>
 				<LogoutOutlined />
 			</div>
 		</Header>
