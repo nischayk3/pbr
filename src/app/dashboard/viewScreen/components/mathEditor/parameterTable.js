@@ -277,7 +277,6 @@ const ParameterTable = (props) => {
 		if (variableCreate === true) {
 			count++;
 			const varParameter = [...parameters];
-			console.log(varParameter)
 			varParameter.forEach((element) => {
 				varArr.push(element);
 			});
@@ -290,7 +289,6 @@ const ParameterTable = (props) => {
 			});
 			setViewJson(viewDataJson);
 			dispatch(createVariable(variableParam));
-			console.log(variableParam)
 			dispatch(viewParamMap(variableParam));
 			setVariableCreate(false);
 			props.getParamData(variableParam);
