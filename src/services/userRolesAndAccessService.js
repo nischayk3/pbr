@@ -21,14 +21,14 @@ export const saveRoleConfiguartions = data => {
     })
 }
 
-export const deleteRoleConfiguartions = role_name => {
+export const deleteRoleConfiguartions = data => {
     let login_response = JSON.parse(localStorage.getItem('login_details'));
     return axios.delete('/services/v1/role-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
             'resource-name': 'VIEW'
         },
-        params: { role_name }
+        data: { data }
     })
 }
 

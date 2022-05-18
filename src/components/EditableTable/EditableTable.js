@@ -96,6 +96,8 @@ class EditableTable extends Component {
             }
         })
 
+        console.log(data)
+
         try {
             await this.props.onDeleteTableRow(data)
             const { dataSource, count } = deleteRow(key, this.state)
