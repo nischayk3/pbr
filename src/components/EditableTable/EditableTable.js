@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import { connect } from 'react-redux'
 import { v1 as uuid } from 'uuid'
 import { Table, Button, Popconfirm, Select, Switch } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
@@ -12,7 +13,7 @@ import {
     changeSelectInput,
     changeToggleInput
 } from '../../utils/editableTableHelper'
-
+import { showLoader, hideLoader } from '../../duck/actions/commonActions'
 
 const { Option } = Select
 
@@ -21,22 +22,40 @@ class EditableTable extends Component {
         tableDataChanged: false
     }
 
-    static getDerivedStateFromProps(props, state) {
-        if (!state.dataSource) {
-            const { rowInitialData, dataSource, deleteActionColumn } = props.tableData
-            return { rowInitialData, dataSource, count: dataSource.length, deleteActionColumn }
-        }
-        
-        return null
-    }
+    // static getDerivedStateFromProps(props, state) {
+    //     if (!state.dataSource) {
+    //         const { rowInitialData, dataSource, deleteActionColumn } = props.tableData
+    //         return { rowInitialData, dataSource, count: dataSource.length, deleteActionColumn }
+    //     }
+
+    //     return null
+    // }
 
     componentDidMount() {
-        this.initializeTableRender()
+        console.log('sdlfsdkfnkl')
+        this.loadTable()
+    }
+
+    loadTable = async () => {
+        this.props.showLoader()
+        try {
+            const response = await this.props.getTableData()
+            const { message } = response.data
+            console.log(message)
+            const { rowInitialData, dataSource, deleteActionColumn, columns } = message
+            this.setState({ rowInitialData, dataSource, count: dataSource.length, deleteActionColumn: true, columns }, () => {
+                this.initializeTableRender()
+            })
+            this.props.hideLoader()
+        } catch (err) {
+            console.log('err: ', err)
+            this.props.hideLoader()
+        }
     }
 
     initializeTableRender() {
         this.state.dataSource.map(data => data.key = uuid())
-        const columnsCopy = [...this.props.tableData.columns]
+        const columnsCopy = [...this.state.columns]
         const columns = this.state.deleteActionColumn ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
         adjustColumnWidths(columns)
         this.renderTable(columns)
@@ -94,12 +113,12 @@ class EditableTable extends Component {
         const data = []
         this.state.dataSource.forEach(row => {
             if (key === row.key) {
-               data.push(row)
+                data.push(row)
             }
         })
 
         try {
-            await this.props.onDeleteTableRow(data)
+            await this.props.deleteTableRow(data)
             const { dataSource, count } = deleteRow(key, this.state)
             this.setState({ dataSource, count })
         } catch (err) {
@@ -130,9 +149,21 @@ class EditableTable extends Component {
         this.setState({ dataSource, tableDataChanged: true })
     }
 
-    onSaveTable = () => {
+    onSaveTable = async () => {
         this.setState({ tableDataChanged: false })
-        this.props.onSaveTableData(this.state.dataSource)
+
+        const tableData = JSON.parse(JSON.stringify(this.state.dataSource))
+        tableData.forEach(obj => delete obj.key)
+        this.props.showLoader()
+
+        try {
+            await this.props.saveTableData(tableData)
+            this.props.hideLoader()
+          } catch (err) {
+            console.log('err: ', err)
+            this.setState({ tableDataChanged: true })
+            this.props.hideLoader()
+          }
     }
 
     render() {
@@ -196,4 +227,4 @@ class EditableTable extends Component {
     }
 }
 
-export default EditableTable
+export default connect(null, { showLoader, hideLoader })(EditableTable)
