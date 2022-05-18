@@ -76,5 +76,6 @@ export const RESET_VIEW = 'RESET_VIEW';
 export const NEW_COLUMN = 'NEW_COLUMN';
 export const VIEW_FUNCTION_NAME = 'VIEW_FUNCTION_NAME';
 export const MATH_VALUE = 'MATH_VALUE';
+export const LOAD_VIEW_RESPONSE = 'LOAD_VIEW_RESPONSE';
 
 
