@@ -82,7 +82,7 @@ class EditableTable extends Component {
                             onChange={selectedValue => this.onChangeToggle(selectedValue, record, column)} />
                     }
                 case 'parent':
-                    this.renderTable(column.children)
+                    this.renderTableColumns(column.children)
             }
         })
     }
@@ -147,18 +147,15 @@ class EditableTable extends Component {
     }
 
     onSaveTable = async () => {
-        this.setState({ tableDataChanged: false })
-
         const tableData = JSON.parse(JSON.stringify(this.state.dataSource))
         tableData.forEach(obj => delete obj.key)
         this.props.showLoader()
-
         try {
             await this.props.saveTableData(tableData)
+            this.setState({ tableDataChanged: false })
             this.props.hideLoader()
           } catch (err) {
             console.log('err: ', err)
-            this.setState({ tableDataChanged: true })
             this.props.hideLoader()
           }
     }
