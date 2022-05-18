@@ -87,7 +87,7 @@ const ScreenControls = () => {
                 <div className='custom-table-wrapper'>
                     <p>Set application and widget level controls pertaining to each role.</p>
                     <Button type="primary" className="button-solid__primary">Save</Button>
-                    <Collapse defaultActiveKey={['0']} expandIconPosition="right">
+                    <Collapse defaultActiveKey={[]} expandIconPosition="right" accordion>
                         {usersAndRestrictions.length && usersAndRestrictions.map((usersAndRestriction, i) => {
                             return (
                                 <Panel header={<span className="panel-delete-button" onClick={e => onDeletePanel(e, i)}>{usersAndRestriction.userType.toUpperCase()} <DeleteTwoTone twoToneColor="#FF0000" /></span>} key={i}>
