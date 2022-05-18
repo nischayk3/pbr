@@ -6,30 +6,28 @@
  * @Last Changed By - Bhanu Thareja
  */
 
-import { Component } from 'react'
 
 import BreadCrumbWrapper from '../../../components/BreadCrumbWrapper/index'
 import GoBackSubHeader from '../../../components/GoBackSubHeader/GoBackSubHeader'
 import EditableTable from '../../../components/EditableTable/EditableTable'
-import tableData from './UserConfiguration.json'
 
-class UserConfiguration extends Component {
+import { getUserConfiguartions, saveUserConfigurationws, deleteUserConfiguartions } from '../../../services/userRolesAndAccessService'
 
-  onSaveUserConfiguration = data => {
-    console.log(data)
-  }
+const UserConfiguration = () => {
 
-  render() {
-    return (
-      <>
-        <BreadCrumbWrapper />
-        <div className="custom-user-roles-wrapper">
-          <GoBackSubHeader currentPage="User configuration" />
-          <EditableTable tableData={tableData} onSaveTable={this.onSaveUserConfiguration} />
-        </div>
-      </>
-    )
-  }
+  return (
+    <>
+      <BreadCrumbWrapper />
+      <div className="custom-user-roles-wrapper">
+        <GoBackSubHeader currentPage="User configuration" />
+        <EditableTable
+          getTableData={getUserConfiguartions}
+          saveTableData={saveUserConfigurationws}
+          deleteTableRow={deleteUserConfiguartions}
+        />
+      </div>
+    </>
+  )
 }
 
 export default UserConfiguration

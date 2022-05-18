@@ -101,15 +101,18 @@ export const changeInput = (row, state) => {
   const dataSource = [...state.dataSource];
   const index = dataSource.findIndex((item) => row.key === item.key)
   const item = dataSource[index]
+  item.updated = true
   dataSource.splice(index, 1, { ...item, ...row })
   return dataSource
 }
 
 export const changeSelectInput = (value, record, column, state) => {
   const dataSource = JSON.parse(JSON.stringify(state.dataSource))
+  if(column.mode === 'single') value = [`${value}`]
   const index = dataSource.findIndex(item => record.key === item.key)
   const name = column.name
   dataSource[index][name] = value
+  dataSource[index].updated = true
   return dataSource
 }
 
@@ -118,6 +121,7 @@ export const changeToggleInput = (value, record, column, state) => {
   const index = dataSource.findIndex(item => record.key === item.key)
   const name = column.name
   dataSource[index][name] = value
+  dataSource[index].updated = true
   return dataSource
 }
 
@@ -131,4 +135,8 @@ export const adjustColumnWidths = columns => {
       adjustColumnWidths(column.children)
     }
   })
+}
+
+export const singleSelectArray = dataSource => {
+  
 }
