@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { Button, Input, Layout } from 'antd';
 import { useDispatch } from 'react-redux';
 import { LogoutOutlined } from '@ant-design/icons';
@@ -22,13 +20,6 @@ const HeaderBar = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
-	useEffect(() => {
-		document.addEventListener('tokenExpired', () => {
-			if(localStorage.getItem('login_details')) {
-				adLogout()
-			}
-		})
-	}, [])
 
 	const toggleCollapsed = () => {
 		dispatch(toggleMenu());
@@ -45,12 +36,11 @@ const HeaderBar = () => {
 	};
 	const adLogout = () => {
 		//  window.open(`${logoutUrl}`,'_self')
-		// window.open(
-		// 	`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}/%2F%23%2Fuser%2Flogin`,
+		window.open(
+			`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}/%2F%23%2Fuser%2Flogin`,
 
-		// 	'_self'
-		// );
-		dispatch(showNotification("error", 'Signature Expired! Please login again.'))
+			'_self'
+		);
 		localStorage.clear()
 		history.push('/user/login')
 	};

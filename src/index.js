@@ -16,21 +16,6 @@ import { CookiesProvider } from 'react-cookie';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
-axios.interceptors.request.use(function (config) {
-    return config;
-}, function (error) {
-    return Promise.reject(error);
-});
-
-axios.interceptors.response.use(function (response) {
-    return response;
-}, function (error) {
-    if (error.response.status === 401) {
-        const tokenExpiredEvent = new Event('tokenExpired')
-        document.dispatchEvent(tokenExpiredEvent)
-    }
-    return Promise.reject(error);
-});
 
 ReactDOM.render(
     <BrowserRouter>
