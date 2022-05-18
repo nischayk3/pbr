@@ -664,6 +664,13 @@ const ViewChart = (props, ref) => {
                 el.chartLayout = chartLayout
                 el.data = res.data
                 //setTempPanels(dash_info.panels);
+                el.data[0].data = el.data[0].data.map((item, index) => {
+                    if (item.mode === 'markers') {
+                        item.marker.defaultColor = item.marker.color;
+                        item.marker.color = [...item.text].fill(item.marker.color)
+                    }
+                    return item;
+                })
 
             }))
             setTempPanels(arr);
@@ -707,7 +714,7 @@ const ViewChart = (props, ref) => {
                         if (item.mode === 'markers') {
                             let pointIndex = item.text.findIndex(x => x == point);
                             if (pointIndex >= 0) {
-                                item.marker.color[pointIndex] = 'green'
+                                item.marker.color[pointIndex] = 'orange'
 
                             }
                             item.selectedpoints = null;
