@@ -40,7 +40,8 @@ import {
 	isLoadView,
 	sendSelectedParamData,
 	viewFunctionMap,
-	viewParamMap
+	viewParamMap,
+	setViewResposne
 } from "../../../../duck/actions/viewAction";
 import Signature from "../../../../components/ElectronicSignature/signature";
 
@@ -81,6 +82,7 @@ const ViewCreation = (props) => {
 	const [viewJson, setViewJson] = useState(viewdatajson);
 	const [isSaveVisible, setIsSaveVisible] = useState(false);
 	const [viewName, setViewName] = useState("");
+	const [selectedFiles,setSelectedFiles] = useState({})
 	const [publishResponse, setPublishResponse] = useState({});
 	const [approveReject, setApproveReject] = useState("");
 	const { id } = useParams();
@@ -178,6 +180,8 @@ const ViewCreation = (props) => {
 				(element.all_parameters = viewState.selectedParamData),
 				(element.view_disp_id = viewDisplayId),
 				(element.material_id = moleculeId);
+				(element.files = selectedFiles);
+
 		});
 
 		const _req = {
@@ -187,12 +191,12 @@ const ViewCreation = (props) => {
 	};
 	const handleSaveAsView = () => {
 		const viewData = JSON.parse(JSON.stringify(viewJson));
-        console.log(viewDisplayId)
 		viewData.forEach((element) => {
 			(element.functions = viewState.functions),
 				(element.parameters = viewState.parameters),
 				(element.all_parameters = viewState.selectedParamData),
 				(element.material_id = moleculeId);
+				(element.files = selectedFiles);
 			element.view_disp_id = viewDisplayId;
 			element.view_status = viewStatus;
 			element.view_version = viewVersion;
@@ -236,6 +240,9 @@ const ViewCreation = (props) => {
 		try {
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
+			setViewJson([loadViewRes]);
+			dispatch(isLoadView(true));
+			dispatch(setViewResposne(loadViewRes))
 
 			if (loadViewRes.material_id) setMoleculeId(loadViewRes.material_id);
 			if (loadViewRes.view_status) {
@@ -247,8 +254,9 @@ const ViewCreation = (props) => {
 			if (loadViewRes.parameters) {
 				dispatch(viewParamMap(loadViewRes.parameters))
 			}
-
-
+			if (loadViewRes.files) {
+				setSelectedFiles(loadViewRes.files)
+			}
 			Object.entries(loadViewRes).forEach(([key, value], index) => {
 				// if (key === 'view_version') {
 				// 	setViewVersion(value);
@@ -260,8 +268,6 @@ const ViewCreation = (props) => {
 				// 	setViewName(value);
 				// }
 			});
-			setViewJson([loadViewRes]);
-			dispatch(isLoadView(true));
 			dispatch(sendSelectedParamData(loadViewRes["all_parameters"]));
 			dispatch(hideLoader());
 		} catch (err) {
@@ -404,6 +410,8 @@ const ViewCreation = (props) => {
 												setNewBatchData={setNewBatchData}
 												functionEditorViewState={functionEditorViewState}
 												setFunctionEditorViewState={setFunctionEditorViewState}
+												selectedFiles={selectedFiles}
+												setSelectedFiles={setSelectedFiles}
 												filesListTree={filesListTree}
 												setFilesListTree={setFilesListTree}
 												count={count}
