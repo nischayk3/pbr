@@ -1,9 +1,9 @@
 import React from 'react';
-import axios from 'axios'
+
 import { ConnectedRouter } from 'connected-react-router';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import App from './app';
 import configureStore, { history } from './duck/store';
 import * as serviceWorker from './serviceWorker';
@@ -16,9 +16,9 @@ import { CookiesProvider } from 'react-cookie';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
-
 ReactDOM.render(
-    <BrowserRouter>
+    <>
+        {/* <React.StrictMode> */}
         <CookiesProvider>
             <MsalProvider instance={msalInstance}>
                 <Provider store={configureStore()}>
@@ -30,7 +30,8 @@ ReactDOM.render(
                 </Provider>
             </MsalProvider>
         </CookiesProvider>
-    </BrowserRouter>,
+        {/* </React.StrictMode> */}
+    </>,
     document.getElementById('root')
 );
 

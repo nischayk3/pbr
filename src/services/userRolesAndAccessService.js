@@ -5,7 +5,7 @@ export const getRoleConfiguartions = () => {
     return axios.get('/services/v1/role-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'VIEW'
+            'resource-name': 'CONFIGURATION'
         }
     })
 }
@@ -16,7 +16,7 @@ export const saveRoleConfiguartions = data => {
     return axios.put('/services/v1/role-config', body, {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'VIEW'
+            'resource-name': 'CONFIGURATION'
         }
     })
 }
@@ -26,7 +26,7 @@ export const deleteRoleConfiguartions = data => {
     return axios.delete('/services/v1/role-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'VIEW'
+            'resource-name': 'CONFIGURATION'
         },
         data: { data }
     })
@@ -37,7 +37,7 @@ export const getUserConfiguartions = () => {
     return axios.get('/services/v1/user-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'ANALYTICS'
+            'resource-name': 'CONFIGURATION'
         }
     })
 }
@@ -48,7 +48,7 @@ export const saveUserConfigurationws = data => {
     return axios.put('/services/v1/user-config', body, {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'ANALYTICS'
+            'resource-name': 'CONFIGURATION'
         }
     })
 }
@@ -58,7 +58,7 @@ export const deleteUserConfiguartions = data => {
     return axios.delete('/services/v1/user-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'ANALYTICS'
+            'resource-name': 'CONFIGURATION'
         },
         data: { data }
     })
