@@ -32,7 +32,6 @@ class EditableTable extends Component {
     // }
 
     componentDidMount() {
-        console.log('sdlfsdkfnkl')
         this.loadTable()
     }
 
@@ -41,9 +40,8 @@ class EditableTable extends Component {
         try {
             const response = await this.props.getTableData()
             const { message } = response.data
-            console.log(message)
             const { rowInitialData, dataSource, deleteActionColumn, columns } = message
-            this.setState({ rowInitialData, dataSource, count: dataSource.length, deleteActionColumn: true, columns }, () => {
+            this.setState({ rowInitialData, dataSource, count: dataSource.length, deleteActionColumn, columns }, () => {
                 this.initializeTableRender()
             })
             this.props.hideLoader()
