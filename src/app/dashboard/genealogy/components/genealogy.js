@@ -29,6 +29,7 @@ import {
 	getForwardData,
 	pbrFileUpload,
 	downloadDataTable,
+	genealogyDataUpload,
 } from '../../../../services/genealogyService';
 import popupicon from '../../../../assets/images/popup.png';
 import GenealogyDrawer from '../components/genealogyDrawer/index.js';
@@ -67,8 +68,11 @@ function Genealogy() {
 	const [selectedFileList, setSelectedFileList] = useState([]);
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [uploadFile, setUploadFile] = useState();
+	const [fileName, setFileName] = useState('');
+	const [fileData, setFileData] = useState('');
 	const [uploading, setUploading] = useState(false);
 	const [uploadId, setUploadId] = useState('');
+	const [collapseKey, setCollapseKey] = useState('0');
 
 	const [type, setType] = useState('');
 
@@ -98,6 +102,7 @@ function Genealogy() {
 			setchartType('forward');
 			setProductCode(node.product);
 		} else if (node.clickType === 'view') {
+			setCollapseKey('0');
 			if (node.nodeType === 'Material') {
 				let batchInfoDetails = {
 					product: node.nodeData.matNo,
@@ -158,6 +163,8 @@ function Genealogy() {
 					: node.nodeType === 'Process Order'
 					? node.nodeData.poNo
 					: '';
+			setFileData(node.nodeId);
+
 			setUploadId(uploadNodeId);
 			setIsUploadVisible(true);
 			setSelectedFileList([]);
@@ -382,8 +389,36 @@ function Genealogy() {
 		}
 	};
 
+	const geanealogyFileDataUpload = async _dataReq => {
+		try {
+			const dataResponse = await genealogyDataUpload(_dataReq);
+			if (dataResponse.Status === 202) {
+				dispatch(showNotification('success', dataResponse.Message));
+			} else {
+				dispatch(showNotification('error', dataResponse.Message));
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification('error', error));
+		}
+	};
+
 	const handleClickUpload = () => {
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		const file = uploadFile;
+		const data = fileData && fileData.split('|');
+		const reqData = {
+			batchNum: data[2],
+			changedBy: null,
+			createdBy: login_response.firstname + login_response.lastname,
+			custKey: '123',
+			filename: fileName,
+			productNum: data[1],
+			siteNum: data[0],
+			status: 'open',
+			uploadReason: 'PBR Document',
+		};
+		geanealogyFileDataUpload(reqData);
 		fileUpload(file);
 	};
 
@@ -435,14 +470,13 @@ function Genealogy() {
 			formData.append('file', info.file.originFileObj);
 			formData.append('method', 'aws');
 
+			setFileName(info.file.name);
 			setUploadFile(formData);
 		} else if (info.file.status === 'error') {
 			nextState.selectedFileList = [];
 			nextState.selectedFile = null;
-
 			message.error(`${info.file.name} file upload failed.`);
 		}
-
 		setSelectedFile(nextState.selectedFile);
 		setSelectedFileList(nextState.selectedFileList);
 	};
@@ -530,7 +564,7 @@ function Genealogy() {
 								/>
 							)}
 							<GenealogyDrawer
-								type={type}
+								type={nodeType}
 								drawerVisible={isDrawerOpen}
 								isDrawer={isDrawerVisible}
 								drawerClose={onCloseDrawer}
@@ -542,6 +576,8 @@ function Genealogy() {
 								fileDownload={downloadFile}
 								productCode={productCode}
 								productType={chartType}
+								collapseKey={collapseKey}
+								setCollapseKey={setCollapseKey}
 							/>
 							<Modal
 								width={520}
@@ -612,6 +648,8 @@ function Genealogy() {
 								batchInfo={batchInfo}
 								processInput={processInput}
 								processOutput={processOutput}
+								collapseKey={collapseKey}
+								setCollapseKey={setCollapseKey}
 							/>
 						</div>
 					</TabPane>

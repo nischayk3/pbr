@@ -8,7 +8,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button, Select } from 'antd';
-import { getGeanealogyFilter, getGenealogyProductType } from '../../../../../services/genealogyService.js';
+import {
+	getGeanealogyFilter,
+	getGenealogyProductType,
+} from '../../../../../services/genealogyService.js';
 import './style.scss';
 import SelectSearchField from '../../../../../components/SelectSearchField/SelectSearchField';
 import Toggle from '../../../../../components/Toggle';
@@ -37,7 +40,9 @@ function Filter(props) {
 		batchList: [],
 		productTypeList: [],
 	});
+
 	const dispatch = useDispatch();
+
 	useEffect(() => {
 		getGenealogyFilterData();
 	}, []);
@@ -230,6 +235,7 @@ function Filter(props) {
 			}
 		}
 	};
+
 	const getGenealogyFilterData = async (
 		selectedPlantValue,
 		selectedBatchValue,
@@ -253,12 +259,14 @@ function Filter(props) {
 
 		try {
 			const filterRes = await getGeanealogyFilter(reqFilter);
-			const getProductType = await getGenealogyProductType()
+
+			const getProductType = await getGenealogyProductType();
 			if (filterRes.statuscode === 200 && getProductType.statuscode == 200) {
-				let productList = []
-				getProductType.Data.map((product) => {
-					productList.push(product.prod_type_cd)
-				})
+				let productList = [];
+				getProductType.Data.map(product => {
+					productList.push(product.prod_type_cd);
+				});
+
 				setParamList(() => {
 					return {
 						plantList: filterRes && filterRes.plant_no,
@@ -276,12 +284,13 @@ function Filter(props) {
 	};
 
 	const OnSearchTree = () => {
-
 		let paramDetail = {
 			plant: selectParam['plant'],
 			product: selectParam['productCode'],
 			batch: selectParam['batchNum'],
-			productType: selectParam['productType'].map(d =>`'${d}'`).join(','),
+			productType:
+				selectParam['productType'] &&
+				selectParam['productType'].map(d => `'${d}'`).join(','),
 			treeType: isCheck ? 'Backward' : 'Forward',
 		};
 
@@ -394,7 +403,7 @@ function Filter(props) {
 				/>
 				<SelectSearchField
 					showSearch
-					mode="multiple"
+					mode='multiple'
 					label='Product Type '
 					placeholder='Select'
 					onChangeSelect={value => onChangeParam(value, 'product_type')}
@@ -402,7 +411,9 @@ function Filter(props) {
 					handleClearSearch={e => clearSearch(e, 'product_type')}
 					//error={isEmptyProductType ? 'Please select product type' : null}
 					options={optionsProductType}
-					selectedValue={selectParam['productType']}
+					selectedValue={
+						selectParam['productType'] !== '' ? selectParam['productType'] : []
+					}
 				/>
 				<Toggle
 					name='isChecked'

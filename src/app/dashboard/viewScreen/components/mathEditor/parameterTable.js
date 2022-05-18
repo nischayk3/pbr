@@ -13,7 +13,7 @@ import {
 	hideLoader,
 	showLoader,
 } from "../../../../../duck/actions/commonActions";
-import { isNewView,setMathValue } from "../../../../../duck/actions/viewAction";
+import { isNewView, setMathValue } from "../../../../../duck/actions/viewAction";
 
 let paramType = "";
 
@@ -146,10 +146,12 @@ const ParameterTable = (props) => {
 			},
 		},
 	];
+
 	const data =
 		tableData !== undefined && tableData.length > 0
-			? Object.keys(tableData[0])
+			? Object.keys(tableData[tableData.length-1])
 			: [];
+
 	const uniqueArr = (value, index, self) => {
 		return self.indexOf(value) === index;
 	};
@@ -164,6 +166,7 @@ const ParameterTable = (props) => {
 			item === "id" ||
 			item === "key" ||
 			item === "sourceType" ||
+			item === "material_id" ||
 			item === "coverage"
 		) {
 			// console.log('i');
@@ -448,9 +451,9 @@ const ParameterTable = (props) => {
 		let newAggrValue = [...tableData];
 		newAggrValue[index].aggregation =
 			value.value !== undefined ? value.value : "";
-		const aggJson = [...parameters];
-		aggJson[index].aggregation = value.value !== undefined ? value.value : "";
-		setParameters(aggJson);
+		// const aggJson = [...parameters];
+		// aggJson[index].aggregation = value.value !== undefined ? value.value : "";
+		// setParameters(aggJson);
 		setTableData(newAggrValue);
 		setAggregationValue(value.value !== undefined ? value.value : "");
 	};
@@ -501,7 +504,7 @@ const ParameterTable = (props) => {
 								let paramsObj = {};
 								const materialKey = element.key.split("-");
 								paramsObj["source_type"] = element.sourceType;
-								paramsObj["material_id"] = materialKey[1];
+								paramsObj["material_id"] = element.sourceType=='file' ? element.material_id :  materialKey[1];
 								paramsObj["parameter_name"] = element.parameter_name;
 								paramsObj["batch_exclude"] = [];
 								paramsObj["priority"] = index;

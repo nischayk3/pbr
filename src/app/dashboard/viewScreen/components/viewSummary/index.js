@@ -41,6 +41,7 @@ const ViewSummaryData = props => {
 		}
 	}, [summaryTableData]);
 
+
 	useEffect(() => {
 		if (funTableData.length > 0) {
 
@@ -79,6 +80,7 @@ const ViewSummaryData = props => {
 						),
 						dataIndex: item,
 						key: `${item}-${i}`,
+						
 						onHeaderCell: (record, rowIndex) => {
 							return {
 								onClick: (ev) => {
@@ -86,9 +88,11 @@ const ViewSummaryData = props => {
 									message.success(`${record.dataIndex} function selected`)
 
 									// dispatch(setViewFunctionName(record.dataIndex));
-								},
+								},	
 							};
+	
 						},
+						
 						render: value =>
 							value ? (
 								<span className='batchChecked'>

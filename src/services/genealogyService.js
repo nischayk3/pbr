@@ -5,8 +5,8 @@ import {
 	BMS_PBR_URL,
 } from '../constants/apiBaseUrl';
 
-
 let login_response = JSON.parse(localStorage.getItem('login_details'));
+console.log('login_response.............', login_response);
 const request_headers = {
 	'content-type': 'application/json',
 	'x-access-token': login_response.token ? login_response.token : '',
@@ -35,19 +35,19 @@ export const getGeanealogyFilter = _queryParam => {
 };
 
 export const getGenealogyProductType = _queryParam => {
-		return Service.get(
-			BMS_APP_PYTHON_SERVICE + '/product-type-genealogy',
-			_queryParam,
-			request_headers
-		).then(
-			response => {
-				return response.data;
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/product-type-genealogy',
+		_queryParam,
+		request_headers
+	).then(
+		response => {
+			return response.data;
 		},
-			error => {
-				return error.response.data;
+		error => {
+			return error.response.data;
 		}
 	);
-	};
+};
 
 export const getBackwardData = _queryParam => {
 	return Service.get(
@@ -136,6 +136,22 @@ export const downloadDataTable = request => {
 export const pbrFileUpload = request => {
 	return Service.post(
 		MDH_APP_PYTHON_SERVICE + '/pbr/udh/ocr_extraction',
+		request,
+		request_header_file
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
+
+//upload genealogy data
+export const genealogyDataUpload = request => {
+	return Service.put(
+		MDH_APP_PYTHON_SERVICE + '/pbr/udh/upload-gngl-data',
 		request,
 		request_header_file
 	).then(
