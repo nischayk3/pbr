@@ -30,9 +30,10 @@ thead[class*="ant-table-thead"] th{
 .generator-table
 {
 table {
-  border-collapse: collapse;
+  border-collapse: separate;
   width: 100%;
-  border: 1px solid #dddddd;
+  border: 2px solid #ddd;
+  border-radius: 4px;
   table-layout: fixed;
 }
 
@@ -175,9 +176,9 @@ td{
 .chart-tags
 {
     background: #F0F5FF;
-    border: 1px solid #ADC6FF;
+    border: 2px solid #ADC6FF;
     box-sizing: border-box;
-    border-radius: 2px;
+    border-radius: 4px;
     align-items: center;
     padding: 1px 8px; 
     margin-left: 20px;
@@ -190,17 +191,22 @@ td{
 .chart-tag
 {
 
+  .ant-tag-close-icon{
+    font-size: 14px;
+  }
+    border: 0px !important;
+
   align-items: center;
   padding: 1px 8px;   
   background: #E2F5FF;
   box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  width: 86px;
+  width: 100px;
   height: 22px;
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   margin-left: 1px;
 
   color: #262626;
@@ -352,4 +358,30 @@ margin-left:20px
 .ant-tabs-nav-list
 {
     margin-left: 0%;
+}
+
+.report-primary-btn {
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: 400 !important;
+	font-size: 14px !important;
+	color: #262626 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 4px !important;
+	border: 0px !important;
+	background: #fff !important;
+}
+
+.report-secondary-btn {
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: 400 !important;
+	font-size: 14px !important;
+	color: #262626 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 4px !important;
+	border: 0px !important;
+
 }

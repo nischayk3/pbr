@@ -129,7 +129,7 @@ const chartComponent = (props) => {
                     style={{marginLeft:'10px'}}
                 />
             </div>
-            <div>
+            <div className='report-chart-tables'>
                 <Tabs activeKey={activeTab} onChange={changeTab} >
                     <TabPane tab="Exclusion" key="Exclusion"><Table style={{height:'400px',width:'600px'}} scroll={{ x: 400}} columns={exclusionColumns} dataSource={exclusion} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>
                     <TabPane tab="Violation" key="Violation"><Table  style={{height:'400px',width:'600px'}} scroll={{ x: 400}} columns={violationColumns} dataSource={violation} size="small" pagination={{ pageSize: 5 }} bordered={false} /></TabPane>

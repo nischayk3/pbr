@@ -459,7 +459,7 @@ export default function Landing(props) {
                                         placeholder='Search by report ID or name'
                                     />
                                 </Row>
-                                <div className="landing-tiles">
+                                {/* <div className="landing-tiles">
                                     {!newsearched  && reportList &&
                                         reportList.length > 0 &&
                                         reportList.map(
@@ -475,15 +475,13 @@ export default function Landing(props) {
                                                     >
                                                         <div className={selectedReportId == i.rep_disp_id ? "landing-tile-check" : "landing-tile"}  >
                                                             <div className="landing-report-id"> {i.rep_disp_id}</div><br />
-                                                            {/* <span className="landing-report-name">{i.rep_name}</span> */}
                                                             {selectedReportId == i.rep_disp_id ? <img className="landing-checkicon" src={checkIcon} /> : <></>}
-                                                            {/* {i.id}<br />
-                                                                     */}
+                                                           
                                                         </div>
                                                     </div>
                                                 )
                                         )}
-                                </div>
+                                </div> */}
                                 {newsearched ? (
                                     <Table
                                         className='landing-table'
