@@ -475,7 +475,9 @@ function Genealogy() {
 		} else if (info.file.status === 'error') {
 			nextState.selectedFileList = [];
 			nextState.selectedFile = null;
-			message.error(`${info.file.name} file upload failed.`);
+			dispatch(
+				showNotification('error', `${info.file.name} file upload failed.`)
+			);
 		}
 		setSelectedFile(nextState.selectedFile);
 		setSelectedFileList(nextState.selectedFileList);
