@@ -18,6 +18,7 @@ import {
 } from '../../../../duck/actions/commonActions';
 import Banner from '../../../../assets/images/Popup-Side.svg';
 import checkIcon from '../../../../assets/images/checkbox.svg'
+import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
 
 export default function Landing(props) {
     const [resultDate, setResultDate] = useState('');
@@ -130,6 +131,11 @@ export default function Landing(props) {
         setFilterTable(filterTable);
     };
     const onSearch = (value) => {
+        if(value=='')
+        setNewSearched(false);
+
+        else
+        {
         setNewSearched(true);
         const tableData = reportList;
         const filterTable = tableData.filter((o) =>
@@ -139,8 +145,9 @@ export default function Landing(props) {
         );
 
         setFilterTable(filterTable);
+        }
     };
-    
+
     const handleCancel = () => {
         setIsModalVisible(false);
     };
@@ -152,10 +159,10 @@ export default function Landing(props) {
     const getReportList = () => {
         let req = { rep_status: 'all' };
         getReports(req).then((res) => {
-            if(res['status-code']==200)
-            setReportList(res['Data']);
+            if (res['status-code'] == 200)
+                setReportList(res['Data']);
             else
-            setReportList([]);
+                setReportList([]);
 
 
         });
@@ -228,8 +235,19 @@ export default function Landing(props) {
                         <BreadCrumbWrapper />
                     </div>
                 </div>
-                <div className='custom-content-layout'>
-                    <Card className='workflow_head'>
+                <div className="landing-screen-header">
+                <ScreenHeader
+                    bannerbg={{
+                        background:
+                            "linear-gradient(180deg, rgba(139, 254, 197, 0.53) 0%, rgba(119, 227, 233, 0.49) 100%)",
+                    }}
+                    title={`Howdy ${localStorage.getItem("username")},`}
+                    description="Lets get designing some report templates"
+                    source={illustrations}
+                    sourceClass="dashboard-landing"
+                />
+                </div>
+                {/* <Card className='workflow_head'>
                         <div>
                             <p className='dash-username'>
                                 Howdy {localStorage.getItem('username')}!
@@ -240,167 +258,77 @@ export default function Landing(props) {
                         </div>
                         <img src={illustrations} className='illustration' />
                         <span className='resultdate'>{resultDate}</span>
-                    </Card>
-                    <Card className='landing-card'>
-                        <div style={{ width: '900px', marginLeft: '180px' }}>
-                            <Input.Search
-                                placeholder='Search by view ID, name, product number, creator, status'
-                                allowClear
-                                className='landing-btn'
-                                enterButton='Search'
-                                size='large'
-                                onSearch={search}
-                            />
-                            <Tabs
-                                className='report-landing-card'
-                                defaultActiveKey='1'
+                    </Card> */}
+                <Card className='landing-card'>
+                    <div style={{ width: '900px', marginLeft: '180px' }}>
+                        <Input.Search
+                            placeholder='Search by view ID, name, product number, creator, status'
+                            allowClear
+                            className='landing-btn'
+                            enterButton='Search'
+                            size='large'
+                            onSearch={search}
+                        />
+                        <Tabs
+                            className='report-landing-card'
+                            defaultActiveKey='1'
+                        >
+                            <TabPane
+                                tab='Design Report Template'
+                                key='Design Report Template'
                             >
-                                <TabPane
-                                    tab='Design Report Template'
-                                    key='Design Report Template'
+                                {searched ? (
+                                    <Table
+                                        className='landing-table'
+                                        columns={columns}
+                                        dataSource={
+                                            filterTable === null
+                                                ? reportList
+                                                : filterTable
+                                        }
+                                        onRow={(record) => ({
+                                            onClick: (e) => {
+                                                getLoadReport(
+                                                    record.rep_disp_id
+                                                );
+                                            },
+                                        })}
+                                    />
+                                ) : (
+                                    <></>
+                                )}
+                                <div
+                                    className='create-new'
+                                    onClick={() => props.changeScreen()}
                                 >
-                                    {searched ? (
-                                        <Table
-                                            className='landing-table'
-                                            columns={columns}
-                                            dataSource={
-                                                filterTable === null
-                                                    ? reportList
-                                                    : filterTable
-                                            }
-                                            onRow={(record) => ({
-                                                onClick: (e) => {
-                                                    getLoadReport(
-                                                        record.rep_disp_id
-                                                    );
-                                                },
-                                            })}
-                                        />
-                                    ) : (
-                                        <></>
-                                    )}
-                                    <div
-                                        className='create-new'
-                                        onClick={() => props.changeScreen()}
-                                    >
-                                        <PlusOutlined />
-                                        <p>Design new report</p>
-                                    </div>
-                                    <br />
-                                    
-                                    <div className='card-legends'>
-                                        <h3 className='recent'>Recently designed report templates</h3>
-                                        <div className='legends'>
-                                            <p>
-                                                <span className='drft'></span>Draft
-                                            </p>
-                                            <p>
-                                                <span className='await'></span>Awaiting approval
-                                            </p>
-                                            <p>
-                                                <span className='aprv'></span>Approved
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className='tile'>
-                                            {reportList && reportList.length > 0 ? (
-                                                reportList.map(
-                                                    (i, index) =>
-                                                        index < 8 && (
-                                                            <div
-                                                                onClick={() => {
-                                                                    getLoadReport(
-                                                                        i.rep_disp_id
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <StatusBlock
-                                                                    id={
-                                                                        i.rep_disp_id
-                                                                    }
-                                                                    status={
-                                                                        i.rep_status
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        )
-                                                )
-                                            ) : (
-                                                <></>
-                                            )}
-                                        </div>
-                                    </div>
-                                </TabPane>
-                                <TabPane
-                                    tab='Generate Report Variant'
-                                    key='Generate Report Variant'
-                                >
-                                    {/* <Input.Search
-                                    placeholder="Search by view ID, name, product number, creator, status"
-                                    allowClear
-                                    enterButton='Search'
-                                    size='large'
-                                    onSearch={search}
-                                // onSearch={onSearch}
-                                /> */}
+                                    <PlusOutlined />
+                                    <p>Design new report</p>
+                                </div>
+                                <br />
 
-                                    {searched ? (
-                                        <Table
-                                            className='landing-table'
-                                            columns={columns}
-                                            dataSource={
-                                                filterTable === null
-                                                    ? reportList
-                                                    : filterTable
-                                            }
-                                            onRow={(record) => ({
-                                                onClick: (e) => {
-                                                    // record['color'] = '#D3D3D3'
-                                                    // setReportId(record.rep_disp_id)
-                                                    // getReportData(record.rep_disp_id, record.rep_status)
-                                                    // dispatch(showLoader())
-                                                    getLoadReportGenerator(
-                                                        record.rep_disp_id
-                                                    );
-                                                    // onOk()
-                                                },
-                                            })}
-                                        />
-                                    ) : (
-                                        <></>
-                                    )}
-                                    <div
-                                        className='create-new'
-                                        onClick={() => setIsModalVisible(true)}
-                                    >
-                                        <PlusOutlined />
-                                        <p>Generate new report</p>
+                                <div className='card-legends'>
+                                    <h3 className='recent'>Recently designed report templates</h3>
+                                    <div className='legends'>
+                                        <p>
+                                            <span className='drft'></span>Draft
+                                        </p>
+                                        <p>
+                                            <span className='await'></span>Awaiting approval
+                                        </p>
+                                        <p>
+                                            <span className='aprv'></span>Approved
+                                        </p>
                                     </div>
-                                    <br />
-                                    <div className='card-legends'>
-                                        <h3 className='recent'>Recently created reports</h3>
-                                        <div className='legends'>
-                                            <p>
-                                                <span className='drft'></span>Draft
-                                            </p>
-                                            <p>
-                                                <span className='await'></span>Awaiting approval
-                                            </p>
-                                            <p>
-                                                <span className='aprv'></span>Approved
-                                            </p>
-                                        </div>
-                                    </div>
+                                </div>
+                                <div>
                                     <div className='tile'>
-                                        {reportList &&
-                                            reportList.length > 0 &&
+                                        {reportList && reportList.length > 0 ? (
                                             reportList.map(
                                                 (i, index) =>
                                                     index < 8 && (
                                                         <div
                                                             onClick={() => {
-                                                                getLoadReportGenerator(
+                                                                getLoadReport(
                                                                     i.rep_disp_id
                                                                 );
                                                             }}
@@ -415,97 +343,186 @@ export default function Landing(props) {
                                                             />
                                                         </div>
                                                     )
-                                            )}
+                                            )
+                                        ) : (
+                                            <></>
+                                        )}
                                     </div>
-                                </TabPane>
-                            </Tabs>
-                        </div>
-                    </Card>
-                    <Modal
-                        className='landing-modal'
-                        title="Create New Dashboard"
-                        visible={isModalVisible}
-                        onCancel={handleCancel}
-                        footer={false}
-                    >
-                        <div>
-                            <Row>
-                                <Col span={12}>
-                                    <img src={Banner} />
-                                </Col>
-                                <Col span={12}>
-                                    <Row>
-                                        <p>Select a report to get started</p>
-                                        <Input.Search
-                                            onSearch={onSearch}
-                                            placeholder='Search by report ID or name'
-                                        />
-                                    </Row>
-                                    <div className="landing-tiles">
-                                        {reportList &&
-                                            reportList.length > 0 &&
-                                            reportList.map(
-                                                (i, index) =>
-                                                    index < 4 && (
-                                                        <div
-                                                            onClick={() => {
-                                                                getLoadReportGenerator(
-                                                                    i.rep_disp_id
-                                                                );
-                                                                setReportId(i.rep_disp_id)
-                                                            }}
-                                                        >
-                                                            <div className={selectedReportId == i.rep_disp_id ? "landing-tile-check" : "landing-tile"}  >
-                                                                <div className="landing-report-id"> {i.rep_disp_id}</div><br />
-                                                                {/* <span className="landing-report-name">{i.rep_name}</span> */}
-                                                                {selectedReportId == i.rep_disp_id ? <img className="landing-checkicon" src={checkIcon} /> : <></>}
-                                                                {/* {i.id}<br />
+                                </div>
+                            </TabPane>
+                            <TabPane
+                                tab='Generate Report Variant'
+                                key='Generate Report Variant'
+                            >
+                                {/* <Input.Search
+                                    placeholder="Search by view ID, name, product number, creator, status"
+                                    allowClear
+                                    enterButton='Search'
+                                    size='large'
+                                    onSearch={search}
+                                // onSearch={onSearch}
+                                /> */}
+
+                                {searched ? (
+                                    <Table
+                                        className='landing-table'
+                                        columns={columns}
+                                        dataSource={
+                                            filterTable === null
+                                                ? reportList
+                                                : filterTable
+                                        }
+                                        onRow={(record) => ({
+                                            onClick: (e) => {
+                                                // record['color'] = '#D3D3D3'
+                                                // setReportId(record.rep_disp_id)
+                                                // getReportData(record.rep_disp_id, record.rep_status)
+                                                // dispatch(showLoader())
+                                                getLoadReportGenerator(
+                                                    record.rep_disp_id
+                                                );
+                                                // onOk()
+                                            },
+                                        })}
+                                    />
+                                ) : (
+                                    <></>
+                                )}
+                                <div
+                                    className='create-new'
+                                    onClick={() => setIsModalVisible(true)}
+                                >
+                                    <PlusOutlined />
+                                    <p>Generate new report</p>
+                                </div>
+                                <br />
+                                <div className='card-legends'>
+                                    <h3 className='recent'>Recently created reports</h3>
+                                    <div className='legends'>
+                                        <p>
+                                            <span className='drft'></span>Draft
+                                        </p>
+                                        <p>
+                                            <span className='await'></span>Awaiting approval
+                                        </p>
+                                        <p>
+                                            <span className='aprv'></span>Approved
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className='tile'>
+                                    {reportList &&
+                                        reportList.length > 0 &&
+                                        reportList.map(
+                                            (i, index) =>
+                                                index < 8 && (
+                                                    <div
+                                                        onClick={() => {
+                                                            getLoadReportGenerator(
+                                                                i.rep_disp_id
+                                                            );
+                                                        }}
+                                                    >
+                                                        <StatusBlock
+                                                            id={
+                                                                i.rep_disp_id
+                                                            }
+                                                            status={
+                                                                i.rep_status
+                                                            }
+                                                        />
+                                                    </div>
+                                                )
+                                        )}
+                                </div>
+                            </TabPane>
+                        </Tabs>
+                    </div>
+                </Card>
+                <Modal
+                    className='landing-modal'
+                    title="Create New Dashboard"
+                    visible={isModalVisible}
+                    onCancel={handleCancel}
+                    footer={false}
+                >
+                    <div>
+                        <Row>
+                            <Col span={12}>
+                                <img className="gen-banner" src={Banner} />
+                            </Col>
+                            <Col span={12}>
+                                <Row>
+                                    <p>Select a report to get started</p>
+                                    <Input.Search
+                                        onSearch={onSearch}
+                                        placeholder='Search by report ID or name'
+                                    />
+                                </Row>
+                                <div className="landing-tiles">
+                                    {!newsearched  && reportList &&
+                                        reportList.length > 0 &&
+                                        reportList.map(
+                                            (i, index) =>
+                                                index < 4 && (
+                                                    <div
+                                                        onClick={() => {
+                                                            getLoadReportGenerator(
+                                                                i.rep_disp_id
+                                                            );
+                                                            setReportId(i.rep_disp_id)
+                                                        }}
+                                                    >
+                                                        <div className={selectedReportId == i.rep_disp_id ? "landing-tile-check" : "landing-tile"}  >
+                                                            <div className="landing-report-id"> {i.rep_disp_id}</div><br />
+                                                            {/* <span className="landing-report-name">{i.rep_name}</span> */}
+                                                            {selectedReportId == i.rep_disp_id ? <img className="landing-checkicon" src={checkIcon} /> : <></>}
+                                                            {/* {i.id}<br />
                                                                      */}
-                                                            </div>
                                                         </div>
-                                                    )
-                                            )}
-                                    </div>
-                                    {newsearched ? (
-                                        <Table
-                                            className='landing-table'
-                                            columns={columns}
-                                            scroll={{ y: 150, x: 350 }}
-                                            // style={{  height: 'auto' }}
-                                            dataSource={
-                                                filterTable === null
-                                                    ? reportList
-                                                    : filterTable
-                                            }
-                                            pagination={false}
-                                            onRow={(record) => ({
-                                                onClick: (e) => {
-                                                    NewReportGenerator(
-                                                        record.rep_disp_id
-                                                    );
-                                                },
-                                            })}
-                                        />
-                                    ) : (
-                                        <></>
-                                    )}
+                                                    </div>
+                                                )
+                                        )}
+                                </div>
+                                {newsearched ? (
+                                    <Table
+                                        className='landing-table'
+                                        columns={columns}
+                                        scroll={{ y: 150, x: 350 }}
+                                        // style={{  height: 'auto' }}
+                                        dataSource={
+                                            filterTable === null
+                                                ? reportList
+                                                : filterTable
+                                        }
+                                        pagination={false}
+                                        onRow={(record) => ({
+                                            onClick: (e) => {
+                                                NewReportGenerator(
+                                                    record.rep_disp_id
+                                                );
+                                            },
+                                        })}
+                                    />
+                                ) : (
+                                    <></>
+                                )}
 
 
-                                </Col>
+                            </Col>
 
-                                <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px', marginLeft: '88%', marginTop: '70px' }}
-                                    onClick={() => {
-                                        history.push({
-                                            pathname:
-                                                '/dashboard/report_generator',
-                                        });
-                                    }}
-                                >Let's Go!</Button>
-                            </Row>
-                        </div>
+                            <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px', marginLeft: '88%', marginTop: '70px' }}
+                                onClick={() => {
+                                    history.push({
+                                        pathname:
+                                            '/dashboard/report_generator',
+                                    });
+                                }}
+                            >Let's Go!</Button>
+                        </Row>
+                    </div>
 
-                    </Modal>
-                </div>
+                </Modal>
             </div>
 
         </div>

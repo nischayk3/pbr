@@ -78,6 +78,7 @@
     }
     .workflow_head{
         // width: 1330px;
+        margin: 24px;
         height: 168px;
         background:  linear-gradient(180deg, rgba(139, 254, 197, 0.53) 0%, rgba(119, 227, 233, 0.49) 100%);
         box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
@@ -301,7 +302,7 @@
     .landing-card
     {
         // width: 101%;
-        margin-top: 8px;
+        margin:8px 24px 24px 24px;
     
         border-radius: 4px;
         .ant-card-body{
@@ -344,6 +345,7 @@
         border-bottom: 1px solid #e2e2e2;
         margin: 4px 0 10px 0;
         display: flex;
+        margin-top: 20px;
         justify-content: space-between;
         .legends {
             display: flex;
@@ -391,6 +393,25 @@
             height: auto;
             background: #ffffff;
             border-radius: 4px;
+        }
+        .gen-banner
+        {
+            height : 250px;
+        }
+        .ant-modal-close-x
+        {
+            margin-top: -5px;
+        }
+        .ant-modal-header
+        {
+            background: #F1F7FF !important;
+            border-radius: 4px 4px 0px 0px !important;
+            font-family: 'Maven Pro';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 22px;
+            color: #4D4D4D;
         }
         .ant-modal-footer {
             border-top: 0px;
@@ -454,9 +475,18 @@
         {
             position: relative;
             float: right;
-            bottom: 40%;
-            left: 39%;
+            bottom: 49%;
+            left: 42%;
         }
         
     }
+
+ .landing-screen-header
+ {
+     padding: 24px 24px 0px 24px ;
+     img
+     {
+         height: 160px;
+     }
+ }   
     
