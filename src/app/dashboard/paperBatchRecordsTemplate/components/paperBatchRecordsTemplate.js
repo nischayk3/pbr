@@ -20,6 +20,8 @@ import {
 	notification,
 	Modal,
 	Table,
+	Dropdown,
+	Menu,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -52,6 +54,7 @@ import BatchRecordExample from '../../../../assets/images/BatchRecordExample2.jp
 import InputField from '../../../../components/InputField/InputField';
 import QueryString from 'query-string';
 import Sider from 'antd/lib/layout/Sider';
+import { ImCrop } from 'react-icons/im';
 import AddParameter from './addParameter/AddParameter';
 import './styles.scss';
 import {
@@ -136,6 +139,8 @@ function PaperBatchRecordsTemplate() {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [tableLoading, setTableLoading] = useState(false);
 	const [searchedFileList, setSearchedFileList] = useState('');
+	const [menuKey, setMenuKey] = useState('word');
+	const [selectedMode, setSelectedMode] = useState('word');
 	const toggleLeftCollapsed = () => {
 		setLeftPanelCollapsed(!leftPanelCollapsed);
 	};
@@ -561,12 +566,12 @@ function PaperBatchRecordsTemplate() {
 	/**
 	 * TODO: get boundingBoxData info
 	 */
-	const getBoundingBoxDataInfo = async (width, height) => {
+	const getBoundingBoxDataInfo = async (width, height, mode) => {
 		try {
 			// dispatch(showLoader());
 			let _reqBatch = {
 				filename: `${params?.file?.split('_')[0]}_page-0.jpeg.json`,
-				bbox_type: 'word',
+				bbox_type: mode,
 			};
 			const batchRes = await getBoundingBoxData(_reqBatch);
 			setOrigianalResponse(batchRes);
@@ -622,7 +627,7 @@ function PaperBatchRecordsTemplate() {
 
 	useEffect(() => {
 		getImage();
-		getBoundingBoxDataInfo();
+		// getBoundingBoxDataInfo();
 	}, []);
 
 	const getImage = async () => {
@@ -654,7 +659,7 @@ function PaperBatchRecordsTemplate() {
 			const list = document.getElementsByTagName('canvas')[0];
 			console.log('height: ', list?.height, list?.width);
 			console.log('height: ', list);
-			getBoundingBoxDataInfo(list?.width, list?.height);
+			getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
 			setImageWidth(list?.width);
 			setimageHeight(list?.height);
 		}, 3000);
@@ -945,6 +950,7 @@ function PaperBatchRecordsTemplate() {
 					dispatch(showNotification('success', batchRes.Message));
 				} else if (batchRes.Status === 404) {
 					dispatch(showNotification('error', batchRes.Message));
+					// dispatch(showNotification('error', batchRes.detail));
 				}
 				dispatch(hideLoader());
 			} catch (error) {
@@ -965,6 +971,7 @@ function PaperBatchRecordsTemplate() {
 			dispatch(showNotification('success', res.Message));
 		} else {
 			dispatch(showNotification('error', res.Message));
+			// dispatch(showNotification('error', batchRes.detail));
 		}
 	};
 	const onFinish = values => {
@@ -1140,6 +1147,7 @@ function PaperBatchRecordsTemplate() {
 			setSearchedFileList(res.Searched_file_list);
 		} else {
 			dispatch(showNotification('error', res.Message));
+			// dispatch(showNotification('error', batchRes.detail));
 		}
 	};
 	const showModal = async () => {
@@ -1279,6 +1287,7 @@ function PaperBatchRecordsTemplate() {
 			setModalData(res.Extraction);
 		} else {
 			dispatch(showNotification('error', res.Message));
+			// dispatch(showNotification('error', batchRes.detail));
 		}
 		setTableLoading(false);
 	};
@@ -1323,6 +1332,27 @@ function PaperBatchRecordsTemplate() {
 			key: 'site',
 		},
 	];
+
+	const handleMenuChange = item => {
+		console.log('item,key', item);
+		setSelectedMode(item.key);
+		setMenuKey(item.key);
+		setAreasMap({ ...areasMap, areas: [] });
+		getBoundingBoxDataInfo(imageWidth, imageHeight, item.key);
+	};
+
+	const modes = (
+		<Menu
+			defaultSelectedKeys={['word']}
+			selectedKeys={[menuKey]}
+			onClick={item => handleMenuChange(item)}>
+			<Menu.Item key='word'>Word</Menu.Item>
+			<Menu.Divider />
+			<Menu.Item key='line'>Line</Menu.Item>
+			<Menu.Divider />
+			<Menu.Item key='key_value'>Key Value</Menu.Item>
+		</Menu>
+	);
 
 	return (
 		<div className='pbr-container pbrTemplate-container'>
@@ -2011,7 +2041,16 @@ function PaperBatchRecordsTemplate() {
 										Draw Snippet
 									</div>
 									<div className='cropSnippet'>
-										<img src={cropImg} className='panelCenterImg' />
+										{/* <img
+                                            src={cropImg}
+                                            className='panelCenterImg'
+                                        /> */}
+										<Dropdown
+											style={{ color: '#ffffff' }}
+											trigger={['click']}
+											overlay={modes}>
+											<ImCrop />
+										</Dropdown>
 									</div>
 									<div className='undoSnippet'>
 										<img src={undoImg} className='panelCenterImg' />

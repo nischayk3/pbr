@@ -430,45 +430,29 @@ export default function Landing(props) {
 										placeholder='Search by report ID or name'
 									/>
 								</Row>
-								<div className='landing-tiles'>
-									{!newsearched &&
-										reportList &&
-										reportList.length > 0 &&
-										reportList.map(
-											(i, index) =>
-												index < 4 && (
-													<div
-														onClick={() => {
-															getLoadReportGenerator(i.rep_disp_id);
-															setReportId(i.rep_disp_id);
-														}}>
-														<div
-															className={
-																selectedReportId == i.rep_disp_id
-																	? 'landing-tile-check'
-																	: 'landing-tile'
-															}>
-															<div className='landing-report-id'>
-																{' '}
-																{i.rep_disp_id}
-															</div>
-															<br />
-															{/* <span className="landing-report-name">{i.rep_name}</span> */}
-															{selectedReportId == i.rep_disp_id ? (
-																<img
-																	className='landing-checkicon'
-																	src={checkIcon}
-																/>
-															) : (
-																<></>
-															)}
-															{/* {i.id}<br />
-															 */}
-														</div>
-													</div>
-												)
-										)}
-								</div>
+								{/* <div className="landing-tiles">
+                                    {!newsearched  && reportList &&
+                                        reportList.length > 0 &&
+                                        reportList.map(
+                                            (i, index) =>
+                                                index < 4 && (
+                                                    <div
+                                                        onClick={() => {
+                                                            getLoadReportGenerator(
+                                                                i.rep_disp_id
+                                                            );
+                                                            setReportId(i.rep_disp_id)
+                                                        }}
+                                                    >
+                                                        <div className={selectedReportId == i.rep_disp_id ? "landing-tile-check" : "landing-tile"}  >
+                                                            <div className="landing-report-id"> {i.rep_disp_id}</div><br />
+                                                            {selectedReportId == i.rep_disp_id ? <img className="landing-checkicon" src={checkIcon} /> : <></>}
+                                                           
+                                                        </div>
+                                                    </div>
+                                                )
+                                        )}
+                                </div> */}
 								{newsearched ? (
 									<Table
 										className='landing-table'
