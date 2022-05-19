@@ -1,4 +1,4 @@
-import { Card, Empty, Table,message } from 'antd';
+import { Card, Empty, Table, message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
@@ -9,11 +9,14 @@ import {
 import LabelTag from '../../../../../components/LabelTag';
 import './styles.scss';
 import { useDispatch } from 'react-redux';
-import { setViewFunctionName,sendFunctionName } from '../../../../../duck/actions/viewAction';
+import {
+	setViewFunctionName,
+	sendFunctionName,
+} from '../../../../../duck/actions/viewAction';
+import { showNotification } from '../../../../../duck/actions/commonActions';
 
 const ViewSummaryData = props => {
-
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	let columns = [];
 	const summaryTableData = useSelector(
 		state => state.viewCreationReducer.summaryTableData
@@ -41,24 +44,18 @@ const ViewSummaryData = props => {
 		}
 	}, [summaryTableData]);
 
-
 	useEffect(() => {
 		if (funTableData.length > 0) {
-
-			
 			const objKey =
 				funTableData !== undefined && funTableData.length > 0
 					? Object.keys(funTableData[0])
 					: [];
 
-
 			const uniqueArr = (value, index, self) => {
 				return self.indexOf(value) === index;
 			};
 
-
 			const summaryColumn = objKey.filter(uniqueArr);
-
 
 			summaryColumn.map((item, i) => {
 				if (item === 'batch' || item === 'batch_year') {
@@ -80,19 +77,21 @@ const ViewSummaryData = props => {
 						),
 						dataIndex: item,
 						key: `${item}-${i}`,
-						
+
 						onHeaderCell: (record, rowIndex) => {
 							return {
-								onClick: (ev) => {
+								onClick: ev => {
 									dispatch(setViewFunctionName(record.dataIndex));
-									message.success(`${record.dataIndex} function selected`)
-
-									// dispatch(setViewFunctionName(record.dataIndex));
-								},	
+									dispatch(
+										showNotification(
+											'success',
+											`${record.dataIndex} function selected`
+										)
+									);
+								},
 							};
-	
 						},
-						
+
 						render: value =>
 							value ? (
 								<span className='batchChecked'>
@@ -119,14 +118,16 @@ const ViewSummaryData = props => {
 			let funData = [];
 
 			const loadViewJson = [...viewJson];
-			let functions_name = loadViewJson[0] && loadViewJson[0].functions ? loadViewJson[0].functions : 0
+			let functions_name =
+				loadViewJson[0] && loadViewJson[0].functions
+					? loadViewJson[0].functions
+					: 0;
 
 			// loadViewJson.forEach(element => {
 			// 	fun.push(element.functions.name);
 			// });
-			if (functions_name) 
-			{
-				functions_name=Object.values(functions_name)
+			if (functions_name) {
+				functions_name = Object.values(functions_name);
 				functions_name.map(element => {
 					fun.push(element.name);
 				});
@@ -139,12 +140,10 @@ const ViewSummaryData = props => {
 
 				loadTableData.forEach(element => {
 					let funObj = {};
-					for(let i=0;i<fun.length;i++)
-					{
-					funObj[fun[i]] = true;
+					for (let i = 0; i < fun.length; i++) {
+						funObj[fun[i]] = true;
 					}
 					funData.push(funObj);
-
 				});
 
 				const mergeArr = loadTableData.map((item, i) =>
@@ -190,7 +189,6 @@ const ViewSummaryData = props => {
 
 		setTableColumn(newColumns);
 	};
-
 
 	return (
 		<Card title='View Summary'>
