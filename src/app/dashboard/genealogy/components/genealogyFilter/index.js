@@ -45,6 +45,7 @@ function Filter(props) {
 
 	useEffect(() => {
 		getGenealogyFilterData();
+		getProductType();
 	}, []);
 
 	const handleChangeToggle = e => {
@@ -259,20 +260,13 @@ function Filter(props) {
 
 		try {
 			const filterRes = await getGeanealogyFilter(reqFilter);
-
-			const getProductType = await getGenealogyProductType();
-			if (filterRes.statuscode === 200 && getProductType.statuscode == 200) {
-				let productList = [];
-				getProductType.Data.map(product => {
-					productList.push(product.prod_type_cd);
-				});
-
-				setParamList(() => {
+			if (filterRes.statuscode === 200) {
+				setParamList(prevState => {
 					return {
+						...prevState,
 						plantList: filterRes && filterRes.plant_no,
 						batchList: filterRes && filterRes.batch_no,
 						produtList: filterRes && filterRes.material,
-						productTypeList: productList,
 					};
 				});
 			} else if (filterRes.data.statuscode === 400) {
@@ -280,6 +274,26 @@ function Filter(props) {
 			}
 		} catch (err) {
 			dispatch(showNotification('error', err));
+		}
+	};
+
+	const getProductType = async () => {
+		try {
+			const getProductType = await getGenealogyProductType();
+			if (getProductType.statuscode == 200) {
+				let productList = [];
+				getProductType.Data.map(product => {
+					productList.push(product.prod_type_cd);
+				});
+				setParamList(prevState => {
+					return {
+						...prevState,
+						productTypeList: productList,
+					};
+				});
+			}
+		} catch (error) {
+			dispatch(showNotification('error', error));
 		}
 	};
 
@@ -342,6 +356,7 @@ function Filter(props) {
 		setIsEmptyBatch(false);
 		setIsEmptyProductType(false);
 		getGenealogyFilterData();
+		getProductType();
 	};
 
 	const optionsPlant = paramList['plantList'].map((item, index) => (
@@ -411,7 +426,9 @@ function Filter(props) {
 					handleClearSearch={e => clearSearch(e, 'product_type')}
 					//error={isEmptyProductType ? 'Please select product type' : null}
 					options={optionsProductType}
-					selectedValue={selectParam['productType']}
+					selectedValue={
+						selectParam['productType'] !== '' ? selectParam['productType'] : []
+					}
 				/>
 				<Toggle
 					name='isChecked'

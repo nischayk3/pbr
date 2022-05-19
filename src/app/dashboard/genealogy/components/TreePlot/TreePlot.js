@@ -27,7 +27,6 @@ function TreePlot(props) {
 	const backwardTreeDiv = useRef();
 	const forwardTreeDiv = useRef();
 	const [isMaterialLink, setisMaterialLink] = useState('#08C6FF');
-	const [isProcesslink, setisProcesslink] = useState('#08C6FF');
 	const [searchOptions, setsearchOptions] = useState([]);
 	const [searchValue, setsearchValue] = useState('');
 	const [selectedNodeId, setselectedNodeId] = useState('');
@@ -1029,8 +1028,6 @@ function TreePlot(props) {
 						else return 2;
 					})
 					.on('mouseover', function (d) {
-						// highlightLink(d.target, '#FF8C00', 1, 10);
-
 						toolTip.transition().duration(200).style('opacity', '.9');
 						var material = '';
 						var processOrder = '';
@@ -1039,19 +1036,15 @@ function TreePlot(props) {
 							' ' +
 							d.source.relationshipMap[d.source.id + '-' + d.target.id].unit;
 						var purchaseOrder = '';
-						var plant = '';
+
 						if (THIS.type === 'forward') {
-							material = d.source.matNo || d.target.matNo;
-							processOrder = d.target.poNo || d.source.poNo;
-							purchaseOrder =
-								d.target.purchaseOrderNo || d.source.purchaseOrderNo;
-							plant = d.target.plant || d.source.plant;
+							material = d.source.matNo || 'Not Available';
+							processOrder = d.source.poNo || 'Not Available';
+							purchaseOrder = d.source.purchaseOrderNo || 'Not Available';
 						} else {
-							material = d.target.matNo || d.source.matNo;
-							processOrder = d.source.poNo || d.target.poNo;
-							purchaseOrder =
-								d.source.purchaseOrderNo || d.target.purchaseOrderNo;
-							plant = d.source.plant || d.target.plant;
+							material = d.source.matNo || 'Not Available';
+							processOrder = d.source.poNo || 'Not Available';
+							purchaseOrder = d.source.purchaseOrderNo || 'Not Available';
 						}
 
 						var tooltipHtml =
@@ -1066,7 +1059,7 @@ function TreePlot(props) {
 							quantity +
 							'</b></span><br/></span></div>';
 						d3.select('#keyTooltip').html(tooltipHtml);
-						// $('#keyTooltip').html(tooltipHtml);
+
 						toolTip.style('left', d3.event.layerX + 100 + 'px');
 
 						if (d3.event.layerY > 200) {
@@ -1076,8 +1069,6 @@ function TreePlot(props) {
 						}
 					})
 					.on('mouseout', function (d) {
-						//  highlightLink(d.target, '#6E6E6E', '0.7', 2);
-
 						toolTip
 							.transition()
 							.duration(500) // it shall take 500ms
@@ -1268,24 +1259,13 @@ function TreePlot(props) {
 								'Not available';
 							quantity = d.relationshipMap[d.id + '-' + d.children[0].id].qty;
 						}
-
 						let tooltipHtml = '';
 						if (d.type === 'Process Order') {
-							if (d['parent']['nodeId'].includes('ITM')) {
-								tooltipHtml =
-									"<div ><span class='col-xs-1' style='padding:5px'>" +
-									"Plant :  </span><span class='col-xs-1' style='padding:5px'><b>" +
-									'ITM - Pomezia, IT' +
-									"</b></span><br/><span class='col-xs-1' style='padding:5px'>Process Order  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
-									key[0] +
-									'</b></span><br/></span></div>';
-							} else {
-								tooltipHtml =
-									"<div style='padding:2px'><span class='col-xs-2'>" +
-									"Process Order : </span><span class='col-xs-1 text-left'><b>" +
-									key[0] +
-									'</b></span></div>';
-							}
+							tooltipHtml =
+								"<div style='padding:2px'><span class='col-xs-2'>" +
+								"Process Order : </span><span class='col-xs-1 text-left'><b>" +
+								key[0] +
+								'</b></span></div>';
 						} else if (d.type === 'Material') {
 							tooltipHtml =
 								"<div></span><br/><span class='col-xs-1' style='padding:5px'>Product No.  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
@@ -1305,10 +1285,7 @@ function TreePlot(props) {
 							let purchaseKeys = key[0].split(',');
 							if (purchaseKeys.length > 1) {
 								tooltipHtml =
-									"<div ><span class='col-xs-1' style='padding:5px'>" +
-									"Plant :  </span><span class='col-xs-1' style='padding:5px'><b>" +
-									d.plant +
-									"</b></span><br/><span class='col-xs-1' style='padding:5px'>Purchase Order  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+									"<div><span class='col-xs-1' style='padding:5px'> Purchase Order  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
 									'Multiple POs' +
 									'</b></span><br/></span></div>';
 							} else {
@@ -1319,13 +1296,9 @@ function TreePlot(props) {
 									'</b></span><br/></span></div>';
 							}
 						}
-
 						d3.select('#keyTooltip').html(tooltipHtml);
 					}
 
-					var toolTipMarginY = 0;
-
-					let positionToolTip = THIS.type === 'forward' ? -200 : 3415;
 					if (d3.event.layerX <= 1000) {
 						toolTip.style('left', d3.event.layerX + 'px');
 					} else if (d3.event.layerX > 1000 && d.type === 'Material') {
@@ -1361,7 +1334,6 @@ function TreePlot(props) {
 				}
 				var x0 = [];
 				var y0 = [];
-				var count = 0;
 
 				multiParentsArray.forEach(function (val) {
 					if (val.child && val.parent) {
@@ -1371,8 +1343,6 @@ function TreePlot(props) {
 							y0.push((val.child.y0 + val.parent.y0) / 2);
 					}
 				});
-				var dupli = x0.filter((e, i, a) => a.indexOf(e) !== i);
-				var duplic = y0.filter((e, i, a) => a.indexOf(e) !== i);
 
 				multiParentsArray.forEach(function (multiPair) {
 					let markerType =
@@ -1532,24 +1502,19 @@ function TreePlot(props) {
 							var data = this.getAttribute('data');
 							data = JSON.parse(data);
 							toolTip.transition().duration(200).style('opacity', '.9');
-							var material = data.mat;
-							var processOrder = data.poNo;
-							var purchaseOrder = data.pur_ord_no;
-							var quantity = data.qty + ' ' + data.unit;
-							var plant = data.plant;
+							var material = data.mat || 'Not available';
+
+							var quantity = data.qty || 'Not available';
+							var uom = data.unit || 'Not available';
+
 							var tooltipHtml =
-								"<div ><span class='col-xs-1' style='padding:5px'>Plant  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
-								plant +
-								"<div ><span class='col-xs-1' style='padding:5px'>Material   :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+								"<div ><span class='col-xs-1' style='padding:5px'>Product   :  </span><span class='col-xs-1' style='padding:5px'><b>" +
 								material +
-								// "</b></span><br/><span class='col-xs-1' style='padding:5px'>Batch  :  </span><span class='col-xs-1' style='padding:5px'><b>" + (key[2] || "N/A") +
-								"</b></span><br/><span class='col-xs-1' style='padding:5px'>Process Order  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
-								processOrder +
-								"</b></span><br/><span class='col-xs-1' style='padding:5px'>Quantity  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
-								purchaseOrder +
 								"</b></span><br/><span class='col-xs-1' style='padding:5px'>Quantity  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
 								quantity +
-								'</b></span><br/></span></div>';
+								"</b></span><br/><span class='col-xs-1' style='padding:5px'>UOM  :  </span><span class='col-xs-1' style='padding:5px'><b>" +
+								uom +
+								'</b></span></div>';
 							d3.select('#keyTooltip').html(tooltipHtml);
 
 							toolTip.style('left', d3.event.layerX + 'px');

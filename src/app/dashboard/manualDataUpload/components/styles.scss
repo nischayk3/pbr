@@ -599,6 +599,8 @@
 .signature-modal {
   overflow: hidden;
   margin-top: 10px;
+  padding:15px;
+  border-top:1px solid #d9d9d9;
   button {
     float: right;
     margin: 0px 10px;
@@ -612,23 +614,36 @@
 
 .modal_digitalSignature {
   .ant-modal-header {
-    background-color: #303f9f !important;
-    border-radius: 8px 8px 0px 0px !important;
+    //background-color: #303f9f !important;
+    //border-radius: 8px 8px 0px 0px !important;
     .ant-modal-title {
-      color: #ffffff;
+     //color: #ffffff;
+      color:#000000;
+
     }
+  }
+  .ant-modal-body{
+    padding: 0px !important;
+  }
+  .ant-modal-footer{
+    border-top: 1px solid grey;
   }
 
   button.ant-modal-close {
-    color: #ffffff;
+    //color: #ffffff;
+    color:#000000;
     top: -4px;
     &:hover {
-      color: #ffffff;
+      //color: #ffffff;
+      color:#000000;
     }
   }
 
   .ant-modal-content {
     border-radius: 8px !important;
+  }
+  p{
+    margin:8px 0px;
   }
 }
 
@@ -670,6 +685,17 @@
   }
 }
 
+.sign-form1{
+  display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 20px 20px;
+    padding: 24px;
+}
+.sign-cols1{
+  display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px 20px;
+}
 // .ant-btn-primary {
 //   border-color: #303f9f !important;
 //   background: #303f9f !important;

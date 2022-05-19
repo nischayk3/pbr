@@ -19,6 +19,7 @@ import {
 	NEW_COLUMN,
 	VIEW_FUNCTION_NAME,
 	MATH_VALUE,
+	LOAD_VIEW_RESPONSE
 } from '../../constants/actionTypes';
 
 export const saveViewFunction = payload => ({
@@ -120,3 +121,7 @@ export const setMathValue = payload => ({
 	payload,
 });
 
+export const setViewResposne = payload => ({
+	type: LOAD_VIEW_RESPONSE,
+	payload,
+});
