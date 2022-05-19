@@ -12,26 +12,15 @@
 			height: 50px;
 			.sub-header-title {
 				display: flex;
+				.bread-crumb-wrapper {
+					box-shadow: none !important;
+				}
 				.header-icon {
 					padding: 15px 0;
 					font-size: 20px;
 					color: #262626;
 				}
 				.header-title {
-					// font-family: 'Maven Pro', sans-serif !important;
-					// font-style: normal;
-					// font-weight: 600;
-					// font-size: 20px;
-					// line-height: 46px;
-					// /* identical to box height, or 230% */
-					// text-transform: uppercase;
-					// /* Gray / gray-9 */
-					// color: #262626;
-					// padding-left: 9.75px;
-					// border-bottom: none;
-					// display: flex;
-					// align-items: center;
-					// margin: 0;
 					font-family: 'Roboto', sans-serif !important;
 					font-style: normal;
 					font-weight: 400;
@@ -232,7 +221,7 @@
 	background-color: #f9f9f9;
 }
 .ant-table-small .ant-table-thead > tr > th {
-	background-color: #f1f7ff;
+	background-color: #F0F7FA;
 	font-family: 'Roboto';
 	font-style: normal;
 	font-weight: 500;
