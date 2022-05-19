@@ -40,7 +40,8 @@ import {
 	isLoadView,
 	sendSelectedParamData,
 	viewFunctionMap,
-	viewParamMap
+	viewParamMap,
+	setViewResposne
 } from "../../../../duck/actions/viewAction";
 import Signature from "../../../../components/ElectronicSignature/signature";
 
@@ -239,6 +240,9 @@ const ViewCreation = (props) => {
 		try {
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
+			setViewJson([loadViewRes]);
+			dispatch(isLoadView(true));
+			dispatch(setViewResposne(loadViewRes))
 
 			if (loadViewRes.material_id) setMoleculeId(loadViewRes.material_id);
 			if (loadViewRes.view_status) {
@@ -253,8 +257,6 @@ const ViewCreation = (props) => {
 			if (loadViewRes.files) {
 				setSelectedFiles(loadViewRes.files)
 			}
-
-
 			Object.entries(loadViewRes).forEach(([key, value], index) => {
 				// if (key === 'view_version') {
 				// 	setViewVersion(value);
@@ -266,8 +268,6 @@ const ViewCreation = (props) => {
 				// 	setViewName(value);
 				// }
 			});
-			setViewJson([loadViewRes]);
-			dispatch(isLoadView(true));
 			dispatch(sendSelectedParamData(loadViewRes["all_parameters"]));
 			dispatch(hideLoader());
 		} catch (err) {

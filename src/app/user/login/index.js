@@ -46,8 +46,8 @@ const Login = () => {
             } else {
                 window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
             }
-		}
-	};
+        }
+    }
 
 	return (
 		<div className='page-login bg-img'>

@@ -10,10 +10,17 @@ import VariableCard from "./variableCard";
 import Modal from "../../../../../components/Modal/Modal";
 import InputField from "../../../../../components/InputField/InputField";
 
-let variableData = [];
 
 const MathEditor = (props) => {
+  let variableData = [];
+
   const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
+  const selectedTableData = useSelector(
+		(state) => state.viewCreationReducer.selectedParamData
+	);
+  const selectedParameters = useSelector(
+		(state) => state.viewCreationReducer.loadResponse
+	);
   const [varData, setVarData] = useState(variableData);
   const [count, setCount] = useState(1);
   const [cardTitle, setCardTitle] = useState("Create Variable");
@@ -86,21 +93,25 @@ a[V1 > 0.0235] = b[V1 > 0.0235] <br />
   useEffect(() => {
     if (isLoadView) {
       let paramKey = [];
-      const viewJsonData = [...viewJson];
+      const viewJsonData = [selectedParameters];
+
       viewJsonData.forEach((element, index) => {
         paramKey.push(Object.keys(element.parameters));
       });
       let var_data = [];
       paramKey = paramKey[0];
       if (paramKey.length > 0) {
+
         for (let i = 0; i < paramKey.length; i++) {
           let obj = {};
           obj["variableName"] = paramKey[i];
           obj["id"] = i;
           var_data.push(obj);
         }
+        variableData=[...var_data]
+        setVarData(var_data);
+
       }
-      setVarData(var_data);
 
       if (
         viewJsonData[0] &&
@@ -110,6 +121,7 @@ a[V1 > 0.0235] = b[V1 > 0.0235] <br />
       }
     }
   }, [isLoadView]);
+
 
   const addVariable = () => {
     setCardTitle("Select parameters");
@@ -176,7 +188,6 @@ a[V1 > 0.0235] = b[V1 > 0.0235] <br />
     setCreateNameModal(!createNameModal);
   };
 
-  console.log(varData)
 
   return (
     <>

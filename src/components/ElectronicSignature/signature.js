@@ -133,28 +133,29 @@ function Signature(props) {
     return (
         <div>
             <Modal
+                className='electronic-signature-modal'
                 visible={isPublish}
                 title="Enter details to confirm update"
                 width={500}
                 mask={true}
                 onCancel={()=>{handleClose(); setIsAuth('')}}
-                footer={isauth==='A' || isauth==='R' || isauth==='P' ? [<Button className="custom-secondary-btn" key="2" onClick={() => handleClose()}>Cancel</Button>, <Button className="custom-secondary-btn" key="1" onClick={() => handleConfirm()} >Confirm</Button>] : [<Button className="custom-secondary-btn" key="3" onClick={() => authenticateUser()} >Authenticate</Button>]}
+                footer={isauth==='A' || isauth==='R' || isauth==='P' ? [<Button className="custom-primary-btn" key="2" onClick={() => handleClose()}>Cancel</Button>, <Button className="custom-secondary-btn" key="1" onClick={() => handleConfirm()} >Confirm</Button>] : [<Button className="custom-secondary-btn" key="3" onClick={() => authenticateUser()} >Authenticate</Button>]}
                 mask={true}
             >
                 <div className="electronic-sig">
                     <div className='sign-cols'>
                     <div>
-                        <p>User ID</p>
+                        <p style={{margin:'8px 0px'}}>User ID</p>
                         <Input value={username} onChange={(e) => setUsername(e.target.value)} />
                     </div>
                     <div>
-                        <p>Password</p>
+                        <p style={{margin:'8px 0px'}}>Password</p>
                         <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     </div>
                     {((isauth ==='A' && props.status === 'A') || ((isauth ==='P' && props.status === 'P'))) && (
                         <div>
-                            <p>Signing</p>
+                            <p style={{margin:'8px 0px'}}>Signing</p>
                             <Select onChange={(e, value) => {
                                 let reason_value = value.value ? value.value : ''
                                 setReason(reason_value)
