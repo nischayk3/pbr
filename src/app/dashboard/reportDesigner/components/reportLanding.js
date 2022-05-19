@@ -453,7 +453,7 @@ export default function Landing(props) {
                             </Col>
                             <Col span={12}>
                                 <Row>
-                                    <p>Select a report to get started</p>
+                                    <p style={{margin:'8px 0px'}}>Select a report to get started</p>
                                     <Input.Search
                                         onSearch={onSearch}
                                         placeholder='Search by report ID or name'
