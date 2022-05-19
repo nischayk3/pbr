@@ -30,9 +30,9 @@ thead[class*="ant-table-thead"] th{
 .generator-table
 {
 table {
-  border-collapse: collapse;
+  border-collapse: separate;
   width: 100%;
-  border: 1px solid #dddddd;
+  border: 2px solid #ddd;
   border-radius: 4px;
   table-layout: fixed;
 }

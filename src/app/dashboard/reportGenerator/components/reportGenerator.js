@@ -386,7 +386,7 @@ function ReportGenerator(props) {
                                     </span>))}</span>} key={i.heading} className="chart-panel">
                                         {i['content'] && i['content'].length > 0  ?
                                         <div className="generator-table">
-                                            <table className="table" cellspacing="0" cellpadding="0" style={{borderRadius:'4px'}} >
+                                            <table cellspacing="0" cellpadding="0" >
                                                 <tr className="tr" >
                                                     <th className="th-key" colspan={5}>
                                                         Key
