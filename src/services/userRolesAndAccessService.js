@@ -5,7 +5,7 @@ export const getRoleConfiguartions = () => {
     return axios.get('/services/v1/role-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'VIEW'
+            'resource-name': 'CONFIGURATION'
         }
     })
 }
@@ -16,19 +16,19 @@ export const saveRoleConfiguartions = data => {
     return axios.put('/services/v1/role-config', body, {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'VIEW'
+            'resource-name': 'CONFIGURATION'
         }
     })
 }
 
-export const deleteRoleConfiguartions = role_name => {
+export const deleteRoleConfiguartions = data => {
     let login_response = JSON.parse(localStorage.getItem('login_details'));
     return axios.delete('/services/v1/role-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'VIEW'
+            'resource-name': 'CONFIGURATION'
         },
-        params: { role_name }
+        data: { data }
     })
 }
 
@@ -37,7 +37,7 @@ export const getUserConfiguartions = () => {
     return axios.get('/services/v1/user-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'REPORT_DESIGNER'
+            'resource-name': 'CONFIGURATION'
         }
     })
 }
@@ -48,18 +48,18 @@ export const saveUserConfigurationws = data => {
     return axios.put('/services/v1/user-config', body, {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'REPORT_DESIGNER'
+            'resource-name': 'CONFIGURATION'
         }
     })
 }
 
-export const deleteUserConfiguartions = role_name => {
+export const deleteUserConfiguartions = data => {
     let login_response = JSON.parse(localStorage.getItem('login_details'));
     return axios.delete('/services/v1/user-config', {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
-            'resource-name': 'REPORT_DESIGNER'
+            'resource-name': 'CONFIGURATION'
         },
-        params: { role_name }
+        data: { data }
     })
 }

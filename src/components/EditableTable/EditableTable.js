@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import { connect } from 'react-redux'
 import { v1 as uuid } from 'uuid'
 import { Table, Button, Popconfirm, Select, Switch } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
@@ -12,35 +13,53 @@ import {
     changeSelectInput,
     changeToggleInput
 } from '../../utils/editableTableHelper'
-
+import { showLoader, hideLoader } from '../../duck/actions/commonActions'
 
 const { Option } = Select
 
 class EditableTable extends Component {
-    state = {}
-
-    static getDerivedStateFromProps(props, state) {
-        if (!state.dataSource) {
-            const { rowInitialData, dataSource, deleteActionColumn } = props.tableData
-            return { rowInitialData, dataSource, count: dataSource.length, deleteActionColumn }
-        }
-        return null
+    state = {
+        tableDataChanged: false
     }
 
+    // static getDerivedStateFromProps(props, state) {
+    //     if (!state.dataSource) {
+    //         const { rowInitialData, dataSource, deleteActionColumn } = props.tableData
+    //         return { rowInitialData, dataSource, count: dataSource.length, deleteActionColumn }
+    //     }
+
+    //     return null
+    // }
+
     componentDidMount() {
-        this.initializeTableRender()
+        this.loadTable()
+    }
+
+    loadTable = async () => {
+        this.props.showLoader()
+        try {
+            const response = await this.props.getTableData()
+            const { rowInitialData, dataSource, deleteActionColumn, columns } = response.data.message
+            this.setState({ rowInitialData, dataSource, count: dataSource.length, deleteActionColumn, columns }, () => {
+                this.initializeTableRender()
+            })
+            this.props.hideLoader()
+        } catch (err) {
+            console.log('err: ', err)
+            this.props.hideLoader()
+        }
     }
 
     initializeTableRender() {
         this.state.dataSource.map(data => data.key = uuid())
-        const columnsCopy = [...this.props.tableData.columns]
+        const columnsCopy = [...this.state.columns]
         const columns = this.state.deleteActionColumn ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
         adjustColumnWidths(columns)
-        this.renderTable(columns)
+        this.renderTableColumns(columns)
         this.setState({ columns })
     }
 
-    renderTable = (columns) => {
+    renderTableColumns = (columns) => {
         columns.forEach(column => {
             switch (column.type) {
                 case 'select':
@@ -59,10 +78,11 @@ class EditableTable extends Component {
                             checked={record[column.name]}
                             checkedChildren={column.toggleTextTrue}
                             unCheckedChildren={column.toggleTextFalse}
+                            className="editable-table--switch__color"
                             onChange={selectedValue => this.onChangeToggle(selectedValue, record, column)} />
                     }
                 case 'parent':
-                    this.renderTable(column.children)
+                    this.renderTableColumns(column.children)
             }
         })
     }
@@ -87,15 +107,15 @@ class EditableTable extends Component {
     }
 
     onDeleteRow = async key => {
-        let roleToDelete = ''
-        this.state.dataSource.forEach(data => {
-            if (key === data.key) {
-                roleToDelete = data.roles
+        const data = []
+        this.state.dataSource.forEach(row => {
+            if (key === row.key) {
+                data.push(row)
             }
         })
 
         try {
-            await this.props.onDeleteTableRow(roleToDelete)
+            await this.props.deleteTableRow(data)
             const { dataSource, count } = deleteRow(key, this.state)
             this.setState({ dataSource, count })
         } catch (err) {
@@ -107,22 +127,37 @@ class EditableTable extends Component {
         const { dataSource, count } = addRow(this.state)
         this.setState({ dataSource, count }, () => {
             this.initializeTableRender()
+            this.setState({ tableDataChanged: true })
         })
     }
 
     onChangeInput = row => {
         const dataSource = changeInput(row, this.state)
-        this.setState({ dataSource })
+        this.setState({ dataSource, tableDataChanged: true })
     }
 
     onChangeSelect = (selectedValue, record, column) => {
         const dataSource = changeSelectInput(selectedValue, record, column, this.state)
-        this.setState({ dataSource })
+        this.setState({ dataSource, tableDataChanged: true })
     }
 
     onChangeToggle = (selectedValue, record, column) => {
         const dataSource = changeToggleInput(selectedValue, record, column, this.state)
-        this.setState({ dataSource })
+        this.setState({ dataSource, tableDataChanged: true })
+    }
+
+    onSaveTable = async () => {
+        const tableData = JSON.parse(JSON.stringify(this.state.dataSource))
+        tableData.forEach(obj => delete obj.key)
+        this.props.showLoader()
+        try {
+            await this.props.saveTableData(tableData)
+            this.setState({ tableDataChanged: false })
+            this.props.hideLoader()
+          } catch (err) {
+            console.log('err: ', err)
+            this.props.hideLoader()
+          }
     }
 
     render() {
@@ -166,9 +201,10 @@ class EditableTable extends Component {
                 </Button>
                 <Button
                     type="primary"
-                    onClick={() => this.props.onSaveTable(this.state.dataSource)}
+                    onClick={this.onSaveTable}
                     style={{ float: 'right' }}
                     className="button-solid__primary"
+                    disabled={!this.state.tableDataChanged}
                 >
                     Save
                 </Button>
@@ -185,4 +221,4 @@ class EditableTable extends Component {
     }
 }
 
-export default EditableTable
+export default connect(null, { showLoader, hideLoader })(EditableTable)

@@ -22,7 +22,7 @@ import { isNewView } from '../../../../../duck/actions/viewAction';
 import { useLocation } from 'react-router';
 
 export default function Landing(props) {
-	const location = useLocation()
+	const location = useLocation();
 	const [searched, setSearched] = useState(false);
 	const [viewList, setViewList] = useState([]);
 	const [filterTable, setFilterTable] = useState(null);
@@ -91,8 +91,7 @@ export default function Landing(props) {
 
 	useEffect(() => {
 		getViewsList();
-		dispatch(isNewView(true))
-
+		dispatch(isNewView(true));
 	}, []);
 
 	const getRandomColor = index => {
@@ -117,10 +116,10 @@ export default function Landing(props) {
 			dispatch(showLoader());
 			const getViewRes = await getViews(req);
 			let viewRes = getViewRes['Data'];
-			viewRes = viewRes.reverse()
+			viewRes = viewRes.reverse();
 			const lastEight = viewRes.slice(Math.max(viewRes.length - 8, 1));
 			setViewList(viewRes);
-			setLastEightView(viewRes);
+			setLastEightView(lastEight && lastEight.reverse());
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
@@ -156,12 +155,15 @@ export default function Landing(props) {
 							className='landing-table'
 							columns={columns}
 							dataSource={filterTable === null ? viewList : filterTable}
-							onRow={(record) => ({
-								onClick: (e) => {
-									history.push({pathname:`${match.url}/${record.view_disp_id}&${record.view_version}`,state:{
-										viewId: record.view_disp_id,
-										viewVersion: record.view_version,
-									}})
+							onRow={record => ({
+								onClick: e => {
+									history.push({
+										pathname: `${match.url}/${record.view_disp_id}&${record.view_version}`,
+										state: {
+											viewId: record.view_disp_id,
+											viewVersion: record.view_version,
+										},
+									});
 								},
 							})}
 						/>
@@ -198,25 +200,28 @@ export default function Landing(props) {
 					<div>
 						<div className='tile'>
 							{lastEightView.length > 0 ? (
-								lastEightView.map((i, index) => index < 8 && (
-									<Link
-										key={i.view_disp_id}
-										to={{
-											pathname: `${match.url}/${i.view_disp_id}&${i.view_version}`,
-											state: {
-												viewId: i.view_disp_id,
-												viewVersion: i.view_version,
-											},
-										}}
-										//	to={`${match.url}/${i.view_disp_id}&${i.view_version}`}
-									>
-										<StatusBlock
-											key={index}
-											id={i.view}
-											status={i.view_status}
-										/>
-									</Link>
-								))
+								lastEightView.map(
+									(i, index) =>
+										index < 8 && (
+											<Link
+												key={i.view_disp_id}
+												to={{
+													pathname: `${match.url}/${i.view_disp_id}&${i.view_version}`,
+													state: {
+														viewId: i.view_disp_id,
+														viewVersion: i.view_version,
+													},
+												}}
+												//	to={`${match.url}/${i.view_disp_id}&${i.view_version}`}
+											>
+												<StatusBlock
+													key={index}
+													id={i.view}
+													status={i.view_status}
+												/>
+											</Link>
+										)
+								)
 							) : (
 								<></>
 							)}
