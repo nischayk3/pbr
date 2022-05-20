@@ -2,8 +2,49 @@
 {
     min-height: 100px;
     max-height: 750px;
-    overflow: scroll;
-
+    // overflow: scroll;
+    .title-card
+    {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 19px;
+      color: #000000;
+    }
+    .ant-tabs-nav-wrap
+    {
+    height:50px;
+    padding: 5px 5px 0px 0px;;
+    background:none;
+    box-shadow: none;
+    }
+    .ant-tabs-tab-btn
+    {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: rgba(0, 0, 0, 0.85);
+    }
+    .ant-tabs-tab-btn:hover
+    {
+      color: rgba(0, 0, 0, 0.85);
+    }
+    .ant-tabs-tab-active .ant-tabs-tab-btn
+    {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    color:#093185 !important;
+    }
+    .ant-tabs-ink-bar 
+    {
+      background: #093185;
+    } 
 .title-button
 {
     margin-left: 50%;
@@ -17,7 +58,7 @@
     color: #093185;
     .see-all
     {
-        margin-left: 10px;
+        margin-left: 13%;
     }
 }
 .hier-tab
@@ -30,6 +71,7 @@
 
     color: #093185 o !important;
   }
+ 
   .tab-title
   {
     width: 393px;
@@ -45,12 +87,21 @@
     .hierarchy-table
     {
         margin-left : 1.2%;
-        width:  1279px;
+        width:  1240px;
     }
     .hierarchy-map-table
     {
         margin-left : 1.2%;
-        width:  1050px;
+        width:  1040px;
+    }
+    .ant-table-cell
+    {
+        font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+color: #141414;
     }
     .map-grid
     {
@@ -60,7 +111,7 @@
     }
     .map-box
     {
-        width: 210px;
+        width: 200px;
         height: 351px;
         background: rgba(72, 107, 201, 0.73);
         border: 1px solid #486BC9;
@@ -75,7 +126,7 @@
         font-size: 16px;
         line-height: 22px;
         align-items: center;
-        margin-left: 20px;
+        margin-left: 15px;
         margin-top: 10px;
         
         color: #FFFFFF;
@@ -105,11 +156,12 @@
     }
     .add-button
     {
-        width: 1279px;
-        margin-left : 1.2%;
+        width: 1240px;
+        margin-left : 1%;
         height: 51px;
         border: 1px dashed #D9D9D9;
         // background-color: black;
+
     }
     .add-row-button
     {
@@ -125,6 +177,15 @@
         border-radius: 2px;
         margin-left: 45%;
         margin-top: .5%;
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px;
+        /* identical to box height, or 157% */
+        
+        
+        color: #093185;
     }
     .tab-button
     {
@@ -132,9 +193,60 @@
         padding: 5px 18px;
         width: 73px;
         height: 32px;
-        background: #093185;
+        color: black;
+        background: #FFFFFF;
+        border: 1px solid #093185;
+        border-radius: 4px;
+        margin-left : 94%
+    }
+    .data-button-one
+    {
+        box-sizing: border-box;
+        align-items: center;
+        padding: 5px 18px;
+        gap: 8px;
+        width: 73px;
+        height: 32px;
+        left: 863px;
+        background: #FFFFFF;
+        border: 1px solid #093185;
         border-radius: 4px;
     }
+    .data-button
+    {
+        box-sizing: border-box;
+        align-items: center;
+        padding: 5px 18px;
+        gap: 8px;
+        width: 73px;
+        height: 32px;
+        left: 943px;
+        background: #FFFFFF;
+        border: 1px solid #093185;
+        border-radius: 4px;
+    }
+    .tab-button-one
+    {
+        padding: 5px 16px;
+        gap: 8px;
+        width: 134px;
+        height: 32px;      
+        background: #F5F5F5;        
+        border: 1px solid #D9D9D9;
+        border-radius: 4px;
+    }
+    .tab-button-two
+    {
+        padding: 5px 16px;
+        gap: 8px;
+        width: 134px;
+        height: 32px;      
+        background: #093185; 
+        color: white;       
+        border: 1px solid #D9D9D9;
+        border-radius: 4px;
+    }
+    
     .tab-button-text
     {
         width: 35px;
@@ -145,7 +257,7 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 22px;
-        color: #FFFFFF;
+        color:black;
     }
 }
 

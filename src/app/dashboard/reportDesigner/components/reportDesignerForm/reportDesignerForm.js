@@ -76,7 +76,7 @@ function ReportDesignerForm(props) {
                 <div className='reportDesigner-block-design'>
                     <div>
                         <Text className='filter-text'> Report ID <span className="colon">:</span> {reportId ? reportId : "Unassigned"}</Text> <br /> 
-                        <Text className='filter-text'> Status <span className="status-colon">:</span> {status}</Text><br />
+                        <Text className='filter-text-status'> Status <span className="status-colon">:</span> {status}</Text><br />
                     </div>
                     <div>
                         <Text className='filter-text'>Report Name <b style={{ color: 'red' }}>*</b></Text><br />
@@ -127,7 +127,7 @@ function ReportDesignerForm(props) {
                                 placeholder="Select Multiple Charts"
                                 value={selectedChartList}
                                 onChange={handleChange}
-                                style={{ width: '100%', minHeight: '60px', maxHeight: '200px',overflow:'auto' }}
+                                style={{ width: '100%', minHeight: '60px', maxHeight: '200px' }}
                             >
                                 {chartsList.length > 0 ? chartsList.map(item => (
                                     <Option value={item} key={item}>

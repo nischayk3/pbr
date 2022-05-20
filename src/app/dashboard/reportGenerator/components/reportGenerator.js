@@ -385,26 +385,24 @@ function ReportGenerator(props) {
                                         {i}
                                     </span>))}</span>} key={i.heading} className="chart-panel">
                                         {i['content'] && i['content'].length > 0  ?
-                                        <div className="generator-table">
                                             <table className="table" cellspacing="0" cellpadding="0">
                                                 <tr className="tr" >
-                                                    <th className="th-key" colspan={5}>
+                                                    <th className="th-key">
                                                         Key
                                                     </th>
-                                                    <th className="th-value" colspan={15}>
+                                                    <th className="th-value">
                                                         Value
                                                     </th>
                                                 </tr>
                                                 <tbody>
                                                     {i['content'] && i['content'].map((item, j) =>
                                                         <tr className="tr" >
-                                                            <td className="td-key" colspan={5} >{item.key}</td>
-                                                            <td className="td" colspan={15}>{item.editable == false || item.editable == undefined ? <Input.TextArea autoSize={true} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span>{item.value}</span>} </td>
+                                                            <td className="td" >{item.key}</td>
+                                                            <td className="td">{item.editable == false || item.editable == undefined ? <Input.TextArea autoSize={true} defaultValue={item.value} onChange={(e) => handleEdit(e.target.value, i.heading, item.key)} /> : <span>{item.value}</span>} </td>
                                                         </tr>
                                                     )}
                                                 </tbody>
-                                            </table> 
-                                            </div>: <></>
+                                            </table> : <></>
                                         }
                                         {i.charts && i.charts.length > 0 && i.charts.map((j) =>
                                         (

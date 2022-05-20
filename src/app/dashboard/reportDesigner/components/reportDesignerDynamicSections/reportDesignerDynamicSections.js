@@ -32,10 +32,12 @@ function ReportDesignerDynamicSections(props) {
 
         dispatch(showLoader())
         section = section + 1
-        let chart_index = addedCharts[`${section}`].indexOf(chartName)
+        let charts_all = {...addedCharts}
+        let chart_index = charts_all[`${section}`].indexOf(chartName)
         if (chart_index > -1) {
-            addedCharts[`${section}`].splice(chart_index, 1)  // 2nd parameter means remove one item only
+            charts_all[`${section}`].splice(chart_index, 1)  // 2nd parameter means remove one item only
         }
+        setAddedCharts(charts_all)
         dispatch(hideLoader())
     }
 
@@ -181,7 +183,7 @@ function ReportDesignerDynamicSections(props) {
                                         </div>
                                         {!addedKeys[name] ?
                                             <center>
-                                                <div style={{ height: '90px', width: '100px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => sectionAddKey(name + 1)}> <PlusOutlined style={{ color: 'gray', marginTop: '10px' }} /> <br />Add Key and value</div>
+                                                <div style={{ height: '100px', width: '120px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => sectionAddKey(name + 1)}> <PlusOutlined style={{ color: 'gray', marginTop: '25px' }} /> <br />Add Key and value</div>
                                             </center> :
                                             <></>
                                         }
@@ -238,7 +240,7 @@ function ReportDesignerDynamicSections(props) {
                                                 <Chart chartName={i} />
                                             </div>
                                         ))}
-                                        <PlusOutlined style={{ fontSize: '16px', marginLeft: '99.5%', color: '#093185', background: "white", padding: "2px", borderRadius: "50px" }} twoToneColor="#eb2f96" onClick={() => add()} />
+                                        <PlusOutlined style={{ fontSize: '16px', marginLeft: '99.2%', color: '#093185', background: "white", padding: "2px", borderRadius: "50px" }} twoToneColor="#eb2f96" onClick={() => add()} />
 
                                     </div>
                                 ))}
@@ -246,7 +248,7 @@ function ReportDesignerDynamicSections(props) {
                                     {showAddSection ? <></> :
                                         <p disabled={props.show}>
                                             <center>
-                                                <div style={{ height: '60px', width: '80px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => add()}> <PlusOutlined twoToneColor="#eb2f96" style={{ marginTop: '10px' }} /> <br />Add Section</div>
+                                                <div style={{ height: '120px', width: '150px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => add()}> <PlusOutlined twoToneColor="#eb2f96" style={{ marginTop: '40px' }} /> <br />Add Section</div>
                                             </center>
                                             {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: -10, right: -10, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> */}
                                         </p>
