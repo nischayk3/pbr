@@ -497,5 +497,16 @@
 
  .landing-table{
      cursor: pointer;
+     .ant-table-tbody > tr > td {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px;
+        color: #000000;
+        // border: none;
+        // border-bottom: 1px solid #d9d9d9;
+        padding: 10px;
+      }
  }
     
