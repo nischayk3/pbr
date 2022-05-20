@@ -312,6 +312,7 @@
     .landing-table
     {
         margin-top: 10px;
+        cursor: pointer;
     }
     
     .landing-btn
@@ -493,4 +494,8 @@
          height: 130px;
      }
  }   
+
+ .landing-table{
+     cursor: pointer;
+ }
     
