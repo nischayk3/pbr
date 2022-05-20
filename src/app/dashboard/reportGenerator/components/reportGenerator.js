@@ -351,27 +351,27 @@ function ReportGenerator(props) {
     return (
 
         <div className='custom-wrapper'>
-            <div className='sub-header'>
+            <div className='sub-header' style={{paddingRight:'24px'}}>
                 <div className='sub-header-title'>
                     <BreadCrumbWrapper />
                 </div>
                 <div className='sub-header-btns'>
                     {!props.screenChange ?
                         <>
-                            <Button className='custom-primary-btn' onClick={() => { setAlertVisible(true); }}>
+                            <Button className='report-primary-btn' onClick={() => { setAlertVisible(true); }}>
                                 Notify Report
                             </Button>
-                            <Button className='custom-primary-btn' onClick={() => prepareJson()}>
+                            <Button className='report-primary-btn' style={{marginLeft:'16px',marginRight:'16px'}}onClick={() => prepareJson()}>
                                 Save
                             </Button>
                         </> : <></>
                     }
-                    <Button className='custom-secondary-btn' onClick={() => generateReport()}>
+                    <Button className='report-secondary-btn'  onClick={() => generateReport()}>
                         <FileTextOutlined />   Generate Report
                     </Button>
-                    <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
+                    {/* <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
                         <EllipsisOutlined style={{ transform: 'rotate(-90deg)', fontSize: '20px', marginLeft: '5px' }} />
-                    </Dropdown>
+                    </Dropdown> */}
                 </div>
             </div>
             <div className='custom-content-layout'>
@@ -385,7 +385,8 @@ function ReportGenerator(props) {
                                         {i}
                                     </span>))}</span>} key={i.heading} className="chart-panel">
                                         {i['content'] && i['content'].length > 0  ?
-                                            <table className="table" cellspacing="0" cellpadding="0">
+                                        <div className="generator-table">
+                                            <table cellspacing="0" cellpadding="0" >
                                                 <tr className="tr" >
                                                     <th className="th-key">
                                                         Key

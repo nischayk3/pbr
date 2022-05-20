@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal } from 'antd';
 import { CheckCircleOutlined } from '@ant-design/icons';
+import './styles.scss';
 
 
 function SaveModal(props) {
@@ -12,10 +13,10 @@ function SaveModal(props) {
     };
 
     return (
-        <div>
+        <div className='report-gen-save'>
             <Modal
+                style={{ top:-100 }}
                 visible={isSave}
-                title="Congartulations"
                 width={500}
                 mask={true}
                 onCancel={handleCancel}
