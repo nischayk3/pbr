@@ -33,10 +33,10 @@ class EditableTable extends Component {
     // }
 
     componentDidMount() {
-        this.loadTable()
+        this.loadTableData()
     }
 
-    loadTable = async () => {
+    loadTableData = async () => {
         this.props.showLoader()
         try {
             const response = await this.props.getTableData()
