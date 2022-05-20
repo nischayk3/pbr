@@ -89,7 +89,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 			render: (text, record, index) => (
 				<>
 					{record.coverage_metric_percent === '100.0%' ||
-					record.coverage_metric_percent === '100%' ? (
+						record.coverage_metric_percent === '100%' ? (
 						<span>
 							<img src={StatusCorrect} />
 						</span>
@@ -342,8 +342,8 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 			ele.data_filter.unapproved_data = batchFilters.unApproved;
 			ele.data_filter.date_range = batchFilters.startDate
 				? new Date(batchFilters.startDate).toISOString() +
-				  '/' +
-				  new Date(batchFilters.endDate).toISOString()
+				'/' +
+				new Date(batchFilters.endDate).toISOString()
 				: '';
 			ele.data_filter.site = batchFilters.site ? batchFilters.site : '';
 		});
@@ -489,9 +489,9 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 								value={
 									batchFilters.startDate
 										? [
-												moment(batchFilters.startDate, dateFormat),
-												moment(batchFilters.endDate, dateFormat),
-										  ]
+											moment(batchFilters.startDate, dateFormat),
+											moment(batchFilters.endDate, dateFormat),
+										]
 										: ''
 								}
 								format={dateFormat}

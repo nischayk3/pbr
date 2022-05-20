@@ -367,7 +367,7 @@ function ReportGenerator(props) {
                         </> : <></>
                     }
                     <Button className='report-secondary-btn'  onClick={() => generateReport()}>
-                        <FileTextOutlined />   Generate Report
+                        <FileTextOutlined style={{color:'#093185'}}/>   Generate Report
                     </Button>
                     {/* <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
                         <EllipsisOutlined style={{ transform: 'rotate(-90deg)', fontSize: '20px', marginLeft: '5px' }} />

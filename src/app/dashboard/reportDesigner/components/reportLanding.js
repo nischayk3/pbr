@@ -48,7 +48,7 @@ export default function Landing(props) {
 
 	const columns = [
 		{
-			title: 'Report Name',
+			title: 'Name',
 			dataIndex: 'rep_name',
 			key: 'rep_name',
 			render: (text, record) => {
@@ -61,7 +61,7 @@ export default function Landing(props) {
 			},
 		},
 		{
-			title: 'Report id',
+			title: 'Id',
 			dataIndex: 'rep_disp_id',
 			key: 'rep_disp_id',
 			render: (text, record) => {
@@ -74,7 +74,7 @@ export default function Landing(props) {
 			},
 		},
 		{
-			title: 'Report Status',
+			title: 'Status',
 			dataIndex: 'rep_status',
 			key: 'rep_status',
 			render: (text, record) => {
@@ -87,7 +87,7 @@ export default function Landing(props) {
 			},
 		},
 		{
-			title: 'Created By',
+			title: 'Creator',
 			dataIndex: 'created_by',
 			key: 'created_by',
 			render: (text, row, index) => {
@@ -100,7 +100,7 @@ export default function Landing(props) {
 							}}>
 							{text.split('')[0].toUpperCase()}{' '}
 						</Avatar>
-						<span className='avatar-text'>{text}</span>
+						<span className='avatar-text'>{text.split(/[.@]/)[0]}</span>
 					</div>
 				);
 			},
@@ -410,6 +410,7 @@ export default function Landing(props) {
 					</div>
 				</Card>
 				<Modal
+					style={{ top: 50 }}
 					className='landing-modal'
 					title='Create New Dashboard'
 					visible={isModalVisible}
