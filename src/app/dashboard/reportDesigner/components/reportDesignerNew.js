@@ -685,7 +685,7 @@ function ReportDesignerNew(props) {
 
   return (
     <div className='custom-wrapper'>
-      <div className='sub-header'>
+      <div className='sub-header' style={{paddingRight:'24px'}}>
         <div className='sub-header-title'>
           <BreadCrumbWrapper />
         </div>
@@ -709,7 +709,7 @@ function ReportDesignerNew(props) {
             (isLoad || isNew) && !params ?
               <>
                 <Button
-                  className='custom-primary-btn'
+                  className='report-primary-btn'
                   onClick={() => {
                     PrepareJson(mainJson, 'save')
                   }}
@@ -719,7 +719,7 @@ function ReportDesignerNew(props) {
                 </Button>
                 {isLoad ?
                   <Button
-                    className='custom-primary-btn'
+                    className='report-primary-btn'
                     onClick={() => {
                       PrepareJson(mainJson, 'save_as')
                     }}
@@ -728,14 +728,15 @@ function ReportDesignerNew(props) {
                     Save As
                   </Button> : <></>}
                 <Button
-                  className='custom-primary-btn'
+                style={{marginLeft:'16px',marginRight:'16px'}}
+                  className='report-primary-btn'
                   onClick={() => dispatch(screenChange(true))}
                   disabled={!isSaved}
                 >
                   Preview
                 </Button>
                 <Button
-                  className="custom-secondary-btn"
+                  className="report-secondary-btn"
                   onClick={() => { setIsPublish(true); setApproveReject('P') }}
                 >
                   <CloudUploadOutlined />
@@ -743,7 +744,8 @@ function ReportDesignerNew(props) {
                 </Button>
                 <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
                   <EllipsisOutlined style={{ transform: 'rotate(-90deg)', fontSize: '20px', marginLeft: '5px' }} />
-                </Dropdown> </>
+                </Dropdown>
+                 </>
               : <> </>
           }
           {

@@ -7,7 +7,7 @@
  * @Last Changed By - @Mihir 
  */
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, Tabs, Table, Popconfirm, Button, Input, Modal, Row, Col } from 'antd'
 import './hierStyle.scss'
 import { ArrowRightOutlined, DeleteTwoTone, PlusOutlined } from '@ant-design/icons'
@@ -32,6 +32,12 @@ function Hierarchy() {
     const [stepMapCount, setStepMapCount] = useState(1);
 
     const [activeTab, setActiveTab] = useState('Plant and molecules')
+
+    useEffect(()=>
+    {handleAdd()
+     handleStepAdd()
+
+    },[])
 
     const plantMoleculeColumns =
         [
@@ -264,7 +270,7 @@ function Hierarchy() {
             >
                 <Tabs className="hier-tab" activeKey={activeTab} onChange={handleChangeTab} tabBarExtraContent={<Button className={activeTab == 'Process step mapping' ? "tab-button-two" : "tab-button-one"} disabled={activeTab == 'Process step mapping' ? false : true}> Save hierarchy</Button>}>
                     <TabPane tab="Plant and molecules" key="Plant and molecules">
-                        <p className="tab-title"> Enter the product and plant details for {hierarchyName} <Button className="data-button-one"> {activeTab == 'Process step mapping' ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button> </p> <br/>
+                        <p className="tab-title"> Enter the product and plant details for {hierarchyName} <Button className="data-button-one"> {activeTab == 'Process step mapping' ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button> </p> 
                         <Table className="hierarchy-table" columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
                         <div className="add-button">
                             <Button
@@ -277,7 +283,7 @@ function Hierarchy() {
                         </div>
                     </TabPane>
                     <TabPane tab="Process steps" key="Process steps">
-                        <p className="tab-title">Enter the process step for {hierarchyName} <Button className="data-button"> {activeTab == 'Process step mapping' ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button></p><br/>
+                        <p className="tab-title">Enter the process step for {hierarchyName} <Button className="data-button"> {activeTab == 'Process step mapping' ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button></p>
                         <Table className="hierarchy-table" columns={stepMapColumns} dataSource={stepData} pagination={false} />
                         <div className="add-button">
                             <Button
@@ -291,7 +297,7 @@ function Hierarchy() {
 
                     </TabPane>
                     <TabPane tab="Process step mapping" key="Process step mapping">
-                        <p className="tab-title">Enter the process step for {hierarchyName}</p> <br/>
+                        <p className="tab-title">Enter the process step for {hierarchyName}</p> 
                         <div className="map-grid">
                             <Table className="hierarchy-map-table" columns={mappingColumns} />
                             <div className="map-box">

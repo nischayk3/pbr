@@ -195,7 +195,7 @@ function ReportDesignerDynamicSections(props) {
                                                     style={{ display: 'flex', justifyContent: 'center' }}
                                                     align="baseline"
                                                 >
-                                                    <table className="dynamicSections-table" style={{ width: '1180px' }}>
+                                                    <table className="dynamicSections-table" style={{ width: '120px' }}>
                                                         <thead className="dynamicSections-thead">
                                                             <tr>
                                                                 <th className="action-clm">Action</th>

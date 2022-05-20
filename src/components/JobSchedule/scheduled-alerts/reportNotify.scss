@@ -37,7 +37,6 @@
       font-family: 'Roboto';
 font-style: normal;
 font-weight: 300;
-font-size: 16px;
     }
   }
     .tab-btns
@@ -154,6 +153,10 @@ font-size: 16px;
   .ant-select-selector
 {
     height: 36px !important;
+}
+.ant-select-selection-item
+{
+    margin-top:1px;
 }
 }
 
@@ -391,8 +394,5 @@ margin-left: 10px
 {
     height: 36px;
 }
-.ant-select-selection-item
-{
-    margin-top:1px;
-}
+
 }
