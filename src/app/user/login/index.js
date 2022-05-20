@@ -66,7 +66,9 @@ const Login = () => {
 				<div className='login-right'>
 					<div>
 						<p className='login-head'>Login</p>
-						<p className='login-desc'>Welcome Back!Please enter your details</p>
+						<p className='login-desc'>
+							Welcome Back! Please enter your details
+						</p>
 					</div>
 
 					<div className='login-input'>
