@@ -1,5 +1,6 @@
 .report-notify
 {
+  
   .ant-picker {
     border-radius: 4px !important;
   }
@@ -53,6 +54,7 @@ font-weight: 300;
       button:first-child:hover {
         background-color: #486BC9 !important ;
         color: white;
+        border-color: #486BC9;
       }
     .ant-tabs-nav-wrap
     {
@@ -156,7 +158,12 @@ font-weight: 300;
 }
 .ant-select-selection-item
 {
-    margin-top:1px;
+    margin-top:5.5px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 22px;
 }
 }
 
@@ -394,5 +401,8 @@ margin-left: 10px
 {
     height: 36px;
 }
-
 }
+.ant-table
+  {
+    border-radius: 4px;
+  }

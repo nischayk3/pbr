@@ -85,11 +85,11 @@ export default function scheduledAlertsTable(props) {
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
-            align: 'center', 
+            align : 'center',
             render: (text, record) =>
             (
                 <Popconfirm title={`Are you Sure you want to delete the ${record.dag_id}?`} onConfirm={() => DeleteJob(record)}>
-                    <DeleteTwoTone twoToneColor="red" />
+                    <DeleteTwoTone twoToneColor="red" style={{fontSize:'16px',marginRight:'25px'}} />
                 </Popconfirm>
             )
         },
@@ -97,7 +97,6 @@ export default function scheduledAlertsTable(props) {
             title: 'Job ID',
             key: 'job_id',
             dataIndex: 'job_id',
-            align: 'center', 
             render: (text, record) =>
             (
                 <u><a onClick={() => props.changeActiveTab('1', record.dag_id,record.job_id)}>{text}</a></u>
@@ -107,13 +106,11 @@ export default function scheduledAlertsTable(props) {
             title: 'Job name',
             key: 'dag_id',
             dataIndex: 'dag_id',
-            align: 'center', 
         },
         {
             title: 'Created by',
             key: 'created_by',
             dataIndex: 'created_by',
-            align: 'center', 
             render  : (text,record) =>
             { return(
                 <div>
@@ -122,10 +119,11 @@ export default function scheduledAlertsTable(props) {
                             size="small" 
 							style={{
 								backgroundColor: 'green',
+                                marginBottom:'2px'
 							}}>
 							{text.split('')[0].toUpperCase()}{' '}
 						</Avatar>
-						<span style={{marginLeft:'10px',marginTop:'15px'}}>{text}</span>
+						<span style={{marginLeft:'10px'}}>{text}</span>
 					</div>
             )
             }
@@ -138,7 +136,6 @@ export default function scheduledAlertsTable(props) {
         {
             title: 'Schedule',
             key: 'created_on',
-            align: 'center', 
             dataIndex: 'created_on',
             render: (text) => (moment(text).format(" MMMM DD, YYYY")),
 
@@ -147,7 +144,6 @@ export default function scheduledAlertsTable(props) {
             title: 'Status',
             key: 'job_status',
             dataIndex: 'job_status',
-            align: 'center', 
             render: (text) =>
             (text == 'scheduled' ?
                 (<Tag className="tag-sch"><p className="tag-text">Scheduled</p></Tag>) : (<Tag className="tag-new"><p className="tag-text-new">New</p></Tag>)

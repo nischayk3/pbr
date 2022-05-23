@@ -69,8 +69,8 @@ const JobSchedule = (props) => {
             <Tabs tabPosition='left' className='schedule-menu' activeKey={activeTab} onChange={changeActiveTab} >
                 <TabPane tab={
                     <span style={{ color: activeTab == '1' ? 'white' : 'grey',fontFamily:'Roboto',fontWeight:'400',fontSize:'16px' }}>
-                        <BellOutlined />
-                        {props.app_type == 'REPORT' ? <>Notify</> : <>Alerts</>}
+                        <BellOutlined style={{fontSize:'18px'}} />
+                        {props.app_type == 'REPORT' ? <span style={{fontSize:'17px',marginBottom:'20px'}}> Notify</span> : <>Alerts</>}
                     </span>
 
                 }
@@ -82,7 +82,7 @@ const JobSchedule = (props) => {
                 </TabPane>
                 <TabPane tab={
                     <span style={{ color: activeTab == '2' ? 'white' : 'grey',fontFamily:'Roboto',fontStyle:'normal',fontWeight:'400',fontSize:'16px' }}>
-                        <HourglassOutlined />   Scheduled alerts
+                        <HourglassOutlined  style={{fontSize:'18px'}}/>  <span style={{fontSize:'17px',marginBottom:'20px'}}> Scheduled alerts</span>
                     </span>
                 } key="2">
                     <div className='schedule-alerts'>

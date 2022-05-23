@@ -466,7 +466,6 @@ const ReportNotify = (props) => {
           </div>
           {/* {emailList.length > 0 && ( */}
           {/* )} */}
-          <Divider />
         </TabPane>
         <TabPane tab="Email schedule" key="email_schedule">
           <div style={{ margin: "24px" }}>
