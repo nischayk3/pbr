@@ -7,7 +7,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Table, Popconfirm, Tag } from 'antd';
+import { Table, Popconfirm, Tag, Avatar } from 'antd';
 import { DeleteOutlined, DeleteTwoTone } from '@ant-design/icons';
 import { getJob, putJob, deleteJob } from '../../../services/jobScheduleService';
 import moment from 'moment';
@@ -85,6 +85,7 @@ export default function scheduledAlertsTable(props) {
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
+            align: 'center', 
             render: (text, record) =>
             (
                 <Popconfirm title={`Are you Sure you want to delete the ${record.dag_id}?`} onConfirm={() => DeleteJob(record)}>
@@ -96,15 +97,38 @@ export default function scheduledAlertsTable(props) {
             title: 'Job ID',
             key: 'job_id',
             dataIndex: 'job_id',
+            align: 'center', 
             render: (text, record) =>
             (
                 <u><a onClick={() => props.changeActiveTab('1', record.dag_id,record.job_id)}>{text}</a></u>
             )
         },
         {
-            title: 'Job Name',
+            title: 'Job name',
             key: 'dag_id',
             dataIndex: 'dag_id',
+            align: 'center', 
+        },
+        {
+            title: 'Created by',
+            key: 'created_by',
+            dataIndex: 'created_by',
+            align: 'center', 
+            render  : (text,record) =>
+            { return(
+                <div>
+						<Avatar
+							className='avatar-icon'
+                            size="small" 
+							style={{
+								backgroundColor: 'green',
+							}}>
+							{text.split('')[0].toUpperCase()}{' '}
+						</Avatar>
+						<span style={{marginLeft:'10px',marginTop:'15px'}}>{text}</span>
+					</div>
+            )
+            }
         },
         // {
         //     title: 'Job Description',
@@ -114,6 +138,7 @@ export default function scheduledAlertsTable(props) {
         {
             title: 'Schedule',
             key: 'created_on',
+            align: 'center', 
             dataIndex: 'created_on',
             render: (text) => (moment(text).format(" MMMM DD, YYYY")),
 
@@ -122,6 +147,7 @@ export default function scheduledAlertsTable(props) {
             title: 'Status',
             key: 'job_status',
             dataIndex: 'job_status',
+            align: 'center', 
             render: (text) =>
             (text == 'scheduled' ?
                 (<Tag className="tag-sch"><p className="tag-text">Scheduled</p></Tag>) : (<Tag className="tag-new"><p className="tag-text-new">New</p></Tag>)

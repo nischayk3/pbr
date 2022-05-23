@@ -330,10 +330,10 @@ opacity: 1px;
 .chart-block
 {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;
-  grid-gap: 24px;
-  margin-left: 5%;
-  margin-right: 5%;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
+  grid-gap: 4px 0px;
+  margin-left: 15%;
+  margin-right: 15%;
 }
   .chart-tile
 {
@@ -343,7 +343,7 @@ opacity: 1px;
     position: relative;
     float: right;
     bottom: 20%;
-    left: 1.7%;
+    left: 1.6%;
     //  top: 0%; 
     // right: %;
     // // width: 3px;
@@ -376,11 +376,11 @@ opacity: 1px;
 .chart-tiless
 { 
 height: 46px;
-width: 200px;
+width: 100px;
 background: #FFFFFF;
 border: 1px solid #00F1C6;
 box-sizing: border-box;
-border-radius: 2px 5px 2px 2px;
+border-radius: 2px 2px 2px 2px;
 border: 1px solid #00F1C6;
 // border-radius: 0px 4px;
 // display: flex;

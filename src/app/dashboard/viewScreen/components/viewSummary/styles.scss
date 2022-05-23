@@ -168,8 +168,24 @@
 	display: flex;
 	gap: 12px;
 	width: 100px;
+	cursor: pointer;
+
 	span > span {
 		color: #ff2828;
 		cursor: pointer;
+	}
+}
+
+.summary-heading
+{
+	display: flex;
+	gap: 12px;
+	width: 100px;
+	color: red;
+	cursor :crosshair;
+
+	span > span {
+		// color: #ff2828;
+		cursor :crosshair;
 	}
 }

@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import './modal.scss';
 //antd imports
 import { Modal, Tabs } from 'antd';
-import {  ArrowRightOutlined, ControlOutlined } from '@ant-design/icons';
+import {  ArrowRightOutlined, BellOutlined,HourglassOutlined  } from '@ant-design/icons';
 //components
 //services
 //react-redux
@@ -69,7 +69,7 @@ const JobSchedule = (props) => {
             <Tabs tabPosition='left' className='schedule-menu' activeKey={activeTab} onChange={changeActiveTab} >
                 <TabPane tab={
                     <span style={{ color: activeTab == '1' ? 'white' : 'grey',fontFamily:'Roboto',fontWeight:'400',fontSize:'16px' }}>
-                        <ControlOutlined />
+                        <BellOutlined />
                         {props.app_type == 'REPORT' ? <>Notify</> : <>Alerts</>}
                     </span>
 
@@ -82,13 +82,13 @@ const JobSchedule = (props) => {
                 </TabPane>
                 <TabPane tab={
                     <span style={{ color: activeTab == '2' ? 'white' : 'grey',fontFamily:'Roboto',fontStyle:'normal',fontWeight:'400',fontSize:'16px' }}>
-                        <ControlOutlined />   Scheduled alerts
+                        <HourglassOutlined />   Scheduled alerts
                     </span>
                 } key="2">
                     <div className='schedule-alerts'>
                         <div className='alerts-text'>
                             <p className='alert-title'>Scheduled alerts</p>
-                            <a className="view-link" href={MDH_AIRFLOW} target="_blank">View More Details</a> <span className='alert-arrow'><ArrowRightOutlined /></span>
+                            <a className="view-link" href={MDH_AIRFLOW} target="_blank">View more details</a> <span className='alert-arrow'><ArrowRightOutlined /></span>
                         </div>
                         <div>
                             <AlertTable appType={props.app_type} id={props.id} changeActiveTab={changeActiveTab}  activeTab={activeTab}/>
