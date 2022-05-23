@@ -171,6 +171,10 @@ function PaperBatchRecords() {
         let res = await getDataView()
         setDataView(res.Data)
         setFileName(res?.Data[0]?.filename)
+        setMatBatch({
+            material_num:res?.Data[0]?.product_num,
+            batch:res?.Data[0].batch_num
+        })
 
     }
 

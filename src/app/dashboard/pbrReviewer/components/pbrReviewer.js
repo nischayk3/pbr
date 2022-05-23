@@ -171,23 +171,23 @@ function PbrReviewer() {
     {
       title: 'Key',
       key: 'key',
-      dataIndex: 'key',
-      ...getColumnSearchProps("key", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_key.localeCompare(b.view_key)
+      dataIndex: 'key_',
+      ...getColumnSearchProps("key_", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
+      sorter: (a, b) => a.key_.localeCompare(b.key_)
     },
     {
       title: 'Value',
       key: 'value',
       dataIndex: 'value',
       ...getColumnSearchProps("value", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_value.localeCompare(b.view_value)
+      sorter: (a, b) => a.value.localeCompare(b.value)
     },
     {
       title: 'Actual Value',
       key: 'actual_value',
       dataIndex: 'actual_value',
       ...getColumnSearchProps("actual_value", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_actual_value.localeCompare(b.view_actual_value),
+      sorter: (a, b) => a.actual_value.localeCompare(b.view_actual_value),
       render: (text, record, index) => {
         return (
           <img src={`https://cpv-poc.mareana.com/bms_poc_snippets/${text}`} width="50%" height="15%" />
@@ -199,35 +199,35 @@ function PbrReviewer() {
       key: 'id',
       dataIndex: 'id',
       ...getColumnSearchProps("id", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_id.localeCompare(b.view_id)
+      sorter: (a, b) => a.id.localeCompare(b.id)
     },
     {
       title: 'Status',
       key: 'status',
       dataIndex: 'status',
       ...getColumnSearchProps("status", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_status.localeCompare(b.view_status)
+      sorter: (a, b) => a.status.localeCompare(b.status)
     },
     {
       title: 'Confidence',
       key: 'confidence',
       dataIndex: 'confidence',
       ...getColumnSearchProps("confidence", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_confidence.localeCompare(b.view_confidence)
+      sorter: (a, b) => a.confidence.localeCompare(b.confidence)
     },
     {
       title: 'Site',
       key: 'site',
       dataIndex: 'site',
       ...getColumnSearchProps("site", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_site.localeCompare(b.view_site)
+      sorter: (a, b) => a.site.localeCompare(b.site)
     },
     {
       title: 'Product',
       key: 'product',
       dataIndex: 'product',
       ...getColumnSearchProps("product", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_product.localeCompare(b.view_product),
+      sorter: (a, b) => a.product.localeCompare(b.product),
       render: (text, record, index) => {
         return (
           <a
@@ -243,14 +243,14 @@ function PbrReviewer() {
       key: 'batch',
       dataIndex: 'batch',
       ...getColumnSearchProps("batch", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_batch.localeCompare(b.view_batch)
+      sorter: (a, b) => a.batch.localeCompare(b.batch)
     },
     {
       title: 'Reference Fields',
       key: 'reference_fields',
       dataIndex: 'reference_fields',
       ...getColumnSearchProps("reference_fields", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_reference_fields.localeCompare(b.view_reference_fields)
+      sorter: (a, b) => a.reference_fields.localeCompare(b.reference_fields)
     },
 
   ]
