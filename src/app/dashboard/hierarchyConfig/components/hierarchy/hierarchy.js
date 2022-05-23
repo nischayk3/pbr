@@ -7,7 +7,7 @@
  * @Last Changed By - @Mihir 
  */
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, Tabs, Table, Popconfirm, Button, Input, Modal, Row, Col } from 'antd'
 import './hierStyle.scss'
 import { ArrowRightOutlined, DeleteTwoTone, PlusOutlined } from '@ant-design/icons'
@@ -32,6 +32,12 @@ function Hierarchy() {
     const [stepMapCount, setStepMapCount] = useState(1);
 
     const [activeTab, setActiveTab] = useState('Plant and molecules')
+
+    useEffect(()=>
+    {handleAdd()
+     handleStepAdd()
+
+    },[])
 
     const plantMoleculeColumns =
         [
@@ -62,8 +68,6 @@ function Hierarchy() {
                                     name="Molecule"
                                     value={data.Molecule}
                                     onChange={(e) => handleChange(index, e)}
-                                    bordered={false}
-
                                 />
                             );
                         }
@@ -83,7 +87,6 @@ function Hierarchy() {
                                     name="Plant"
                                     value={data.Plant}
                                     onChange={(e) => handleChange(index, e)}
-                                    bordered={false}
 
                                 />
                             );
@@ -121,7 +124,6 @@ function Hierarchy() {
                                     name="Sequence"
                                     value={data.Molecule}
                                     onChange={(e) => handleStepChange(index, e)}
-                                    bordered={false}
 
                                 />
                             );
@@ -142,7 +144,6 @@ function Hierarchy() {
                                     name="Step"
                                     value={data.Plant}
                                     onChange={(e) => handleStepChange(index, e)}
-                                    bordered={false}
                                 />
                             );
                         }
@@ -265,11 +266,11 @@ function Hierarchy() {
                  { !show ? 
             <Card
                 className="hierarchy-card"
-                title={<span>Molecule Hierarchy Configuration - {hierarchyName} <span className="title-button"> <span onClick={() => setIsModalVisible(true)}>Add new hierarchy</span> <span className="see-all" onClick={()=>setShow(true)}>See all hierarchy <ArrowRightOutlined /></span></span></span>}
+                title={<span><span>Molecule Hierarchy Configuration -</span> <span className="title-card">{hierarchyName}</span> <span className="title-button"> <span className="see-all" onClick={()=>setShow(true)}>See all hierarchy <ArrowRightOutlined /></span></span></span>}
             >
-                <Tabs className="hier-tab" activeKey={activeTab} onChange={handleChangeTab} tabBarExtraContent={<Button className="tab-button"> {activeTab == 'Process step mapping' ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button>}>
+                <Tabs className="hier-tab" activeKey={activeTab} onChange={handleChangeTab} tabBarExtraContent={<Button className={activeTab == 'Process step mapping' ? "tab-button-two" : "tab-button-one"} disabled={activeTab == 'Process step mapping' ? false : true}> Save hierarchy</Button>}>
                     <TabPane tab="Plant and molecules" key="Plant and molecules">
-                        <p className="tab-title">Enter the product and plant details for {hierarchyName}</p>
+                        <p className="tab-title"> Enter the product and plant details for {hierarchyName} <Button className="data-button-one"> {activeTab == 'Process step mapping' ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button> </p> 
                         <Table className="hierarchy-table" columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
                         <div className="add-button">
                             <Button
@@ -278,11 +279,11 @@ function Hierarchy() {
                             >
                                 <PlusOutlined />
                                 Add new row
-                            </Button>
+                            </Button> 
                         </div>
                     </TabPane>
                     <TabPane tab="Process steps" key="Process steps">
-                        <p className="tab-title">Enter the process step for {hierarchyName}</p>
+                        <p className="tab-title">Enter the process step for {hierarchyName} <Button className="data-button"> {activeTab == 'Process step mapping' ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button></p>
                         <Table className="hierarchy-table" columns={stepMapColumns} dataSource={stepData} pagination={false} />
                         <div className="add-button">
                             <Button
@@ -296,7 +297,7 @@ function Hierarchy() {
 
                     </TabPane>
                     <TabPane tab="Process step mapping" key="Process step mapping">
-                        <p className="tab-title">Enter the process step for {hierarchyName}</p>
+                        <p className="tab-title">Enter the process step for {hierarchyName}</p> 
                         <div className="map-grid">
                             <Table className="hierarchy-map-table" columns={mappingColumns} />
                             <div className="map-box">

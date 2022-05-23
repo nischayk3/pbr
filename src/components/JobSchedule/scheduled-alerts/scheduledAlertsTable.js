@@ -7,7 +7,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Table, Popconfirm, Tag } from 'antd';
+import { Table, Popconfirm, Tag, Avatar } from 'antd';
 import { DeleteOutlined, DeleteTwoTone } from '@ant-design/icons';
 import { getJob, putJob, deleteJob } from '../../../services/jobScheduleService';
 import moment from 'moment';
@@ -85,10 +85,11 @@ export default function scheduledAlertsTable(props) {
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
+            align : 'center',
             render: (text, record) =>
             (
                 <Popconfirm title={`Are you Sure you want to delete the ${record.dag_id}?`} onConfirm={() => DeleteJob(record)}>
-                    <DeleteTwoTone twoToneColor="red" />
+                    <DeleteTwoTone twoToneColor="red" style={{fontSize:'16px',marginRight:'25px'}} />
                 </Popconfirm>
             )
         },
@@ -102,9 +103,30 @@ export default function scheduledAlertsTable(props) {
             )
         },
         {
-            title: 'Job Name',
+            title: 'Job name',
             key: 'dag_id',
             dataIndex: 'dag_id',
+        },
+        {
+            title: 'Created by',
+            key: 'created_by',
+            dataIndex: 'created_by',
+            render  : (text,record) =>
+            { return(
+                <div>
+						<Avatar
+							className='avatar-icon'
+                            size="small" 
+							style={{
+								backgroundColor: 'green',
+                                marginBottom:'2px'
+							}}>
+							{text.split('')[0].toUpperCase()}{' '}
+						</Avatar>
+						<span style={{marginLeft:'10px'}}>{text}</span>
+					</div>
+            )
+            }
         },
         // {
         //     title: 'Job Description',

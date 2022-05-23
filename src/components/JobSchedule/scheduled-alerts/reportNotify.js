@@ -319,8 +319,8 @@ const ReportNotify = (props) => {
     //   Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
     //   everyDayValue
     // );
-    if(props.job_id)
-    req["job_id"] = props.job_id ? props.job_id : ' ';
+    if (props.job_id)
+      req["job_id"] = props.job_id ? props.job_id : ' ';
 
     let res = await putJob(req, request_headers);
 
@@ -406,7 +406,7 @@ const ReportNotify = (props) => {
               mihir.bagga@mareana.com
             </Option>
           </Select>
-          <hr style={{ borderTop: "1px solid #dbdbdb" }} />
+          <hr style={{ borderTop: "1px solid #dbdbdb",width:'60%',marginRight:'407px' }} />
           <span>
             <p
               onDoubleClick={() => handleSubject(subject)}
@@ -434,7 +434,7 @@ const ReportNotify = (props) => {
               )}{" "}
             </p>
           </span>
-          <hr style={{ borderTop: "1px solid #dbdbdb" }} />
+          <hr style={{ borderTop: "1px solid #dbdbdb",width:'60%',marginRight:'407px' }} />
           <br />
           <p className="email-content">
             {" "}
@@ -458,13 +458,14 @@ const ReportNotify = (props) => {
 
           <div className="attachment-report-report">
             <span>
-              <PaperClipOutlined style={{ marginLeft: "10px" }} />
+              <PaperClipOutlined
+                style={{ marginLeft: "10px", marginTop: "4px" }}
+              />
             </span>
             <span className="attachment-report-text"> Report_name.pdf</span>
           </div>
           {/* {emailList.length > 0 && ( */}
           {/* )} */}
-          <Divider />
         </TabPane>
         <TabPane tab="Email schedule" key="email_schedule">
           <div style={{ margin: "24px" }}>
@@ -556,7 +557,6 @@ const ReportNotify = (props) => {
                             style={{
                               display: "flex",
                               flexDirection: "row",
-                              alignItems: "baseline",
                             }}
                           >
                             <Radio value={3} className="alerts-radio">
@@ -566,7 +566,7 @@ const ReportNotify = (props) => {
                               style={{
                                 width: "72px",
                                 marginRight: "20px",
-                                marginTop: "12px",
+                                marginTop: "15px",
                               }}
                             >
                               <InputField
@@ -578,7 +578,7 @@ const ReportNotify = (props) => {
                                 placeholder="4"
                               />
                             </span>
-                            <div style={{ width: "100px", marginTop: "18px" }}>
+                            <div style={{ width: "100px", marginTop: "15px" }}>
                               <SelectField
                                 // className='alerts-radio'
                                 placeholder=""

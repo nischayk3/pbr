@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Input, Divider, Table, Tabs, Avatar, message, Row, Col, Modal, Button } from 'antd';
+import {
+    Card,
+    Input,
+    Divider,
+    Table,
+    Tabs,
+    Avatar,
+    message,
+    Row,
+    Col,
+    Modal,
+    Button,
+} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import illustrations from '../../../../assets/images/landing_image.png';
 import { getReports } from '../../../../services/reportDesignerServices';
@@ -17,7 +29,7 @@ import {
     showNotification,
 } from '../../../../duck/actions/commonActions';
 import Banner from '../../../../assets/images/Popup-Side.svg';
-import checkIcon from '../../../../assets/images/checkbox.svg'
+import checkIcon from '../../../../assets/images/checkbox.svg';
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
 
 export default function Landing(props) {
@@ -36,8 +48,9 @@ export default function Landing(props) {
 
     const columns = [
         {
-            title: 'Report Name',
+            title: 'Name',
             dataIndex: 'rep_name',
+            width: '200px',
             key: 'rep_name',
             render: (text, record) => {
                 return {
@@ -49,8 +62,9 @@ export default function Landing(props) {
             },
         },
         {
-            title: 'Report id',
+            title: 'ID',
             dataIndex: 'rep_disp_id',
+            width: '100px',
             key: 'rep_disp_id',
             render: (text, record) => {
                 return {
@@ -62,8 +76,9 @@ export default function Landing(props) {
             },
         },
         {
-            title: 'Report Status',
+            title: 'Status',
             dataIndex: 'rep_status',
+            width: '100px',
             key: 'rep_status',
             render: (text, record) => {
                 return {
@@ -75,9 +90,10 @@ export default function Landing(props) {
             },
         },
         {
-            title: 'Created By',
+            title: 'Creator',
             dataIndex: 'created_by',
             key: 'created_by',
+            width: '200px',
             render: (text, row, index) => {
                 return (
                     <div>
@@ -85,11 +101,10 @@ export default function Landing(props) {
                             className='avatar-icon'
                             style={{
                                 backgroundColor: getRandomColor(index + 1),
-                            }}
-                        >
+                            }}>
                             {text.split('')[0].toUpperCase()}{' '}
                         </Avatar>
-                        <span className='avatar-text'>{text}</span>
+                        <span className='avatar-text' style={{ marginLeft: '5px' }}>{text.split(/[.@]/)[0]}</span>
                     </div>
                 );
             },
@@ -110,41 +125,38 @@ export default function Landing(props) {
         setResultDate(resultDate);
     };
 
-    const setReportId = (value) => {
-        setSelectedReportId(value)
-    }
+    const setReportId = value => {
+        setSelectedReportId(value);
+    };
 
-    const getRandomColor = (index) => {
+    const getRandomColor = index => {
         let colors = ['#56483F', '#728C69', '#c04000', '#c19578'];
         return colors[index % 4];
     };
 
-    const search = (value) => {
+    const search = value => {
         setSearched(true);
         const tableData = reportList;
-        const filterTable = tableData.filter((o) =>
-            Object.keys(o).some((k) =>
+        const filterTable = tableData.filter(o =>
+            Object.keys(o).some(k =>
                 String(o[k]).toLowerCase().includes(value.toLowerCase())
             )
         );
 
         setFilterTable(filterTable);
     };
-    const onSearch = (value) => {
-        if(value=='')
-        setNewSearched(false);
+    const onSearch = value => {
+        if (value == '') setNewSearched(false);
+        else {
+            setNewSearched(true);
+            const tableData = reportList;
+            const filterTable = tableData.filter(o =>
+                Object.keys(o).some(k =>
+                    String(o[k]).toLowerCase().includes(value.toLowerCase())
+                )
+            );
 
-        else
-        {
-        setNewSearched(true);
-        const tableData = reportList;
-        const filterTable = tableData.filter((o) =>
-            Object.keys(o).some((k) =>
-                String(o[k]).toLowerCase().includes(value.toLowerCase())
-            )
-        );
-
-        setFilterTable(filterTable);
+            setFilterTable(filterTable);
         }
     };
 
@@ -158,18 +170,15 @@ export default function Landing(props) {
 
     const getReportList = () => {
         let req = { rep_status: 'all' };
-        getReports(req).then((res) => {
-            if (res['status-code'] == 200)
-                setReportList(res['Data']);
-            else
-                setReportList([]);
-
-
+        getReports(req).then(res => {
+            if (res['status-code'] == 200) setReportList(res['Data']);
+            else setReportList([]);
         });
     };
 
-    const getLoadReport = async (report_id) => {
-        message.success(report_id + ' selected');
+    const getLoadReport = async report_id => {
+        dispatch(showNotification('success', report_id + ' selected'));
+
         dispatch(showLoader());
         let req = { report_displ_id: report_id };
         let data = await loadReport(req);
@@ -182,13 +191,12 @@ export default function Landing(props) {
         }
     };
 
-    const getLoadReportGenerator = async (report_id) => {
-        message.success(report_id + ' selected');
+    const getLoadReportGenerator = async report_id => {
+        dispatch(showNotification('success', report_id + ' selected'));
         dispatch(showLoader());
         let req = { report_displ_id: report_id };
         let data = await loadReportGen(req);
-        if (data.report_generator)
-            dispatch(sendReport(data.report_generator.data));
+        if (data.report_generator) dispatch(sendReport(data.report_generator.data));
         if (data.Status == 200 || data.report_generator) {
             history.push({
                 pathname: '/dashboard/report_generator',
@@ -198,13 +206,13 @@ export default function Landing(props) {
             dispatch(showNotification('error', data.Message));
         }
     };
-    const NewReportGenerator = async (report_id) => {
-        message.success(report_id + ' selected');
+    const NewReportGenerator = async report_id => {
+        dispatch(showNotification('success', report_id + ' selected'));
+
         dispatch(showLoader());
         let req = { report_displ_id: report_id };
         let data = await loadReportGen(req);
-        if (data.report_generator)
-            dispatch(sendReport(data.report_generator.data));
+        if (data.report_generator) dispatch(sendReport(data.report_generator.data));
         if (data.Status == 200 || data.report_generator) {
             dispatch(hideLoader());
             dispatch(showNotification('success', `Loaded ${report_id}`));
@@ -214,7 +222,7 @@ export default function Landing(props) {
         }
     };
 
-    const statusColor = (status) => {
+    const statusColor = status => {
         if (status == 'APRD') {
             return 'aprd';
         }
@@ -226,26 +234,25 @@ export default function Landing(props) {
         }
     };
 
-
     return (
-        <div className="report-landing">
+        <div className='report-landing'>
             <div className='custom-wrapper'>
                 <div className='sub-header'>
                     <div className='sub-header-title'>
                         <BreadCrumbWrapper />
                     </div>
                 </div>
-                <div className="landing-screen-header">
-                <ScreenHeader
-                    bannerbg={{
-                        background:
-                            "linear-gradient(180deg, rgba(139, 254, 197, 0.53) 0%, rgba(119, 227, 233, 0.49) 100%)",
-                    }}
-                    title={`Howdy ${localStorage.getItem("username")},`}
-                    description="Lets get designing some report templates"
-                    source={illustrations}
-                    sourceClass="dashboard-landing"
-                />
+                <div className='landing-screen-header'>
+                    <ScreenHeader
+                        bannerbg={{
+                            background:
+                                'linear-gradient(180deg, rgba(139, 254, 197, 0.53) 0%, rgba(119, 227, 233, 0.49) 100%)',
+                        }}
+                        title={`Howdy ${localStorage.getItem('username')},`}
+                        description='Lets get designing some report templates'
+                        source={illustrations}
+                        sourceClass='dashboard-landing'
+                    />
                 </div>
                 {/* <Card className='workflow_head'>
                         <div>
@@ -269,38 +276,30 @@ export default function Landing(props) {
                             size='large'
                             onSearch={search}
                         />
-                        <Tabs
-                            className='report-landing-card'
-                            defaultActiveKey='1'
-                        >
+                        {searched ? (
+                            <Table
+                                className='landing-table'
+                                columns={columns}
+                                scroll={{ y: 150, x: 800 }}
+                                pagination={false}
+                                dataSource={filterTable === null ? reportList : filterTable}
+                                onRow={record => ({
+                                    onClick: e => {
+                                        getLoadReport(record.rep_disp_id);
+                                    },
+                                })}
+                            />
+                        ) : (
+                            <></>
+                        )}
+                        <Tabs className='report-landing-card' defaultActiveKey='1'>
                             <TabPane
                                 tab='Design Report Template'
-                                key='Design Report Template'
-                            >
-                                {searched ? (
-                                    <Table
-                                        className='landing-table'
-                                        columns={columns}
-                                        dataSource={
-                                            filterTable === null
-                                                ? reportList
-                                                : filterTable
-                                        }
-                                        onRow={(record) => ({
-                                            onClick: (e) => {
-                                                getLoadReport(
-                                                    record.rep_disp_id
-                                                );
-                                            },
-                                        })}
-                                    />
-                                ) : (
-                                    <></>
-                                )}
+                                key='Design Report Template'>
+
                                 <div
                                     className='create-new'
-                                    onClick={() => props.changeScreen()}
-                                >
+                                    onClick={() => props.changeScreen()}>
                                     <PlusOutlined />
                                     <p>Design new report</p>
                                 </div>
@@ -328,18 +327,11 @@ export default function Landing(props) {
                                                     index < 8 && (
                                                         <div
                                                             onClick={() => {
-                                                                getLoadReport(
-                                                                    i.rep_disp_id
-                                                                );
-                                                            }}
-                                                        >
+                                                                getLoadReport(i.rep_disp_id);
+                                                            }}>
                                                             <StatusBlock
-                                                                id={
-                                                                    i.rep_disp_id
-                                                                }
-                                                                status={
-                                                                    i.rep_status
-                                                                }
+                                                                id={i.rep_disp_id}
+                                                                status={i.rep_status}
                                                             />
                                                         </div>
                                                     )
@@ -352,8 +344,7 @@ export default function Landing(props) {
                             </TabPane>
                             <TabPane
                                 tab='Generate Report Variant'
-                                key='Generate Report Variant'
-                            >
+                                key='Generate Report Variant'>
                                 {/* <Input.Search
                                     placeholder="Search by view ID, name, product number, creator, status"
                                     allowClear
@@ -366,21 +357,16 @@ export default function Landing(props) {
                                 {searched ? (
                                     <Table
                                         className='landing-table'
+                                        scroll={{ y: 150, x: 800 }}
                                         columns={columns}
-                                        dataSource={
-                                            filterTable === null
-                                                ? reportList
-                                                : filterTable
-                                        }
-                                        onRow={(record) => ({
-                                            onClick: (e) => {
+                                        dataSource={filterTable === null ? reportList : filterTable}
+                                        onRow={record => ({
+                                            onClick: e => {
                                                 // record['color'] = '#D3D3D3'
                                                 // setReportId(record.rep_disp_id)
                                                 // getReportData(record.rep_disp_id, record.rep_status)
                                                 // dispatch(showLoader())
-                                                getLoadReportGenerator(
-                                                    record.rep_disp_id
-                                                );
+                                                getLoadReportGenerator(record.rep_disp_id);
                                                 // onOk()
                                             },
                                         })}
@@ -390,8 +376,7 @@ export default function Landing(props) {
                                 )}
                                 <div
                                     className='create-new'
-                                    onClick={() => setIsModalVisible(true)}
-                                >
+                                    onClick={() => setIsModalVisible(true)}>
                                     <PlusOutlined />
                                     <p>Generate new report</p>
                                 </div>
@@ -418,18 +403,11 @@ export default function Landing(props) {
                                                 index < 8 && (
                                                     <div
                                                         onClick={() => {
-                                                            getLoadReportGenerator(
-                                                                i.rep_disp_id
-                                                            );
-                                                        }}
-                                                    >
+                                                            getLoadReportGenerator(i.rep_disp_id);
+                                                        }}>
                                                         <StatusBlock
-                                                            id={
-                                                                i.rep_disp_id
-                                                            }
-                                                            status={
-                                                                i.rep_status
-                                                            }
+                                                            id={i.rep_disp_id}
+                                                            status={i.rep_status}
                                                         />
                                                     </div>
                                                 )
@@ -440,20 +418,22 @@ export default function Landing(props) {
                     </div>
                 </Card>
                 <Modal
+                    style={{ top: 50 }}
                     className='landing-modal'
-                    title="Create New Dashboard"
+                    title='Create New Dashboard'
                     visible={isModalVisible}
                     onCancel={handleCancel}
-                    footer={false}
-                >
+                    footer={false}>
                     <div>
                         <Row>
                             <Col span={12}>
-                                <img className="gen-banner" src={Banner} />
+                                <img className='gen-banner' src={Banner} />
                             </Col>
                             <Col span={12}>
                                 <Row>
-                                    <p style={{margin:'8px 0px'}}>Select a report to get started</p>
+                                    <p style={{ margin: '8px 0px' }}>
+                                        Select a report to get started
+                                    </p>
                                     <Input.Search
                                         onSearch={onSearch}
                                         placeholder='Search by report ID or name'
@@ -486,43 +466,40 @@ export default function Landing(props) {
                                     <Table
                                         className='landing-table'
                                         columns={columns}
-                                        scroll={{ y: 150, x: 350 }}
+                                        scroll={{ y: 150, x: 800 }}
                                         // style={{  height: 'auto' }}
-                                        dataSource={
-                                            filterTable === null
-                                                ? reportList
-                                                : filterTable
-                                        }
+                                        dataSource={filterTable === null ? reportList : filterTable}
                                         pagination={false}
-                                        onRow={(record) => ({
-                                            onClick: (e) => {
-                                                NewReportGenerator(
-                                                    record.rep_disp_id
-                                                );
+                                        onRow={record => ({
+                                            onClick: e => {
+                                                NewReportGenerator(record.rep_disp_id);
                                             },
                                         })}
                                     />
                                 ) : (
                                     <></>
                                 )}
-
-
                             </Col>
 
-                            <Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px', marginLeft: '88%', marginTop: '70px' }}
+                            <Button
+                                style={{
+                                    backgroundColor: '#093185',
+                                    color: 'white',
+                                    borderRadius: '4px',
+                                    marginLeft: '88%',
+                                    marginTop: '70px',
+                                }}
                                 onClick={() => {
                                     history.push({
-                                        pathname:
-                                            '/dashboard/report_generator',
+                                        pathname: '/dashboard/report_generator',
                                     });
-                                }}
-                            >Let's Go!</Button>
+                                }}>
+                                Let's Go!
+                            </Button>
                         </Row>
                     </div>
-
                 </Modal>
             </div>
-
         </div>
     );
 }
