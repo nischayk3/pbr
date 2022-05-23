@@ -80,13 +80,13 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						testDate:
 							ele.chart_type === 'process control'
 								? new Date(
-										el['recorded_date_' + ele.chart_mapping.y.function_name]
-								  ).toLocaleDateString()
+									el['recorded_date_' + ele.chart_mapping.y.function_name]
+								).toLocaleDateString()
 								: `(${new Date(
-										el['recorded_date_' + ele.chart_mapping.x.function_name]
-								  ).toLocaleDateString()},${new Date(
-										el['recorded_date_' + ele.chart_mapping.y.function_name]
-								  ).toLocaleDateString()})`,
+									el['recorded_date_' + ele.chart_mapping.x.function_name]
+								).toLocaleDateString()},${new Date(
+									el['recorded_date_' + ele.chart_mapping.y.function_name]
+								).toLocaleDateString()})`,
 					});
 				}
 			});
@@ -129,8 +129,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				Object.keys(xAxis).length !== 0
 					? xAxis.function_name
 					: obj.function_name === 'batch_num'
-					? 'Batch'
-					: 'Recorded Date';
+						? 'Batch'
+						: 'Recorded Date';
 			ele.layout.yaxis.title.text = yAxis.function_name;
 		});
 		setPostChartData({ ...postChartData, data: newArr });

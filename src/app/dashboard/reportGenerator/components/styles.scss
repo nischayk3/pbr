@@ -155,7 +155,7 @@
 	box-sizing: border-box;
 	border-radius: 4px;
 	align-items: center;
-	padding: 1px 8px;
+	padding: 2px 8px;
 	margin-left: 20px;
 	color: #2f54eb;
 	font-family: 'Roboto';
@@ -328,6 +328,11 @@
 	background: #fff !important;
 }
 
+.report-primary-btn:hover {
+	color:#486bc9 !important;
+
+}
+
 .report-secondary-btn {
 	font-family: 'Roboto', sans-serif !important;
 	font-weight: 400 !important;
@@ -338,4 +343,8 @@
 	justify-content: center !important;
 	border-radius: 4px !important;
 	border: 0px !important;
+}
+.report-secondary-btn:hover {
+	color:#486bc9 !important;
+
 }

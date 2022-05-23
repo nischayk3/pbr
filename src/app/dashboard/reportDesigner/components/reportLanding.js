@@ -48,8 +48,9 @@ export default function Landing(props) {
 
 	const columns = [
 		{
-			title: 'Report Name',
+			title: 'Name',
 			dataIndex: 'rep_name',
+			width:'200px',
 			key: 'rep_name',
 			render: (text, record) => {
 				return {
@@ -61,8 +62,9 @@ export default function Landing(props) {
 			},
 		},
 		{
-			title: 'Report id',
+			title: 'ID',
 			dataIndex: 'rep_disp_id',
+			width:'100px',
 			key: 'rep_disp_id',
 			render: (text, record) => {
 				return {
@@ -74,8 +76,9 @@ export default function Landing(props) {
 			},
 		},
 		{
-			title: 'Report Status',
+			title: 'Status',
 			dataIndex: 'rep_status',
+			width:'100px',
 			key: 'rep_status',
 			render: (text, record) => {
 				return {
@@ -87,9 +90,10 @@ export default function Landing(props) {
 			},
 		},
 		{
-			title: 'Created By',
+			title: 'Creator',
 			dataIndex: 'created_by',
 			key: 'created_by',
+			width:'200px',
 			render: (text, row, index) => {
 				return (
 					<div>
@@ -100,7 +104,7 @@ export default function Landing(props) {
 							}}>
 							{text.split('')[0].toUpperCase()}{' '}
 						</Avatar>
-						<span className='avatar-text'>{text}</span>
+						<span className='avatar-text' style={{marginLeft:'5px'}}>{text.split(/[.@]/)[0]}</span>
 					</div>
 				);
 			},
@@ -280,6 +284,7 @@ export default function Landing(props) {
 									<Table
 										className='landing-table'
 										columns={columns}
+										scroll={{ y: 150, x: 800 }}
 										dataSource={filterTable === null ? reportList : filterTable}
 										onRow={record => ({
 											onClick: e => {
@@ -350,6 +355,7 @@ export default function Landing(props) {
 								{searched ? (
 									<Table
 										className='landing-table'
+										scroll={{ y: 150, x: 800 }}
 										columns={columns}
 										dataSource={filterTable === null ? reportList : filterTable}
 										onRow={record => ({
@@ -410,6 +416,7 @@ export default function Landing(props) {
 					</div>
 				</Card>
 				<Modal
+					style={{ top: 50 }}
 					className='landing-modal'
 					title='Create New Dashboard'
 					visible={isModalVisible}
@@ -457,7 +464,7 @@ export default function Landing(props) {
 									<Table
 										className='landing-table'
 										columns={columns}
-										scroll={{ y: 150, x: 350 }}
+										scroll={{ y: 150, x: 800 }}
 										// style={{  height: 'auto' }}
 										dataSource={filterTable === null ? reportList : filterTable}
 										pagination={false}
