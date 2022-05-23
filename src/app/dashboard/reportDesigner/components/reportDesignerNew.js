@@ -738,12 +738,13 @@ function ReportDesignerNew(props) {
                 <Button
                   className="report-secondary-btn"
                   onClick={() => { setIsPublish(true); setApproveReject('P') }}
+                  style={{marginRight:'16px'}}
                 >
                   <CloudUploadOutlined />
                   Publish
                 </Button>
                 <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
-                  <EllipsisOutlined style={{ transform: 'rotate(-90deg)', fontSize: '20px', marginLeft: '5px' }} />
+                  <EllipsisOutlined style={{ transform: 'rotate(-90deg)', fontSize: '20px', marginRight: '10px' }} />
                 </Dropdown>
                  </>
               : <> </>

@@ -406,7 +406,7 @@ const ReportNotify = (props) => {
               mihir.bagga@mareana.com
             </Option>
           </Select>
-          <hr style={{ borderTop: "1px solid #dbdbdb" }} />
+          <hr style={{ borderTop: "1px solid #dbdbdb",width:'60%',marginRight:'407px' }} />
           <span>
             <p
               onDoubleClick={() => handleSubject(subject)}
@@ -434,7 +434,7 @@ const ReportNotify = (props) => {
               )}{" "}
             </p>
           </span>
-          <hr style={{ borderTop: "1px solid #dbdbdb" }} />
+          <hr style={{ borderTop: "1px solid #dbdbdb",width:'60%',marginRight:'407px' }} />
           <br />
           <p className="email-content">
             {" "}

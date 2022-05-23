@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import './modal.scss';
 //antd imports
 import { Modal, Tabs } from 'antd';
-import {  ArrowRightOutlined, BellOutlined } from '@ant-design/icons';
+import {  ArrowRightOutlined, BellOutlined,HourglassOutlined  } from '@ant-design/icons';
 //components
 //services
 //react-redux
@@ -82,7 +82,7 @@ const JobSchedule = (props) => {
                 </TabPane>
                 <TabPane tab={
                     <span style={{ color: activeTab == '2' ? 'white' : 'grey',fontFamily:'Roboto',fontStyle:'normal',fontWeight:'400',fontSize:'16px' }}>
-                        <BellOutlined />   Scheduled alerts
+                        <HourglassOutlined />   Scheduled alerts
                     </span>
                 } key="2">
                     <div className='schedule-alerts'>
