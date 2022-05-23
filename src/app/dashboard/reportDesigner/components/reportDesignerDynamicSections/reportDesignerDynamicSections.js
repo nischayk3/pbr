@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Space, Popconfirm, Card } from 'antd';
-import { CheckCircleOutlined, DeleteTwoTone, PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { Form, Input, Space, Popconfirm, Card,Tooltip } from 'antd';
+import {  DeleteTwoTone, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
 import Chart from '../reportChart/chartComponent/chartComponent'
@@ -169,10 +169,10 @@ function ReportDesignerDynamicSections(props) {
                                                 <Form.Item {...restField} name={[name, 'sectionName']}>
                                                     <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px' }} className="input-section" disabled={props.show} disabled={editable} />
                                                 </Form.Item>
-                                                <EditOutlined style={{ marginTop: '8px', marginLeft: '10px' }} onClick={() => handleEdit(editable)} />
-                                            </div>
+                                                <Tooltip placement="topLeft" title="Edit Section Name">    <EditOutlined style={{ marginTop: '8px', marginLeft: '10px' }} onClick={() => handleEdit(editable)} /> </Tooltip>
+                                            </div> 
 
-                                            <div className="add-chart" onClick={() => trackCharts(name)} >{!showChart[name] ? <span>+ Add Chart </span> : <span> -  <span>Remove</span>  </span>} </div>
+                                            <div className="add-chart" onClick={() => trackCharts(name)} ><span>+ Add Chart </span>  </div>
 
                                             <div style={{ marginLeft: '15%' }}>
                                                 <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
@@ -240,7 +240,7 @@ function ReportDesignerDynamicSections(props) {
                                                 <Chart chartName={i} />
                                             </div>
                                         ))}
-                                        <PlusOutlined style={{ fontSize: '16px', marginLeft: '99.2%', color: '#093185', background: "white", padding: "2px", borderRadius: "50px" }} twoToneColor="#eb2f96" onClick={() => add()} />
+                                  <Tooltip placement="bottomRight" title="Add Section">       <PlusOutlined style={{ fontSize: '16px', marginLeft: '99.2%', color: '#093185', background: "white", padding: "2px", borderRadius: "50px",boxShadow: '.5px grey' }} twoToneColor="#eb2f96" onClick={() => add()} /> </Tooltip>
 
                                     </div>
                                 ))}
