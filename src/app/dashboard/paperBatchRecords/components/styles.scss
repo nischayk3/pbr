@@ -265,3 +265,15 @@ p {
     display: flex;
     justify-content: center;
 }
+
+a:link {
+    color: green;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  
+  a:visited {
+    color: pink;
+    background-color: transparent;
+    text-decoration: none;
+  }
