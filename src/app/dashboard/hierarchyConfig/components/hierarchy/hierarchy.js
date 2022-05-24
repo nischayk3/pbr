@@ -190,6 +190,7 @@ function Hierarchy() {
             title: "Process Step",
             dataIndex: "Process Step",
             width: "200",
+            align:'left',
             render : (text,record) =>
             {
                 return (
@@ -200,7 +201,7 @@ function Hierarchy() {
                     dropdownStyle={{ border: '10' }}
                     notFoundContent="No Result"
                     placeholder="Select Step"
-                    style={{ width: '100%',borderRadius:'4px'}}
+                    style={{ width: '100%',borderRadius:'4px',right:'15px'}}
                 >
                     {stepArray.length > 0 ? stepArray.map(item => (
                         <Option value={item} key={item}>
