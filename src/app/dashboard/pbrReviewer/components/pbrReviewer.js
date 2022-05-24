@@ -390,7 +390,6 @@ function PbrReviewer() {
             <Table
               columns={columns2}
               dataSource={templateData}
-              pagination={false}
               style={{ border: '1px solid #ececec', borderRadius: '2px' }}
             />
           </div>

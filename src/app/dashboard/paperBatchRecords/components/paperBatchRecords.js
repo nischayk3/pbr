@@ -139,7 +139,7 @@ function PaperBatchRecords() {
                         return (
                             <a onClick={() => {
                                 console.log("rowww",row.pbr_template_info[0].filename)
-                                history.push(`/dashboard/pbr_template?file=${row.pbr_template_info[0].filename}`)
+                                history.push(`/dashboard/pbr_template?file=${row.pbr_template_info[0].filename}&temp_disp_id=${row.pbr_temp_int_id}&tempalteName=${row.pbr_template_name}`)
                                 dispatch(loadTemplateInfo(row.pbr_template_info))
                             }} className='review-submission'>{text}</a>
                         )

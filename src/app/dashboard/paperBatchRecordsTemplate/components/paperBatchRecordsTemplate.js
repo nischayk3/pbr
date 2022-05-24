@@ -7,41 +7,41 @@
  */
 
 import {
-	Col,
-	Collapse,
-	Form,
-	Input,
-	Row,
-	Select,
-	Button,
-	Upload,
-	message,
-	Space,
-	notification,
-	Modal,
-	Table,
-	Dropdown,
-	Menu,
+    Col,
+    Collapse,
+    Form,
+    Input,
+    Row,
+    Select,
+    Button,
+    Upload,
+    message,
+    Space,
+    notification,
+    Modal,
+    Table,
+    Dropdown,
+    Menu,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ImageMapper from 'react-image-mapper';
 
 import {
-	ArrowLeftOutlined,
-	EditOutlined,
-	ArrowRightOutlined,
-	EllipsisOutlined,
-	CaretDownOutlined,
-	PlusOutlined,
-	MinusCircleOutlined,
-	MonitorOutlined,
+    ArrowLeftOutlined,
+    EditOutlined,
+    ArrowRightOutlined,
+    EllipsisOutlined,
+    CaretDownOutlined,
+    PlusOutlined,
+    MinusCircleOutlined,
+    MonitorOutlined,
 } from '@ant-design/icons';
 
 import {
-	hideLoader,
-	showLoader,
-	showNotification,
+    hideLoader,
+    showLoader,
+    showNotification,
 } from '../../../../duck/actions/commonActions';
 import { useDispatch, useSelector } from 'react-redux';
 import panelLeftImg from '../../../../assets/images/panel-leftIcon.svg';
@@ -60,10 +60,10 @@ import AddParameter from './addParameter/AddParameter';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import './styles.scss'; ImCrop
 import {
-	getBoundingBoxData,
-	savePbrTemplate,
-	processBatchRecord,
-	findParameter,
+    getBoundingBoxData,
+    savePbrTemplate,
+    processBatchRecord,
+    findParameter,
 } from '../../../../services/pbrService';
 // import { ImCrop } from "react-icons/im";
 const { Panel } = Collapse;
@@ -553,12 +553,12 @@ function PaperBatchRecordsTemplate() {
      */
     const getBoundingBoxDataInfo = async (width, height, mode) => {
         try {
-            // dispatch(showLoader());
+            console.log("param",params)
             let _reqBatch = {
                 filename: `${params?.file?.split('_')[0]}_page-0.jpeg.json`,
                 bbox_type: mode,
-                action_type: "create",
-                temp_disp_id: ""
+                action_type: params?.temp_disp_id ? "edit":"create",
+                temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id:""
             };
             const batchRes = await getBoundingBoxData(_reqBatch);
             setOrigianalResponse(batchRes)
@@ -647,36 +647,36 @@ function PaperBatchRecordsTemplate() {
                 name: item.name,
                 method: item.method,
                 values: {
-                    anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_snippet_id,
+                    anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_key_snippet_id,
                     anchorCoords: [
                         item?.param_key_left * imageWidth, item?.param_key_top * imageHeight, (item?.param_key_left + item?.param_key_width) * imageWidth, (item?.param_key_top + item?.param_key_height) * imageHeight
                     ], valueCoords: [
                         item?.param_value_left * imageWidth, item?.param_value_top * imageHeight, (item?.param_value_left + item?.param_value_width) * imageWidth, (item?.param_value_top + item?.param_value_height) * imageHeight
-                    ], valueSnippetID: item?.param_snippet_id
+                    ], valueSnippetID: item?.param_value_snippet_id
                 },
                 unitValues: {
-                    unitAnchor: item?.uom_key_text, unitId: item?.uom_value_text, snippetID: item?.uom_snippet_id,
+                    unitAnchor: item?.uom_key_text, unitId: item?.uom_value_text, snippetID: item?.uom_key_snippet_id,
                     coords: [
                         item?.uom_key_left * imageWidth, item?.uom_key_top * imageHeight, (item?.uom_key_left + item?.uom_key_width) * imageWidth, (item?.uom_key_top + item?.uom_key_height) * imageHeight
                     ], valueCoords: [
                         item?.uom_value_left * imageWidth, item?.uom_value_top * imageHeight, (item?.uom_value_left + item?.uom_value_width) * imageWidth, (item?.uom_value_top + item?.uom_value_height) * imageHeight
-                    ], valueSnippetID: item?.uom_snippet_id
+                    ], valueSnippetID: item?.uom_value_snippet_id
                 },
                 timeValues: {
-                    timeAnchor: item?.time_key_text, timeId: item?.time_value_text, snippetID: item?.time_snippet_id,
+                    timeAnchor: item?.time_key_text, timeId: item?.time_value_text, snippetID: item?.time_key_snippet_id,
                     coords: [
                         item?.time_key_left * imageWidth, item?.time_key_top * imageHeight, (item?.time_key_left + item?.time_key_width) * imageWidth, (item?.time_key_top + item?.time_key_height) * imageHeight
                     ], valueCoords: [
                         item?.time_value_left * imageWidth, item?.time_value_top * imageHeight, (item?.time_value_left + item?.time_value_width) * imageWidth, (item?.time_value_top + item?.time_value_height) * imageHeight
-                    ], valueSnippetID: item?.time_snippet_id
+                    ], valueSnippetID: item?.time_value_snippet_id
                 },
                 dateValues: {
-                    dateAnchor: item?.date_key_text, dateId: item?.date_value_text, snippetID: item?.date_snippet_id,
+                    dateAnchor: item?.date_key_text, dateId: item?.date_value_text, snippetID: item?.date_key_snippet_id,
                     coords: [
                         item?.date_key_left * imageWidth, item?.date_key_top * imageHeight, (item?.date_key_left + item?.date_key_width) * imageWidth, (item?.date_key_top + item?.date_key_height) * imageHeight
                     ], valueCoords: [
                         item?.date_value_left * imageWidth, item?.date_value_top * imageHeight, (item?.date_value_left + item?.date_value_width) * imageWidth, (item?.date_value_top + item?.date_value_height) * imageHeight
-                    ], valueSnippetID: item?.date_snippet_id
+                    ], valueSnippetID: item?.date_value_snippet_id
                 }
 
 
@@ -720,7 +720,7 @@ function PaperBatchRecordsTemplate() {
         }, 3000)
 
     }, [document.getElementsByTagName("canvas")[0]]);
-    
+
 
     const load = () => { };
 
@@ -749,7 +749,7 @@ function PaperBatchRecordsTemplate() {
             arr[activeKey] = { ...arr[activeKey], values: { ...arr[activeKey]?.values, anchorValue: area.areaValue, snippetID: area.snippetID, anchorCoords: area.coords } }
             setParameterValue(obj1);
             setFormValues(arr)
-            
+
         } else if (DraggerActiveMultiple.unit) {
             let obj1 = { ...parameterValue };
             obj1[`param${Number(activeKey) + 1}`] = {
@@ -870,7 +870,7 @@ function PaperBatchRecordsTemplate() {
                         obj['uom_key_top'] = ele?.unitValues?.coords[1] / 1123
                         obj['uom_key_width'] = (ele?.unitValues?.coords[2] - ele?.unitValues?.coords[0])
                         obj['uom_page'] = 1
-                        obj['uom_snippet_id'] = ele?.unitValues?.snippetID
+                        obj['uom_key_snippet_id'] = ele?.unitValues?.snippetID
                         obj['uom_value_height'] = (ele?.unitValues?.valueCoords[3] - ele?.unitValues?.valueCoords[1]) / 1123
                         obj['uom_value_left'] = ele?.unitValues?.valueCoords[0] / 868
                         obj['uom_value_text'] = ele?.unitValues?.unitId
@@ -886,7 +886,7 @@ function PaperBatchRecordsTemplate() {
                         obj['time_key_top'] = ele?.timeValues?.coords[1] / 1123
                         obj['time_key_width'] = (ele?.timeValues?.coords[2] - ele?.timeValues?.coords[0])
                         obj['time_page'] = 1
-                        obj['time_snippet_id'] = ele?.timeValues?.snippetID
+                        obj['time_key_snippet_id'] = ele?.timeValues?.snippetID
                         obj['time_value_height'] = (ele?.timeValues?.valueCoords[3] - ele?.timeValues?.valueCoords[1]) / 1123
                         obj['time_value_left'] = ele?.timeValues?.valueCoords[0] / 868
                         obj['time_value_text'] = ele?.timeValues?.timeId
@@ -902,7 +902,7 @@ function PaperBatchRecordsTemplate() {
                         obj['date_key_top'] = ele?.dateValues?.coords[1] / 1123
                         obj['date_key_width'] = (ele?.dateValues?.coords[2] - ele?.dateValues?.coords[0])
                         obj['date_page'] = 1
-                        obj['date_snippet_id'] = ele?.dateValues?.snippetID
+                        obj['date_key_snippet_id'] = ele?.dateValues?.snippetID
                         obj['date_value_height'] = (ele?.dateValues?.valueCoords[3] - ele?.dateValues?.valueCoords[1]) / 1123
                         obj['date_value_left'] = ele?.dateValues?.valueCoords[0] / 868
                         obj['date_value_text'] = ele?.dateValues?.dateId
@@ -1233,7 +1233,7 @@ function PaperBatchRecordsTemplate() {
                         <span className='header-title'>
                             Paper Batch Records /
                         </span>
-                        <span className='header-title'>Template001</span>
+                        <span className='header-title'>{`TEMPLATE-${params?.tempalteName.toUpperCase()}`}</span>
                     </div>
                 </div>
                 <div className='sub-header'>
@@ -1361,21 +1361,21 @@ function PaperBatchRecordsTemplate() {
                                                                                     <Form.Item
                                                                                         {...restField}
                                                                                         name={[name, 'method']}
-                                                                                        rules={[{ required: true, message: 'Missing last name' }]}
+                                                                                        rules={[{ required: true, message: 'method' }]}
                                                                                     >
                                                                                         <Select placeholder="Select Method" onChange={(e, value) => onChangeChart(e, 'method', key, value)} value={formValues[key]?.method}>
                                                                                             <Option value='absolute_coordinate'>
                                                                                                 Get By Absolute Coordinate
                                                                                             </Option>
-                                                                                            <Option value='regex'>
+                                                                                            {/* <Option value='regex'>
                                                                                                 Get By Regex
-                                                                                            </Option>
+                                                                                            </Option> */}
                                                                                             <Option value='key_value_form'>
                                                                                                 Get By Form Key Value
                                                                                             </Option>
-                                                                                            <Option value='relative_direction '>
+                                                                                            {/* <Option value='relative_direction '>
                                                                                                 Get By Relative Direction
-                                                                                            </Option>
+                                                                                            </Option> */}
                                                                                         </Select>
                                                                                     </Form.Item>
                                                                                     <div className='parameterAddingBlock parameterValueBlock'>
@@ -1388,6 +1388,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 ? 'activeBorder'
                                                                                                 : 'inActiveBorder'
                                                                                                 }`}
+                                                                                            style={{ pointerEvents: "none" }}
                                                                                         >
                                                                                             <p className='ant-upload-drag-icon'>
                                                                                                 <PlusOutlined />
@@ -1402,6 +1403,7 @@ function PaperBatchRecordsTemplate() {
                                                                                             <p
                                                                                                 className='ant-upload-text-input'
                                                                                                 onClick={(e) => DraggerInputHandlerAnchor(e, "value")}
+                                                                                                style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <Form.Item
                                                                                                     {...restField}
@@ -1432,6 +1434,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 ? 'inActiveBorder'
                                                                                                 : 'activeBorder'
                                                                                                 }`}
+                                                                                            style={{ pointerEvents: "none" }}
                                                                                         >
                                                                                             <p className='ant-upload-drag-icon'>
                                                                                                 <PlusOutlined />
@@ -1447,6 +1450,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 onClick={
                                                                                                     (e) => DraggerInputHandlerSnippet(e, "value")
                                                                                                 }
+                                                                                                style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <span>
                                                                                                     Or
@@ -1525,6 +1529,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 ? 'activeBorder'
                                                                                                 : 'inActiveBorder'
                                                                                                 }`}
+                                                                                            style={{ pointerEvents: "none" }}
                                                                                         >
                                                                                             <p className='ant-upload-drag-icon'>
                                                                                                 <PlusOutlined />
@@ -1541,6 +1546,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 onClick={
                                                                                                     (e) => DraggerInputHandlerAnchor(e, "unit")
                                                                                                 }
+                                                                                                style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <Input
                                                                                                     value={
@@ -1565,6 +1571,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 ? 'inActiveBorder'
                                                                                                 : 'activeBorder'
                                                                                                 }`}
+                                                                                            style={{ pointerEvents: "none" }}
                                                                                         >
                                                                                             <p className='ant-upload-drag-icon'>
                                                                                                 <PlusOutlined />
@@ -1580,6 +1587,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 onClick={
                                                                                                     (e) => DraggerInputHandlerSnippet(e, "unit")
                                                                                                 }
+                                                                                                style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <span>
                                                                                                     Or
@@ -1638,6 +1646,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 ? 'activeBorder'
                                                                                                 : 'inActiveBorder'
                                                                                                 }`}
+                                                                                            style={{ pointerEvents: "none" }}
                                                                                         >
                                                                                             <p className='ant-upload-drag-icon'>
                                                                                                 <PlusOutlined />
@@ -1654,6 +1663,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 onClick={
                                                                                                     (e) => DraggerInputHandlerAnchor(e, "time")
                                                                                                 }
+                                                                                                style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <Input
                                                                                                     value={
@@ -1678,6 +1688,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 ? 'inActiveBorder'
                                                                                                 : 'activeBorder'
                                                                                                 }`}
+                                                                                            style={{ pointerEvents: "none" }}
                                                                                         >
                                                                                             <p className='ant-upload-drag-icon'>
                                                                                                 <PlusOutlined />
@@ -1693,6 +1704,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 onClick={
                                                                                                     (e) => DraggerInputHandlerSnippet(e, "time")
                                                                                                 }
+                                                                                                style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <span>
                                                                                                     Or
@@ -1750,6 +1762,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 ? 'activeBorder'
                                                                                                 : 'inActiveBorder'
                                                                                                 }`}
+                                                                                            style={{ pointerEvents: "none" }}
                                                                                         >
                                                                                             <p className='ant-upload-drag-icon'>
                                                                                                 <PlusOutlined />
@@ -1766,6 +1779,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 onClick={
                                                                                                     (e) => DraggerInputHandlerAnchor(e, "date")
                                                                                                 }
+                                                                                                style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <InputField
                                                                                                     value={
@@ -1791,6 +1805,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 ? 'inActiveBorder'
                                                                                                 : 'activeBorder'
                                                                                                 }`}
+                                                                                            style={{ pointerEvents: "none" }}
                                                                                         >
                                                                                             <p className='ant-upload-drag-icon'>
                                                                                                 <PlusOutlined />
@@ -1806,6 +1821,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 onClick={
                                                                                                     (e) => DraggerInputHandlerSnippet(e, "date")
                                                                                                 }
+                                                                                                style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <span>
                                                                                                     Or
@@ -1941,175 +1957,175 @@ function PaperBatchRecordsTemplate() {
                                             src={cropImg}
                                             className='panelCenterImg'
                                         /> */}
-										<Dropdown
-											style={{ color: '#ffffff' }}
-											trigger={['click']}
-											overlay={modes}>
-											<ImCrop />
-										</Dropdown>
-									</div>
-									<div className='undoSnippet'>
-										<img src={undoImg} className='panelCenterImg' />
-									</div>
-									<div className='redoSnippet'>
-										<img src={redoImg} className='panelCenterImg' />
-									</div>
-									<div className='contrastSnippet'>
-										<img src={contrastImg} className='panelCenterImg' />
-									</div>
-								</Col>
-							</Row>
-						</div>
-						<div className='pbrCenterPdfBlock'>
-							<div className='pdfContent'>
-								<div className='snippetsFound'></div>
-								<div className='snippetsImg'></div>
-							</div>
-							<div className='pdfToImgBlock' onClick={onClickImage}>
-								{areasMap.areas.length > 0 && (
-									<ImageMapper
-										id='imageMApper'
-										className='pdfToImageWrapper'
-										src={displayImage}
-										map={areasMap}
-										// onLoad={() => load()}
-										onClick={area => clicked(area)}
-									/>
-								)}
-							</div>
-						</div>
-					</div>
-					<Modal
-						title='Preview'
-						visible={isModalVisible}
-						onOk={handleOk}
-						onCancel={handleCancel}
-						footer={null}>
-						<Table
-							loading={tableLoading}
-							className='pbrTemplates-table'
-							columns={modalColumns}
-							dataSource={modalData}
-							pagination={false}
-						/>
-					</Modal>
-				</div>
-				<div className='pbrTemplateRight'>
-					<div className='pbrPanel pbrRightPanel'>
-						<Sider trigger={null} collapsible collapsed={rightPanelCollapsed}>
-							<span className='trigger' onClick={toggleRightCollapsed}>
-								<img src={panelRightImg} className='panelImg' />
-							</span>
-							<Collapse
-								accordion
-								expandIconPosition='right'
-								defaultActiveKey={['1']}>
-								<Panel header='Snippet Attributes' key='1'>
-									<div className='snippetsBlock'>
-										<Form
-											layout='vertical'
-											form={form}
-											className='formNewTemplate'>
-											<InputField
-												value={areasMapObject.snippetID}
-												label='Snippet ID'
-												placeholder='Enter Snippet ID'
-												onChangeInput={e => {
-													onChangeChart(e, 'snippetId');
-												}}
-											/>
-											<InputField
-												value={areasMapObject.areaValue}
-												label='Key 1'
-												placeholder='Enter Key 1'
-												onChangeInput={e => {
-													onChangeChart(e, 'snippetKey1');
-												}}
-												disabled
-											/>
-											<div className='secondary-flexBox'>
-												<InputField
-													value={areasMapObject.coords[0]}
-													label='X1'
-													placeholder='Enter Value'
-													onChangeInput={e => {
-														onChangeChart(e, 'x1');
-													}}
-												/>
-												<InputField
-													value={areasMapObject.coords[1]}
-													label='Y1'
-													placeholder='Enter Value'
-													onChangeInput={e => {
-														onChangeChart(e, 'y1');
-													}}
-												/>
-											</div>
-											<div className='secondary-flexBox'>
-												<InputField
-													value={areasMapObject.coords[2]}
-													label='X2'
-													placeholder='Enter Value'
-													onChangeInput={e => {
-														onChangeChart(e, 'x2');
-													}}
-												/>
-												<InputField
-													value={areasMapObject.coords[3]}
-													label='Y2'
-													placeholder='Enter Value'
-													onChangeInput={e => {
-														onChangeChart(e, 'y2');
-													}}
-												/>
-											</div>
-											<div className='secondary-flexBox'>
-												<InputField
-													value={areasMapObject.areaValue}
-													label='Area'
-													placeholder='Enter Value'
-													onChangeInput={e => {
-														onChangeChart(e, 'area');
-													}}
-													disabled
-												/>
-											</div>
-											<div className='hierarchyBlock'>
-												<p>Hierarchy</p>
-												<div className='hierarchyDiv hierarchyDiv1'>
-													<CaretDownOutlined />
-													TemplateNew01
-												</div>
-												<div className='hierarchyDiv hierarchyDiv2'>
-													<CaretDownOutlined />
-													0001-6.0
-												</div>
-												<div className='hierarchyDiv hierarchyDiv3'>
-													<CaretDownOutlined />8
-												</div>
-												<div className='hierarchyDiv hierarchyDiv4'>
-													<CaretDownOutlined />
-													ID001
-												</div>
-											</div>
-											<div className='saveSnippetsBlock'>
-												<Button
-													type='default'
-													className='saveSnippetsBtn'
-													onClick={() => saveTemplateHandler()}>
-													Save
-												</Button>
-											</div>
-										</Form>
-									</div>
-								</Panel>
-							</Collapse>
-						</Sider>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+                                        <Dropdown
+                                            style={{ color: '#ffffff' }}
+                                            trigger={['click']}
+                                            overlay={modes}>
+                                            <ImCrop />
+                                        </Dropdown>
+                                    </div>
+                                    <div className='undoSnippet'>
+                                        <img src={undoImg} className='panelCenterImg' />
+                                    </div>
+                                    <div className='redoSnippet'>
+                                        <img src={redoImg} className='panelCenterImg' />
+                                    </div>
+                                    <div className='contrastSnippet'>
+                                        <img src={contrastImg} className='panelCenterImg' />
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                        <div className='pbrCenterPdfBlock'>
+                            <div className='pdfContent'>
+                                <div className='snippetsFound'></div>
+                                <div className='snippetsImg'></div>
+                            </div>
+                            <div className='pdfToImgBlock' onClick={onClickImage}>
+                                {areasMap.areas.length > 0 && (
+                                    <ImageMapper
+                                        id='imageMApper'
+                                        className='pdfToImageWrapper'
+                                        src={displayImage}
+                                        map={areasMap}
+                                        // onLoad={() => load()}
+                                        onClick={area => clicked(area)}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <Modal
+                        title='Preview'
+                        visible={isModalVisible}
+                        onOk={handleOk}
+                        onCancel={handleCancel}
+                        footer={null}>
+                        <Table
+                            loading={tableLoading}
+                            className='pbrTemplates-table'
+                            columns={modalColumns}
+                            dataSource={modalData}
+                            pagination={false}
+                        />
+                    </Modal>
+                </div>
+                <div className='pbrTemplateRight'>
+                    <div className='pbrPanel pbrRightPanel'>
+                        <Sider trigger={null} collapsible collapsed={rightPanelCollapsed}>
+                            <span className='trigger' onClick={toggleRightCollapsed}>
+                                <img src={panelRightImg} className='panelImg' />
+                            </span>
+                            <Collapse
+                                accordion
+                                expandIconPosition='right'
+                                defaultActiveKey={['1']}>
+                                <Panel header='Snippet Attributes' key='1'>
+                                    <div className='snippetsBlock'>
+                                        <Form
+                                            layout='vertical'
+                                            form={form}
+                                            className='formNewTemplate'>
+                                            <InputField
+                                                value={areasMapObject.snippetID}
+                                                label='Snippet ID'
+                                                placeholder='Enter Snippet ID'
+                                                onChangeInput={e => {
+                                                    onChangeChart(e, 'snippetId');
+                                                }}
+                                            />
+                                            <InputField
+                                                value={areasMapObject.areaValue}
+                                                label='Key 1'
+                                                placeholder='Enter Key 1'
+                                                onChangeInput={e => {
+                                                    onChangeChart(e, 'snippetKey1');
+                                                }}
+                                                disabled
+                                            />
+                                            <div className='secondary-flexBox'>
+                                                <InputField
+                                                    value={areasMapObject.coords[0]}
+                                                    label='X1'
+                                                    placeholder='Enter Value'
+                                                    onChangeInput={e => {
+                                                        onChangeChart(e, 'x1');
+                                                    }}
+                                                />
+                                                <InputField
+                                                    value={areasMapObject.coords[1]}
+                                                    label='Y1'
+                                                    placeholder='Enter Value'
+                                                    onChangeInput={e => {
+                                                        onChangeChart(e, 'y1');
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className='secondary-flexBox'>
+                                                <InputField
+                                                    value={areasMapObject.coords[2]}
+                                                    label='X2'
+                                                    placeholder='Enter Value'
+                                                    onChangeInput={e => {
+                                                        onChangeChart(e, 'x2');
+                                                    }}
+                                                />
+                                                <InputField
+                                                    value={areasMapObject.coords[3]}
+                                                    label='Y2'
+                                                    placeholder='Enter Value'
+                                                    onChangeInput={e => {
+                                                        onChangeChart(e, 'y2');
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className='secondary-flexBox'>
+                                                <InputField
+                                                    value={areasMapObject.areaValue}
+                                                    label='Area'
+                                                    placeholder='Enter Value'
+                                                    onChangeInput={e => {
+                                                        onChangeChart(e, 'area');
+                                                    }}
+                                                    disabled
+                                                />
+                                            </div>
+                                            <div className='hierarchyBlock'>
+                                                <p>Hierarchy</p>
+                                                <div className='hierarchyDiv hierarchyDiv1'>
+                                                    <CaretDownOutlined />
+                                                    TemplateNew01
+                                                </div>
+                                                <div className='hierarchyDiv hierarchyDiv2'>
+                                                    <CaretDownOutlined />
+                                                    0001-6.0
+                                                </div>
+                                                <div className='hierarchyDiv hierarchyDiv3'>
+                                                    <CaretDownOutlined />8
+                                                </div>
+                                                <div className='hierarchyDiv hierarchyDiv4'>
+                                                    <CaretDownOutlined />
+                                                    ID001
+                                                </div>
+                                            </div>
+                                            <div className='saveSnippetsBlock'>
+                                                <Button
+                                                    type='default'
+                                                    className='saveSnippetsBtn'
+                                                    onClick={() => saveTemplateHandler()}>
+                                                    Save
+                                                </Button>
+                                            </div>
+                                        </Form>
+                                    </div>
+                                </Panel>
+                            </Collapse>
+                        </Sider>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default PaperBatchRecordsTemplate;
