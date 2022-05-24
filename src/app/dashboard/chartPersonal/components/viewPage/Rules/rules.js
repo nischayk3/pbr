@@ -162,7 +162,7 @@ const rules = ({ postChartData, setPostChartData }) => {
 
   return (
     <div>
-      {Object.keys(params).length == 0 && params.fromScreen !== "Workspace" ? (
+      {Object.keys(params).length > 0 && params.fromScreen !== "Workspace" ? (
         <div className="selected-rules" style={{ padding: "0px 24px" }}>
           <h3>Selected Rules</h3>
           {Object.keys(loadRuleList).map((ele, index) => {
