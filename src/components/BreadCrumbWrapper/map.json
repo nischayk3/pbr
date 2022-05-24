@@ -20,7 +20,7 @@
 	"/dashboard/user-roles-and-access/screen-controls": "Screen controls",
 	"/dashboard/molecule_hierarchy_configuration": "Molecule Hierarchy Configuration",
 	"/dashboard/filterRegister/filterList/filterDetails": "Filter Details",
-	"/dashboard/molecule_hierarchy_configurations/untilted_view" :"Molecule Hierarchy Configuration / Untilted View",
+	"/dashboard/molecule_hierarchy_configurations" :"Molecule Hierarchy Configuration",
 	"/dashboard/analysis": "Analysis",
 	"/dashboard/analysis/:id": "Model"
 }

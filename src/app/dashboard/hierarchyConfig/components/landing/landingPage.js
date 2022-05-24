@@ -33,7 +33,7 @@ export default function Landing(props) {
 
     useEffect(()=>
     {
-        getViews()
+        // getViews()
     },[])
 
     const getViews = async ()=>
@@ -215,16 +215,16 @@ export default function Landing(props) {
                     </div>
                 </div>
             </div>
-            <div className="modal-hier"> 
+            <div > 
             <Modal
-                className='landing-modal'
+                className="landing-modal"
                 title="Create New Hierarchy"
                 visible={isModalVisible}
                 onCancel={handleCancel}
                 footer={[
                     <Button className="custom-primary-button" onClick={() =>{
                          history.push({
-                                pathname: '/dashboard/molecule_hierarchy_configurations/untilted_view',
+                                pathname: '/dashboard/molecule_hierarchy_configurations/untitled_view',
                             });
                     }}>Let's Go!</Button>
                 ]}>

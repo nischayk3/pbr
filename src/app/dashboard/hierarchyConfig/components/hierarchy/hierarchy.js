@@ -16,12 +16,12 @@ import BreadCrumbWrapper from '../../../../../components/BreadCrumbWrapper';
 import Display from '../display/display';
 import { putMolecule, putProcessStep, getProcessStep } from '../../../../../services/viewHierarchyServices';
 import { showNotification } from '../../../../../duck/actions/commonActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const { TabPane } = Tabs
 
 function Hierarchy() {
-    const [hierarchyName, setHierarchyName] = useState('Untilted')
+    const [hierarchyName, setHierarchyName] = useState('Untitled')
     const Option = Select
     const [moleculeData, setMoleculeData] = useState([])
     const [stepData, setStepData] = useState([])
@@ -38,9 +38,14 @@ function Hierarchy() {
 
     const dispatch = useDispatch()
 
+    const hier_name = useSelector((state) => state.viewHierarchy.drugName);
+
     useEffect(() => {
         handleAdd()
         handleStepAdd()
+        if(hier_name)
+        setHierarchyName(hier_name)
+
 
     }, [])
 
