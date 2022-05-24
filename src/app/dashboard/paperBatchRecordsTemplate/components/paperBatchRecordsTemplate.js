@@ -553,7 +553,6 @@ function PaperBatchRecordsTemplate() {
      */
     const getBoundingBoxDataInfo = async (width, height, mode) => {
         try {
-            console.log("param",params)
             let _reqBatch = {
                 filename: `${params?.file?.split('_')[0]}_page-0.jpeg.json`,
                 bbox_type: mode,
