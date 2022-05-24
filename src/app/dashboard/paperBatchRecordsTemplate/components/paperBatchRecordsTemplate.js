@@ -842,7 +842,7 @@ function PaperBatchRecordsTemplate() {
                 formValues.forEach((ele) => {
                     let obj = {
                         method: ele.method,
-                        filename: 'Batch Record Example 2_page-0.jpeg.json',
+                        filename: params?.file,
                         name: ele.name,
                     }
                     if (ele.values) {
@@ -992,7 +992,7 @@ function PaperBatchRecordsTemplate() {
             template_list: []
         }
         let obj = {
-            filename: "Batch Record Example 2_page-0.jpeg.json",
+            filename: params?.file,
             method: formValues[activeKey]?.method
         }
         if (formValues[activeKey]?.values) {
