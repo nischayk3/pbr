@@ -43,7 +43,6 @@ export default function Landing(props) {
         let response= await getAllViews(req)
         let response_two= await getAllViews(reqs)
 
-        console.log(response)
         if(response['status-code']==200)
         {
             setLastEightView(response.Data)
