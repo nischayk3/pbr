@@ -298,7 +298,6 @@ function Hierarchy() {
     }
 
     const handleSave = async () => {
-        console.log(activeTab)
         if (activeTab == 'Plant and molecules') {
             let req = {
                 ds_name: hierarchyName,
@@ -332,7 +331,6 @@ function Hierarchy() {
 
     }
 
-    console.log(stepData)
     return (
 
         <div className='custom-wrapper'>
