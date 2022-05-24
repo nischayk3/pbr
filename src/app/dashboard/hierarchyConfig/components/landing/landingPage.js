@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Table, Avatar, Modal, Button, Row, Col } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import illustrations from '../../../../../assets/images/ViewCreation_bannerillustration.png';
@@ -7,6 +7,9 @@ import StatusBlock from '../../../../../components/StatusBlock/statusBlock';
 import ScreenHeader from '../../../../../components/ScreenHeader/screenHeader';
 import { useHistory } from 'react-router';
 import Banner from '../../../../../assets/images/Popup-Side.svg';
+import { getAllViews } from '../../../../../services/viewHierarchyServices';
+import { useDispatch } from 'react-redux';
+import { sendDrugSub } from '../../../../../duck/actions/viewHierarchyAction';
 
 
 export default function Landing(props) {
@@ -16,6 +19,7 @@ export default function Landing(props) {
     const [lastEightView, setLastEightView] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [hierarchyName, setHierarchyName] = useState('Untilted')
+    const dispatch = useDispatch()
 
 
     const history = useHistory();
@@ -26,11 +30,35 @@ export default function Landing(props) {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+
+    useEffect(()=>
+    {
+        // getViews()
+    },[])
+
+    const getViews = async ()=>
+    {
+        let req={limit:8}
+        let reqs={}
+        let response= await getAllViews(req)
+        let response_two= await getAllViews(reqs)
+
+        if(response['status-code']==200)
+        {
+            setLastEightView(response.Data)
+            setViewList(response.Data)
+        }
+        if(response_two['status-code']==200)
+        {
+            setViewList(response.Data)
+        }
+    }
+    
     const columns = [
         {
-            title: 'View',
-            dataIndex: 'view',
-            key: 'view',
+            title: 'Drug Substance',
+            dataIndex: 'ds_name',
+            key: 'ds_name',
             render: (text, record) => {
                 return {
                     props: {
@@ -41,9 +69,9 @@ export default function Landing(props) {
             },
         },
         {
-            title: 'View Name',
-            dataIndex: 'view_name',
-            key: 'view_name',
+            title: 'Product Number',
+            dataIndex: 'product_num',
+            key: 'product_num',
             render: (text, record) => {
                 return {
                     props: {
@@ -54,9 +82,9 @@ export default function Landing(props) {
             },
         },
         {
-            title: 'View Status',
-            dataIndex: 'view_status',
-            key: 'rep_status',
+            title: 'Site Code',
+            dataIndex: 'site_code',
+            key: 'site_code',
             render: (text, record) => {
                 return {
                     props: {
@@ -92,6 +120,10 @@ export default function Landing(props) {
     };
 
     const search = value => {
+        if(value=='')
+        setSearched(false);
+        else
+        {
         setSearched(true);
         const tableData = viewList;
         const filterTable = tableData.filter(o =>
@@ -100,6 +132,7 @@ export default function Landing(props) {
             )
         );
         setFilterTable(filterTable);
+            }
     };
 
 
@@ -118,6 +151,7 @@ export default function Landing(props) {
 
             <div className='landing-search-wrapper'>
                 <div className='landing-card'>
+                    <div className="landing-input">
                     <Input.Search
                         placeholder='Search by drug substance name'
                         allowClear
@@ -126,6 +160,7 @@ export default function Landing(props) {
                         size='large'
                         onSearch={search}
                     />
+                    </div>
                     {searched ? (
                         <Table
                             className='landing-table'
@@ -168,7 +203,7 @@ export default function Landing(props) {
                                 lastEightView.map((i, index) => (
                                     <StatusBlock
                                         key={index}
-                                        id={i.view}
+                                        id={i.ds_name}
                                         status={i.view_status}
                                     // handleClickTiles={e => handleClickView(e, i)}
                                     />
@@ -180,16 +215,16 @@ export default function Landing(props) {
                     </div>
                 </div>
             </div>
+            <div > 
             <Modal
-                className='landing-modal'
-                title="Create New Dashboard"
+                className="landing-modal"
+                title="Create New Hierarchy"
                 visible={isModalVisible}
-                //onOk={handleOk} 
                 onCancel={handleCancel}
                 footer={[
-                    <Button className="custom-secondary-button" onClick={() =>{
+                    <Button className="custom-primary-button" onClick={() =>{
                          history.push({
-                                pathname: '/dashboard/molecule_hierarchy_configurations/untilted_view',
+                                pathname: '/dashboard/molecule_hierarchy_configurations/untitled_view',
                             });
                     }}>Let's Go!</Button>
                 ]}>
@@ -201,11 +236,13 @@ export default function Landing(props) {
                         <Col span={12}>
                             <Row>
                                 <p>Name of the drug you want to add</p>
+                                <div className="input-ant">
                                 <Input
                                     placeholder='Enter Name'
-                                    onChange={(e) => setHierarchyName(e.target.value)}
+                                    onChange={(e) => {setHierarchyName(e.target.value),dispatch(sendDrugSub(e.target.value))}}
                                     value={hierarchyName}
                                 />
+                                </div>
                             </Row>
 
                         </Col>
@@ -213,6 +250,7 @@ export default function Landing(props) {
                 </div>
 
             </Modal>
+            </div>
         </div>
     );
 }
