@@ -19,7 +19,8 @@ const { Option } = Select
 
 class EditableTable extends Component {
     state = {
-        tableDataChanged: false
+        tableDataChanged: false,
+        deleteActionColumnAdded: false
     }
 
     // static getDerivedStateFromProps(props, state) {
@@ -32,10 +33,10 @@ class EditableTable extends Component {
     // }
 
     componentDidMount() {
-        this.loadTable()
+        this.loadTableData()
     }
 
-    loadTable = async () => {
+    loadTableData = async () => {
         this.props.showLoader()
         try {
             const response = await this.props.getTableData()
@@ -51,9 +52,9 @@ class EditableTable extends Component {
     }
 
     initializeTableRender() {
-        this.state.dataSource.map(data => data.key = uuid())
-        const columnsCopy = [...this.state.columns]
-        const columns = this.state.deleteActionColumn ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
+        const { dataSource, deleteActionColumn,  deleteActionColumnAdded, columns: columnsCopy } = this.state
+        dataSource.map(data => data.key = uuid())
+        const columns = deleteActionColumn && !deleteActionColumnAdded ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
         adjustColumnWidths(columns)
         this.renderTableColumns(columns)
         this.setState({ columns })
@@ -88,6 +89,7 @@ class EditableTable extends Component {
     }
 
     addDeleteActionColumn = columns => {
+        this.setState({ deleteActionColumnAdded: true })
         const actionColumn = {
             title: 'Action',
             dataIndex: 'action',

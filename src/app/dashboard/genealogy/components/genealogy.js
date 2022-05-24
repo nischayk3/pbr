@@ -286,7 +286,7 @@ function Genealogy() {
 				setLimsBatchInfo(batchRes);
 			} else if (batchRes.status === 404) {
 				setLimsBatchInfo();
-				dispatch(showNotification('error', batchRes.detail));
+				//	dispatch(showNotification('error', batchRes.detail));
 			}
 			dispatch(hideLoader());
 		} catch (error) {

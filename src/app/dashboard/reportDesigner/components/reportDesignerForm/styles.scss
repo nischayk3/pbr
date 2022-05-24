@@ -72,6 +72,19 @@ line-height: 30px;
 background: #FFFFFF;
 margin-top: 10px;
 position: relative;
+top: 6px;
+}
+.filter-text-status
+{
+font-family: Roboto;
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 30px;
+background: #FFFFFF;
+margin-top: 10px;
+position: relative;
+top: 12px;
 }
 
 .table-search
@@ -88,5 +101,9 @@ position: relative;
 {
   margin-left: 22px;
   margin-right: 5px;
+}
+.ant-typography .filter-text
+{
+  top: 6px;
 }
 }

@@ -116,7 +116,7 @@ function ReportDesignerForm(props) {
                         </div>
                     </div>
                     <div>
-                        <Text className='filter-text' >Chart ID</Text><br />
+                        <Text className='filter-text'>Chart ID</Text><br />
                             <Select
                                 row={1}
                                 className="filter-button"
@@ -127,7 +127,7 @@ function ReportDesignerForm(props) {
                                 placeholder="Select Multiple Charts"
                                 value={selectedChartList}
                                 onChange={handleChange}
-                                style={{ width: '100%', minHeight: '60px', maxHeight: '200px',overflow:'auto' }}
+                                style={{ width: '100%', minHeight: '60px', maxHeight: '60px',overflow:'auto' }}
                             >
                                 {chartsList.length > 0 ? chartsList.map(item => (
                                     <Option value={item} key={item}>

@@ -1,7 +1,7 @@
 .chart-tiles {
 	height: 84px;
 	cursor: pointer;
-	border-radius: 0px 4px;
+	border-radius: 4px ;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -9,7 +9,7 @@
 	position: relative;
 	.tile-status {
 		// background: #F7BB61;
-		border-radius: 0px 4px;
+		border-radius:  4px;
 		margin-right: right;
 		position: absolute;
 		top: 0%;
