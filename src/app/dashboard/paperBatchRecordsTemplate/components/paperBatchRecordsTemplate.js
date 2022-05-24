@@ -842,72 +842,72 @@ function PaperBatchRecordsTemplate() {
                 formValues.forEach((ele) => {
                     let obj = {
                         method: ele.method,
-                        filename: 'Batch Record Example 2_page-0.jpeg.json',
+                        filename: params?.file,
                         name: ele.name,
                     }
                     if (ele.values) {
                         obj['color'] = "blue"
-                        obj['param_key_height'] = (ele?.values?.anchorCoords[3] - ele?.values?.anchorCoords[1]) / 1123
-                        obj['param_key_left'] = ele?.values?.anchorCoords[0] / 868
+                        obj['param_key_height'] = (ele?.values?.anchorCoords[3] - ele?.values?.anchorCoords[1]) / imageHeight
+                        obj['param_key_left'] = ele?.values?.anchorCoords[0] / imageWidth
                         obj['param_key_text'] = ele?.values?.anchorValue
-                        obj['param_key_top'] = ele?.values?.anchorCoords[1] / 1123
-                        obj['param_key_width'] = (ele?.values?.anchorCoords[2] - ele?.values?.anchorCoords[0])
+                        obj['param_key_top'] = ele?.values?.anchorCoords[1] / imageHeight
+                        obj['param_key_width'] = (ele?.values?.anchorCoords[2] - ele?.values?.anchorCoords[0]) / imageWidth
                         obj['param_page'] = 1
                         obj['param_key_snippet_id'] = ele?.values?.snippetID
-                        obj['param_value_height'] = (ele?.values?.valueCoords[3] - ele?.values?.valueCoords[1]) / 1123
-                        obj['param_value_left'] = ele?.values?.valueCoords[0] / 868
+                        obj['param_value_height'] = (ele?.values?.valueCoords[3] - ele?.values?.valueCoords[1]) / imageHeight
+                        obj['param_value_left'] = ele?.values?.valueCoords[0] / imageWidth
                         obj['param_value_text'] = ele?.values?.anchorId
-                        obj['param_value_top'] = ele?.values?.valueCoords[1] / 1123
-                        obj['param_value_width'] = (ele?.values?.valueCoords[2] - ele?.values?.valueCoords[0]) / 868
-                        obj['param_value_snippet_id'] = ele?.values?.valueSnippetID
+                        obj['param_value_top'] = ele?.values?.valueCoords[1] / imageHeight
+                        obj['param_value_width'] = (ele?.values?.valueCoords[2] - ele?.values?.valueCoords[0]) / imageWidth
+                        obj['param_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
 
                     }
                     if (ele.unitValues) {
-                        obj['uom_key_height'] = (ele?.unitValues?.coords[3] - ele?.unitValues?.coords[1]) / 1123
-                        obj['uom_key_left'] = ele?.unitValues?.coords[0] / 868
+                        obj['uom_key_height'] = (ele?.unitValues?.coords[3] - ele?.unitValues?.coords[1]) / imageHeight
+                        obj['uom_key_left'] = ele?.unitValues?.coords[0] / imageWidth
                         obj['uom_key_text'] = ele?.unitValues?.unitAnchor
-                        obj['uom_key_top'] = ele?.unitValues?.coords[1] / 1123
-                        obj['uom_key_width'] = (ele?.unitValues?.coords[2] - ele?.unitValues?.coords[0])
+                        obj['uom_key_top'] = ele?.unitValues?.coords[1] / imageHeight
+                        obj['uom_key_width'] = (ele?.unitValues?.coords[2] - ele?.unitValues?.coords[0])/ imageWidth
                         obj['uom_page'] = 1
                         obj['uom_key_snippet_id'] = ele?.unitValues?.snippetID
-                        obj['uom_value_height'] = (ele?.unitValues?.valueCoords[3] - ele?.unitValues?.valueCoords[1]) / 1123
-                        obj['uom_value_left'] = ele?.unitValues?.valueCoords[0] / 868
+                        obj['uom_value_height'] = (ele?.unitValues?.valueCoords[3] - ele?.unitValues?.valueCoords[1]) / imageHeight
+                        obj['uom_value_left'] = ele?.unitValues?.valueCoords[0] / imageWidth
                         obj['uom_value_text'] = ele?.unitValues?.unitId
-                        obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / 1123
-                        obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / 868
-                        obj['uom_value_snippet_id'] = ele?.values?.valueSnippetID
+                        obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / imageHeight
+                        obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / imageWidth
+                        obj['uom_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
 
                     }
                     if (ele.timeValues) {
-                        obj['time_key_height'] = (ele?.timeValues?.coords[3] - ele?.timeValues?.coords[1]) / 1123
-                        obj['time_key_left'] = ele?.timeValues?.coords[0] / 868
+                        obj['time_key_height'] = (ele?.timeValues?.coords[3] - ele?.timeValues?.coords[1]) / imageHeight
+                        obj['time_key_left'] = ele?.timeValues?.coords[0] / imageWidth
                         obj['time_key_text'] = ele?.timeValues?.timeAnchor
-                        obj['time_key_top'] = ele?.timeValues?.coords[1] / 1123
-                        obj['time_key_width'] = (ele?.timeValues?.coords[2] - ele?.timeValues?.coords[0])
+                        obj['time_key_top'] = ele?.timeValues?.coords[1] / imageHeight
+                        obj['time_key_width'] = (ele?.timeValues?.coords[2] - ele?.timeValues?.coords[0]) / imageWidth
                         obj['time_page'] = 1
                         obj['time_key_snippet_id'] = ele?.timeValues?.snippetID
-                        obj['time_value_height'] = (ele?.timeValues?.valueCoords[3] - ele?.timeValues?.valueCoords[1]) / 1123
-                        obj['time_value_left'] = ele?.timeValues?.valueCoords[0] / 868
+                        obj['time_value_height'] = (ele?.timeValues?.valueCoords[3] - ele?.timeValues?.valueCoords[1]) / imageHeight
+                        obj['time_value_left'] = ele?.timeValues?.valueCoords[0] / imageWidth
                         obj['time_value_text'] = ele?.timeValues?.timeId
-                        obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / 1123
-                        obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / 868
-                        obj['time_value_snippet_id'] = ele?.values?.valueSnippetID
+                        obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / imageHeight
+                        obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / imageWidth
+                        obj['time_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
 
                     }
                     if (ele.dateValues) {
-                        obj['date_key_height'] = (ele?.dateValues?.coords[3] - ele?.dateValues?.coords[1]) / 1123
-                        obj['date_key_left'] = ele?.dateValues?.coords[0] / 868
+                        obj['date_key_height'] = (ele?.dateValues?.coords[3] - ele?.dateValues?.coords[1]) / imageHeight
+                        obj['date_key_left'] = ele?.dateValues?.coords[0] / imageWidth
                         obj['date_key_text'] = ele?.dateValues?.dateAnchor
-                        obj['date_key_top'] = ele?.dateValues?.coords[1] / 1123
-                        obj['date_key_width'] = (ele?.dateValues?.coords[2] - ele?.dateValues?.coords[0])
+                        obj['date_key_top'] = ele?.dateValues?.coords[1] / imageHeight
+                        obj['date_key_width'] = (ele?.dateValues?.coords[2] - ele?.dateValues?.coords[0]) / imageWidth
                         obj['date_page'] = 1
                         obj['date_key_snippet_id'] = ele?.dateValues?.snippetID
-                        obj['date_value_height'] = (ele?.dateValues?.valueCoords[3] - ele?.dateValues?.valueCoords[1]) / 1123
-                        obj['date_value_left'] = ele?.dateValues?.valueCoords[0] / 868
+                        obj['date_value_height'] = (ele?.dateValues?.valueCoords[3] - ele?.dateValues?.valueCoords[1]) / imageHeight
+                        obj['date_value_left'] = ele?.dateValues?.valueCoords[0] / imageWidth
                         obj['date_value_text'] = ele?.dateValues?.dateId
-                        obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / 1123
-                        obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / 868
-                        obj['date_value_snippet_id'] = ele?.values?.valueSnippetID
+                        obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / imageHeight
+                        obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / imageWidth
+                        obj['date_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
 
                     }
                     arr.push(obj);
@@ -918,11 +918,14 @@ function PaperBatchRecordsTemplate() {
                 const batchRes = await savePbrTemplate(_reqBatch);
                 if (batchRes.Status === 202) {
                     message.success(batchRes.Message);
+                    dispatch(hideLoader());
+                    dispatch(showNotification('success', batchRes.Message));
                 } else if (batchRes.Status === 404) {
                     message.error(batchRes.Message);
+                    dispatch(hideLoader());
                     // dispatch(showNotification('error', batchRes.detail));
                 }
-                dispatch(hideLoader());
+               
             } catch (error) {
                 dispatch(hideLoader());
                 dispatch(showNotification('error', 'No Data Found'));
@@ -989,7 +992,7 @@ function PaperBatchRecordsTemplate() {
             template_list: []
         }
         let obj = {
-            filename: "Batch Record Example 2_page-0.jpeg.json",
+            filename: params?.file,
             method: formValues[activeKey]?.method
         }
         if (formValues[activeKey]?.values) {

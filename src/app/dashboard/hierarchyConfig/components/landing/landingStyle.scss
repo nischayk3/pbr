@@ -134,7 +134,7 @@
 	justify-content: center;
 	gap: 10px;
 	margin-top: 40px;
-	margin-bottom: 10px;
+	margin-bottom: 40px;
 
 	svg {
 		cursor: pointer;
@@ -214,6 +214,8 @@
 
 .landing-search-wrapper {
 	background: #fff;
+	border-radius: 4px;
+	margin-top: -10px;
 	.landing-card {
 		width: 784px;
 		margin: 24px auto;
@@ -262,4 +264,70 @@
 			}
 		}
 	}
+
+}
+
+.landing-modal {
+	margin-left: 350px;
+	margin-top: 100px;
+	.ant-modal-content {
+		width: 787px;
+		height: auto;
+		background: #ffffff;
+		border-radius: 4px;
+	}
+	.ant-modal-footer {
+		border-top: 0px;
+	}
+    .modal-button
+    {
+        background-color: '#093185';
+        color: 'white';
+        border-radius: '4px' 
+    }
+	.ant-modal-close-x
+{
+	margin-top: -5px;
+}
+.ant-modal-header
+{
+	background: #F1F7FF !important;
+	border-radius: 4px 4px 0px 0px !important;
+	font-family: 'Maven Pro';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 22px;
+	color: #4D4D4D;
+}
+
+
+.ant-spin-container
+{
+	bottom: 20px;
+}
+}
+.landing-input
+{
+	margin-top: -25px;
+}
+
+.input-ant{
+	width: 100%;
+	.ant-input
+	{
+		bottom: 8px;
+	}
+}
+.custom-primary-button {
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: 400 !important;
+	font-size: 14px !important;
+	color: #fff !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 4px !important;
+	border: 1px solid #093185 !important;
+	background: #093185 !important;
 }
