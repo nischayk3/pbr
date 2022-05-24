@@ -42,6 +42,7 @@ export const uploadFileApi = (_queryParam) => {
 };
 
 export const cancelFileUpload = (request) => {
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
   return Service.post(BMS_APP_PYTHON_SERVICE + "/cancel-file-upload", request, {
     "x-access-token": login_response.token ? login_response.token : "",
     "resource-name": "FILE_UPLOAD",
@@ -56,6 +57,7 @@ export const cancelFileUpload = (request) => {
 };
 
 export const approvedData = (request) => {
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
   return Service.post(BMS_APP_PYTHON_SERVICE + "/approve-data", request, {
     "x-access-token": login_response.token ? login_response.token : "",
     "resource-name": "FILE_UPLOAD",
@@ -70,6 +72,7 @@ export const approvedData = (request) => {
 };
 
 export const updateApprovedData = (request) => {
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
   return Service.post(
     BMS_APP_PYTHON_SERVICE + "/update-approved-data",
     request,
@@ -88,6 +91,7 @@ export const updateApprovedData = (request) => {
 };
 
 export const finalFileUpload = (request) => {
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
   return Service.post(BMS_APP_PYTHON_SERVICE + "/final-upload", request, {
     "x-access-token": login_response.token ? login_response.token : "",
     "resource-name": "FILE_UPLOAD",
