@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
-import { Input, Table, Avatar } from 'antd';
+import { Input, Table, Avatar, Modal, Button, Row, Col } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import illustrations from '../../../../../assets/images/ViewCreation_bannerillustration.png';
 import './landingStyle.scss';
 import StatusBlock from '../../../../../components/StatusBlock/statusBlock';
 import ScreenHeader from '../../../../../components/ScreenHeader/screenHeader';
 import { useHistory } from 'react-router';
+import Banner from '../../../../../assets/images/Popup-Side.svg';
+
 
 export default function Landing(props) {
     const [searched, setSearched] = useState(false);
     const [viewList, setViewList] = useState([]);
     const [filterTable, setFilterTable] = useState(null);
     const [lastEightView, setLastEightView] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [hierarchyName, setHierarchyName] = useState('Untilted')
+
 
     const history = useHistory();
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
     const columns = [
         {
             title: 'View',
@@ -126,9 +138,10 @@ export default function Landing(props) {
                     <div
                         className='create-new'
                         onClick={() => {
-                            history.push({
-                                pathname: '/dashboard/molecule_hierarchy_configurations/untilted_view',
-                            });
+                            setIsModalVisible(true)
+                            // history.push({
+                            //     pathname: '/dashboard/molecule_hierarchy_configurations/untilted_view',
+                            // });
                         }}>
                         <PlusOutlined />
                         <p>Create new hierarchy</p>
@@ -167,6 +180,39 @@ export default function Landing(props) {
                     </div>
                 </div>
             </div>
+            <Modal
+                className='landing-modal'
+                title="Create New Dashboard"
+                visible={isModalVisible}
+                //onOk={handleOk} 
+                onCancel={handleCancel}
+                footer={[
+                    <Button className="custom-secondary-button" onClick={() =>{
+                         history.push({
+                                pathname: '/dashboard/molecule_hierarchy_configurations/untilted_view',
+                            });
+                    }}>Let's Go!</Button>
+                ]}>
+                <div>
+                    <Row>
+                        <Col span={12}>
+                            <img src={Banner} />
+                        </Col>
+                        <Col span={12}>
+                            <Row>
+                                <p>Name of the drug you want to add</p>
+                                <Input
+                                    placeholder='Enter Name'
+                                    onChange={(e) => setHierarchyName(e.target.value)}
+                                    value={hierarchyName}
+                                />
+                            </Row>
+
+                        </Col>
+                    </Row>
+                </div>
+
+            </Modal>
         </div>
     );
 }

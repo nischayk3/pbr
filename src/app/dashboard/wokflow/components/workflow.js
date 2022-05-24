@@ -10,7 +10,7 @@ import {
     showNotification,
 } from '../../../../duck/actions/commonActions';
 import { getCountData, getTableData } from '../../../../services/workFlowServices';
-import { Card, Empty, Tabs } from 'antd';
+import { Card, Empty, Tabs,Button } from 'antd';
 import { ArrowLeftOutlined, DownloadOutlined, } from '@ant-design/icons';
 import DashCard from '../../../../components/CardComponent/customCard';
 import illustrations from '../../../../assets/images/Banner illustration.svg';
@@ -177,6 +177,12 @@ const Workflow = () => {
                                     onChange={changeTab}
                                 >
                                     <TabPane tab='Awaiting Approval' key='1'>
+                                        {cardTitle==='Param Data Approval' && (
+                                            <div style={{margin: '30px 0px 20px 0px'}}>
+                                                <Button className='custom-secondary-btn'>Approve</Button>
+                                                <Button className='custom-primary-btn' style={{marginLeft:'16px'}}>Reject</Button>
+                                            </div>
+                                        )}
                                         <WorkflowTable
                                             columns={columns}
                                             dataSource={dataSource}

@@ -19,7 +19,9 @@ import {
     Space,
     notification,
     Modal,
-    Table
+    Table,
+    Dropdown,
+    Menu,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -33,14 +35,15 @@ import {
     CaretDownOutlined,
     PlusOutlined,
     MinusCircleOutlined,
-    MonitorOutlined
+    MonitorOutlined,
 } from '@ant-design/icons';
+
 import {
     hideLoader,
     showLoader,
     showNotification,
 } from '../../../../duck/actions/commonActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import panelLeftImg from '../../../../assets/images/panel-leftIcon.svg';
 import panelRightImg from '../../../../assets/images/panel-rightIcon.svg';
 import cropImg from '../../../../assets/images/cropImg.svg';
@@ -50,17 +53,19 @@ import contrastImg from '../../../../assets/images/contrastImg.svg';
 import BatchRecordExample from '../../../../assets/images/BatchRecordExample2.jpg';
 
 import InputField from '../../../../components/InputField/InputField';
-import QueryString from "query-string"
+import QueryString from 'query-string';
 import Sider from 'antd/lib/layout/Sider';
+import { ImCrop } from 'react-icons/im';
 import AddParameter from './addParameter/AddParameter';
-import './styles.scss';
+import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
+import './styles.scss'; ImCrop
 import {
     getBoundingBoxData,
     savePbrTemplate,
     processBatchRecord,
-    findParameter
+    findParameter,
 } from '../../../../services/pbrService';
-
+// import { ImCrop } from "react-icons/im";
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Dragger } = Upload;
@@ -70,6 +75,7 @@ function PaperBatchRecordsTemplate() {
         name: 'my-map',
         areas: [],
     };
+    const templateInfo = useSelector((state) => state.pbrReducer.templateData)
     const location = useLocation()
     const dispatch = useDispatch();
     const params = QueryString.parse(location.search)
@@ -136,6 +142,9 @@ function PaperBatchRecordsTemplate() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [tableLoading, setTableLoading] = useState(false);
     const [searchedFileList, setSearchedFileList] = useState("");
+    const [selectedMode, setSelectedMode] = useState("word");
+    const [menuKey, setMenuKey] = useState("word");
+    const [formLoadParameter, setFormLoadParameter] = useState({});
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
     };
@@ -542,23 +551,19 @@ function PaperBatchRecordsTemplate() {
     /**
      * TODO: get boundingBoxData info
      */
-    const getBoundingBoxDataInfo = async (width, height) => {
+    const getBoundingBoxDataInfo = async (width, height, mode) => {
         try {
-
-            // dispatch(showLoader());
             let _reqBatch = {
                 filename: `${params?.file?.split('_')[0]}_page-0.jpeg.json`,
-                bbox_type: "word",
+                bbox_type: mode,
+                action_type: params?.temp_disp_id ? "edit":"create",
+                temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id:""
             };
             const batchRes = await getBoundingBoxData(_reqBatch);
             setOrigianalResponse(batchRes)
             let areasArr = [];
             let width1 = width ? width : 856
             let height1 = height ? height : 1108
-            // const list = document.getElementsByTagName("canvas")[0]
-            // console.log("listlistlist", list)
-            // // // let rect = list.getBoundingClientRect();
-            // console.log("height: ", list.height, list.width);
             if (batchRes.Data.length > 0) {
 
                 batchRes.Data.forEach((e) => {
@@ -605,9 +610,81 @@ function PaperBatchRecordsTemplate() {
 
     useEffect(() => {
         getImage()
-        getBoundingBoxDataInfo();
+        if (templateInfo) {
+            let obj = {}
+            templateInfo.forEach((item, index) => {
+                obj[`param${index + 1}`] = {
+                    anchorValue: item?.param_key_text,
+                    anchorId: item?.param_value_text,
+                    unitAnchor: item?.uom_key_text,
+                    unitId: item?.uom_value_text,
+                    timeAnchor: item.time_key_text,
+                    timeId: item.time_value_text,
+                    dateAnchor: item.date_key_text,
+                    dateId: item.date_value_text,
+                }
+            })
+            setParameterValue(obj)
+            let demoValues = {
+                users: []
+            }
+            templateInfo.forEach(item => {
+                let obj = {
+                    name: item.name,
+                    method: item.method
+                }
+                demoValues.users.push(obj)
+            })
+            setFormLoadParameter(demoValues)
 
+        }
     }, []);
+
+    useEffect(() => {
+        if (templateInfo?.length > 0) {
+            let arr = templateInfo.map((item, index) => ({
+                name: item.name,
+                method: item.method,
+                values: {
+                    anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_key_snippet_id,
+                    anchorCoords: [
+                        item?.param_key_left * imageWidth, item?.param_key_top * imageHeight, (item?.param_key_left + item?.param_key_width) * imageWidth, (item?.param_key_top + item?.param_key_height) * imageHeight
+                    ], valueCoords: [
+                        item?.param_value_left * imageWidth, item?.param_value_top * imageHeight, (item?.param_value_left + item?.param_value_width) * imageWidth, (item?.param_value_top + item?.param_value_height) * imageHeight
+                    ], valueSnippetID: item?.param_value_snippet_id
+                },
+                unitValues: {
+                    unitAnchor: item?.uom_key_text, unitId: item?.uom_value_text, snippetID: item?.uom_key_snippet_id,
+                    coords: [
+                        item?.uom_key_left * imageWidth, item?.uom_key_top * imageHeight, (item?.uom_key_left + item?.uom_key_width) * imageWidth, (item?.uom_key_top + item?.uom_key_height) * imageHeight
+                    ], valueCoords: [
+                        item?.uom_value_left * imageWidth, item?.uom_value_top * imageHeight, (item?.uom_value_left + item?.uom_value_width) * imageWidth, (item?.uom_value_top + item?.uom_value_height) * imageHeight
+                    ], valueSnippetID: item?.uom_value_snippet_id
+                },
+                timeValues: {
+                    timeAnchor: item?.time_key_text, timeId: item?.time_value_text, snippetID: item?.time_key_snippet_id,
+                    coords: [
+                        item?.time_key_left * imageWidth, item?.time_key_top * imageHeight, (item?.time_key_left + item?.time_key_width) * imageWidth, (item?.time_key_top + item?.time_key_height) * imageHeight
+                    ], valueCoords: [
+                        item?.time_value_left * imageWidth, item?.time_value_top * imageHeight, (item?.time_value_left + item?.time_value_width) * imageWidth, (item?.time_value_top + item?.time_value_height) * imageHeight
+                    ], valueSnippetID: item?.time_value_snippet_id
+                },
+                dateValues: {
+                    dateAnchor: item?.date_key_text, dateId: item?.date_value_text, snippetID: item?.date_key_snippet_id,
+                    coords: [
+                        item?.date_key_left * imageWidth, item?.date_key_top * imageHeight, (item?.date_key_left + item?.date_key_width) * imageWidth, (item?.date_key_top + item?.date_key_height) * imageHeight
+                    ], valueCoords: [
+                        item?.date_value_left * imageWidth, item?.date_value_top * imageHeight, (item?.date_value_left + item?.date_value_width) * imageWidth, (item?.date_value_top + item?.date_value_height) * imageHeight
+                    ], valueSnippetID: item?.date_value_snippet_id
+                }
+
+
+            }))
+            setFormValues(arr)
+            setActiveNumber(templateInfo?.length)
+            setParamaterAdded(false)
+        }
+    }, [areasMap])
 
     const getImage = async () => {
         var requestOptions = {
@@ -619,7 +696,7 @@ function PaperBatchRecordsTemplate() {
             redirect: "follow",
         };
         let response = await fetch(
-            `https://bms-cpvdev.mareana.com/pbr/udh/get_file_page_image?filename=${params?.file?.split('_')[0]}.pdf&pageId=1`,
+            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${params?.file?.split('_')[0]}.pdf&pageId=1`,
             requestOptions
         )
             .then((response) => response)
@@ -635,15 +712,14 @@ function PaperBatchRecordsTemplate() {
     useEffect(() => {
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
-            console.log("height: ", list?.height, list?.width);
-            console.log("height: ", list);
-            getBoundingBoxDataInfo(list?.width, list?.height);
+            getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
             setImageWidth(list?.width)
             setimageHeight(list?.height)
+
         }, 3000)
 
     }, [document.getElementsByTagName("canvas")[0]]);
-    console.log("areas.map", areasMap)
+
 
     const load = () => { };
 
@@ -672,6 +748,7 @@ function PaperBatchRecordsTemplate() {
             arr[activeKey] = { ...arr[activeKey], values: { ...arr[activeKey]?.values, anchorValue: area.areaValue, snippetID: area.snippetID, anchorCoords: area.coords } }
             setParameterValue(obj1);
             setFormValues(arr)
+
         } else if (DraggerActiveMultiple.unit) {
             let obj1 = { ...parameterValue };
             obj1[`param${Number(activeKey) + 1}`] = {
@@ -776,12 +853,13 @@ function PaperBatchRecordsTemplate() {
                         obj['param_key_top'] = ele?.values?.anchorCoords[1] / 1123
                         obj['param_key_width'] = (ele?.values?.anchorCoords[2] - ele?.values?.anchorCoords[0])
                         obj['param_page'] = 1
-                        obj['param_snippet_id'] = ele?.values?.snippetID
+                        obj['param_key_snippet_id'] = ele?.values?.snippetID
                         obj['param_value_height'] = (ele?.values?.valueCoords[3] - ele?.values?.valueCoords[1]) / 1123
                         obj['param_value_left'] = ele?.values?.valueCoords[0] / 868
                         obj['param_value_text'] = ele?.values?.anchorId
                         obj['param_value_top'] = ele?.values?.valueCoords[1] / 1123
                         obj['param_value_width'] = (ele?.values?.valueCoords[2] - ele?.values?.valueCoords[0]) / 868
+                        obj['param_value_snippet_id'] = ele?.values?.valueSnippetID
 
                     }
                     if (ele.unitValues) {
@@ -791,12 +869,13 @@ function PaperBatchRecordsTemplate() {
                         obj['uom_key_top'] = ele?.unitValues?.coords[1] / 1123
                         obj['uom_key_width'] = (ele?.unitValues?.coords[2] - ele?.unitValues?.coords[0])
                         obj['uom_page'] = 1
-                        obj['uom_snippet_id'] = ele?.unitValues?.snippetID
+                        obj['uom_key_snippet_id'] = ele?.unitValues?.snippetID
                         obj['uom_value_height'] = (ele?.unitValues?.valueCoords[3] - ele?.unitValues?.valueCoords[1]) / 1123
                         obj['uom_value_left'] = ele?.unitValues?.valueCoords[0] / 868
                         obj['uom_value_text'] = ele?.unitValues?.unitId
                         obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / 1123
                         obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / 868
+                        obj['uom_value_snippet_id'] = ele?.values?.valueSnippetID
 
                     }
                     if (ele.timeValues) {
@@ -806,12 +885,13 @@ function PaperBatchRecordsTemplate() {
                         obj['time_key_top'] = ele?.timeValues?.coords[1] / 1123
                         obj['time_key_width'] = (ele?.timeValues?.coords[2] - ele?.timeValues?.coords[0])
                         obj['time_page'] = 1
-                        obj['time_snippet_id'] = ele?.timeValues?.snippetID
+                        obj['time_key_snippet_id'] = ele?.timeValues?.snippetID
                         obj['time_value_height'] = (ele?.timeValues?.valueCoords[3] - ele?.timeValues?.valueCoords[1]) / 1123
                         obj['time_value_left'] = ele?.timeValues?.valueCoords[0] / 868
                         obj['time_value_text'] = ele?.timeValues?.timeId
                         obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / 1123
                         obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / 868
+                        obj['time_value_snippet_id'] = ele?.values?.valueSnippetID
 
                     }
                     if (ele.dateValues) {
@@ -821,12 +901,13 @@ function PaperBatchRecordsTemplate() {
                         obj['date_key_top'] = ele?.dateValues?.coords[1] / 1123
                         obj['date_key_width'] = (ele?.dateValues?.coords[2] - ele?.dateValues?.coords[0])
                         obj['date_page'] = 1
-                        obj['date_snippet_id'] = ele?.dateValues?.snippetID
+                        obj['date_key_snippet_id'] = ele?.dateValues?.snippetID
                         obj['date_value_height'] = (ele?.dateValues?.valueCoords[3] - ele?.dateValues?.valueCoords[1]) / 1123
                         obj['date_value_left'] = ele?.dateValues?.valueCoords[0] / 868
                         obj['date_value_text'] = ele?.dateValues?.dateId
                         obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / 1123
                         obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / 868
+                        obj['date_value_snippet_id'] = ele?.values?.valueSnippetID
 
                     }
                     arr.push(obj);
@@ -854,14 +935,18 @@ function PaperBatchRecordsTemplate() {
         savePbrTemplateDataInfo();
     };
     const batchProcess = async () => {
+        dispatch(showLoader());
         let req = ""
         let res = await processBatchRecord(req)
-        if (res.File_list.length > 0) {
+        if (res.Found_file_list.length > 0) {
             message.success(res.Message);
+            dispatch(hideLoader());
         } else {
             message.error(res.Message);
+            dispatch(hideLoader());
             // dispatch(showNotification('error', batchRes.detail));
         }
+        dispatch(hideLoader());
 
 
     };
@@ -897,7 +982,7 @@ function PaperBatchRecordsTemplate() {
         });
     };
     const findTemplate = async () => {
-
+        dispatch(showLoader());
         let req = {
             extraction_type: "all",
             extraction_filename: params?.file,
@@ -913,7 +998,7 @@ function PaperBatchRecordsTemplate() {
             obj['param_key_left'] = formValues[activeKey]?.values?.anchorCoords[0] / imageWidth
             obj['param_key_text'] = formValues[activeKey]?.values?.anchorValue
             obj['param_key_top'] = formValues[activeKey]?.values?.anchorCoords[1] / imageHeight
-            obj['param_key_width'] = (formValues[activeKey]?.values?.anchorCoords[2] - formValues[activeKey]?.values?.anchorCoords[0])
+            obj['param_key_width'] = (formValues[activeKey]?.values?.anchorCoords[2] - formValues[activeKey]?.values?.anchorCoords[0]) / imageWidth
             obj['param_page'] = 1
             obj['param_snippet_id'] = formValues[activeKey]?.values?.snippetID
             obj['param_value_height'] = (formValues[activeKey]?.values?.valueCoords[3] - formValues[activeKey]?.values?.valueCoords[1]) / imageHeight
@@ -927,7 +1012,7 @@ function PaperBatchRecordsTemplate() {
             obj['uom_key_left'] = formValues[activeKey]?.unitValues?.coords[0] / imageWidth
             obj['uom_key_text'] = formValues[activeKey]?.unitValues?.unitAnchor
             obj['uom_key_top'] = formValues[activeKey]?.unitValues?.coords[1] / imageHeight
-            obj['uom_key_width'] = (formValues[activeKey]?.unitValues?.coords[2] - formValues[activeKey]?.unitValues?.coords[0])
+            obj['uom_key_width'] = (formValues[activeKey]?.unitValues?.coords[2] - formValues[activeKey]?.unitValues?.coords[0]) / imageWidth
             obj['uom_page'] = 1
             obj['uom_snippet_id'] = formValues[activeKey]?.unitValues?.snippetID
             obj['uom_value_height'] = (formValues[activeKey]?.unitValues?.valueCoords[3] - formValues[activeKey]?.unitValues?.valueCoords[1]) / imageHeight
@@ -941,7 +1026,7 @@ function PaperBatchRecordsTemplate() {
             obj['time_key_left'] = formValues[activeKey]?.timeValues?.coords[0] / imageWidth
             obj['time_key_text'] = formValues[activeKey]?.timeValues?.timeAnchor
             obj['time_key_top'] = formValues[activeKey]?.timeValues?.coords[1] / imageHeight
-            obj['time_key_width'] = (formValues[activeKey]?.timeValues?.coords[2] - formValues[activeKey]?.timeValues?.coords[0])
+            obj['time_key_width'] = (formValues[activeKey]?.timeValues?.coords[2] - formValues[activeKey]?.timeValues?.coords[0]) / imageWidth
             obj['time_page'] = 1
             obj['time_snippet_id'] = formValues[activeKey]?.timeValues?.snippetID
             obj['time_value_height'] = (formValues[activeKey]?.timeValues?.valueCoords[3] - formValues[activeKey]?.timeValues?.valueCoords[1]) / imageHeight
@@ -955,24 +1040,25 @@ function PaperBatchRecordsTemplate() {
             obj['date_key_left'] = formValues[activeKey]?.dateValues?.coords[0] / imageWidth
             obj['date_key_text'] = formValues[activeKey]?.dateValues?.dateAnchor
             obj['date_key_top'] = formValues[activeKey]?.dateValues?.coords[1] / imageHeight
-            obj['date_key_width'] = (formValues[activeKey]?.dateValues?.coords[2] - formValues[activeKey]?.dateValues?.coords[0])
+            obj['date_key_width'] = (formValues[activeKey]?.dateValues?.coords[2] - formValues[activeKey]?.dateValues?.coords[0]) / imageWidth
             obj['date_page'] = 1
             obj['date_snippet_id'] = formValues[activeKey]?.dateValues?.snippetID
             obj['date_value_height'] = (formValues[activeKey]?.dateValues?.valueCoords[3] - formValues[activeKey]?.dateValues?.valueCoords[1]) / imageHeight
             obj['date_value_left'] = formValues[activeKey]?.dateValues?.valueCoords[0] / imageWidth
             obj['date_value_text'] = formValues[activeKey]?.dateValues?.dateId
             obj['date_value_top'] = formValues[activeKey]?.dateValues?.valueCoords[1] / imageHeight
-            obj['date_value_width'] = (formValues[activeKey]?.dateValues?.valueCoords[2] - formValues[activeKey]?.dateValues?.valueCoords[0]) / 868
+            obj['date_value_width'] = (formValues[activeKey]?.dateValues?.valueCoords[2] - formValues[activeKey]?.dateValues?.valueCoords[0]) / imageWidth
         }
         req.template_list.push(obj)
         let res = await findParameter(req)
         if (res?.Found_file_list?.length > 0) {
-            console.log("ress", res)
             message.success(res.Message);
             setFileList(res.Found_file_list)
             setSearchedFileList(res.Searched_file_list)
+            dispatch(hideLoader());
         } else {
             message.error(res.Message);
+            dispatch(hideLoader());
             // dispatch(showNotification('error', batchRes.detail));
         }
 
@@ -985,7 +1071,6 @@ function PaperBatchRecordsTemplate() {
             template_list: [],
             extraction_filename: params?.file,
         }
-        console.log("re1", req1)
         let arr = []
         let obj = {
 
@@ -994,63 +1079,62 @@ function PaperBatchRecordsTemplate() {
         }
         if (formValues[activeKey]?.values) {
             obj['color'] = "blue",
-                obj['param_key_height'] = (formValues[activeKey]?.values?.anchorCoords[3] - formValues[activeKey]?.values?.anchorCoords[1]) / 1123
-            obj['param_key_left'] = formValues[activeKey]?.values?.anchorCoords[0] / 868
+                obj['param_key_height'] = (formValues[activeKey]?.values?.anchorCoords[3] - formValues[activeKey]?.values?.anchorCoords[1]) / imageHeight
+            obj['param_key_left'] = formValues[activeKey]?.values?.anchorCoords[0] / imageWidth
             obj['param_key_text'] = formValues[activeKey]?.values?.anchorValue
-            obj['param_key_top'] = formValues[activeKey]?.values?.anchorCoords[1] / 1123
-            obj['param_key_width'] = (formValues[activeKey]?.values?.anchorCoords[2] - formValues[activeKey]?.values?.anchorCoords[0]) / 868
+            obj['param_key_top'] = formValues[activeKey]?.values?.anchorCoords[1] / imageHeight
+            obj['param_key_width'] = (formValues[activeKey]?.values?.anchorCoords[2] - formValues[activeKey]?.values?.anchorCoords[0]) / imageWidth
             obj['param_page'] = 1
             obj['param_snippet_id'] = formValues[activeKey]?.values?.snippetID
-            obj['param_value_height'] = (formValues[activeKey]?.values?.valueCoords[3] - formValues[activeKey]?.values?.valueCoords[1]) / 1123
-            obj['param_value_left'] = formValues[activeKey]?.values?.valueCoords[0] / 868
+            obj['param_value_height'] = (formValues[activeKey]?.values?.valueCoords[3] - formValues[activeKey]?.values?.valueCoords[1]) / imageHeight
+            obj['param_value_left'] = formValues[activeKey]?.values?.valueCoords[0] / imageWidth
             obj['param_value_text'] = formValues[activeKey]?.values?.anchorId
-            obj['param_value_top'] = formValues[activeKey]?.values?.valueCoords[1] / 1123
-            obj['param_value_width'] = (formValues[activeKey]?.values?.valueCoords[2] - formValues[activeKey]?.values?.valueCoords[0]) / 868
+            obj['param_value_top'] = formValues[activeKey]?.values?.valueCoords[1] / imageHeight
+            obj['param_value_width'] = (formValues[activeKey]?.values?.valueCoords[2] - formValues[activeKey]?.values?.valueCoords[0]) / imageWidth
         }
         if (formValues[activeKey]?.unitValues) {
-            obj['uom_key_height'] = (formValues[activeKey]?.unitValues?.coords[3] - formValues[activeKey]?.unitValues?.coords[1]) / 1123
-            obj['uom_key_left'] = formValues[activeKey]?.unitValues?.coords[0] / 868
+            obj['uom_key_height'] = (formValues[activeKey]?.unitValues?.coords[3] - formValues[activeKey]?.unitValues?.coords[1]) / imageHeight
+            obj['uom_key_left'] = formValues[activeKey]?.unitValues?.coords[0] / imageWidth
             obj['uom_key_text'] = formValues[activeKey]?.unitValues?.unitAnchor
-            obj['uom_key_top'] = formValues[activeKey]?.unitValues?.coords[1] / 1123
-            obj['uom_key_width'] = (formValues[activeKey]?.unitValues?.coords[2] - formValues[activeKey]?.unitValues?.coords[0]) / 868
+            obj['uom_key_top'] = formValues[activeKey]?.unitValues?.coords[1] / imageHeight
+            obj['uom_key_width'] = (formValues[activeKey]?.unitValues?.coords[2] - formValues[activeKey]?.unitValues?.coords[0]) / imageWidth
             obj['uom_page'] = 1
             obj['uom_snippet_id'] = formValues[activeKey]?.unitValues?.snippetID
-            obj['uom_value_height'] = (formValues[activeKey]?.unitValues?.valueCoords[3] - formValues[activeKey]?.unitValues?.valueCoords[1]) / 1123
-            obj['uom_value_left'] = formValues[activeKey]?.unitValues?.valueCoords[0] / 868
+            obj['uom_value_height'] = (formValues[activeKey]?.unitValues?.valueCoords[3] - formValues[activeKey]?.unitValues?.valueCoords[1]) / imageHeight
+            obj['uom_value_left'] = formValues[activeKey]?.unitValues?.valueCoords[0] / imageWidth
             obj['uom_value_text'] = formValues[activeKey]?.unitValues?.unitId
-            obj['uom_value_top'] = formValues[activeKey]?.unitValues?.valueCoords[1] / 1123
-            obj['uom_value_width'] = (formValues[activeKey]?.unitValues?.valueCoords[2] - formValues[activeKey]?.unitValues?.valueCoords[0]) / 868
+            obj['uom_value_top'] = formValues[activeKey]?.unitValues?.valueCoords[1] / imageHeight
+            obj['uom_value_width'] = (formValues[activeKey]?.unitValues?.valueCoords[2] - formValues[activeKey]?.unitValues?.valueCoords[0]) / imageWidth
         }
         if (formValues[activeKey]?.timeValues) {
-            obj['time_key_height'] = (formValues[activeKey]?.timeValues?.coords[3] - formValues[activeKey]?.timeValues?.coords[1]) / 1123
-            obj['time_key_left'] = formValues[activeKey]?.timeValues?.coords[0] / 868
+            obj['time_key_height'] = (formValues[activeKey]?.timeValues?.coords[3] - formValues[activeKey]?.timeValues?.coords[1]) / imageHeight
+            obj['time_key_left'] = formValues[activeKey]?.timeValues?.coords[0] / imageWidth
             obj['time_key_text'] = formValues[activeKey]?.timeValues?.timeAnchor
-            obj['time_key_top'] = formValues[activeKey]?.timeValues?.coords[1] / 1123
-            obj['time_key_width'] = (formValues[activeKey]?.timeValues?.coords[2] - formValues[activeKey]?.timeValues?.coords[0]) / 868
+            obj['time_key_top'] = formValues[activeKey]?.timeValues?.coords[1] / imageHeight
+            obj['time_key_width'] = (formValues[activeKey]?.timeValues?.coords[2] - formValues[activeKey]?.timeValues?.coords[0]) / imageWidth
             obj['time_page'] = 1
             obj['time_snippet_id'] = formValues[activeKey]?.timeValues?.snippetID
-            obj['time_value_height'] = (formValues[activeKey]?.timeValues?.valueCoords[3] - formValues[activeKey]?.timeValues?.valueCoords[1]) / 1123
-            obj['time_value_left'] = formValues[activeKey]?.timeValues?.valueCoords[0] / 868
+            obj['time_value_height'] = (formValues[activeKey]?.timeValues?.valueCoords[3] - formValues[activeKey]?.timeValues?.valueCoords[1]) / imageHeight
+            obj['time_value_left'] = formValues[activeKey]?.timeValues?.valueCoords[0] / imageWidth
             obj['time_value_text'] = formValues[activeKey]?.timeValues?.timeId
-            obj['time_value_top'] = formValues[activeKey]?.timeValues?.valueCoords[1] / 1123
-            obj['time_value_width'] = (formValues[activeKey]?.timeValues?.valueCoords[2] - formValues[activeKey]?.timeValues?.valueCoords[0]) / 868
+            obj['time_value_top'] = formValues[activeKey]?.timeValues?.valueCoords[1] / imageHeight
+            obj['time_value_width'] = (formValues[activeKey]?.timeValues?.valueCoords[2] - formValues[activeKey]?.timeValues?.valueCoords[0]) / imageWidth
         }
         if (formValues[activeKey]?.dateValues) {
-            obj['date_key_height'] = (formValues[activeKey]?.dateValues?.coords[3] - formValues[activeKey]?.dateValues?.coords[1]) / 1123
-            obj['date_key_left'] = formValues[activeKey]?.dateValues?.coords[0] / 868
+            obj['date_key_height'] = (formValues[activeKey]?.dateValues?.coords[3] - formValues[activeKey]?.dateValues?.coords[1]) / imageHeight
+            obj['date_key_left'] = formValues[activeKey]?.dateValues?.coords[0] / imageWidth
             obj['date_key_text'] = formValues[activeKey]?.dateValues?.dateAnchor
-            obj['date_key_top'] = formValues[activeKey]?.dateValues?.coords[1] / 1123
-            obj['date_key_width'] = (formValues[activeKey]?.dateValues?.coords[2] - formValues[activeKey]?.dateValues?.coords[0]) / 868
+            obj['date_key_top'] = formValues[activeKey]?.dateValues?.coords[1] / imageHeight
+            obj['date_key_width'] = (formValues[activeKey]?.dateValues?.coords[2] - formValues[activeKey]?.dateValues?.coords[0]) / imageWidth
             obj['date_page'] = 1
             obj['date_snippet_id'] = formValues[activeKey]?.dateValues?.snippetID
-            obj['date_value_height'] = (formValues[activeKey]?.dateValues?.valueCoords[3] - formValues[activeKey]?.dateValues?.valueCoords[1]) / 1123
-            obj['date_value_left'] = formValues[activeKey]?.dateValues?.valueCoords[0] / 868
+            obj['date_value_height'] = (formValues[activeKey]?.dateValues?.valueCoords[3] - formValues[activeKey]?.dateValues?.valueCoords[1]) / imageHeight
+            obj['date_value_left'] = formValues[activeKey]?.dateValues?.valueCoords[0] / imageWidth
             obj['date_value_text'] = formValues[activeKey]?.dateValues?.dateId
-            obj['date_value_top'] = formValues[activeKey]?.dateValues?.valueCoords[1] / 1123
-            obj['date_value_width'] = (formValues[activeKey]?.dateValues?.valueCoords[2] - formValues[activeKey]?.dateValues?.valueCoords[0]) / 868
+            obj['date_value_top'] = formValues[activeKey]?.dateValues?.valueCoords[1] / imageHeight
+            obj['date_value_width'] = (formValues[activeKey]?.dateValues?.valueCoords[2] - formValues[activeKey]?.dateValues?.valueCoords[0]) / imageWidth
         }
         req1.template_list.push(obj)
-        console.log("req1", req1)
         let res = await findParameter(req1)
         if (res?.Found_file_list?.length > 0) {
             message.success(res.Message);
@@ -1103,7 +1187,42 @@ function PaperBatchRecordsTemplate() {
             key: 'site',
         },
     ];
-    
+    const handleMenuChange = (item) => {
+        setSelectedMode(item.key)
+        setMenuKey(item.key)
+        setAreasMap({ ...areasMap, areas: [] });
+        getBoundingBoxDataInfo(imageWidth, imageHeight, item.key)
+
+    }
+    const modes = (
+        <Menu defaultSelectedKeys={["word"]} selectedKeys={[menuKey]} onClick={(item) => handleMenuChange(item)}>
+            <Menu.Item key='word'>
+                Word
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key='line'>
+                Line
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key='key_value'>
+                Key Value
+            </Menu.Item>
+        </Menu>
+    );
+    const areas = [
+        { label: 'Beijing', value: 'Beijing' },
+        { label: 'Shanghai', value: 'Shanghai' },
+    ];
+
+    const sights = {
+        Beijing: ['Tiananmen', 'Great Wall'],
+        Shanghai: ['Oriental Pearl', 'The Bund'],
+    };
+    const handleChange = () => {
+        form.setFieldsValue({ sights: [] });
+    };
+
+
     return (
         <div className='pbr-container pbrTemplate-container'>
             <div className='custom-wrapper pbr-wrapper'>
@@ -1113,7 +1232,7 @@ function PaperBatchRecordsTemplate() {
                         <span className='header-title'>
                             Paper Batch Records /
                         </span>
-                        <span className='header-title'>Template001</span>
+                        <span className='header-title'>{`TEMPLATE-${params?.tempalteName.toUpperCase()}`}</span>
                     </div>
                 </div>
                 <div className='sub-header'>
@@ -1202,625 +1321,594 @@ function PaperBatchRecordsTemplate() {
                                     </div>
                                 </Panel>
                                 <Panel header='Add Parameter' key='2'>
-                                    <Form
-                                        layout='vertical'
-                                        form={form}
-                                        initialValue={{dymamic_sections:[{name:"asdf",method:"absolute_coordinate"},{name:"zxcv",method:"absolute_coordinate"}]}}
-                                        className='formNewTemplate'
-                                        onFinish={onFinish}
-                                        onValuesChange={handleValuesChange}
-                                    >
+                                    <Form onValuesChange={handleValuesChange} name="dynamic_form_nest_item" onFinish={onFinish}
+                                        initialValues={formLoadParameter}
+                                        autoComplete="off">
                                         <div className='addParameterContainer'>
                                             <div className='addParameterBlock'>
                                                 <div className='singleParameterBlock'>
-                                                    <Form.List name='dymamic_sections' >
-                                                        {(
-                                                            fields,
-                                                            { add, remove }
-                                                        ) => (
+                                                    <Form.List name="users">
+                                                        {(fields, { add, remove }) => (
                                                             <>
                                                                 <Collapse accordion expandIconPosition='right' onChange={(val) => setActiveKey(val)}>
-                                                                    {fields.map(
-                                                                        ({
-                                                                            key,
-                                                                            name,
-                                                                            ...restField
+                                                                    {fields.map(({ key, name, ...restField }) => (
 
-                                                                        }) => (
+                                                                        // <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                                                                        <Panel header={`Parameter ${key + 1} created`} key={`${key}`}>
+                                                                            <div className='addParameterBlock'>
+                                                                                <div className='parameterAdded-block'>
+                                                                                    <Form.Item
+                                                                                        {...restField}
+                                                                                        name={[name, 'name']}
+                                                                                        // label="Name"
+                                                                                        rules={[{ required: true, message: 'Missing first name' }]}
+                                                                                    >
+                                                                                        <Input
+                                                                                            placeholder='Enter name'
+                                                                                            onChange={(
+                                                                                                e
+                                                                                            ) =>
+                                                                                                onChangeChart(
+                                                                                                    e,
+                                                                                                    'parameterName',
+                                                                                                    key
+                                                                                                )
+                                                                                            }
 
-                                                                            <Panel header={`Parameter ${key + 1} created`} key={`${key}`}>
-                                                                                <div className='addParameterBlock'>
-                                                                                    {/* {paramaterAdded ? ( */}
-                                                                                        <div className='parameterAdded-block'>
-                                                                                            <Form.Item {...restField} name={[name, 'name']} label="Name">
+                                                                                        />
+                                                                                    </Form.Item>
+                                                                                    <Form.Item
+                                                                                        {...restField}
+                                                                                        name={[name, 'method']}
+                                                                                        rules={[{ required: true, message: 'method' }]}
+                                                                                    >
+                                                                                        <Select placeholder="Select Method" onChange={(e, value) => onChangeChart(e, 'method', key, value)} value={formValues[key]?.method}>
+                                                                                            <Option value='absolute_coordinate'>
+                                                                                                Get By Absolute Coordinate
+                                                                                            </Option>
+                                                                                            {/* <Option value='regex'>
+                                                                                                Get By Regex
+                                                                                            </Option> */}
+                                                                                            <Option value='key_value_form'>
+                                                                                                Get By Form Key Value
+                                                                                            </Option>
+                                                                                            {/* <Option value='relative_direction '>
+                                                                                                Get By Relative Direction
+                                                                                            </Option> */}
+                                                                                        </Select>
+                                                                                    </Form.Item>
+                                                                                    <div className='parameterAddingBlock parameterValueBlock'>
+                                                                                        <p>
+                                                                                            Value
+                                                                                        </p>
+                                                                                        <p></p>
+                                                                                        <Dragger
+                                                                                            className={`draggerSnippet ${DraggerActive
+                                                                                                ? 'activeBorder'
+                                                                                                : 'inActiveBorder'
+                                                                                                }`}
+                                                                                            style={{ pointerEvents: "none" }}
+                                                                                        >
+                                                                                            <p className='ant-upload-drag-icon'>
+                                                                                                <PlusOutlined />
+                                                                                            </p>
+                                                                                            <p className='ant-upload-text'>
+                                                                                                Drag
+                                                                                                and
+                                                                                                drop
+                                                                                                anchor
+                                                                                            </p>
+                                                                                            {/* {showInputAnchor && ( */}
+                                                                                            <p
+                                                                                                className='ant-upload-text-input'
+                                                                                                onClick={(e) => DraggerInputHandlerAnchor(e, "value")}
+                                                                                                style={{ pointerEvents: "auto" }}
+                                                                                            >
+                                                                                                <Form.Item
+                                                                                                    {...restField}
+                                                                                                // name={[name, 'param_key']}
+                                                                                                // rules={[{ required: true, message: 'Missing last name' }]}
+                                                                                                >
+                                                                                                    <Input
+                                                                                                        value={
+                                                                                                            parameterValue[`param${key + 1}`]?.anchorValue
+                                                                                                        }
+                                                                                                        className='uploadSnippetInput'
+                                                                                                        placeholder='Enter Anchor Value'
+                                                                                                        onChange={(
+                                                                                                            e
+                                                                                                        ) =>
+                                                                                                            onChangeChart(
+                                                                                                                e,
+                                                                                                                'anchorValue', key
+                                                                                                            )
+                                                                                                        }
+                                                                                                    />
+                                                                                                </Form.Item>
+                                                                                            </p>
+                                                                                            {/* )} */}
+                                                                                        </Dragger>
+                                                                                        <Dragger
+                                                                                            className={`draggerSnippet ${DraggerActive
+                                                                                                ? 'inActiveBorder'
+                                                                                                : 'activeBorder'
+                                                                                                }`}
+                                                                                            style={{ pointerEvents: "none" }}
+                                                                                        >
+                                                                                            <p className='ant-upload-drag-icon'>
+                                                                                                <PlusOutlined />
+                                                                                            </p>
+                                                                                            <p className='ant-upload-text'>
+                                                                                                Drag
+                                                                                                and
+                                                                                                drop
+                                                                                                snippet
+                                                                                            </p>
+                                                                                            <p
+                                                                                                className='ant-upload-text-input'
+                                                                                                onClick={
+                                                                                                    (e) => DraggerInputHandlerSnippet(e, "value")
+                                                                                                }
+                                                                                                style={{ pointerEvents: "auto" }}
+                                                                                            >
+                                                                                                <span>
+                                                                                                    Or
+                                                                                                    enter
+                                                                                                    snippet
+                                                                                                    number
+                                                                                                </span>
+                                                                                                <Form.Item
+                                                                                                    {...restField}
+                                                                                                // name={[name, 'param_value']}
+                                                                                                // rules={[{ required: true, message: 'Missing last name' }]}
+                                                                                                >
+                                                                                                    <Input
+                                                                                                        value={
+                                                                                                            parameterValue[`param${key + 1}`]?.anchorId
+
+                                                                                                        }
+                                                                                                        className='uploadSnippetInput'
+                                                                                                        placeholder='Enter Snippet Value'
+                                                                                                        onChange={(
+                                                                                                            e
+                                                                                                        ) =>
+                                                                                                            onChangeChart(
+                                                                                                                e,
+                                                                                                                'snippetValue', key
+                                                                                                            )
+                                                                                                        }
+                                                                                                    />
+                                                                                                </Form.Item>
+
+                                                                                            </p>
+                                                                                        </Dragger>
+                                                                                        <Form.Item  {...restField}
+                                                                                            name={[name, 'param_valueFormat']}>
+                                                                                            <Select >
+                                                                                                <Option value='FORMAT'>
+                                                                                                    FORMAT
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>
+                                                                                        <Form.Item {...restField}
+                                                                                            name={[name, 'param_valueTransformation']}>
+                                                                                            <Input placeholder='Enter transformation' />
+                                                                                        </Form.Item>
+
+                                                                                        <Form.Item {...restField}
+                                                                                            name={[name, 'param_valueArea']}>
+                                                                                            <Input placeholder='Enter area' />
+                                                                                        </Form.Item>
+                                                                                        <Form.Item {...restField}
+                                                                                            name={[name, 'param_valueAnchorDirection']}>
+                                                                                            <Select defaultValue='AnchorDirection'>
+                                                                                                <Option value='top'>
+                                                                                                    Top
+                                                                                                </Option>
+                                                                                                <Option value='left'>
+                                                                                                    Left
+                                                                                                </Option>
+                                                                                                <Option value='bottom'>
+                                                                                                    Bottom
+                                                                                                </Option>
+                                                                                                <Option value='right'>
+                                                                                                    Right
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>
+
+                                                                                    </div>
+                                                                                    <p>
+                                                                                        Unit of Manufacturing
+                                                                                    </p>
+                                                                                    {/* <p></p> */}
+                                                                                    <div className='parameterAddingBlock parameterValueBlock'>
+                                                                                        <Dragger
+                                                                                            className={`draggerSnippet ${DraggerActive
+                                                                                                ? 'activeBorder'
+                                                                                                : 'inActiveBorder'
+                                                                                                }`}
+                                                                                            style={{ pointerEvents: "none" }}
+                                                                                        >
+                                                                                            <p className='ant-upload-drag-icon'>
+                                                                                                <PlusOutlined />
+                                                                                            </p>
+                                                                                            <p className='ant-upload-text'>
+                                                                                                Drag
+                                                                                                and
+                                                                                                drop
+                                                                                                anchor
+                                                                                            </p>
+                                                                                            {/* {showInputAnchor && ( */}
+                                                                                            <p
+                                                                                                className='ant-upload-text-input'
+                                                                                                onClick={
+                                                                                                    (e) => DraggerInputHandlerAnchor(e, "unit")
+                                                                                                }
+                                                                                                style={{ pointerEvents: "auto" }}
+                                                                                            >
                                                                                                 <Input
-                                                                                                    placeholder='Enter name'
+                                                                                                    value={
+                                                                                                        parameterValue[`param${key + 1}`]?.unitAnchor
+                                                                                                    }
+                                                                                                    className='uploadSnippetInput'
+                                                                                                    placeholder='Enter Anchor Value'
                                                                                                     onChange={(
                                                                                                         e
                                                                                                     ) =>
                                                                                                         onChangeChart(
                                                                                                             e,
-                                                                                                            'parameterName',
-                                                                                                            key
+                                                                                                            'uomanchorValue', key
                                                                                                         )
                                                                                                     }
-
                                                                                                 />
-                                                                                            </Form.Item>
-                                                                                            <Form.Item {...restField} name={[name, 'method']} label="Method">
-                                                                                                <Select onChange={(e, value) => onChangeChart(e, 'method', key, value)} value={formValues[key]?.method}>
-                                                                                                    <Option value='absolute_coordinate'>
-                                                                                                        Get By Absolute Coordinate
-                                                                                                    </Option>
-                                                                                                    <Option value='regex'>
-                                                                                                        Get By Regex
-                                                                                                    </Option>
-                                                                                                    <Option value='key_value_form'>
-                                                                                                        Get By Form Key Value
-                                                                                                    </Option>
-                                                                                                    <Option value='relative_direction '>
-                                                                                                        Get By Relative Direction
-                                                                                                    </Option>
-                                                                                                </Select>
-                                                                                            </Form.Item>
-                                                                                            {formValues[key]?.method === "regex" &&
-                                                                                                <Form.Item {...restField} name={[name, 'regEx']} label="RegEx">
-                                                                                                    <Input
-                                                                                                        placeholder='Enter RegEx'
-                                                                                                        onChange={(
-                                                                                                            e
-                                                                                                        ) => {
-                                                                                                            onChangeChart(
-                                                                                                                e,
-                                                                                                                'RegEx',
-                                                                                                                key
-                                                                                                            );
-                                                                                                        }}
-                                                                                                    // status={formValues[key]?.name === "" || formValues[key]?.name === undefined ? "error" : ""}
-                                                                                                    />
-                                                                                                </Form.Item>}
-                                                                                            <div className='parameterAddingBlock parameterValueBlock'>
-                                                                                                <p>
-                                                                                                    Value
-                                                                                                </p>
-                                                                                                <p></p>
-                                                                                                <Dragger
-                                                                                                    className={`draggerSnippet ${DraggerActive
-                                                                                                        ? 'activeBorder'
-                                                                                                        : 'inActiveBorder'
-                                                                                                        }`}
-                                                                                                >
-                                                                                                    <p className='ant-upload-drag-icon'>
-                                                                                                        <PlusOutlined />
-                                                                                                    </p>
-                                                                                                    <p className='ant-upload-text'>
-                                                                                                        Drag
-                                                                                                        and
-                                                                                                        drop
-                                                                                                        anchor
-                                                                                                    </p>
-                                                                                                    {/* {showInputAnchor && ( */}
-                                                                                                    <p
-                                                                                                        className='ant-upload-text-input'
-                                                                                                        onClick={(e) => DraggerInputHandlerAnchor(e, "value")}
-                                                                                                    >
-                                                                                                        <InputField
-                                                                                                            value={
-                                                                                                                parameterValue[
-                                                                                                                `param${key +
-                                                                                                                1
-                                                                                                                }`
-                                                                                                                ][
-                                                                                                                `anchorValue`
-                                                                                                                ]
-                                                                                                            }
-                                                                                                            className='uploadSnippetInput'
-                                                                                                            placeholder='Enter Anchor Value'
-                                                                                                            onChangeInput={(
-                                                                                                                e
-                                                                                                            ) =>
-                                                                                                                onChangeChart(
-                                                                                                                    e,
-                                                                                                                    'anchorValue', key
-                                                                                                                )
-                                                                                                            }
-                                                                                                        />
-                                                                                                    </p>
-                                                                                                    {/* )} */}
-                                                                                                </Dragger>
-                                                                                                <Dragger
-                                                                                                    className={`draggerSnippet ${DraggerActive
-                                                                                                        ? 'inActiveBorder'
-                                                                                                        : 'activeBorder'
-                                                                                                        }`}
-                                                                                                >
-                                                                                                    <p className='ant-upload-drag-icon'>
-                                                                                                        <PlusOutlined />
-                                                                                                    </p>
-                                                                                                    <p className='ant-upload-text'>
-                                                                                                        Drag
-                                                                                                        and
-                                                                                                        drop
-                                                                                                        snippet
-                                                                                                    </p>
-                                                                                                    <p
-                                                                                                        className='ant-upload-text-input'
-                                                                                                        onClick={
-                                                                                                            (e) => DraggerInputHandlerSnippet(e, "value")
-                                                                                                        }
-                                                                                                    >
-                                                                                                        <span>
-                                                                                                            Or
-                                                                                                            enter
-                                                                                                            snippet
-                                                                                                            number
-                                                                                                        </span>
-                                                                                                        <InputField
-                                                                                                            value={
-                                                                                                                parameterValue[
-                                                                                                                `param${key +
-                                                                                                                1
-                                                                                                                }`
-                                                                                                                ][
-                                                                                                                `anchorId`
-                                                                                                                ]
-                                                                                                            }
-                                                                                                            className='uploadSnippetInput'
-                                                                                                            placeholder='Enter Snippet Value'
-                                                                                                            onChangeInput={(
-                                                                                                                e
-                                                                                                            ) => {
-                                                                                                                onChangeChart(
-                                                                                                                    e,
-                                                                                                                    'snippetValue', key
-                                                                                                                );
-                                                                                                            }}
-                                                                                                        />
-                                                                                                    </p>
-                                                                                                </Dragger>
-                                                                                                <Form.Item name='valueFormat'>
-                                                                                                    <Select defaultValue='FORMAT'>
-                                                                                                        <Option value='FORMAT'>
-                                                                                                            FORMAT
-                                                                                                        </Option>
-                                                                                                    </Select>
-                                                                                                </Form.Item>
-                                                                                                <Form.Item name='valueTransformation'>
-                                                                                                    <Input placeholder='Enter transformation' />
-                                                                                                </Form.Item>
-
-                                                                                                <Form.Item name='valueArea'>
-                                                                                                    <Input placeholder='Enter area' />
-                                                                                                </Form.Item>
-                                                                                                <Form.Item name='valueAnchorDirection'>
-                                                                                                    <Select defaultValue='AnchorDirection'>
-                                                                                                        <Option value='top'>
-                                                                                                            Top
-                                                                                                        </Option>
-                                                                                                        <Option value='left'>
-                                                                                                            Left
-                                                                                                        </Option>
-                                                                                                        <Option value='bottom'>
-                                                                                                            Bottom
-                                                                                                        </Option>
-                                                                                                        <Option value='right'>
-                                                                                                            Right
-                                                                                                        </Option>
-                                                                                                    </Select>
-                                                                                                </Form.Item>
-                                                                                            </div>
-
-                                                                                            <p>
-                                                                                                Unit of Manufacturing
                                                                                             </p>
-                                                                                            {/* <p></p> */}
-                                                                                            <div className='parameterAddingBlock parameterValueBlock'>
-                                                                                                <Dragger
-                                                                                                    className={`draggerSnippet ${DraggerActive
-                                                                                                        ? 'activeBorder'
-                                                                                                        : 'inActiveBorder'
-                                                                                                        }`}
-                                                                                                >
-                                                                                                    <p className='ant-upload-drag-icon'>
-                                                                                                        <PlusOutlined />
-                                                                                                    </p>
-                                                                                                    <p className='ant-upload-text'>
-                                                                                                        Drag
-                                                                                                        and
-                                                                                                        drop
-                                                                                                        anchor
-                                                                                                    </p>
-                                                                                                    {/* {showInputAnchor && ( */}
-                                                                                                    <p
-                                                                                                        className='ant-upload-text-input'
-                                                                                                        onClick={
-                                                                                                            (e) => DraggerInputHandlerAnchor(e, "unit")
-                                                                                                        }
-                                                                                                    >
-                                                                                                        <InputField
-                                                                                                            value={
-                                                                                                                parameterValue[
-                                                                                                                `param${key +
-                                                                                                                1
-                                                                                                                }`
-                                                                                                                ][
-                                                                                                                `unitAnchor`
-                                                                                                                ]
-                                                                                                            }
-                                                                                                            className='uploadSnippetInput'
-                                                                                                            placeholder='Enter Anchor Value'
-                                                                                                            onChangeInput={(
-                                                                                                                e
-                                                                                                            ) =>
-                                                                                                                onChangeChart(
-                                                                                                                    e,
-                                                                                                                    'uomanchorValue', key
-                                                                                                                )
-                                                                                                            }
-                                                                                                        />
-                                                                                                    </p>
-                                                                                                    {/* )} */}
-                                                                                                </Dragger>
-                                                                                                <Dragger
-                                                                                                    className={`draggerSnippet ${DraggerActive
-                                                                                                        ? 'inActiveBorder'
-                                                                                                        : 'activeBorder'
-                                                                                                        }`}
-                                                                                                >
-                                                                                                    <p className='ant-upload-drag-icon'>
-                                                                                                        <PlusOutlined />
-                                                                                                    </p>
-                                                                                                    <p className='ant-upload-text'>
-                                                                                                        Drag
-                                                                                                        and
-                                                                                                        drop
-                                                                                                        snippet
-                                                                                                    </p>
-                                                                                                    <p
-                                                                                                        className='ant-upload-text-input'
-                                                                                                        onClick={
-                                                                                                            (e) => DraggerInputHandlerSnippet(e, "unit")
-                                                                                                        }
-                                                                                                    >
-                                                                                                        <span>
-                                                                                                            Or
-                                                                                                            enter
-                                                                                                            snippet
-                                                                                                            number
-                                                                                                        </span>
-                                                                                                        <InputField
-                                                                                                            value={
-                                                                                                                parameterValue[
-                                                                                                                `param${key +
-                                                                                                                1
-                                                                                                                }`
-                                                                                                                ][
-                                                                                                                `unitId`
-                                                                                                                ]
-                                                                                                            }
-                                                                                                            className='uploadSnippetInput'
-                                                                                                            placeholder='Enter Snippet Value'
-                                                                                                            onChangeInput={(
-                                                                                                                e
-                                                                                                            ) => {
-                                                                                                                onChangeChart(
-                                                                                                                    e,
-                                                                                                                    'uomsnippetValue', key
-                                                                                                                );
-                                                                                                            }}
-                                                                                                        />
-                                                                                                    </p>
-                                                                                                </Dragger>
-                                                                                                <Form.Item name='valueFormat'>
-                                                                                                    <Select defaultValue='FORMAT'>
-                                                                                                        <Option value='FORMAT'>
-                                                                                                            FORMAT
-                                                                                                        </Option>
-                                                                                                    </Select>
-                                                                                                </Form.Item>
-                                                                                                <Form.Item name='valueTransformation'>
-                                                                                                    <Input placeholder='Enter transformation' />
-                                                                                                </Form.Item>
+                                                                                            {/* )} */}
+                                                                                        </Dragger>
+                                                                                        <Dragger
+                                                                                            className={`draggerSnippet ${DraggerActive
+                                                                                                ? 'inActiveBorder'
+                                                                                                : 'activeBorder'
+                                                                                                }`}
+                                                                                            style={{ pointerEvents: "none" }}
+                                                                                        >
+                                                                                            <p className='ant-upload-drag-icon'>
+                                                                                                <PlusOutlined />
+                                                                                            </p>
+                                                                                            <p className='ant-upload-text'>
+                                                                                                Drag
+                                                                                                and
+                                                                                                drop
+                                                                                                snippet
+                                                                                            </p>
+                                                                                            <p
+                                                                                                className='ant-upload-text-input'
+                                                                                                onClick={
+                                                                                                    (e) => DraggerInputHandlerSnippet(e, "unit")
+                                                                                                }
+                                                                                                style={{ pointerEvents: "auto" }}
+                                                                                            >
+                                                                                                <span>
+                                                                                                    Or
+                                                                                                    enter
+                                                                                                    snippet
+                                                                                                    number
+                                                                                                </span>
+                                                                                                <Input
+                                                                                                    value={
+                                                                                                        parameterValue[`param${key + 1}`]?.unitId
 
-                                                                                                <Form.Item name='valueArea'>
-                                                                                                    <Input placeholder='Enter area' />
-                                                                                                </Form.Item>
-                                                                                                <Form.Item name='valueAnchorDirection'>
-                                                                                                    <Select defaultValue='AnchorDirection'>
-                                                                                                        <Option value='AnchorDirection'>
-                                                                                                            Anchor
-                                                                                                            Direction
-                                                                                                        </Option>
-                                                                                                    </Select>
-                                                                                                </Form.Item>
-                                                                                            </div>
-                                                                                            <div className='parameterAddingBlock parameterValueBlock'>
-                                                                                                <p>
-                                                                                                    Time
-                                                                                                </p>
-                                                                                                <p></p>
-                                                                                                <Dragger
-                                                                                                    className={`draggerSnippet ${DraggerActive
-                                                                                                        ? 'activeBorder'
-                                                                                                        : 'inActiveBorder'
-                                                                                                        }`}
-                                                                                                >
-                                                                                                    <p className='ant-upload-drag-icon'>
-                                                                                                        <PlusOutlined />
-                                                                                                    </p>
-                                                                                                    <p className='ant-upload-text'>
-                                                                                                        Drag
-                                                                                                        and
-                                                                                                        drop
-                                                                                                        anchor
-                                                                                                    </p>
-                                                                                                    {/* {showInputAnchor && ( */}
-                                                                                                    <p
-                                                                                                        className='ant-upload-text-input'
-                                                                                                        onClick={
-                                                                                                            (e) => DraggerInputHandlerAnchor(e, "time")
-                                                                                                        }
-                                                                                                    >
-                                                                                                        <InputField
-                                                                                                            value={
-                                                                                                                parameterValue[
-                                                                                                                `param${key +
-                                                                                                                1
-                                                                                                                }`
-                                                                                                                ][
-                                                                                                                `timeAnchor`
-                                                                                                                ]
-                                                                                                            }
-                                                                                                            className='uploadSnippetInput'
-                                                                                                            placeholder='Enter Anchor Value'
-                                                                                                            onChangeInput={(
-                                                                                                                e
-                                                                                                            ) =>
-                                                                                                                onChangeChart(
-                                                                                                                    e,
-                                                                                                                    'timeanchorValue', key
-                                                                                                                )
-                                                                                                            }
-                                                                                                        />
-                                                                                                    </p>
-                                                                                                    {/* )} */}
-                                                                                                </Dragger>
-                                                                                                <Dragger
-                                                                                                    className={`draggerSnippet ${DraggerActive
-                                                                                                        ? 'inActiveBorder'
-                                                                                                        : 'activeBorder'
-                                                                                                        }`}
-                                                                                                >
-                                                                                                    <p className='ant-upload-drag-icon'>
-                                                                                                        <PlusOutlined />
-                                                                                                    </p>
-                                                                                                    <p className='ant-upload-text'>
-                                                                                                        Drag
-                                                                                                        and
-                                                                                                        drop
-                                                                                                        snippet
-                                                                                                    </p>
-                                                                                                    <p
-                                                                                                        className='ant-upload-text-input'
-                                                                                                        onClick={
-                                                                                                            (e) => DraggerInputHandlerSnippet(e, "time")
-                                                                                                        }
-                                                                                                    >
-                                                                                                        <span>
-                                                                                                            Or
-                                                                                                            enter
-                                                                                                            snippet
-                                                                                                            number
-                                                                                                        </span>
-                                                                                                        <InputField
-                                                                                                            value={
-                                                                                                                parameterValue[
-                                                                                                                `param${key +
-                                                                                                                1
-                                                                                                                }`
-                                                                                                                ][
-                                                                                                                `timeId`
-                                                                                                                ]
-                                                                                                            }
-                                                                                                            className='uploadSnippetInput'
-                                                                                                            placeholder='Enter Snippet Value'
-                                                                                                            onChangeInput={(
-                                                                                                                e
-                                                                                                            ) => {
-                                                                                                                onChangeChart(
-                                                                                                                    e,
-                                                                                                                    'timesnippetValue', key
-                                                                                                                );
-                                                                                                            }}
-                                                                                                        />
-                                                                                                    </p>
-                                                                                                </Dragger>
-                                                                                                <Form.Item name='valueFormat'>
-                                                                                                    <Select defaultValue='FORMAT'>
-                                                                                                        <Option value='FORMAT'>
-                                                                                                            FORMAT
-                                                                                                        </Option>
-                                                                                                    </Select>
-                                                                                                </Form.Item>
-                                                                                                <Form.Item name='valueTransformation'>
-                                                                                                    <Input placeholder='Enter transformation' />
-                                                                                                </Form.Item>
+                                                                                                    }
+                                                                                                    className='uploadSnippetInput'
+                                                                                                    placeholder='Enter Snippet Value'
+                                                                                                    onChange={(
+                                                                                                        e
+                                                                                                    ) => {
+                                                                                                        onChangeChart(
+                                                                                                            e,
+                                                                                                            'uomsnippetValue', key
+                                                                                                        );
+                                                                                                    }}
+                                                                                                />
+                                                                                            </p>
+                                                                                        </Dragger>
+                                                                                        <Form.Item name='valueFormat'>
+                                                                                            <Select defaultValue='FORMAT'>
+                                                                                                <Option value='FORMAT'>
+                                                                                                    FORMAT
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>
+                                                                                        <Form.Item name='valueTransformation'>
+                                                                                            <Input placeholder='Enter transformation' />
+                                                                                        </Form.Item>
 
-                                                                                                <Form.Item name='valueArea'>
-                                                                                                    <Input placeholder='Enter area' />
-                                                                                                </Form.Item>
-                                                                                                <Form.Item name='valueAnchorDirection'>
-                                                                                                    <Select defaultValue='AnchorDirection'>
-                                                                                                        <Option value='AnchorDirection'>
-                                                                                                            Anchor
-                                                                                                            Direction
-                                                                                                        </Option>
-                                                                                                    </Select>
-                                                                                                </Form.Item>
-                                                                                            </div>
-                                                                                            <div className='parameterAddingBlock parameterValueBlock'>
-                                                                                                <p>
-                                                                                                    Date
-                                                                                                </p>
-                                                                                                <p></p>
-                                                                                                <Dragger
-                                                                                                    className={`draggerSnippet ${DraggerActive
-                                                                                                        ? 'activeBorder'
-                                                                                                        : 'inActiveBorder'
-                                                                                                        }`}
-                                                                                                >
-                                                                                                    <p className='ant-upload-drag-icon'>
-                                                                                                        <PlusOutlined />
-                                                                                                    </p>
-                                                                                                    <p className='ant-upload-text'>
-                                                                                                        Drag
-                                                                                                        and
-                                                                                                        drop
-                                                                                                        anchor
-                                                                                                    </p>
-                                                                                                    {/* {showInputAnchor && ( */}
-                                                                                                    <p
-                                                                                                        className='ant-upload-text-input'
-                                                                                                        onClick={
-                                                                                                            (e) => DraggerInputHandlerAnchor(e, "date")
-                                                                                                        }
-                                                                                                    >
-                                                                                                        <InputField
-                                                                                                            value={
-                                                                                                                parameterValue[
-                                                                                                                `param${key +
-                                                                                                                1
-                                                                                                                }`
-                                                                                                                ][
-                                                                                                                `dateAnchor`
-                                                                                                                ]
-                                                                                                            }
-                                                                                                            className='uploadSnippetInput'
-                                                                                                            placeholder='Enter Anchor Value'
-                                                                                                            onChangeInput={(
-                                                                                                                e
-                                                                                                            ) =>
-                                                                                                                onChangeChart(
-                                                                                                                    e,
-                                                                                                                    'dateanchorValue', key
-                                                                                                                )
-                                                                                                            }
-                                                                                                        />
-                                                                                                    </p>
-                                                                                                    {/* )} */}
-                                                                                                </Dragger>
-                                                                                                <Dragger
-                                                                                                    className={`draggerSnippet ${DraggerActive
-                                                                                                        ? 'inActiveBorder'
-                                                                                                        : 'activeBorder'
-                                                                                                        }`}
-                                                                                                >
-                                                                                                    <p className='ant-upload-drag-icon'>
-                                                                                                        <PlusOutlined />
-                                                                                                    </p>
-                                                                                                    <p className='ant-upload-text'>
-                                                                                                        Drag
-                                                                                                        and
-                                                                                                        drop
-                                                                                                        snippet
-                                                                                                    </p>
-                                                                                                    <p
-                                                                                                        className='ant-upload-text-input'
-                                                                                                        onClick={
-                                                                                                            (e) => DraggerInputHandlerSnippet(e, "date")
-                                                                                                        }
-                                                                                                    >
-                                                                                                        <span>
-                                                                                                            Or
-                                                                                                            enter
-                                                                                                            snippet
-                                                                                                            number
-                                                                                                        </span>
-                                                                                                        <InputField
-                                                                                                            value={
-                                                                                                                parameterValue[
-                                                                                                                `param${key +
-                                                                                                                1
-                                                                                                                }`
-                                                                                                                ][
-                                                                                                                `dateId`
-                                                                                                                ]
-                                                                                                            }
-                                                                                                            className='uploadSnippetInput'
-                                                                                                            placeholder='Enter Snippet Value'
-                                                                                                            onChangeInput={(
-                                                                                                                e
-                                                                                                            ) => {
-                                                                                                                onChangeChart(
-                                                                                                                    e,
-                                                                                                                    'datesnippetValue', key
-                                                                                                                );
-                                                                                                            }}
-                                                                                                        />
-                                                                                                    </p>
-                                                                                                </Dragger>
-                                                                                                <Form.Item name='valueFormat'>
-                                                                                                    <Select defaultValue='FORMAT'>
-                                                                                                        <Option value='FORMAT'>
-                                                                                                            FORMAT
-                                                                                                        </Option>
-                                                                                                    </Select>
-                                                                                                </Form.Item>
-                                                                                                <Form.Item name='valueTransformation'>
-                                                                                                    <Input placeholder='Enter transformation' />
-                                                                                                </Form.Item>
+                                                                                        <Form.Item name='valueArea'>
+                                                                                            <Input placeholder='Enter area' />
+                                                                                        </Form.Item>
+                                                                                        <Form.Item name='valueAnchorDirection'>
+                                                                                            <Select defaultValue='AnchorDirection'>
+                                                                                                <Option value='AnchorDirection'>
+                                                                                                    Anchor
+                                                                                                    Direction
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>
+                                                                                    </div>
+                                                                                    <div className='parameterAddingBlock parameterValueBlock'>
+                                                                                        <p>
+                                                                                            Time
+                                                                                        </p>
+                                                                                        <p></p>
+                                                                                        <Dragger
+                                                                                            className={`draggerSnippet ${DraggerActive
+                                                                                                ? 'activeBorder'
+                                                                                                : 'inActiveBorder'
+                                                                                                }`}
+                                                                                            style={{ pointerEvents: "none" }}
+                                                                                        >
+                                                                                            <p className='ant-upload-drag-icon'>
+                                                                                                <PlusOutlined />
+                                                                                            </p>
+                                                                                            <p className='ant-upload-text'>
+                                                                                                Drag
+                                                                                                and
+                                                                                                drop
+                                                                                                anchor
+                                                                                            </p>
+                                                                                            {/* {showInputAnchor && ( */}
+                                                                                            <p
+                                                                                                className='ant-upload-text-input'
+                                                                                                onClick={
+                                                                                                    (e) => DraggerInputHandlerAnchor(e, "time")
+                                                                                                }
+                                                                                                style={{ pointerEvents: "auto" }}
+                                                                                            >
+                                                                                                <Input
+                                                                                                    value={
+                                                                                                        parameterValue[`param${key + 1}`]?.timeAnchor
+                                                                                                    }
+                                                                                                    className='uploadSnippetInput'
+                                                                                                    placeholder='Enter Anchor Value'
+                                                                                                    onChange={(
+                                                                                                        e
+                                                                                                    ) =>
+                                                                                                        onChangeChart(
+                                                                                                            e,
+                                                                                                            'timeanchorValue', key
+                                                                                                        )
+                                                                                                    }
+                                                                                                />
+                                                                                            </p>
+                                                                                            {/* )} */}
+                                                                                        </Dragger>
+                                                                                        <Dragger
+                                                                                            className={`draggerSnippet ${DraggerActive
+                                                                                                ? 'inActiveBorder'
+                                                                                                : 'activeBorder'
+                                                                                                }`}
+                                                                                            style={{ pointerEvents: "none" }}
+                                                                                        >
+                                                                                            <p className='ant-upload-drag-icon'>
+                                                                                                <PlusOutlined />
+                                                                                            </p>
+                                                                                            <p className='ant-upload-text'>
+                                                                                                Drag
+                                                                                                and
+                                                                                                drop
+                                                                                                snippet
+                                                                                            </p>
+                                                                                            <p
+                                                                                                className='ant-upload-text-input'
+                                                                                                onClick={
+                                                                                                    (e) => DraggerInputHandlerSnippet(e, "time")
+                                                                                                }
+                                                                                                style={{ pointerEvents: "auto" }}
+                                                                                            >
+                                                                                                <span>
+                                                                                                    Or
+                                                                                                    enter
+                                                                                                    snippet
+                                                                                                    number
+                                                                                                </span>
+                                                                                                <InputField
+                                                                                                    value={
+                                                                                                        parameterValue[`param${key + 1}`]?.timeId
+                                                                                                    }
+                                                                                                    className='uploadSnippetInput'
+                                                                                                    placeholder='Enter Snippet Value'
+                                                                                                    onChangeInput={(
+                                                                                                        e
+                                                                                                    ) => {
+                                                                                                        onChangeChart(
+                                                                                                            e,
+                                                                                                            'timesnippetValue', key
+                                                                                                        );
+                                                                                                    }}
+                                                                                                />
+                                                                                            </p>
+                                                                                        </Dragger>
+                                                                                        <Form.Item name='valueFormat'>
+                                                                                            <Select defaultValue='FORMAT'>
+                                                                                                <Option value='FORMAT'>
+                                                                                                    FORMAT
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>
+                                                                                        <Form.Item name='valueTransformation'>
+                                                                                            <Input placeholder='Enter transformation' />
+                                                                                        </Form.Item>
 
-                                                                                                <Form.Item name='valueArea'>
-                                                                                                    <Input placeholder='Enter area' />
-                                                                                                </Form.Item>
-                                                                                                <Form.Item name='valueAnchorDirection'>
-                                                                                                    <Select defaultValue='AnchorDirection'>
-                                                                                                        <Option value='AnchorDirection'>
-                                                                                                            Anchor
-                                                                                                            Direction
-                                                                                                        </Option>
-                                                                                                    </Select>
-                                                                                                </Form.Item>
-                                                                                                <Button type='primary' className='defineTableBtn' onClick={findTemplate}>
-                                                                                                    <MonitorOutlined /> Find
-                                                                                                </Button>
-                                                                                                <p>Found in {`${fileList.length}/${searchedFileList.length}`} files</p>
-                                                                                            </div>
-                                                                                            <div>{fileList.map(item => (
-                                                                                                <p>{item?.split('_')[0]}</p>
-                                                                                            ))}</div>
-                                                                                        </div>
-                                                                                    {/* ) : (
-                                                                                        '' */}
-                                                                                    {/* )} */}
+                                                                                        <Form.Item name='valueArea'>
+                                                                                            <Input placeholder='Enter area' />
+                                                                                        </Form.Item>
+                                                                                        <Form.Item name='valueAnchorDirection'>
+                                                                                            <Select defaultValue='AnchorDirection'>
+                                                                                                <Option value='AnchorDirection'>
+                                                                                                    Anchor
+                                                                                                    Direction
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>
+                                                                                    </div>
+                                                                                    <div className='parameterAddingBlock parameterValueBlock'>
+                                                                                        <p>
+                                                                                            Date
+                                                                                        </p>
+                                                                                        <p></p>
+                                                                                        <Dragger
+                                                                                            className={`draggerSnippet ${DraggerActive
+                                                                                                ? 'activeBorder'
+                                                                                                : 'inActiveBorder'
+                                                                                                }`}
+                                                                                            style={{ pointerEvents: "none" }}
+                                                                                        >
+                                                                                            <p className='ant-upload-drag-icon'>
+                                                                                                <PlusOutlined />
+                                                                                            </p>
+                                                                                            <p className='ant-upload-text'>
+                                                                                                Drag
+                                                                                                and
+                                                                                                drop
+                                                                                                anchor
+                                                                                            </p>
+                                                                                            {/* {showInputAnchor && ( */}
+                                                                                            <p
+                                                                                                className='ant-upload-text-input'
+                                                                                                onClick={
+                                                                                                    (e) => DraggerInputHandlerAnchor(e, "date")
+                                                                                                }
+                                                                                                style={{ pointerEvents: "auto" }}
+                                                                                            >
+                                                                                                <InputField
+                                                                                                    value={
+                                                                                                        parameterValue[`param${key + 1}`]?.dateAnchor
+
+                                                                                                    }
+                                                                                                    className='uploadSnippetInput'
+                                                                                                    placeholder='Enter Anchor Value'
+                                                                                                    onChangeInput={(
+                                                                                                        e
+                                                                                                    ) =>
+                                                                                                        onChangeChart(
+                                                                                                            e,
+                                                                                                            'dateanchorValue', key
+                                                                                                        )
+                                                                                                    }
+                                                                                                />
+                                                                                            </p>
+                                                                                            {/* )} */}
+                                                                                        </Dragger>
+                                                                                        <Dragger
+                                                                                            className={`draggerSnippet ${DraggerActive
+                                                                                                ? 'inActiveBorder'
+                                                                                                : 'activeBorder'
+                                                                                                }`}
+                                                                                            style={{ pointerEvents: "none" }}
+                                                                                        >
+                                                                                            <p className='ant-upload-drag-icon'>
+                                                                                                <PlusOutlined />
+                                                                                            </p>
+                                                                                            <p className='ant-upload-text'>
+                                                                                                Drag
+                                                                                                and
+                                                                                                drop
+                                                                                                snippet
+                                                                                            </p>
+                                                                                            <p
+                                                                                                className='ant-upload-text-input'
+                                                                                                onClick={
+                                                                                                    (e) => DraggerInputHandlerSnippet(e, "date")
+                                                                                                }
+                                                                                                style={{ pointerEvents: "auto" }}
+                                                                                            >
+                                                                                                <span>
+                                                                                                    Or
+                                                                                                    enter
+                                                                                                    snippet
+                                                                                                    number
+                                                                                                </span>
+                                                                                                <InputField
+                                                                                                    value={
+                                                                                                        parameterValue[`param${key + 1}`]?.dateId
+
+                                                                                                    }
+                                                                                                    className='uploadSnippetInput'
+                                                                                                    placeholder='Enter Snippet Value'
+                                                                                                    onChangeInput={(
+                                                                                                        e
+                                                                                                    ) => {
+                                                                                                        onChangeChart(
+                                                                                                            e,
+                                                                                                            'datesnippetValue', key
+                                                                                                        );
+                                                                                                    }}
+                                                                                                />
+                                                                                            </p>
+                                                                                        </Dragger>
+                                                                                        <Form.Item name='valueFormat'>
+                                                                                            <Select defaultValue='FORMAT'>
+                                                                                                <Option value='FORMAT'>
+                                                                                                    FORMAT
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>
+                                                                                        <Form.Item name='valueTransformation'>
+                                                                                            <Input placeholder='Enter transformation' />
+                                                                                        </Form.Item>
+
+                                                                                        <Form.Item name='valueArea'>
+                                                                                            <Input placeholder='Enter area' />
+                                                                                        </Form.Item>
+                                                                                        <Form.Item name='valueAnchorDirection'>
+                                                                                            <Select defaultValue='AnchorDirection'>
+                                                                                                <Option value='AnchorDirection'>
+                                                                                                    Anchor
+                                                                                                    Direction
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>
+                                                                                        <Button type='primary' className='defineTableBtn' onClick={findTemplate}>
+                                                                                            <MonitorOutlined /> Find
+                                                                                        </Button>
+                                                                                        <p>Found in {`${fileList.length}/${searchedFileList.length}`} files</p>
+                                                                                    </div>
+                                                                                    <div>{fileList.map(item => (
+                                                                                        <p>{item?.split('_')[0]}</p>
+                                                                                    ))}</div>
+
+                                                                                    {/* <MinusCircleOutlined onClick={() => remove(name)} /> */}
                                                                                 </div>
-                                                                            </Panel>
-                                                                        )
-                                                                    )}
 
+                                                                            </div>
+
+                                                                        </Panel>
+                                                                        // </Space>
+
+                                                                    ))}
                                                                 </Collapse>
-
-                                                                <div
-                                                                    className='firstParameter-para'
-                                                                    onClick={() => parameterAddingHandler()}
-                                                                >
-                                                                    <p
-                                                                        onClick={() => {
-                                                                            // if(callAdd == false){
-                                                                            add()
-                                                                            // }
-                                                                        }
-
-
-                                                                        }
+                                                                <Form.Item>
+                                                                    <div
+                                                                        className='firstParameter-para'
+                                                                        onClick={() => parameterAddingHandler()}
                                                                     >
-                                                                        {paramaterAdded
-                                                                            ? 'Add another paramater'
-                                                                            : 'Add your first Parameter'}
-                                                                    </p>
+                                                                        <p
+                                                                            onClick={() => {
+                                                                                // if(callAdd == false){
+                                                                                add()
+                                                                                // }
+                                                                            }
 
-                                                                </div>
 
+                                                                            }
+                                                                        >
+                                                                            {paramaterAdded
+                                                                                ? 'Add another paramater'
+                                                                                : 'Add your first Parameter'}
+                                                                        </p>
+
+                                                                    </div>
+                                                                </Form.Item>
                                                             </>
                                                         )}
                                                     </Form.List>
@@ -1836,12 +1924,6 @@ function PaperBatchRecordsTemplate() {
                                                 </div>
                                             </div>
                                         </div>
-                                        {/* <AddParameter
-                                            paramaterAdded={paramaterAdded}
-                                            setParamaterAdded={
-                                                setParamaterAdded
-                                            }
-                                        /> */}
                                     </Form>
                                 </Panel>
                             </Collapse>
@@ -1870,28 +1952,25 @@ function PaperBatchRecordsTemplate() {
                                         Draw Snippet
                                     </div>
                                     <div className='cropSnippet'>
-                                        <img
+                                        {/* <img
                                             src={cropImg}
                                             className='panelCenterImg'
-                                        />
+                                        /> */}
+                                        <Dropdown
+                                            style={{ color: '#ffffff' }}
+                                            trigger={['click']}
+                                            overlay={modes}>
+                                            <ImCrop />
+                                        </Dropdown>
                                     </div>
                                     <div className='undoSnippet'>
-                                        <img
-                                            src={undoImg}
-                                            className='panelCenterImg'
-                                        />
+                                        <img src={undoImg} className='panelCenterImg' />
                                     </div>
                                     <div className='redoSnippet'>
-                                        <img
-                                            src={redoImg}
-                                            className='panelCenterImg'
-                                        />
+                                        <img src={redoImg} className='panelCenterImg' />
                                     </div>
                                     <div className='contrastSnippet'>
-                                        <img
-                                            src={contrastImg}
-                                            className='panelCenterImg'
-                                        />
+                                        <img src={contrastImg} className='panelCenterImg' />
                                     </div>
                                 </Col>
                             </Row>
@@ -1901,138 +1980,111 @@ function PaperBatchRecordsTemplate() {
                                 <div className='snippetsFound'></div>
                                 <div className='snippetsImg'></div>
                             </div>
-                            <div
-                                className='pdfToImgBlock'
-                                onClick={onClickImage}
-                            >
-                                {areasMap.areas.length > 0 &&
+                            <div className='pdfToImgBlock' onClick={onClickImage}>
+                                {areasMap.areas.length > 0 && (
                                     <ImageMapper
-                                        id="imageMApper"
+                                        id='imageMApper'
                                         className='pdfToImageWrapper'
                                         src={displayImage}
                                         map={areasMap}
                                         // onLoad={() => load()}
-                                        onClick={(area) => clicked(area)}
+                                        onClick={area => clicked(area)}
                                     />
-                                }
+                                )}
                             </div>
                         </div>
                     </div>
-                    <Modal title="Preview" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={null} >
+                    <Modal
+                        title='Preview'
+                        visible={isModalVisible}
+                        onOk={handleOk}
+                        onCancel={handleCancel}
+                        footer={null}>
                         <Table
                             loading={tableLoading}
                             className='pbrTemplates-table'
                             columns={modalColumns}
                             dataSource={modalData}
                             pagination={false}
-
                         />
                     </Modal>
                 </div>
                 <div className='pbrTemplateRight'>
                     <div className='pbrPanel pbrRightPanel'>
-                        <Sider
-                            trigger={null}
-                            collapsible
-                            collapsed={rightPanelCollapsed}
-                        >
-                            <span
-                                className='trigger'
-                                onClick={toggleRightCollapsed}
-                            >
+                        <Sider trigger={null} collapsible collapsed={rightPanelCollapsed}>
+                            <span className='trigger' onClick={toggleRightCollapsed}>
                                 <img src={panelRightImg} className='panelImg' />
                             </span>
                             <Collapse
                                 accordion
                                 expandIconPosition='right'
-                                defaultActiveKey={['1']}
-                            >
+                                defaultActiveKey={['1']}>
                                 <Panel header='Snippet Attributes' key='1'>
                                     <div className='snippetsBlock'>
                                         <Form
                                             layout='vertical'
                                             form={form}
-                                            className='formNewTemplate'
-                                        >
+                                            className='formNewTemplate'>
                                             <InputField
                                                 value={areasMapObject.snippetID}
                                                 label='Snippet ID'
                                                 placeholder='Enter Snippet ID'
-                                                onChangeInput={(e) => {
-                                                    onChangeChart(
-                                                        e,
-                                                        'snippetId'
-                                                    );
+                                                onChangeInput={e => {
+                                                    onChangeChart(e, 'snippetId');
                                                 }}
                                             />
                                             <InputField
                                                 value={areasMapObject.areaValue}
                                                 label='Key 1'
                                                 placeholder='Enter Key 1'
-                                                onChangeInput={(e) => {
-                                                    onChangeChart(
-                                                        e,
-                                                        'snippetKey1'
-                                                    );
+                                                onChangeInput={e => {
+                                                    onChangeChart(e, 'snippetKey1');
                                                 }}
                                                 disabled
                                             />
                                             <div className='secondary-flexBox'>
                                                 <InputField
-                                                    value={
-                                                        areasMapObject.coords[0]
-                                                    }
+                                                    value={areasMapObject.coords[0]}
                                                     label='X1'
                                                     placeholder='Enter Value'
-                                                    onChangeInput={(e) => {
+                                                    onChangeInput={e => {
                                                         onChangeChart(e, 'x1');
                                                     }}
                                                 />
                                                 <InputField
-                                                    value={
-                                                        areasMapObject.coords[1]
-                                                    }
+                                                    value={areasMapObject.coords[1]}
                                                     label='Y1'
                                                     placeholder='Enter Value'
-                                                    onChangeInput={(e) => {
+                                                    onChangeInput={e => {
                                                         onChangeChart(e, 'y1');
                                                     }}
                                                 />
                                             </div>
                                             <div className='secondary-flexBox'>
                                                 <InputField
-                                                    value={
-                                                        areasMapObject.coords[2]
-                                                    }
+                                                    value={areasMapObject.coords[2]}
                                                     label='X2'
                                                     placeholder='Enter Value'
-                                                    onChangeInput={(e) => {
+                                                    onChangeInput={e => {
                                                         onChangeChart(e, 'x2');
                                                     }}
                                                 />
                                                 <InputField
-                                                    value={
-                                                        areasMapObject.coords[3]
-                                                    }
+                                                    value={areasMapObject.coords[3]}
                                                     label='Y2'
                                                     placeholder='Enter Value'
-                                                    onChangeInput={(e) => {
+                                                    onChangeInput={e => {
                                                         onChangeChart(e, 'y2');
                                                     }}
                                                 />
                                             </div>
                                             <div className='secondary-flexBox'>
                                                 <InputField
-                                                    value={
-                                                        areasMapObject.areaValue
-                                                    }
+                                                    value={areasMapObject.areaValue}
                                                     label='Area'
                                                     placeholder='Enter Value'
-                                                    onChangeInput={(e) => {
-                                                        onChangeChart(
-                                                            e,
-                                                            'area'
-                                                        );
+                                                    onChangeInput={e => {
+                                                        onChangeChart(e, 'area');
                                                     }}
                                                     disabled
                                                 />
@@ -2059,8 +2111,7 @@ function PaperBatchRecordsTemplate() {
                                                 <Button
                                                     type='default'
                                                     className='saveSnippetsBtn'
-                                                    onClick={() => saveTemplateHandler()}
-                                                >
+                                                    onClick={() => saveTemplateHandler()}>
                                                     Save
                                                 </Button>
                                             </div>

@@ -11,8 +11,8 @@
       font-family: 'Roboto';
 font-style: normal;
 font-weight: 300;
-font-size: 16px;
     }
+   
   }
   input::placeholder {
     font-family: Roboto !important;
@@ -360,6 +360,7 @@ height: 27px;
 border: 1px solid #2D8007;
 box-sizing: border-box;
 border-radius: 4px;
+background-color: white;
 }
 
 .tag-text
@@ -424,10 +425,5 @@ margin-left: 10px;
     height: 36px;
 }
 
-}
-
-.ant-select-selection-item
-{
-    margin-top:1px;
 }
 

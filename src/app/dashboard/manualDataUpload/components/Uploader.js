@@ -209,7 +209,7 @@ class Uploader extends Component {
 				`${info.file.name} is not excel or csv file`
 			);
 		} else {
-			
+
 			if (info.file.status === 'uploading') {
 				nextState.selectedFileList = [info.file];
 			} else if (info.file.status === 'done') {
@@ -1080,28 +1080,30 @@ class Uploader extends Component {
 														e.stopPropagation();
 														this.closeModel();
 													}}>
-													<div className='sign-form'>
-														<div>
-															<p>Username</p>
-															<Input
-																placeholder='Username'
-																value={username}
-																onChange={value =>
-																	this.onChangeField(value, 'username')
-																}
-															/>
-														</div>
-														<div>
-															<p>Password</p>
-															<Input
-																placeholder='Password'
-																autocomplete='new-password'
-																type='password'
-																value={password}
-																onChange={value =>
-																	this.onChangeField(value, 'password')
-																}
-															/>
+													<div className='sign-form1'>
+														<div className='sign-cols1'>
+															<div>
+																<p>Username</p>
+																<Input
+																	placeholder='Username'
+																	value={username}
+																	onChange={value =>
+																		this.onChangeField(value, 'username')
+																	}
+																/>
+															</div>
+															<div>
+																<p>Password</p>
+																<Input
+																	placeholder='Password'
+																	autocomplete='new-password'
+																	type='password'
+																	value={password}
+																	onChange={value =>
+																		this.onChangeField(value, 'password')
+																	}
+																/>
+															</div>
 														</div>
 														{isAuth &&
 															<div>
@@ -1130,16 +1132,18 @@ class Uploader extends Component {
 															<>
 																<Button
 																	type='primary'
+																	style={{backgroundColor:'#093185'}}
 																	onClick={() => this.updateFileApproveData()}>
 																	Ok
 																</Button>
-																<Button onClick={() => this.closeModel()}>
+																<Button className='custom-primary-btn' onClick={() => this.closeModel()}>
 																	Cancel
 																</Button>
 															</>
 														) : (
 															<Button
 																type='primary'
+																style={{backgroundColor:'#093185'}}
 																onClick={() => this.onAuthenticate()}>
 																Authenticate
 															</Button>
@@ -1155,28 +1159,30 @@ class Uploader extends Component {
 														e.stopPropagation();
 														this.closeModel();
 													}}>
-													<div className='sign-form'>
-														<div>
-															<p>Username</p>
-															<Input
-																placeholder='Username'
-																value={username}
-																onChange={value =>
-																	this.onChangeField(value, 'username')
-																}
-															/>
-														</div>
-														<div>
-															<p>Password</p>
-															<Input
-																placeholder='Password'
-																autocomplete='new-password'
-																type='password'
-																value={password}
-																onChange={value =>
-																	this.onChangeField(value, 'password')
-																}
-															/>
+													<div className='sign-form1'>
+														<div className='sign-cols1'>
+															<div>
+																<p>Username</p>
+																<Input
+																	placeholder='Username'
+																	value={username}
+																	onChange={value =>
+																		this.onChangeField(value, 'username')
+																	}
+																/>
+															</div>
+															<div>
+																<p>Password</p>
+																<Input
+																	placeholder='Password'
+																	autocomplete='new-password'
+																	type='password'
+																	value={password}
+																	onChange={value =>
+																		this.onChangeField(value, 'password')
+																	}
+																/>
+															</div>
 														</div>
 														{isAuth &&
 															<div>
@@ -1205,16 +1211,18 @@ class Uploader extends Component {
 															<>
 																<Button
 																	type='primary'
+																	style={{backgroundColor:'#093185'}}
 																	onClick={() => this.approveDataFile()}>
 																	Ok
 																</Button>
-																<Button onClick={() => this.closeModel()}>
+																<Button className='custom-primary-btn' onClick={() => this.closeModel()}>
 																	Cancel
 																</Button>
 															</>
 														) : (
 															<Button
 																type='primary'
+																style={{backgroundColor:'#093185'}}
 																onClick={() => this.onAuthenticate()}>
 																Authenticate
 															</Button>
@@ -1309,7 +1317,8 @@ class Uploader extends Component {
 															e.stopPropagation();
 															this.closeModelSignature1();
 														}}>
-														<div className='sign-form'>
+														<div className='sign-form1'>
+															<div className='sign-cols1'>
 															<div>
 																<p>Username</p>
 																<Input
@@ -1331,6 +1340,7 @@ class Uploader extends Component {
 																		this.onChangeField(value, 'password')
 																	}
 																/>
+															</div>
 															</div>
 															{isAuth &&
 																<div>
@@ -1359,15 +1369,17 @@ class Uploader extends Component {
 																<>
 																	<Button
 																		type='primary'
+																		style={{backgroundColor:'#093185'}}
 																		onClick={() => this.finalFileUploadData()}>
 																		Ok
 																	</Button>
-																	<Button onClick={() => this.closeModelSignature1()}>
+																	<Button className='custom-primary-btn' onClick={() => this.closeModelSignature1()}>
 																		Cancel
 																	</Button></>
 															) : (
 																<Button
 																	type='primary'
+																	style={{backgroundColor:'#093185'}}
 																	onClick={() => this.onAuthenticate()}>
 																	Authenticate
 																</Button>

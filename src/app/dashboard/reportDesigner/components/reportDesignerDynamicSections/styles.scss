@@ -35,6 +35,11 @@
     background-color: #f2fbff;
     border: none;
     align-items: center;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
   }
   .dynamicSections-container {
     margin-top: 30px;
@@ -47,7 +52,7 @@
     }
       thead.dynamicSections-thead {
         th {
-          background-color:  #F2FBFFBA;
+          background-color:  #F2FBFF;
           color: #000000;
           font-weight: 600;
           border: 1px solid rgba(241, 247, 255, 0.73);
@@ -330,10 +335,10 @@ opacity: 1px;
 .chart-block
 {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;
-  grid-gap: 24px;
-  margin-left: 5%;
-  margin-right: 5%;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
+  grid-gap: 4px 0px;
+  margin-left: 15%;
+  margin-right: 15%;
 }
   .chart-tile
 {
@@ -342,8 +347,8 @@ opacity: 1px;
     // margin-right: right;
     position: relative;
     float: right;
-    bottom: 20%;
-    left: 1.7%;
+    bottom: 33%;
+    left: 12%;
     //  top: 0%; 
     // right: %;
     // // width: 3px;
@@ -376,11 +381,11 @@ opacity: 1px;
 .chart-tiless
 { 
 height: 46px;
-width: 200px;
+width: 100px;
 background: #FFFFFF;
 border: 1px solid #00F1C6;
 box-sizing: border-box;
-border-radius: 2px 5px 2px 2px;
+border-radius: 2px 2px 2px 2px;
 border: 1px solid #00F1C6;
 // border-radius: 0px 4px;
 // display: flex;

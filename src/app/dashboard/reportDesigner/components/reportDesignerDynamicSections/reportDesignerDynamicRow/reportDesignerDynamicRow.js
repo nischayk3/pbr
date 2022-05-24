@@ -115,7 +115,7 @@ function ReportDesignerDynamicRow(props) {
                         <td></td>
                         <td>
                     <Form.Item>
-                        <div className="add-row-btn" onClick={() => add()} > <PlusOutlined style={{ color: '#093185',marginLeft:'15px' }} /> Add new row </div>
+                        <div className="add-row-btn" onClick={() => add()} > <PlusOutlined style={{ color: '#093185' }} /> Add new row </div>
                     </Form.Item>
                     </td>
                     </tr>

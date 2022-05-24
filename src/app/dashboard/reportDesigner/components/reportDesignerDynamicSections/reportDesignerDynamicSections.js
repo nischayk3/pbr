@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Space, Popconfirm, Card } from 'antd';
-import { CheckCircleOutlined, DeleteTwoTone, PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { Form, Input, Space, Popconfirm, Card,Tooltip } from 'antd';
+import {  DeleteTwoTone, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
 import Chart from '../reportChart/chartComponent/chartComponent'
@@ -32,10 +32,12 @@ function ReportDesignerDynamicSections(props) {
 
         dispatch(showLoader())
         section = section + 1
-        let chart_index = addedCharts[`${section}`].indexOf(chartName)
+        let charts_all = {...addedCharts}
+        let chart_index = charts_all[`${section}`].indexOf(chartName)
         if (chart_index > -1) {
-            addedCharts[`${section}`].splice(chart_index, 1)  // 2nd parameter means remove one item only
+            charts_all[`${section}`].splice(chart_index, 1)  // 2nd parameter means remove one item only
         }
+        setAddedCharts(charts_all)
         dispatch(hideLoader())
     }
 
@@ -167,10 +169,10 @@ function ReportDesignerDynamicSections(props) {
                                                 <Form.Item {...restField} name={[name, 'sectionName']}>
                                                     <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px' }} className="input-section" disabled={props.show} disabled={editable} />
                                                 </Form.Item>
-                                                <EditOutlined style={{ marginTop: '8px', marginLeft: '10px' }} onClick={() => handleEdit(editable)} />
-                                            </div>
+                                                <Tooltip placement="topLeft" title="Edit Section Name">    <EditOutlined style={{ marginTop: '8px', marginLeft: '10px' }} onClick={() => handleEdit(editable)} /> </Tooltip>
+                                            </div> 
 
-                                            <div className="add-chart" onClick={() => trackCharts(name)} >{!showChart[name] ? <span>+ Add Chart </span> : <span> -  <span>Remove</span>  </span>} </div>
+                                            <div className="add-chart" onClick={() => trackCharts(name)} ><span>+ Add Chart </span>  </div>
 
                                             <div style={{ marginLeft: '15%' }}>
                                                 <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
@@ -181,7 +183,7 @@ function ReportDesignerDynamicSections(props) {
                                         </div>
                                         {!addedKeys[name] ?
                                             <center>
-                                                <div style={{ height: '90px', width: '100px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => sectionAddKey(name + 1)}> <PlusOutlined style={{ color: 'gray', marginTop: '10px' }} /> <br />Add Key and value</div>
+                                                <div style={{ height: '100px', width: '120px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => sectionAddKey(name + 1)}> <PlusOutlined style={{ color: 'gray', marginTop: '25px' }} /> <br />Add Key and value</div>
                                             </center> :
                                             <></>
                                         }
@@ -193,7 +195,7 @@ function ReportDesignerDynamicSections(props) {
                                                     style={{ display: 'flex', justifyContent: 'center' }}
                                                     align="baseline"
                                                 >
-                                                    <table className="dynamicSections-table" style={{ width: '1180px' }}>
+                                                    <table className="dynamicSections-table" style={{ width: '1190px',marginLeft:'10px' }}>
                                                         <thead className="dynamicSections-thead">
                                                             <tr>
                                                                 <th className="action-clm">Action</th>
@@ -238,7 +240,7 @@ function ReportDesignerDynamicSections(props) {
                                                 <Chart chartName={i} />
                                             </div>
                                         ))}
-                                        <PlusOutlined style={{ fontSize: '16px', marginLeft: '99.5%', color: '#093185', background: "white", padding: "2px", borderRadius: "50px" }} twoToneColor="#eb2f96" onClick={() => add()} />
+                                  <Tooltip placement="bottomRight" title="Add Section">       <PlusOutlined style={{ fontSize: '16px', marginLeft: '99.2%', color: '#093185', background: "white", padding: "2px", borderRadius: "50px",boxShadow: '.5px grey' }} twoToneColor="#eb2f96" onClick={() => add()} /> </Tooltip>
 
                                     </div>
                                 ))}
@@ -246,7 +248,7 @@ function ReportDesignerDynamicSections(props) {
                                     {showAddSection ? <></> :
                                         <p disabled={props.show}>
                                             <center>
-                                                <div style={{ height: '60px', width: '80px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => add()}> <PlusOutlined twoToneColor="#eb2f96" style={{ marginTop: '10px' }} /> <br />Add Section</div>
+                                                <div style={{ height: '120px', width: '150px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => add()}> <PlusOutlined twoToneColor="#eb2f96" style={{ marginTop: '40px' }} /> <br />Add Section</div>
                                             </center>
                                             {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: -10, right: -10, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> */}
                                         </p>

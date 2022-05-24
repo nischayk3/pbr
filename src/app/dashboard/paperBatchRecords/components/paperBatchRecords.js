@@ -41,6 +41,7 @@ import pdfIcon from '../../../../assets/images/pdfIcon.svg';
 import { getPbrTemplateData, getDataView } from '../../../../services/pbrService';
 import { tableColumns } from '../../../../utils/TableColumns'
 import { useHistory } from 'react-router-dom';
+import { loadTemplateInfo } from '../../../../duck/actions/pbrAction';
 
 const { Search } = Input;
 
@@ -99,6 +100,10 @@ function PaperBatchRecords() {
     const [dataView, setDataView] = useState([])
     const [fileName, setFileName] = useState("")
     const [templateName, seTemplateName] = useState("")
+    const [matBatch, setMatBatch] = useState({
+        material_num:"",
+        batch:""
+    })
 
     useEffect(() => {
         updateDate();
@@ -132,7 +137,11 @@ function PaperBatchRecords() {
                 if (item.dataIndex === "pbr_template_disp_id") {
                     obj.render = (text, row, index) => {
                         return (
-                            <a onClick={() => history.push(`/dashboard/pbr_template`)} className='review-submission'>{text}</a>
+                            <a onClick={() => {
+                                console.log("rowww",row.pbr_template_info[0].filename)
+                                history.push(`/dashboard/pbr_template?file=${row.pbr_template_info[0].filename}&temp_disp_id=${row.pbr_temp_int_id}&tempalteName=${row.pbr_template_name}`)
+                                dispatch(loadTemplateInfo(row.pbr_template_info))
+                            }} className='review-submission'>{text}</a>
                         )
 
                     }
@@ -162,6 +171,10 @@ function PaperBatchRecords() {
         let res = await getDataView()
         setDataView(res.Data)
         setFileName(res?.Data[0]?.filename)
+        setMatBatch({
+            material_num:res?.Data[0]?.product_num,
+            batch:res?.Data[0].batch_num
+        })
 
     }
 
@@ -315,6 +328,7 @@ function PaperBatchRecords() {
 
     const newTemplateModalHandler = () => {
         setNewTemplateModalVisible(true);
+        dispatch(loadTemplateInfo([]))
     };
 
     const handleCancel = () => {
@@ -372,6 +386,15 @@ function PaperBatchRecords() {
             onClose: close,
         });
     };
+    const onRadioChange = (val) => {
+        console.log("vall",val)
+        let arr = dataView.filter(item => item.filename === val)
+        console.log("arrr",arr)
+        setMatBatch({
+            material_num:arr[0].product_num,
+            batch:arr[0].batch_num
+        })
+    }
     
 
     return (
@@ -509,15 +532,15 @@ function PaperBatchRecords() {
                                     </Form.Item>
                                     <Form.Item
                                         label='Material number'
-                                        name='materialNumber'
+                                        // name='materialNumber'
                                     >
-                                        <Input />
+                                        <Input value={matBatch?.material_num}/>
                                     </Form.Item>
                                     <Form.Item
                                         label='Batch number'
-                                        name='batchNumber'
+                                        // name='batchNumber'
                                     >
-                                        <Input />
+                                        <Input value={matBatch?.batch}/>
                                     </Form.Item>
                                 </div>
 
@@ -570,7 +593,10 @@ function PaperBatchRecords() {
                                 // onChange={onChange}
                                 defaultValue={dataView[0]?.filename}
                                 className='radioPdfBlock'
-                                onChange={(e) => setFileName(e.target.value)}
+                                onChange={(e) => {
+                                    setFileName(e.target.value)
+                                    onRadioChange(e.target.value)
+                                }}
                             >
                                 {dataView.map((item, index) => (
                                     <Radio.Button value={`${item.filename}`} >

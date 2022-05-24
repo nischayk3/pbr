@@ -286,7 +286,7 @@ function Genealogy() {
 				setLimsBatchInfo(batchRes);
 			} else if (batchRes.status === 404) {
 				setLimsBatchInfo();
-				dispatch(showNotification('error', batchRes.detail));
+				//	dispatch(showNotification('error', batchRes.detail));
 			}
 			dispatch(hideLoader());
 		} catch (error) {
@@ -475,7 +475,9 @@ function Genealogy() {
 		} else if (info.file.status === 'error') {
 			nextState.selectedFileList = [];
 			nextState.selectedFile = null;
-			message.error(`${info.file.name} file upload failed.`);
+			dispatch(
+				showNotification('error', `${info.file.name} file upload failed.`)
+			);
 		}
 		setSelectedFile(nextState.selectedFile);
 		setSelectedFileList(nextState.selectedFileList);
