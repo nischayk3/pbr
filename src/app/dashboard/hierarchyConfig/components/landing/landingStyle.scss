@@ -134,7 +134,7 @@
 	justify-content: center;
 	gap: 10px;
 	margin-top: 40px;
-	margin-bottom: 10px;
+	margin-bottom: 40px;
 
 	svg {
 		cursor: pointer;
@@ -214,6 +214,8 @@
 
 .landing-search-wrapper {
 	background: #fff;
+	border-radius: 4px;
+	margin-top: -10px;
 	.landing-card {
 		width: 784px;
 		margin: 24px auto;
@@ -261,5 +263,44 @@
 				display: block;
 			}
 		}
+	}
+
+}
+
+
+.ant-modal-close-x
+{
+	margin-top: -5px;
+}
+.ant-modal-header
+{
+	background: #F1F7FF !important;
+	border-radius: 4px 4px 0px 0px !important;
+	font-family: 'Maven Pro';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 22px;
+	color: #4D4D4D;
+}
+.ant-modal 
+{
+	margin-left: 350px;
+	margin-top: 100px;
+
+}
+.landing-input
+{
+	margin-top: -15px;
+}
+.ant-spin-container
+{
+	bottom: 20px;
+}
+.input-ant{
+	width: 100%;
+	.ant-input
+	{
+		bottom: 8px;
 	}
 }
