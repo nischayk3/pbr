@@ -45,3 +45,35 @@ export const putMolecule = request => {
 		}
 	);
 };
+
+export const putProcessStep = request => {
+	return Service.put(
+		BMS_APP_PYTHON_SERVICE + '/ds-process-step',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
+
+
+
+export const getProcessStep = request => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/ds-process-step',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
