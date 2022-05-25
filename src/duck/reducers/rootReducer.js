@@ -8,7 +8,7 @@ import reportDesignerReducer from './reportDesignerReducer';
 import viewCreationReducer from './viewCreationReducer';
 import loginReducer from './loginReducer';
 import pbrReducer from './pbrReducer';
-
+import viewHierarchy from './viewHierarchy';
 const createRootReducer = (history) =>
   combineReducers({
     router: connectRouter(history),
@@ -19,7 +19,9 @@ const createRootReducer = (history) =>
     reportDesignerReducer,
     viewCreationReducer,
     loginReducer,
-    pbrReducer
+    pbrReducer,
+    viewHierarchy
+
     
   });
 export default createRootReducer;

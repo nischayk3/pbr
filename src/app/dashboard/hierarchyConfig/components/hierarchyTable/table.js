@@ -7,7 +7,7 @@ import { ArrowRightOutlined } from '@ant-design/icons'
 
 function HierarchyTable()
 {
-    const [hierarchyName , setHierarchyName] = useState('Untilted')
+    const [hierarchyName , setHierarchyName] = useState('Untitled')
     return(
         <div>
          <Table className="hierarchy-table"/>

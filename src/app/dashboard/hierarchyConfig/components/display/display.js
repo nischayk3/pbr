@@ -30,7 +30,7 @@ const { Option } = Select
 function Display(props) {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [hierarchyName, setHierarchyName] = useState('Untilted')
+    const [hierarchyName, setHierarchyName] = useState('Untitled')
 
     const handleOk = () => {
         setIsModalVisible(false);
