@@ -6,7 +6,7 @@ export const tableColumns = (item) => {
   objkeys &&
     objkeys.map((val, i) => {
       column.push({
-        title: val.toUpperCase(),
+        title: val.toUpperCase().replace(/_/g," "),
         dataIndex: val,
         key: `${val}-${i}`,
       });
