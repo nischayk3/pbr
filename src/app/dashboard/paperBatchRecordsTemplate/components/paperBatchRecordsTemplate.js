@@ -65,7 +65,6 @@ import {
     processBatchRecord,
     findParameter,
 } from '../../../../services/pbrService';
-// import { ImCrop } from "react-icons/im";
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Dragger } = Upload;
@@ -549,7 +548,6 @@ function PaperBatchRecordsTemplate() {
         setAreasMapFilteredArr(filteredArr);
 
     };
-    console.log("formVALLSSS", formValues)
     /**
      * TODO: get boundingBoxData info
      */
@@ -601,12 +599,12 @@ function PaperBatchRecordsTemplate() {
                 setAreasMap({ ...areasMap, areas: areasArr });
             } else if (batchRes.status === 404) {
                 setAreasMap();
-                // dispatch(showNotification('error', batchRes.detail));
+                
             }
-            // dispatch(hideLoader());
+            
         } catch (error) {
-            // dispatch(hideLoader());
-            // dispatch(showNotification('error', 'No Data Found'));
+            dispatch(hideLoader());
+            dispatch(showNotification('error', 'No Data Found'));
         }
     };
 
@@ -614,19 +612,11 @@ function PaperBatchRecordsTemplate() {
         getImage()
         const list = document.getElementsByTagName("canvas")[0]
         getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
-        // console.log("paramsss",JSON.parse(params.metaData))
-        // let val =JSON.parse(params.metaData)
-        // if(params)
         let obj = {
             material_num: matBatch.material_num,
             batch: matBatch.batch
         }
         setTemplateInitialData(obj)
-        // if(Object.keys(matBatch).length>0){
-        //     setTemplateInitialData(matBatch)
-        // }
-
-
         if (templateInfo) {
             let obj = {}
             templateInfo.forEach((item, index) => {
@@ -656,7 +646,7 @@ function PaperBatchRecordsTemplate() {
 
         }
     }, []);
-    console.log("tempppp", matBatch)
+
     useEffect(() => {
         if (templateInfo?.length > 0) {
             let arr = templateInfo.map((item, index) => ({
@@ -699,17 +689,15 @@ function PaperBatchRecordsTemplate() {
             }))
             setFormValues(arr)
             setActiveNumber(templateInfo?.length)
-            setParamaterAdded(false)
+            setParamaterAdded(true)
         }
     }, [areasMap])
 
     const getImage = async () => {
         var requestOptions = {
             method: "GET",
-            // headers: myHeaders,
             response: "image/jpeg",
             psId: "",
-            //body: raw,
             redirect: "follow",
         };
         let response = await fetch(
@@ -942,7 +930,7 @@ function PaperBatchRecordsTemplate() {
                 } else if (batchRes.Status === 404) {
                     message.error(batchRes.Message);
                     dispatch(hideLoader());
-                    // dispatch(showNotification('error', batchRes.detail));
+                    dispatch(showNotification('error', batchRes.detail));
                 }
 
             } catch (error) {
@@ -966,7 +954,6 @@ function PaperBatchRecordsTemplate() {
         } else {
             message.error(res.Message);
             dispatch(hideLoader());
-            // dispatch(showNotification('error', batchRes.detail));
         }
         dispatch(hideLoader());
 
@@ -1081,7 +1068,6 @@ function PaperBatchRecordsTemplate() {
         } else {
             message.error(res.Message);
             dispatch(hideLoader());
-            // dispatch(showNotification('error', batchRes.detail));
         }
 
     }
@@ -1163,7 +1149,6 @@ function PaperBatchRecordsTemplate() {
             setModalData(res.Extraction)
         } else {
             message.error(res.Message);
-            // dispatch(showNotification('error', batchRes.detail));
         }
         setTableLoading(false)
     };
