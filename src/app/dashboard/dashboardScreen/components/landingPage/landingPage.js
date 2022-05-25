@@ -27,6 +27,7 @@ import {
 import ChartSearchTable from './chartTableLoad';
 import { PlusOutlined } from '@ant-design/icons';
 import './styles.scss';
+import { NoStyleItemContext } from 'antd/lib/form/context';
 
 export default function landingPage(props) {
 	const { Search } = Input;
@@ -123,8 +124,10 @@ export default function landingPage(props) {
 	};
 
 	const handleOk = () => {
-		setIsModalVisible(false);
-		props.chartCard(true);
+		if (props.dashboardName && props.viewData.searchValue) {
+			setIsModalVisible(false);
+			props.chartCard(true);
+		}
 	};
 
 	const handleCancel = () => {
