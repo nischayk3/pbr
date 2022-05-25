@@ -165,12 +165,9 @@ const Workflow = () => {
 									</div>
 								}>
 								{cardTitle === 'Param Data Approval' ? (
-									<Tabs
-										className='workflow-tabs'
-										activeKey={activeTab}
-										onChange={changeTab}>
-										<TabPane tab='Awaiting Approval' key='1'>
-											{cardTitle === 'Param Data Approval' && (
+									<>
+										{dataSource.length > 0 ? (
+											<>
 												<div style={{ margin: '25px 0px 20px 0px' }}>
 													<Button className='custom-secondary-btn' disabled>
 														Approve
@@ -182,15 +179,21 @@ const Workflow = () => {
 														Reject
 													</Button>
 												</div>
-											)}
-											<WorkflowTable
-												isRowSelection={true}
-												columns={columns}
-												dataSource={[]}
-												activeTab={activeTab}
+
+												<WorkflowTable
+													isRowSelection={true}
+													columns={columns}
+													dataSource={[]}
+													activeTab={activeTab}
+												/>
+											</>
+										) : (
+											<Empty
+												className='empty-workflow data-empty'
+												description={false}
 											/>
-										</TabPane>
-									</Tabs>
+										)}
+									</>
 								) : (
 									<Tabs
 										className='workflow-tabs'
