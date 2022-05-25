@@ -110,3 +110,13 @@
 .workflow-right-block {
 	width: 75%;
 }
+
+.data-empty {
+	margin: 30px 0;
+	.ant-empty-image {
+		height: 280px;
+		svg {
+			width: 100%;
+		}
+	}
+}
