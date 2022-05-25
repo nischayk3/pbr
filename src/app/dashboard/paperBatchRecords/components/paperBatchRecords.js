@@ -41,7 +41,7 @@ import pdfIcon from '../../../../assets/images/pdfIcon.svg';
 import { getPbrTemplateData, getDataView } from '../../../../services/pbrService';
 import { tableColumns } from '../../../../utils/TableColumns'
 import { useHistory } from 'react-router-dom';
-import { loadTemplateInfo } from '../../../../duck/actions/pbrAction';
+import { loadTemplateInfo,loadMatBatchInfo } from '../../../../duck/actions/pbrAction';
 
 const { Search } = Input;
 
@@ -118,7 +118,7 @@ function PaperBatchRecords() {
             dispatch(showLoader());
             const tableResponse = await getPbrTemplateData(req);
             const tableColumn = tableColumns(tableResponse?.Data)
-            let newArray1 = tableColumn.filter(item => item.dataIndex != 'changed_by' && item.dataIndex != 'changed_on' && item.dataIndex != 'created_by' && item.dataIndex != 'created_on' && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
+            let newArray1 = tableColumn.filter(item => item.dataIndex != 'changed_by' && item.dataIndex != 'changed_on'  && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
             let columns = [];
             newArray1.map(item => {
                 let { title, dataIndex } = item;
@@ -148,8 +148,6 @@ function PaperBatchRecords() {
                 }
                 columns.push(obj)
             })
-            console.log("newArray1", tableColumn)
-            console.log("newArray1", columns)
             if (tableResponse['status-code'] === 200) {
                 setTemplateColumns(columns)
                 setTemplateData(tableResponse.Data);
@@ -340,6 +338,7 @@ function PaperBatchRecords() {
             openNotification()
         } else {
             history.push(`/dashboard/pbr_template?file=${fileName}&tempalteName=${templateName}`);
+            dispatch(loadMatBatchInfo(matBatch))
         }
 
     };
@@ -466,11 +465,9 @@ function PaperBatchRecords() {
                                         className='pbrTemplates-table'
                                         columns={templateColumns}
                                         dataSource={
-                                            // tableDataSourceFiltered === null
-                                            //     ? tableDataSource
-                                            //     : tableDataSourceFiltered
                                             templateData
                                         }
+                                        scroll={{x:100}}
                                     />
                                 </div>
                             </Col>

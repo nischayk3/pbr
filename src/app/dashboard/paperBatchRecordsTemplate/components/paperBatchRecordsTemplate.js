@@ -75,7 +75,8 @@ function PaperBatchRecordsTemplate() {
         name: 'my-map',
         areas: [],
     };
-    const templateInfo = useSelector((state) => state.pbrReducer.templateData)
+    const templateInfo = useSelector((state) => state?.pbrReducer?.templateData)
+    const matBatch = useSelector((state) => state?.pbrReducer?.matBatchInfo)
     const location = useLocation()
     const dispatch = useDispatch();
     const params = QueryString.parse(location.search)
@@ -145,6 +146,7 @@ function PaperBatchRecordsTemplate() {
     const [selectedMode, setSelectedMode] = useState("word");
     const [menuKey, setMenuKey] = useState("word");
     const [formLoadParameter, setFormLoadParameter] = useState({});
+    const [templateInitialData, setTemplateInitialData] = useState({});
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
     };
@@ -556,8 +558,8 @@ function PaperBatchRecordsTemplate() {
             let _reqBatch = {
                 filename: `${params?.file?.split('_')[0]}_page-0.jpeg.json`,
                 bbox_type: mode,
-                action_type: params?.temp_disp_id ? "edit":"create",
-                temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id:""
+                action_type: params?.temp_disp_id ? "edit" : "create",
+                temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : ""
             };
             const batchRes = await getBoundingBoxData(_reqBatch);
             setOrigianalResponse(batchRes)
@@ -610,6 +612,21 @@ function PaperBatchRecordsTemplate() {
 
     useEffect(() => {
         getImage()
+        const list = document.getElementsByTagName("canvas")[0]
+        getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
+        // console.log("paramsss",JSON.parse(params.metaData))
+        // let val =JSON.parse(params.metaData)
+        // if(params)
+        let obj = {
+            material_num: matBatch.material_num,
+            batch: matBatch.batch
+        }
+        setTemplateInitialData(obj)
+        // if(Object.keys(matBatch).length>0){
+        //     setTemplateInitialData(matBatch)
+        // }
+
+
         if (templateInfo) {
             let obj = {}
             templateInfo.forEach((item, index) => {
@@ -639,7 +656,7 @@ function PaperBatchRecordsTemplate() {
 
         }
     }, []);
-
+    console.log("tempppp", matBatch)
     useEffect(() => {
         if (templateInfo?.length > 0) {
             let arr = templateInfo.map((item, index) => ({
@@ -710,6 +727,7 @@ function PaperBatchRecordsTemplate() {
 
 
     useEffect(() => {
+
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
             getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
@@ -829,12 +847,13 @@ function PaperBatchRecordsTemplate() {
         if (formValues.length > 0) {
             try {
                 dispatch(showLoader());
+                let login_response = JSON.parse(localStorage.getItem('login_details'));
                 let _reqBatch = {
                     pbrTemplateName: params.tempalteName,
                     custKey: 'PBR',
                     pbrTemplateVersion: '1',
                     pbrTemplateStatus: 'DRFT',
-                    createdBy: 'demo',
+                    createdBy: login_response?.email_id,
                     changedBy: null,
                     pbrTemplateInfo: [],
                 };
@@ -867,7 +886,7 @@ function PaperBatchRecordsTemplate() {
                         obj['uom_key_left'] = ele?.unitValues?.coords[0] / imageWidth
                         obj['uom_key_text'] = ele?.unitValues?.unitAnchor
                         obj['uom_key_top'] = ele?.unitValues?.coords[1] / imageHeight
-                        obj['uom_key_width'] = (ele?.unitValues?.coords[2] - ele?.unitValues?.coords[0])/ imageWidth
+                        obj['uom_key_width'] = (ele?.unitValues?.coords[2] - ele?.unitValues?.coords[0]) / imageWidth
                         obj['uom_page'] = 1
                         obj['uom_key_snippet_id'] = ele?.unitValues?.snippetID
                         obj['uom_value_height'] = (ele?.unitValues?.valueCoords[3] - ele?.unitValues?.valueCoords[1]) / imageHeight
@@ -925,7 +944,7 @@ function PaperBatchRecordsTemplate() {
                     dispatch(hideLoader());
                     // dispatch(showNotification('error', batchRes.detail));
                 }
-               
+
             } catch (error) {
                 dispatch(hideLoader());
                 dispatch(showNotification('error', 'No Data Found'));
@@ -1270,7 +1289,57 @@ function PaperBatchRecordsTemplate() {
                                 expandIconPosition='right'
                                 defaultActiveKey={['1']}
                             >
-                                <Panel header='Page Identifier' key='1'>
+                                <Panel header='Template' key='1'>
+                                    <Form onValuesChange={handleValuesChange} name="template_desc" onFinish={onFinish}
+                                        // labelCol={{ span: 8 }}
+                                        // wrapperCol={{ span: 16 }}
+                                        initialValues={{ material_num: matBatch?.material_num, batch: matBatch?.batch, template_name: params?.tempalteName, status: "Draft" }}
+                                    >
+                                        {/* <Form.Item
+                                            name='template_id'
+                                            label="Template ID"
+                                        >
+                                            <Input style={{ width: 193, marginLeft: 25 }} />
+                                        </Form.Item> */}
+                                        <Form.Item
+                                            name='template_name'
+                                            label="Template Name"
+                                        // rules={[{ required: true, message: 'Missing first name' }]}
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                        <Form.Item
+                                            name='status'
+                                            label="Status"
+                                        // rules={[{ required: true, message: 'Missing first name' }]}
+                                        >
+                                            <Input style={{ width: 193, marginLeft: 59 }} />
+                                            {/* <Input/> */}
+                                        </Form.Item>
+                                        <Form.Item
+                                            name='material_num'
+                                            label="Material"
+                                        // rules={[{ required: true, message: 'Missing first name' }]}
+                                        >
+                                            <Input style={{ width: 193, marginLeft: 47 }} />
+                                            {/* <Input/> */}
+                                        </Form.Item>
+                                        <Form.Item
+                                            name='batch'
+                                            label="Batch"
+                                        // rules={[{ required: true, message: 'Missing first name' }]}
+                                        >
+                                            <Input style={{ width: 193, marginLeft: 61 }} />
+                                            {/* <Input/> */}
+                                        </Form.Item>
+                                        {/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                                            <Button type="primary" htmlType="submit">
+                                                Submit
+                                            </Button>
+                                        </Form.Item> */}
+                                    </Form>
+                                </Panel>
+                                <Panel header='Page Identifier' key='2'>
                                     <div className='pageIdentifierBlock'>
                                         <Form
                                             layout='vertical'
@@ -1323,7 +1392,7 @@ function PaperBatchRecordsTemplate() {
                                         </Form>
                                     </div>
                                 </Panel>
-                                <Panel header='Add Parameter' key='2'>
+                                <Panel header='Add Parameter' key='3'>
                                     <Form onValuesChange={handleValuesChange} name="dynamic_form_nest_item" onFinish={onFinish}
                                         initialValues={formLoadParameter}
                                         autoComplete="off">
@@ -1343,7 +1412,7 @@ function PaperBatchRecordsTemplate() {
                                                                                     <Form.Item
                                                                                         {...restField}
                                                                                         name={[name, 'name']}
-                                                                                        // label="Name"
+                                                                                        label="Name"
                                                                                         rules={[{ required: true, message: 'Missing first name' }]}
                                                                                     >
                                                                                         <Input
@@ -1357,12 +1426,14 @@ function PaperBatchRecordsTemplate() {
                                                                                                     key
                                                                                                 )
                                                                                             }
+                                                                                            style={{ marginLeft: 10, width: 200 }}
 
                                                                                         />
                                                                                     </Form.Item>
                                                                                     <Form.Item
                                                                                         {...restField}
                                                                                         name={[name, 'method']}
+                                                                                        label="Method"
                                                                                         rules={[{ required: true, message: 'method' }]}
                                                                                     >
                                                                                         <Select placeholder="Select Method" onChange={(e, value) => onChangeChart(e, 'method', key, value)} value={formValues[key]?.method}>
@@ -1396,10 +1467,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <PlusOutlined />
                                                                                             </p>
                                                                                             <p className='ant-upload-text'>
-                                                                                                Drag
-                                                                                                and
-                                                                                                drop
-                                                                                                anchor
+                                                                                                Click below and select anchor
                                                                                             </p>
                                                                                             {/* {showInputAnchor && ( */}
                                                                                             <p
@@ -1442,10 +1510,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <PlusOutlined />
                                                                                             </p>
                                                                                             <p className='ant-upload-text'>
-                                                                                                Drag
-                                                                                                and
-                                                                                                drop
-                                                                                                snippet
+                                                                                                Click below and select snippet
                                                                                             </p>
                                                                                             <p
                                                                                                 className='ant-upload-text-input'
@@ -1455,10 +1520,10 @@ function PaperBatchRecordsTemplate() {
                                                                                                 style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <span>
-                                                                                                    Or
+                                                                                                    {/* Or
                                                                                                     enter
                                                                                                     snippet
-                                                                                                    number
+                                                                                                    number */}
                                                                                                 </span>
                                                                                                 <Form.Item
                                                                                                     {...restField}
@@ -1487,9 +1552,15 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Dragger>
                                                                                         <Form.Item  {...restField}
                                                                                             name={[name, 'param_valueFormat']}>
-                                                                                            <Select >
+                                                                                            <Select defaultValue='Rule'>
                                                                                                 <Option value='FORMAT'>
-                                                                                                    FORMAT
+                                                                                                    Date
+                                                                                                </Option>
+                                                                                                <Option value='FORMAT'>
+                                                                                                    Range
+                                                                                                </Option>
+                                                                                                <Option value='FORMAT'>
+                                                                                                    RegEx
                                                                                                 </Option>
                                                                                             </Select>
                                                                                         </Form.Item>
@@ -1522,7 +1593,7 @@ function PaperBatchRecordsTemplate() {
 
                                                                                     </div>
                                                                                     <p>
-                                                                                        Unit of Manufacturing
+                                                                                        UOM
                                                                                     </p>
                                                                                     {/* <p></p> */}
                                                                                     <div className='parameterAddingBlock parameterValueBlock'>
@@ -1537,10 +1608,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <PlusOutlined />
                                                                                             </p>
                                                                                             <p className='ant-upload-text'>
-                                                                                                Drag
-                                                                                                and
-                                                                                                drop
-                                                                                                anchor
+                                                                                                Click below and select anchor
                                                                                             </p>
                                                                                             {/* {showInputAnchor && ( */}
                                                                                             <p
@@ -1579,10 +1647,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <PlusOutlined />
                                                                                             </p>
                                                                                             <p className='ant-upload-text'>
-                                                                                                Drag
-                                                                                                and
-                                                                                                drop
-                                                                                                snippet
+                                                                                                Click below and select snippet
                                                                                             </p>
                                                                                             <p
                                                                                                 className='ant-upload-text-input'
@@ -1592,10 +1657,10 @@ function PaperBatchRecordsTemplate() {
                                                                                                 style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <span>
-                                                                                                    Or
+                                                                                                    {/* Or
                                                                                                     enter
                                                                                                     snippet
-                                                                                                    number
+                                                                                                    number */}
                                                                                                 </span>
                                                                                                 <Input
                                                                                                     value={
@@ -1616,9 +1681,15 @@ function PaperBatchRecordsTemplate() {
                                                                                             </p>
                                                                                         </Dragger>
                                                                                         <Form.Item name='valueFormat'>
-                                                                                            <Select defaultValue='FORMAT'>
+                                                                                            <Select defaultValue='Rule'>
                                                                                                 <Option value='FORMAT'>
-                                                                                                    FORMAT
+                                                                                                    Date
+                                                                                                </Option>
+                                                                                                <Option value='FORMAT'>
+                                                                                                    Range
+                                                                                                </Option>
+                                                                                                <Option value='FORMAT'>
+                                                                                                    RegEx
                                                                                                 </Option>
                                                                                             </Select>
                                                                                         </Form.Item>
@@ -1631,9 +1702,17 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Form.Item>
                                                                                         <Form.Item name='valueAnchorDirection'>
                                                                                             <Select defaultValue='AnchorDirection'>
-                                                                                                <Option value='AnchorDirection'>
-                                                                                                    Anchor
-                                                                                                    Direction
+                                                                                                <Option value='top'>
+                                                                                                    Top
+                                                                                                </Option>
+                                                                                                <Option value='left'>
+                                                                                                    Left
+                                                                                                </Option>
+                                                                                                <Option value='bottom'>
+                                                                                                    Bottom
+                                                                                                </Option>
+                                                                                                <Option value='right'>
+                                                                                                    Right
                                                                                                 </Option>
                                                                                             </Select>
                                                                                         </Form.Item>
@@ -1654,10 +1733,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <PlusOutlined />
                                                                                             </p>
                                                                                             <p className='ant-upload-text'>
-                                                                                                Drag
-                                                                                                and
-                                                                                                drop
-                                                                                                anchor
+                                                                                                Click below and select anchor
                                                                                             </p>
                                                                                             {/* {showInputAnchor && ( */}
                                                                                             <p
@@ -1696,10 +1772,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <PlusOutlined />
                                                                                             </p>
                                                                                             <p className='ant-upload-text'>
-                                                                                                Drag
-                                                                                                and
-                                                                                                drop
-                                                                                                snippet
+                                                                                                Click below and select snippet
                                                                                             </p>
                                                                                             <p
                                                                                                 className='ant-upload-text-input'
@@ -1709,10 +1782,10 @@ function PaperBatchRecordsTemplate() {
                                                                                                 style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <span>
-                                                                                                    Or
+                                                                                                    {/* Or
                                                                                                     enter
                                                                                                     snippet
-                                                                                                    number
+                                                                                                    number */}
                                                                                                 </span>
                                                                                                 <InputField
                                                                                                     value={
@@ -1732,9 +1805,15 @@ function PaperBatchRecordsTemplate() {
                                                                                             </p>
                                                                                         </Dragger>
                                                                                         <Form.Item name='valueFormat'>
-                                                                                            <Select defaultValue='FORMAT'>
+                                                                                            <Select defaultValue='Rule'>
                                                                                                 <Option value='FORMAT'>
-                                                                                                    FORMAT
+                                                                                                    Date
+                                                                                                </Option>
+                                                                                                <Option value='FORMAT'>
+                                                                                                    Range
+                                                                                                </Option>
+                                                                                                <Option value='FORMAT'>
+                                                                                                    RegEx
                                                                                                 </Option>
                                                                                             </Select>
                                                                                         </Form.Item>
@@ -1747,9 +1826,17 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Form.Item>
                                                                                         <Form.Item name='valueAnchorDirection'>
                                                                                             <Select defaultValue='AnchorDirection'>
-                                                                                                <Option value='AnchorDirection'>
-                                                                                                    Anchor
-                                                                                                    Direction
+                                                                                                <Option value='top'>
+                                                                                                    Top
+                                                                                                </Option>
+                                                                                                <Option value='left'>
+                                                                                                    Left
+                                                                                                </Option>
+                                                                                                <Option value='bottom'>
+                                                                                                    Bottom
+                                                                                                </Option>
+                                                                                                <Option value='right'>
+                                                                                                    Right
                                                                                                 </Option>
                                                                                             </Select>
                                                                                         </Form.Item>
@@ -1770,10 +1857,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <PlusOutlined />
                                                                                             </p>
                                                                                             <p className='ant-upload-text'>
-                                                                                                Drag
-                                                                                                and
-                                                                                                drop
-                                                                                                anchor
+                                                                                                Click below and select anchor
                                                                                             </p>
                                                                                             {/* {showInputAnchor && ( */}
                                                                                             <p
@@ -1813,10 +1897,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <PlusOutlined />
                                                                                             </p>
                                                                                             <p className='ant-upload-text'>
-                                                                                                Drag
-                                                                                                and
-                                                                                                drop
-                                                                                                snippet
+                                                                                                Click below and select snippet
                                                                                             </p>
                                                                                             <p
                                                                                                 className='ant-upload-text-input'
@@ -1826,10 +1907,10 @@ function PaperBatchRecordsTemplate() {
                                                                                                 style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <span>
-                                                                                                    Or
+                                                                                                    {/* Or
                                                                                                     enter
                                                                                                     snippet
-                                                                                                    number
+                                                                                                    number */}
                                                                                                 </span>
                                                                                                 <InputField
                                                                                                     value={
@@ -1850,9 +1931,15 @@ function PaperBatchRecordsTemplate() {
                                                                                             </p>
                                                                                         </Dragger>
                                                                                         <Form.Item name='valueFormat'>
-                                                                                            <Select defaultValue='FORMAT'>
+                                                                                            <Select defaultValue='Rule'>
                                                                                                 <Option value='FORMAT'>
-                                                                                                    FORMAT
+                                                                                                    Date
+                                                                                                </Option>
+                                                                                                <Option value='FORMAT'>
+                                                                                                    Range
+                                                                                                </Option>
+                                                                                                <Option value='FORMAT'>
+                                                                                                    RegEx
                                                                                                 </Option>
                                                                                             </Select>
                                                                                         </Form.Item>
@@ -1864,10 +1951,18 @@ function PaperBatchRecordsTemplate() {
                                                                                             <Input placeholder='Enter area' />
                                                                                         </Form.Item>
                                                                                         <Form.Item name='valueAnchorDirection'>
-                                                                                            <Select defaultValue='AnchorDirection'>
-                                                                                                <Option value='AnchorDirection'>
-                                                                                                    Anchor
-                                                                                                    Direction
+                                                                                        <Select defaultValue='AnchorDirection'>
+                                                                                                <Option value='top'>
+                                                                                                    Top
+                                                                                                </Option>
+                                                                                                <Option value='left'>
+                                                                                                    Left
+                                                                                                </Option>
+                                                                                                <Option value='bottom'>
+                                                                                                    Bottom
+                                                                                                </Option>
+                                                                                                <Option value='right'>
+                                                                                                    Right
                                                                                                 </Option>
                                                                                             </Select>
                                                                                         </Form.Item>
@@ -1894,6 +1989,8 @@ function PaperBatchRecordsTemplate() {
                                                                     <div
                                                                         className='firstParameter-para'
                                                                         onClick={() => parameterAddingHandler()}
+                                                                        type="primary"
+                                                                        htmlType="submit"
                                                                     >
                                                                         <p
                                                                             onClick={() => {
