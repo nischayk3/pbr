@@ -27,7 +27,6 @@ import {
 import ChartSearchTable from './chartTableLoad';
 import { PlusOutlined } from '@ant-design/icons';
 import './styles.scss';
-import { NoStyleItemContext } from 'antd/lib/form/context';
 
 export default function landingPage(props) {
 	const { Search } = Input;
