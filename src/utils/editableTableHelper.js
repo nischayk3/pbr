@@ -70,12 +70,17 @@ export const EditableCell = ({
     ) : (
       <div
         className="editable-cell-value-wrap"
-        style={{
-          paddingRight: 24,
-        }}
+        style={{ paddingRight: 24 }}
         onClick={toggleEdit}
       >
         {children}
+        <style>{`
+            .editable-row .ant-form-item-explain {
+              position: absolute;
+              top: 100%;
+              font-size: 12px;
+            }
+        `}</style>
       </div>
     );
   }
@@ -108,7 +113,7 @@ export const changeInput = (row, state) => {
 
 export const changeSelectInput = (value, record, column, state) => {
   const dataSource = JSON.parse(JSON.stringify(state.dataSource))
-  if(column.mode === 'single') value = [`${value}`]
+  if (column.mode === 'single') value = [`${value}`]
   const index = dataSource.findIndex(item => record.key === item.key)
   const name = column.name
   dataSource[index][name] = value
@@ -138,5 +143,5 @@ export const adjustColumnWidths = columns => {
 }
 
 export const singleSelectArray = dataSource => {
-  
+
 }
