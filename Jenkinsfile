@@ -32,7 +32,8 @@ pipeline {
                   sh '''#!/bin/bash -x
                         npm install 
                         npm install cypress --save-dev
-                        npm run cy:build
+                        npm start
+                        npm run cy:run
                         ls coverage
                  '''       
                 }
