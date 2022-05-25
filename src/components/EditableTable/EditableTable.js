@@ -52,7 +52,7 @@ class EditableTable extends Component {
     }
 
     initializeTableRender() {
-        const { dataSource, deleteActionColumn,  deleteActionColumnAdded, columns: columnsCopy } = this.state
+        const { dataSource, deleteActionColumn, deleteActionColumnAdded, columns: columnsCopy } = this.state
         dataSource.map(data => data.key = uuid())
         const columns = deleteActionColumn && !deleteActionColumnAdded ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
         adjustColumnWidths(columns)
@@ -95,12 +95,13 @@ class EditableTable extends Component {
             dataIndex: 'action',
             align: 'center',
             type: 'action_delete',
+            className: 'adsasd',
+            style: { background: 'black' },
             render: (_, record) =>
                 this.state.dataSource.length >= 1 ? (
                     <Popconfirm title="Sure to delete?" onConfirm={() => this.onDeleteRow(record.key)}>
                         <DeleteOutlined style={{ color: 'red' }} />
                     </Popconfirm>
-
                 ) : null,
         }
         columns.unshift(actionColumn)
@@ -156,10 +157,10 @@ class EditableTable extends Component {
             await this.props.saveTableData(tableData)
             this.setState({ tableDataChanged: false })
             this.props.hideLoader()
-          } catch (err) {
+        } catch (err) {
             console.log('err: ', err)
             this.props.hideLoader()
-          }
+        }
     }
 
     render() {
