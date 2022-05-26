@@ -98,7 +98,7 @@ class EditableTable extends Component {
             type: 'action_delete',
             render: (_, record, i) => {
                 return this.state.dataSource.length >= 1 ? (
-                    <Checkbox name={record.key} checked={record.deleteRowChecked} key={record.key} onChange={this.onDeleteRowCheck}></Checkbox>
+                    <Checkbox name={record.key} checked={record.deleteRowChecked} key={i} onChange={this.onDeleteRowCheck}></Checkbox>
                 ) : null
             }
 
