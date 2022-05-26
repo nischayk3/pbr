@@ -5,11 +5,11 @@
 
 version: '3.9'
 services:
-  cpv-nextgen-ui:
-    container_name: cpv-nextgen-ui
-    image: registry.mareana.com/cpv-nextgen-ui:latest
-    restart: unless-stopped
-    dockerfile: Dockerfile
+  ui-cypress-test:
+    container_name: ui-cypress-test
+    build: 
+      context: .
+      dockerfile: Dockerfile-start-server
     environment:
       - NODE_PATH=src/
     ports:

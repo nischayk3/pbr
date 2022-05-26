@@ -30,10 +30,15 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                
                   sh '''#!/bin/bash -x
+                        sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+                        sudo chmod +x /usr/local/bin/docker-compose
+                        docker-compose version
                         npm install 
                         npm install cypress --save-dev
-                        npm start
+                        docker-compose up -d ui-cypress-test 
+                        sleep 5
                         npm run cy:run
+                        docker-compose down -v
                         ls coverage
                  '''       
                 }
