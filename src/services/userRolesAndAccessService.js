@@ -45,7 +45,7 @@ export const getUserConfiguartions = () => {
 export const saveUserConfigurationws = data => {
     const body = { data }
     let login_response = JSON.parse(localStorage.getItem('login_details'));
-    return axios.put('/services/v1/user-config', body, {
+    return axios.put('/services/v1/user-configg', body, {
         headers: {
             'x-access-token': login_response.token ? login_response.token : '',
             'resource-name': 'CONFIGURATION'

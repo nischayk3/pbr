@@ -215,3 +215,22 @@ button[role="switch"][aria-checked="true"] {
 	background: #486BC9;
 	color: #fff;
 }
+
+.ant-checkbox-checked .ant-checkbox-inner {
+	background-color: var(--primary-color) !important;
+	border-color: var(--primary-color) !important;
+}
+
+.button--delete {
+	float: right;
+	margin-right: 16px;
+	border: 1px solid var(--primary-color) !important;
+	background-color: #fff !important;
+	color: var(--primary-color) !important;
+	border-radius: 4px;
+}
+
+.button--delete:hover {
+	background-color: #fff !important;
+	color: #486BC9 !important;
+}

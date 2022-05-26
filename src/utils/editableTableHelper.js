@@ -61,7 +61,7 @@ export const EditableCell = ({
         rules={[
           {
             required: true,
-            message: `${title} is required.`,
+            message: `${title} is required.`
           },
         ]}
       >
@@ -149,10 +149,9 @@ export const selectAllRowsForDeletion = (checked, dataSource) => {
   return dataSourceCopy
 }
 
-export const checkDeleteButtonDisabledState = (dataSource) => {
+export const checkDeleteButtonDisabledState = dataSource => {
   let rowsMarkedForDeletion = false
-  const dataSourceCopy = JSON.parse(JSON.stringify(dataSource))
-  dataSourceCopy.forEach(data => {
+  dataSource.forEach(data => {
     if (data.deleteRowChecked) rowsMarkedForDeletion = true
   })
   return rowsMarkedForDeletion
