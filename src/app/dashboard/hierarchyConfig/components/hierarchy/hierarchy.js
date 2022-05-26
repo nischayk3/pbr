@@ -8,15 +8,16 @@
  */
 
 import React, { useEffect, useState } from 'react'
-import { Card, Tabs, Table, Popconfirm, Button, Input, Modal, Row, Col, Select,message } from 'antd'
+import { Card, Tabs, Table, Popconfirm, Button, Input, Modal, Row, Col, Select, message } from 'antd'
 import './hierStyle.scss'
 import { ArrowRightOutlined, DeleteTwoTone, PlusOutlined } from '@ant-design/icons'
 import Banner from '../../../../../assets/images/Popup-Side.svg';
 import BreadCrumbWrapper from '../../../../../components/BreadCrumbWrapper';
 import Display from '../display/display';
-import { putMolecule, putProcessStep, getProcessStep } from '../../../../../services/viewHierarchyServices';
+import { putMolecule, putProcessStep, getProcessStep, getProcessStepMap, putProcessStepMap } from '../../../../../services/viewHierarchyServices';
 import { showNotification } from '../../../../../duck/actions/commonActions';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEdges } from 'react-flow-renderer';
 
 const { TabPane } = Tabs
 
@@ -33,6 +34,7 @@ function Hierarchy() {
     const [count, setCount] = useState(1);
     const [stepCount, setStepCount] = useState(1);
     const [stepMapCount, setStepMapCount] = useState(1);
+    const [tableData,setTableData] = useState([])
 
     const [activeTab, setActiveTab] = useState('Plant and molecules')
 
@@ -43,12 +45,27 @@ function Hierarchy() {
     useEffect(() => {
         handleAdd()
         handleStepAdd()
-        if(hier_name)
-        setHierarchyName(hier_name)
+        if (hier_name)
+            setHierarchyName(hier_name)
 
 
     }, [])
+    useEffect(() => {
+        if (stepData && stepData.length > 0 && moleculeData && moleculeData.length > 0 && activeTab == 'Process step mapping') {
+            getStepMapping()
+        }
+    }, [activeTab])
 
+
+    const getStepMapping = async () => {
+        let req = { ds_name: hierarchyName }
+        let mapResponse = getProcessStepMap(req)
+
+        if (mapResponse['status-code'] == 200) {
+             setTableData(mapResponse.data)
+             setStepArray(mapResponse.options)
+        }
+    }
     const plantMoleculeColumns =
         [
             {
@@ -164,20 +181,20 @@ function Hierarchy() {
     const mappingColumns = [
         {
             title: "Product",
-            dataIndex: "Product",
-            key: "Product",
+            dataIndex: "molecule_num",
+            key: "molecule_num",
             width: "200",
         },
         {
             title: "Plant",
-            dataIndex: "Plant",
-            key: "Plant",
+            dataIndex: "site_num",
+            key: "site_num",
             width: "200",
         },
         {
             title: "Level1",
-            dataIndex: "Level1",
-            key: "Level 1",
+            dataIndex: "l1_product",
+            key: "l1_product",
             width: "200",
         },
         {
@@ -188,48 +205,35 @@ function Hierarchy() {
         },
         {
             title: "Process Step",
-            dataIndex: "Process Step",
+            dataIndex: "process_step",
+            key:'process_step',
             width: "200",
-            align:'left',
-            render : (text,record) =>
-            {
+            align: 'left',
+            render: (text, record) => {
                 return (
                     <Select
-                    row={1}
-                    className="filter-button"
-                    allowClear
-                    dropdownStyle={{ border: '10' }}
-                    notFoundContent="No Result"
-                    placeholder="Select Step"
-                    style={{ width: '100%',borderRadius:'4px',right:'15px'}}
-                >
-                    {stepArray.length > 0 ? stepArray.map(item => (
-                        <Option value={item} key={item}>
-                            {item}
-                        </Option>
-                    )) : <Option >
+                        row={1}
+                        className="filter-button"
+                        allowClear
+                        dropdownStyle={{ border: '10' }}
+                        notFoundContent="No Result"
+                        placeholder="Select Step"
+                        style={{ width: '100%', borderRadius: '4px', right: '15px' }}
+                    >
+                        {stepArray.length > 0 ? stepArray.map(item => (
+                            <Option value={item} key={item}>
+                                {item}
+                            </Option>
+                        )) : <Option >
 
-                    </Option>}
-                </Select>
+                        </Option>}
+                    </Select>
                 )
             }
         },
 
     ]
-    const dataSource = [
-        {
-          Product: '1',
-          Plant: 'Mike',
-          Level1: 32,
-          Description: '10 Downing Street',
-        },
-        {
-          key: '2',
-          name: 'John',
-          age: 42,
-          address: '10 Downing Street',
-        },
-      ];
+
 
     const handleAdd = () => {
         const newData = {
@@ -378,7 +382,7 @@ function Hierarchy() {
                             <TabPane tab="Process step mapping" key="Process step mapping">
                                 <p className="tab-title">Enter the process step for {hierarchyName}</p>
                                 <div className="map-grid">
-                                    <Table className="hierarchy-map-table" columns={mappingColumns} dataSource={dataSource} />
+                                    <Table className="hierarchy-map-table" columns={mappingColumns} dataSource={tableData} />
                                     {/* <div className="map-box">
                                         <p className="map-box-text">Process steps available</p>
                                         {stepArray && stepArray.map((i) =>
