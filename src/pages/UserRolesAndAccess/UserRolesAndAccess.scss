@@ -175,7 +175,10 @@ custom-panel .panel-repeat {
 }
 
 .create-new-row .ant-col.ant-col-4 p {
-	font-weight: 300;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 22px;
+	color: #494949;
 }
 
 .custom-table-wrapper p~button {
@@ -197,4 +200,18 @@ custom-panel .panel-repeat {
 
 button[role="switch"][aria-checked="true"] {
 	background-color: #083185;
+}
+
+.ant-popover-inner-content {
+	border-radius: 4px;
+}
+
+.ant-popover-inner-content .ant-btn.ant-btn-primary.ant-btn-sm {
+	background: var(--primary-color);
+	border: var(--primary-color);
+}
+
+.ant-popover-inner-content .ant-btn.ant-btn-default.ant-btn-sm:hover {
+	background: #486BC9;
+	color: #fff;
 }

@@ -195,7 +195,7 @@ function ReportDesignerDynamicSections(props) {
                                                     style={{ display: 'flex', justifyContent: 'center' }}
                                                     align="baseline"
                                                 >
-                                                    <table className="dynamicSections-table" style={{ width: '1190px',marginLeft:'10px' }}>
+                                                    <table className="dynamicSections-table" style={{ width: '1200px',marginLeft:'14px' }}>
                                                         <thead className="dynamicSections-thead">
                                                             <tr>
                                                                 <th className="action-clm">Action</th>
@@ -240,7 +240,7 @@ function ReportDesignerDynamicSections(props) {
                                                 <Chart chartName={i} />
                                             </div>
                                         ))}
-                                  <Tooltip placement="bottomRight" title="Add Section">       <PlusOutlined style={{ fontSize: '16px', marginLeft: '99.2%', color: '#093185', background: "white", padding: "2px", borderRadius: "50px",boxShadow: '.5px grey' }} twoToneColor="#eb2f96" onClick={() => add()} /> </Tooltip>
+                                  <Tooltip placement="bottomRight" title="Add Section"> <PlusOutlined style={{ fontSize: '18px', marginLeft: '99.2%', color: '#093185', background: "white", padding: "2px", borderRadius: "50px",filter: 'drop-shadow(0px 1px 10px rgba(38, 38, 38, 0.1))' }} twoToneColor="#eb2f96" onClick={() => add()} /> </Tooltip>
 
                                     </div>
                                 ))}
