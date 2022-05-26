@@ -226,14 +226,14 @@ class EditableTable extends Component {
                 >
                     Save
                 </Button>
-                <Button
+                {this.state.deleteActionColumnAdded && <Button
                     type="primary"
                     onClick={this.onDeleteRows}
                     className="button--delete"
                     disabled={!this.state.rowsMarkedForDeletion}
                 >
                     Delete
-                </Button>
+                </Button>}
                 <Table
                     components={components}
                     rowClassName={() => 'editable-row'}
