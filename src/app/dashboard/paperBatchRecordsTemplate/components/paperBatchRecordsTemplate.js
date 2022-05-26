@@ -22,6 +22,7 @@ import {
     Table,
     Dropdown,
     Menu,
+    InputNumber
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -36,6 +37,8 @@ import {
     PlusOutlined,
     MinusCircleOutlined,
     MonitorOutlined,
+    LeftOutlined,
+    RightOutlined
 } from '@ant-design/icons';
 
 import {
@@ -58,6 +61,7 @@ import Sider from 'antd/lib/layout/Sider';
 import { ImCrop } from 'react-icons/im';
 import AddParameter from './addParameter/AddParameter';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
+import { loadTemplateInfo, loadMatBatchInfo } from '../../../../duck/actions/pbrAction';
 import './styles.scss'; ImCrop
 import {
     getBoundingBoxData,
@@ -65,6 +69,7 @@ import {
     processBatchRecord,
     findParameter,
 } from '../../../../services/pbrService';
+import { IdTokenEntity } from '@azure/msal-common';
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Dragger } = Upload;
@@ -692,6 +697,7 @@ function PaperBatchRecordsTemplate() {
             setFormValues(arr)
             setActiveNumber(templateInfo?.length)
             setParamaterAdded(true)
+            dispatch(loadTemplateInfo([]))
         }
     }, [areasMap])
 
@@ -735,6 +741,15 @@ function PaperBatchRecordsTemplate() {
         setBoundingBoxClicked(true);
         setClickedSnippetId(area.areaValue);
         setSnippetNumber(area.snippetID)
+        let updateObj = { ...areasMap }
+        updateObj.areas.forEach(item => {
+            if (item.snippetID === area.snippetID) {
+                item.strokeColor = "green"
+            } else {
+                item.strokeColor = "blue"
+            }
+        })
+        setAreasMap(updateObj)
         let obj = {
             snippetID: area.snippetID,
             areaValue: area.areaValue,
@@ -846,8 +861,8 @@ function PaperBatchRecordsTemplate() {
                     createdBy: login_response?.email_id,
                     changedBy: login_response?.firstname,
                     pbrTemplateInfo: [],
-                    material:matBatch?.material_num,
-                    batch:matBatch?.batch
+                    material: matBatch?.material_num,
+                    batch: matBatch?.batch
                 };
                 let arr = [];
                 formValues.forEach((ele) => {
@@ -870,7 +885,7 @@ function PaperBatchRecordsTemplate() {
                         obj['param_value_text'] = ele?.values?.anchorId
                         obj['param_value_top'] = ele?.values?.valueCoords[1] / imageHeight
                         obj['param_value_width'] = (ele?.values?.valueCoords[2] - ele?.values?.valueCoords[0]) / imageWidth
-                        obj['param_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
+                        obj['param_value_snippet_id'] = ele?.values?.valueSnippetID
 
                     }
                     if (ele.unitValues) {
@@ -886,7 +901,7 @@ function PaperBatchRecordsTemplate() {
                         obj['uom_value_text'] = ele?.unitValues?.unitId
                         obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / imageHeight
                         obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / imageWidth
-                        obj['uom_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
+                        obj['uom_value_snippet_id'] = ele?.values?.valueSnippetID
 
                     }
                     if (ele.timeValues) {
@@ -902,7 +917,7 @@ function PaperBatchRecordsTemplate() {
                         obj['time_value_text'] = ele?.timeValues?.timeId
                         obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / imageHeight
                         obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / imageWidth
-                        obj['time_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
+                        obj['time_value_snippet_id'] = ele?.values?.valueSnippetID
 
                     }
                     if (ele.dateValues) {
@@ -918,7 +933,7 @@ function PaperBatchRecordsTemplate() {
                         obj['date_value_text'] = ele?.dateValues?.dateId
                         obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / imageHeight
                         obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / imageWidth
-                        obj['date_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
+                        obj['date_value_snippet_id'] = ele?.values?.valueSnippetID
 
                     }
                     arr.push(obj);
@@ -1089,63 +1104,6 @@ function PaperBatchRecordsTemplate() {
             filename: params.file,
             method: formValues[activeKey]?.method
         }
-        // if (formValues[activeKey]?.values) {
-        //     obj['color'] = "blue",
-        //         obj['param_key_height'] = (formValues[activeKey]?.values?.anchorCoords[3] - formValues[activeKey]?.values?.anchorCoords[1]) / imageHeight
-        //     obj['param_key_left'] = formValues[activeKey]?.values?.anchorCoords[0] / imageWidth
-        //     obj['param_key_text'] = formValues[activeKey]?.values?.anchorValue
-        //     obj['param_key_top'] = formValues[activeKey]?.values?.anchorCoords[1] / imageHeight
-        //     obj['param_key_width'] = (formValues[activeKey]?.values?.anchorCoords[2] - formValues[activeKey]?.values?.anchorCoords[0]) / imageWidth
-        //     obj['param_page'] = 1
-        //     obj['param_snippet_id'] = formValues[activeKey]?.values?.snippetID
-        //     obj['param_value_height'] = (formValues[activeKey]?.values?.valueCoords[3] - formValues[activeKey]?.values?.valueCoords[1]) / imageHeight
-        //     obj['param_value_left'] = formValues[activeKey]?.values?.valueCoords[0] / imageWidth
-        //     obj['param_value_text'] = formValues[activeKey]?.values?.anchorId
-        //     obj['param_value_top'] = formValues[activeKey]?.values?.valueCoords[1] / imageHeight
-        //     obj['param_value_width'] = (formValues[activeKey]?.values?.valueCoords[2] - formValues[activeKey]?.values?.valueCoords[0]) / imageWidth
-        // }
-        // if (formValues[activeKey]?.unitValues) {
-        //     obj['uom_key_height'] = (formValues[activeKey]?.unitValues?.coords[3] - formValues[activeKey]?.unitValues?.coords[1]) / imageHeight
-        //     obj['uom_key_left'] = formValues[activeKey]?.unitValues?.coords[0] / imageWidth
-        //     obj['uom_key_text'] = formValues[activeKey]?.unitValues?.unitAnchor
-        //     obj['uom_key_top'] = formValues[activeKey]?.unitValues?.coords[1] / imageHeight
-        //     obj['uom_key_width'] = (formValues[activeKey]?.unitValues?.coords[2] - formValues[activeKey]?.unitValues?.coords[0]) / imageWidth
-        //     obj['uom_page'] = 1
-        //     obj['uom_snippet_id'] = formValues[activeKey]?.unitValues?.snippetID
-        //     obj['uom_value_height'] = (formValues[activeKey]?.unitValues?.valueCoords[3] - formValues[activeKey]?.unitValues?.valueCoords[1]) / imageHeight
-        //     obj['uom_value_left'] = formValues[activeKey]?.unitValues?.valueCoords[0] / imageWidth
-        //     obj['uom_value_text'] = formValues[activeKey]?.unitValues?.unitId
-        //     obj['uom_value_top'] = formValues[activeKey]?.unitValues?.valueCoords[1] / imageHeight
-        //     obj['uom_value_width'] = (formValues[activeKey]?.unitValues?.valueCoords[2] - formValues[activeKey]?.unitValues?.valueCoords[0]) / imageWidth
-        // }
-        // if (formValues[activeKey]?.timeValues) {
-        //     obj['time_key_height'] = (formValues[activeKey]?.timeValues?.coords[3] - formValues[activeKey]?.timeValues?.coords[1]) / imageHeight
-        //     obj['time_key_left'] = formValues[activeKey]?.timeValues?.coords[0] / imageWidth
-        //     obj['time_key_text'] = formValues[activeKey]?.timeValues?.timeAnchor
-        //     obj['time_key_top'] = formValues[activeKey]?.timeValues?.coords[1] / imageHeight
-        //     obj['time_key_width'] = (formValues[activeKey]?.timeValues?.coords[2] - formValues[activeKey]?.timeValues?.coords[0]) / imageWidth
-        //     obj['time_page'] = 1
-        //     obj['time_snippet_id'] = formValues[activeKey]?.timeValues?.snippetID
-        //     obj['time_value_height'] = (formValues[activeKey]?.timeValues?.valueCoords[3] - formValues[activeKey]?.timeValues?.valueCoords[1]) / imageHeight
-        //     obj['time_value_left'] = formValues[activeKey]?.timeValues?.valueCoords[0] / imageWidth
-        //     obj['time_value_text'] = formValues[activeKey]?.timeValues?.timeId
-        //     obj['time_value_top'] = formValues[activeKey]?.timeValues?.valueCoords[1] / imageHeight
-        //     obj['time_value_width'] = (formValues[activeKey]?.timeValues?.valueCoords[2] - formValues[activeKey]?.timeValues?.valueCoords[0]) / imageWidth
-        // }
-        // if (formValues[activeKey]?.dateValues) {
-        //     obj['date_key_height'] = (formValues[activeKey]?.dateValues?.coords[3] - formValues[activeKey]?.dateValues?.coords[1]) / imageHeight
-        //     obj['date_key_left'] = formValues[activeKey]?.dateValues?.coords[0] / imageWidth
-        //     obj['date_key_text'] = formValues[activeKey]?.dateValues?.dateAnchor
-        //     obj['date_key_top'] = formValues[activeKey]?.dateValues?.coords[1] / imageHeight
-        //     obj['date_key_width'] = (formValues[activeKey]?.dateValues?.coords[2] - formValues[activeKey]?.dateValues?.coords[0]) / imageWidth
-        //     obj['date_page'] = 1
-        //     obj['date_snippet_id'] = formValues[activeKey]?.dateValues?.snippetID
-        //     obj['date_value_height'] = (formValues[activeKey]?.dateValues?.valueCoords[3] - formValues[activeKey]?.dateValues?.valueCoords[1]) / imageHeight
-        //     obj['date_value_left'] = formValues[activeKey]?.dateValues?.valueCoords[0] / imageWidth
-        //     obj['date_value_text'] = formValues[activeKey]?.dateValues?.dateId
-        //     obj['date_value_top'] = formValues[activeKey]?.dateValues?.valueCoords[1] / imageHeight
-        //     obj['date_value_width'] = (formValues[activeKey]?.dateValues?.valueCoords[2] - formValues[activeKey]?.dateValues?.valueCoords[0]) / imageWidth
-        // }
         formValues.forEach((ele) => {
             let obj = {
 
@@ -1306,7 +1264,6 @@ function PaperBatchRecordsTemplate() {
         form.setFieldsValue({ sights: [] });
     };
 
-    console.log("fornValsss", formValues)
     return (
         <div className='pbr-container pbrTemplate-container'>
             <div className='custom-wrapper pbr-wrapper'>
@@ -2106,11 +2063,21 @@ function PaperBatchRecordsTemplate() {
                                     span={12}
                                     className='pbrCenterPanelCol pbrCenterBlockLeft'
                                 >
-                                    <p className='pbrCenterPanelHeader-para' onClick={showModal}>
-                                        Preview
-                                        <span>{params?.file?.split('_')[0]}</span>
-                                    </p>
+                                    <div className='preview_page_finder'>
+                                        <p className='pbrCenterPanelHeader-para' onClick={showModal}>
+                                            Preview
+                                            <span>{params?.file?.split('_')[0]}</span>
+
+                                        </p>
+                                        <div>
+                                            <LeftOutlined className='icon_size' />
+                                            <Input style={{ width: 35 }} value="1" />
+                                            <RightOutlined className='icon_size' />
+                                        </div>
+
+                                    </div>
                                 </Col>
+
                                 <Col
                                     span={12}
                                     className='pbrCenterPanelCol pbrCenterBlockRight'
@@ -2120,10 +2087,6 @@ function PaperBatchRecordsTemplate() {
                                         Draw Snippet
                                     </div>
                                     <div className='cropSnippet'>
-                                        {/* <img
-                                            src={cropImg}
-                                            className='panelCenterImg'
-                                        /> */}
                                         <Dropdown
                                             style={{ color: '#ffffff' }}
                                             trigger={['click']}
