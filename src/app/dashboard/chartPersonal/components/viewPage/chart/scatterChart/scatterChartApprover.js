@@ -22,7 +22,7 @@ import {
 
 const { TabPane } = Tabs;
 
-const ScatterChart = ({ postChartData, setPostChartData }) => {
+const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
   const dispatch = useDispatch();
   const chartTypeList = [
     "Scatter Plot",
@@ -238,45 +238,36 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
   }, [axisValues.chartType]);
   return (
     <div className="chartLayout-container">
-      <Row gutter={24}>
+      <Row>
         <Col span={6}>
-          <p>Chart Type</p>
-          <SelectField
-            placeholder="Select Chart type"
-            selectList={chartTypeList}
-            selectedValue={axisValues.chartType}
-            onChangeSelect={handleChartType}
-          />
+          <Row gutter={16}>
+            <Col span={8}>
+              <p>Chart Type</p>
+            </Col>
+            <Col span={10}>
+              <p>: {axisValues.chartType ? axisValues.chartType : ""}</p>
+            </Col>
+          </Row>
         </Col>
-        <Col span={6}>
-          <p>X-axis</p>
-          <SelectField
-            placeholder="Select X-axis"
-            selectList={xaxisList}
-            selectedValue={axisValues.xaxis}
-            onChangeSelect={(e) => setAxisValues({ ...axisValues, xaxis: e })}
-          />
+        <Col span={8} style={{ paddingLeft: "10px" }}>
+          <Row gutter={16}>
+            <Col span={6}>
+              <p>X-axis</p>
+            </Col>
+            <Col span={18}>
+              <p>: {axisValues.xaxis ? axisValues.xaxis : ""}</p>
+            </Col>
+          </Row>
         </Col>
-        <Col span={6}>
-          <p>Y-axis</p>
-          <SelectField
-            placeholder="Select Y-axis"
-            selectList={yaxisList}
-            selectedValue={axisValues.yaxis}
-            onChangeSelect={(e) => setAxisValues({ ...axisValues, yaxis: e })}
-          />
-        </Col>
-        <Col span={6} className="button-visible">
-          <p>button</p>
-          <Button
-            className="custom-primary-btn"
-            onClick={onApply}
-            disabled={
-              !axisValues.chartType || !axisValues.xaxis || !axisValues.yaxis
-            }
-          >
-            Apply
-          </Button>
+        <Col span={8}>
+          <Row gutter={16}>
+            <Col span={6}>
+              <p>Y-axis</p>
+            </Col>
+            <Col span={18}>
+              <p>: {axisValues.yaxis ? axisValues.yaxis : ""}</p>
+            </Col>
+          </Row>
         </Col>
       </Row>
       <div className="chart-table">
@@ -321,27 +312,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
           </Row>
         )}
       </div>
-      <Modal
-        title="Batch Parameter"
-        isModalVisible={isModalVisible}
-        handleCancel={handleCloseModal}
-      >
-        <ExclusionPopup
-          className="exclusion-modal"
-          exclusionValues={exclusionValues}
-          setExclusionValues={setExclusionValues}
-          isModalVisible={isModalVisible}
-          setIsModalVisible={setIsModalVisible}
-          setExclusionTable={setExclusionTable}
-          exclusionTable={exclusionTable}
-          postChartData={postChartData}
-          setPostChartData={setPostChartData}
-          setTableKey={setTableKey}
-          exclusionIdCounter={exclusionIdCounter}
-        />
-      </Modal>
     </div>
   );
 };
 
-export default ScatterChart;
+export default ScatterChartApprover;

@@ -16,12 +16,14 @@
 	border-radius: 4px;
 	border: 1px solid #486bc9;
 	box-sizing: border-box;
+	height: 490px;
 	.ant-card-head {
 		background: #ffffff !important;
 		height: 65px !important;
+		padding: 20px 7px !important ;
 	}
 	.ant-card-head-title {
-		padding: 12px 15px !important;
+		//padding: 12px 15px !important;
 	}
 	.ant-card-body {
 		padding: 0px 25px !important;
@@ -107,4 +109,14 @@
 
 .workflow-right-block {
 	width: 75%;
+}
+
+.data-empty {
+	margin: 30px 0;
+	.ant-empty-image {
+		height: 280px;
+		svg {
+			width: 100%;
+		}
+	}
 }

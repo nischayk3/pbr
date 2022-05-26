@@ -75,6 +75,7 @@ button.button-solid__primary {
   background: var(--primary-color);
   color: #fff;
   border-radius: 4px;
+  border-color: var(--primary-color);
 }
 
 button.button-solid__primary:hover {
