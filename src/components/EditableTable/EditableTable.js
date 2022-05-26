@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import { v1 as uuid } from 'uuid'
-import { Table, Button, Popconfirm, Select, Switch } from 'antd'
+import { Table, Button, Popconfirm, Select, Switch, Checkbox } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import {
     EditableRow,
@@ -11,26 +11,22 @@ import {
     addRow,
     changeInput,
     changeSelectInput,
-    changeToggleInput
+    changeToggleInput,
+    deleteRowCheck,
+    selectAllRowsForDeletion,
+    checkDeleteButtonDisabledState
 } from '../../utils/editableTableHelper'
 import { showLoader, hideLoader } from '../../duck/actions/commonActions'
+import tableData from '../../pages/UserRolesAndAccess/UserConfiguration/UserConfiguration.json'
 
 const { Option } = Select
 
 class EditableTable extends Component {
     state = {
         tableDataChanged: false,
-        deleteActionColumnAdded: false
+        deleteActionColumnAdded: false,
+        rowsMarkedForDeletion: false
     }
-
-    // static getDerivedStateFromProps(props, state) {
-    //     if (!state.dataSource) {
-    //         const { rowInitialData, dataSource, deleteActionColumn } = props.tableData
-    //         return { rowInitialData, dataSource, count: dataSource.length, deleteActionColumn }
-    //     }
-
-    //     return null
-    // }
 
     componentDidMount() {
         this.loadTableData()
@@ -39,8 +35,9 @@ class EditableTable extends Component {
     loadTableData = async () => {
         this.props.showLoader()
         try {
-            const response = await this.props.getTableData()
-            const { rowInitialData, dataSource, deleteActionColumn, columns } = response.data.message
+            // const response = await this.props.getTableData()
+            // const { rowInitialData, dataSource, deleteActionColumn, columns } = response.data.message
+            const { rowInitialData, dataSource, deleteActionColumn, columns } = tableData
             this.setState({ rowInitialData, dataSource, count: dataSource.length, deleteActionColumn, columns }, () => {
                 this.initializeTableRender()
             })
@@ -53,7 +50,10 @@ class EditableTable extends Component {
 
     initializeTableRender() {
         const { dataSource, deleteActionColumn, deleteActionColumnAdded, columns: columnsCopy } = this.state
-        dataSource.map(data => data.key = uuid())
+        dataSource.map(data => {
+            data.key = uuid()
+            data.deleteRowChecked = false
+        })
         const columns = deleteActionColumn && !deleteActionColumnAdded ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
         adjustColumnWidths(columns)
         this.renderTableColumns(columns)
@@ -91,39 +91,55 @@ class EditableTable extends Component {
     addDeleteActionColumn = columns => {
         this.setState({ deleteActionColumnAdded: true })
         const actionColumn = {
-            title: 'Action',
+            title: <Checkbox name="selectAll" onChange={this.onSelectAllRowsForDeletion} ></Checkbox>,
             dataIndex: 'action',
             align: 'center',
             type: 'action_delete',
-            className: 'adsasd',
-            style: { background: 'black' },
-            render: (_, record) =>
-                this.state.dataSource.length >= 1 ? (
-                    <Popconfirm title="Sure to delete?" onConfirm={() => this.onDeleteRow(record.key)}>
-                        <DeleteOutlined style={{ color: 'red' }} />
-                    </Popconfirm>
-                ) : null,
+            render: (_, record, i) => {
+                return this.state.dataSource.length >= 1 ? (
+                    <Checkbox name={record.key} checked={record.deleteRowChecked} key={record.key} onChange={this.onDeleteRowCheck}></Checkbox>
+                ) : null
+            }
+
         }
         columns.unshift(actionColumn)
         adjustColumnWidths(columns)
         return columns
     }
 
-    onDeleteRow = async key => {
-        const data = []
+    onSelectAllRowsForDeletion = e => {
+        const dataSource = selectAllRowsForDeletion(e.target.checked, this.state.dataSource)
+        this.setState({ dataSource }, () => {
+            const rowsMarkedForDeletion = checkDeleteButtonDisabledState(this.state.dataSource)
+            this.setState({ rowsMarkedForDeletion })
+        })
+    }
+
+    onDeleteRowCheck = e => {
+        const { name, checked } = e.target
+        const dataSource = deleteRowCheck(name, checked, this.state.dataSource)
+        this.setState({ dataSource }, () => {
+            const rowsMarkedForDeletion = checkDeleteButtonDisabledState(this.state.dataSource)
+            this.setState({ rowsMarkedForDeletion })
+        })
+    }
+
+    onDeleteRows = async () => {
+        const rowsToDelete = []
         this.state.dataSource.forEach(row => {
-            if (key === row.key) {
-                data.push(row)
-            }
+            if (row.deleteRowChecked) rowsToDelete.push(row)
         })
 
-        try {
-            await this.props.deleteTableRow(data)
-            const { dataSource, count } = deleteRow(key, this.state)
-            this.setState({ dataSource, count })
-        } catch (err) {
-            console.log('delete err: ', err)
-        }
+        const { dataSource, count } = deleteRow(rowsToDelete, this.state)
+        this.setState({ dataSource, count, rowsMarkedForDeletion: false })
+
+        // try {
+        //     await this.props.deleteTableRow(data)
+        //     const { dataSource, count } = deleteRow(rowsToDelete, this.state)
+        //     this.setState({ dataSource, count, rowsMarkedForDeletion: false })
+        // } catch (err) {
+        //     console.log('delete err: ', err)
+        // }
     }
 
     onAddRow = () => {
@@ -210,6 +226,15 @@ class EditableTable extends Component {
                     disabled={!this.state.tableDataChanged}
                 >
                     Save
+                </Button>
+                <Button
+                    type="primary"
+                    onClick={this.onDeleteRows}
+                    style={{ float: 'right', marginRight: '16px' }}
+                    className="button-solid__primary"
+                    disabled={!this.state.rowsMarkedForDeletion}
+                >
+                    Delete
                 </Button>
                 <Table
                     components={components}

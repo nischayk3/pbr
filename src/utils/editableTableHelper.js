@@ -88,13 +88,6 @@ export const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 }
 
-export const deleteRow = (key, state) => {
-  const dataSourceCopy = [...state.dataSource]
-  const dataSource = dataSourceCopy.filter((item) => item.key !== key)
-  const count = state.count - 1
-  return { dataSource, count }
-}
-
 export const addRow = state => {
   let { dataSource, rowInitialData, count } = JSON.parse(JSON.stringify(state))
   dataSource.unshift(rowInitialData)
@@ -142,6 +135,37 @@ export const adjustColumnWidths = columns => {
   })
 }
 
-export const singleSelectArray = dataSource => {
+export const deleteRowCheck = (key, checked, dataSource) => {
+  const dataSourceCopy = JSON.parse(JSON.stringify(dataSource))
+  dataSourceCopy.forEach(data => {
+    if (data.key === key) data.deleteRowChecked = checked
+  })
+  return dataSourceCopy
+}
 
+export const selectAllRowsForDeletion = (checked, dataSource) => {
+  const dataSourceCopy = JSON.parse(JSON.stringify(dataSource))
+  dataSourceCopy.forEach(data => data.deleteRowChecked = checked)
+  return dataSourceCopy
+}
+
+export const checkDeleteButtonDisabledState = (dataSource) => {
+  let rowsMarkedForDeletion = false
+  const dataSourceCopy = JSON.parse(JSON.stringify(dataSource))
+  dataSourceCopy.forEach(data => {
+    if (data.deleteRowChecked) rowsMarkedForDeletion = true
+  })
+  return rowsMarkedForDeletion
+}
+
+export const deleteRow = (rowsToDelete, state) => {
+  const dataSource = [...state.dataSource]
+  for (let i = 0; i < dataSource.length; i++) {
+    if (dataSource[i].deleteRowChecked) {
+      dataSource.splice(i, 1)
+      i--
+    }
+  }
+  const count = state.count - rowsToDelete.length
+  return { dataSource, count }
 }
