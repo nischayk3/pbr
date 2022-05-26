@@ -6,9 +6,10 @@
 version: '3.9'
 services:
   ui-cypress-test:
-    container_name: cpv-nextgen-ui
-    build: .
-    dockerfile: Dockerfile-server-start-for-cypresss
+    container_name: ui-cypress-test
+    build: 
+      context: .
+      dockerfile: Dockerfile-start-server
     environment:
       - NODE_PATH=src/
     ports:
