@@ -19,6 +19,6 @@ Cypress.on("uncaught:exception", (err, runnable) => {
       ); /* ==== End Cypress Studio ==== */
     });
     it("Dashboard page", () => {
-      cy.visit("http://localhost/#/dashboard/dashboard");
+      cy.visit("");
     });
   });
