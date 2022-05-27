@@ -9,7 +9,7 @@ const statusColor = status => {
 	if (status == 'DRFT') {
 		return 'drft';
 	}
-	if (status == 'AWAP' || status == 'unapproved') {
+	if (status == 'AWAP' || status == 'unapproved' || status == "Unapproved"){
 		return 'awap';
 	}
 };

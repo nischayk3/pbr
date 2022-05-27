@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
     Card,
     Input,
-    Divider,
     Table,
     Tabs,
     Avatar,
@@ -275,7 +274,7 @@ export default function Landing(props) {
                 <Card className='landing-card'>
                     <div style={{ width: '900px', marginLeft: '180px' }}>
                         <Input.Search
-                            placeholder='Search by view ID, name, product number, creator, status'
+                            placeholder='Search by report ID, report name, chart ID, chart name, creator, status'
                             allowClear
                             className='landing-btn'
                             enterButton='Search'
