@@ -1,0 +1,13 @@
+ROM node:12
+ENV APP_FILE package.json
+ENV APP_HOME /usr/apps
+WORKDIR $APP_HOME
+ADD $APP_FILE $APP_HOME/$APP_FILE
+COPY . .
+EXPOSE 3030
+ENV PORT 3030
+ENTRYPOINT ["sh", "-c"]
+RUN rm -rf node_modules
+RUN npm i --silent
+RUN npm rebuild node-sass
+CMD ["npm run start"]

@@ -740,7 +740,7 @@ function ReportDesignerNew(props) {
                   onClick={() => { setIsPublish(true); setApproveReject('P') }}
                   style={{marginRight:'16px'}}
                 >
-                  <CloudUploadOutlined />
+                  <CloudUploadOutlined style={{color:'#093185',fontSize:'16px',marginTop:'2px'}} />
                   Publish
                 </Button>
                 <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>

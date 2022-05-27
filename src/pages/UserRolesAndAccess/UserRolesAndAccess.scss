@@ -172,7 +172,10 @@ custom-panel .panel-repeat {
 }
 
 .create-new-row .ant-col.ant-col-4 p {
-	font-weight: 300;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 22px;
+	color: #494949;
 }
 
 .custom-table-wrapper p ~ button {
@@ -195,3 +198,39 @@ custom-panel .panel-repeat {
 button[role='switch'][aria-checked='true'] {
 	background-color: #083185;
 }
+<<<<<<< HEAD
+=======
+
+.ant-popover-inner-content {
+	border-radius: 4px;
+}
+
+.ant-popover-inner-content .ant-btn.ant-btn-primary.ant-btn-sm {
+	background: var(--primary-color);
+	border: var(--primary-color);
+}
+
+.ant-popover-inner-content .ant-btn.ant-btn-default.ant-btn-sm:hover {
+	background: #486BC9;
+	color: #fff;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+	background-color: var(--primary-color) !important;
+	border-color: var(--primary-color) !important;
+}
+
+.button--delete {
+	float: right;
+	margin-right: 16px;
+	border: 1px solid var(--primary-color) !important;
+	background-color: #fff !important;
+	color: var(--primary-color) !important;
+	border-radius: 4px;
+}
+
+.button--delete:hover {
+	background-color: #fff !important;
+	color: #486BC9 !important;
+}
+>>>>>>> 00f994114ab44f622bdeb42c7364acfa45957723

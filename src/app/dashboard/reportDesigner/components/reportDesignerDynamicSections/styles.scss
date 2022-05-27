@@ -347,8 +347,8 @@ opacity: 1px;
     // margin-right: right;
     position: relative;
     float: right;
-    bottom: 33%;
-    left: 12%;
+    bottom: 20%;
+    left: 5%;
     //  top: 0%; 
     // right: %;
     // // width: 3px;
@@ -395,11 +395,29 @@ align-items: center;
 // position: relative;
 text-align: center;
 }
+.chart-tilesss
+{ 
+height: 46px;
+width: 100px;
+background: #FFFFFF;
+border: 1px solid #00F1C6;
+box-sizing: border-box;
+border-radius: 2px 2px 2px 2px;
+border: 1px solid #C5C5C5;// border-radius: 0px 4px;
+// display: flex;
+// justify-content: center;
+align-items: center;
+// background: #E2E8F2;
+// position: relative;
+text-align: center;
+}
+
 .charttile-content
 {
   // margin-left: 33px;
   margin-top: 10px;
   // width: 157px;
+  padding: 0px 10px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -409,8 +427,8 @@ text-align: center;
 align-items: center;
 padding: 5px 16px;
 position:inherit;
-margin-left: 870px;
-width: 108px;
+margin-left: 840px;
+width: 113px;
 height: 32px;
 left: 1140px;
 top: 109px;
