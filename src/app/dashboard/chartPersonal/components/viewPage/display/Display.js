@@ -15,7 +15,60 @@ import SelectField from "../../../../../../components/SelectField/SelectField";
 
 const Display = ({ setFigure, postChartData, setPostChartData }) => {
   const [layoutData, setLayoutData] = useState(initialLayout);
+  const [chartDataMarkers, setChartDataMarkers] = useState({
+    markerSize: null,
+    markerShape: null,
+    markerColor: null,
+  });
   const orientationList = ["Vertical", "Horizontal"];
+  const symbolList = [
+    "circle",
+    "square",
+    "diamond",
+    "cross",
+    "triangle-up",
+    "triangle-down",
+    "pentagon",
+    "hexagon",
+    "octagon",
+  ];
+
+  const handleMarkerChange = (e) => {
+    const chartData = JSON.parse(JSON.stringify(postChartData));
+    chartData.data.forEach((element) => {
+      element.data.forEach((item) => {
+        if (item.mode === "markers" && item.name === "Normal") {
+          item.marker.symbol = e;
+        }
+      });
+    });
+    setChartDataMarkers({ ...chartDataMarkers, markerShape: e });
+    setPostChartData(chartData);
+  };
+  const handleMarkerColorChange = (e) => {
+    const chartData = JSON.parse(JSON.stringify(postChartData));
+    chartData.data.forEach((element) => {
+      element.data.forEach((item) => {
+        if (item.mode === "markers" && item.name === "Normal") {
+          item.marker.color = e.target.value;
+        }
+      });
+    });
+    setChartDataMarkers({ ...chartDataMarkers, markerColor: e.target.value });
+    setPostChartData(chartData);
+  };
+  const handleMarkerSizeChange = (e) => {
+    const chartData = JSON.parse(JSON.stringify(postChartData));
+    chartData.data.forEach((element) => {
+      element.data.forEach((item) => {
+        if (item.mode === "markers" && item.name === "Normal") {
+          item.marker.size = e.target.value;
+        }
+      });
+    });
+    setChartDataMarkers({ ...chartDataMarkers, markerSize: e.target.value });
+    setPostChartData(chartData);
+  };
 
   useEffect(() => {
     if (postChartData.data) {
@@ -40,6 +93,17 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
           title: { ...layoutData.yaxis.title, text: yvalue },
         },
       });
+      newArr.data[0] &&
+        newArr.data[0].data &&
+        newArr.data[0].data.forEach((ele) => {
+          if (ele.name === "Normal" && ele.mode === "markers") {
+            setChartDataMarkers({
+              markerSize: ele.marker.size,
+              markerShape: ele.marker.symbol ? ele.marker.symbol : "circle",
+              markerColor: ele.marker.color,
+            });
+          }
+        });
     }
   }, []);
 
@@ -64,34 +128,6 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
           style={{ background: "white !important" }}
         >
           <div className="figure-container">
-            {/* <Row className="figure-inputs" gutter={16}>
-              <Col span={8}>
-                <label>Lines </label>
-              </Col>
-              <Col span={16}>
-                <Switch
-                  size="small"
-                  name="lines"
-                  checked={figure.lines}
-                  onChange={(e) => setFigure({ ...figure, lines: e })}
-                />
-              </Col>
-            </Row>
-            <Row className="figure-inputs select-top" gutter={16}>
-              <Col span={8}>
-                <label>Line Width </label>
-              </Col>
-              <Col span={16}>
-                <Select
-                  defaultValue="1"
-                  onChange={(e) => setFigure({ ...figure, lineWidth: e })}
-                >
-                  <Option value="1">1</Option>
-                  <Option value="2">2</Option>
-                  <Option value="3">3</Option>
-                </Select>
-              </Col>
-            </Row> */}
             <Row className="figure-inputs select-top" gutter={16}>
               <Col span={8}>
                 <label>Height </label>
@@ -133,6 +169,41 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
                       plot_bgcolor: e.target.value,
                     })
                   }
+                />
+              </Col>
+            </Row>
+            <Row className="figure-inputs select-top" gutter={16}>
+              <Col span={8}>
+                <label>Markers shape</label>
+              </Col>
+              <Col span={16}>
+                <SelectField
+                  selectList={symbolList}
+                  onChangeSelect={(e) => handleMarkerChange(e)}
+                  selectedValue={chartDataMarkers.markerShape}
+                />
+              </Col>
+            </Row>
+            <Row className="figure-inputs select-top" gutter={16}>
+              <Col span={8}>
+                <label>Marker color</label>
+              </Col>
+              <Col span={16}>
+                <ColorPicker
+                  value={chartDataMarkers.markerColor}
+                  onChange={(e) => handleMarkerColorChange(e)}
+                />
+              </Col>
+            </Row>
+            <Row className="figure-inputs select-top" gutter={16}>
+              <Col span={8}>
+                <label>Marker size</label>
+              </Col>
+              <Col span={16}>
+                <InputField
+                  value={chartDataMarkers.markerSize}
+                  name="markerSize"
+                  onChangeInput={(e) => handleMarkerSizeChange(e)}
                 />
               </Col>
             </Row>

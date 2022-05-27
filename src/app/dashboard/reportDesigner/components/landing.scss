@@ -352,9 +352,9 @@
         .legends {
             display: flex;
             p {
-                padding: 0 10px 0 0;
+                padding: 0 5px 0 15px;
                 display: flex;
-                margin: 0px;
+                margin-left: 0px;
                 .drft {
                     width: 14px;
                     height: 14px;
@@ -514,4 +514,8 @@
  .ant-spin-container
  {
      bottom: 10px;
+ }
+ .ant-btn
+ {
+    border: none
  }
