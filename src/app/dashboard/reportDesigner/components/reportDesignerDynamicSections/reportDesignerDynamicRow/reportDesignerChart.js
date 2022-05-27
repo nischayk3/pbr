@@ -49,11 +49,11 @@ function ReportDesignerDynamicRow(props) {
 
                                         return value['editable'] === true ? (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea allowClear autoSize={true} style={{ width: '100px' }} placeholder="Enter Key" name={[name, 'keyName']} disabled />
+                                                <Input.TextArea allowClear autoSize={true} style={{ width: '100px' }} placeholder="Enter key" name={[name, 'keyName']} disabled />
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} style={{ width: '100px', height: '20px' }} placeholder="Enter Key" bordered={true} disabled={props.show} />
+                                                <Input.TextArea bordered allowClear autoSize={true} style={{ width: '100px', height: '20px' }} placeholder="Enter key" bordered={true} disabled={props.show} />
                                             </Form.Item>
                                         )
                                     }}
@@ -73,11 +73,11 @@ function ReportDesignerDynamicRow(props) {
 
                                         return value['editable'] === true ? (
                                             <Form.Item name={[name, 'value']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Value" name={[name, 'value']} disabled />
+                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter value" name={[name, 'value']} disabled />
                                             </Form.Item>
                                         ) : (
                                             <Form.Item name={[name, 'value']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Value" bordered={true} disabled={props.show} />
+                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter value" bordered={true} disabled={props.show} />
                                             </Form.Item>
                                         )
                                     }}

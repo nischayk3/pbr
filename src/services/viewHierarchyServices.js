@@ -77,3 +77,34 @@ export const getProcessStep = request => {
 		}
 	);
 };
+
+export const getProcessStepMap = request => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/process-step-mapping',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
+
+
+export const putProcessStepMap = request => {
+	return Service.put(
+		BMS_APP_PYTHON_SERVICE + '/ds-process-step-mapping',
+		request,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
