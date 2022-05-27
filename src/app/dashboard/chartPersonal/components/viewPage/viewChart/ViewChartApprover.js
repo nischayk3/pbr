@@ -83,45 +83,41 @@ const ViewChartApprover = ({ postChartData, setPostChartData }) => {
   }, [postChartData]);
 
   return (
-    <div className="view-container">
-      <Row className="view-details">
-        <Col span={16}>
-          <Row>
-            <Col span={8}>
-              <label>View ID</label>
-            </Col>
-            <Col span={14}>
-              <p>: {viewData.viewDispId || "-"}</p>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={8}>
-              <label>View name</label>
-            </Col>
-            <Col span={14}>
-              <p>: {viewData.viewName || "-"}</p>
-            </Col>
-          </Row>
-        </Col>
-        <Col span={8} className="pb">
-          <Row>
-            <Col span={14}>
-              <p>Version</p>
-            </Col>
-            <Col span={10}>
-              <p>: {viewData.chartVersion || "-"}</p>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={14}>
-              <p>Status</p>
-            </Col>
-            <Col span={10}>
-              <p>: {viewData.status || "-"}</p>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+    <div className="view-container" style={{ marginTop: "-20px" }}>
+      <div className="view-details">
+        <Row>
+          <Col span={8}>
+            <label>View ID</label>
+          </Col>
+          <Col span={14}>
+            <p>: {viewData.viewDispId || "-"}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={8}>
+            <label>View name</label>
+          </Col>
+          <Col span={14}>
+            <p>: {viewData.viewName || "-"}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={8}>
+            <p>Version</p>
+          </Col>
+          <Col span={14}>
+            <p>: {viewData.chartVersion || "-"}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={8}>
+            <p>Status</p>
+          </Col>
+          <Col span={14}>
+            <p>: {viewData.status || "-"}</p>
+          </Col>
+        </Row>
+      </div>
       <Divider />
       {postChartData && postChartData.data && postChartData.data[0].view_id ? (
         <>
