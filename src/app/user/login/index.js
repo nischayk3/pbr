@@ -17,7 +17,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { MDH_APP_PYTHON_SERVICE } from '../../../constants/apiBaseUrl';
 
 const Login = () => {
-	
+
 	const dispatch = useDispatch();
 	const history = useHistory();
 
@@ -36,22 +36,16 @@ const Login = () => {
 	};
 
 	const onLogin = async () => {
-		console.log('on login')
 		if (localStorage.getItem('login_details')) {
-			console.log('here 1')
 			history.push('/dashboard/workspace');
 			dispatch(showNotification('success', 'Logged In Success'));
 		} else {
-			console.log('here 2')
 			if (localStorage.getItem('test_enabled')) {
-				console.log('2a')
 				window.open(
 					`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`,
 					'_self'
 				);
 			} else {
-				console.log('2b')
-				console.log('loginUrl: ', loginUrl)
 				window.open(
 					`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`,
 					'_self'
@@ -83,8 +77,8 @@ const Login = () => {
 							className='input-prefix'
 							placeholder='Enter username: admin or user'
 							prefix={<UserOutlined />}
-							//onChange={handleDashboardName}
-							//value={props.dashboardName}
+						//onChange={handleDashboardName}
+						//value={props.dashboardName}
 						/>
 					</div>
 
@@ -93,8 +87,8 @@ const Login = () => {
 							className='input-prefix'
 							placeholder='Enter password: **********'
 							prefix={<LockOutlined />}
-							//onChange={handleDashboardName}
-							//value={props.dashboardName}
+						//onChange={handleDashboardName}
+						//value={props.dashboardName}
 						/>
 					</div>
 

@@ -43,13 +43,12 @@ const HeaderBar = () => {
 		});
 	};
 	const adLogout = (tokenExpired) => {
-		localStorage.clear()
-		window.open(`${logoutUrl}`, '_self')
-		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`,'_self')
-
 		if (tokenExpired) {
 			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
 		}
+		localStorage.clear()
+		window.open(`${logoutUrl}`, '_self')
+		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`,'_self')
 	}
 
 	return (
