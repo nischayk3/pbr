@@ -21,7 +21,7 @@
 					color: #262626;
 				}
 				.header-title {
-					font-family: 'Roboto', sans-serif !important;
+					font-family: var(--primary-font-family) !important;
 					font-style: normal;
 					font-weight: 400;
 					font-size: 16px;
@@ -58,7 +58,7 @@
 	border-bottom: 1px solid #d9d9d9 !important;
 	padding: 8px 12px;
 	.ant-card-head-title {
-		font-family: 'Maven Pro', sans-serif;
+		font-family: var(--secondary-font-family);
 		font-style: normal;
 		font-weight: 600;
 		font-size: 16px;
@@ -95,13 +95,13 @@
 .ant-select-selection-overflow-item .ant-select-selection-item {
 	background-color: #fafafa;
 	margin: 5px;
-	// border-color: #093185;
+	// border-color: var(--primary-color);
 }
 
 // cpv custom buttons
 
 .custom-primary-btn {
-	font-family: 'Roboto', sans-serif !important;
+	font-family: var(--primary-font-family) !important;
 	font-weight: 400 !important;
 	font-size: 14px !important;
 	color: #262626 !important;
@@ -109,12 +109,12 @@
 	align-items: center !important;
 	justify-content: center !important;
 	border-radius: 4px !important;
-	border: 1px solid #093185 !important;
+	border: 1px solid var(--primary-color) !important;
 	background: #fff !important;
 }
 
 .custom-secondary-btn {
-	font-family: 'Roboto', sans-serif !important;
+	font-family: var(--primary-font-family) !important;
 	font-weight: 400 !important;
 	font-size: 14px !important;
 	color: #fff !important;
@@ -122,8 +122,8 @@
 	align-items: center !important;
 	justify-content: center !important;
 	border-radius: 4px !important;
-	border: 1px solid #093185 !important;
-	background: #093185 !important;
+	border: 1px solid var(--primary-color) !important;
+	background: var(--primary-color) !important;
 }
 
 .custom-secondary-btn-link {
@@ -200,7 +200,7 @@
 	background: #555;
 }
 .ant-switch-checked {
-	background-color: #093185;
+	background-color: var(--primary-color);
 }
 
 .input-error-label {
@@ -222,7 +222,7 @@
 }
 .ant-table-small .ant-table-thead > tr > th {
 	background-color: #f0f7fa;
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 500;
 	line-height: 22px;
@@ -234,7 +234,7 @@
 .ant-table-tbody > tr > td {
 	border-bottom: 1px solid #f0f0f0;
 	transition: background 0.3s;
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;

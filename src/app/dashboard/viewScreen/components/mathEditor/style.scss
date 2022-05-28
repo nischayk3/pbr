@@ -10,17 +10,17 @@
 	height: 71px;
 	cursor: pointer;
 	span {
-		color: #093185;
+		color: var(--primary-color);
 	}
 	p {
 		margin: 0px;
-		font-family: 'Roboto';
+		font-family: var(--primary-font-family);
 		font-style: normal;
 		font-weight: 400;
 		font-size: 14px;
 		line-height: 22px;
 		/* identical to box height, or 157% */
-		color: #093185;
+		color: var(--primary-color);
 	}
 }
 .add-var_block_bg {
@@ -49,7 +49,7 @@
 			padding: 0;
 		}
 		.edit {
-			color: #093185;
+			color: var(--primary-color);
 		}
 		.delete {
 			color: #ff2828;
@@ -65,7 +65,7 @@
 	}
 	.ant-input:placeholder-shown {
 		text-overflow: ellipsis;
-		font-family: 'Roboto';
+		font-family: var(--primary-font-family);
 		font-style: italic;
 		font-weight: 300;
 		font-size: 14px;
@@ -98,7 +98,7 @@
 
 .function-modal {
 	.heading {
-		font-family: 'Maven Pro';
+		font-family: var(--secondary-font-family);
 		font-style: normal;
 		font-weight: 500;
 		font-size: 16px;
@@ -137,11 +137,11 @@ span.statusClosed {
 
 .custom-check {
 	> span {
-		background: #093185;
+		background: var(--primary-color);
 		border-radius: 50px;
 		width: 18px;
 		height: 18px;
-		border: 1px solid #093185;
+		border: 1px solid var(--primary-color);
 		.ant-checkbox-inner {
 			background-color: transparent;
 			border-color: transparent;
@@ -159,7 +159,7 @@ span.statusClosed {
 	padding: 22px;
 	p {
 		margin: 0;
-		font-family: 'Roboto';
+		font-family: var(--primary-font-family);
 		font-style: normal;
 		font-weight: 300;
 		font-size: 16px;
@@ -187,12 +187,11 @@ span.statusClosed {
 	}
 }
 
-.eval-table
-{
-	height :400px;
+.eval-table {
+	height: 400px;
 }
 .custom-eval-btn {
-	font-family: 'Roboto', sans-serif !important;
+	font-family: var(--primary-font-family) !important;
 	font-weight: 400 !important;
 	font-size: 14px !important;
 	color: #262626 !important;
@@ -200,13 +199,12 @@ span.statusClosed {
 	align-items: center !important;
 	justify-content: center !important;
 	border-radius: 4px !important;
-	border: 1px solid #093185 !important;
+	border: 1px solid var(--primary-color) !important;
 	background: #fff !important;
 	margin-top: 10px;
-
 }
 .custom-secondary-eval-btn {
-	font-family: 'Roboto', sans-serif !important;
+	font-family: var(--primary-font-family) !important;
 	font-weight: 400 !important;
 	font-size: 14px !important;
 	color: #fff !important;
@@ -214,32 +212,29 @@ span.statusClosed {
 	align-items: center !important;
 	justify-content: center !important;
 	border-radius: 4px !important;
-	border: 1px solid #093185 !important;
-	background: #093185 !important;
+	border: 1px solid var(--primary-color) !important;
+	background: var(--primary-color) !important;
 	margin-left: 10px;
-
 }
 .custom-eval-btn-disable {
-	font-family: 'Roboto', sans-serif !important;
+	font-family: var(--primary-font-family) !important;
 	font-weight: 400 !important;
 	font-size: 14px !important;
-	color:rgb(84, 84, 84) !important;
+	color: rgb(84, 84, 84) !important;
 	display: inline-flex !important;
 	align-items: center !important;
 	justify-content: center !important;
 	border-radius: 4px !important;
 	border: 1px solid grey !important;
-	background:rgb(235, 235, 228) !important;
+	background: rgb(235, 235, 228) !important;
 	margin-top: 10px;
 	margin-left: 10px;
-
 }
-.keyboard-icon
-{
+.keyboard-icon {
 	margin-left: 69%;
 }
 .variable-name-popup {
-	p{
+	p {
 		margin-bottom: 4px !important;
 	}
 	button {
@@ -253,20 +248,17 @@ span.statusClosed {
 	}
 }
 
-.script-help
-{
-	font-family: 'Roboto', sans-serif !important;
+.script-help {
+	font-family: var(--primary-font-family) !important;
 	font-weight: 300 !important;
 	font-size: 16px !important;
 }
-.script-help-heading
-{
-	font-family: 'Roboto', sans-serif !important;
+.script-help-heading {
+	font-family: var(--primary-font-family) !important;
 	font-weight: 500 !important;
 	font-size: 16px !important;
 }
-.script-info
-{
-overflow-y: scroll; 
-height:400px;
+.script-info {
+	overflow-y: scroll;
+	height: 400px;
 }
