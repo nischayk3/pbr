@@ -35,7 +35,7 @@
 
 	// }
 	.ant-table .ant-table-thead > tr > th {
-		font-family: 'Roboto';
+		font-family: var(--primary-font-family);
 		font-style: normal;
 		font-weight: 500;
 		font-size: 14px;
@@ -47,7 +47,7 @@
 	}
 
 	.ant-table-tbody > tr > td {
-		font-family: 'Roboto';
+		font-family: var(--primary-font-family);
 		font-style: normal;
 		font-weight: 400;
 		font-size: 14px;
@@ -68,10 +68,10 @@
 }
 
 .review-submission {
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 500;
 	font-size: 14px;
 	line-height: 22px;
-	color: #093185;
+	color: var(--primary-color);
 }

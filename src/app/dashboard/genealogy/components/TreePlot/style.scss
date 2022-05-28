@@ -25,10 +25,6 @@
 	stroke-width: 3px;
 }
 
-.node text {
-	font: 12px sans-serif;
-}
-
 .link {
 	fill: none;
 	stroke: #ccc;
@@ -51,7 +47,7 @@ div.tooltipheader {
 	text-align: center;
 	font-weight: bold;
 	padding: 10px;
-	font-family: 'Open Sans', Arial, Helvetica, Sans-Serif;
+	font-family: var(--primary-font-family);
 	height: 37px;
 }
 
@@ -409,7 +405,7 @@ div.popup {
 	user-select: none;
 	.drag-search_head {
 		background: #486bc9;
-		font-family: Maven Pro;
+		font-family: var(--secondary-font-family);
 		font-style: normal;
 		font-weight: 500;
 		font-size: 16px;
@@ -435,7 +431,7 @@ div.popup {
 		margin: 1px 0;
 		width: 100%;
 		background: #fff;
-		color: #093185;
+		color: var(--primary-color);
 		padding: 0;
 		height: 36px;
 		border-bottom: 1px solid #ccc;
@@ -448,7 +444,7 @@ div.popup {
 	}
 	:hover {
 		background-color: transparent;
-		color: #093185;
+		color: var(--primary-color);
 	}
 }
 
@@ -466,7 +462,7 @@ div.gbttooltip {
 	opacity: 0;
 }
 div.headerattribute {
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 500;
 	font-size: 14px;
@@ -491,7 +487,7 @@ div.headerattribute {
 #zoomscale {
 	background: #ffffff;
 	border-radius: 4px;
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 400;
 	font-size: 16px;
