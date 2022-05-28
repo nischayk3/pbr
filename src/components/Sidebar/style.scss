@@ -13,6 +13,8 @@
 	.ant-menu-inline,
 	.ant-menu {
 		border-right: 1px solid var(--secondary-color);
+		overflow-y: auto;
+		height: 100vh;
 		.ant-menu-item {
 			color: #fff;
 		}
