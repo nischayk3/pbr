@@ -96,10 +96,10 @@ class Uploader extends Component {
 			'I do not want to insert duplicate record',
 		],
 		username: '',
-		isAuth: false
+		isAuth: false,
 	};
 
-	componentDidMount = () => { };
+	componentDidMount = () => {};
 
 	clearData = () => {
 		this.setState({
@@ -117,7 +117,7 @@ class Uploader extends Component {
 			cancelReason: '',
 			selectedFileList: [],
 			nextStepDisabled: false,
-			isAuth: false
+			isAuth: false,
 		});
 	};
 
@@ -209,7 +209,6 @@ class Uploader extends Component {
 				`${info.file.name} is not excel or csv file`
 			);
 		} else {
-
 			if (info.file.status === 'uploading') {
 				nextState.selectedFileList = [info.file];
 			} else if (info.file.status === 'done') {
@@ -217,7 +216,10 @@ class Uploader extends Component {
 				var formData = new FormData();
 				formData.append('file', info.file.originFileObj);
 				formData.append('sourcename', 'fileupload/UIupdate/pbr');
-				formData.append('username', JSON.parse(localStorage.getItem('login_details')).email_id);
+				formData.append(
+					'username',
+					JSON.parse(localStorage.getItem('login_details')).email_id
+				);
 				uploadFileApi(formData).then(res => {
 					if (res.data && res.data.statuscode === 400) {
 						this.setState({
@@ -373,7 +375,7 @@ class Uploader extends Component {
 						signatureStatus: '',
 						signatureReason: '',
 						signatureScreen: '',
-						isAuth: false
+						isAuth: false,
 					},
 					() => {
 						console.log('state update', this.state);
@@ -550,7 +552,7 @@ class Uploader extends Component {
 			signatureStatus: '',
 			nextState: {},
 			selectedFileList: [],
-			isAuth: false
+			isAuth: false,
 		});
 	};
 
@@ -572,7 +574,7 @@ class Uploader extends Component {
 			isModalVisibleSignature1: false,
 			nextState: {},
 			selectedFileList: [],
-			isAuth: false
+			isAuth: false,
 		});
 	};
 
@@ -671,19 +673,17 @@ class Uploader extends Component {
 		let req = {};
 		let header = {
 			username: this.state.username,
-			password: this.state.password
-
-		}
+			password: this.state.password,
+		};
 		const res = await getAuthenticate(req, header);
 		if (res.Status != 200) {
 			this.props.showNotification('error', res.Message);
 			this.closeModel();
 			this.closeModelSignature1();
 		} else {
-			this.setState({ isAuth: true })
+			this.setState({ isAuth: true });
 		}
-
-	}
+	};
 
 	render() {
 		const {
@@ -716,7 +716,7 @@ class Uploader extends Component {
 			uploading,
 			fileList,
 			isModalVisible,
-			isAuth
+			isAuth,
 		} = this.state;
 
 		const { Step } = Steps;
@@ -839,118 +839,118 @@ class Uploader extends Component {
 									)}
 									{steps[this.state.currentStep].content ==
 										'Second-content' && (
-											<div className='step-content'>
-												<p className='step-head-1'>
-													Please select the filled out template in the section
-													below to upload, only excel and csv formats.{' '}
-												</p>
-												<p className='step-head-1'>
-													Ensure cells formats are correct e.g. "012" will get
-													loaded as 12 if cell type is numerical. Only one sheet
-													can be uploaded at a time
-												</p>
-												{onChangeStatus && onChangeStatus === 400 && (
-													<Alert
-														message={onChangeRes}
-														description='Can you please check and try again.'
-														type='error'
-														showIcon
-														closable
-													/>
-												)}
-												{onChangeStatus && onChangeStatus === 401 && (
-													<Alert
-														message={onChangeRes}
-														type='error'
-														description='User not aurhtorised for site, Can you please check and try again.'
-														showIcon
-														closable
-													/>
-												)}
-												{onChangeStatus && onChangeStatus === 200 && (
-													<Alert
-														message={onChangeRes}
-														description='Please click on Next for Digital Signature'
-														type='success'
-														showIcon
-													/>
-												)}
-												{onChangeStatus && onChangeStatus === 201 && (
-													<Alert
-														message={onChangeRes}
-														description='Please click on Next for Digital Signature'
-														type='success'
-														showIcon
-													/>
-												)}
-												{approvedDataStatus && approvedDataStatus === 200 && (
-													<Alert
-														message={approvedDataRes}
-														description='Please click on Next for Digital Signature'
-														type='success'
-														showIcon
-													/>
-												)}
-												{approvedDataStatus && approvedDataStatus === 206 && (
-													<Alert
-														message={approvedDataRes}
-														description='Please click on Next for Digital Signature'
-														type='success'
-														showIcon
-													/>
-												)}
-												{/* {onChangeStatus && onChangeStatus === 300 && (
+										<div className='step-content'>
+											<p className='step-head-1'>
+												Please select the filled out template in the section
+												below to upload, only excel and csv formats.{' '}
+											</p>
+											<p className='step-head-1'>
+												Ensure cells formats are correct e.g. "012" will get
+												loaded as 12 if cell type is numerical. Only one sheet
+												can be uploaded at a time
+											</p>
+											{onChangeStatus && onChangeStatus === 400 && (
+												<Alert
+													message={onChangeRes}
+													description='Can you please check and try again.'
+													type='error'
+													showIcon
+													closable
+												/>
+											)}
+											{onChangeStatus && onChangeStatus === 401 && (
+												<Alert
+													message={onChangeRes}
+													type='error'
+													description='User not aurhtorised for site, Can you please check and try again.'
+													showIcon
+													closable
+												/>
+											)}
+											{onChangeStatus && onChangeStatus === 200 && (
+												<Alert
+													message={onChangeRes}
+													description='Please click on Next for Digital Signature'
+													type='success'
+													showIcon
+												/>
+											)}
+											{onChangeStatus && onChangeStatus === 201 && (
+												<Alert
+													message={onChangeRes}
+													description='Please click on Next for Digital Signature'
+													type='success'
+													showIcon
+												/>
+											)}
+											{approvedDataStatus && approvedDataStatus === 200 && (
+												<Alert
+													message={approvedDataRes}
+													description='Please click on Next for Digital Signature'
+													type='success'
+													showIcon
+												/>
+											)}
+											{approvedDataStatus && approvedDataStatus === 206 && (
+												<Alert
+													message={approvedDataRes}
+													description='Please click on Next for Digital Signature'
+													type='success'
+													showIcon
+												/>
+											)}
+											{/* {onChangeStatus && onChangeStatus === 300 && (
                           <Alert message={` Duplicate records found !!`} description="Please click on Next to Validation & Review." type="error" showIcon />
                         )} */}
 
-												{onChangeStatus && onChangeStatus === 300 && (
-													<Alert
-														message={`${duplicateRecords} Duplicate Record found !!`}
-														type='error'
-														description='Do you want to continue or cancel? '
-														showIcon
-														action={
-															<Space direction='horizontal'>
-																<Button
-																	type='primary'
-																	onClick={() => this.approveDataFile()}>
-																	Continue
-																</Button>
-																<Button
-																	type='ghost'
-																	onClick={() => this.cancelAlert()}>
-																	Cancel
-																</Button>
-															</Space>
-														}
-													/>
-												)}
+											{onChangeStatus && onChangeStatus === 300 && (
+												<Alert
+													message={`${duplicateRecords} Duplicate Record found !!`}
+													type='error'
+													description='Do you want to continue or cancel? '
+													showIcon
+													action={
+														<Space direction='horizontal'>
+															<Button
+																type='primary'
+																onClick={() => this.approveDataFile()}>
+																Continue
+															</Button>
+															<Button
+																type='ghost'
+																onClick={() => this.cancelAlert()}>
+																Cancel
+															</Button>
+														</Space>
+													}
+												/>
+											)}
 
-												<div className='plan-sections download-template'>
-													<div className='fileuploader-input'>
-														<div className='fileuploader-input-inner'>
-															{/* <i className="material-icons button-icons upload-icon">
+											<div className='plan-sections download-template'>
+												<div className='fileuploader-input'>
+													<div className='fileuploader-input-inner'>
+														{/* <i className="material-icons button-icons upload-icon">
                                 cloud_upload
                               </i> */}
-															<h5 className='fileuploader-input-caption'>
-																<span>Upload your file here</span>
-															</h5>
-															<p>in EXCEL or CSV.</p>
-															<Upload
-																{...uploadFileProps}
-																maxCount={1}
-																fileList={this.state.selectedFileList}
-																customRequest={dummyRequest}
-																onChange={this.onChange}>
-																<Button className='upload_button'>
-																	Choose File
-																</Button>
-															</Upload>
-														</div>
+														<h5 className='fileuploader-input-caption'>
+															<span>Upload your file here</span>
+														</h5>
+														<p>in EXCEL or CSV.</p>
+														<Upload
+															{...uploadFileProps}
+															maxCount={1}
+															fileList={this.state.selectedFileList}
+															customRequest={dummyRequest}
+															onChange={this.onChange}>
+															<Button className='upload_button'>
+																Choose File
+															</Button>
+														</Upload>
 													</div>
 												</div>
 											</div>
-										)}
+										</div>
+									)}
 									{steps[this.state.currentStep].content == 'third-content' && (
 										<div>
 											<div className='step-content'>
@@ -1105,7 +1105,7 @@ class Uploader extends Component {
 																/>
 															</div>
 														</div>
-														{isAuth &&
+														{isAuth && (
 															<div>
 																<p>Reason</p>
 																<Select
@@ -1125,25 +1125,31 @@ class Uploader extends Component {
 																	))}
 																</Select>
 															</div>
-														}
+														)}
 													</div>
 													<div className='signature-modal'>
 														{isAuth ? (
 															<>
 																<Button
 																	type='primary'
-																	style={{backgroundColor:'#093185'}}
+																	style={{
+																		backgroundColor: '#093185',
+																	}}
 																	onClick={() => this.updateFileApproveData()}>
 																	Ok
 																</Button>
-																<Button className='custom-primary-btn' onClick={() => this.closeModel()}>
+																<Button
+																	className='custom-primary-btn'
+																	onClick={() => this.closeModel()}>
 																	Cancel
 																</Button>
 															</>
 														) : (
 															<Button
 																type='primary'
-																style={{backgroundColor:'#093185'}}
+																style={{
+																	backgroundColor: '#093185',
+																}}
 																onClick={() => this.onAuthenticate()}>
 																Authenticate
 															</Button>
@@ -1184,7 +1190,7 @@ class Uploader extends Component {
 																/>
 															</div>
 														</div>
-														{isAuth &&
+														{isAuth && (
 															<div>
 																<p>Reason</p>
 																<Select
@@ -1204,25 +1210,31 @@ class Uploader extends Component {
 																	))}
 																</Select>
 															</div>
-														}
+														)}
 													</div>
 													<div className='signature-modal'>
 														{isAuth ? (
 															<>
 																<Button
 																	type='primary'
-																	style={{backgroundColor:'#093185'}}
+																	style={{
+																		backgroundColor: '#093185',
+																	}}
 																	onClick={() => this.approveDataFile()}>
 																	Ok
 																</Button>
-																<Button className='custom-primary-btn' onClick={() => this.closeModel()}>
+																<Button
+																	className='custom-primary-btn'
+																	onClick={() => this.closeModel()}>
 																	Cancel
 																</Button>
 															</>
 														) : (
 															<Button
 																type='primary'
-																style={{backgroundColor:'#093185'}}
+																style={{
+																	backgroundColor: '#093185',
+																}}
 																onClick={() => this.onAuthenticate()}>
 																Authenticate
 															</Button>
@@ -1285,40 +1297,40 @@ class Uploader extends Component {
 
 									{steps[this.state.currentStep].content ==
 										'fourth-content' && (
-											<div>
-												<div className='step-content'>
-													<Alert
-														message='Final Digital Signature'
-														description='Please provide a final digital signature to revalidate the Excel/CSV file.'
-														type='info'
-														action={
-															<Space direction='horizontal'>
-																<Button
-																	type='primary'
-																	onClick={() =>
-																		this.showDigitalSignaturePopup2()
-																	}>
-																	Digital Signature
-																</Button>
-																<Button
-																	type='ghost'
-																	onClick={() => this.showCancelModel()}>
-																	Cancel
-																</Button>
-															</Space>
-														}
-													/>
-													<Modal
-														className='modal_digitalSignature'
-														title='Digital Signature'
-														visible={this.state.isModalVisibleSignature1}
-														footer={null}
-														onCancel={e => {
-															e.stopPropagation();
-															this.closeModelSignature1();
-														}}>
-														<div className='sign-form1'>
-															<div className='sign-cols1'>
+										<div>
+											<div className='step-content'>
+												<Alert
+													message='Final Digital Signature'
+													description='Please provide a final digital signature to revalidate the Excel/CSV file.'
+													type='info'
+													action={
+														<Space direction='horizontal'>
+															<Button
+																type='primary'
+																onClick={() =>
+																	this.showDigitalSignaturePopup2()
+																}>
+																Digital Signature
+															</Button>
+															<Button
+																type='ghost'
+																onClick={() => this.showCancelModel()}>
+																Cancel
+															</Button>
+														</Space>
+													}
+												/>
+												<Modal
+													className='modal_digitalSignature'
+													title='Digital Signature'
+													visible={this.state.isModalVisibleSignature1}
+													footer={null}
+													onCancel={e => {
+														e.stopPropagation();
+														this.closeModelSignature1();
+													}}>
+													<div className='sign-form1'>
+														<div className='sign-cols1'>
 															<div>
 																<p>Username</p>
 																<Input
@@ -1341,81 +1353,88 @@ class Uploader extends Component {
 																	}
 																/>
 															</div>
-															</div>
-															{isAuth &&
-																<div>
-																	<p>Reason</p>
-																	<Select
-																		placeholder='Select a reason'
-																		value={signatureReason1}
-																		onChange={value =>
-																			this.onChangeSelect(value, 'reason1')
-																		}
-																		style={{
-																			width: '100%',
-																			margin: '0px',
-																		}}>
-																		{reasonList.map(item => (
-																			<Select.Option key={item} value={item}>
-																				{item}
-																			</Select.Option>
-																		))}
-																	</Select>
-																</div>
-															}
 														</div>
-														<div className='signature-modal'>
-															{isAuth ? (
-																<>
-																	<Button
-																		type='primary'
-																		style={{backgroundColor:'#093185'}}
-																		onClick={() => this.finalFileUploadData()}>
-																		Ok
-																	</Button>
-																	<Button className='custom-primary-btn' onClick={() => this.closeModelSignature1()}>
-																		Cancel
-																	</Button></>
-															) : (
-																<Button
-																	type='primary'
-																	style={{backgroundColor:'#093185'}}
-																	onClick={() => this.onAuthenticate()}>
-																	Authenticate
-																</Button>
-															)}
-														</div>
-													</Modal>
-													<Modal
-														className='modal_digitalSignature'
-														title='Do you want to cancel?'
-														visible={this.state.isModalCancelVisible}
-														footer={null}
-														onCancel={e => {
-															e.stopPropagation();
-															this.closeModelCancel();
-														}}>
-														<div className='sign-form'>
+														{isAuth && (
 															<div>
 																<p>Reason</p>
 																<Select
 																	placeholder='Select a reason'
-																	value={cancelReason}
+																	value={signatureReason1}
 																	onChange={value =>
-																		this.onChangeSelect(value, 'reason_cancel')
+																		this.onChangeSelect(value, 'reason1')
 																	}
 																	style={{
 																		width: '100%',
 																		margin: '0px',
 																	}}>
-																	{reasonListCancel.map(item => (
+																	{reasonList.map(item => (
 																		<Select.Option key={item} value={item}>
 																			{item}
 																		</Select.Option>
 																	))}
 																</Select>
 															</div>
-															{/* <div>
+														)}
+													</div>
+													<div className='signature-modal'>
+														{isAuth ? (
+															<>
+																<Button
+																	type='primary'
+																	style={{
+																		backgroundColor: '#093185',
+																	}}
+																	onClick={() => this.finalFileUploadData()}>
+																	Ok
+																</Button>
+																<Button
+																	className='custom-primary-btn'
+																	onClick={() => this.closeModelSignature1()}>
+																	Cancel
+																</Button>
+															</>
+														) : (
+															<Button
+																type='primary'
+																style={{
+																	backgroundColor: '#093185',
+																}}
+																onClick={() => this.onAuthenticate()}>
+																Authenticate
+															</Button>
+														)}
+													</div>
+												</Modal>
+												<Modal
+													className='modal_digitalSignature'
+													title='Do you want to cancel?'
+													visible={this.state.isModalCancelVisible}
+													footer={null}
+													onCancel={e => {
+														e.stopPropagation();
+														this.closeModelCancel();
+													}}>
+													<div className='sign-form'>
+														<div>
+															<p>Reason</p>
+															<Select
+																placeholder='Select a reason'
+																value={cancelReason}
+																onChange={value =>
+																	this.onChangeSelect(value, 'reason_cancel')
+																}
+																style={{
+																	width: '100%',
+																	margin: '0px',
+																}}>
+																{reasonListCancel.map(item => (
+																	<Select.Option key={item} value={item}>
+																		{item}
+																	</Select.Option>
+																))}
+															</Select>
+														</div>
+														{/* <div>
                               <p>Reason</p>
                               <Input placeholder="Reason" value={cancelReason} onChange={value => this.onChangeField(value, "reason_cancel")} />
                             </div>
@@ -1424,21 +1443,21 @@ class Uploader extends Component {
                               <p>Status</p>
                               <Input placeholder="Status" value={cancelStatus} onChange={value => this.onChangeField(value, "status_cancel")} />
                             </div> */}
-														</div>
-														<div className='signature-modal'>
-															<Button
-																type='primary'
-																onClick={() => this.cancelFileUploadService()}>
-																Ok
-															</Button>
-															<Button onClick={() => this.closeModelCancel()}>
-																Cancel
-															</Button>
-														</div>
-													</Modal>
-												</div>
+													</div>
+													<div className='signature-modal'>
+														<Button
+															type='primary'
+															onClick={() => this.cancelFileUploadService()}>
+															Ok
+														</Button>
+														<Button onClick={() => this.closeModelCancel()}>
+															Cancel
+														</Button>
+													</div>
+												</Modal>
 											</div>
-										)}
+										</div>
+									)}
 
 									{steps[this.state.currentStep].content == 'fifth-content' && (
 										<div>

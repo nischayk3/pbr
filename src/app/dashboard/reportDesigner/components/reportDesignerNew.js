@@ -3,100 +3,110 @@
  * @Mareana - CPV Product
  * @version 1
  * @Last Modified - 14 March, 2022
- * @Last Changed By - @Mihir 
+ * @Last Changed By - @Mihir
  */
 import './stylesNew.scss';
 import React, { useEffect, useState } from 'react';
 import {
-  BlockOutlined,
-  CloudUploadOutlined,
-  EllipsisOutlined
+	BlockOutlined,
+	CloudUploadOutlined,
+	EllipsisOutlined,
 } from '@ant-design/icons';
 import { useLocation } from 'react-router';
 import {
-  Form,
-  Select,
-  Button,
-  Modal,
-  Table,
-  Input,
-  Empty,
-  Dropdown,
-  Menu
+	Form,
+	Select,
+	Button,
+	Modal,
+	Table,
+	Input,
+	Empty,
+	Dropdown,
+	Menu,
 } from 'antd';
 // import ChartSelector from './reportDesignerFilter/chartSelector';
 import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
-import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections'
+import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections';
 // import ReportDesigneTable from './reportDesignerDynamicSections/ReportDesigneTable'
-import { getViews, getCharts, saveReportDesign, getReports } from '../../../../services/reportDesignerServices';
-import SaveModal from '../../../../components/SaveModal/saveModal'
+import {
+	getViews,
+	getCharts,
+	saveReportDesign,
+	getReports,
+} from '../../../../services/reportDesignerServices';
+import SaveModal from '../../../../components/SaveModal/saveModal';
 import { useDispatch } from 'react-redux';
-import { sendReport, screenChange } from '../../../../duck/actions/reportDesignerAction';
-import { showLoader, hideLoader, showNotification } from '../../../../duck/actions/commonActions';
-import Signature from '../../../../components/ElectronicSignature/signature'
-import queryString from "query-string";
+import {
+	sendReport,
+	screenChange,
+} from '../../../../duck/actions/reportDesignerAction';
+import {
+	showLoader,
+	hideLoader,
+	showNotification,
+} from '../../../../duck/actions/commonActions';
+import Signature from '../../../../components/ElectronicSignature/signature';
+import queryString from 'query-string';
 import { loginUrl } from '../../../../services/loginService';
 import { adenabled } from '../../../../config/config';
 import { sendUrl } from '../../../../duck/actions/loginAction';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { loadReport } from '../../../../services/reportDesignerServices';
 
-
 //Columns For The view Selection modal
 const columns = [
-  {
-    title: 'Report ID',
-    dataIndex: 'rep_disp_id',
-    key: 'rep_disp_id',
-    render: (text, record) => {
-      return {
-        props: {
-          style: { background: record.color },
-        },
-        children: <div>{text}</div>,
-      };
-    },
-  },
-  {
-    title: 'Report Name',
-    dataIndex: 'rep_name',
-    key: 'rep_name',
-    render: (text, record) => {
-      return {
-        props: {
-          style: { background: record.color },
-        },
-        children: <div>{text}</div>,
-      };
-    },
-
-  },
-  {
-    title: 'Report Status',
-    dataIndex: 'rep_status',
-    key: 'rep_status',
-    render: (text, record) => {
-      return {
-        props: {
-          style: { background: record.color },
-        },
-        children: <div>{text}</div>,
-      };
-    },
-  },
-  {
-    title: 'Created By',
-    dataIndex: 'created_by',
-    key: 'created_by',
-    render: (text, record) => {
-      return {
-        props: {
-          style: { background: record.color },
-        },
-        children: <div>{text}</div>,
-      };
-    },
-  },
+	{
+		title: 'Report ID',
+		dataIndex: 'rep_disp_id',
+		key: 'rep_disp_id',
+		render: (text, record) => {
+			return {
+				props: {
+					style: { background: record.color },
+				},
+				children: <div>{text}</div>,
+			};
+		},
+	},
+	{
+		title: 'Report Name',
+		dataIndex: 'rep_name',
+		key: 'rep_name',
+		render: (text, record) => {
+			return {
+				props: {
+					style: { background: record.color },
+				},
+				children: <div>{text}</div>,
+			};
+		},
+	},
+	{
+		title: 'Report Status',
+		dataIndex: 'rep_status',
+		key: 'rep_status',
+		render: (text, record) => {
+			return {
+				props: {
+					style: { background: record.color },
+				},
+				children: <div>{text}</div>,
+			};
+		},
+	},
+	{
+		title: 'Created By',
+		dataIndex: 'created_by',
+		key: 'created_by',
+		render: (text, record) => {
+			return {
+				props: {
+					style: { background: record.color },
+				},
+				children: <div>{text}</div>,
+			};
+		},
+	},
 ];
 
 function ReportDesignerNew(props) {
@@ -699,7 +709,7 @@ function ReportDesignerNew(props) {
             >
               New
             </Button>)} */}
-          {/* {!params ?
+					{/* {!params ?
             <Button
               className='custom-primary-btn'
               onClick={() => { setVisible(true); setIsNew(false); }}
@@ -707,198 +717,266 @@ function ReportDesignerNew(props) {
               Load
             </Button> : <></>
           } */}
-          {
-            (isLoad || isNew) && !params ?
-              <>
-                <Button
-                  className='report-primary-btn'
-                  onClick={() => {
-                    PrepareJson(mainJson, 'save')
-                  }}
-                >
+					{(isLoad || isNew) && !params ? (
+						<>
+							<Button
+								className='report-primary-btn'
+								onClick={() => {
+									PrepareJson(mainJson, 'save');
+								}}>
+								Save
+							</Button>
+							{isLoad ? (
+								<Button
+									className='report-primary-btn'
+									onClick={() => {
+										PrepareJson(mainJson, 'save_as');
+									}}>
+									Save As
+								</Button>
+							) : (
+								<></>
+							)}
+							<Button
+								style={{ marginLeft: '16px', marginRight: '16px' }}
+								className='report-primary-btn'
+								onClick={() => dispatch(screenChange(true))}
+								disabled={!isSaved}>
+								Preview
+							</Button>
+							<Button
+								className='report-secondary-btn'
+								onClick={() => {
+									setIsPublish(true);
+									setApproveReject('P');
+								}}
+								style={{ marginRight: '16px' }}>
+								<CloudUploadOutlined
+									style={{
+										color: '#093185',
+										fontSize: '16px',
+										marginTop: '2px',
+									}}
+								/>
+								Publish
+							</Button>
+							<Dropdown
+								overlay={menu}
+								placement='bottomLeft'
+								arrow={{ pointAtCenter: true }}>
+								<EllipsisOutlined
+									style={{
+										transform: 'rotate(-90deg)',
+										fontSize: '20px',
+										marginRight: '10px',
+									}}
+								/>
+							</Dropdown>
+						</>
+					) : (
+						<> </>
+					)}
+					{params ? (
+						<div>
+							<Button
+								className='viewCreation-rejectBtn'
+								onClick={() => {
+									setIsPublish(true);
+									setApproveReject('R');
+								}}
+								// onClick={() => { adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
+							>
+								Reject
+							</Button>
+							<Button
+								className='viewCreation-publishBtn'
+								onClick={() => {
+									setIsPublish(true);
+									setApproveReject('A');
+								}}
+								// onClick={() => { adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
+							>
+								Approve
+							</Button>
+						</div>
+					) : (
+						<></>
+					)}
+				</div>
+			</div>
 
-                  Save
-                </Button>
-                {isLoad ?
-                  <Button
-                    className='report-primary-btn'
-                    onClick={() => {
-                      PrepareJson(mainJson, 'save_as')
-                    }}
-                  >
+			<div className='custom-content-layout'>
+				<ReportDesignerForm
+					setViewId={setViewId}
+					viewList={viewList}
+					setStatus={setStatus}
+					status={status}
+					isLoad={isLoad}
+					reportName={reportName}
+					setReportName={setReportName}
+					viewVersion={viewVersion}
+					setViewVersion={setViewVersion}
+					reportId={reportId}
+					viewIdVersion={viewIdVersion}
+					setViewIdVersion={setViewIdVersion}
+					getChartsList={getChartsList}
+					mapViewList={mapViewList}
+					show={params}
+					selectedChartList={selectedChartList}
+					setSelectedChartList={setSelectedChartList}
+					chartList={chartList}
+				/>
 
-                    Save As
-                  </Button> : <></>}
-                <Button
-                style={{marginLeft:'16px',marginRight:'16px'}}
-                  className='report-primary-btn'
-                  onClick={() => dispatch(screenChange(true))}
-                  disabled={!isSaved}
-                >
-                  Preview
-                </Button>
-                <Button
-                  className="report-secondary-btn"
-                  onClick={() => { setIsPublish(true); setApproveReject('P') }}
-                  style={{marginRight:'16px'}}
-                >
-                  <CloudUploadOutlined style={{color:'#093185',fontSize:'16px',marginTop:'2px'}} />
-                  Publish
-                </Button>
-                <Dropdown overlay={menu} placement="bottomLeft" arrow={{ pointAtCenter: true }}>
-                  <EllipsisOutlined style={{ transform: 'rotate(-90deg)', fontSize: '20px', marginRight: '10px' }} />
-                </Dropdown>
-                 </>
-              : <> </>
-          }
-          {
-            params ? <div>
-              <Button
-                className='viewCreation-rejectBtn'
-                onClick={() => {
-                  setIsPublish(true);
-                  setApproveReject('R');
-                }}
-              // onClick={() => { adenabled ? onApprove('R') : setIsPublish(true); setApproveReject('R'); }}
-              >
-                Reject
-              </Button>
-              <Button
-                className='viewCreation-publishBtn'
-                onClick={() => {
-                  setIsPublish(true);
-                  setApproveReject('A');
-                }}
-              // onClick={() => { adenabled ? onApprove('A') : setIsPublish(true); setApproveReject('A'); }}
-              >
-                Approve
-              </Button></div> : <></>
-          }
+				{(isLoad || isNew) && loading == false && viewId == '' ? (
+					<div className='new-empty-block'>
+						<Empty
+							description={
+								<span>Fill in ‘Report info’ to add new section</span>
+							}
+							className='empty-block'
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+						/>
+					</div>
+				) : (
+					<></>
+				)}
 
-        </div>
-      </div>
-
-      <div className='custom-content-layout'>
-        <ReportDesignerForm
-          setViewId={setViewId}
-          viewList={viewList}
-          setStatus={setStatus}
-          status={status}
-          isLoad={isLoad}
-          reportName={reportName}
-          setReportName={setReportName}
-          viewVersion={viewVersion}
-          setViewVersion={setViewVersion}
-          reportId={reportId}
-          viewIdVersion={viewIdVersion}
-          setViewIdVersion={setViewIdVersion}
-          getChartsList={getChartsList}
-          mapViewList={mapViewList}
-          show={params}
-          selectedChartList={selectedChartList}
-          setSelectedChartList={setSelectedChartList}
-          chartList={chartList}
-        />
-
-        {(isLoad || isNew) && loading == false && viewId == '' ? <div className='new-empty-block'>
-          <Empty description={
-            <span>
-              Fill in ‘Report info’ to add new section
-            </span>
-          }
-            className='empty-block'
-            image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        </div> : <></>
-
-        }
-
-        {(isLoad || isNew) && loading == false && viewId !== '' ?
-          <div className="reportDesigner-grid-tables">
-            <Form
-              className="report-form"
-              name="report-generator-form"
-              form={form}
-              onValuesChange={handleValuesChange}
-              initialValues={formData}
-            >
-              <ReportDesignerDynamicSections formData={formData} show={params} list={selectedChartList} setSectionCharts={setSectionCharts} sectionKeys={sectionKeys} sectionAddedCharts={sectionAddedCharts} setSectionAddKey={setSectionAddKey} setSectionAddCharts={setSectionAddCharts} charts_layout={chartsLayout} isLoad={isLoad} />
-            </Form>
-          </div> :
-          <></>
-        }
-        <Modal
-          title="Select Report"
-          visible={visible}
-          onCancel={() => setVisible(false)}
-          width={500}
-          style={{ marginRight: '800px' }}
-          footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() =>
-            onOk()
-          }>OK</Button>,]}
-        >
-          <Select className="filter-button" defaultValue={reportId} onChange={(e, value) => {
-            let view_value = value.value ? value.value : ''
-            setReportId(view_value)
-            getReportData(view_value)
-          }}
-            value={reportId}
-            showSearch
-            showArrow
-            style={{ backgroundColor: 'white', borderRadius: '4px' }}
-            onMouseDown={e => { e.stopPropagation(); }}
-          >
-            {mapReportList.length >= 0 ? mapReportList.map((item) =>
-
-              <Option value={item.rep_disp_id} key={item.rep_disp_id}>{item.rep_disp_id}</Option>
-            ) :
-              <></>
-            }
-          </Select>
-          <Button onClick={() => setPopVisible(true)}><BlockOutlined twoToneColor="#093185" /></Button>
-        </Modal>
-        <Modal
-          title="Select Report"
-          visible={popvisible}
-          onCancel={() => setPopVisible(false)}
-          width={600}
-          title={<p>Select Report  <Input.Search
-            className='table-search'
-            placeholder='Search by...'
-            enterButton
-            onSearch={search}
-            style={{ borderRadius: '4px' }}
-          /></p>}
-          centered
-          width={500}
-          footer={[<Button style={{ backgroundColor: '#093185', color: 'white', borderRadius: '4px' }} onClick={() => {
-            dispatch(showLoader());
-            onOk()
-          }}>OK</Button>,]}
-        >
-          <Table
-            // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
-            rowHighlightTest={isStyledDifferently}
-            dataSource={filterTable === null ? reportList : filterTable}
-            columns={columns}
-            onRow={record => ({
-              onClick: e => {
-                record['color'] = '#D3D3D3'
-                setReportId(record.rep_disp_id)
-                getReportData(record.rep_disp_id, record.rep_status)
-                dispatch(showLoader())
-              }
-            })}
-            scroll={{ y: 200 }}
-            size='small'
-            pagination={false}
-          />
-        </Modal>
-        <SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
-
-      </div>
-      <Signature isPublish={isPublish} handleClose={handleClose} screenName="Report Designer" PublishResponse={PublishResponse} appType="REPORT" dispId={reportId} version={0} status={approveReject} />
-    </div>
-  );
+				{(isLoad || isNew) && loading == false && viewId !== '' ? (
+					<div className='reportDesigner-grid-tables'>
+						<Form
+							className='report-form'
+							name='report-generator-form'
+							form={form}
+							onValuesChange={handleValuesChange}
+							initialValues={formData}>
+							<ReportDesignerDynamicSections
+								formData={formData}
+								show={params}
+								list={selectedChartList}
+								setSectionCharts={setSectionCharts}
+								sectionKeys={sectionKeys}
+								sectionAddedCharts={sectionAddedCharts}
+								setSectionAddKey={setSectionAddKey}
+								setSectionAddCharts={setSectionAddCharts}
+								charts_layout={chartsLayout}
+								isLoad={isLoad}
+							/>
+						</Form>
+					</div>
+				) : (
+					<></>
+				)}
+				<Modal
+					title='Select Report'
+					visible={visible}
+					onCancel={() => setVisible(false)}
+					width={500}
+					style={{ marginRight: '800px' }}
+					footer={[
+						<Button
+							style={{
+								backgroundColor: '#093185',
+								color: 'white',
+								borderRadius: '4px',
+							}}
+							onClick={() => onOk()}>
+							OK
+						</Button>,
+					]}>
+					<Select
+						className='filter-button'
+						defaultValue={reportId}
+						onChange={(e, value) => {
+							let view_value = value.value ? value.value : '';
+							setReportId(view_value);
+							getReportData(view_value);
+						}}
+						value={reportId}
+						showSearch
+						showArrow
+						style={{ backgroundColor: 'white', borderRadius: '4px' }}
+						onMouseDown={e => {
+							e.stopPropagation();
+						}}>
+						{mapReportList.length >= 0 ? (
+							mapReportList.map(item => (
+								<Option value={item.rep_disp_id} key={item.rep_disp_id}>
+									{item.rep_disp_id}
+								</Option>
+							))
+						) : (
+							<></>
+						)}
+					</Select>
+					<Button onClick={() => setPopVisible(true)}>
+						<BlockOutlined twoToneColor='#093185' />
+					</Button>
+				</Modal>
+				<Modal
+					title='Select Report'
+					visible={popvisible}
+					onCancel={() => setPopVisible(false)}
+					width={600}
+					title={
+						<p>
+							Select Report{' '}
+							<Input.Search
+								className='table-search'
+								placeholder='Search by...'
+								enterButton
+								onSearch={search}
+								style={{ borderRadius: '4px' }}
+							/>
+						</p>
+					}
+					centered
+					width={500}
+					footer={[
+						<Button
+							style={{
+								backgroundColor: '#093185',
+								color: 'white',
+								borderRadius: '4px',
+							}}
+							onClick={() => {
+								dispatch(showLoader());
+								onOk();
+							}}>
+							OK
+						</Button>,
+					]}>
+					<Table
+						// rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
+						rowHighlightTest={isStyledDifferently}
+						dataSource={filterTable === null ? reportList : filterTable}
+						columns={columns}
+						onRow={record => ({
+							onClick: e => {
+								record['color'] = '#D3D3D3';
+								setReportId(record.rep_disp_id);
+								getReportData(record.rep_disp_id, record.rep_status);
+								dispatch(showLoader());
+							},
+						})}
+						scroll={{ y: 200 }}
+						size='small'
+						pagination={false}
+					/>
+				</Modal>
+				<SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
+			</div>
+			<Signature
+				isPublish={isPublish}
+				handleClose={handleClose}
+				screenName='Report Designer'
+				PublishResponse={PublishResponse}
+				appType='REPORT'
+				dispId={reportId}
+				version={0}
+				status={approveReject}
+			/>
+		</div>
+	);
 }
 
 export default ReportDesignerNew;
