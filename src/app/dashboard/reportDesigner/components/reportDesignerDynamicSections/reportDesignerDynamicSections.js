@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Space, Popconfirm, Card,Tooltip, message } from 'antd';
-import {  DeleteTwoTone, PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { Form, Input, Space, Popconfirm, Card, Tooltip, message } from 'antd';
+import { DeleteTwoTone, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
 import Chart from '../reportChart/chartComponent/chartComponent'
@@ -31,7 +31,7 @@ function ReportDesignerDynamicSections(props) {
 
         dispatch(showLoader())
         section = section + 1
-        let charts_all = {...addedCharts}
+        let charts_all = { ...addedCharts }
         let chart_index = charts_all[`${section}`].indexOf(chartName)
         if (chart_index > -1) {
             charts_all[`${section}`].splice(chart_index, 1)  // 2nd parameter means remove one item only
@@ -74,38 +74,35 @@ function ReportDesignerDynamicSections(props) {
         }
         dispatch(showLoader())
         section = section + 1
-        if(`${section}` in addedCharts)
-        {
+        if (`${section}` in addedCharts) {
             console.log(addedCharts[`${section}`])
-            if(addedCharts[`${section}`].includes(chartName))
-            {
+            if (addedCharts[`${section}`].includes(chartName)) {
                 message.error('Chart already added')
                 dispatch(hideLoader())
 
             }
-            else
-            {
-                console.log('here')
-            if (`${section}` in addedCharts) {
-                addedCharts[`${section}`].push(chartName)
-                setAddedCharts(addedCharts)
-                dispatch(hideLoader())
-            }
             else {
-                if (addedCharts && !addedCharts[`${section}`]) {
-                    addedCharts[`${section}`] = []
+                console.log('here')
+                if (`${section}` in addedCharts) {
                     addedCharts[`${section}`].push(chartName)
                     setAddedCharts(addedCharts)
                     dispatch(hideLoader())
                 }
                 else {
-                    addedCharts[`${section}`].push(chartName)
-                    setAddedKeys(addedCharts)
+                    if (addedCharts && !addedCharts[`${section}`]) {
+                        addedCharts[`${section}`] = []
+                        addedCharts[`${section}`].push(chartName)
+                        setAddedCharts(addedCharts)
+                        dispatch(hideLoader())
+                    }
+                    else {
+                        addedCharts[`${section}`].push(chartName)
+                        setAddedKeys(addedCharts)
+                    }
+                    dispatch(hideLoader())
                 }
-                dispatch(hideLoader())
+                props.setSectionCharts(chartName, addedCharts)
             }
-            props.setSectionCharts(chartName, addedCharts)
-        }
         }
 
 
@@ -173,7 +170,7 @@ function ReportDesignerDynamicSections(props) {
                         {(fields, { add, remove }) => (
                             <>
                                 {fields.map(({ key, name, ...restField }) => (
-                                    <div style={{ border: "1px solid #486BC9", marginBottom: "30px", minHeight: "160px", borderRadius: "4px",marginTop:'20px' }}>
+                                    <div style={{ border: "1px solid #486BC9", marginBottom: "30px", minHeight: "160px", borderRadius: "4px", marginTop: '20px' }}>
 
                                         {name >= 0 ? setShowAddSection(true) : setShowAddSection(false)}
                                         <p className="section-name">Section {name + 1} </p>
@@ -181,26 +178,26 @@ function ReportDesignerDynamicSections(props) {
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '10px' }}>
                                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
                                                 <Form.Item {...restField} name={[name, 'sectionName']}>
-                                                    <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px',marginRight:'20px' }} className="input-section" disabled={props.show} disabled={editable} />
+                                                    <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px', marginRight: '20px' }} className="input-section" disabled={props.show} disabled={editable} />
                                                 </Form.Item>
-                                                <Tooltip placement="topLeft" title="Edit Section Name">    <EditOutlined style={{ marginTop: '8px', marginLeft: '10px',color:'#949494' }} onClick={() => handleEdit(editable)} /> </Tooltip>
-                                            </div> 
-                                            {name>0 ? 
-                                            <div className="add-chart" onClick={() => trackCharts(name)} ><span style={{marginRight:'4px'}}>+</span>  Add Chart  </div> : <></>
-}
-{name > 0 ?
-                                            <div style={{ marginLeft: '15%' }}>
-                                                <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
-                                                    <DeleteTwoTone twoToneColor="red" style={{ fontSize: '18px', marginTop: '5px' }} />
-                                                </Popconfirm>
-                                            </div> 
-                                            :
-                                            <div style={{ marginLeft: '193%' }}>
-                                                <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
-                                                    <DeleteTwoTone twoToneColor="red" style={{ fontSize: '18px', marginTop: '5px' }} />
-                                                </Popconfirm>
+                                                <Tooltip placement="topLeft" title="Edit Section Name">    <EditOutlined style={{ marginTop: '8px', marginLeft: '10px', color: '#949494' }} onClick={() => handleEdit(editable)} /> </Tooltip>
                                             </div>
-}
+                                            {name > 0 ?
+                                                <div className="add-chart" onClick={() => trackCharts(name)} ><span style={{ marginRight: '4px' }}>+</span>  Add Chart  </div> : <></>
+                                            }
+                                            {name > 0 ?
+                                                <div style={{ marginLeft: '15%' }}>
+                                                    <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
+                                                        <DeleteTwoTone twoToneColor="red" style={{ fontSize: '18px', marginTop: '5px' }} />
+                                                    </Popconfirm>
+                                                </div>
+                                                :
+                                                <div style={{ marginLeft: '193%' }}>
+                                                    <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
+                                                        <DeleteTwoTone twoToneColor="red" style={{ fontSize: '18px', marginTop: '5px' }} />
+                                                    </Popconfirm>
+                                                </div>
+                                            }
 
                                         </div>
                                         {!addedKeys[name] ?
@@ -217,7 +214,7 @@ function ReportDesignerDynamicSections(props) {
                                                     style={{ display: 'flex', justifyContent: 'center' }}
                                                     align="baseline"
                                                 >
-                                                    <table className="dynamicSections-table" style={{ width: '1200px',marginRight:'4px' }}>
+                                                    <table className="dynamicSections-table" style={{ width: '1180px', marginRight: '4px' }}>
                                                         <thead className="dynamicSections-thead">
                                                             <tr>
                                                                 <th className="action-clm">Action</th>
@@ -257,12 +254,12 @@ function ReportDesignerDynamicSections(props) {
                                         (
                                             <div className="chart-sections" >
                                                 <p className="chart-name" >{i} <Popconfirm title="Are you sure you want to delete the chart?" onConfirm={() => deleteChart(i, name)} disabled={props.show}>
-                                                <Tooltip placement="bottomRight" title="Delete the chart">    <DeleteTwoTone twoToneColor="red" style={{ marginLeft: '20px' }} /> </Tooltip>
+                                                    <Tooltip placement="bottomRight" title="Delete the chart">    <DeleteTwoTone twoToneColor="red" style={{ marginLeft: '20px' }} /> </Tooltip>
                                                 </Popconfirm></p>
                                                 <Chart chartName={i} />
                                             </div>
                                         ))}
-                                  <Tooltip placement="bottomRight" title="Add Section"> <PlusOutlined style={{ fontSize: '18px', marginLeft: '99.2%', color: '#093185', background: "white", padding: "2px", borderRadius: "50px",position:'relative',top:'10px', filter: 'drop-shadow(0px 1px 10px rgba(38, 38, 38, 0.1))' }} twoToneColor="#eb2f96" onClick={() => add()} /> </Tooltip>
+                                        <Tooltip placement="bottomRight" title="Add Section"> <PlusOutlined style={{ fontSize: '18px', marginLeft: '99.2%', color: '#093185', background: "white", padding: "2px", borderRadius: "50px", position: 'relative', top: '10px', filter: 'drop-shadow(0px 1px 10px rgba(38, 38, 38, 0.1))' }} twoToneColor="#eb2f96" onClick={() => add()} /> </Tooltip>
 
                                     </div>
                                 ))}

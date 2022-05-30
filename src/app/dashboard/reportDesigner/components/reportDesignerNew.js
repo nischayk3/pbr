@@ -687,7 +687,9 @@ function ReportDesignerNew(props) {
     <div className='custom-wrapper'>
       <div className='sub-header' style={{paddingRight:'24px'}}>
         <div className='sub-header-title'>
+          <div onClick={()=>window.location.reload()}>
           <BreadCrumbWrapper />
+          </div>
         </div>
         <div className='sub-header-btns'>
           {/* {isLoad || params ? <> </> : (

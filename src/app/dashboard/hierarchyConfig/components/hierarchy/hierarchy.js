@@ -10,12 +10,12 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Tabs, Table, Popconfirm, Button, Input, Modal, Row, Col, Select, message } from 'antd'
 import './hierStyle.scss'
-import { ArrowRightOutlined, DeleteTwoTone, PlusOutlined } from '@ant-design/icons'
+import {  DeleteTwoTone, PlusOutlined } from '@ant-design/icons'
 import Banner from '../../../../../assets/images/Popup-Side.svg';
 import BreadCrumbWrapper from '../../../../../components/BreadCrumbWrapper';
 import Display from '../display/display';
 import { putMolecule, putProcessStep, getProcessStep, getProcessStepMap, putProcessStepMap } from '../../../../../services/viewHierarchyServices';
-import { showNotification } from '../../../../../duck/actions/commonActions';
+import { hideLoader, showLoader, showNotification } from '../../../../../duck/actions/commonActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEdges } from 'react-flow-renderer';
 
@@ -23,7 +23,7 @@ const { TabPane } = Tabs
 
 function Hierarchy() {
     const [hierarchyName, setHierarchyName] = useState('Untitled')
-    const Option = Select
+    const {Option} = Select
     const [moleculeData, setMoleculeData] = useState([])
     const [stepData, setStepData] = useState([])
     const [stepMappingData, setStepMappingData] = useState([])
@@ -34,7 +34,7 @@ function Hierarchy() {
     const [count, setCount] = useState(1);
     const [stepCount, setStepCount] = useState(1);
     const [stepMapCount, setStepMapCount] = useState(1);
-    const [tableData,setTableData] = useState([])
+    const [tableData, setTableData] = useState([])
 
     const [activeTab, setActiveTab] = useState('Plant and molecules')
 
@@ -58,13 +58,19 @@ function Hierarchy() {
 
 
     const getStepMapping = async () => {
+        dispatch(showLoader())
         let req = { ds_name: hierarchyName }
-        let mapResponse = getProcessStepMap(req)
+        let mapResponse = await getProcessStepMap(req)
+        console.log(mapResponse)
+
 
         if (mapResponse['status-code'] == 200) {
-             setTableData(mapResponse.data)
-             setStepArray(mapResponse.options)
+            console.log(mapResponse)
+
+            setTableData(mapResponse.Data.data && mapResponse.Data.data[0] ? mapResponse.Data.data[0] : [])
+            setStepArray(mapResponse.Data.options)
         }
+        dispatch(hideLoader())
     }
     const plantMoleculeColumns =
         [
@@ -178,11 +184,27 @@ function Hierarchy() {
             },
         ]
 
+    const handleProcessStepChange = (text, index) => {
+        dispatch(showLoader())
+        console.log(text, index)
+        let newAggrValue = [...tableData];
+        console.log('before', newAggrValue)
+        newAggrValue[index].process_step = text ? text.key : "hello";
+        // const aggJson = [...parameters];
+        // aggJson[index].aggregation = value.value !== undefined ? value.value : "";
+        // setParameters(aggJson);
+        console.log('after', newAggrValue)
+
+        setTableData(newAggrValue);
+        // setAggregationValue(value.value !== undefined ? value.value : "");
+        dispatch(hideLoader())
+    }
+
     const mappingColumns = [
         {
             title: "Product",
-            dataIndex: "molecule_num",
-            key: "molecule_num",
+            dataIndex: "parent_product_num",
+            key: "parent_product_num",
             width: "200",
         },
         {
@@ -206,22 +228,26 @@ function Hierarchy() {
         {
             title: "Process Step",
             dataIndex: "process_step",
-            key:'process_step',
+            key: 'process_step',
             width: "200",
             align: 'left',
-            render: (text, record) => {
+            render: (text, record, index) => {
                 return (
                     <Select
                         row={1}
                         className="filter-button"
                         allowClear
                         dropdownStyle={{ border: '10' }}
-                        notFoundContent="No Result"
+                        // value={ }
+                        onChange={(e, value) => {
+                            handleProcessStepChange(value, index);
+                        }}
+                        {...(text && { defaultValue: text })}
                         placeholder="Select Step"
                         style={{ width: '100%', borderRadius: '4px', right: '15px' }}
                     >
-                        {stepArray.length > 0 ? stepArray.map(item => (
-                            <Option value={item} key={item}>
+                        {stepArray && stepArray.length > 0 ? stepArray.map((item,index) => (
+                            <Option value={index} key={item}>
                                 {item}
                             </Option>
                         )) : <Option >
@@ -338,9 +364,29 @@ function Hierarchy() {
                 message.error(response.message)
             }
         }
+        if (activeTab == 'Process step mapping') {
+            let req = {
+                ds_name: hierarchyName,
+                l1_product: tableData.map((i) => { return parseInt(i.l1_product)} ),
+                process_step: tableData.map((i) => { return i.process_step ? i.process_step : ''  }),
+                site_num :  tableData.map((i) => { return i.site_num  ? i.site_num : '' }),
+                molecule_num  : tableData.map((i) => { return i.parent_product_num ? i.parent_product_num : ''  }), 
+                delete_row: false
+            }
 
-    }
+            let response = await putProcessStepMap(req)
+            if (response['status-code'] == 200) {
+                message.success('Saved')
+            }
+            else {
+                message.error(response.message)
+            }
 
+
+        
+
+    }}
+    console.log(tableData)
     return (
 
         <div className='custom-wrapper'>
