@@ -57,7 +57,7 @@ module.exports = {
       },
     ],
     "no-console": "warn",
-    "no-duplicate-imports": "warn",
+    "no-duplicate-imports": "error",
     "no-restricted-imports": [
       "error",
       {
@@ -85,7 +85,7 @@ module.exports = {
         patterns: ["lodash/**", "lodash/fp/**"],
       },
     ],
-    "no-unused-vars": "warn",
+    "no-unused-vars": "error",
     "object-curly-spacing": ["warn", "always"],
     quotes: ["warn", "double"],
     "react/jsx-curly-spacing": [
