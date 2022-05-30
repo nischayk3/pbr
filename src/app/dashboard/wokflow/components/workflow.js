@@ -15,20 +15,25 @@ import {
 import {
 	getCountData,
 	getTableData,
+	getUnapprovedData,
+	approveParamData,
 } from '../../../../services/workFlowServices';
-import { Card, Empty, Tabs, Button } from 'antd';
+import { Card, Empty, Tabs, Button, Table } from 'antd';
 import { ArrowLeftOutlined, DownloadOutlined } from '@ant-design/icons';
 import DashCard from '../../../../components/CardComponent/customCard';
 import illustrations from '../../../../assets/images/Banner illustration.svg';
 import WorkflowTable from './workflowTable/workflowTable';
 import './styles.scss';
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import Signature from '../../../../components/ElectronicSignature/signature';
 
 const { TabPane } = Tabs;
 const Workflow = () => {
 	const [itemCount, setItemCount] = useState();
 	const [cardTitle, setCardTitle] = useState('');
 	const [indexCount, setIndexCount] = useState(0);
+	const [isPublish, setIsPublish] = useState(false);
 	const [resultDate, setResultDate] = useState('');
 	const [tilesData, setTilesData] = useState([]);
 	const [activeDiv, setActiveDiv] = useState('');
@@ -36,6 +41,9 @@ const Workflow = () => {
 	const [activeTab, setActiveTab] = useState('1');
 	const [columns, setColumns] = useState([]);
 	const [dataSource, setDataSource] = useState([]);
+	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+	const [approveReject, setApproveReject] = useState('');
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -46,6 +54,12 @@ const Workflow = () => {
 	useEffect(() => {
 		if (cardTitle != '') {
 			cardTableData();
+		}
+	}, [cardTitle, activeTab]);
+
+	useEffect(() => {
+		if (cardTitle === 'Param Data Approval') {
+			getUnApprovedParamData();
 		}
 	}, [cardTitle, activeTab]);
 
@@ -85,6 +99,7 @@ const Workflow = () => {
 			}
 		}
 	};
+
 	const getTilesData = async () => {
 		let req = {};
 		try {
@@ -95,6 +110,90 @@ const Workflow = () => {
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', error.message));
+		}
+	};
+
+	const getUnApprovedParamData = async () => {
+		let _reqData = {
+			limit: 10,
+		};
+
+		const dataColumns = [
+			{
+				title: 'Product',
+				key: 'product_num',
+				dataIndex: 'product_num',
+			},
+			{
+				title: 'Batch',
+				key: 'batch_num',
+				dataIndex: 'batch_num',
+			},
+			{
+				title: 'Parameter Name',
+				key: 'parameter_name',
+				dataIndex: 'parameter_name',
+			},
+			{
+				title: 'Parameter Value',
+				key: 'parameter_value',
+				dataIndex: 'parameter_value',
+			},
+
+			{
+				title: 'Site',
+				key: 'site_code',
+				dataIndex: 'site_code',
+			},
+			{
+				title: 'UOM',
+				key: 'uom_code',
+				dataIndex: 'uom_code',
+			},
+			{
+				title: 'Created By',
+				key: 'created_by',
+				dataIndex: 'created_by',
+			},
+			{
+				title: 'Date',
+				key: 'recorded_date',
+				dataIndex: 'recorded_date',
+			},
+		];
+
+		try {
+			dispatch(showLoader());
+			const dataRes = await getUnapprovedData(_reqData);
+			if (dataRes.statuscode === 200) {
+				setDataSource(dataRes.Data);
+				setColumns(dataColumns);
+			} else {
+				dispatch(hideLoader());
+				dispatch(showNotification('error', 'No data found'));
+			}
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification('error', 'No data found'));
+		}
+	};
+
+	const approveData = async _reqParam => {
+		try {
+			dispatch(showLoader());
+			const approveRes = await approveParamData(_reqParam);
+			if (approveRes.Status === 200) {
+				dispatch(showNotification('success', approveRes.Message));
+				getUnApprovedParamData();
+			} else {
+				dispatch(hideLoader());
+				dispatch(showNotification('error', 'No data found'));
+			}
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification('error', 'No data found'));
 		}
 	};
 
@@ -110,14 +209,28 @@ const Workflow = () => {
 		setActiveTab(activeKey);
 	};
 
+	const handleClose = () => {
+		setIsPublish(false);
+	};
+
+	const eSignId = esign => {
+		console.log('esign', esign);
+		let _approveReq = {
+			esign_id: esign.toString(),
+			prod_param_id: selectedRowKeys,
+		};
+		console.log('_approveReq', _approveReq);
+		approveData(_approveReq);
+	};
+
+	console.log(
+		'state selected row keys:',
+		selectedRowKeys.length > 0 ? true : false
+	);
 	return (
 		<div className='custom-wrapper'>
-			<div className='sub-header'>
-				<div className='sub-header-title'>
-					<ArrowLeftOutlined className='header-icon' />
-					<span className='header-title'>Workflow</span>
-				</div>
-			</div>
+			<BreadCrumbWrapper />
+
 			<div className='custom-content-layout'>
 				<ScreenHeader
 					bannerbg={{
@@ -166,33 +279,51 @@ const Workflow = () => {
 								}>
 								{cardTitle === 'Param Data Approval' ? (
 									<>
-										{dataSource.length > 0 ? (
-											<>
-												<div style={{ margin: '25px 0px 20px 0px' }}>
-													<Button className='custom-secondary-btn' disabled>
-														Approve
-													</Button>
-													<Button
-														disabled
-														className='custom-primary-btn '
-														style={{ marginLeft: '16px' }}>
-														Reject
-													</Button>
-												</div>
+										<div style={{ margin: '25px 0px 20px 0px' }}>
+											<Button
+												className='custom-secondary-btn'
+												disabled={selectedRowKeys.length >= 0}
+												onClick={() => {
+													setIsPublish(true);
+													setApproveReject('A');
+												}}>
+												Approve
+											</Button>
+											<Button
+												className='custom-primary-btn'
+												style={{ marginLeft: '16px' }}
+												disabled={selectedRowKeys.length >= 0}
+												onClick={() => {
+													setIsPublish(true);
+													setApproveReject('R');
+												}}>
+												Reject
+											</Button>
+										</div>
 
-												<WorkflowTable
-													isRowSelection={true}
-													columns={columns}
-													dataSource={[]}
-													activeTab={activeTab}
-												/>
-											</>
-										) : (
-											<Empty
-												className='empty-workflow data-empty'
-												description={false}
-											/>
-										)}
+										<Table
+											rowSelection={{
+												selectedRowKeys,
+												onChange: (selectedRowKeys, selectedRows) => {
+													console.log(
+														'selectedRowKeys rowselection',
+														selectedRowKeys,
+														selectedRows
+													);
+													setSelectedRowKeys(selectedRowKeys);
+												},
+											}}
+											className='approval-table'
+											columns={columns}
+											dataSource={dataSource}
+											rowKey='prod_param_id'
+											style={{
+												border: '1px solid #ececec',
+												borderRadius: '2px',
+											}}
+											pagination={false}
+											scroll={{ x: 500, y: 300 }}
+										/>
 									</>
 								) : (
 									<Tabs
@@ -225,6 +356,14 @@ const Workflow = () => {
 					)}
 				</div>
 			</div>
+			<Signature
+				isPublish={isPublish}
+				status={approveReject}
+				handleClose={handleClose}
+				eSignId={eSignId}
+				screenName='Workflow'
+				appType='WORKITEMS'
+			/>
 		</div>
 	);
 };
