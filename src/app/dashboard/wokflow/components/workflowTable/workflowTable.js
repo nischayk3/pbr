@@ -100,9 +100,9 @@ function workflowTable(props) {
 		onFilter: (value, record) =>
 			record[dataIndex]
 				? record[dataIndex]
-						.toString()
-						.toLowerCase()
-						.includes(value.toLowerCase())
+					.toString()
+					.toLowerCase()
+					.includes(value.toLowerCase())
 				: '',
 		onFilterDropdownVisibleChange: visible => {
 			if (visible) {
@@ -213,10 +213,10 @@ function workflowTable(props) {
 								a.field_name === ''
 								? -1
 								: b.field_name == null ||
-								  b.field_name == undefined ||
-								  b.field_name == ''
-								? 1
-								: a.field_name.toString().localeCompare(b.field_name);
+									b.field_name == undefined ||
+									b.field_name == ''
+									? 1
+									: a.field_name.toString().localeCompare(b.field_name);
 						},
 					};
 
@@ -311,10 +311,10 @@ function workflowTable(props) {
 								a.field_name === ''
 								? -1
 								: b.field_name == null ||
-								  b.field_name == undefined ||
-								  b.field_name == ''
-								? 1
-								: a.field_name.toString().localeCompare(b.field_name);
+									b.field_name == undefined ||
+									b.field_name == ''
+									? 1
+									: a.field_name.toString().localeCompare(b.field_name);
 						},
 					};
 
@@ -356,7 +356,7 @@ function workflowTable(props) {
 				style={{ border: '1px solid #ececec', borderRadius: '2px' }}
 				pagination={false}
 				scroll={{ x: 500, y: 300 }}
-				//rowKey={(record) => record.param}
+			//rowKey={(record) => record.param}
 			/>
 		</div>
 	);

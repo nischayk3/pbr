@@ -123,8 +123,10 @@ export default function landingPage(props) {
 	};
 
 	const handleOk = () => {
-		setIsModalVisible(false);
-		props.chartCard(true);
+		if (props.dashboardName && props.viewData.searchValue) {
+			setIsModalVisible(false);
+			props.chartCard(true);
+		}
 	};
 
 	const handleCancel = () => {
@@ -229,6 +231,17 @@ export default function landingPage(props) {
 												? dashboardData
 												: filterTableLanding
 										}
+										onRow={(record, rowIndex) => {
+											return {
+												onClick: event => {
+													history.push(
+														`/dashboard/dashboard?id=${record.dashboard_disp_id}&version=${record.dashboard_version}`
+													);
+													window.location.reload();
+												}, // click row
+
+											}
+										}}
 									/>
 								) : (
 									<></>
