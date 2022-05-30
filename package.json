@@ -104,7 +104,6 @@
       "src/app/dashboard/chartPersonalization/**/*.js",
       "src/app/dashboard/manualDtaUpload/**/*.js",
       "src/app/dashboard/dataLoad/**/*.js",
-      "src/app/dashboard/genealogy/**/*.js",
       "src/app/dashboard/reportDesign/**/*.js",
       "src/app/dashboard/reportGenerator/**/*.js",
       "src/app/dashboard/systemErrorReport/**/*.js",
