@@ -46,7 +46,7 @@
 		box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
 		border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 	line-height: 1.75;
-	font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+	font-family: var(--primary-font-family);
 	border-radius: 4px;
 	letter-spacing: 0.086em;
 	color: white;
@@ -71,18 +71,15 @@
 .page-login {
 	padding: 0px !important;
 	padding: 25px 50px;
+	min-height: 100vh;
 }
 .cpv-logo {
 	height: 100px;
 }
 
-.page-login {
-	min-height: 100vh;
-}
-
 .login-head {
 	margin: 0px;
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 500;
 	font-size: 32px;
@@ -96,7 +93,7 @@
 }
 
 .login-desc {
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 300;
 	font-size: 16px;
@@ -109,7 +106,7 @@
 }
 
 .signup-text {
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
@@ -119,23 +116,23 @@
 	.sign-up {
 		font-size: 16px;
 		text-align: center;
-		color: #093185;
+		color: var(--primary-color);
 	}
 }
 
 .microsoft-btn {
 	width: 100%;
 	margin: 20px 0px;
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 400;
 	font-size: 16px;
 	line-height: 22px;
 	/* identical to box height, or 138% */
 	padding: 6px 12px;
-	color: #093185;
+	color: var(--primary-color);
 	border-radius: 4px;
-	border: 1px solid #093185;
+	border: 1px solid var(--primary-color);
 	height: 40px;
 	background: transparent !important;
 	span {
@@ -144,8 +141,8 @@
 	}
 }
 .microsoft-btn:hover {
-	color: #093185;
-	border: 1px solid #093185;
+	color: var(--primary-color);
+	border: 1px solid var(--primary-color);
 }
 
 .login-wrapper {
@@ -165,7 +162,7 @@
 				padding: 28px 0 0 0;
 				.input-prefix {
 					padding: 8px 12px;
-					color: #093185;
+					color: var(--primary-color);
 					.ant-input-prefix {
 						margin-right: 40px;
 					}
@@ -176,7 +173,7 @@
 				justify-content: space-between;
 				padding: 26px 0 0 0;
 				span {
-					font-family: 'Roboto';
+					font-family: var(--primary-font-family);
 					font-style: normal;
 					font-weight: 400;
 					font-size: 14px;
@@ -185,26 +182,26 @@
 					/* Character/Title .85 */
 					color: rgba(0, 0, 0, 0.85);
 					.ant-checkbox-inner {
-						background-color: #093185;
-						border-color: #093185;
+						background-color: var(--primary-color);
+						border-color: var(--primary-color);
 					}
 				}
 				p {
-					font-family: 'Roboto';
+					font-family: var(--primary-font-family);
 					font-style: normal;
 					font-weight: 400;
 					font-size: 16px;
 					line-height: 24px;
 					margin: 0px;
 					text-align: center;
-					color: #093185;
+					color: var(--primary-color);
 				}
 			}
 			.login-btn {
 				width: 100%;
 				margin: 23px 0px 10px 0px;
 				padding: 8px 12px;
-				font-family: 'Roboto', sans-serif !important;
+				font-family: var(--primary-font-family) !important;
 				font-weight: 400 !important;
 				font-size: 14px !important;
 				color: #fff !important;
@@ -212,8 +209,8 @@
 				align-items: center !important;
 				justify-content: center !important;
 				border-radius: 4px !important;
-				border: 1px solid #093185 !important;
-				background: #093185 !important;
+				border: 1px solid var(--primary-color) !important;
+				background: var(--primary-color) !important;
 				height: 40px;
 			}
 		}

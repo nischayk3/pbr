@@ -1,29 +1,25 @@
-.dynamicSections-spaceRows
-{
-    background-color: grey;
-    color: hotpink;
+.dynamicSections-spaceRows {
+	background-color: grey;
+	color: hotpink;
 }
 ::placeholder {
-    color: black;
-    opacity: 1; /* Firefox */
-  }
-.ant-input-textarea
-  {
-
-    background-color: #baeaff 
-  }
-  .add-row-btn {
-
-    align-items: center;
-    padding: 5px 5px;
-    // position:inherit;
-    margin-left: 30%;
-    width: 150px;
-    height: 34px;
-    color: #093185;
-    background: #FFFFFF;
-    border: 1px dashed #D9D9D9;
-    box-sizing: border-box;
-    border-radius: 2px;
-    justify-content: center;
-    }
+	color: black;
+	opacity: 1; /* Firefox */
+}
+.ant-input-textarea {
+	background-color: #baeaff;
+}
+.add-row-btn {
+	align-items: center;
+	padding: 5px 5px;
+	// position:inherit;
+	margin-left: 30%;
+	width: 150px;
+	height: 34px;
+	color: var(--primary-color);
+	background: #ffffff;
+	border: 1px dashed #d9d9d9;
+	box-sizing: border-box;
+	border-radius: 2px;
+	justify-content: center;
+}

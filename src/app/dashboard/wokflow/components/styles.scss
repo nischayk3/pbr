@@ -31,7 +31,7 @@
 }
 
 .table-head {
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: normal;
 	font-size: 16px;
@@ -53,10 +53,10 @@
 		font-weight: normal;
 		font-size: 16px;
 		line-height: 22px;
-		color: #093185 !important;
+		color: var(--primary-color) !important;
 	}
 	.ant-tabs-ink-bar {
-		background: #093185;
+		background: var(--primary-color);
 	}
 }
 

@@ -10,12 +10,9 @@ function workflowTable(props) {
 	const [searchText, setSearchText] = useState('');
 	const [searchedColumn, setSearchedColumn] = useState('');
 	const [newColumns, setNewColumns] = useState([]);
-	const [select, setSelect] = useState({
-		selectedRowKeys: [],
-	});
+
 	const refSearchInput = useRef();
 	const history = useHistory();
-	const { selectedRowKeys } = select;
 
 	useEffect(() => {
 		updateTableColumns();
@@ -349,19 +346,10 @@ function workflowTable(props) {
 
 		setNewColumns(columns);
 	};
-	const rowSelection = {
-		selectedRowKeys,
-		onChange: selectedRowKeys => {
-			setSelect({
-				...select,
-				selectedRowKeys: selectedRowKeys,
-			});
-		},
-	};
+
 	return (
 		<div className='workflow-table'>
 			<Table
-				rowSelection={props.isRowSelection ? rowSelection : null}
 				className='approval-table'
 				columns={newColumns}
 				dataSource={props.dataSource}
