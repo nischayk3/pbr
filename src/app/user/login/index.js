@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Form, Input, Button, Row, Col, Checkbox } from 'antd';
 import { userLogin } from '../../../api/login';
 import Auth from '../../../utils/auth';
@@ -11,7 +12,7 @@ import './login.scss';
 import { useHistory } from 'react-router-dom';
 import Banner from '../../../assets/images/dashboard_login_1.png';
 import microsoft from '../../../assets/images/icons8-microsoft-48.png';
-import { loginUrl, logoutUrl } from '../../../services/loginService';
+import { loginUrl } from '../../../services/loginService';
 import { adenabled } from '../../../config/config';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { MDH_APP_PYTHON_SERVICE } from '../../../constants/apiBaseUrl';
@@ -21,6 +22,9 @@ const Login = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
+	useEffect(() => {
+		localStorage.clear()
+	}, [])
 
 	const onFinish = async values => {
 		try {

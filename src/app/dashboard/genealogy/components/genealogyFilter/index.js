@@ -57,10 +57,8 @@ function Filter(props) {
 			if (field === 'plant') {
 				getGenealogyFilterData(
 					value,
-					selectParam['batchNum'],
 					selectParam['productCode'],
-					selectParam['productType'],
-					'',
+					selectParam['batchNum'],
 					'',
 					'',
 					''
@@ -73,10 +71,8 @@ function Filter(props) {
 			if (field === 'batch_num') {
 				getGenealogyFilterData(
 					selectParam['plant'],
-					value,
 					selectParam['productCode'],
-					selectParam['productType'],
-					'',
+					value,
 					'',
 					'',
 					''
@@ -88,10 +84,8 @@ function Filter(props) {
 			} else if (field === 'product_code') {
 				getGenealogyFilterData(
 					selectParam['plant'],
-					selectParam['batchNum'],
 					value,
-					selectParam['productType'],
-					'',
+					selectParam['batchNum'],
 					'',
 					'',
 					''
@@ -101,16 +95,6 @@ function Filter(props) {
 				});
 				setIsEmptyProduct(false);
 			} else if (field === 'product_type') {
-				getGenealogyFilterData(
-					selectParam['plant'],
-					selectParam['batchNum'],
-					selectParam['productCode'],
-					value,
-					'',
-					'',
-					'',
-					''
-				);
 				setselectParam(prevState => {
 					return { ...prevState, productType: value };
 				});
@@ -127,10 +111,8 @@ function Filter(props) {
 			});
 			getGenealogyFilterData(
 				'',
-				selectParam['batchNum'],
 				selectParam['productCode'],
-				selectParam['productType'],
-				'',
+				selectParam['batchNum'],
 				'',
 				'',
 				''
@@ -141,10 +123,8 @@ function Filter(props) {
 			});
 			getGenealogyFilterData(
 				selectParam['plant'],
+				'',
 				selectParam['batchNum'],
-				'',
-				selectParam['productType'],
-				'',
 				'',
 				'',
 				''
@@ -155,9 +135,7 @@ function Filter(props) {
 			});
 			getGenealogyFilterData(
 				selectParam['plant'],
-				'',
 				selectParam['productCode'],
-				selectParam['productType'],
 				'',
 				'',
 				'',
@@ -167,16 +145,6 @@ function Filter(props) {
 			setselectParam(prevState => {
 				return { ...prevState, productType: '' };
 			});
-			getGenealogyFilterData(
-				selectParam['plant'],
-				selectParam['batchNum'],
-				selectParam['productCode'],
-				'',
-				'',
-				'',
-				'',
-				''
-			);
 		}
 	};
 
@@ -185,10 +153,8 @@ function Filter(props) {
 			if (field === 'plant') {
 				getGenealogyFilterData(
 					selectParam['plant'],
-					selectParam['batchNum'],
 					selectParam['productCode'],
-					selectParam['productType'],
-					'',
+					selectParam['batchNum'],
 					type,
 					'',
 					''
@@ -197,10 +163,8 @@ function Filter(props) {
 			} else if (field === 'product_code') {
 				getGenealogyFilterData(
 					selectParam['plant'],
-					selectParam['batchNum'],
 					selectParam['productCode'],
-					selectParam['productType'],
-					'',
+					selectParam['batchNum'],
 					'',
 					type,
 					''
@@ -210,28 +174,15 @@ function Filter(props) {
 			} else if (field === 'batch_num') {
 				getGenealogyFilterData(
 					selectParam['plant'],
-					selectParam['batchNum'],
 					selectParam['productCode'],
-					selectParam['productType'],
-					type,
-					'',
-					'',
-					''
-				);
-
-				setIsEmptyBatch(false);
-			} else if (field === 'product_type') {
-				getGenealogyFilterData(
-					selectParam['plant'],
 					selectParam['batchNum'],
-					selectParam['productCode'],
-					selectParam['productType'],
-					'',
 					'',
 					'',
 					type
 				);
 
+				setIsEmptyBatch(false);
+			} else if (field === 'product_type') {
 				setIsEmptyProductType(false);
 			}
 		}
@@ -239,23 +190,19 @@ function Filter(props) {
 
 	const getGenealogyFilterData = async (
 		selectedPlantValue,
-		selectedBatchValue,
 		selectedProductValue,
-		selectedProductType,
-		batchText,
+		selectedBatchValue,
 		plantText,
 		matText,
-		productText
+		batchText
 	) => {
 		let reqFilter = {
 			batch_no: selectedBatchValue ? selectedBatchValue : '',
 			material: selectedProductValue ? selectedProductValue : '',
 			plant_no: selectedPlantValue ? selectedPlantValue : '',
-			product_type: selectedProductType ? selectedProductType : '',
 			batchText: batchText ? batchText : '',
 			plantText: plantText ? plantText : '',
 			matText: matText ? matText : '',
-			productText: productText ? productText : '',
 		};
 
 		try {

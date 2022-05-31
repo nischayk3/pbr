@@ -31,7 +31,8 @@ import {
     Form,
     Space,
     Radio,
-    notification
+    notification,
+    Avatar
 } from 'antd';
 import { useDispatch } from 'react-redux';
 import Highlighter from 'react-highlight-words';
@@ -41,8 +42,8 @@ import pdfIcon from '../../../../assets/images/pdfIcon.svg';
 import { getPbrTemplateData, getDataView } from '../../../../services/pbrService';
 import { tableColumns } from '../../../../utils/TableColumns'
 import { useHistory } from 'react-router-dom';
-import { loadTemplateInfo,loadMatBatchInfo } from '../../../../duck/actions/pbrAction';
-
+import { loadTemplateInfo, loadMatBatchInfo,loadPageIdentifier } from '../../../../duck/actions/pbrAction';
+import StatusBlock from '../../../../components/StatusBlock/statusBlock'
 const { Search } = Input;
 
 function PaperBatchRecords() {
@@ -100,9 +101,11 @@ function PaperBatchRecords() {
     const [dataView, setDataView] = useState([])
     const [fileName, setFileName] = useState("")
     const [templateName, seTemplateName] = useState("")
+    const [searchedLanding, setSearchedLanding] = useState(false);
+    const [filterTableLanding, setFilterTableLanding] = useState(null);
     const [matBatch, setMatBatch] = useState({
-        material_num:"",
-        batch:""
+        material_num: "",
+        batch: ""
     })
 
     useEffect(() => {
@@ -118,7 +121,7 @@ function PaperBatchRecords() {
             dispatch(showLoader());
             const tableResponse = await getPbrTemplateData(req);
             const tableColumn = tableColumns(tableResponse?.Data)
-            let newArray1 = tableColumn.filter(item => item.dataIndex != 'changed_by' && item.dataIndex != 'changed_on'  && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
+            let newArray1 = tableColumn.filter(item => item.dataIndex != 'changed_by' && item.dataIndex != 'changed_on' && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
             let columns = [];
             newArray1.map(item => {
                 let { title, dataIndex } = item;
@@ -138,10 +141,32 @@ function PaperBatchRecords() {
                     obj.render = (text, row, index) => {
                         return (
                             <a onClick={() => {
-                                console.log("rowww",row.pbr_template_info[0].filename)
+                                let obj =
+                                {
+                                    material_num: row?.material,
+                                    batch: row?.batch
+                                }
+                                dispatch(loadMatBatchInfo(obj))
                                 history.push(`/dashboard/pbr_template?file=${row.pbr_template_info[0].filename}&temp_disp_id=${row.pbr_template_disp_id}&tempalteName=${row.pbr_template_name}`)
                                 dispatch(loadTemplateInfo(row.pbr_template_info))
+
+
                             }} className='review-submission'>{text}</a>
+                        )
+
+                    }
+                }
+                if (item.dataIndex === "created_by") {
+                    obj.render = (text, row, index) => {
+                        return (
+                            <div>
+                                <Avatar
+                                    className='avatar-icon'
+                                    style={{ backgroundColor: getRandomColor(index + 1) }}>
+                                    {text?.split('')[0]?.toUpperCase()}{' '}
+                                </Avatar>
+                                <span className='avatar-text' style={{marginLeft:10}}>{text}</span>
+                            </div>
                         )
 
                     }
@@ -165,13 +190,18 @@ function PaperBatchRecords() {
         }
     }
 
+    const getRandomColor = index => {
+		let colors = ['#56483F', '#728C69', '#c04000', '#c19578'];
+		return colors[index % 4];
+	};
+
     const getViewData = async () => {
         let res = await getDataView()
         setDataView(res.Data)
         setFileName(res?.Data[0]?.filename)
         setMatBatch({
-            material_num:res?.Data[0]?.product_num,
-            batch:res?.Data[0].batch_num
+            material_num: res?.Data[0]?.product_num,
+            batch: res?.Data[0].batch_num
         })
 
     }
@@ -186,9 +216,6 @@ function PaperBatchRecords() {
             }) => (
                 <div style={{ padding: 8 }}>
                     <Input
-                        // ref={node => {
-                        //   this.searchInput = node;
-                        // }}
                         placeholder={`Search ${dataIndex}`}
                         value={selectedKeys[0]}
                         onChange={(e) =>
@@ -351,11 +378,7 @@ function PaperBatchRecords() {
         );
         setTableDataSourceFiltered(filterdDataArr);
     }
-    console.log("form", form.getFieldValue())
     const handleValuesChange = (changedValues, values) => {
-
-        // setMainJson(convertToJson(values));
-        console.log("changedValues", changedValues, values)
         seTemplateName(changedValues?.templateName)
 
     };
@@ -386,15 +409,35 @@ function PaperBatchRecords() {
         });
     };
     const onRadioChange = (val) => {
-        console.log("vall",val)
         let arr = dataView.filter(item => item.filename === val)
-        console.log("arrr",arr)
         setMatBatch({
-            material_num:arr[0].product_num,
-            batch:arr[0].batch_num
+            material_num: arr[0].product_num,
+            batch: arr[0].batch_num
         })
     }
-    
+
+    const handleClickTiles = (value) => {
+        let obj =
+        {
+            material_num: value?.material,
+            batch: value?.batch
+        }
+        dispatch(loadPageIdentifier(value?.pbr_template_info?.pbrPageIdentifier))
+        dispatch(loadMatBatchInfo(obj))
+        history.push(`/dashboard/pbr_template?file=${value?.pbr_template_info?.pbrTemplateInfo[0].filename}&temp_disp_id=${value.pbr_template_disp_id}&tempalteName=${value.pbr_template_name}`)
+        dispatch(loadTemplateInfo(value?.pbr_template_info?.pbrTemplateInfo))
+
+    }
+    const landingSearch = value => {
+        setSearchedLanding(true);
+        const tableData = templateData;
+        const filterTable = tableData.filter(o =>
+            Object.keys(o).some(k =>
+                String(o[k]).toLowerCase().includes(value.toLowerCase())
+            )
+        );
+        setFilterTableLanding(filterTable);
+    };
 
     return (
         <div className='pbr-container'>
@@ -433,12 +476,25 @@ function PaperBatchRecords() {
                             <Col span={6} />
                             <Col span={12} className='p36'>
                                 <Search
+                                    className='dashboard-search'
                                     placeholder='Search by template ID, name, creator or date of creation'
                                     allowClear
                                     enterButton='Search'
                                     size='large'
-                                    onSearch={globalTemplateSearch}
+                                    onSearch={landingSearch}
                                 />
+                                {searchedLanding ? (
+                                    <Table
+                                        className='landing-table'
+                                        columns={templateColumns}
+                                        dataSource={filterTableLanding === null
+                                            ? templateData
+                                            : filterTableLanding}
+                                        scroll={{ x: 2000, y: 650 }}
+                                    />
+                                ) : (
+                                    <></>
+                                )}
                             </Col>
                             <Col span={6} />
                         </Row>
@@ -456,22 +512,27 @@ function PaperBatchRecords() {
                             <Col span={6} />
                         </Row>
                         <Row className='recent-charts'>
-                            {/* <Col span={6} /> */}
-                            <Col span={24} className='p36'>
+                            <Col span={6} />
+                            <Col span={12} className='p36'>
                                 <h3>Recently created templates</h3>
                                 <Divider />
-                                <div className='pbrTemplates-tableBlock'>
-                                    <Table
-                                        className='pbrTemplates-table'
-                                        columns={templateColumns}
-                                        dataSource={
-                                            templateData
-                                        }
-                                        scroll={{x:100}}
-                                    />
-                                </div>
+                                <Row gutter={24}>
+                                    {templateData &&
+                                        templateData.length > 0 &&
+                                        templateData.map((el, index) => {
+                                            return (
+                                                <Col
+                                                    className='gutter-row'
+                                                    span={8}
+                                                    style={{ marginTop: '10px' }}
+                                                    key={index}>
+                                                    <StatusBlock id={el.pbr_template_disp_id} name={el.pbr_template_name} status={el.pbr_template_status} handleClickTiles={() => handleClickTiles(el)} />
+                                                </Col>
+                                            );
+                                        })}
+                                </Row>
                             </Col>
-                            {/* <Col span={6} /> */}
+                            <Col span={6} />
                         </Row>
                     </Card>
                 </Col>
@@ -529,57 +590,17 @@ function PaperBatchRecords() {
                                     </Form.Item>
                                     <Form.Item
                                         label='Material number'
-                                        // name='materialNumber'
+                                    // name='materialNumber'
                                     >
-                                        <Input value={matBatch?.material_num}/>
+                                        <Input value={matBatch?.material_num} />
                                     </Form.Item>
                                     <Form.Item
                                         label='Batch number'
-                                        // name='batchNumber'
+                                    // name='batchNumber'
                                     >
-                                        <Input value={matBatch?.batch}/>
+                                        <Input value={matBatch?.batch} />
                                     </Form.Item>
                                 </div>
-
-                                {/* <Radio.Group
-                                    // onChange={onChange}
-                                    defaultValue={dataView[0]?.filename}
-                                    className='radioPdfBlock'
-                                    onChange={(e) => setFileName(e.target.value)}
-                                >
-                                    {dataView.map((item, index) => (
-                                        <Radio.Button value={`${item.filename}`} >
-                                            <div className='pdfListBlock'>
-                                                <img src={pdfIcon} alt='pdfIcon' />
-                                                <span>{item.filename.substring(0, 15) + '...'}</span>
-                                            </div>
-                                        </Radio.Button>
-                                    ))} */}
-                                {/* <Radio.Button value='a'>
-                                        <div className='pdfListBlock'>
-                                            <img src={pdfIcon} alt='pdfIcon' />
-                                            <span>loremipsum23.pdf</span>
-                                        </div>
-                                    </Radio.Button>
-                                    <Radio.Button value='b'>
-                                        <div className='pdfListBlock'>
-                                            <img src={pdfIcon} alt='pdfIcon' />
-                                            <span>loremipsum23.pdf</span>
-                                        </div>
-                                    </Radio.Button>
-                                    <Radio.Button value='c'>
-                                        <div className='pdfListBlock'>
-                                            <img src={pdfIcon} alt='pdfIcon' />
-                                            <span>loremipsum23.pdf</span>
-                                        </div>
-                                    </Radio.Button>
-                                    <Radio.Button value='d'>
-                                        <div className='pdfListBlock'>
-                                            <img src={pdfIcon} alt='pdfIcon' />
-                                            <span>loremipsum23.pdf</span>
-                                        </div>
-                                    </Radio.Button> */}
-                                {/* </Radio.Group> */}
                             </Form>
                         </Col>
                     </Row>

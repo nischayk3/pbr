@@ -92,12 +92,13 @@ $secondary: #547e48;
 	box-sizing: border-box;
 	background: #fff;
 	border-radius: 2px;
+	margin-top: 12%;
 	.table-header {
 		border-bottom: 1px solid #eee;
 		display: block;
 		overflow: hidden;
 		margin-bottom: 0;
-		margin: 10;
+		//margin: 10;
 		div:nth-child(1) {
 			float: left;
 			padding: 13px 16px;
@@ -194,9 +195,7 @@ $secondary: #547e48;
 	grid-template-columns: 0.12fr 0.12fr 0.12fr;
 	padding: 10px;
 }
-.custom-table-card {
-	margin-top: 12%;
-}
+
 .filter-header {
 	background-color: white !important;
 }
