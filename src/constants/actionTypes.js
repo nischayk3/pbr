@@ -81,5 +81,7 @@ export const LOAD_VIEW_RESPONSE = 'LOAD_VIEW_RESPONSE';
 
 
 export const DRUG_SUBSTANCE = 'DRUG_SUBSTANCE';
+export const DRUG_LOAD = 'DRUG_LOAD';
+
 
 

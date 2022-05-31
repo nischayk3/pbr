@@ -4,7 +4,7 @@ import { DeleteTwoTone, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
 import Chart from '../reportChart/chartComponent/chartComponent'
-import { showLoader, hideLoader } from '../../../../../duck/actions/commonActions';
+import { showLoader, hideLoader, showNotification } from '../../../../../duck/actions/commonActions';
 import { useDispatch } from 'react-redux';
 import checkIcon from '../../../../../assets/images/checkbox.svg'
 
@@ -74,35 +74,33 @@ function ReportDesignerDynamicSections(props) {
         }
         dispatch(showLoader())
         section = section + 1
+        console.log(addedCharts)
         if (`${section}` in addedCharts) {
             console.log(addedCharts[`${section}`])
             if (addedCharts[`${section}`].includes(chartName)) {
-                message.error('Chart already added')
+                dispatch(showNotification('error','Chart already added'))
                 dispatch(hideLoader())
-
             }
             else {
                 console.log('here')
-                if (`${section}` in addedCharts) {
                     addedCharts[`${section}`].push(chartName)
                     setAddedCharts(addedCharts)
                     dispatch(hideLoader())
-                }
-                else {
-                    if (addedCharts && !addedCharts[`${section}`]) {
-                        addedCharts[`${section}`] = []
-                        addedCharts[`${section}`].push(chartName)
-                        setAddedCharts(addedCharts)
-                        dispatch(hideLoader())
-                    }
-                    else {
-                        addedCharts[`${section}`].push(chartName)
-                        setAddedKeys(addedCharts)
-                    }
-                    dispatch(hideLoader())
-                }
                 props.setSectionCharts(chartName, addedCharts)
             }
+        }
+        else {
+            if (addedCharts && !addedCharts[`${section}`]) {
+                addedCharts[`${section}`] = []
+                addedCharts[`${section}`].push(chartName)
+                setAddedCharts(addedCharts)
+                dispatch(hideLoader())
+            }
+            else {
+                addedCharts[`${section}`].push(chartName)
+                setAddedKeys(addedCharts)
+            }
+            dispatch(hideLoader())
         }
 
 
@@ -186,13 +184,13 @@ function ReportDesignerDynamicSections(props) {
                                                 <div className="add-chart" onClick={() => trackCharts(name)} ><span style={{ marginRight: '4px' }}>+</span>  Add Chart  </div> : <></>
                                             }
                                             {name > 0 ?
-                                                <div style={{ marginLeft: '15%' }}>
+                                                <div style={{ marginLeft: '28%' }}>
                                                     <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
                                                         <DeleteTwoTone twoToneColor="red" style={{ fontSize: '18px', marginTop: '5px' }} />
                                                     </Popconfirm>
                                                 </div>
                                                 :
-                                                <div style={{ marginLeft: '193%' }}>
+                                                <div style={{ marginLeft: '194%' }}>
                                                     <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
                                                         <DeleteTwoTone twoToneColor="red" style={{ fontSize: '18px', marginTop: '5px' }} />
                                                     </Popconfirm>
@@ -214,7 +212,7 @@ function ReportDesignerDynamicSections(props) {
                                                     style={{ display: 'flex', justifyContent: 'center' }}
                                                     align="baseline"
                                                 >
-                                                    <table className="dynamicSections-table" style={{ width: '100px', marginRight: '4px' }}>
+                                                    <table className="dynamicSections-table" style={{ width: '1205px', marginLeft: '15px' }}>
                                                         <thead className="dynamicSections-thead">
                                                             <tr>
                                                                 <th className="action-clm">Action</th>
