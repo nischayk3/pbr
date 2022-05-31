@@ -68,24 +68,20 @@ function ReportDesignerDynamicSections(props) {
     }
 
     const addChart = (chartName, section) => {
-        console.log(chartName)
         if (chartName && chartName[0] == '<') {
             chartName = extract(chartName)
         }
         dispatch(showLoader())
         section = section + 1
-        console.log(addedCharts)
         if (`${section}` in addedCharts) {
-            console.log(addedCharts[`${section}`])
             if (addedCharts[`${section}`].includes(chartName)) {
-                dispatch(showNotification('error','Chart already added'))
+                dispatch(showNotification('error', 'Chart already added'))
                 dispatch(hideLoader())
             }
             else {
-                console.log('here')
-                    addedCharts[`${section}`].push(chartName)
-                    setAddedCharts(addedCharts)
-                    dispatch(hideLoader())
+                addedCharts[`${section}`].push(chartName)
+                setAddedCharts(addedCharts)
+                dispatch(hideLoader())
                 props.setSectionCharts(chartName, addedCharts)
             }
         }
