@@ -208,7 +208,6 @@ function ReportGenerator(props) {
         let headingSection = obj['sections'] ? obj['sections'] : [];
         allSections = [...allSections, ...headingSection];
 
-        console.log(rep_layout);
 
         for (let i = 0; i < allSections.length; i++) {
             allSections[i].charts = rep_layout[i + 1] ? rep_layout[i + 1] : [];

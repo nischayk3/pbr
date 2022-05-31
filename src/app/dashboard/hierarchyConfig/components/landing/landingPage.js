@@ -137,7 +137,6 @@ export default function Landing(props) {
         }
     };
 
-    console.log(viewList, lastEightView)
 
     return (
         <div>

@@ -9,17 +9,14 @@
 import "./hierStyle.scss";
 import { DeleteTwoTone, PlusOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Input, Modal, Popconfirm, Row, Select, Table, Tabs, message } from "antd";
-import queryString from "query-string";
 import React, { useEffect, useState } from "react";
-import { useEdges } from "react-flow-renderer";
 import { useDispatch, useSelector } from "react-redux";
 import Banner from "../../../../../assets/images/Popup-Side.svg";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
-import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
+import { hideLoader, showLoader } from "../../../../../duck/actions/commonActions";
 import { getProcessStep, getProcessStepMap, putMolecule, putProcessStep, putProcessStepMap, getAllViews } from "../../../../../services/viewHierarchyServices";
 import Display from "../display/display";
-import { sendDrugSub } from "../../../../../duck/actions/viewHierarchyAction";
-import { index } from "d3";
+import { sendDrugSub } from '../../../../../duck/actions/viewHierarchyAction'
 
 
 const { TabPane } = Tabs;
@@ -29,22 +26,20 @@ function Hierarchy() {
     const { Option } = Select;
     const [moleculeData, setMoleculeData] = useState([]);
     const [stepData, setStepData] = useState([]);
-    const [stepMappingData, setStepMappingData] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [stepArray, setStepArray] = useState([]);
     const [show, setShow] = useState(false);
-
     const [count, setCount] = useState(1);
     const [stepCount, setStepCount] = useState(1);
-    const [stepMapCount, setStepMapCount] = useState(1);
     const [tableData, setTableData] = useState([]);
-
     const [activeTab, setActiveTab] = useState("Plant and molecules");
-
     const dispatch = useDispatch();
-
     const hier_name = useSelector((state) => state.viewHierarchy.drugName);
     const load_drug = useSelector((state) => state.viewHierarchy.drugLoad);
+
+
+
+
 
 
     useEffect(() => {
@@ -54,31 +49,11 @@ function Hierarchy() {
             setHierarchyName(hier_name);
     }, []);
 
-    useEffect(async () => {
+    useEffect(() => {
         if (load_drug) {
-            dispatch(showLoader())
             const url = window.location.href
             let param = url.split('/')
-            if (param.length > 0 && param != 'untitled_view') {
-                param = param[param.length - 1]
-                dispatch(sendDrugSub(param))
-                setHierarchyName(param)
-                let req = { ds_name: param }
-                let res = await getAllViews(req)
-                let res_step = await getProcessStep(req)
-
-                if (res['status-code'] == 200 && res_step['statuscode'] == 200) {
-                    let data_molecule = [...res.Data]
-                    let data_step = [...res_step.data]
-                    data_molecule = data_molecule.map((v, index) => ({ ...v, key: index + 1 }))
-                    data_step = data_step.map((v, index) => ({ ...v, key: index + 1 }))
-                    setCount(Math.max(...data_molecule.map(o => o.key)) + 1)
-                    setStepCount(Math.max(...data_step.map(o => o.key)) + 1)
-                    setMoleculeData(data_molecule)
-                    setStepData(data_step)
-                }
-            }
-            dispatch(hideLoader())
+            LoadView(param)
         }
     }, [load_drug]
     );
@@ -89,16 +64,35 @@ function Hierarchy() {
         }
     }, [activeTab]);
 
+    const LoadView = async (param) => {
+        dispatch(showLoader())
+        if (param.length > 0 && param != 'untitled_view') {
+            param = param[param.length - 1]
+            dispatch(sendDrugSub(param))
+            setHierarchyName(param)
+            let req = { ds_name: param }
+            let res = await getAllViews(req)
+            let res_step = await getProcessStep(req)
+
+            if (res['status-code'] == 200 && res_step['statuscode'] == 200) {
+                let data_molecule = [...res.Data]
+                let data_step = [...res_step.data]
+                data_molecule = data_molecule.map((v, index) => ({ ...v, key: index + 1 }))
+                data_step = data_step.map((v, index) => ({ ...v, key: index + 1 }))
+                setCount(Math.max(...data_molecule.map(o => o.key)) + 1)
+                setStepCount(Math.max(...data_step.map(o => o.key)) + 1)
+                setMoleculeData(data_molecule)
+                setStepData(data_step)
+            }
+        }
+        dispatch(hideLoader())
+    }
 
     const getStepMapping = async () => {
         dispatch(showLoader());
         let req = { ds_name: hierarchyName };
         let mapResponse = await getProcessStepMap(req);
-        console.log(mapResponse);
-
-
         if (mapResponse["status-code"] == 200) {
-            console.log(mapResponse);
             setTableData(mapResponse.Data.data && mapResponse.Data.data[0] ? mapResponse.Data.data[0] : []);
             setStepArray(mapResponse.Data.options);
         }
@@ -218,14 +212,11 @@ function Hierarchy() {
 
     const handleProcessStepChange = (text, index) => {
         dispatch(showLoader());
-        console.log(text, index);
         let newAggrValue = [...tableData];
-        console.log("before", newAggrValue);
         newAggrValue[index].process_step = text ? text.key : "";
         // const aggJson = [...parameters];
         // aggJson[index].aggregation = value.value !== undefined ? value.value : "";
         // setParameters(aggJson);
-        console.log("after", newAggrValue);
 
         setTableData(newAggrValue);
         // setAggregationValue(value.value !== undefined ? value.value : "");
@@ -279,12 +270,14 @@ function Hierarchy() {
                         style={{ width: "100%", borderRadius: "4px", right: "15px" }}
                     >
                         {stepArray && stepArray.length > 0 ? stepArray.map((item, index) => (
-                            <Option value={index} key={item}>
-                                {item}
+
+                            <Option value={index} key={item.process_step}>
+                                {item.process_step}
                             </Option>
                         )) : <Option >
 
-                        </Option>}
+                        </Option>
+                        }
                     </Select>
                 );
             }
@@ -416,7 +409,8 @@ function Hierarchy() {
         }
     };
 
-    console.log(moleculeData, stepData)
+
+
     return (
 
         <div className="custom-wrapper">
