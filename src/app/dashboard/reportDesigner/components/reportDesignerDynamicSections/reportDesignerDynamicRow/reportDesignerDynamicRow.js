@@ -41,105 +41,52 @@ function ReportDesignerDynamicRow(props) {
 									/>
 								</Popconfirm>
 							</td>
-							<td>
-								<Form.Item
-									{...restField1}
-									shouldUpdate={(prevValues, currentValues) =>
-										isEditableHandler(prevValues, currentValues, name, fieldKey)
-									}>
-									{({ getFieldValue }) => {
-										let res = getFieldValue('response');
-										let dynamic_rows = res[fieldKey] ? res[fieldKey] : [];
-										let dynamic_rows_row = dynamic_rows['dymamic_rows']
-											? dynamic_rows['dymamic_rows']
-											: [];
-										let value = dynamic_rows_row[name]
-											? dynamic_rows_row[name]
-											: [];
+							<td >
+                                <Form.Item
+                                    {...restField1}
+                                    shouldUpdate={(prevValues, currentValues) => isEditableHandler(prevValues, currentValues, name, fieldKey)
+                                    }
+                                >
+                                    {({ getFieldValue }) => {
+                                        let res = getFieldValue('response')
+                                        let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
+                                        let dynamic_rows_row = dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
+                                        let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : []
+                                        
+                                        return (
+                                            <Form.Item name={[name, 'keyName']}>
+                                                <Input.TextArea className="report-designer__row-input" allowClear autoSize={true} style={{ width: '150px' }} placeholder="Enter Key" name={[name, 'keyName']} disabled={value['editable'] === false} />
+                                            </Form.Item>
+                                        )
+                                    }}
+                                </Form.Item>
+                            </td>
+                            <td >
+                                <Form.Item
+                                    {...restField1}
+                                    shouldUpdate={(prevValues, currentValues) => isEditableHandler(prevValues, currentValues, name, fieldKey)
+                                    }
+                                >
+                                    {({ getFieldValue }) => {
+                                        let res = getFieldValue('response')
+                                        let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
+                                        let dynamic_rows_row = dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
+                                        let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : []
 
-										return value['editable'] === true ? (
-											<Form.Item name={[name, 'keyName']}>
-												<Input.TextArea
-													allowClear
-													autoSize={true}
-													style={{ width: '150px' }}
-													placeholder='Enter key'
-													name={[name, 'keyName']}
-													disabled
-												/>
-											</Form.Item>
-										) : (
-											<Form.Item name={[name, 'keyName']}>
-												<Input.TextArea
-													bordered
-													allowClear
-													autoSize={true}
-													style={{ width: '150px' }}
-													placeholder='Enter key'
-													bordered={true}
-													disabled={props.show}
-												/>
-											</Form.Item>
-										);
-									}}
-								</Form.Item>
-							</td>
-							<td>
-								<Form.Item
-									{...restField1}
-									shouldUpdate={(prevValues, currentValues) =>
-										isEditableHandler(prevValues, currentValues, name, fieldKey)
-									}>
-									{({ getFieldValue }) => {
-										let res = getFieldValue('response');
-										let dynamic_rows = res[fieldKey] ? res[fieldKey] : [];
-										let dynamic_rows_row = dynamic_rows['dymamic_rows']
-											? dynamic_rows['dymamic_rows']
-											: [];
-										let value = dynamic_rows_row[name]
-											? dynamic_rows_row[name]
-											: [];
+                                        return (
+                                            <Form.Item name={[name, 'value']} >
+                                                <Input.TextArea className="report-designer__row-input" bordered allowClear autoSize={true} placeholder="Enter Value" name={[name, 'value']} disabled={value['editable'] === false} />
+                                            </Form.Item>
+                                        )
+                                    }}
+                                </Form.Item>
+                            </td>
 
-										return value['editable'] === true ? (
-											<Form.Item name={[name, 'value']}>
-												<Input.TextArea
-													bordered
-													allowClear
-													autoSize={true}
-													placeholder='Enter value'
-													name={[name, 'value']}
-													disabled
-												/>
-											</Form.Item>
-										) : (
-											<Form.Item name={[name, 'value']}>
-												<Input.TextArea
-													bordered
-													allowClear
-													autoSize={true}
-													placeholder='Enter value'
-													bordered={true}
-													disabled={props.show}
-												/>
-											</Form.Item>
-										);
-									}}
-								</Form.Item>
-							</td>
-
-							<td>
-								<Form.Item
-									{...restField1}
-									name={[name, 'editable']}
-									valuePropName='checked'
-									defaultChecked>
-									<Switch
-										defaultChecked={false}
-										size='small'
-										disabled={props.show}
-									/>
-								</Form.Item>
-							</td>
+                            <td >
+                                <Form.Item {...restField1} name={[name, 'editable']} valuePropName="checked">
+                                    <Switch defaultChecked={true} size="small" disabled={props.show} />
+                                </Form.Item>
+                            </td>
 						</tr>
 					))}
 					<tr>

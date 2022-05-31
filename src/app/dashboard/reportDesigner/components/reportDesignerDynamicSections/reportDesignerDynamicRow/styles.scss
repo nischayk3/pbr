@@ -23,3 +23,7 @@
 	border-radius: 2px;
 	justify-content: center;
 }
+
+.report-designer__row-input:disabled {
+  background-color: transparent;
+}
