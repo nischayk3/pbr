@@ -31,22 +31,27 @@ function GenealogyDrawer(props) {
   const downloadFile = () => {
     props.fileDownload(true);
   };
+
   return (
     <Drawer
       className="genealogy-drawer"
       title={
         <div className="drawer-heading">
           <div className="drawer-title">
-            <img className="tree-type-icon" src={batchIcon} />
+            <img className="tree-type-icon" src={batchIcon} alt="tree node" />
             <p>
-              {props.productCode} - {props.type}
+              {props.nodeTitle} - {props.type}
             </p>
             <span onClick={downloadFile}>
               <DownloadOutlined />
             </span>
           </div>
-          <span className="expand-drawer" onClick={expandDrawer}>
-            <img src={popupicon} />
+          <span
+            className="expand-drawer"
+            onClick={expandDrawer}
+            onKeyDown={expandDrawer}
+          >
+            <img src={popupicon} alt="popup" />
           </span>
         </div>
       }

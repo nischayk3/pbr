@@ -2,11 +2,10 @@ import Service from './AjaxService';
 import {
 	BMS_APP_PYTHON_SERVICE,
 	MDH_APP_PYTHON_SERVICE,
-	BMS_PBR_URL,
 } from '../constants/apiBaseUrl';
 
 let login_response = JSON.parse(localStorage.getItem('login_details'));
-console.log('login_response.............', login_response);
+
 const request_headers = {
 	'content-type': 'application/json',
 	'x-access-token': login_response.token ? login_response.token : '',

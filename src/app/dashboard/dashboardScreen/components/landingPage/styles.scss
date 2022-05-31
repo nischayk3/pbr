@@ -60,7 +60,7 @@ p {
 		min-height: 65vh;
 	}
 	.ant-input-search-button {
-		background-color: #093185 !important;
+		background-color: var(--primary-color) !important;
 	}
 	.ant-input-search-button:hover {
 		background: #486bc9 !important;
@@ -68,13 +68,13 @@ p {
 	.p36 {
 		padding: 12px 18px;
 	}
-	.dashboard-search{
-		font-family: 'Roboto';
+	.dashboard-search {
+		font-family: var(--primary-font-family);
 		font-style: normal;
 		font-weight: 400;
 		font-size: 14px;
 		line-height: 22px;
-		color: #8C8C8C;
+		color: #8c8c8c;
 	}
 	.create-new {
 		height: 137px;
@@ -183,7 +183,7 @@ p {
 }
 
 .dashboard-username {
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 400;
 	font-size: 24px;
@@ -191,7 +191,7 @@ p {
 	color: #000000;
 }
 .dashboard-text {
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 300;
 	font-size: 18px;
@@ -202,7 +202,7 @@ p {
 	height: 137px;
 }
 .dashboard-resultdate {
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 400;
 	font-size: 16px;
@@ -211,8 +211,8 @@ p {
 }
 
 .dashboard-landing-modal {
-	.ant-modal-header{
-		background: #F1F7FF !important;
+	.ant-modal-header {
+		background: #f1f7ff !important;
 		border-radius: 4px 4px 0px 0px;
 	}
 	.ant-modal-content {
@@ -244,7 +244,7 @@ p {
 	padding: 24px;
 }
 .chart-preview-text {
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px !important;

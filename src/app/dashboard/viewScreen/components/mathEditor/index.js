@@ -10,17 +10,16 @@ import VariableCard from "./variableCard";
 import Modal from "../../../../../components/Modal/Modal";
 import InputField from "../../../../../components/InputField/InputField";
 
-
 const MathEditor = (props) => {
   let variableData = [];
 
   const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
   const selectedTableData = useSelector(
-		(state) => state.viewCreationReducer.selectedParamData
-	);
+    (state) => state.viewCreationReducer.selectedParamData
+  );
   const selectedParameters = useSelector(
-		(state) => state.viewCreationReducer.loadResponse
-	);
+    (state) => state.viewCreationReducer.loadResponse
+  );
   const [varData, setVarData] = useState(variableData);
   const [count, setCount] = useState(1);
   const [cardTitle, setCardTitle] = useState("Create Variable");
@@ -50,46 +49,81 @@ const MathEditor = (props) => {
 
   const content = (
     <div className="script-info">
-      <p className="script-help">All variables are dataframes with batch_num and parameter_value.<br />
-        batch_num as index and parameter_value is the value for the variable for given batch.<br /><br />
-        e.g:1 : isnull and fillna will fill null data with given values.<br />
-if V1.isnull().sum().sum() > 0:<br />
-        V1.fillna(0)<br />
-if V2.isnull().sum().sum() > 0:<br />
-        V2.fillna(0)<br />
-        result = V1 + V2<br /><br />
-        e.g:2 To replace some values of V1 with the values of V2.<br />
-        a = V1<br />
-        b = V2<br />
-a[V1 > 0.0235] = b[V1 > 0.0235] <br />
-        result = a<br /><br />
-        e.g:3: To find any power of values<br />
-        pow(V2, 1.2)<br /><br />
-        e.g: 4: To find log<br />
-        np.log(V2)<br /><br />
+      <p className="script-help">
+        All variables are dataframes with batch_num and parameter_value.
+        <br />
+        batch_num as index and parameter_value is the value for the variable for
+        given batch.
+        <br />
+        <br />
+        e.g:1 : isnull and fillna will fill null data with given values.
+        <br />
+        if V1.isnull().sum().sum() > 0:
+        <br />
+        V1.fillna(0)
+        <br />
+        if V2.isnull().sum().sum() > 0:
+        <br />
+        V2.fillna(0)
+        <br />
+        result = V1 + V2
+        <br />
+        <br />
+        e.g:2 To replace some values of V1 with the values of V2.
+        <br />
+        a = V1
+        <br />
+        b = V2
+        <br />
+        a[V1 > 0.0235] = b[V1 > 0.0235] <br />
+        result = a<br />
+        <br />
+        e.g:3: To find any power of values
+        <br />
+        pow(V2, 1.2)
+        <br />
+        <br />
+        e.g: 4: To find log
+        <br />
+        np.log(V2)
+        <br />
+        <br />
         e.g: 5<br />
-        np.round_(V2)<br /><br />
-        e.g: add<br />
-        V1 + V2 <br /><br />
-        e.g: sub<br />
-        V1 - V2<br /><br />
-        e.g: multiply<br />
-        V1 * V2<br /><br />
-        e.g: divide<br />
-        V1 / V2<br /><br />
-        e.g polynomial<br />
-        V1**2 + V1*2 + 10</p>
+        np.round_(V2)
+        <br />
+        <br />
+        e.g: add
+        <br />
+        V1 + V2 <br />
+        <br />
+        e.g: sub
+        <br />
+        V1 - V2
+        <br />
+        <br />
+        e.g: multiply
+        <br />
+        V1 * V2
+        <br />
+        <br />
+        e.g: divide
+        <br />
+        V1 / V2
+        <br />
+        <br />
+        e.g polynomial
+        <br />
+        V1**2 + V1*2 + 10
+      </p>
     </div>
   );
-  const isNew = useSelector(
-    (state) => state.viewCreationReducer.isNew
-  );
+  const isNew = useSelector((state) => state.viewCreationReducer.isNew);
 
   useEffect(() => {
     if (isNew) {
-      setVarData([])
+      setVarData([]);
     }
-  }, [isNew])
+  }, [isNew]);
   useEffect(() => {
     if (isLoadView) {
       let paramKey = [];
@@ -101,16 +135,14 @@ a[V1 > 0.0235] = b[V1 > 0.0235] <br />
       let var_data = [];
       paramKey = paramKey[0];
       if (paramKey.length > 0) {
-
         for (let i = 0; i < paramKey.length; i++) {
           let obj = {};
           obj["variableName"] = paramKey[i];
           obj["id"] = i;
           var_data.push(obj);
         }
-        variableData=[...var_data]
+        variableData = [...var_data];
         setVarData(var_data);
-
       }
 
       if (
@@ -122,7 +154,6 @@ a[V1 > 0.0235] = b[V1 > 0.0235] <br />
     }
   }, [isLoadView]);
 
-
   const addVariable = () => {
     setCardTitle("Select parameters");
     setRowDisable(false);
@@ -130,9 +161,8 @@ a[V1 > 0.0235] = b[V1 > 0.0235] <br />
   };
 
   const createVar = () => {
-    if(varData && varData.length > 0)
-    {
-      variableData=[...varData]
+    if (varData && varData.length > 0) {
+      variableData = [...varData];
     }
     variableData.push({
       variableName: variableName,
@@ -188,7 +218,6 @@ a[V1 > 0.0235] = b[V1 > 0.0235] <br />
     setCreateNameModal(!createNameModal);
   };
 
-
   return (
     <>
       <Collapse
@@ -198,9 +227,16 @@ a[V1 > 0.0235] = b[V1 > 0.0235] <br />
       >
         <Panel
           className="viewCreation-materialsPanel"
-          header={<span>Script Editor <Popover content={content} title={false} trigger="hover"> <InfoCircleOutlined /> </Popover></span>}
+          header={
+            <span>
+              Script Editor{" "}
+              <Popover content={content} title={false} trigger="hover">
+                {" "}
+                <InfoCircleOutlined />{" "}
+              </Popover>
+            </span>
+          }
           key="1"
-
         >
           <MathFunction data={paramData} materialId={materialId} />
           <div className="variable-wrapper">
@@ -213,6 +249,7 @@ a[V1 > 0.0235] = b[V1 > 0.0235] <br />
             {varData.map((item, index) => {
               return (
                 <VariableCard
+                key={index}
                   item={item}
                   variableName={item.variableName}
                   deleteVariable={deleteVariable}

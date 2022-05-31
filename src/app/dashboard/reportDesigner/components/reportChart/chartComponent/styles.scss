@@ -1,8 +1,7 @@
-.chart-table
-{
-    display: grid;
-    grid-template-columns: 1fr ;
-    grid-gap: 10px 20px;   
+.chart-table {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-gap: 10px 20px;
 }
 // table {
 //     font-family: arial, sans-serif;
@@ -11,32 +10,27 @@
 //     border: none;
 //   }
 
-.report-chart-tables{
-    .ant-tabs-tab-btn
-    {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 22px;
-    color: rgba(0, 0, 0, 0.85);
-    }
-    .ant-tabs-tab-btn:hover
-    {
-      color: rgba(0, 0, 0, 0.85);
-    }
-    .ant-tabs-tab-active .ant-tabs-tab-btn
-    {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 22px;
-    color:#093185 !important;
-    }
-    .ant-tabs-ink-bar
-    {
-      background: #093185;
-    }
-
+.report-chart-tables {
+	.ant-tabs-tab-btn {
+		font-family: Roboto;
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 22px;
+		color: rgba(0, 0, 0, 0.85);
+	}
+	.ant-tabs-tab-btn:hover {
+		color: rgba(0, 0, 0, 0.85);
+	}
+	.ant-tabs-tab-active .ant-tabs-tab-btn {
+		font-family: Roboto;
+		font-style: normal;
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 22px;
+		color: var(--primary-color) !important;
+	}
+	.ant-tabs-ink-bar {
+		background: var(--primary-color);
+	}
 }

@@ -38,7 +38,7 @@ function Signature(props) {
 		try {
 			dispatch(showLoader());
 			const res = await getAuthenticate(req, header);
-			console.log(res);
+			console.log('resss', res);
 			if (res.Status != 200) {
 				setIsAuth('');
 				dispatch(showNotification('error', 'Incorrect credentials'));
@@ -107,6 +107,11 @@ function Signature(props) {
 				}
 				req1['status'] = props.status;
 
+				//callback esign id
+				if(props.eSignId){
+					props.eSignId(esign_response.primary_id);
+				}
+				
 				let publish_response =
 					Object.keys(params).length > 0 && params.fromScreen !== 'Workspace'
 						? await approveRecord(req1)
@@ -143,27 +148,27 @@ function Signature(props) {
 				footer={
 					isauth === 'A' || isauth === 'R' || isauth === 'P'
 						? [
-							<Button
-								className='custom-primary-btn'
-								key='2'
-								onClick={() => handleClose()}>
-								Cancel
-							</Button>,
-							<Button
-								className='custom-secondary-btn'
-								key='1'
-								onClick={() => handleConfirm()}>
-								Confirm
-							</Button>,
-						]
+								<Button
+									className='custom-primary-btn'
+									key='2'
+									onClick={() => handleClose()}>
+									Cancel
+								</Button>,
+								<Button
+									className='custom-secondary-btn'
+									key='1'
+									onClick={() => handleConfirm()}>
+									Confirm
+								</Button>,
+						  ]
 						: [
-							<Button
-								className='custom-secondary-btn'
-								key='3'
-								onClick={() => authenticateUser()}>
-								Authenticate
-							</Button>,
-						]
+								<Button
+									className='custom-secondary-btn'
+									key='3'
+									onClick={() => authenticateUser()}>
+									Authenticate
+								</Button>,
+						  ]
 				}
 				mask={true}>
 				<div className='electronic-sig'>
@@ -186,23 +191,23 @@ function Signature(props) {
 					</div>
 					{((isauth === 'A' && props.status === 'A') ||
 						(isauth === 'P' && props.status === 'P')) && (
-							<div>
-								<p style={{ margin: '8px 0px' }}>Signing</p>
-								<Select
-									onChange={(e, value) => {
-										let reason_value = value.value ? value.value : '';
-										setReason(reason_value);
-									}}
-									className='sign-select'>
-									<Option key='Signing on behalf of team mate'>
-										Signing on behalf of team mate
-									</Option>
-									<Option key='I am an approver'>I am an approver</Option>
-									<Option key='I am the author'>I am the author</Option>
-									<Option key='Other Reason'>Other Reason</Option>
-								</Select>
-							</div>
-						)}
+						<div>
+							<p style={{ margin: '8px 0px' }}>Signing</p>
+							<Select
+								onChange={(e, value) => {
+									let reason_value = value.value ? value.value : '';
+									setReason(reason_value);
+								}}
+								className='sign-select'>
+								<Option key='Signing on behalf of team mate'>
+									Signing on behalf of team mate
+								</Option>
+								<Option key='I am an approver'>I am an approver</Option>
+								<Option key='I am the author'>I am the author</Option>
+								<Option key='Other Reason'>Other Reason</Option>
+							</Select>
+						</div>
+					)}
 
 					{isauth === 'R' && props.status === 'R' && (
 						<div>

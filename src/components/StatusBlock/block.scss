@@ -19,11 +19,11 @@
 		font-size: small;
 	}
 }
-.tile {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-gap: 24px;
-	text-align: center;
+// .tile {
+// 	display: grid;
+// 	grid-template-columns: 1fr 1fr 1fr 1fr;
+// 	grid-gap: 24px;
+// 	text-align: center;
 
 	.awap {
 		background: #f7bb61;
@@ -39,4 +39,4 @@
 		color: white;
 		font-size: 8px;
 	}
-}
+// }
