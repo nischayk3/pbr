@@ -10,6 +10,7 @@ const request_headers = {
 
 //get count data
 export const getCountData = _queryParam => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
 	return Service.get(BMS_APP_PYTHON_SERVICE + '/workflow-count', _queryParam, {
 		'content-type': 'application/json',
 		'x-access-token': login_response && login_response.token ? login_response.token : '',
