@@ -341,7 +341,7 @@ function PbrReviewer() {
       key: 'id',
       dataIndex: 'id',
       ...getColumnSearchProps("id", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_id.localeCompare(b.view_id)
+      sorter: (a, b) => a.id.localeCompare(b.id)
     },
     {
       title: 'Attribute Name',
@@ -375,7 +375,7 @@ function PbrReviewer() {
       key: 'confidence',
       dataIndex: 'confidence',
       ...getColumnSearchProps("confidence", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_confidence.localeCompare(b.view_confidence)
+      sorter: (a, b) => a.confidence.localeCompare(b.confidence)
     },
     {
       title: 'File Path',

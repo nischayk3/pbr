@@ -14,13 +14,7 @@
 	justify-content: center;
 	align-items: center;
 }
-.card-changes {
-	// left: 315px;
-	// top: -30px;
-	min-width: 540px;
-	background: #fff;
-	// border-radius: 15px;
-}
+
 .card-action-new {
 	//padding: 45px 0px !important;
 	border-top: 0px !important;
@@ -52,7 +46,7 @@
 		box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
 		border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 	line-height: 1.75;
-	font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+	font-family: var(--primary-font-family);
 	border-radius: 4px;
 	letter-spacing: 0.086em;
 	color: white;
@@ -77,85 +71,148 @@
 .page-login {
 	padding: 0px !important;
 	padding: 25px 50px;
+	min-height: 100vh;
 }
 .cpv-logo {
 	height: 100px;
 }
 
-.page-login {
-	min-height: 100vh;
+.login-head {
+	margin: 0px;
+	font-family: var(--primary-font-family);
+	font-style: normal;
+	font-weight: 500;
+	font-size: 32px;
+	line-height: 24px;
+	/* identical to box height, or 75% */
+
+	display: flex;
+	align-items: center;
+
+	color: #000000;
 }
 
-.login-head{
-margin: 0px;
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 500;
-font-size: 32px;
-line-height: 24px;
-/* identical to box height, or 75% */
-
-display: flex;
-align-items: center;
-
-color: #000000;
-
-}
-
-.login-desc{
-	font-family: 'Roboto';
+.login-desc {
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 300;
 	font-size: 16px;
 	line-height: 24px;
-	/* identical to box height, or 150% */
-	
 	display: flex;
 	align-items: center;
-	
-	color: #A0A0A0;
-	margin:5px 0px;
-	
+	color: #a0a0a0;
+	margin: 0px;
+	padding: 16px 0 17px 0;
 }
 
-.forgot-pwd{
-	span{
-		font-family: 'Roboto';
+.signup-text {
+	font-family: var(--primary-font-family);
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	color: rgba(0, 0, 0, 0.85);
+	text-align: center;
+	.sign-up {
+		font-size: 16px;
+		text-align: center;
+		color: var(--primary-color);
+	}
+}
+
+.microsoft-btn {
+	width: 100%;
+	margin: 20px 0px;
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 400;
 	font-size: 16px;
-	line-height: 24px;
-/* identical to box height, or 150% */
-
-	text-align: center;
-
-	color: #093185;
-
+	line-height: 22px;
+	/* identical to box height, or 138% */
+	padding: 6px 12px;
+	color: var(--primary-color);
+	border-radius: 4px;
+	border: 1px solid var(--primary-color);
+	height: 40px;
+	background: transparent !important;
+	span {
+		padding: 0 0 0 8px;
+		vertical-align: middle;
 	}
 }
-.login-btn{
-	width: 100%;
-    margin: 20px 0px 10px 0px;
-	background: #093185;
-	border-radius: 4px;
-	color: #ffffff;
-}
-.signup-text{
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
-line-height: 22px;
-color: rgba(0, 0, 0, 0.85);
-
-.sign-up{
-	font-size: 16px;
-	text-align: center;
-	color: #093185;
-}
+.microsoft-btn:hover {
+	color: var(--primary-color);
+	border: 1px solid var(--primary-color);
 }
 
-.microsoft-btn{
+.login-wrapper {
 	width: 100%;
-	margin: 20px 0px;
+	height: 100%;
+	background-color: #f2fbff;
+	.login-split {
+		display: flex;
+		gap: 0 23px;
+		flex-direction: row;
+		justify-content: space-evenly;
+		padding: 7% 0;
+		.login-right {
+			width: 360px;
+			.login-input {
+				width: 100%;
+				padding: 28px 0 0 0;
+				.input-prefix {
+					padding: 8px 12px;
+					color: var(--primary-color);
+					.ant-input-prefix {
+						margin-right: 40px;
+					}
+				}
+			}
+			.forgot-pwd {
+				display: flex;
+				justify-content: space-between;
+				padding: 26px 0 0 0;
+				span {
+					font-family: var(--primary-font-family);
+					font-style: normal;
+					font-weight: 400;
+					font-size: 14px;
+					line-height: 22px;
+					/* identical to box height, or 157% */
+					/* Character/Title .85 */
+					color: rgba(0, 0, 0, 0.85);
+					.ant-checkbox-inner {
+						background-color: var(--primary-color);
+						border-color: var(--primary-color);
+					}
+				}
+				p {
+					font-family: var(--primary-font-family);
+					font-style: normal;
+					font-weight: 400;
+					font-size: 16px;
+					line-height: 24px;
+					margin: 0px;
+					text-align: center;
+					color: var(--primary-color);
+				}
+			}
+			.login-btn {
+				width: 100%;
+				margin: 23px 0px 10px 0px;
+				padding: 8px 12px;
+				font-family: var(--primary-font-family) !important;
+				font-weight: 400 !important;
+				font-size: 14px !important;
+				color: #fff !important;
+				display: inline-flex !important;
+				align-items: center !important;
+				justify-content: center !important;
+				border-radius: 4px !important;
+				border: 1px solid var(--primary-color) !important;
+				background: var(--primary-color) !important;
+				height: 40px;
+			}
+		}
+	}
 }

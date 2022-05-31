@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://bms-cpvdev.mareana.com",
+  "baseUrl": "http://localhost:3030",
   "integrationFolder": "cypress/integration",
   "fixturesFolder": "cypress/fixtures",
   "supportFile": "cypress/support/index.js",

@@ -16,12 +16,17 @@ const GoBackSubHeader = props => {
         <div className='custom-user-roles-sub-header'>
             <div className='sub-header-title' onClick={goBackOnePage}>
                 <ArrowLeftOutlined className='go-back--header-icon' /> &nbsp;
-                <span className='header-title' style={{ textTransform: 'none' }}>{props.currentPage}</span>
+                <span className='header-title'>{props.currentPage}</span>
             </div>
             <style>{`
-                // .go-back--header-icon {
-                //     font-size: 16px;
-                // }
+                .header-title {
+                    font-family: 'Maven Pro';
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 22px;
+                    color: #262626;
+                }
             `}</style>
         </div>
     )

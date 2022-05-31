@@ -76,7 +76,7 @@ function ReportDesignerForm(props) {
                 <div className='reportDesigner-block-design'>
                     <div>
                         <Text className='filter-text'> Report ID <span className="colon">:</span> {reportId ? reportId : "Unassigned"}</Text> <br /> 
-                        <Text className='filter-text'> Status <span className="status-colon">:</span> {status}</Text><br />
+                        <Text className='filter-text-status'> Status <span className="status-colon">:</span> {status}</Text><br />
                     </div>
                     <div>
                         <Text className='filter-text'>Report Name <b style={{ color: 'red' }}>*</b></Text><br />
@@ -94,6 +94,7 @@ function ReportDesignerForm(props) {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }} >
                             <Select
                                 className='filter-button'
+                                placeholder="Select view"
                                 defaultValue={viewIdVersion}
                                 showArrow={false}
                                 showSearch
@@ -116,18 +117,18 @@ function ReportDesignerForm(props) {
                         </div>
                     </div>
                     <div>
-                        <Text className='filter-text' >Chart ID</Text><br />
+                        <Text className='filter-text'>Chart ID</Text><br />
                             <Select
                                 row={1}
                                 className="filter-button"
                                 mode="multiple"
-                                allowClear
                                 dropdownStyle={{ border: '10' }}
                                 notFoundContent="No Result"
                                 placeholder="Select Multiple Charts"
                                 value={selectedChartList}
                                 onChange={handleChange}
-                                style={{ width: '100%', minHeight: '60px', maxHeight: '200px',overflow:'auto' }}
+                                style={{ width: '100%',position:'relative',height:'75px',overflow:'auto' }}
+                                maxTagCount="responsive"
                             >
                                 {chartsList.length > 0 ? chartsList.map(item => (
                                     <Option value={item} key={item}>

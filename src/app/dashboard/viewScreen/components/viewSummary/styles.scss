@@ -20,21 +20,6 @@
 		grid-gap: 14px 24px;
 		grid-template-columns: 38% 59%;
 	}
-	.functionEditor-FormBlock {
-		display: grid;
-
-		// grid-gap: 14px 24px;
-		// grid-template-columns: repeat(5, 133px);
-		grid-gap: 30px;
-		grid-template-columns: repeat(5, 150px);
-	}
-
-	.MathEditor-FormBlock {
-		display: grid;
-		padding-top: 24px;
-		grid-gap: 14px 24px;
-		grid-template-columns: 38% 59%;
-	}
 
 	.emptyDiv {
 		display: flex;
@@ -125,7 +110,7 @@
 	}
 
 	.ant-table .ant-table-thead > tr > th {
-		font-family: 'Roboto', sans-serif;
+		font-family: var(--primary-font-family);
 		color: #262626 !important;
 		font-weight: 500;
 		font-size: 14px;
@@ -134,7 +119,7 @@
 	}
 
 	.ant-table-tbody > tr > td {
-		font-family: 'Roboto', sans-serif;
+		font-family: var(--primary-font-family);
 		color: #262626;
 		font-weight: 400;
 		font-size: 14px;
@@ -168,8 +153,23 @@
 	display: flex;
 	gap: 12px;
 	width: 100px;
+	cursor: pointer;
+
 	span > span {
 		color: #ff2828;
 		cursor: pointer;
+	}
+}
+
+.summary-heading {
+	display: flex;
+	gap: 12px;
+	width: 100px;
+	color: red;
+	cursor: crosshair;
+
+	span > span {
+		// color: #ff2828;
+		cursor: crosshair;
 	}
 }

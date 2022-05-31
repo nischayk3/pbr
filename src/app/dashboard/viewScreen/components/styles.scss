@@ -20,9 +20,10 @@
 		position: absolute;
 		top: 0;
 		right: 0;
+		z-index: 999;
 		.viewCreation-btns {
 			button.ant-btn {
-				font-family: 'Roboto', sans-serif;
+				font-family: var(--primary-font-family);
 				font-weight: 400;
 				font-size: 14px;
 				color: #262626;
@@ -31,14 +32,14 @@
 				justify-content: center;
 				// margin-left: 8px;
 				border-radius: 4px;
-				border: 0px solid #093185;
+				border: 0px solid var(--primary-color);
 
 				&:hover {
 					color: #40a9ff;
 				}
 
 				span.anticon {
-					color: #093185;
+					color: var(--primary-color);
 				}
 			}
 
@@ -59,14 +60,14 @@
 
 			.view-publish-btn {
 				span.anticon {
-					color: #093185 !important;
+					color: var(--primary-color) !important;
 				}
 			}
 		}
 	}
 
 	// .reportDesigner-headline {
-	// 	font-family: 'Roboto', sans-serif;
+	// 	font-family: var(--primary-font-family);
 	// 	font-size: 20px;
 	// 	color: #000000;
 	// 	border-bottom: none;
@@ -121,7 +122,7 @@ a.deleteTableAction {
 	.viewCreation-materialsPanel {
 		.ant-collapse-header {
 			background-color: #f1f7ff;
-			font-family: 'Maven Pro', sans-serif;
+			font-family: var(--secondary-font-family);
 			font-style: normal;
 			font-weight: 600;
 			font-size: 16px;
@@ -152,7 +153,7 @@ a.deleteTableAction {
 	.viewCreation-filesPanel {
 		.ant-collapse-header {
 			background-color: #f1f7ff;
-			font-family: 'Maven Pro', sans-serif;
+			font-family: var(--secondary-font-family);
 			font-style: normal;
 			font-weight: 600;
 			font-size: 16px;
@@ -198,7 +199,7 @@ a.deleteTableAction {
 		margin: 0px;
 
 		label {
-			font-family: 'Roboto', sans-serif;
+			font-family: var(--primary-font-family);
 			font-weight: 400;
 		}
 	}
@@ -268,7 +269,7 @@ a.deleteTableAction {
 .viewCreation-blockHeader {
 	border-radius: 4px 4px 0 0 !important;
 	border-bottom: 1px solid #cacaca;
-	font-family: 'Maven Pro', sans-serif;
+	font-family: var(--secondary-font-family);
 	font-style: normal;
 	font-weight: 600;
 	font-size: 16px;
@@ -301,7 +302,7 @@ a.deleteTableAction {
 	.tree-block-param {
 		display: flex;
 		.treenode-param {
-			font-family: 'Roboto';
+			font-family: var(--primary-font-family);
 			font-style: normal;
 			font-weight: 400;
 			font-size: 12px;
@@ -318,7 +319,7 @@ a.deleteTableAction {
 			padding: 0 6px;
 		}
 		.treenode-coverage {
-			font-family: 'Roboto';
+			font-family: var(--primary-font-family);
 			font-style: normal;
 			font-weight: 400;
 			font-size: 14px;

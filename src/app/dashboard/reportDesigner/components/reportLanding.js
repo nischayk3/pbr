@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import {
 	Card,
 	Input,
-	Divider,
 	Table,
 	Tabs,
 	Avatar,
-	message,
 	Row,
 	Col,
 	Modal,
@@ -41,15 +39,20 @@ export default function Landing(props) {
 	const [screen, setScreen] = useState(false);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [selectedReportId, setSelectedReportId] = useState('');
+	const [activeTab, setActiveTab] = useState('Design Report Template');
 
 	const { TabPane } = Tabs;
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const handleChangeTab = value => {
+		setActiveTab(value);
+	};
 
 	const columns = [
 		{
 			title: 'Name',
 			dataIndex: 'rep_name',
+			width: '200px',
 			key: 'rep_name',
 			render: (text, record) => {
 				return {
@@ -61,8 +64,9 @@ export default function Landing(props) {
 			},
 		},
 		{
-			title: 'Id',
+			title: 'ID',
 			dataIndex: 'rep_disp_id',
+			width: '100px',
 			key: 'rep_disp_id',
 			render: (text, record) => {
 				return {
@@ -76,6 +80,7 @@ export default function Landing(props) {
 		{
 			title: 'Status',
 			dataIndex: 'rep_status',
+			width: '100px',
 			key: 'rep_status',
 			render: (text, record) => {
 				return {
@@ -90,6 +95,7 @@ export default function Landing(props) {
 			title: 'Creator',
 			dataIndex: 'created_by',
 			key: 'created_by',
+			width: '200px',
 			render: (text, row, index) => {
 				return (
 					<div>
@@ -100,7 +106,9 @@ export default function Landing(props) {
 							}}>
 							{text.split('')[0].toUpperCase()}{' '}
 						</Avatar>
-						<span className='avatar-text'>{text.split(/[.@]/)[0]}</span>
+						<span className='avatar-text' style={{ marginLeft: '5px' }}>
+							{text.split(/[.@]/)[0]}
+						</span>
 					</div>
 				);
 			},
@@ -131,15 +139,18 @@ export default function Landing(props) {
 	};
 
 	const search = value => {
-		setSearched(true);
-		const tableData = reportList;
-		const filterTable = tableData.filter(o =>
-			Object.keys(o).some(k =>
-				String(o[k]).toLowerCase().includes(value.toLowerCase())
-			)
-		);
+		if (value == '') setSearched(false);
+		else {
+			setSearched(true);
+			const tableData = reportList;
+			const filterTable = tableData.filter(o =>
+				Object.keys(o).some(k =>
+					String(o[k]).toLowerCase().includes(value.toLowerCase())
+				)
+			);
 
-		setFilterTable(filterTable);
+			setFilterTable(filterTable);
+		}
 	};
 	const onSearch = value => {
 		if (value == '') setNewSearched(false);
@@ -265,31 +276,38 @@ export default function Landing(props) {
 				<Card className='landing-card'>
 					<div style={{ width: '900px', marginLeft: '180px' }}>
 						<Input.Search
-							placeholder='Search by view ID, name, product number, creator, status'
+							placeholder='Search by report ID, report name, chart ID, chart name, creator, status'
 							allowClear
 							className='landing-btn'
 							enterButton='Search'
 							size='large'
 							onSearch={search}
 						/>
-						<Tabs className='report-landing-card' defaultActiveKey='1'>
+						{searched ? (
+							<Table
+								className='landing-table'
+								columns={columns}
+								scroll={{ y: 150, x: 800 }}
+								pagination={false}
+								dataSource={filterTable === null ? reportList : filterTable}
+								onRow={record => ({
+									onClick: e => {
+										activeTab == 'Design Report Template'
+											? getLoadReport(record.rep_disp_id)
+											: getLoadReportGenerator(record.rep_disp_id);
+									},
+								})}
+							/>
+						) : (
+							<></>
+						)}
+						<Tabs
+							className='report-landing-card'
+							activeKey={activeTab}
+							onChange={handleChangeTab}>
 							<TabPane
 								tab='Design Report Template'
 								key='Design Report Template'>
-								{searched ? (
-									<Table
-										className='landing-table'
-										columns={columns}
-										dataSource={filterTable === null ? reportList : filterTable}
-										onRow={record => ({
-											onClick: e => {
-												getLoadReport(record.rep_disp_id);
-											},
-										})}
-									/>
-								) : (
-									<></>
-								)}
 								<div
 									className='create-new'
 									onClick={() => props.changeScreen()}>
@@ -338,34 +356,6 @@ export default function Landing(props) {
 							<TabPane
 								tab='Generate Report Variant'
 								key='Generate Report Variant'>
-								{/* <Input.Search
-                                    placeholder="Search by view ID, name, product number, creator, status"
-                                    allowClear
-                                    enterButton='Search'
-                                    size='large'
-                                    onSearch={search}
-                                // onSearch={onSearch}
-                                /> */}
-
-								{searched ? (
-									<Table
-										className='landing-table'
-										columns={columns}
-										dataSource={filterTable === null ? reportList : filterTable}
-										onRow={record => ({
-											onClick: e => {
-												// record['color'] = '#D3D3D3'
-												// setReportId(record.rep_disp_id)
-												// getReportData(record.rep_disp_id, record.rep_status)
-												// dispatch(showLoader())
-												getLoadReportGenerator(record.rep_disp_id);
-												// onOk()
-											},
-										})}
-									/>
-								) : (
-									<></>
-								)}
 								<div
 									className='create-new'
 									onClick={() => setIsModalVisible(true)}>
@@ -412,7 +402,7 @@ export default function Landing(props) {
 				<Modal
 					style={{ top: 50 }}
 					className='landing-modal'
-					title='Create New Dashboard'
+					title='Create New Variant'
 					visible={isModalVisible}
 					onCancel={handleCancel}
 					footer={false}>
@@ -431,34 +421,47 @@ export default function Landing(props) {
 										placeholder='Search by report ID or name'
 									/>
 								</Row>
-								{/* <div className="landing-tiles">
-                                    {!newsearched  && reportList &&
-                                        reportList.length > 0 &&
-                                        reportList.map(
-                                            (i, index) =>
-                                                index < 4 && (
-                                                    <div
-                                                        onClick={() => {
-                                                            getLoadReportGenerator(
-                                                                i.rep_disp_id
-                                                            );
-                                                            setReportId(i.rep_disp_id)
-                                                        }}
-                                                    >
-                                                        <div className={selectedReportId == i.rep_disp_id ? "landing-tile-check" : "landing-tile"}  >
-                                                            <div className="landing-report-id"> {i.rep_disp_id}</div><br />
-                                                            {selectedReportId == i.rep_disp_id ? <img className="landing-checkicon" src={checkIcon} /> : <></>}
-                                                           
-                                                        </div>
-                                                    </div>
-                                                )
-                                        )}
-                                </div> */}
+								<div className='landing-tiles'>
+									{!newsearched &&
+										reportList &&
+										reportList.length > 0 &&
+										reportList.map(
+											(i, index) =>
+												index < 4 && (
+													<div
+														onClick={() => {
+															getLoadReportGenerator(i.rep_disp_id);
+															setReportId(i.rep_disp_id);
+														}}>
+														<div
+															className={
+																selectedReportId == i.rep_disp_id
+																	? 'landing-tile-check'
+																	: 'landing-tile'
+															}>
+															<div className='landing-report-id'>
+																{' '}
+																{i.rep_disp_id}
+															</div>
+															<br />
+															{selectedReportId == i.rep_disp_id ? (
+																<img
+																	className='landing-checkicon'
+																	src={checkIcon}
+																/>
+															) : (
+																<></>
+															)}
+														</div>
+													</div>
+												)
+										)}
+								</div>
 								{newsearched ? (
 									<Table
 										className='landing-table'
 										columns={columns}
-										scroll={{ y: 150, x: 350 }}
+										scroll={{ y: 150, x: 800 }}
 										// style={{  height: 'auto' }}
 										dataSource={filterTable === null ? reportList : filterTable}
 										pagination={false}

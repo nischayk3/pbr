@@ -40,6 +40,9 @@ import AlertTable from '../scheduled-alerts/scheduledAlertsTable';
 import JobSchedule from '../../../../../components/JobSchedule';
 import Signature from '../../../../../components/ElectronicSignature/signature';
 import queryString from 'query-string';
+import ViewChartApprover from './viewChart/ViewChartApprover';
+import ChartApprover from './chart/ChartApprover';
+import DisplayApprover from './display/DisplayApprover';
 
 const { TabPane } = Tabs;
 
@@ -220,10 +223,15 @@ const ViewPage = () => {
 					<Col span={7} className='tab-container'>
 						<Tabs defaultActiveKey='1' onChange={callback}>
 							<TabPane tab='View' key='1'>
-								<ViewChart
-									postChartData={postChartData}
-									setPostChartData={setPostChartData}
-								/>
+								{Object.keys(params).length > 0 &&
+								params.fromScreen !== 'Workspace' ? (
+									<ViewChartApprover postChartData={postChartData} />
+								) : (
+									<ViewChart
+										postChartData={postChartData}
+										setPostChartData={setPostChartData}
+									/>
+								)}
 							</TabPane>
 							<TabPane tab='Limit' key='2'>
 								<Limits
@@ -232,10 +240,17 @@ const ViewPage = () => {
 								/>
 							</TabPane>
 							<TabPane tab='Display' key='3'>
-								<Display
-									postChartData={postChartData}
-									setPostChartData={setPostChartData}
-								/>
+								{Object.keys(params).length > 0 ? (
+									<DisplayApprover
+										postChartData={postChartData}
+										setPostChartData={setPostChartData}
+									/>
+								) : (
+									<Display
+										postChartData={postChartData}
+										setPostChartData={setPostChartData}
+									/>
+								)}
 							</TabPane>
 							<TabPane tab='Threshold' key='4'>
 								<Threshold
@@ -252,10 +267,17 @@ const ViewPage = () => {
 						</Tabs>
 					</Col>
 					<Col span={17}>
-						<Chart
-							postChartData={postChartData}
-							setPostChartData={setPostChartData}
-						/>
+						{Object.keys(params).length > 0 ? (
+							<ChartApprover
+								postChartData={postChartData}
+								setPostChartData={setPostChartData}
+							/>
+						) : (
+							<Chart
+								postChartData={postChartData}
+								setPostChartData={setPostChartData}
+							/>
+						)}
 					</Col>
 				</Row>
 			</div>
@@ -291,7 +313,10 @@ const ViewPage = () => {
 								<span className='alert-arrow'>
 									<a>View More Details</a>
 									<ArrowRightOutlined
-										style={{ marginLeft: '10px', color: '#093185' }}
+										style={{
+											marginLeft: '10px',
+											color: '#093185',
+										}}
 									/>
 								</span>
 							</div>

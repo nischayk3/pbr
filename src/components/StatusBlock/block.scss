@@ -1,7 +1,7 @@
 .chart-tiles {
 	height: 84px;
 	cursor: pointer;
-	border-radius: 0px 4px;
+	border-radius: 4px ;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -9,7 +9,7 @@
 	position: relative;
 	.tile-status {
 		// background: #F7BB61;
-		border-radius: 0px 4px;
+		border-radius:  4px;
 		margin-right: right;
 		position: absolute;
 		top: 0%;
@@ -19,11 +19,11 @@
 		font-size: small;
 	}
 }
-.tile {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-gap: 24px;
-	text-align: center;
+// .tile {
+// 	display: grid;
+// 	grid-template-columns: 1fr 1fr 1fr 1fr;
+// 	grid-gap: 24px;
+// 	text-align: center;
 
 	.awap {
 		background: #f7bb61;
@@ -39,4 +39,4 @@
 		color: white;
 		font-size: 8px;
 	}
-}
+// }
