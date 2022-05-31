@@ -110,48 +110,6 @@ function PbrReviewer() {
     }
   };
 
-<<<<<<< HEAD
-  const handleReset = (clearFilters, setSearchText) => {
-    clearFilters();
-    setSearchText("");
-  }; 
-
-  
-
-
-  const columns2 = [
-    {
-      title: 'File Path',
-      key: 'file_path',
-      dataIndex: 'file_path',
-      ...getColumnSearchProps("file_path", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.file_path.localeCompare(b.file_path)
-    },
-    {
-      title: 'Key',
-      key: 'anchor_key',
-      dataIndex: 'key_',
-      ...getColumnSearchProps("key_", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.key_.localeCompare(b.key_)
-    },
-    {
-      title: 'Value',
-      key: 'snippet_value',
-      dataIndex: 'value',
-      ...getColumnSearchProps("value", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.value.localeCompare(b.value)
-    },
-    {
-      title: 'Actual Value',
-      key: 'actual_value',
-      dataIndex: 'actual_value',
-      ...getColumnSearchProps("actual_value", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.actual_value.localeCompare(b.view_actual_value),
-      render: (text, record, index) => {
-        return (
-          <img src={"data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO 9TXL0Y4OHwAAAABJRU5ErkJggg=="} width="50%" height="15%" />
-        )
-=======
   const onFocus = () => {
     setViewSearch(true);
   };
@@ -251,7 +209,6 @@ function PbrReviewer() {
       line: {
         color: 'white',
         width: 2
->>>>>>> 97786712157bc0e496a0750904694e928246873a
       }
     },
     showlegend: true,
@@ -316,7 +273,7 @@ function PbrReviewer() {
   const handleChange = (e) => {
     let isChecked = e.target.checked;
     if (e.target.checked === true) {
-      alert("hi")
+      // alert("hi")
     }
   }
 
