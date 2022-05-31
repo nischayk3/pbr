@@ -25,7 +25,6 @@ import { showNotification } from "../../../../duck/actions/commonActions";
 const { Option } = Select;
 const { Text } = Typography;
 let filterIng = [];
-
 class AuditTrials extends React.Component {
   constructor(props) {
     super(props);
@@ -207,6 +206,7 @@ class AuditTrials extends React.Component {
     
     };
   }
+
   componentDidMount() {
     this.setState({ initialColumns: this.state.columns });
     this.auditHighlight();
@@ -226,7 +226,6 @@ class AuditTrials extends React.Component {
     //   });
     // });
   }
-
 
   onAuditUserAndEventFilter = async () => {
     let login_response = JSON.parse(localStorage.getItem("login_details"));
