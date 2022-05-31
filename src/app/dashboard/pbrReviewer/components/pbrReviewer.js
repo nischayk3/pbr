@@ -72,6 +72,8 @@ function PbrReviewer() {
         dispatch(hideLoader());
         setTemplateData(tableResponse.Data);
         dispatch(showNotification('error', tableResponse.Message));
+      }else{
+        dispatch(hideLoader());
       }
     }
     catch (error) {
@@ -271,7 +273,7 @@ function PbrReviewer() {
   const handleChange = (e) => {
     let isChecked = e.target.checked;
     if (e.target.checked === true) {
-      alert("hi")
+      // alert("hi")
     }
   }
 

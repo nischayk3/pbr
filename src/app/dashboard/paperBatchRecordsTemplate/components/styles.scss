@@ -215,10 +215,11 @@ label {
 	justify-content: space-between;
 	margin-top: 10px;
 
-	.pbrTemplateCenter {
-		width: 100%;
-		padding: 0 40px;
-	}
+    .pbrTemplateCenter {
+        width: 100%;
+        margin: 0 40px;
+        // overflow-y: scroll;
+    }
 
 	.pbrTemplateLeft {
 		span.trigger {
