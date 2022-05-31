@@ -94,6 +94,7 @@ function ReportDesignerForm(props) {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }} >
                             <Select
                                 className='filter-button'
+                                placeholder="Select view"
                                 defaultValue={viewIdVersion}
                                 showArrow={false}
                                 showSearch

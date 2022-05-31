@@ -1,6 +1,7 @@
 {
 	"/dashboard/dashboard": "Dashboard",
 	"/dashboard/view_creation": "View creation",
+	"/dashboard/workflow": "Workflow",
 	"/dashboard/view_creation_view": "View creation",
 	"/dashboard/workspace": "Workspace",
 	"/dashboard/report_designer": "Report Designer",
@@ -20,7 +21,7 @@
 	"/dashboard/user-roles-and-access/screen-controls": "Screen controls",
 	"/dashboard/molecule_hierarchy_configuration": "Molecule Hierarchy Configuration",
 	"/dashboard/filterRegister/filterList/filterDetails": "Filter Details",
-	"/dashboard/molecule_hierarchy_configurations" :"Molecule Hierarchy Configuration",
+	"/dashboard/molecule_hierarchy_configurations": "Molecule Hierarchy Configuration",
 	"/dashboard/analysis": "Analysis",
 	"/dashboard/analysis/:id": "Model"
 }

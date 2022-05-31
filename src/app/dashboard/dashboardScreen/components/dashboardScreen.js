@@ -237,7 +237,10 @@ const DashboardScreen = () => {
 		<div className='custom-wrapper'>
 			{/* <BreadCrumbWrapper /> */}
 			<div className='sub-header'>
+				<div onClick={()=>window.location.reload()}>
 				<BreadCrumbWrapper />
+				</div>
+				
 				{/* <div className='sub-header-title'>
                     <ArrowLeftOutlined className='header-icon' onClick={onBackArrowClick} /> &nbsp;
                     <span className='header-title'>Dashboard</span>
