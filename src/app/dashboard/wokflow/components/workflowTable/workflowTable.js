@@ -10,12 +10,9 @@ function workflowTable(props) {
 	const [searchText, setSearchText] = useState('');
 	const [searchedColumn, setSearchedColumn] = useState('');
 	const [newColumns, setNewColumns] = useState([]);
-	const [select, setSelect] = useState({
-		selectedRowKeys: [],
-	});
+
 	const refSearchInput = useRef();
 	const history = useHistory();
-	const { selectedRowKeys } = select;
 
 	useEffect(() => {
 		updateTableColumns();
@@ -103,9 +100,9 @@ function workflowTable(props) {
 		onFilter: (value, record) =>
 			record[dataIndex]
 				? record[dataIndex]
-						.toString()
-						.toLowerCase()
-						.includes(value.toLowerCase())
+					.toString()
+					.toLowerCase()
+					.includes(value.toLowerCase())
 				: '',
 		onFilterDropdownVisibleChange: visible => {
 			if (visible) {
@@ -216,10 +213,10 @@ function workflowTable(props) {
 								a.field_name === ''
 								? -1
 								: b.field_name == null ||
-								  b.field_name == undefined ||
-								  b.field_name == ''
-								? 1
-								: a.field_name.toString().localeCompare(b.field_name);
+									b.field_name == undefined ||
+									b.field_name == ''
+									? 1
+									: a.field_name.toString().localeCompare(b.field_name);
 						},
 					};
 
@@ -314,10 +311,10 @@ function workflowTable(props) {
 								a.field_name === ''
 								? -1
 								: b.field_name == null ||
-								  b.field_name == undefined ||
-								  b.field_name == ''
-								? 1
-								: a.field_name.toString().localeCompare(b.field_name);
+									b.field_name == undefined ||
+									b.field_name == ''
+									? 1
+									: a.field_name.toString().localeCompare(b.field_name);
 						},
 					};
 
@@ -349,26 +346,17 @@ function workflowTable(props) {
 
 		setNewColumns(columns);
 	};
-	const rowSelection = {
-		selectedRowKeys,
-		onChange: selectedRowKeys => {
-			setSelect({
-				...select,
-				selectedRowKeys: selectedRowKeys,
-			});
-		},
-	};
+
 	return (
 		<div className='workflow-table'>
 			<Table
-				rowSelection={props.isRowSelection ? rowSelection : null}
 				className='approval-table'
 				columns={newColumns}
 				dataSource={props.dataSource}
 				style={{ border: '1px solid #ececec', borderRadius: '2px' }}
 				pagination={false}
 				scroll={{ x: 500, y: 300 }}
-				//rowKey={(record) => record.param}
+			//rowKey={(record) => record.param}
 			/>
 		</div>
 	);

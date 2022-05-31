@@ -1,6 +1,5 @@
-// eslint-disable-next-line
-import React from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 import {
   Table,
   Input,
@@ -11,28 +10,27 @@ import {
   Button,
   Select,
   Typography,
-} from 'antd';
+} from "antd";
 import {
   loadFilter,
   auditDataChange,
-  auditFilter
-} from '../../../../duck/actions/auditTrialAction';
+  auditFilter,
+} from "../../../../duck/actions/auditTrialAction";
 
-import './styles.scss';
-import moment from 'moment';
-import { BMS_APP_PYTHON_SERVICE, MDH_APP_PYTHON_SERVICE} from '../../../../constants/apiBaseUrl';
-import { showNotification } from '../../../../duck/actions/commonActions';
+import "./styles.scss";
+import moment from "moment";
+import { MDH_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
+import { showNotification } from "../../../../duck/actions/commonActions";
 
 const { Option } = Select;
 const { Text } = Typography;
 let filterIng = [];
-
 class AuditTrials extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       brandList: [],
-      eventType: '',
+      eventType: "",
       productList: [],
       columnConfig: [],
       questionList: [],
@@ -47,12 +45,12 @@ class AuditTrials extends React.Component {
         entry_date: 0,
         table_name: 0,
       },
-      sortState: 'DESC',
+      sortState: "DESC",
       tableData: [],
       userList: [],
       filterIng: [],
       filterPkg: [],
-      type: '',
+      type: "",
       dataGrid: {
         columns: [],
         rows: [],
@@ -63,43 +61,43 @@ class AuditTrials extends React.Component {
       },
       tableDataPackaging: [],
       ansList: [
-        { value: 'Yes', label: 'Yes' },
-        { value: 'No', label: 'No' },
+        { value: "Yes", label: "Yes" },
+        { value: "No", label: "No" },
       ],
       ansListPkg: [
-        { value: 'Yes', label: 'Yes' },
-        { value: 'No', label: 'No' },
+        { value: "Yes", label: "Yes" },
+        { value: "No", label: "No" },
       ],
-      selectedBrand: '',
-      selectedProduct: '',
-      selectedQuestion: '',
-      selectedBrandPkg: '',
-      selectedProductPkg: '',
-      selectedQuestionPkg: '',
-      selectedAns: '',
-      selectedAnsPkg: '',
+      selectedBrand: "",
+      selectedProduct: "",
+      selectedQuestion: "",
+      selectedBrandPkg: "",
+      selectedProductPkg: "",
+      selectedQuestionPkg: "",
+      selectedAns: "",
+      selectedAnsPkg: "",
       // loading: true,
-      searchText: '',
-      colSort: 'entry_date',
-      searchedColumn: '',
+      searchText: "",
+      colSort: "entry_date",
+      searchedColumn: "",
       filterTable: null,
-      searchText1: '',
-      searchedColumn1: '',
+      searchText1: "",
+      searchedColumn1: "",
       filterTable1: null,
       value: false,
       checkedColumns: [],
       visibleMenuSettings: false,
-      user: '',
+      user: "",
       daterange: [],
       downloadData: [],
       selectedDate: [],
       // config: [],
       columns: [
         {
-          title: 'User',
-          dataIndex: 'user_id',
-          key: '2',
-          defaultSortOrder: 'descend',
+          title: "User",
+          dataIndex: "user_id",
+          key: "2",
+          defaultSortOrder: "descend",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
@@ -110,10 +108,10 @@ class AuditTrials extends React.Component {
           sorter: (a, b) => a.user_id - b.user_id,
         },
         {
-          title: 'Event',
-          dataIndex: 'activity',
-          key: '3',
-          defaultSortOrder: 'descend',
+          title: "Event",
+          dataIndex: "activity",
+          key: "3",
+          defaultSortOrder: "descend",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
@@ -124,10 +122,10 @@ class AuditTrials extends React.Component {
           sorter: (a, b) => a.activity - b.activity,
         },
         {
-          title: 'Old Value',
-          dataIndex: 'old_value',
-          key: '3',
-          defaultSortOrder: 'descend',
+          title: "Old Value",
+          dataIndex: "old_value",
+          key: "3",
+          defaultSortOrder: "descend",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
@@ -135,16 +133,16 @@ class AuditTrials extends React.Component {
               },
             };
           },
-          className: 'old_value_class',
+          className: "old_value_class",
 
           sorter: (a, b) => a.old_value - b.old_value,
         },
         {
-          title: 'New Value',
-          dataIndex: 'new_value',
-          key: '3',
-          defaultSortOrder: 'descend',
-          className: 'old_value_class',
+          title: "New Value",
+          dataIndex: "new_value",
+          key: "3",
+          defaultSortOrder: "descend",
+          className: "old_value_class",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
@@ -155,10 +153,10 @@ class AuditTrials extends React.Component {
           sorter: (a, b) => a.new_value - b.new_value,
         },
         {
-          title: 'Reason For Change',
-          dataIndex: 'reason',
-          key: '2',
-          defaultSortOrder: 'descend',
+          title: "Reason For Change",
+          dataIndex: "reason",
+          key: "2",
+          defaultSortOrder: "descend",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
@@ -169,11 +167,11 @@ class AuditTrials extends React.Component {
           sorter: (a, b) => a.reason - b.reason,
         },
         {
-          title: 'Changed On',
-          dataIndex: 'entry_date',
-          key: '1',
+          title: "Changed On",
+          dataIndex: "entry_date",
+          key: "1",
           width: 200,
-          defaultSortOrder: 'descend',
+          defaultSortOrder: "descend",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
@@ -182,13 +180,13 @@ class AuditTrials extends React.Component {
             };
           },
           sorter: (a, b) => a.entry_date - b.entry_date,
-          render: (text) => moment(text).format('YYYY-MM-DD'),
+          render: (text) => moment(text).format("YYYY-MM-DD"),
         },
         {
-          title: 'Table Name',
-          dataIndex: 'table_name',
-          key: '4',
-          defaultSortOrder: 'descend',
+          title: "Table Name",
+          dataIndex: "table_name",
+          key: "4",
+          defaultSortOrder: "descend",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
@@ -203,6 +201,7 @@ class AuditTrials extends React.Component {
       initialColumns: [],
     };
   }
+
   componentDidMount() {
     this.setState({ initialColumns: this.state.columns });
     this.auditHighlight();
@@ -223,27 +222,25 @@ class AuditTrials extends React.Component {
     // });
   }
 
-
   onAuditUserAndEventFilter = async () => {
-    let login_response = JSON.parse(localStorage.getItem('login_details'));
+    let login_response = JSON.parse(localStorage.getItem("login_details"));
     let req = {};
     let headers = {
-      'content-type': 'application/json',
-      'x-access-token': login_response.token ? login_response.token : '',
-      'resource-name': 'AUDIT_REPORT',
-    }
+      "content-type": "application/json",
+      "x-access-token": login_response.token ? login_response.token : "",
+      "resource-name": "AUDIT_REPORT",
+    };
 
     let res = await auditFilter(req, headers);
     if (res.statuscode != 200) {
-      this.props.showNotification('error', res.Message);
-    }else{
+      this.props.showNotification("error", res.Message);
+    } else {
       this.setState({
-        userList:res.data[0].userid,
-        eventList:res.data[0].activity
-      })
+        userList: res.data[0].userid,
+        eventList: res.data[0].activity,
+      });
     }
-
-  }
+  };
 
   loadData = (column) => {
     this.setState({ colSort: column }, () => this.auditHighlight());
@@ -253,42 +250,42 @@ class AuditTrials extends React.Component {
     var today = new Date();
     today.setDate(today.getDate() + 1);
 
-    let endPoint = '/services/v1/audit-information?';
+    let endPoint = "/services/v1/audit-information?";
     let baseUrl = MDH_APP_PYTHON_SERVICE + endPoint;
 
     let startDate =
       this.state.selectedDate.length > 0
         ? this.state.selectedDate[0]
-        : '2021-09-01';
+        : "2021-09-01";
     let endDate =
       this.state.selectedDate.length > 0
         ? this.state.selectedDate[1]
         : today.toISOString().slice(0, 10);
-    let tableName = ['Parameter Data'];
+    let tableName = ["Parameter Data"];
     let activity = this.state.eventType.value;
     let userid = this.state.user.value;
 
     const myUrlWithParams = new URL(baseUrl);
     if (startDate == endDate) {
-      myUrlWithParams.searchParams.append('startdate', startDate);
+      myUrlWithParams.searchParams.append("startdate", startDate);
     } else {
-      myUrlWithParams.searchParams.append('startdate', startDate);
-      myUrlWithParams.searchParams.append('enddate', endDate);
+      myUrlWithParams.searchParams.append("startdate", startDate);
+      myUrlWithParams.searchParams.append("enddate", endDate);
     }
 
     if (activity) {
-      myUrlWithParams.searchParams.append('activity', activity);
+      myUrlWithParams.searchParams.append("activity", activity);
     }
     if (userid) {
-      myUrlWithParams.searchParams.append('userid', userid);
+      myUrlWithParams.searchParams.append("userid", userid);
     }
-    myUrlWithParams.searchParams.append('table_name', tableName);
+    myUrlWithParams.searchParams.append("table_name", tableName);
 
-    if (value == 'excel') {
-      myUrlWithParams.searchParams.append('export_csv', false);
+    if (value == "excel") {
+      myUrlWithParams.searchParams.append("export_csv", false);
     }
-    if (value == 'csv') {
-      myUrlWithParams.searchParams.append('export_csv', true);
+    if (value == "csv") {
+      myUrlWithParams.searchParams.append("export_csv", true);
     }
 
     let url = myUrlWithParams.href;
@@ -297,21 +294,21 @@ class AuditTrials extends React.Component {
 
   disabledDate = (current) => {
     // Can not select days before today and today
-    return current && current > moment().endOf('day');
+    return current && current > moment().endOf("day");
   };
 
   auditHighlight = () => {
     var today = new Date();
     today.setDate(today.getDate() + 1);
     let req = {
-      identification: '10.10.16.30',
-      source_system: 'cpv',
-      transactionid: '20200813161038.066',
+      identification: "10.10.16.30",
+      source_system: "cpv",
+      transactionid: "20200813161038.066",
       // username: this.state.user ? this.state.user.value : "",
       startdate:
         this.state.selectedDate.length > 0 && this.state.selectedDate[0]
           ? this.state.selectedDate[0]
-          : '2021-09-01',
+          : "2021-09-01",
       enddate:
         this.state.selectedDate.length > 0 && this.state.selectedDate[1]
           ? this.state.selectedDate[1]
@@ -321,12 +318,10 @@ class AuditTrials extends React.Component {
       // activity:this.state.eventType ? this.state.eventType.value : '',
     };
     if (this.state.eventType) {
-      req['activity'] = this.state.eventType
-        ? this.state.eventType.value
-        : '';
+      req["activity"] = this.state.eventType ? this.state.eventType.value : "";
     }
     if (this.state.user) {
-      req['username'] = this.state.user ? this.state.user.value : '';
+      req["username"] = this.state.user ? this.state.user.value : "";
     }
 
     auditDataChange(req).then((res) => {
@@ -334,19 +329,19 @@ class AuditTrials extends React.Component {
       res.data.forEach((item, key) => {
         let antdObj = {};
         let val11 = item.delta.toString();
-        antdObj['key'] = key;
-        antdObj['user_id'] = item.user_id;
-        antdObj['activity'] = item.activity;
-        antdObj['old_value'] = item.old_value;
-        antdObj['entry_date'] = item.entry_date;
-        antdObj['table_name'] = item.table_name;
-        antdObj['reason'] = item.reason;
+        antdObj["key"] = key;
+        antdObj["user_id"] = item.user_id;
+        antdObj["activity"] = item.activity;
+        antdObj["old_value"] = item.old_value;
+        antdObj["entry_date"] = item.entry_date;
+        antdObj["table_name"] = item.table_name;
+        antdObj["reason"] = item.reason;
         if (val11 === item.new_value) {
-          antdObj['new_value'] = (
-            <p style={{ background: 'yellow' }}>{item.new_value}</p>
+          antdObj["new_value"] = (
+            <p style={{ background: "yellow" }}>{item.new_value}</p>
           );
-        } else if (item.activity === 'U' && item.delta.length > 0) {
-          let val = '';
+        } else if (item.activity === "U" && item.delta.length > 0) {
+          let val = "";
           item.delta.forEach((item1) => {
             if (val.length > 0) {
               let val1 = val.replace(
@@ -362,11 +357,11 @@ class AuditTrials extends React.Component {
               val = val1;
             }
           });
-          antdObj['new_value'] = (
+          antdObj["new_value"] = (
             <p dangerouslySetInnerHTML={{ __html: val }}></p>
           );
         } else {
-          antdObj['new_value'] = item.new_value;
+          antdObj["new_value"] = item.new_value;
         }
         antdDataTable.push(antdObj);
       });
@@ -378,9 +373,9 @@ class AuditTrials extends React.Component {
   };
   loadEventFilter = (_filterId, _filter) => {
     let _req = {
-      appId: 'BMS',
+      appId: "BMS",
       filterId: _filterId,
-      q: '',
+      q: "",
       filters: _filter ? _filter : [],
     };
     loadFilter(_req)
@@ -391,8 +386,7 @@ class AuditTrials extends React.Component {
         });
       })
       .catch((error) => {
-        if (error && error.message)
-          console.log('Warning', error.message);
+        if (error && error.message) console.log("Warning", error.message);
       });
   };
 
@@ -445,8 +439,8 @@ class AuditTrials extends React.Component {
     if (value !== null) {
       let userarr = [];
       userarr.push({
-        field: 'user_id',
-        operator: 'IN',
+        field: "user_id",
+        operator: "IN",
         value: [value.value.trim()],
       });
       filterIng = userarr;
@@ -458,8 +452,8 @@ class AuditTrials extends React.Component {
       let arr = [];
 
       arr.push({
-        field: 'entry_date',
-        operator: 'Between',
+        field: "entry_date",
+        operator: "Between",
         value: value,
       });
       this.setState({ filterPkg: arr });
@@ -477,14 +471,14 @@ class AuditTrials extends React.Component {
   handleClear = () => {
     this.setState(
       {
-        selectedBrand: '',
-        selectedProduct: '',
-        selectedQuestion: '',
-        selectedAns: '',
-        user: '',
+        selectedBrand: "",
+        selectedProduct: "",
+        selectedQuestion: "",
+        selectedAns: "",
+        user: "",
         daterange: [],
         selectedDate: [],
-        eventType: '',
+        eventType: "",
         filterTable: null,
       },
       () => this.auditHighlight()
@@ -507,17 +501,17 @@ class AuditTrials extends React.Component {
 
   handleClearPkg = () => {
     this.setState({
-      selectedBrandPkg: '',
-      selectedProductPkg: '',
-      selectedQuestionPkg: '',
-      selectedAnsPkg: '',
+      selectedBrandPkg: "",
+      selectedProductPkg: "",
+      selectedQuestionPkg: "",
+      selectedAnsPkg: "",
     });
     this.esgTablePackaging();
   };
   handleAutoCompleteChange = (state, evt, value) => {
     if (evt) {
       if (value === null) {
-        value = { label: '', value: '' };
+        value = { label: "", value: "" };
       } else {
         this.setState({
           user: value,
@@ -532,32 +526,32 @@ class AuditTrials extends React.Component {
 
     const userMenu = (
       <Menu>
-        <Menu.Item key='1' onClick={() => this.getExcelFile('excel')}>
+        <Menu.Item key="1" onClick={() => this.getExcelFile("excel")}>
           Excel
         </Menu.Item>
         <Menu.Divider />
-        <Menu.Item key='2' onClick={() => this.getExcelFile('csv')}>
+        <Menu.Item key="2" onClick={() => this.getExcelFile("csv")}>
           CSV
         </Menu.Item>
       </Menu>
     );
     return (
       <div>
-        <div className='divFilterDrop bg-white'>
-          <div className='filter-header' style={{ height: '150px' }}>
-            <div className='divFilter-name'>
+        <div className="divFilterDrop bg-white">
+          <div className="filter-header" style={{ height: "150px" }}>
+            <div className="divFilter-name">
               <Text>Date</Text>
-              <Text style={{ marginLeft: '15px' }}>User</Text>
+              <Text style={{ marginLeft: "15px" }}>User</Text>
               <Text>Event Type</Text>
             </div>
-            <div className='divFilter'>
+            <div className="divFilter">
               <Space>
                 <RangePicker
                   value={this.state.daterange}
                   onChange={(e, value) => {
                     this.setState({
                       selectedDate: value,
-                      type: 'date',
+                      type: "date",
                       daterange: e,
                     });
                     this.onChangePkg(e, value);
@@ -568,35 +562,35 @@ class AuditTrials extends React.Component {
               <Space>
                 <Select
                   style={{
-                    width: '150px',
-                    marginLeft: '20px',
+                    width: "150px",
+                    marginLeft: "20px",
                   }}
-                  placeholder='User'
+                  placeholder="User"
                   onChange={(e, value) => {
                     return (
                       this.setState({
-                        type: 'user',
+                        type: "user",
                         user: value,
                       }),
-                      this.onChangeIng(e, value, 'user')
+                      this.onChangeIng(e, value, "user")
                     );
                   }}
                   value={this.state.user}
                 >
-                  {this.state.userList && this.state.userList.map((item, i) => {
-                   
-                    return (
-                      <Option value={item.value}>
-                        {item.value}
-                      </Option>
-                    );
-                  })}
+                  {this.state.userList &&
+                    this.state.userList.map((item, i) => {
+                      return (
+                        <Option value={item.value} key={i}>
+                          {item.value}
+                        </Option>
+                      );
+                    })}
                 </Select>
               </Space>
               <Space>
                 <Select
-                  style={{ width: '150px' }}
-                  placeholder='Event'
+                  style={{ width: "150px" }}
+                  placeholder="Event"
                   onChange={(e, value) => {
                     return this.setState({
                       eventType: value,
@@ -604,24 +598,25 @@ class AuditTrials extends React.Component {
                   }}
                   value={this.state.eventType}
                 >
-                  {this.state.eventList && this.state.eventList.map((item, i) => {
-                    return (
-                      <Option value={item.value}>
-                        {item.value}
-                      </Option>
-                    );
-                  })}
+                  {this.state.eventList &&
+                    this.state.eventList.map((item, i) => {
+                      return (
+                        <Option value={item.value} key={i}>
+                          {item.value}
+                        </Option>
+                      );
+                    })}
                 </Select>
               </Space>
             </div>
-            <div className='divFilter-second'>
+            <div className="divFilter-second">
               <Button
                 style={{
-                  backgroundColor: '#495fc3',
-                  color: '#ffffff',
-                  width: '100px',
+                  backgroundColor: "#495fc3",
+                  color: "#ffffff",
+                  width: "100px",
                 }}
-                type='primary'
+                type="primary"
                 onClick={() => {
                   this.handleFilter();
                 }}
@@ -630,12 +625,12 @@ class AuditTrials extends React.Component {
               </Button>
               <Button
                 style={{
-                  backgroundColor: '#495fc3',
-                  color: '#ffffff',
-                  width: '100px',
+                  backgroundColor: "#495fc3",
+                  color: "#ffffff",
+                  width: "100px",
                 }}
-                type='primary'
-                className='simulate-btn'
+                type="primary"
+                className="simulate-btn"
                 onClick={() => {
                   this.handleClear();
                 }}
@@ -645,45 +640,39 @@ class AuditTrials extends React.Component {
             </div>
           </div>
 
-          <div
-            className='custom-table-card'
-            style={{ margin: '10px 0' }}
-          >
-            <div className='table-header'>
+          <div className="custom-table-card" style={{ margin: "10px 0" }}>
+            <div className="table-header">
               <div>
                 <p>Audit Trail Report</p>
               </div>
               <div
                 style={{
-                  marginLeft: '100px',
-                  display: 'flex',
-                  flexDirection: 'row',
+                  marginLeft: "100px",
+                  display: "flex",
+                  flexDirection: "row",
                 }}
               >
                 <Input.Search
-                  className='table-search'
-                  placeholder='Search by...'
+                  className="table-search"
+                  placeholder="Search by..."
                   enterButton
                   onSearch={this.search}
                 />
               </div>
               <div
                 style={{
-                  marginTop: '10px',
-                  float: 'right',
-                  marginRight: '10px',
+                  marginTop: "10px",
+                  float: "right",
+                  marginRight: "10px",
                 }}
               >
-                <Dropdown
-                  style={{ color: '#ffffff' }}
-                  overlay={userMenu}
-                >
+                <Dropdown style={{ color: "#ffffff" }} overlay={userMenu}>
                   <Button
                     style={{
-                      backgroundColor: '#495fc3',
-                      color: '#ffffff',
+                      backgroundColor: "#495fc3",
+                      color: "#ffffff",
                     }}
-                    type='primary'
+                    type="primary"
                   >
                     Export
                   </Button>
@@ -691,13 +680,11 @@ class AuditTrials extends React.Component {
               </div>
             </div>
             <Table
-              style={{ margin: '20px' }}
+              style={{ margin: "20px" }}
               loading={this.state.loading}
-              size='small'
+              size="small"
               columns={columns}
-              dataSource={
-                filterTable === null ? tableData : filterTable
-              }
+              dataSource={filterTable === null ? tableData : filterTable}
               scroll={{ x: 400 }}
               bordered
             />

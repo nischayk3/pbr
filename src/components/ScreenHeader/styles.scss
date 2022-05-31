@@ -15,7 +15,7 @@
 }
 
 .screen_header_username {
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 400;
 	font-size: 24px;
@@ -24,7 +24,7 @@
 	padding-top: 47px;
 }
 .screen_header_text {
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 300;
 	font-size: 18px;
@@ -33,7 +33,7 @@
 }
 .screen_header_resultdate {
 	padding-top: 47px;
-	font-family: 'Roboto';
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 400;
 	font-size: 16px;

@@ -8,7 +8,7 @@
 
 import React, { useState } from 'react';
 import {
-	ArrowLeftOutlined,
+	 
 	DownloadOutlined,
 	InboxOutlined,
 } from '@ant-design/icons';
@@ -73,12 +73,14 @@ function Genealogy() {
 	const [uploading, setUploading] = useState(false);
 	const [uploadId, setUploadId] = useState('');
 	const [collapseKey, setCollapseKey] = useState('0');
+	const [nodeTitle, setNodeTitle] = useState('');
 
 	const [type, setType] = useState('');
 
 	const dispatch = useDispatch();
 
 	const onClickNode = node => {
+		console.log('nodeeeeeeeeeee', node);
 		if (node.clickType === 'backward') {
 			setGenealogyData([]);
 			let _reqBackward = {
@@ -115,6 +117,7 @@ function Genealogy() {
 				setIsDrawerOpen(true);
 				setIsDrawerRef(false);
 				setNodeType(node.nodeType);
+				setNodeTitle(node.product);
 				let nodeSplit = node.nodeId.split('|');
 
 				let _reqBatchInfo = {
@@ -137,6 +140,7 @@ function Genealogy() {
 					process_order_id: `${node.nodeData.plant}|${node.nodeData.poNo}`,
 					relation_id: 'output_batch_to_process_order',
 				};
+				setNodeTitle(node.nodeData.poNo);
 				setIsDrawerOpen(true);
 				setIsDrawerRef(false);
 				setNodeType(node.nodeType);
@@ -149,6 +153,7 @@ function Genealogy() {
 					purchase_id: node.nodeData.pur_ord_no,
 					vendor_no: node.nodeData.vendor_no,
 				};
+				setNodeTitle(node.nodeData.pur_ord_no);
 				setPurchaseInfo(purchaseInfo);
 				setIsDrawerOpen(true);
 				setIsDrawerRef(false);
@@ -546,8 +551,8 @@ function Genealogy() {
 							genealogyData &&
 							genealogyData.length > 0 && (
 								<p className='tab-label'>
-									<img className='tree-type-icon' src={batchIcon} />
-									{productCode}-{chartType}
+									<img className='tree-type-icon' src={batchIcon} alt='tree node' />
+									{productCode}- {chartType}
 								</p>
 							)
 						}
@@ -577,6 +582,7 @@ function Genealogy() {
 								processOutput={processOutput}
 								fileDownload={downloadFile}
 								productCode={productCode}
+								nodeTitle={nodeTitle}
 								productType={chartType}
 								collapseKey={collapseKey}
 								setCollapseKey={setCollapseKey}
@@ -626,17 +632,17 @@ function Genealogy() {
 						tab={
 							showView && (
 								<p className='tab-label'>
-									<img className='tree-type-icon' src={popupicon} />
-									Popout - {productCode}
+									<img className='tree-type-icon' src={popupicon} alt='tree node' />
+									Popout - {nodeTitle}
 								</p>
 							)
 						}
 						key='3'>
 						<div className='popout-table'>
 							<div className='drawer-title'>
-								<img className='tree-type-icon' src={batchIcon} />
+								<img className='tree-type-icon' src={batchIcon} alt='tree node' />
 								<p>
-									{productCode}-{type}
+									{nodeTitle} - {nodeType}
 								</p>
 								<span className='download-file'>
 									<DownloadOutlined />

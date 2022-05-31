@@ -1,26 +1,22 @@
-.reportDesignergen
-{
-    width: 100% ;
-    margin-left:22px;
-    .report-heading
-   {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 22px;    
-    color: #262626;
-    }
+.reportDesignergen {
+	width: 100%;
+	margin-left: 22px;
+	.report-heading {
+		font-family: var(--primary-font-family);
+		font-style: normal;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 22px;
+		color: #262626;
+	}
 
-    .colon
-    {
-        margin-right: 10px;
-        margin-left: 10px;
-    }
-    .report-name
-    {
-        width:auto;
-        float:left;
-        margin-left:55px;
-    }
+	.colon {
+		margin-right: 10px;
+		margin-left: 10px;
+	}
+	.report-name {
+		width: auto;
+		float: left;
+		margin-left: 55px;
+	}
 }

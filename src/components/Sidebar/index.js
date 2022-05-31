@@ -51,7 +51,7 @@ const MENU = [
   },
   {
     key: "dashboard",
-    icon: <FundProjectionScreenOutlined style={{ fontSize: "23px" }} />,
+    icon: <FundProjectionScreenOutlined style={{ fontSize: "23px" }}/>,
     title: "Dashboard",
     linkTo: "/dashboard/dashboard",
   },
@@ -188,7 +188,7 @@ const Sidebar = () => {
         {/* <div id='logo-small'></div> */}
         <Menu selectedKeys={[selectedKey]} mode="inline" theme={theme}>
           {MENU.map((item) => (
-            <Menu.Item key={item.key} icon={item.icon} id={item.key}>
+            <Menu.Item key={item.key} icon={item.icon} id={item.key} onClick={()=>window.location.reload()}>
               <Link to={item.linkTo}>{item.title}</Link>
             </Menu.Item>
           ))}
