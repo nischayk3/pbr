@@ -1,18 +1,18 @@
 import React, { lazy, useEffect } from 'react';
 import {
-	Route,
-	useRouteMatch,
-	Switch,
 	Redirect,
+	Route,
+	Switch,
 	useHistory,
+	useRouteMatch
 } from 'react-router-dom';
 import { Layout } from 'antd';
-import Sidebar from '../../components/Sidebar';
-import HeaderBar from '../../components/Header';
-import SuspenseWrapper from '../../components/SuspenseWrapper';
-import BreadCrumbWrapper from '../../components/BreadCrumbWrapper';
+import Sidebar from '../components/Sidebar';
+import HeaderBar from '../components/Header';
+import SuspenseWrapper from '../components/SuspenseWrapper';
+import BreadCrumbWrapper from '../components/BreadCrumbWrapper';
 import './dashboard.scss';
-import Auth from '../../utils/auth';
+import Auth from '../utils/auth';
 
 import UserAdminConfig from '../pages/UserAdminConfig/UserAdminConfig';
 

@@ -1,7 +1,7 @@
 import { DRUG_SUBSTANCE } from "../../constants/actionTypes";
 
 const initState = {
-	drugName: '',
+	drugName: ''
 };
 
 export default (state = initState, action) => {

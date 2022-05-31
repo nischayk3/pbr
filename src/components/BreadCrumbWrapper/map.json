@@ -1,5 +1,6 @@
 {
 	"/dashboard/dashboard": "Dashboard",
+	"/dashboard/audit_trail_report": "Audit Trail Report",
 	"/dashboard/view_creation": "View creation",
 	"/dashboard/workflow": "Workflow",
 	"/dashboard/view_creation_view": "View creation",

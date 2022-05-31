@@ -4,12 +4,12 @@ import { BMS_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 
 export const functionTextName = payload => ({
 	type: FUNCTION_TEXT,
-	payload,
+	payload
 });
 
 export const moleculeName = payload => ({
 	type: MOLECULE_ID,
-	payload,
+	payload
 });
 
 export const updateFunction = (request, dispid, version, headers) => {

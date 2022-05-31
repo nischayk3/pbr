@@ -1,11 +1,11 @@
-import Service from './AjaxService';
 import { BMS_APP_PYTHON_SERVICE } from '../constants/apiBaseUrl';
+import Service from './AjaxService';
 
 let login_response = JSON.parse(localStorage.getItem('login_details'));
 const request_headers = {
 	'content-type': 'application/json',
 	'x-access-token': login_response.token ? login_response.token : '',
-	'resource-name': 'WORKITEMS',
+	'resource-name': 'WORKITEMS'
 };
 
 //get count data
@@ -14,7 +14,7 @@ export const getCountData = _queryParam => {
 		'content-type': 'application/json',
 		'x-access-token': login_response.token ? login_response.token : '',
 		'resource-name': 'WORKITEMS',
-		username: localStorage.getItem('user'),
+		username: localStorage.getItem('user')
 	}).then(
 		response => {
 			return response.data;
@@ -29,7 +29,7 @@ export const getCountData = _queryParam => {
 export const getTableData = _queryParam => {
 	return Service.get(BMS_APP_PYTHON_SERVICE + '/approvals' + _queryParam, '', {
 		'content-type': 'application/json',
-		username: localStorage.getItem('user'),
+		username: localStorage.getItem('user')
 	}).then(
 		response => {
 			return response.data;
