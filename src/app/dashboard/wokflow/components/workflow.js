@@ -193,7 +193,7 @@ const Workflow = () => {
 
   const tilesClicked = (item, index) => {
     setItemCount(item.item_count);
-    setIndexCount(index);
+    //setIndexCount(index);
     setCardTitle(item.text);
     setActiveDiv(item.text);
     setApplicationType(item.application_type);
