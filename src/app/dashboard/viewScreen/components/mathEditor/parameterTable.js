@@ -8,16 +8,13 @@ import {
   selectParamType,
   viewFunctionMap,
   viewParamMap,
-} from "../../../../../duck/actions/viewAction";
-import { hideLoader } from "../../../../../duck/actions/commonActions";
-import {
   isNewView,
   setMathValue,
 } from "../../../../../duck/actions/viewAction";
+import { hideLoader } from "../../../../../duck/actions/commonActions";
 
 let paramType = "";
 
-let count = 0;
 let counter = 0;
 
 const ParameterTable = (props) => {
@@ -272,9 +269,9 @@ const ParameterTable = (props) => {
   }, [varClick]);
 
   useEffect(() => {
+    let count = 0;
     let varArr = [];
-    let varObj = {};
-    let variableObj = {};
+
     if (variableCreate === true) {
       count++;
       const varParameter = [...parameters];
@@ -285,7 +282,7 @@ const ParameterTable = (props) => {
       setVariableParam(variableParam);
 
       const viewDataJson = [...viewJson];
-      viewDataJson.forEach((element, index) => {
+      viewDataJson.forEach((element) => {
         return (element.parameters = variableParam);
       });
       setViewJson(viewDataJson);
@@ -347,7 +344,7 @@ const ParameterTable = (props) => {
       let new_column_data = newColumnData.map((e) => e.batch_num);
       functionTable.forEach((item) => {
         let obj = {};
-        Object.entries(primarySelectedData).forEach(([key, value]) => {
+        Object.entries(primarySelectedData).forEach(([key]) => {
           if (key === item.batch) {
             if (new_column_data.includes(key)) obj[functionName] = true;
             else obj[functionName] = false;
@@ -383,7 +380,7 @@ const ParameterTable = (props) => {
   const onRadioChange = ({ checked, type, primary, record, index }) => {
     if (checked) {
       const newPrimaryData = [...tableData];
-      const primaryJson = [...parameters];
+
       newPrimaryData[index].primary = 1;
       let radioObj = [record];
       radioObj.forEach((element) => {
@@ -467,7 +464,7 @@ const ParameterTable = (props) => {
       e.target.checked == false ? "" : e.target.checked;
 
     const batchExcludeJson = [...parameters];
-    batchExcludeJson.forEach((element, index) => {
+    batchExcludeJson.forEach((element) => {
       if (element.parameter_name === record.parameter_name) {
         //batchExc.push(key);
         element.batch_exclude.push(key);

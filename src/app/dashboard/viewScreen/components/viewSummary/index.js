@@ -1,227 +1,218 @@
-import { Card, Empty, Table, message } from 'antd';
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { Card, Empty, Table } from "antd";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
-	CheckOutlined,
-	CloseOutlined,
-	DeleteOutlined,
-} from '@ant-design/icons';
-import LabelTag from '../../../../../components/LabelTag';
-import './styles.scss';
-import { useDispatch } from 'react-redux';
-import {
-	setViewFunctionName,
-	sendFunctionName,
-} from '../../../../../duck/actions/viewAction';
-import { showNotification } from '../../../../../duck/actions/commonActions';
+  CheckOutlined,
+  CloseOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+import LabelTag from "../../../../../components/LabelTag";
+import "./styles.scss";
 
-const ViewSummaryData = props => {
-	const dispatch = useDispatch();
-	let columns = [];
-	const summaryTableData = useSelector(
-		state => state.viewCreationReducer.summaryTableData
-	);
-	const functionName = useSelector(
-		state => state.viewCreationReducer.functionName
-	);
-	const isLoadView = useSelector(state => state.viewCreationReducer.isLoad);
-	const [tableColumn, setTableColumn] = useState(columns);
+import { setViewFunctionName } from "../../../../../duck/actions/viewAction";
+import { showNotification } from "../../../../../duck/actions/commonActions";
 
-	const [funTableData, setFunTableData] = useState([]);
+const ViewSummaryData = (props) => {
+  const dispatch = useDispatch();
+  let columns = [];
+  const summaryTableData = useSelector(
+    (state) => state.viewCreationReducer.summaryTableData
+  );
+  const functionName = useSelector(
+    (state) => state.viewCreationReducer.functionName
+  );
+  const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
+  const [tableColumn, setTableColumn] = useState(columns);
 
-	const {
-		viewDisplayId,
-		viewStatus,
-		viewVersion,
-		viewJson,
-		setViewJson,
-		parentBatches,
-	} = props;
+  const [funTableData, setFunTableData] = useState([]);
 
-	useEffect(() => {
-		if (functionName !== '') {
-			setFunTableData(summaryTableData);
-		}
-	}, [summaryTableData]);
+  const { viewDisplayId, viewStatus, viewVersion, viewJson, parentBatches } =
+    props;
 
-	useEffect(() => {
-		if (funTableData.length > 0) {
-			const objKey =
-				funTableData !== undefined && funTableData.length > 0
-					? Object.keys(funTableData[0])
-					: [];
+  useEffect(() => {
+    if (functionName !== "") {
+      setFunTableData(summaryTableData);
+    }
+  }, [summaryTableData]);
 
-			const uniqueArr = (value, index, self) => {
-				return self.indexOf(value) === index;
-			};
+  useEffect(() => {
+    if (funTableData.length > 0) {
+      const objKey =
+        funTableData !== undefined && funTableData.length > 0
+          ? Object.keys(funTableData[0])
+          : [];
 
-			const summaryColumn = objKey.filter(uniqueArr);
+      const uniqueArr = (value, index, self) => {
+        return self.indexOf(value) === index;
+      };
 
-			summaryColumn.map((item, i) => {
-				if (item === 'batch' || item === 'batch_year') {
-					columns.push({
-						title: item.toUpperCase().replace('_', ' '),
-						dataIndex: item,
-						key: `${item}-${i}`,
-						width: 100,
-					});
-				} else {
-					columns.push({
-						title: (
-							<div className='summary-column'>
-								<p>{item.toUpperCase().replace('_', ' ')}</p>
-								<span onClick={() => handleRemoveColumn(item)}>
-									<DeleteOutlined className='delete' />
-								</span>
-							</div>
-						),
-						dataIndex: item,
-						key: `${item}-${i}`,
+      const summaryColumn = objKey.filter(uniqueArr);
 
-						onHeaderCell: (record, rowIndex) => {
-							return {
-								onClick: ev => {
-									dispatch(setViewFunctionName(record.dataIndex));
-									dispatch(
-										showNotification(
-											'success',
-											`${record.dataIndex} function selected`
-										)
-									);
-								},
-							};
-						},
+      summaryColumn.map((item, i) => {
+        if (item === "batch" || item === "batch_year") {
+          columns.push({
+            title: item.toUpperCase().replace("_", " "),
+            dataIndex: item,
+            key: `${item}-${i}`,
+            width: 100,
+          });
+        } else {
+          columns.push({
+            title: (
+              <div className="summary-column">
+                <p>{item.toUpperCase().replace("_", " ")}</p>
+                <span onClick={() => handleRemoveColumn(item)}>
+                  <DeleteOutlined className="delete" />
+                </span>
+              </div>
+            ),
+            dataIndex: item,
+            key: `${item}-${i}`,
 
-						render: value =>
-							value ? (
-								<span className='batchChecked'>
-									<CheckOutlined />
-								</span>
-							) : (
-								<span className='batchClosed'>
-									<CloseOutlined />
-								</span>
-							),
-						width: 100,
-					});
-				}
-			});
+            onHeaderCell: (record) => {
+              return {
+                onClick: (ev) => {
+                  dispatch(setViewFunctionName(record.dataIndex));
+                  dispatch(
+                    showNotification(
+                      "success",
+                      `${record.dataIndex} function selected`
+                    )
+                  );
+                },
+              };
+            },
 
-			const tableColumns = [...columns];
-			setTableColumn(tableColumns);
-		}
-	}, [funTableData]);
+            render: (value) =>
+              value ? (
+                <span className="batchChecked">
+                  <CheckOutlined />
+                </span>
+              ) : (
+                <span className="batchClosed">
+                  <CloseOutlined />
+                </span>
+              ),
+            width: 100,
+          });
+        }
+      });
 
-	useEffect(() => {
-		if (isLoadView) {
-			let fun = [];
-			let funData = [];
+      const tableColumns = [...columns];
+      setTableColumn(tableColumns);
+    }
+  }, [funTableData]);
 
-			const loadViewJson = [...viewJson];
-			let functions_name =
-				loadViewJson[0] && loadViewJson[0].functions
-					? loadViewJson[0].functions
-					: 0;
+  useEffect(() => {
+    if (isLoadView) {
+      let fun = [];
+      let funData = [];
 
-			// loadViewJson.forEach(element => {
-			// 	fun.push(element.functions.name);
-			// });
-			if (functions_name) {
-				functions_name = Object.values(functions_name);
-				functions_name.map(element => {
-					fun.push(element.name);
-				});
-			}
-			if (parentBatches.length > 0) {
-				const loadTableData =
-					parentBatches !== undefined && parentBatches.length > 0
-						? parentBatches
-						: {};
+      const loadViewJson = [...viewJson];
+      let functions_name =
+        loadViewJson[0] && loadViewJson[0].functions
+          ? loadViewJson[0].functions
+          : 0;
 
-				loadTableData.forEach(element => {
-					let funObj = {};
-					for (let i = 0; i < fun.length; i++) {
-						funObj[fun[i]] = true;
-					}
-					funData.push(funObj);
-				});
+      // loadViewJson.forEach(element => {
+      // 	fun.push(element.functions.name);
+      // });
+      if (functions_name) {
+        functions_name = Object.values(functions_name);
+        functions_name.map((element) => {
+          fun.push(element.name);
+        });
+      }
+      if (parentBatches.length > 0) {
+        const loadTableData =
+          parentBatches !== undefined && parentBatches.length > 0
+            ? parentBatches
+            : {};
 
-				const mergeArr = loadTableData.map((item, i) =>
-					Object.assign({}, item, funData[i])
-				);
+        loadTableData.forEach((element) => {
+          let funObj = {};
+          for (let i = 0; i < fun.length; i++) {
+            funObj[fun[i]] = true;
+          }
+          funData.push(funObj);
+        });
 
-				const funKey =
-					mergeArr !== undefined && mergeArr.length > 0
-						? Object.keys(mergeArr[0])
-						: [];
-				const uniqueArr = (value, index, self) => {
-					return self.indexOf(value) === index;
-				};
-				const funColumn = funKey.filter(uniqueArr);
+        const mergeArr = loadTableData.map((item, i) =>
+          Object.assign({}, item, funData[i])
+        );
 
-				funColumn.map((item, i) => {
-					columns.push({
-						title: item.toUpperCase().replace('_', ' '),
-						dataIndex: item,
-						key: `${item}-${i}`,
-					});
-				});
+        const funKey =
+          mergeArr !== undefined && mergeArr.length > 0
+            ? Object.keys(mergeArr[0])
+            : [];
+        const uniqueArr = (value, index, self) => {
+          return self.indexOf(value) === index;
+        };
+        const funColumn = funKey.filter(uniqueArr);
 
-				setTableColumn(columns);
-				setFunTableData(mergeArr);
-			}
-			// });
-		}
-	}, [isLoadView, parentBatches]);
+        funColumn.map((item, i) => {
+          columns.push({
+            title: item.toUpperCase().replace("_", " "),
+            dataIndex: item,
+            key: `${item}-${i}`,
+          });
+        });
 
-	const handleRemoveColumn = item => {
-		let newColumns = [];
-		const tableColumns = tableColumn.filter(ele => {
-			return ele.dataIndex !== item;
-		});
+        setTableColumn(columns);
+        setFunTableData(mergeArr);
+      }
+      // });
+    }
+  }, [isLoadView, parentBatches]);
 
-		const column = columns.filter(ele => {
-			return ele.dataIndex !== item;
-		});
+  const handleRemoveColumn = (item) => {
+    let newColumns = [];
+    const tableColumns = tableColumn.filter((ele) => {
+      return ele.dataIndex !== item;
+    });
 
-		columns = column;
-		newColumns = tableColumns;
+    const column = columns.filter((ele) => {
+      return ele.dataIndex !== item;
+    });
 
-		setTableColumn(newColumns);
-	};
+    columns = column;
+    newColumns = tableColumns;
 
-	return (
-		<Card title='View Summary'>
-			<div className='view-summary_lable' style={{ paddingTop: '20px' }}>
-				<LabelTag lableName='View ID' lableValue={viewDisplayId} />
-				<LabelTag lableName='Status' lableValue={viewStatus} />
-				<LabelTag lableName='Version' lableValue={viewVersion} />
-			</div>
+    setTableColumn(newColumns);
+  };
 
-			<div className='summary-table_block'>
-				<Table
-					rowClassName={index =>
-						index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
-					}
-					locale={{
-						emptyText: (
-							<Empty
-								image={Empty.PRESENTED_IMAGE_SIMPLE}
-								description={
-									<span>You will see the created fucntions here</span>
-								}
-							/>
-						),
-					}}
-					columns={tableColumn}
-					dataSource={funTableData}
-					size='small'
-					scroll={{ y: 250 }}
-					pagination={false}
-				/>
-			</div>
-		</Card>
-	);
+  return (
+    <Card title="View Summary">
+      <div className="view-summary_lable" style={{ paddingTop: "20px" }}>
+        <LabelTag lableName="View ID" lableValue={viewDisplayId} />
+        <LabelTag lableName="Status" lableValue={viewStatus} />
+        <LabelTag lableName="Version" lableValue={viewVersion} />
+      </div>
+
+      <div className="summary-table_block">
+        <Table
+          rowClassName={(index) =>
+            index % 2 === 0 ? "table-row-light" : "table-row-dark"
+          }
+          locale={{
+            emptyText: (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={
+                  <span>You will see the created fucntions here</span>
+                }
+              />
+            ),
+          }}
+          columns={tableColumn}
+          dataSource={funTableData}
+          size="small"
+          scroll={{ y: 250 }}
+          pagination={false}
+        />
+      </div>
+    </Card>
+  );
 };
 
 export const MemoizedViewSummaryData = React.memo(ViewSummaryData);

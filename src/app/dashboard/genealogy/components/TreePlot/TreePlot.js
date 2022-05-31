@@ -462,8 +462,8 @@ function TreePlot(props) {
           graphHeight <= 500
             ? 600
             : graphHeight > 3000
-            ? graphHeight - 1000
-            : graphHeight - margin[0] - margin[2],
+              ? graphHeight - 1000
+              : graphHeight - margin[0] - margin[2],
         i = 0;
       // graphHeight - margin[0] - margin[2]
       THIS.tree = d3.layout.tree().size([height, width]);
@@ -1434,7 +1434,7 @@ function TreePlot(props) {
               if (
                 multiPair.parent &&
                 multiPair.parent.relationshipMap[
-                  multiPair.parent.id + "-" + multiPair.child.id
+                multiPair.parent.id + "-" + multiPair.child.id
                 ]
               ) {
                 if (isForward) {

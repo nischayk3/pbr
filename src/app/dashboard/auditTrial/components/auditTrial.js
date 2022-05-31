@@ -24,7 +24,7 @@ import { showNotification } from "../../../../duck/actions/commonActions";
 
 const { Option } = Select;
 const { Text } = Typography;
-let filterIng = [];
+
 class AuditTrials extends React.Component {
   constructor(props) {
     super(props);
@@ -386,7 +386,7 @@ class AuditTrials extends React.Component {
         });
       })
       .catch((error) => {
-        if (error && error.message) console.log("Warning", error.message);
+        if (error && error.message) console.warn("Warning", error.message);
       });
   };
 
@@ -443,7 +443,8 @@ class AuditTrials extends React.Component {
         operator: "IN",
         value: [value.value.trim()],
       });
-      filterIng = userarr;
+      this.setState({ filterIng: userarr })
+
     }
   };
 
@@ -522,7 +523,7 @@ class AuditTrials extends React.Component {
 
   render() {
     const { RangePicker } = DatePicker;
-    const { filterTable, tableData, columns, columnConfig } = this.state;
+    const { filterTable, tableData, columns, } = this.state;
 
     const userMenu = (
       <Menu>

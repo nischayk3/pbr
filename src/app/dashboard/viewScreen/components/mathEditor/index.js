@@ -14,9 +14,7 @@ const MathEditor = (props) => {
   let variableData = [];
 
   const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
-  const selectedTableData = useSelector(
-    (state) => state.viewCreationReducer.selectedParamData
-  );
+
   const selectedParameters = useSelector(
     (state) => state.viewCreationReducer.loadResponse
   );
@@ -249,7 +247,7 @@ const MathEditor = (props) => {
             {varData.map((item, index) => {
               return (
                 <VariableCard
-                key={index}
+                  key={index}
                   item={item}
                   variableName={item.variableName}
                   deleteVariable={deleteVariable}
