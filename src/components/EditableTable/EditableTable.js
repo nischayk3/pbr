@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import { v1 as uuid } from 'uuid'
-import { Table, Button, Select, Switch, Checkbox } from 'antd'
+import { Table, Button, Select, Switch, Checkbox, Modal } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import {
     EditableRow,
@@ -24,7 +24,9 @@ class EditableTable extends Component {
     state = {
         tableDataChanged: false,
         deleteActionColumnAdded: false,
-        rowsMarkedForDeletion: false
+        rowsMarkedForDeletion: false,
+        visible: false,
+        confirmLoading: false
     }
 
     componentDidMount() {
@@ -53,7 +55,7 @@ class EditableTable extends Component {
             data.deleteRowChecked = false
         })
         const columns = deleteActionColumn && !deleteActionColumnAdded ? this.addDeleteActionColumn(columnsCopy) : columnsCopy
-        columns.forEach(data =>  data.key = uuid())
+        columns.forEach(data => data.key = uuid())
         adjustColumnWidths(columns)
         this.renderTableColumns(columns)
         this.setState({ columns })
@@ -125,22 +127,27 @@ class EditableTable extends Component {
         })
     }
 
-    onDeleteRows = async () => {
-        const rowsToDelete = []
-        this.state.dataSource.forEach(row => {
-            if (row.deleteRowChecked) rowsToDelete.push(row)
-        })
-        this.props.showLoader()
-        try {
-            await this.props.deleteTableRow(rowsToDelete)
-            const { dataSource, count } = deleteRow(rowsToDelete, this.state)
-            this.setState({ dataSource, count, rowsMarkedForDeletion: false })
-        } catch (err) {
-            this.props.showNotification('error', err.message)
-        } finally {
-            this.props.hideLoader()
-        }
+    handleOk = () => {
+        this.setState({ visible: false })
+        // const rowsToDelete = []
+        // this.state.dataSource.forEach(row => {
+        //     if (row.deleteRowChecked) rowsToDelete.push(row)
+        // })
+        // this.props.showLoader()
+        // try {
+        //     await this.props.deleteTableRow(rowsToDelete)
+        //     const { dataSource, count } = deleteRow(rowsToDelete, this.state)
+        //     this.setState({ dataSource, count, rowsMarkedForDeletion: false })
+        // } catch (err) {
+        //     this.props.showNotification('error', err.message)
+        // } finally {
+        //     this.props.hideLoader()
+        // }
     }
+
+    handleCancel = () => this.setState({ visible: false })
+
+    onDeleteRows = () => this.setState({ visible: true })
 
     onAddRow = () => {
         const { dataSource, count } = addRow(this.state)
@@ -242,6 +249,30 @@ class EditableTable extends Component {
                     columns={columns}
                     scroll={{ y: 300 }}
                 />
+
+                <Modal
+                    title="DELETE"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    centered={true}
+                    wrapClassName=""
+                    style={{ minWidth: '50%' }}
+                    footer={[
+                        <Button
+                            key="button"
+                            className="analysis--modal-submit-button"
+                            onClick={this.handleOk}>Delete</Button>
+                    ]}
+                >
+                    <div className="analysis--modal__display">
+                        <div className="analysis--modal-right-content__width">
+                            <p>Model Name</p>
+                        </div>
+                    </div>
+                </Modal>
+
+
             </div>
         )
     }
