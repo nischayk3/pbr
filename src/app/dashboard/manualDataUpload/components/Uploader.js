@@ -31,7 +31,7 @@ import {
 } from '../../../../duck/actions/fileUploadAction';
 import { getAuthenticate } from '../../../../services/loginService';
 
-import { showNotification } from '../../../../duck/actions/commonActions';
+import { hideLoader,showLoader,showNotification } from '../../../../duck/actions/commonActions';
 import { isAnyTypeAnnotation } from '@babel/types';
 
 const dummyRequest = ({ onSuccess }) => {
@@ -212,6 +212,7 @@ class Uploader extends Component {
 			if (info.file.status === 'uploading') {
 				nextState.selectedFileList = [info.file];
 			} else if (info.file.status === 'done') {
+				this.props.showLoader()
 				nextState.selectedFileList = [info.file];
 				var formData = new FormData();
 				formData.append('file', info.file.originFileObj);
@@ -230,6 +231,7 @@ class Uploader extends Component {
 							toastVariant: 'error',
 							nextStepDisabled: true,
 						});
+						this.props.hideLoader()
 					} else if (res.data && res.data.statuscode === 401) {
 						this.setState({
 							toastOpen: false,
@@ -239,6 +241,7 @@ class Uploader extends Component {
 							toastVariant: 'error',
 							nextStepDisabled: true,
 						});
+						this.props.hideLoader()
 					} else if (res.data && res.data.status === 300) {
 						this.setState({
 							toastOpen: false,
@@ -251,6 +254,7 @@ class Uploader extends Component {
 							toastVariant: 'error',
 							nextStepDisabled: false,
 						});
+						this.props.hideLoader()
 					} else if (res && res.statuscode === 200) {
 						this.setState({
 							toastOpen: false,
@@ -262,6 +266,7 @@ class Uploader extends Component {
 							nextStepDisabled: false,
 							primaryFileId: res.file_pointer,
 						});
+						this.props.hideLoader()
 					} else if (res.data && res.data.statuscode === 201) {
 						this.setState({
 							toastOpen: false,
@@ -273,6 +278,7 @@ class Uploader extends Component {
 							primaryFileId: res.data.file_pointer,
 							nextStepDisabled: false,
 						});
+						this.props.hideLoader()
 					} else if (res === 'Internal Server Error') {
 						this.setState({
 							toastOpen: true,
@@ -281,6 +287,7 @@ class Uploader extends Component {
 							toastVariant: 'error',
 							nextStepDisabled: true,
 						});
+						this.props.hideLoader()
 						this.props.showNotification('error', res);
 					}
 				});
@@ -346,6 +353,7 @@ class Uploader extends Component {
 	};
 
 	updateFileApproveData = () => {
+		this.props.showLoader()
 		let reqUpdateData = {
 			date: currentDateFormat,
 			timestamp: currentTimestamp.toString(),
@@ -381,6 +389,7 @@ class Uploader extends Component {
 						console.log('state update', this.state);
 					}
 				);
+				this.props.hideLoader()
 			} else if (response === 'Internal Server Error') {
 				this.setState({
 					toastOpen: true,
@@ -389,6 +398,7 @@ class Uploader extends Component {
 					toastVariant: 'error',
 					nextStepDisabled: true,
 				});
+				this.props.hideLoader()
 				this.props.showNotification('error', response);
 			} else {
 				this.setState(
@@ -404,12 +414,14 @@ class Uploader extends Component {
 						console.log('state update', this.state);
 					}
 				);
+				this.props.hideLoader()
 				this.props.showNotification('error', response.message);
 			}
 		});
 	};
 
 	approveDataFile = () => {
+		this.props.showLoader()
 		let reqUpdateData = {
 			userid: JSON.parse(localStorage.getItem('login_details')).email_id,
 			fileid: this.state.primaryFileId,
@@ -430,6 +442,7 @@ class Uploader extends Component {
 					approvedDataStatus: response.data.statuscode,
 					onChangeStatus: '',
 				});
+				this.props.hideLoader()
 			} else if (response.data.statuscode === 206) {
 				this.setState({
 					toastOpen: false,
@@ -440,6 +453,7 @@ class Uploader extends Component {
 					approvedDataStatus: response.data.statuscode,
 					onChangeStatus: '',
 				});
+				this.props.hideLoader()
 			} else if (response.data.statuscode === 400) {
 				this.setState({
 					toastOpen: true,
@@ -447,6 +461,7 @@ class Uploader extends Component {
 					toastMessage: response.data.message,
 					toastVariant: 'error',
 				});
+				this.props.hideLoader()
 				this.props.showNotification('error', response.data.message);
 			} else if (response === 'Internal Server Error') {
 				this.setState({
@@ -456,12 +471,14 @@ class Uploader extends Component {
 					toastVariant: 'error',
 					nextStepDisabled: true,
 				});
+				this.props.hideLoader()
 				this.props.showNotification('error', response);
 			}
 		});
 	};
 
 	finalFileUploadData = () => {
+		this.props.showLoader();
 		let reqFile = {
 			date: currentDateFormat,
 			timestamp: currentTimestamp.toString(),
@@ -494,6 +511,7 @@ class Uploader extends Component {
 						console.log('update', this.state);
 					}
 				);
+				this.props.hideLoader()
 				this.props.showNotification('success', response.data.message);
 			} else if (response.data.statuscode === 400) {
 				this.setState(
@@ -509,6 +527,7 @@ class Uploader extends Component {
 						console.log('update', this.state);
 					}
 				);
+				this.props.hideLoader()
 				this.props.showNotification('error', response.data.message);
 			} else if (response === 'Internal Server Error') {
 				this.setState(
@@ -523,6 +542,7 @@ class Uploader extends Component {
 						console.log('update', this.state);
 					}
 				);
+				this.props.hideLoader()
 				this.props.showNotification('error', response);
 			}
 		});
@@ -1529,6 +1549,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
 	showNotification,
+	hideLoader,
+	showLoader
+
 };
 
 Uploader = connect(null, mapDispatchToProps)(Uploader);

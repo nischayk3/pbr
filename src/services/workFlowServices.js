@@ -4,15 +4,16 @@ import { BMS_APP_PYTHON_SERVICE } from '../constants/apiBaseUrl';
 let login_response = JSON.parse(localStorage.getItem('login_details'));
 const request_headers = {
 	'content-type': 'application/json',
-	'x-access-token': login_response.token ? login_response.token : '',
+	'x-access-token': login_response && login_response.token ? login_response.token : '',
 	'resource-name': 'WORKITEMS',
 };
 
 //get count data
 export const getCountData = _queryParam => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
 	return Service.get(BMS_APP_PYTHON_SERVICE + '/workflow-count', _queryParam, {
 		'content-type': 'application/json',
-		'x-access-token': login_response.token ? login_response.token : '',
+		'x-access-token': login_response && login_response.token ? login_response.token : '',
 		'resource-name': 'WORKITEMS',
 		username: localStorage.getItem('user'),
 	}).then(

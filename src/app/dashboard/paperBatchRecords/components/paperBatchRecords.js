@@ -31,7 +31,8 @@ import {
     Form,
     Space,
     Radio,
-    notification
+    notification,
+    Avatar
 } from 'antd';
 import { useDispatch } from 'react-redux';
 import Highlighter from 'react-highlight-words';
@@ -41,7 +42,7 @@ import pdfIcon from '../../../../assets/images/pdfIcon.svg';
 import { getPbrTemplateData, getDataView } from '../../../../services/pbrService';
 import { tableColumns } from '../../../../utils/TableColumns'
 import { useHistory } from 'react-router-dom';
-import { loadTemplateInfo, loadMatBatchInfo } from '../../../../duck/actions/pbrAction';
+import { loadTemplateInfo, loadMatBatchInfo,loadPageIdentifier } from '../../../../duck/actions/pbrAction';
 import StatusBlock from '../../../../components/StatusBlock/statusBlock'
 const { Search } = Input;
 
@@ -100,6 +101,8 @@ function PaperBatchRecords() {
     const [dataView, setDataView] = useState([])
     const [fileName, setFileName] = useState("")
     const [templateName, seTemplateName] = useState("")
+    const [searchedLanding, setSearchedLanding] = useState(false);
+    const [filterTableLanding, setFilterTableLanding] = useState(null);
     const [matBatch, setMatBatch] = useState({
         material_num: "",
         batch: ""
@@ -153,6 +156,21 @@ function PaperBatchRecords() {
 
                     }
                 }
+                if (item.dataIndex === "created_by") {
+                    obj.render = (text, row, index) => {
+                        return (
+                            <div>
+                                <Avatar
+                                    className='avatar-icon'
+                                    style={{ backgroundColor: getRandomColor(index + 1) }}>
+                                    {text?.split('')[0]?.toUpperCase()}{' '}
+                                </Avatar>
+                                <span className='avatar-text' style={{marginLeft:10}}>{text}</span>
+                            </div>
+                        )
+
+                    }
+                }
                 columns.push(obj)
             })
             if (tableResponse['status-code'] === 200) {
@@ -171,6 +189,11 @@ function PaperBatchRecords() {
             dispatch(showNotification('error', error.Message));
         }
     }
+
+    const getRandomColor = index => {
+		let colors = ['#56483F', '#728C69', '#c04000', '#c19578'];
+		return colors[index % 4];
+	};
 
     const getViewData = async () => {
         let res = await getDataView()
@@ -399,11 +422,22 @@ function PaperBatchRecords() {
             material_num: value?.material,
             batch: value?.batch
         }
+        dispatch(loadPageIdentifier(value?.pbr_template_info?.pbrPageIdentifier))
         dispatch(loadMatBatchInfo(obj))
-        history.push(`/dashboard/pbr_template?file=${value.pbr_template_info[0].filename}&temp_disp_id=${value.pbr_template_disp_id}&tempalteName=${value.pbr_template_name}`)
-        dispatch(loadTemplateInfo(value.pbr_template_info))
+        history.push(`/dashboard/pbr_template?file=${value?.pbr_template_info?.pbrTemplateInfo[0].filename}&temp_disp_id=${value.pbr_template_disp_id}&tempalteName=${value.pbr_template_name}`)
+        dispatch(loadTemplateInfo(value?.pbr_template_info?.pbrTemplateInfo))
 
     }
+    const landingSearch = value => {
+        setSearchedLanding(true);
+        const tableData = templateData;
+        const filterTable = tableData.filter(o =>
+            Object.keys(o).some(k =>
+                String(o[k]).toLowerCase().includes(value.toLowerCase())
+            )
+        );
+        setFilterTableLanding(filterTable);
+    };
 
     return (
         <div className='pbr-container'>
@@ -442,12 +476,25 @@ function PaperBatchRecords() {
                             <Col span={6} />
                             <Col span={12} className='p36'>
                                 <Search
+                                    className='dashboard-search'
                                     placeholder='Search by template ID, name, creator or date of creation'
                                     allowClear
                                     enterButton='Search'
                                     size='large'
-                                    onSearch={globalTemplateSearch}
+                                    onSearch={landingSearch}
                                 />
+                                {searchedLanding ? (
+                                    <Table
+                                        className='landing-table'
+                                        columns={templateColumns}
+                                        dataSource={filterTableLanding === null
+                                            ? templateData
+                                            : filterTableLanding}
+                                        scroll={{ x: 2000, y: 650 }}
+                                    />
+                                ) : (
+                                    <></>
+                                )}
                             </Col>
                             <Col span={6} />
                         </Row>
