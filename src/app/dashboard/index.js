@@ -25,7 +25,6 @@ import PaperBatchRecords from './paperBatchRecords';
 import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate';
 import Analysis from '../../pages/Analysis/Analysis';
 import AnalysisModel from '../../pages/Analysis/AnalysisModel/AnalysisModel'
-
 import PbrReviewer from './pbrReviewer';
 import './dashboard.scss';
 import PythonNotebook from './pythonNotebook/pythonNotebook';
@@ -38,6 +37,8 @@ const View = lazy(() => import('./viewScreen/components/View'));
 const DataLoad = lazy(() => import('./dataLoad'));
 const ReportDesigner = lazy(() => import('./reportDesigner'));
 const AuditTrial = lazy(() => import('./auditTrial'));
+const Audit = lazy(() => import('./auditLogs'));
+const PbrUpdate = lazy(() => import('./pbrUpdate'));
 const ReportGenerator = lazy(() => import('./reportGenerator'));
 const Workflow = lazy(() => import('./wokflow'));
 const Workspace = lazy(() => import('./workspace'));
@@ -132,6 +133,16 @@ const Dashboard = () => {
 									<AuditTrial />
 								</Route>
 								<Route
+									key='audit_logs'
+									path={`${match.url}/audit_logs`}>
+									<Audit />
+								</Route>
+								<Route
+									key='pbr_update'
+									path={`${match.url}/pbr_update`}>
+									<PbrUpdate />
+								</Route>
+								<Route
 									key='report_generator'
 									path={`${match.url}/report_generator`}>
 									<ReportGenerator />
@@ -156,6 +167,10 @@ const Dashboard = () => {
 								<Route key='pbr_reviewer' path={`${match.url}/pbr_reviewer`}>
 									<PbrReviewer />
 								</Route>
+								
+								{/* <Route key='audit_logs' path={`${match.url}/audit_logs`}>
+									<Audit />
+								</Route> */}
 								<Route
 									key='paper_batch_records_template'
 									path={`${match.url}/pbr_template`}>

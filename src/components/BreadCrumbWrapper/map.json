@@ -22,5 +22,7 @@
 	"/dashboard/filterRegister/filterList/filterDetails": "Filter Details",
 	"/dashboard/molecule_hierarchy_configurations/untilted_view" :"Molecule Hierarchy Configuration / Untilted View",
 	"/dashboard/analysis": "Analysis",
-	"/dashboard/analysis/:id": "Model"
+	"/dashboard/analysis/:id": "Model",
+	"/dashboard/pbr_reviewer": "PBR Reviewer",
+	"/dashboard/pbr_update": "PBR Update"
 }
