@@ -99,6 +99,12 @@ const MENU = [
     linkTo: "/dashboard/pbr_reviewer",
   },
   {
+    key: "pbr_update",
+    icon: <LayoutOutlined style={{ fontSize: "23px" }} />,
+    title: "Pbr Update",
+    linkTo: "/dashboard/pbr_update",
+  },
+  {
     key: "data_science_studio",
     icon: <CodeOutlined style={{ fontSize: "23px" }} />,
     title: "Data Science Studio",
