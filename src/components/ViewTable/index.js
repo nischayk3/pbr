@@ -1,12 +1,9 @@
-import './style.scss';
-
-import { Button, Input, Modal, Table, message } from 'antd';
+import { Button, Input, Modal, Table } from 'antd';
 import React, { useState } from 'react';
-
-import { SearchOutlined } from '@ant-design/icons';
-import { sendView } from '../../duck/actions/chartPersonalizationAction';
 import { useDispatch } from 'react-redux';
-
+import { sendView } from '../../duck/actions/chartPersonalizationAction';
+import { showNotification } from '../../duck/actions/commonActions'
+import './style.scss';
 const ViewTable = props => {
 	const [selectedKeys, setselectedKeys] = useState([]);
 	const [selectedViewId, setselectedViewId] = useState('');
@@ -14,33 +11,32 @@ const ViewTable = props => {
 	const [filterData, setfilterData] = useState(null);
 
 	const dispatch = useDispatch();
-
 	const columns = [
 		{
 			title: 'Product',
 			dataIndex: 'product_num',
-			key: 'product_num',
+			key: 'product_num'
 		},
 		{
 			title: 'View ',
 			dataIndex: 'view',
-			key: 'view',
+			key: 'view'
 		},
 		{
 			title: 'View Name',
 			dataIndex: 'view_name',
-			key: 'view_name',
+			key: 'view_name'
 		},
 		{
 			title: 'Status',
 			dataIndex: 'view_status',
-			key: 'view_status',
+			key: 'view_status'
 		},
 		{
 			title: 'Created By',
 			dataIndex: 'created_by',
-			key: 'created_by',
-		},
+			key: 'created_by'
+		}
 	];
 	const data = props.data;
 
@@ -88,7 +84,7 @@ const ViewTable = props => {
 					type='primary'
 					disabled={isDisabled}>
 					Ok
-				</Button>,
+				</Button>
 			]}>
 			<div className='modal-search-bar'>
 				<Input.Search
@@ -97,9 +93,9 @@ const ViewTable = props => {
 					enterButton
 					onSearch={searchTable}
 					allowClear
-					// prefix={
-					//   <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
-					// }
+				// prefix={
+				//   <SearchOutlined style={{ fontSize: '16px', color: '#D7D7D7' }} />
+				// }
 				/>
 			</div>
 			<div className='custom-table-antd'>
@@ -108,16 +104,6 @@ const ViewTable = props => {
 						index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
 					}
 					columns={columns}
-					// rowSelection={() => ({
-					//   onChange: (selectedRowKeys, selectedRows) => {
-					//     console.log(
-					//       `selectedRowKeys: ${selectedRowKeys}`,
-					//       'selectedRows: ',
-					//       selectedRows
-					//     );
-					//     setselectedKeys({ selectedRowKeys });
-					//   },
-					// })}
 					rowKey='key'
 					onRow={record => ({
 						onClick: () => {
@@ -133,7 +119,7 @@ const ViewTable = props => {
 								dispatch(sendView(record.view_disp_id));
 							}
 							setselectedKeys({ selectedRowKeys });
-						},
+						}
 					})}
 					dataSource={filterData === null ? data : filterData}
 					size='small'

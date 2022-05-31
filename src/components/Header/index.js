@@ -1,41 +1,34 @@
-import { useEffect } from 'react';
 
-import { Button, Input, Layout } from 'antd';
+import { useEffect } from 'react';
+import { Layout } from 'antd';
 import { useDispatch } from 'react-redux';
 import { LogoutOutlined } from '@ant-design/icons';
-import cpvLogo from '../../assets/cpv-logo.png';
-import hamburgerIcon from '../../assets/icons/hamburger.svg';
+import { useHistory } from 'react-router-dom';
 import mareanaLogo from '../../assets/mareana_logo.png';
 import { showNotification, toggleMenu } from '../../duck/actions/commonActions';
 import './style.scss';
 import Auth from '../../utils/auth';
-import { useHistory } from 'react-router-dom';
 import { adenabled } from '../../config/config';
-import { logoutUrl } from '../../services/loginService';
-import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 
 const { Header } = Layout;
 
-
 const HeaderBar = () => {
-
 	const dispatch = useDispatch();
 	const history = useHistory();
 
 	useEffect(() => {
 		document.addEventListener('tokenExpired', () => {
-			if(localStorage.getItem('login_details')) {
+			if (localStorage.getItem('login_details')) {
 				adLogout('tokenExpired')
 			}
 		})
 	}, [])
 
-	const toggleCollapsed = () => {
-		dispatch(toggleMenu());
-	};
+	// const toggleCollapsed = () => {
+	// 	dispatch(toggleMenu());
+	// };
 
 	const Logout = () => {
-
 		// LOGOUT API NOT WORKING
 		// const jwt = localStorage.getItem('user_token');
 		// await userLogout(jwt);
@@ -50,7 +43,7 @@ const HeaderBar = () => {
 
 		// 	'_self'
 		// );
-		if(tokenExpired) {
+		if (tokenExpired) {
 			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
 		}
 		localStorage.clear()
@@ -66,7 +59,7 @@ const HeaderBar = () => {
 			</div>
 			<div
 				className='logout-btn'
-				onClick={adenabled ? () =>  adLogout() : () => Logout()}>
+				onClick={adenabled ? () => adLogout() : () => Logout()}>
 				<LogoutOutlined />
 			</div>
 		</Header>
