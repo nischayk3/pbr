@@ -8,7 +8,7 @@
 
 import React, { useState } from 'react';
 import {
-	ArrowLeftOutlined,
+	 
 	DownloadOutlined,
 	InboxOutlined,
 } from '@ant-design/icons';
@@ -551,7 +551,7 @@ function Genealogy() {
 							genealogyData &&
 							genealogyData.length > 0 && (
 								<p className='tab-label'>
-									<img className='tree-type-icon' src={batchIcon} />
+									<img className='tree-type-icon' src={batchIcon} alt='tree node' />
 									{productCode}- {chartType}
 								</p>
 							)
@@ -632,7 +632,7 @@ function Genealogy() {
 						tab={
 							showView && (
 								<p className='tab-label'>
-									<img className='tree-type-icon' src={popupicon} />
+									<img className='tree-type-icon' src={popupicon} alt='tree node' />
 									Popout - {nodeTitle}
 								</p>
 							)
@@ -640,7 +640,7 @@ function Genealogy() {
 						key='3'>
 						<div className='popout-table'>
 							<div className='drawer-title'>
-								<img className='tree-type-icon' src={batchIcon} />
+								<img className='tree-type-icon' src={batchIcon} alt='tree node' />
 								<p>
 									{nodeTitle} - {nodeType}
 								</p>
