@@ -611,7 +611,6 @@ function PaperBatchRecordsTemplate() {
                 setAreasMap();
 
             }
-
         } catch (error) {
             dispatch(hideLoader());
             dispatch(showNotification('error', 'No Data Found'));
@@ -726,16 +725,16 @@ function PaperBatchRecordsTemplate() {
 
 
     useEffect(() => {
-
+        
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
             getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
             setImageWidth(list?.width)
             setimageHeight(list?.height)
-
         }, 3000)
-
+        
     }, [document.getElementsByTagName("canvas")[0]]);
+
 
 
     const load = () => { };
@@ -2112,7 +2111,7 @@ function PaperBatchRecordsTemplate() {
                                             <ImCrop />
                                         </Dropdown>
                                     </div>
-                                    <div className='undoSnippet'>
+                                    {/* <div className='undoSnippet'>
                                         <img src={undoImg} className='panelCenterImg' />
                                     </div>
                                     <div className='redoSnippet'>
@@ -2120,7 +2119,7 @@ function PaperBatchRecordsTemplate() {
                                     </div>
                                     <div className='contrastSnippet'>
                                         <img src={contrastImg} className='panelCenterImg' />
-                                    </div>
+                                    </div> */}
                                 </Col>
                             </Row>
                         </div>
@@ -2238,7 +2237,7 @@ function PaperBatchRecordsTemplate() {
                                                     disabled
                                                 />
                                             </div>
-                                            <div className='hierarchyBlock'>
+                                            {/* <div className='hierarchyBlock'>
                                                 <p>Hierarchy</p>
                                                 <div className='hierarchyDiv hierarchyDiv1'>
                                                     <CaretDownOutlined />
@@ -2255,15 +2254,15 @@ function PaperBatchRecordsTemplate() {
                                                     <CaretDownOutlined />
                                                     ID001
                                                 </div>
-                                            </div>
-                                            <div className='saveSnippetsBlock'>
+                                            </div> */}
+                                            {/* <div className='saveSnippetsBlock'>
                                                 <Button
                                                     type='default'
                                                     className='saveSnippetsBtn'
                                                     onClick={() => saveTemplateHandler()}>
                                                     Save
                                                 </Button>
-                                            </div>
+                                            </div> */}
                                         </Form>
                                     </div>
                                 </Panel>
