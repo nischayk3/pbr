@@ -220,7 +220,8 @@ label {
 
     .pbrTemplateCenter {
         width: 100%;
-        padding: 0 40px;
+        margin: 0 40px;
+        // overflow-y: scroll;
     }
 
     .pbrTemplateLeft {

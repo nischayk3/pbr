@@ -38,6 +38,8 @@ function PbrReviewer() {
         dispatch(hideLoader());
         setTemplateData(tableResponse.Data);
         dispatch(showNotification('error', tableResponse.Message));
+      }else{
+        dispatch(hideLoader());
       }
     }
     catch (error) {
@@ -157,7 +159,9 @@ function PbrReviewer() {
   const handleReset = (clearFilters, setSearchText) => {
     clearFilters();
     setSearchText("");
-  };
+  }; 
+
+  
 
 
   const columns2 = [
@@ -170,14 +174,14 @@ function PbrReviewer() {
     },
     {
       title: 'Key',
-      key: 'key',
+      key: 'anchor_key',
       dataIndex: 'key_',
       ...getColumnSearchProps("key_", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
       sorter: (a, b) => a.key_.localeCompare(b.key_)
     },
     {
       title: 'Value',
-      key: 'value',
+      key: 'snippet_value',
       dataIndex: 'value',
       ...getColumnSearchProps("value", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
       sorter: (a, b) => a.value.localeCompare(b.value)
@@ -190,7 +194,7 @@ function PbrReviewer() {
       sorter: (a, b) => a.actual_value.localeCompare(b.view_actual_value),
       render: (text, record, index) => {
         return (
-          <img src={`https://cpv-poc.mareana.com/bms_poc_snippets/${text}`} width="50%" height="15%" />
+          <img src={"data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO 9TXL0Y4OHwAAAABJRU5ErkJggg=="} width="50%" height="15%" />
         )
       }
     },
