@@ -262,7 +262,7 @@ class EditableTable extends Component {
                     footer={[
                         <Button
                             key="cancel"
-                            className="editable__table-delete"
+                            className={classes['editable__table-cancel']}
                             onClick={this.handleCancel}>Cancel</Button>,
                         <Button
                             key="delete"

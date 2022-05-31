@@ -18,8 +18,8 @@
     color: #262626;
 }
 
-.editable__table-delete {
-    margin-right: 16px;
+.editable__table-cancel {
+    margin-right: 8px;
 	border: 1px solid var(--primary-color) !important;
 	background-color: #fff !important;
 	color: var(--primary-color) !important;
