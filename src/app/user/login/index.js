@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Form, Input, Button, Row, Col, Checkbox } from 'antd';
 import { userLogin } from '../../../api/login';
 import Auth from '../../../utils/auth';
@@ -21,6 +22,9 @@ const Login = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
+	useEffect(() => {
+		localStorage.clear()
+	}, [])
 
 	const onFinish = async values => {
 		try {
