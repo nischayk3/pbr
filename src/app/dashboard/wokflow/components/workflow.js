@@ -19,7 +19,7 @@ import {
   approveParamData,
 } from "../../../../services/workFlowServices";
 import { Card, Empty, Tabs, Button, Table } from "antd";
-import { ArrowLeftOutlined, DownloadOutlined } from "@ant-design/icons";
+import { DownloadOutlined } from "@ant-design/icons";
 import DashCard from "../../../../components/CardComponent/customCard";
 import illustrations from "../../../../assets/images/Banner illustration.svg";
 import WorkflowTable from "./workflowTable/workflowTable";
@@ -32,9 +32,9 @@ const { TabPane } = Tabs;
 const Workflow = () => {
   const [itemCount, setItemCount] = useState();
   const [cardTitle, setCardTitle] = useState("");
-  const [indexCount, setIndexCount] = useState(0);
+  //const [indexCount, setIndexCount] = useState(0);
   const [isPublish, setIsPublish] = useState(false);
-  const [resultDate, setResultDate] = useState("");
+  //const [resultDate, setResultDate] = useState("");
   const [tilesData, setTilesData] = useState([]);
   const [activeDiv, setActiveDiv] = useState("");
   const [applicationType, setApplicationType] = useState("");
@@ -49,7 +49,7 @@ const Workflow = () => {
 
   useEffect(() => {
     getTilesData();
-    updateDate();
+
   }, []);
 
   useEffect(() => {
@@ -64,14 +64,6 @@ const Workflow = () => {
     }
   }, [cardTitle, activeTab]);
 
-  const updateDate = () => {
-    const date = new Date();
-    const month = date.toLocaleString("default", { month: "long" });
-    const latestDate = date.getDate();
-    const year = date.getFullYear();
-    const resultDate = month + " " + latestDate + "," + " " + year;
-    setResultDate(resultDate);
-  };
 
   const cardTableData = async () => {
     let req;
@@ -201,7 +193,7 @@ const Workflow = () => {
 
   const tilesClicked = (item, index) => {
     setItemCount(item.item_count);
-    setIndexCount(index);
+    //setIndexCount(index);
     setCardTitle(item.text);
     setActiveDiv(item.text);
     setApplicationType(item.application_type);
