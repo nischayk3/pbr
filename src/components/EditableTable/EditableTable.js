@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import { v1 as uuid } from 'uuid'
 import { Table, Button, Select, Switch, Checkbox, Modal } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined, DeleteTwoTone } from '@ant-design/icons'
 import {
     EditableRow,
     EditableCell,
@@ -17,6 +17,7 @@ import {
     checkDeleteButtonDisabledState
 } from '../../utils/editableTableHelper'
 import { showLoader, hideLoader, showNotification } from '../../duck/actions/commonActions'
+import classes from './EditableTable.module.css'
 
 const { Option } = Select
 
@@ -127,22 +128,22 @@ class EditableTable extends Component {
         })
     }
 
-    handleOk = () => {
+    handleOk = async () => {
         this.setState({ visible: false })
-        // const rowsToDelete = []
-        // this.state.dataSource.forEach(row => {
-        //     if (row.deleteRowChecked) rowsToDelete.push(row)
-        // })
-        // this.props.showLoader()
-        // try {
-        //     await this.props.deleteTableRow(rowsToDelete)
-        //     const { dataSource, count } = deleteRow(rowsToDelete, this.state)
-        //     this.setState({ dataSource, count, rowsMarkedForDeletion: false })
-        // } catch (err) {
-        //     this.props.showNotification('error', err.message)
-        // } finally {
-        //     this.props.hideLoader()
-        // }
+        const rowsToDelete = []
+        this.state.dataSource.forEach(row => {
+            if (row.deleteRowChecked) rowsToDelete.push(row)
+        })
+        this.props.showLoader()
+        try {
+            await this.props.deleteTableRow(rowsToDelete)
+            const { dataSource, count } = deleteRow(rowsToDelete, this.state)
+            this.setState({ dataSource, count, rowsMarkedForDeletion: false })
+        } catch (err) {
+            this.props.showNotification('error', err.message)
+        } finally {
+            this.props.hideLoader()
+        }
     }
 
     handleCancel = () => this.setState({ visible: false })
@@ -251,24 +252,27 @@ class EditableTable extends Component {
                 />
 
                 <Modal
-                    title="DELETE"
                     visible={this.state.visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
+                    closable={false}
                     centered={true}
-                    wrapClassName=""
-                    style={{ minWidth: '50%' }}
+                    wrapClassName="editable--modal"
+                    style={{ minWidth: '30%' }}
                     footer={[
                         <Button
-                            key="button"
-                            className="analysis--modal-submit-button"
+                            key="cancel"
+                            className="editable__table-delete"
+                            onClick={this.handleCancel}>Cancel</Button>,
+                        <Button
+                            key="delete"
+                            className="button-solid__primary"
                             onClick={this.handleOk}>Delete</Button>
                     ]}
                 >
-                    <div className="analysis--modal__display">
-                        <div className="analysis--modal-right-content__width">
-                            <p>Model Name</p>
-                        </div>
+                    <div>
+                        <p className={classes['editable__modal-text']}><DeleteTwoTone twoToneColor="#FF2828" style={{ fontSize: '22px', marginRight: '8px' }} /> Are you sure you want to delete the selected items?</p>
+                        <small className={classes['editable__modal-small-text']}>This action is irreversible.</small>
                     </div>
                 </Modal>
 
