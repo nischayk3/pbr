@@ -13,13 +13,15 @@ function ReportDesignerDynamicRow(props) {
         let res = prev['response']
         let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
         let dynamic_rows_row = dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
-        let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : []
+        // let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : []
 
         let res_curr = current['response']
         let dynamic_rows_curr = res_curr[fieldKey] ? res[fieldKey] : []
         let dynamic_rows_row_curr = dynamic_rows_curr['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
         let value_curr = dynamic_rows_row_curr[name] ? dynamic_rows_row[name] : []
-        return value_curr ? value_curr : false
+
+
+        return value_curr
     }
 
     return (
@@ -45,16 +47,22 @@ function ReportDesignerDynamicRow(props) {
                                         let dynamic_rows = res[fieldKey] ? res[fieldKey] : []
                                         let dynamic_rows_row = dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
                                         let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : []
-
-                                        return value['editable'] === true ? (
-                                            <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea allowClear autoSize={true} style={{ width: '150px' }} placeholder="Enter Key" name={[name, 'keyName']} disabled />
-                                            </Form.Item>
-                                        ) : (
-                                            <Form.Item name={[name, 'keyName']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} style={{ width: '150px' }} placeholder="Enter Key" bordered={true} disabled={props.show} />
+                                        
+                                        return (
+                                            <Form.Item name={[name, 'keyName']}>
+                                                <Input.TextArea className="report-designer__row-input" allowClear autoSize={true} style={{ width: '150px' }} placeholder="Enter Key" name={[name, 'keyName']} disabled={value['editable'] === false} />
                                             </Form.Item>
                                         )
+
+                                        // return value['editable'] === true ? (
+                                        //     <Form.Item name={[name, 'keyName']} >
+                                        //         <Input.TextArea allowClear autoSize={true} style={{ width: '150px' }} placeholder="Enter Key" name={[name, 'keyName']} disabled />
+                                        //     </Form.Item>
+                                        // ) : (
+                                        //     <Form.Item name={[name, 'keyName']} >
+                                        //         <Input.TextArea bordered allowClear autoSize={true} style={{ width: '150px' }} placeholder="Enter Key" bordered={true} disabled={props.show} />
+                                        //     </Form.Item>
+                                        // )
                                     }}
                                 </Form.Item>
                             </td>
@@ -70,22 +78,28 @@ function ReportDesignerDynamicRow(props) {
                                         let dynamic_rows_row = dynamic_rows['dymamic_rows'] ? dynamic_rows['dymamic_rows'] : []
                                         let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : []
 
-                                        return value['editable'] === true ? (
+                                        return (
                                             <Form.Item name={[name, 'value']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Value" name={[name, 'value']} disabled />
-                                            </Form.Item>
-                                        ) : (
-                                            <Form.Item name={[name, 'value']} >
-                                                <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Value" bordered={true} disabled={props.show} />
+                                                <Input.TextArea className="report-designer__row-input" bordered allowClear autoSize={true} placeholder="Enter Value" name={[name, 'value']} disabled={value['editable'] === false} />
                                             </Form.Item>
                                         )
+
+                                        // return value['editable'] !== true ? (
+                                        //     <Form.Item name={[name, 'value']} >
+                                        //         <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Value" name={[name, 'value']} disabled />
+                                        //     </Form.Item>
+                                        // ) : (
+                                        //     <Form.Item name={[name, 'value']} >
+                                        //         <Input.TextArea bordered allowClear autoSize={true} placeholder="Enter Value" bordered={true} disabled={props.show} />
+                                        //     </Form.Item>
+                                        // )
                                     }}
                                 </Form.Item>
                             </td>
 
                             <td >
-                                <Form.Item {...restField1} name={[name, 'editable']} valuePropName="checked" defaultChecked>
-                                    <Switch defaultChecked={false} size="small" disabled={props.show} />
+                                <Form.Item {...restField1} name={[name, 'editable']} valuePropName="checked">
+                                    <Switch defaultChecked={true} size="small" disabled={props.show} />
                                 </Form.Item>
                             </td>
                             {/* <td >
@@ -114,10 +128,10 @@ function ReportDesignerDynamicRow(props) {
                         <td></td>
                         <td></td>
                         <td>
-                    <Form.Item>
-                        <div className="add-row-btn" onClick={() => add()} > <PlusOutlined style={{ color: '#093185' }} /> Add new row </div>
-                    </Form.Item>
-                    </td>
+                            <Form.Item>
+                                <div className="add-row-btn" onClick={() => add()} > <PlusOutlined style={{ color: '#093185' }} /> Add new row </div>
+                            </Form.Item>
+                        </td>
                     </tr>
                 </>
             )}
