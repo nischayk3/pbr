@@ -37,6 +37,7 @@ function Hierarchy() {
     const hier_name = useSelector((state) => state.viewHierarchy.drugName);
     const load_drug = useSelector((state) => state.viewHierarchy.drugLoad);
 
+
     useEffect(() => {
         handleAdd();
         handleStepAdd();

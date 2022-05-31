@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Space, Popconfirm, Card, Tooltip, message } from 'antd';
+import { Form, Input, Space, Popconfirm, Card, Tooltip } from 'antd';
 import { DeleteTwoTone, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
@@ -18,11 +18,9 @@ function ReportDesignerDynamicSections(props) {
     const dispatch = useDispatch();
     const [addedCharts, setAddedCharts] = useState(props.chart_layout ? props.chart_layout : {})
     const [addedKeys, setAddedKeys] = useState({})
-    const [chartList, setChartList] = useState([])
     const [showChart, setShowChart] = useState({})
     const [showAddSection, setShowAddSection] = useState(false)
     const [editable, setEditable] = useState(false)
-
     const { list } = props;
 
 
@@ -52,7 +50,6 @@ function ReportDesignerDynamicSections(props) {
                 o += s[i];
             return o;
         }
-
         let b = false
         for (let i = s - 1; i >= 0; i--) {
             if (str[i] == '>') {
@@ -65,6 +62,18 @@ function ReportDesignerDynamicSections(props) {
             if (str[i] == '<')
                 b = true
         }
+    }
+
+    const chartAddCheck = (chartName, section) => {
+        section = section + 1
+        if (`${section}` in addedCharts)
+            if (addedCharts[`${section}`].includes(chartName)) {
+                return true
+            }
+            else
+                return false
+        else
+            return false
     }
 
     const addChart = (chartName, section) => {
@@ -174,7 +183,7 @@ function ReportDesignerDynamicSections(props) {
                                                 <Form.Item {...restField} name={[name, 'sectionName']}>
                                                     <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px', marginRight: '20px' }} className="input-section" disabled={props.show} disabled={editable} />
                                                 </Form.Item>
-                                                <Tooltip placement="topLeft" title="Edit Section Name">    <EditOutlined style={{ marginTop: '8px', marginLeft: '10px', color: '#949494' }} onClick={() => handleEdit(editable)} /> </Tooltip>
+                                                <Tooltip placement="topLeft" title="Edit Section Name">    <EditOutlined style={{ marginTop: '7px', marginLeft: '0px', color: '#949494', fontSize: '16px' }} onClick={() => handleEdit(editable)} /> </Tooltip>
                                             </div>
                                             {name > 0 ?
                                                 <div className="add-chart" onClick={() => trackCharts(name)} ><span style={{ marginRight: '4px' }}>+</span>  Add Chart  </div> : <></>
@@ -208,7 +217,7 @@ function ReportDesignerDynamicSections(props) {
                                                     style={{ display: 'flex', justifyContent: 'center' }}
                                                     align="baseline"
                                                 >
-                                                    <table className="dynamicSections-table" style={{ width: '1205px', marginLeft: '15px' }}>
+                                                    <table className="dynamicSections-table" style={{ width: '1205px', marginLeft: '18px', }}>
                                                         <thead className="dynamicSections-thead">
                                                             <tr>
                                                                 <th className="action-clm">Action</th>
@@ -233,7 +242,7 @@ function ReportDesignerDynamicSections(props) {
                                                 {showChart[name] ?
                                                     list.map((i) =>
                                                     (<Form.Item {...restField} name={[name, 'select']}>
-                                                        <div className='chart-tiless' onClick={(e) => addChart(e.target.innerHTML, name)}>
+                                                        <div className={chartAddCheck(i, name) ? "chart-tiless" : "chart-tilesss"} onClick={(e) => addChart(e.target.innerHTML, name)}>
                                                             {addedCharts[`${name + 1}`] && addedCharts[`${name + 1}`].map((j) => (j == i ? <div className="chart-tile"> <img src={checkIcon} /></div> : <></>))}
                                                             <p className="charttile-content">{i}</p>
                                                         </div>
