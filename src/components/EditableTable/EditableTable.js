@@ -270,9 +270,12 @@ class EditableTable extends Component {
                             onClick={this.handleOk}>Delete</Button>
                     ]}
                 >
-                    <div>
-                        <p className={classes['editable__modal-text']}><DeleteTwoTone twoToneColor="#FF2828" style={{ fontSize: '22px', marginRight: '8px' }} /> Are you sure you want to delete the selected items?</p>
-                        <small className={classes['editable__modal-small-text']}>This action is irreversible.</small>
+                    <div className={classes['editable__modal-content']}>
+                        <DeleteTwoTone twoToneColor="#FF2828" style={{ fontSize: '22px', marginRight: '8px' }} />
+                        <div>
+                            <p className={classes['editable__modal-text']}> Are you sure you want to delete the selected items?</p>
+                            <small className={classes['editable__modal-small-text']}>This action is irreversible.</small>
+                        </div>
                     </div>
                 </Modal>
 
