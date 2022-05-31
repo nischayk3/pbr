@@ -1,25 +1,25 @@
+// eslint-disable-next-line
+import {
+  Button,
+  DatePicker,
+  Dropdown,
+  Input,
+  Menu,
+  Select,
+  Space,
+  Table,
+  Typography
+} from "antd";
+import moment from "moment";
 import React from "react";
 import { connect } from "react-redux";
+import { MDH_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import {
-  Table,
-  Input,
-  DatePicker,
-  Space,
-  Menu,
-  Dropdown,
-  Button,
-  Select,
-  Typography,
-} from "antd";
-import {
-  loadFilter,
   auditDataChange,
   auditFilter,
+  loadFilter
 } from "../../../../duck/actions/auditTrialAction";
-
 import "./styles.scss";
-import moment from "moment";
-import { MDH_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import { showNotification } from "../../../../duck/actions/commonActions";
 
 const { Option } = Select;
@@ -29,176 +29,181 @@ class AuditTrials extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      brandList: [],
-      eventType: "",
-      productList: [],
-      columnConfig: [],
-      questionList: [],
-      eventList: [],
-      brandListPkg: [],
-      productListPkg: [],
-      questionListPkg: [],
-      orderSort: {
-        old_value: 0,
-        activity: 0,
-        user_id: 0,
-        entry_date: 0,
-        table_name: 0,
-      },
-      sortState: "DESC",
-      tableData: [],
-      userList: [],
-      filterIng: [],
-      filterPkg: [],
-      type: "",
-      dataGrid: {
-        columns: [],
-        rows: [],
-        totalRecord: null,
-        pageNumber: 0,
-        pageOffset: null,
-        selectedIndexes: [],
-      },
-      tableDataPackaging: [],
       ansList: [
-        { value: "Yes", label: "Yes" },
-        { value: "No", label: "No" },
+        { label: "Yes",value: "Yes" },
+        {  label: "No",value: "No" }
       ],
       ansListPkg: [
-        { value: "Yes", label: "Yes" },
-        { value: "No", label: "No" },
+        {  label: "Yes",value: "Yes" },
+        {  label: "No",value: "No" }
       ],
-      selectedBrand: "",
-      selectedProduct: "",
-      selectedQuestion: "",
-      selectedBrandPkg: "",
-      selectedProductPkg: "",
-      selectedQuestionPkg: "",
-      selectedAns: "",
-      selectedAnsPkg: "",
-      // loading: true,
-      searchText: "",
-      colSort: "entry_date",
-      searchedColumn: "",
-      filterTable: null,
-      searchText1: "",
-      searchedColumn1: "",
-      filterTable1: null,
-      value: false,
+      brandList: [],
+      brandListPkg: [],
       checkedColumns: [],
-      visibleMenuSettings: false,
-      user: "",
-      daterange: [],
-      downloadData: [],
-      selectedDate: [],
-      // config: [],
+      colSort: "entry_date",
       columns: [
         {
-          title: "User",
+          
           dataIndex: "user_id",
-          key: "2",
           defaultSortOrder: "descend",
+          key: "2",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
                 this.loadData(column.dataIndex);
-              },
+              }
             };
           },
           sorter: (a, b) => a.user_id - b.user_id,
+          title: "User"
         },
         {
-          title: "Event",
+          
           dataIndex: "activity",
-          key: "3",
           defaultSortOrder: "descend",
+          key: "3",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
                 this.loadData(column.dataIndex);
-              },
+              }
             };
           },
           sorter: (a, b) => a.activity - b.activity,
+          title: "Event"
         },
         {
-          title: "Old Value",
+          className: "old_value_class",
           dataIndex: "old_value",
-          key: "3",
           defaultSortOrder: "descend",
+          key: "3",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
                 this.loadData(column.dataIndex);
-              },
+              }
             };
           },
-          className: "old_value_class",
-
           sorter: (a, b) => a.old_value - b.old_value,
+          title: "Old Value"
         },
         {
-          title: "New Value",
-          dataIndex: "new_value",
-          key: "3",
-          defaultSortOrder: "descend",
           className: "old_value_class",
+          dataIndex: "new_value",
+          defaultSortOrder: "descend",
+          key: "3",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
                 this.loadData(column.dataIndex);
-              },
+              }
             };
           },
           sorter: (a, b) => a.new_value - b.new_value,
+          title: "New Value"
         },
         {
-          title: "Reason For Change",
+          
           dataIndex: "reason",
-          key: "2",
           defaultSortOrder: "descend",
+          key: "2",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
                 this.loadData(column.dataIndex);
-              },
+              }
             };
           },
           sorter: (a, b) => a.reason - b.reason,
+          title: "Reason For Change"
         },
         {
-          title: "Changed On",
+          
           dataIndex: "entry_date",
-          key: "1",
-          width: 200,
           defaultSortOrder: "descend",
+          key: "1",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
                 this.loadData(column.dataIndex);
-              },
+              }
             };
           },
-          sorter: (a, b) => a.entry_date - b.entry_date,
           render: (text) => moment(text).format("YYYY-MM-DD"),
+          sorter: (a, b) => a.entry_date - b.entry_date,
+          title: "Changed On",
+          width: 200
+          
         },
         {
-          title: "Table Name",
+          
           dataIndex: "table_name",
-          key: "4",
           defaultSortOrder: "descend",
+          key: "4",
           onHeaderCell: (column) => {
             return {
               onClick: (e) => {
                 this.loadData(column.dataIndex);
-              },
+              }
             };
           },
           sorter: (a, b) => a.table_name - b.table_name,
-        },
+          title: "Table Name"
+        }
       ],
-
+      
+      dataGrid: {
+        columns: [],
+        pageNumber: 0,
+        pageOffset: null,
+        rows: [],
+        selectedIndexes: [],
+        totalRecord: null
+        
+        
+      },
+      daterange: [],
+      downloadData: [],
+      eventList: [],
+      eventType: "",
+      filterIng: [],
+      filterPkg: [],
+      filterTable: null,
+      filterTable1: null,
       initialColumns: [],
+      orderSort: {
+        activity: 0,
+        entry_date: 0,
+        old_value: 0,
+        table_name: 0,
+        user_id: 0
+
+      },
+      
+      productList: [],
+      productListPkg: [],
+      questionList: [],
+      questionListPkg: [],
+      searchText: "",
+      searchText1: "",
+      searchedColumn: "",
+      searchedColumn1: "",
+      selectedAns: "",
+      selectedAnsPkg: "",
+      selectedBrand: "",
+      selectedBrandPkg: "",
+      selectedDate: [],
+      sortState: "DESC",
+      tableData: [],
+      tableDataPackaging: [],
+      type: "",
+      user: "",
+      userList: [],
+      // loading: true,
+      value: false,
+      visibleMenuSettings: false
+      // config: [],
+    
     };
   }
 
@@ -227,19 +232,22 @@ class AuditTrials extends React.Component {
     let req = {};
     let headers = {
       "content-type": "application/json",
-      "x-access-token": login_response.token ? login_response.token : "",
       "resource-name": "AUDIT_REPORT",
+      "x-access-token": login_response.token ? login_response.token : ""
+      
     };
 
     let res = await auditFilter(req, headers);
     if (res.statuscode != 200) {
       this.props.showNotification("error", res.Message);
-    } else {
+    }else{
       this.setState({
-        userList: res.data[0].userid,
-        eventList: res.data[0].activity,
+        eventList:res.data[0].activity,
+        userList:res.data[0].userid
+        
       });
     }
+
   };
 
   loadData = (column) => {
@@ -301,24 +309,29 @@ class AuditTrials extends React.Component {
     var today = new Date();
     today.setDate(today.getDate() + 1);
     let req = {
-      identification: "10.10.16.30",
-      source_system: "cpv",
-      transactionid: "20200813161038.066",
-      // username: this.state.user ? this.state.user.value : "",
-      startdate:
-        this.state.selectedDate.length > 0 && this.state.selectedDate[0]
-          ? this.state.selectedDate[0]
-          : "2021-09-01",
       enddate:
         this.state.selectedDate.length > 0 && this.state.selectedDate[1]
           ? this.state.selectedDate[1]
           : today.toISOString().slice(0, 10),
+      identification: "10.10.16.30",
       order_by_col: this.state.colSort,
       order_by_type: this.state.sortState,
+      source_system: "cpv",
+      startdate:
+        this.state.selectedDate.length > 0 && this.state.selectedDate[0]
+          ? this.state.selectedDate[0]
+          : "2021-09-01",
+      transactionid: "20200813161038.066"
+      // username: this.state.user ? this.state.user.value : "",
+      
+      
+      
       // activity:this.state.eventType ? this.state.eventType.value : '',
     };
     if (this.state.eventType) {
-      req["activity"] = this.state.eventType ? this.state.eventType.value : "";
+      req["activity"] = this.state.eventType
+        ? this.state.eventType.value
+        : "";
     }
     if (this.state.user) {
       req["username"] = this.state.user ? this.state.user.value : "";
@@ -338,7 +351,7 @@ class AuditTrials extends React.Component {
         antdObj["reason"] = item.reason;
         if (val11 === item.new_value) {
           antdObj["new_value"] = (
-            <p style={{ background: "yellow" }}>{item.new_value}</p>
+            <p style={ { background: "yellow" } }>{ item.new_value }</p>
           );
         } else if (item.activity === "U" && item.delta.length > 0) {
           let val = "";
@@ -358,7 +371,7 @@ class AuditTrials extends React.Component {
             }
           });
           antdObj["new_value"] = (
-            <p dangerouslySetInnerHTML={{ __html: val }}></p>
+            <p dangerouslySetInnerHTML={ { __html: val } }></p>
           );
         } else {
           antdObj["new_value"] = item.new_value;
@@ -366,8 +379,9 @@ class AuditTrials extends React.Component {
         antdDataTable.push(antdObj);
       });
       this.setState({
-        tableData: antdDataTable,
         downloadData: this.state.tableData,
+        tableData: antdDataTable
+        
       });
     });
   };
@@ -375,18 +389,20 @@ class AuditTrials extends React.Component {
     let _req = {
       appId: "BMS",
       filterId: _filterId,
-      q: "",
       filters: _filter ? _filter : [],
+      q: ""
+      
     };
     loadFilter(_req)
       .then((res) => {
         let eventlist = res.data;
         this.setState({
-          eventList: eventlist,
+          eventList: eventlist
         });
       })
       .catch((error) => {
-        if (error && error.message) console.log("Warning", error.message);
+        if (error && error.message)
+          console.log("Warning", error.message);
       });
   };
 
@@ -432,7 +448,7 @@ class AuditTrials extends React.Component {
         return el.dataIndex !== checkedColumns[i];
       });
 
-    this.setState({ columns: filtered, checkedColumns: checkedColumns });
+    this.setState({ checkedColumns: checkedColumns ,columns: filtered });
   };
 
   onChangeIng = (e, value) => {
@@ -441,7 +457,7 @@ class AuditTrials extends React.Component {
       userarr.push({
         field: "user_id",
         operator: "IN",
-        value: [value.value.trim()],
+        value: [value.value.trim()]
       });
       filterIng = userarr;
     }
@@ -454,7 +470,7 @@ class AuditTrials extends React.Component {
       arr.push({
         field: "entry_date",
         operator: "Between",
-        value: value,
+        value: value
       });
       this.setState({ filterPkg: arr });
     }
@@ -471,15 +487,15 @@ class AuditTrials extends React.Component {
   handleClear = () => {
     this.setState(
       {
-        selectedBrand: "",
-        selectedProduct: "",
-        selectedQuestion: "",
-        selectedAns: "",
-        user: "",
         daterange: [],
-        selectedDate: [],
         eventType: "",
         filterTable: null,
+        selectedAns: "",
+        selectedBrand: "",
+        selectedDate: [],
+        selectedProduct: "",
+        selectedQuestion: "",
+        user: ""
       },
       () => this.auditHighlight()
     );
@@ -501,10 +517,11 @@ class AuditTrials extends React.Component {
 
   handleClearPkg = () => {
     this.setState({
+      selectedAnsPkg: "",
       selectedBrandPkg: "",
       selectedProductPkg: "",
-      selectedQuestionPkg: "",
-      selectedAnsPkg: "",
+      selectedQuestionPkg: ""
+      
     });
     this.esgTablePackaging();
   };
@@ -514,7 +531,7 @@ class AuditTrials extends React.Component {
         value = { label: "", value: "" };
       } else {
         this.setState({
-          user: value,
+          user: value
         });
       }
     }
@@ -522,15 +539,15 @@ class AuditTrials extends React.Component {
 
   render() {
     const { RangePicker } = DatePicker;
-    const { filterTable, tableData, columns, columnConfig } = this.state;
+    const { filterTable, tableData, columns } = this.state;
 
     const userMenu = (
       <Menu>
-        <Menu.Item key="1" onClick={() => this.getExcelFile("excel")}>
+        <Menu.Item key="1" onClick={ () => this.getExcelFile("excel") }>
           Excel
         </Menu.Item>
         <Menu.Divider />
-        <Menu.Item key="2" onClick={() => this.getExcelFile("csv")}>
+        <Menu.Item key="2" onClick={ () => this.getExcelFile("csv") }>
           CSV
         </Menu.Item>
       </Menu>
@@ -538,140 +555,149 @@ class AuditTrials extends React.Component {
     return (
       <div>
         <div className="divFilterDrop bg-white">
-          <div className="filter-header" style={{ height: "150px" }}>
+          <div className="filter-header" style={ { height: "150px" } }>
             <div className="divFilter-name">
               <Text>Date</Text>
-              <Text style={{ marginLeft: "15px" }}>User</Text>
+              <Text style={ { marginLeft: "15px" } }>User</Text>
               <Text>Event Type</Text>
             </div>
             <div className="divFilter">
               <Space>
                 <RangePicker
-                  value={this.state.daterange}
-                  onChange={(e, value) => {
+                  value={ this.state.daterange }
+                  onChange={ (e, value) => {
                     this.setState({
-                      selectedDate: value,
-                      type: "date",
                       daterange: e,
+                      selectedDate: value,
+                      type: "date"
+                      
                     });
                     this.onChangePkg(e, value);
-                  }}
-                  disabledDate={this.disabledDate}
+                  } }
+                  disabledDate={ this.disabledDate }
                 />
               </Space>
               <Space>
                 <Select
-                  style={{
-                    width: "150px",
+                  style={ {
                     marginLeft: "20px",
-                  }}
+                    width: "150px"
+                    
+                  } }
                   placeholder="User"
-                  onChange={(e, value) => {
+                  onChange={ (e, value) => {
                     return (
                       this.setState({
                         type: "user",
-                        user: value,
+                        user: value
                       }),
                       this.onChangeIng(e, value, "user")
                     );
-                  }}
-                  value={this.state.user}
+                  } }
+                  value={ this.state.user }
                 >
-                  {this.state.userList &&
-                    this.state.userList.map((item, i) => {
-                      return (
-                        <Option value={item.value} key={i}>
-                          {item.value}
-                        </Option>
-                      );
-                    })}
+                  { this.state.userList && this.state.userList.map((item, i) => {
+                   
+                    return (
+                      <Option value={ item.value } key={ i } >
+                        { item.value }
+                      </Option>
+                    );
+                  }) }
                 </Select>
               </Space>
               <Space>
                 <Select
-                  style={{ width: "150px" }}
+                  style={ { width: "150px" } }
                   placeholder="Event"
-                  onChange={(e, value) => {
+                  onChange={ (e, value) => {
                     return this.setState({
-                      eventType: value,
+                      eventType: value
                     });
-                  }}
-                  value={this.state.eventType}
+                  } }
+                  value={ this.state.eventType }
                 >
-                  {this.state.eventList &&
-                    this.state.eventList.map((item, i) => {
-                      return (
-                        <Option value={item.value} key={i}>
-                          {item.value}
-                        </Option>
-                      );
-                    })}
+                  { this.state.eventList && this.state.eventList.map((item, i) => {
+                    return (
+                      <Option value={ item.value } key={ i }>
+                        { item.value }
+                      </Option>
+                    );
+                  }) }
                 </Select>
               </Space>
             </div>
             <div className="divFilter-second">
               <Button
-                style={{
+                style={ {
                   backgroundColor: "#495fc3",
                   color: "#ffffff",
-                  width: "100px",
-                }}
+                  width: "100px"
+                } }
                 type="primary"
-                onClick={() => {
+                onClick={ () => {
                   this.handleFilter();
-                }}
+                } }
               >
                 Filter
               </Button>
               <Button
-                style={{
+                style={ {
                   backgroundColor: "#495fc3",
                   color: "#ffffff",
-                  width: "100px",
-                }}
+                  width: "100px"
+                } }
                 type="primary"
                 className="simulate-btn"
-                onClick={() => {
+                onClick={ () => {
                   this.handleClear();
-                }}
+                } }
               >
                 Clear
               </Button>
             </div>
           </div>
 
-          <div className="custom-table-card" style={{ margin: "10px 0" }}>
+          <div
+            className="custom-table-card"
+            style={ { margin: "10px 0" } }
+          >
             <div className="table-header">
               <div>
                 <p>Audit Trail Report</p>
               </div>
               <div
-                style={{
-                  marginLeft: "100px",
+                style={ {
                   display: "flex",
                   flexDirection: "row",
-                }}
+                  marginLeft: "100px"
+                  
+                } }
               >
                 <Input.Search
                   className="table-search"
                   placeholder="Search by..."
                   enterButton
-                  onSearch={this.search}
+                  onSearch={ this.search }
                 />
               </div>
               <div
-                style={{
-                  marginTop: "10px",
+                style={ {
                   float: "right",
                   marginRight: "10px",
-                }}
+                  marginTop: "10px"
+                  
+                } }
               >
-                <Dropdown style={{ color: "#ffffff" }} overlay={userMenu}>
+                <Dropdown
+                  style={ { color: "#ffffff" } }
+                  overlay={ userMenu }
+                >
                   <Button
-                    style={{
+                    style={ {
                       backgroundColor: "#495fc3",
-                      color: "#ffffff",
-                    }}
+                      color: "#ffffff"
+                    } }
                     type="primary"
                   >
                     Export
@@ -680,12 +706,14 @@ class AuditTrials extends React.Component {
               </div>
             </div>
             <Table
-              style={{ margin: "20px" }}
-              loading={this.state.loading}
+              style={ { margin: "20px" } }
+              loading={ this.state.loading }
               size="small"
-              columns={columns}
-              dataSource={filterTable === null ? tableData : filterTable}
-              scroll={{ x: 400 }}
+              columns={ columns }
+              dataSource={
+                filterTable === null ? tableData : filterTable
+              }
+              scroll={ { x: 400 } }
               bordered
             />
           </div>
@@ -696,7 +724,7 @@ class AuditTrials extends React.Component {
 }
 
 const mapDispatchToProps = {
-  showNotification,
+  showNotification
 };
 
 export default connect(null, mapDispatchToProps)(AuditTrials);
