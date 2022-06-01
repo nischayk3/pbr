@@ -1,9 +1,10 @@
 
-import { LOAD_TEMPLATE, MATBATCH_INFO } from '../types/types';
+import { LOAD_TEMPLATE, MATBATCH_INFO, PAGE_IDENTIFIER } from '../types/types';
 
 const initialState = {
 	templateData: [],
-	matBatchInfo: {}
+	matBatchInfo: {},
+	pageIdentifier: {}
 };
 
 export default (state = initialState, action) => {
@@ -12,6 +13,8 @@ export default (state = initialState, action) => {
 			return { ...state, templateData: action.payload };
 		case MATBATCH_INFO:
 			return { ...state, matBatchInfo: action.payload };
+		case PAGE_IDENTIFIER:
+			return { ...state, pageIdentifier: action.payload };
 		default:
 			return state;
 	}

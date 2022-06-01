@@ -18,7 +18,6 @@ import queryString from 'query-string';
 import {
 	ShareAltOutlined,
 	ExclamationCircleOutlined,
-	CheckCircleOutlined,
 } from '@ant-design/icons';
 import './styles.scss';
 
@@ -44,7 +43,7 @@ const DashboardScreen = () => {
 	const searchData = useRef([]);
 	const ref = useRef();
 	const [landingChartData, setLandingChartData] = useState([]);
-	const [landingChartLayout, setLandingChartLayout] = useState([]);
+	//const [landingChartLayout, setLandingChartLayout] = useState([]);
 	const [landingChartLayoutX, setLandingChartLayoutX] = useState([]);
 	const [landingChartLayoutY, setLandingChartLayoutY] = useState([]);
 	const [showSaveModal, setShowSaveModal] = useState(false);
@@ -54,9 +53,7 @@ const DashboardScreen = () => {
 	const settingDashboardName = value => {
 		setdashboardName(value);
 	};
-	const onBackArrowClick = () => {
-		//setShowDashboard(false);
-	};
+	
 
 	const chartCard = value => {
 		setShowChartCard(value);

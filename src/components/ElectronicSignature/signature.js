@@ -105,7 +105,10 @@ function Signature(props) {
 				req1["status"] = props.status;
 
 				//callback esign id
-				props.eSignId(esign_response.primary_id);
+				if(props.eSignId){
+					props.eSignId(esign_response.primary_id);
+				}
+				
 				let publish_response =
 					Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
 						? await approveRecord(req1)

@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { Layout } from 'antd';
 import { useDispatch } from 'react-redux';
@@ -37,18 +36,13 @@ const HeaderBar = () => {
 		});
 	};
 	const adLogout = (tokenExpired) => {
-		//  window.open(`${logoutUrl}`,'_self')
-		// window.open(
-		// 	`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}/%2F%23%2Fuser%2Flogin`,
-
-		// 	'_self'
-		// );
 		if (tokenExpired) {
 			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
 		}
 		localStorage.clear()
-		history.push('/user/login')
-	};
+		window.open(`${logoutUrl}`, '_self')
+		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`, '_self')
+	}
 
 	return (
 		<Header id='header'>

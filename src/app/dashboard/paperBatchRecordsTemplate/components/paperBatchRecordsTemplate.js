@@ -38,7 +38,8 @@ import {
     MinusCircleOutlined,
     MonitorOutlined,
     LeftOutlined,
-    RightOutlined
+    RightOutlined,
+    PlusSquareTwoTone
 } from '@ant-design/icons';
 
 import {
@@ -81,6 +82,7 @@ function PaperBatchRecordsTemplate() {
     };
     const templateInfo = useSelector((state) => state?.pbrReducer?.templateData)
     const matBatch = useSelector((state) => state?.pbrReducer?.matBatchInfo)
+    const pageIdentifier = useSelector((state) => state?.pbrReducer?.pageIdentifier)
     const location = useLocation()
     const dispatch = useDispatch();
     const params = QueryString.parse(location.search)
@@ -151,6 +153,7 @@ function PaperBatchRecordsTemplate() {
     const [menuKey, setMenuKey] = useState("word");
     const [formLoadParameter, setFormLoadParameter] = useState({});
     const [templateInitialData, setTemplateInitialData] = useState({});
+    const [pageIdentifierData, setPageIdentifierData] = useState({});
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
         setRightPanelCollapsed(!rightPanelCollapsed);
@@ -860,7 +863,7 @@ function PaperBatchRecordsTemplate() {
                     pbrTemplateStatus: 'Unapproved',
                     createdBy: login_response?.email_id,
                     changedBy: login_response?.firstname,
-                    pbrTemplateInfo: [],
+                    templateInfo: {pbrTemplateInfo:[],pbrPageIdentifier:{}},
                     material: matBatch?.material_num,
                     batch: matBatch?.batch
                 };
@@ -938,7 +941,8 @@ function PaperBatchRecordsTemplate() {
                     }
                     arr.push(obj);
                 });
-                _reqBatch.pbrTemplateInfo = arr;
+                _reqBatch.templateInfo.pbrTemplateInfo = arr;
+                _reqBatch.templateInfo.pbrPageIdentifier = pageIdentifierData;
 
                 //api call
                 const batchRes = await savePbrTemplate(_reqBatch);
@@ -946,7 +950,7 @@ function PaperBatchRecordsTemplate() {
                     message.success(batchRes.Message);
                     dispatch(hideLoader());
                     dispatch(showNotification('success', batchRes.Message));
-                } else if (batchRes.Status === 404) {
+                } else {
                     message.error(batchRes.Message);
                     dispatch(hideLoader());
                     dispatch(showNotification('error', batchRes.detail));
@@ -985,6 +989,10 @@ function PaperBatchRecordsTemplate() {
     const handleValuesChange = (changedValues, values) => {
         console.log("changedValues", changedValues, values)
     };
+    const pageIdentifierValueChange = (changedValues, values) => {
+        setPageIdentifierData(values)
+    };
+    pageIdentifierValueChange
     const close = () => {
         console.log(
             'Notification was closed. Either the close button was clicked or duration time elapsed.',
@@ -1362,34 +1370,44 @@ function PaperBatchRecordsTemplate() {
                                     <div className='pageIdentifierBlock'>
                                         <Form
                                             layout='vertical'
-                                            form={form}
+                                            initialValues={pageIdentifier}
                                             className='formNewTemplate'
+                                            onValuesChange={pageIdentifierValueChange} name="page_identifier" onFinish={onFinish}
                                         >
-                                            <InputField
-                                                label='Page ID'
-                                                placeholder='Enter Page ID'
-                                                onChangeInput={(e) => {
-                                                    onChangeChart(e, 'pageId');
-                                                }}
-                                            />
-                                            <InputField
-                                                label='Key 1'
-                                                placeholder='Enter Key 1'
-                                                onChangeInput={(e) => {
-                                                    onChangeChart(e, 'Key1');
-                                                }}
-                                            />
-                                            <InputField
-                                                label='Key 2'
-                                                placeholder='Enter Key 2'
-                                                onChangeInput={(e) => {
-                                                    onChangeChart(e, 'Key2');
-                                                }}
-                                            />
                                             <Form.Item
+                                                name='page_id'
+                                                label="Page ID"
+                                           
+                                            >
+                                                <Input />
+                                                {/* <Input/> */}
+                                            </Form.Item>
+                                            <Form.Item
+                                                name='key'
+                                                label="Key 1"
+                                           
+                                            >
+                                                <Input />
+                                                {/* <Input/> */}
+                                            </Form.Item>
+                                            <Form.Item
+                                                name='key_2'
+                                                label="Key 2"
+                                           
+                                            >
+                                                 <Input/>
+                                                {/* <div style={{display:"flex",flexDirection:"row"}}>
+                                                    <Input style={{ width: 250 }} />
+                                                    
+                                                        <PlusSquareTwoTone style={{fontSize:30,marginLeft:17,cursor:"pointer"}}/>
+                                                </div> */}
+
+
+                                            </Form.Item>
+                                            {/* <Form.Item
                                                 label='Condition'
                                                 name='condition'
-                                            >
+                                            > */}
                                                 <div className='conditonBlock'>
                                                     <span>Key 1</span>
                                                     <span>
@@ -1407,7 +1425,7 @@ function PaperBatchRecordsTemplate() {
                                                     </span>
                                                     <span>Key 2</span>
                                                 </div>
-                                            </Form.Item>
+                                            {/* </Form.Item> */}
                                         </Form>
                                     </div>
                                 </Panel>

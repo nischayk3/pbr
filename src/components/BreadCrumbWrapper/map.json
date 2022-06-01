@@ -24,5 +24,7 @@
 	"/dashboard/filterRegister/filterList/filterDetails": "Filter Details",
 	"/dashboard/molecule_hierarchy_configurations": "Molecule Hierarchy Configuration",
 	"/dashboard/analysis": "Analysis",
-	"/dashboard/analysis/:id": "Model"
+	"/dashboard/analysis/:id": "Model",
+	"/dashboard/pbr_reviewer": "PBR Reviewer",
+	"/dashboard/pbr_update": "PBR Update"
 }
