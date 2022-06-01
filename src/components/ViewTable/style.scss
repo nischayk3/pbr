@@ -1,23 +1,19 @@
-// .ant-table-selection-column {
-//   display: none;
-// }
+ .modal-search-bar {
+ 	right: 18px;
+ 	top: 6px;
+ 	position: absolute;
 
-.modal-search-bar {
-  right: 18px;
-  top: 6px;
-  position: absolute;
+ 	span {
+ 		button {
+ 			color: #ccc;
+ 			border-color: #ccc;
+ 			background: #fff;
+ 			padding: 5px 10px;
+ 			// margin-top: 60px !important;
+ 		}
+ 	}
+ }
 
-  span{
-    button{
-      color: #ccc;
-      border-color: #ccc;
-      background: #fff;
-      padding: 5px 10px;
-      // margin-top: 60px !important;
-        }
-  }
-}
-
-.ant-modal-content button:first-of-type {
-  margin-top: 0px !important;
-}
+ .ant-modal-content button:first-of-type {
+ 	margin-top: 0px !important;
+ }

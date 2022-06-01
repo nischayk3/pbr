@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./viewChartStyles.scss";
-import { useParams } from "react-router-dom";
 //antd imports
 import { Row, Col, Divider, Tag, Tooltip, Table, Empty } from "antd";
 import EmptyImg from "../../../../../../assets/icons/empty.svg";
 //components
-import SelectField from "../../../../../../components/SelectField/SelectField";
 import StatusWrong from "../../../../../../assets/statusWrong.svg";
 import StatusCorrect from "../../../../../../assets/statusCorrect.svg";
 
 const ViewChartApprover = ({ postChartData, setPostChartData }) => {
-  //redux variables
-  const { id } = useParams();
   //state variables
   const [coverageTableData, setCoverageTableData] = useState([]);
   const [viewData, setViewData] = useState({

@@ -9,7 +9,7 @@ import { useHistory } from 'react-router';
 import Banner from '../../../../../assets/images/Popup-Side.svg';
 import { getAllViews } from '../../../../../services/viewHierarchyServices';
 import { useDispatch } from 'react-redux';
-import { sendDrugSub } from '../../../../../duck/actions/viewHierarchyAction';
+import { sendDrugSub, loadDrug } from '../../../../../duck/actions/viewHierarchyAction';
 
 
 export default function Landing(props) {
@@ -31,29 +31,32 @@ export default function Landing(props) {
         setIsModalVisible(false);
     };
 
-    useEffect(()=>
-    {
-        // getViews()
-    },[])
+    useEffect(() => {
+        getViews()
+    }, [])
 
-    const getViews = async ()=>
-    {
-        let req={limit:8}
-        let reqs={}
-        let response= await getAllViews(req)
-        let response_two= await getAllViews(reqs)
+    const loadHier = async (ds_name) => {
+        dispatch(loadDrug(true))
+        history.push({
+            pathname: `/dashboard/molecule_hierarchy_configurations/${ds_name}`,
+        });
+    }
 
-        if(response['status-code']==200)
-        {
+
+    const getViews = async () => {
+        let req = { limit: 8 }
+        let reqs = {}
+        let response = await getAllViews(req)
+        let response_two = await getAllViews(reqs)
+
+        if (response['status-code'] == 200) {
             setLastEightView(response.Data)
-            setViewList(response.Data)
         }
-        if(response_two['status-code']==200)
-        {
-            setViewList(response.Data)
+        if (response_two['status-code'] == 200) {
+            setViewList(response_two.Data)
         }
     }
-    
+
     const columns = [
         {
             title: 'Drug Substance',
@@ -120,19 +123,18 @@ export default function Landing(props) {
     };
 
     const search = value => {
-        if(value=='')
-        setSearched(false);
-        else
-        {
-        setSearched(true);
-        const tableData = viewList;
-        const filterTable = tableData.filter(o =>
-            Object.keys(o).some(k =>
-                String(o[k]).toLowerCase().includes(value.toLowerCase())
-            )
-        );
-        setFilterTable(filterTable);
-            }
+        if (value == '')
+            setSearched(false);
+        else {
+            setSearched(true);
+            const tableData = viewList;
+            const filterTable = tableData.filter(o =>
+                Object.keys(o).some(k =>
+                    String(o[k]).toLowerCase().includes(value.toLowerCase())
+                )
+            );
+            setFilterTable(filterTable);
+        }
     };
 
 
@@ -152,20 +154,25 @@ export default function Landing(props) {
             <div className='landing-search-wrapper'>
                 <div className='landing-card'>
                     <div className="landing-input">
-                    <Input.Search
-                        placeholder='Search by drug substance name'
-                        allowClear
-                        className='landing-btn'
-                        enterButton='Search'
-                        size='large'
-                        onSearch={search}
-                    />
+                        <Input.Search
+                            placeholder='Search by drug substance name'
+                            allowClear
+                            className='landing-btn'
+                            enterButton='Search'
+                            size='large'
+                            onSearch={search}
+                        />
                     </div>
                     {searched ? (
                         <Table
                             className='landing-table'
                             columns={columns}
                             dataSource={filterTable === null ? viewList : filterTable}
+                            onRow={record => ({
+                                onClick: e => {
+                                    loadHier(record.ds_name);
+                                },
+                            })}
                         />
                     ) : (
                         <></>
@@ -201,12 +208,17 @@ export default function Landing(props) {
                         <div className='tile'>
                             {lastEightView.length > 0 ? (
                                 lastEightView.map((i, index) => (
-                                    <StatusBlock
-                                        key={index}
-                                        id={i.ds_name}
-                                        status={i.view_status}
-                                    // handleClickTiles={e => handleClickView(e, i)}
-                                    />
+                                    <div
+                                        onClick={() => {
+                                            loadHier(i.ds_name);
+                                        }}>
+                                        <StatusBlock
+                                            key={index}
+                                            id={i.ds_name}
+                                            status={i.view_status}
+                                        // handleClickTiles={e => handleClickView(e, i)}
+                                        />
+                                    </div>
                                 ))
                             ) : (
                                 <></>
@@ -215,41 +227,43 @@ export default function Landing(props) {
                     </div>
                 </div>
             </div>
-            <div > 
-            <Modal
-                className="landing-modal"
-                title="Create New Hierarchy"
-                visible={isModalVisible}
-                onCancel={handleCancel}
-                footer={[
-                    <Button className="custom-primary-button" onClick={() =>{
-                         history.push({
+            <div >
+                <Modal
+                    className="landing-modal"
+                    title="Create New Hierarchy"
+                    visible={isModalVisible}
+                    onCancel={handleCancel}
+                    footer={[
+                        <Button className="custom-primary-button" onClick={() => {
+                            history.push({
                                 pathname: '/dashboard/molecule_hierarchy_configurations/untitled_view',
                             });
-                    }}>Let's Go!</Button>
-                ]}>
-                <div>
-                    <Row>
-                        <Col span={12}>
-                            <img src={Banner} />
-                        </Col>
-                        <Col span={12}>
-                            <Row>
-                                <p>Name of the drug you want to add</p>
-                                <div className="input-ant">
-                                <Input
-                                    placeholder='Enter Name'
-                                    onChange={(e) => {setHierarchyName(e.target.value),dispatch(sendDrugSub(e.target.value))}}
-                                    value={hierarchyName}
-                                />
-                                </div>
-                            </Row>
+                        }}>Let's Go!</Button>
+                    ]}>
+                    <div>
+                        <Row>
+                            <Col span={12}>
+                                <img src={Banner} />
+                            </Col>
+                            <Col span={12}>
+                                <Row>
+                                    <p>Name of the drug you want to add</p>
+                                    <div className="input-ant">
+                                        <Input
+                                            placeholder='Enter Name'
+                                            onChange={(e) => {
+                                                setHierarchyName(e.target.value), dispatch(sendDrugSub(e.target.value)), dispatch(loadDrug(false))
+                                            }}
+                                            value={hierarchyName}
+                                        />
+                                    </div>
+                                </Row>
 
-                        </Col>
-                    </Row>
-                </div>
+                            </Col>
+                        </Row>
+                    </div>
 
-            </Modal>
+                </Modal>
             </div>
         </div>
     );

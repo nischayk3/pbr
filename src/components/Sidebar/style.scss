@@ -1,29 +1,37 @@
 #sidebar {
+
 	a,
 	.anticon,
 	.ant-menu {
 		color: #fff;
 	}
+
 	.ant-menu {
 		background-color: var(--secondary-color);
 	}
+
 	.ant-menu-vertical {
 		border-right: none;
 	}
+
 	.ant-menu-inline,
 	.ant-menu {
 		border-right: 1px solid var(--secondary-color);
 		overflow-y: auto;
 		height: 100vh;
+
 		.ant-menu-item {
 			color: #fff;
 		}
+
 		.ant-menu-item::after {
 			border-right: none;
 		}
+
 		.ant-menu-item:not(.ant-menu-item-selected) {
 			background: transparent !important;
 		}
+
 		.ant-menu-item.ant-menu-item-selected::before {
 			border-left: 3px solid #fff;
 			position: absolute;
@@ -32,22 +40,26 @@
 			bottom: 0;
 			content: '';
 		}
+
 		.ant-menu-item-selected {
 			background-color: var(--secondary-light-color);
 		}
 	}
+
 	#logo-small {
 		height: 50px;
 		background: #fff;
 		margin: 5px;
 		border-radius: 5px;
 	}
+
 	.ant-menu-item .anticon,
 	.ant-menu-submenu-title .anticon {
 		position: relative;
 		top: 5px;
 	}
-	.ant-menu-inline-collapsed > .ant-menu-item .anticon {
+
+	.ant-menu-inline-collapsed>.ant-menu-item .anticon {
 		left: -5px;
 	}
 }

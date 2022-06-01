@@ -8,48 +8,47 @@
 
 import React, { useState } from 'react';
 import {
-	 
+
 	DownloadOutlined,
-	InboxOutlined,
+	InboxOutlined
 } from '@ant-design/icons';
-import { Tabs, Modal, Upload, message, Button } from 'antd';
-import Filter from './genealogyFilter';
-import TreePlot from './TreePlot/TreePlot';
-import batchIcon from '../../../../assets/images/material.png';
+import { Button, Modal, Tabs, Upload } from 'antd';
 import { useDispatch } from 'react-redux';
+import batchIcon from '../../../../assets/images/material.png';
 import {
 	hideLoader,
 	showLoader,
-	showNotification,
+	showNotification
 } from '../../../../duck/actions/commonActions';
 import {
-	getBackwardData,
-	getBatchInfo,
-	getProcessInfo,
-	getForwardData,
-	pbrFileUpload,
 	downloadDataTable,
 	genealogyDataUpload,
+	getBackwardData,
+	getBatchInfo,
+	getForwardData,
+	getProcessInfo,
+	pbrFileUpload
 } from '../../../../services/genealogyService';
 import popupicon from '../../../../assets/images/popup.png';
 import GenealogyDrawer from '../components/genealogyDrawer/index.js';
-import GenealogyDataTable from './genealogyDataTable';
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
 import genealogyLanding from '../../../../assets/images/genealogy-landing.png';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import GenealogyDataTable from './genealogyDataTable';
+import TreePlot from './TreePlot/TreePlot';
+import Filter from './genealogyFilter';
 
 const { TabPane } = Tabs;
 const { Dragger } = Upload;
 
 let initialPanes = [
-	{ title: ' ', content: '', key: '1', closable: false, class: '' },
+	{ title: ' ', content: '', key: '1', closable: false, class: '' }
 ];
 function Genealogy() {
 	const [chartType, setchartType] = useState('backward');
 	const [isBackward, setisBackward] = useState(true);
 	const [isForward, setisForward] = useState(false);
 	const [genealogyData, setGenealogyData] = useState([]);
-	const [showTree, setShowTree] = useState(false);
 	const [productCode, setProductCode] = useState('');
 	const [activateKey, setActivateKey] = useState('1');
 	const [isDrawer, setIsDrawer] = useState(false);
@@ -75,18 +74,16 @@ function Genealogy() {
 	const [collapseKey, setCollapseKey] = useState('0');
 	const [nodeTitle, setNodeTitle] = useState('');
 
-	const [type, setType] = useState('');
-
 	const dispatch = useDispatch();
 
 	const onClickNode = node => {
-		console.log('nodeeeeeeeeeee', node);
+
 		if (node.clickType === 'backward') {
 			setGenealogyData([]);
 			let _reqBackward = {
 				levels: 5,
 				batch_id: node.nodeId,
-				backward: true,
+				backward: true
 			};
 			getBackwardGeneology(_reqBackward);
 			setActivateKey('2');
@@ -97,7 +94,7 @@ function Genealogy() {
 			let _reqFor = {
 				levels: 5,
 				batch_id: node.nodeId,
-				backward: false,
+				backward: false
 			};
 			getForwardGeneology(_reqFor);
 			setActivateKey('2');
@@ -110,9 +107,9 @@ function Genealogy() {
 					product: node.nodeData.matNo,
 					batch: node.nodeData.batchNo,
 					product_desc: node.nodeData.matDesc,
-					node_id: node.nodeData.nodeId,
+					node_id: node.nodeData.nodeId
 				};
-				setType(node.nodeData.type);
+
 				setBatchInfo(batchInfoDetails);
 				setIsDrawerOpen(true);
 				setIsDrawerRef(false);
@@ -123,7 +120,7 @@ function Genealogy() {
 				let _reqBatchInfo = {
 					entity_type: 'Lims',
 					relation_id: 'batch_to_lims',
-					batch_id: nodeSplit[2],
+					batch_id: nodeSplit[2]
 					// 'ABV4103',
 				};
 				setLimsBatch(nodeSplit[2]);
@@ -133,12 +130,12 @@ function Genealogy() {
 				let _reqProcessInput = {
 					entity_type: 'Batch',
 					process_order_id: `${node.nodeData.plant}|${node.nodeData.poNo}`,
-					relation_id: 'input_process_order_to_batch',
+					relation_id: 'input_process_order_to_batch'
 				};
 				let _reqProcessOutput = {
 					entity_type: 'Batch',
 					process_order_id: `${node.nodeData.plant}|${node.nodeData.poNo}`,
-					relation_id: 'output_batch_to_process_order',
+					relation_id: 'output_batch_to_process_order'
 				};
 				setNodeTitle(node.nodeData.poNo);
 				setIsDrawerOpen(true);
@@ -151,7 +148,7 @@ function Genealogy() {
 					node_id: node.nodeData.nodeId,
 					plant: node.nodeData.plant,
 					purchase_id: node.nodeData.pur_ord_no,
-					vendor_no: node.nodeData.vendor_no,
+					vendor_no: node.nodeData.vendor_no
 				};
 				setNodeTitle(node.nodeData.pur_ord_no);
 				setPurchaseInfo(purchaseInfo);
@@ -164,10 +161,10 @@ function Genealogy() {
 				node.nodeType === 'Purchase Order'
 					? node.nodeId
 					: node.nodeType === 'Material'
-					? node.product
-					: node.nodeType === 'Process Order'
-					? node.nodeData.poNo
-					: '';
+						? node.product
+						: node.nodeType === 'Process Order'
+							? node.nodeData.poNo
+							: '';
 			setFileData(node.nodeId);
 
 			setUploadId(uploadNodeId);
@@ -187,7 +184,7 @@ function Genealogy() {
 				levels: 5,
 				batch_id: selectedValue.replace(/\s/g, ''),
 				backward: true,
-				mat_type: param.productType,
+				mat_type: param.productType
 			};
 			//setActivateKey('2');
 			setisBackward(true);
@@ -200,7 +197,7 @@ function Genealogy() {
 				levels: 5,
 				batch_id: selectedValue.replace(/\s/g, ''),
 				backward: false,
-				mat_type: param.productType,
+				mat_type: param.productType
 			};
 			//setActivateKey('2');
 			setisBackward(false);
@@ -216,7 +213,7 @@ function Genealogy() {
 				content: '',
 				key: '2',
 				closable: true,
-				class: 'tree-wrap site-drawer-render-in-current-wrapper',
+				class: 'tree-wrap site-drawer-render-in-current-wrapper'
 			});
 			setPanes(initialPanes);
 		} else {
@@ -235,7 +232,6 @@ function Genealogy() {
 				setGenealogyData(backwardRes.data);
 				setisBackward(true);
 				setisForward(false);
-				setShowTree(true);
 				setIsDrawerRef(true);
 				setActivateKey('2');
 				dispatch(hideLoader());
@@ -243,7 +239,6 @@ function Genealogy() {
 				setGenealogyData([]);
 				dispatch(hideLoader());
 				dispatch(showNotification('error', 'No Data Found'));
-				setShowTree(false);
 				setActivateKey('1');
 			}
 		} catch (error) {
@@ -262,14 +257,12 @@ function Genealogy() {
 				setGenealogyData(forwardRes.data);
 				setisBackward(false);
 				setisForward(true);
-				setShowTree(true);
 				setIsDrawerRef(true);
 				setActivateKey('2');
 				dispatch(hideLoader());
 			} else if (forwardRes.status === 400) {
 				dispatch(hideLoader());
 				dispatch(showNotification('error', 'No Data Found'));
-				setShowTree(false);
 				setActivateKey('1');
 			}
 
@@ -364,7 +357,7 @@ function Genealogy() {
 			query: uri,
 			table_name: 'tran_product_params',
 			'x-access-token': login_response.token ? login_response.token : '',
-			'resource-name': 'GENEALOGY',
+			'resource-name': 'GENEALOGY'
 		};
 		try {
 			dispatch(showLoader());
@@ -421,7 +414,7 @@ function Genealogy() {
 			productNum: data[1],
 			siteNum: data[0],
 			status: 'open',
-			uploadReason: 'PBR Document',
+			uploadReason: 'PBR Document'
 		};
 		geanealogyFileDataUpload(reqData);
 		fileUpload(file);
@@ -492,15 +485,15 @@ function Genealogy() {
 		progress: {
 			strokeColor: {
 				'0%': '#108ee9',
-				'100%': '#87d068',
+				'100%': '#87d068'
 			},
 			strokeWidth: 8,
 			showInfo: true,
-			format: percent => `${parseFloat(percent.toFixed(2))}%`,
+			format: percent => `${parseFloat(percent.toFixed(2))}%`
 		},
 		onDrop(e) {
 			console.log('Dropped files', e.dataTransfer.files);
-		},
+		}
 	};
 
 	const dummyRequest = ({ onSuccess }) => {
@@ -522,7 +515,7 @@ function Genealogy() {
 					<div style={{ marginBottom: '9px' }}>
 						<ScreenHeader
 							bannerbg={{
-								background: 'linear-gradient(180deg, #FFFFFF 0%, #B9D6FF 100%)',
+								background: 'linear-gradient(180deg, #FFFFFF 0%, #B9D6FF 100%)'
 							}}
 							title='Hello there,'
 							description='Shall we get down to tracing some batches and materials?'
@@ -540,7 +533,7 @@ function Genealogy() {
 					onChange={handleChangeTab}
 					onEdit={onEditTab}
 					hideAdd
-					//</div>type='editable-card'
+				//</div>type='editable-card'
 				>
 					<TabPane tab='Select Parameter' key='1'>
 						<Filter parameterDetails={selectedParameter} />
@@ -567,7 +560,7 @@ function Genealogy() {
 									data={genealogyData[0]}
 									nodeClick={onClickNode}
 									firstNode={productCode}
-									//handleChartClick={handleClickNode}
+								//handleChartClick={handleClickNode}
 								/>
 							)}
 							<GenealogyDrawer
