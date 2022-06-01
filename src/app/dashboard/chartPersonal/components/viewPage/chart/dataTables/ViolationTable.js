@@ -13,7 +13,7 @@ const ViolationTable = ({ postChartData }) => {
     return self.indexOf(value) === index;
   };
   const filterColumn = objkeys.filter(uniqueArr);
-  filterColumn.map((item, i) => {
+  filterColumn.forEach((item, i) => {
     columns.push({
       title: item.toUpperCase().replace("_", " "),
       dataIndex: item,
@@ -29,9 +29,9 @@ const ViolationTable = ({ postChartData }) => {
         if (ele.violations) {
           const violation = ele.violations;
           violation &&
-            violation.forEach((ele) => {
-              ele.recorded_date = new Date(
-                ele.recorded_date
+            violation.forEach((element) => {
+              element.recorded_date = new Date(
+                element.recorded_date
               ).toLocaleDateString();
             });
           setViolationTable(ele.violations);

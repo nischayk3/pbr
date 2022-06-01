@@ -77,13 +77,14 @@ const ViewPage = () => {
           savetype: "save",
         };
       } else {
-        (postData.data[0].chart_id = ""),
-          (postData.data[0].chart_version = ""),
-          (postData.data[0].chart_status = ""),
+        (postData.data[0].chart_id = "")((postData.data[0].chart_version = ""))(
+          (postData.data[0].chart_status = "")
+        )(
           (obj = {
             ...postData,
             savetype: "saveas",
-          });
+          })
+        );
       }
     } else {
       obj = {

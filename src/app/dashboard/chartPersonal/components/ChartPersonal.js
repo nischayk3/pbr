@@ -1,12 +1,8 @@
 import React from "react";
 import "./style.scss";
-//antd imports
-import { Tabs } from "antd";
 //components
 import LandingPage from "./landingPage/LandingPage";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
-
-const { TabPane } = Tabs;
 
 //main component
 const ChartPersonal = () => {

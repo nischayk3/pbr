@@ -16,7 +16,7 @@ import {
   AreaChartOutlined,
   CodeOutlined,
   DeploymentUnitOutlined,
-  LayoutOutlined
+  LayoutOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link, useHistory, useLocation } from "react-router-dom";
@@ -25,7 +25,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Auth from "../../utils/auth";
 import { useSelector } from "react-redux";
 import { useMsal } from "@azure/msal-react";
-import {JUPYTER_NOTEBOOK} from '../../constants/apiBaseUrl'
+import { JUPYTER_NOTEBOOK } from "../../constants/apiBaseUrl";
 // import { useSelector } from 'react-redux';
 
 // import { userLogout } from '../../api/login';
@@ -51,7 +51,7 @@ const MENU = [
   },
   {
     key: "dashboard",
-    icon: <FundProjectionScreenOutlined style={{ fontSize: "23px" }}/>,
+    icon: <FundProjectionScreenOutlined style={{ fontSize: "23px" }} />,
     title: "Dashboard",
     linkTo: "/dashboard/dashboard",
   },
@@ -124,7 +124,7 @@ const MENU = [
   },
   {
     key: "hierarchy",
-    icon: <DeploymentUnitOutlined  style={{ fontSize: "23px" }} />,
+    icon: <DeploymentUnitOutlined style={{ fontSize: "23px" }} />,
     title: "Hierarchy",
     linkTo: "/dashboard/molecule_hierarchy_configuration",
   },
@@ -140,19 +140,13 @@ const MENU = [
     title: "System Error Report",
     linkTo: "/dashboard/system_error_report",
   },
-  
- 
+
   // {
   //     key: 'report_generator',
   //     icon: <FileFilled style={{ fontSize: '23px' }} />,
   //     title: 'Report Generator',
   //     linkTo: '/dashboard/report_generator',
   // },
- 
- 
-  
- 
-  
 ];
 
 const { Sider } = Layout;
@@ -194,7 +188,7 @@ const Sidebar = () => {
         {/* <div id='logo-small'></div> */}
         <Menu selectedKeys={[selectedKey]} mode="inline" theme={theme}>
           {MENU.map((item) => (
-            <Menu.Item key={item.key} icon={item.icon} id={item.key} onClick={()=>window.location.reload()}>
+            <Menu.Item key={item.key} icon={item.icon} id={item.key}>
               <Link to={item.linkTo}>{item.title}</Link>
             </Menu.Item>
           ))}

@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
 //antd imports
-import { Collapse, Input, Switch, Checkbox, Select, Row, Col } from "antd";
-import { DeleteTwoTone } from "@ant-design/icons";
-//mock data
-import { figure, legend, axes } from "./displayObjects";
+import { Collapse, Switch, Row, Col } from "antd";
 //unpacking antd components
 const { Panel } = Collapse;
-const { Option } = Select;
 import { initialLayout } from "./displayFunctions";
 import InputField from "../../../../../../components/InputField/InputField";
 import ColorPicker from "../../../../../../components/ColorPicker/ColorPicker";
 import SelectField from "../../../../../../components/SelectField/SelectField";
 
-const Display = ({ setFigure, postChartData, setPostChartData }) => {
+const Display = ({ postChartData, setPostChartData }) => {
   const [layoutData, setLayoutData] = useState(initialLayout);
   const [chartDataMarkers, setChartDataMarkers] = useState({
     markerSize: null,
@@ -37,6 +33,7 @@ const Display = ({ setFigure, postChartData, setPostChartData }) => {
     const chartData = JSON.parse(JSON.stringify(postChartData));
     chartData.data.forEach((element) => {
       element.data.forEach((item) => {
+        console.log(item, "itemm");
         if (item.mode === "markers" && item.name === "Normal") {
           item.marker.symbol = e;
         }
