@@ -71,9 +71,8 @@ const ViewSearchTable = ({
             });
             let newArr = [...postChartData.data];
             newArr.forEach((ele) => {
-              (ele.view_id = record.view_disp_id)(
-                (ele.view_name = record.view_name)
-              );
+              ele.view_id = record.view_disp_id;
+              ele.view_name = record.view_name;
             });
             setPostChartData({ ...postChartData, data: newArr });
             setViewSearch(false);
