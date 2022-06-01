@@ -6,17 +6,17 @@
  * @Last Changed By - Fahad
  */
 
-import Service from './AjaxService';
 import { BMS_APP_PYTHON_SERVICE } from '../constants/apiBaseUrl';
+import Service from './AjaxService';
 
 
 export const faqData = (request) => {
-    return Service.post(BMS_APP_PYTHON_SERVICE + '/faq', request).then(
-      (response) => {
-        return response.data;
-      },
-      (error) => {
-        return error.response.data;
-      }
-    );
-  };
+	return Service.post(BMS_APP_PYTHON_SERVICE + '/faq', request).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};

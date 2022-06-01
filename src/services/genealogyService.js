@@ -1,20 +1,20 @@
-import Service from './AjaxService';
 import {
 	BMS_APP_PYTHON_SERVICE,
-	MDH_APP_PYTHON_SERVICE,
+	MDH_APP_PYTHON_SERVICE
 } from '../constants/apiBaseUrl';
+import Service from './AjaxService';
 
 let login_response = JSON.parse(localStorage.getItem('login_details'));
 
 const request_headers = {
 	'content-type': 'application/json',
 	'x-access-token': login_response.token ? login_response.token : '',
-	'resource-name': 'GENEALOGY',
+	'resource-name': 'GENEALOGY'
 };
 
 const request_header_file = {
 	'content-type': 'application/json',
-	'Content-Type': 'multipart/form-data',
+	'Content-Type': 'multipart/form-data'
 };
 //geanealogy plant/product/batch
 

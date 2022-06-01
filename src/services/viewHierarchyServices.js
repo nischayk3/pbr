@@ -6,7 +6,7 @@ let login_response = JSON.parse(localStorage.getItem('login_details'));
 const request_headers = {
 	'content-type': 'application/json',
 	'x-access-token': login_response.token ? login_response.token : '',
-	'resource-name': 'VIEW',
+	'resource-name': 'VIEW'
 };
 
 // Get all drug substance
