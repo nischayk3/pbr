@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {  Input, Select, Typography, Card } from 'antd';
+import { Input, Select, Typography, Card } from 'antd';
 import { getCharts } from '../../../../../services/reportDesignerServices';
 import './styles.scss';
 // import { getCharts } from '../../../../../services/reportDesignerServices';
@@ -75,7 +75,7 @@ function ReportDesignerForm(props) {
             <div className='reportDesigner-grid'>
                 <div className='reportDesigner-block-design'>
                     <div>
-                        <Text className='filter-text'> Report ID <span className="colon">:</span> {reportId ? reportId : "Unassigned"}</Text> <br /> 
+                        <Text className='filter-text'> Report ID <span className="colon">:</span> {reportId ? reportId : "Unassigned"}</Text> <br />
                         <Text className='filter-text-status'> Status <span className="status-colon">:</span> {status}</Text><br />
                     </div>
                     <div>
@@ -93,8 +93,8 @@ function ReportDesignerForm(props) {
                         <Text className='filter-text'>View</Text><br />
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }} >
                             <Select
-                                className='filter-button'
                                 placeholder="Select view"
+                                className='filter-button'
                                 defaultValue={viewIdVersion}
                                 showArrow={false}
                                 showSearch
@@ -111,33 +111,34 @@ function ReportDesignerForm(props) {
                                 disabled={props.show}
                             >
                                 {mapViewList.map((item) => (
-                                    <Option value={item.view} key={item.view}>{item.view}</Option>
+                                    <Option
+                                        value={item.view} key={item.view}>{item.view}</Option>
                                 ))}
                             </Select>
                         </div>
                     </div>
                     <div>
                         <Text className='filter-text'>Chart ID</Text><br />
-                            <Select
-                                row={1}
-                                className="filter-button"
-                                mode="multiple"
-                                dropdownStyle={{ border: '10' }}
-                                notFoundContent="No Result"
-                                placeholder="Select Multiple Charts"
-                                value={selectedChartList}
-                                onChange={handleChange}
-                                style={{ width: '100%',position:'relative',height:'75px',overflow:'auto' }}
-                                maxTagCount="responsive"
-                            >
-                                {chartsList.length > 0 ? chartsList.map(item => (
-                                    <Option value={item} key={item}>
-                                        {item}
-                                    </Option>
-                                )) : <Option >
+                        <Select
+                            row={1}
+                            className="filter-button"
+                            mode="multiple"
+                            dropdownStyle={{ border: '10' }}
+                            notFoundContent="No Result"
+                            placeholder="Select Multiple Charts"
+                            value={selectedChartList}
+                            onChange={handleChange}
+                            style={{ width: '100%', position: 'relative', height: '75px', overflow: 'auto' }}
+                            maxTagCount="responsive"
+                        >
+                            {chartsList.length > 0 ? chartsList.map(item => (
+                                <Option value={item} key={item}>
+                                    {item}
+                                </Option>
+                            )) : <Option >
 
-                                </Option>}
-                            </Select>
+                            </Option>}
+                        </Select>
                     </div>
                 </div>
             </div>
