@@ -254,7 +254,7 @@ const Workspace = () => {
                   </Row>
                 </div>
                 <div className='avatar-block'>
-                  <p>{`${userApproval?.length} People awaiting your approval!`} </p>
+                  <p>{`${userApproval && userApproval?.length} People awaiting your approval!`} </p>
                   <Avatar.Group
                     maxCount={4}
                     maxStyle={{
@@ -262,14 +262,14 @@ const Workspace = () => {
                       backgroundColor: '#fde3cf',
                     }}
                   >
-                    {userApproval.length > 0 && userApproval.map((e, j) => {
+                    {userApproval && userApproval.length > 0 && userApproval.map((e, j) => {
                       return (
                         <Avatar
                           style={{
                             backgroundColor: '#0CE7CC',
                           }}
                         >
-                          {e.created_by.split("")[0].toUpperCase()}
+                          {e?.created_by?.split("")[0]?.toUpperCase()}
                         </Avatar>
                       )
                     })}
