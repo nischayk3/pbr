@@ -281,8 +281,14 @@
 		margin: 8px 24px 24px 24px;
 
 		border-radius: 4px;
+		max-height: 500px;
+		overflow: auto;
 		.ant-card-body {
 			padding: 24px 24px 48px 24px;
+		}
+		.ant-spin-container {
+			bottom: 20px;
+			width: 100%;
 		}
 	}
 	.landing-table {
@@ -461,9 +467,7 @@
 		padding: 10px;
 	}
 }
-.ant-spin-container {
-	bottom: 10px;
-}
+
 .ant-btn {
 	border: none;
 }

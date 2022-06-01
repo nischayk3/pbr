@@ -205,7 +205,7 @@ function ReportDesignerDynamicSections(props) {
                                         </div>
                                         {!addedKeys[name] ?
                                             <center>
-                                                <div style={{ height: '100px', width: '120px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => sectionAddKey(name + 1)}> <PlusOutlined style={{ color: 'gray', marginTop: '25px' }} /> <br />Add key and value</div>
+                                                <div style={{ height: '100px', width: '140px', opacity: '1px', border: '1px dashed #D9D9D9', padding: '0 10px', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => sectionAddKey(name + 1)}> <PlusOutlined style={{ color: 'gray', marginTop: '25px', fontSize: '16px' }} /> <br />Add key and value</div>
                                             </center> :
                                             <></>
                                         }
