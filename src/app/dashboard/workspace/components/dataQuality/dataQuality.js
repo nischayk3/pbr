@@ -30,7 +30,7 @@ const QualityTable = () => {
             title: 'Version',
             key: 'view_version',
             dataIndex: 'view_version',
-            sorter:(a, b)=>a.view_version.localeCompare(b.view_version)
+            sorter:(a, b)=>a.view_version-b.view_version
             
         },
         {
