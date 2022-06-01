@@ -4,10 +4,12 @@
 	background-repeat: no-repeat;
 	background-position: center;
 }
+
 .logo {
 	height: 55px;
 	padding-top: 5px;
 }
+
 .body {
 	//padding-top: 80px;
 	display: flex;
@@ -18,20 +20,21 @@
 .card-action-new {
 	//padding: 45px 0px !important;
 	border-top: 0px !important;
+
 	button {
 		background: rgb(60, 78, 158) !important;
 		color: #ffffff;
+
 		&:hover {
 			color: #ffffff;
 		}
 	}
 }
-.card-container-change {
-	// padding: 20px 40px !important;
-}
+
 .group-feilds {
 	margin-top: 34px !important;
 }
+
 .btn-spectra {
 	background-color: #2196f3;
 	font-weight: 300;
@@ -51,16 +54,19 @@
 	letter-spacing: 0.086em;
 	color: white;
 }
+
 .page-login-header {
 	background-color: #fff;
 	height: 60px;
 	position: relative;
 	top: 0;
 }
+
 .page-login-header .logo {
 	float: right;
 	padding-right: 25px;
 }
+
 .brand-name {
 	float: left;
 	padding: 14px 0px 14px 20px;
@@ -68,11 +74,13 @@
 	font-size: 22px;
 	font-weight: 600;
 }
+
 .page-login {
 	padding: 0px !important;
 	padding: 25px 50px;
 	min-height: 100vh;
 }
+
 .cpv-logo {
 	height: 100px;
 }
@@ -113,6 +121,7 @@
 	line-height: 22px;
 	color: rgba(0, 0, 0, 0.85);
 	text-align: center;
+
 	.sign-up {
 		font-size: 16px;
 		text-align: center;
@@ -135,11 +144,13 @@
 	border: 1px solid var(--primary-color);
 	height: 40px;
 	background: transparent !important;
+
 	span {
 		padding: 0 0 0 8px;
 		vertical-align: middle;
 	}
 }
+
 .microsoft-btn:hover {
 	color: var(--primary-color);
 	border: 1px solid var(--primary-color);
@@ -149,29 +160,36 @@
 	width: 100%;
 	height: 100%;
 	background-color: #f2fbff;
+
 	.login-split {
 		display: flex;
 		gap: 0 23px;
 		flex-direction: row;
 		justify-content: space-evenly;
 		padding: 7% 0;
+
 		.login-right {
 			width: 360px;
+
 			.login-input {
 				width: 100%;
 				padding: 28px 0 0 0;
+
 				.input-prefix {
 					padding: 8px 12px;
 					color: var(--primary-color);
+
 					.ant-input-prefix {
 						margin-right: 40px;
 					}
 				}
 			}
+
 			.forgot-pwd {
 				display: flex;
 				justify-content: space-between;
 				padding: 26px 0 0 0;
+
 				span {
 					font-family: var(--primary-font-family);
 					font-style: normal;
@@ -181,11 +199,13 @@
 					/* identical to box height, or 157% */
 					/* Character/Title .85 */
 					color: rgba(0, 0, 0, 0.85);
+
 					.ant-checkbox-inner {
 						background-color: var(--primary-color);
 						border-color: var(--primary-color);
 					}
 				}
+
 				p {
 					font-family: var(--primary-font-family);
 					font-style: normal;
@@ -197,6 +217,7 @@
 					color: var(--primary-color);
 				}
 			}
+
 			.login-btn {
 				width: 100%;
 				margin: 23px 0px 10px 0px;

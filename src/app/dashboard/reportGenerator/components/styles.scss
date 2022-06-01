@@ -43,6 +43,7 @@
 		padding-bottom: 12px;
 		border-bottom: 1px solid #d9d9d9;
 	}
+
 	th {
 		font-family: var(--primary-font-family);
 		font-style: normal;
@@ -110,10 +111,12 @@
 		max-height: 282px;
 		overflow-y: auto;
 	}
+
 	.chart-panel {
 		background-color: white;
 		color: black;
 	}
+
 	.card-schedule {
 		width: 651px;
 		min-height: 282px;
@@ -131,24 +134,29 @@
 		}
 	}
 }
+
 .table-card {
 	margin-top: 40px;
 }
+
 .radio-button {
 	border-radius: 50%;
 }
+
 .schedule-btn {
 	background-color: var(--primary-color);
 	color: 'white';
 	border-radius: '4px';
 	float: 'left';
 }
+
 .schedule-btn-true {
 	background-color: var(--primary-color);
 	color: 'white';
 	border-radius: '4px';
 	float: 'left';
 }
+
 .chart-tags {
 	background: #f0f5ff;
 	border: 2px solid #adc6ff;
@@ -163,10 +171,12 @@
 	font-weight: 400;
 	font-size: 12px;
 }
+
 .chart-tag {
 	.ant-tag-close-icon {
 		font-size: 14px;
 	}
+
 	border: 0px !important;
 
 	align-items: center;
@@ -184,6 +194,7 @@
 
 	color: #262626;
 }
+
 .chart-names {
 	font-family: var(--primary-font-family);
 	font-style: normal;
@@ -199,6 +210,7 @@
 
 	color: rgba(0, 0, 0, 0.85);
 }
+
 .chart-name-rep {
 	font-family: var(--primary-font-family);
 	font-style: normal;
@@ -217,6 +229,7 @@
 
 	color: rgba(0, 0, 0, 0.85);
 }
+
 .email-subject {
 	font-family: var(--primary-font-family);
 	font-style: normal;
@@ -228,6 +241,7 @@
 
 	color: #000000;
 }
+
 .email-sub {
 	font-family: var(--primary-font-family);
 	font-style: normal;
@@ -239,6 +253,7 @@
 	color: #000000;
 	margin-left: 30px;
 }
+
 .email-recipients {
 	font-family: var(--primary-font-family);
 	font-style: normal;
@@ -248,6 +263,7 @@
 	/* identical to box height, or 138% */
 	color: #000000;
 }
+
 .email-content {
 	font-family: var(--primary-font-family);
 	font-style: normal;
@@ -258,12 +274,15 @@
 	color: #343434;
 	margin-left: 10px;
 }
+
 .email-freq {
 	margin-left: 20%;
 }
+
 .end-dates {
 	color: var(--primary-color);
 }
+
 .day-buttons {
 	border-radius: 50% !important;
 	width: 40px !important;
@@ -273,6 +292,7 @@
 	margin-left: 10px;
 	color: black !important;
 }
+
 .selected-day-buttons {
 	border-radius: 50% !important;
 	width: 40px !important;
@@ -286,9 +306,11 @@
 .select-days {
 	// margin-left: 30%;
 }
+
 .end-date {
 	margin-left: 30%;
 }
+
 .generator-card {
 	min-height: 700px;
 	max-height: 700px;
@@ -297,17 +319,21 @@
 	// padding: 30px;
 	overflow: scroll;
 }
+
 .collapse-generate {
 	background: #fafafa;
 	border: 1px solid #d9d9d9;
 	margin-left: 20px;
 }
+
 .tag-div {
 	margin-left: 25px;
 }
+
 .ant-card-head-title {
 	align-items: center;
 }
+
 .ant-tabs-nav-list {
 	margin-left: 0%;
 }
@@ -328,8 +354,8 @@
 .report-primary-btn:hover {
 	color: #486bc9 !important;
 }
-.report-primary-btn:disabled
-{
+
+.report-primary-btn:disabled {
 	background-color: white !important;
 }
 
@@ -344,6 +370,7 @@
 	border-radius: 4px !important;
 	border: 0px !important;
 }
+
 .report-secondary-btn:hover {
 	color: #486bc9 !important;
 }
