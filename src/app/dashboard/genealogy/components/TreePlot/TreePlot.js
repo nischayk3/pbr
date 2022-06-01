@@ -158,12 +158,12 @@ function TreePlot(props) {
 			let linkSvg = diagramLayout.selectAll(".link");
 			let linkNotMatchValue = diagramLayout.selectAll(".value-match");
 			let linkSvg1 = diagramLayout.select("g");
-			let linkSvg2 = diagramLayout.selectAll("#node-" + selectedNodeId);
-			let nodeCoords = d3.transform(linkSvg2.attr("transform"));
-			let ntranslateX = nodeCoords.translate[0];
-			let ntranslateY = nodeCoords.translate[1];
-			let newTranslateX = ntranslateX - 960;
-			let newTranslateY = ntranslateY - ntranslateY - 70;
+			//let linkSvg2 = diagramLayout.selectAll("#node-" + selectedNodeId);
+			//let nodeCoords = d3.transform(linkSvg2.attr("transform"));
+			// let ntranslateX = nodeCoords.translate[0];
+			// let ntranslateY = nodeCoords.translate[1];
+			// let newTranslateX = ntranslateX - 960;
+			// let newTranslateY = ntranslateY - ntranslateY - 70;
 			linkNotMatchValue.attr("class", "link").style("stroke", isMaterialLink);
 			linkSvg1
 				.attr("transform", "translate(" + -300 + "," + 20 + ")scale(1,1)")
@@ -186,7 +186,7 @@ function TreePlot(props) {
 						if (d && d !== null) {
 							while (e.target === d) {
 								highlightPathBackward(e.source, displayColor);
-								return d && d !== null ? true : false;
+								return d !== null ? true : false;
 							}
 						}
 					})
@@ -204,12 +204,12 @@ function TreePlot(props) {
 			let linkSvgFor = diagramForward.selectAll(".link");
 			let linkNotMatchValueFor = diagramForward.selectAll(".value-match");
 			let linkSvg1For = diagramForward.select("g");
-			let linkSvg2For = diagramForward.selectAll("#node-" + selectedNodeId);
-			let nodeCoordsFor = d3.transform(linkSvg2For.attr("transform"));
-			let ntranslateXFor = nodeCoordsFor.translate[0];
-			let ntranslateYFor = nodeCoordsFor.translate[1];
-			let newTranslateXFor = ntranslateXFor - 600;
-			let newtranslateYFor = ntranslateYFor - ntranslateYFor - 40;
+			//let linkSvg2For = diagramForward.selectAll("#node-" + selectedNodeId);
+			//let nodeCoordsFor = d3.transform(linkSvg2For.attr("transform"));
+			// let ntranslateXFor = nodeCoordsFor.translate[0];
+			// let ntranslateYFor = nodeCoordsFor.translate[1];
+			// let newTranslateXFor = ntranslateXFor - 600;
+			// let newtranslateYFor = ntranslateYFor - ntranslateYFor - 40;
 			linkNotMatchValueFor
 				.attr("class", "link")
 				.style("stroke", isMaterialLink);
@@ -232,7 +232,7 @@ function TreePlot(props) {
 						if (d && d !== null) {
 							while (e.source === d) {
 								highlightPathForward(e.target, displayColor);
-								return d && d !== null ? true : false;
+								return d !== null ? true : false;
 							}
 						}
 					})
@@ -614,97 +614,97 @@ function TreePlot(props) {
 				//   }
 				// });
 
-				var highlightForwardLink = function (
-					d,
-					displayColor,
-					opacity,
-					strokeWidth
-				) {
-					link
-						.filter(function (e) {
-							if (d && d !== null) {
-								while (e.source === d) {
-									highlightForwardLink(
-										e.target,
-										displayColor,
-										opacity,
-										strokeWidth
-									);
-									return d && d !== null ? true : false;
-								}
-							}
-						})
-						.transition(0)
-						.duration(300)
-						.style("stroke", function (obj) {
-							if (isBackward) {
-								return isMaterialLink;
-								// if (obj.source && obj.source.type === 'Material') {
-								//   return isProcesslink;
-								// } else {
-								//   return isMaterialLink;
-								// }
-							}
-							if (isForward) {
-								// if (obj.source && obj.source.type === 'Process Order') {
-								//   return isProcesslink;
-								// } else {
-								//   return isMaterialLink;
-								// }
-							}
-						})
-						.style("opacity", opacity)
-						.style("stroke-width", strokeWidth);
-				};
+				// var highlightForwardLink = function (
+				// 	d,
+				// 	displayColor,
+				// 	opacity,
+				// 	strokeWidth
+				// ) {
+				// 	link
+				// 		.filter(function (e) {
+				// 			if (d && d !== null) {
+				// 				while (e.source === d) {
+				// 					highlightForwardLink(
+				// 						e.target,
+				// 						displayColor,
+				// 						opacity,
+				// 						strokeWidth
+				// 					);
+				// 					return d && d !== null ? true : false;
+				// 				}
+				// 			}
+				// 		})
+				// 		.transition(0)
+				// 		.duration(300)
+				// 		.style("stroke", function (obj) {
+				// 			if (isBackward) {
+				// 				return isMaterialLink;
+				// 				// if (obj.source && obj.source.type === 'Material') {
+				// 				//   return isProcesslink;
+				// 				// } else {
+				// 				//   return isMaterialLink;
+				// 				// }
+				// 			}
+				// 			if (isForward) {
+				// 				// if (obj.source && obj.source.type === 'Process Order') {
+				// 				//   return isProcesslink;
+				// 				// } else {
+				// 				//   return isMaterialLink;
+				// 				// }
+				// 			}
+				// 		})
+				// 		.style("opacity", opacity)
+				// 		.style("stroke-width", strokeWidth);
+				// };
 
-				var highlightBackwardLink = function (
-					d,
-					displayColor,
-					opacity,
-					strokeWidth
-				) {
-					link
-						.filter(function (e) {
-							if (d && d !== null) {
-								while (e.target === d) {
-									highlightBackwardLink(
-										e.source,
-										displayColor,
-										opacity,
-										strokeWidth
-									);
-									return d && d !== null ? true : false;
-								}
-							}
-						})
-						.transition(0)
-						.duration(300)
-						.style("stroke", function (obj) {
-							if (isBackward) {
-								return isMaterialLink;
-								// if (obj.source && obj.source.type === 'Material') {
-								//   return isProcesslink;
-								// } else {
-								//   return isMaterialLink;
-								// }
-							}
-							if (isForward) {
-								return isMaterialLink;
-								// if (obj.source && obj.source.type === 'Process Order') {
-								//   return isProcesslink;
-								// } else {
-								//   return isMaterialLink;
-								// }
-							}
-						})
-						.style("opacity", opacity)
-						.style("stroke-width", strokeWidth);
-				};
+				// var highlightBackwardLink = function (
+				// 	d,
+				// 	displayColor,
+				// 	opacity,
+				// 	strokeWidth
+				// ) {
+				// 	link
+				// 		.filter(function (e) {
+				// 			if (d && d !== null) {
+				// 				while (e.target === d) {
+				// 					highlightBackwardLink(
+				// 						e.source,
+				// 						displayColor,
+				// 						opacity,
+				// 						strokeWidth
+				// 					);
+				// 					return d && d !== null ? true : false;
+				// 				}
+				// 			}
+				// 		})
+				// 		.transition(0)
+				// 		.duration(300)
+				// 		.style("stroke", function (obj) {
+				// 			if (isBackward) {
+				// 				return isMaterialLink;
+				// 				// if (obj.source && obj.source.type === 'Material') {
+				// 				//   return isProcesslink;
+				// 				// } else {
+				// 				//   return isMaterialLink;
+				// 				// }
+				// 			}
+				// 			if (isForward) {
+				// 				return isMaterialLink;
+				// 				// if (obj.source && obj.source.type === 'Process Order') {
+				// 				//   return isProcesslink;
+				// 				// } else {
+				// 				//   return isMaterialLink;
+				// 				// }
+				// 			}
+				// 		})
+				// 		.style("opacity", opacity)
+				// 		.style("stroke-width", strokeWidth);
+				// };
 
-				var highlightLink = function (d, displayColor, opacity, strokeWidth) {
-					highlightForwardLink(d, displayColor, opacity, strokeWidth);
-					highlightBackwardLink(d, displayColor, opacity, strokeWidth);
-				};
+				// var highlightLink = function (d, displayColor, opacity, strokeWidth) {
+				// 	highlightForwardLink(d, displayColor, opacity, strokeWidth);
+				// 	highlightBackwardLink(d, displayColor, opacity, strokeWidth);
+				// };
 
 				nodeEnter
 					.append("rect")
@@ -1004,10 +1004,6 @@ function TreePlot(props) {
 							material = d.source.matNo || "Not Available";
 							processOrder = d.source.poNo || "Not Available";
 							purchaseOrder = d.source.purchaseOrderNo || "Not Available";
-						} else {
-							material = d.source.matNo || "Not Available";
-							processOrder = d.source.poNo || "Not Available";
-							purchaseOrder = d.source.purchaseOrderNo || "Not Available";
 						}
 
 						var tooltipHtml =
@@ -1271,10 +1267,10 @@ function TreePlot(props) {
 				}
 			};
 
-			this.multiParentCoupling = (multiParent) => {
+			this.multiParentCoupling = (multiParents) => {
 				var multiParentsArray = [];
-				for (var key in multiParent) {
-					multiParent[key].forEach((a) => {
+				for (var key in multiParents) {
+					multiParents[key].forEach((a) => {
 						var parent = {};
 						var child = {};
 						parent = THIS.tree.nodes(THIS.root).filter(function (d) {
@@ -1342,8 +1338,6 @@ function TreePlot(props) {
 										multiPair.parent.type == "Process Order"
 									) {
 										return "additionalParentLink";
-									} else {
-										return "additionalParentLink";
 									}
 								}
 								if (multiPair.child?.poNo) {
@@ -1351,8 +1345,6 @@ function TreePlot(props) {
 										multiPair.child.type == "Process Order" &&
 										multiPair.parent.type == "Material"
 									) {
-										return "additionalParentLink";
-									} else {
 										return "additionalParentLink";
 									}
 								}
@@ -1362,8 +1354,6 @@ function TreePlot(props) {
 										multiPair.parent.type == "Purchase Order"
 									) {
 										return "additionalParentLink";
-									} else {
-										return "additionalParentLink";
 									}
 								}
 								if (multiPair.child?.pur_ord_no) {
@@ -1371,8 +1361,6 @@ function TreePlot(props) {
 										multiPair.child.type == "Purchase Order" &&
 										multiPair.parent.type == "Material"
 									) {
-										return "additionalParentLink";
-									} else {
 										return "additionalParentLink";
 									}
 								}
@@ -1386,16 +1374,16 @@ function TreePlot(props) {
 								multiPair.parent.id + "-" + multiPair.child.id
 								]
 							) {
-								if (isForward) {
-									var oTarget1 = {
-										x: multiPair.parent && multiPair.parent.x0, //y
-										y: multiPair.parent && multiPair.parent.y0 + 15 //x
-									};
-									var oSource1 = {
-										x: multiPair.child && multiPair.child.x0,
-										y: multiPair.child && multiPair.child.y0 - 18
-									};
-								}
+								// if (isForward) {
+								// 	var oTarget1 = {
+								// 		x: multiPair.parent && multiPair.parent.x0, //y
+								// 		y: multiPair.parent && multiPair.parent.y0 + 15 //x
+								// 	};
+								// 	var oSource1 = {
+								// 		x: multiPair.child && multiPair.child.x0,
+								// 		y: multiPair.child && multiPair.child.y0 - 18
+								// 	};
+								// }
 								if (isBackward) {
 									var oTarget = {
 										x: multiPair.parent && multiPair.parent.x0, //y
@@ -1445,10 +1433,9 @@ function TreePlot(props) {
 							return multiPair;
 						});
 
-					var adlink = THIS.vis
-						.selectAll(
-							"path.additionalParentLink,path.additionalParentForwardLink"
-						)
+					THIS.vis.selectAll(
+						"path.additionalParentLink,path.additionalParentForwardLink"
+					)
 						.on("mouseover", function (d) {
 							var data = this.getAttribute("data");
 							data = JSON.parse(data);
@@ -1510,7 +1497,7 @@ function TreePlot(props) {
 	};
 
 	window.onclick = function (event) {
-		if (!(event.target.className.baseVal == "")) {
+		if ((event.target.className.baseVal !== "")) {
 			d3.select("#popup").style("display", "none");
 		}
 	};

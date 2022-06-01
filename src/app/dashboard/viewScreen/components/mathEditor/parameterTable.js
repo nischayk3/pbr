@@ -153,7 +153,7 @@ const ParameterTable = (props) => {
 
 	const paramColumn = data && data.filter(uniqueArr);
 
-	paramColumn.map((item, i) => {
+	paramColumn.map((item) => {
 		if (
 			item === "parameter_name" ||
 			item === "primary" ||

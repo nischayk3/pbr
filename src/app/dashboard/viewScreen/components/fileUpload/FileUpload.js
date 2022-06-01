@@ -164,11 +164,15 @@ function FileUpload(props) {
 
 			molBatch.map((el) => {
 				if (record.coverage_list.includes(el.batch)) {
-					batchData[el.batch] = true;
-					newBatchData[el.batch] = true;
+					return (
+						batchData[el.batch] = true,
+						newBatchData[el.batch] = true
+					)
 				} else {
-					batchData[el.batch] = false;
-					newBatchData[el.batch] = false;
+					return (
+						batchData[el.batch] = false,
+						newBatchData[el.batch] = false
+					)
 				}
 			});
 
@@ -180,13 +184,8 @@ function FileUpload(props) {
 				(x) => x.param == record.param
 			);
 			if (indexDuplicate === -1) {
-				// rowData = Object.assign(record, batchData);
-				// rowData.sourceType = 'file';
-				// rowData.file_id = record.File_id;
-				// rowData.parameters = [rowData];
 				rowData = Object.assign(batchData);
 				rowData.sourceType = "file";
-				//rowData.file_id = record.File_id;
 				rowData.parameter_name = record.param;
 				rowData.coverage =
 					`${record.coverage_metric_percent}` + `(${record.coverage_metric})`;
@@ -195,7 +194,6 @@ function FileUpload(props) {
 				rowData.aggregation = "";
 				rowData.material_id = selectedFileId;
 
-				//	getNewData(rowData);
 				let data = { ...rowData };
 				if (selectedTableData && selectedTableData.length !== 0) {
 					selectedTableData.forEach((ele) => {
@@ -209,7 +207,6 @@ function FileUpload(props) {
 				}
 				finalData.current.push(data);
 				setNewBatchData(newBatchData);
-				//setViewSummaryTable([...finalData]);
 				setFunctionEditorViewState(true);
 				dispatch(batchCoverage(newBatchData));
 				dispatch(sendSelectedParamData(finalData.current));

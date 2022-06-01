@@ -58,13 +58,17 @@ const MaterialTree = (props) => {
 					});
 				});
 			});
-			molBatch.map((el, index) => {
+			molBatch.map((el) => {
 				if (record.batches.includes(el.batch)) {
-					batchData[el.batch] = true;
-					newBatchData[el.batch] = true;
+					return (
+						batchData[el.batch] = true,
+						newBatchData[el.batch] = true
+					)
 				} else {
-					batchData[el.batch] = false;
-					newBatchData[el.batch] = false;
+					return (
+						batchData[el.batch] = false,
+						newBatchData[el.batch] = false
+					)
 				}
 			});
 			batchData["id"] = count;
