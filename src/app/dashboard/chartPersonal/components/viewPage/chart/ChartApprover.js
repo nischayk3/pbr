@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
-import { useParams } from "react-router-dom";
 //antd imports
 import { Row, Col, Divider, Empty } from "antd";
 //components
-import ScatterChart from "./scatterChart/ScatterChart";
 import EmptyImg from "../../../../../../assets/icons/empty.svg";
 import ScatterChartApprover from "./scatterChart/scatterChartApprover";
 
@@ -17,7 +15,6 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
     chartVersion: "",
     chartStatus: "",
   });
-  const { id } = useParams();
 
   useEffect(() => {
     postChartData &&
