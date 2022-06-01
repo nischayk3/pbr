@@ -49,6 +49,7 @@ Cypress.on("uncaught:exception", (err, runnable) => {
       cy.url().should("include", "/user/login");
       cy.get("#login-btn").click();
       localStorage.setItem("test_enabled", true);
+      localStorage.setItem("user", "fahad.siddiqui@mareana.com");
       localStorage.setItem(
         "login_details",
         JSON.stringify({
@@ -65,8 +66,15 @@ Cypress.on("uncaught:exception", (err, runnable) => {
 
       });/* ==== End Cypress Studio ==== */
       /* ==== Generated with Cypress Studio ==== */
-      
-      
+      cy.get(':nth-child(1) > .workspace-processChart-card').click();
+      cy.get('#workspace > .ant-menu-title-content > a').click();
+      cy.get(':nth-child(1) > .workspace-processView-card > .workspace-processView-id').click();
+      cy.get('#workspace > .ant-menu-title-content > a').click();
+      cy.get(':nth-child(1) > .innercard > .paper-batch-card > .paper-batch-desc').click();
+      cy.get('.workspace-main-block > :nth-child(1)').click();
+      cy.get('.recentcard').click();
+      cy.get('.workspace-main-block > :nth-child(3)').click();
+
       /* ==== End Cypress Studio ==== */
     });
     // it("Workspace page", () => {
