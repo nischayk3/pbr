@@ -50,9 +50,6 @@ const ViewCreation = (props) => {
 		(state) => state.viewCreationReducer.selectedParamData
 	);
 	const viewState = useSelector((state) => state.viewCreationReducer);
-	const viewTableData = useSelector(
-		(state) => state.viewCreationReducer.paramData
-	);
 	const dispatch = useDispatch();
 	const [count, setCount] = useState(1);
 	const [params, setParams] = useState(false);
@@ -142,11 +139,11 @@ const ViewCreation = (props) => {
 	const handleSaveView = () => {
 		const viewData = JSON.parse(JSON.stringify(viewJson));
 		viewData.forEach((element) => {
-			(element.functions = viewState.functions),
-				(element.parameters = viewState.parameters),
-				(element.all_parameters = viewState.selectedParamData),
-				(element.view_disp_id = viewDisplayId),
-				(element.material_id = moleculeId);
+			element.functions = viewState.functions;
+			element.parameters = viewState.parameters;
+			element.all_parameters = viewState.selectedParamData;
+			element.view_disp_id = viewDisplayId;
+			element.material_id = moleculeId;
 			element.files = selectedFiles;
 		});
 
@@ -158,10 +155,10 @@ const ViewCreation = (props) => {
 	const handleSaveAsView = () => {
 		const viewData = JSON.parse(JSON.stringify(viewJson));
 		viewData.forEach((element) => {
-			(element.functions = viewState.functions),
-				(element.parameters = viewState.parameters),
-				(element.all_parameters = viewState.selectedParamData),
-				(element.material_id = moleculeId);
+			element.functions = viewState.functions;
+			element.parameters = viewState.parameters;
+			element.all_parameters = viewState.selectedParamData;
+			element.material_id = moleculeId;
 			element.files = selectedFiles;
 			element.view_disp_id = viewDisplayId;
 			element.view_status = viewStatus;
@@ -324,7 +321,6 @@ const ViewCreation = (props) => {
 					<div className="viewCreation-leftBlocks bg-white">
 						<div className="viewCreation-parameterLookup">
 							<h4 className="viewCreation-blockHeader">Parameter Lookup</h4>
-
 							<ParameterLookup
 								moleculeList={moleculeList}
 								setMoleculeList={setMoleculeList}
