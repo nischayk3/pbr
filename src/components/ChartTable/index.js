@@ -1,52 +1,45 @@
-import './style.scss';
-
-import { Button, Input, Modal, Table, message } from 'antd';
 import React, { useState } from 'react';
-import {
-	sendChartData,
-	sendChartId,
-	sendChartVersion,
-	sendView,
-} from '../../duck/actions/chartPersonalizationAction';
-
-import { SearchOutlined } from '@ant-design/icons';
+import { Button, Input, Modal, Table } from 'antd';
 import { useDispatch } from 'react-redux';
-
+import {
+	sendChartId,
+	sendChartVersion
+} from '../../duck/actions/chartPersonalizationAction';
+import './style.scss';
+import { showNotification } from '../../duck/actions/commonActions';
 const ChartTable = props => {
 	const [selectedKeys, setselectedKeys] = useState([]);
 	const [selectedViewId, setselectedViewId] = useState('');
 	const [isDisabled, setisDisabled] = useState(true);
-
 	const [filterData, setfilterData] = useState(null);
-
 	const dispatch = useDispatch();
 
 	const columns = [
 		{
 			title: 'Chart ID',
 			dataIndex: 'chart_disp_id',
-			key: 'chart_disp_id',
+			key: 'chart_disp_id'
 		},
 		{
 			title: 'Chart Name ',
 			dataIndex: 'chart_name',
-			key: 'chart_name',
+			key: 'chart_name'
 		},
 		{
 			title: 'Status',
 			dataIndex: 'chart_status',
-			key: 'chart_status',
+			key: 'chart_status'
 		},
 		{
 			title: ' Version',
 			dataIndex: 'chart_version',
-			key: 'chart_version',
+			key: 'chart_version'
 		},
 		{
 			title: 'Created By',
 			dataIndex: 'created_by',
-			key: 'created_by',
-		},
+			key: 'created_by'
+		}
 	];
 	const data = props.data;
 
@@ -92,7 +85,7 @@ const ChartTable = props => {
 					type='primary'
 					disabled={isDisabled}>
 					Ok
-				</Button>,
+				</Button>
 			]}>
 			<div className='modal-search-bar'>
 				<Input.Search
@@ -139,7 +132,7 @@ const ChartTable = props => {
 								dispatch(sendChartVersion(record.chart_version));
 							}
 							setselectedKeys({ selectedRowKeys });
-						},
+						}
 					})}
 					dataSource={filterData === null ? data : filterData}
 					size='small'

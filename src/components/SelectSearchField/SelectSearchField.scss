@@ -11,8 +11,10 @@
 		color: #262626;
 		margin-bottom: 7px;
 	}
+
 	.search-block {
 		position: relative;
+
 		.close-search {
 			border: 0;
 			position: absolute;
@@ -21,6 +23,7 @@
 			background: transparent;
 		}
 	}
+
 	.field-error {
 		margin: 0px;
 		color: #ff4d4f;

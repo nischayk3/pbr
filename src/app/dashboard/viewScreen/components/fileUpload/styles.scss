@@ -6,10 +6,12 @@
 
 	span.fileUpload-download {
 		margin-right: 10px;
+
 		a {
 			color: var(--primary-color);
 		}
 	}
+
 	span.fileUpload-delete {
 		color: #fa541c;
 	}
@@ -96,6 +98,7 @@
 
 		p.ant-upload-drag-icon {
 			margin-bottom: 10px;
+
 			svg {
 				color: var(--primary-color);
 			}

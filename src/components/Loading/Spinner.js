@@ -1,8 +1,7 @@
-import './style.scss';
-
 import { LoadingOutlined } from '@ant-design/icons';
 import React from 'react';
 import { Spin } from 'antd';
+import './style.scss';
 
 const DEFAULT_LOADING_TEXT = 'Please wait...';
 const antIcon = (

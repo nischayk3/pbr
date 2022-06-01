@@ -1,34 +1,27 @@
 import "./style.scss";
 import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  FileSearchOutlined,
-  PartitionOutlined,
-  ClusterOutlined,
-  TeamOutlined,
-  SolutionOutlined,
-  FileDoneOutlined,
   AppstoreAddOutlined,
-  HomeOutlined,
-  FundProjectionScreenOutlined,
-  UploadOutlined,
-  FileProtectOutlined,
+  AppstoreOutlined,
   AreaChartOutlined,
+  BarChartOutlined,
+  ClusterOutlined,
   CodeOutlined,
   DeploymentUnitOutlined,
+  FileDoneOutlined,
+  FileProtectOutlined,
+  FileSearchOutlined,
+  FundProjectionScreenOutlined,
+  HomeOutlined,
   LayoutOutlined,
+  PartitionOutlined,
+  SolutionOutlined,
+  TeamOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import React, { useCallback, useEffect, useState } from "react";
-
-import Auth from "../../utils/auth";
 import { useSelector } from "react-redux";
-import { useMsal } from "@azure/msal-react";
-import { JUPYTER_NOTEBOOK } from "../../constants/apiBaseUrl";
-// import { useSelector } from 'react-redux';
-
-// import { userLogout } from '../../api/login';
 
 const MENU = [
   {
@@ -99,6 +92,67 @@ const MENU = [
     linkTo: "/dashboard/pbr_reviewer",
   },
   {
+    key: "data_science_studio",
+    icon: <CodeOutlined style={{ fontSize: "23px" }} />,
+    title: "Data Science Studio",
+    linkTo: "/dashboard/pythonNoteBook",
+  },
+  {
+    key: "analysis",
+    icon: <AreaChartOutlined style={{ fontSize: "23px" }} />,
+    title: "Analysis",
+    linkTo: "/dashboard/analysis",
+  },
+  {
+    key: "user-roles-and-access",
+    icon: <TeamOutlined style={{ fontSize: "23px" }} />,
+    title: "User Roles",
+    linkTo: "/dashboard/user-roles-and-access",
+  },
+  {
+    key: "hierarchy",
+    icon: <DeploymentUnitOutlined style={{ fontSize: "23px" }} />,
+    title: "Hierarchy",
+    linkTo: "/dashboard/molecule_hierarchy_configuration",
+  },
+  {
+    key: "data_load",
+    icon: <SolutionOutlined style={{ fontSize: "23px" }} />,
+    title: "Data Load",
+    linkTo: "/dashboard/data_load",
+  },
+  {
+    key: "system_error_report",
+    icon: <AppstoreOutlined style={{ fontSize: "23px" }} />,
+    title: "System Error Report",
+    linkTo: "/dashboard/system_error_report",
+  },
+
+  {
+    key: "manual_data_upload",
+    icon: <UploadOutlined style={{ fontSize: "23px" }} />,
+    title: "Manual Data Upload",
+    linkTo: "/dashboard/manual_data_upload",
+  },
+  {
+    key: "audit_trail_report",
+    icon: <FileSearchOutlined style={{ fontSize: "23px" }} />,
+    title: "Audit Trail Report",
+    linkTo: "/dashboard/audit_trail_report",
+  },
+  {
+    key: "paper batch records",
+    icon: <FileProtectOutlined style={{ fontSize: "23px" }} />,
+    title: "Paper Batch Records",
+    linkTo: "/dashboard/paper_batch_records",
+  },
+  {
+    key: "pbr_reviewer",
+    icon: <LayoutOutlined style={{ fontSize: "23px" }} />,
+    title: "Pbr Reviewer",
+    linkTo: "/dashboard/pbr_reviewer",
+  },
+  {
     key: "pbr_update",
     icon: <LayoutOutlined style={{ fontSize: "23px" }} />,
     title: "Pbr Update",
@@ -140,28 +194,13 @@ const MENU = [
     title: "System Error Report",
     linkTo: "/dashboard/system_error_report",
   },
-
-  // {
-  //     key: 'report_generator',
-  //     icon: <FileFilled style={{ fontSize: '23px' }} />,
-  //     title: 'Report Generator',
-  //     linkTo: '/dashboard/report_generator',
-  // },
 ];
 
 const { Sider } = Layout;
-function handleLogout(instance) {
-  instance.logoutPopup().catch((e) => {
-    console.error(e);
-  });
-}
 
 const Sidebar = () => {
-  const { instance } = useMsal();
-
   const [selectedKey, setSelectedKey] = useState("");
   const location = useLocation();
-  const history = useHistory();
   const collapsed = useSelector((state) => state.commonReducer.isMenuCollapsed);
   const theme = useSelector((state) => state.commonReducer.theme);
 
