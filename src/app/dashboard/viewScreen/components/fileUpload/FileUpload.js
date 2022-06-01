@@ -162,7 +162,7 @@ function FileUpload(props) {
 			let molBatch = [...parentBatches, ...coverage_lists];
 			setParentBatches(molBatch);
 
-			molBatch.map((el, index) => {
+			molBatch.map((el) => {
 				if (record.coverage_list.includes(el.batch)) {
 					batchData[el.batch] = true;
 					newBatchData[el.batch] = true;
@@ -416,7 +416,7 @@ function FileUpload(props) {
 									pagination={false}
 									columns={columns}
 									dataSource={item.Data}
-									rowKey={(record, index) => index}
+
 								/>
 							</Panel>
 						);
