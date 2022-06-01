@@ -1,6 +1,9 @@
 {
 	"/dashboard/dashboard": "Dashboard",
 	"/dashboard/audit_trail_report": "Audit Trail Report",
+	"/dashboard/system_error_report": "System Error Report",
+	"/dashboard/data_load": "Data Load",
+	"/dashboard/manual_data_upload": "Manual Data Upload",
 	"/dashboard/view_creation": "View creation",
 	"/dashboard/workflow": "Workflow",
 	"/dashboard/view_creation_view": "View creation",

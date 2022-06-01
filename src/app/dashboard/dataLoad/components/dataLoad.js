@@ -4,6 +4,7 @@ import { API_CPV_URL } from '../../../../constants/apiBaseUrl';
 import { dataLoadUpload } from '../../../../duck/actions/fileUploadAction';
 import PublishScreen from './publishScreen';
 import { Upload, message, Spin, Typography, Button } from 'antd';
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 
 const dummyRequest = ({ file, onSuccess }) => {
 	setTimeout(() => {
@@ -50,7 +51,7 @@ class Uploader extends Component {
 		});
 	};
 
-	componentDidMount = () => {};
+	componentDidMount = () => { };
 
 	// handleClose = () => {
 	//     this.setState({ toastOpen: false });
@@ -64,7 +65,7 @@ class Uploader extends Component {
 		const nextState = {};
 		if (
 			info.file.type !==
-				'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' &&
+			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' &&
 			info.file.type !== 'application/vnd.ms-excel'
 		) {
 			message.error(`${info.file.name} is not excel or csv file`);
@@ -147,7 +148,7 @@ class Uploader extends Component {
 	};
 
 	render() {
-		const { toastOpen, toastMessage, showLoader } = this.state;
+		const { showLoader } = this.state;
 		const uploadFileProps = {
 			strokeColor: {
 				'0%': '#108ee9',
@@ -157,43 +158,45 @@ class Uploader extends Component {
 			format: percent => `${parseFloat(percent.toFixed(2))}%`,
 		};
 		return (
-			<div className='bg-white'>
-				{showLoader && <Spin />}
-
-				<div className='custom-overview'></div>
-				<div className='div-card custom-data-configure'>
-					<Typography variant='h5'>Data Load</Typography>
-					{this.state.changeScreen ? (
-						<div>
-							<div className='plan-sections download-template'>
-								<div className='fileuploader-input'>
-									<div className='fileuploader-input-inner'>
-										<i className='material-icons button-icons upload-icon'>
-											cloud_upload
-										</i>
-										<h5 className='fileuploader-input-caption'>
-											<span>Choose file to upload</span>
-										</h5>
-										<Upload
-											{...uploadFileProps}
-											maxCount={1}
-											fileList={this.state.selectedFileList}
-											customRequest={dummyRequest}
-											onChange={this.onChange}>
-											<Button variant='contained' color='primary'>
-												Select files
-											</Button>
-										</Upload>
+			<div className='custom-wrapper'>
+				<BreadCrumbWrapper />
+				<div className='custom-content-layout'>
+					<div className='bg-white'>
+						{showLoader && <Spin />}
+						<div className='div-card custom-data-configure'>
+							{this.state.changeScreen ? (
+								<div>
+									<div className='plan-sections download-template'>
+										<div className='fileuploader-input'>
+											<div className='fileuploader-input-inner'>
+												<i className='material-icons button-icons upload-icon'>
+													cloud_upload
+												</i>
+												<h5 className='fileuploader-input-caption'>
+													<span>Choose file to upload</span>
+												</h5>
+												<Upload
+													{...uploadFileProps}
+													maxCount={1}
+													fileList={this.state.selectedFileList}
+													customRequest={dummyRequest}
+													onChange={this.onChange}>
+													<Button variant='contained' color='primary'>
+														Select files
+													</Button>
+												</Upload>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
+							) : (
+								<PublishScreen
+									screen={this.state.changeScreen}
+									tableColumns={this.state.tableColumns}
+								/>
+							)}
 						</div>
-					) : (
-						<PublishScreen
-							screen={this.state.changeScreen}
-							tableColumns={this.state.tableColumns}
-						/>
-					)}
+					</div>
 				</div>
 			</div>
 		);
