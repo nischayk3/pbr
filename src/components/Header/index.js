@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
-
-import { Button, Input, Layout } from 'antd';
+import { Layout } from 'antd';
 import { useDispatch } from 'react-redux';
 import { LogoutOutlined } from '@ant-design/icons';
-import cpvLogo from '../../assets/cpv-logo.png';
-import hamburgerIcon from '../../assets/icons/hamburger.svg';
 import mareanaLogo from '../../assets/mareana_logo.png';
 import { showNotification, toggleMenu } from '../../duck/actions/commonActions';
 import './style.scss';
@@ -16,15 +13,12 @@ import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 
 const { Header } = Layout;
 
-
 const HeaderBar = () => {
-
 	const dispatch = useDispatch();
 	const history = useHistory();
-
 	useEffect(() => {
 		document.addEventListener('tokenExpired', () => {
-			if(localStorage.getItem('login_details')) {
+			if (localStorage.getItem('login_details')) {
 				adLogout('tokenExpired')
 			}
 		})
@@ -35,7 +29,6 @@ const HeaderBar = () => {
 	};
 
 	const Logout = () => {
-
 		// LOGOUT API NOT WORKING
 		// const jwt = localStorage.getItem('user_token');
 		// await userLogout(jwt);
@@ -44,18 +37,13 @@ const HeaderBar = () => {
 		});
 	};
 	const adLogout = (tokenExpired) => {
-		//  window.open(`${logoutUrl}`,'_self')
-		// window.open(
-		// 	`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}/%2F%23%2Fuser%2Flogin`,
-
-		// 	'_self'
-		// );
-		if(tokenExpired) {
+		if (tokenExpired) {
 			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
 		}
 		localStorage.clear()
-		history.push('/user/login')
-	};
+		window.open(`${logoutUrl}`, '_self')
+		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`, '_self')
+	}
 
 	return (
 		<Header id='header'>
@@ -66,7 +54,7 @@ const HeaderBar = () => {
 			</div>
 			<div
 				className='logout-btn'
-				onClick={adenabled ? () =>  adLogout() : () => Logout()}>
+				onClick={adenabled ? () => adLogout() : () => Logout()}>
 				<LogoutOutlined />
 			</div>
 		</Header>

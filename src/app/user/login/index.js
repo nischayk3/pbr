@@ -1,5 +1,5 @@
-import React from 'react';
-import { Form, Input, Button, Row, Col, Checkbox } from 'antd';
+import { useEffect } from 'react';
+import { Form, Input, Button, Checkbox } from 'antd';
 import { userLogin } from '../../../api/login';
 import Auth from '../../../utils/auth';
 import { useDispatch } from 'react-redux';
@@ -20,6 +20,9 @@ import { MDH_APP_PYTHON_SERVICE } from '../../../constants/apiBaseUrl';
 const Login = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	useEffect(() => {
+		localStorage.clear()
+	}, [])
 
 	const onFinish = async values => {
 		try {
@@ -76,8 +79,8 @@ const Login = () => {
 							className='input-prefix'
 							placeholder='Enter username: admin or user'
 							prefix={<UserOutlined />}
-							//onChange={handleDashboardName}
-							//value={props.dashboardName}
+						//onChange={handleDashboardName}
+						//value={props.dashboardName}
 						/>
 					</div>
 
@@ -86,8 +89,8 @@ const Login = () => {
 							className='input-prefix'
 							placeholder='Enter password: **********'
 							prefix={<LockOutlined />}
-							//onChange={handleDashboardName}
-							//value={props.dashboardName}
+						//onChange={handleDashboardName}
+						//value={props.dashboardName}
 						/>
 					</div>
 

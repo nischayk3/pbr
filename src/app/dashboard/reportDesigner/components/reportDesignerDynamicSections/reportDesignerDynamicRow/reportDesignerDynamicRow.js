@@ -61,6 +61,7 @@ function ReportDesignerDynamicRow(props) {
 											<Form.Item name={[name, 'keyName']}>
 												<Input.TextArea
 													allowClear
+													className="report-designer__row-input"
 													autoSize={true}
 													style={{ width: '150px' }}
 													placeholder='Enter key'
@@ -72,6 +73,7 @@ function ReportDesignerDynamicRow(props) {
 											<Form.Item name={[name, 'keyName']}>
 												<Input.TextArea
 													bordered
+													className="report-designer__row-input"
 													allowClear
 													autoSize={true}
 													style={{ width: '150px' }}
@@ -104,6 +106,7 @@ function ReportDesignerDynamicRow(props) {
 											<Form.Item name={[name, 'value']}>
 												<Input.TextArea
 													bordered
+													className="report-designer__row-input"
 													allowClear
 													autoSize={true}
 													placeholder='Enter value'
@@ -115,6 +118,7 @@ function ReportDesignerDynamicRow(props) {
 											<Form.Item name={[name, 'value']}>
 												<Input.TextArea
 													bordered
+													className="report-designer__row-input"
 													allowClear
 													autoSize={true}
 													placeholder='Enter value'

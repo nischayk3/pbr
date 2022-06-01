@@ -1,7 +1,7 @@
 import Service from "../../services/AjaxService";
 import {
   API_PLOT_URL,
-  BMS_APP_PYTHON_SERVICE,
+  BMS_APP_PYTHON_SERVICE
 } from "../../constants/apiBaseUrl";
 
 let login_response = JSON.parse(localStorage.getItem("login_details"));
@@ -9,7 +9,7 @@ let login_response = JSON.parse(localStorage.getItem("login_details"));
 export const uploadFile = (_queryParam) => {
   return Service.post("http://192.168.1.49:8084/fileUploadToFTP", _queryParam, {
     "Content-Type": "multipart/form-data",
-    Accept: "*/*",
+    Accept: "*/*"
   }).then((posts) => {
     return posts;
   });
@@ -18,7 +18,7 @@ export const uploadFile = (_queryParam) => {
 export const uploadFileExl = (_queryParam) => {
   return Service.post(API_PLOT_URL + "bulkupload", _queryParam, {
     "Content-Type": "multipart/form-data",
-    Accept: "*/*",
+    Accept: "*/*"
   }).then((posts) => {
     return posts;
   });
@@ -30,7 +30,7 @@ export const uploadFileApi = (_queryParam) => {
     "Content-Type": "multipart/form-data",
     "x-access-token": login_response.token ? login_response.token : "",
     "resource-name": "FILE_UPLOAD",
-    Accept: "*/*",
+    Accept: "*/*"
   }).then(
     (response) => {
       return response.data;
@@ -45,7 +45,7 @@ export const cancelFileUpload = (request) => {
   let login_response = JSON.parse(localStorage.getItem("login_details"));
   return Service.post(BMS_APP_PYTHON_SERVICE + "/cancel-file-upload", request, {
     "x-access-token": login_response.token ? login_response.token : "",
-    "resource-name": "FILE_UPLOAD",
+    "resource-name": "FILE_UPLOAD"
   }).then(
     (response) => {
       return response.data;
@@ -60,7 +60,7 @@ export const approvedData = (request) => {
   let login_response = JSON.parse(localStorage.getItem("login_details"));
   return Service.post(BMS_APP_PYTHON_SERVICE + "/approve-data", request, {
     "x-access-token": login_response.token ? login_response.token : "",
-    "resource-name": "FILE_UPLOAD",
+    "resource-name": "FILE_UPLOAD"
   }).then(
     (response) => {
       return response.data;
@@ -78,7 +78,7 @@ export const updateApprovedData = (request) => {
     request,
     {
       "x-access-token": login_response.token ? login_response.token : "",
-      "resource-name": "FILE_UPLOAD",
+      "resource-name": "FILE_UPLOAD"
     }
   ).then(
     (response) => {
@@ -94,7 +94,7 @@ export const finalFileUpload = (request) => {
   let login_response = JSON.parse(localStorage.getItem("login_details"));
   return Service.post(BMS_APP_PYTHON_SERVICE + "/final-upload", request, {
     "x-access-token": login_response.token ? login_response.token : "",
-    "resource-name": "FILE_UPLOAD",
+    "resource-name": "FILE_UPLOAD"
   }).then(
     (response) => {
       return response.data;
@@ -122,7 +122,7 @@ export const dataLoadUpload = (_queryParam) => {
     _queryParam,
     {
       "Content-Type": "multipart/form-data",
-      Accept: "*/*",
+      Accept: "*/*"
     }
   ).then(
     (response) => {
@@ -148,7 +148,7 @@ export const materialsParameterTree = (request) => {
 export const deleteAdHocFile = (_queryParam) => {
   return Service.del(BMS_APP_PYTHON_SERVICE + "/adhoc-files", _queryParam, {
     "x-access-token": login_response.token ? login_response.token : "",
-    "resource-name": "FILE_UPLOAD",
+    "resource-name": "FILE_UPLOAD"
   }).then(
     (response) => {
       return response.data;
