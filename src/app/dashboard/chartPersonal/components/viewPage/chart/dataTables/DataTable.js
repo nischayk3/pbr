@@ -18,7 +18,7 @@ const DataTable = ({ postChartData }) => {
     return self.indexOf(value) === index;
   };
   const filterColumn = objkeys.filter(uniqueArr);
-  filterColumn.map((item, i) => {
+  filterColumn.forEach((item, i) => {
     columns.push({
       title: item.toUpperCase().replace("_", " "),
       dataIndex: item,

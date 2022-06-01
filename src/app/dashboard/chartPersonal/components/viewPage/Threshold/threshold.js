@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
-import { Row, Col, Button, message } from "antd";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { Row, Col, Button } from "antd";
 import SelectField from "../../../../../../components/SelectField/SelectField";
 import InputField from "../../../../../../components/InputField/InputField";
 import { useDispatch } from "react-redux";

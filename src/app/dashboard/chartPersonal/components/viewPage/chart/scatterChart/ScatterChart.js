@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./ScatterStyles.scss";
 //antd imports
-import { Row, Col, Button, message, Tabs, Empty } from "antd";
+import { Row, Col, Button, Tabs, Empty } from "antd";
 //components
 import SelectField from "../../../../../../../components/SelectField/SelectField";
 import ScatterPlot from "../../../../../../../components/ScatterPlot/ScatterPlot";
