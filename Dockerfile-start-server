@@ -1,4 +1,4 @@
-ROM node:12
+FROM node:12
 ENV APP_FILE package.json
 ENV APP_HOME /usr/apps
 WORKDIR $APP_HOME

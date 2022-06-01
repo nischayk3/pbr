@@ -127,7 +127,7 @@ function ReportDesignerNew(props) {
   const [viewId, setViewId] = useState('');
   const [reportId, setReportId] = useState('');
   const [viewVersion, setViewVersion] = useState('');
-  const [viewIdVersion, setViewIdVersion] = useState('');
+  const [viewIdVersion, setViewIdVersion] = useState();
   const [selectedChartList, setSelectedChartList] = useState([]);
   const [status, setStatus] = useState('');
   const [viewList, setViewList] = useState('');
