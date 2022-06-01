@@ -19,9 +19,7 @@ describe('View Creation', () => {
 			})
 		);
 
-		cy.get('#genealogy > .ant-menu-title-content > a').click({
-			force: true,
-		});
+
 
 	});
 

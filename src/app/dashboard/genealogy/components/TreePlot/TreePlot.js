@@ -61,10 +61,7 @@ function TreePlot(props) {
 					value: item.matDesc,
 					nodeId: item.id
 				});
-				proType.push({
-					value: item.mat_type,
-					nodeId: item.id
-				});
+
 
 			}
 		};
@@ -107,16 +104,7 @@ function TreePlot(props) {
 				}
 			});
 		};
-		let loopChildrenPType = (item) => {
-			item.forEach((i) => {
-				if (i.mat_type !== undefined) {
-					arrProType.push(i.mat_type);
-				}
-				if (i.children) {
-					loopChildrenPType(i.children);
-				}
-			});
-		};
+
 
 
 		chartDataRes &&
@@ -128,7 +116,6 @@ function TreePlot(props) {
 					loopChildrenMat(item.children);
 					loopChildrenBatch(item.children);
 					loopChildrenMatDes(item.children);
-					loopChildrenPType(item.children);
 				}
 			});
 		const mergeArray = [
