@@ -6,20 +6,21 @@
  * @Last Changed By - Dinesh
  */
 
-import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import './styles.scss';
-import { Select, Input } from 'antd';
-import { moleculeName } from '../../../../../duck/actions/viewCreationAction';
-import { getMoleculeList } from '../../../../../services/viewCreationPublishing';
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import "./styles.scss";
+import { Input, Select } from "antd";
+import { moleculeName } from "../../../../../duck/actions/viewCreationAction";
+import { getMoleculeList } from "../../../../../services/viewCreationPublishing";
 import {
 	hideLoader,
 	showLoader,
-	showNotification,
-} from '../../../../../duck/actions/commonActions';
+	showNotification
+} from "../../../../../duck/actions/commonActions";
 
 function ParameterLookup(props) {
 	const { Search } = Input;
+	const { Option } = Select;
 	const {
 		moleculeList,
 		setMoleculeList,
@@ -27,31 +28,27 @@ function ParameterLookup(props) {
 		setMoleculeId,
 		materialsList,
 		setMaterialsList,
-		setFilterdData,
+		// setFilterdData,
 		setParentBatches,
-		viewSummaryBatch,
 		setViewSummaryBatch,
-		params,
+		params
 	} = props;
 
-	const [expandKey, setExpandKey] = useState([]);
-	const [searchValue, setSearchValue] = useState('');
-	const [autoExpandParent, setAutoExpandParent] = useState();
-	const [filterList, setFilterList] = useState([]);
+	const [searchValue, setSearchValue] = useState("");
 
 	const dispatch = useDispatch();
 	const tempMaterialList = useRef();
 
 	const onSelectMoleculeHandler = async () => {
-		let req = { user_id: localStorage.user }
-		let res = JSON.parse(localStorage.getItem('login_details'));
+		let req = { user_id: localStorage.user };
+		let res = JSON.parse(localStorage.getItem("login_details"));
 
 		try {
 			dispatch(showLoader());
 			const moleculeRes = await getMoleculeList(req, {
-				'content-type': 'application/json',
-				'x-access-token': res.token ? res.token : '',
-				'resource-name': 'VIEW',
+				"content-type": "application/json",
+				"x-access-token": res.token ? res.token : "",
+				"resource-name": "VIEW"
 			});
 
 			if (moleculeRes.statuscode === 200) {
@@ -59,17 +56,17 @@ function ParameterLookup(props) {
 				dispatch(hideLoader());
 			} else if (moleculeRes.Status === 401) {
 				dispatch(hideLoader());
-				dispatch(showNotification('error', moleculeRes.Message));
+				dispatch(showNotification("error", moleculeRes.Message));
 			} else if (moleculeRes.Status === 400) {
 				dispatch(hideLoader());
-				dispatch(showNotification('error', moleculeRes.Message));
+				dispatch(showNotification("error", moleculeRes.Message));
 			} else {
 				dispatch(hideLoader());
-				dispatch(showNotification('error', moleculeRes.Message));
+				dispatch(showNotification("error", moleculeRes.Message));
 			}
 		} catch (error) {
 			dispatch(hideLoader());
-			dispatch(showNotification('error', error));
+			dispatch(showNotification("error", error));
 		}
 	};
 
@@ -88,18 +85,18 @@ function ParameterLookup(props) {
 		}
 	}, [moleculeId]);
 
-	const onChangeMoleculeHandler = async value => {
+	const onChangeMoleculeHandler = async (value) => {
 		setMoleculeId(value);
 
 		let _req = { molecule_name: value };
-		let res = JSON.parse(localStorage.getItem('login_details'));
+		let res = JSON.parse(localStorage.getItem("login_details"));
 		try {
 			dispatch(showLoader());
 
 			const paramTreeRes = await getMoleculeList(_req, {
-				'content-type': 'application/json',
-				'x-access-token': res.token ? res.token : '',
-				'resource-name': 'VIEW',
+				"content-type": "application/json",
+				"x-access-token": res.token ? res.token : "",
+				"resource-name": "VIEW"
 			});
 
 			if (paramTreeRes.statuscode === 200) {
@@ -109,45 +106,45 @@ function ParameterLookup(props) {
 					setViewSummaryBatch(paramTreeRes.data.mol_batches);
 				}
 			} else if (paramTreeRes.statuscode === 401) {
-				dispatch(showNotification('error', 'Filter -', paramTreeRes.Message));
+				dispatch(showNotification("error", "Filter -", paramTreeRes.Message));
 				dispatch(hideLoader());
 			} else if (paramTreeRes.statuscode === 400) {
-				dispatch(showNotification('error', 'Filter -', paramTreeRes.Message));
+				dispatch(showNotification("error", "Filter -", paramTreeRes.Message));
 				dispatch(hideLoader());
 			} else if (paramTreeRes.statuscode === 404) {
-				dispatch(showNotification('error', 'Filter -', paramTreeRes.Message));
+				dispatch(showNotification("error", "Filter -", paramTreeRes.Message));
 				dispatch(hideLoader());
 			}
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
-			dispatch(showNotification('error', error));
+			dispatch(showNotification("error", error));
 		}
 	};
 
-	function onChange(value) {
-		if (!value) {
-			setFilterdData(null);
-		} else {
-			const filterdDataArr = materialsList.filter(o =>
-				Object.keys(o).some(k =>
-					String(o[k]).toLowerCase().includes(value.toLowerCase())
-				)
-			);
-			setFilterdData(filterdDataArr);
-		}
-	}
+	// function onChange(value) {
+	//   if (!value) {
+	//     setFilterdData(null);
+	//   } else {
+	//     const filterdDataArr = materialsList.filter((o) =>
+	//       Object.keys(o).some((k) =>
+	//         String(o[k]).toLowerCase().includes(value.toLowerCase())
+	//       )
+	//     );
+	//     setFilterdData(filterdDataArr);
+	//   }
+	// }
 
-	const onSearchChange = e => {
-		if (e.target.value === '') {
+	const onSearchChange = (e) => {
+		if (e.target.value === "") {
 			setMaterialsList(tempMaterialList.current);
 		}
 		setSearchValue(e.target.value);
 	};
 
 	const searchTable = () => {
-		const newArr = materialsList.filter(ele =>
-			ele.children.some(element =>
+		const newArr = materialsList.filter((ele) =>
+			ele.children.some((element) =>
 				element.product_description.toLowerCase().includes(searchValue)
 			)
 		);
@@ -158,16 +155,17 @@ function ParameterLookup(props) {
 	};
 
 	return (
-		<div className='parameterLookup-FormBlock'>
-			<div className='param-select'>
+		<div className="parameterLookup-FormBlock">
+			<div className="param-select">
 				<p>Molecule</p>
 				<Select
-					placeholder='Select'
-					style={{ width: '100%' }}
+					placeholder="Select"
+					style={{ width: "100%" }}
 					onChange={onChangeMoleculeHandler}
 					defaultValue={moleculeId}
 					value={moleculeId}
-					disabled={params}>
+					disabled={params}
+				>
 					{moleculeList.map((item, i) => {
 						return (
 							<Option value={item.ds_name} key={item.ds_name}>
@@ -177,28 +175,11 @@ function ParameterLookup(props) {
 					})}
 				</Select>
 			</div>
-			<div className='param-select'>
+			<div className="param-select">
 				<p>Filters</p>
-				{/* <Select
-					showSearch
-					optionFilterProp='children'
-					onChange={onChange}
-					filterOption={(input, option) =>
-						option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-					}
-					placeholder='Select'
-					allowClear={true}
-					disabled={params}>
-					{filterList.map((item, index) => {
-						return (
-							<Option value={item.title} key={index}>
-								{item.title}
-							</Option>
-						);
-					})}
-				</Select> */}
+
 				<Search
-					placeholder='Search'
+					placeholder="Search"
 					onChange={onSearchChange}
 					onSearch={searchTable}
 				/>

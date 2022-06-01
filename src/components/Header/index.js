@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
-
-import { Button, Input, Layout } from 'antd';
+import { Layout } from 'antd';
 import { useDispatch } from 'react-redux';
 import { LogoutOutlined } from '@ant-design/icons';
-import cpvLogo from '../../assets/cpv-logo.png';
-import hamburgerIcon from '../../assets/icons/hamburger.svg';
 import mareanaLogo from '../../assets/mareana_logo.png';
 import { showNotification, toggleMenu } from '../../duck/actions/commonActions';
 import './style.scss';
@@ -16,12 +13,9 @@ import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 
 const { Header } = Layout;
 
-
 const HeaderBar = () => {
-
 	const dispatch = useDispatch();
 	const history = useHistory();
-
 	useEffect(() => {
 		document.addEventListener('tokenExpired', () => {
 			if (localStorage.getItem('login_details')) {
@@ -48,7 +42,7 @@ const HeaderBar = () => {
 		}
 		localStorage.clear()
 		window.open(`${logoutUrl}`, '_self')
-		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`,'_self')
+		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`, '_self')
 	}
 
 	return (

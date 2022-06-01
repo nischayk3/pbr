@@ -1,5 +1,4 @@
 import './block.scss';
-
 import React from 'react';
 
 const statusColor = status => {
@@ -9,7 +8,7 @@ const statusColor = status => {
 	if (status == 'DRFT') {
 		return 'drft';
 	}
-	if (status == 'AWAP' || status == 'unapproved' || status == "Unapproved"){
+	if (status == 'AWAP' || status == 'unapproved' || status == "Unapproved") {
 		return 'awap';
 	}
 };
@@ -20,7 +19,7 @@ const StatusBlock = props => {
 			<div className={`tile-status ${statusColor(props.status)}`}>
 				{props.status}
 			</div>
-			{props.id}<br/>
+			{props.id}<br />
 			{props.name}
 		</div>
 	);

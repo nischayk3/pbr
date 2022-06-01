@@ -42,9 +42,10 @@ h6.dynamicSections-noteHeadline {
 	margin: 10px;
 }
 table.dynamicSections-table {
-	border: 1px solid rgba(241, 247, 255, 0.73);
+	border: 2px solid rgba(241, 247, 255, 0.73);
 	text-align: center;
 	margin-bottom: 30px;
+	border-radius: 4px;
 }
 thead.dynamicSections-thead {
 	th {
@@ -378,7 +379,7 @@ tbody.dynamicSections-tbody {
 	height: 46px;
 	width: 100px;
 	background: #ffffff;
-	border: 1px solid #00f1c6;
+	border: 1px solid grey;
 	box-sizing: border-box;
 	border-radius: 2px 2px 2px 2px;
 	border: 1px solid #c5c5c5; // border-radius: 0px 4px;

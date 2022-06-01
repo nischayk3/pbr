@@ -4,7 +4,7 @@ let login_response = JSON.parse(localStorage.getItem('login_details'));
 const request_headers = {
 	'content-type': 'application/json',
 	'x-access-token': login_response.token ? login_response.token : '',
-	'resource-name': 'VIEW',
+	'resource-name': 'VIEW'
 };
 
 export const getViews = request => {
@@ -74,7 +74,7 @@ export const adHocFileUpload = _queryParam => {
 		request_headers,
 		{
 			'Content-Type': 'multipart/form-data',
-			Accept: '*/*',
+			Accept: '*/*'
 		}
 	).then(
 		response => {

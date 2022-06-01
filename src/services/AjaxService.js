@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 class Service {
 	constructor() {
 		let service = axios.create();
@@ -9,7 +8,7 @@ class Service {
 		}, function (error) {
 			return Promise.reject(error);
 		});
-		
+
 		this.service.interceptors.response.use(function (response) {
 			return response;
 		}, function (error) {
@@ -26,7 +25,7 @@ class Service {
 			method: 'GET',
 			url: url,
 			headers: headers || { 'content-type': 'application/json' },
-			params: params || {},
+			params: params || {}
 		});
 	}
 
@@ -35,7 +34,7 @@ class Service {
 			method: 'POST',
 			url: url,
 			headers: headers || { 'content-type': 'application/json' },
-			data: data,
+			data: data
 		});
 	}
 
@@ -44,7 +43,7 @@ class Service {
 			method: 'DELETE',
 			url: url,
 			headers: headers || { 'content-type': 'application/json' },
-			data: data,
+			data: data
 		});
 	}
 
@@ -53,7 +52,7 @@ class Service {
 			method: 'PUT',
 			url: url,
 			headers: headers || { 'content-type': 'application/json' },
-			data: data,
+			data: data
 		});
 	}
 }
