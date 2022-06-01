@@ -219,7 +219,7 @@ const Dashboard = () => {
 								/>
 								<Route
 									key='hierarchy_main'
-									path={`${match.url}/molecule_hierarchy_configurations/untitled_view`}>
+									path={`${match.url}/molecule_hierarchy_configurations`}>
 									<HierarchyMain />
 								</Route>
 								<Route

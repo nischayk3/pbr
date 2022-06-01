@@ -218,6 +218,7 @@ const MathEditor = (props) => {
     setCreateNameModal(!createNameModal);
   };
 
+
   return (
     <>
       <Collapse
@@ -249,7 +250,7 @@ const MathEditor = (props) => {
             {varData.map((item, index) => {
               return (
                 <VariableCard
-                key={index}
+                  key={index}
                   item={item}
                   variableName={item.variableName}
                   deleteVariable={deleteVariable}
