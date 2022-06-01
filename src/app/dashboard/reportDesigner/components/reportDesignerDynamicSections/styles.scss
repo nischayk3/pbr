@@ -30,7 +30,6 @@ h6.dynamicSections-noteHeadline {
 	color: black;
 	background-color: #f2fbff;
 	border: none;
-	align-items: center;
 	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: 400;
@@ -39,7 +38,9 @@ h6.dynamicSections-noteHeadline {
 }
 .dynamicSections-container {
 	margin-top: 30px;
-	margin: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
 }
 table.dynamicSections-table {
 	border: 1.5px solid  #E3E3E3;
@@ -372,7 +373,7 @@ tbody.dynamicSections-tbody {
 	border: 1px solid #00f1c6;
 	box-sizing: border-box;
 	border-radius: 2px 2px 2px 2px;
-	border: 1px solid #00f1c6;
+	// border: 1px solid #00f1c6;
 	// border-radius: 0px 4px;
 	// display: flex;
 	// justify-content: center;
@@ -385,7 +386,7 @@ tbody.dynamicSections-tbody {
 	height: 46px;
 	width: 100px;
 	background: #ffffff;
-	border: 1px solid grey;
+	// border: 1px solid grey;
 	box-sizing: border-box;
 	border-radius: 2px 2px 2px 2px;
 	border: 1px solid #c5c5c5; // border-radius: 0px 4px;
