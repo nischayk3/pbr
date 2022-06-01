@@ -1,127 +1,127 @@
 import {
+	BATCH_COVERAGE_DATA,
+	FUNCTION_MAP,
+	FUNCTION_NAME,
+	IS_LOAD_VIEW,
+	IS_NEW_VIEW,
+	LOAD_VIEW_RESPONSE,
+	MATH_EDITOR,
+	MATH_VALUE,
+	NEW_COLUMN,
+	PARAMETER_MAP,
+	RESET_VIEW,
 	SAVE_AS_FUNCTIONS,
 	SAVE_FUNCTIONS,
-	MATH_EDITOR,
-	FUNCTION_NAME,
-	FUNCTION_MAP,
-	PARAMETER_MAP,
-	VIEW_PARAM_DATA,
 	SELECTED_PARAM_DATA,
-	BATCH_COVERAGE_DATA,
+	SELECTED_PARAM_TYPE,
 	SELECTED_VARIABLE,
 	SUMMARY_TABLE_DATA,
-	SELECTED_PARAM_TYPE,
 	VIEW_FUNCTION_MAP,
-	VIEW_PARAM_MAP,
-	IS_LOAD_VIEW,
-	RESET_VIEW,
-	IS_NEW_VIEW,
-	NEW_COLUMN,
 	VIEW_FUNCTION_NAME,
-	MATH_VALUE,
-	LOAD_VIEW_RESPONSE
+	VIEW_PARAM_DATA,
+	VIEW_PARAM_MAP
 } from '../../constants/actionTypes';
 
 export const saveViewFunction = payload => ({
 	type: SAVE_FUNCTIONS,
-	payload,
+	payload
 });
 
 export const saveAsViewFunction = payload => ({
 	type: SAVE_AS_FUNCTIONS,
-	payload,
+	payload
 });
 
 export const sendFunDetails = payload => ({
 	type: MATH_EDITOR,
-	payload,
+	payload
 });
 
 export const sendFunctionName = payload => ({
 	type: FUNCTION_NAME,
-	payload,
+	payload
 });
 
 export const sendFunctionJson = payload => ({
 	type: FUNCTION_MAP,
-	payload,
+	payload
 });
 
 export const sendParameterJson = payload => ({
 	type: PARAMETER_MAP,
-	payload,
+	payload
 });
 
 export const sendViewParamData = payload => ({
 	type: VIEW_PARAM_DATA,
-	payload,
+	payload
 });
 
 export const sendSelectedParamData = payload => ({
 	type: SELECTED_PARAM_DATA,
-	payload,
+	payload
 });
 
 export const batchCoverage = payload => ({
 	type: BATCH_COVERAGE_DATA,
-	payload,
+	payload
 });
 
 export const createVariable = payload => ({
 	type: SELECTED_VARIABLE,
-	payload,
+	payload
 });
 
 export const createSummaryData = payload => ({
 	type: SUMMARY_TABLE_DATA,
-	payload,
+	payload
 });
 
 export const selectParamType = payload => ({
 	type: SELECTED_PARAM_TYPE,
-	payload,
+	payload
 });
 
 export const viewFunctionMap = payload => ({
 	type: VIEW_FUNCTION_MAP,
-	payload,
+	payload
 });
 export const viewParamMap = payload => ({
 	type: VIEW_PARAM_MAP,
-	payload,
+	payload
 });
 
 export const isLoadView = payload => ({
 	type: IS_LOAD_VIEW,
-	payload,
+	payload
 });
 
 export const isNewView = payload => ({
 	type: IS_NEW_VIEW,
-	payload,
+	payload
 });
 
 export const setNewColumn = payload => ({
 	type: NEW_COLUMN,
-	payload,
+	payload
 });
 
 export const resetView = payload => ({
 	type: RESET_VIEW,
-	payload,
+	payload
 });
 
 export const setViewFunctionName = payload => ({
 	type: VIEW_FUNCTION_NAME,
-	payload,
+	payload
 });
 
 export const setMathValue = payload => ({
 	type: MATH_VALUE,
-	payload,
+	payload
 });
 
 export const setViewResposne = payload => ({
 	type: LOAD_VIEW_RESPONSE,
-	payload,
+	payload
 });

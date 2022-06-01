@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Form, Input, Button, Row, Col, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox } from 'antd';
 import { userLogin } from '../../../api/login';
 import Auth from '../../../utils/auth';
 import { useDispatch } from 'react-redux';
@@ -18,10 +18,8 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { MDH_APP_PYTHON_SERVICE } from '../../../constants/apiBaseUrl';
 
 const Login = () => {
-
 	const dispatch = useDispatch();
 	const history = useHistory();
-
 	useEffect(() => {
 		localStorage.clear()
 	}, [])

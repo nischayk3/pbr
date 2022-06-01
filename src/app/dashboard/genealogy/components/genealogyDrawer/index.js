@@ -14,67 +14,67 @@ import GenealogyDataTable from "../genealogyDataTable";
 import "./style.scss";
 
 function GenealogyDrawer(props) {
-  const [visible, setVisible] = useState(false);
+	const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    setVisible(props.drawerVisible);
-  }, [props.drawerVisible]);
+	useEffect(() => {
+		setVisible(props.drawerVisible);
+	}, [props.drawerVisible]);
 
-  const expandDrawer = () => {
-    setVisible(false);
-    props.isDrawer(false);
-  };
-  const onCloseDrawer = () => {
-    setVisible(false);
-    props.drawerClose(false);
-  };
-  const downloadFile = () => {
-    props.fileDownload(true);
-  };
+	const expandDrawer = () => {
+		setVisible(false);
+		props.isDrawer(false);
+	};
+	const onCloseDrawer = () => {
+		setVisible(false);
+		props.drawerClose(false);
+	};
+	const downloadFile = () => {
+		props.fileDownload(true);
+	};
 
-  return (
-    <Drawer
-      className="genealogy-drawer"
-      title={
-        <div className="drawer-heading">
-          <div className="drawer-title">
-            <img className="tree-type-icon" src={batchIcon} alt="tree node" />
-            <p>
-              {props.nodeTitle} - {props.type}
-            </p>
-            <span onClick={downloadFile}>
-              <DownloadOutlined />
-            </span>
-          </div>
-          <span
-            className="expand-drawer"
-            onClick={expandDrawer}
-            onKeyDown={expandDrawer}
-          >
-            <img src={popupicon} alt="popup" />
-          </span>
-        </div>
-      }
-      placement="right"
-      closable={false}
-      onClose={onCloseDrawer}
-      visible={visible}
-      getContainer={false}
-      style={{ position: "absolute" }}
-    >
-      <GenealogyDataTable
-        className={visible ? "drawer-collapse" : "popout-collapse"}
-        batchInfo={props.batchInfo}
-        limsBatchInfo={props.limsBatchInfo}
-        purchaseInfo={props.purchaseInfo}
-        processInput={props.processInput}
-        processOutput={props.processOutput}
-        type={props.type}
-        collapseKey={props.collapseKey}
-        setCollapseKey={props.setCollapseKey}
-      />
-    </Drawer>
-  );
+	return (
+		<Drawer
+			className="genealogy-drawer"
+			title={
+				<div className="drawer-heading">
+					<div className="drawer-title">
+						<img className="tree-type-icon" src={batchIcon} alt="tree node" />
+						<p>
+							{props.nodeTitle} - {props.type}
+						</p>
+						<span onClick={downloadFile}>
+							<DownloadOutlined />
+						</span>
+					</div>
+					<span
+						className="expand-drawer"
+						onClick={expandDrawer}
+						onKeyDown={expandDrawer}
+					>
+						<img src={popupicon} alt="popup" />
+					</span>
+				</div>
+			}
+			placement="right"
+			closable={false}
+			onClose={onCloseDrawer}
+			visible={visible}
+			getContainer={false}
+			style={{ position: "absolute" }}
+		>
+			<GenealogyDataTable
+				className={visible ? "drawer-collapse" : "popout-collapse"}
+				batchInfo={props.batchInfo}
+				limsBatchInfo={props.limsBatchInfo}
+				purchaseInfo={props.purchaseInfo}
+				processInput={props.processInput}
+				processOutput={props.processOutput}
+				type={props.type}
+				collapseKey={props.collapseKey}
+				setCollapseKey={props.setCollapseKey}
+			/>
+		</Drawer>
+	);
 }
 
 export default GenealogyDrawer;
