@@ -2,19 +2,20 @@ import { useEffect } from 'react';
 import { Layout } from 'antd';
 import { useDispatch } from 'react-redux';
 import { LogoutOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom';
 import mareanaLogo from '../../assets/mareana_logo.png';
 import { showNotification, toggleMenu } from '../../duck/actions/commonActions';
 import './style.scss';
 import Auth from '../../utils/auth';
+import { useHistory } from 'react-router-dom';
 import { adenabled } from '../../config/config';
+import { logoutUrl } from '../../services/loginService';
+import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 
 const { Header } = Layout;
 
 const HeaderBar = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-
 	useEffect(() => {
 		document.addEventListener('tokenExpired', () => {
 			if (localStorage.getItem('login_details')) {
@@ -23,9 +24,9 @@ const HeaderBar = () => {
 		})
 	}, [])
 
-	// const toggleCollapsed = () => {
-	// 	dispatch(toggleMenu());
-	// };
+	const toggleCollapsed = () => {
+		dispatch(toggleMenu());
+	};
 
 	const Logout = () => {
 		// LOGOUT API NOT WORKING
