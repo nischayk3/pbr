@@ -44,11 +44,9 @@ function TreePlot(props) {
 		let arrMat = [];
 		let arrBatch = [];
 		let arrMatDes = [];
-		let arrProType = [];
 		let material = [];
 		let batch = [];
 		let materialDisc = [];
-		let proType = [];
 		let pushMaterial = (item) => {
 			if (item.matNo.length > 0) {
 				material.push({
@@ -1341,19 +1339,13 @@ function TreePlot(props) {
 						.attr("class", function () {
 							if (isForward) {
 								if (multiPair.parent?.poNo) {
-									return multiPair.parent?.poNo
-										? "additionalParentLink"
-										: "additionalParentLink";
+									return "additionalParentLink";
 								}
 								if (multiPair.parent?.matNo) {
-									return multiPair.parent?.matNo
-										? "additionalParentLink"
-										: "additionalParentLink";
+									return "additionalParentLink";
 								}
 								if (multiPair.parent?.pur_ord_no) {
-									return multiPair.parent?.pur_ord_no
-										? "additionalParentLink"
-										: "additionalParentLink";
+									return "additionalParentLink";
 								}
 							}
 							if (isBackward) {

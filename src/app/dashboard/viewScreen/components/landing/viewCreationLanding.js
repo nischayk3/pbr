@@ -101,12 +101,12 @@ export default function Landing() {
 	const search = (value) => {
 		setSearched(true);
 		const tableData = viewList;
-		const filterTable = tableData.filter((o) =>
+		const filterTableSearch = tableData.filter((o) =>
 			Object.keys(o).some((k) =>
 				String(o[k]).toLowerCase().includes(value.toLowerCase())
 			)
 		);
-		setFilterTable(filterTable);
+		setFilterTable(filterTableSearch);
 	};
 
 	const getViewsList = async () => {
