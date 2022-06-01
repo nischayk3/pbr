@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { message, Table, Popconfirm } from "antd";
+import { Table } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import {
@@ -29,7 +28,7 @@ const ExclusionTable = ({
     return self.indexOf(value) === index;
   };
   const filterColumn = objkeys.filter(uniqueArr);
-  filterColumn.map((item, i) => {
+  filterColumn.forEach((item, i) => {
     columns.push({
       title: item.toUpperCase().replace("_", " "),
       dataIndex: item,

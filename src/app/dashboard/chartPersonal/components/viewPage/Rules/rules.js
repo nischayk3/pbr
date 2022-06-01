@@ -137,7 +137,7 @@ const rules = ({ postChartData, setPostChartData }) => {
       if (Number(id) !== 0) {
         const tempObj = {};
         const checkedList = [];
-        Object.entries(ruleList).map(([key, value]) => {
+        Object.entries(ruleList).forEach(([key, value]) => {
           value.map((ele) => {
             if (ele.applied === true) {
               checkedList.push(ele.rule_id);
@@ -215,7 +215,7 @@ const rules = ({ postChartData, setPostChartData }) => {
                           let html = item.rule_desc;
                           item &&
                             item.default_params &&
-                            Object.keys(item.default_params).map((key) => {
+                            Object.keys(item.default_params).forEach((key) => {
                               html = reactStringReplace(
                                 html,
                                 `<${key}>`,
