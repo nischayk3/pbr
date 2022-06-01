@@ -114,10 +114,10 @@ export default function Landing() {
 		try {
 			dispatch(showLoader());
 			const getViewRes = await getViews(req);
-			let viewRes = getViewRes["Data"];
-			viewRes = viewRes.reverse();
-			const lastEight = viewRes.slice(Math.max(viewRes.length - 8, 1));
-			setViewList(viewRes);
+			const viewRes = getViewRes["Data"];
+			const viewResRev = viewRes.reverse();
+			const lastEight = viewResRev.slice(Math.max(viewResRev.length - 8, 1));
+			setViewList(viewResRev);
 			setLastEightView(lastEight && lastEight.reverse());
 			dispatch(hideLoader());
 		} catch (error) {
