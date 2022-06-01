@@ -265,9 +265,9 @@ function Hierarchy() {
                         placeholder="Select Step"
                         style={{ width: "100%", borderRadius: "4px", right: "15px" }}
                     >
-                        {stepArray && stepArray.length > 0 ? stepArray.map((item, index) => (
+                        {stepArray && stepArray.length > 0 ? stepArray.map((item, i) => (
 
-                            <Option value={index} key={item.process_step}>
+                            <Option value={i} key={item.process_step}>
                                 {item.process_step}
                             </Option>
                         )) : <Option >
