@@ -65,7 +65,7 @@ export const putProcessStep = request => {
 
 export const getProcessStep = request => {
 	return Service.get(
-		BMS_APP_PYTHON_SERVICE + '/ds-process-step',
+		BMS_APP_PYTHON_SERVICE + '/ds-process-step/' + request.ds_name,
 		request,
 		request_headers
 	).then(
@@ -96,7 +96,7 @@ export const getProcessStepMap = request => {
 
 export const putProcessStepMap = request => {
 	return Service.put(
-		BMS_APP_PYTHON_SERVICE + '/ds-process-step-mapping',
+		BMS_APP_PYTHON_SERVICE + '/process-step-mapping',
 		request,
 		request_headers
 	).then(

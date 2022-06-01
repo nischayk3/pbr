@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Button, Col, Collapse, Popover, Row } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
-import InputField from "../../../../../components/InputField/InputField";
-import Modal from "../../../../../components/Modal/Modal";
 import CreateVariable from "./createVariable";
+import { Button, Col, Collapse, Row, Popover } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import "./style.scss";
 import MathFunction from "./mathFunction";
 import { MemoizedParameterTable } from "./parameterTable";
 import VariableCard from "./variableCard";
+import Modal from "../../../../../components/Modal/Modal";
+import InputField from "../../../../../components/InputField/InputField";
 
 const MathEditor = (props) => {
 	let variableData = [];
 
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
-
+	const selectedTableData = useSelector(
+		(state) => state.viewCreationReducer.selectedParamData
+	);
 	const selectedParameters = useSelector(
 		(state) => state.viewCreationReducer.loadResponse
 	);
@@ -38,7 +40,7 @@ const MathEditor = (props) => {
 		setViewJson,
 		viewSummaryBatch,
 		setViewSummaryBatch,
-		materialId
+		materialId,
 	} = props;
 
 	function callback(key) {
@@ -164,7 +166,7 @@ const MathEditor = (props) => {
 		}
 		variableData.push({
 			variableName: variableName,
-			id: count
+			id: count,
 		});
 		setCount(count + 1);
 		setVarData(variableData);
@@ -215,6 +217,7 @@ const MathEditor = (props) => {
 		setVariableName("");
 		setCreateNameModal(!createNameModal);
 	};
+
 
 	return (
 		<>
