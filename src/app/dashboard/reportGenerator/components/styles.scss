@@ -328,6 +328,10 @@
 .report-primary-btn:hover {
 	color: #486bc9 !important;
 }
+.report-primary-btn:disabled
+{
+	background-color: white !important;
+}
 
 .report-secondary-btn {
 	font-family: var(--primary-font-family) !important;

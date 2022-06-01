@@ -186,7 +186,7 @@ function ReportDesignerDynamicSections(props) {
                                                 <Tooltip placement="topLeft" title="Edit Section Name">    <EditOutlined style={{ marginTop: '7px', marginLeft: '0px', color: '#949494', fontSize: '16px' }} onClick={() => handleEdit(editable)} /> </Tooltip>
                                             </div>
                                             {name > 0 ?
-                                                <div className="add-chart" onClick={() => trackCharts(name)} ><span style={{ marginRight: '4px' }}>+</span>  Add Chart  </div> : <></>
+                                                <div className="add-chart" onClick={() => trackCharts(name)} ><span style={{ marginRight: '4px' }}><PlusOutlined style={{ fontSize: '14px' }} /></span>  Add chart  </div> : <></>
                                             }
                                             {name > 0 ?
                                                 <div style={{ marginLeft: '28%' }}>
@@ -205,7 +205,15 @@ function ReportDesignerDynamicSections(props) {
                                         </div>
                                         {!addedKeys[name] ?
                                             <center>
-                                                <div style={{ height: '100px', width: '140px', opacity: '1px', border: '1px dashed #D9D9D9', padding: '0 10px', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => sectionAddKey(name + 1)}> <PlusOutlined style={{ color: 'gray', marginTop: '25px', fontSize: '16px' }} /> <br />Add key and value</div>
+                                                <div className="sectionTable">
+                                                    <div
+                                                        className='create-new'
+                                                        onClick={() => sectionAddKey(name + 1)}                                                     >
+                                                        <PlusOutlined />
+                                                        <p>Add key and value</p>
+                                                    </div>
+                                                </div>
+                                                {/* <div style={{ height: '100px', width: '140px', opacity: '1px', border: '1px dashed #D9D9D9', padding: '0 10px', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => sectionAddKey(name + 1)}> <PlusOutlined style={{ color: 'gray', marginTop: '25px', fontSize: '16px' }} /> <br />Add key and value</div> */}
                                             </center> :
                                             <></>
                                         }
@@ -270,7 +278,12 @@ function ReportDesignerDynamicSections(props) {
                                     {showAddSection ? <></> :
                                         <p disabled={props.show}>
                                             <center>
-                                                <div style={{ height: '120px', width: '150px', opacity: '1px', border: '1px dashed #D9D9D9', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => add()}> <PlusOutlined twoToneColor="#eb2f96" style={{ marginTop: '40px' }} /> <br />Add Section</div>
+                                                <div
+                                                    className='create-new'
+                                                    onClick={() => add()}                                    >
+                                                    <PlusOutlined />
+                                                    <p>Add section</p>
+                                                </div>
                                             </center>
                                             {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: -10, right: -10, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> */}
                                         </p>
