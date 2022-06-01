@@ -14,13 +14,16 @@
 		line-height: 19px;
 		color: var(--primary-color);
 	}
+
 	.panel-delete-button {
 		margin-left: 97%;
 	}
+
 	.hierarchy-collapse {
 		margin-left: 20px;
 	}
 }
+
 .landing-modal {
 	.ant-modal-content {
 		width: 787px;
@@ -28,6 +31,7 @@
 		background: #ffffff;
 		border-radius: 4px;
 	}
+
 	.ant-modal-footer {
 		border-top: 0px;
 	}

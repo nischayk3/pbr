@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './style.scss';
 //antd imports
 import {
-	Card,
-	Row,
-	Col,
 	Button,
 	Menu,
 	Dropdown,
-	message,
 	Modal,
 	Tabs,
 } from 'antd';
@@ -99,7 +95,6 @@ const ChartPersonal = () => {
 		</Menu>
 	);
 
-	const handleOk = () => {};
 	const handleCancel = () => {
 		setAlertModal(false);
 	};
