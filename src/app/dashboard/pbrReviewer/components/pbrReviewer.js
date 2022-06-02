@@ -20,15 +20,15 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 function PbrReviewer() {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([])
-  const [searchText, setSearchText] = useState("");
+ // const [searchText, setSearchText] = useState("");
   //const [viewSearch, setViewSearch] = useState(false);
   const [arr, setArr] = useState([]);
  // const searchViewData = useRef([]);
  // const ref = useRef(null);
-  const [searchedColumn, setSearchedColumn] = useState("");
+ // const [searchedColumn, setSearchedColumn] = useState("");
   const [pieChartData, setPieChartData] = useState([0, 0]);
   const history = useHistory();
-  const refSearchInput = useRef();
+ // const refSearchInput = useRef();
   useEffect(() => {
     cardTableData()
   }, []);
