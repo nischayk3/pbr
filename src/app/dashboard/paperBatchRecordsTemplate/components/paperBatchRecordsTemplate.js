@@ -396,10 +396,10 @@ function PaperBatchRecordsTemplate() {
             });
         } else if (field === 'area') {
             obj.areaValue = e.target.value;
-            setAreasMapObject({
-                ...areasMapObject,
-                areaValue: e.target.value,
-            });
+            // setAreasMapObject({
+            //     ...areasMapObject,
+            //     areaValue: e.target.value,
+            // });
         } else if (field === 'x1') {
             obj.coords[0] = e.target.value;
             let tempArr = [...areasMapObject.coords];

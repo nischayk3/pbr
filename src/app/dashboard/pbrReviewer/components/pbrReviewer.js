@@ -27,32 +27,14 @@ const { Search } = Input;
 function PbrReviewer() {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([])
-  const [templateColumns, setTemplateColumns] = useState([])
   const [searchText, setSearchText] = useState("");
-  const [tableDataSource, setTableDataSource] = useState([]);
-  const [chartList, setChartList] = useState([]);
-  const [viewSearch, setViewSearch] = useState(false);
-  const [tilesData, setTilesData] = useState([]);
-  const [searchTitle, setSearchTitle] = useState("");
-  const [userApproval, setUserApproval] = useState([]);
   const searchViewData = useRef([]);
   const ref = useRef(null);
-
-  const [tableDataSourceFiltered, setTableDataSourceFiltered] =
-    useState(null);
-  const [searched, setSearched] = useState(false);
   const [searchedColumn, setSearchedColumn] = useState("");
-  const [toppings, setToppings] = useState(null)
   const [toppingsArray, setToppingsArray] = useState([])
-  const [showFilterData, setShowFilterData] = useState("");
   // const [showApproved, setshowApproved] = useState("");
   const [pieChartData, setPieChartData] = useState([0, 0]);
-  const [checked, setChecked] = useState(false);
-  const [users, setUser] = useState([])
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [userId, setUserId] = useState(null)
+
   const history = useHistory();
   const refSearchInput = useRef();
   useEffect(() => {
@@ -94,25 +76,6 @@ function PbrReviewer() {
 
   };
 
-  const searchTable = value => {
-    const filterData = searchViewData.current.filter(o =>
-      Object.keys(o).some(k =>
-        String(o[k]).toLowerCase().includes(value.toLowerCase())
-      )
-
-    );
-    setTemplateData(filterData);
-
-  };
-  const onSearchChange = e => {
-    if (e.target.value === '') {
-      setTemplateData(searchViewData.current);
-    }
-  };
-
-  const onFocus = () => {
-    setViewSearch(true);
-  };
 
   const closeTableView = e => {
     if (ref.current && !ref.current.contains(e.target)) {
@@ -157,24 +120,7 @@ function PbrReviewer() {
 
 
   // }
-  const getTilesData = async () => {
-    let req = {};
-    try {
-      dispatch(showLoader());
-      const tilesResponse = await getCountData(req);
-      console.log(tilesResponse);
 
-      if (tilesResponse['status-code'] == 200) {
-        setTilesData(tilesResponse['Data']);
-        setUserApproval(tilesResponse['counts'])
-        dispatch(hideLoader());
-      }
-
-    } catch (error) {
-      dispatch(hideLoader());
-      dispatch(showNotification('error', error.message));
-    }
-  };
 
   const chart = async (res) => {
 
@@ -270,16 +216,7 @@ function PbrReviewer() {
   // };
 
 
-  const handleChange = (e) => {
-    let isChecked = e.target.checked;
-    if (e.target.checked === true) {
-      // alert("hi")
-    }
-  }
 
-
-
-  const getExcelFile = () => { };
 
   // getExcelFile = (value) => {
   //   var today = new Date();
@@ -464,76 +401,7 @@ function PbrReviewer() {
     // },
 
   ]
-  const data1 = [
-    {
-      file_path: 'Batch Record Example 1.pdf',
-      key: 'Product ; value',
-      value: '001',
-      actual_value: 'snippet_Batch_Record_Example_1_1004.png',
-      id: '5',
-      status: <Checkbox
-        onChange={handleCheck} />,
-      confidence: 'High',
-      site: "US01",
-      product: 'New Product 001',
-      batch: 'B001',
-      reference_fields: 'asgdsagdsad.pdf',
-
-
-    },
-    {
-      file_path: 'Batch Record Example 1.pdf',
-      attribute_name: 'Balance Readout',
-      key: 'Product ; value',
-      value: '002',
-      actual_value: 'snippet_Batch_Record_Example_1_1004.png',
-      id: '1',
-      status: <Checkbox
-        onChange={handleCheck} />,
-      confidence: 'High',
-      site: "US01",
-      product: 'New Product 002',
-      batch: 'B001',
-      reference_fields: 'asgdsagdsad.pdf',
-
-
-    },
-    {
-      file_path: 'Batch Record Example 1.pdf',
-      attribute_name: 'Balance Readout',
-      key: 'Product ; value',
-      value: '003',
-      actual_value: 'snippet_Batch_Record_Example_1_1004.png',
-      id: '2',
-      status: <Checkbox
-        onChange={handleCheck} />,
-      confidence: 'High',
-      site: "US01",
-      product: 'New Product 003',
-      batch: 'B001',
-      reference_fields: 'asgdsagdsad.pdf',
-
-
-    },
-    {
-      file_path: 'Batch Record Example 1.pdf',
-      attribute_name: 'Balance Readout',
-      key: 'Product ; value',
-      value: '004',
-      actual_value: 'snippet_Batch_Record_Example_1_1004.png',
-      id: '3',
-      status: <Checkbox
-        onChange={handleCheck} />,
-      confidence: 'High',
-      site: "US01",
-      product: 'New Product 004',
-      batch: 'B001',
-      reference_fields: 'asgdsagdsad.pdf',
-
-
-    },
-
-  ]
+  
   // let colors = this.state.pieData.map(i => "");
   // if (selectedPart.length > 0) {
   //   colors = this.state.pieData.map(i => {
