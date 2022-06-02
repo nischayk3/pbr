@@ -684,7 +684,6 @@ function ReportDesignerNew(props) {
 		return rowObject.isActive ? true : false;
 	}
 
-
 	return (
 		<div className='custom-wrapper'>
 			<div className='sub-header' style={{ paddingRight: '24px' }}>

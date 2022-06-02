@@ -42,16 +42,16 @@ function ReportDesignerDynamicSections(props) {
     const extract = (str) => {
         let s = str.length - 1
         let chart_name = ''
-        function reverse(s) {
+        function reverse(ss) {
             var o = '';
-            for (var i = s.length - 1; i >= 0; i--)
-                o += s[i];
+            for (var i = ss.length - 1; i >= 0; i--)
+                o += ss[i];
             return o;
         }
         let b = false
         for (let i = s - 1; i >= 0; i--) {
             if (str[i] == '>') {
-                b = false
+                // b = false
                 return reverse(chart_name)
             }
             if (b) {
@@ -65,9 +65,12 @@ function ReportDesignerDynamicSections(props) {
     const chartAddCheck = (chartName, section) => {
         section = section + 1
         if (`${section}` in addedCharts)
-            if (addedCharts[`${section}`].includes(chartName)) {
-                return true
-            }
+            if (addedCharts[`${section}`] != null)
+                if (addedCharts[`${section}`].includes(chartName)) {
+                    return true
+                }
+                else
+                    return false
             else
                 return false
         else
@@ -81,6 +84,7 @@ function ReportDesignerDynamicSections(props) {
         dispatch(showLoader())
         section = section + 1
         if (`${section}` in addedCharts) {
+
             if (addedCharts[`${section}`].includes(chartName)) {
                 dispatch(showNotification('error', 'Chart already added'))
                 dispatch(hideLoader())
@@ -89,23 +93,27 @@ function ReportDesignerDynamicSections(props) {
                 addedCharts[`${section}`].push(chartName)
                 setAddedCharts(addedCharts)
                 dispatch(hideLoader())
-                props.setSectionCharts(chartName, addedCharts)
+
             }
         }
         else {
+
             if (addedCharts && !addedCharts[`${section}`]) {
                 addedCharts[`${section}`] = []
                 addedCharts[`${section}`].push(chartName)
+                props.setSectionCharts(chartName, addedCharts)
                 setAddedCharts(addedCharts)
                 dispatch(hideLoader())
             }
             else {
+
                 addedCharts[`${section}`].push(chartName)
                 setAddedKeys(addedCharts)
             }
             dispatch(hideLoader())
         }
 
+        props.setSectionCharts(chartName, addedCharts)
 
     }
 
@@ -162,7 +170,6 @@ function ReportDesignerDynamicSections(props) {
         setAddedKeys(props.sectionKeys)
     }
 
-
     return (
         <div className="reportDesigner-dynamicSections bg-white">
             <Card className="reportTableCard" title="Report Table" >
@@ -205,7 +212,7 @@ function ReportDesignerDynamicSections(props) {
                                             <center>
                                                 <div className="sectionTable">
                                                     <div
-                                                        className='create-new'
+                                                        className='create-new-report'
                                                         onClick={() => sectionAddKey(name + 1)}                                                     >
                                                         <PlusOutlined />
                                                         <p>Add key and value</p>
@@ -277,7 +284,7 @@ function ReportDesignerDynamicSections(props) {
                                         <p disabled={props.show}>
                                             <center>
                                                 <div
-                                                    className='create-new'
+                                                    className='create-new-report'
                                                     onClick={() => add()}                                    >
                                                     <PlusOutlined />
                                                     <p>Add section</p>
