@@ -43,7 +43,7 @@ export const getPbrReviewerData = (_queryParam) => {
 	);
 };
 export const updateApprove = (_queryParam) => {
-	return Service.get(
+	return Service.put(
 		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr',
 		_queryParam
 	).then(
