@@ -25,7 +25,7 @@ const PbrUpdate = () => {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([]);
   const [array, setArray] = useState([]);
- 
+  //const { id } = props.match.params ;
 //  const [loadstate, setLoadstate] = useState("");
   const location = useLocation();
   // const cardTableData = async () => {
@@ -65,12 +65,12 @@ const PbrUpdate = () => {
   //   this.setState({ filterTable });
   // };
 
-  const arr = async () => {
-    let obj = ''
-    const tableResponse = await getPbrReviewerData(obj);
-    setTemplateData(tableResponse.Data);
-    console.log(tableResponse.Data);
-  }
+  // const arr = async () => {
+  //   let obj = ''
+  //   const tableResponse = await getPbrReviewerData(obj);
+  //   setTemplateData(tableResponse.Data);
+  //   console.log(tableResponse.Data);
+  // }
   useEffect(() => {
 
     loadTableData();
@@ -79,7 +79,7 @@ const PbrUpdate = () => {
 
   const loadTableData = async (props) => {
 
-    
+    let antdDataTable = [];
     
 
     const params = queryString.parse(location.search);
@@ -87,18 +87,20 @@ const PbrUpdate = () => {
     //let antdDatatable = [...array]
     //antdDatatable.push(params.id)
    //setArray(antdDatatable)
-   const viewRes = await getPbrReviewerData(req, headers);
-   viewRes.data.forEach((item, id) => {
-    let antdObj = {};
-    antdObj['id'] = params.id;
+   const viewRes = await getPbrReviewerData(params);
+ 
+    viewRes.Data.forEach((item, key) => {
+      let antdObj = {};
+    antdObj['key'] = params.id;
     antdObj['recorded_date'] = item.recorded_date;
     antdObj['recorded_time'] = item.recorded_time;
     antdObj['snippet_value'] = item.snippet_value;
     antdObj['uom'] = item.uom;
     antdDataTable.push(antdObj);
     console.log(antdObj);
+    
   });
-   
+
   };
 
 
