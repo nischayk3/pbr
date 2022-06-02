@@ -27,6 +27,7 @@ import {
 	getBatchInfo,
 	getForwardData,
 	getProcessInfo,
+	pbrApproval,
 	pbrFileUpload
 } from '../../../../services/genealogyService';
 import popupicon from '../../../../assets/images/popup.png';
@@ -60,6 +61,7 @@ function Genealogy() {
 	const [isDrawerRef, setIsDrawerRef] = useState(false);
 	const [panes, setPanes] = useState(initialPanes);
 	const [limsBatchInfo, setLimsBatchInfo] = useState([]);
+	const [pbrBatchData, setPbrBatchData] = useState([]);
 	const [showView, setShowView] = useState(false);
 	const [nodeType, setNodeType] = useState('');
 	const [limsBatch, setLimsBatch] = useState('');
@@ -123,8 +125,13 @@ function Genealogy() {
 					batch_id: nodeSplit[2]
 					// 'ABV4103',
 				};
+				let _reqPbrBatch = {
+					productNum: node.nodeData.matNo,
+					batchNum: node.nodeData.batchNo
+				}
 				setLimsBatch(nodeSplit[2]);
 				getNodeBatchInfo(_reqBatchInfo);
+				getPBRData(_reqPbrBatch)
 			} else if (node.nodeType === 'Process Order') {
 				setNodeType(node.nodeType);
 				let _reqProcessInput = {
@@ -144,14 +151,14 @@ function Genealogy() {
 				getNodeProcessInput(_reqProcessInput);
 				getNodeProcessOutput(_reqProcessOutput);
 			} else if (node.nodeType === 'Purchase Order') {
-				let purchaseInfo = {
+				const _purchaseInfo = {
 					node_id: node.nodeData.nodeId,
 					plant: node.nodeData.plant,
 					purchase_id: node.nodeData.pur_ord_no,
 					vendor_no: node.nodeData.vendor_no
 				};
+				setPurchaseInfo(_purchaseInfo);
 				setNodeTitle(node.nodeData.pur_ord_no);
-				setPurchaseInfo(purchaseInfo);
 				setIsDrawerOpen(true);
 				setIsDrawerRef(false);
 				setNodeType(node.nodeType);
@@ -319,6 +326,27 @@ function Genealogy() {
 			const processResOutput = await getProcessInfo(_reqProcessInfo);
 			if (processResOutput.length > 0) {
 				setProcessOutput(processResOutput);
+			}
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification('error', 'No Data Found'));
+		}
+	};
+	/**
+	 *TODO: get PBR Data output of node
+	 */
+	const getPBRData = async _reqPbrBatch => {
+		console.log("getPBRData", _reqPbrBatch);
+		try {
+			dispatch(showLoader());
+			const pbrRes = await pbrApproval(_reqPbrBatch);
+			console.log("pbrRes", pbrRes, pbrRes.Data)
+			if (pbrRes.Status === 200) {
+				setPbrBatchData(pbrRes.Data);
+			} else if (pbrRes.Status === 400 && pbrRes.Status === 401) {
+				setPbrBatchData();
+				//	dispatch(showNotification('error', batchRes.detail));
 			}
 			dispatch(hideLoader());
 		} catch (error) {
@@ -506,7 +534,7 @@ function Genealogy() {
 		setIsUploadVisible(false);
 		setUploading(false);
 	};
-
+	console.log("props.pbrBatchData111111", pbrBatchData)
 	return (
 		<div className='custom-wrapper'>
 			<BreadCrumbWrapper />
@@ -569,6 +597,7 @@ function Genealogy() {
 								isDrawer={isDrawerVisible}
 								drawerClose={onCloseDrawer}
 								limsBatchInfo={limsBatchInfo}
+								pbrBatchData={pbrBatchData}
 								purchaseInfo={purchaseInfo}
 								batchInfo={batchInfo}
 								processInput={processInput}
@@ -645,6 +674,7 @@ function Genealogy() {
 								className={isDrawer ? 'drawer-collapse' : 'popout-collapse'}
 								type={nodeType}
 								limsBatchInfo={limsBatchInfo}
+								pbrBatchData={pbrBatchData}
 								purchaseInfo={purchaseInfo}
 								batchInfo={batchInfo}
 								processInput={processInput}
