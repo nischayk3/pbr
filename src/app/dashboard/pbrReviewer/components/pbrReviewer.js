@@ -34,6 +34,7 @@ function PbrReviewer() {
   const [toppingsArray, setToppingsArray] = useState([])
   // const [showApproved, setshowApproved] = useState("");
   const [pieChartData, setPieChartData] = useState([0, 0]);
+  const [checked, setChecked] = useState(false);
 
   const history = useHistory();
   const refSearchInput = useRef();
@@ -79,7 +80,7 @@ function PbrReviewer() {
 
   const closeTableView = e => {
     if (ref.current && !ref.current.contains(e.target)) {
-      setViewSearch(false);
+      // setViewSearch(false);
       setTemplateData(searchViewData.current);
     }
   };
@@ -99,14 +100,14 @@ function PbrReviewer() {
 
   };
 
-  function globalTemplateSearch(value) {
-    const filterdDataArr = tableDataSource.filter((o) =>
-      Object.keys(o).some((k) =>
-        String(o[k]).toLowerCase().includes(value.toLowerCase())
-      )
-    );
-    setTableDataSourceFiltered(filterdDataArr);
-  }
+  // function globalTemplateSearch(value) {
+  //   const filterdDataArr = tableDataSource.filter((o) =>
+  //     Object.keys(o).some((k) =>
+  //       String(o[k]).toLowerCase().includes(value.toLowerCase())
+  //     )
+  //   );
+  //   setTableDataSourceFiltered(filterdDataArr);
+  // }
 
   // function showApproved(id){
   //   let item=users[id-1];
@@ -181,7 +182,7 @@ function PbrReviewer() {
 
     };
     if (event.target.checked) {
-      setToppings(item);
+      // setToppings(item);
       if (toppingsArray.map(val => val["type"]).indexOf(item["type"]) == -1) setToppingsArray([...toppingsArray, item]);
     } else {
       setToppingsArray(toppingsArray.filter(val => val["type"] != item["type"]));
