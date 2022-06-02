@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import "./style.scss";
 import {
   ClusterOutlined,
   BarChartOutlined,
@@ -24,97 +25,34 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 const cpvMenu = [
   {
     key: "view_creation",
-    icon: <ClusterOutlined style={{ fontSize: "23px" }} />,
+    icon: <ClusterOutlined className="menu-icons" />,
     title: "View Creation",
     linkTo: "/dashboard/view_creation",
   },
   {
     key: "chart_personalization",
-    icon: <BarChartOutlined style={{ fontSize: "23px" }} />,
+    icon: <BarChartOutlined className="menu-icons" />,
     title: "Chart Personalization",
     linkTo: "/dashboard/chart_personalization",
   },
   {
     key: "genealogy",
-    icon: <PartitionOutlined style={{ fontSize: "23px" }} />,
+    icon: <PartitionOutlined className="menu-icons" />,
     title: "Genealogy",
     linkTo: "/dashboard/genealogy",
   },
   {
-<<<<<<< HEAD
     key: "workflow",
     icon: <FileDoneOutlined style={{ fontSize: "26px" }} />,
     title: "Workflow",
     linkTo: "/dashboard/workflow",
-=======
-    key: "audit_trail_report",
-    icon: <FileSearchOutlined style={{ fontSize: "23px" }} />,
-    title: "Audit Trail Report",
-    linkTo: "/dashboard/audit_trail_report",
   },
-  {
-    key: "paper batch records",
-    icon: <FileProtectOutlined style={{ fontSize: "23px" }} />,
-    title: "Paper Batch Records",
-    linkTo: "/dashboard/paper_batch_records",
-  },
-  {
-    key: "pbr_reviewer",
-    icon: <LayoutOutlined style={{ fontSize: "23px" }} />,
-    title: "Pbr Reviewer",
-    linkTo: "/dashboard/pbr_reviewer",
-  },
-  {
-    key: "pbr_update",
-    icon: <LayoutOutlined style={{ fontSize: "23px" }} />,
-    title: "Pbr Update",
-    linkTo: "/dashboard/pbr_update",
-  },
-  {
-    key: "data_science_studio",
-    icon: <CodeOutlined style={{ fontSize: "23px" }} />,
-    title: "Data Science Studio",
-    linkTo: "/dashboard/pythonNoteBook",
-  },
-  {
-    key: "analysis",
-    icon: <AreaChartOutlined style={{ fontSize: "23px" }} />,
-    title: "Analysis",
-    linkTo: "/dashboard/analysis",
-  },
-  {
-    key: "user-roles-and-access",
-    icon: <TeamOutlined style={{ fontSize: "23px" }} />,
-    title: "User Roles",
-    linkTo: "/dashboard/user-roles-and-access",
-  },
-  {
-    key: "hierarchy",
-    icon: <DeploymentUnitOutlined style={{ fontSize: "23px" }} />,
-    title: "Hierarchy",
-    linkTo: "/dashboard/molecule_hierarchy_configuration",
-  },
-  {
-    key: "data_load",
-    icon: <SolutionOutlined style={{ fontSize: "23px" }} />,
-    title: "Data Load",
-    linkTo: "/dashboard/data_load",
-  },
-  {
-    key: "system_error_report",
-    icon: <AppstoreOutlined style={{ fontSize: "23px" }} />,
-    title: "System Error Report",
-    linkTo: "/dashboard/system_error_report",
->>>>>>> 00108f19e124d2c7488b385cce57012f8ad7ec4a
-  },
-
 ];
 
 const Sidebar = () => {
@@ -128,11 +66,12 @@ const Sidebar = () => {
       onMouseOver={mouseHover}
       onMouseLeave={() => setCollapsed(true)}
       id="sidebar"
+      className={!collapsed ? "collapse-side-bar" : ""}
     >
       <Menu theme="dark" mode="inline">
         <Menu.Item
           key="dashboard"
-          icon={<AppstoreOutlined style={{ fontSize: "23px" }} />}
+          icon={<AppstoreOutlined className="menu-icons" />}
           id="dashboard"
         >
           <Link to="/dashboard/dashboard">Dashboard</Link>
@@ -140,7 +79,7 @@ const Sidebar = () => {
         <SubMenu
           key="sub2"
           mode="inline"
-          icon={<NodeIndexOutlined style={{ fontSize: "23px" }} />}
+          icon={<NodeIndexOutlined className="menu-icons" />}
           title="CPV"
         >
           {cpvMenu.map((item) => (
@@ -152,12 +91,12 @@ const Sidebar = () => {
         <SubMenu
           key="sub3"
           mode="inline"
-          icon={<SisternodeOutlined style={{ fontSize: "23px" }} />}
+          icon={<SisternodeOutlined className="menu-icons" />}
           title="Configuration"
         >
           <Menu.Item
             key="hierarchy"
-            icon={<DeploymentUnitOutlined style={{ fontSize: "23px" }} />}
+            icon={<DeploymentUnitOutlined className="menu-icons" />}
             id="hierarchy"
           >
             <Link to="/dashboard/molecule_hierarchy_configuration">
@@ -168,12 +107,12 @@ const Sidebar = () => {
         <SubMenu
           key="sub4"
           mode="inline"
-          icon={<FileSyncOutlined style={{ fontSize: "23px" }} />}
+          icon={<FileSyncOutlined className="menu-icons" />}
           title="Reports"
         >
           <Menu.Item
             key="audit"
-            icon={<FileSearchOutlined style={{ fontSize: "23px" }} />}
+            icon={<FileSearchOutlined className="menu-icons" />}
             id="audit"
           >
             <Link to="/dashboard/audit_trail_report">Audit Trail</Link>
@@ -181,14 +120,14 @@ const Sidebar = () => {
         </SubMenu>
         <Menu.Item
           key="report_designer"
-          icon={<AppstoreAddOutlined style={{ fontSize: "23px" }} />}
+          icon={<AppstoreAddOutlined className="menu-icons" />}
           id="1"
         >
           <Link to="/dashboard/report_designer">Report designer</Link>
         </Menu.Item>
         <Menu.Item
           key="report_generator"
-          icon={<BlockOutlined style={{ fontSize: "23px" }} />}
+          icon={<BlockOutlined className="menu-icons" />}
           id="1"
         >
           <Link to="/dashboard/dashboard">Report generator</Link>
@@ -196,19 +135,19 @@ const Sidebar = () => {
         <SubMenu
           key="sub5"
           mode="inline"
-          icon={<AreaChartOutlined style={{ fontSize: "23px" }} />}
+          icon={<AreaChartOutlined className="menu-icons" />}
           title="Analytics"
         >
           <Menu.Item
             key="data_science_studio"
-            icon={<CodeOutlined style={{ fontSize: "23px" }} />}
+            icon={<CodeOutlined className="menu-icons" />}
             id="data_science_studio"
           >
             <Link to="/dashboard/pythonNoteBook">Data Science Studio</Link>
           </Menu.Item>
           <Menu.Item
             key="analysis"
-            icon={<FundOutlined style={{ fontSize: "23px" }} />}
+            icon={<FundOutlined className="menu-icons" />}
             id="analysis"
           >
             <Link to="/dashboard/analysis">Auto ML analytics</Link>
@@ -217,19 +156,19 @@ const Sidebar = () => {
         <SubMenu
           key="sub6"
           mode="inline"
-          icon={<FileProtectOutlined style={{ fontSize: "23px" }} />}
+          icon={<FileProtectOutlined className="menu-icons" />}
           title="Paper batch records"
         >
           <Menu.Item
             key="paper batch records"
-            icon={<DiffOutlined style={{ fontSize: "23px" }} />}
+            icon={<DiffOutlined className="menu-icons" />}
             id="paper batch records"
           >
             <Link to="/dashboard/paper_batch_records">Create template</Link>
           </Menu.Item>
           <Menu.Item
             key="pbr_reviewer"
-            icon={<CheckCircleOutlined style={{ fontSize: "23px" }} />}
+            icon={<CheckCircleOutlined className="menu-icons" />}
             id="pbr_reviewer"
           >
             <Link to="/dashboard/pbr_reviewer">Approve</Link>
@@ -237,21 +176,21 @@ const Sidebar = () => {
         </SubMenu>
         <Menu.Item
           key="user-roles-and-access"
-          icon={<TeamOutlined style={{ fontSize: "23px" }} />}
+          icon={<TeamOutlined className="menu-icons" />}
           id="user-roles-and-access"
         >
           <Link to="/dashboard/user-roles-and-access">Roles and access</Link>
         </Menu.Item>
         {/* <Menu.Item
           key="settings"
-          icon={<ControlOutlined style={{ fontSize: "23px" }} />}
+          icon={<ControlOutlined className="menu-icons" />}
           id="settings"
         >
           <Link to="/dashboard/audit_trail_report">Settings</Link>
         </Menu.Item>
         <Menu.Item
           key="help"
-          icon={<QuestionCircleOutlined style={{ fontSize: "23px" }} />}
+          icon={<QuestionCircleOutlined className="menu-icons" />}
           id="help"
         >
           <Link to="/dashboard/audit_trail_report">Help</Link>
