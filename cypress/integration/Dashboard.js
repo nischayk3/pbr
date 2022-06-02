@@ -31,7 +31,8 @@ describe('chart Personalization', () => {
         cy.get(':nth-child(1) > :nth-child(2) > :nth-child(1) > .ant-input').clear();
         cy.get(':nth-child(1) > :nth-child(2) > :nth-child(1) > .ant-input').type('new dashboard');
         cy.get('.ant-input-wrapper > .ant-input').click();
-        cy.get('[data-row-key="0"] > :nth-child(1)').click();
+        cy.wait(7000)
+        cy.get('[data-row-key="0"] > :nth-child(1)').click({force:true});
         cy.get('.ant-modal-footer > .ant-btn > span').click();
         cy.get('[style="margin-left: 20px; margin-right: 20px;"] > .anticon > svg > path').click({force:true});
         cy.get('.select_field > .ant-select > .ant-select-selector').click();
