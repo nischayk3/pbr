@@ -54,12 +54,9 @@ function ParameterLookup(props) {
 			if (moleculeRes.statuscode === 200) {
 				setMoleculeList(moleculeRes.data);
 				dispatch(hideLoader());
-			} else if (moleculeRes.Status === 401) {
+			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
 				dispatch(hideLoader());
-				dispatch(showNotification("error", moleculeRes.Message));
-			} else if (moleculeRes.Status === 400) {
-				dispatch(hideLoader());
-				dispatch(showNotification("error", moleculeRes.Message));
+				dispatch(showNotification("error", "No Data Found"));
 			} else {
 				dispatch(hideLoader());
 				dispatch(showNotification("error", moleculeRes.Message));
@@ -71,6 +68,9 @@ function ParameterLookup(props) {
 	};
 
 	useEffect(() => {
+		console.log("materialsList", materialsList)
+		console.log("JSON.stringify(materialsList)", JSON.stringify(materialsList))
+		console.log(" JSON.parse(JSON.stringify(materialsList))", JSON.parse(JSON.stringify(materialsList)))
 		tempMaterialList.current = JSON.parse(JSON.stringify(materialsList));
 	}, [materialsList]);
 
@@ -105,14 +105,11 @@ function ParameterLookup(props) {
 				if (paramTreeRes.data.mol_batches.length > 0) {
 					setViewSummaryBatch(paramTreeRes.data.mol_batches);
 				}
-			} else if (paramTreeRes.statuscode === 401) {
-				dispatch(showNotification("error", "Filter -", paramTreeRes.Message));
-				dispatch(hideLoader());
-			} else if (paramTreeRes.statuscode === 400) {
+			} else if (paramTreeRes.statuscode === 401 && paramTreeRes.statuscode === 400) {
 				dispatch(showNotification("error", "Filter -", paramTreeRes.Message));
 				dispatch(hideLoader());
 			} else if (paramTreeRes.statuscode === 404) {
-				dispatch(showNotification("error", "Filter -", paramTreeRes.Message));
+				dispatch(showNotification("error", "Filter - No Data found",));
 				dispatch(hideLoader());
 			}
 			dispatch(hideLoader());

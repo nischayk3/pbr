@@ -21,7 +21,9 @@ const Login = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	useEffect(() => {
-		localStorage.clear()
+		if (localStorage.getItem('test_enabled') == null) {
+			localStorage.clear()
+		}
 	}, [])
 
 	const onFinish = async values => {

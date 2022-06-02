@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
-	Card,
 	Row,
 	Col,
 	Button,
-	Menu,
-	Dropdown,
-	message,
-	Modal,
 	Tabs,
 	DatePicker,
 	TimePicker,
@@ -18,11 +13,9 @@ import {
 import SelectField from '../../../../../components/SelectField/SelectField';
 import InputField from '../../../../../components/InputField/InputField';
 import { ArrowRightOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import './styles.scss';
 
 const { TabPane } = Tabs;
-const { RangePicker } = DatePicker;
 const alertList = ['Limits', 'Rules', 'Threshold'];
 const scheduleList = ['Repeat Once', 'Daily', 'Weekly', 'Monthly'];
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
@@ -40,7 +33,7 @@ const alertEvaluation = () => {
 	const handleSelectScheduleChange = e => {
 		setSelectedSchedule(e);
 	};
-	const onChangeTimePicker = (time, timeString) => {};
+	const onChangeTimePicker = (time, timeString) => { };
 	const onChangeRadioButton = e => {
 		setRadioValue(e.target.value);
 	};
