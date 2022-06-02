@@ -14,9 +14,6 @@ const MathEditor = (props) => {
 	let variableData = [];
 
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
-	const selectedTableData = useSelector(
-		(state) => state.viewCreationReducer.selectedParamData
-	);
 	const selectedParameters = useSelector(
 		(state) => state.viewCreationReducer.loadResponse
 	);
