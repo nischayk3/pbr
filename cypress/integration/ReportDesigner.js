@@ -30,35 +30,33 @@ describe("Report", () => {
     cy.get('.create-new').click();
     cy.get('.ant-input').clear();
     cy.get('.ant-input').type('Report');
-    cy.get('#rc_select_0')
-    cy.get('#rc_select_0').type('v238{enter}');
-    // cy.get(':nth-child(4) > .ant-select > .ant-select-selector').click();
-    // cy.get('[style="height: 888px; position: relative; overflow: hidden;"] > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
-    // cy.get('.reportDesigner-dynamicSections > .ant-card > .ant-card-head').click();
-    // cy.get('center > div > .anticon > svg').click();
-    // cy.get('[style="border: 1px solid rgb(72, 107, 201); margin-bottom: 30px; min-height: 160px; border-radius: 4px; margin-top: 20px;"]').click();
-    // cy.get('#report-generator-form_response_0_sectionName').clear();
-    // cy.get('#report-generator-form_response_0_sectionName').type('Titlepage');
-    // cy.get('center > div > .anticon > svg').click();
-    // cy.get('.add-row-btn').click();
-    // cy.get('#report-generator-form_response_0_dymamic_rows_0_keyName').click();
-    // cy.get('[style="border: 1px solid rgb(72, 107, 201); margin-bottom: 30px; min-height: 160px; border-radius: 4px; margin-top: 20px;"] > :nth-child(5) > .anticon > svg').click();
-    // cy.get(':nth-child(2) > [style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;"] > [style="display: grid; grid-template-columns: 1fr 1fr;"] > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content').click();
-    // cy.get('#report-generator-form_response_1_sectionName').clear();
-    // cy.get('#report-generator-form_response_1_sectionName').type('Summary');
-    // cy.get('center > div > .anticon > svg').click();
-    // cy.get(':nth-child(2) > .ant-space > .ant-space-item > .dynamicSections-table > .dynamicSections-tbody > tr > :nth-child(3) > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .add-row-btn').click();
-    // cy.get('#report-generator-form_response_1_dymamic_rows_0_keyName').click();
-    // cy.get('.add-chart').click();
-    // cy.get('.charttile-content').click();
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get('#rc_select_0').click();
+    cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+    cy.get('.ant-select-selection-overflow').click();
+    cy.get(':nth-child(5) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item > .ant-select-item-option-content', { timeout: 20000 }).click({ force: true }).click();
+    cy.get('.create-new-report > .anticon > svg').click();
+    cy.get('#report-generator-form_response_0_sectionName').clear();
+    cy.get('#report-generator-form_response_0_sectionName').type('Title');
+    cy.get('.create-new-report > .anticon > svg > [d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"]').click();
+    cy.get('.add-row-btn').click();
+    cy.get('#report-generator-form_response_0_dymamic_rows_0_keyName').click();
+    cy.get('[style="border: 1px solid rgb(72, 107, 201); margin-bottom: 30px; min-height: 160px; border-radius: 4px; margin-top: 20px;"] > :nth-child(5) > .anticon > svg').click();
+    cy.get('#report-generator-form_response_1_sectionName').clear();
+    cy.get('#report-generator-form_response_1_sectionName').type('Summary');
+    cy.get('.create-new-report > .anticon > svg').click();
+    cy.get(':nth-child(2) > .ant-space > .ant-space-item > .dynamicSections-table > .dynamicSections-tbody > tr > :nth-child(3) > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .add-row-btn').click();
+    cy.get('#report-generator-form_response_1_dymamic_rows_0_keyName').click();
+
     /* ==== End Cypress Studio ==== */
     /* ==== Generated with Cypress Studio ==== */
-    cy.get('#rc_select_0').clear();
-    cy.get('#rc_select_0').type('v238');
-    cy.get('.ant-select-item-option-content').click();
+    cy.get('.add-chart').click();
     cy.get('.ant-select-selection-overflow').click();
-    cy.get('[style="height: 1008px; position: relative; overflow: hidden;"] > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
-    cy.get('.reportDesigner-dynamicSections > .ant-card > .ant-card-body').click();
+    cy.get(':nth-child(5) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item > .ant-select-item-option-content').click();
+    cy.get('.reportDesigner-dynamicSections > .ant-card > .ant-card-head').click();
+    cy.get('.add-chart').click();
+    cy.get('.add-chart').click();
+    cy.get('.charttile-content').click();
     /* ==== End Cypress Studio ==== */
   });
   // it("Workflow page", () => {
