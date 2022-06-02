@@ -8,51 +8,25 @@ import {
 } from '../../../../duck/actions/commonActions';
 import ScreenHeader from "../../../../components/ScreenHeader/screenHeader";
 import illustrations from "../../../../assets/images/Dashboard-Banner.svg";
-import { Card, Table, Button, Input, Space, Col, Row, Select, Menu, Dropdown, Checkbox } from 'antd';
-import { getPbrReviewerData } from '../../../../services/pbrService'
-import { SearchOutlined } from "@ant-design/icons";
-import { getCountData } from '../../../../services/workFlowServices';
-import { returnData } from '../../../../duck/actions/auditTrialAction';
-import { saveRecord } from '../../../../duck/actions/filterAction';
-import { BMS_PBR_URL } from "../../../../constants/apiBaseUrl.js";
+import { Card, Table, Button, Col, Row, Checkbox } from 'antd';
+import { getPbrReviewerData, updateApprove } from '../../../../services/pbrService'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-import Highlighter from "react-highlight-words";
 import Plot from 'react-plotly.js';
 import './styles.scss'
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { BMS_APP_PYTHON_SERVICE, MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
+//import { BMS_APP_PYTHON_SERVICE, MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 
-const { Search } = Input;
 
 function PbrReviewer() {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([])
-  const [templateColumns, setTemplateColumns] = useState([])
   const [searchText, setSearchText] = useState("");
-  const [tableDataSource, setTableDataSource] = useState([]);
-  const [chartList, setChartList] = useState([]);
-  const [viewSearch, setViewSearch] = useState(false);
-  const [tilesData, setTilesData] = useState([]);
-  const [searchTitle, setSearchTitle] = useState("");
-  const [userApproval, setUserApproval] = useState([]);
-  const searchViewData = useRef([]);
-  const ref = useRef(null);
-
-  const [tableDataSourceFiltered, setTableDataSourceFiltered] =
-    useState(null);
-  const [searched, setSearched] = useState(false);
+  //const [viewSearch, setViewSearch] = useState(false);
+  const [arr, setArr] = useState([]);
+ // const searchViewData = useRef([]);
+ // const ref = useRef(null);
   const [searchedColumn, setSearchedColumn] = useState("");
-  const [toppings, setToppings] = useState(null)
-  const [toppingsArray, setToppingsArray] = useState([])
-  const [showFilterData, setShowFilterData] = useState("");
-  // const [showApproved, setshowApproved] = useState("");
   const [pieChartData, setPieChartData] = useState([0, 0]);
-  const [checked, setChecked] = useState(false);
-  const [users, setUser] = useState([])
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [userId, setUserId] = useState(null)
   const history = useHistory();
   const refSearchInput = useRef();
   useEffect(() => {
@@ -72,19 +46,17 @@ function PbrReviewer() {
         dispatch(hideLoader());
         setTemplateData(tableResponse.Data);
         dispatch(showNotification('error', tableResponse.Message));
-      }else{
-        dispatch(hideLoader());
       }
     }
     catch (error) {
       dispatch(hideLoader());
       dispatch(showNotification('error', error.Message));
     }
-  }
+  };
 
   const showfilterData = async (value) => {
 
-    console.log('hello', value);
+    //console.log('hello', value);
     let obj = { status: value.toLowerCase() }
 
     let res = await getPbrReviewerData(obj)
@@ -94,41 +66,15 @@ function PbrReviewer() {
 
   };
 
-  const searchTable = value => {
-    const filterData = searchViewData.current.filter(o =>
-      Object.keys(o).some(k =>
-        String(o[k]).toLowerCase().includes(value.toLowerCase())
-      )
-
-    );
-    setTemplateData(filterData);
-
-  };
-  const onSearchChange = e => {
-    if (e.target.value === '') {
-      setTemplateData(searchViewData.current);
-    }
-  };
-
-  const onFocus = () => {
-    setViewSearch(true);
-  };
-
-  const closeTableView = e => {
-    if (ref.current && !ref.current.contains(e.target)) {
-      setViewSearch(false);
-      setTemplateData(searchViewData.current);
-    }
-  };
-  useEffect(() => {
-    document.addEventListener('mousedown', closeTableView);
-    return () => {
-      document.removeEventListener('mousedown', closeTableView);
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.addEventListener('mousedown', closeTableView);
+  //   return () => {
+  //     document.removeEventListener('mousedown', closeTableView);
+  //   };
+  // }, []);
   const showfilters = async (value) => {
 
-    console.log('hello', value);
+    //console.log('hello', value);
     let obj = { confidence: value.toLowerCase() }
     let res = await getPbrReviewerData(obj)
     setTemplateData(res.Data);
@@ -136,50 +82,51 @@ function PbrReviewer() {
 
   };
 
-  function globalTemplateSearch(value) {
-    const filterdDataArr = tableDataSource.filter((o) =>
-      Object.keys(o).some((k) =>
-        String(o[k]).toLowerCase().includes(value.toLowerCase())
-      )
-    );
-    setTableDataSourceFiltered(filterdDataArr);
-  }
-
-  // function showApproved(id){
-  //   let item=users[id-1];
-  //   setName(item.status)
-  // }
-
-  // function updateStatus (){
-
-  //   let item={status}
-  //   console.warn ("item", item)
+  const updateStatus = (e, record) => {
 
 
-  // }
-  const getTilesData = async () => {
-    let req = {};
-    try {
-      dispatch(showLoader());
-      const tilesResponse = await getCountData(req);
-      console.log(tilesResponse);
 
-      if (tilesResponse['status-code'] == 200) {
-        setTilesData(tilesResponse['Data']);
-        setUserApproval(tilesResponse['counts'])
-        dispatch(hideLoader());
-      }
+    //console.log(e.target.checked);
+    //console.log(record);
+    let resp = [...arr];
+    resp.push(record.id);
+    setArr(resp);
 
-    } catch (error) {
-      dispatch(hideLoader());
-      dispatch(showNotification('error', error.message));
-    }
+
   };
+
+  const showApproved = async () => {
+
+    // console.log(arr)
+    let req = {
+      id: arr,
+      recorded_date: "",
+      recorded_time: "",
+      snippet_value: "",
+      status: "approved",
+      uom: ""
+    }
+    let res = await updateApprove(req)
+    
+    //console.log(res);
+    if (res.Status == "202") {
+    
+      dispatch(showNotification('success', 'Approved Successfully'));
+       setTimeout(
+        () => window.location.reload(),
+        2000
+      );
+    }
+
+  };
+
+
+
 
   const chart = async (res) => {
 
     let obj = await getPbrReviewerData(res);
-    console.log(obj.Data);
+    // console.log(obj.Data);
 
     var jsondata = obj.Data;
     let unappcount = 0;
@@ -228,104 +175,6 @@ function PbrReviewer() {
 
   }, []);
 
-
-  function handleCheck(event) {
-    const item = {
-      "type": event.target.id,
-
-    };
-    if (event.target.checked) {
-      setToppings(item);
-      if (toppingsArray.map(val => val["type"]).indexOf(item["type"]) == -1) setToppingsArray([...toppingsArray, item]);
-    } else {
-      setToppingsArray(toppingsArray.filter(val => val["type"] != item["type"]));
-    }
-  }
-
-  // const handleChange = async (e, res) => {
-
-  //   let obj = await data1(res);
-  //   console.log(obj);
-  //   console.log(obj.Data);
-  //   let record = obj.Data;
-  //   let approved = [];
-  //   if (e.target.checked === true) {
-
-  //     alert("hi")
-
-
-
-  //     //  console.log(record.status)
-  //     // setChecked(!checked);
-
-  //     // //approved.push(record);
-  //     setChecked({ ...checked, [record.status]: e.target.value, });
-  //     console.log(e.target.status);
-  //   }
-  //   else {
-  //     //let filtered = this.state.unapprovedCheckbox.filter((item) => item.id !== record.id);
-  //     //this.setState({ unapprovedCheckbox: filtered })
-  //   }
-
-  // };
-
-
-  const handleChange = (e) => {
-    let isChecked = e.target.checked;
-    if (e.target.checked === true) {
-      // alert("hi")
-    }
-  }
-
-
-
-  const getExcelFile = () => { };
-
-  // getExcelFile = (value) => {
-  //   var today = new Date();
-  //   today.setDate(today.getDate() + 1);
-
-  //   let endPoint = '/services/v1/audit-information?';
-  //   let baseUrl = MDH_APP_PYTHON_SERVICE + endPoint;
-
-  //   let startDate =
-  //     this.state.selectedDate.length > 0
-  //       ? this.state.selectedDate[0]
-  //       : '2021-09-01';
-  //   let endDate =
-  //     this.state.selectedDate.length > 0
-  //       ? this.state.selectedDate[1]
-  //       : today.toISOString().slice(0, 10);
-  //   let tableName = ['Parameter Data'];
-  //   let activity = this.state.eventType.value;
-  //   let userid = this.state.user.value;
-
-  //   const myUrlWithParams = new URL(baseUrl);
-  //   if (startDate == endDate) {
-  //     myUrlWithParams.searchParams.append('startdate', startDate);
-  //   } else {
-  //     myUrlWithParams.searchParams.append('startdate', startDate);
-  //     myUrlWithParams.searchParams.append('enddate', endDate);
-  //   }
-
-  //   if (activity) {
-  //     myUrlWithParams.searchParams.append('activity', activity);
-  //   }
-  //   if (userid) {
-  //     myUrlWithParams.searchParams.append('userid', userid);
-  //   }
-  //   myUrlWithParams.searchParams.append('table_name', tableName);
-
-  //   if (value == 'excel') {
-  //     myUrlWithParams.searchParams.append('export_csv', false);
-  //   }
-  //   if (value == 'csv') {
-  //     myUrlWithParams.searchParams.append('export_csv', true);
-  //   }
-
-  //   let url = myUrlWithParams.href;
-  //   window.open(url);
-  // };
   const columns2 = [
     // {
     //       title: "Anchor ",
@@ -342,30 +191,34 @@ function PbrReviewer() {
       title: 'ID',
       key: 'id',
       dataIndex: 'id',
-      ...getColumnSearchProps("id", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.id.localeCompare(b.id)
+      ...getColumnSearchProps('id'),
+      sorter: (a, b) => a.id - b.id,
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Attribute Name',
       key: 'anchor_key',
       dataIndex: 'anchor_key',
-      ...getColumnSearchProps("anchor_key", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_anchor_key.localeCompare(b.view_anchor_key)
+      ...getColumnSearchProps('anchor_key'),
+      sorter: (a, b) => a.anchor_key.length - b.anchor_key.length,
+      sortDirections: ['descend', 'ascend'],
     },
 
     {
       title: 'Value',
       key: 'snippet_value',
       dataIndex: 'snippet_value',
-      ...getColumnSearchProps("snippet_value", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_snippet_value.localeCompare(b.snippet_value)
+      ...getColumnSearchProps('snippet_value'),
+      sorter: (a, b) => a.snippet_value.length - b.snippet_value.length,
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Snippet Value',
       key: 'snippet_image',
       dataIndex: 'snippet_image',
-      ...getColumnSearchProps("snippet_image", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_snippet_image.localeCompare(b.view_snippet_image),
+      ...getColumnSearchProps('snippet_image'),
+      sorter: (a, b) => a.snippet_image.length - b.snippet_image.length,
+      sortDirections: ['descend', 'ascend'],
       render: (text, record, index) => {
         return (
           <img src={`https://cpv-poc.mareana.com/bms_poc_snippets/${text}`} width="50%" height="15%" />
@@ -376,53 +229,62 @@ function PbrReviewer() {
       title: 'Confidence',
       key: 'confidence',
       dataIndex: 'confidence',
-      ...getColumnSearchProps("confidence", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.confidence.localeCompare(b.confidence)
+      ...getColumnSearchProps('confidence'),
+      sorter: (a, b) => a.confidence.length - b.confidence.length,
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'File Path',
       key: 'file_path',
       dataIndex: 'file_path',
-      ...getColumnSearchProps("file_path", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.file_path.localeCompare(b.file_path)
+      ...getColumnSearchProps('file_path'),
+      sorter: (a, b) => a.file_path.length - b.file_path.length,
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Status',
       key: 'status',
       dataIndex: 'status',
-      ...getColumnSearchProps("status", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
+      ...getColumnSearchProps('status'),
+      sorter: (a, b) => a.status.length - b.status.length,
+      sortDirections: ['descend', 'ascend'],
       render: (text, record, index) => {
-        return (
+        if (record.status == "approved") {
+          return record.status;
+        }
+        else {
+          return (
+            <Checkbox
+              onChange={(e) => { updateStatus(e, record) }}
+            />
 
-          text == "unapproved" ? <Checkbox
-            onChange={(e) => { setChecked(e.target.value) }}
-          /> : "approved"
 
-
-        )
+          )
+        }
       }
-
 
     },
     {
       title: 'Updated by',
       key: 'username',
       dataIndex: 'username',
-      ...getColumnSearchProps("username", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_username.localeCompare(b.view_username)
+      ...getColumnSearchProps('username'),
+      sorter: (a, b) => a.username.length - b.username.length,
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Product',
       key: 'product_num',
       dataIndex: 'product_num',
-      ...getColumnSearchProps("product_num", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_product_num.localeCompare(b.product_num),
+      ...getColumnSearchProps('product_num'),
+      sorter: (a, b) => a.product_num.length - b.product_num.length,
+      sortDirections: ['descend', 'ascend'],
       render: (text, record, index) => {
         return (
           <a
             style={{ color: "#1890ff" }}
             onClick={() => {
-              history.push(`/dashBoard/pbr_update`);
+              history.push(`/dashBoard/pbr_update?id=${record.id}`);
             }}
 
           >
@@ -443,8 +305,9 @@ function PbrReviewer() {
       title: 'Action',
       key: 'action',
       dataIndex: 'action',
-      ...getColumnSearchProps("action", refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-      sorter: (a, b) => a.view_action.localeCompare(b.view_action)
+      ...getColumnSearchProps('action'),
+      sorter: (a, b) => a.action.length - b.action.length,
+      sortDirections: ['descend', 'ascend'],
     },
 
 
@@ -471,8 +334,7 @@ function PbrReviewer() {
       value: '001',
       actual_value: 'snippet_Batch_Record_Example_1_1004.png',
       id: '5',
-      status: <Checkbox
-        onChange={handleCheck} />,
+      status: <Checkbox />,
       confidence: 'High',
       site: "US01",
       product: 'New Product 001',
@@ -488,8 +350,7 @@ function PbrReviewer() {
       value: '002',
       actual_value: 'snippet_Batch_Record_Example_1_1004.png',
       id: '1',
-      status: <Checkbox
-        onChange={handleCheck} />,
+      status: <Checkbox />,
       confidence: 'High',
       site: "US01",
       product: 'New Product 002',
@@ -504,9 +365,7 @@ function PbrReviewer() {
       key: 'Product ; value',
       value: '003',
       actual_value: 'snippet_Batch_Record_Example_1_1004.png',
-      id: '2',
-      status: <Checkbox
-        onChange={handleCheck} />,
+      status: <Checkbox />,
       confidence: 'High',
       site: "US01",
       product: 'New Product 003',
@@ -522,8 +381,7 @@ function PbrReviewer() {
       value: '004',
       actual_value: 'snippet_Batch_Record_Example_1_1004.png',
       id: '3',
-      status: <Checkbox
-        onChange={handleCheck} />,
+      status: <Checkbox />,
       confidence: 'High',
       site: "US01",
       product: 'New Product 004',
@@ -545,15 +403,6 @@ function PbrReviewer() {
   //   })
   // }
 
-
-
-
-  // let chartData = [{
-
-
-
-  //   //textinfo: 'none'
-  // }]
 
 
 
@@ -666,7 +515,9 @@ function PbrReviewer() {
     //             text
     //         ),
     // };
-  }
+  };
+
+
 
   return (
     <>
@@ -743,56 +594,9 @@ function PbrReviewer() {
                   color: "#303f9f"
 
                 }}
-                // onClick={this.showApproved}
-                // onClick = {handlechange}
-                // onClick={() => showApproved(item.id)}
+                  onClick={showApproved}
+
                 >Approve</Button>
-                {/* <Select
-                  defaultValue="Batch"
-                  style={{
-                    width: 120,
-                  }}
-                 // onChange={handleChange}
-                >
-                  <Option value="Batch1">Batch 1</Option>
-                  <Option value="Batch2">Batch 2</Option>
-                </Select> */}
-                {/* <div
-                  style={{
-                    marginTop: '10px',
-                    float: 'right',
-                    marginRight: '10px',
-                  }}
-                >
-
-                  <Dropdown
-                    style={{ color: '#ffffff' }}
-                  //overlay={userMenu}
-                  >
-                    <Button
-                      style={{
-                        backgroundColor: '#495fc3',
-                        color: '#ffffff',
-                      }}
-                      type='primary'
-                    >
-                      download
-                    </Button>
-                  </Dropdown>
-                </div> */}
-
-                {/* <Search
-                  placeholder='Search '
-                  allowClear
-                  enterButton='Search'
-                  size='large'
-                  //onFocus={onFocus}
-									//onChange={onSearchChange}
-									//onSearch={searchTable}
-                /> */}
-                {/* {viewSearch && <Table templateData={templateData} />} */}
-
-
                 <Table
                   columns={columns2}
                   dataSource={templateData}
