@@ -251,9 +251,8 @@ const ReportNotify = (props) => {
       subjectContent.length > 0 ? subjectContent : `Update For ${props.id}`;
     email_config["scheduled_start"] = scheduleEmailStartDate;
     email_config["scheduled_time"] = scheduleEmailTime;
-    (email_config["frequency_unit"] =
-      selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule)
-      (email_config["email_list"] = emailList);
+    email_config["frequency_unit"] = selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule;
+    email_config["email_list"] = emailList;
     email_config["attachment"] = "";
     email_config["created_by"] = localStorage.getItem("username")
       ? localStorage.getItem("username")
