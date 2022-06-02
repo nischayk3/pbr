@@ -48,7 +48,7 @@ const alertEvaluation = (props) => {
 
 	const [selectedSchedule, setSelectedSchedule] = useState("Repeat Once");
 	const [selectedTimeRange, setSelectedTimeRange] = useState("Hour");
-	const [showReceipients, setShowReceipients] = useState(false);
+	const showReceipients = false;
 	const [radioValue, setRadioValue] = useState(null);
 	const [emailList, setEmailList] = useState([]);
 	const [scheduleStartDate, setScheduleStartDate] = useState("");
@@ -66,7 +66,7 @@ const alertEvaluation = (props) => {
 		Saturday: false,
 	});
 	const [activeTab, setActiveTab] = useState("schedule_evaluation");
-	const [scheduleEmailTime, setScheduleEmailTime] = useState("");
+	// const [scheduleEmailTime, setScheduleEmailTime] = useState("");
 	const [everyDayValue, setEveryDayValue] = useState("");
 	const [emailLoad, setEmailLoad] = useState({});
 
@@ -96,7 +96,7 @@ const alertEvaluation = (props) => {
 		setEmailList([]);
 		setSelectedSchedule("");
 		setScheduleStartDate("");
-		setScheduleEmailTime("");
+		// setScheduleEmailTime("");
 		setRadioValue("");
 		setSelectedDays({
 			Sunday: false,
@@ -162,7 +162,7 @@ const alertEvaluation = (props) => {
 		radio,
 		f,
 		days,
-		everyDayValue
+		everyDayValuee
 	) => {
 		let cron_string = "";
 		let time_split = time.split(":");
@@ -177,14 +177,14 @@ const alertEvaluation = (props) => {
 			}
 			if (radio == 3) {
 				if (f == "Minutes") {
-					cron_string = `*/${everyDayValue}  * * * *`;
+					cron_string = `*/${everyDayValuee}  * * * *`;
 				}
 				if (f == "Seconds") {
-					cron_string = `*/${everyDayValue}  * * * *`;
+					cron_string = `*/${everyDayValuee}  * * * *`;
 				}
 				if (f == "Hour") {
 					// cron_string = '*' + ' ' + time_split[0] + ' * * *'
-					cron_string = `* */${everyDayValue}  * * *`;
+					cron_string = `* */${everyDayValuee}  * * *`;
 				}
 			}
 		}

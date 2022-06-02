@@ -18,8 +18,6 @@ import {
   Select,
   Divider,
   Space,
-  Table,
-  Avatar,
   Input,
 } from "antd";
 import SelectField from "../../SelectField/SelectField";
@@ -40,22 +38,17 @@ const { Option } = Select;
 
 // const { RangePicker } = DatePicker;
 
-const alertList = ["Limits", "Rules", "Threshold"];
 const scheduleList = ["Repeat Once", "Daily", "Weekly", "Monthly"];
 const timeRange = ["Hour", "Minutes", "Seconds"];
 
 const ReportNotify = (props) => {
-  const [selectedAlert, setSelectedAlert] = useState("");
   const [selectedSchedule, setSelectedSchedule] = useState("Repeat Once");
-  const [selectedEmailSchedule, setSelectedEmailSchedule] = useState("");
   const [selectedTimeRange, setSelectedTimeRange] = useState("");
-  const [showReceipients, setShowReceipients] = useState(false);
+  const showReceipients = false;
   const [radioValue, setRadioValue] = useState(null);
   const [emailList, setEmailList] = useState([]);
   const [scheduleStartDate, setScheduleStartDate] = useState("");
   const [scheduleEmailStartDate, setScheduleEmailStartDate] = useState("");
-  const [scheduleTime, setScheduleTime] = useState("");
-  const [scheduleEndDate, setScheduleEndDate] = useState("");
   const [selectedDays, setSelectedDays] = useState({
     Sunday: false,
     Monday: false,
@@ -67,7 +60,7 @@ const ReportNotify = (props) => {
   });
   const [activeTab, setActiveTab] = useState("schedule_evaluation");
   const [scheduleEmailTime, setScheduleEmailTime] = useState("");
-  const [frequency, setFrequency] = useState("");
+  // const [frequency, setFrequency] = useState("");
   const [everyDayValue, setEveryDayValue] = useState("");
   const [subject, setSubject] = useState("");
   const [subjectContent, setSubjectContent] = useState("");
@@ -102,14 +95,11 @@ const ReportNotify = (props) => {
     dispatch(hideLoader());
   };
 
-  const handleSubject = (subject) => {
-    setSubject(!subject);
+  const handleSubject = (subjects) => {
+    setSubject(!subjects);
   };
 
-  const onChangeEnd = (date, dateString) => {
-    setScheduleEndDate(dateString);
-    // setendTimeIso(moment(date).toISOString());
-  };
+
 
   const convertExpresion = (
     date,
@@ -118,7 +108,7 @@ const ReportNotify = (props) => {
     radio,
     f,
     days,
-    everyDayValue
+    everyDayValuee
   ) => {
     let cron_string = "";
     let time_split = time.split(":");
@@ -133,14 +123,14 @@ const ReportNotify = (props) => {
       }
       if (radio == 3) {
         if (f == "Minutes") {
-          cron_string = `*/${everyDayValue}  * * * *`;
+          cron_string = `*/${everyDayValuee}  * * * *`;
         }
         if (f == "Seconds") {
-          cron_string = `*/${everyDayValue}  * * * *`;
+          cron_string = `*/${everyDayValuee}  * * * *`;
         }
         if (f == "Hour") {
           // cron_string = '*' + ' ' + time_split[0] + ' * * *'
-          cron_string = `* */${everyDayValue}  * * *`;
+          cron_string = `* */${everyDayValuee}  * * *`;
         }
       }
     }
@@ -222,17 +212,12 @@ const ReportNotify = (props) => {
     });
   };
 
-  const handleSelectChange = (e) => {
-    setSelectedAlert(e);
-  };
+
   const handleSelectScheduleChange = (e) => {
     setSelectedSchedule(e);
   };
-  const handleSelectEmailScheduleChange = (e) => {
-    setSelectedEmailSchedule(e);
-  };
 
-  const onChangeTimePicker = (time, timeString) => { };
+
   const onChangeRadioButton = (e) => {
     setRadioValue(e.target.value);
   };
@@ -267,7 +252,7 @@ const ReportNotify = (props) => {
     email_config["scheduled_start"] = scheduleEmailStartDate;
     email_config["scheduled_time"] = scheduleEmailTime;
     (email_config["frequency_unit"] =
-      selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule),
+      selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule)
       (email_config["email_list"] = emailList);
     email_config["attachment"] = "";
     email_config["created_by"] = localStorage.getItem("username")
@@ -336,19 +321,13 @@ const ReportNotify = (props) => {
     setActiveTab(activeKey);
   };
 
-  const onChangeStart = (date, dateString) => {
-    setScheduleStartDate(dateString);
-    // setstartTimeIso(moment(date).toISOString());
-  };
+
 
   const onChangeEmailStart = (date, dateString) => {
     setScheduleEmailStartDate(dateString);
     // setstartTimeIso(moment(date).toISOString());
   };
-  const onChangeTime = (date, dateString) => {
-    setScheduleTime(dateString);
-    // setstartTimeIso(moment(date).toISOString());
-  };
+
   const onChangeEmailTime = (date, dateString) => {
     setScheduleEmailTime(dateString);
     // setstartTimeIso(moment(date).toISOString());
@@ -370,6 +349,7 @@ const ReportNotify = (props) => {
       <Tabs
         className="evaluation-tabs"
         onChange={changeTab}
+        activeKey={activeTab}
         tabBarExtraContent={
           <div className="tab-btns">
             <Button
@@ -406,7 +386,7 @@ const ReportNotify = (props) => {
               mihir.bagga@mareana.com
             </Option>
           </Select>
-          <hr style={{ borderTop: "1px solid #dbdbdb",width:'60%',marginRight:'407px' }} />
+          <hr style={{ borderTop: "1px solid #dbdbdb", width: '60%', marginRight: '407px' }} />
           <span>
             <p
               onDoubleClick={() => handleSubject(subject)}
@@ -434,7 +414,7 @@ const ReportNotify = (props) => {
               )}{" "}
             </p>
           </span>
-          <hr style={{ borderTop: "1px solid #dbdbdb",width:'60%',marginRight:'407px' }} />
+          <hr style={{ borderTop: "1px solid #dbdbdb", width: '60%', marginRight: '407px' }} />
           <br />
           <p className="email-content">
             {" "}
