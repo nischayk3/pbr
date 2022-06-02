@@ -207,7 +207,7 @@ function ReportDesignerDynamicSections(props) {
                                             <center>
                                                 <div className="sectionTable">
                                                     <div
-                                                        className='create-new'
+                                                        className='create-new-report'
                                                         onClick={() => sectionAddKey(name + 1)}                                                     >
                                                         <PlusOutlined />
                                                         <p>Add key and value</p>
@@ -279,7 +279,7 @@ function ReportDesignerDynamicSections(props) {
                                         <p disabled={props.show}>
                                             <center>
                                                 <div
-                                                    className='create-new'
+                                                    className='create-new-report'
                                                     onClick={() => add()}                                    >
                                                     <PlusOutlined />
                                                     <p>Add section</p>
