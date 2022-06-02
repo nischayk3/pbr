@@ -50,51 +50,54 @@ const ViewSummaryData = (props) => {
 
 			summaryColumn.map((item, i) => {
 				if (item === "batch" || item === "batch_year") {
-					columns.push({
-						title: item.toUpperCase().replace("_", " "),
-						dataIndex: item,
-						key: `${item}-${i}`,
-						width: 100
-					});
+					return (
+						columns.push({
+							title: item.toUpperCase().replace("_", " "),
+							dataIndex: item,
+							key: `${item}-${i}`,
+							width: 100
+						})
+					)
 				} else {
-					columns.push({
-						title: (
-							<div className="summary-column">
-								<p>{item.toUpperCase().replace("_", " ")}</p>
-								<span onClick={() => handleRemoveColumn(item)}>
-									<DeleteOutlined className="delete" />
-								</span>
-							</div>
-						),
-						dataIndex: item,
-						key: `${item}-${i}`,
-
-						onHeaderCell: (record) => {
-							return {
-								onClick: (ev) => {
-									dispatch(setViewFunctionName(record.dataIndex));
-									dispatch(
-										showNotification(
-											"success",
-											`${record.dataIndex} function selected`
-										)
-									);
-								}
-							};
-						},
-
-						render: (value) =>
-							value ? (
-								<span className="batchChecked">
-									<CheckOutlined />
-								</span>
-							) : (
-								<span className="batchClosed">
-									<CloseOutlined />
-								</span>
+					return (
+						columns.push({
+							title: (
+								<div className="summary-column">
+									<p>{item.toUpperCase().replace("_", " ")}</p>
+									<span onClick={() => handleRemoveColumn(item)}>
+										<DeleteOutlined className="delete" />
+									</span>
+								</div>
 							),
-						width: 100
-					});
+							dataIndex: item,
+							key: `${item}-${i}`,
+
+							onHeaderCell: (record) => {
+								return {
+									onClick: (ev) => {
+										dispatch(setViewFunctionName(record.dataIndex));
+										dispatch(
+											showNotification(
+												"success",
+												`${record.dataIndex} function selected`
+											)
+										);
+									}
+								};
+							},
+							render: (value) =>
+								value ? (
+									<span className="batchChecked">
+										<CheckOutlined />
+									</span>
+								) : (
+									<span className="batchClosed">
+										<CloseOutlined />
+									</span>
+								),
+							width: 100
+						})
+					)
 				}
 			});
 
@@ -114,13 +117,10 @@ const ViewSummaryData = (props) => {
 					? loadViewJson[0].functions
 					: 0;
 
-			// loadViewJson.forEach(element => {
-			// 	fun.push(element.functions.name);
-			// });
 			if (functions_name) {
 				functions_name = Object.values(functions_name);
 				functions_name.map((element) => {
-					fun.push(element.name);
+					return fun.push(element.name);
 				});
 			}
 			if (parentBatches.length > 0) {
@@ -151,17 +151,18 @@ const ViewSummaryData = (props) => {
 				const funColumn = funKey.filter(uniqueArr);
 
 				funColumn.map((item, i) => {
-					columns.push({
-						title: item.toUpperCase().replace("_", " "),
-						dataIndex: item,
-						key: `${item}-${i}`
-					});
+					return (
+						columns.push({
+							title: item.toUpperCase().replace("_", " "),
+							dataIndex: item,
+							key: `${item}-${i}`
+						})
+					)
 				});
 
 				setTableColumn(columns);
 				setFunTableData(mergeArr);
 			}
-			// });
 		}
 	}, [isLoadView, parentBatches]);
 

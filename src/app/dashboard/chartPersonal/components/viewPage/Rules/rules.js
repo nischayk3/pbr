@@ -1,16 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "./styles.scss";
-import {
-  Button,
-  Checkbox,
-  Collapse,
-  Input,
-  message,
-  Skeleton,
-  Row,
-  Col,
-} from "antd";
+import { Button, Checkbox, Collapse, Input, Skeleton, Row, Col } from "antd";
 import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import reactStringReplace from "react-string-replace";
 import { getRuleList } from "../../../../../../services/chartPersonalizationService";
@@ -60,24 +51,24 @@ const rules = ({ postChartData, setPostChartData }) => {
     }
   };
 
-  const getChecked = (e, id) => {
+  const getChecked = (e, ruleId) => {
     if (e.target.checked) {
-      if (!checked.includes(id)) {
+      if (!checked.includes(ruleId)) {
         let newChecked = [...checked];
-        newChecked.push(id);
+        newChecked.push(ruleId);
         setChecked(newChecked);
       }
     } else {
-      if (checked.includes(id)) {
+      if (checked.includes(ruleId)) {
         let newChecked = [...checked];
-        newChecked.splice(checked.indexOf(id), 1);
+        newChecked.splice(checked.indexOf(ruleId), 1);
         setChecked(newChecked);
       }
     }
   };
-  const handleChange = (event, id, key) => {
+  const handleChange = (event, selId, key) => {
     let tempArr = [...selectedRules];
-    let objIndex = tempArr.findIndex((obj) => obj.rule_id === id);
+    let objIndex = tempArr.findIndex((obj) => obj.rule_id === selId);
     tempArr[objIndex].default_params[key] = event.target.value;
     setSelectedRules(tempArr);
   };
@@ -145,16 +136,16 @@ const rules = ({ postChartData, setPostChartData }) => {
       setSelectedRules(tempArr);
       if (Number(id) !== 0) {
         const tempObj = {};
-        const checked = [];
-        Object.entries(ruleList).map(([key, value]) => {
+        const checkedList = [];
+        Object.entries(ruleList).forEach(([key, value]) => {
           value.map((ele) => {
             if (ele.applied === true) {
-              checked.push(ele.rule_id);
+              checkedList.push(ele.rule_id);
             }
           });
           tempObj[key] = value.filter((ele) => ele.applied === true);
         });
-        setChecked(checked);
+        setChecked(checkedList);
         setLoadRuleList(tempObj);
       }
     }
@@ -220,29 +211,27 @@ const rules = ({ postChartData, setPostChartData }) => {
                         ghost
                         className="rule-content"
                       >
-                        {value.map((item, index) => {
+                        {value.map((item) => {
                           let html = item.rule_desc;
                           item &&
                             item.default_params &&
-                            Object.keys(item.default_params).map(
-                              (key, index) => {
-                                html = reactStringReplace(
-                                  html,
-                                  `<${key}>`,
-                                  () => (
-                                    <span key={key} style={{ color: "red" }}>
-                                      <Input
-                                        type="number"
-                                        defaultValue={item.default_params[key]}
-                                        onChange={(e) =>
-                                          handleChange(e, item.rule_id, key)
-                                        }
-                                      />
-                                    </span>
-                                  )
-                                );
-                              }
-                            );
+                            Object.keys(item.default_params).forEach((key) => {
+                              html = reactStringReplace(
+                                html,
+                                `<${key}>`,
+                                () => (
+                                  <span key={key} style={{ color: "red" }}>
+                                    <Input
+                                      type="number"
+                                      defaultValue={item.default_params[key]}
+                                      onChange={(e) =>
+                                        handleChange(e, item.rule_id, key)
+                                      }
+                                    />
+                                  </span>
+                                )
+                              );
+                            });
 
                           return (
                             <Panel

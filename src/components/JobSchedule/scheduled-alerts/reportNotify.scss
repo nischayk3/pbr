@@ -2,12 +2,15 @@
 	.ant-picker {
 		border-radius: 4px !important;
 	}
+
 	.ant-select-selector {
 		border-radius: 4px !important;
 	}
+
 	input::placeholder {
 		font-family: Roboto !important;
 	}
+
 	.radio-daily {
 		.ant-radio-inner:after {
 			background: #093185 !important;
@@ -24,32 +27,38 @@
 		.ant-radio-checked .ant-radio-inner {
 			border-color: #093185 !important;
 		}
+
 		span {
 			font-family: var(--primary-font-family);
 			font-style: normal;
 			font-weight: 300;
 		}
 	}
+
 	.tab-btns {
 		margin-top: 10%;
 		margin-right: 28px;
 	}
+
 	.divider-tab {
 		background-color: red;
 		margin-left: 10%;
 	}
+
 	.evaluation-tabs {
 		button:first-child:hover {
-			background-color: #486bc9 !important ;
+			background-color: #486bc9 !important;
 			color: white;
 			border-color: #486bc9;
 		}
+
 		.ant-tabs-nav-wrap {
 			height: 50px;
 			padding: 5px 5px 0px 0px;
 			background: none;
 			box-shadow: none;
 		}
+
 		.ant-tabs-tab-btn {
 			font-family: Roboto;
 			font-style: normal;
@@ -58,9 +67,11 @@
 			line-height: 22px;
 			color: rgba(0, 0, 0, 0.85);
 		}
+
 		.ant-tabs-tab-btn:hover {
 			color: rgba(0, 0, 0, 0.85);
 		}
+
 		.ant-tabs-tab-active .ant-tabs-tab-btn {
 			font-family: Roboto;
 			font-style: normal;
@@ -69,6 +80,7 @@
 			line-height: 22px;
 			color: #093185 !important;
 		}
+
 		// .ant-tabs-tab .ant-tabs-tab-active
 		// {
 		//     margin-top: 6%;
@@ -119,6 +131,7 @@
 		line-height: 22px;
 		border: 0px;
 		color: #262626;
+
 		:hover {
 			color: #486bc9;
 		}
@@ -127,11 +140,14 @@
 	.end-dates {
 		color: #093185;
 	}
+
 	.select-report-antd {
 		width: 187px;
+
 		.ant-select-selector {
 			height: 36px !important;
 		}
+
 		.ant-select-selection-item {
 			margin-top: 5.5px;
 			font-family: var(--primary-font-family);
@@ -151,6 +167,7 @@
 		color: black !important;
 		border: none;
 	}
+
 	.day-buttons-one {
 		border-radius: 50% !important;
 		width: 35px !important;
@@ -170,6 +187,7 @@
 		color: white !important;
 		border: none;
 	}
+
 	.selected-day-buttons-one {
 		border-radius: 50% !important;
 		width: 35px !important;
@@ -184,15 +202,14 @@
 		margin-top: 30px;
 		display: flex;
 		flex-direction: row;
+
 		button {
 			padding: 0px !important;
 			margin-right: 20px !important;
 		}
 	}
 
-	.end-date {
-		//   margin-left: 30%;
-	}
+
 	.email-subject {
 		font-family: var(--primary-font-family);
 		font-style: normal;
@@ -225,6 +242,7 @@
 		/* identical to box height, or 138% */
 		color: #000000;
 	}
+
 	.email-recipients-report {
 		font-family: var(--primary-font-family);
 		font-style: italic;
@@ -287,6 +305,7 @@
 		margin-top: 5px;
 		color: #df980f;
 	}
+
 	.attachment-report-report {
 		display: flex;
 		align-items: center;
@@ -327,6 +346,7 @@
 		color: #343434;
 		margin-left: 10px;
 	}
+
 	.ant-picker-input {
 		input {
 			font-family: var(--primary-font-family);
@@ -337,14 +357,17 @@
 			color: #262626;
 			margin-left: 10px;
 		}
+
 		:-ms-input-placeholder {
 			color: red;
 		}
 	}
+
 	.ant-select-selector {
 		height: 36px;
 	}
 }
+
 .ant-table {
 	border-radius: 4px;
 }

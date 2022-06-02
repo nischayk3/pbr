@@ -339,11 +339,11 @@ function Genealogy() {
 		setIsDrawerOpen(val);
 	};
 
-	const handleChangeTab = activateKey => {
-		setActivateKey(activateKey);
+	const handleChangeTab = key => {
+		setActivateKey(key);
 	};
 
-	const onEditTab = (targetKey, action) => {
+	const onEditTab = (targetKey) => {
 		remove(targetKey);
 	};
 

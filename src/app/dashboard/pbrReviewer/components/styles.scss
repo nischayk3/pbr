@@ -1,44 +1,41 @@
 .content_section {
-  background: #ffffff;
-  box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  padding: 20px;
-  margin-top: 20px;
+	background: #ffffff;
+	box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+	padding: 20px;
+	margin-top: 20px;
 }
+
 .review-wrapper {
-  
-  margin-top: 15px;
+	margin-top: 15px;
 }
+
 .review-main-block {
-  display: grid;
-  grid-template-rows:auto auto auto;
-  gap: 24px;
+	display: grid;
+	grid-template-rows: auto auto auto;
+	gap: 24px;
 }
+
 .review-innerColumn {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 24px;
 }
+
 .review-card1 {
-  //width: 401px;
-  //height: 220px;
-  box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  border-radius: 4px;
-  background: linear-gradient(360deg, #e7e6ff 0%, #fff4f4 100%);
-    box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
+	//width: 401px;
+	//height: 220px;
+	box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+	box-sizing: border-box;
+	border-radius: 4px;
+	background: linear-gradient(360deg, #e7e6ff 0%, #fff4f4 100%);
 }
 
 .review-card2 {
-  //width: 428px;
- // height: 220px;
- background: linear-gradient(360deg, #e7e6ff 0%, #fff4f4 100%);
-    box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-  box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  border-radius: 4px;
+	//width: 428px;
+	// height: 220px;
+	background: linear-gradient(360deg, #e7e6ff 0%, #fff4f4 100%);
+	box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+	box-sizing: border-box;
+	border-radius: 4px;
 }
-
-

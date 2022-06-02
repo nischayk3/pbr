@@ -12,7 +12,7 @@ function ReportDesignerDynamicRow(props) {
 		let dynamic_rows_row = dynamic_rows['dymamic_rows']
 			? dynamic_rows['dymamic_rows']
 			: [];
-		let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : [];
+		//let value = dynamic_rows_row[name] ? dynamic_rows_row[name] : [];
 
 		let res_curr = current['response'];
 		let dynamic_rows_curr = res_curr[fieldKey] ? res[fieldKey] : [];
@@ -72,7 +72,6 @@ function ReportDesignerDynamicRow(props) {
 													autoSize={true}
 													style={{ width: '100px', height: '20px' }}
 													placeholder='Enter key'
-													bordered={true}
 													disabled={props.show}
 												/>
 											</Form.Item>
