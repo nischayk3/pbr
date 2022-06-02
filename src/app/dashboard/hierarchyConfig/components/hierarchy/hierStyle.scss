@@ -1,7 +1,7 @@
 .hierarchy-card {
 	min-height: 100px;
 	max-height: 750px;
-	// overflow: scroll;
+	overflow: scroll;
 	.title-card {
 		font-family: 'Inter';
 		font-style: normal;
@@ -184,6 +184,7 @@
 			width: 73px;
 			height: 32px;
 			left: 863px;
+			position: fixed;
 			background: #ffffff;
 			border: 1px solid var(--primary-color);
 			border-radius: 4px;
@@ -196,6 +197,7 @@
 			width: 73px;
 			height: 32px;
 			left: 943px;
+			position: fixed;
 			background: #ffffff;
 			border: 1px solid var(--primary-color);
 			border-radius: 4px;

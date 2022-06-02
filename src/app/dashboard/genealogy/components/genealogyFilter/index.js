@@ -8,37 +8,37 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button, Select } from 'antd';
+import { useDispatch } from 'react-redux';
 import {
 	getGeanealogyFilter,
-	getGenealogyProductType,
+	getGenealogyProductType
 } from '../../../../../services/genealogyService.js';
 import './style.scss';
 import SelectSearchField from '../../../../../components/SelectSearchField/SelectSearchField';
 import Toggle from '../../../../../components/Toggle';
 import { showNotification } from '../../../../../duck/actions/commonActions.js';
-import { useDispatch } from 'react-redux';
+
 
 function Filter(props) {
 	const [disabled, setDisabled] = useState(true);
 	const [isCheck, setisCheck] = useState(true);
-	const [isBackward, setisBackward] = useState(true);
-	const [isForward, setisForward] = useState(false);
+
 	const [isEmptyPlant, setIsEmptyPlant] = useState(false);
 	const [isEmptyProduct, setIsEmptyProduct] = useState(false);
-	const [isEmpty, setIsEmptyProductType] = useState(false);
+
 	const [isEmptyBatch, setIsEmptyBatch] = useState(false);
 
 	const [selectParam, setselectParam] = useState({
 		plant: '',
 		productCode: '',
 		batchNum: '',
-		productType: '',
+		productType: ''
 	});
 	const [paramList, setParamList] = useState({
 		plantList: [],
 		produtList: [],
 		batchList: [],
-		productTypeList: [],
+		productTypeList: []
 	});
 
 	const dispatch = useDispatch();
@@ -98,7 +98,7 @@ function Filter(props) {
 				setselectParam(prevState => {
 					return { ...prevState, productType: value };
 				});
-				setIsEmptyProductType(false);
+
 			}
 			setDisabled(false);
 		}
@@ -182,8 +182,6 @@ function Filter(props) {
 				);
 
 				setIsEmptyBatch(false);
-			} else if (field === 'product_type') {
-				setIsEmptyProductType(false);
 			}
 		}
 	};
@@ -202,7 +200,7 @@ function Filter(props) {
 			plant_no: selectedPlantValue ? selectedPlantValue : '',
 			batchText: batchText ? batchText : '',
 			plantText: plantText ? plantText : '',
-			matText: matText ? matText : '',
+			matText: matText ? matText : ''
 		};
 
 		try {
@@ -213,7 +211,7 @@ function Filter(props) {
 						...prevState,
 						plantList: filterRes && filterRes.plant_no,
 						batchList: filterRes && filterRes.batch_no,
-						produtList: filterRes && filterRes.material,
+						produtList: filterRes && filterRes.material
 					};
 				});
 			} else if (filterRes.data.statuscode === 400) {
@@ -226,16 +224,16 @@ function Filter(props) {
 
 	const getProductType = async () => {
 		try {
-			const getProductType = await getGenealogyProductType();
-			if (getProductType.statuscode == 200) {
+			const getProductTypeRes = await getGenealogyProductType();
+			if (getProductTypeRes.statuscode == 200) {
 				let productList = [];
-				getProductType.Data.map(product => {
+				getProductTypeRes.Data.map(product => {
 					productList.push(product.prod_type_cd);
 				});
 				setParamList(prevState => {
 					return {
 						...prevState,
-						productTypeList: productList,
+						productTypeList: productList
 					};
 				});
 			}
@@ -252,38 +250,28 @@ function Filter(props) {
 			productType:
 				selectParam['productType'] &&
 				selectParam['productType'].map(d => `'${d}'`).join(','),
-			treeType: isCheck ? 'Backward' : 'Forward',
+			treeType: isCheck ? 'Backward' : 'Forward'
 		};
 
 		if (paramDetail.plant === '') {
 			setIsEmptyPlant(true);
 			setIsEmptyProduct(false);
 			setIsEmptyBatch(false);
-			setIsEmptyProductType(false);
+
 		} else if (paramDetail.product === '') {
 			setIsEmptyProduct(true);
 			setIsEmptyPlant(false);
 			setIsEmptyBatch(false);
-			setIsEmptyProductType(false);
+
 		} else if (paramDetail.batch === '') {
 			setIsEmptyBatch(true);
 			setIsEmptyPlant(false);
 			setIsEmptyProduct(false);
-			setIsEmptyProductType(false);
 		} else {
 			props.parameterDetails(paramDetail);
 			setIsEmptyPlant(false);
 			setIsEmptyProduct(false);
 			setIsEmptyBatch(false);
-			setIsEmptyProductType(false);
-		}
-
-		if (isCheck) {
-			setisBackward(true);
-			setisForward(false);
-		} else {
-			setisForward(true);
-			setisBackward(false);
 		}
 	};
 
@@ -294,14 +282,13 @@ function Filter(props) {
 				plant: '',
 				productCode: '',
 				batchNum: '',
-				productType: '',
+				productType: ''
 			};
 		});
 		setDisabled(true);
 		setIsEmptyPlant(false);
 		setIsEmptyProduct(false);
 		setIsEmptyBatch(false);
-		setIsEmptyProductType(false);
 		getGenealogyFilterData();
 		getProductType();
 	};

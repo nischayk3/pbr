@@ -29,7 +29,7 @@ import PbrReviewer from './pbrReviewer';
 import './dashboard.scss';
 import PythonNotebook from './pythonNotebook/pythonNotebook';
 // DASHBOARD ROUTE COMPONENTS
-const Home = lazy(() => import('./home'));
+
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
 const ChartPersonal = lazy(() => import('./chartPersonal'));
 const SystemErrorReport = lazy(() => import('./systemErrorReport'));
@@ -77,9 +77,7 @@ const Dashboard = () => {
 						{/* <BreadCrumbWrapper /> */}
 						<SuspenseWrapper>
 							<Switch>
-								<Route key='home' path={`${match.url}/home`}>
-									<Home />
-								</Route>
+
 								<Route
 									key='manual_data_upload'
 									path={`${match.url}/manual_data_upload`}>
@@ -167,7 +165,7 @@ const Dashboard = () => {
 								<Route key='pbr_reviewer' path={`${match.url}/pbr_reviewer`}>
 									<PbrReviewer />
 								</Route>
-								
+
 								{/* <Route key='audit_logs' path={`${match.url}/audit_logs`}>
 									<Audit />
 								</Route> */}
@@ -219,7 +217,7 @@ const Dashboard = () => {
 								/>
 								<Route
 									key='hierarchy_main'
-									path={`${match.url}/molecule_hierarchy_configurations/untitled_view`}>
+									path={`${match.url}/molecule_hierarchy_configurations`}>
 									<HierarchyMain />
 								</Route>
 								<Route

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
-import { useParams } from "react-router-dom";
 //antd imports
 import { Row, Col, Divider, Input, Empty } from "antd";
 //components
@@ -18,7 +17,7 @@ const Chart = ({ postChartData, setPostChartData }) => {
     chartVersion: "",
     chartStatus: "",
   });
-  const { id } = useParams();
+
   const handleChange = (e, value) => {
     const newArr = [...postChartData.data];
     newArr.forEach((ele) => {

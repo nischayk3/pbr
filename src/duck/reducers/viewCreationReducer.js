@@ -1,26 +1,26 @@
 import { FUNCTION_TEXT, MOLECULE_ID } from "../types/types";
 import {
-	SAVE_FUNCTIONS,
-	SAVE_AS_FUNCTIONS,
-	MATH_EDITOR,
-	FUNCTION_NAME,
-	FUNCTION_MAP,
-	PARAMETER_MAP,
-	VIEW_PARAM_DATA,
-	SELECTED_PARAM_DATA,
 	BATCH_COVERAGE_DATA,
+	FUNCTION_MAP,
+	FUNCTION_NAME,
+	IS_LOAD_VIEW,
+	IS_NEW_VIEW,
+	LOAD_VIEW_RESPONSE,
+	MATH_EDITOR,
+	MATH_VALUE,
+	NEW_COLUMN,
+	PARAMETER_MAP,
+	RESET_VIEW,
+	SAVE_AS_FUNCTIONS,
+	SAVE_FUNCTIONS,
+	SELECTED_PARAM_DATA,
+	SELECTED_PARAM_TYPE,
 	SELECTED_VARIABLE,
 	SUMMARY_TABLE_DATA,
-	SELECTED_PARAM_TYPE,
 	VIEW_FUNCTION_MAP,
-	VIEW_PARAM_MAP,
-	IS_LOAD_VIEW,
-	RESET_VIEW,
-	IS_NEW_VIEW,
-	NEW_COLUMN,
 	VIEW_FUNCTION_NAME,
-	MATH_VALUE,
-	LOAD_VIEW_RESPONSE
+	VIEW_PARAM_DATA,
+	VIEW_PARAM_MAP
 } from '../../constants/actionTypes';
 
 const initState = {
@@ -42,10 +42,10 @@ const initState = {
 	parameters: {},
 	isLoad: false,
 	isNew: false,
-	newColumn:[],
-	viewFunctionName:'',
-	mathValue:'',
-	loadResponse : [],
+	newColumn: [],
+	viewFunctionName: '',
+	mathValue: '',
+	loadResponse: []
 
 };
 

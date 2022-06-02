@@ -8,16 +8,13 @@
 
 import './styles.scss';
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Collapse, Input, Tag, Dropdown, Menu } from 'antd';
-import { FileTextOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { Button, Card, Collapse, Input, Tag } from 'antd';
+import { FileTextOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
 import ReportDesignerForm from '../components/reportGeneratorHeader';
-import { sendReport } from '../../../../duck/actions/reportDesignerAction';
 import {
 	saveReportGenerator,
-	getReportGenerator,
-	latexReport,
 	latexBuilder,
 } from '../../../../services/reportGeneratorServices';
 import SaveModal from '../../../../components/SaveModal/saveModal';
@@ -34,60 +31,60 @@ import axios from 'axios';
 
 const { Panel } = Collapse;
 
-const columns = [
-	{
-		title: 'Report ID',
-		dataIndex: 'rep_disp_id',
-		key: 'rep_disp_id',
-		render: (text, record) => {
-			return {
-				props: {
-					style: { background: record.color },
-				},
-				children: <div>{text}</div>,
-			};
-		},
-	},
-	{
-		title: 'Report Name',
-		dataIndex: 'rep_name',
-		key: 'rep_name',
-		render: (text, record) => {
-			return {
-				props: {
-					style: { background: record.color },
-				},
-				children: <div>{text}</div>,
-			};
-		},
-	},
-	{
-		title: 'Report Status',
-		dataIndex: 'rep_status',
-		key: 'rep_status',
-		render: (text, record) => {
-			return {
-				props: {
-					style: { background: record.color },
-				},
-				children: <div>{text}</div>,
-			};
-		},
-	},
-	{
-		title: 'Created By',
-		dataIndex: 'created_by',
-		key: 'created_by',
-		render: (text, record) => {
-			return {
-				props: {
-					style: { background: record.color },
-				},
-				children: <div>{text}</div>,
-			};
-		},
-	},
-];
+// const columns = [
+// 	{
+// 		title: 'Report ID',
+// 		dataIndex: 'rep_disp_id',
+// 		key: 'rep_disp_id',
+// 		render: (text, record) => {
+// 			return {
+// 				props: {
+// 					style: { background: record.color },
+// 				},
+// 				children: <div>{text}</div>,
+// 			};
+// 		},
+// 	},
+// 	{
+// 		title: 'Report Name',
+// 		dataIndex: 'rep_name',
+// 		key: 'rep_name',
+// 		render: (text, record) => {
+// 			return {
+// 				props: {
+// 					style: { background: record.color },
+// 				},
+// 				children: <div>{text}</div>,
+// 			};
+// 		},
+// 	},
+// 	{
+// 		title: 'Report Status',
+// 		dataIndex: 'rep_status',
+// 		key: 'rep_status',
+// 		render: (text, record) => {
+// 			return {
+// 				props: {
+// 					style: { background: record.color },
+// 				},
+// 				children: <div>{text}</div>,
+// 			};
+// 		},
+// 	},
+// 	{
+// 		title: 'Created By',
+// 		dataIndex: 'created_by',
+// 		key: 'created_by',
+// 		render: (text, record) => {
+// 			return {
+// 				props: {
+// 					style: { background: record.color },
+// 				},
+// 				children: <div>{text}</div>,
+// 			};
+// 		},
+// 	},
+// ];
 
 function ReportGenerator(props) {
 	const repotData = useSelector(
@@ -98,11 +95,11 @@ function ReportGenerator(props) {
 		update_object(checkedValues, i);
 	}
 
-	const menu = (
-		<Menu>
-			<Menu.Item>Save As</Menu.Item>
-		</Menu>
-	);
+	// const menu = (
+	// 	<Menu>
+	// 		<Menu.Item>Save As</Menu.Item>
+	// 	</Menu>
+	// );
 
 	const handleCancel = () => {
 		setAlertVisible(false);
@@ -145,7 +142,7 @@ function ReportGenerator(props) {
 		});
 	};
 
-	const mapReportList = reportList && reportList.length > 0 ? reportList : [];
+	//const mapReportList = reportList && reportList.length > 0 ? reportList : [];
 
 	const createArraObj = arr => {
 		let res = [];
@@ -208,7 +205,6 @@ function ReportGenerator(props) {
 		let headingSection = obj['sections'] ? obj['sections'] : [];
 		allSections = [...allSections, ...headingSection];
 
-		console.log(rep_layout);
 
 		for (let i = 0; i < allSections.length; i++) {
 			allSections[i].charts = rep_layout[i + 1] ? rep_layout[i + 1] : [];
@@ -236,11 +232,11 @@ function ReportGenerator(props) {
 		setTable(
 			ReportData['layout_info']
 				? getTableData(
-						ReportData['layout_info'],
-						ReportData.layout_info.charts_layout
-							? ReportData.layout_info.charts_layout
-							: {}
-				  )
+					ReportData['layout_info'],
+					ReportData.layout_info.charts_layout
+						? ReportData.layout_info.charts_layout
+						: {}
+				)
 				: {}
 		);
 		setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '');
@@ -397,8 +393,8 @@ function ReportGenerator(props) {
 													{i.heading}{' '}
 													{i.charts &&
 														i.charts.length > 0 &&
-														i.charts.map(i => (
-															<span className='chart-tags'>{i}</span>
+														i.charts.map(a => (
+															<span className='chart-tags'>{a}</span>
 														))}
 												</span>
 											}
@@ -424,7 +420,7 @@ function ReportGenerator(props) {
 																		</td>
 																		<td className='td' colspan={15}>
 																			{item.editable == false ||
-																			item.editable == undefined ? (
+																				item.editable == undefined ? (
 																				<Input.TextArea
 																					autoSize={true}
 																					defaultValue={item.value}

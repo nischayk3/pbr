@@ -1,9 +1,11 @@
 .viewCreation-container {
 	position: relative;
 	padding: 0px;
+
 	h4 {
 		margin-bottom: 0px !important;
 	}
+
 	hr {
 		margin: 0px !important;
 		border-width: 0.5px !important;
@@ -21,6 +23,7 @@
 		top: 0;
 		right: 0;
 		z-index: 999;
+
 		.viewCreation-btns {
 			button.ant-btn {
 				font-family: var(--primary-font-family);
@@ -50,6 +53,7 @@
 					}
 				}
 			}
+
 			.ant-btn[disabled]:hover {
 				color: #262626;
 			}
@@ -95,12 +99,15 @@
 			h4 {
 				margin-bottom: 0px !important;
 			}
+
 			hr {
 				margin: 0px !important;
 			}
+
 			.ant-select-selector {
 				border-radius: 4px !important;
 			}
+
 			.ant-select-selection-placeholder {
 				color: black !important;
 			}
@@ -128,7 +135,7 @@ a.deleteTableAction {
 			font-size: 16px;
 			line-height: 22px;
 			/* identical to box height, or 138% */
-			background: #f1f7ff;
+
 			border-radius: 4px 4px 0px 0px;
 			padding: 15px 12px 8px 25px;
 			letter-spacing: 0.01em;
@@ -141,15 +148,18 @@ a.deleteTableAction {
 				position: absolute;
 			}
 		}
+
 		.ant-collapse-item:last-child {
 			border-bottom: 0px !important;
 		}
+
 		.ant-collapse-content {
 			.ant-collapse-content-box {
 				padding: 10px 24px 20px !important;
 			}
 		}
 	}
+
 	.viewCreation-filesPanel {
 		.ant-collapse-header {
 			background-color: #f1f7ff;
@@ -158,8 +168,7 @@ a.deleteTableAction {
 			font-weight: 600;
 			font-size: 16px;
 			line-height: 22px;
-			/* identical to box height, or 138% */
-			background: #f1f7ff;
+
 			border-radius: 4px 4px 0px 0px;
 			padding: 15px 12px 8px 25px;
 			letter-spacing: 0.01em;
@@ -172,9 +181,11 @@ a.deleteTableAction {
 				position: absolute;
 			}
 		}
+
 		.ant-collapse-item:last-child {
 			border-bottom: 0px !important;
 		}
+
 		.ant-collapse-content {
 			.ant-collapse-content-box {
 				padding: 10px 24px 20px !important;
@@ -186,6 +197,7 @@ a.deleteTableAction {
 .table-search {
 	margin: 6px 30px;
 }
+
 .ant-table-wrapper {
 	overflow: auto;
 }
@@ -195,6 +207,7 @@ a.deleteTableAction {
 	border-radius: 4px;
 	background-color: #ffffff;
 	height: fit-content;
+
 	.ant-row.ant-form-item {
 		margin: 0px;
 
@@ -275,7 +288,6 @@ a.deleteTableAction {
 	font-size: 16px;
 	line-height: 22px;
 	background: #f1f7ff;
-	border-radius: 4px 4px 0px 0px;
 	padding: 15px 12px 8px 25px;
 	letter-spacing: 0.01em;
 	color: #000000;
@@ -299,8 +311,10 @@ a.deleteTableAction {
 	margin-bottom: 10px;
 	width: 270px;
 	justify-content: space-between;
+
 	.tree-block-param {
 		display: flex;
+
 		.treenode-param {
 			font-family: var(--primary-font-family);
 			font-style: normal;
@@ -318,6 +332,7 @@ a.deleteTableAction {
 			border-radius: 2px;
 			padding: 0 6px;
 		}
+
 		.treenode-coverage {
 			font-family: var(--primary-font-family);
 			font-style: normal;

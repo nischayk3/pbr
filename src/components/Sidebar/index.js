@@ -1,34 +1,27 @@
 import "./style.scss";
 import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  FileSearchOutlined,
-  PartitionOutlined,
-  ClusterOutlined,
-  TeamOutlined,
-  SolutionOutlined,
-  FileDoneOutlined,
   AppstoreAddOutlined,
-  HomeOutlined,
-  FundProjectionScreenOutlined,
-  UploadOutlined,
-  FileProtectOutlined,
+  AppstoreOutlined,
   AreaChartOutlined,
+  BarChartOutlined,
+  ClusterOutlined,
   CodeOutlined,
   DeploymentUnitOutlined,
-  LayoutOutlined
+  FileDoneOutlined,
+  FileProtectOutlined,
+  FileSearchOutlined,
+  FundProjectionScreenOutlined,
+  HomeOutlined,
+  LayoutOutlined,
+  PartitionOutlined,
+  SolutionOutlined,
+  TeamOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import React, { useCallback, useEffect, useState } from "react";
-
-import Auth from "../../utils/auth";
 import { useSelector } from "react-redux";
-import { useMsal } from "@azure/msal-react";
-import {JUPYTER_NOTEBOOK} from '../../constants/apiBaseUrl'
-// import { useSelector } from 'react-redux';
-
-// import { userLogout } from '../../api/login';
 
 const MENU = [
   {
@@ -51,7 +44,7 @@ const MENU = [
   },
   {
     key: "dashboard",
-    icon: <FundProjectionScreenOutlined style={{ fontSize: "23px" }}/>,
+    icon: <FundProjectionScreenOutlined style={{ fontSize: "23px" }} />,
     title: "Dashboard",
     linkTo: "/dashboard/dashboard",
   },
@@ -124,7 +117,7 @@ const MENU = [
   },
   {
     key: "hierarchy",
-    icon: <DeploymentUnitOutlined  style={{ fontSize: "23px" }} />,
+    icon: <DeploymentUnitOutlined style={{ fontSize: "23px" }} />,
     title: "Hierarchy",
     linkTo: "/dashboard/molecule_hierarchy_configuration",
   },
@@ -140,34 +133,14 @@ const MENU = [
     title: "System Error Report",
     linkTo: "/dashboard/system_error_report",
   },
-  
- 
-  // {
-  //     key: 'report_generator',
-  //     icon: <FileFilled style={{ fontSize: '23px' }} />,
-  //     title: 'Report Generator',
-  //     linkTo: '/dashboard/report_generator',
-  // },
- 
- 
-  
- 
-  
+
 ];
 
 const { Sider } = Layout;
-function handleLogout(instance) {
-  instance.logoutPopup().catch((e) => {
-    console.error(e);
-  });
-}
 
 const Sidebar = () => {
-  const { instance } = useMsal();
-
   const [selectedKey, setSelectedKey] = useState("");
   const location = useLocation();
-  const history = useHistory();
   const collapsed = useSelector((state) => state.commonReducer.isMenuCollapsed);
   const theme = useSelector((state) => state.commonReducer.theme);
 
@@ -194,7 +167,7 @@ const Sidebar = () => {
         {/* <div id='logo-small'></div> */}
         <Menu selectedKeys={[selectedKey]} mode="inline" theme={theme}>
           {MENU.map((item) => (
-            <Menu.Item key={item.key} icon={item.icon} id={item.key} onClick={()=>window.location.reload()}>
+            <Menu.Item key={item.key} icon={item.icon} id={item.key}>
               <Link to={item.linkTo}>{item.title}</Link>
             </Menu.Item>
           ))}

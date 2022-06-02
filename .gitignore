@@ -42,7 +42,8 @@ videos
 
 # Linter
 linters/
-
+.eslintrc.js
+eslintrc.js
 # compiled output
 /build
 /Release
