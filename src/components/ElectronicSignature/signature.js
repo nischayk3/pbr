@@ -1,26 +1,29 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router";
+/* eslint-disable react/prop-types */
 import { Button, Input, Modal, Select } from "antd";
-import "./styles.scss";
-import { useDispatch } from "react-redux";
 import queryString from "query-string";
-import {
-	approveRecord,
-	eSign,
-	publishEvent
-} from "../../services/electronicSignatureService";
-import { getAuthenticate } from "../../services/loginService";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useLocation } from "react-router";
+import "./styles.scss";
 import {
 	hideLoader,
 	showLoader,
 	showNotification
 } from "../../duck/actions/commonActions";
+import {
+	approveRecord,
+	eSign,
+	publishEvent
+} from "../../services/electronicSignatureService";
+import { getAuthenticate, getAuthenticateWithoutAD } from "../../services/loginService";
+
 
 const { Option } = Select;
 
 function Signature(props) {
 	const location = useLocation();
 	const params = queryString.parse(location.search);
+	// eslint-disable-next-line react/prop-types
 	var { isPublish, handleClose } = props;
 	const [password, setPassword] = useState("");
 	const [username, setUsername] = useState("");
@@ -32,8 +35,9 @@ function Signature(props) {
 	const authenticateUser = async () => {
 		let req = {};
 		let header = {
-			username: username,
-			password: password
+			password: password,
+			username: username
+
 		};
 		try {
 			dispatch(showLoader());
@@ -43,14 +47,41 @@ function Signature(props) {
 				dispatch(showNotification("error", "Incorrect credentials"));
 				handleClose();
 			} else {
+				// eslint-disable-next-line react/prop-types
 				setIsAuth(props.status);
 			}
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
-			dispatch(showNotification("error", "Unable to fetch coverages"));
+			dispatch(showNotification("error", "Incorrect credentials"));
 		}
 	};
+
+	const authenticateUserWithoutAD = async () => {
+		let req = {};
+		let header = {
+			password: password,
+			username: username
+
+		};
+		try {
+			dispatch(showLoader());
+			const res = await getAuthenticateWithoutAD(req, header);
+			if (res.Status != 200) {
+				setIsAuth("");
+				dispatch(showNotification("error", "Incorrect credentials"));
+				handleClose();
+			} else {
+				// eslint-disable-next-line react/prop-types
+				setIsAuth(props.status);
+			}
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", "Incorrect credentials"));
+		}
+	};
+
 	const handleConfirm = async () => {
 		var today = new Date();
 		var h = today.getHours();
@@ -68,15 +99,17 @@ function Signature(props) {
 		req["timestamp"] = time_today;
 		req["reason"] = reason;
 		req["user_id"] = username;
+		// eslint-disable-next-line react/prop-types
 		req["screen"] = props.screenName;
 		req["first_name"] = "first_name";
 		req["last_name"] = "last_name";
 		let login_response = JSON.parse(localStorage.getItem("login_details"));
 		let headers = {
 			"content-type": "application/json",
-			"x-access-token": login_response.token ? login_response.token : "",
 			"resource-name":
-				props.appType == "REPORT" ? "REPORT_DESIGNER" : props.appType
+				props.appType == "REPORT" ? "REPORT_DESIGNER" : props.appType,
+			"x-access-token": login_response.token ? login_response.token : ""
+
 		};
 		try {
 			let esign_response = await eSign(req, headers);
@@ -105,10 +138,10 @@ function Signature(props) {
 				req1["status"] = props.status;
 
 				//callback esign id
-				if(props.eSignId){
+				if (props.eSignId) {
 					props.eSignId(esign_response.primary_id);
 				}
-				
+
 				let publish_response =
 					Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
 						? await approveRecord(req1)
@@ -134,28 +167,28 @@ function Signature(props) {
 		<div>
 			<Modal
 				className="electronic-signature-modal"
-				visible={isPublish}
+				visible={ isPublish }
 				title="Enter details to confirm update"
-				width={500}
-				mask={true}
-				onCancel={() => {
+				width={ 500 }
+				mask={ true }
+				onCancel={ () => {
 					handleClose();
 					setIsAuth("");
-				}}
+				} }
 				footer={
 					isauth === "A" || isauth === "R" || isauth === "P"
 						? [
 							<Button
 								className="custom-primary-btn"
 								key="2"
-								onClick={() => handleClose()}
+								onClick={ () => handleClose() }
 							>
 								Cancel
 							</Button>,
 							<Button
 								className="custom-secondary-btn"
 								key="1"
-								onClick={() => handleConfirm()}
+								onClick={ () => handleConfirm() }
 							>
 								Confirm
 							</Button>
@@ -164,7 +197,14 @@ function Signature(props) {
 							<Button
 								className="custom-secondary-btn"
 								key="3"
-								onClick={() => authenticateUser()}
+								onClick={ () => authenticateUser() }
+							>
+								Authenticate with AD
+							</Button>,
+							<Button
+								className="custom-secondary-btn"
+								key="4"
+								onClick={ () => authenticateUserWithoutAD() }
 							>
 								Authenticate
 							</Button>
@@ -174,30 +214,30 @@ function Signature(props) {
 				<div className="electronic-sig">
 					<div className="sign-cols">
 						<div>
-							<p style={{ margin: "8px 0px" }}>User ID</p>
+							<p style={ { margin: "8px 0px" } }>User ID</p>
 							<Input
-								value={username}
-								onChange={(e) => setUsername(e.target.value)}
+								value={ username }
+								onChange={ (e) => setUsername(e.target.value) }
 							/>
 						</div>
 						<div>
-							<p style={{ margin: "8px 0px" }}>Password</p>
+							<p style={ { margin: "8px 0px" } }>Password</p>
 							<Input
 								type="password"
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
+								value={ password }
+								onChange={ (e) => setPassword(e.target.value) }
 							/>
 						</div>
 					</div>
-					{((isauth === "A" && props.status === "A") ||
+					{ ((isauth === "A" && props.status === "A") ||
 						(isauth === "P" && props.status === "P")) && (
 							<div>
-								<p style={{ margin: "8px 0px" }}>Signing</p>
+								<p style={ { margin: "8px 0px" } }>Signing</p>
 								<Select
-									onChange={(e, value) => {
+									onChange={ (e, value) => {
 										let reason_value = value.value ? value.value : "";
 										setReason(reason_value);
-									}}
+									} }
 									className="sign-select"
 								>
 									<Option key="Signing on behalf of team mate">
@@ -208,21 +248,21 @@ function Signature(props) {
 									<Option key="Other Reason">Other Reason</Option>
 								</Select>
 							</div>
-						)}
+						) }
 
-					{isauth === "R" && props.status === "R" && (
+					{ isauth === "R" && props.status === "R" && (
 						<div>
 							<p>Comment</p>
 							<Input.TextArea
-								rows={3}
-								value={reason}
-								style={{ width: "450px" }}
-								onChange={(e) => {
+								rows={ 3 }
+								value={ reason }
+								style={ { width: "450px" } }
+								onChange={ (e) => {
 									setReason(e.target.value);
-								}}
+								} }
 							/>
 						</div>
-					)}
+					) }
 				</div>
 			</Modal>
 		</div>
