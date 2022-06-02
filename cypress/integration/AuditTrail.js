@@ -25,27 +25,25 @@ describe('chart Personalization', () => {
 
 
         cy.get("#login-btn",{timeout:2000}).click();
-        cy.get('#chart_personalization > .ant-menu-title-content > a',{timeout:20000}).click({ force: true});
-        cy.location('href', {timeout: 10000}).should('include', '/chart_personalization');
-        cy.get('.create-new').click();
-        cy.get('.ant-input').click({force:true});
-        cy.get('[data-row-key="7"] > :nth-child(1)').click();
-        cy.get('.input_field > .ant-input').clear();
-        cy.get('.input_field > .ant-input').type('new chart');
-        cy.get('.ant-input-affix-wrapper > .ant-input').click();
-        cy.get('.details-container > :nth-child(2)').click();
-        cy.get('#rc_select_2').click();
+        cy.wait(5000)
+        cy.get('#audit_trail_report > .ant-menu-title-content > a').click({ force: true,multiple:true});
+        cy.location('href', {timeout: 10000}).should('include', '/audit_trail_report');
+        cy.get(':nth-child(2) > .ant-space-item > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
         cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
-        cy.get('#rc_select_3').click();
-        cy.get(':nth-child(5) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
-        cy.get(':nth-child(3) > .select_field > .ant-select > .ant-select-selector').click();
+        cy.get(':nth-child(3) > .ant-space-item > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
         cy.get(':nth-child(6) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
-        cy.get('.button-visible > .ant-btn > span').click();
-        cy.get('#rc-tabs-0-tab-2').click();
-        cy.get('#rc-tabs-0-tab-3').click();
-        cy.get('.btns > div > :nth-child(4) > span').click();
-        cy.get('div > :nth-child(5) > :nth-child(3)').click();
-        cy.get('.ant-modal-close-x > .anticon > svg > path').click();
-       
+        cy.get('.divFilter-second > :nth-child(1) > span').click();
+        cy.get('.simulate-btn > span').click();
+        cy.get('.ant-input').clear();
+        cy.get('.ant-input').type('ab');
+        cy.get('.ant-input-group-addon > .ant-btn').click();
+        cy.get(':nth-child(1) > .ant-table-column-sorters').click();
+        cy.get(':nth-child(3) > .ant-table-column-sorters').click();
+        cy.get(':nth-child(4) > .ant-table-column-sorters').click();
+        cy.get(':nth-child(5) > .ant-table-column-sorters').click();
+        cy.get(':nth-child(6) > .ant-table-column-sorters').click();
+        cy.get(':nth-child(7) > .ant-table-column-sorters').click();
+        cy.get('[style="margin-top: 10px; float: right; margin-right: 10px;"] > .ant-btn > span').click();
+        
     });
 });
