@@ -6,6 +6,7 @@
 		box-shadow: none;
 		margin-top: 24px;
 	}
+
 	.ant-tabs-tab-btn {
 		font-family: Roboto;
 		font-style: normal;
@@ -14,9 +15,11 @@
 		line-height: 22px;
 		color: rgba(0, 0, 0, 0.85);
 	}
+
 	.ant-tabs-tab-btn:hover {
 		color: rgba(0, 0, 0, 0.85);
 	}
+
 	.ant-tabs-tab .ant-tabs-tab-active {
 		font-family: Roboto;
 		font-style: normal;
@@ -25,6 +28,7 @@
 		line-height: 22px;
 		color: red !important;
 	}
+
 	.ant-tabs-ink-bar {
 		background: var(--primary-color);
 	}
@@ -32,9 +36,11 @@
 	.ant-input-affix-wrapper .ant-input-affix-wrapper-lg {
 		height: 33px;
 	}
+
 	.ant-btn .ant-btn-primary .ant-btn-lg .ant-input-search-button {
 		height: 33px;
 	}
+
 	.dash-username {
 		font-family: Roboto;
 		font-style: normal;
@@ -44,6 +50,7 @@
 		color: #000000;
 		margin-top: 10px;
 	}
+
 	.dash-text {
 		font-family: Roboto;
 		font-style: normal;
@@ -59,21 +66,21 @@
 		grid-template-columns: auto auto;
 		grid-gap: 0px 19px;
 	}
+
 	.approve-wrapper {
 		display: grid;
 		grid-gap: 19px 0px;
 		//margin:22px 28px 19px 18px ;
 		margin: 0px;
 	}
+
 	.workflow_head {
 		// width: 1330px;
 		margin: 24px;
 		height: 168px;
-		background: linear-gradient(
-			180deg,
-			rgba(139, 254, 197, 0.53) 0%,
-			rgba(119, 227, 233, 0.49) 100%
-		);
+		background: linear-gradient(180deg,
+				rgba(139, 254, 197, 0.53) 0%,
+				rgba(119, 227, 233, 0.49) 100%);
 		box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
 		// background: #F1F7FF;
 		// box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
@@ -88,6 +95,7 @@
 		bottom: 105px;
 		right: 300px;
 	}
+
 	.resultdate {
 		float: right;
 		position: relative;
@@ -100,6 +108,7 @@
 		line-height: 22px;
 		color: #666666;
 	}
+
 	.table-cards {
 		//position: relative;
 		//margin-left: 320px;
@@ -110,13 +119,16 @@
 		border-radius: 4px;
 		border: 1px solid #486bc9;
 		box-sizing: border-box;
+
 		.ant-card-head {
 			background: #ffffff !important;
 			height: 65px !important;
 		}
+
 		.ant-card-head-title {
 			padding: 12px 15px !important;
 		}
+
 		.ant-card-body {
 			padding: 0px 25px !important;
 		}
@@ -130,6 +142,7 @@
 		line-height: 22px;
 		color: #262626;
 	}
+
 	.workflow-tabs {
 		.ant-tabs-tab-btn {
 			font-family: Roboto;
@@ -139,6 +152,7 @@
 			line-height: 22px;
 			color: rgba(0, 0, 0, 0.85);
 		}
+
 		.ant-tabs-tab-active .ant-tabs-tab-btn {
 			font-family: Roboto;
 			font-style: normal;
@@ -147,6 +161,7 @@
 			line-height: 22px;
 			color: var(--primary-color) !important;
 		}
+
 		.ant-tabs-ink-bar {
 			background: var(--primary-color);
 		}
@@ -164,6 +179,7 @@
 		box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
 		border-radius: 4px;
 	}
+
 	.create_new {
 		justify-content: center;
 		align-items: flex-start;
@@ -177,6 +193,7 @@
 		margin-top: 20px;
 		margin-right: 600px;
 	}
+
 	.create-new {
 		height: 137px;
 		width: 175px;
@@ -193,12 +210,14 @@
 		margin-bottom: 10px;
 		margin-right: 430px;
 		margin-left: 0px;
+
 		svg {
 			cursor: pointer;
 			margin-top: 10px !important;
 			font-size: 40px;
 			color: #cbcbcb;
 		}
+
 		p {
 			font-size: 14px;
 			font-weight: 400;
@@ -206,9 +225,11 @@
 			color: #494949;
 		}
 	}
+
 	.recent {
 		margin-right: 300px;
 	}
+
 	.recent-report {
 		margin-right: 350px;
 	}
@@ -222,6 +243,7 @@
 		align-items: center;
 		background: #e2e8f2;
 		position: relative;
+
 		.tile-status {
 			// background: #F7BB61;
 			border-radius: 0px 4px;
@@ -234,6 +256,7 @@
 			font-size: small;
 		}
 	}
+
 	.tile {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -245,16 +268,19 @@
 			align-content: center;
 			font-size: 12px;
 		}
+
 		.aprd {
 			background: #a4f588;
 			font-size: 12px;
 		}
+
 		.drft {
 			background: #363636;
 			color: white;
 			font-size: 12px;
 		}
 	}
+
 	.tiles {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -266,10 +292,12 @@
 			align-content: center;
 			font-size: 12px;
 		}
+
 		.aprd {
 			background: #a4f588;
 			font-size: 12px;
 		}
+
 		.drft {
 			background: #363636;
 			color: white;
@@ -284,14 +312,17 @@
 		border-radius: 4px;
 		max-height: 500px;
 		overflow: auto;
+
 		.ant-card-body {
 			padding: 24px 24px 48px 24px;
 		}
+
 		.ant-spin-container {
 			bottom: 20px;
 			width: 100%;
 		}
 	}
+
 	.landing-table {
 		margin-top: 10px;
 		cursor: pointer;
@@ -310,9 +341,11 @@
 		.ant-tabs-nav-list {
 			margin-left: 28%;
 		}
+
 		.ant-tabs-tab-btn {
 			color: var(--primary-color) !important;
 		}
+
 		.ant-tabs-ink-bar {
 			color: var(--primary-color) !important;
 		}
@@ -324,12 +357,15 @@
 		display: flex;
 		margin-top: 20px;
 		justify-content: space-between;
+
 		.legends {
 			display: flex;
+
 			p {
 				padding: 0 5px 0 15px;
 				display: flex;
 				margin-left: 0px;
+
 				.drft {
 					width: 14px;
 					height: 14px;
@@ -338,6 +374,7 @@
 					display: block;
 					margin: 3px 6px;
 				}
+
 				.aprv {
 					width: 14px;
 					height: 14px;
@@ -346,6 +383,7 @@
 					margin: 3px 6px;
 					display: block;
 				}
+
 				.await {
 					width: 14px;
 					height: 14px;
@@ -358,16 +396,19 @@
 		}
 	}
 }
+
 .landing-modal {
 	//  margin-right: 210px;
 	margin-right: 650px;
 	margin-top: 100px;
+
 	.ant-modal-content {
 		width: 907px;
 		height: auto;
 		background: #ffffff;
 		border-radius: 4px;
 	}
+
 	.gen-banner {
 		height: 250px;
 		display: flex;
@@ -375,9 +416,11 @@
 		margin-top: 24px;
 		// justify-content: center;
 	}
+
 	.ant-modal-close-x {
 		margin-top: -5px;
 	}
+
 	.ant-modal-header {
 		background: #f1f7ff !important;
 		border-radius: 4px 4px 0px 0px !important;
@@ -388,9 +431,11 @@
 		line-height: 22px;
 		color: #4d4d4d;
 	}
+
 	.ant-modal-footer {
 		border-top: 0px;
 	}
+
 	.landing-tiles {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -398,6 +443,7 @@
 		margin-top: 15px;
 		margin-bottom: 12px;
 	}
+
 	.landing-tile {
 		width: 165px;
 		height: 57px;
@@ -409,6 +455,7 @@
 		align-items: center;
 		position: relative;
 	}
+
 	.landing-tile-check {
 		width: 165px;
 		height: 57px;
@@ -420,6 +467,7 @@
 		align-items: center;
 		position: relative;
 	}
+
 	.landing-report-id {
 		font-family: var(--primary-font-family);
 		font-style: normal;
@@ -428,6 +476,7 @@
 		line-height: 22px;
 		color: #000000;
 	}
+
 	.landing-report-name {
 		font-family: var(--primary-font-family);
 		font-style: normal;
@@ -438,6 +487,7 @@
 
 		color: var(--primary-color);
 	}
+
 	.landing-checkicon {
 		position: relative;
 		float: right;
@@ -448,6 +498,7 @@
 
 .landing-screen-header {
 	padding: 24px 24px 0px 24px;
+
 	img {
 		margin: 24px;
 		height: 130px;
@@ -456,7 +507,8 @@
 
 .landing-table {
 	cursor: pointer;
-	.ant-table-tbody > tr > td {
+
+	.ant-table-tbody>tr>td {
 		font-family: var(--primary-font-family);
 		font-style: normal;
 		font-weight: 400;

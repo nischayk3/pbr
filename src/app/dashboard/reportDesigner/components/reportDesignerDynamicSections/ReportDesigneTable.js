@@ -3,22 +3,18 @@ import { Form, Input, Space, Popconfirm, Card, Button } from 'antd';
 import {
 	DeleteTwoTone,
 	PlusOutlined,
-	CheckCircleTwoTone,
 } from '@ant-design/icons';
 import './styles.scss';
 import ReportDesignerDynamicRow from './reportDesignerDynamicRow/reportDesignerDynamicRow';
 import ChartTable from '../reportChart/reportChart';
 
 function ReportDesigneTable(props) {
-	const { formData, list } = props;
+	const { list } = props;
 
 	const [count, setCount] = useState(0);
 	const [alertCount, setAlertCount] = useState([0]);
 	const [showCharts, setShowCharts] = useState(false);
 	const [addedCharts, setAddedCharts] = useState([]);
-	const [selected, setSelected] = useState('');
-
-	let chartsObj = {};
 
 	const handleClick = () => {
 		setCount(count + 1);
@@ -33,7 +29,6 @@ function ReportDesigneTable(props) {
 	const addCharts = (chartname, name) => {
 		let arr = [...addedCharts];
 		arr.push(chartname);
-		setSelected(chartname);
 		setAddedCharts(arr);
 		// setAddedCharts(addedCharts.push(chartname));
 		// setCount(count + 1);

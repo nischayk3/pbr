@@ -35,8 +35,8 @@ const MaterialTree = (props) => {
 	const onSelect = (keys) => {
 		setSelectedKeys(keys);
 	};
-	const onCheck = (checkedKeys) => {
-		setCheckedKeys(checkedKeys);
+	const onCheck = (oncheckkey) => {
+		setCheckedKeys(oncheckkey);
 	};
 	const handleClickParam = (e, keys, param, record) => {
 		const existing = selectedData.find((item) => item.key === keys);
@@ -58,13 +58,17 @@ const MaterialTree = (props) => {
 					});
 				});
 			});
-			molBatch.map((el, index) => {
+			molBatch.map((el) => {
 				if (record.batches.includes(el.batch)) {
-					batchData[el.batch] = true;
-					newBatchData[el.batch] = true;
+					return (
+						batchData[el.batch] = true,
+						newBatchData[el.batch] = true
+					)
 				} else {
-					batchData[el.batch] = false;
-					newBatchData[el.batch] = false;
+					return (
+						batchData[el.batch] = false,
+						newBatchData[el.batch] = false
+					)
 				}
 			});
 			batchData["id"] = count;
@@ -121,10 +125,10 @@ const MaterialTree = (props) => {
 							selectedKeys={selectedKeys}
 						>
 							<TreeNode title={item.process_step} key={item.key + index}>
-								{item.children.map((a, index) => {
+								{item.children.map((a) => {
 									return (
 										<TreeNode title={a.product_description} key={a.key + index}>
-											{a.children.map((b, index) => {
+											{a.children.map((b) => {
 												return (
 													<TreeNode
 														title={

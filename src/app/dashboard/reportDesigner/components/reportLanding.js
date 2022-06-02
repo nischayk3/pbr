@@ -31,12 +31,10 @@ import checkIcon from '../../../../assets/images/checkbox.svg';
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
 
 export default function Landing(props) {
-	const [resultDate, setResultDate] = useState('');
 	const [searched, setSearched] = useState(false);
 	const [newsearched, setNewSearched] = useState(false);
 	const [reportList, setReportList] = useState([]);
 	const [filterTable, setFilterTable] = useState(null);
-	const [screen, setScreen] = useState(false);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [selectedReportId, setSelectedReportId] = useState('');
 	const [activeTab, setActiveTab] = useState('Design Report Template');
@@ -143,13 +141,12 @@ export default function Landing(props) {
 		else {
 			setSearched(true);
 			const tableData = reportList;
-			const filterTable = tableData.filter(o =>
+			const filterTableData = tableData.filter(o =>
 				Object.keys(o).some(k =>
 					String(o[k]).toLowerCase().includes(value.toLowerCase())
 				)
 			);
-
-			setFilterTable(filterTable);
+			setFilterTable(filterTableData);
 		}
 	};
 	const onSearch = value => {
@@ -157,21 +154,17 @@ export default function Landing(props) {
 		else {
 			setNewSearched(true);
 			const tableData = reportList;
-			const filterTable = tableData.filter(o =>
+			const filterTableData = tableData.filter(o =>
 				Object.keys(o).some(k =>
 					String(o[k]).toLowerCase().includes(value.toLowerCase())
 				)
 			);
 
-			setFilterTable(filterTable);
+			setFilterTable(filterTableData);
 		}
 	};
 
 	const handleCancel = () => {
-		setIsModalVisible(false);
-	};
-
-	const handleOk = () => {
 		setIsModalVisible(false);
 	};
 
@@ -229,17 +222,17 @@ export default function Landing(props) {
 		}
 	};
 
-	const statusColor = status => {
-		if (status == 'APRD') {
-			return 'aprd';
-		}
-		if (status == 'DRFT') {
-			return 'drft';
-		}
-		if (status == 'AWAP') {
-			return 'awap';
-		}
-	};
+	// const statusColor = status => {
+	// 	if (status == 'APRD') {
+	// 		return 'aprd';
+	// 	}
+	// 	if (status == 'DRFT') {
+	// 		return 'drft';
+	// 	}
+	// 	if (status == 'AWAP') {
+	// 		return 'awap';
+	// 	}
+	// };
 
 	return (
 		<div className='report-landing'>
@@ -261,18 +254,7 @@ export default function Landing(props) {
 						sourceClass='dashboard-landing'
 					/>
 				</div>
-				{/* <Card className='workflow_head'>
-                        <div>
-                            <p className='dash-username'>
-                                Howdy {localStorage.getItem('username')}!
-                            </p>
-                            <p className='dash-text'>
-                                Let's get designing some report templates!
-                            </p>
-                        </div>
-                        <img src={illustrations} className='illustration' />
-                        <span className='resultdate'>{resultDate}</span>
-                    </Card> */}
+
 				<Card className='landing-card'>
 					<div style={{ width: '900px', marginLeft: '180px' }}>
 						<Input.Search

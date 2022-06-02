@@ -8,9 +8,7 @@ import { showLoader, hideLoader, showNotification } from '../../../../../duck/ac
 import { useDispatch } from 'react-redux';
 import checkIcon from '../../../../../assets/images/checkbox.svg'
 
-
 function ReportDesignerDynamicSections(props) {
-
     useEffect(() => {
         LoadData()
     })
@@ -207,7 +205,7 @@ function ReportDesignerDynamicSections(props) {
                                             <center>
                                                 <div className="sectionTable">
                                                     <div
-                                                        className='create-new-report'
+                                                        className='create-new'
                                                         onClick={() => sectionAddKey(name + 1)}                                                     >
                                                         <PlusOutlined />
                                                         <p>Add key and value</p>
@@ -279,7 +277,7 @@ function ReportDesignerDynamicSections(props) {
                                         <p disabled={props.show}>
                                             <center>
                                                 <div
-                                                    className='create-new-report'
+                                                    className='create-new'
                                                     onClick={() => add()}                                    >
                                                     <PlusOutlined />
                                                     <p>Add section</p>

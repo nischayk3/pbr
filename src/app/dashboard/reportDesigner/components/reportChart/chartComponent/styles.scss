@@ -3,6 +3,7 @@
 	grid-template-columns: 1fr;
 	grid-gap: 10px 20px;
 }
+
 // table {
 //     font-family: arial, sans-serif;
 //     border-collapse: collapse;
@@ -19,9 +20,11 @@
 		line-height: 22px;
 		color: rgba(0, 0, 0, 0.85);
 	}
+
 	.ant-tabs-tab-btn:hover {
 		color: rgba(0, 0, 0, 0.85);
 	}
+
 	.ant-tabs-tab-active .ant-tabs-tab-btn {
 		font-family: Roboto;
 		font-style: normal;
@@ -30,12 +33,13 @@
 		line-height: 22px;
 		color: var(--primary-color) !important;
 	}
+
 	.ant-tabs-ink-bar {
 		background: var(--primary-color);
 	}
 }
-.ant-spin-container
-{
-	margin-top:10px;
-	margin-right:20px;
+
+.ant-spin-container {
+	margin-top: 10px;
+	margin-right: 20px;
 }
