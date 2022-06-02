@@ -21,8 +21,8 @@ const INITIAL_USER_RESTRICTIONS = [
         userType: 'user',
         restrictions: [
             {
-                screens: ['a', 'b'],
-                widgets: ['c', 'd']
+                screens: [],
+                widgets: []
             }
         ]
     },
@@ -30,8 +30,8 @@ const INITIAL_USER_RESTRICTIONS = [
         userType: 'admin',
         restrictions: [
             {
-                screens: ['e', 'f'],
-                widgets: ['g', 'h']
+                screens: [],
+                widgets: []
             }
         ]
     },
@@ -39,8 +39,8 @@ const INITIAL_USER_RESTRICTIONS = [
         userType: 'cmo',
         restrictions: [
             {
-                screens: ['i', 'j'],
-                widgets: ['k', 'l']
+                screens: [],
+                widgets: []
             }
         ]
     }
