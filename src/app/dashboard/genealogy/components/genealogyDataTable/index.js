@@ -11,13 +11,23 @@ import React, { useEffect, useState } from "react";
 function GenealogyDataTable(props) {
 	const [batchData, setbatchData] = useState({});
 	const [limsBatchData, setLimsBatchData] = useState([]);
+	const [pbrDetails, setPbrDetails] = useState([]);
 	const [proInput, setProInput] = useState([]);
 	const [proOutput, setProOutput] = useState([]);
 	const [purchaseData, setPurchaseData] = useState([]);
 
 	const { Panel } = Collapse;
 
-
+	const pbrColumns = [
+		{ title: "Site", dataIndex: "site_code", key: "1", width: 100 },
+		{ title: "Product", dataIndex: "product_num", key: "2", width: 100 },
+		{ title: "Batch", dataIndex: "batch_num", key: "3", width: 100 },
+		{ title: "Parameter", dataIndex: "parameter_name", key: "4", width: 100 },
+		{ title: "Param Value", dataIndex: "parameter_value", key: "5", width: 100 },
+		{ title: "Data Source", dataIndex: "data_source", key: "6", width: 100 },
+		{ title: "System Code", dataIndex: "system_code", key: "7", width: 100 },
+		{ title: "UOM ", dataIndex: "uom_code", key: "8", width: 100 },
+	]
 	const limsColumns = [
 		{ title: "Batch", dataIndex: "batch_num", key: "1", width: 100 },
 		{ title: "Plant", dataIndex: "site_code", key: "2", width: 100 },
@@ -72,6 +82,8 @@ function GenealogyDataTable(props) {
 		{ title: "End Time", dataIndex: "end_time", key: "4", width: 80 }
 	];
 
+
+
 	//	https://mdh-dashboard.mareana.com/d/trqNakk7z/live-sensor-monitor?orgId=1&from=1515646800000&to=1516770000000
 
 	const batchEquData = [
@@ -90,6 +102,7 @@ function GenealogyDataTable(props) {
 	];
 
 	useEffect(() => {
+		console.log("props.pbrBatchData12", props.pbrBatchData, props)
 		if (props && props.batchInfo) {
 			setbatchData(props.batchInfo);
 		}
@@ -105,12 +118,17 @@ function GenealogyDataTable(props) {
 		if (props && props.purchaseInfo) {
 			setPurchaseData(props.purchaseInfo);
 		}
+		if (props && props.pbrBatchData) {
+			console.log("props.pbrBatchData13", props.pbrBatchData, props)
+			setPbrDetails(props.pbrBatchData)
+		}
 	}, [
 		props.processInput,
 		props.processOutput,
 		props.batchInfo,
 		props.limsBatchInfo,
-		props.purchaseInfo
+		props.purchaseInfo,
+		props.pbrBatchData
 	]);
 
 	const callback = (key) => {
@@ -341,7 +359,7 @@ function GenealogyDataTable(props) {
 				<Panel
 					header={
 						<div className="panel-header">
-							<p>Component details</p>
+							<p>PBR details</p>
 							<Button
 								type="primary"
 								className="custom-primary-btn"
@@ -358,9 +376,9 @@ function GenealogyDataTable(props) {
 							index % 2 === 0 ? "table-row-light" : "table-row-dark"
 						}
 						size="small"
-						// columns={columns}
-						// dataSource={dataTable}
-						scroll={{ y: 350 }}
+						columns={pbrColumns}
+						dataSource={pbrDetails}
+						scroll={{ x: 1600, y: 350 }}
 						pagination={false}
 					/>
 				</Panel>
