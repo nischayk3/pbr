@@ -2,7 +2,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 	return false;
 });
 
-describe('chart Personalization', () => {
+describe('Audit Trail', () => {
 	it("should login successfully using Ad", () => {
         cy.visit("/");
         cy.url().should("include", "/user/login");
@@ -28,22 +28,29 @@ describe('chart Personalization', () => {
         cy.wait(5000)
         cy.get('#audit_trail_report > .ant-menu-title-content > a').click({ force: true,multiple:true});
         cy.location('href', {timeout: 10000}).should('include', '/audit_trail_report');
-        cy.get(':nth-child(2) > .ant-space-item > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
-        cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
-        cy.get(':nth-child(3) > .ant-space-item > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
-        cy.get(':nth-child(6) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
-        cy.get('.divFilter-second > :nth-child(1) > span').click();
-        cy.get('.simulate-btn > span').click();
+        cy.wait(5000)
+        cy.get(':nth-child(2) > .ant-space-item > .ant-select > .ant-select-selector > .ant-select-selection-item').click({ force: true});
+        cy.wait(5000)
+        cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click({ force: true});
+        cy.wait(5000)
+        cy.get(':nth-child(3) > .ant-space-item > .ant-select > .ant-select-selector > .ant-select-selection-item').click({ force: true});
+        cy.wait(5000)
+        cy.get('.divFilter-second > :nth-child(1) > span').click({ force: true});
+        cy.wait(5000)
+        cy.get('.simulate-btn > span').click({ force: true});
+        cy.wait(5000)
         cy.get('.ant-input').clear();
         cy.get('.ant-input').type('ab');
-        cy.get('.ant-input-group-addon > .ant-btn').click();
-        cy.get(':nth-child(1) > .ant-table-column-sorters').click();
-        cy.get(':nth-child(3) > .ant-table-column-sorters').click();
-        cy.get(':nth-child(4) > .ant-table-column-sorters').click();
-        cy.get(':nth-child(5) > .ant-table-column-sorters').click();
-        cy.get(':nth-child(6) > .ant-table-column-sorters').click();
-        cy.get(':nth-child(7) > .ant-table-column-sorters').click();
-        cy.get('[style="margin-top: 10px; float: right; margin-right: 10px;"] > .ant-btn > span').click();
+        cy.wait(5000)
+        cy.get('.ant-input-group-addon > .ant-btn').click({ force: true});
+        cy.wait(5000)
+        cy.get(':nth-child(1) > .ant-table-column-sorters').click({ force: true});
+        cy.get(':nth-child(3) > .ant-table-column-sorters').click({ force: true});
+        cy.get(':nth-child(4) > .ant-table-column-sorters').click({ force: true});
+        cy.get(':nth-child(5) > .ant-table-column-sorters').click({ force: true});
+        cy.get(':nth-child(6) > .ant-table-column-sorters').click({ force: true});
+        cy.get(':nth-child(7) > .ant-table-column-sorters').click({ force: true});
+        cy.get('[style="margin-top: 10px; float: right; margin-right: 10px;"] > .ant-btn > span').click({ force: true});
         
     });
 });

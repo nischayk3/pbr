@@ -2,7 +2,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 	return false;
 });
 
-describe('chart Personalization', () => {
+describe('Dashboard', () => {
 	it("should login successfully using Ad", () => {
         cy.visit("/");
         cy.url().should("include", "/user/login");
