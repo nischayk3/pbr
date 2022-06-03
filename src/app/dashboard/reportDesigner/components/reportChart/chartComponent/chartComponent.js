@@ -44,9 +44,8 @@ const chartComponent = (props) => {
 					dataIndex: i,
 					key: i,
 				}
-				res_arr.push(res)
+				return res_arr.push(res)
 			})
-
 			return res_arr
 		}
 		else {

@@ -50,11 +50,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import panelLeftImg from '../../../../assets/images/panel-leftIcon.svg';
 import panelRightImg from '../../../../assets/images/panel-rightIcon.svg';
-import cropImg from '../../../../assets/images/cropImg.svg';
-import undoImg from '../../../../assets/images/undoImg.svg';
-import redoImg from '../../../../assets/images/redoImg.svg';
-import contrastImg from '../../../../assets/images/contrastImg.svg';
-import BatchRecordExample from '../../../../assets/images/BatchRecordExample2.jpg';
 
 import InputField from '../../../../components/InputField/InputField';
 import QueryString from 'query-string';
@@ -70,7 +65,7 @@ import {
     processBatchRecord,
     findParameter,
 } from '../../../../services/pbrService';
-import { IdTokenEntity } from '@azure/msal-common';
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper'
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Dragger } = Upload;
@@ -154,6 +149,7 @@ function PaperBatchRecordsTemplate() {
     const [formLoadParameter, setFormLoadParameter] = useState({});
     const [templateInitialData, setTemplateInitialData] = useState({});
     const [pageIdentifierData, setPageIdentifierData] = useState({});
+    const [parameterFormData, setParameterFormData] = useState([]);
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
         setRightPanelCollapsed(!rightPanelCollapsed);
@@ -368,6 +364,12 @@ function PaperBatchRecordsTemplate() {
         } else if (field === 'method') {
             arr[key] = { ...arr[key], method: value.value }
             setFormValues(arr)
+        } else if (field === 'anchor_dir') {
+            arr[key] = { ...arr[key], anchor_dir: value.value }
+            setFormValues(arr)
+        } else if (field === 'param_rule') {
+            arr[key] = { ...arr[key], values: { ...arr[key]?.values, param_rule: value.value } }
+            setFormValues(arr)
         } else if (field === 'RegEx') {
             arr[key] = { ...arr[key], RegEx: e.target.value }
             setFormValues(arr)
@@ -394,10 +396,10 @@ function PaperBatchRecordsTemplate() {
             });
         } else if (field === 'area') {
             obj.areaValue = e.target.value;
-            setAreasMapObject({
-                ...areasMapObject,
-                areaValue: e.target.value,
-            });
+            // setAreasMapObject({
+            //     ...areasMapObject,
+            //     areaValue: e.target.value,
+            // });
         } else if (field === 'x1') {
             obj.coords[0] = e.target.value;
             let tempArr = [...areasMapObject.coords];
@@ -626,6 +628,14 @@ function PaperBatchRecordsTemplate() {
             batch: matBatch.batch
         }
         setTemplateInitialData(obj)
+        if (Object.keys(pageIdentifier).length > 0) {
+            let obj1 = {
+                key: pageIdentifier.keys[0],
+                key_2: pageIdentifier.keys[1]
+            }
+            setPageIdentifierData(obj1)
+        }
+
         if (templateInfo) {
             let obj = {}
             templateInfo.forEach((item, index) => {
@@ -647,11 +657,33 @@ function PaperBatchRecordsTemplate() {
             templateInfo.forEach(item => {
                 let obj = {
                     name: item.name,
-                    method: item.method
+                    method: item.method,
+                    param_rule: item?.param_value_rule?.rule_name,
+                    param_valueArea: item?.param_value_rule?.regex_text,
+                    param_max: item?.param_value_rule?.range_min,
+                    param_min: item?.param_value_rule?.range_max,
+                    param_valueTransformation: item?.param_value_rule?.factor,
+                    uom_rule: item?.uom_value_rule?.rule_name,
+                    uom_valueArea: item?.uom_value_rule?.regex_text,
+                    uom_max: item?.uom_value_rule?.range_min,
+                    uom_min: item?.uom_value_rule?.range_max,
+                    uom_valueTransformation: item?.uom_value_rule?.factor,
+                    time_rule: item?.time_value_rule?.rule_name,
+                    time_valueArea: item?.time_value_rule?.regex_text,
+                    time_max: item?.time_value_rule?.range_min,
+                    time_min: item?.time_value_rule?.range_max,
+                    time_valueTransformation: item?.time_value_rule?.factor,
+                    date_rule: item?.date_value_rule?.rule_name,
+                    date_valueArea: item?.date_value_rule?.regex_text,
+                    date_max: item?.date_value_rule?.range_min,
+                    date_min: item?.date_value_rule?.range_max,
+                    date_valueTransformation: item?.date_value_rule?.factor,
+
                 }
                 demoValues.users.push(obj)
             })
             setFormLoadParameter(demoValues)
+            setParameterFormData(demoValues.users)
 
         }
     }, []);
@@ -701,6 +733,7 @@ function PaperBatchRecordsTemplate() {
             setParamaterAdded(true)
             dispatch(loadTemplateInfo([]))
         }
+
     }, [areasMap])
 
     const getImage = async () => {
@@ -725,14 +758,14 @@ function PaperBatchRecordsTemplate() {
 
 
     useEffect(() => {
-        
+
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
             getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
             setImageWidth(list?.width)
             setimageHeight(list?.height)
         }, 3000)
-        
+
     }, [document.getElementsByTagName("canvas")[0]]);
 
 
@@ -862,12 +895,12 @@ function PaperBatchRecordsTemplate() {
                     pbrTemplateStatus: 'Unapproved',
                     createdBy: login_response?.email_id,
                     changedBy: login_response?.firstname,
-                    templateInfo: {pbrTemplateInfo:[],pbrPageIdentifier:{}},
+                    templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
                     material: matBatch?.material_num,
                     batch: matBatch?.batch
                 };
                 let arr = [];
-                formValues.forEach((ele) => {
+                formValues.forEach((ele, index) => {
                     let obj = {
                         method: ele.method,
                         filename: params?.file,
@@ -888,7 +921,11 @@ function PaperBatchRecordsTemplate() {
                         obj['param_value_top'] = ele?.values?.valueCoords[1] / imageHeight
                         obj['param_value_width'] = (ele?.values?.valueCoords[2] - ele?.values?.valueCoords[0]) / imageWidth
                         obj['param_value_snippet_id'] = ele?.values?.valueSnippetID
-
+                        obj['param_value_rule'] = {
+                            rule_name: parameterFormData[index]?.param_rule, regex_text: parameterFormData[index]?.param_valueArea,
+                            range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max, transormation: "divide",
+                            factor: parameterFormData[index]?.param_valueTransformation
+                        }
                     }
                     if (ele.unitValues) {
                         obj['uom_key_height'] = (ele?.unitValues?.coords[3] - ele?.unitValues?.coords[1]) / imageHeight
@@ -904,6 +941,11 @@ function PaperBatchRecordsTemplate() {
                         obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / imageHeight
                         obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / imageWidth
                         obj['uom_value_snippet_id'] = ele?.values?.valueSnippetID
+                        obj['uom_value_rule'] = {
+                            rule_name: parameterFormData[index]?.uom_rule, regex_text: parameterFormData[index]?.uom_valueArea,
+                            range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max, transormation: "divide",
+                            factor: parameterFormData[index]?.uom_valueTransformation
+                        }
 
                     }
                     if (ele.timeValues) {
@@ -920,6 +962,11 @@ function PaperBatchRecordsTemplate() {
                         obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / imageHeight
                         obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / imageWidth
                         obj['time_value_snippet_id'] = ele?.values?.valueSnippetID
+                        obj['time_value_rule'] = {
+                            rule_name: parameterFormData[index]?.time_rule, regex_text: parameterFormData[index]?.time_valueArea,
+                            range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max, transormation: "divide",
+                            factor: parameterFormData[index]?.time_valueTransformation
+                        }
 
                     }
                     if (ele.dateValues) {
@@ -936,12 +983,26 @@ function PaperBatchRecordsTemplate() {
                         obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / imageHeight
                         obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / imageWidth
                         obj['date_value_snippet_id'] = ele?.values?.valueSnippetID
+                        obj['date_value_rule'] = {
+                            rule_name: parameterFormData[index]?.date_rule, regex_text: parameterFormData[index]?.date_valueArea,
+                            range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max, transormation: "divide",
+                            factor: parameterFormData[index]?.date_valueTransformation
+                        }
 
                     }
                     arr.push(obj);
                 });
+                let obj1 = {
+                    keys: [],
+                    condition: "AND"
+                }
+                Object.entries(pageIdentifierData).forEach(item => {
+                    if (item[0] != "page_id" && item[1]) {
+                        obj1.keys.push(item[1])
+                    }
+                })
                 _reqBatch.templateInfo.pbrTemplateInfo = arr;
-                _reqBatch.templateInfo.pbrPageIdentifier = pageIdentifierData;
+                _reqBatch.templateInfo.pbrPageIdentifier = obj1;
 
                 //api call
                 const batchRes = await savePbrTemplate(_reqBatch);
@@ -988,6 +1049,10 @@ function PaperBatchRecordsTemplate() {
     const handleValuesChange = (changedValues, values) => {
         console.log("changedValues", changedValues, values)
     };
+    const parameterValuesChange = (changedValues, values) => {
+        console.log("changedValues", changedValues, values)
+        setParameterFormData(values.users)
+    };
     const pageIdentifierValueChange = (changedValues, values) => {
         setPageIdentifierData(values)
     };
@@ -1021,7 +1086,7 @@ function PaperBatchRecordsTemplate() {
         let req = {
             extraction_type: "all",
             extraction_filename: params?.file,
-            template_list: []
+            templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} }
         }
         let obj = {
             filename: params?.file,
@@ -1084,7 +1149,19 @@ function PaperBatchRecordsTemplate() {
             obj['date_value_top'] = formValues[activeKey]?.dateValues?.valueCoords[1] / imageHeight
             obj['date_value_width'] = (formValues[activeKey]?.dateValues?.valueCoords[2] - formValues[activeKey]?.dateValues?.valueCoords[0]) / imageWidth
         }
-        req.template_list.push(obj)
+        let obj1 = {
+            keys: [],
+            condition: "AND"
+        }
+        Object.entries(pageIdentifierData).forEach(item => {
+            if (item[0] != "page_id" && item[1]) {
+                obj1.keys.push(item[1])
+            }
+        })
+        req.templateInfo.pbrTemplateInfo.push(obj)
+        req.templateInfo.pbrPageIdentifier = obj1
+        // _reqBatch.templateInfo.pbrTemplateInfo = arr;
+        // _reqBatch.templateInfo.pbrPageIdentifier = pageIdentifierData;
         let res = await findParameter(req)
         if (res?.Found_file_list?.length > 0) {
             message.success(res.Message);
@@ -1102,7 +1179,7 @@ function PaperBatchRecordsTemplate() {
         setTableLoading(true)
         let req1 = {
             extraction_type: "custom",
-            template_list: [],
+            templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
             extraction_filename: params?.file,
         }
         let arr = []
@@ -1184,7 +1261,18 @@ function PaperBatchRecordsTemplate() {
             }
             arr.push(obj);
         });
-        req1.template_list = arr
+        let obj1 = {
+            keys: [],
+            condition: "AND"
+        }
+        Object.entries(pageIdentifierData).forEach(item => {
+            if (item[0] != "page_id" && item[1]) {
+                obj1.keys.push(item[1])
+            }
+        })
+        // req1.template_list = arr
+        req1.templateInfo.pbrTemplateInfo = arr;
+        req1.templateInfo.pbrPageIdentifier = obj1;
         let res = await findParameter(req1)
         if (res?.Found_file_list?.length > 0) {
             message.success(res.Message);
@@ -1282,6 +1370,7 @@ function PaperBatchRecordsTemplate() {
                         </span>
                         <span className='header-title'>{`TEMPLATE-${params?.tempalteName.toUpperCase()}`}</span>
                     </div>
+                    {/* <BreadCrumbWrapper /> */}
                 </div>
                 <div className='sub-header'>
                     <div className='sub-header-title'>
@@ -1369,14 +1458,14 @@ function PaperBatchRecordsTemplate() {
                                     <div className='pageIdentifierBlock'>
                                         <Form
                                             layout='vertical'
-                                            initialValues={pageIdentifier}
+                                            initialValues={pageIdentifierData}
                                             className='formNewTemplate'
                                             onValuesChange={pageIdentifierValueChange} name="page_identifier" onFinish={onFinish}
                                         >
                                             <Form.Item
                                                 name='page_id'
                                                 label="Page ID"
-                                           
+
                                             >
                                                 <Input />
                                                 {/* <Input/> */}
@@ -1384,7 +1473,7 @@ function PaperBatchRecordsTemplate() {
                                             <Form.Item
                                                 name='key'
                                                 label="Key 1"
-                                           
+
                                             >
                                                 <Input />
                                                 {/* <Input/> */}
@@ -1392,9 +1481,9 @@ function PaperBatchRecordsTemplate() {
                                             <Form.Item
                                                 name='key_2'
                                                 label="Key 2"
-                                           
+
                                             >
-                                                 <Input/>
+                                                <Input />
                                                 {/* <div style={{display:"flex",flexDirection:"row"}}>
                                                     <Input style={{ width: 250 }} />
                                                     
@@ -1407,29 +1496,29 @@ function PaperBatchRecordsTemplate() {
                                                 label='Condition'
                                                 name='condition'
                                             > */}
-                                                <div className='conditonBlock'>
-                                                    <span>Key 1</span>
-                                                    <span>
-                                                        <Select defaultValue='AND'>
-                                                            <Option value='AND'>
-                                                                AND
-                                                            </Option>
-                                                            <Option value='OR'>
-                                                                OR
-                                                            </Option>
-                                                            <Option value='NOT'>
-                                                                NOT
-                                                            </Option>
-                                                        </Select>
-                                                    </span>
-                                                    <span>Key 2</span>
-                                                </div>
+                                            <div className='conditonBlock'>
+                                                <span>Key 1</span>
+                                                <span>
+                                                    <Select defaultValue='AND'>
+                                                        <Option value='AND'>
+                                                            AND
+                                                        </Option>
+                                                        <Option value='OR'>
+                                                            OR
+                                                        </Option>
+                                                        <Option value='NOT'>
+                                                            NOT
+                                                        </Option>
+                                                    </Select>
+                                                </span>
+                                                <span>Key 2</span>
+                                            </div>
                                             {/* </Form.Item> */}
                                         </Form>
                                     </div>
                                 </Panel>
                                 <Panel header='Add Parameter' key='3'>
-                                    <Form onValuesChange={handleValuesChange} name="dynamic_form_nest_item" onFinish={onFinish}
+                                    <Form onValuesChange={parameterValuesChange} name="dynamic_form_nest_item" onFinish={onFinish}
                                         initialValues={formLoadParameter}
                                         autoComplete="off">
                                         <div className='addParameterContainer'>
@@ -1476,17 +1565,46 @@ function PaperBatchRecordsTemplate() {
                                                                                             <Option value='absolute_coordinate'>
                                                                                                 Get By Absolute Coordinate
                                                                                             </Option>
-                                                                                            {/* <Option value='regex'>
+                                                                                            <Option value='regex'>
                                                                                                 Get By Regex
-                                                                                            </Option> */}
+                                                                                            </Option>
                                                                                             <Option value='key_value_form'>
                                                                                                 Get By Form Key Value
                                                                                             </Option>
-                                                                                            {/* <Option value='relative_direction '>
+                                                                                            <Option value='relative_direction'>
                                                                                                 Get By Relative Direction
-                                                                                            </Option> */}
+                                                                                            </Option>
                                                                                         </Select>
                                                                                     </Form.Item>
+                                                                                    {formValues[key]?.method === "relative_direction" &&
+                                                                                        <Form.Item {...restField}
+                                                                                            name={[name, 'AnchorDirection']}
+                                                                                        // label="AnchorDirection"
+                                                                                        >
+
+                                                                                            <Select placeholder="AnchorDirection" onChange={(e, value) => onChangeChart(e, 'anchor_dir', key, value)}>
+                                                                                                <Option value='ABOVE'>
+                                                                                                    Above
+                                                                                                </Option>
+                                                                                                <Option value='LEFT'>
+                                                                                                    Left
+                                                                                                </Option>
+                                                                                                <Option value='RIGHT'>
+                                                                                                    Under
+                                                                                                </Option>
+                                                                                                <Option value='RIGHT'>
+                                                                                                    Right
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>}
+                                                                                    {formValues[key]?.method === "regex" &&
+                                                                                        <Form.Item {...restField}
+                                                                                            name={[name, 'regex']}
+                                                                                        // label="AnchorDirection"
+                                                                                        >
+
+                                                                                            <Input placeholder='Enter Regex' />
+                                                                                        </Form.Item>}
                                                                                     <div className='parameterAddingBlock parameterValueBlock'>
                                                                                         <p>
                                                                                             Value
@@ -1587,29 +1705,67 @@ function PaperBatchRecordsTemplate() {
                                                                                             </p>
                                                                                         </Dragger>
                                                                                         <Form.Item  {...restField}
-                                                                                            name={[name, 'param_valueFormat']}>
-                                                                                            <Select defaultValue='Rule'>
-                                                                                                <Option value='FORMAT'>
+                                                                                            name={[name, 'param_rule']}>
+                                                                                            <Select placeholder="Rule" onChange={(e, value) => onChangeChart(e, 'param_rule', key, value)}>
+                                                                                                <Option value='date'>
                                                                                                     Date
                                                                                                 </Option>
-                                                                                                <Option value='FORMAT'>
+                                                                                                <Option value='range'>
                                                                                                     Range
                                                                                                 </Option>
-                                                                                                <Option value='FORMAT'>
+                                                                                                <Option value='regex'>
                                                                                                     RegEx
                                                                                                 </Option>
                                                                                             </Select>
                                                                                         </Form.Item>
+
+                                                                                        {parameterFormData[key]?.param_rule === "range" ?
+                                                                                            <Row gutter={8}>
+                                                                                                <Col span={11}>
+                                                                                                    <Form.Item {...restField}
+                                                                                                        name={[name, 'param_min']}
+                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' }]}
+                                                                                                    >
+
+                                                                                                        <Input placeholder='Min' />
+                                                                                                    </Form.Item>
+                                                                                                </Col>
+                                                                                                {/* <Col span={1}>-</Col> */}
+                                                                                                <Col span={12}>
+                                                                                                    <Form.Item {...restField}
+                                                                                                        name={[name, 'param_max']}
+                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        () => ({
+                                                                                                            validator(_, value) {
+                                                                                                                if (!value) {
+                                                                                                                    return Promise.reject();
+                                                                                                                }
+
+                                                                                                                if (value < parameterFormData[key]?.param_min) {
+                                                                                                                    return Promise.reject("Enter value greater then Min");
+                                                                                                                }
+                                                                                                                return Promise.resolve();
+                                                                                                            },
+                                                                                                        })
+                                                                                                        ]}
+                                                                                                    >
+                                                                                                        <Input placeholder='Max' />
+                                                                                                    </Form.Item>
+                                                                                                </Col>
+                                                                                            </Row> :
+                                                                                            <Form.Item {...restField}
+                                                                                                name={[name, 'param_valueArea']}>
+                                                                                                <Input placeholder='Enter area' />
+                                                                                            </Form.Item>}
+
+                                                                                        <p></p>
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'param_valueTransformation']}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
 
-                                                                                        <Form.Item {...restField}
-                                                                                            name={[name, 'param_valueArea']}>
-                                                                                            <Input placeholder='Enter area' />
-                                                                                        </Form.Item>
-                                                                                        <Form.Item {...restField}
+
+                                                                                        {/* <Form.Item {...restField}
                                                                                             name={[name, 'param_valueAnchorDirection']}>
                                                                                             <Select defaultValue='AnchorDirection'>
                                                                                                 <Option value='top'>
@@ -1625,7 +1781,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     Right
                                                                                                 </Option>
                                                                                             </Select>
-                                                                                        </Form.Item>
+                                                                                        </Form.Item> */}
 
                                                                                     </div>
                                                                                     <p>
@@ -1716,27 +1872,64 @@ function PaperBatchRecordsTemplate() {
                                                                                                 />
                                                                                             </p>
                                                                                         </Dragger>
-                                                                                        <Form.Item name='valueFormat'>
-                                                                                            <Select defaultValue='Rule'>
-                                                                                                <Option value='FORMAT'>
+                                                                                        <Form.Item  {...restField}
+                                                                                            name={[name, 'uom_rule']}>
+                                                                                            <Select placeholder="Rule" onChange={(e, value) => onChangeChart(e, 'uom_rule', key, value)}>
+                                                                                                <Option value='date'>
                                                                                                     Date
                                                                                                 </Option>
-                                                                                                <Option value='FORMAT'>
+                                                                                                <Option value='range'>
                                                                                                     Range
                                                                                                 </Option>
-                                                                                                <Option value='FORMAT'>
+                                                                                                <Option value='regex'>
                                                                                                     RegEx
                                                                                                 </Option>
                                                                                             </Select>
                                                                                         </Form.Item>
-                                                                                        <Form.Item name='valueTransformation'>
+
+                                                                                        {parameterFormData[key]?.uom_rule === "range" ?
+                                                                                            <Row gutter={8}>
+                                                                                                <Col span={11}>
+                                                                                                    <Form.Item {...restField}
+                                                                                                        name={[name, 'uom_min']}
+                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' }]}
+                                                                                                    >
+                                                                                                        <Input placeholder='Min' />
+                                                                                                    </Form.Item>
+                                                                                                </Col>
+                                                                                                {/* <Col span={1}>-</Col> */}
+                                                                                                <Col span={12}>
+                                                                                                    <Form.Item {...restField}
+                                                                                                        name={[name, 'uom_max']}
+                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        () => ({
+                                                                                                            validator(_, value) {
+                                                                                                                if (!value) {
+                                                                                                                    return Promise.reject();
+                                                                                                                }
+
+                                                                                                                if (value < parameterFormData[key]?.uom_min) {
+                                                                                                                    return Promise.reject("Enter value greater then Min");
+                                                                                                                }
+                                                                                                                return Promise.resolve();
+                                                                                                            },
+                                                                                                        })
+                                                                                                        ]}
+                                                                                                    >
+                                                                                                        <Input placeholder='Max' />
+                                                                                                    </Form.Item>
+                                                                                                </Col>
+                                                                                            </Row> :
+                                                                                            <Form.Item {...restField}
+                                                                                                name={[name, 'uom_valueArea']}>
+                                                                                                <Input placeholder='Enter area' />
+                                                                                            </Form.Item>}
+                                                                                        <p></p>
+                                                                                        <Form.Item {...restField}
+                                                                                            name={[name, 'uom_valueTransformation']}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
-
-                                                                                        <Form.Item name='valueArea'>
-                                                                                            <Input placeholder='Enter area' />
-                                                                                        </Form.Item>
-                                                                                        <Form.Item name='valueAnchorDirection'>
+                                                                                        {/* <Form.Item name='valueAnchorDirection'>
                                                                                             <Select defaultValue='AnchorDirection'>
                                                                                                 <Option value='top'>
                                                                                                     Top
@@ -1751,7 +1944,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     Right
                                                                                                 </Option>
                                                                                             </Select>
-                                                                                        </Form.Item>
+                                                                                        </Form.Item> */}
                                                                                     </div>
                                                                                     <div className='parameterAddingBlock parameterValueBlock'>
                                                                                         <p>
@@ -1840,27 +2033,64 @@ function PaperBatchRecordsTemplate() {
                                                                                                 />
                                                                                             </p>
                                                                                         </Dragger>
-                                                                                        <Form.Item name='valueFormat'>
-                                                                                            <Select defaultValue='Rule'>
-                                                                                                <Option value='FORMAT'>
+                                                                                        <Form.Item  {...restField}
+                                                                                            name={[name, 'time_rule']}>
+                                                                                            <Select placeholder="Rule" onChange={(e, value) => onChangeChart(e, 'time_rule', key, value)}>
+                                                                                                <Option value='date'>
                                                                                                     Date
                                                                                                 </Option>
-                                                                                                <Option value='FORMAT'>
+                                                                                                <Option value='range'>
                                                                                                     Range
                                                                                                 </Option>
-                                                                                                <Option value='FORMAT'>
+                                                                                                <Option value='regex'>
                                                                                                     RegEx
                                                                                                 </Option>
                                                                                             </Select>
                                                                                         </Form.Item>
-                                                                                        <Form.Item name='valueTransformation'>
+
+                                                                                        {parameterFormData[key]?.time_rule === "range" ?
+                                                                                            <Row gutter={8}>
+                                                                                                <Col span={11}>
+                                                                                                    <Form.Item {...restField}
+                                                                                                        name={[name, 'time_min']}
+                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' }]}
+                                                                                                    >
+                                                                                                        <Input placeholder='Min' />
+                                                                                                    </Form.Item>
+                                                                                                </Col>
+                                                                                                {/* <Col span={1}>-</Col> */}
+                                                                                                <Col span={12}>
+                                                                                                    <Form.Item {...restField}
+                                                                                                        name={[name, 'time_max']}
+                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        () => ({
+                                                                                                            validator(_, value) {
+                                                                                                                if (!value) {
+                                                                                                                    return Promise.reject();
+                                                                                                                }
+
+                                                                                                                if (value < parameterFormData[key]?.time_min) {
+                                                                                                                    return Promise.reject("Enter value greater then Min");
+                                                                                                                }
+                                                                                                                return Promise.resolve();
+                                                                                                            },
+                                                                                                        })
+                                                                                                        ]}
+                                                                                                    >
+                                                                                                        <Input placeholder='Max' />
+                                                                                                    </Form.Item>
+                                                                                                </Col>
+                                                                                            </Row> :
+                                                                                            <Form.Item {...restField}
+                                                                                                name={[name, 'time_valueArea']}>
+                                                                                                <Input placeholder='Enter area' />
+                                                                                            </Form.Item>}
+                                                                                        <p></p>
+                                                                                        <Form.Item {...restField}
+                                                                                            name={[name, 'time_valueTransformation']}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
-
-                                                                                        <Form.Item name='valueArea'>
-                                                                                            <Input placeholder='Enter area' />
-                                                                                        </Form.Item>
-                                                                                        <Form.Item name='valueAnchorDirection'>
+                                                                                        {/* <Form.Item name='valueAnchorDirection'>
                                                                                             <Select defaultValue='AnchorDirection'>
                                                                                                 <Option value='top'>
                                                                                                     Top
@@ -1875,7 +2105,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     Right
                                                                                                 </Option>
                                                                                             </Select>
-                                                                                        </Form.Item>
+                                                                                        </Form.Item> */}
                                                                                     </div>
                                                                                     <div className='parameterAddingBlock parameterValueBlock'>
                                                                                         <p>
@@ -1966,27 +2196,64 @@ function PaperBatchRecordsTemplate() {
                                                                                                 />
                                                                                             </p>
                                                                                         </Dragger>
-                                                                                        <Form.Item name='valueFormat'>
-                                                                                            <Select defaultValue='Rule'>
-                                                                                                <Option value='FORMAT'>
+                                                                                        <Form.Item  {...restField}
+                                                                                            name={[name, 'date_rule']}>
+                                                                                            <Select placeholder="Rule" onChange={(e, value) => onChangeChart(e, 'date_rule', key, value)}>
+                                                                                                <Option value='date'>
                                                                                                     Date
                                                                                                 </Option>
-                                                                                                <Option value='FORMAT'>
+                                                                                                <Option value='range'>
                                                                                                     Range
                                                                                                 </Option>
-                                                                                                <Option value='FORMAT'>
+                                                                                                <Option value='regex'>
                                                                                                     RegEx
                                                                                                 </Option>
                                                                                             </Select>
                                                                                         </Form.Item>
-                                                                                        <Form.Item name='valueTransformation'>
+
+                                                                                        {parameterFormData[key]?.date_rule === "range" ?
+                                                                                            <Row gutter={8}>
+                                                                                                <Col span={11}>
+                                                                                                    <Form.Item {...restField}
+                                                                                                        name={[name, 'date_min']}
+                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' }]}
+                                                                                                    >
+                                                                                                        <Input placeholder='Min' />
+                                                                                                    </Form.Item>
+                                                                                                </Col>
+                                                                                                {/* <Col span={1}>-</Col> */}
+                                                                                                <Col span={12}>
+                                                                                                    <Form.Item {...restField}
+                                                                                                        name={[name, 'date_max']}
+                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        () => ({
+                                                                                                            validator(_, value) {
+                                                                                                                if (!value) {
+                                                                                                                    return Promise.reject();
+                                                                                                                }
+
+                                                                                                                if (value < parameterFormData[key]?.time_min) {
+                                                                                                                    return Promise.reject("Enter value greater then Min");
+                                                                                                                }
+                                                                                                                return Promise.resolve();
+                                                                                                            },
+                                                                                                        })
+                                                                                                        ]}
+                                                                                                    >
+                                                                                                        <Input placeholder='Max' />
+                                                                                                    </Form.Item>
+                                                                                                </Col>
+                                                                                            </Row> :
+                                                                                            <Form.Item {...restField}
+                                                                                                name={[name, 'date_valueArea']}>
+                                                                                                <Input placeholder='Enter area' />
+                                                                                            </Form.Item>}
+                                                                                        <p></p>
+                                                                                        <Form.Item {...restField}
+                                                                                            name={[name, 'date_valueTransformation']}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
-
-                                                                                        <Form.Item name='valueArea'>
-                                                                                            <Input placeholder='Enter area' />
-                                                                                        </Form.Item>
-                                                                                        <Form.Item name='valueAnchorDirection'>
+                                                                                        {/* <Form.Item name='valueAnchorDirection'>
                                                                                             <Select defaultValue='AnchorDirection'>
                                                                                                 <Option value='top'>
                                                                                                     Top
@@ -2001,7 +2268,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     Right
                                                                                                 </Option>
                                                                                             </Select>
-                                                                                        </Form.Item>
+                                                                                        </Form.Item> */}
                                                                                         <Button type='primary' className='defineTableBtn' onClick={findTemplate}>
                                                                                             <MonitorOutlined /> Find
                                                                                         </Button>
@@ -2237,24 +2504,24 @@ function PaperBatchRecordsTemplate() {
                                                     disabled
                                                 />
                                             </div>
-                                            {/* <div className='hierarchyBlock'>
+                                            <div className='hierarchyBlock'>
                                                 <p>Hierarchy</p>
                                                 <div className='hierarchyDiv hierarchyDiv1'>
                                                     <CaretDownOutlined />
-                                                    TemplateNew01
+                                                    {params?.tempalteName}
                                                 </div>
                                                 <div className='hierarchyDiv hierarchyDiv2'>
                                                     <CaretDownOutlined />
                                                     0001-6.0
                                                 </div>
                                                 <div className='hierarchyDiv hierarchyDiv3'>
-                                                    <CaretDownOutlined />8
+                                                    <CaretDownOutlined />1
                                                 </div>
                                                 <div className='hierarchyDiv hierarchyDiv4'>
                                                     <CaretDownOutlined />
-                                                    ID001
+                                                    {clickedSnippetId ? clickedSnippetId : "Document"}
                                                 </div>
-                                            </div> */}
+                                            </div>
                                             {/* <div className='saveSnippetsBlock'>
                                                 <Button
                                                     type='default'

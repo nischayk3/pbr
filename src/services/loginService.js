@@ -27,3 +27,14 @@ export const getAuthenticate = (request, header) => {
 		}
 	);
 };
+
+export const getAuthenticateWithoutAD = (request, header) => {
+	return Service.get(BMS_APP_LOGIN_PASS + "/token", request, header).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};

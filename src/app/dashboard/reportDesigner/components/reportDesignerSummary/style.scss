@@ -1,5 +1,5 @@
 .summary-li {
-	font-family: Roboto;
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: normal;
 	font-size: 14px;
@@ -9,7 +9,7 @@
 }
 
 .summary-note {
-	font-family: Roboto;
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: normal;
 	font-size: 14px;

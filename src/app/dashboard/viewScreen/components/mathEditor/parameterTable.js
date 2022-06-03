@@ -164,62 +164,64 @@ const ParameterTable = (props) => {
 			item === "material_id" ||
 			item === "coverage"
 		) {
-			// console.log('i');
+			return console.log('i');
 		} else {
-			columns.push({
-				title: item,
-				dataIndex: item,
-				key: `${item}-4`,
-				width: 80,
-				render: (value, record, rowIndex) => {
-					if (!rowDisable) {
-						if (value) {
-							return (
-								<Checkbox
-									className="custom-check"
-									onChange={(e) => onChangeBatch(e, record, rowIndex, item)}
-									checked={value}
-								/>
-							);
-						} else if (value === "") {
-							return (
-								<Checkbox
-									className="custom-check"
-									onChange={(e) => onChangeBatch(e, record, rowIndex, item)}
-								/>
-							);
+			return (
+				columns.push({
+					title: item,
+					dataIndex: item,
+					key: `${item}-4`,
+					width: 80,
+					render: (value, record, rowIndex) => {
+						if (!rowDisable) {
+							if (value) {
+								return (
+									<Checkbox
+										className="custom-check"
+										onChange={(e) => onChangeBatch(e, record, rowIndex, item)}
+										checked={value}
+									/>
+								);
+							} else if (value === "") {
+								return (
+									<Checkbox
+										className="custom-check"
+										onChange={(e) => onChangeBatch(e, record, rowIndex, item)}
+									/>
+								);
+							} else {
+								return (
+									<span className="batchClosed">
+										<CloseOutlined />
+									</span>
+								);
+							}
 						} else {
-							return (
-								<span className="batchClosed">
-									<CloseOutlined />
-								</span>
-							);
+							if (value) {
+								return (
+									<span className="batchChecked">
+										<CheckOutlined />
+									</span>
+								);
+							} else {
+								return (
+									<span className="batchClosed">
+										<CloseOutlined />
+									</span>
+								);
+							}
 						}
-					} else {
-						if (value) {
-							return (
-								<span className="batchChecked">
-									<CheckOutlined />
-								</span>
-							);
-						} else {
-							return (
-								<span className="batchClosed">
-									<CloseOutlined />
-								</span>
-							);
-						}
+						// else if (value === '') {
+						// 	return (
+						// 		<Checkbox
+						// 			className='custom-check'
+						// 			onChange={e => onChangeBatch(e, record, rowIndex, item)}
+						// 		/>
+						// 	);
+						// }
 					}
-					// else if (value === '') {
-					// 	return (
-					// 		<Checkbox
-					// 			className='custom-check'
-					// 			onChange={e => onChangeBatch(e, record, rowIndex, item)}
-					// 		/>
-					// 	);
-					// }
-				}
-			});
+				})
+			)
 		}
 	});
 

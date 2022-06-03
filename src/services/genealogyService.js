@@ -162,3 +162,17 @@ export const genealogyDataUpload = request => {
 		}
 	);
 };
+
+export const pbrApproval = request => {
+	return Service.get(
+		MDH_APP_PYTHON_SERVICE + '/pbr/udh/pbr_approval',
+		request,
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
