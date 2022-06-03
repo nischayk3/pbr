@@ -49,5 +49,12 @@ describe('Audit Trail', () => {
     cy.get(':nth-child(5) > .ant-table-column-sorters').click({ force: true });
     cy.get(':nth-child(6) > .ant-table-column-sorters').click({ force: true });
     cy.get(':nth-child(7) > .ant-table-column-sorters').click({ force: true });
+    cy.get('.ant-btn-primary').eq(3).click()
+    cy.wait(1000)
+    cy.get('.ant-dropdown-menu-title-content').contains('Excel').click()
+    cy.wait(1000)
+    cy.get('.ant-btn-primary').eq(3).click()
+    cy.wait(1000)
+    cy.get('.ant-dropdown-menu-title-content').contains('CSV').click()
   });
 });
