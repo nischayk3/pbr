@@ -1,28 +1,27 @@
 import Service from "../../services/AjaxService";
 import {
-	API_PLOT_URL,
 	BMS_APP_PYTHON_SERVICE
 } from "../../constants/apiBaseUrl";
 
 let login_response = JSON.parse(localStorage.getItem("login_details"));
 
-export const uploadFile = (_queryParam) => {
-	return Service.post("http://192.168.1.49:8084/fileUploadToFTP", _queryParam, {
-		"Content-Type": "multipart/form-data",
-		Accept: "*/*"
-	}).then((posts) => {
-		return posts;
-	});
-};
+// export const uploadFile = (_queryParam) => {
+// 	return Service.post("http://192.168.1.49:8084/fileUploadToFTP", _queryParam, {
+// 		"Content-Type": "multipart/form-data",
+// 		Accept: "*/*"
+// 	}).then((posts) => {
+// 		return posts;
+// 	});
+// };
 
-export const uploadFileExl = (_queryParam) => {
-	return Service.post(API_PLOT_URL + "bulkupload", _queryParam, {
-		"Content-Type": "multipart/form-data",
-		Accept: "*/*"
-	}).then((posts) => {
-		return posts;
-	});
-};
+// export const uploadFileExl = (_queryParam) => {
+// 	return Service.post(API_PLOT_URL + "bulkupload", _queryParam, {
+// 		"Content-Type": "multipart/form-data",
+// 		Accept: "*/*"
+// 	}).then((posts) => {
+// 		return posts;
+// 	});
+// };
 
 export const uploadFileApi = (_queryParam) => {
 	let login_response = JSON.parse(localStorage.getItem("login_details"));
@@ -105,16 +104,16 @@ export const finalFileUpload = (request) => {
 	);
 };
 
-export const validateFileData = (request) => {
-	return Service.post(BMS_APP_PYTHON_SERVICE + "/validatedata", request).then(
-		(response) => {
-			return response.data;
-		},
-		(error) => {
-			return error.response.data;
-		}
-	);
-};
+// export const validateFileData = (request) => {
+// 	return Service.post(BMS_APP_PYTHON_SERVICE + "/validatedata", request).then(
+// 		(response) => {
+// 			return response.data;
+// 		},
+// 		(error) => {
+// 			return error.response.data;
+// 		}
+// 	);
+// };
 
 
 
