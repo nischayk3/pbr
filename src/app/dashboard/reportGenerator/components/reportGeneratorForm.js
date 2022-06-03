@@ -14,13 +14,13 @@ import { useSelector } from 'react-redux';
 
 const { Text } = Typography
 
-function ReportDesignerForm(props) {
+function ReportGeneratorForm(props) {
 
     const repotData = useSelector(
         (state) => state.reportDesignerReducer.reportData
     );
 
-    const [ReportData, setReportData] = useState(repotData)
+    // const [ReportData, setReportData] = useState(repotData)
     const [reportId, setReportId] = useState('')
     const [reportName, setReportName] = useState('')
     const [reportStatus, setReportStatus] = useState('')
@@ -77,4 +77,4 @@ function ReportDesignerForm(props) {
     );
 }
 
-export default ReportDesignerForm;
+export default ReportGeneratorForm;

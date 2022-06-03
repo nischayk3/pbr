@@ -23,11 +23,9 @@ let finalData = [];
 const MaterialTree = (props) => {
 	const dispatch = useDispatch();
 	const { materialsList, parentBatches } = props;
-
 	const [selectedKeys, setSelectedKeys] = useState([]);
 	const [checkedKeys, setCheckedKeys] = useState([]);
 	const [count, setCount] = useState("");
-
 	const selectedTableData = useSelector(
 		(state) => state.viewCreationReducer.selectedParamData
 	);
