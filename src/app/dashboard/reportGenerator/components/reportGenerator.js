@@ -129,7 +129,7 @@ function ReportGenerator(props) {
 
 	useEffect(() => {
 		unloadTest(ReportData);
-	}, [ReportDatas]);
+	}, [ReportData]);
 
 	// useEffect(() => {
 	// 	getReportList();
@@ -378,7 +378,7 @@ function ReportGenerator(props) {
 			<div className='custom-content-layout'>
 				<div className='report-card'>
 					<Card title='Generate new report variant' className='generator-card'>
-						<ReportDesignerForm />
+						<ReportGeneratorForm />
 						<div className='table-card'>
 							{table.length > 0 &&
 								table.map(i => (
