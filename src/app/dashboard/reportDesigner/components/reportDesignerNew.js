@@ -27,7 +27,6 @@ import {
 // import ChartSelector from './reportDesignerFilter/chartSelector';
 import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
 import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections';
-// import ReportDesigneTable from './reportDesignerDynamicSections/ReportDesigneTable'
 import {
 	getViews,
 	getCharts,

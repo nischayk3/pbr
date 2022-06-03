@@ -58,7 +58,7 @@ const ReportNotify = (props) => {
     Friday: false,
     Saturday: false,
   });
-  const [activeTab, setActiveTab] = useState("schedule_evaluation");
+  // const [activeTab, setActiveTab] = useState("schedule_evaluation");
   const [scheduleEmailTime, setScheduleEmailTime] = useState("");
   // const [frequency, setFrequency] = useState("");
   const [everyDayValue, setEveryDayValue] = useState("");
@@ -316,9 +316,9 @@ const ReportNotify = (props) => {
       );
     }
   };
-  const changeTab = (activeKey) => {
-    setActiveTab(activeKey);
-  };
+  // const changeTab = (activeKey) => {
+  //   setActiveTab(activeKey);
+  // };
 
 
 
@@ -347,8 +347,8 @@ const ReportNotify = (props) => {
     <div className="report-notify">
       <Tabs
         className="evaluation-tabs"
-        onChange={changeTab}
-        activeKey={activeTab}
+        // onChange={changeTab}
+        // activeKey={activeTab}
         tabBarExtraContent={
           <div className="tab-btns">
             <Button

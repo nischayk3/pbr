@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-scripts -r @cypress/instrument-cra --max_old_space_size=8192 start",
-    "build": "react-scripts --max_old_space_size=8192 build",
+    "build": "react-scripts  --max_old_space_size=8192 build",
     "build-theme": "lessc -clean-css=\"--s1 --advanced --compatibility=ie8\" ./src/assets/styles/less/main.less ./src/assets/styles/css/doNotModify/custom-theme.css --js",
     "lint": "eslint -c .eslintrc.js --ext .js,.jsx .",
     "lint:fix": "npm run lint -- --fix",
@@ -92,23 +92,15 @@
   "nyc": {
     "report-dir": "coverage",
     "exclude": [
-      "src/serviceWorker.js",
-      "src/api",
-      "src/app/user/login/**/*.js",
-      "src/components/BreadCrumbWrapper/**/*",
-      "src/duck/actions/**/*.js",
-      "src/duck/reducers/**/*.js",
-      "src/utils/auth.js",
-      "src/services chartPersonalizationService.js",
-      "src/app/dashboard/auditTrial/**/*.js",
-      "src/app/dashboard/chartPersonalization/**/*.js",
-      "src/app/dashboard/manualDtaUpload/**/*.js",
-      "src/app/dashboard/dataLoad/**/*.js",
-      "src/app/dashboard/reportDesign/**/*.js",
-      "src/app/dashboard/reportGenerator/**/*.js",
-      "src/app/dashboard/systemErrorReport/**/*.js",
-      "src/app/dashboard/wokflow/**/*.js",
-      "src/app/dashboard/chartPersonal/**/*.js"
+      "src/app/dashboard/auditLogs/**/*.js",
+      "src/app/dashboard/faq/**/*.js",
+      "src/app/dashboard/multipleDocExtraction/**/*.js",
+      "src/app/dashboard/paperBatchRecords/**/*.js",
+      "src/app/dashboard/paperBatchRecordsTemplate/**/*.js",
+      "src/app/dashboard/pbrReviewer/**/*.js",
+      "src/app/dashboard/pbrUpdate/**/*.js",
+      "src/app/dashboard/pythonNotebook/**/*.js",
+      "src/app/components/**/*.js"
     ],
     "excludeAfterRemap": true
   }
