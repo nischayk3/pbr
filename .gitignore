@@ -6,6 +6,8 @@ node_modules
 # testing
 /coverage
 .nyc_output
+.scannerwork
+/.scannerwork
 /.nyc_output
 cypress.json
 /cypress.json
