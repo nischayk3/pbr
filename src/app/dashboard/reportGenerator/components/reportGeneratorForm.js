@@ -77,4 +77,4 @@ function ReportGeneratorForm(props) {
     );
 }
 
-export default ReportDesignerForm;
+export default ReportGeneratorForm;
