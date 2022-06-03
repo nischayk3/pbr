@@ -8,7 +8,6 @@ import {
 } from "@ant-design/icons";
 import LabelTag from "../../../../../components/LabelTag";
 import "./styles.scss";
-
 import { setViewFunctionName } from "../../../../../duck/actions/viewAction";
 import { showNotification } from "../../../../../duck/actions/commonActions";
 
@@ -31,7 +30,9 @@ const ViewSummaryData = (props) => {
 
 	useEffect(() => {
 		if (functionName !== "") {
-			setFunTableData(summaryTableData);
+			let fun_table = [...funTableData]
+			console.log(fun_table)
+			setFunTableData(fun_table);
 		}
 	}, [summaryTableData]);
 
@@ -159,7 +160,7 @@ const ViewSummaryData = (props) => {
 						})
 					)
 				});
-
+				console.log(mergeArr)
 				setTableColumn(columns);
 				setFunTableData(mergeArr);
 			}
@@ -181,6 +182,7 @@ const ViewSummaryData = (props) => {
 
 		setTableColumn(newColumns);
 	};
+	console.log(funTableData)
 
 	return (
 		<Card title="View Summary">
