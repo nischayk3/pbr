@@ -1,17 +1,17 @@
 describe("Renders the view Hierarachy page", () => {
   beforeEach(() => {
-    cy.viewport(1280, 720);
+    cy.visit("/");
+    cy.url().should("include", "/user/login");
     localStorage.setItem("test_enabled", true);
-    localStorage.setItem("user", "bhanu.thareja@mareana.com");
-    localStorage.setItem("username", "Bhanu");
+    localStorage.setItem("user", "fahad.siddiqui@mareana.com");
     localStorage.setItem(
       "login_details",
       JSON.stringify({
         ad_role: false,
-        email_id: "bhanu.thareja@mareana.com",
-        firstname: "Bhanu",
-        lastname: "Thareja",
-        email_id: "bhanu.thareja@mareana.com",
+        email_id: "fahad.siddiqui@mareana.com",
+        firstname: "Fahad",
+        lastname: "siddiqui",
+        email_id: "fahad.siddiqui@mareana.com",
         mdh_role: "USER",
         screen_set: "1000_USER",
         token:
@@ -21,13 +21,17 @@ describe("Renders the view Hierarachy page", () => {
   });
 
   it("Renders View Hierarchy", () => {
-    cy.visit("http://localhost/#/dashboard/workspace");
-    cy.wait(5000);
-    cy.visit("http://localhost/#/dashboard/molecule_hierarchy_configuration");
+    cy.get("#login-btn", { timeout: 2000 }).click();
+    cy.wait(10000);
+    cy.get("#hierarchy > .ant-menu-title-content > a", {
+      timeout: 20000,
+    }).click({ force: true });
+    cy.location("href", { timeout: 10000 }).should(
+      "include",
+      "/molecule_hierarchy_configuration"
+    );
     cy.wait(1000);
-    /* ==== Generated with Cypress Studio ==== */
     cy.get(".create-new").click();
-    /* ==== Generated with Cypress Studio ==== */
     cy.get(".input-ant > .ant-input").clear();
     cy.get(".input-ant > .ant-input").type("View Hier");
     cy.get(".ant-modal-footer > .ant-btn > span").click();
@@ -57,6 +61,5 @@ describe("Renders the view Hierarachy page", () => {
     cy.get(".ant-input").clear();
     cy.get(".ant-input").type("view");
     cy.get(".ant-btn > span").click();
-    /* ==== End Cypress Studio ==== */
   });
 });
