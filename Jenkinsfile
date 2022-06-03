@@ -34,10 +34,10 @@ pipeline {
                         sudo chmod +x /usr/local/bin/docker-compose
                         docker-compose version
                         npm install 
-                        nohup npm run start &
-                        #docker-compose build
-                        #docker-compose up -d ui-cypress-test 
-                        #sleep 10
+                        #nohup npm run start &
+                        docker-compose build
+                        docker-compose up -d ui-cypress-test 
+                        sleep 10
                         npm run cy:run
                         docker-compose down -v
                         ls coverage
