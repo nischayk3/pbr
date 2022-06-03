@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DesignCharts from './components/reportDesignerNew';
 import ReportGenerator from '../reportGenerator/components/reportGenerator';
 import { useSelector } from 'react-redux';
-import Landing from './components/reportLanding';
+import ReportLanding from './components/reportLanding';
 import queryString from "query-string";
 import { useLocation } from 'react-router';
 
@@ -31,7 +31,7 @@ function Report() {
 	}, [])
 	return (
 		<div>
-			{!screenChange && !isParam ? <Landing changeScreen={changeScreen} getReportData={getReportData} /> :
+			{!screenChange && !isParam ? <ReportLanding changeScreen={changeScreen} getReportData={getReportData} /> :
 				<> {screen ?
 					<div><ReportGenerator screenChange={screenChange} /></div> :
 					<div><DesignCharts loadData={getData} /></div>

@@ -134,7 +134,7 @@ const ChartNotify = (props) => {
 		Friday: false,
 		Saturday: false,
 	});
-	const [activeTab, setActiveTab] = useState("schedule_evaluation");
+	// const [activeTab, setActiveTab] = useState("schedule_evaluation");
 	const [scheduleEmailTime, setScheduleEmailTime] = useState("");
 	const [everyDayValue, setEveryDayValue] = useState("");
 	const [png, setPng] = useState(false);
@@ -401,9 +401,9 @@ const ChartNotify = (props) => {
 			);
 		}
 	};
-	const changeTab = (activeKey) => {
-		setActiveTab(activeKey);
-	};
+	// const changeTab = (activeKey) => {
+	// 	setActiveTab(activeKey);
+	// };
 
 	const onChangeEmailStart = (date, dateString) => {
 		setScheduleEmailStartDate(dateString);
@@ -426,8 +426,8 @@ const ChartNotify = (props) => {
 		<div className="chart_notify-notify">
 			<Tabs
 				className="evaluation-tabs"
-				onChange={changeTab}
-				activeKey={activeTab}
+				// onChange={changeTab}
+				// activeKey={activeTab}
 				tabBarExtraContent={
 					<div className="tab-btns">
 						<Button
