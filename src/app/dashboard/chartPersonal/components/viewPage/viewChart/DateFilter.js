@@ -58,6 +58,7 @@ const DateFilter = ({
         <Col span={10}>
           <InputField
             type="number"
+            id="show-last-number"
             placeholder="Enter number"
             name="time"
             value={batchFilters.time}
@@ -69,6 +70,7 @@ const DateFilter = ({
         <Col span={14}>
           <SelectField
             placeholder="Select"
+            id="show-last-duration"
             selectList={list}
             selectedValue={batchFilters.duration}
             name="duration"
