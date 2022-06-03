@@ -9,10 +9,10 @@ services:
     container_name: ui-cypress-test
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-start-server
     environment:
       - NODE_PATH=src/
     ports:
-      - 3030:80
+      - 3030:3030
 
 
