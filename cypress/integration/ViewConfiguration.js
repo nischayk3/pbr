@@ -7,7 +7,7 @@ Cypress.Commands.add("multiselect", (options) => {
 
 
 describe('Renders the view config page', () => {
-    it('Renders use roles and access correctly', () => {
+    beforeEach(() => {
         cy.viewport(1280, 720)
         localStorage.setItem("test_enabled", true);
         localStorage.setItem("user", "bhanu.thareja@mareana.com");
@@ -26,7 +26,9 @@ describe('Renders the view config page', () => {
                     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
             })
         );
+    })
 
+    it('Renders use roles and access correctly', () => {
         cy.visit('http://localhost/#/dashboard/workspace')
         cy.wait(5000)
         cy.get('#user-roles-and-access > .ant-menu-title-content > a').click();
@@ -34,24 +36,6 @@ describe('Renders the view config page', () => {
     })
 
     it('Loads user configuration page correctly', () => {
-        cy.viewport(1280, 720)
-        localStorage.setItem("test_enabled", true);
-        localStorage.setItem("user", "bhanu.thareja@mareana.com");
-        localStorage.setItem("username", "Bhanu");
-        localStorage.setItem(
-            "login_details",
-            JSON.stringify({
-                ad_role: false,
-                email_id: "bhanu.thareja@mareana.com",
-                firstname: "Bhanu",
-                lastname: "Thareja",
-                email_id: "bhanu.thareja@mareana.com",
-                mdh_role: "USER",
-                screen_set: "1000_USER",
-                token:
-                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
-            })
-        );
         cy.log('Clicking on User Configuration')
         cy.contains('User Configuration').click()
         cy.url().should('include', '/user-configuration')
@@ -134,25 +118,6 @@ describe('Renders the view config page', () => {
     })
 
     it('Loads roles and access page correctly', () => {
-        cy.viewport(1280, 720)
-        localStorage.setItem("test_enabled", true);
-        localStorage.setItem("user", "bhanu.thareja@mareana.com");
-        localStorage.setItem("username", "Bhanu");
-        localStorage.setItem(
-            "login_details",
-            JSON.stringify({
-                ad_role: false,
-                email_id: "bhanu.thareja@mareana.com",
-                firstname: "Bhanu",
-                lastname: "Thareja",
-                email_id: "bhanu.thareja@mareana.com",
-                mdh_role: "USER",
-                screen_set: "1000_USER",
-                token:
-                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
-            })
-        )
-
         cy.log('Clicking on Roles And Access')
         cy.contains('Roles And Access').click()
         cy.url().should('include', '/roles-and-access')
@@ -190,26 +155,6 @@ describe('Renders the view config page', () => {
     })
 
     it('Loads screen controls page correctly', () => {
-        cy.viewport(1280, 720)
-        localStorage.setItem("test_enabled", true);
-        localStorage.setItem("user", "bhanu.thareja@mareana.com");
-        localStorage.setItem("username", "Bhanu");
-        localStorage.setItem(
-            "login_details",
-            JSON.stringify({
-                ad_role: false,
-                email_id: "bhanu.thareja@mareana.com",
-                firstname: "Bhanu",
-                lastname: "Thareja",
-                email_id: "bhanu.thareja@mareana.com",
-                mdh_role: "USER",
-                screen_set: "1000_USER",
-                token:
-                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
-            })
-        )
-
-
         cy.log('Clicking on Screen Controls')
         cy.contains('Screen Controls').click()
         cy.url().should('include', '/screen-controls')
