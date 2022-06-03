@@ -35,6 +35,7 @@ pipeline {
                         docker-compose version
                         npm install 
                         npm install cypress --save-dev
+                        docker-compose build
                         docker-compose up -d ui-cypress-test 
                         sleep 5
                         npm run cy:run

@@ -70,14 +70,14 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 button.button-solid__primary {
-	background: var(--primary-color);
-	color: #fff;
-	border-radius: 4px;
-	border-color: var(--primary-color);
+	background: var(--primary-color) !important;
+	color: #fff !important;
+	border-radius: 4px !important;
+	border-color: var(--primary-color) !important;
 }
 
 button.button-solid__primary:hover {
-	background: #486bc9;
+	background: #486bc9 !important;
 }
 
 .icon-primary {

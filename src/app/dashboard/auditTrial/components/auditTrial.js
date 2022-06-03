@@ -444,7 +444,11 @@ class AuditTrials extends React.Component {
 				operator: "IN",
 				value: [value.value.trim()]
 			});
-			this.setState({ filterIng: userarr })
+			this.setState({
+				filterIng: userarr,
+				type: "user",
+				user: value
+			})
 
 		}
 	};
@@ -570,15 +574,7 @@ class AuditTrials extends React.Component {
 											marginLeft: "20px"
 										}}
 										placeholder="User"
-										onChange={(e, value) => {
-											return (
-												this.setState({
-													type: "user",
-													user: value
-												}),
-												this.onChangeIng(e, value, "user")
-											);
-										}}
+										onChange={(e, value) => { this.onChangeIng(e, value, "user") }}
 										value={this.state.user}
 									>
 										{this.state.userList &&
@@ -695,7 +691,7 @@ class AuditTrials extends React.Component {
 						</div>
 					</div>
 				</div>
-			</div>
+			</div >
 		);
 	}
 }
