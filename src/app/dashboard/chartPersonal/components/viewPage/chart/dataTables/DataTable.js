@@ -5,12 +5,12 @@ const DataTable = ({ postChartData }) => {
   const [dataTable, setDataTable] = useState([]);
 
   let columns = [];
-  let objkeys =
+  const first = "batch_num";
+  let objkeys = (
     dataTable !== undefined && dataTable.length > 0
       ? Object.keys(dataTable[0])
-      : [];
-  const first = "batch_num";
-  objkeys = objkeys.sort(function (x, y) {
+      : []
+  ).sort(function (x, y) {
     return x == first ? -1 : y == first ? 1 : 0;
   });
 
