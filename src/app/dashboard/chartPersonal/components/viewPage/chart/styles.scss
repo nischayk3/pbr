@@ -1,4 +1,4 @@
-.chart-container {
+.chart-container, .chart-containerApprover {
 	min-height: 83vh;
 	width: 100%;
 	background: #ffffff;
@@ -8,7 +8,7 @@
 	.ant-divider {
 		margin: 6px !important;
 	}
-	.header {
+	.header, .headerApprover {
 		background-color: #f1f7ff;
 		height: 49px;
 		border-radius: 4px 4px 0px 0px;
@@ -25,7 +25,7 @@
 	p {
 		margin-bottom: 6px !important;
 	}
-	.details-container {
+	.details-container, .details-containerApprover {
 		padding: 0px 26px;
 		margin-top: 16px;
 	}
