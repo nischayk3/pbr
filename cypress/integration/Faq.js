@@ -1,7 +1,7 @@
 Cypress.on('uncaught:exception', (err, runnable) => {
     return false;
   });
-  describe('Audit Trail', () => {
+  describe('Faq', () => {
     beforeEach(() => {
     cy.visit("/");
     cy.url().should("include", "/user/login");
