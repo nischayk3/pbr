@@ -59,6 +59,7 @@ describe('Manual data upload', () => {
         cy.wait(10000)
         cy.get('.ant-btn-primary').eq(1).click();
         
+        cy.wait(10000)
         cy.log("click on digital signature button")
         cy.get('.ant-space-item').eq(0).click()
        
