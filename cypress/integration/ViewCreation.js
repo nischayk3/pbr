@@ -28,7 +28,7 @@ describe("Render View Creation Page", () => {
 	})
 
 	it('Renders View Creation Correctly', () => {
-		cy.visit('http://localhost/#/dashboard/workspace')
+		cy.visit('http://localhost:3030/#/dashboard/workspace')
 		cy.wait(5000)
 		cy.get('#view_creation > .ant-menu-title-content > a').click();
 		cy.wait(1000)
