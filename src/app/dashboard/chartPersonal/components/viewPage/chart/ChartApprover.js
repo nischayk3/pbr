@@ -9,11 +9,11 @@ import ScatterChartApprover from "./scatterChart/scatterChartApprover";
 //main component
 const ChartApprover = ({ postChartData, setPostChartData }) => {
   const [chartValuesApprover, setChartValuesApprover] = useState({
-    chartName: "",
-    chartdesc: "",
-    chartId: "",
-    chartVersion: "",
-    chartStatus: "",
+    chartNameApprover: "",
+    chartdescApprover: "",
+    chartIdApprover: "",
+    chartVersionApprover: "",
+    chartStatusApprover: "",
   });
 
   useEffect(() => {
@@ -23,26 +23,26 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
         if (ele.chart_id) {
           setChartValuesApprover({
             ...chartValuesApprover,
-            chartId: ele.chart_id,
-            chartVersion: ele.chart_version,
-            chartStatus: ele.chart_status,
-            chartName: ele.chart_name,
-            chartdesc: ele.chart_description,
+            chartIdApprover: ele.chart_id,
+            chartVersionApprover: ele.chart_version,
+            chartStatusApprover: ele.chart_status,
+            chartNameApprover: ele.chart_name,
+            chartdescApprover: ele.chart_description,
           });
         }
       });
   }, [postChartData]);
 
   return (
-    <div className="chart-container">
+    <div className="chart-containerApprover">
       <Row>
-        <Col span={24} className="header">
+        <Col span={24} className="headerApprover">
           <h3>Chart</h3>
         </Col>
       </Row>
       {postChartData && postChartData.data && postChartData.data[0].view_id ? (
         <>
-          <Row gutter={24} className="details-container">
+          <Row gutter={24} className="details-containerApprover">
             <Col span={6}>
               <Row gutter={16}>
                 <Col span={8}>
@@ -51,8 +51,8 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
                 <Col span={10}>
                   <p>
                     :{" "}
-                    {chartValuesApprover.chartId
-                      ? chartValuesApprover.chartId
+                    {chartValuesApprover.chartIdApprover
+                      ? chartValuesApprover.chartIdApprover
                       : "Unassigned"}
                   </p>
                 </Col>
@@ -65,8 +65,8 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
                 <Col span={8}>
                   <p>
                     :{" "}
-                    {chartValuesApprover.chartVersion
-                      ? chartValuesApprover.chartVersion
+                    {chartValuesApprover.chartVersionApprover
+                      ? chartValuesApprover.chartVersionApprover
                       : ""}
                   </p>
                 </Col>
@@ -79,8 +79,8 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
                 <Col span={8}>
                   <p>
                     :{" "}
-                    {chartValuesApprover.chartStatus
-                      ? chartValuesApprover.chartStatus
+                    {chartValuesApprover.chartStatusApprover
+                      ? chartValuesApprover.chartStatusApprover
                       : ""}
                   </p>
                 </Col>
@@ -95,8 +95,8 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
                 <Col span={8}>
                   <p>
                     :{" "}
-                    {chartValuesApprover.chartName
-                      ? chartValuesApprover.chartName
+                    {chartValuesApprover.chartNameApprover
+                      ? chartValuesApprover.chartNameApprover
                       : ""}
                   </p>
                 </Col>
@@ -108,8 +108,8 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
                 <Col span={8}>
                   <p>
                     :{" "}
-                    {chartValuesApprover.chartdesc
-                      ? chartValuesApprover.chartdesc
+                    {chartValuesApprover.chartdescApprover
+                      ? chartValuesApprover.chartdescApprover
                       : ""}
                   </p>
                 </Col>
