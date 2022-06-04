@@ -129,7 +129,22 @@ describe('Manual data upload', () => {
         cy.scrollTo(0,5000)
         cy.get('.steps-action').get('button').eq(3).click()
 
-
+        cy.log("going to complete section and pressing previous button")
+        cy.get('.ant-btn-primary > :nth-child(1)').click();
+        cy.wait(3000)
+        cy.get('.ant-btn-primary').eq(1).click();
+        cy.wait(3000)
+        cy.get('.ant-btn-primary').eq(1).click();
+        cy.wait(3000)
+        cy.get('.ant-btn-primary').eq(2).click()
+        cy.wait(3000)
+        cy.get('.ant-btn-primary').eq(0).click();
+        cy.wait(3000)
+        cy.get('.ant-btn-primary').eq(1).click();
+        cy.wait(3000)
+        cy.get('.ant-btn-primary').eq(0).click();
+        cy.wait(3000)
+        cy.get('.ant-btn-primary').eq(0).click();
 
         
         cy.log("status 200")
@@ -141,17 +156,16 @@ describe('Manual data upload', () => {
         cy.log("status 201")
         cy.get('input[type=file]').selectFile({contents:'res_data_201.xlsx'},{ force: true })
 
-
         cy.log("status 300")
         cy.get('input[type=file]').selectFile({contents:'300_cypress_status.xlsx'},{ force: true })
-
-        
 
         cy.log("pdf file error")
         cy.get('input[type=file]').selectFile({contents:'blank.pdf'},{ force: true })
 
-
-        
-        
+        cy.wait(3000)
+        cy.log("removing upload file")
+        cy.log("removing upload file")
+        cy.get('button[title="Remove file"]').click()
+ 
     });
 });
