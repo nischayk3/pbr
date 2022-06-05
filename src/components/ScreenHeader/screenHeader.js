@@ -13,8 +13,8 @@ const ScreenHeader = (props) => {
 		const month = date.toLocaleString('default', { month: 'long' });
 		const latestDate = date.getDate();
 		const year = date.getFullYear();
-		const resultDate = month + ' ' + latestDate + ',' + ' ' + year;
-		setResultDate(resultDate);
+		const currentDate = month + ' ' + latestDate + ',' + ' ' + year;
+		setResultDate(currentDate);
 	};
 	return (
 		<Card className='screen_header_wrap' style={props.bannerbg}>
