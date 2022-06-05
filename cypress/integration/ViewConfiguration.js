@@ -29,7 +29,7 @@ describe('Renders the view config page', () => {
     })
 
     it('Renders use roles and access correctly', () => {
-        cy.visit('http://localhost/#/dashboard/workspace')
+        cy.visit('http://localhost:3030/#/dashboard/workspace')
         cy.wait(5000)
         cy.get('#user-roles-and-access > .ant-menu-title-content > a').click();
         cy.wait(1000)

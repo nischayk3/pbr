@@ -20,7 +20,7 @@ describe("Report", () => {
     })
     it('Renders Report Landing Page and create new report variant and download pdf', () => {
         cy.log('Opening a report template')
-        cy.visit('http://localhost/#/dashboard/workspace')
+        cy.visit('http://localhost:3030/#/dashboard/workspace')
         cy.wait(2000)
         cy.get('#report_designer > .ant-menu-title-content > a').click();
         cy.wait(500)
