@@ -21,79 +21,34 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
   const [showChart, setShowChart] = useState(false);
   const [tableKey, setTableKey] = useState("3");
   const exclusionIdCounter = useRef(0);
-  const [exclusionValues, setExclusionValues] = useState({
-    productCode: "",
-    parameterName: "",
-    parameterValue: "",
-    unit: "",
-    testDate: "",
-    ncNumber: "",
-    notes: "",
-    excludeRecord: false,
-  });
   const [exclusionTable, setExclusionTable] = useState([]);
-
-  const chartNodeClicked = (data) => {
-    postChartData.data.forEach((ele) => {
-      ele.extras.data_table.forEach((el) => {
-        if (el.batch_num === data.text) {
-          setExclusionValues({
-            ...exclusionValues,
-            batchId: data.text,
-            productCode: ele.view_name,
-            parameterValue:
-              ele.chart_type === "process control"
-                ? data.y
-                : `(${data.x},${data.y})`,
-            notes: "",
-            unit: el.uom_code,
-            excludeRecord: false,
-            parameterName:
-              ele.chart_type === "process control"
-                ? ele.chart_mapping.y.function_name
-                : `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
-            testDate:
-              ele.chart_type === "process control"
-                ? new Date(
-                    el["recorded_date_" + ele.chart_mapping.y.function_name]
-                  ).toLocaleDateString()
-                : `(${new Date(
-                    el["recorded_date_" + ele.chart_mapping.x.function_name]
-                  ).toLocaleDateString()},${new Date(
-                    el["recorded_date_" + ele.chart_mapping.y.function_name]
-                  ).toLocaleDateString()})`,
-          });
-        }
-      });
-    });
-  };
 
   const tabChange = (key) => {
     setTableKey(key);
   };
 
-  useEffect(() => {
-    const newCovArr = JSON.parse(JSON.stringify(postChartData));
-    newCovArr &&
-      newCovArr.data &&
-      newCovArr.data.forEach((ele) => {
-        let obj;
-        let table = [];
+  const setPostData = () => {
+    const postChartClone = JSON.parse(JSON.stringify(postChartData));
+    postChartClone &&
+      postChartClone.data &&
+      postChartClone.data.forEach((ele) => {
+        let obj1;
+        let table1 = [];
         let count = 0;
         ele.exclusions &&
           ele.exclusions.forEach((item) => {
             exclusionIdCounter.current = count + 1;
             const excValue = item.exclusion_value.batch;
-            obj = {
+            obj1 = {
               exclusion_id: item.exclusion_id,
               exclusion_value: excValue,
               exclusion_description: item.exclusion_description,
               user: item.user,
               timestamp: new Date(item.timestamp).toLocaleDateString(),
             };
-            table.push(obj);
+            table1.push(obj1);
           });
-        setExclusionTable(table);
+        setExclusionTable(table1);
         if (ele.data[0].x && ele.data[0].x.length >= 1) {
           const chart =
             ele.chart_type === "scatter" ? "Scatter Plot" : "Process Control";
@@ -131,6 +86,10 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
           });
         }
       });
+  };
+
+  useEffect(() => {
+    setPostData();
   }, [postChartData]);
 
   return (
@@ -169,23 +128,18 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
       </Row>
       <div className="chart-table">
         <Row className="scatter-chart">
-          {showChart && (
-            <ScatterPlot
-              data={chartData}
-              layout={layoutData}
-              nodeClicked={chartNodeClicked}
-            />
-          )}
+          {showChart && <ScatterPlot data={chartData} layout={layoutData} />}
         </Row>
         {showChart && (
-          <Row className="tabledata">
-            <Col span={24}>
+          <Row className="tabledata" id="chart">
+            <Col id="col-chart" span={24}>
               <Tabs
+                id="tabs"
                 defaultActiveKey="3"
                 activeKey={tableKey}
                 onChange={tabChange}
               >
-                <TabPane tab="Exclusion" key="1">
+                <TabPane id="tab-exclusion" tab="Exclusion" key="1">
                   {exclusionTable.length >= 1 ? (
                     <ExclusionTable
                       setExclusionTable={setExclusionTable}
@@ -198,10 +152,10 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
                     <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
                   )}
                 </TabPane>
-                <TabPane tab="Violation" key="2">
+                <TabPane id="tab-violation" tab="Violation" key="2">
                   <ViolationTable postChartData={postChartData} />
                 </TabPane>
-                <TabPane tab="Data Table" key="3">
+                <TabPane id="tab-datatable" tab="Data Table" key="3">
                   <DataTable postChartData={postChartData} />
                 </TabPane>
               </Tabs>
