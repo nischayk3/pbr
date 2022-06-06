@@ -114,7 +114,7 @@ export default function landingPage(props) {
 				String(o[k]).toLowerCase().includes(value.toLowerCase())
 			)
 		);
-		console.log('filterTable', filterTable);
+		
 		setFilterTableLanding(filterTable);
 	};
 
