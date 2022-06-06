@@ -45,6 +45,24 @@ describe("Report", () => {
     cy.get('.create-new-report > .anticon > svg').click();
     cy.get('#report-generator-form_response_0_sectionName').clear();
     cy.get('#report-generator-form_response_0_sectionName').type('TitlePage');
+    cy.get('.add-row-btn').click();
+    cy.wait(500)
+    cy.get('#report-generator-form_response_0_dymamic_rows_0_keyName').click();
+    cy.get('#report-generator-form_response_0_dymamic_rows_0_keyName').type('key');
+    cy.get('#report-generator-form_response_0_dymamic_rows_0_value').click();
+    cy.get('#report-generator-form_response_0_dymamic_rows_0_value').type('value');
+    cy.get('.add-row-btn').click();
+    cy.get('#report-generator-form_response_0_dymamic_rows_1_keyName').click();
+    cy.get('#report-generator-form_response_0_dymamic_rows_1_keyName').type('key');
+    cy.get('#report-generator-form_response_0_dymamic_rows_1_value').click();
+    cy.get('#report-generator-form_response_0_dymamic_rows_1_value').type('value');
+    cy.wait(500)
+    cy.get('#report-generator-form_response_0_dymamic_rows_0_editable').click();
+    cy.wait(500)
+    cy.get(':nth-child(2) > :nth-child(1) > .anticon > svg').click();
+    cy.wait(500)
+    cy.get('.ant-btn-primary > span').click();
+    cy.wait(500)
     cy.get('[style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;"]').click();
     cy.wait(1000)
     cy.get(':nth-child(5) > .anticon > svg > [d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"]').click(); cy.get('.designer-block > :nth-child(2)').click();
@@ -60,15 +78,36 @@ describe("Report", () => {
     cy.get('.sub-header-btns > :nth-child(1) > span').click();
     cy.wait(1000)
     cy.get('.ant-modal-close-x').click();
-    cy.wait(4000)
-    cy.get(':nth-child(1) > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click();
+    cy.wait(2000)
+    cy.get('.chart-name > :nth-child(1) > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click();
+    // cy.get(':nth-child(1) > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click();
     cy.get('.ant-btn-primary > span').click();
     /* ==== Generated with Cypress Studio ==== */
     cy.get('.charttile-content').click();
-    // cy.get('#rc-tabs-3-tab-Violation').click();
-    // cy.get(':nth-child(1) > .anticon > svg > [d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"]').click();
-    // cy.get('.ant-btn-primary > span').click();
-    // cy.get('#report-generator-form_response_1_select').click();
+    cy.get('.ant-tabs-nav-list > :nth-child(1)')
+    cy.get('.ant-tabs-nav-list > :nth-child(2)')
+
+    cy.get('.custom-wrapper').click();
+    cy.get('#report_designer > .ant-menu-title-content').click();
+    cy.get('#report_designer > .ant-menu-title-content > a').click();
+    cy.wait(500)
+    cy.get(':nth-child(3) > .ant-breadcrumb-link > a').click();
+    cy.wait(500)
+    // cy.get('.ant-input-affix-wrapper').click();
+    // cy.get('.ant-input').clear();
+    // cy.get('.ant-input').type('R219{enter}', { force: true });
+    // cy.wait(500)
+    // cy.wait(500)
+    // cy.get('#rc-tabs-0-tab-Generate\\ Report\\ Variant').click();
+    // cy.get('#rc-tabs-0-tab-Design\\ Report\\ Template').click();
+    cy.get(':nth-child(4) > .tile > :nth-child(1) > .chart-tiles').click();
+    cy.get('.sub-header-btns > :nth-child(1) > span').click();
+    /* ==== End Cypress Studio ==== */
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get(':nth-child(1) > [style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;"] > [style="display: grid; grid-template-columns: 1fr 1fr;"] > :nth-child(2) > .anticon > svg')
     /* ==== End Cypress Studio ==== */
   });
+
+  /* ==== Test Created with Cypress Studio ==== */
+
 });
