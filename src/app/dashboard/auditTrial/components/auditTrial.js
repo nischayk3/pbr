@@ -413,9 +413,9 @@ class AuditTrials extends React.Component {
 	// 	this.setState({ filterTable1 });
 	// };
 
-	handleVisibleChange = (flag) => {
-		this.setState({ visibleMenuSettings: flag });
-	};
+	// handleVisibleChange = (flag) => {
+	// 	this.setState({ visibleMenuSettings: flag });
+	// };
 
 	// onChangeCheckbox = (e) => {
 	// 	var checkedColumns = this.state.checkedColumns;
