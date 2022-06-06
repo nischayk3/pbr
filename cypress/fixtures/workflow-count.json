@@ -1,0 +1,44 @@
+{
+	"Data": [
+		{
+			"application_type": "CHART",
+			"item_count": 2.0,
+			"text": "Chart Approval"
+		}	
+	],
+	"counts": [
+		{
+			"created_by": "fahad.siddiqui@mareana.com",
+			"total_count": 2
+		},
+		{
+			"created_by": "krishnapriyam@mareana.com",
+			"total_count": 3
+		},
+		{
+			"created_by": "binkita.tiwari@mareana.com",
+			"total_count": 3
+		},
+		{
+			"created_by": "dinesh.kumar@mareana.com",
+			"total_count": 2
+		},
+		{
+			"created_by": "vinay.reddy@mareana.com",
+			"total_count": 2
+		},
+		{
+			"created_by": "demo",
+			"total_count": 8
+		},
+		{
+			"created_by": "ramaa.rao@mareana.com",
+			"total_count": 1
+		},
+		{
+			"created_by": "mihir.bagga@mareana.com",
+			"total_count": 5
+		}
+	],
+	"status-code": 200
+}

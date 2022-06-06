@@ -41,13 +41,15 @@ import newTemplateModal from '../../../../assets/images/newTemplateModal.svg';
 import pdfIcon from '../../../../assets/images/pdfIcon.svg';
 import { getPbrTemplateData, getDataView } from '../../../../services/pbrService';
 import { tableColumns } from '../../../../utils/TableColumns'
-import { useHistory } from 'react-router-dom';
+import { useHistory,useRouteMatch } from 'react-router-dom';
 import { loadTemplateInfo, loadMatBatchInfo,loadPageIdentifier } from '../../../../duck/actions/pbrAction';
 import StatusBlock from '../../../../components/StatusBlock/statusBlock'
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper'
 const { Search } = Input;
 
 function PaperBatchRecords() {
     let history = useHistory();
+    const match = useRouteMatch();
     const dispatch = useDispatch();
     const initialTableDataSource = [
         {
@@ -364,7 +366,7 @@ function PaperBatchRecords() {
         if (templateName == "") {
             openNotification()
         } else {
-            history.push(`/dashboard/pbr_template?file=${fileName}&tempalteName=${templateName}`);
+            history.push(`${match.url}/Untitled?file=${fileName}&tempalteName=${templateName}`);
             dispatch(loadMatBatchInfo(matBatch))
         }
 
@@ -417,6 +419,7 @@ function PaperBatchRecords() {
     }
 
     const handleClickTiles = (value) => {
+        // history.push(`${match.url}/0`);
         let obj =
         {
             material_num: value?.material,
@@ -424,7 +427,7 @@ function PaperBatchRecords() {
         }
         dispatch(loadPageIdentifier(value?.pbr_template_info?.pbrPageIdentifier))
         dispatch(loadMatBatchInfo(obj))
-        history.push(`/dashboard/pbr_template?file=${value?.pbr_template_info?.pbrTemplateInfo[0].filename}&temp_disp_id=${value.pbr_template_disp_id}&tempalteName=${value.pbr_template_name}`)
+        history.push(`${match.url}/${value.pbr_template_disp_id}?file=${value?.pbr_template_info?.pbrTemplateInfo[0].filename}&temp_disp_id=${value.pbr_template_disp_id}&tempalteName=${value.pbr_template_name}`)
         dispatch(loadTemplateInfo(value?.pbr_template_info?.pbrTemplateInfo))
 
     }
@@ -442,14 +445,15 @@ function PaperBatchRecords() {
     return (
         <div className='pbr-container'>
             <div className='custom-wrapper pbr-wrapper'>
-                <div className='sub-header'>
+                {/* <div className='sub-header'>
                     <div className='sub-header-title'>
                         <ArrowLeftOutlined className='header-icon' />
                         <span className='header-title'>
                             Paper Batch Records
                         </span>
                     </div>
-                </div>
+                </div> */}
+                <BreadCrumbWrapper />
             </div>
             <Row className='p-28'>
                 <Col span={24} className='banner'>
