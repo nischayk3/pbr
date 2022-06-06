@@ -24,7 +24,6 @@ import {
 	Dropdown,
 	Menu,
 } from 'antd';
-// import ChartSelector from './reportDesignerFilter/chartSelector';
 import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
 import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections';
 import {
