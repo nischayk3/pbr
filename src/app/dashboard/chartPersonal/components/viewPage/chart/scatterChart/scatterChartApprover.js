@@ -11,14 +11,14 @@ import ViolationTable from "../dataTables/ViolationTable";
 const { TabPane } = Tabs;
 
 const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
-  const [axisValues, setAxisValues] = useState({
+  const [axisValuesApprover, setAxisValuesApprover] = useState({
     xaxis: null,
     yaxis: null,
     chartType: null,
   });
-  const [chartData, setChartData] = useState([]);
-  const [layoutData, setLayoutData] = useState({});
-  const [showChart, setShowChart] = useState(false);
+  const [chartDataApprover, setChartDataApprover] = useState([]);
+  const [layoutDataApprover, setLayoutDataApprover] = useState({});
+  const [showChartApprover, setShowChartApprover] = useState(false);
   const [tableKey, setTableKey] = useState("3");
   const exclusionIdCounter = useRef(0);
   const [exclusionTable, setExclusionTable] = useState([]);
@@ -50,36 +50,36 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
           });
         setExclusionTable(table1);
         if (ele.data[0].x && ele.data[0].x.length >= 1) {
-          const chart =
+          const chartApproverType =
             ele.chart_type === "scatter" ? "Scatter Plot" : "Process Control";
-          let xValue = "";
-          let yValue = "";
+          let xValueApprover = "";
+          let yValueApprover = "";
           if (ele.chart_type === "scatter") {
-            xValue = ele.chart_mapping.x.function_name;
+            xValueApprover = ele.chart_mapping.x.function_name;
           } else {
-            xValue =
+            xValueApprover =
               ele.chart_mapping.x.function_name === "batch_num"
                 ? "Batch"
                 : "Date";
           }
-          yValue = ele.chart_mapping.y.function_name
+          yValueApprover = ele.chart_mapping.y.function_name
             ? ele.chart_mapping.y.function_name
             : "";
-          setAxisValues({
-            ...axisValues,
-            chartType: chart,
-            xaxis: xValue,
-            yaxis: yValue,
+          setAxisValuesApprover({
+            ...axisValuesApprover,
+            chartType: chartApproverType,
+            xaxis: xValueApprover,
+            yaxis: yValueApprover,
           });
-          setShowChart(true);
-          setChartData(ele.data);
-          setLayoutData(ele.layout);
+          setShowChartApprover(true);
+          setChartDataApprover(ele.data);
+          setLayoutDataApprover(ele.layout);
         } else {
-          setShowChart(false);
-          setChartData([]);
-          setLayoutData({});
-          setAxisValues({
-            ...axisValues,
+          setShowChartApprover(false);
+          setChartDataApprover([]);
+          setLayoutDataApprover({});
+          setAxisValuesApprover({
+            ...axisValuesApprover,
             chartType: null,
             xaxis: null,
             yaxis: null,
@@ -101,7 +101,12 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
               <p>Chart Type</p>
             </Col>
             <Col span={10}>
-              <p>: {axisValues.chartType ? axisValues.chartType : ""}</p>
+              <p>
+                :{" "}
+                {axisValuesApprover.chartType
+                  ? axisValuesApprover.chartType
+                  : ""}
+              </p>
             </Col>
           </Row>
         </Col>
@@ -111,7 +116,9 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
               <p>X-axis</p>
             </Col>
             <Col span={18}>
-              <p>: {axisValues.xaxis ? axisValues.xaxis : ""}</p>
+              <p>
+                : {axisValuesApprover.xaxis ? axisValuesApprover.xaxis : ""}
+              </p>
             </Col>
           </Row>
         </Col>
@@ -121,16 +128,20 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
               <p>Y-axis</p>
             </Col>
             <Col span={18}>
-              <p>: {axisValues.yaxis ? axisValues.yaxis : ""}</p>
+              <p>
+                : {axisValuesApprover.yaxis ? axisValuesApprover.yaxis : ""}
+              </p>
             </Col>
           </Row>
         </Col>
       </Row>
       <div className="chart-table">
         <Row className="scatter-chart">
-          {showChart && <ScatterPlot data={chartData} layout={layoutData} />}
+          {showChartApprover && (
+            <ScatterPlot data={chartDataApprover} layout={layoutDataApprover} />
+          )}
         </Row>
-        {showChart && (
+        {showChartApprover && (
           <Row className="tabledata" id="chart">
             <Col id="col-chart" span={24}>
               <Tabs
