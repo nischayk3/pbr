@@ -76,12 +76,13 @@ describe("Report", () => {
         cy.wait(3000)
         cy.get('[style="color: grey; font-family: Roboto; font-style: normal; font-weight: 400; font-size: 16px;"] > [style="font-size: 17px; margin-bottom: 20px;"]').click();
         cy.wait(4000)
-        cy.get('.ant-modal-close-x > .anticon > svg').click();
+        // cy.get('.ant-modal-close-x > .anticon > svg').click();
+        cy.get(':nth-child(7) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x').click()
         cy.get('#report_designer > .ant-menu-title-content > a').click();
         cy.wait(2000)
-        cy.get('#rc-tabs-4-tab-Generate\\ Report\\ Variant').click();
+        cy.get('#rc-tabs-6-tab-Generate\\ Report\\ Variant').click();
         cy.wait(2000)
-        cy.get('#rc-tabs-4-panel-Generate\\ Report\\ Variant > .tile > :nth-child(1) > .chart-tiles').click();
+        cy.get('#rc-tabs-6-panel-Generate\\ Report\\ Variant > .tile > :nth-child(1) > .chart-tiles').click();
         // // })
 
         // // it('Load Report Generator', () => {
