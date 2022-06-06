@@ -7,28 +7,28 @@ const { Panel } = Collapse;
 import { initialLayout } from "./displayFunctions";
 
 const DisplayApprover = ({ postChartData, setPostChartData }) => {
-  const [layoutData, setLayoutData] = useState(initialLayout);
+  const [layoutDataApprover, setLayoutDataApprover] = useState(initialLayout);
   useEffect(() => {
     if (postChartData.data) {
-      const newArr = JSON.parse(JSON.stringify(postChartData));
-      const xvalue = newArr.data[0].layout.xaxis.title.text;
-      const yvalue = newArr.data[0].layout.yaxis.title.text;
-      const annotations = newArr.data[0].layout.annotations;
+      const newArrApprover = JSON.parse(JSON.stringify(postChartData));
+      const xvalueApprover = newArrApprover.data[0].layout.xaxis.title.text;
+      const yvalueApprover = newArrApprover.data[0].layout.yaxis.title.text;
+      const annotationsApprover = newArrApprover.data[0].layout.annotations;
       const o =
-        newArr.data[0].layout.legend.orientation === "v"
+        newArrApprover.data[0].layout.legend.orientation === "v"
           ? "Vertical"
           : "Horizontal";
-      setLayoutData({
-        ...layoutData,
-        legend: { ...layoutData.legend, orientation: o },
+      setLayoutDataApprover({
+        ...layoutDataApprover,
+        legend: { ...layoutDataApprover.legend, orientation: o },
         xaxis: {
-          ...layoutData.xaxis,
-          title: { ...layoutData.xaxis.title, text: xvalue },
+          ...layoutDataApprover.xaxis,
+          title: { ...layoutDataApprover.xaxis.title, text: xvalueApprover },
         },
-        annotations: annotations,
+        annotations: annotationsApprover,
         yaxis: {
-          ...layoutData.yaxis,
-          title: { ...layoutData.yaxis.title, text: yvalue },
+          ...layoutDataApprover.yaxis,
+          title: { ...layoutDataApprover.yaxis.title, text: yvalueApprover },
         },
       });
     }
@@ -36,31 +36,40 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
 
   useEffect(() => {
     if (postChartData.data) {
-      const newArr = [...postChartData.data];
-      newArr[0].layout = JSON.parse(JSON.stringify(layoutData));
-      const orientation = newArr[0].layout.legend.orientation;
-      newArr[0].layout.legend.orientation =
+      const newArrApprover = [...postChartData.data];
+      newArrApprover[0].layout = JSON.parse(JSON.stringify(layoutDataApprover));
+      const orientation = newArrApprover[0].layout.legend.orientation;
+      newArrApprover[0].layout.legend.orientation =
         orientation === "Vertical" ? "v" : "h";
-      setPostChartData({ ...postChartData, data: newArr });
+      setPostChartData({ ...postChartData, data: newArrApprover });
     }
-  }, [layoutData]);
+  }, [layoutDataApprover]);
 
   return (
-    <div className="display-section p-bottom">
-      <Collapse expandIconPosition="right" ghost accordion>
+    <div id="display" className="display-section p-bottom">
+      <Collapse
+        expandIconPosition="right"
+        id="display-collapase"
+        ghost
+        accordion
+      >
         {/* Figure */}
         <Panel
           header="Figure"
           key="1"
           style={{ background: "white !important" }}
         >
-          <div className="figure-container">
-            <Row className="figure-inputs select-top" gutter={16}>
-              <Col span={8}>
+          <div className="figure-container" id="figure">
+            <Row
+              className="figure-inputs select-top"
+              id="inputs-figure"
+              gutter={16}
+            >
+              <Col id="col-height" span={8}>
                 <label>Height </label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.height || "-"}</p>
+                <p>: {layoutDataApprover.height || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -68,7 +77,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Width </label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.width || "-"}</p>
+                <p>: {layoutDataApprover.width || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -76,7 +85,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Plot color </label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.plot_bgcolor || "-"}</p>
+                <p>: {layoutDataApprover.plot_bgcolor || "-"}</p>
               </Col>
             </Row>
             <div className="figure-inputs header">Panel Options</div>
@@ -85,7 +94,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Title </label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.title.text || "-"}</p>
+                <p>: {layoutDataApprover.title.text || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -93,7 +102,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Font size </label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.title.font.size || "-"}</p>
+                <p>: {layoutDataApprover.title.font.size || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -101,7 +110,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Font color </label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.title.font.color || "-"}</p>
+                <p>: {layoutDataApprover.title.font.color || "-"}</p>
               </Col>
             </Row>
           </div>
@@ -116,7 +125,10 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Show</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.showlegend === true ? "Yes" : "No" || "-"}</p>
+                <p>
+                  :{" "}
+                  {layoutDataApprover.showlegend === true ? "Yes" : "No" || "-"}
+                </p>
               </Col>
             </Row>
             <Row className="figure-inputs" gutter={16}>
@@ -124,7 +136,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Title</label>
               </Col>
               <Col className="gutter-row select-top" span={16}>
-                <p>: {layoutData.legend.title.text || "-"}</p>
+                <p>: {layoutDataApprover.legend.title.text || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -132,7 +144,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Legend size</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.legend.title.font.size || "-"}</p>
+                <p>: {layoutDataApprover.legend.title.font.size || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -140,7 +152,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Legend color</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.legend.title.font.color || "-"}</p>
+                <p>: {layoutDataApprover.legend.title.font.color || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -148,7 +160,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Border width</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.legend.borderwidth || "-"}</p>
+                <p>: {layoutDataApprover.legend.borderwidth || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -156,7 +168,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Border color</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.legend.bordercolor || "-"}</p>
+                <p>: {layoutDataApprover.legend.bordercolor || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -164,7 +176,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Background color</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.legend.bgcolor || "-"}</p>
+                <p>: {layoutDataApprover.legend.bgcolor || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -172,7 +184,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Orientation</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.legend.orientation || "-"}</p>
+                <p>: {layoutDataApprover.legend.orientation || "-"}</p>
               </Col>
             </Row>
           </div>
@@ -187,7 +199,10 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
               </Col>
               <Col span={16}>
                 <p>
-                  : {layoutData.xaxis.visible === true ? "Yes" : "No" || "-"}
+                  :{" "}
+                  {layoutDataApprover.xaxis.visible === true
+                    ? "Yes"
+                    : "No" || "-"}
                 </p>
               </Col>
             </Row>
@@ -198,7 +213,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
               <Col span={16}>
                 <p>
                   :{" "}
-                  {layoutData.xaxis.showticklabels === true
+                  {layoutDataApprover.xaxis.showticklabels === true
                     ? "Yes"
                     : "No" || "-"}
                 </p>
@@ -210,7 +225,10 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
               </Col>
               <Col span={16}>
                 <p>
-                  : {layoutData.xaxis.showline === true ? "Yes" : "No" || "-"}
+                  :{" "}
+                  {layoutDataApprover.xaxis.showline === true
+                    ? "Yes"
+                    : "No" || "-"}
                 </p>
               </Col>
             </Row>
@@ -220,7 +238,10 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
               </Col>
               <Col span={16}>
                 <p>
-                  : {layoutData.xaxis.showgrid === true ? "Yes" : "No" || "-"}
+                  :{" "}
+                  {layoutDataApprover.xaxis.showgrid === true
+                    ? "Yes"
+                    : "No" || "-"}
                 </p>
               </Col>
             </Row>
@@ -229,7 +250,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Title</label>
               </Col>
               <Col className="gutter-row select-top" span={16}>
-                <p>: {layoutData.xaxis.title.text || "-"}</p>
+                <p>: {layoutDataApprover.xaxis.title.text || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -237,7 +258,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Title size</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.xaxis.title.font.size || "-"}</p>
+                <p>: {layoutDataApprover.xaxis.title.font.size || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -245,7 +266,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Title color</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.xaxis.title.font.color || "-"}</p>
+                <p>: {layoutDataApprover.xaxis.title.font.color || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -253,7 +274,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Grid color</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.xaxis.gridcolor || "-"}</p>
+                <p>: {layoutDataApprover.xaxis.gridcolor || "-"}</p>
               </Col>
             </Row>
             <div className="header">Y-Axis</div>
@@ -263,7 +284,10 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
               </Col>
               <Col span={16}>
                 <p>
-                  : {layoutData.yaxis.visible === true ? "Yes" : "No" || "-"}
+                  :{" "}
+                  {layoutDataApprover.yaxis.visible === true
+                    ? "Yes"
+                    : "No" || "-"}
                 </p>
               </Col>
             </Row>
@@ -274,7 +298,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
               <Col span={16}>
                 <p>
                   :{" "}
-                  {layoutData.yaxis.showticklabels === true
+                  {layoutDataApprover.yaxis.showticklabels === true
                     ? "Yes"
                     : "No" || "-"}
                 </p>
@@ -286,7 +310,10 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
               </Col>
               <Col span={16}>
                 <p>
-                  : {layoutData.yaxis.showline === true ? "Yes" : "No" || "-"}
+                  :{" "}
+                  {layoutDataApprover.yaxis.showline === true
+                    ? "Yes"
+                    : "No" || "-"}
                 </p>
               </Col>
             </Row>
@@ -296,7 +323,10 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
               </Col>
               <Col span={16}>
                 <p>
-                  : {layoutData.yaxis.showgrid === true ? "Yes" : "No" || "-"}
+                  :{" "}
+                  {layoutDataApprover.yaxis.showgrid === true
+                    ? "Yes"
+                    : "No" || "-"}
                 </p>
               </Col>
             </Row>
@@ -305,7 +335,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Title</label>
               </Col>
               <Col className="gutter-row select-top" span={16}>
-                <p>: {layoutData.yaxis.title.text || "-"}</p>
+                <p>: {layoutDataApprover.yaxis.title.text || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -313,7 +343,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Title size</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.yaxis.title.font.size || "-"}</p>
+                <p>: {layoutDataApprover.yaxis.title.font.size || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -321,7 +351,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Title color</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.yaxis.title.font.color || "-"}</p>
+                <p>: {layoutDataApprover.yaxis.title.font.color || "-"}</p>
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
@@ -329,7 +359,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <label>Grid color</label>
               </Col>
               <Col span={16}>
-                <p>: {layoutData.yaxis.gridcolor || "-"}</p>
+                <p>: {layoutDataApprover.yaxis.gridcolor || "-"}</p>
               </Col>
             </Row>
           </div>
