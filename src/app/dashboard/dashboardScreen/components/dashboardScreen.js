@@ -65,7 +65,7 @@ const DashboardScreen = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log(viewData);
+		
 		if (viewData.chartDispId != '') {
 			getChartData();
 		}
@@ -126,7 +126,7 @@ const DashboardScreen = () => {
 
 	//get chart data to plot
 	const getChartData = async () => {
-		console.log(viewData);
+		
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		let req = { chartId: viewData.chartDispId };
 		let headers = {
@@ -183,7 +183,7 @@ const DashboardScreen = () => {
 	};
 
 	const handleSave = async value => {
-		console.log(ref.current.getChildState());
+		
 		let json = ref.current.getChildState();
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		let headers = {
@@ -198,7 +198,7 @@ const DashboardScreen = () => {
 		try {
 			dispatch(showLoader());
 			let res = await saveDashboardData(req, headers);
-			console.log(res);
+			
 			if (res.statuscode == 200) {
 				dispatch(hideLoader());
 				dispatch(
@@ -227,7 +227,7 @@ const DashboardScreen = () => {
 		setShowSaveModal(false);
 	};
 	const onChangeInputSaveAs = e => {
-		console.log(e.target.value);
+		
 		setdashboardName(e.target.value);
 	};
 	return (
