@@ -1,0 +1,61 @@
+{
+	"Data": {
+		"config": [
+			{
+				"display_name": "Creation Date",
+				"field_name": "created_on",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Event Id",
+				"field_name": "event_id",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Application Type",
+				"field_name": "application_type",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Id",
+				"field_name": "Id",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Chart Name",
+				"field_name": "chart_name",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Version",
+				"field_name": "version",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Creator",
+				"field_name": "created_by",
+				"id": 1234,
+				"visible": true
+			}
+		],
+		"data": [
+			{
+				"Id": "C267",
+				"application_type": "CHART",
+				"chart_name": "chart",
+				"created_by": "vinay.reddy@mareana.com",
+				"created_on": "2022-05-24T12:52:43.135153+00:00",
+				"event_id": 100,
+				"version": 1
+			}
+		]
+	},
+	"Message": "Sucess",
+	"status-code": 200
+}
