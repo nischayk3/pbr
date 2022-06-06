@@ -21,7 +21,7 @@ import UserRolesAndAccess from '../../pages/UserRolesAndAccess/UserRolesAndAcces
 import UserConfiguration from '../../pages/UserRolesAndAccess/UserConfiguration/UserConfiguration';
 import RolesAndAccess from '../../pages/UserRolesAndAccess/RolesAndAccess/RolesAndAccess';
 import ScreenControls from '../../pages/UserRolesAndAccess/ScreenControls/ScreenControls';
-import PaperBatchRecords from './paperBatchRecords';
+// import PaperBatchRecords from './paperBatchRecords';
 import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate';
 import Analysis from '../../pages/Analysis/Analysis';
 import AnalysisModel from '../../pages/Analysis/AnalysisModel/AnalysisModel'
@@ -39,6 +39,7 @@ const ReportDesigner = lazy(() => import('./reportDesigner'));
 const AuditTrial = lazy(() => import('./auditTrial'));
 const Audit = lazy(() => import('./auditLogs'));
 const PbrUpdate = lazy(() => import('./pbrUpdate'));
+const PaperBatchRecords = lazy(() => import('./paperBatchRecords'));
 const ReportGenerator = lazy(() => import('./reportGenerator'));
 const Workflow = lazy(() => import('./wokflow'));
 const Workspace = lazy(() => import('./workspace'));
@@ -157,11 +158,11 @@ const Dashboard = () => {
 								<Route key='dashboard' path={`${match.url}/dashboard`}>
 									<DashboardScreen />
 								</Route>
-								<Route
+								{/* <Route
 									key='paper_batch_records'
 									path={`${match.url}/paper_batch_records`}>
 									<PaperBatchRecords />
-								</Route>
+								</Route> */}
 								<Route key='pbr_reviewer' path={`${match.url}/pbr_reviewer`}>
 									<PbrReviewer />
 								</Route>
@@ -169,11 +170,20 @@ const Dashboard = () => {
 								{/* <Route key='audit_logs' path={`${match.url}/audit_logs`}>
 									<Audit />
 								</Route> */}
-								<Route
+								{/* <Route
 									key='paper_batch_records_template'
 									path={`${match.url}/pbr_template`}>
 									<PaperBatchRecordsTemplate />
-								</Route>
+								</Route> */}
+								<Route
+									path={`${match.url}/paper_batch_records`}
+									render={({ match: { url } }) => (
+										<>
+											<Route path={`${url}/`} component={PaperBatchRecords} exact />
+											<Route path={`${url}/:id`} component={PaperBatchRecordsTemplate } />
+										</>
+									)}
+								/>
 								<Route key='redirect' path={`${match.url}/redirect`}>
 									<LoginRedirect />
 								</Route>
