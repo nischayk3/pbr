@@ -12,7 +12,7 @@ import { Button, Card, Collapse, Input, Tag } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReports } from '../../../../services/reportDesignerServices';
-import ReportDesignerForm from '../components/reportGeneratorHeader';
+import ReportGeneratorForm from '../components/reportGeneratorForm';
 import {
 	saveReportGenerator,
 	latexBuilder,
@@ -91,9 +91,9 @@ function ReportGenerator(props) {
 		state => state.reportDesignerReducer.reportData
 	);
 
-	function onChange(checkedValues, i) {
-		update_object(checkedValues, i);
-	}
+	// function onChange(checkedValues, i) {
+	// 	update_object(checkedValues, i);
+	// }
 
 	// const menu = (
 	// 	<Menu>
@@ -105,16 +105,16 @@ function ReportGenerator(props) {
 		setAlertVisible(false);
 	};
 
-	const [ReportData, setReportData] = useState(repotData);
+	const ReportData = repotData;
 	const [chart, setCharts] = useState([]);
 	const [table, setTable] = useState([]);
 	const [isSave, setIsSave] = useState(false);
 	const [reportId, setReportId] = useState('');
 	const [reportName, setReportName] = useState('');
 	const [reportStatus, setReportStatus] = useState('');
-	const [reportList, setReportList] = useState('');
+	// const [reportList, setReportList] = useState('');
 	const [chartLayout, setChartLayout] = useState({});
-	const [selectedDays, setSelectedDays] = useState({
+	const selectedDays = {
 		Sunday: false,
 		Monday: false,
 		Tuesday: false,
@@ -122,7 +122,7 @@ function ReportGenerator(props) {
 		Thursday: false,
 		Friday: false,
 		Saturday: false,
-	});
+	};
 	const [alertVisible, setAlertVisible] = useState(false);
 	// const [ sectionCharts,setSectionCharts] =
 	const dispatch = useDispatch();
@@ -131,29 +131,29 @@ function ReportGenerator(props) {
 		unloadTest(ReportData);
 	}, [ReportData]);
 
-	useEffect(() => {
-		getReportList();
-	}, []);
+	// useEffect(() => {
+	// 	getReportList();
+	// }, []);
 
-	const getReportList = () => {
-		let req = { rep_status: 'all' };
-		getReports(req).then(res => {
-			setReportList(res['Data']);
-		});
-	};
+	// const getReportList = () => {
+	// 	let req = { rep_status: 'all' };
+	// 	getReports(req).then(res => {
+	// 		setReportList(res['Data']);
+	// 	});
+	// };
 
 	//const mapReportList = reportList && reportList.length > 0 ? reportList : [];
 
 	const createArraObj = arr => {
 		let res = [];
 		arr.map(i => {
-			let chart = {};
-			chart['chart'] = i;
-			chart['excursion'] = false;
-			chart['violation'] = false;
-			chart['parameter'] = false;
-			chart['exclusion'] = false;
-			res.push(chart);
+			let chart_objects = {};
+			chart_objects['chart'] = i;
+			chart_objects['excursion'] = false;
+			chart_objects['violation'] = false;
+			chart_objects['parameter'] = false;
+			chart_objects['exclusion'] = false;
+			res.push(chart_objects);
 		});
 		return res;
 	};
@@ -183,9 +183,9 @@ function ReportGenerator(props) {
 		return res;
 	};
 
-	const updateChartLayout = (chart, section, param) => {
+	const updateChartLayout = (chartt, section, param) => {
 		section = section + 1;
-		let objIndex = chartLayout[section].findIndex(obj => obj.chart == chart);
+		let objIndex = chartLayout[section].findIndex(obj => obj.chartt == chartt);
 		chartLayout[section][objIndex][`${param}`] = false;
 	};
 
@@ -212,53 +212,53 @@ function ReportGenerator(props) {
 		return allSections;
 	};
 
-	const unloadTest = ReportData => {
+	const unloadTest = ReportDatas => {
 		dispatch(showLoader());
-		setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '');
-		if (ReportData.layout_info && ReportData.layout_info.charts_layout)
+		setReportId(ReportDatas['rep_disp_id'] ? ReportDatas['rep_disp_id'] : '');
+		if (ReportDatas.layout_info && ReportDatas.layout_info.charts_layout)
 			setChartLayout(
-				ReportData.layout_info.charts_layout
-					? createChartRecord(ReportData.layout_info.charts_layout)
+				ReportDatas.layout_info.charts_layout
+					? createChartRecord(ReportDatas.layout_info.charts_layout)
 					: {}
 			);
 		else
-			setChartLayout(ReportData.charts_layout ? ReportData.charts_layout : {});
-		setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '');
+			setChartLayout(ReportDatas.charts_layout ? ReportDatas.charts_layout : {});
+		setReportName(ReportDatas['rep_name'] ? ReportDatas['rep_name'] : '');
 		setCharts(
-			ReportData['chart_int_ids']
-				? createArraObj(ReportData['chart_int_ids'])
+			ReportDatas['chart_int_ids']
+				? createArraObj(ReportDatas['chart_int_ids'])
 				: []
 		);
 		setTable(
-			ReportData['layout_info']
+			ReportDatas['layout_info']
 				? getTableData(
-					ReportData['layout_info'],
-					ReportData.layout_info.charts_layout
-						? ReportData.layout_info.charts_layout
+					ReportDatas['layout_info'],
+					ReportDatas.layout_info.charts_layout
+						? ReportDatas.layout_info.charts_layout
 						: {}
 				)
 				: {}
 		);
-		setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '');
-		setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '');
-		setReportStatus(ReportData['rep_status'] ? ReportData['rep_status'] : '');
+		setReportId(ReportDatas['rep_disp_id'] ? ReportDatas['rep_disp_id'] : '');
+		setReportName(ReportDatas['rep_name'] ? ReportDatas['rep_name'] : '');
+		setReportStatus(ReportDatas['rep_status'] ? ReportDatas['rep_status'] : '');
 		dispatch(hideLoader());
 	};
 
-	const update_object = (arr, i) => {
-		let objIndex = chart.findIndex(chart => chart.chart == i);
-		if (arr.includes('excursion')) chart[objIndex].excursion = true;
-		else chart[objIndex].excursion = false;
-		if (arr.includes('violation')) chart[objIndex].violation = true;
-		else chart[objIndex].violation = false;
-		if (arr.includes('parameter')) chart[objIndex].parameter = true;
-		else chart[objIndex].parameter = false;
-		if (arr.includes('exclusion')) chart[objIndex].exclusion = true;
-		else chart[objIndex].exclusion = false;
+	// const update_object = (arr, i) => {
+	// 	let objIndex = chart.findIndex(chart => chart.chart == i);
+	// 	if (arr.includes('excursion')) chart[objIndex].excursion = true;
+	// 	else chart[objIndex].excursion = false;
+	// 	if (arr.includes('violation')) chart[objIndex].violation = true;
+	// 	else chart[objIndex].violation = false;
+	// 	if (arr.includes('parameter')) chart[objIndex].parameter = true;
+	// 	else chart[objIndex].parameter = false;
+	// 	if (arr.includes('exclusion')) chart[objIndex].exclusion = true;
+	// 	else chart[objIndex].exclusion = false;
 
-		let object = chart;
-		setCharts(object);
-	};
+	// 	let object = chart;
+	// 	setCharts(object);
+	// };
 	const generateReport = async () => {
 		dispatch(showNotification('success', 'Generating Report'));
 		let generate_obj = {};
@@ -378,7 +378,7 @@ function ReportGenerator(props) {
 			<div className='custom-content-layout'>
 				<div className='report-card'>
 					<Card title='Generate new report variant' className='generator-card'>
-						<ReportDesignerForm />
+						<ReportGeneratorForm />
 						<div className='table-card'>
 							{table.length > 0 &&
 								table.map(i => (
