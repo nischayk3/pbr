@@ -36,25 +36,43 @@ describe("Report", () => {
     cy.get('.ant-select-selection-overflow').click();
     cy.wait(2000)
     // cy.get(':nth-child(6) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item > .ant-select-item-option-content').click();
-    cy.get('.create-new-report > .anticon > svg').click();
-    cy.get('#report-generator-form_response_0_sectionName').clear();
-    cy.get('#report-generator-form_response_0_sectionName').type('Title');
-    cy.get(':nth-child(5) > .anticon > svg > [d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"]').click();
-    cy.get('#report-generator-form_response_1_sectionName').clear();
-    cy.get('#report-generator-form_response_1_sectionName').type('Summary');
-    cy.get('.add-chart').click();
-    // cy.get('.charttile-content').click();
-    // cy.get(':nth-child(2) > center > .sectionTable > .create-new-report > .anticon > svg').click();
-    cy.get('.sub-header-btns > :nth-child(1) > span').click();
-    // cy.get('.ant-modal-close-x > .anticon > svg').click();
-    cy.wait(1000)
-    cy.get('#report_designer > .ant-menu-title-content').click();
-    cy.wait(1000)
-    cy.get(':nth-child(3) > .ant-breadcrumb-link > a').click();
-    cy.wait(1000)
-    cy.get(':nth-child(1) > .chart-tiles').click();
+    // cy.get('.create-new-report > .anticon > svg').click();
+    // cy.get('#report-generator-form_response_0_sectionName').clear();
+    // cy.get('#report-generator-form_response_0_sectionName').type('Title');
+    // cy.get(':nth-child(5) > .anticon > svg > [d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"]').click();
+    // cy.get('#report-generator-form_response_1_sectionName').clear();
+    // cy.get('#report-generator-form_response_1_sectionName').type('Summary');
+    // cy.get('.add-chart').click();
+    // // cy.get('.charttile-content').click();
+    // // cy.get(':nth-child(2) > center > .sectionTable > .create-new-report > .anticon > svg').click();
+    // cy.get('.sub-header-btns > :nth-child(1) > span').click();
+    // // cy.get('.ant-modal-close-x > .anticon > svg').click();
+    // cy.wait(1000)
+    // cy.get('#report_designer > .ant-menu-title-content').click();
+    // cy.wait(1000)
+    // cy.get(':nth-child(3) > .ant-breadcrumb-link > a').click();
+    // cy.wait(1000)
+    // cy.get(':nth-child(1) > .chart-tiles').click();
     /* ==== Generated with Cypress Studio ==== */
     // cy.get(':nth-child(6) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item > .ant-select-item-option-content').click();
+    /* ==== End Cypress Studio ==== */
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get(':nth-child(6) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
+    cy.get('center').click();
+    cy.get('.create-new-report > .anticon > svg').click();
+    cy.get('#report-generator-form_response_0_sectionName').clear();
+    cy.get('#report-generator-form_response_0_sectionName').type('title');
+    cy.get('[style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;"]').click();
+    cy.get('.create-new-report').click();
+    cy.get('.add-row-btn').click();
+    cy.get('#report-generator-form_response_0_dymamic_rows_0_keyName').click();
+    cy.get('#report-generator-form_response_0_dymamic_rows_0_keyName').click();
+    cy.get('.ant-tooltip-open > .anticon > svg > [d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"]').click();
+    cy.get('#report-generator-form_response_1_sectionName').clear();
+    cy.get('#report-generator-form_response_1_sectionName').type('summary');
+    cy.get('.create-new-report').click();
+    cy.get('.add-chart').click();
+    cy.get('.charttile-content').click();
     /* ==== End Cypress Studio ==== */
   });
 });

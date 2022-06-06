@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Collapse, Input, Tag } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { getReports } from '../../../../services/reportDesignerServices';
+// import { getReports } from '../../../../services/reportDesignerServices';
 import ReportGeneratorForm from '../components/reportGeneratorForm';
 import {
 	saveReportGenerator,
@@ -224,11 +224,11 @@ function ReportGenerator(props) {
 		else
 			setChartLayout(ReportDatas.charts_layout ? ReportDatas.charts_layout : {});
 		setReportName(ReportDatas['rep_name'] ? ReportDatas['rep_name'] : '');
-		setCharts(
-			ReportDatas['chart_int_ids']
-				? createArraObj(ReportDatas['chart_int_ids'])
-				: []
-		);
+		// setCharts(
+		// 	ReportDatas['chart_int_ids']
+		// 		? createArraObj(ReportDatas['chart_int_ids'])
+		// 		: []
+		// );
 		setTable(
 			ReportDatas['layout_info']
 				? getTableData(
