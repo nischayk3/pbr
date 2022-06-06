@@ -16,7 +16,7 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
     chartStatusApprover: "",
   });
 
-  useEffect(() => {
+  const setDataFromPostChart = () => {
     postChartData &&
       postChartData.data &&
       postChartData.data.forEach((ele) => {
@@ -31,11 +31,15 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
           });
         }
       });
+  };
+
+  useEffect(() => {
+    setDataFromPostChart();
   }, [postChartData]);
 
   return (
     <div className="chart-containerApprover">
-      <Row>
+      <Row id="chart-row">
         <Col span={24} className="headerApprover">
           <h3>Chart</h3>
         </Col>
@@ -43,12 +47,12 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
       {postChartData && postChartData.data && postChartData.data[0].view_id ? (
         <>
           <Row gutter={24} className="details-containerApprover">
-            <Col span={6}>
-              <Row gutter={16}>
-                <Col span={8}>
+            <Col id="chart-id-main-col" span={6}>
+              <Row id="chart-id-row" gutter={16}>
+                <Col id="chart-id-main-col" span={8}>
                   <p>Chart ID</p>
                 </Col>
-                <Col span={10}>
+                <Col id="chart-idvalue-main-col" span={10}>
                   <p>
                     :{" "}
                     {chartValuesApprover.chartIdApprover
