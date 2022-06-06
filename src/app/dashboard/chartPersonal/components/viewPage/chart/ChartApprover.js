@@ -8,12 +8,12 @@ import ScatterChartApprover from "./scatterChart/scatterChartApprover";
 
 //main component
 const ChartApprover = ({ postChartData, setPostChartData }) => {
-  const [chartValues, setChartValues] = useState({
-    chartName: "",
-    chartdesc: "",
-    chartId: "",
-    chartVersion: "",
-    chartStatus: "",
+  const [chartValuesApprover, setChartValuesApprover] = useState({
+    chartNameApprover: "",
+    chartdescApprover: "",
+    chartIdApprover: "",
+    chartVersionApprover: "",
+    chartStatusApprover: "",
   });
 
   useEffect(() => {
@@ -21,28 +21,28 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
       postChartData.data &&
       postChartData.data.forEach((ele) => {
         if (ele.chart_id) {
-          setChartValues({
-            ...chartValues,
-            chartId: ele.chart_id,
-            chartVersion: ele.chart_version,
-            chartStatus: ele.chart_status,
-            chartName: ele.chart_name,
-            chartdesc: ele.chart_description,
+          setChartValuesApprover({
+            ...chartValuesApprover,
+            chartIdApprover: ele.chart_id,
+            chartVersionApprover: ele.chart_version,
+            chartStatusApprover: ele.chart_status,
+            chartNameApprover: ele.chart_name,
+            chartdescApprover: ele.chart_description,
           });
         }
       });
   }, [postChartData]);
 
   return (
-    <div className="chart-container">
+    <div className="chart-containerApprover">
       <Row>
-        <Col span={24} className="header">
+        <Col span={24} className="headerApprover">
           <h3>Chart</h3>
         </Col>
       </Row>
       {postChartData && postChartData.data && postChartData.data[0].view_id ? (
         <>
-          <Row gutter={24} className="details-container">
+          <Row gutter={24} className="details-containerApprover">
             <Col span={6}>
               <Row gutter={16}>
                 <Col span={8}>
@@ -50,7 +50,10 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
                 </Col>
                 <Col span={10}>
                   <p>
-                    : {chartValues.chartId ? chartValues.chartId : "Unassigned"}
+                    :{" "}
+                    {chartValuesApprover.chartIdApprover
+                      ? chartValuesApprover.chartIdApprover
+                      : "Unassigned"}
                   </p>
                 </Col>
                 <Col span={6} />
@@ -61,7 +64,10 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
                 </Col>
                 <Col span={8}>
                   <p>
-                    : {chartValues.chartVersion ? chartValues.chartVersion : ""}
+                    :{" "}
+                    {chartValuesApprover.chartVersionApprover
+                      ? chartValuesApprover.chartVersionApprover
+                      : ""}
                   </p>
                 </Col>
                 <Col span={6} />
@@ -72,7 +78,10 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
                 </Col>
                 <Col span={8}>
                   <p>
-                    : {chartValues.chartStatus ? chartValues.chartStatus : ""}
+                    :{" "}
+                    {chartValuesApprover.chartStatusApprover
+                      ? chartValuesApprover.chartStatusApprover
+                      : ""}
                   </p>
                 </Col>
                 <Col span={6} />
@@ -84,7 +93,12 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
                   <p>Chart name</p>
                 </Col>
                 <Col span={8}>
-                  <p>: {chartValues.chartName ? chartValues.chartName : ""}</p>
+                  <p>
+                    :{" "}
+                    {chartValuesApprover.chartNameApprover
+                      ? chartValuesApprover.chartNameApprover
+                      : ""}
+                  </p>
                 </Col>
               </Row>
               <Row gutter={16}>
@@ -92,7 +106,12 @@ const ChartApprover = ({ postChartData, setPostChartData }) => {
                   <p>Chart description</p>
                 </Col>
                 <Col span={8}>
-                  <p>: {chartValues.chartdesc ? chartValues.chartdesc : ""}</p>
+                  <p>
+                    :{" "}
+                    {chartValuesApprover.chartdescApprover
+                      ? chartValuesApprover.chartdescApprover
+                      : ""}
+                  </p>
                 </Col>
               </Row>
             </Col>

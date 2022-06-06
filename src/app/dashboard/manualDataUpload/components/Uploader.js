@@ -125,31 +125,12 @@ class Uploader extends Component {
 				this.setState({
 					username: e.target.value,
 				});
-			} else if (field === 'password') {
+			} 
+			if (field === 'password') {
 				this.setState({
 					password: e.target.value,
 				});
-			} else if (field === 'reason1') {
-				this.setState({
-					signatureReason1: e.target.value,
-				});
-			} else if (field === 'screen2') {
-				this.setState({
-					signatureScreen2: e.target.value,
-				});
-			} else if (field === 'status3') {
-				this.setState({
-					signatureStatus3: e.target.value,
-				});
-			} else if (field === 'reason_cancel') {
-				this.setState({
-					cancelReason: e.target.value,
-				});
-			} else if (field === 'status_cancel') {
-				this.setState({
-					cancelStatus: e.target.value,
-				});
-			}
+			} 
 		}
 	};
 
@@ -426,7 +407,18 @@ class Uploader extends Component {
 		};
 
 		approvedData(reqUpdateData).then(response => {
-			if (response.data.statuscode === 200 && response.data.statuscode === 206) {
+			if (response.data.statuscode === 200) {
+				this.setState({
+					toastOpen: false,
+					showLoader: false,
+					toastMessage: response.data.message,
+					toastVariant: 'success',
+					approvedDataRes: response.data.message,
+					approvedDataStatus: response.data.statuscode,
+					onChangeStatus: '',
+				});
+				this.props.hideLoader()
+			} else if (response.data.statuscode === 206) {
 				this.setState({
 					toastOpen: false,
 					showLoader: false,
@@ -636,19 +628,23 @@ class Uploader extends Component {
 			} else if (this.state.onChangeStatus === 201) {
 				this.setState({
 					nextStepDisabled: true,
-					currentStep: (this.state.currentStep + 1),
+					currentStep: this.state.currentStep + 1,
 				});
 			} else if (this.state.onChangeStatus === 200) {
 				this.setState({
 					nextStepDisabled: true,
-					currentStep: (this.state.currentStep + 2),
+					currentStep: this.state.currentStep + 2,
 				});
 			} else {
 				this.setState({
 					currentStep: this.state.currentStep + 1,
 				});
 			}
-		} else if (step === 2 && step === 3) {
+		} else if (step === 2) {
+			this.setState({
+				currentStep: this.state.currentStep + 1,
+			});
+		} else if (step === 3) {
 			this.setState({
 				currentStep: this.state.currentStep + 1,
 			});

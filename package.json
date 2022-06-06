@@ -91,17 +91,10 @@
   },
   "nyc": {
     "report-dir": "coverage",
-    "exclude": [
-      "src/app/dashboard/auditLogs/**/*.js",
-      "src/app/dashboard/faq/**/*.js",
-      "src/app/dashboard/multipleDocExtraction/**/*.js",
-      "src/app/dashboard/paperBatchRecords/**/*.js",
-      "src/app/dashboard/paperBatchRecordsTemplate/**/*.js",
-      "src/app/dashboard/pbrReviewer/**/*.js",
-      "src/app/dashboard/pbrUpdate/**/*.js",
-      "src/app/dashboard/pythonNotebook/**/*.js",
-      "src/app/components/**/*.js"
-    ],
-    "excludeAfterRemap": true
+    "all": true,
+    "include": "src/**",
+    "reporter": [
+      "lcov"
+    ]
   }
 }

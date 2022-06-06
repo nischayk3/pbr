@@ -402,39 +402,39 @@ class AuditTrials extends React.Component {
 		this.setState({ filterTable });
 	};
 
-	searchTable = (value) => {
-		const { tableData1 } = this.state;
-		const filterTable1 = tableData1.filter((o) =>
-			Object.keys(o).some((k) =>
-				String(o[k]).toLowerCase().includes(value.toLowerCase())
-			)
-		);
+	// searchTable = (value) => {
+	// 	const { tableData1 } = this.state;
+	// 	const filterTable1 = tableData1.filter((o) =>
+	// 		Object.keys(o).some((k) =>
+	// 			String(o[k]).toLowerCase().includes(value.toLowerCase())
+	// 		)
+	// 	);
 
-		this.setState({ filterTable1 });
-	};
+	// 	this.setState({ filterTable1 });
+	// };
 
-	handleVisibleChange = (flag) => {
-		this.setState({ visibleMenuSettings: flag });
-	};
+	// handleVisibleChange = (flag) => {
+	// 	this.setState({ visibleMenuSettings: flag });
+	// };
 
-	onChangeCheckbox = (e) => {
-		var checkedColumns = this.state.checkedColumns;
-		if (e.target.checked) {
-			checkedColumns = checkedColumns.filter((id) => {
-				return id !== e.target.id;
-			});
-		} else if (!e.target.checked) {
-			checkedColumns.push(e.target.id);
-		}
+	// onChangeCheckbox = (e) => {
+	// 	var checkedColumns = this.state.checkedColumns;
+	// 	if (e.target.checked) {
+	// 		checkedColumns = checkedColumns.filter((id) => {
+	// 			return id !== e.target.id;
+	// 		});
+	// 	} else if (!e.target.checked) {
+	// 		checkedColumns.push(e.target.id);
+	// 	}
 
-		var filtered = this.state.initialColumns;
-		for (var i = 0; i < checkedColumns.length; i++)
-			filtered = filtered.filter((el) => {
-				return el.dataIndex !== checkedColumns[i];
-			});
+	// 	var filtered = this.state.initialColumns;
+	// 	for (var i = 0; i < checkedColumns.length; i++)
+	// 		filtered = filtered.filter((el) => {
+	// 			return el.dataIndex !== checkedColumns[i];
+	// 		});
 
-		this.setState({ columns: filtered, checkedColumns: checkedColumns });
-	};
+	// 	this.setState({ columns: filtered, checkedColumns: checkedColumns });
+	// };
 
 	onChangeIng = (e, value) => {
 		if (value !== null) {

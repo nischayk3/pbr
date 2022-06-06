@@ -215,17 +215,17 @@ const rules = ({ postChartData, setPostChartData }) => {
                           let html = item.rule_desc;
                           item &&
                             item.default_params &&
-                            Object.keys(item.default_params).forEach((key) => {
+                            Object.keys(item.default_params).forEach((key1) => {
                               html = reactStringReplace(
                                 html,
-                                `<${key}>`,
+                                `<${key1}>`,
                                 () => (
-                                  <span key={key} style={{ color: "red" }}>
+                                  <span key={key1} style={{ color: "red" }}>
                                     <Input
                                       type="number"
-                                      defaultValue={item.default_params[key]}
+                                      defaultValue={item.default_params[key1]}
                                       onChange={(e) =>
-                                        handleChange(e, item.rule_id, key)
+                                        handleChange(e, item.rule_id, key1)
                                       }
                                     />
                                   </span>
