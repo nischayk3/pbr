@@ -25,7 +25,7 @@ import {
     InputNumber
 } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import ImageMapper from 'react-image-mapper';
 
 import {
@@ -79,6 +79,7 @@ function PaperBatchRecordsTemplate() {
     const matBatch = useSelector((state) => state?.pbrReducer?.matBatchInfo)
     const pageIdentifier = useSelector((state) => state?.pbrReducer?.pageIdentifier)
     const location = useLocation()
+    const { id } = useParams()
     const dispatch = useDispatch();
     const params = QueryString.parse(location.search)
     const [form] = Form.useForm();
@@ -618,8 +619,9 @@ function PaperBatchRecordsTemplate() {
             dispatch(showNotification('error', 'No Data Found'));
         }
     };
-
+    console.log("idddd", id)
     useEffect(() => {
+
         getImage()
         const list = document.getElementsByTagName("canvas")[0]
         getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
@@ -660,23 +662,23 @@ function PaperBatchRecordsTemplate() {
                     method: item.method,
                     param_rule: item?.param_value_rule?.rule_name,
                     param_valueArea: item?.param_value_rule?.regex_text,
-                    param_max: item?.param_value_rule?.range_min,
-                    param_min: item?.param_value_rule?.range_max,
+                    param_max: item?.param_value_rule?.range_max,
+                    param_min: item?.param_value_rule?.range_min,
                     param_valueTransformation: item?.param_value_rule?.factor,
                     uom_rule: item?.uom_value_rule?.rule_name,
                     uom_valueArea: item?.uom_value_rule?.regex_text,
-                    uom_max: item?.uom_value_rule?.range_min,
-                    uom_min: item?.uom_value_rule?.range_max,
+                    uom_max: item?.uom_value_rule?.range_max,
+                    uom_min: item?.uom_value_rule?.range_min,
                     uom_valueTransformation: item?.uom_value_rule?.factor,
                     time_rule: item?.time_value_rule?.rule_name,
                     time_valueArea: item?.time_value_rule?.regex_text,
-                    time_max: item?.time_value_rule?.range_min,
-                    time_min: item?.time_value_rule?.range_max,
+                    time_max: item?.time_value_rule?.range_max,
+                    time_min: item?.time_value_rule?.range_min,
                     time_valueTransformation: item?.time_value_rule?.factor,
                     date_rule: item?.date_value_rule?.rule_name,
                     date_valueArea: item?.date_value_rule?.regex_text,
-                    date_max: item?.date_value_rule?.range_min,
-                    date_min: item?.date_value_rule?.range_max,
+                    date_max: item?.date_value_rule?.range_max,
+                    date_min: item?.date_value_rule?.range_min,
                     date_valueTransformation: item?.date_value_rule?.factor,
 
                 }
@@ -1106,6 +1108,11 @@ function PaperBatchRecordsTemplate() {
             obj['param_value_text'] = formValues[activeKey]?.values?.anchorId
             obj['param_value_top'] = formValues[activeKey]?.values?.valueCoords[1] / imageHeight
             obj['param_value_width'] = (formValues[activeKey]?.values?.valueCoords[2] - formValues[activeKey]?.values?.valueCoords[0]) / imageWidth
+            obj['param_value_rule'] = {
+                rule_name: parameterFormData[activeKey]?.param_rule, regex_text: parameterFormData[activeKey]?.param_valueArea,
+                range_min: parameterFormData[activeKey]?.param_min, range_max: parameterFormData[activeKey]?.param_max, transormation: "divide",
+                factor: parameterFormData[activeKey]?.param_valueTransformation
+            }
         }
         if (formValues[activeKey]?.unitValues) {
             obj['uom_key_height'] = (formValues[activeKey]?.unitValues?.coords[3] - formValues[activeKey]?.unitValues?.coords[1]) / imageHeight
@@ -1120,6 +1127,11 @@ function PaperBatchRecordsTemplate() {
             obj['uom_value_text'] = formValues[activeKey]?.unitValues?.unitId
             obj['uom_value_top'] = formValues[activeKey]?.unitValues?.valueCoords[1] / imageHeight
             obj['uom_value_width'] = (formValues[activeKey]?.unitValues?.valueCoords[2] - formValues[activeKey]?.unitValues?.valueCoords[0]) / imageWidth
+            obj['uom_value_rule'] = {
+                rule_name: parameterFormData[activeKey]?.uom_rule, regex_text: parameterFormData[activeKey]?.uom_valueArea,
+                range_min: parameterFormData[activeKey]?.uom_min, range_max: parameterFormData[activeKey]?.uom_max, transormation: "divide",
+                factor: parameterFormData[activeKey]?.uom_valueTransformation
+            }
         }
         if (formValues[activeKey]?.timeValues) {
             obj['time_key_height'] = (formValues[activeKey]?.timeValues?.coords[3] - formValues[activeKey]?.timeValues?.coords[1]) / imageHeight
@@ -1134,6 +1146,11 @@ function PaperBatchRecordsTemplate() {
             obj['time_value_text'] = formValues[activeKey]?.timeValues?.timeId
             obj['time_value_top'] = formValues[activeKey]?.timeValues?.valueCoords[1] / imageHeight
             obj['time_value_width'] = (formValues[activeKey]?.timeValues?.valueCoords[2] - formValues[activeKey]?.timeValues?.valueCoords[0]) / imageWidth
+            obj['time_value_rule'] = {
+                rule_name: parameterFormData[activeKey]?.time_rule, regex_text: parameterFormData[activeKey]?.time_valueArea,
+                range_min: parameterFormData[activeKey]?.time_min, range_max: parameterFormData[activeKey]?.time_max, transormation: "divide",
+                factor: parameterFormData[activeKey]?.time_valueTransformation
+            }
         }
         if (formValues[activeKey]?.dateValues) {
             obj['date_key_height'] = (formValues[activeKey]?.dateValues?.coords[3] - formValues[activeKey]?.dateValues?.coords[1]) / imageHeight
@@ -1148,6 +1165,11 @@ function PaperBatchRecordsTemplate() {
             obj['date_value_text'] = formValues[activeKey]?.dateValues?.dateId
             obj['date_value_top'] = formValues[activeKey]?.dateValues?.valueCoords[1] / imageHeight
             obj['date_value_width'] = (formValues[activeKey]?.dateValues?.valueCoords[2] - formValues[activeKey]?.dateValues?.valueCoords[0]) / imageWidth
+            obj['date_value_rule'] = {
+                rule_name: parameterFormData[activeKey]?.date_rule, regex_text: parameterFormData[activeKey]?.date_valueArea,
+                range_min: parameterFormData[activeKey]?.date_min, range_max: parameterFormData[activeKey]?.date_max, transormation: "divide",
+                factor: parameterFormData[activeKey]?.date_valueTransformation
+            }
         }
         let obj1 = {
             keys: [],
@@ -1169,6 +1191,8 @@ function PaperBatchRecordsTemplate() {
             setSearchedFileList(res.Searched_file_list)
             dispatch(hideLoader());
         } else {
+            setFileList(res.Found_file_list)
+            setSearchedFileList(res.Searched_file_list)
             message.error(res.Message);
             dispatch(hideLoader());
         }
@@ -1188,7 +1212,7 @@ function PaperBatchRecordsTemplate() {
             filename: params.file,
             method: formValues[activeKey]?.method
         }
-        formValues.forEach((ele) => {
+        formValues.forEach((ele, index) => {
             let obj = {
 
                 filename: params.file,
@@ -1209,6 +1233,11 @@ function PaperBatchRecordsTemplate() {
                 obj['param_value_top'] = ele?.values?.valueCoords[1] / imageHeight
                 obj['param_value_width'] = (ele?.values?.valueCoords[2] - ele?.values?.valueCoords[0]) / imageWidth
                 obj['param_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
+                obj['param_value_rule'] = {
+                    rule_name: parameterFormData[index]?.param_rule, regex_text: parameterFormData[index]?.param_valueArea,
+                    range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max, transormation: "divide",
+                    factor: parameterFormData[index]?.param_valueTransformation
+                }
 
             }
             if (ele.unitValues) {
@@ -1225,6 +1254,11 @@ function PaperBatchRecordsTemplate() {
                 obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / imageHeight
                 obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / imageWidth
                 obj['uom_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
+                obj['uom_value_rule'] = {
+                    rule_name: parameterFormData[index]?.uom_rule, regex_text: parameterFormData[index]?.uom_valueArea,
+                    range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max, transormation: "divide",
+                    factor: parameterFormData[index]?.uom_valueTransformation
+                }
 
             }
             if (ele.timeValues) {
@@ -1241,6 +1275,11 @@ function PaperBatchRecordsTemplate() {
                 obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / imageHeight
                 obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / imageWidth
                 obj['time_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
+                obj['time_value_rule'] = {
+                    rule_name: parameterFormData[index]?.time_rule, regex_text: parameterFormData[index]?.time_valueArea,
+                    range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max, transormation: "divide",
+                    factor: parameterFormData[index]?.time_valueTransformation
+                }
 
             }
             if (ele.dateValues) {
@@ -1257,6 +1296,11 @@ function PaperBatchRecordsTemplate() {
                 obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / imageHeight
                 obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / imageWidth
                 obj['date_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
+                obj['date_value_rule'] = {
+                    rule_name: parameterFormData[index]?.date_rule, regex_text: parameterFormData[index]?.date_valueArea,
+                    range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max, transormation: "divide",
+                    factor: parameterFormData[index]?.date_valueTransformation
+                }
 
             }
             arr.push(obj);
@@ -1278,6 +1322,7 @@ function PaperBatchRecordsTemplate() {
             message.success(res.Message);
             setModalData(res.Extraction)
         } else {
+            setModalData(res.Extraction)
             message.error(res.Message);
         }
         setTableLoading(false)
@@ -1323,6 +1368,21 @@ function PaperBatchRecordsTemplate() {
             dataIndex: 'site',
             key: 'site',
         },
+        {
+            title: 'UOM',
+            dataIndex: 'uom',
+            key: 'uom',
+        },
+        {
+            title: 'Date',
+            dataIndex: 'date',
+            key: 'date',
+        },
+        {
+            title: 'Time',
+            dataIndex: 'time',
+            key: 'time',
+        },
     ];
     const handleMenuChange = (item) => {
         setSelectedMode(item.key)
@@ -1363,14 +1423,18 @@ function PaperBatchRecordsTemplate() {
         <div className='pbr-container pbrTemplate-container'>
             <div className='custom-wrapper pbr-wrapper'>
                 <div className='sub-header'>
-                    <div className='sub-header-title'>
+                    {/* <div className='sub-header-title'>
                         <ArrowLeftOutlined className='header-icon' />
                         <span className='header-title'>
                             Paper Batch Records /
                         </span>
                         <span className='header-title'>{`TEMPLATE-${params?.tempalteName.toUpperCase()}`}</span>
-                    </div>
-                    {/* <BreadCrumbWrapper /> */}
+                    </div> */}
+                    <BreadCrumbWrapper
+                        urlName={`/dashboard/paper_batch_records/${id}`}
+                        value={id}
+                        data="Untitled"
+                    />
                 </div>
                 <div className='sub-header'>
                     <div className='sub-header-title'>
@@ -2421,6 +2485,7 @@ function PaperBatchRecordsTemplate() {
                             columns={modalColumns}
                             dataSource={modalData}
                             pagination={false}
+                            scroll={{ x: 800 }}
                         />
                     </Modal>
                 </div>
