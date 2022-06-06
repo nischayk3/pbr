@@ -67,6 +67,7 @@ describe('Manual data upload', () => {
         cy.get('.ant-modal-close').click()
 
         cy.log("click on digital signature button")
+        cy.wait(2000)
         cy.get('.ant-space-item').eq(0).click()
 
         
@@ -96,12 +97,13 @@ describe('Manual data upload', () => {
         cy.wait(3000)
         cy.log("load duplicate approved records again")
         cy.get('input[type=file]').selectFile({contents:'cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
-        cy.wait(1000)
+        cy.wait(10000)
         cy.log("continute to digital gisnature")
         cy.get('.ant-space-item').eq(0).click()
-        cy.wait(10000)
+        cy.wait(3000)
         cy.get('.ant-btn-primary').eq(1).click();
-        
+
+
         cy.log("click on digital signature button")
         cy.get('.ant-space-item').eq(1).click()
 
@@ -121,6 +123,53 @@ describe('Manual data upload', () => {
         cy.get('.ant-select-item-option-content').eq(2).click();
         cy.get('.signature-modal > .ant-btn-primary > span').click();
         cy.wait(6000)
+
+
+        cy.log("cancel digital signature with internalserver error")
+        
+        cy.reload()
+        cy.wait(3000)
+        cy.intercept(
+          {
+            method: 'POST', 
+            url: '/services/v1/cancel-file-upload', 
+          },
+          "Internal Server Error"
+        ).as('cancel file-upload')
+        cy.log("cancel digital signature")
+        cy.reload()
+        cy.wait(3000)
+        cy.get('.ant-btn-primary > :nth-child(1)').click();
+        cy.wait(3000)
+        cy.log("load duplicate approved records again")
+        cy.get('input[type=file]').selectFile({contents:'cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
+        cy.wait(10000)
+        cy.log("continute to digital gisnature")
+        cy.get('.ant-space-item').eq(0).click()
+        cy.wait(3000)
+        cy.get('.ant-btn-primary').eq(1).click();
+
+
+        cy.log("click on digital signature button")
+        cy.get('.ant-space-item').eq(1).click()
+
+        cy.log("close signature modal")
+        cy.get('.ant-modal-close').click()
+
+        cy.log("click on digital signature button")
+        cy.get('.ant-space-item').eq(1).click()
+
+
+        cy.log("selecting cancel reason")
+        cy.get('.ant-select-selection-item').click();
+        cy.get('.ant-select-item-option-content').eq(0).click();
+        cy.get('.ant-select-selection-item').click();
+        cy.get('.ant-select-item-option-content').eq(1).click();
+        cy.get('.ant-select-selection-item').click();
+        cy.get('.ant-select-item-option-content').eq(2).click();
+        cy.get('.signature-modal > .ant-btn-primary > span').click();
+        cy.wait(6000)
+
 
 
         cy.log("cancel button for lear data")
@@ -167,6 +216,107 @@ describe('Manual data upload', () => {
         cy.log("removing upload file")
         cy.log("removing upload file")
         cy.get('button[title="Remove file"]').click()
- 
+
+
+        // Moking API response
+        cy.log("approved data api response 206 mock")
+        cy.reload()
+        cy.wait(2000)
+        cy.get('.ant-btn-primary > :nth-child(1)').click()
+        cy.wait(2000)
+        cy.intercept(
+          {
+            method: 'POST', 
+            url: '/services/v1/approve-data', 
+          },
+          {data:{
+                  statuscode:206,
+                  message:"test cases"
+                  }
+                }
+        ).as('file-upload')
+
+        cy.get('input[type=file]').selectFile({contents:'cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
+        cy.wait(3000)
+        cy.log("continute to digital gisnature")
+        cy.get('.ant-space-item').eq(0).click()
+        cy.wait(2000)
+        cy.reload()
+        cy.wait(2000)
+        cy.get('.ant-btn-primary > :nth-child(1)').click();
+        
+        cy.log("approved data api response 400 mock")
+        cy.wait(2000)
+        cy.intercept(
+          {
+            method: 'POST', 
+            url: '/services/v1/approve-data', 
+          },
+          {data:{
+                  statuscode:400,
+                  message:"test cases"
+                  }
+                }
+        ).as('file-upload')
+        
+        cy.get('input[type=file]').selectFile({contents:'cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
+        cy.wait(3000)
+        cy.log("continute to digital gisnature")
+        cy.get('.ant-space-item').eq(0).click()
+        cy.wait(2000)
+        cy.reload()
+        cy.wait(2000)
+        cy.get('.ant-btn-primary > :nth-child(1)').click();
+
+
+        cy.log("approved data api response internal mock")
+        cy.wait(2000)
+        cy.intercept(
+          {
+            method: 'POST', 
+            url: '/services/v1/approve-data', 
+          },
+          "Internal Server Error"
+        ).as('file-upload')
+        
+        cy.get('input[type=file]').selectFile({contents:'cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
+        cy.wait(3000)
+        cy.log("continute to digital gisnature")
+        cy.get('.ant-space-item').eq(0).click()
+        cy.wait(2000)
+        cy.reload()
+        cy.wait(2000)
+        cy.get('.ant-btn-primary > :nth-child(1)').click();
+
+
+
+        cy.log("file upload response 401")
+        cy.wait(2000)
+        cy.intercept(
+          {
+            method: 'POST', 
+            url: '/services/v1/upload-file', 
+          },
+            {data:{
+              statuscode:401,
+              message:"test cases"
+              }
+            }
+        ).as('file-upload')
+        cy.get('input[type=file]').selectFile({contents:'300_cypress_status.xlsx'},{ force: true })
+
+
+        cy.log("file upload internal server")
+        cy.wait(2000)
+        cy.intercept(
+          {
+            method: 'POST', 
+            url: '/services/v1/upload-file', 
+          },
+            "Internal Server Error"
+        ).as('file-upload')
+        cy.get('input[type=file]').selectFile({contents:'300_cypress_status.xlsx'},{ force: true })
+
+        
     });
 });
