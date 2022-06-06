@@ -1,4 +1,3 @@
-import { eq } from "cypress/types/lodash";
 
 Cypress.on('uncaught:exception', (err, runnable) => {
 	return false;
@@ -112,6 +111,7 @@ describe('Dashboard', () => {
 		cy.get('.btns > :nth-child(2) > span').click();
 		/* ==== End Cypress Studio ==== */
 		/* ==== Generated with Cypress Studio ==== */
+		//loaded chart with date filters
 		cy.get('[style="margin-left: 20px; margin-right: 20px;"] > .anticon > svg').click();
 		cy.get(':nth-child(3) > .ant-picker > .ant-picker-input > input').click();
 		cy.get('.ant-picker-super-prev-icon').click();
@@ -126,13 +126,32 @@ describe('Dashboard', () => {
 		/* ==== End Cypress Studio ==== */
 
 		/* ==== Generated with Cypress Studio ==== */
-		// cy.get(':nth-child(1) > .ant-picker-input > input').click();
-		// cy.get(':nth-child(1) > .ant-picker-cell-start > .ant-picker-cell-inner').click();
-		// cy.get(':nth-child(2) > .ant-picker-input > input').click();
-		// cy.wait(6000);
-		// cy.get('.ant-picker-cell-today > .ant-picker-cell-inner').eq(1).click({ force: true });
-		// cy.get('.global-filters > :nth-child(2) > .ant-btn > span').click();
-		// cy.get('.btns > [ant-click-animating-without-extra-node="false"] > span').click();
+		//creating a new chart with date filters
+		cy.get('.before-new-card > .anticon > svg').click();
+		cy.get('.ant-input').click();
+		cy.wait(6000);
+		cy.get('[data-row-key="0"] > :nth-child(1)').click();
+		cy.get(':nth-child(3) > .ant-picker > .ant-picker-input > input').click();
+		cy.get('.ant-picker-super-prev-icon').click();
+		cy.get('.ant-picker-super-prev-icon').click();
+		cy.get(':nth-child(1) > .ant-picker-cell-start > .ant-picker-cell-inner').click();
+		cy.get(':nth-child(4) > .ant-picker > .ant-picker-input > input').click();
+		cy.wait(6000);
+		cy.get('.ant-picker-cell-today > .ant-picker-cell-inner').click();
+		cy.get('.ant-col > .ant-btn > span').click();
+		cy.get('.inner-chart-filters > div > [style="margin-left: 20px; margin-right: 20px;"] > .anticon > svg').click();
+		/* ==== End Cypress Studio ==== */
+
+
+		/* ==== Generated with Cypress Studio ==== */
+		//global date filters
+		cy.get(':nth-child(1) > .ant-picker-input > input').click();
+		cy.get(':nth-child(1) > .ant-picker-cell-start > .ant-picker-cell-inner').click();
+		cy.get(':nth-child(2) > .ant-picker-input > input').click();
+		cy.wait(6000);
+		cy.get('.ant-picker-cell-today > .ant-picker-cell-inner').eq(1).click({ force: true });
+		cy.get('.global-filters > :nth-child(2) > .ant-btn > span').click();
+		cy.get('.btns > [ant-click-animating-without-extra-node="false"] > span').click();
 		/* ==== End Cypress Studio ==== */
 
 	});
