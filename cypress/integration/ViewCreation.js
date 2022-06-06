@@ -25,23 +25,66 @@ describe("Render View Creation Page", () => {
 					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
 			})
 		);
+
 	})
 
-	it('Renders View Creation Correctly', () => {
-		cy.visit('http://localhost:3030/#/dashboard/workspace')
-		cy.wait(5000)
-		cy.get('#view_creation > .ant-menu-title-content > a').click();
-		cy.wait(1000)
+
+
+	it('Load View Landing Page Correctly', () => {
+		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' })
+		cy.visit('http://localhost:3030/#/dashboard/view_creation')
+
+		cy.log('Load Landing Page')
+		cy.url().should('eq', 'http://localhost:3030/#/dashboard/view_creation')
+	})
+
+
+	it('Load Screen Header', () => {
+		const date = new Date();
+		const month = date.toLocaleString('default', { month: 'long' });
+		const latestDate = date.getDate();
+		const year = date.getFullYear();
+		const currentDate = month + ' ' + latestDate + ',' + ' ' + year;
+
+		cy.log('Verify Screen Header Component')
+		cy.get('.screen_header_head')
+
+		cy.log('Verify User Name')
+		cy.get('.screen_header_username').should("have.text", "Howdy Fahad!")
+
+		cy.log('Verify Header Text')
+		cy.get('.screen_header_text').should("have.text", "Let’s get configuring some Views!")
+
+		cy.log('Verify Current Date')
+		cy.get('.screen_header_resultdate').should("have.text", currentDate)
+	})
+
+	it('Load Landing Page Table Component', () => {
+		cy.log('Load Search Bar')
+		cy.log('Search View Id In Search Component')
+		cy.get("input[placeholder='Search by view ID or name']").type("V288")
+		cy.get(".ant-input-search-button").click()
+
+		cy.log('Verify Search Result In Table')
+		cy.get('.ant-table-row > :nth-child(1) > div').should("have.text", "V288-1")
+		cy.get('.ant-table-row > :nth-child(2) > div').should("have.text", "demo")
+		cy.get('.ant-table-row > :nth-child(3) > div').should("have.text", "APRD")
+		cy.get('.ant-table-row > :nth-child(4) > div').should("have.text", "K krishnapriyam@mareana.com")
+	})
+
+	it('Recently Created View', () => {
+		cy.log('Recent View Verify')
+		cy.get('.tile').should('have.length', 1)
 	})
 
 	it('Load View Landing Page Correctly', () => {
-		cy.wait(4000)
 		cy.log('Create a New View Creation')
 		cy.get('.create-new > .anticon > svg').click({ force: true });
 		cy.wait(5000)
 	})
 
 	it('Load View Creation Page Correctly', () => {
+
 		cy.log('Select a Molecule')
 		cy.get('#rc_select_0').click();
 		cy.get('div[title="BELATACEPT"]').click({ force: true })
@@ -57,12 +100,17 @@ describe("Render View Creation Page", () => {
 		cy.get(':nth-child(5) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2)').click();
 		cy.wait(4000)
 
-		cy.get('.add-var_block > p').click();
+		cy.get('.add-var_block > div').click();
 		cy.wait(4000)
+
 		cy.get('[data-row-key="140L-1176024-ASSAY 1DECPT"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
-		cy.get('.ant-table-row-selected > [style="position: sticky; left: 181.979px;"] > .ant-radio-wrapper > .ant-radio > .ant-radio-input').check();
+		cy.get('[data-row-key="140L-1176024-ASSAY 1DECPT"] > [style="position: sticky; left: 182px;"] > .ant-radio-wrapper > .ant-radio > .ant-radio-inner').check();
+		cy.wait(2000)
+
 		cy.get('#rc_select_3').click();
 		cy.get(':nth-child(5) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
+		cy.wait(4000)
+
 		cy.get('.add-var_block > .ant-btn > span').click();
 		cy.get('.input_field > .ant-input').clear();
 		cy.get('.input_field > .ant-input').type('var1');
