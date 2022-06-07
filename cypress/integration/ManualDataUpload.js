@@ -77,7 +77,7 @@ describe('Manual data upload', () => {
         cy.get(':nth-child(2) > .ant-input').clear();
         cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
         cy.get('.signature-modal > .ant-btn-primary').click();
-        cy.wait(2000)
+        cy.wait(3000)
         
         cy.log("selecting reason")
         cy.get('.ant-select-selection-item').click();
@@ -88,8 +88,211 @@ describe('Manual data upload', () => {
         cy.get('.ant-select-item-option-content').eq(2).click();
         cy.get('.signature-modal > .ant-btn-primary > span').click();
         cy.wait(6000)
-        
 
+      //start 
+      cy.log("replicating final approved data api")
+        cy.reload()
+        cy.wait(3000)
+        cy.wait(3000)
+        cy.log("load duplicate approved records again")
+        cy.get('.ant-btn-primary > :nth-child(1)').click();
+        cy.get('input[type=file]').selectFile({contents:'cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
+        cy.wait(1000)
+
+
+        cy.log("continute to digital gisnature")
+        cy.get('.ant-space-item').eq(0).click()
+        cy.wait(10000)
+        cy.get('.ant-btn-primary').eq(1).click();
+        
+        cy.wait(10000)
+        cy.log("click on digital signature button")
+        cy.get('.ant-space-item').eq(0).click()
+       
+        cy.log("close signature modal")
+        cy.get('.ant-modal-close').click()
+
+        cy.log("click on digital signature button")
+        cy.wait(2000)
+        cy.get('.ant-space-item').eq(0).click()
+
+        
+        cy.log("digital signature modal input")
+        cy.get(':nth-child(1) > .ant-input').clear();
+        cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
+        cy.get(':nth-child(2) > .ant-input').clear();
+        cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
+        cy.get('.signature-modal > .ant-btn-primary').click();
+        cy.wait(2000)
+        
+        cy.log("selecting reason")
+        cy.get('.ant-select-selection-item').click();
+        cy.get('.ant-select-item-option-content').eq(0).click();
+        cy.get('.signature-modal > .ant-btn-primary > span').click();
+        cy.wait(6000)
+        
+        cy.get("#nextButton").click()
+        cy.log("click on digital signature button")
+        cy.wait(2000)
+        cy.get('.ant-space-item').eq(0).click()
+        cy.log("digital signature modal input")
+        cy.get(':nth-child(1) > .ant-input').clear();
+        cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
+        cy.get(':nth-child(2) > .ant-input').clear();
+        cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
+        cy.get('.signature-modal > .ant-btn-primary').click();
+        cy.wait(3000)
+        
+        cy.log("selecting reason")
+        cy.get('.ant-select-selection-item').click();
+        cy.get('.ant-select-item-option-content').eq(0).click();
+        cy.get('.signature-modal > .ant-btn-primary > span').click();
+        cy.wait(6000)
+
+        // end
+
+
+        //start services/v1/final-upload
+      cy.log("replicating final approved data api")
+      cy.reload()
+      cy.wait(3000)
+      cy.wait(3000)
+      cy.intercept(
+        {
+          method: 'POST', 
+          url: 'services/v1/final-upload', 
+        },
+        "Internal Server Error"
+      ).as('cancel file-upload')
+      cy.log("load duplicate approved records again")
+      cy.get('.ant-btn-primary > :nth-child(1)').click();
+      cy.get('input[type=file]').selectFile({contents:'cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
+      cy.wait(1000)
+
+
+      cy.log("continute to digital gisnature")
+      cy.get('.ant-space-item').eq(0).click()
+      cy.wait(10000)
+      cy.get('.ant-btn-primary').eq(1).click();
+      
+      cy.wait(10000)
+      cy.log("click on digital signature button")
+      cy.get('.ant-space-item').eq(0).click()
+     
+      cy.log("close signature modal")
+      cy.get('.ant-modal-close').click()
+
+      cy.log("click on digital signature button")
+      cy.wait(2000)
+      cy.get('.ant-space-item').eq(0).click()
+
+      
+      cy.log("digital signature modal input")
+      cy.get(':nth-child(1) > .ant-input').clear();
+      cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
+      cy.get(':nth-child(2) > .ant-input').clear();
+      cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
+      cy.get('.signature-modal > .ant-btn-primary').click();
+      cy.wait(2000)
+      
+      cy.log("selecting reason")
+      cy.get('.ant-select-selection-item').click();
+      cy.get('.ant-select-item-option-content').eq(0).click();
+      cy.get('.signature-modal > .ant-btn-primary > span').click();
+      cy.wait(10000)
+      
+      cy.get("#nextButton").click()
+      cy.log("click on digital signature button")
+      cy.wait(2000)
+      cy.get('.ant-space-item').eq(0).click()
+      cy.log("digital signature modal input")
+      cy.get(':nth-child(1) > .ant-input').clear();
+      cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
+      cy.get(':nth-child(2) > .ant-input').clear();
+      cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
+      cy.get('.signature-modal > .ant-btn-primary').click();
+      cy.wait(2000)
+      
+      cy.log("selecting reason")
+      cy.get('.ant-select-selection-item').click();
+      cy.get('.ant-select-item-option-content').eq(0).click();
+      cy.get('.signature-modal > .ant-btn-primary > span').click();
+      cy.wait(6000)
+
+      // end
+
+
+      //start services/v1/final-upload
+      cy.log("replicating final approved data api")
+      cy.reload()
+      cy.wait(3000)
+      cy.wait(3000)
+      cy.intercept(
+        {
+          method: 'POST', 
+          url: 'services/v1/final-upload', 
+        },
+        {
+          statuscode :800
+        }
+      ).as('cancel file-upload')
+      cy.log("load duplicate approved records again")
+      cy.get('.ant-btn-primary > :nth-child(1)').click();
+      cy.get('input[type=file]').selectFile({contents:'cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
+      cy.wait(1000)
+
+
+      cy.log("continute to digital gisnature")
+      cy.get('.ant-space-item').eq(0).click()
+      cy.wait(10000)
+      cy.get('.ant-btn-primary').eq(1).click();
+      
+      cy.wait(10000)
+      cy.log("click on digital signature button")
+      cy.get('.ant-space-item').eq(0).click()
+     
+      cy.log("close signature modal")
+      cy.get('.ant-modal-close').click()
+
+      cy.log("click on digital signature button")
+      cy.wait(2000)
+      cy.get('.ant-space-item').eq(0).click()
+
+      
+      cy.log("digital signature modal input")
+      cy.get(':nth-child(1) > .ant-input').clear();
+      cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
+      cy.get(':nth-child(2) > .ant-input').clear();
+      cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
+      cy.get('.signature-modal > .ant-btn-primary').click();
+      cy.wait(3000)
+      
+      cy.log("selecting reason")
+      cy.get('.ant-select-selection-item').click();
+      cy.get('.ant-select-item-option-content').eq(0).click();
+      cy.get('.signature-modal > .ant-btn-primary > span').click();
+      cy.wait(10000)
+      
+      cy.get("#nextButton").click()
+      cy.log("click on digital signature button")
+      cy.wait(2000)
+      cy.get('.ant-space-item').eq(0).click()
+      cy.log("digital signature modal input")
+      cy.get(':nth-child(1) > .ant-input').clear();
+      cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
+      cy.get(':nth-child(2) > .ant-input').clear();
+      cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
+      cy.get('.signature-modal > .ant-btn-primary').click();
+      cy.wait(2000)
+      
+      cy.log("selecting reason")
+      cy.get('.ant-select-selection-item').click();
+      cy.get('.ant-select-item-option-content').eq(0).click();
+      cy.get('.signature-modal > .ant-btn-primary > span').click();
+      cy.wait(6000)
+
+      // end
+        
         cy.log("cancel digital signature")
         cy.reload()
         cy.wait(3000)

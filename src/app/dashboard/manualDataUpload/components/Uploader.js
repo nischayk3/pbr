@@ -1398,6 +1398,7 @@ class Uploader extends Component {
 										margin: '0 8px',
 										float: 'left',
 									}}
+									id="previousButton"
 									type='primary'
 									onClick={() => this.prevStep()}>
 									<ArrowLeftOutlined /> Previous
@@ -1412,6 +1413,7 @@ class Uploader extends Component {
 										float: 'right',
 									}}
 									type='primary'
+									id="nextButton"
 									onClick={e => this.nextStep(e, this.state.currentStep)}>
 									Next <ArrowRightOutlined />
 								</Button>
