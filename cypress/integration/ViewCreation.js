@@ -201,6 +201,30 @@ describe("Render View Creation Page", () => {
 
 		cy.log("Modal should open")
 		cy.get('.ant-modal-content').should('be.visible')
+
+		cy.log("Add Variable Name")
+		cy.get('.input_field > .ant-input').clear();
+		cy.get('.input_field > .ant-input').type('var1');
+
+		cy.get('.variable-cancel-button > .ant-btn').click();
+		cy.get('.add-var_block > .ant-btn > span').click()
+
+		cy.get('.input_field > .ant-input').clear();
+		cy.get('.input_field > .ant-input').type('var1');
+
+		cy.log("Create A Variable")
+		cy.get('.variable-name-popup > .ant-btn').click()
+
+		cy.log('Enter variable name to script')
+		cy.get('.w-tc-editor-text').type('var1')
+
+		cy.log('Validate Function');
+		cy.get(':nth-child(2) > .custom-eval-btn').click();
+
+
+
+
+
 	})
 
 	// 	it('Load View Creation Page Correctly', () => {
