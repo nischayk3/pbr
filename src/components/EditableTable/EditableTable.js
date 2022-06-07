@@ -222,6 +222,7 @@ class EditableTable extends Component {
                     onClick={this.onAddRow}
                     icon={<PlusOutlined />}
                     style={{ marginBottom: 16 }}
+                    id="editable-table-button-add-new-user"
                 >
                     Add new user
                 </Button>
@@ -231,6 +232,7 @@ class EditableTable extends Component {
                     style={{ float: 'right' }}
                     className="button-solid__primary"
                     disabled={!this.state.tableDataChanged}
+                    id="editable-table-button-save"
                 >
                     Save
                 </Button>
@@ -238,6 +240,7 @@ class EditableTable extends Component {
                     type="primary"
                     onClick={this.onDeleteRows}
                     className="button--delete"
+                    id="editable-table-button-delete"
                     disabled={!this.state.rowsMarkedForDeletion}
                 >
                     Delete
@@ -263,10 +266,12 @@ class EditableTable extends Component {
                         <Button
                             key="cancel"
                             className={classes['editable__table-cancel']}
+                            id="editable-modal-button-cancel"
                             onClick={this.handleCancel}>Cancel</Button>,
                         <Button
                             key="delete"
                             className="button-solid__primary"
+                            id="editable-modal-button-delete"
                             onClick={this.handleOk}>Delete</Button>
                     ]}
                 >

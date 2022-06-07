@@ -1,0 +1,78 @@
+{
+	"Data": {
+		"config": [
+			{
+				"display_name": "Action",
+				"field_name": "appl_url",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Event Id",
+				"field_name": "event_id",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Application Type",
+				"field_name": "application_type",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Id",
+				"field_name": "Id",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Chart Name",
+				"field_name": "chart_name",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Version",
+				"field_name": "version",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Creator",
+				"field_name": "created_by",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Creation Date",
+				"field_name": "created_on",
+				"id": 1234,
+				"visible": true
+			}
+		],
+		"data": [
+			{
+				"Id": "C279",
+				"appl_url": "/dashboard/chart_personalization",
+				"application_type": "CHART",
+				"chart_name": "NotLoading",
+				"created_by": "krishnapriyam@mareana.com",
+				"created_on": "2022-05-25T10:34:23.537613+00:00",
+				"event_id": 102,
+				"version": 1
+			},
+			{
+				"Id": "C281",
+				"appl_url": "/dashboard/chart_personalization",
+				"application_type": "CHART",
+				"chart_name": "chart",
+				"created_by": "krishnapriyam@mareana.com",
+				"created_on": "2022-05-25T12:55:53.257939+00:00",
+				"event_id": 103,
+				"version": 1
+			}
+		]
+	},
+	"Message": "Sucess",
+	"status-code": 200
+}

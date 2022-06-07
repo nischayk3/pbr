@@ -120,7 +120,7 @@ function FileUpload(props) {
 		if (isLoadView) {
 			let selected_keys = Object.keys(selectedFiles);
 			dispatch(showLoader());
-			if (selected_keys && selected_keys.length > 0) {
+			if (selected_keys.length > 0) {
 				selected_keys.map((i) =>
 					adHocFilesParameterTree({
 						file_id: parseInt(i),

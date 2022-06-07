@@ -125,31 +125,12 @@ class Uploader extends Component {
 				this.setState({
 					username: e.target.value,
 				});
-			} else if (field === 'password') {
+			} 
+			if (field === 'password') {
 				this.setState({
 					password: e.target.value,
 				});
-			} else if (field === 'reason1') {
-				this.setState({
-					signatureReason1: e.target.value,
-				});
-			} else if (field === 'screen2') {
-				this.setState({
-					signatureScreen2: e.target.value,
-				});
-			} else if (field === 'status3') {
-				this.setState({
-					signatureStatus3: e.target.value,
-				});
-			} else if (field === 'reason_cancel') {
-				this.setState({
-					cancelReason: e.target.value,
-				});
-			} else if (field === 'status_cancel') {
-				this.setState({
-					cancelStatus: e.target.value,
-				});
-			}
+			} 
 		}
 	};
 

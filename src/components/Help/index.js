@@ -56,8 +56,8 @@ const Help = () => {
 		<>
 			<Popover className='help-popover' overlayClassName="custom_style" placement="leftTop" content={
 				<>
-					<div className="help_item" ><a onClick={showDrawers}>Help</a></div>
-					<div className="feedback_item" ><a onClick={showDrawers}>Feedback</a></div>
+					<div className="help_item" ><a id="helptext" onClick={showDrawers}>Help</a></div>
+					<div className="feedback_item" ><a id="feedbackText" onClick={showDrawers}>Feedback</a></div>
 				</>
 			} >
 				< QuestionCircleFilled className="hepIcon" />
@@ -69,9 +69,10 @@ const Help = () => {
 				width={500}
 				onClose={onClose}
 				visible={visible}
+				className="faq_drawer"
 				extra={
 					<Space>
-						<a href='/#/dashboard/faq' target="_blank">View all FAQs</a>
+						<a id="view_all_faq" href='/#/dashboard/faq' target="_blank">View all FAQs</a>
 					</Space>
 				}
 			>

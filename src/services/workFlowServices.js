@@ -2,18 +2,18 @@ import { BMS_APP_PYTHON_SERVICE } from '../constants/apiBaseUrl';
 import Service from './AjaxService';
 
 let login_response = JSON.parse(localStorage.getItem('login_details'));
+console.log("login_response", login_response)
 const request_headers = {
 	'content-type': 'application/json',
-	'x-access-token': login_response && login_response.token ? login_response.token : '',
+	'x-access-token': login_response !== null ? login_response.token : '',
 	'resource-name': 'WORKITEMS',
 };
 
 //get count data
 export const getCountData = _queryParam => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
 	return Service.get(BMS_APP_PYTHON_SERVICE + '/workflow-count', _queryParam, {
 		'content-type': 'application/json',
-		'x-access-token': login_response && login_response.token ? login_response.token : '',
+		'x-access-token': login_response.token ? login_response.token : '',
 		'resource-name': 'WORKITEMS',
 		username: localStorage.getItem('user')
 	}).then(
@@ -43,6 +43,7 @@ export const getTableData = _queryParam => {
 
 //get unapproved table data
 export const getUnapprovedData = _queryParam => {
+
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + '/unapproved-param',
 		_queryParam,

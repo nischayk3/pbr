@@ -16,7 +16,7 @@ h6.dynamicSections-noteHeadline {
 }
 
 .dynamicSections-ul {
-	font-family: Roboto;
+	font-family: var(--primary-font-family);
 	font-style: normal;
 	font-weight: normal;
 	font-size: 15px;
@@ -409,7 +409,7 @@ tbody.dynamicSections-tbody {
 	color: #8C8C8C;
 }
 
-.create-new {
+.create-new-report {
 	height: 137px;
 	width: 175px;
 	border-radius: 4px;

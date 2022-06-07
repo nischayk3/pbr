@@ -30,7 +30,7 @@ import Banner from '../../../../assets/images/Popup-Side.svg';
 import checkIcon from '../../../../assets/images/checkbox.svg';
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
 
-export default function Landing(props) {
+export default function ReportLanding(props) {
 	const [searched, setSearched] = useState(false);
 	const [newsearched, setNewSearched] = useState(false);
 	const [reportList, setReportList] = useState([]);
@@ -114,18 +114,18 @@ export default function Landing(props) {
 	];
 
 	useEffect(() => {
-		updateDate();
+		// updateDate();
 		getReportList();
 	}, []);
 
-	const updateDate = () => {
-		const date = new Date();
-		const month = date.toLocaleString('default', { month: 'long' });
-		const latestDate = date.getDate();
-		const year = date.getFullYear();
-		const resultDate = month + ' ' + latestDate + ',' + ' ' + year;
-		setResultDate(resultDate);
-	};
+	// const updateDate = () => {
+	// 	const date = new Date();
+	// 	const month = date.toLocaleString('default', { month: 'long' });
+	// 	const latestDate = date.getDate();
+	// 	const year = date.getFullYear();
+	// 	const resultDate = month + ' ' + latestDate + ',' + ' ' + year;
+	// 	setResultDate(resultDate);
+	// };
 
 	const setReportId = value => {
 		setSelectedReportId(value);
