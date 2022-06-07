@@ -223,7 +223,7 @@ const ViewChart = (props, ref) => {
 	};
 
 	const getSiteIdHandler = (id = props.viewData.viewId) => {
-		console.log(id);
+		
 		let reqSite = { view_id: id };
 		return getSiteId(reqSite).then(res => {
 			if (res.Status === 200) {
@@ -252,7 +252,7 @@ const ViewChart = (props, ref) => {
 	};
 
 	const fetchDataFromUrl = async () => {
-		console.log('idd', props.dashboardId);
+		
 		if (props.dashboardId) {
 			let req = {
 				dashboardId: props.dashboardId,
@@ -261,7 +261,7 @@ const ViewChart = (props, ref) => {
 			try {
 				dispatch(showLoader());
 				const dashboardRes = await getDashboard(req);
-				console.log(dashboardRes.data[0]);
+				
 				dashboardRes.data[0].version = props.dashboardVersion;
 				//setDashboardInfo(dashboardRes.data);
 				//setTempPanels(dash_info.panels);
@@ -360,14 +360,14 @@ const ViewChart = (props, ref) => {
 	};
 
 	const onChangeInnerCheckbox = (checked, index) => {
-		console.log('checked,index', checked, index);
+		
 		const isChecked = checked ? 1 : 0;
 		let arr = [...tempPanels];
 		arr[index].data_filter.unapproved_data = isChecked;
 		setTempPanels(arr);
 	};
 	const onChangeTempCheckbox = checked => {
-		console.log('checked,index', checked);
+		
 		const isChecked = checked ? 1 : 0;
 		let obj = { ...tempCard };
 		obj.data_filter.unapproved_data = isChecked;
@@ -380,8 +380,7 @@ const ViewChart = (props, ref) => {
 		showModal();
 	};
 	const onChangeStart = (date, dateString) => {
-		console.log('setEndTime', dateString);
-		console.log('forment', moment(date).toISOString());
+		
 		let obj = { ...dashboardInfo };
 		if (obj.data_filter.date_range == '') {
 			obj.data_filter.date_range = `${date ? moment(date).toISOString() : ''}/`;
@@ -393,8 +392,7 @@ const ViewChart = (props, ref) => {
 		setDashboardInfo(obj);
 	};
 	const onChangeEnd = (date, dateString) => {
-		console.log('setEndTime', dateString);
-		console.log('forment', moment(date).toISOString());
+		
 		let obj = { ...dashboardInfo };
 		if (obj.data_filter.date_range == '') {
 			obj.data_filter.date_range = `/${date ? moment(date).toISOString() : ''}`;
@@ -407,8 +405,7 @@ const ViewChart = (props, ref) => {
 	};
 
 	const onInnerStart = (date, dateString, index) => {
-		console.log('setStartTime', date, dateString);
-		console.log('forment', moment(date).toISOString());
+		
 		let arr = [...tempPanels];
 		if (arr[index].data_filter.date_range == '') {
 			arr[index].data_filter.date_range = `${date ? moment(date).toISOString() : ''
@@ -421,8 +418,7 @@ const ViewChart = (props, ref) => {
 		setTempPanels(arr);
 	};
 	const onInnerEnd = (date, dateString, index) => {
-		console.log('setStartTime', date, dateString);
-		console.log('forment', moment(date).toISOString());
+		
 		let arr = [...tempPanels];
 		if (arr[index].data_filter.date_range == '') {
 			arr[index].data_filter.date_range = `/${date ? moment(date).toISOString() : ''
@@ -434,8 +430,7 @@ const ViewChart = (props, ref) => {
 		setTempPanels(arr);
 	};
 	const onInnerTempStart = (date, dateString) => {
-		console.log('setStartTime', date, dateString);
-		console.log('forment', moment(date).toISOString());
+		
 		let obj = { ...tempCard };
 		if (obj.data_filter.date_range == '') {
 			obj.data_filter.date_range = `${date ? moment(date).toISOString() : ''}/`;
@@ -447,8 +442,7 @@ const ViewChart = (props, ref) => {
 		setTempCard(obj);
 	};
 	const onInnerTempEnd = (date, dateString) => {
-		console.log('setStartTime', date, dateString);
-		console.log('forment', moment(date).toISOString());
+		
 		let obj = { ...tempCard };
 		if (obj.data_filter.date_range == '') {
 			obj.data_filter.date_range = `/${date ? moment(date).toISOString() : ''}`;
@@ -460,10 +454,6 @@ const ViewChart = (props, ref) => {
 		setTempCard(obj);
 	};
 	const onClickTimeRange = () => {
-		console.log(
-			'`${startTime} / ${endTime}`',
-			`${startTimeIso} / ${endTimeIso}`
-		);
 		setSelectedDateRange(`${startTimeIso}/${endTimeIso}`);
 		setVisible(false);
 	};
@@ -482,7 +472,7 @@ const ViewChart = (props, ref) => {
 	};
 
 	const handleGlobalDropdownChange = (value, text) => {
-		console.log(value);
+		
 		let obj = JSON.parse(JSON.stringify(dashboardInfo));
 		switch (text) {
 			case 'Site':
@@ -519,7 +509,7 @@ const ViewChart = (props, ref) => {
 	};
 
 	const onTypeChartsChange = (e, index) => {
-		console.log('source value', e);
+		
 		let arr = [...tempPanels];
 		tempPanels[index].source_type = e;
 		setTempPanels(arr);
@@ -634,7 +624,7 @@ const ViewChart = (props, ref) => {
 		arr[index].chart_name = data.chartName;
 		arr[index].view_id = data.viewId;
 		let res = await getSiteIdHandler(data.viewId);
-		console.log(res);
+		
 		arr[index].data_filter.site_list = res;
 		setTempPanels(arr);
 	};
@@ -645,7 +635,7 @@ const ViewChart = (props, ref) => {
 		obj.chart_name = data.chartName;
 		obj.view_id = data.viewId;
 		let res = await getSiteIdHandler(data.viewId);
-		console.log(res);
+		
 		obj.data_filter.site_list = res;
 		setTempCard(obj);
 	};
@@ -734,7 +724,7 @@ const ViewChart = (props, ref) => {
 		let obj = { ...dashboardInfo };
 		obj.data_filter.date_range = `${date.length > 0 ? moment(date[0]).toISOString() : ''
 			}/${date.length > 0 ? moment(date[1]).toISOString() : ''}`;
-		console.log(obj);
+		
 		setDashboardInfo(obj);
 	};
 
@@ -753,7 +743,7 @@ const ViewChart = (props, ref) => {
 	};
 
 	const onPointSelected = data => {
-		console.log(data);
+		
 		if (data && data.points) {
 			let points = data.points.map((item, index) => item.text);
 			let panels = JSON.parse(JSON.stringify(tempPanels));
@@ -778,7 +768,7 @@ const ViewChart = (props, ref) => {
 	};
 
 	const onResetFilters = index => {
-		console.log(index);
+		
 		let arr = [...tempPanels];
 		arr[index].data_filter.date_range = '';
 		arr[index].data_filter.site = '';
@@ -787,8 +777,7 @@ const ViewChart = (props, ref) => {
 		setTempPanels(arr);
 	};
 
-	console.log('temp', tempPanels);
-	console.log('dashInfo', dashboardInfo);
+	
 	const { RangePicker } = DatePicker;
 	return (
 		<div>
@@ -1001,7 +990,7 @@ const ViewChart = (props, ref) => {
 
 				<Row gutter={[16, 24]} className='chart-row'>
 					{tempPanels.map((el, index) => {
-						console.log('indise ', el);
+						
 						return (
 							<Col
 								className='gutter-row'
