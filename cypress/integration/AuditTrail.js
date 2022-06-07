@@ -25,11 +25,11 @@ describe('Audit Trail', () => {
   
   it("should login successfully using Ad", () => {
     
-
-    cy.get("#login-btn",{timeout:2000}).click();
-    cy.get('#audit_trail_report > .ant-menu-title-content > a',{timeout:20000}).click({ force: true,multiple:true});
-    cy.location('href', {timeout: 10000}).should('include', '/audit_trail_report');
-
+    const url = Cypress.config().baseUrl
+    cy.visit(url +  '/#/dashboard/audit_trail_report')
+		cy.log('Load Landing Page')
+		cy.url().should('eq', url + '/#/dashboard/audit_trail_report')
+    
 
     cy.log("selecting daterange")
     cy.get('.ant-picker-input').first().click()
