@@ -19,8 +19,9 @@ describe("Report", () => {
         );
     })
     it('Renders Report Landing Page ', () => {
+        const url = Cypress.config().baseUrl
         cy.log('Opening a report template')
-        cy.visit('http://localhost/#/dashboard/workspace')
+        cy.visit(url + '/#/dashboard/workspace')
         cy.wait(2000)
         // })
         // it('create New report variant', () => {

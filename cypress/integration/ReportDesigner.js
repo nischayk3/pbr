@@ -20,8 +20,9 @@ describe("Report", () => {
   })
 
   it("Report landing page", () => {
+    const url = Cypress.config().baseUrl
     cy.log('Opening a report template')
-    cy.visit('http://localhost/#/dashboard/workspace')
+    cy.visit(url + '/#/dashboard/workspace')
     cy.wait(2000)
     cy.get('#report_designer > .ant-menu-title-content > a').click();
     cy.wait(500)
