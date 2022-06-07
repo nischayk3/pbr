@@ -78,6 +78,7 @@ function ReportDesignerDynamicSections(props) {
     }
 
     const addChart = (chartName, section) => {
+        extract(chartName)
         if (chartName && chartName[0] == '<') {
             chartName = extract(chartName)
         }
@@ -108,7 +109,7 @@ function ReportDesignerDynamicSections(props) {
             else {
 
                 addedCharts[`${section}`].push(chartName)
-                setAddedKeys(addedCharts)
+                setAddedCharts(addedCharts)
             }
             dispatch(hideLoader())
         }
@@ -121,46 +122,46 @@ function ReportDesignerDynamicSections(props) {
 
         dispatch(showLoader())
         section = section - 1
-        if (`${section}` in addedKeys) {
-            if (addedKeys[`${section}`]) {
-                addedKeys[`${section}`] = false
-                setAddedKeys(addedKeys)
-                dispatch(hideLoader())
-            }
-            else {
-                addedKeys[`${section}`] = true
-                setAddedKeys(addedKeys)
-                dispatch(hideLoader())
-            }
-        }
-        else {
-            addedKeys[`${section}`] = true
-            setAddedKeys(addedKeys)
-            dispatch(hideLoader())
-        }
+        // if (`${section}` in addedKeys) {
+        //     if (addedKeys[`${section}`]) {
+        //         addedKeys[`${section}`] = false
+        //         setAddedKeys(addedKeys)
+        //         dispatch(hideLoader())
+        //     }
+        //     else {
+        //         addedKeys[`${section}`] = true
+        //         setAddedKeys(addedKeys)
+        //         dispatch(hideLoader())
+        //     }
+        // }
+        // else {
+        addedKeys[`${section}`] = true
+        setAddedKeys(addedKeys)
+        dispatch(hideLoader())
+        // }
         props.setSectionAddKey(addedKeys)
     }
 
     const trackCharts = (section) => {
         dispatch(showLoader())
 
-        if (`${section}` in addedKeys) {
-            if (showChart[`${section}`]) {
-                showChart[`${section}`] = false
-                setShowChart(showChart)
-                dispatch(hideLoader())
-            }
-            else {
-                showChart[`${section}`] = true
-                setShowChart(showChart)
-                dispatch(hideLoader())
-            }
-        }
-        else {
-            showChart[`${section}`] = true
-            setShowChart(showChart)
-            dispatch(hideLoader())
-        }
+        // if (`${section}` in addedKeys) {
+        //     if (showChart[`${section}`]) {
+        //         showChart[`${section}`] = false
+        //         setShowChart(showChart)
+        //         dispatch(hideLoader())
+        //     }
+        //     else {
+        //         showChart[`${section}`] = true
+        //         setShowChart(showChart)
+        //         dispatch(hideLoader())
+        //     }
+        // }
+        // else {
+        showChart[`${section}`] = true
+        setShowChart(showChart)
+        dispatch(hideLoader())
+        // }
         props.setSectionAddCharts(showChart)
     }
 
@@ -169,6 +170,7 @@ function ReportDesignerDynamicSections(props) {
         setShowChart(props.sectionAddedCharts)
         setAddedKeys(props.sectionKeys)
     }
+    console.log(addedKeys)
 
     return (
         <div className="reportDesigner-dynamicSections bg-white">
