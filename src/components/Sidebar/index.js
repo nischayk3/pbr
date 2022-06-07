@@ -21,9 +21,7 @@ import {
   DiffOutlined,
   FundProjectionScreenOutlined,
   UploadOutlined,
-  // ControlOutlined,
   BlockOutlined,
-  // QuestionCircleOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
@@ -196,20 +194,6 @@ const Sidebar = () => {
         >
           <Link to="/dashboard/user-roles-and-access">Roles and access</Link>
         </Menu.Item>
-        {/* <Menu.Item
-          key="settings"
-          icon={<ControlOutlined className="menu-icons" />}
-          id="settings"
-        >
-          <Link to="/dashboard/audit_trail_report">Settings</Link>
-        </Menu.Item>
-        <Menu.Item
-          key="help"
-          icon={<QuestionCircleOutlined className="menu-icons" />}
-          id="help"
-        >
-          <Link to="/dashboard/audit_trail_report">Help</Link>
-        </Menu.Item> */}
       </Menu>
     </Sider>
   );
