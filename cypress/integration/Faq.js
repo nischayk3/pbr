@@ -25,9 +25,11 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
         
     it("should login successfully using Ad", () => {
-        cy.get("#login-btn",{timeout:2000}).click();
-        cy.get('#genealogy > .ant-menu-title-content > a',{timeout:20000}).click({ force: true,multiple:true});
-        cy.location('href', {timeout: 10000}).should('include', '/genealogy');
+
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/genealogy')
+        cy.log('Load Landing Page')
+        cy.url().should('eq', url + '/#/dashboard/genealogy')
         cy.wait(1000)
 
         cy.log("opening faq drawer")

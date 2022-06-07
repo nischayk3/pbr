@@ -24,9 +24,10 @@ describe('Manual data upload', () => {
         );
 
 
-        cy.get("#login-btn",{timeout:2000}).click();
-        cy.get('#manual_data_upload > .ant-menu-title-content > a',{timeout:20000}).click({ force: true,multiple:true});
-        cy.location('href', {timeout: 10000}).should('include', '/manual_data_upload');
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/manual_data_upload')
+		    cy.log('Load Landing Page')
+		    cy.url().should('eq', url + '/#/dashboard/manual_data_upload')
         cy.get('.ant-btn > a').click();
         cy.get('.ant-btn-primary > :nth-child(1)').click();
         
@@ -162,7 +163,7 @@ describe('Manual data upload', () => {
           method: 'POST', 
           url: 'services/v1/final-upload', 
         },
-        "Internal Server Error"
+          "Internal Server Error"
       ).as('cancel file-upload')
       cy.log("load duplicate approved records again")
       cy.get('.ant-btn-primary > :nth-child(1)').click();
@@ -233,7 +234,9 @@ describe('Manual data upload', () => {
           url: 'services/v1/final-upload', 
         },
         {
-          statuscode :800
+          data:{
+            statuscode:400
+          }
         }
       ).as('cancel file-upload')
       cy.log("load duplicate approved records again")
@@ -420,6 +423,49 @@ describe('Manual data upload', () => {
         cy.log("removing upload file")
         cy.get('button[title="Remove file"]').click()
 
+        
+      
+      //start authenticate
+      cy.log("replicating final approved data api")
+      cy.reload()
+      cy.wait(3000)
+      cy.wait(3000)
+      cy.intercept(
+        {
+          method: 'GET', 
+          url: '/auth/login-pass', 
+        },
+          {Status:300}
+      ).as('cancel file-upload')
+      cy.log("load duplicate approved records again")
+      cy.get('.ant-btn-primary > :nth-child(1)').click();
+      cy.get('input[type=file]').selectFile({contents:'cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
+      cy.wait(1000)
+
+      cy.log("continute to digital gisnature")
+      cy.get('.ant-space-item').eq(0).click()
+      cy.wait(10000)
+      cy.get('.ant-btn-primary').eq(1).click();
+      
+      cy.wait(10000)
+      cy.log("click on digital signature button")
+      cy.get('.ant-space-item').eq(0).click()
+     
+      cy.log("close signature modal")
+      cy.get('.ant-modal-close').click()
+
+      cy.log("click on digital signature button")
+      cy.wait(2000)
+      cy.get('.ant-space-item').eq(0).click()
+
+      
+      cy.log("digital signature modal input")
+      cy.get(':nth-child(1) > .ant-input').clear();
+      cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
+      cy.get(':nth-child(2) > .ant-input').clear();
+      cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
+      cy.get('.signature-modal > .ant-btn-primary').click();
+      cy.wait(2000)
 
         // Moking API response
         cy.log("approved data api response 206 mock")
@@ -519,6 +565,9 @@ describe('Manual data upload', () => {
             "Internal Server Error"
         ).as('file-upload')
         cy.get('input[type=file]').selectFile({contents:'300_cypress_status.xlsx'},{ force: true })
+
+
+
 
         
     });
