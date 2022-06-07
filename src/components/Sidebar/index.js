@@ -19,6 +19,8 @@ import {
   CodeOutlined,
   FileProtectOutlined,
   DiffOutlined,
+  FundProjectionScreenOutlined,
+  UploadOutlined,
   // ControlOutlined,
   BlockOutlined,
   // QuestionCircleOutlined,
@@ -39,6 +41,12 @@ const cpvMenu = [
     key: "chart_personalization",
     icon: <BarChartOutlined className="menu-icons" />,
     title: "Chart Personalization",
+    linkTo: "/dashboard/dashboard",
+  },
+  {
+    key: "chart_configuration",
+    icon: <FundProjectionScreenOutlined className="menu-icons" />,
+    title: "Chart Configuration",
     linkTo: "/dashboard/chart_personalization",
   },
   {
@@ -70,11 +78,11 @@ const Sidebar = () => {
     >
       <Menu theme="dark" mode="inline">
         <Menu.Item
-          key="dashboard"
+          key="workspace"
           icon={<AppstoreOutlined className="menu-icons" />}
-          id="dashboard"
+          id="workspace"
         >
-          <Link to="/dashboard/dashboard">Dashboard</Link>
+          <Link to="/dashboard/workspace">Dashboard</Link>
         </Menu.Item>
         <SubMenu
           key="sub2"
@@ -116,6 +124,13 @@ const Sidebar = () => {
             id="audit"
           >
             <Link to="/dashboard/audit_trail_report">Audit Trail</Link>
+          </Menu.Item>
+          <Menu.Item
+            key="manual_data_upload"
+            icon={<UploadOutlined className="menu-icons" />}
+            id="manual_data_upload"
+          >
+            <Link to="/dashboard/manual_data_upload">Manual Data Upload</Link>
           </Menu.Item>
         </SubMenu>
         <Menu.Item
