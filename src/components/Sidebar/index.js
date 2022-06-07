@@ -1,168 +1,203 @@
+import React, { useState } from "react";
 import "./style.scss";
 import {
-	AppstoreAddOutlined,
-	AppstoreOutlined,
-	AreaChartOutlined,
-	BarChartOutlined,
-	ClusterOutlined,
-	CodeOutlined,
-	DeploymentUnitOutlined,
-	FileDoneOutlined,
-	FileProtectOutlined,
-	FileSearchOutlined,
-	FundProjectionScreenOutlined,
-	HomeOutlined,
-	LayoutOutlined,
-	PartitionOutlined,
-	SolutionOutlined,
-	TeamOutlined,
-	UploadOutlined,
+  ClusterOutlined,
+  BarChartOutlined,
+  PartitionOutlined,
+  FileDoneOutlined,
+  DeploymentUnitOutlined,
+  FileSearchOutlined,
+  CheckCircleOutlined,
+  AppstoreAddOutlined,
+  TeamOutlined,
+  AppstoreOutlined,
+  FileSyncOutlined,
+  AreaChartOutlined,
+  FundOutlined,
+  SisternodeOutlined,
+  NodeIndexOutlined,
+  CodeOutlined,
+  FileProtectOutlined,
+  DiffOutlined,
+  // ControlOutlined,
+  BlockOutlined,
+  // QuestionCircleOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
-import { Link, useLocation } from "react-router-dom";
-import React, { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+const { Sider } = Layout;
+const { SubMenu } = Menu;
 
-const MENU = [
-	{
-		key: "workspace",
-		icon: <HomeOutlined style={{ fontSize: "23px" }} />,
-		title: "Workspace",
-		linkTo: "/dashboard/workspace",
-	},
-	{
-		key: "view_creation",
-		icon: <ClusterOutlined style={{ fontSize: "23px" }} />,
-		title: "View Creation",
-		linkTo: "/dashboard/view_creation",
-	},
-	{
-		key: "chart_personalization",
-		icon: <BarChartOutlined style={{ fontSize: "23px" }} />,
-		title: "Chart Personalization",
-		linkTo: "/dashboard/chart_personalization",
-	},
-	{
-		key: "dashboard",
-		icon: <FundProjectionScreenOutlined style={{ fontSize: "23px" }} />,
-		title: "Dashboard",
-		linkTo: "/dashboard/dashboard",
-	},
-	{
-		key: "report_designer",
-		icon: <AppstoreAddOutlined style={{ fontSize: "23px" }} />,
-		title: "Report Designer",
-		linkTo: "/dashboard/report_designer",
-	},
-	{
-		key: "workflow",
-		icon: <FileDoneOutlined style={{ fontSize: "26px" }} />,
-		title: "Workflow",
-		linkTo: "/dashboard/workflow",
-	},
-	{
-		key: "genealogy",
-		icon: <PartitionOutlined style={{ fontSize: "23px" }} />,
-		title: "Genealogy",
-		linkTo: "/dashboard/genealogy",
-	},
-
-	{
-		key: "manual_data_upload",
-		icon: <UploadOutlined style={{ fontSize: "23px" }} />,
-		title: "Manual Data Upload",
-		linkTo: "/dashboard/manual_data_upload",
-	},
-	{
-		key: "audit_trail_report",
-		icon: <FileSearchOutlined style={{ fontSize: "23px" }} />,
-		title: "Audit Trail Report",
-		linkTo: "/dashboard/audit_trail_report",
-	},
-	{
-		key: "paper batch records",
-		icon: <FileProtectOutlined style={{ fontSize: "23px" }} />,
-		title: "Paper Batch Records",
-		linkTo: "/dashboard/paper_batch_records",
-	},
-	{
-		key: "pbr_reviewer",
-		icon: <LayoutOutlined style={{ fontSize: "23px" }} />,
-		title: "Pbr Reviewer",
-		linkTo: "/dashboard/pbr_reviewer",
-	},
-	{
-		key: "pbr_update",
-		icon: <LayoutOutlined style={{ fontSize: "23px" }} />,
-		title: "Pbr Update",
-		linkTo: "/dashboard/pbr_update",
-	},
-	{
-		key: "data_science_studio",
-		icon: <CodeOutlined style={{ fontSize: "23px" }} />,
-		title: "Data Science Studio",
-		linkTo: "/dashboard/pythonNoteBook",
-	},
-	{
-		key: "analysis",
-		icon: <AreaChartOutlined style={{ fontSize: "23px" }} />,
-		title: "Analysis",
-		linkTo: "/dashboard/analysis",
-	},
-	{
-		key: "user-roles-and-access",
-		icon: <TeamOutlined style={{ fontSize: "23px" }} />,
-		title: "User Roles",
-		linkTo: "/dashboard/user-roles-and-access",
-	},
-	{
-		key: "hierarchy",
-		icon: <DeploymentUnitOutlined style={{ fontSize: "23px" }} />,
-		title: "Hierarchy",
-		linkTo: "/dashboard/molecule_hierarchy_configuration",
-	}
-
+const cpvMenu = [
+  {
+    key: "view_creation",
+    icon: <ClusterOutlined className="menu-icons" />,
+    title: "View Creation",
+    linkTo: "/dashboard/view_creation",
+  },
+  {
+    key: "chart_personalization",
+    icon: <BarChartOutlined className="menu-icons" />,
+    title: "Chart Personalization",
+    linkTo: "/dashboard/chart_personalization",
+  },
+  {
+    key: "genealogy",
+    icon: <PartitionOutlined className="menu-icons" />,
+    title: "Genealogy",
+    linkTo: "/dashboard/genealogy",
+  },
+  {
+    key: "workflow",
+    icon: <FileDoneOutlined style={{ fontSize: "26px" }} />,
+    title: "Workflow",
+    linkTo: "/dashboard/workflow",
+  },
 ];
 
-const { Sider } = Layout;
-
 const Sidebar = () => {
-	const [selectedKey, setSelectedKey] = useState("");
-	const location = useLocation();
-	const collapsed = useSelector((state) => state.commonReducer.isMenuCollapsed);
-	const theme = useSelector((state) => state.commonReducer.theme);
-
-	const init = useCallback(() => {
-		const screen = location.pathname.split("/");
-		const key = MENU.filter((item) => {
-			return screen.length > 2
-				? screen[2]
-					.toLowerCase()
-					.includes(item.title.replace(/\s/g, "").toLowerCase())
-				: false;
-		})[0]?.["key"];
-		if (key) {
-			setSelectedKey(key);
-		}
-	}, [location.pathname]);
-
-	useEffect(() => {
-		init();
-	}, [init, location.pathname]);
-	return (
-		<Sider collapsed={collapsed} theme={theme} id="sidebar">
-			<div>
-				{/* <div id='logo-small'></div> */}
-				<Menu selectedKeys={[selectedKey]} mode="inline" theme={theme}>
-					{MENU.map((item) => (
-						<Menu.Item key={item.key} icon={item.icon} id={item.key}>
-							<Link to={item.linkTo}>{item.title}</Link>
-						</Menu.Item>
-					))}
-				</Menu>
-			</div>
-		</Sider>
-	);
+  const [collapsed, setCollapsed] = useState(true);
+  const mouseHover = () => {
+    setCollapsed(false);
+  };
+  return (
+    <Sider
+      collapsed={collapsed}
+      onMouseOver={mouseHover}
+      onMouseLeave={() => setCollapsed(true)}
+      id="sidebar"
+      className={!collapsed ? "collapse-side-bar" : ""}
+    >
+      <Menu theme="dark" mode="inline">
+        <Menu.Item
+          key="dashboard"
+          icon={<AppstoreOutlined className="menu-icons" />}
+          id="dashboard"
+        >
+          <Link to="/dashboard/dashboard">Dashboard</Link>
+        </Menu.Item>
+        <SubMenu
+          key="sub2"
+          mode="inline"
+          icon={<NodeIndexOutlined className="menu-icons" />}
+          title="CPV"
+        >
+          {cpvMenu.map((item) => (
+            <Menu.Item key={item.key} icon={item.icon} id={item.key}>
+              <Link to={item.linkTo}>{item.title}</Link>
+            </Menu.Item>
+          ))}
+        </SubMenu>
+        <SubMenu
+          key="sub3"
+          mode="inline"
+          icon={<SisternodeOutlined className="menu-icons" />}
+          title="Configuration"
+        >
+          <Menu.Item
+            key="hierarchy"
+            icon={<DeploymentUnitOutlined className="menu-icons" />}
+            id="hierarchy"
+          >
+            <Link to="/dashboard/molecule_hierarchy_configuration">
+              Hierarchy Config
+            </Link>
+          </Menu.Item>
+        </SubMenu>
+        <SubMenu
+          key="sub4"
+          mode="inline"
+          icon={<FileSyncOutlined className="menu-icons" />}
+          title="Reports"
+        >
+          <Menu.Item
+            key="audit"
+            icon={<FileSearchOutlined className="menu-icons" />}
+            id="audit"
+          >
+            <Link to="/dashboard/audit_trail_report">Audit Trail</Link>
+          </Menu.Item>
+        </SubMenu>
+        <Menu.Item
+          key="report_designer"
+          icon={<AppstoreAddOutlined className="menu-icons" />}
+          id="1"
+        >
+          <Link to="/dashboard/report_designer">Report designer</Link>
+        </Menu.Item>
+        <Menu.Item
+          key="report_generator"
+          icon={<BlockOutlined className="menu-icons" />}
+          id="1"
+        >
+          <Link to="/dashboard/dashboard">Report generator</Link>
+        </Menu.Item>
+        <SubMenu
+          key="sub5"
+          mode="inline"
+          icon={<AreaChartOutlined className="menu-icons" />}
+          title="Analytics"
+        >
+          <Menu.Item
+            key="data_science_studio"
+            icon={<CodeOutlined className="menu-icons" />}
+            id="data_science_studio"
+          >
+            <Link to="/dashboard/pythonNoteBook">Data Science Studio</Link>
+          </Menu.Item>
+          <Menu.Item
+            key="analysis"
+            icon={<FundOutlined className="menu-icons" />}
+            id="analysis"
+          >
+            <Link to="/dashboard/analysis">Auto ML analytics</Link>
+          </Menu.Item>
+        </SubMenu>
+        <SubMenu
+          key="sub6"
+          mode="inline"
+          icon={<FileProtectOutlined className="menu-icons" />}
+          title="Paper batch records"
+        >
+          <Menu.Item
+            key="paper batch records"
+            icon={<DiffOutlined className="menu-icons" />}
+            id="paper batch records"
+          >
+            <Link to="/dashboard/paper_batch_records">Create template</Link>
+          </Menu.Item>
+          <Menu.Item
+            key="pbr_reviewer"
+            icon={<CheckCircleOutlined className="menu-icons" />}
+            id="pbr_reviewer"
+          >
+            <Link to="/dashboard/pbr_reviewer">Approve</Link>
+          </Menu.Item>
+        </SubMenu>
+        <Menu.Item
+          key="user-roles-and-access"
+          icon={<TeamOutlined className="menu-icons" />}
+          id="user-roles-and-access"
+        >
+          <Link to="/dashboard/user-roles-and-access">Roles and access</Link>
+        </Menu.Item>
+        {/* <Menu.Item
+          key="settings"
+          icon={<ControlOutlined className="menu-icons" />}
+          id="settings"
+        >
+          <Link to="/dashboard/audit_trail_report">Settings</Link>
+        </Menu.Item>
+        <Menu.Item
+          key="help"
+          icon={<QuestionCircleOutlined className="menu-icons" />}
+          id="help"
+        >
+          <Link to="/dashboard/audit_trail_report">Help</Link>
+        </Menu.Item> */}
+      </Menu>
+    </Sider>
+  );
 };
 
 export default Sidebar;
