@@ -39,13 +39,13 @@ const cpvMenu = [
     key: "chart_personalization",
     icon: <BarChartOutlined className="menu-icons" />,
     title: "Chart Personalization",
-    linkTo: "/dashboard/dashboard",
+    linkTo: "/dashboard/chart_personalization",
   },
   {
     key: "chart_configuration",
     icon: <FundProjectionScreenOutlined className="menu-icons" />,
     title: "Chart Configuration",
-    linkTo: "/dashboard/chart_personalization",
+    linkTo: "/dashboard/dashboard",
   },
   {
     key: "genealogy",
