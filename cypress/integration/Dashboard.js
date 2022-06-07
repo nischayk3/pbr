@@ -28,11 +28,12 @@ describe('Dashboard', () => {
 		);
 	})
 	it('Load View Landing Page Correctly', () => {
+		const url = Cypress.config().baseUrl
 		cy.intercept('GET', '**/dashboards', { fixture: 'dashboard.json' })
-		cy.visit('http://localhost/#/dashboard/dashboard')
+		cy.visit(url + '/#/dashboard/dashboard')
 
 		cy.log('Load Landing Page')
-		cy.url().should('eq', 'http://localhost/#/dashboard/dashboard')
+		cy.url().should('eq', url + '/#/dashboard/dashboard')
 	})
 
 	it('Load Screen Header', () => {
