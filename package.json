@@ -91,6 +91,10 @@
   },
   "nyc": {
     "report-dir": "coverage",
-    "excludeAfterRemap": true
+    "all": true,
+    "include": "src/**",
+    "reporter": [
+      "lcov"
+    ]
   }
 }

@@ -29,5 +29,8 @@
 	"/dashboard/analysis": "Analysis",
 	"/dashboard/analysis/:id": "Model",
 	"/dashboard/pbr_reviewer": "PBR Reviewer",
-	"/dashboard/pbr_update": "PBR Update"
+	"/dashboard/pbr_update": "PBR Update",
+	"/dashboard/paper_batch_records": "PBR Template"
+	
+	
 }

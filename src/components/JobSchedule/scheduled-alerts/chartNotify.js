@@ -107,7 +107,7 @@ const tableColumns = [
 		},
 	},
 ];
-const data = [
+const data_table = [
 	{
 		chart: "Sample Chart",
 		event: "Nelson Rule 1",
@@ -120,10 +120,10 @@ const data = [
 const ChartNotify = (props) => {
 	const [selectedAlert, setSelectedAlert] = useState(["Limits"]);
 	const [selectedTimeRange, setSelectedTimeRange] = useState("");
-	const [showReceipients, setShowReceipients] = useState(false);
+	const showReceipients = false;
 	const [radioValue, setRadioValue] = useState(null);
 	const [emailList, setEmailList] = useState([]);
-	const [scheduleStartDate, setScheduleStartDate] = useState("");
+	// const [scheduleStartDate, setScheduleStartDate] = useState("");
 	const [scheduleEmailStartDate, setScheduleEmailStartDate] = useState("");
 	const [selectedDays, setSelectedDays] = useState({
 		Sunday: false,
@@ -134,7 +134,7 @@ const ChartNotify = (props) => {
 		Friday: false,
 		Saturday: false,
 	});
-	const [activeTab, setActiveTab] = useState("schedule_evaluation");
+	// const [activeTab, setActiveTab] = useState("schedule_evaluation");
 	const [scheduleEmailTime, setScheduleEmailTime] = useState("");
 	const [everyDayValue, setEveryDayValue] = useState("");
 	const [png, setPng] = useState(false);
@@ -142,7 +142,7 @@ const ChartNotify = (props) => {
 	const [subject, setSubject] = useState("");
 	const [subjectContent, setSubjectContent] = useState("");
 	const [selectedSchedule, setSelectedSchedule] = useState("Repeat Once");
-	const [days_obj, setDays] = useState({
+	const days_obj = {
 		Sunday: 0,
 		Monday: 1,
 		Tuesday: 2,
@@ -150,7 +150,7 @@ const ChartNotify = (props) => {
 		Thursday: 4,
 		Friday: 5,
 		Saturday: 6,
-	});
+	};
 
 	const handlePng = (value) => {
 		setPng(!value);
@@ -202,8 +202,8 @@ const ChartNotify = (props) => {
 			if (data.frequency_unit) setSelectedSchedule(data.frequency_unit);
 
 			if (data.email_config) {
-				if (data.email_config.scheduled_start)
-					setScheduleStartDate(data.email_config.scheduled_start);
+				// if (data.email_config.scheduled_start)
+				// 	setScheduleStartDate(data.email_config.scheduled_start);
 				if (data.email_config.scheduled_time)
 					setScheduleEmailTime(data.email_config.scheduled_time);
 				setRadioValue(data.email_config.daily_frequency);
@@ -243,7 +243,7 @@ const ChartNotify = (props) => {
 		radio,
 		f,
 		days,
-		everyDayValue
+		everyDayValuee
 	) => {
 		let cron_string = "";
 		let time_split = time.split(":");
@@ -258,14 +258,14 @@ const ChartNotify = (props) => {
 			}
 			if (radio == 3) {
 				if (f == "Minutes") {
-					cron_string = `*/${everyDayValue}  * * * *`;
+					cron_string = `*/${everyDayValuee}  * * * *`;
 				}
 				if (f == "Seconds") {
-					cron_string = `*/${everyDayValue}  * * * *`;
+					cron_string = `*/${everyDayValuee}  * * * *`;
 				}
 				if (f == "Hour") {
 					// cron_string = '*' + ' ' + time_split[0] + ' * * *'
-					cron_string = `* */${everyDayValue}  * * *`;
+					cron_string = `* */${everyDayValuee}  * * *`;
 				}
 			}
 		}
@@ -401,9 +401,9 @@ const ChartNotify = (props) => {
 			);
 		}
 	};
-	const changeTab = (activeKey) => {
-		setActiveTab(activeKey);
-	};
+	// const changeTab = (activeKey) => {
+	// 	setActiveTab(activeKey);
+	// };
 
 	const onChangeEmailStart = (date, dateString) => {
 		setScheduleEmailStartDate(dateString);
@@ -426,7 +426,8 @@ const ChartNotify = (props) => {
 		<div className="chart_notify-notify">
 			<Tabs
 				className="evaluation-tabs"
-				onChange={changeTab}
+				// onChange={changeTab}
+				// activeKey={activeTab}
 				tabBarExtraContent={
 					<div className="tab-btns">
 						<Button
@@ -531,7 +532,7 @@ const ChartNotify = (props) => {
 						<br />
 						<Table
 							style={{ width: "98%" }}
-							dataSource={data}
+							dataSource={data_table}
 							columns={tableColumns}
 							pagination={false}
 						/>

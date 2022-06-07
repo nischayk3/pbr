@@ -8,10 +8,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Table, Popconfirm, Tag, Avatar } from 'antd';
-import { DeleteOutlined, DeleteTwoTone } from '@ant-design/icons';
-import { getJob, putJob, deleteJob } from '../../../services/jobScheduleService';
+import { DeleteTwoTone } from '@ant-design/icons';
+import { getJob, deleteJob } from '../../../services/jobScheduleService';
 import moment from 'moment';
-import { dispatch } from 'd3';
 import { showNotification, showLoader, hideLoader } from '../../../duck/actions/commonActions';
 import { useDispatch } from 'react-redux';
 import './tableStyles.scss'
@@ -85,11 +84,11 @@ export default function scheduledAlertsTable(props) {
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
-            align : 'center',
+            align: 'center',
             render: (text, record) =>
             (
                 <Popconfirm title={`Are you Sure you want to delete the ${record.dag_id}?`} onConfirm={() => DeleteJob(record)}>
-                    <DeleteTwoTone twoToneColor="red" style={{fontSize:'16px',marginRight:'25px'}} />
+                    <DeleteTwoTone twoToneColor="red" style={{ fontSize: '16px', marginRight: '25px' }} />
                 </Popconfirm>
             )
         },
@@ -99,7 +98,7 @@ export default function scheduledAlertsTable(props) {
             dataIndex: 'job_id',
             render: (text, record) =>
             (
-                <u><a onClick={() => props.changeActiveTab('1', record.dag_id,record.job_id)}>{text}</a></u>
+                <u><a onClick={() => props.changeActiveTab('1', record.dag_id, record.job_id)}>{text}</a></u>
             )
         },
         {
@@ -111,21 +110,21 @@ export default function scheduledAlertsTable(props) {
             title: 'Created by',
             key: 'created_by',
             dataIndex: 'created_by',
-            render  : (text,record) =>
-            { return(
-                <div>
-						<Avatar
-							className='avatar-icon'
-                            size="small" 
-							style={{
-								backgroundColor: 'green',
-                                marginBottom:'2px'
-							}}>
-							{text.split('')[0].toUpperCase()}{' '}
-						</Avatar>
-						<span style={{marginLeft:'10px'}}>{text}</span>
-					</div>
-            )
+            render: (text, record) => {
+                return (
+                    <div>
+                        <Avatar
+                            className='avatar-icon'
+                            size="small"
+                            style={{
+                                backgroundColor: 'green',
+                                marginBottom: '2px'
+                            }}>
+                            {text.split('')[0].toUpperCase()}{' '}
+                        </Avatar>
+                        <span style={{ marginLeft: '10px' }}>{text}</span>
+                    </div>
+                )
             }
         },
         // {

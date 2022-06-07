@@ -29,14 +29,14 @@ describe('Renders the view config page', () => {
     })
 
     it('Renders use roles and access correctly', () => {
-        cy.visit('http://localhost/#/dashboard/workspace')
+        cy.visit('http://localhost:3030/#/dashboard/workspace')
         cy.wait(5000)
         cy.get('#user-roles-and-access > .ant-menu-title-content > a').click();
         cy.wait(1000)
     })
 
     it('Loads user configuration page correctly', () => {
-        cy.intercept('GET', '/services/v1/user-config').as('userConfigGet')
+        cy.intercept('GET', '/services/v1/user-config', { fixture: 'userConfig.json' }).as('userConfigGet')
         cy.log('Clicking on User Configuration')
         cy.contains('User Configuration').click()
         cy.wait('@userConfigGet').then(() => {
@@ -80,7 +80,7 @@ describe('Renders the view config page', () => {
             cy.get('.ant-switch').eq(2).click()
             cy.get('.ant-table-row').first().scrollIntoView({ offset: { top: -5, left: 0 } })
 
-            cy.intercept('PUT', '/services/v1/user-config').as('userConfigPut')
+            cy.intercept('PUT', '/services/v1/user-config', { fixture: 'configSuccess.json' }).as('userConfigPut')
             cy.log('Saving user')
             cy.get('#editable-table-button-save').click()
             cy.wait('@userConfigPut').then(() => {
@@ -108,7 +108,7 @@ describe('Renders the view config page', () => {
                 cy.log('Clicking on delete button to show confirmation modal')
                 cy.get('#editable-table-button-delete').click()
 
-                cy.intercept('DELETE', '/services/v1/user-config').as('userConfigDel')
+                cy.intercept('DELETE', '/services/v1/user-config', { fixture: 'configSuccess.json' }).as('userConfigDel')
                 cy.log('Deleting the user')
                 cy.get('#editable-modal-button-delete').click()
                 cy.wait('@userConfigDel').then(() => {
@@ -121,7 +121,7 @@ describe('Renders the view config page', () => {
     })
 
     it('Loads roles and access page correctly', () => {
-        cy.intercept('GET', '/services/v1/role-config').as('roleConfigGet')
+        cy.intercept('GET', '/services/v1/role-config', { fixture: 'rolesConfig.json' }).as('roleConfigGet')
         cy.log('Clicking on Roles And Access')
         cy.contains('Roles And Access').click()
         cy.wait('@roleConfigGet').then(() => {
@@ -148,7 +148,7 @@ describe('Renders the view config page', () => {
             cy.get('.ant-select-multiple').eq(2).click().multiselect(['READ'])
             cy.get('.ant-table-row').first().scrollIntoView({ offset: { top: -5, left: 0 } })
 
-            cy.intercept('PUT', '/services/v1/role-config').as('roleConfigPut')
+            cy.intercept('PUT', '/services/v1/role-config', { fixture: 'configSuccess.json' }).as('roleConfigPut')
             cy.log('Saving user')
             cy.get('#editable-table-button-save').click()
             cy.wait('@roleConfigPut').then(() => {

@@ -39,11 +39,11 @@ const Threshold = ({ postChartData, setPostChartData }) => {
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(newArr);
-      let newdataArr = [...postChartData.data];
-      newdataArr[0].thresholds = viewRes.data[0].thresholds;
-      newdataArr[0].violations = viewRes.data[0].violations;
-      newdataArr[0].data = viewRes.data[0].data;
-      setPostChartData({ ...postChartData, data: newdataArr });
+      let postChartClone = [...postChartData.data];
+      postChartClone[0].thresholds = viewRes.data[0].thresholds;
+      postChartClone[0].violations = viewRes.data[0].violations;
+      postChartClone[0].data = viewRes.data[0].data;
+      setPostChartData({ ...postChartData, data: postChartClone });
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
@@ -211,6 +211,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
               <InputField
                 placeholder="Enter Number"
                 value={thresValues.valueNum}
+                id="threshold_value"
                 onChangeInput={(e) =>
                   setThresvalues({ ...thresValues, valueNum: e.target.value })
                 }

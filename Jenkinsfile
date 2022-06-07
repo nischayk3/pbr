@@ -34,9 +34,10 @@ pipeline {
                         sudo chmod +x /usr/local/bin/docker-compose
                         docker-compose version
                         npm install 
-                        npm install cypress --save-dev
+                        #nohup npm run start &
+                        docker-compose build
                         docker-compose up -d ui-cypress-test 
-                        sleep 5
+                        sleep 10
                         npm run cy:run
                         docker-compose down -v
                         ls coverage
@@ -100,6 +101,11 @@ pipeline {
                  }
                  }
             }
+    }
+      post {
+        always {
+            archiveArtifacts artifacts: 'coverage/', onlyIfSuccessful: true
+        }
     }
 }
 

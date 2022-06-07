@@ -66,6 +66,7 @@ function GenealogyDrawer(props) {
 				className={visible ? "drawer-collapse" : "popout-collapse"}
 				batchInfo={props.batchInfo}
 				limsBatchInfo={props.limsBatchInfo}
+				pbrBatchData={props.pbrBatchData}
 				purchaseInfo={props.purchaseInfo}
 				processInput={props.processInput}
 				processOutput={props.processOutput}
