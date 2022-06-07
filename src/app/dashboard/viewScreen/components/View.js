@@ -223,6 +223,9 @@ const ViewCreation = (props) => {
 			if (loadViewRes.files) {
 				setSelectedFiles(loadViewRes.files);
 			}
+			if (loadViewRes.view_name) {
+				setViewName(loadViewRes.view_name);
+			}
 			Object.entries(loadViewRes).forEach(([key, value], index) => {
 				// if (key === 'view_version') {
 				// 	setViewVersion(value);
