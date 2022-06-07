@@ -143,7 +143,7 @@ const Sidebar = () => {
           icon={<BlockOutlined className="menu-icons" />}
           id="1"
         >
-          <Link to="/dashboard/dashboard">Report generator</Link>
+          <Link to="/dashboard/report_designer">Report generator</Link>
         </Menu.Item>
         <SubMenu
           key="sub5"
