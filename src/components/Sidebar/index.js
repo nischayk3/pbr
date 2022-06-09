@@ -19,9 +19,9 @@ import {
 	CodeOutlined,
 	FileProtectOutlined,
 	DiffOutlined,
-	// ControlOutlined,
+	FundProjectionScreenOutlined,
+	UploadOutlined,
 	BlockOutlined,
-	// QuestionCircleOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
@@ -40,6 +40,12 @@ const cpvMenu = [
 		icon: <BarChartOutlined className="menu-icons" />,
 		title: "Chart Personalization",
 		linkTo: "/dashboard/chart_personalization",
+	},
+	{
+		key: "chart_configuration",
+		icon: <FundProjectionScreenOutlined className="menu-icons" />,
+		title: "Chart Configuration",
+		linkTo: "/dashboard/dashboard",
 	},
 	{
 		key: "genealogy",
@@ -70,12 +76,11 @@ const Sidebar = () => {
 		>
 			<Menu theme="dark" mode="inline">
 				<Menu.Item
-					key="dashboard"
+					key="workspace"
 					icon={<AppstoreOutlined className="menu-icons" />}
-					id="dashboard"
-					onClick={() => { window.location.reload() }}
+					id="workspace"
 				>
-					<Link to="/dashboard/dashboard">Dashboard</Link>
+					<Link to="/dashboard/workspace">Dashboard</Link>
 				</Menu.Item>
 				<SubMenu
 					key="sub2"
@@ -84,9 +89,15 @@ const Sidebar = () => {
 					title="CPV"
 				>
 					{cpvMenu.map((item) => (
-						<Menu.Item key={item.key} icon={item.icon} id={item.key}>
-							<Link to={item.linkTo}>{item.title}</Link>
-						</Menu.Item>
+						item.key === 'chart_configuration' ? (
+							<Menu.Item key={item.key} icon={item.icon} id={item.key} onClick={() => window.location.reload()}>
+								<Link to={item.linkTo}>{item.title}</Link>
+							</Menu.Item>
+						) : (
+							<Menu.Item key={item.key} icon={item.icon} id={item.key}>
+								<Link to={item.linkTo}>{item.title}</Link>
+							</Menu.Item>
+						)
 					))}
 				</SubMenu>
 				<SubMenu
@@ -118,6 +129,13 @@ const Sidebar = () => {
 					>
 						<Link to="/dashboard/audit_trail_report">Audit Trail</Link>
 					</Menu.Item>
+					<Menu.Item
+						key="manual_data_upload"
+						icon={<UploadOutlined className="menu-icons" />}
+						id="manual_data_upload"
+					>
+						<Link to="/dashboard/manual_data_upload">Manual Data Upload</Link>
+					</Menu.Item>
 				</SubMenu>
 				<Menu.Item
 					key="report_designer"
@@ -131,7 +149,7 @@ const Sidebar = () => {
 					icon={<BlockOutlined className="menu-icons" />}
 					id="1"
 				>
-					<Link to="/dashboard/dashboard">Report generator</Link>
+					<Link to="/dashboard/report_designer">Report generator</Link>
 				</Menu.Item>
 				<SubMenu
 					key="sub5"
@@ -161,7 +179,7 @@ const Sidebar = () => {
 					title="Paper batch records"
 				>
 					<Menu.Item
-						key="paper batch records"
+						key="paper-batch-records"
 						icon={<DiffOutlined className="menu-icons" />}
 						id="paper batch records"
 					>
@@ -182,20 +200,6 @@ const Sidebar = () => {
 				>
 					<Link to="/dashboard/user-roles-and-access">Roles and access</Link>
 				</Menu.Item>
-				{/* <Menu.Item
-          key="settings"
-          icon={<ControlOutlined className="menu-icons" />}
-          id="settings"
-        >
-          <Link to="/dashboard/audit_trail_report">Settings</Link>
-        </Menu.Item>
-        <Menu.Item
-          key="help"
-          icon={<QuestionCircleOutlined className="menu-icons" />}
-          id="help"
-        >
-          <Link to="/dashboard/audit_trail_report">Help</Link>
-        </Menu.Item> */}
 			</Menu>
 		</Sider>
 	);

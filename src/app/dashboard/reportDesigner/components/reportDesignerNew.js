@@ -17,9 +17,6 @@ import {
 	Form,
 	Select,
 	Button,
-	Modal,
-	Table,
-	Input,
 	Empty,
 	Dropdown,
 	Menu,
@@ -49,65 +46,65 @@ import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { loadReport } from '../../../../services/reportDesignerServices';
 
 //Columns For The view Selection modal
-const columns = [
-	{
-		title: 'Report ID',
-		dataIndex: 'rep_disp_id',
-		key: 'rep_disp_id',
-		render: (text, record) => {
-			return {
-				props: {
-					style: { background: record.color },
-				},
-				children: <div>{text}</div>,
-			};
-		},
-	},
-	{
-		title: 'Report Name',
-		dataIndex: 'rep_name',
-		key: 'rep_name',
-		render: (text, record) => {
-			return {
-				props: {
-					style: { background: record.color },
-				},
-				children: <div>{text}</div>,
-			};
-		},
-	},
-	{
-		title: 'Report Status',
-		dataIndex: 'rep_status',
-		key: 'rep_status',
-		render: (text, record) => {
-			return {
-				props: {
-					style: { background: record.color },
-				},
-				children: <div>{text}</div>,
-			};
-		},
-	},
-	{
-		title: 'Created By',
-		dataIndex: 'created_by',
-		key: 'created_by',
-		render: (text, record) => {
-			return {
-				props: {
-					style: { background: record.color },
-				},
-				children: <div>{text}</div>,
-			};
-		},
-	},
-];
+// const columns = [
+// 	{
+// 		title: 'Report ID',
+// 		dataIndex: 'rep_disp_id',
+// 		key: 'rep_disp_id',
+// 		render: (text, record) => {
+// 			return {
+// 				props: {
+// 					style: { background: record.color },
+// 				},
+// 				children: <div>{text}</div>,
+// 			};
+// 		},
+// 	},
+// 	{
+// 		title: 'Report Name',
+// 		dataIndex: 'rep_name',
+// 		key: 'rep_name',
+// 		render: (text, record) => {
+// 			return {
+// 				props: {
+// 					style: { background: record.color },
+// 				},
+// 				children: <div>{text}</div>,
+// 			};
+// 		},
+// 	},
+// 	{
+// 		title: 'Report Status',
+// 		dataIndex: 'rep_status',
+// 		key: 'rep_status',
+// 		render: (text, record) => {
+// 			return {
+// 				props: {
+// 					style: { background: record.color },
+// 				},
+// 				children: <div>{text}</div>,
+// 			};
+// 		},
+// 	},
+// 	{
+// 		title: 'Created By',
+// 		dataIndex: 'created_by',
+// 		key: 'created_by',
+// 		render: (text, record) => {
+// 			return {
+// 				props: {
+// 					style: { background: record.color },
+// 				},
+// 				children: <div>{text}</div>,
+// 			};
+// 		},
+// 	},
+// ];
 
 function ReportDesignerNew(props) {
 
 	const { loadData } = props
-	const { Option } = Select;
+	// const { Option } = Select;
 	const location = useLocation()
 
 	const [loading, setLoading] = useState(false);
@@ -118,7 +115,7 @@ function ReportDesignerNew(props) {
 	const [isNew, setIsNew] = useState(true);
 	const [visible, setVisible] = useState(false);
 	const [popvisible, setPopVisible] = useState(false);
-	const [filterTable, setFilterTable] = useState(null);
+	// const [filterTable, setFilterTable] = useState(null);
 	const [viewId, setViewId] = useState('');
 	const [reportId, setReportId] = useState('');
 	const [viewVersion, setViewVersion] = useState('');
@@ -141,6 +138,8 @@ function ReportDesignerNew(props) {
 	const [sectionAddedCharts, setSectionAddedCharts] = useState({})
 	const [chartsLayout, setChartsLayout] = useState({})
 	const [chartsLayoutCompare, setChartsLayoutCompare] = useState({})
+	const [currentSection, setCurrentSection] = useState()
+
 
 	const [form] = Form.useForm();
 
@@ -290,6 +289,8 @@ function ReportDesignerNew(props) {
 
 	// Get form values
 	const handleValuesChange = (changedValues, values) => {
+		let keys = Object.keys(changedValues.response)
+		setCurrentSection(keys.length > 0 ? keys[keys.length - 1] : 0)
 		setMainJson(convertToJson(values));
 	};
 
@@ -840,6 +841,8 @@ function ReportDesignerNew(props) {
 							initialValues={formData}>
 							<ReportDesignerDynamicSections
 								formData={formData}
+								setCurrentSection={setCurrentSection}
+								currentSection={currentSection}
 								show={params}
 								list={selectedChartList}
 								setSectionCharts={setSectionCharts}
