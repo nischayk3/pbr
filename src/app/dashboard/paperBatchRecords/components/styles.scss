@@ -171,6 +171,9 @@ p {
 }
 
 .ant-modal.newTemplateModal {
+	.ant-modal-content{
+		height: 430px;
+	}
 	.ant-modal-header {
 		.ant-modal-title {
 			font-family: var(--secondary-font-family);
@@ -204,17 +207,24 @@ p {
 }
 
 .radioPdfBlock {
+	width: 100%;
 	display: grid !important;
-	grid-template-columns: 1fr 1fr;
-	grid-gap: 0 24px;
+	grid-template-rows: 1fr;
+	// grid-gap: 0 24px;
 	margin-bottom: 10px !important;
-
+	height: 140px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	
 	label {
 		padding: 11px 5px;
 		border: 0.5px solid #c2c2c2;
 		border-radius: 4px;
 		margin: 10px 0px;
 		height: 57px;
+	}
+	.ant-radio-button-wrapper{
+		margin-right: 10px;
 	}
 
 	.ant-radio-button-wrapper:first-child {
@@ -244,7 +254,7 @@ p {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-
+	
 	img {
 		margin-right: 4px;
 	}
@@ -258,10 +268,10 @@ p {
 	}
 }
 
-.newTemplate-imgBlock {
-	display: flex;
-	justify-content: center;
-}
+// .newTemplate-imgBlock {
+// 	// display: flex;
+// 	// justify-content: center;
+// }
 
 .dashboard-search{
     font-family: 'Roboto';
@@ -270,4 +280,49 @@ p {
     font-size: 14px;
     line-height: 22px;
     color: #8C8C8C;
+}
+
+.card-legends {
+	border-bottom: 1px solid #e2e2e2;
+	margin: 4px 0 10px 0;
+	display: flex;
+	margin-top: 20px;
+	justify-content: space-between;
+
+	.legends {
+		display: flex;
+
+		p {
+			padding: 0 5px 0 15px;
+			display: flex;
+			margin-left: 0px;
+
+			.drft {
+				width: 14px;
+				height: 14px;
+				border-radius: 50px;
+				background: #363636;
+				display: block;
+				margin: 3px 6px;
+			}
+
+			.aprv {
+				width: 14px;
+				height: 14px;
+				border-radius: 50px;
+				background: #a4f588;
+				margin: 3px 6px;
+				display: block;
+			}
+
+			.await {
+				width: 14px;
+				height: 14px;
+				border-radius: 50px;
+				background: #f6ba60;
+				margin: 3px 6px;
+				display: block;
+			}
+		}
+	}
 }
