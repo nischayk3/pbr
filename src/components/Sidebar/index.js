@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./style.scss";
 import {
-<<<<<<< HEAD
   ClusterOutlined,
   BarChartOutlined,
   PartitionOutlined,
@@ -22,32 +21,7 @@ import {
   DiffOutlined,
   FundProjectionScreenOutlined,
   UploadOutlined,
-  // ControlOutlined,
   BlockOutlined,
-  // QuestionCircleOutlined,
-=======
-	ClusterOutlined,
-	BarChartOutlined,
-	PartitionOutlined,
-	FileDoneOutlined,
-	DeploymentUnitOutlined,
-	FileSearchOutlined,
-	CheckCircleOutlined,
-	AppstoreAddOutlined,
-	TeamOutlined,
-	AppstoreOutlined,
-	FileSyncOutlined,
-	AreaChartOutlined,
-	FundOutlined,
-	SisternodeOutlined,
-	NodeIndexOutlined,
-	CodeOutlined,
-	FileProtectOutlined,
-	DiffOutlined,
-	// ControlOutlined,
-	BlockOutlined,
-	// QuestionCircleOutlined,
->>>>>>> 10b3d5c2dff7b24f7c359644f9c2f1a215a1a460
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
@@ -55,7 +29,6 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 const cpvMenu = [
-<<<<<<< HEAD
   {
     key: "view_creation",
     icon: <ClusterOutlined className="menu-icons" />,
@@ -66,13 +39,13 @@ const cpvMenu = [
     key: "chart_personalization",
     icon: <BarChartOutlined className="menu-icons" />,
     title: "Chart Personalization",
-    linkTo: "/dashboard/dashboard",
+    linkTo: "/dashboard/chart_personalization",
   },
   {
     key: "chart_configuration",
     icon: <FundProjectionScreenOutlined className="menu-icons" />,
     title: "Chart Configuration",
-    linkTo: "/dashboard/chart_personalization",
+    linkTo: "/dashboard/dashboard",
   },
   {
     key: "genealogy",
@@ -170,7 +143,7 @@ const Sidebar = () => {
           icon={<BlockOutlined className="menu-icons" />}
           id="1"
         >
-          <Link to="/dashboard/dashboard">Report generator</Link>
+          <Link to="/dashboard/report_designer">Report generator</Link>
         </Menu.Item>
         <SubMenu
           key="sub5"
@@ -200,7 +173,7 @@ const Sidebar = () => {
           title="Paper batch records"
         >
           <Menu.Item
-            key="paper batch records"
+            key="paper-batch-records"
             icon={<DiffOutlined className="menu-icons" />}
             id="paper batch records"
           >
@@ -221,179 +194,9 @@ const Sidebar = () => {
         >
           <Link to="/dashboard/user-roles-and-access">Roles and access</Link>
         </Menu.Item>
-        {/* <Menu.Item
-=======
-	{
-		key: "view_creation",
-		icon: <ClusterOutlined className="menu-icons" />,
-		title: "View Creation",
-		linkTo: "/dashboard/view_creation",
-	},
-	{
-		key: "chart_personalization",
-		icon: <BarChartOutlined className="menu-icons" />,
-		title: "Chart Personalization",
-		linkTo: "/dashboard/chart_personalization",
-	},
-	{
-		key: "genealogy",
-		icon: <PartitionOutlined className="menu-icons" />,
-		title: "Genealogy",
-		linkTo: "/dashboard/genealogy",
-	},
-	{
-		key: "workflow",
-		icon: <FileDoneOutlined style={{ fontSize: "26px" }} />,
-		title: "Workflow",
-		linkTo: "/dashboard/workflow",
-	},
-];
-
-const Sidebar = () => {
-	const [collapsed, setCollapsed] = useState(true);
-	const mouseHover = () => {
-		setCollapsed(false);
-	};
-	return (
-		<Sider
-			collapsed={collapsed}
-			onMouseOver={mouseHover}
-			onMouseLeave={() => setCollapsed(true)}
-			id="sidebar"
-			className={!collapsed ? "collapse-side-bar" : ""}
-		>
-			<Menu theme="dark" mode="inline">
-				<Menu.Item
-					key="dashboard"
-					icon={<AppstoreOutlined className="menu-icons" />}
-					id="dashboard"
-					onClick={() => { window.location.reload() }}
-				>
-					<Link to="/dashboard/dashboard">Dashboard</Link>
-				</Menu.Item>
-				<SubMenu
-					key="sub2"
-					mode="inline"
-					icon={<NodeIndexOutlined className="menu-icons" />}
-					title="CPV"
-				>
-					{cpvMenu.map((item) => (
-						<Menu.Item key={item.key} icon={item.icon} id={item.key}>
-							<Link to={item.linkTo}>{item.title}</Link>
-						</Menu.Item>
-					))}
-				</SubMenu>
-				<SubMenu
-					key="sub3"
-					mode="inline"
-					icon={<SisternodeOutlined className="menu-icons" />}
-					title="Configuration"
-				>
-					<Menu.Item
-						key="hierarchy"
-						icon={<DeploymentUnitOutlined className="menu-icons" />}
-						id="hierarchy"
-					>
-						<Link to="/dashboard/molecule_hierarchy_configuration">
-							Hierarchy Config
-						</Link>
-					</Menu.Item>
-				</SubMenu>
-				<SubMenu
-					key="sub4"
-					mode="inline"
-					icon={<FileSyncOutlined className="menu-icons" />}
-					title="Reports"
-				>
-					<Menu.Item
-						key="audit"
-						icon={<FileSearchOutlined className="menu-icons" />}
-						id="audit"
-					>
-						<Link to="/dashboard/audit_trail_report">Audit Trail</Link>
-					</Menu.Item>
-				</SubMenu>
-				<Menu.Item
-					key="report_designer"
-					icon={<AppstoreAddOutlined className="menu-icons" />}
-					id="1"
-				>
-					<Link to="/dashboard/report_designer">Report designer</Link>
-				</Menu.Item>
-				<Menu.Item
-					key="report_generator"
-					icon={<BlockOutlined className="menu-icons" />}
-					id="1"
-				>
-					<Link to="/dashboard/dashboard">Report generator</Link>
-				</Menu.Item>
-				<SubMenu
-					key="sub5"
-					mode="inline"
-					icon={<AreaChartOutlined className="menu-icons" />}
-					title="Analytics"
-				>
-					<Menu.Item
-						key="data_science_studio"
-						icon={<CodeOutlined className="menu-icons" />}
-						id="data_science_studio"
-					>
-						<Link to="/dashboard/pythonNoteBook">Data Science Studio</Link>
-					</Menu.Item>
-					<Menu.Item
-						key="analysis"
-						icon={<FundOutlined className="menu-icons" />}
-						id="analysis"
-					>
-						<Link to="/dashboard/analysis">Auto ML analytics</Link>
-					</Menu.Item>
-				</SubMenu>
-				<SubMenu
-					key="sub6"
-					mode="inline"
-					icon={<FileProtectOutlined className="menu-icons" />}
-					title="Paper batch records"
-				>
-					<Menu.Item
-						key="paper batch records"
-						icon={<DiffOutlined className="menu-icons" />}
-						id="paper batch records"
-					>
-						<Link to="/dashboard/paper_batch_records">Create template</Link>
-					</Menu.Item>
-					<Menu.Item
-						key="pbr_reviewer"
-						icon={<CheckCircleOutlined className="menu-icons" />}
-						id="pbr_reviewer"
-					>
-						<Link to="/dashboard/pbr_reviewer">Approve</Link>
-					</Menu.Item>
-				</SubMenu>
-				<Menu.Item
-					key="user-roles-and-access"
-					icon={<TeamOutlined className="menu-icons" />}
-					id="user-roles-and-access"
-				>
-					<Link to="/dashboard/user-roles-and-access">Roles and access</Link>
-				</Menu.Item>
-				{/* <Menu.Item
->>>>>>> 10b3d5c2dff7b24f7c359644f9c2f1a215a1a460
-          key="settings"
-          icon={<ControlOutlined className="menu-icons" />}
-          id="settings"
-        >
-          <Link to="/dashboard/audit_trail_report">Settings</Link>
-        </Menu.Item>
-        <Menu.Item
-          key="help"
-          icon={<QuestionCircleOutlined className="menu-icons" />}
-          id="help"
-        >
-          <Link to="/dashboard/audit_trail_report">Help</Link>
-        </Menu.Item> */}
-			</Menu>
-		</Sider>
-	);
+      </Menu>
+    </Sider>
+  );
 };
 
 export default Sidebar;
