@@ -1457,8 +1457,8 @@ function PaperBatchRecordsTemplate() {
                 <div className='sub-header'>
                     <div className='sub-header-title'>
                         <div className='btns'>
-                            <Button className='custom-primary-btn'>Batch Process</Button>
-                            <Button className='custom-secondary-btn'>Publish</Button>
+                            <Button className='custom-primary-btn'>Publish</Button>
+                            <Button className='custom-secondary-btn' style={{margin:"0px 16px"}}>Batch Process</Button>
                         </div>
                     </div>
                 </div>
@@ -1487,14 +1487,14 @@ function PaperBatchRecordsTemplate() {
                                     <Form onValuesChange={handleValuesChange} name="template_desc" onFinish={onFinish}
                                         // labelCol={{ span: 8 }}
                                         // wrapperCol={{ span: 16 }}
-                                        initialValues={{ material_num: matBatch?.material_num, batch: matBatch?.batch, template_name: params?.tempalteName, status: "Draft" }}
+                                        initialValues={{template_id:id, material_num: matBatch?.material_num, batch: matBatch?.batch, template_name: params?.tempalteName, status: "Draft" }}
                                     >
-                                        {/* <Form.Item
+                                        <Form.Item
                                             name='template_id'
                                             label="Template ID"
                                         >
-                                            <Input style={{ width: 193, marginLeft: 25 }} />
-                                        </Form.Item> */}
+                                            <Input style={{ width: 193, marginLeft: 25 }} disabled/>
+                                        </Form.Item>
                                         <Form.Item
                                             name='template_name'
                                             label="Template Name"
