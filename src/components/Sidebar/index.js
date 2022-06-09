@@ -161,7 +161,7 @@ const Sidebar = () => {
 					title="Paper batch records"
 				>
 					<Menu.Item
-						key="paper batch records"
+						key="paper-batch-records"
 						icon={<DiffOutlined className="menu-icons" />}
 						id="paper batch records"
 					>

@@ -41,10 +41,11 @@ import newTemplateModal from '../../../../assets/images/newTemplateModal.svg';
 import pdfIcon from '../../../../assets/images/pdfIcon.svg';
 import { getPbrTemplateData, getDataView } from '../../../../services/pbrService';
 import { tableColumns } from '../../../../utils/TableColumns'
-import { useHistory,useRouteMatch } from 'react-router-dom';
-import { loadTemplateInfo, loadMatBatchInfo,loadPageIdentifier } from '../../../../duck/actions/pbrAction';
+import { useHistory, useRouteMatch } from 'react-router-dom';
+import { loadTemplateInfo, loadMatBatchInfo, loadPageIdentifier } from '../../../../duck/actions/pbrAction';
 import StatusBlock from '../../../../components/StatusBlock/statusBlock'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper'
+import ScreenHeader from '../../../../components/ScreenHeader/screenHeader'
 const { Search } = Input;
 
 function PaperBatchRecords() {
@@ -167,7 +168,7 @@ function PaperBatchRecords() {
                                     style={{ backgroundColor: getRandomColor(index + 1) }}>
                                     {text?.split('')[0]?.toUpperCase()}{' '}
                                 </Avatar>
-                                <span className='avatar-text' style={{marginLeft:10}}>{text}</span>
+                                <span className='avatar-text' style={{ marginLeft: 10 }}>{text}</span>
                             </div>
                         )
 
@@ -193,9 +194,9 @@ function PaperBatchRecords() {
     }
 
     const getRandomColor = index => {
-		let colors = ['#56483F', '#728C69', '#c04000', '#c19578'];
-		return colors[index % 4];
-	};
+        let colors = ['#56483F', '#728C69', '#c04000', '#c19578'];
+        return colors[index % 4];
+    };
 
     const getViewData = async () => {
         let res = await getDataView()
@@ -203,7 +204,8 @@ function PaperBatchRecords() {
         setFileName(res?.Data[0]?.filename)
         setMatBatch({
             material_num: res?.Data[0]?.product_num,
-            batch: res?.Data[0].batch_num
+            batch: res?.Data[0].batch_num,
+            site: res?.Data[0].site_num
         })
 
     }
@@ -413,8 +415,9 @@ function PaperBatchRecords() {
     const onRadioChange = (val) => {
         let arr = dataView.filter(item => item.filename === val)
         setMatBatch({
-            material_num: arr[0].product_num,
-            batch: arr[0].batch_num
+            material_num: arr[0]?.product_num,
+            batch: arr[0]?.batch_num,
+            site: arr[0]?.site_num
         })
     }
 
@@ -457,7 +460,7 @@ function PaperBatchRecords() {
             </div>
             <Row className='p-28'>
                 <Col span={24} className='banner'>
-                    <Card bordered={false}>
+                    {/* <Card bordered={false}>
                         <div className='card-body-div'>
                             <div className='text-descp'>
                                 <h2>
@@ -470,7 +473,17 @@ function PaperBatchRecords() {
                             <img src={illustrations} alt='banner' />
                             <h6>{resultDate}</h6>
                         </div>
-                    </Card>
+                    </Card> */}
+                    <ScreenHeader
+                        bannerbg={{
+                            background:
+                                'linear-gradient(180deg, rgba(199, 144, 129, 0.15) 0%, rgba(223, 165, 121, 0.56) 100%)',
+                        }}
+                        title={`Howdy ${localStorage.getItem('username')},`}
+                        description='In the mood to draw up some template today?'
+                        source={illustrations}
+                        sourceClass='pbr-image'
+                    />
                 </Col>
             </Row>
             <Row className='landing-content p-28'>
@@ -518,7 +531,35 @@ function PaperBatchRecords() {
                         <Row className='recent-charts'>
                             <Col span={6} />
                             <Col span={12} className='p36'>
-                                <h3>Recently created templates</h3>
+                                <Row gutter={16} className="title">
+                                    <Col span={8}>
+                                        <h3>Recently created charts</h3>
+                                    </Col>
+                                    <Col span={14} className="title-legends">
+                                        <dl>
+                                            <dt className="grey"></dt>
+                                            <dd>Draft</dd>
+                                            <dt className="yellow"></dt>
+                                            <dd>Awaiting Approval</dd>
+                                            <dt className="green"></dt>
+                                            <dd>Approved</dd>
+                                        </dl>
+                                    </Col>
+                                </Row>
+                                {/* <div className='card-legends'>
+                                    <h3>Recently created templates</h3>
+                                    <div className='legends'>
+                                        <p>
+                                            <span className='drft'></span>Draft
+                                        </p>
+                                        <p>
+                                            <span className='await'></span>Awaiting approval
+                                        </p>
+                                        <p>
+                                            <span className='aprv'></span>Approved
+                                        </p>
+                                    </div>
+                                </div> */}
                                 <Divider />
                                 <Row gutter={24}>
                                     {templateData &&
@@ -560,57 +601,81 @@ function PaperBatchRecords() {
                     </Button>,
                 ]}
                 width={750}
+
             >
                 <div className='newTemplate-modalBody'>
                     <Row className='recent-charts'>
                         <Col span={12} className='newTemplate-imgBlock'>
-                            <img src={newTemplateModal} alt='banner' style={{ height: 150 }} />
+                            <img src={newTemplateModal} alt='banner' style={{ height: 218 }} />
                         </Col>
                         <Col span={12} className='newTemplate-contentBlock'>
-                            <Form
-                                layout='vertical'
-                                form={form}
-                                className='formNewTemplate'
-                                name="basic"
-                                onValuesChange={handleValuesChange}
-                                onFinish={onFinish}
-                            >
-                                <div className='formNewTemplateDiv'>
-                                    <Form.Item
-                                        label='Template name'
-                                        name='templateName'
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: 'Please input your password!',
-                                            },
-                                        ]}
+                            <Row>
+                                <Form
+                                    layout='vertical'
+                                    form={form}
+                                    className='formNewTemplate'
+                                    name="basic"
+                                    onValuesChange={handleValuesChange}
+                                    onFinish={onFinish}
+                                >
+                                    <div className='formNewTemplateDiv'>
+                                        <Form.Item
+                                            label='Template name'
+                                            name='templateName'
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: 'Please input your password!',
+                                                },
+                                            ]}
 
-                                    >
-                                        <Input />
-                                    </Form.Item>
-                                    <Form.Item label='Status' name='status'>
-                                        <Input placeholder='Draft' disabled />
-                                    </Form.Item>
-                                    <Form.Item
-                                        label='Material number'
-                                    // name='materialNumber'
-                                    >
-                                        <Input value={matBatch?.material_num} />
-                                    </Form.Item>
-                                    <Form.Item
-                                        label='Batch number'
-                                    // name='batchNumber'
-                                    >
-                                        <Input value={matBatch?.batch} />
-                                    </Form.Item>
-                                </div>
-                            </Form>
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                        <Form.Item label='Status' name='status'>
+                                            <Input placeholder='Draft' disabled />
+                                        </Form.Item>
+                                        <Form.Item
+                                            label='Material number'
+                                        // name='materialNumber'
+                                        >
+                                            <Input value={matBatch?.material_num} />
+                                        </Form.Item>
+                                        <Form.Item
+                                            label='Batch number'
+                                        // name='batchNumber'
+                                        >
+                                            <Input value={matBatch?.batch} />
+                                        </Form.Item>
+                                    </div>
+                                </Form>
+                            </Row>
+                            <Row>
+                                <Radio.Group
+                                    // onChange={onChange}
+                                    defaultValue={dataView[0]?.filename}
+                                    className='radioPdfBlock'
+                                    onChange={(e) => {
+                                        setFileName(e.target.value)
+                                        onRadioChange(e.target.value)
+                                    }}
+                                >
+                                    {dataView.map((item, index) => (
+                                        <Radio.Button value={`${item.filename}`} >
+                                            <div className='pdfListBlock'>
+                                                <img src={pdfIcon} alt='pdfIcon' />
+                                                <span>{item.filename.split('_')[0]}</span>
+                                            </div>
+                                        </Radio.Button>
+                                    ))}
+                                </Radio.Group>
+                            </Row>
                         </Col>
                     </Row>
 
-                    <Row>
-                        <Col span={24} className='newTemplate-contentBlock'>
+                    {/* <Row>
+                        <Col span={12}></Col>
+                        <Col span={12} className='newTemplate-contentBlock'>
                             <Radio.Group
                                 // onChange={onChange}
                                 defaultValue={dataView[0]?.filename}
@@ -630,7 +695,7 @@ function PaperBatchRecords() {
                                 ))}
                             </Radio.Group>
                         </Col>
-                    </Row>
+                    </Row> */}
 
                 </div>
             </Modal>
