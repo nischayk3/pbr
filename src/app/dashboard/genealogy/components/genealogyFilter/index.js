@@ -17,17 +17,14 @@ import './style.scss';
 import SelectSearchField from '../../../../../components/SelectSearchField/SelectSearchField';
 import Toggle from '../../../../../components/Toggle';
 import { showNotification } from '../../../../../duck/actions/commonActions.js';
-
+import debounce from "lodash/debounce";
 
 function Filter(props) {
 	const [disabled, setDisabled] = useState(true);
 	const [isCheck, setisCheck] = useState(true);
-
 	const [isEmptyPlant, setIsEmptyPlant] = useState(false);
 	const [isEmptyProduct, setIsEmptyProduct] = useState(false);
-
 	const [isEmptyBatch, setIsEmptyBatch] = useState(false);
-
 	const [selectParam, setselectParam] = useState({
 		plant: '',
 		productCode: '',
@@ -48,12 +45,15 @@ function Filter(props) {
 		getProductType();
 	}, []);
 
+
+
 	const handleChangeToggle = e => {
 		setisCheck(typeof isCheck === 'boolean' ? !isCheck : e.target.value);
 	};
 
 	const onChangeParam = (value, field) => {
 		if (value != null) {
+
 			if (field === 'plant') {
 				getGenealogyFilterData(
 					value,
@@ -67,8 +67,7 @@ function Filter(props) {
 					return { ...prevState, plant: value };
 				});
 				setIsEmptyPlant(false);
-			}
-			if (field === 'batch_num') {
+			} else if (field === 'batch_num') {
 				getGenealogyFilterData(
 					selectParam['plant'],
 					selectParam['productCode'],
@@ -148,8 +147,10 @@ function Filter(props) {
 		}
 	};
 
-	const onSearchParam = (type, field) => {
+	const onSearchParam = debounce((type, field) => {
 		if (type != null) {
+
+
 			if (field === 'plant') {
 				getGenealogyFilterData(
 					selectParam['plant'],
@@ -184,7 +185,7 @@ function Filter(props) {
 				setIsEmptyBatch(false);
 			}
 		}
-	};
+	}, 500);
 
 	const getGenealogyFilterData = async (
 		selectedPlantValue,

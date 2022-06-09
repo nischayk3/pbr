@@ -167,7 +167,7 @@ const MathFunction = (props) => {
 						showIcon
 					/>
 				) : (
-					<div>
+					<div className="script-editor-wrapper">
 						<CodeEditor
 							value={mathEditorValue}
 							language="py"
@@ -185,9 +185,7 @@ const MathFunction = (props) => {
 						/>
 
 						<span>
-
 							<>
-
 								<Button
 									onClick={functionEvaluate}
 									type="text"
@@ -208,7 +206,6 @@ const MathFunction = (props) => {
 									Create
 								</Button>
 							</>
-
 							<img
 								className="keyboard-icon"
 								src={FunctionKey}
