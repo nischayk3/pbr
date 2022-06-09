@@ -1,0 +1,431 @@
+{
+	"coverage": [
+		{
+			"batchstats": "32/33",
+			"coverage_metric_percent": "97.0%",
+			"function_id": "1",
+			"function_name": "function-1"
+		}
+	],
+	"data_table": [
+		{
+			"batch_num": "ABL2258",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2019-11-04T12:34:58Z",
+			"uom_code": "PPM"
+		},
+		{
+			"batch_num": "ABL2259",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2019-11-04T12:34:58Z",
+			"uom_code": "PPM"
+		},
+		{
+			"batch_num": "ABL2261",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2019-11-04T12:34:58Z",
+			"uom_code": "PPM"
+		},
+		{
+			"batch_num": "ABL2264",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2019-11-04T12:34:58Z",
+			"uom_code": "PPM"
+		},
+		{
+			"batch_num": "ABR9486",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-05-20T16:28:40Z",
+			"uom_code": "PPM"
+		},
+		{
+			"batch_num": "ABR9487",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-05-20T16:28:40Z",
+			"uom_code": "PPM"
+		},
+		{
+			"batch_num": "ABR9491",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-07-02T15:46:50Z",
+			"uom_code": "PPM"
+		},
+		{
+			"batch_num": "ABR9492",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-07-02T15:46:50Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABT9563",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-07-02T15:46:50Z",
+			"uom_code": "PPM"
+		},
+		{
+			"batch_num": "ABT9564",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-07-02T15:46:50Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABT9565",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-07-02T15:46:50Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABT9566",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-07-02T15:46:50Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABT9567",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABV4289",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABV4290",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABV4292",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABV4293",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABV4294",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABV4295",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABV4296",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABV4297",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABV4298",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABV4299",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABY0079",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABY0080",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "PPM"
+		},
+		{
+			"batch_num": "ABY0081",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "PPM"
+		},
+		{
+			"batch_num": "ABY0082",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABY0083",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "PPM"
+		},
+		{
+			"batch_num": "ABY0084",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "PPM"
+		},
+		{
+			"batch_num": "ABY0086",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABY0088",
+			"function-1": 5.0,
+			"recorded_date_function-1": "2020-04-09T16:09:24Z",
+			"uom_code": "%_ANHY"
+		},
+		{
+			"batch_num": "ABY0089",
+			"function-1": 99.932,
+			"recorded_date_function-1": "2021-03-05T11:02:21Z",
+			"uom_code": "%_ANHY"
+		}
+	],
+	"functions": [
+		{
+			"batch_num": "ABL2258",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABL2259",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABL2261",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABL2264",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABR9486",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABR9487",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABR9491",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABR9492",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABT9563",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABT9564",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABT9565",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABT9566",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABT9567",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABV4289",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABV4290",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABV4292",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABV4293",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABV4294",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABV4295",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABV4296",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABV4297",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABV4298",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABV4299",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABY0079",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABY0080",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABY0081",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABY0082",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABY0083",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABY0084",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABY0086",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABY0088",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"batch_num": "ABY0089",
+			"function_index": "1",
+			"parameter": "function-1",
+			"recorded_date": "2021-03-05T11:02:21Z",
+			"value": 99.932
+		}
+	],
+	"view_status": ""
+}
