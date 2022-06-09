@@ -27,7 +27,7 @@ import {
 	approvedData,
 	finalFileUpload,
 } from '../../../../duck/actions/fileUploadAction';
-import { getAuthenticate } from '../../../../services/loginService';
+import { getAuthenticate, getAuthenticateWithoutAD } from '../../../../services/loginService';
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 
@@ -121,12 +121,12 @@ class Uploader extends Component {
 				this.setState({
 					username: e.target.value,
 				});
-			} 
+			}
 			if (field === 'password') {
 				this.setState({
 					password: e.target.value,
 				});
-			} 
+			}
 		}
 	};
 
@@ -668,6 +668,22 @@ class Uploader extends Component {
 		}
 	};
 
+	onAuthenticateWithoutAD = async () => {
+		let req = {};
+		let header = {
+			username: this.state.username,
+			password: this.state.password,
+		};
+		const res = await getAuthenticateWithoutAD(req, header);
+		if (res.Status != 200) {
+			this.props.showNotification('error', res.Message);
+			this.closeModel();
+			this.closeModelSignature1();
+		} else {
+			this.setState({ isAuth: true });
+		}
+	}
+
 	render() {
 		const {
 			approvedDataRes,
@@ -837,7 +853,7 @@ class Uploader extends Component {
 												showIcon
 											/>
 										)}
-										
+
 
 										{onChangeStatus && onChangeStatus === 300 && (
 											<Alert
@@ -1081,14 +1097,24 @@ class Uploader extends Component {
 														</Button>
 													</>
 												) : (
-													<Button
-														type='primary'
-														style={{
-															backgroundColor: '#093185',
-														}}
-														onClick={() => this.onAuthenticate()}>
-														Authenticate
-													</Button>
+													<>
+														<Button
+															type='primary'
+															style={{
+																backgroundColor: '#093185',
+															}}
+															onClick={() => this.onAuthenticate()}>
+															Authenticate with AD
+														</Button>
+														<Button
+															type='primary'
+															style={{
+																backgroundColor: '#093185',
+															}}
+															onClick={() => this.onAuthenticateWithoutAD()}>
+															Authenticate without AD
+														</Button>
+													</>
 												)}
 											</div>
 										</Modal>
@@ -1166,14 +1192,24 @@ class Uploader extends Component {
 														</Button>
 													</>
 												) : (
-													<Button
-														type='primary'
-														style={{
-															backgroundColor: '#093185',
-														}}
-														onClick={() => this.onAuthenticate()}>
-														Authenticate
-													</Button>
+													<>
+														<Button
+															type='primary'
+															style={{
+																backgroundColor: '#093185',
+															}}
+															onClick={() => this.onAuthenticate()}>
+															Authenticate with AD
+														</Button>
+														<Button
+															type='primary'
+															style={{
+																backgroundColor: '#093185',
+															}}
+															onClick={() => this.onAuthenticateWithoutAD()}>
+															Authenticate without AD
+														</Button>
+													</>
 												)}
 											</div>
 										</Modal>
@@ -1206,7 +1242,7 @@ class Uploader extends Component {
 														))}
 													</Select>
 												</div>
-												
+
 											</div>
 											<div className='signature-modal'>
 												<Button
@@ -1322,14 +1358,24 @@ class Uploader extends Component {
 															</Button>
 														</>
 													) : (
-														<Button
-															type='primary'
-															style={{
-																backgroundColor: '#093185',
-															}}
-															onClick={() => this.onAuthenticate()}>
-															Authenticate
-														</Button>
+														<>
+															<Button
+																type='primary'
+																style={{
+																	backgroundColor: '#093185',
+																}}
+																onClick={() => this.onAuthenticate()}>
+																Authenticate with AD
+															</Button>
+															<Button
+																type='primary'
+																style={{
+																	backgroundColor: '#093185',
+																}}
+																onClick={() => this.onAuthenticateWithoutAD()}>
+																Authenticate without AD
+															</Button>
+														</>
 													)}
 												</div>
 											</Modal>
@@ -1362,7 +1408,7 @@ class Uploader extends Component {
 															))}
 														</Select>
 													</div>
-													
+
 												</div>
 												<div className='signature-modal'>
 													<Button
