@@ -6,8 +6,6 @@ import {
   showLoader,
   showNotification,
 } from '../../../../duck/actions/commonActions';
-import ScreenHeader from "../../../../components/ScreenHeader/screenHeader";
-import illustrations from "../../../../assets/images/Dashboard-Banner.svg";
 import Highlighter from 'react-highlight-words';
 import { Card, Table, Button, Col, Row, Checkbox , Input, Space} from 'antd';
 import { getPbrReviewerData, updateApprove } from '../../../../services/pbrService'
@@ -77,9 +75,7 @@ function PbrReviewer() {
   const updateStatus = (e, record) => {
 
     let resp = [...arr];
-    console.log(arr);
     resp.push(record.id);
-    console.log(resp);
     setArr(resp);
 
   };
