@@ -4,6 +4,9 @@ pipeline {
         DOCKER_IMAGE = 'registry.cloud.mareana.com/mdh-cpv/dev'
     }
     agent { label 'cpv_node' } 
+    options {
+        ansiColor('xterm')
+    }
     stages {
      //stage('Checkout SCM') {
     //    steps {
