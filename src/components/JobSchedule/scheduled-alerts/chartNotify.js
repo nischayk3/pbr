@@ -331,60 +331,69 @@ const ChartNotify = (props) => {
       Saturday: false,
     });
   };
+  const checkValidRequest = () => {
+    if (radioValue == 3 && everyDayValue.length <= 0) {
+      return false
+    }
+    else
+      return true
+  }
 
   const SaveData = async () => {
-    let req = {};
-    let login_response = JSON.parse(localStorage.getItem("login_details"));
+    let is_valid = checkValidRequest()
+    if (is_valid) {
+      let req = {};
+      let login_response = JSON.parse(localStorage.getItem("login_details"));
 
-    let request_headers = {
-      "content-type": "application/json",
-      "x-access-token": login_response.token ? login_response.token : "",
-      "resource-name": "DASHBOARD",
-    };
+      let request_headers = {
+        "content-type": "application/json",
+        "x-access-token": login_response.token ? login_response.token : "",
+        "resource-name": "DASHBOARD",
+      };
 
-    req["app_data"] = props.name ? props.name : props.appType;
-    req["dag_id"] = " ";
-    req["created_by"] = localStorage.getItem("username")
-      ? localStorage.getItem("username")
-      : "";
-    req["app_type"] = props.appType;
-    req["app_id"] = props.id ? props.id : "C222";
+      req["app_data"] = props.name ? props.name : props.appType;
+      req["dag_id"] = " ";
+      req["created_by"] = localStorage.getItem("username")
+        ? localStorage.getItem("username")
+        : "";
+      req["app_type"] = props.appType;
+      req["app_id"] = props.id ? props.id : "C222";
 
-    let email_config = {};
-    email_config["subject"] =
-      subjectContent.length > 0 ? subjectContent : `Update For ${props.id}`;
-    email_config["scheduled_start"] = scheduleEmailStartDate;
-    email_config["scheduled_time"] = scheduleEmailTime;
-    email_config["frequency_unit"] =
-      selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule;
-    email_config["email_list"] = emailList;
-    email_config["selected_alert"] = selectedAlert;
-    email_config["attachment"] = "";
-    email_config["data_table"] = pdf;
-    email_config["created_by"] = localStorage.getItem("username")
-      ? localStorage.getItem("username")
-      : "";
-    email_config["selected_days_obj"] = selectedDays;
+      let email_config = {};
+      email_config["subject"] =
+        subjectContent.length > 0 ? subjectContent : `Update For ${props.id}`;
+      email_config["scheduled_start"] = scheduleEmailStartDate;
+      email_config["scheduled_time"] = scheduleEmailTime;
+      email_config["frequency_unit"] =
+        selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule;
+      email_config["email_list"] = emailList;
+      email_config["selected_alert"] = selectedAlert;
+      email_config["attachment"] = "";
+      email_config["data_table"] = pdf;
+      email_config["created_by"] = localStorage.getItem("username")
+        ? localStorage.getItem("username")
+        : "";
+      email_config["selected_days_obj"] = selectedDays;
 
-    if (selectedSchedule == "Weekly") {
-      email_config["selected_days"] = Object.keys(selectedDays).filter(
-        (k) => selectedDays[k] === true
-      );
-    }
-    if (selectedSchedule == "Daily") {
-      if (radioValue == 3) {
-        email_config["daily_frequency"] =
-          "Every" + " " + everyDayValue + " " + selectedTimeRange;
-      } else {
-        email_config["daily_frequency"] = radioValue;
+      if (selectedSchedule == "Weekly") {
+        email_config["selected_days"] = Object.keys(selectedDays).filter(
+          (k) => selectedDays[k] === true
+        );
       }
-    }
+      if (selectedSchedule == "Daily") {
+        if (radioValue == 3) {
+          email_config["daily_frequency"] =
+            "Every" + " " + everyDayValue + " " + selectedTimeRange;
+        } else {
+          email_config["daily_frequency"] = radioValue;
+        }
+      }
 
-    req["email_config"] = email_config;
-    req["frequency"] =
-      selectedSchedule == "Repeat Once"
-        ? "Once"
-        : convertExpresion(
+      req["email_config"] = email_config;
+      req["frequency"] =
+        selectedSchedule == "Repeat Once"
+          ? "Once"
+          : convertExpresion(
             scheduleEmailStartDate,
             scheduleEmailTime,
             selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
@@ -393,33 +402,37 @@ const ChartNotify = (props) => {
             Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
             everyDayValue
           );
-    req["frequency_unit"] =
-      selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule;
-    req["job_status"] = "NEW";
-    req["job_type"] = "email";
-    req["notify_emails"] = emailList ? emailList : [];
-    req["scheduled_end"] =
-      selectedSchedule == "Repeat Once" ? scheduleEmailStartDate : "2030/12/12";
-    req["scheduled_start"] = scheduleEmailStartDate;
-    // req["cron_exp"] = convertExpresion(
-    //   scheduleEmailStartDate,
-    //   scheduleEmailTime,
-    //   selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
-    //   radioValue,
-    //   selectedTimeRange,
-    //   Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
-    //   everyDayValue
-    // );
-    if (props.job_id) req["job_id"] = props.job_id ? props.job_id : " ";
+      req["frequency_unit"] =
+        selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule;
+      req["job_status"] = "NEW";
+      req["job_type"] = "email";
+      req["notify_emails"] = emailList ? emailList : [];
+      req["scheduled_end"] =
+        selectedSchedule == "Repeat Once" ? scheduleEmailStartDate : "2030/12/12";
+      req["scheduled_start"] = scheduleEmailStartDate;
+      // req["cron_exp"] = convertExpresion(
+      //   scheduleEmailStartDate,
+      //   scheduleEmailTime,
+      //   selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
+      //   radioValue,
+      //   selectedTimeRange,
+      //   Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
+      //   everyDayValue
+      // );
+      if (props.job_id) req["job_id"] = props.job_id ? props.job_id : " ";
 
-    let res = await putJob(req, request_headers);
+      let res = await putJob(req, request_headers);
 
-    if (res.Status == 200) {
-      dispatch(showNotification("success", "Saved"));
-    } else {
-      dispatch(
-        showNotification("error", res.Message ? res.Message : res.detail)
-      );
+      if (res.Status == 200) {
+        dispatch(showNotification("success", "Saved"));
+      } else {
+        dispatch(
+          showNotification("error", res.Message ? res.Message : res.detail)
+        );
+      }
+    }
+    else {
+      showNotification("error", 'Required Fields are missing')
     }
   };
   // const changeTab = (activeKey) => {

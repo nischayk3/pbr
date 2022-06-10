@@ -9,9 +9,11 @@
 	margin-right: 16px;
 	height: 71px;
 	cursor: pointer;
+
 	span {
 		color: var(--primary-color);
 	}
+
 	p {
 		margin: 0px;
 		font-family: var(--primary-font-family);
@@ -23,9 +25,11 @@
 		color: var(--primary-color);
 	}
 }
+
 .add-var_block_bg {
 	background: #adc6ff;
 }
+
 .var_block_card {
 	background: #f0f5ff;
 	border: 1px dashed #adc6ff;
@@ -36,33 +40,40 @@
 	padding: 11.5px 17px 11px 17px;
 	margin: 0px 16px 12px 0;
 	height: 71px;
+
 	p {
 		margin: 0;
 	}
+
 	.var-btn {
 		display: flex;
 		flex-wrap: nowrap;
 		justify-content: space-between;
+
 		button {
 			background: transparent;
 			border: 0;
 			padding: 0;
 		}
+
 		.edit {
 			color: var(--primary-color);
 		}
+
 		.delete {
 			color: #ff2828;
 		}
 	}
 }
+
 .function-editor {
 	span {
-		> input {
+		>input {
 			height: 66px;
 			border: 1px solid #797979;
 		}
 	}
+
 	.ant-input:placeholder-shown {
 		text-overflow: ellipsis;
 		font-family: var(--primary-font-family);
@@ -73,8 +84,10 @@
 		letter-spacing: 0.01em;
 		color: #000000;
 	}
-	> .ant-input-affix-wrapper {
+
+	>.ant-input-affix-wrapper {
 		padding: 0px 18px;
+
 		.ant-input-suffix {
 			span {
 				button {
@@ -104,15 +117,18 @@
 		font-size: 16px;
 		line-height: 24px;
 		color: #262626;
+
 		.heading-icon {
 			color: #faad14;
 			padding: 0 12px 0 0;
 		}
 	}
+
 	.function-input {
 		width: 285px;
 		margin: 0px auto;
 	}
+
 	.function-btn {
 		display: flex;
 		flex-wrap: nowrap;
@@ -125,10 +141,12 @@ span.batchChecked,
 span.statusChecked {
 	color: #00a811;
 	font-size: 16px;
+
 	.anticon-check-circle {
 		font-size: 16px;
 	}
 }
+
 span.batchClosed,
 span.statusClosed {
 	color: #db0000;
@@ -136,12 +154,13 @@ span.statusClosed {
 }
 
 .custom-check {
-	> span {
+	>span {
 		background: var(--primary-color);
 		border-radius: 50px;
 		width: 18px;
 		height: 18px;
 		border: 1px solid var(--primary-color);
+
 		.ant-checkbox-inner {
 			background-color: transparent;
 			border-color: transparent;
@@ -157,6 +176,7 @@ span.statusClosed {
 	align-items: center;
 	justify-content: center;
 	padding: 22px;
+
 	p {
 		margin: 0;
 		font-family: var(--primary-font-family);
@@ -168,6 +188,7 @@ span.statusClosed {
 		letter-spacing: 0.01em;
 		color: #000000;
 	}
+
 	span {
 		span {
 			background: #52c41a;
@@ -190,6 +211,7 @@ span.statusClosed {
 .eval-table {
 	height: 400px;
 }
+
 .custom-eval-btn {
 	font-family: var(--primary-font-family) !important;
 	font-weight: 400 !important;
@@ -203,6 +225,7 @@ span.statusClosed {
 	background: #fff !important;
 	margin-top: 10px;
 }
+
 .custom-secondary-eval-btn {
 	font-family: var(--primary-font-family) !important;
 	font-weight: 400 !important;
@@ -216,6 +239,7 @@ span.statusClosed {
 	background: var(--primary-color) !important;
 	margin-left: 10px;
 }
+
 .custom-eval-btn-disable {
 	font-family: var(--primary-font-family) !important;
 	font-weight: 400 !important;
@@ -230,17 +254,17 @@ span.statusClosed {
 	margin-top: 10px;
 	margin-left: 10px;
 }
-.keyboard-icon {
-	margin-left: 69%;
-}
+
 .variable-name-popup {
 	p {
 		margin-bottom: 4px !important;
 	}
+
 	button {
 		margin-top: 15px;
 	}
 }
+
 .variable-cancel-button {
 	button {
 		margin-top: 15px;
@@ -253,12 +277,24 @@ span.statusClosed {
 	font-weight: 300 !important;
 	font-size: 16px !important;
 }
+
 .script-help-heading {
 	font-family: var(--primary-font-family) !important;
 	font-weight: 500 !important;
 	font-size: 16px !important;
 }
+
 .script-info {
 	overflow-y: scroll;
 	height: 400px;
+}
+
+.script-editor-wrapper {
+	position: relative;
+
+	.keyboard-icon {
+		position: absolute;
+		top: 6px;
+		right: 25px;
+	}
 }

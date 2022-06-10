@@ -201,6 +201,47 @@ describe("Render View Creation Page", () => {
 
 		cy.log("Modal should open")
 		cy.get('.ant-modal-content').should('be.visible')
+
+		cy.log("Add Variable Name");
+		cy.get('.input_field > .ant-input').clear();
+		cy.get('.input_field > .ant-input').type('var1');
+
+		cy.get('.variable-cancel-button > .ant-btn').click();
+		cy.get('.add-var_block > .ant-btn > span').click();
+
+		cy.get('.input_field > .ant-input').clear();
+		cy.get('.input_field > .ant-input').type('var1');
+
+		cy.log("Create A Variable");
+		cy.get('.variable-name-popup > .ant-btn').click();
+
+		cy.log('Enter variable name to script');
+		cy.get('.w-tc-editor-text').type('var1');
+
+	})
+
+	it('Render Function Evaluation', () => {
+		cy.intercept('GET', '**/view-evaluate', { fixture: 'funEvalutionData.json' });
+		cy.log('Validate Function');
+		cy.get(':nth-child(2) > .custom-eval-btn').click();
+
+		cy.log('Function data modal open');
+		cy.get('.ant-modal-content').should('be.visible');
+
+		cy.wait(2000);
+		cy.log('Function Modal Closed');
+		cy.get('.ant-modal-close-x > .anticon > svg ').click();
+	})
+
+	it('Render Function Creation', () => {
+		cy.log('Function Modal Open');
+		cy.get('.custom-secondary-eval-btn > span').click();
+
+		cy.log('Enter function name');
+		cy.get('.function-input > .input_field > .ant-input').type('function_1');
+
+		cy.log("Save Function")
+		cy.get('.custom-secondary-btn > span').click({ force: true })
 	})
 
 	// 	it('Load View Creation Page Correctly', () => {

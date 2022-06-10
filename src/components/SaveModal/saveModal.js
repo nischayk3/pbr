@@ -28,7 +28,7 @@ function SaveModal(props) {
 						/> <br />
 						{id ? <b style={{ marginTop: '10px' }}>Report ID :{id}</b> : <></>}
 						<br />
-						<p style={{ marginTop: '7px' }}>Changes have been successfully saved </p>
+						<p style={{ marginTop: '7px' }}>New report is created successfully</p>
 					</center>
 				</div>
 
