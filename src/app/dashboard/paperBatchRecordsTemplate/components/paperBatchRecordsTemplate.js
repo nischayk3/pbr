@@ -1365,28 +1365,28 @@ function PaperBatchRecordsTemplate() {
         },
         {
             title: 'Key',
-            dataIndex: 'key_',
-            key: 'key',
+            dataIndex: 'anchor_key',
+            key: 'anchor_key',
         },
         {
             title: 'Value',
-            dataIndex: 'value',
-            key: 'value',
+            dataIndex: 'snippet_value',
+            key: 'snippet_value',
         },
         {
             title: 'Product',
-            dataIndex: 'product',
-            key: 'product',
+            dataIndex: 'product_num',
+            key: 'product_num',
         },
         {
             title: 'Batch',
-            dataIndex: 'batch',
-            key: 'batch',
+            dataIndex: 'batch_num',
+            key: 'batch_num',
         },
         {
             title: 'Site',
-            dataIndex: 'site',
-            key: 'site',
+            dataIndex: 'site_num',
+            key: 'site_num',
         },
         {
             title: 'UOM',
@@ -2464,7 +2464,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         <Button type='primary' className='defineTableBtn' onClick={findTemplate}>
                                                                                             <MonitorOutlined /> Find
                                                                                         </Button>
-                                                                                        <p>Found in {`${fileList.length}/${searchedFileList.length}`} files</p>
+                                                                                        <p>Found in {`${fileList?.length}/${searchedFileList?.length}`} files</p>
                                                                                     </div>
                                                                                     <div>{fileList.map(item => (
                                                                                         <p>{item?.split('_')[0]}</p>
