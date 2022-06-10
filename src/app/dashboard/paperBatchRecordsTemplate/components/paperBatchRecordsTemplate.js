@@ -65,7 +65,8 @@ import {
     processBatchRecord,
     findParameter,
 } from '../../../../services/pbrService';
-import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper'
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import Signature from "../../../../components/ElectronicSignature/signature";
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Dragger } = Upload;
@@ -151,6 +152,12 @@ function PaperBatchRecordsTemplate() {
     const [templateInitialData, setTemplateInitialData] = useState({});
     const [pageIdentifierData, setPageIdentifierData] = useState({});
     const [parameterFormData, setParameterFormData] = useState([]);
+    const [isPublish, setIsPublish] = useState(false);
+    const [approveReject, setApproveReject] = useState("");
+    const [publishResponse, setPublishResponse] = useState({});
+    const [templateId, setTemplateId] = useState("C116");
+    const [templateVersion, setTemplateVersion] = useState("1");
+    const [templateStatus, setTemplateStatus] = useState("DRFT");
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
         setRightPanelCollapsed(!rightPanelCollapsed);
@@ -1358,28 +1365,28 @@ function PaperBatchRecordsTemplate() {
         },
         {
             title: 'Key',
-            dataIndex: 'key_',
-            key: 'key',
+            dataIndex: 'anchor_key',
+            key: 'anchor_key',
         },
         {
             title: 'Value',
-            dataIndex: 'value',
-            key: 'value',
+            dataIndex: 'snippet_value',
+            key: 'snippet_value',
         },
         {
             title: 'Product',
-            dataIndex: 'product',
-            key: 'product',
+            dataIndex: 'product_num',
+            key: 'product_num',
         },
         {
             title: 'Batch',
-            dataIndex: 'batch',
-            key: 'batch',
+            dataIndex: 'batch_num',
+            key: 'batch_num',
         },
         {
             title: 'Site',
-            dataIndex: 'site',
-            key: 'site',
+            dataIndex: 'site_num',
+            key: 'site_num',
         },
         {
             title: 'UOM',
@@ -1409,6 +1416,14 @@ function PaperBatchRecordsTemplate() {
         getBoundingBoxDataInfo(imageWidth, imageHeight, item.key)
 
     }
+    const handleClose = () => {
+        setIsPublish(false);
+    };
+
+    const PublishResponse = (res) => {
+        setPublishResponse(res);
+        setTemplateStatus(res.rep_stauts);
+    };
     const modes = (
         <Menu defaultSelectedKeys={["word"]} selectedKeys={[menuKey]} onClick={(item) => handleMenuChange(item)}>
             <Menu.Item key='word'>
@@ -1456,10 +1471,39 @@ function PaperBatchRecordsTemplate() {
                 </div>
                 <div className='sub-header'>
                     <div className='sub-header-title'>
-                        <div className='btns'>
-                            <Button className='custom-primary-btn'>Batch Process</Button>
-                            <Button className='custom-secondary-btn'>Publish</Button>
-                        </div>
+                        {Object.keys(params) &&
+                            Object.keys(params).length > 0 &&
+                            params.fromScreen !== "Workflow" ?
+                            (<div className='btns'>
+                                <Button
+                                    className='custom-secondary-btn'
+                                    onClick={() => {
+                                        setIsPublish(true);
+                                        setApproveReject("P");
+                                    }}>
+                                    Publish
+                                </Button>
+                                <Button style={{ margin: "0px 16px" }} className='custom-primary-btn'>Batch Process</Button>
+                            </div>)
+                            : (
+                                <div className='btns'>
+                                    <Button
+                                        className='custom-primary-btn'
+                                        onClick={() => {
+                                            setIsPublish(true);
+                                            setApproveReject("R");
+                                        }}>
+                                        Reject
+                                    </Button>
+                                    <Button style={{ margin: "0px 16px" }} className='custom-primary-btn'
+                                        onClick={() => {
+                                            setIsPublish(true);
+                                            setApproveReject("A");
+                                        }}
+                                    >Approve</Button>
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             </div>
@@ -1487,6 +1531,7 @@ function PaperBatchRecordsTemplate() {
                                     <Form onValuesChange={handleValuesChange} name="template_desc" onFinish={onFinish}
                                         // labelCol={{ span: 8 }}
                                         // wrapperCol={{ span: 16 }}
+                                        layout='vertical'
                                         initialValues={{ material_num: matBatch?.material_num, batch: matBatch?.batch, template_name: params?.tempalteName, status: "Draft" }}
                                     >
                                         {/* <Form.Item
@@ -1505,25 +1550,28 @@ function PaperBatchRecordsTemplate() {
                                         <Form.Item
                                             name='status'
                                             label="Status"
+                                            style={{marginBottom:10}}
                                         // rules={[{ required: true, message: 'Missing first name' }]}
                                         >
-                                            <Input style={{ width: 193, marginLeft: 59 }} disabled />
+                                            <Input  disabled />
                                             {/* <Input/> */}
                                         </Form.Item>
                                         <Form.Item
                                             name='material_num'
                                             label="Material"
+                                            style={{marginBottom:10}}
                                         // rules={[{ required: true, message: 'Missing first name' }]}
                                         >
-                                            <Input style={{ width: 193, marginLeft: 47 }} disabled />
+                                            <Input  disabled />
                                             {/* <Input/> */}
                                         </Form.Item>
                                         <Form.Item
                                             name='batch'
                                             label="Batch"
+                                            style={{marginBottom:10}}
                                         // rules={[{ required: true, message: 'Missing first name' }]}
                                         >
-                                            <Input style={{ width: 193, marginLeft: 61 }} disabled />
+                                            <Input  disabled />
                                             {/* <Input/> */}
                                         </Form.Item>
                                         {/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
@@ -2416,7 +2464,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         <Button type='primary' className='defineTableBtn' onClick={findTemplate}>
                                                                                             <MonitorOutlined /> Find
                                                                                         </Button>
-                                                                                        <p>Found in {`${fileList.length}/${searchedFileList.length}`} files</p>
+                                                                                        <p>Found in {`${fileList?.length}/${searchedFileList?.length}`} files</p>
                                                                                     </div>
                                                                                     <div>{fileList.map(item => (
                                                                                         <p>{item?.split('_')[0]}</p>
@@ -2683,6 +2731,16 @@ function PaperBatchRecordsTemplate() {
                     </div>
                 </div>
             </div>
+            <Signature
+                isPublish={isPublish}
+                handleClose={handleClose}
+                screenName="Pbr Creation"
+                PublishResponse={PublishResponse}
+                appType="VIEW"
+                dispId={templateId}
+                version={templateVersion}
+                status={approveReject}
+            />
         </div>
     );
 }
