@@ -113,8 +113,8 @@ function ReportDesignerNew(props) {
 	const [isSaved, setIsSaved] = useState(false);
 	const [reportName, setReportName] = useState('');
 	const [isNew, setIsNew] = useState(true);
-	const [visible, setVisible] = useState(false);
-	const [popvisible, setPopVisible] = useState(false);
+	// const [visible, setVisible] = useState(false);
+	// const [popvisible, setPopVisible] = useState(false);
 	// const [filterTable, setFilterTable] = useState(null);
 	const [viewId, setViewId] = useState('');
 	const [reportId, setReportId] = useState('');
@@ -132,12 +132,12 @@ function ReportDesignerNew(props) {
 	const [params, setParams] = useState(false)
 	const [selectedSectionCharts, setSelectedSectionCharts] = useState([])
 	const [sectionCharts, setCharts] = useState([])
-	const [publishResponse, setPublishResponse] = useState({});
+	// const [publishResponse, setPublishResponse] = useState({});
 	const [approveReject, setApproveReject] = useState('')
 	const [sectionKeys, setSectionKeys] = useState({})
 	const [sectionAddedCharts, setSectionAddedCharts] = useState({})
 	const [chartsLayout, setChartsLayout] = useState({})
-	const [chartsLayoutCompare, setChartsLayoutCompare] = useState({})
+	// const [chartsLayoutCompare, setChartsLayoutCompare] = useState({})
 	const [currentSection, setCurrentSection] = useState()
 
 
@@ -195,8 +195,8 @@ function ReportDesignerNew(props) {
 				LoadData(data)
 				setTimeout(() => {
 					setIsLoad(true);
-					setVisible(false)
-					setPopVisible(false);
+					// setVisible(false)
+					// setPopVisible(false);
 					dispatch(hideLoader())
 				}, 2000)
 			}
@@ -299,7 +299,7 @@ function ReportDesignerNew(props) {
 	};
 
 	const PublishResponse = (res) => {
-		setPublishResponse(res)
+		// setPublishResponse(res)
 		setStatus(res.rep_stauts)
 	}
 	//Get view table data
@@ -321,18 +321,18 @@ function ReportDesignerNew(props) {
 	//   setIsPublish(true)
 	// };
 
-	const getReportData = async (rep_id, rep_status) => {
-		// message.success(`${rep_id} selected`)
-		let req = { rep_status: rep_status ? rep_status : 'DRFT' };
-		if (rep_id)
-			req['rep_disp_id'] = rep_id
-		let data = await getReports(req)
+	// const getReportData = async (rep_id, rep_status) => {
+	// 	// message.success(`${rep_id} selected`)
+	// 	let req = { rep_status: rep_status ? rep_status : 'DRFT' };
+	// 	if (rep_id)
+	// 		req['rep_disp_id'] = rep_id
+	// 	let data = await getReports(req)
 
-		if (data['Data']) {
-			setReportData(data['Data']);
-			return data['Data']
-		}
-	};
+	// 	if (data['Data']) {
+	// 		setReportData(data['Data']);
+	// 		return data['Data']
+	// 	}
+	// };
 
 
 	//Get charts based on viewId-version
@@ -532,7 +532,7 @@ function ReportDesignerNew(props) {
 
 				setChartsLayout(layout_data['charts_layout'] ? layout_data['charts_layout'] : {})
 				setCharts(layout_data['charts_layout'] ? layout_data['charts_layout'] : {})
-				setChartsLayoutCompare(layout_data['charts_layout'] ? layout_data['charts_layout'] : {})
+				// setChartsLayoutCompare(layout_data['charts_layout'] ? layout_data['charts_layout'] : {})
 
 				let section_keys = layout_data['add_keys_layout'] ? layout_data['add_keys_layout'] : {}
 				setSectionKeys(section_keys)
@@ -679,9 +679,9 @@ function ReportDesignerNew(props) {
 	// 	dispatch(hideLoader())
 	// }
 
-	const isStyledDifferently = (rowObject, index) => {
-		return rowObject.isActive ? true : false;
-	}
+	// const isStyledDifferently = (rowObject, index) => {
+	// 	return rowObject.isActive ? true : false;
+	// }
 
 	return (
 		<div className='custom-wrapper'>
