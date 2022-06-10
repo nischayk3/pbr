@@ -52,7 +52,6 @@ const ViewCreation = (props) => {
 	const viewState = useSelector((state) => state.viewCreationReducer);
 	const dispatch = useDispatch();
 	const [count, setCount] = useState(1);
-	const [params, setParams] = useState(false);
 	const [moleculeList, setMoleculeList] = useState([]);
 	const [isPublish, setIsPublish] = useState(false);
 	const [moleculeId, setMoleculeId] = useState();
@@ -74,7 +73,6 @@ const ViewCreation = (props) => {
 	const [isSaveVisible, setIsSaveVisible] = useState(false);
 	const [viewName, setViewName] = useState("");
 	const [selectedFiles, setSelectedFiles] = useState({});
-	const [publishResponse, setPublishResponse] = useState({});
 	const [approveReject, setApproveReject] = useState("");
 	const { id } = useParams();
 
@@ -249,7 +247,7 @@ const ViewCreation = (props) => {
 	};
 
 	const PublishResponse = (res) => {
-		setPublishResponse(res);
+
 		setViewStatus(res.rep_stauts);
 	};
 
@@ -342,7 +340,7 @@ const ViewCreation = (props) => {
 								viewSummaryTable={viewSummaryTable}
 								setViewSummaryTable={setViewSummaryTable}
 								form={form}
-								params={params}
+
 							/>
 						</div>
 						<div className="viewCreation-materials">

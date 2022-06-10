@@ -68,7 +68,7 @@ function Genealogy() {
 	const [isUploadVisible, setIsUploadVisible] = useState(false);
 	const [selectedFileList, setSelectedFileList] = useState([]);
 	const [selectedFile, setSelectedFile] = useState(null);
-	const [uploadFile, setUploadFile] = useState();
+	const [uploadFile, setUploadFile] = useState([]);
 	const [fileName, setFileName] = useState('');
 	const [fileData, setFileData] = useState('');
 	const [uploading, setUploading] = useState(false);
@@ -444,7 +444,10 @@ function Genealogy() {
 			status: 'open',
 			uploadReason: 'PBR Document'
 		};
-		geanealogyFileDataUpload(reqData);
+
+
+
+		//geanealogyFileDataUpload(reqData);
 		fileUpload(file);
 	};
 
@@ -486,16 +489,25 @@ function Genealogy() {
 
 	const onChangeFile = info => {
 		const nextState = {};
+		const fileList = []
 		if (info.file.status === 'uploading') {
 			nextState.selectedFileList = [info.file];
 		} else if (info.file.status === 'done') {
-			nextState.selectedFileList = [info.file];
+			const nodeFileData = fileData && fileData.split('|');
+			fileList.push(info.file)
+			nextState.selectedFileList = fileList;
 			nextState.selectedFile = info.file;
 
 			var formData = new FormData();
-			formData.append('file', info.file.originFileObj);
-			formData.append('method', 'aws');
-
+			// formData.append('file', info.file.originFileObj);
+			//formData.append('method', 'aws');
+			info && info.fileList.map((item) => {
+				formData.append('file', item.originFileObj);
+				formData.append('fileSize', item.size)
+			})
+			formData.append('batchNum', nodeFileData[2])
+			formData.append('productNum', nodeFileData[1])
+			console.log("formData", formData);
 			setFileName(info.file.name);
 			setUploadFile(formData);
 		} else if (info.file.status === 'error') {
@@ -510,19 +522,23 @@ function Genealogy() {
 	};
 
 	const files = {
+		name: 'file',
+		multiple: true,
 		progress: {
 			strokeColor: {
 				'0%': '#108ee9',
 				'100%': '#87d068'
 			},
-			strokeWidth: 8,
+			strokeWidth: 2,
 			showInfo: true,
-			format: percent => `${parseFloat(percent.toFixed(2))}%`
+			format: percent => percent && `${parseFloat(percent.toFixed(2))}%`
 		},
 		onDrop(e) {
 			console.log('Dropped files', e.dataTransfer.files);
 		}
 	};
+
+
 
 	const dummyRequest = ({ onSuccess }) => {
 		setTimeout(() => {
@@ -534,12 +550,12 @@ function Genealogy() {
 		setIsUploadVisible(false);
 		setUploading(false);
 	};
-	console.log("props.pbrBatchData111111", pbrBatchData)
+
 	return (
 		<div className='custom-wrapper'>
 			<BreadCrumbWrapper />
 			<div className='custom-content-layout'>
-				{activateKey == '1' ? (
+				{activateKey == '1' && (
 					<div style={{ marginBottom: '9px' }}>
 						<ScreenHeader
 							bannerbg={{
@@ -551,8 +567,6 @@ function Genealogy() {
 							sourceClass='geanealogy-image'
 						/>
 					</div>
-				) : (
-					<></>
 				)}
 
 				<Tabs
@@ -620,7 +634,9 @@ function Genealogy() {
 									{...files}
 									onChange={onChangeFile}
 									customRequest={dummyRequest}
-									fileList={selectedFileList}>
+								// fileList={selectedFileList}
+								>
+
 									<p className='ant-upload-drag-icon'>
 										<InboxOutlined />
 									</p>
