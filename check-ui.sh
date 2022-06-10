@@ -1,5 +1,5 @@
 #!/bin/bash
-until curl -s -f -o /dev/null "http://localhost:3030"
+until curl -s -f -o /dev/null "http://localhost"
 do
   sleep 2
   echo " ui container not started yet"

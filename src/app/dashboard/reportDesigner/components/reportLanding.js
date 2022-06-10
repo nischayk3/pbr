@@ -38,6 +38,9 @@ export default function ReportLanding(props) {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [selectedReportId, setSelectedReportId] = useState('');
 	const [activeTab, setActiveTab] = useState('Design Report Template');
+	const [reportSearch, setReportSearch] = useState('')
+	const [genSearch, setReportGen] = useState('')
+
 
 	const { TabPane } = Tabs;
 	const history = useHistory();
@@ -254,13 +257,14 @@ export default function ReportLanding(props) {
 						sourceClass='dashboard-landing'
 					/>
 				</div>
-
 				<Card className='landing-card'>
 					<div style={{ width: '900px', marginLeft: '180px' }}>
 						<Input.Search
 							placeholder='Search by report ID, report name, chart ID, chart name, creator, status'
 							allowClear
 							className='landing-btn'
+							onChange={(e) => setReportSearch(e.target.value)}
+							value={reportSearch}
 							enterButton='Search'
 							size='large'
 							onSearch={search}
@@ -277,6 +281,8 @@ export default function ReportLanding(props) {
 										activeTab == 'Design Report Template'
 											? getLoadReport(record.rep_disp_id)
 											: getLoadReportGenerator(record.rep_disp_id);
+										setReportSearch(record.rep_disp_id)
+										setReportGen(record.rep_disp_id)
 									},
 								})}
 							/>
@@ -401,6 +407,8 @@ export default function ReportLanding(props) {
 									<Input.Search
 										onSearch={onSearch}
 										placeholder='Search by report ID or name'
+										onChange={(e) => setReportGen(e.target.value)}
+										value={genSearch}
 									/>
 								</Row>
 								<div className='landing-tiles'>
@@ -450,6 +458,7 @@ export default function ReportLanding(props) {
 										onRow={record => ({
 											onClick: e => {
 												NewReportGenerator(record.rep_disp_id);
+												setReportGen(record.rep_disp_id)
 											},
 										})}
 									/>
