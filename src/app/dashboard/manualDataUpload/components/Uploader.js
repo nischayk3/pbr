@@ -27,7 +27,7 @@ import {
 	approvedData,
 	finalFileUpload,
 } from '../../../../duck/actions/fileUploadAction';
-import { getAuthenticate } from '../../../../services/loginService';
+import { getAuthenticate, getAuthenticateWithoutAD } from '../../../../services/loginService';
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 
@@ -88,11 +88,7 @@ class Uploader extends Component {
 			'I am the author',
 			'Signing on behalf of another team member',
 		],
-		reasonListCancel: [
-			'I am an approver',
-			'I am the author',
-			'I do not want to insert duplicate record',
-		],
+
 		username: '',
 		isAuth: false,
 	};
@@ -125,12 +121,12 @@ class Uploader extends Component {
 				this.setState({
 					username: e.target.value,
 				});
-			} 
+			}
 			if (field === 'password') {
 				this.setState({
 					password: e.target.value,
 				});
-			} 
+			}
 		}
 	};
 
@@ -175,7 +171,6 @@ class Uploader extends Component {
 		});
 		const nextState = {};
 		if (info.file.type === 'application/pdf') {
-			// message.error(`${info.file.name} is not excel or csv file`);
 			this.setState({
 				toastOpen: true,
 				showLoader: false,
@@ -673,6 +668,22 @@ class Uploader extends Component {
 		}
 	};
 
+	onAuthenticateWithoutAD = async () => {
+		let req = {};
+		let header = {
+			username: this.state.username,
+			password: this.state.password,
+		};
+		const res = await getAuthenticateWithoutAD(req, header);
+		if (res.Status != 200) {
+			this.props.showNotification('error', res.Message);
+			this.closeModel();
+			this.closeModelSignature1();
+		} else {
+			this.setState({ isAuth: true });
+		}
+	}
+
 	render() {
 		const {
 			approvedDataRes,
@@ -682,7 +693,6 @@ class Uploader extends Component {
 			username,
 			password,
 			reasonList,
-			reasonListCancel,
 			cancelReason,
 			signatureReason1,
 			primaryFileRes,
@@ -843,9 +853,7 @@ class Uploader extends Component {
 												showIcon
 											/>
 										)}
-										{/* {onChangeStatus && onChangeStatus === 300 && (
-                          <Alert message={` Duplicate records found !!`} description="Please click on Next to Validation & Review." type="error" showIcon />
-                        )} */}
+
 
 										{onChangeStatus && onChangeStatus === 300 && (
 											<Alert
@@ -1089,14 +1097,24 @@ class Uploader extends Component {
 														</Button>
 													</>
 												) : (
-													<Button
-														type='primary'
-														style={{
-															backgroundColor: '#093185',
-														}}
-														onClick={() => this.onAuthenticate()}>
-														Authenticate
-													</Button>
+													<>
+														<Button
+															type='primary'
+															style={{
+																backgroundColor: '#093185',
+															}}
+															onClick={() => this.onAuthenticate()}>
+															Authenticate with AD
+														</Button>
+														<Button
+															type='primary'
+															style={{
+																backgroundColor: '#093185',
+															}}
+															onClick={() => this.onAuthenticateWithoutAD()}>
+															Authenticate without AD
+														</Button>
+													</>
 												)}
 											</div>
 										</Modal>
@@ -1174,14 +1192,24 @@ class Uploader extends Component {
 														</Button>
 													</>
 												) : (
-													<Button
-														type='primary'
-														style={{
-															backgroundColor: '#093185',
-														}}
-														onClick={() => this.onAuthenticate()}>
-														Authenticate
-													</Button>
+													<>
+														<Button
+															type='primary'
+															style={{
+																backgroundColor: '#093185',
+															}}
+															onClick={() => this.onAuthenticate()}>
+															Authenticate with AD
+														</Button>
+														<Button
+															type='primary'
+															style={{
+																backgroundColor: '#093185',
+															}}
+															onClick={() => this.onAuthenticateWithoutAD()}>
+															Authenticate without AD
+														</Button>
+													</>
 												)}
 											</div>
 										</Modal>
@@ -1207,22 +1235,14 @@ class Uploader extends Component {
 															width: '100%',
 															margin: '0px',
 														}}>
-														{reasonListCancel.map(item => (
+														{reasonList.map(item => (
 															<Select.Option key={item} value={item}>
 																{item}
 															</Select.Option>
 														))}
 													</Select>
 												</div>
-												{/* <div>
-                              <p>Reason</p>
-                              <Input placeholder="Reason" value={cancelReason} onChange={value => this.onChangeField(value, "reason_cancel")} />
-                            </div>
 
-                            <div>
-                              <p>Status</p>
-                              <Input placeholder="Status" value={cancelStatus} onChange={value => this.onChangeField(value, "status_cancel")} />
-                            </div> */}
 											</div>
 											<div className='signature-modal'>
 												<Button
@@ -1338,14 +1358,24 @@ class Uploader extends Component {
 															</Button>
 														</>
 													) : (
-														<Button
-															type='primary'
-															style={{
-																backgroundColor: '#093185',
-															}}
-															onClick={() => this.onAuthenticate()}>
-															Authenticate
-														</Button>
+														<>
+															<Button
+																type='primary'
+																style={{
+																	backgroundColor: '#093185',
+																}}
+																onClick={() => this.onAuthenticate()}>
+																Authenticate with AD
+															</Button>
+															<Button
+																type='primary'
+																style={{
+																	backgroundColor: '#093185',
+																}}
+																onClick={() => this.onAuthenticateWithoutAD()}>
+																Authenticate without AD
+															</Button>
+														</>
 													)}
 												</div>
 											</Modal>
@@ -1371,22 +1401,14 @@ class Uploader extends Component {
 																width: '100%',
 																margin: '0px',
 															}}>
-															{reasonListCancel.map(item => (
+															{reasonList.map(item => (
 																<Select.Option key={item} value={item}>
 																	{item}
 																</Select.Option>
 															))}
 														</Select>
 													</div>
-													{/* <div>
-                              <p>Reason</p>
-                              <Input placeholder="Reason" value={cancelReason} onChange={value => this.onChangeField(value, "reason_cancel")} />
-                            </div>
 
-                            <div>
-                              <p>Status</p>
-                              <Input placeholder="Status" value={cancelStatus} onChange={value => this.onChangeField(value, "status_cancel")} />
-                            </div> */}
 												</div>
 												<div className='signature-modal'>
 													<Button
@@ -1422,6 +1444,7 @@ class Uploader extends Component {
 										margin: '0 8px',
 										float: 'left',
 									}}
+									id="previousButton"
 									type='primary'
 									onClick={() => this.prevStep()}>
 									<ArrowLeftOutlined /> Previous
@@ -1436,6 +1459,7 @@ class Uploader extends Component {
 										float: 'right',
 									}}
 									type='primary'
+									id="nextButton"
 									onClick={e => this.nextStep(e, this.state.currentStep)}>
 									Next <ArrowRightOutlined />
 								</Button>

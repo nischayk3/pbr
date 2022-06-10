@@ -92,7 +92,7 @@
   "nyc": {
     "report-dir": "coverage",
     "all": true,
-    "include": "src/**",
+    "include": "./src/**",
     "reporter": [
       "lcov"
     ]

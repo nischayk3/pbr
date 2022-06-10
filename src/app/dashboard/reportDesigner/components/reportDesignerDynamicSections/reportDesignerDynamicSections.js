@@ -19,12 +19,9 @@ function ReportDesignerDynamicSections(props) {
     const [showChart, setShowChart] = useState({})
     const [showAddSection, setShowAddSection] = useState(false)
     const [editable, setEditable] = useState(false)
-    const { list } = props;
 
-
-
+    const { list, setCurrentSection, currentSection } = props;
     const deleteChart = (chartName, section) => {
-
         dispatch(showLoader())
         section = section + 1
         let charts_all = { ...addedCharts }
@@ -78,6 +75,8 @@ function ReportDesignerDynamicSections(props) {
     }
 
     const addChart = (chartName, section) => {
+        setCurrentSection(section)
+        extract(chartName)
         if (chartName && chartName[0] == '<') {
             chartName = extract(chartName)
         }
@@ -108,7 +107,7 @@ function ReportDesignerDynamicSections(props) {
             else {
 
                 addedCharts[`${section}`].push(chartName)
-                setAddedKeys(addedCharts)
+                setAddedCharts(addedCharts)
             }
             dispatch(hideLoader())
         }
@@ -121,46 +120,46 @@ function ReportDesignerDynamicSections(props) {
 
         dispatch(showLoader())
         section = section - 1
-        if (`${section}` in addedKeys) {
-            if (addedKeys[`${section}`]) {
-                addedKeys[`${section}`] = false
-                setAddedKeys(addedKeys)
-                dispatch(hideLoader())
-            }
-            else {
-                addedKeys[`${section}`] = true
-                setAddedKeys(addedKeys)
-                dispatch(hideLoader())
-            }
-        }
-        else {
-            addedKeys[`${section}`] = true
-            setAddedKeys(addedKeys)
-            dispatch(hideLoader())
-        }
+        // if (`${section}` in addedKeys) {
+        //     if (addedKeys[`${section}`]) {
+        //         addedKeys[`${section}`] = false
+        //         setAddedKeys(addedKeys)
+        //         dispatch(hideLoader())
+        //     }
+        //     else {
+        //         addedKeys[`${section}`] = true
+        //         setAddedKeys(addedKeys)
+        //         dispatch(hideLoader())
+        //     }
+        // }
+        // else {
+        addedKeys[`${section}`] = true
+        setAddedKeys(addedKeys)
+        dispatch(hideLoader())
+        // }
         props.setSectionAddKey(addedKeys)
     }
 
     const trackCharts = (section) => {
         dispatch(showLoader())
 
-        if (`${section}` in addedKeys) {
-            if (showChart[`${section}`]) {
-                showChart[`${section}`] = false
-                setShowChart(showChart)
-                dispatch(hideLoader())
-            }
-            else {
-                showChart[`${section}`] = true
-                setShowChart(showChart)
-                dispatch(hideLoader())
-            }
-        }
-        else {
-            showChart[`${section}`] = true
-            setShowChart(showChart)
-            dispatch(hideLoader())
-        }
+        // if (`${section}` in addedKeys) {
+        //     if (showChart[`${section}`]) {
+        //         showChart[`${section}`] = false
+        //         setShowChart(showChart)
+        //         dispatch(hideLoader())
+        //     }
+        //     else {
+        //         showChart[`${section}`] = true
+        //         setShowChart(showChart)
+        //         dispatch(hideLoader())
+        //     }
+        // }
+        // else {
+        showChart[`${section}`] = true
+        setShowChart(showChart)
+        dispatch(hideLoader())
+        // }
         props.setSectionAddCharts(showChart)
     }
 
@@ -169,6 +168,7 @@ function ReportDesignerDynamicSections(props) {
         setShowChart(props.sectionAddedCharts)
         setAddedKeys(props.sectionKeys)
     }
+    console.log(currentSection)
 
     return (
         <div className="reportDesigner-dynamicSections bg-white">
@@ -178,7 +178,7 @@ function ReportDesignerDynamicSections(props) {
                         {(fields, { add, remove }) => (
                             <>
                                 {fields.map(({ key, name, ...restField }) => (
-                                    <div style={{ border: "1px solid #486BC9", marginBottom: "30px", minHeight: "160px", borderRadius: "4px", marginTop: '20px' }}>
+                                    <div style={{ border: currentSection == name ? "1px solid #486BC9" : "1px solid #E3E3E3", marginBottom: "30px", minHeight: "160px", borderRadius: "4px", marginTop: '20px' }}>
 
                                         {name >= 0 ? setShowAddSection(true) : setShowAddSection(false)}
                                         <p className="section-name">Section {name + 1} </p>
@@ -194,7 +194,7 @@ function ReportDesignerDynamicSections(props) {
                                                 <div className="add-chart" onClick={() => trackCharts(name)} ><span style={{ marginRight: '4px' }}><PlusOutlined style={{ fontSize: '14px' }} /></span>  Add chart  </div> : <></>
                                             }
                                             {name > 0 ?
-                                                <div style={{ marginLeft: '28%' }}>
+                                                <div style={{ marginLeft: '15%' }}>
                                                     <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
                                                         <DeleteTwoTone twoToneColor="red" style={{ fontSize: '18px', marginTop: '5px' }} />
                                                     </Popconfirm>
@@ -230,7 +230,7 @@ function ReportDesignerDynamicSections(props) {
                                                     style={{ display: 'flex', justifyContent: 'center' }}
                                                     align="baseline"
                                                 >
-                                                    <table className="dynamicSections-table" style={{ width: '1205px', marginLeft: '18px', }}>
+                                                    <table className="dynamicSections-table" style={{ width: '1185px', marginLeft: '18px', }}>
                                                         <thead className="dynamicSections-thead">
                                                             <tr>
                                                                 <th className="action-clm">Action</th>
@@ -240,7 +240,7 @@ function ReportDesignerDynamicSections(props) {
                                                             </tr>
                                                         </thead>
                                                         <tbody className="dynamicSections-tbody">
-                                                            <ReportDesignerDynamicRow fieldKey={name} show={props.show} />
+                                                            <ReportDesignerDynamicRow fieldKey={name} show={props.show} setCurrentSection={setCurrentSection} />
                                                         </tbody>
                                                     </table>
                                                 </Space>

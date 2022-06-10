@@ -1,8 +1,8 @@
 Cypress.Commands.add("multiselect", (options) => {
-    options.forEach((option) => {
-        cy.log(option)
-        cy.get('.ant-select-item-option').contains(option).click()
-    });
+	options.forEach((option) => {
+		cy.log(option)
+		cy.get('.ant-select-item-option').contains(option).click()
+	});
 });
 
 

@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Collapse, Input, Tag } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { getReports } from '../../../../services/reportDesignerServices';
+// import { getReports } from '../../../../services/reportDesignerServices';
 import ReportGeneratorForm from '../components/reportGeneratorForm';
 import {
 	saveReportGenerator,
@@ -144,19 +144,19 @@ function ReportGenerator(props) {
 
 	//const mapReportList = reportList && reportList.length > 0 ? reportList : [];
 
-	const createArraObj = arr => {
-		let res = [];
-		arr.map(i => {
-			let chart_objects = {};
-			chart_objects['chart'] = i;
-			chart_objects['excursion'] = false;
-			chart_objects['violation'] = false;
-			chart_objects['parameter'] = false;
-			chart_objects['exclusion'] = false;
-			res.push(chart_objects);
-		});
-		return res;
-	};
+	// const createArraObj = arr => {
+	// 	let res = [];
+	// 	arr.map(i => {
+	// 		let chart_objects = {};
+	// 		chart_objects['chart'] = i;
+	// 		chart_objects['excursion'] = false;
+	// 		chart_objects['violation'] = false;
+	// 		chart_objects['parameter'] = false;
+	// 		chart_objects['exclusion'] = false;
+	// 		res.push(chart_objects);
+	// 	});
+	// 	return res;
+	// };
 
 	const makeArrayOfObject = ar => {
 		let res = [];
@@ -175,6 +175,8 @@ function ReportGenerator(props) {
 			return res;
 		} else return res;
 	};
+
+
 	const createChartRecord = arr => {
 		let res = {};
 		for (let key in arr) {
@@ -185,7 +187,12 @@ function ReportGenerator(props) {
 
 	const updateChartLayout = (chartt, section, param) => {
 		section = section + 1;
-		let objIndex = chartLayout[section].findIndex(obj => obj.chartt == chartt);
+		console.log(chartLayout)
+		console.log(chartt, section, param)
+		console.log(chartLayout[section])
+		let objIndex = chartLayout[section].findIndex(obj => obj.chart == chartt);
+		console.log(objIndex)
+		console.log(chartLayout[section][objIndex][`${param}`] = false)
 		chartLayout[section][objIndex][`${param}`] = false;
 	};
 
@@ -224,11 +231,11 @@ function ReportGenerator(props) {
 		else
 			setChartLayout(ReportDatas.charts_layout ? ReportDatas.charts_layout : {});
 		setReportName(ReportDatas['rep_name'] ? ReportDatas['rep_name'] : '');
-		setCharts(
-			ReportDatas['chart_int_ids']
-				? createArraObj(ReportDatas['chart_int_ids'])
-				: []
-		);
+		// setCharts(
+		// 	ReportDatas['chart_int_ids']
+		// 		? createArraObj(ReportDatas['chart_int_ids'])
+		// 		: []
+		// );
 		setTable(
 			ReportDatas['layout_info']
 				? getTableData(
@@ -311,11 +318,8 @@ function ReportGenerator(props) {
 
 		let layout_obj = {};
 		layout_obj['titlepage'] = table[0] ? table[0] : {};
-		layout_obj['sections'] =
-			table.length > 0 ? table.filter((item, index) => index > 0) : [];
-
+		layout_obj['sections'] = table.length > 0 ? table.filter((item, index) => index > 0) : [];
 		obj['layout_info'] = layout_obj;
-
 		let req = {};
 		req['data'] = obj;
 		req['saveType'] = 'save';

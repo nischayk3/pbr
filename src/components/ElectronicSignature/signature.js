@@ -167,28 +167,28 @@ function Signature(props) {
 		<div>
 			<Modal
 				className="electronic-signature-modal"
-				visible={ isPublish }
+				visible={isPublish}
 				title="Enter details to confirm update"
-				width={ 500 }
-				mask={ true }
-				onCancel={ () => {
+				width={500}
+				mask={true}
+				onCancel={() => {
 					handleClose();
 					setIsAuth("");
-				} }
+				}}
 				footer={
 					isauth === "A" || isauth === "R" || isauth === "P"
 						? [
 							<Button
 								className="custom-primary-btn"
 								key="2"
-								onClick={ () => handleClose() }
+								onClick={() => handleClose()}
 							>
 								Cancel
 							</Button>,
 							<Button
 								className="custom-secondary-btn"
 								key="1"
-								onClick={ () => handleConfirm() }
+								onClick={() => handleConfirm()}
 							>
 								Confirm
 							</Button>
@@ -197,14 +197,14 @@ function Signature(props) {
 							<Button
 								className="custom-secondary-btn"
 								key="3"
-								onClick={ () => authenticateUser() }
+								onClick={() => authenticateUser()}
 							>
 								Authenticate with AD
 							</Button>,
 							<Button
 								className="custom-secondary-btn"
 								key="4"
-								onClick={ () => authenticateUserWithoutAD() }
+								onClick={() => authenticateUserWithoutAD()}
 							>
 								Authenticate
 							</Button>
@@ -214,30 +214,30 @@ function Signature(props) {
 				<div className="electronic-sig">
 					<div className="sign-cols">
 						<div>
-							<p style={ { margin: "8px 0px" } }>User ID</p>
+							<p style={{ margin: "8px 0px" }}>User ID</p>
 							<Input
-								value={ username }
-								onChange={ (e) => setUsername(e.target.value) }
+								value={username}
+								onChange={(e) => setUsername(e.target.value)}
 							/>
 						</div>
 						<div>
-							<p style={ { margin: "8px 0px" } }>Password</p>
+							<p style={{ margin: "8px 0px" }}>Password</p>
 							<Input
 								type="password"
-								value={ password }
-								onChange={ (e) => setPassword(e.target.value) }
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</div>
 					</div>
-					{ ((isauth === "A" && props.status === "A") ||
+					{((isauth === "A" && props.status === "A") ||
 						(isauth === "P" && props.status === "P")) && (
 							<div>
-								<p style={ { margin: "8px 0px" } }>Signing</p>
+								<p style={{ margin: "8px 0px" }}>Signing</p>
 								<Select
-									onChange={ (e, value) => {
+									onChange={(e, value) => {
 										let reason_value = value.value ? value.value : "";
 										setReason(reason_value);
-									} }
+									}}
 									className="sign-select"
 								>
 									<Option key="Signing on behalf of team mate">
@@ -248,21 +248,21 @@ function Signature(props) {
 									<Option key="Other Reason">Other Reason</Option>
 								</Select>
 							</div>
-						) }
+						)}
 
-					{ isauth === "R" && props.status === "R" && (
+					{isauth === "R" && props.status === "R" && (
 						<div>
 							<p>Comment</p>
 							<Input.TextArea
-								rows={ 3 }
-								value={ reason }
-								style={ { width: "450px" } }
-								onChange={ (e) => {
+								rows={3}
+								value={reason}
+								style={{ width: "450px" }}
+								onChange={(e) => {
 									setReason(e.target.value);
-								} }
+								}}
 							/>
 						</div>
-					) }
+					)}
 				</div>
 			</Modal>
 		</div>

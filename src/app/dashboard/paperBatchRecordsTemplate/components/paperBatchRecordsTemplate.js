@@ -65,7 +65,8 @@ import {
     processBatchRecord,
     findParameter,
 } from '../../../../services/pbrService';
-import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper'
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import Signature from "../../../../components/ElectronicSignature/signature";
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Dragger } = Upload;
@@ -151,6 +152,12 @@ function PaperBatchRecordsTemplate() {
     const [templateInitialData, setTemplateInitialData] = useState({});
     const [pageIdentifierData, setPageIdentifierData] = useState({});
     const [parameterFormData, setParameterFormData] = useState([]);
+    const [isPublish, setIsPublish] = useState(false);
+    const [approveReject, setApproveReject] = useState("");
+    const [publishResponse, setPublishResponse] = useState({});
+    const [templateId, setTemplateId] = useState("C116");
+    const [templateVersion, setTemplateVersion] = useState("1");
+    const [templateStatus, setTemplateStatus] = useState("DRFT");
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
         setRightPanelCollapsed(!rightPanelCollapsed);
@@ -598,7 +605,7 @@ function PaperBatchRecordsTemplate() {
                     let valuey1 = e.value_top * height1;
                     let valuey2 = (e.value_top + e.value_height) * height1;
                     let obj1 = {
-                        snippetID: e.key_snippet_id,
+                        snippetID: e.value_snippet_id,
                         areaValue: e.value_text,
                         shape: 'rect',
                         coords: [valuex1, valuey1, valuex2, valuey2],
@@ -619,7 +626,7 @@ function PaperBatchRecordsTemplate() {
             dispatch(showNotification('error', 'No Data Found'));
         }
     };
-    console.log("idddd", id)
+
     useEffect(() => {
 
         getImage()
@@ -781,11 +788,14 @@ function PaperBatchRecordsTemplate() {
         let updateObj = { ...areasMap }
         updateObj.areas.forEach(item => {
             if (item.snippetID === area.snippetID) {
-                item.strokeColor = "green"
+                item.strokeColor = "green",
+                    item['lineWidth'] = 3
             } else {
                 item.strokeColor = "blue"
+                item['lineWidth'] = 1
             }
         })
+        console.log("updateObj", updateObj)
         setAreasMap(updateObj)
         let obj = {
             snippetID: area.snippetID,
@@ -894,12 +904,13 @@ function PaperBatchRecordsTemplate() {
                     pbrTemplateName: params.tempalteName,
                     custKey: 'PBR',
                     pbrTemplateVersion: '1',
-                    pbrTemplateStatus: 'Unapproved',
+                    pbrTemplateStatus: 'DRFT',
                     createdBy: login_response?.email_id,
                     changedBy: login_response?.firstname,
                     templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
                     material: matBatch?.material_num,
-                    batch: matBatch?.batch
+                    batch: matBatch?.batch,
+                    site_code: matBatch?.site
                 };
                 let arr = [];
                 formValues.forEach((ele, index) => {
@@ -907,6 +918,8 @@ function PaperBatchRecordsTemplate() {
                         method: ele.method,
                         filename: params?.file,
                         name: ele.name,
+                        param_value_direction: parameterFormData[index]?.AnchorDirection,
+                        param_value_regex: parameterFormData[index]?.regex
                     }
                     if (ele.values) {
                         obj['color'] = "blue"
@@ -925,8 +938,8 @@ function PaperBatchRecordsTemplate() {
                         obj['param_value_snippet_id'] = ele?.values?.valueSnippetID
                         obj['param_value_rule'] = {
                             rule_name: parameterFormData[index]?.param_rule, regex_text: parameterFormData[index]?.param_valueArea,
-                            range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max, transormation: "divide",
-                            factor: parameterFormData[index]?.param_valueTransformation
+                            range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max,
+                            factor: parameterFormData[index]?.param_valueTransformation, transformation: parameterFormData[index]?.param_transformation
                         }
                     }
                     if (ele.unitValues) {
@@ -945,8 +958,8 @@ function PaperBatchRecordsTemplate() {
                         obj['uom_value_snippet_id'] = ele?.values?.valueSnippetID
                         obj['uom_value_rule'] = {
                             rule_name: parameterFormData[index]?.uom_rule, regex_text: parameterFormData[index]?.uom_valueArea,
-                            range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max, transormation: "divide",
-                            factor: parameterFormData[index]?.uom_valueTransformation
+                            range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max,
+                            factor: parameterFormData[index]?.uom_valueTransformation, transformation: parameterFormData[index]?.uom_transformation
                         }
 
                     }
@@ -966,8 +979,8 @@ function PaperBatchRecordsTemplate() {
                         obj['time_value_snippet_id'] = ele?.values?.valueSnippetID
                         obj['time_value_rule'] = {
                             rule_name: parameterFormData[index]?.time_rule, regex_text: parameterFormData[index]?.time_valueArea,
-                            range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max, transormation: "divide",
-                            factor: parameterFormData[index]?.time_valueTransformation
+                            range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max,
+                            factor: parameterFormData[index]?.time_valueTransformation, transformation: parameterFormData[index]?.time_transformation
                         }
 
                     }
@@ -987,8 +1000,8 @@ function PaperBatchRecordsTemplate() {
                         obj['date_value_snippet_id'] = ele?.values?.valueSnippetID
                         obj['date_value_rule'] = {
                             rule_name: parameterFormData[index]?.date_rule, regex_text: parameterFormData[index]?.date_valueArea,
-                            range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max, transormation: "divide",
-                            factor: parameterFormData[index]?.date_valueTransformation
+                            range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max,
+                            factor: parameterFormData[index]?.date_valueTransformation, transformation: parameterFormData[index]?.date_transformation
                         }
 
                     }
@@ -1088,11 +1101,17 @@ function PaperBatchRecordsTemplate() {
         let req = {
             extraction_type: "all",
             extraction_filename: params?.file,
-            templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} }
+            templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
+            product_num: matBatch?.material_num,
+            batch_num: matBatch?.batch,
+            site_code: matBatch?.site
         }
+
         let obj = {
             filename: params?.file,
-            method: formValues[activeKey]?.method
+            method: formValues[activeKey]?.method,
+            param_value_direction: parameterFormData[activeKey]?.AnchorDirection,
+            param_value_regex: parameterFormData[activeKey]?.regex
         }
         if (formValues[activeKey]?.values) {
             obj['color'] = "blue",
@@ -1110,8 +1129,8 @@ function PaperBatchRecordsTemplate() {
             obj['param_value_width'] = (formValues[activeKey]?.values?.valueCoords[2] - formValues[activeKey]?.values?.valueCoords[0]) / imageWidth
             obj['param_value_rule'] = {
                 rule_name: parameterFormData[activeKey]?.param_rule, regex_text: parameterFormData[activeKey]?.param_valueArea,
-                range_min: parameterFormData[activeKey]?.param_min, range_max: parameterFormData[activeKey]?.param_max, transormation: "divide",
-                factor: parameterFormData[activeKey]?.param_valueTransformation
+                range_min: parameterFormData[activeKey]?.param_min, range_max: parameterFormData[activeKey]?.param_max,
+                factor: parameterFormData[activeKey]?.param_valueTransformation, transformation: parameterFormData[activeKey]?.param_transformation
             }
         }
         if (formValues[activeKey]?.unitValues) {
@@ -1129,8 +1148,8 @@ function PaperBatchRecordsTemplate() {
             obj['uom_value_width'] = (formValues[activeKey]?.unitValues?.valueCoords[2] - formValues[activeKey]?.unitValues?.valueCoords[0]) / imageWidth
             obj['uom_value_rule'] = {
                 rule_name: parameterFormData[activeKey]?.uom_rule, regex_text: parameterFormData[activeKey]?.uom_valueArea,
-                range_min: parameterFormData[activeKey]?.uom_min, range_max: parameterFormData[activeKey]?.uom_max, transormation: "divide",
-                factor: parameterFormData[activeKey]?.uom_valueTransformation
+                range_min: parameterFormData[activeKey]?.uom_min, range_max: parameterFormData[activeKey]?.uom_max,
+                factor: parameterFormData[activeKey]?.uom_valueTransformation, transformation: parameterFormData[activeKey]?.uom_transformation
             }
         }
         if (formValues[activeKey]?.timeValues) {
@@ -1148,8 +1167,8 @@ function PaperBatchRecordsTemplate() {
             obj['time_value_width'] = (formValues[activeKey]?.timeValues?.valueCoords[2] - formValues[activeKey]?.timeValues?.valueCoords[0]) / imageWidth
             obj['time_value_rule'] = {
                 rule_name: parameterFormData[activeKey]?.time_rule, regex_text: parameterFormData[activeKey]?.time_valueArea,
-                range_min: parameterFormData[activeKey]?.time_min, range_max: parameterFormData[activeKey]?.time_max, transormation: "divide",
-                factor: parameterFormData[activeKey]?.time_valueTransformation
+                range_min: parameterFormData[activeKey]?.time_min, range_max: parameterFormData[activeKey]?.time_max,
+                factor: parameterFormData[activeKey]?.time_valueTransformation, transformation: parameterFormData[activeKey]?.time_transformation
             }
         }
         if (formValues[activeKey]?.dateValues) {
@@ -1167,8 +1186,8 @@ function PaperBatchRecordsTemplate() {
             obj['date_value_width'] = (formValues[activeKey]?.dateValues?.valueCoords[2] - formValues[activeKey]?.dateValues?.valueCoords[0]) / imageWidth
             obj['date_value_rule'] = {
                 rule_name: parameterFormData[activeKey]?.date_rule, regex_text: parameterFormData[activeKey]?.date_valueArea,
-                range_min: parameterFormData[activeKey]?.date_min, range_max: parameterFormData[activeKey]?.date_max, transormation: "divide",
-                factor: parameterFormData[activeKey]?.date_valueTransformation
+                range_min: parameterFormData[activeKey]?.date_min, range_max: parameterFormData[activeKey]?.date_max,
+                factor: parameterFormData[activeKey]?.date_valueTransformation, transformation: parameterFormData[activeKey]?.date_transformation
             }
         }
         let obj1 = {
@@ -1205,18 +1224,19 @@ function PaperBatchRecordsTemplate() {
             extraction_type: "custom",
             templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
             extraction_filename: params?.file,
+            product_num: matBatch?.material_num,
+            batch_num: matBatch?.batch,
+            site_code: matBatch?.site
         }
         let arr = []
-        let obj = {
-
-            filename: params.file,
-            method: formValues[activeKey]?.method
-        }
         formValues.forEach((ele, index) => {
             let obj = {
 
                 filename: params.file,
-                method: ele.method
+                method: ele.method,
+                param_value_direction: parameterFormData[index]?.AnchorDirection,
+                param_value_regex: parameterFormData[index]?.regex
+
             }
             if (ele.values) {
                 obj['color'] = "blue"
@@ -1235,8 +1255,8 @@ function PaperBatchRecordsTemplate() {
                 obj['param_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
                 obj['param_value_rule'] = {
                     rule_name: parameterFormData[index]?.param_rule, regex_text: parameterFormData[index]?.param_valueArea,
-                    range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max, transormation: "divide",
-                    factor: parameterFormData[index]?.param_valueTransformation
+                    range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max,
+                    factor: parameterFormData[index]?.param_valueTransformation, transformation: parameterFormData[activeKey]?.param_transformation
                 }
 
             }
@@ -1256,8 +1276,8 @@ function PaperBatchRecordsTemplate() {
                 obj['uom_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
                 obj['uom_value_rule'] = {
                     rule_name: parameterFormData[index]?.uom_rule, regex_text: parameterFormData[index]?.uom_valueArea,
-                    range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max, transormation: "divide",
-                    factor: parameterFormData[index]?.uom_valueTransformation
+                    range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max,
+                    factor: parameterFormData[index]?.uom_valueTransformation, transformation: parameterFormData[activeKey]?.uom_transformation
                 }
 
             }
@@ -1277,8 +1297,8 @@ function PaperBatchRecordsTemplate() {
                 obj['time_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
                 obj['time_value_rule'] = {
                     rule_name: parameterFormData[index]?.time_rule, regex_text: parameterFormData[index]?.time_valueArea,
-                    range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max, transormation: "divide",
-                    factor: parameterFormData[index]?.time_valueTransformation
+                    range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max,
+                    factor: parameterFormData[index]?.time_valueTransformation, transformation: parameterFormData[activeKey]?.time_transformation
                 }
 
             }
@@ -1298,8 +1318,8 @@ function PaperBatchRecordsTemplate() {
                 obj['date_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
                 obj['date_value_rule'] = {
                     rule_name: parameterFormData[index]?.date_rule, regex_text: parameterFormData[index]?.date_valueArea,
-                    range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max, transormation: "divide",
-                    factor: parameterFormData[index]?.date_valueTransformation
+                    range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max,
+                    factor: parameterFormData[index]?.date_valueTransformation, transformation: parameterFormData[activeKey]?.date_transformation
                 }
 
             }
@@ -1345,33 +1365,38 @@ function PaperBatchRecordsTemplate() {
         },
         {
             title: 'Key',
-            dataIndex: 'key_',
-            key: 'key',
+            dataIndex: 'anchor_key',
+            key: 'anchor_key',
         },
         {
             title: 'Value',
-            dataIndex: 'value',
-            key: 'value',
+            dataIndex: 'snippet_value',
+            key: 'snippet_value',
         },
         {
             title: 'Product',
-            dataIndex: 'product',
-            key: 'product',
+            dataIndex: 'product_num',
+            key: 'product_num',
         },
         {
             title: 'Batch',
-            dataIndex: 'batch',
-            key: 'batch',
+            dataIndex: 'batch_num',
+            key: 'batch_num',
         },
         {
             title: 'Site',
-            dataIndex: 'site',
-            key: 'site',
+            dataIndex: 'site_num',
+            key: 'site_num',
         },
         {
             title: 'UOM',
             dataIndex: 'uom',
             key: 'uom',
+        },
+        {
+            title: 'Confidence',
+            dataIndex: 'confidence',
+            key: 'confidence',
         },
         {
             title: 'Date',
@@ -1391,6 +1416,14 @@ function PaperBatchRecordsTemplate() {
         getBoundingBoxDataInfo(imageWidth, imageHeight, item.key)
 
     }
+    const handleClose = () => {
+        setIsPublish(false);
+    };
+
+    const PublishResponse = (res) => {
+        setPublishResponse(res);
+        setTemplateStatus(res.rep_stauts);
+    };
     const modes = (
         <Menu defaultSelectedKeys={["word"]} selectedKeys={[menuKey]} onClick={(item) => handleMenuChange(item)}>
             <Menu.Item key='word'>
@@ -1438,13 +1471,39 @@ function PaperBatchRecordsTemplate() {
                 </div>
                 <div className='sub-header'>
                     <div className='sub-header-title'>
-                        <Button type='primary' className='defineTableBtn'>
-                            <ArrowRightOutlined /> Define Table
-                        </Button>
-                        <Button type='primary' className='defineTableBtn' onClick={batchProcess}>
-                            <ArrowRightOutlined /> Batch Process
-                        </Button>
-                        <EllipsisOutlined className='ellipseIconMenu' />
+                        {Object.keys(params) &&
+                            Object.keys(params).length > 0 &&
+                            params.fromScreen !== "Workflow" ?
+                            (<div className='btns'>
+                                <Button
+                                    className='custom-secondary-btn'
+                                    onClick={() => {
+                                        setIsPublish(true);
+                                        setApproveReject("P");
+                                    }}>
+                                    Publish
+                                </Button>
+                                <Button style={{ margin: "0px 16px" }} className='custom-primary-btn'>Batch Process</Button>
+                            </div>)
+                            : (
+                                <div className='btns'>
+                                    <Button
+                                        className='custom-primary-btn'
+                                        onClick={() => {
+                                            setIsPublish(true);
+                                            setApproveReject("R");
+                                        }}>
+                                        Reject
+                                    </Button>
+                                    <Button style={{ margin: "0px 16px" }} className='custom-primary-btn'
+                                        onClick={() => {
+                                            setIsPublish(true);
+                                            setApproveReject("A");
+                                        }}
+                                    >Approve</Button>
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             </div>
@@ -1472,6 +1531,7 @@ function PaperBatchRecordsTemplate() {
                                     <Form onValuesChange={handleValuesChange} name="template_desc" onFinish={onFinish}
                                         // labelCol={{ span: 8 }}
                                         // wrapperCol={{ span: 16 }}
+                                        layout='vertical'
                                         initialValues={{ material_num: matBatch?.material_num, batch: matBatch?.batch, template_name: params?.tempalteName, status: "Draft" }}
                                     >
                                         {/* <Form.Item
@@ -1485,30 +1545,33 @@ function PaperBatchRecordsTemplate() {
                                             label="Template Name"
                                         // rules={[{ required: true, message: 'Missing first name' }]}
                                         >
-                                            <Input />
+                                            <Input disabled />
                                         </Form.Item>
                                         <Form.Item
                                             name='status'
                                             label="Status"
+                                            style={{marginBottom:10}}
                                         // rules={[{ required: true, message: 'Missing first name' }]}
                                         >
-                                            <Input style={{ width: 193, marginLeft: 59 }} />
+                                            <Input  disabled />
                                             {/* <Input/> */}
                                         </Form.Item>
                                         <Form.Item
                                             name='material_num'
                                             label="Material"
+                                            style={{marginBottom:10}}
                                         // rules={[{ required: true, message: 'Missing first name' }]}
                                         >
-                                            <Input style={{ width: 193, marginLeft: 47 }} />
+                                            <Input  disabled />
                                             {/* <Input/> */}
                                         </Form.Item>
                                         <Form.Item
                                             name='batch'
                                             label="Batch"
+                                            style={{marginBottom:10}}
                                         // rules={[{ required: true, message: 'Missing first name' }]}
                                         >
-                                            <Input style={{ width: 193, marginLeft: 61 }} />
+                                            <Input  disabled />
                                             {/* <Input/> */}
                                         </Form.Item>
                                         {/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
@@ -1625,7 +1688,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         label="Method"
                                                                                         rules={[{ required: true, message: 'method' }]}
                                                                                     >
-                                                                                        <Select placeholder="Select Method" onChange={(e, value) => onChangeChart(e, 'method', key, value)} value={formValues[key]?.method}>
+                                                                                        <Select placeholder="Select Method" onChange={(e, value) => onChangeChart(e, 'method', key, value)} allowClear={true}>
                                                                                             <Option value='absolute_coordinate'>
                                                                                                 Get By Absolute Coordinate
                                                                                             </Option>
@@ -1638,6 +1701,9 @@ function PaperBatchRecordsTemplate() {
                                                                                             <Option value='relative_direction'>
                                                                                                 Get By Relative Direction
                                                                                             </Option>
+                                                                                            <Option value='absolute_distance'>
+                                                                                                Get By Absolute Distance
+                                                                                            </Option>
                                                                                         </Select>
                                                                                     </Form.Item>
                                                                                     {formValues[key]?.method === "relative_direction" &&
@@ -1646,14 +1712,14 @@ function PaperBatchRecordsTemplate() {
                                                                                         // label="AnchorDirection"
                                                                                         >
 
-                                                                                            <Select placeholder="AnchorDirection" onChange={(e, value) => onChangeChart(e, 'anchor_dir', key, value)}>
+                                                                                            <Select placeholder="AnchorDirection" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'anchor_dir', key, value)}>
                                                                                                 <Option value='ABOVE'>
                                                                                                     Above
                                                                                                 </Option>
                                                                                                 <Option value='LEFT'>
                                                                                                     Left
                                                                                                 </Option>
-                                                                                                <Option value='RIGHT'>
+                                                                                                <Option value='UNDER'>
                                                                                                     Under
                                                                                                 </Option>
                                                                                                 <Option value='RIGHT'>
@@ -1770,7 +1836,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Dragger>
                                                                                         <Form.Item  {...restField}
                                                                                             name={[name, 'param_rule']}>
-                                                                                            <Select placeholder="Rule" onChange={(e, value) => onChangeChart(e, 'param_rule', key, value)}>
+                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'param_rule', key, value)}>
                                                                                                 <Option value='date'>
                                                                                                     Date
                                                                                                 </Option>
@@ -1822,7 +1888,23 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Input placeholder='Enter area' />
                                                                                             </Form.Item>}
 
-                                                                                        <p></p>
+                                                                                        <Form.Item  {...restField}
+                                                                                            name={[name, 'param_transformation']}>
+                                                                                            <Select placeholder="Trans." allowClear value={null}>
+                                                                                                <Option value='add'>
+                                                                                                    ADD
+                                                                                                </Option>
+                                                                                                <Option value='substract'>
+                                                                                                    Substract
+                                                                                                </Option>
+                                                                                                <Option value='multiply'>
+                                                                                                    Multiply
+                                                                                                </Option>
+                                                                                                <Option value='divide'>
+                                                                                                    Divide
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'param_valueTransformation']}>
                                                                                             <Input placeholder='Enter transformation' />
@@ -1988,7 +2070,23 @@ function PaperBatchRecordsTemplate() {
                                                                                                 name={[name, 'uom_valueArea']}>
                                                                                                 <Input placeholder='Enter area' />
                                                                                             </Form.Item>}
-                                                                                        <p></p>
+                                                                                        <Form.Item  {...restField}
+                                                                                            name={[name, 'uom_transformation']}>
+                                                                                            <Select placeholder="Trans." allowClear value={null}>
+                                                                                                <Option value='add'>
+                                                                                                    ADD
+                                                                                                </Option>
+                                                                                                <Option value='substract'>
+                                                                                                    Substract
+                                                                                                </Option>
+                                                                                                <Option value='multiply'>
+                                                                                                    Multiply
+                                                                                                </Option>
+                                                                                                <Option value='divide'>
+                                                                                                    Divide
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'uom_valueTransformation']}>
                                                                                             <Input placeholder='Enter transformation' />
@@ -2100,9 +2198,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         <Form.Item  {...restField}
                                                                                             name={[name, 'time_rule']}>
                                                                                             <Select placeholder="Rule" onChange={(e, value) => onChangeChart(e, 'time_rule', key, value)}>
-                                                                                                <Option value='date'>
-                                                                                                    Date
-                                                                                                </Option>
+
                                                                                                 <Option value='range'>
                                                                                                     Range
                                                                                                 </Option>
@@ -2149,7 +2245,23 @@ function PaperBatchRecordsTemplate() {
                                                                                                 name={[name, 'time_valueArea']}>
                                                                                                 <Input placeholder='Enter area' />
                                                                                             </Form.Item>}
-                                                                                        <p></p>
+                                                                                        <Form.Item  {...restField}
+                                                                                            name={[name, 'time_transformation']}>
+                                                                                            <Select placeholder="Trans." allowClear value={null}>
+                                                                                                <Option value='add'>
+                                                                                                    ADD
+                                                                                                </Option>
+                                                                                                <Option value='substract'>
+                                                                                                    Substract
+                                                                                                </Option>
+                                                                                                <Option value='multiply'>
+                                                                                                    Multiply
+                                                                                                </Option>
+                                                                                                <Option value='divide'>
+                                                                                                    Divide
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'time_valueTransformation']}>
                                                                                             <Input placeholder='Enter transformation' />
@@ -2312,7 +2424,23 @@ function PaperBatchRecordsTemplate() {
                                                                                                 name={[name, 'date_valueArea']}>
                                                                                                 <Input placeholder='Enter area' />
                                                                                             </Form.Item>}
-                                                                                        <p></p>
+                                                                                        <Form.Item  {...restField}
+                                                                                            name={[name, 'date_transformation']}>
+                                                                                            <Select placeholder="Trans." allowClear value={null}>
+                                                                                                <Option value='add'>
+                                                                                                    ADD
+                                                                                                </Option>
+                                                                                                <Option value='substract'>
+                                                                                                    Substract
+                                                                                                </Option>
+                                                                                                <Option value='multiply'>
+                                                                                                    Multiply
+                                                                                                </Option>
+                                                                                                <Option value='divide'>
+                                                                                                    Divide
+                                                                                                </Option>
+                                                                                            </Select>
+                                                                                        </Form.Item>
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'date_valueTransformation']}>
                                                                                             <Input placeholder='Enter transformation' />
@@ -2336,7 +2464,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         <Button type='primary' className='defineTableBtn' onClick={findTemplate}>
                                                                                             <MonitorOutlined /> Find
                                                                                         </Button>
-                                                                                        <p>Found in {`${fileList.length}/${searchedFileList.length}`} files</p>
+                                                                                        <p>Found in {`${fileList?.length}/${searchedFileList?.length}`} files</p>
                                                                                     </div>
                                                                                     <div>{fileList.map(item => (
                                                                                         <p>{item?.split('_')[0]}</p>
@@ -2603,6 +2731,16 @@ function PaperBatchRecordsTemplate() {
                     </div>
                 </div>
             </div>
+            <Signature
+                isPublish={isPublish}
+                handleClose={handleClose}
+                screenName="Pbr Creation"
+                PublishResponse={PublishResponse}
+                appType="VIEW"
+                dispId={templateId}
+                version={templateVersion}
+                status={approveReject}
+            />
         </div>
     );
 }

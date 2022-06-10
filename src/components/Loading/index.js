@@ -6,7 +6,7 @@ const Loading = ({ text, show }) => {
 		<>
 			{show ? (
 				<>
-					<div className='ant-modal-mask'></div>
+					{/* <div className='ant-modal-mask'></div> */}
 					<Spinner text={text} />
 				</>
 			) : null}

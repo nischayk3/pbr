@@ -28,10 +28,8 @@ function ParameterLookup(props) {
 		setMoleculeId,
 		materialsList,
 		setMaterialsList,
-		// setFilterdData,
 		setParentBatches,
 		setViewSummaryBatch,
-		params
 	} = props;
 
 	const [searchValue, setSearchValue] = useState("");
@@ -161,7 +159,6 @@ function ParameterLookup(props) {
 					onChange={onChangeMoleculeHandler}
 					defaultValue={moleculeId}
 					value={moleculeId}
-					disabled={params}
 				>
 					{moleculeList.map((item, i) => {
 						return (
