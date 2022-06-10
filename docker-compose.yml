@@ -14,5 +14,13 @@ services:
       - NODE_PATH=src/
     ports:
       - 3030:3030
+  nginx:
+    container_name: nginx
+    image: nginx:1.19
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx-conf:/etc/nginx/conf.d
 
 

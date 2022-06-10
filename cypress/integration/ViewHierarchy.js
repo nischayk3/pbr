@@ -58,7 +58,8 @@ describe("Renders the view Hierarachy page", () => {
   });
   */
   it("Renders View Hierarchy", () => {
-    cy.visit('localhost/ __/#/dashboard/molecule_hierarchy_configuration');
+    const url = Cypress.config().baseUrl
+    cy.visit(url + '/#/dashboard/molecule_hierarchy_configuration');
     cy.get('.create-new > .anticon > svg').click();
     cy.get('.input-ant > .ant-input').clear();
     cy.get('.input-ant > .ant-input').type('drug1');
