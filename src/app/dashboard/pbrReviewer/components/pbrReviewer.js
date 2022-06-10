@@ -8,21 +8,28 @@ import {
 } from '../../../../duck/actions/commonActions';
 import ScreenHeader from "../../../../components/ScreenHeader/screenHeader";
 import illustrations from "../../../../assets/images/Dashboard-Banner.svg";
-import { Card, Table, Button, Col, Row, Checkbox } from 'antd';
+import Highlighter from 'react-highlight-words';
+import { Card, Table, Button, Col, Row, Checkbox , Input, Space} from 'antd';
 import { getPbrReviewerData, updateApprove } from '../../../../services/pbrService'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Plot from 'react-plotly.js';
 import './styles.scss'
-import { ArrowLeftOutlined } from '@ant-design/icons';
-
+import { ArrowLeftOutlined , SearchOutlined} from '@ant-design/icons';
+const { Search } = Input;
 
 function PbrReviewer() {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([])
+  const [searchedColumn, setSearchedColumn] = useState('');
   const [arr, setArr] = useState([]);
+  const [searchedLanding, setSearchedLanding] = useState(false);
+  const [filterTableLanding, setFilterTableLanding] = useState(null);
+ 
   const [pieChartData, setPieChartData] = useState([0, 0]);
   const [pieChartData1, setPieChartData1] = useState([0, 0, 0]);
-
+  const [searchText, setSearchText] = useState("");
+  let [filteredData] = useState();
+ 
   const history = useHistory();
   useEffect(() => {
     cardTableData()
@@ -69,18 +76,15 @@ function PbrReviewer() {
 
   const updateStatus = (e, record) => {
 
-
-
     let resp = [...arr];
+    console.log(arr);
     resp.push(record.id);
+    console.log(resp);
     setArr(resp);
-
 
   };
 
   const showApproved = async () => {
-
-
     let req = {
       id: arr,
       recorded_date: "",
@@ -94,11 +98,11 @@ function PbrReviewer() {
     if (res.Status == "202") {
 
       dispatch(showNotification("success", "Approved Successfully")),
-      dispatch(showLoader());
+        dispatch(showLoader());
 
-        setTimeout( () => window.location.reload(),
-          1000
-        );
+      setTimeout(() => window.location.reload(),
+        1000
+      );
     }
 
   };
@@ -172,11 +176,21 @@ function PbrReviewer() {
       line: {
         color: 'white',
         width: 2
+      },
+      layout: {
+
+        x: 1,
+        xanchor: 'right',
+        y: 1
+
       }
+
     },
+
     hoverinfo: 'label+percent+name',
     hole: .7,
     type: 'pie',
+
   }]
 
   let appchart = [{
@@ -296,6 +310,25 @@ function PbrReviewer() {
       ...getColumnSearchProps('product_num'),
       sorter: (a, b) => a.product_num.length - b.product_num.length,
       sortDirections: ['descend', 'ascend'],
+      // render: (text, record, index) => {
+      //   return (
+      //     <a
+      //       style={{ color: "#1890ff" }}
+      //       onClick={() => {
+      //         history.push(`/dashBoard/pbr_update?id=${record.id}`);
+      //       }}
+
+      //     >
+      //       {text}
+      //     </a>
+      //   )
+      // }
+    },
+    {
+      title: 'Action',
+      key: 'operation',
+      fixed: 'right',
+      width: 100,
       render: (text, record, index) => {
         return (
           <a
@@ -305,21 +338,13 @@ function PbrReviewer() {
             }}
 
           >
-            {text}
+            Edit
           </a>
         )
       }
     },
 
-
-    {
-      title: 'Action',
-      key: 'action',
-      dataIndex: 'action',
-      ...getColumnSearchProps('action'),
-      sorter: (a, b) => a.action.length - b.action.length,
-      sortDirections: ['descend', 'ascend'],
-    },
+    
 
 
 
@@ -394,9 +419,116 @@ function PbrReviewer() {
 
 
   function getColumnSearchProps(dataIndex) {
+    return {
+      filterDropdown: ({
+          setSelectedKeys,
+          selectedKeys,
+          confirm,
+          clearFilters,
+      }) => (
+          <div style={{ padding: 8 }}>
+              <Input
+                  placeholder={`Search ${dataIndex}`}
+                  value={selectedKeys[0]}
+                  onChange={(e) =>
+                      setSelectedKeys(
+                          e.target.value ? [e.target.value] : []
+                      )
+                  }
+                  onPressEnter={() =>
+                      handleSearch(selectedKeys, confirm, dataIndex)
+                  }
+                  style={{
+                      marginBottom: 8,
+                      display: 'block',
+                  }}
+              />
+              <Space>
+                  <Button
+                      type='primary'
+                      onClick={() =>
+                          handleSearch(selectedKeys, confirm, dataIndex)
+                      }
+                      icon={<SearchOutlined />}
+                      size='small'
+                      style={{ width: 90 }}
+                  >
+                      Search
+                  </Button>
+                  <Button
+                      onClick={() => handleReset(clearFilters)}
+                      size='small'
+                      style={{ width: 90 }}
+                  >
+                      Reset
+                  </Button>
+                  <Button
+                      type='link'
+                      size='small'
+                      onClick={() => {
+                          confirm({ closeDropdown: false });
+                          setSearchText(selectedKeys[0]);
+                          setSearchedColumn(dataIndex);
+                      }}
+                  >
+                      Filter
+                  </Button>
+              </Space>
+          </div>
+      ),
+      filterIcon: (filtered) => (
+          <SearchOutlined
+              style={{ color: filtered ? '#1890ff' : undefined }}
+          />
+      ),
+      onFilter: (value, record) =>
+          record[dataIndex]
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase()),
+      onFilterDropdownVisibleChange: (visible) => {
+          if (visible) {
+              // setTimeout(() => this.searchInput.select());
+          }
+      },
+      render: (text) =>
+          searchedColumn === dataIndex ? (
+              <Highlighter
+                  highlightStyle={{
+                      backgroundColor: '#ffc069',
+                      padding: 0,
+                  }}
+                  searchWords={[searchText]}
+                  autoEscape
+                  textToHighlight={text.toString()}
+              />
+          ) : (
+              text
+          ),
   };
 
+  };
+  function handleSearch(selectedKeys, confirm, dataIndex) {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+}
 
+function handleReset(clearFilters) {
+    clearFilters();
+    setSearchText('');
+}
+
+  const landingSearch = value => {
+    setSearchedLanding(true);
+    const tableData = templateData;
+    const filterTable = tableData.filter(o =>
+        Object.keys(o).some(k =>
+            String(o[k]).toLowerCase().includes(value.toLowerCase())
+        )
+    );
+    setFilterTableLanding(filterTable);
+};
 
   return (
     <>
@@ -411,18 +543,7 @@ function PbrReviewer() {
           </div>
         </div>
         <div className='custom-content-layout'>
-          <div>
-            <ScreenHeader
-              bannerbg={{
-                background:
-                  "linear-gradient(180deg, rgba(199, 144, 129, 0.15) 0%, rgba(223, 165, 121, 0.56) 100%)",
-              }}
-              title={`Howdy ${localStorage.getItem("username")},`}
-              description="Lets get designing some report templates"
-              source={illustrations}
-              sourceClass="dashboard-image"
-            />
-          </div>
+
           <div className='review-wrapper'>
             <div className='content_section' >
 
@@ -439,7 +560,15 @@ function PbrReviewer() {
                         <Plot
                           data={appchart}
                           onClick={(e) => showfilterData(e.points[0].label)}
-                          layout={{ paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: "" }} />
+                          layout={{
+                            showlegend: true,
+                            legend: {
+                              x: 1.3,
+                              xanchor: 'left',
+                              y: 0.5
+
+                            }, paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: ''
+                          }} />
 
                       </div>
                     </Card>
@@ -452,7 +581,15 @@ function PbrReviewer() {
                         <Plot
                           data={appchart1}
                           onClick={(e) => showfilters(e.points[0].label)}
-                          layout={{ paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: '' }} />
+                          layout={{
+                            showlegend: true,
+                            legend: {
+                              x: 1.3,
+                              //xanchor: 'right',
+                              y: 0.5
+
+                            }, paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: ''
+                          }}/>
                       </div>
                     </Card>
                   </Col>
@@ -461,7 +598,21 @@ function PbrReviewer() {
               </div>
 
               <div style={{ marginTop: 20 }}>
-                <Button style={{
+                <div>
+                
+              <Search
+                                    className='dashboard-search'
+                                    placeholder='Search by template ID, name, creator or date of creation'
+                                    allowClear
+                                    enterButton='Search'
+                                    size='large'
+                                    icon={<SearchOutlined/>}
+                                    onSearch={landingSearch}
+                                />
+
+
+                                </div>
+              <Button style={{
                   margin: "7px",
                   right: 8,
                   borderRadius: "5px",
@@ -474,12 +625,22 @@ function PbrReviewer() {
                   onClick={showApproved}
 
                 >Approve</Button>
+                
+              
+                                 
+                
                 <Table
                   columns={columns2}
-                  dataSource={templateData}
-                  pagination={false}
+                  dataSource={filterTableLanding === null
+                    ? templateData
+                    : filterTableLanding}
+                  pagination={{ pageSize: 5 }}
+                  scroll={{
+                    x: 1300,
+                  }}
                   style={{ border: '1px solid #ececec', borderRadius: '2px' }}
                 />
+               
               </div>
             </div>
           </div>
