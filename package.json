@@ -11,7 +11,7 @@
     "start:local": "react-scripts --max_old_space_size=8192 start",
     "test": "cypress run",
     "cy:open": "cypress open",
-    "cy:run": "cypress run --headless --browser chrome",
+    "cy:run": "cypress run --headless",
     "dev": "start-test 3030 cy:open",
     "cy:build": "start-server-and-test https://bms-cpvdev.mareana.com cy:run",
     "e2e": "start-test 3030"
