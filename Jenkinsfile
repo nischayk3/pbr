@@ -8,11 +8,6 @@ pipeline {
         ansiColor('xterm')
     }
     stages {
-     //stage('Checkout SCM') {
-    //    steps {
-  //            git branch: 'master', credentialsId: 'b7fc056f-aa79-44ba-ae9a-616535d691dd', url: 'git@bitbucket.org:qmareanateam/cpvui.git'
-       // }
-    //}
     stage("Installing Pre-requisites") {
          
             steps {
@@ -21,6 +16,9 @@ pipeline {
                   sh '''#!/bin/bash -x
                         curl -sL https://rpm.nodesource.com/setup_12.x | sudo bash -
                         sudo yum install -y nodejs install gcc-c++ make xorg-x11-server-Xvfb gtk2-devel gtk3-devel libnotify-devel GConf2 nss libXScrnSaver alsa-lib
+                        sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+                        sudo chmod +x /usr/local/bin/docker-compose
+                        docker-compose version
                         node --version
                         npm --version
                  '''       
@@ -33,14 +31,11 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                
                   sh '''#!/bin/bash -x
-                        sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-                        sudo chmod +x /usr/local/bin/docker-compose
-                        docker-compose version
+                        sudo docker rm $(docker ps -a -q)
                         npm install 
-                        #nohup npm run start &
-                        docker-compose build --no-cache
-                        docker-compose up -d ui-cypress-test 
-                        sleep 10
+                        docker-compose build  --no-cache ui-cypress-test
+                        docker-compose up -d  
+                        ./check-ui.sh
                         npm run cy:run
                         docker-compose down -v
                         ls coverage
