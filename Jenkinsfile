@@ -36,10 +36,22 @@ pipeline {
                         docker-compose build  --no-cache ui-cypress-test
                         docker-compose up -d  
                         ./check-ui.sh
+                        rm -rf coverage
+                        rm -rf .nyc_output
                         npm run cy:run
                         docker-compose down -v
                         ls coverage
-                 '''       
+                 '''  
+                     // publish html
+                    publishHTML target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: './coverage/lcov-report/',
+                    reportFiles: 'index.html',
+                    reportName: 'Coverage Report'
+                    ]
+
                 }
               }
            }  
