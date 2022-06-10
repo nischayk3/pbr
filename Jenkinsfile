@@ -38,7 +38,7 @@ pipeline {
                         ./check-ui.sh
                         rm -rf coverage
                         rm -rf .nyc_output
-                        npm run cy:run
+                        DEBUG=code-coverage npm run cy:run
                         docker-compose down -v
                         ls coverage
                  '''  
