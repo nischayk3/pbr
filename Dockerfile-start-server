@@ -7,7 +7,4 @@ COPY . .
 EXPOSE 3030
 ENV PORT 3030
 ENTRYPOINT ["sh", "-c"]
-#RUN rm -rf node_modules
-#RUN npm i --silent
-#RUN npm rebuild node-sass
 CMD ["npm run start"]
