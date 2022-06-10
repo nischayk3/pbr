@@ -251,7 +251,7 @@ function WorkflowTable(props) {
 									<a
 										onClick={() =>
 											history.push(
-												`${text}/${row.Id}?temp_disp_id=${row.Id}&file=${row.file_name}&fromScreen=Workflow`
+												`${text}/${row.Id}?id=${row.Id}&temp_disp_id=${row.Id}&file=${row.file_name}&fromScreen=Workflow`
 											)
 										}
 										className="review-submission">
