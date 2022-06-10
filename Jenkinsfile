@@ -35,7 +35,7 @@ pipeline {
                         docker-compose version
                         npm install 
                         #nohup npm run start &
-                        docker-compose build
+                        docker-compose build --no-cache
                         docker-compose up -d ui-cypress-test 
                         sleep 10
                         npm run cy:run
