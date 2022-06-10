@@ -33,8 +33,8 @@ pipeline {
                   sh '''#!/bin/bash -x
                         sudo docker rm $(docker ps -a -q)
                         npm install 
-                        docker-compose build --no-cache
-                        docker-compose up -d ui-cypress-test 
+                        docker-compose build  --no-cache ui-cypress-test
+                        docker-compose up -d  
                         ./check-ui.sh
                         npm run cy:run
                         docker-compose down -v
