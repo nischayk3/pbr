@@ -134,7 +134,7 @@ export const downloadDataTable = request => {
 
 export const pbrFileUpload = request => {
 	return Service.post(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/ocr_extraction',
+		MDH_APP_PYTHON_SERVICE + '/pbr/udh/file_uploads',
 		request,
 		request_header_file
 	).then(

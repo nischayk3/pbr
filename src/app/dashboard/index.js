@@ -6,14 +6,11 @@ import {
 	useRouteMatch,
 	useLocation,
 } from 'react-router-dom';
-import Auth from '../../utils/auth';
-import BreadCrumbWrapper from '../../components/BreadCrumbWrapper';
 import HeaderBar from '../../components/Header';
 import Help from '../../components/Help';
 import { Layout } from 'antd';
 import Sidebar from '../../components/Sidebar';
 import SuspenseWrapper from '../../components/SuspenseWrapper';
-import Uploader from './dataLoad/index';
 import LoginRedirect from '../user/login/redirect';
 import RedirectSign from '../user/login/redirectSign';
 import ViewPage from './chartPersonal/components/viewPage/ViewPage';
@@ -21,7 +18,7 @@ import UserRolesAndAccess from '../../pages/UserRolesAndAccess/UserRolesAndAcces
 import UserConfiguration from '../../pages/UserRolesAndAccess/UserConfiguration/UserConfiguration';
 import RolesAndAccess from '../../pages/UserRolesAndAccess/RolesAndAccess/RolesAndAccess';
 import ScreenControls from '../../pages/UserRolesAndAccess/ScreenControls/ScreenControls';
-import PaperBatchRecords from './paperBatchRecords';
+// import PaperBatchRecords from './paperBatchRecords';
 import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate';
 import Analysis from '../../pages/Analysis/Analysis';
 import AnalysisModel from '../../pages/Analysis/AnalysisModel/AnalysisModel'
@@ -32,22 +29,18 @@ import PythonNotebook from './pythonNotebook/pythonNotebook';
 
 const ManualDataUpload = lazy(() => import('./manualDataUpload'));
 const ChartPersonal = lazy(() => import('./chartPersonal'));
-const SystemErrorReport = lazy(() => import('./systemErrorReport'));
 const View = lazy(() => import('./viewScreen/components/View'));
-const DataLoad = lazy(() => import('./dataLoad'));
 const ReportDesigner = lazy(() => import('./reportDesigner'));
 const AuditTrial = lazy(() => import('./auditTrial'));
 const Audit = lazy(() => import('./auditLogs'));
 const PbrUpdate = lazy(() => import('./pbrUpdate'));
+const PaperBatchRecords = lazy(() => import('./paperBatchRecords'));
 const ReportGenerator = lazy(() => import('./reportGenerator'));
 const Workflow = lazy(() => import('./wokflow'));
 const Workspace = lazy(() => import('./workspace'));
 const Genealogy = lazy(() => import('./genealogy'));
 const DashboardScreen = lazy(() => import('./dashboardScreen'));
 const ViewLanding = lazy(() => import('./viewScreen'));
-const ViewChart = lazy(() =>
-	import('./dashboardScreen/components/viewChart/viewChart')
-);
 const Hierarchy = lazy(() => import('./hierarchyConfig'));
 const HierarchyMain = lazy(() =>
 	import('./hierarchyConfig/components/hierarchy/hierarchy')
@@ -77,22 +70,12 @@ const Dashboard = () => {
 						{/* <BreadCrumbWrapper /> */}
 						<SuspenseWrapper>
 							<Switch>
-
 								<Route
 									key='manual_data_upload'
 									path={`${match.url}/manual_data_upload`}>
 									<ManualDataUpload />
 								</Route>
-								{/* <Route
-									key='view_creation'
-									path={`${match.url}/view_creation_view`}>
-									<View />
-								</Route>
-								<Route
-									key='view_creation_landing'
-									path={`${match.url}/view_creation_landing`}>
-									<ViewLanding />
-								</Route> */}
+
 								<Route
 									path={`${match.url}/view_creation`}
 									render={({ match: { url } }) => (
@@ -112,14 +95,6 @@ const Dashboard = () => {
 										</>
 									)}
 								/>
-								<Route
-									key='system_error_report'
-									path={`${match.url}/system_error_report`}>
-									<SystemErrorReport />
-								</Route>
-								<Route key='data_load' path={`${match.url}/data_load`}>
-									<DataLoad />
-								</Route>
 								<Route
 									key='report_designer'
 									path={`${match.url}/report_designer`}>
@@ -157,11 +132,11 @@ const Dashboard = () => {
 								<Route key='dashboard' path={`${match.url}/dashboard`}>
 									<DashboardScreen />
 								</Route>
-								<Route
+								{/* <Route
 									key='paper_batch_records'
 									path={`${match.url}/paper_batch_records`}>
 									<PaperBatchRecords />
-								</Route>
+								</Route> */}
 								<Route key='pbr_reviewer' path={`${match.url}/pbr_reviewer`}>
 									<PbrReviewer />
 								</Route>
@@ -169,11 +144,21 @@ const Dashboard = () => {
 								{/* <Route key='audit_logs' path={`${match.url}/audit_logs`}>
 									<Audit />
 								</Route> */}
+								{/* <Route
 								<Route
 									key='paper_batch_records_template'
 									path={`${match.url}/pbr_template`}>
 									<PaperBatchRecordsTemplate />
-								</Route>
+								</Route> */}
+								<Route
+									path={`${match.url}/paper_batch_records`}
+									render={({ match: { url } }) => (
+										<>
+											<Route path={`${url}/`} component={PaperBatchRecords} exact />
+											<Route path={`${url}/:id`} component={PaperBatchRecordsTemplate } />
+										</>
+									)}
+								/>
 								<Route key='redirect' path={`${match.url}/redirect`}>
 									<LoginRedirect />
 								</Route>
@@ -194,27 +179,6 @@ const Dashboard = () => {
 								<Route key='screen-controls' path={`${match.url}/user-roles-and-access/screen-controls`} component={ScreenControls} />
 								<Route key={'analysis'} path={`${match.url}/analysis`} component={Analysis} exact />
 								<Route key={'analysis-model'} path={`${match.url}/analysis/:id`} component={AnalysisModel} />
-								<Route
-									key='userRolesAndAccess'
-									path={`${match.url}/user-roles-and-access`}
-									exact
-									component={UserRolesAndAccess}
-								/>
-								<Route
-									key='user-configuration'
-									path={`${match.url}/user-roles-and-access/user-configuration`}
-									component={UserConfiguration}
-								/>
-								<Route
-									key='roles-and-access'
-									path={`${match.url}/user-roles-and-access/roles-and-access`}
-									component={RolesAndAccess}
-								/>
-								<Route
-									key='screen-controls'
-									path={`${match.url}/user-roles-and-access/screen-controls`}
-									component={ScreenControls}
-								/>
 								<Route
 									key='hierarchy_main'
 									path={`${match.url}/molecule_hierarchy_configurations`}>

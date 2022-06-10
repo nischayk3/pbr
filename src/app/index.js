@@ -11,29 +11,29 @@ const Account = lazy(() => import('./user'));
 
 const App = () => {
 
-  const match = useRouteMatch();
-  const showLoading = useSelector((state) => state.commonReducer.showLoading);
-
-  return (
-    <>
-      <Loading show={showLoading} />
-      <Notification />
-      <div style={{ opacity: showLoading ? 0.5 : 1 }}>
-        <SuspenseWrapper>
-          <Switch>
-            <Route path={`${match.url}dashboard`} key='dashboard'>
-              <Dashboard />
-            </Route>
-            <Route path={`${match.url}user`} key='user'>
-              <Account />
-            </Route>
-            <Route exact path='/' key='login'>
-              <Redirect to={'/user/login'} />
-            </Route>
-          </Switch>
-        </SuspenseWrapper>
-      </div>
-    </>
-  );
+	const match = useRouteMatch();
+	const showLoading = useSelector((state) => state.commonReducer.showLoading);
+	console.log("showLoadingggggggggggg", showLoading)
+	return (
+		<>
+			<Loading show={showLoading} />
+			<Notification />
+			<div style={{ opacity: showLoading ? 0.5 : 1 }}>
+				<SuspenseWrapper>
+					<Switch>
+						<Route path={`${match.url}dashboard`} key='dashboard'>
+							<Dashboard />
+						</Route>
+						<Route path={`${match.url}user`} key='user'>
+							<Account />
+						</Route>
+						<Route exact path='/' key='login'>
+							<Redirect to={'/user/login'} />
+						</Route>
+					</Switch>
+				</SuspenseWrapper>
+			</div>
+		</>
+	);
 };
 export default App;

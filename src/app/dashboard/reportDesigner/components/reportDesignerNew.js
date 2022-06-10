@@ -17,17 +17,12 @@ import {
 	Form,
 	Select,
 	Button,
-	Modal,
-	Table,
-	Input,
 	Empty,
 	Dropdown,
 	Menu,
 } from 'antd';
-// import ChartSelector from './reportDesignerFilter/chartSelector';
 import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
 import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections';
-// import ReportDesigneTable from './reportDesignerDynamicSections/ReportDesigneTable'
 import {
 	getViews,
 	getCharts,
@@ -51,65 +46,65 @@ import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { loadReport } from '../../../../services/reportDesignerServices';
 
 //Columns For The view Selection modal
-const columns = [
-	{
-		title: 'Report ID',
-		dataIndex: 'rep_disp_id',
-		key: 'rep_disp_id',
-		render: (text, record) => {
-			return {
-				props: {
-					style: { background: record.color },
-				},
-				children: <div>{text}</div>,
-			};
-		},
-	},
-	{
-		title: 'Report Name',
-		dataIndex: 'rep_name',
-		key: 'rep_name',
-		render: (text, record) => {
-			return {
-				props: {
-					style: { background: record.color },
-				},
-				children: <div>{text}</div>,
-			};
-		},
-	},
-	{
-		title: 'Report Status',
-		dataIndex: 'rep_status',
-		key: 'rep_status',
-		render: (text, record) => {
-			return {
-				props: {
-					style: { background: record.color },
-				},
-				children: <div>{text}</div>,
-			};
-		},
-	},
-	{
-		title: 'Created By',
-		dataIndex: 'created_by',
-		key: 'created_by',
-		render: (text, record) => {
-			return {
-				props: {
-					style: { background: record.color },
-				},
-				children: <div>{text}</div>,
-			};
-		},
-	},
-];
+// const columns = [
+// 	{
+// 		title: 'Report ID',
+// 		dataIndex: 'rep_disp_id',
+// 		key: 'rep_disp_id',
+// 		render: (text, record) => {
+// 			return {
+// 				props: {
+// 					style: { background: record.color },
+// 				},
+// 				children: <div>{text}</div>,
+// 			};
+// 		},
+// 	},
+// 	{
+// 		title: 'Report Name',
+// 		dataIndex: 'rep_name',
+// 		key: 'rep_name',
+// 		render: (text, record) => {
+// 			return {
+// 				props: {
+// 					style: { background: record.color },
+// 				},
+// 				children: <div>{text}</div>,
+// 			};
+// 		},
+// 	},
+// 	{
+// 		title: 'Report Status',
+// 		dataIndex: 'rep_status',
+// 		key: 'rep_status',
+// 		render: (text, record) => {
+// 			return {
+// 				props: {
+// 					style: { background: record.color },
+// 				},
+// 				children: <div>{text}</div>,
+// 			};
+// 		},
+// 	},
+// 	{
+// 		title: 'Created By',
+// 		dataIndex: 'created_by',
+// 		key: 'created_by',
+// 		render: (text, record) => {
+// 			return {
+// 				props: {
+// 					style: { background: record.color },
+// 				},
+// 				children: <div>{text}</div>,
+// 			};
+// 		},
+// 	},
+// ];
 
 function ReportDesignerNew(props) {
 
 	const { loadData } = props
-	const { Option } = Select;
+	// const { Option } = Select;
 	const location = useLocation()
 
 	const [loading, setLoading] = useState(false);
@@ -120,7 +115,7 @@ function ReportDesignerNew(props) {
 	const [isNew, setIsNew] = useState(true);
 	const [visible, setVisible] = useState(false);
 	const [popvisible, setPopVisible] = useState(false);
-	const [filterTable, setFilterTable] = useState(null);
+	// const [filterTable, setFilterTable] = useState(null);
 	const [viewId, setViewId] = useState('');
 	const [reportId, setReportId] = useState('');
 	const [viewVersion, setViewVersion] = useState('');
@@ -143,6 +138,8 @@ function ReportDesignerNew(props) {
 	const [sectionAddedCharts, setSectionAddedCharts] = useState({})
 	const [chartsLayout, setChartsLayout] = useState({})
 	const [chartsLayoutCompare, setChartsLayoutCompare] = useState({})
+	const [currentSection, setCurrentSection] = useState()
+
 
 	const [form] = Form.useForm();
 
@@ -276,22 +273,24 @@ function ReportDesignerNew(props) {
 	// 	setChartList([])
 	// }
 
-	const onOk = async () => {
-		const unloadResponse = await unLoadJson(reportData);
-		if (unloadResponse) {
-			dispatch(hideLoader());
-			setIsLoad(true);
-			setVisible(false)
-			setPopVisible(false);
-		}
-		else {
-			dispatch(hideLoader());
-		}
-	}
+	// const onOk = async () => {
+	// 	const unloadResponse = await unLoadJson(reportData);
+	// 	if (unloadResponse) {
+	// 		dispatch(hideLoader());
+	// 		setIsLoad(true);
+	// 		setVisible(false)
+	// 		setPopVisible(false);
+	// 	}
+	// 	else {
+	// 		dispatch(hideLoader());
+	// 	}
+	// }
 
 
 	// Get form values
 	const handleValuesChange = (changedValues, values) => {
+		let keys = Object.keys(changedValues.response)
+		setCurrentSection(keys.length > 0 ? keys[keys.length - 1] : 0)
 		setMainJson(convertToJson(values));
 	};
 
@@ -385,10 +384,10 @@ function ReportDesignerNew(props) {
 				content_arr = item.dymamic_rows ? item.dymamic_rows.map((i, index) => {
 					// let objj = {};
 					let key_obj = {}
-					key_obj['value'] = i.value ? i.value : ''
-					key_obj['editable'] = i.editable == undefined ? false : i.editable
-					key_obj['id'] = index + 1
-					key_obj['key'] = i.keyName ? i.keyName : ''
+					key_obj['value'] = i && i.value ? i.value : ''
+					key_obj['editable'] = i && i.editable == undefined ? false : i && i.editable
+					key_obj['id'] = i && index + 1
+					key_obj['key'] = i && i.keyName ? i.keyName : ''
 
 					return key_obj;
 				}) : []
@@ -408,15 +407,15 @@ function ReportDesignerNew(props) {
 
 
 	// searching values in table
-	const search = (value) => {
-		const tableData = reportList;
-		const filterTableData = tableData.filter((o) =>
-			Object.keys(o).some((k) =>
-				String(o[k]).toLowerCase().includes(value.toLowerCase())
-			)
-		);
-		setFilterTable(filterTableData);
-	};
+	// const search = (value) => {
+	// 	const tableData = reportList;
+	// 	const filterTableData = tableData.filter((o) =>
+	// 		Object.keys(o).some((k) =>
+	// 			String(o[k]).toLowerCase().includes(value.toLowerCase())
+	// 		)
+	// 	);
+	// 	setFilterTable(filterTableData);
+	// };
 
 
 	// Saving the json
@@ -603,82 +602,82 @@ function ReportDesignerNew(props) {
 	}
 
 
-	const unLoadJson = async (json_data) => {
-		dispatch(showLoader())
-		try {
-			let status = json_data['rep_status'] ? json_data['rep_status'] : ''
-			if (status)
-				setStatus(status)
+	// const unLoadJson = async (json_data) => {
+	// 	dispatch(showLoader())
+	// 	try {
+	// 		let status = json_data['rep_status'] ? json_data['rep_status'] : ''
+	// 		if (status)
+	// 			setStatus(status)
 
-			let ReportName = json_data['rep_name'] ? json_data['rep_name'] : ''
-			if (ReportName)
-				setReportName(ReportName)
+	// 		let ReportName = json_data['rep_name'] ? json_data['rep_name'] : ''
+	// 		if (ReportName)
+	// 			setReportName(ReportName)
 
-			let view = json_data['view_disp_id'] ? json_data['view_disp_id'] : ''
-			if (view)
-				setViewId(view)
+	// 		let view = json_data['view_disp_id'] ? json_data['view_disp_id'] : ''
+	// 		if (view)
+	// 			setViewId(view)
 
-			let chartList = json_data['chart_details'].length > 0 ? json_data['chart_details'] : []
-			if (chartList.length > 0)
-				setSelectedChartList(chartList)
+	// 		let chartList = json_data['chart_details'].length > 0 ? json_data['chart_details'] : []
+	// 		if (chartList.length > 0)
+	// 			setSelectedChartList(chartList)
 
-			let view_version = json_data['view_version'] ? json_data['view_version'].toString() : ''
-			setViewVersion(view_version)
+	// 		let view_version = json_data['view_version'] ? json_data['view_version'].toString() : ''
+	// 		setViewVersion(view_version)
 
-			getChartsList(view + '-' + view_version)
-			setViewIdVersion(view + '-' + view_version)
-			json_data = json_data['layout_info']
-			if (json_data) {
+	// 		getChartsList(view + '-' + view_version)
+	// 		setViewIdVersion(view + '-' + view_version)
+	// 		json_data = json_data['layout_info']
+	// 		if (json_data) {
 
-				let res = []
-				let layout_info = json_data ? json_data : {}
-				let title_page = layout_info['titlepage'] ? layout_info['titlepage'] : {}
+	// 			let res = []
+	// 			let layout_info = json_data ? json_data : {}
+	// 			let title_page = layout_info['titlepage'] ? layout_info['titlepage'] : {}
 
-				let title_section = title_page['heading'] ? title_page['heading'] : {}
-				let title_rows = title_page['content'] ? convertContent(title_page['content']) : {}
-				let title_obj = {}
-				title_obj['sectionName'] = title_section ? title_section : ''
-				title_obj['dymamic_rows'] = title_rows ? title_rows : ''
+	// 			let title_section = title_page['heading'] ? title_page['heading'] : {}
+	// 			let title_rows = title_page['content'] ? convertContent(title_page['content']) : {}
+	// 			let title_obj = {}
+	// 			title_obj['sectionName'] = title_section ? title_section : ''
+	// 			title_obj['dymamic_rows'] = title_rows ? title_rows : ''
 
-				res.push(title_obj)
+	// 			res.push(title_obj)
 
-				let section_area = layout_info['sections'] ? layout_info['sections'] : ''
+	// 			let section_area = layout_info['sections'] ? layout_info['sections'] : ''
 
-				if (section_area) {
-					section_area.map((item) => {
-						let section_obj = {}
-						section_obj['sectionName'] = item['heading'] ? item['heading'] : ''
-						section_obj['dymamic_rows'] = item['content'] ? convertContent(item['content']) : ''
-						res.push(section_obj)
-					})
-					let form_res = {}
-					form_res['response'] = res
-					setFormData(form_res)
-					form.setFieldsValue(form_res);
-					return true
-				}
-				else {
-					setFormData({})
-					form.setFieldsValue({});
-					return true
-				}
-			}
-			else {
-				setFormData({})
-				form.setFieldsValue({});
-				setViewId('')
-				setSelectedChartList([])
-				setViewIdVersion('')
-				setChartList([])
-				return false
-			}
-		}
-		catch
-		{
-			dispatch(showNotification('error', 'Loading Data.....'));
-		}
-		dispatch(hideLoader())
-	}
+	// 			if (section_area) {
+	// 				section_area.map((item) => {
+	// 					let section_obj = {}
+	// 					section_obj['sectionName'] = item['heading'] ? item['heading'] : ''
+	// 					section_obj['dymamic_rows'] = item['content'] ? convertContent(item['content']) : ''
+	// 					res.push(section_obj)
+	// 				})
+	// 				let form_res = {}
+	// 				form_res['response'] = res
+	// 				setFormData(form_res)
+	// 				form.setFieldsValue(form_res);
+	// 				return true
+	// 			}
+	// 			else {
+	// 				setFormData({})
+	// 				form.setFieldsValue({});
+	// 				return true
+	// 			}
+	// 		}
+	// 		else {
+	// 			setFormData({})
+	// 			form.setFieldsValue({});
+	// 			setViewId('')
+	// 			setSelectedChartList([])
+	// 			setViewIdVersion('')
+	// 			setChartList([])
+	// 			return false
+	// 		}
+	// 	}
+	// 	catch
+	// 	{
+	// 		dispatch(showNotification('error', 'Loading Data.....'));
+	// 	}
+	// 	dispatch(hideLoader())
+	// }
 
 	const isStyledDifferently = (rowObject, index) => {
 		return rowObject.isActive ? true : false;
@@ -842,6 +841,8 @@ function ReportDesignerNew(props) {
 							initialValues={formData}>
 							<ReportDesignerDynamicSections
 								formData={formData}
+								setCurrentSection={setCurrentSection}
+								currentSection={currentSection}
 								show={params}
 								list={selectedChartList}
 								setSectionCharts={setSectionCharts}
@@ -857,7 +858,7 @@ function ReportDesignerNew(props) {
 				) : (
 					<></>
 				)}
-				<Modal
+				{/* <Modal
 					title='Select Report'
 					visible={visible}
 					onCancel={() => setVisible(false)}
@@ -870,7 +871,8 @@ function ReportDesignerNew(props) {
 								color: 'white',
 								borderRadius: '4px',
 							}}
-							onClick={() => onOk()}>
+						// onClick={() => onOk()}
+						>
 							OK
 						</Button>,
 					]}>
@@ -902,8 +904,8 @@ function ReportDesignerNew(props) {
 					<Button onClick={() => setPopVisible(true)}>
 						<BlockOutlined twoToneColor='#093185' />
 					</Button>
-				</Modal>
-				<Modal
+				</Modal> */}
+				{/* <Modal
 					visible={popvisible}
 					onCancel={() => setPopVisible(false)}
 					title={
@@ -913,7 +915,7 @@ function ReportDesignerNew(props) {
 								className='table-search'
 								placeholder='Search by...'
 								enterButton
-								onSearch={search}
+								// onSearch={search}
 								style={{ borderRadius: '4px' }}
 							/>
 						</p>
@@ -929,7 +931,7 @@ function ReportDesignerNew(props) {
 							}}
 							onClick={() => {
 								dispatch(showLoader());
-								onOk();
+								// onOk();
 							}}>
 							OK
 						</Button>,
@@ -951,7 +953,7 @@ function ReportDesignerNew(props) {
 						size='small'
 						pagination={false}
 					/>
-				</Modal>
+				</Modal> */}
 				<SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
 			</div>
 			<Signature

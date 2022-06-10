@@ -94,8 +94,9 @@ const alertEvaluation = (props) => {
 
 	const onClear = () => {
 		setEmailList([]);
-		setSelectedSchedule("");
+		setSelectedSchedule("Repeat Once");
 		setScheduleStartDate("");
+		setScheduleTime("")
 		// setScheduleEmailTime("");
 		setRadioValue("");
 		setSelectedDays({
@@ -109,6 +110,13 @@ const alertEvaluation = (props) => {
 		});
 	};
 
+	const checkValidRequest = () => {
+		if (radioValue == 3 && everyDayValue.length <= 0) {
+			return false
+		}
+		else
+			return true
+	}
 	const getJobs = async (job) => {
 		dispatch(showLoader());
 		let login_response = JSON.parse(localStorage.getItem("login_details"));
@@ -248,65 +256,70 @@ const alertEvaluation = (props) => {
 		setIsSame(value);
 	};
 	const SaveData = async () => {
-		let req = {};
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		let is_valid = checkValidRequest()
+		if (is_valid) {
+			let req = {};
+			let login_response = JSON.parse(localStorage.getItem("login_details"));
 
-		let request_headers = {
-			"content-type": "application/json",
-			"x-access-token": login_response.token ? login_response.token : "",
-			"resource-name": "DASHBOARD",
-		};
+			let request_headers = {
+				"content-type": "application/json",
+				"x-access-token": login_response.token ? login_response.token : "",
+				"resource-name": "DASHBOARD",
+			};
 
-		req["app_data"] = props.name ? props.name : props.appType;
-		req["dag_id"] = " ";
-		req["created_by"] = localStorage.getItem("username")
-			? localStorage.getItem("username")
-			: "";
-		req["app_type"] = props.appType;
-		req["app_id"] = props.id;
+			req["app_data"] = props.name ? props.name : props.appType;
+			req["dag_id"] = " ";
+			req["created_by"] = localStorage.getItem("username")
+				? localStorage.getItem("username")
+				: "";
+			req["app_type"] = props.appType;
+			req["app_id"] = props.id;
 
-		let email_config = {};
-		email_config["scheduled_time"] = scheduleTime;
-		email_config["selected_days_obj"] = selectedDays;
-		email_config["frequency"] = convertExpresion(
-			scheduleStartDate,
-			scheduleTime,
-			selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
-			radioValue,
-			selectedTimeRange,
-			Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
-			everyDayValue
-		);
-		req["email_config"] = email_config;
-		req["frequency"] =
-			selectedSchedule == "Repeat Once"
-				? "Once"
-				: convertExpresion(
-					scheduleStartDate,
-					scheduleTime,
-					selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
-					radioValue,
-					selectedTimeRange,
-					Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
-					everyDayValue
-				);
-		req["frequency_unit"] =
-			selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule;
-		req["job_status"] = "scheduled";
-		req["job_type"] = "event";
-		req["notify_emails"] = [];
-		req["scheduled_start"] = scheduleStartDate;
-		req["scheduled_end"] =
-			selectedSchedule == "Repeat Once" ? scheduleStartDate : "2030/12/12";
-		if (props.job_id)
-			req["job_id"] = props.job_id ? props.job_id : ' ';
+			let email_config = {};
+			email_config["scheduled_time"] = scheduleTime;
+			email_config["selected_days_obj"] = selectedDays;
+			email_config["frequency"] = convertExpresion(
+				scheduleStartDate,
+				scheduleTime,
+				selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
+				radioValue,
+				selectedTimeRange,
+				Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
+				everyDayValue
+			);
+			req["email_config"] = email_config;
+			req["frequency"] =
+				selectedSchedule == "Repeat Once"
+					? "Once"
+					: convertExpresion(
+						scheduleStartDate,
+						scheduleTime,
+						selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
+						radioValue,
+						selectedTimeRange,
+						Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
+						everyDayValue
+					);
+			req["frequency_unit"] =
+				selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule;
+			req["job_status"] = "scheduled";
+			req["job_type"] = "event";
+			req["notify_emails"] = [];
+			req["scheduled_start"] = scheduleStartDate;
+			req["scheduled_end"] =
+				selectedSchedule == "Repeat Once" ? scheduleStartDate : "2030/12/12";
+			if (props.job_id)
+				req["job_id"] = props.job_id ? props.job_id : ' ';
+			let res = await putJob(req, request_headers);
 
-		let res = await putJob(req, request_headers);
-
-		if (res.Status == 200) {
-			dispatch(showNotification("success", "Saved"));
-		} else {
-			dispatch(showNotification("error", res.Message));
+			if (res.Status == 200) {
+				dispatch(showNotification("success", "Saved"));
+			} else {
+				dispatch(showNotification("error", res.Message));
+			}
+		}
+		else {
+			dispatch(showNotification("error", 'Required fields are missing'));
 		}
 	};
 	const changeTab = (activeKey) => {

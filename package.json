@@ -91,25 +91,10 @@
   },
   "nyc": {
     "report-dir": "coverage",
-    "exclude": [
-      "src/serviceWorker.js",
-      "src/api",
-      "src/app/user/login/**/*.js",
-      "src/components/BreadCrumbWrapper/**/*",
-      "src/duck/actions/**/*.js",
-      "src/duck/reducers/**/*.js",
-      "src/utils/auth.js",
-      "src/services chartPersonalizationService.js",
-      "src/app/dashboard/auditTrial/**/*.js",
-      "src/app/dashboard/chartPersonalization/**/*.js",
-      "src/app/dashboard/manualDtaUpload/**/*.js",
-      "src/app/dashboard/dataLoad/**/*.js",
-      "src/app/dashboard/reportDesign/**/*.js",
-      "src/app/dashboard/reportGenerator/**/*.js",
-      "src/app/dashboard/systemErrorReport/**/*.js",
-      "src/app/dashboard/wokflow/**/*.js",
-      "src/app/dashboard/chartPersonal/**/*.js"
-    ],
-    "excludeAfterRemap": true
+    "all": true,
+    "include": "./src/**",
+    "reporter": [
+      "lcov"
+    ]
   }
 }

@@ -30,7 +30,7 @@ import Banner from '../../../../assets/images/Popup-Side.svg';
 import checkIcon from '../../../../assets/images/checkbox.svg';
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
 
-export default function Landing(props) {
+export default function ReportLanding(props) {
 	const [searched, setSearched] = useState(false);
 	const [newsearched, setNewSearched] = useState(false);
 	const [reportList, setReportList] = useState([]);
