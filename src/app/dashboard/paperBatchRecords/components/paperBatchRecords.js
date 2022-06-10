@@ -205,7 +205,7 @@ function PaperBatchRecords() {
 		setMatBatch({
 			material_num: res?.Data[0]?.product_num,
 			batch: res?.Data[0].batch_num,
-			site: res?.Data[0].site_num
+			site: res?.Data[0].site_code
 		})
 
 	}
@@ -417,7 +417,7 @@ function PaperBatchRecords() {
 		setMatBatch({
 			material_num: arr[0]?.product_num,
 			batch: arr[0]?.batch_num,
-			site: arr[0]?.site_num
+			site: arr[0]?.site_code
 		})
 	}
 
