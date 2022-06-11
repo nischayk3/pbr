@@ -1,0 +1,276 @@
+{
+    "message": {
+        "columns": [
+            {
+                "align": "center",
+                "dataIndex": "roles",
+                "editable": true,
+                "label": "Roles",
+                "name": "roles",
+                "title": "Roles",
+                "type": "input"
+            },
+            {
+                "align": "center",
+                "dataIndex": "resources",
+                "label": "Resources",
+                "mode": "multiple",
+                "name": "resources",
+                "options": [
+                    {
+                        "label": "VIEW",
+                        "value": 1
+                    },
+                    {
+                        "label": "CHART",
+                        "value": 2
+                    },
+                    {
+                        "label": "GENEALOGY",
+                        "value": 3
+                    },
+                    {
+                        "label": "DASHBOARD",
+                        "value": 4
+                    },
+                    {
+                        "label": "FILE_UPLOAD",
+                        "value": 5
+                    },
+                    {
+                        "label": "REPORT_GENERATOR",
+                        "value": 6
+                    },
+                    {
+                        "label": "WORKITEMS",
+                        "value": 7
+                    },
+                    {
+                        "label": "REPORT_DESIGNER",
+                        "value": 8
+                    },
+                    {
+                        "label": "SYSTEM_ERRORS",
+                        "value": 50
+                    },
+                    {
+                        "label": "AUDIT_REPORT",
+                        "value": 51
+                    },
+                    {
+                        "label": "CONFIGURATION",
+                        "value": 52
+                    },
+                    {
+                        "label": "ANALYTICS",
+                        "value": 9
+                    }
+                ],
+                "title": "Resources",
+                "type": "select"
+            },
+            {
+                "align": "center",
+                "dataIndex": "visibility",
+                "label": "Visibility",
+                "mode": "multiple",
+                "name": "visibility",
+                "options": [
+                    {
+                        "label": "OWN",
+                        "value": 1
+                    },
+                    {
+                        "label": "APRD",
+                        "value": 2
+                    },
+                    {
+                        "label": "APRD_DRFT",
+                        "value": 3
+                    },
+                    {
+                        "label": "AWAP",
+                        "value": 4
+                    }
+                ],
+                "title": "Visibility",
+                "type": "select"
+            },
+            {
+                "align": "center",
+                "dataIndex": "access",
+                "label": "Access",
+                "mode": "multiple",
+                "name": "access",
+                "options": [
+                    {
+                        "label": "READ",
+                        "value": 10
+                    },
+                    {
+                        "label": "MAINT",
+                        "value": 20
+                    },
+                    {
+                        "label": "APPR",
+                        "value": 30
+                    }
+                ],
+                "title": "Access",
+                "type": "select"
+            }
+        ],
+        "dataSource": [
+            {
+                "access": [],
+                "resources": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    50,
+                    51,
+                    52
+                ],
+                "roles": "ADMIN",
+                "visibility": []
+            },
+            {
+                "access": [],
+                "resources": [],
+                "roles": "ALL_ACCESS",
+                "visibility": []
+            },
+            {
+                "access": [
+                    10
+                ],
+                "resources": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "roles": "CMO",
+                "visibility": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "access": [],
+                "resources": [],
+                "roles": "NEW_ROLE",
+                "visibility": []
+            },
+            {
+                "access": [
+                    10,
+                    20,
+                    30
+                ],
+                "resources": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    51,
+                    52
+                ],
+                "roles": "TEST_ADMIN",
+                "visibility": [
+                    1,
+                    2,
+                    3,
+                    4
+                ]
+            },
+            {
+                "access": [
+                    10
+                ],
+                "resources": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "roles": "TEST_CMO",
+                "visibility": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "access": [
+                    10,
+                    20
+                ],
+                "resources": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    51,
+                    52
+                ],
+                "roles": "TEST_USER",
+                "visibility": [
+                    1,
+                    2,
+                    3,
+                    4
+                ]
+            },
+            {
+                "access": [
+                    10,
+                    20
+                ],
+                "resources": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    51,
+                    52
+                ],
+                "roles": "USER",
+                "visibility": [
+                    1,
+                    2,
+                    3
+                ]
+            }
+        ],
+        "deleteActionColumn": false,
+        "rowInitialData": {
+            "access": [],
+            "resources": [],
+            "roles": "NEW_ROLE",
+            "updated": false,
+            "visibility": []
+        }
+    },
+    "statuscode": 200
+}

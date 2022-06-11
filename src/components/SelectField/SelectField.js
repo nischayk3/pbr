@@ -14,6 +14,7 @@ const SelectField = (props) => {
 
 			<Select
 				placeholder={props.placeholder}
+				id={props.id}
 				value={props.selectedValue}
 				onChange={props.onChangeSelect}
 				style={{ width: "100%", margin: "0px" }}

@@ -443,7 +443,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 						<p>Batch Coverage</p>
 					</Col>
 					<Col className='arrow-right' span={12}>
-						<Button onClick={handleBatchFilterChange}>Apply</Button>
+						<Button id="side-view-batch-coverage-apply-button" onClick={handleBatchFilterChange}>Apply</Button>
 						<ArrowRightOutlined />
 					</Col>
 				</Row>
