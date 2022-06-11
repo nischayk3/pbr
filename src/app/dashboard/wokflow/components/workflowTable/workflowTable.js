@@ -246,6 +246,18 @@ function WorkflowTable(props) {
 										Review Submission
 									</a>
 								);
+							} else if (text == "/dashboard/paper_batch_records") {
+								return (
+									<a
+										onClick={() =>
+											history.push(
+												`${text}/${row.Id}?id=${row.Id}&temp_disp_id=${row.Id}&file=${row.filename}&fromScreen=Workflow&version=${row.version}`
+											)
+										}
+										className="review-submission">
+										Review Submission
+									</a>
+								);
 							} else {
 								return (
 									<a
@@ -268,10 +280,10 @@ function WorkflowTable(props) {
 								<div>
 									<Avatar
 										className="avatar-icon"
-										style={ { backgroundColor: getRandomColor(index + 1) } }>
-										{ text.split("")[0].toUpperCase() }{ " " }
+										style={{ backgroundColor: getRandomColor(index + 1) }}>
+										{text.split("")[0].toUpperCase()}{" "}
 									</Avatar>
-									<span className="avatar-text">{ text }</span>
+									<span className="avatar-text">{text}</span>
 								</div>
 							);
 						};
@@ -279,7 +291,7 @@ function WorkflowTable(props) {
 
 					if (i.field_name === "created_on") {
 						obj.render = (text, row, index) => {
-							return <>{ moment(text.split("T")[0]).format("DD/MM/YYYY") }</>;
+							return <>{moment(text.split("T")[0]).format("DD/MM/YYYY")}</>;
 						};
 					}
 
@@ -323,10 +335,10 @@ function WorkflowTable(props) {
 								<div>
 									<Avatar
 										className="avatar-icon"
-										style={ { backgroundColor: getRandomColor(index + 1) } }>
-										{ text.split("")[0].toUpperCase() }{ " " }
+										style={{ backgroundColor: getRandomColor(index + 1) }}>
+										{text.split("")[0].toUpperCase()}{" "}
 									</Avatar>
-									<span className="avatar-text">{ text }</span>
+									<span className="avatar-text">{text}</span>
 								</div>
 							);
 						};
@@ -334,7 +346,7 @@ function WorkflowTable(props) {
 
 					if (i.field_name === "created_on") {
 						obj.render = (text, row, index) => {
-							return <>{ moment(text.split("T")[0]).format("DD/MM/YYYY") }</>;
+							return <>{moment(text.split("T")[0]).format("DD/MM/YYYY")}</>;
 						};
 					}
 
@@ -350,11 +362,11 @@ function WorkflowTable(props) {
 		<div className="workflow-table">
 			<Table
 				className="approval-table"
-				columns={ newColumns }
-				dataSource={ props.dataSource }
-				style={ { border: "1px solid #ececec", borderRadius: "2px" } }
-				pagination={ false }
-				scroll={ { x: 500, y: 300 }  }
+				columns={newColumns}
+				dataSource={props.dataSource}
+				style={{ border: "1px solid #ececec", borderRadius: "2px" }}
+				pagination={false}
+				scroll={{ x: 500, y: 300 }}
 			//rowKey={(record) => record.param}
 			/>
 		</div>
