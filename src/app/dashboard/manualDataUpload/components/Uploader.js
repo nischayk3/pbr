@@ -529,6 +529,7 @@ class Uploader extends Component {
 			signatureReason: '',
 			signatureScreen: '',
 			selectedFileList: [],
+			nextStepDisabled:false
 		});
 	};
 
