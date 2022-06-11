@@ -91,7 +91,6 @@
   },
   "nyc": {
     "report-dir": "coverage",
-    "all": true,
     "include": "./src/**",
     "reporter": [
       "lcov"
