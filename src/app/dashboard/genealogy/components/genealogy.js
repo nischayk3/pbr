@@ -66,10 +66,9 @@ function Genealogy() {
 	const [nodeType, setNodeType] = useState('');
 	const [limsBatch, setLimsBatch] = useState('');
 	const [isUploadVisible, setIsUploadVisible] = useState(false);
-	const [selectedFileList, setSelectedFileList] = useState([]);
-	const [selectedFile, setSelectedFile] = useState(null);
 	const [uploadFile, setUploadFile] = useState([]);
-	const [fileName, setFileName] = useState('');
+	const [uploadFileName, setUploadFileName] = useState([]);
+	const [uploadFileDetail, setUploadFileDetail] = useState([]);
 	const [fileData, setFileData] = useState('');
 	const [uploading, setUploading] = useState(false);
 	const [uploadId, setUploadId] = useState('');
@@ -176,7 +175,7 @@ function Genealogy() {
 
 			setUploadId(uploadNodeId);
 			setIsUploadVisible(true);
-			setSelectedFileList([]);
+
 		}
 	};
 
@@ -359,7 +358,6 @@ function Genealogy() {
 		setIsDrawer(val);
 		setShowView(true);
 		setIsDrawerOpen(false);
-
 		setActivateKey('3');
 	};
 
@@ -378,7 +376,6 @@ function Genealogy() {
 	const downloadFile = async val => {
 		let uri =
 			'SELECT * FROM tran_product_params WHERE batch_num=' + `'${limsBatch}'`;
-
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		let req = {
 			export_csv: true,
@@ -403,12 +400,40 @@ function Genealogy() {
 			setUploading(true);
 			const fileResponse = await pbrFileUpload(_fileRequest);
 			if (fileResponse.Status === 202) {
-				dispatch(showNotification('success', fileResponse.Message));
+				const fileName = [];
+				const fileSize = [];
 				setUploading(false);
+				dispatch(showNotification('success', fileResponse.Message));
+				const duplicateFile = fileResponse.data
+				const filterDuplicateFile = uploadFileDetail.filter(item => !duplicateFile.includes(item.fileName))
+				console.log("filterDuplicateFile", filterDuplicateFile)
+				filterDuplicateFile.map((item) => {
+					fileName.push(item.fileName)
+					fileSize.push(item.fileSize)
+				})
+				let login_response = JSON.parse(localStorage.getItem('login_details'));
+				const data = fileData && fileData.split('|');
+				console.log("filterDuplicateFile", filterDuplicateFile)
+				console.log("fileName", fileName, fileSize)
+				if (fileName !== null) {
+					const reqData = {
+						batchNum: data[2],
+						changedBy: null,
+						createdBy: login_response.firstname + login_response.lastname,
+						custKey: '123',
+						filename: fileName,
+						fileSize: fileSize,
+						productNum: data[1],
+						siteNum: data[0],
+						status: 'N',
+						uploadReason: 'PBR Document'
+					};
+					geanealogyFileDataUpload(reqData);
+				}
+
 			} else {
 				dispatch(showNotification('error', fileResponse.Message));
 			}
-			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', error));
@@ -430,25 +455,10 @@ function Genealogy() {
 	};
 
 	const handleClickUpload = () => {
-		let login_response = JSON.parse(localStorage.getItem('login_details'));
+
 		const file = uploadFile;
-		const data = fileData && fileData.split('|');
-		const reqData = {
-			batchNum: data[2],
-			changedBy: null,
-			createdBy: login_response.firstname + login_response.lastname,
-			custKey: '123',
-			filename: fileName,
-			productNum: data[1],
-			siteNum: data[0],
-			status: 'open',
-			uploadReason: 'PBR Document'
-		};
-
-
-
-		//geanealogyFileDataUpload(reqData);
 		fileUpload(file);
+
 	};
 
 	const remove = targetKey => {
@@ -487,43 +497,10 @@ function Genealogy() {
 		setActivateKey(newActiveKey);
 	};
 
-	const onChangeFile = info => {
-		const nextState = {};
-		const fileList = []
-		if (info.file.status === 'uploading') {
-			nextState.selectedFileList = [info.file];
-		} else if (info.file.status === 'done') {
-			const nodeFileData = fileData && fileData.split('|');
-			fileList.push(info.file)
-			nextState.selectedFileList = fileList;
-			nextState.selectedFile = info.file;
-
-			var formData = new FormData();
-			// formData.append('file', info.file.originFileObj);
-			//formData.append('method', 'aws');
-			info && info.fileList.map((item) => {
-				formData.append('file', item.originFileObj);
-				formData.append('fileSize', item.size)
-			})
-			formData.append('batchNum', nodeFileData[2])
-			formData.append('productNum', nodeFileData[1])
-			console.log("formData", formData);
-			setFileName(info.file.name);
-			setUploadFile(formData);
-		} else if (info.file.status === 'error') {
-			nextState.selectedFileList = [];
-			nextState.selectedFile = null;
-			dispatch(
-				showNotification('error', `${info.file.name} file upload failed.`)
-			);
-		}
-		setSelectedFile(nextState.selectedFile);
-		setSelectedFileList(nextState.selectedFileList);
-	};
-
 	const files = {
 		name: 'file',
 		multiple: true,
+
 		progress: {
 			strokeColor: {
 				'0%': '#108ee9',
@@ -533,12 +510,40 @@ function Genealogy() {
 			showInfo: true,
 			format: percent => percent && `${parseFloat(percent.toFixed(2))}%`
 		},
+		onChange(info) {
+			const fileName = [];
+			const fileSize = [];
+			const fileDetail = [];
+
+			const nodeFileData = fileData && fileData.split('|');
+
+			var formData = new FormData();
+
+			info && info.fileList.map((item) => {
+				formData.append('file', item.originFileObj);
+
+				fileDetail.push({
+					fileName: item.name,
+					fileSize: item.size
+				})
+				fileName.push(item.name)
+				fileSize.push(item.size)
+			})
+
+			formData.append('fileSize', fileSize)
+			formData.append('batchNum', nodeFileData[2])
+			formData.append('productNum', nodeFileData[1])
+			setUploadFileDetail(fileDetail);
+			setUploadFileName(fileName);
+			setUploadFile(formData);
+			dispatch(
+				showNotification('error', `${info.file.name} file uploaded successfully.`)
+			);
+		},
 		onDrop(e) {
 			console.log('Dropped files', e.dataTransfer.files);
 		}
 	};
-
-
 
 	const dummyRequest = ({ onSuccess }) => {
 		setTimeout(() => {
@@ -549,6 +554,7 @@ function Genealogy() {
 	const handleCancel = () => {
 		setIsUploadVisible(false);
 		setUploading(false);
+
 	};
 
 	return (
@@ -624,6 +630,7 @@ function Genealogy() {
 								setCollapseKey={setCollapseKey}
 							/>
 							<Modal
+								destroyOnClose
 								width={520}
 								visible={isUploadVisible}
 								title={'Upload file to ' + uploadId}
@@ -632,9 +639,9 @@ function Genealogy() {
 								footer={null}>
 								<Dragger
 									{...files}
-									onChange={onChangeFile}
+									listType='text'
 									customRequest={dummyRequest}
-								// fileList={selectedFileList}
+
 								>
 
 									<p className='ant-upload-drag-icon'>
@@ -649,11 +656,11 @@ function Genealogy() {
 										or other band files
 									</p>
 								</Dragger>
-								{selectedFileList.length > 0 ? (
+								{uploadFileName.length > 0 ? (
 									<div className='file-upload-section'>
 										<div className='upload-btn'>
 											<Button
-												disabled={selectedFileList.length === 0}
+												disabled={uploadFileName.length === 0}
 												loading={uploading}
 												onClick={() => handleClickUpload()}>
 												{uploading ? 'Uploading' : 'Upload'}
