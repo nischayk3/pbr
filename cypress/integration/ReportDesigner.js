@@ -2,7 +2,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
   return false;
 });
 
-describe("Report", () => {
+describe("Report Designer", () => {
   beforeEach(() => {
     cy.viewport(1280, 720)
     localStorage.setItem("test_enabled", true);
