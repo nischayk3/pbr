@@ -272,7 +272,7 @@ function PbrReviewer() {
 			sortDirections: ['descend', 'ascend'],
 			render: (text, record, index) => {
 				return (
-					<img src={`https://cpv-poc.mareana.com/bms_poc_snippets/${text}`} width="50%" height="15%" />
+					<img src={`data:image/png;base64,${text}`} width="50%" height="15%" />
 				)
 			}
 		},
@@ -511,7 +511,7 @@ function PbrReviewer() {
 								<Table
 									columns={columns2}
 									dataSource={templateData}
-									pagination={false}
+									pagination={true}
 									style={{ border: '1px solid #ececec', borderRadius: '2px' }}
 								/>
 							</div>

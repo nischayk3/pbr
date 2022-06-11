@@ -32,9 +32,6 @@ const rules = ({ postChartData, setPostChartData }) => {
       if (Number(id) !== 0) {
         Object.entries(rulesResponse.rules_list).map(([key, value]) => {
           value.map((ele) => {
-            if (ele.applied === true) {
-              checked.push(ele.rule_id);
-            }
             newArr.data[0].rules &&
               newArr.data[0].rules.map((el) => {
                 if (el.rule_id === ele.rule_id) {

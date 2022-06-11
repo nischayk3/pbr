@@ -1,4 +1,4 @@
-import { LOAD_TEMPLATE, MATBATCH_INFO, PAGE_IDENTIFIER } from '../types/types';
+import { LOAD_TEMPLATE, MATBATCH_INFO, PAGE_IDENTIFIER,TEMP_ADDITIONAL } from '../types/types';
 
 export const loadTemplateInfo = payload => ({
 	type: LOAD_TEMPLATE,
@@ -12,6 +12,11 @@ export const loadMatBatchInfo = payload => ({
 
 export const loadPageIdentifier = payload => ({
 	type: PAGE_IDENTIFIER,
+	payload,
+});
+
+export const loadTempAdditionalData = payload => ({
+	type: TEMP_ADDITIONAL,
 	payload,
 });
 
