@@ -413,27 +413,6 @@ describe('Manual data upload', () => {
         cy.log("cancel button for lear data")
         cy.reload()
         cy.wait(3000)
-        cy.get('.ant-btn-primary > :nth-child(1)').click();
-       
-        cy.get('.steps-action').get('button').eq(3).click()
-
-        cy.log("going to complete section and pressing previous button")
-        cy.get('.ant-btn-primary > :nth-child(1)').click();
-        cy.wait(3000)
-        cy.get('.ant-btn-primary').eq(1).click();
-        cy.wait(3000)
-        cy.get('.ant-btn-primary').eq(1).click();
-        cy.wait(3000)
-        cy.get('.ant-btn-primary').eq(2).click()
-        cy.wait(3000)
-        cy.get('.ant-btn-primary').eq(0).click();
-        cy.wait(3000)
-        cy.get('.ant-btn-primary').eq(1).click();
-        cy.wait(3000)
-        cy.get('.ant-btn-primary').eq(0).click();
-        cy.wait(3000)
-        cy.get('.ant-btn-primary').eq(0).click();
-
         
         cy.log("status 200")
         cy.get('.ant-btn-primary > :nth-child(1)').click();
