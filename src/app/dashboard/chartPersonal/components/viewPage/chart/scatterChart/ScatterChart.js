@@ -285,7 +285,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             <ScatterPlot
               data={chartData}
               layout={layoutData}
-              // nodeClicked={chartNodeClicked}
+              nodeClicked={chartNodeClicked}
             />
           )}
         </Row>
