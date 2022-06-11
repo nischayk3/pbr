@@ -322,8 +322,6 @@ describe('Manual data upload', () => {
         cy.get('.signature-modal > .ant-btn-primary > span').click();
         cy.wait(6000)
       });
-gi
-
 
       it("Api check",()=>{
         cy.log("cancel digital signature")
