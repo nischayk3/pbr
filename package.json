@@ -92,6 +92,12 @@
    "nyc": {
      "all": true,
     "sourceMap": false,
-    "instrument": false
+    "instrument": true,
+    "require": [
+    "babel-register"
+  ],
+  "include": [
+    "src/**/*.js"
+  ]
   }
 }
