@@ -15,6 +15,9 @@ const Display = ({ postChartData, setPostChartData }) => {
     markerSize: null,
     markerShape: null,
     markerColor: null,
+    violationMarkerColor: null,
+    violationMarkerSize: null,
+    violationMarkerShape: null,
   });
   const orientationList = ["Vertical", "Horizontal"];
   const symbolList = [
@@ -29,41 +32,73 @@ const Display = ({ postChartData, setPostChartData }) => {
     "octagon",
   ];
 
-  const handleMarkerChange = (e) => {
+  const handleMarkerChange = (e, type) => {
     const chartData = JSON.parse(JSON.stringify(postChartData));
     chartData.data.forEach((element) => {
       element.data.forEach((item) => {
-        console.log(item, "itemm");
-        if (item.mode === "markers" && item.name === "Normal") {
-          item.marker.symbol = e;
+        if (type === "markerShape") {
+          if (item.mode === "markers" && item.name === "Normal") {
+            item.marker.symbol = e;
+          }
+          setChartDataMarkers({ ...chartDataMarkers, markerShape: e });
+        } else {
+          if (item.mode === "markers" && item.name === "Violations") {
+            item.marker.symbol = e;
+          }
+          setChartDataMarkers({ ...chartDataMarkers, violationMarkerShape: e });
         }
       });
     });
-    setChartDataMarkers({ ...chartDataMarkers, markerShape: e });
     setPostChartData(chartData);
   };
-  const handleMarkerColorChange = (e) => {
+  const handleMarkerColorChange = (e, type) => {
     const chartData = JSON.parse(JSON.stringify(postChartData));
     chartData.data.forEach((element) => {
       element.data.forEach((item) => {
-        if (item.mode === "markers" && item.name === "Normal") {
-          item.marker.color = e.target.value;
+        if (type === "markerColor") {
+          if (item.mode === "markers" && item.name === "Normal") {
+            item.marker.color = e.target.value;
+          }
+          setChartDataMarkers({
+            ...chartDataMarkers,
+            markerColor: e.target.value,
+          });
+        } else {
+          if (item.mode === "markers" && item.name === "Violations") {
+            item.marker.color = e.target.value;
+          }
+          setChartDataMarkers({
+            ...chartDataMarkers,
+            violationMarkerColor: e.target.value,
+          });
         }
       });
     });
-    setChartDataMarkers({ ...chartDataMarkers, markerColor: e.target.value });
     setPostChartData(chartData);
   };
-  const handleMarkerSizeChange = (e) => {
+  const handleMarkerSizeChange = (e, type) => {
     const chartData = JSON.parse(JSON.stringify(postChartData));
     chartData.data.forEach((element) => {
       element.data.forEach((item) => {
-        if (item.mode === "markers" && item.name === "Normal") {
-          item.marker.size = e.target.value;
+        if (type === "markerSize") {
+          if (item.mode === "markers" && item.name === "Normal") {
+            item.marker.size = e.target.value;
+          }
+          setChartDataMarkers({
+            ...chartDataMarkers,
+            markerSize: e.target.value,
+          });
+        } else {
+          if (item.mode === "markers" && item.name === "Violations") {
+            item.marker.size = e.target.value;
+          }
+          setChartDataMarkers({
+            ...chartDataMarkers,
+            violationMarkerSize: e.target.value,
+          });
         }
       });
     });
-    setChartDataMarkers({ ...chartDataMarkers, markerSize: e.target.value });
     setPostChartData(chartData);
   };
 
@@ -95,6 +130,7 @@ const Display = ({ postChartData, setPostChartData }) => {
         newArr.data[0].data.forEach((ele) => {
           if (ele.name === "Normal" && ele.mode === "markers") {
             setChartDataMarkers({
+              ...chartDataMarkers,
               markerSize: ele.marker.size,
               markerShape: ele.marker.symbol ? ele.marker.symbol : "circle",
               markerColor: ele.marker.color,
@@ -103,6 +139,27 @@ const Display = ({ postChartData, setPostChartData }) => {
         });
     }
   }, []);
+
+  useEffect(() => {
+    if (postChartData.data) {
+      const newArr = JSON.parse(JSON.stringify(postChartData));
+      newArr.data[0] &&
+        newArr.data[0].data &&
+        newArr.data[0].data.forEach((ele) => {
+          if (ele.name === "Violations" && ele.mode === "markers") {
+            console.log(ele, "elel");
+            setChartDataMarkers({
+              ...chartDataMarkers,
+              violationMarkerSize: ele.marker.size,
+              violationMarkerShape: ele.marker.symbol
+                ? ele.marker.symbol
+                : "circle",
+              violationMarkerColor: ele.marker.color,
+            });
+          }
+        });
+    }
+  }, [postChartData]);
 
   useEffect(() => {
     if (postChartData.data) {
@@ -169,41 +226,91 @@ const Display = ({ postChartData, setPostChartData }) => {
                 />
               </Col>
             </Row>
+            <div className="figure-inputs header">Marker</div>
             <Row className="figure-inputs select-top" gutter={16}>
               <Col span={8}>
-                <label>Markers shape</label>
+                <label>Shape</label>
               </Col>
               <Col span={16}>
                 <SelectField
                   selectList={symbolList}
-                  onChangeSelect={(e) => handleMarkerChange(e)}
+                  onChangeSelect={(e) => handleMarkerChange(e, "markerShape")}
                   selectedValue={chartDataMarkers.markerShape}
                 />
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
               <Col span={8}>
-                <label>Marker color</label>
+                <label>Color</label>
               </Col>
               <Col span={16}>
                 <ColorPicker
                   value={chartDataMarkers.markerColor}
-                  onChange={(e) => handleMarkerColorChange(e)}
+                  onChange={(e) => handleMarkerColorChange(e, "markerColor")}
                 />
               </Col>
             </Row>
             <Row className="figure-inputs select-top" gutter={16}>
               <Col span={8}>
-                <label>Marker size</label>
+                <label>Size</label>
               </Col>
               <Col span={16}>
                 <InputField
                   value={chartDataMarkers.markerSize}
                   name="markerSize"
-                  onChangeInput={(e) => handleMarkerSizeChange(e)}
+                  onChangeInput={(e) => handleMarkerSizeChange(e, "markerSize")}
                 />
               </Col>
             </Row>
+            {postChartData &&
+              postChartData.data[0] &&
+              postChartData.data[0].violations &&
+              postChartData.data[0].violations.length > 1 && (
+                <>
+                  <div className="figure-inputs header">Violations</div>
+                  <Row className="figure-inputs select-top" gutter={16}>
+                    <Col span={8}>
+                      <label>Shape</label>
+                    </Col>
+                    <Col span={16}>
+                      <SelectField
+                        selectList={symbolList}
+                        onChangeSelect={(e) =>
+                          handleMarkerChange(e, "violationShape")
+                        }
+                        selectedValue={chartDataMarkers.violationMarkerShape}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="figure-inputs select-top" gutter={16}>
+                    <Col span={8}>
+                      <label>Color</label>
+                    </Col>
+                    <Col span={16}>
+                      <ColorPicker
+                        value={chartDataMarkers.violationMarkerColor}
+                        onChange={(e) =>
+                          handleMarkerColorChange(e, "violationMarkerColor")
+                        }
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="figure-inputs select-top" gutter={16}>
+                    <Col span={8}>
+                      <label>Size</label>
+                    </Col>
+                    <Col span={16}>
+                      <InputField
+                        value={chartDataMarkers.violationMarkerSize}
+                        name="markerSize"
+                        onChangeInput={(e) =>
+                          handleMarkerSizeChange(e, "violationMarkerSize")
+                        }
+                      />
+                    </Col>
+                  </Row>
+                </>
+              )}
             <div className="figure-inputs header">Panel Options</div>
             <Row className="figure-inputs select-top" gutter={16}>
               <Col span={8}>
