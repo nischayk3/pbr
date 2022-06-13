@@ -15,7 +15,7 @@ import Banner from "../../../../../assets/images/Popup-Side.svg";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import { hideLoader, showLoader } from "../../../../../duck/actions/commonActions";
 import { getProcessStep, getProcessStepMap, putMolecule, putProcessStep, putProcessStepMap, getAllViews } from "../../../../../services/viewHierarchyServices";
-import Display from "../display/display";
+// import Display from "../display/display";
 import { sendDrugSub } from '../../../../../duck/actions/viewHierarchyAction'
 
 
@@ -28,7 +28,7 @@ function Hierarchy() {
 	const [stepData, setStepData] = useState([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [stepArray, setStepArray] = useState([]);
-	const [show, setShow] = useState(false);
+	// const [show, setShow] = useState(false);
 	const [count, setCount] = useState(1);
 	const [stepCount, setStepCount] = useState(1);
 	const [tableData, setTableData] = useState([]);
@@ -349,10 +349,10 @@ function Hierarchy() {
 			setActiveTab("Process steps");
 	};
 
-	const handleNew = (name) => {
-		setShow(false);
-		setHierarchyName(name);
-	};
+	// const handleNew = (name) => {
+	// 	setShow(false);
+	// 	setHierarchyName(name);
+	// };
 
 	const handleSave = async () => {
 		if (activeTab == "Plant and molecules") {
@@ -412,44 +412,44 @@ function Hierarchy() {
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
 			<div className="custom-content-layout">
-				{!show ?
-					<Card
-						className="hierarchy-card"
-						title={<span><span>Molecule Hierarchy Configuration -</span> <span className="title-card">{hierarchyName}</span> <span className="title-button"> </span></span>}
-					>
-						<Tabs className="hier-tab" activeKey={activeTab} onChange={handleChangeTab} tabBarExtraContent={<Button className="tab-button-two" onClick={() => handleSave()} >Save</Button>}>
-							<TabPane tab="Plant and molecules" key="Plant and molecules">
-								<p className="tab-title"> Enter the product and plant details for {hierarchyName} <Button className="data-button-one"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button> </p>
-								<Table className="hierarchy-table" columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
-								<div className="add-button">
-									<Button
-										onClick={() => handleAdd()}
-										className="add-row-button"
-									>
-										<PlusOutlined />
-										Add new row
-									</Button>
-								</div>
-							</TabPane>
-							<TabPane tab="Process steps" key="Process steps">
-								<p className="tab-title">Enter the process step for {hierarchyName} <Button className="data-button"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button></p>
-								<Table className="hierarchy-table" columns={stepMapColumns} dataSource={stepData} pagination={false} />
-								<div className="add-button">
-									<Button
-										onClick={() => handleStepAdd()}
-										className="add-row-button"
-									>
-										<PlusOutlined />
-										Add new row
-									</Button>
-								</div>
+				{/* {!show ? */}
+				<Card
+					className="hierarchy-card"
+					title={<span><span>Molecule Hierarchy Configuration -</span> <span className="title-card">{hierarchyName}</span> <span className="title-button"> </span></span>}
+				>
+					<Tabs className="hier-tab" activeKey={activeTab} onChange={handleChangeTab} tabBarExtraContent={<Button className="tab-button-two" onClick={() => handleSave()} >Save</Button>}>
+						<TabPane tab="Plant and molecules" key="Plant and molecules">
+							<p className="tab-title"> Enter the product and plant details for {hierarchyName} <Button className="data-button-one"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button> </p>
+							<Table className="hierarchy-table" columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
+							<div className="add-button">
+								<Button
+									onClick={() => handleAdd()}
+									className="add-row-button"
+								>
+									<PlusOutlined />
+									Add new row
+								</Button>
+							</div>
+						</TabPane>
+						<TabPane tab="Process steps" key="Process steps">
+							<p className="tab-title">Enter the process step for {hierarchyName} <Button className="data-button"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button></p>
+							<Table className="hierarchy-table" columns={stepMapColumns} dataSource={stepData} pagination={false} />
+							<div className="add-button">
+								<Button
+									onClick={() => handleStepAdd()}
+									className="add-row-button"
+								>
+									<PlusOutlined />
+									Add new row
+								</Button>
+							</div>
 
-							</TabPane>
-							<TabPane tab="Process step mapping" key="Process step mapping">
-								<p className="tab-title">Enter the process step for {hierarchyName}</p>
-								<div className="map-grid">
-									<Table className="hierarchy-map-table" columns={mappingColumns} dataSource={tableData} />
-									{ /* <div className="map-box">
+						</TabPane>
+						<TabPane tab="Process step mapping" key="Process step mapping">
+							<p className="tab-title">Enter the process step for {hierarchyName}</p>
+							<div className="map-grid">
+								<Table className="hierarchy-map-table" columns={mappingColumns} dataSource={tableData} />
+								{ /* <div className="map-box">
                                         <p className="map-box-text">Process steps available</p>
                                         {stepArray && stepArray.map((i) =>
                                             <div className="map-box-tile">
@@ -457,11 +457,14 @@ function Hierarchy() {
                                             </div>
                                         )}
                                     </div> */ }
-								</div>
-							</TabPane>
+							</div>
+						</TabPane>
 
-						</Tabs>
-					</Card> : <Display handleNew={handleNew} />}
+					</Tabs>
+				</Card>
+				{/* :
+					  <Display handleNew={handleNew} /> 
+					// }*/}
 				<Modal
 					className="landing-modal"
 					title="Create New Dashboard"
