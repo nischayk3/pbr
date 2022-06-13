@@ -14,13 +14,9 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                
                   sh '''#!/bin/bash -x
-                        curl -sL https://rpm.nodesource.com/setup_12.x | sudo bash -
-                        sudo yum install -y nodejs install gcc-c++ make xorg-x11-server-Xvfb gtk2-devel gtk3-devel libnotify-devel GConf2 nss libXScrnSaver alsa-lib
                         sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
                         sudo chmod +x /usr/local/bin/docker-compose
                         docker-compose version
-                        node --version
-                        npm --version
                  '''       
                 }
               }
@@ -69,7 +65,7 @@ pipeline {
        steps {
             withSonarQubeEnv('sonar') {
            sh "${scannerHome}/bin/sonar-scanner"
-           sh "sudo rm -rf coverage/ .nyc_output/ "
+           sh "sudo rm -rf coverage/ .nyc_output/ dist/"
          }
       }
     }
@@ -120,10 +116,4 @@ pipeline {
                  }
             }
     }
-      post {
-        always {
-            archiveArtifacts artifacts: 'coverage/', onlyIfSuccessful: true
-        }
-    }
 }
-
