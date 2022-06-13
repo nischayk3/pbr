@@ -147,7 +147,6 @@ const Display = ({ postChartData, setPostChartData }) => {
         newArr.data[0].data &&
         newArr.data[0].data.forEach((ele) => {
           if (ele.name === "Violations" && ele.mode === "markers") {
-            console.log(ele, "elel");
             setChartDataMarkers({
               ...chartDataMarkers,
               violationMarkerSize: ele.marker.size,
