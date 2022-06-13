@@ -6,5 +6,5 @@
   "pluginsFile": "cypress/plugins/index.js",
   "video": false,
   "experimentalStudio": true,
-  "defaultCommandTimeout": 4000
+  "defaultCommandTimeout": 10000
 }
