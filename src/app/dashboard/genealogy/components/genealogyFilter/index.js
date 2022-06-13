@@ -376,6 +376,7 @@ function Filter(props) {
 			<div className='param-filter-btn'>
 				<Button
 					type='primary'
+					id="genealogy-search"
 					className='custom-secondary-btn'
 					onClick={OnSearchTree}
 					disabled={disabled}>
@@ -383,6 +384,7 @@ function Filter(props) {
 				</Button>
 				<Button
 					type='link'
+					id="clear-search"
 					className='custom-secondary-btn-link'
 					onClick={handleClear}>
 					Clear

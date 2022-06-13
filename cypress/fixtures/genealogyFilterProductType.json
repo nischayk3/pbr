@@ -1,0 +1,23 @@
+{
+	"Data": [{
+		"prod_type_cd": "UNBW",
+		"prod_type_descr": "UNBW"
+	}, {
+		"prod_type_cd": "HIBE",
+		"prod_type_descr": "HIBE"
+	}, {
+		"prod_type_cd": "FIN",
+		"prod_type_descr": "FIN"
+	}, {
+		"prod_type_cd": "RAW",
+		"prod_type_descr": "RAW"
+	}, {
+		"prod_type_cd": "PACK",
+		"prod_type_descr": "PACK"
+	}, {
+		"prod_type_cd": "HALB",
+		"prod_type_descr": "HALB"
+	}],
+	"Message": "Sucess",
+	"statuscode": 200
+}
