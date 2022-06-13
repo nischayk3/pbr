@@ -3,8 +3,6 @@ Cypress.on('uncaught:exception', (err, runnable) => {
   });
   describe('Faq', () => {
     beforeEach(() => {
-    cy.visit("/");
-    cy.url().should("include", "/user/login");
       localStorage.setItem("test_enabled", true);
       localStorage.setItem("user", "fahad.siddiqui@mareana.com");
       localStorage.setItem(
@@ -14,7 +12,6 @@ Cypress.on('uncaught:exception', (err, runnable) => {
           email_id: "fahad.siddiqui@mareana.com",
           firstname: "Fahad",
           lastname: "siddiqui",
-          email_id: "fahad.siddiqui@mareana.com",
           mdh_role: "USER",
           screen_set: "1000_USER",
           token:
