@@ -137,18 +137,18 @@ export default function Landing() {
 
 	return (
 		<div>
-			<Suspense fallback={<h1>Loading ScreenHeader...</h1>}>
-				<ScreenHeader
-					bannerbg={{
-						background:
-							"linear-gradient(180deg, rgba(224, 145, 15, 0.35) 0%, rgba(255, 208, 123, 0.42) 100%)",
-					}}
-					title={`Howdy ${localStorage.getItem("username")}!`}
-					description="Let’s get configuring some Views!"
-					source={illustrations}
-					sourceClass="geanealogy-image"
-				/>
-			</Suspense>
+
+			<ScreenHeader
+				bannerbg={{
+					background:
+						"linear-gradient(180deg, rgba(224, 145, 15, 0.35) 0%, rgba(255, 208, 123, 0.42) 100%)",
+				}}
+				title={`Howdy ${localStorage.getItem("username")}!`}
+				description="Let’s get configuring some Views!"
+				source={illustrations}
+				sourceClass="geanealogy-image"
+			/>
+
 			<div className="landing-search-wrapper">
 				<div className="landing-card">
 					<Input.Search
@@ -223,13 +223,13 @@ export default function Landing() {
 											}}
 										//	to={`${match.url}/${i.view_disp_id}&${i.view_version}`}
 										>
-											<Suspense fallback={<h1>Loading Dinesh...</h1>}>
-												<StatusBlock
-													key={index}
-													id={i.view}
-													status={i.view_status}
-												/>
-											</Suspense>
+
+											<StatusBlock
+												key={index}
+												id={i.view}
+												status={i.view_status}
+											/>
+
 										</Link>
 									)
 							)

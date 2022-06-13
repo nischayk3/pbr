@@ -167,7 +167,9 @@ const MaterialTree = (props) => {
 						</Tree>
 					);
 				})}
+
 		</div>
+
 	);
 };
 

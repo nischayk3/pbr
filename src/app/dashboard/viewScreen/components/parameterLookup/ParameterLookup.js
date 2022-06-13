@@ -21,6 +21,7 @@ import {
 function ParameterLookup(props) {
 	const { Search } = Input;
 	const { Option } = Select;
+	const dispatch = useDispatch();
 	const {
 		moleculeList,
 		setMoleculeList,
@@ -34,23 +35,17 @@ function ParameterLookup(props) {
 
 	const [searchValue, setSearchValue] = useState("");
 
-	const dispatch = useDispatch();
+
 	const tempMaterialList = useRef();
 
 	const onSelectMoleculeHandler = async () => {
-		let req = { user_id: localStorage.user };
-		let res = JSON.parse(localStorage.getItem("login_details"));
-
+		let req = {};
 		try {
 			dispatch(showLoader());
-			const moleculeRes = await getMoleculeList(req, {
-				"content-type": "application/json",
-				"x-access-token": res.token ? res.token : "",
-				"resource-name": "VIEW"
-			});
-
-			if (moleculeRes.statuscode === 200) {
-				setMoleculeList(moleculeRes.data);
+			const moleculeRes = await getMoleculeList(req);
+			console.log("moleculeResmoleculeRes", moleculeRes);
+			if (moleculeRes.Status === 200) {
+				setMoleculeList(moleculeRes.Data);
 				dispatch(hideLoader());
 			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
 				dispatch(hideLoader());
@@ -66,9 +61,7 @@ function ParameterLookup(props) {
 	};
 
 	useEffect(() => {
-		console.log("materialsList", materialsList)
-		console.log("JSON.stringify(materialsList)", JSON.stringify(materialsList))
-		console.log(" JSON.parse(JSON.stringify(materialsList))", JSON.parse(JSON.stringify(materialsList)))
+
 		tempMaterialList.current = JSON.parse(JSON.stringify(materialsList));
 	}, [materialsList]);
 
@@ -85,19 +78,14 @@ function ParameterLookup(props) {
 
 	const onChangeMoleculeHandler = async (value) => {
 		setMoleculeId(value);
-
 		let _req = { molecule_name: value };
-		let res = JSON.parse(localStorage.getItem("login_details"));
 		try {
 			dispatch(showLoader());
 
-			const paramTreeRes = await getMoleculeList(_req, {
-				"content-type": "application/json",
-				"x-access-token": res.token ? res.token : "",
-				"resource-name": "VIEW"
-			});
+			const paramTreeRes = await getMoleculeList(_req);
 
 			if (paramTreeRes.statuscode === 200) {
+				dispatch(hideLoader());
 				setMaterialsList(paramTreeRes.data.hierarchy);
 				setParentBatches(paramTreeRes.data.mol_batches);
 				if (paramTreeRes.data.mol_batches.length > 0) {
@@ -117,18 +105,6 @@ function ParameterLookup(props) {
 		}
 	};
 
-	// function onChange(value) {
-	//   if (!value) {
-	//     setFilterdData(null);
-	//   } else {
-	//     const filterdDataArr = materialsList.filter((o) =>
-	//       Object.keys(o).some((k) =>
-	//         String(o[k]).toLowerCase().includes(value.toLowerCase())
-	//       )
-	//     );
-	//     setFilterdData(filterdDataArr);
-	//   }
-	// }
 
 	const onSearchChange = (e) => {
 		if (e.target.value === "") {

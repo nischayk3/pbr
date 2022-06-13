@@ -15,6 +15,7 @@ import "./styles.scss";
 import queryString from "query-string";
 import {
 	getViewConfig,
+	getMoleculeList,
 	saveFunction
 } from "../../../../services/viewCreationPublishing";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
@@ -40,6 +41,8 @@ import { MemoizedViewSummaryData } from "./viewSummary/index";
 import viewdatajson from "./view.json";
 import ParameterLookup from "./parameterLookup/ParameterLookup";
 import FileUpload from "./fileUpload/FileUpload";
+import ParamLookup from "./parameterLookup/ParamLookup";
+import ProcessHierarchy from "./processHierarchy/ProcessHierarchy";
 
 const { Panel } = Collapse;
 
@@ -78,6 +81,8 @@ const ViewCreation = (props) => {
 
 	const parameters = queryString.parse(location.search);
 
+
+
 	useEffect(() => {
 		setParamTableData(selectedTableData);
 	}, [selectedTableData]);
@@ -111,6 +116,38 @@ const ViewCreation = (props) => {
 			setViewVersion(parameters.version);
 		}
 	}, []);
+
+	//Moleculelist api call
+	const loadMolecule = async (_reqMolecule) => {
+		try {
+			dispatch(showLoader());
+			const moleculeRes = await getMoleculeList(_reqMolecule);
+			console.log("moleculeResmoleculeRes", moleculeRes);
+			if (moleculeRes.Status === 200) {
+				setMoleculeList(moleculeRes.Data);
+				dispatch(hideLoader());
+			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
+				dispatch(hideLoader());
+				dispatch(showNotification("error", "No Data Found"));
+			} else {
+				dispatch(hideLoader());
+				dispatch(showNotification("error", moleculeRes.Message));
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	}
+
+	//selected molecule 
+	const getMoleculeId = (mol) => {
+		const _reqMol = {
+			molecule_name: mol
+		}
+		setMoleculeId(mol)
+		loadMolecule(_reqMol)
+	}
+
 
 	const getNewData = (el) => {
 		getData.current = el;
@@ -322,7 +359,7 @@ const ViewCreation = (props) => {
 					<div className="viewCreation-leftBlocks bg-white">
 						<div className="viewCreation-parameterLookup">
 							<h4 className="viewCreation-blockHeader">Parameter Lookup</h4>
-							<ParameterLookup
+							{/* <ParameterLookup
 								moleculeList={moleculeList}
 								setMoleculeList={setMoleculeList}
 								moleculeId={moleculeId}
@@ -341,6 +378,9 @@ const ViewCreation = (props) => {
 								setViewSummaryTable={setViewSummaryTable}
 								form={form}
 
+							/> */}
+							<ParamLookup
+								callbackMoleculeId={getMoleculeId}
 							/>
 						</div>
 						<div className="viewCreation-materials">
@@ -356,10 +396,11 @@ const ViewCreation = (props) => {
 											header="Process hierarchy"
 											key="1"
 										>
-											<MaterialTree
+											{/* <MaterialTree
 												materialsList={materialsList}
 												parentBatches={parentBatches}
-											/>
+											/> */}
+											<ProcessHierarchy moleculeList={moleculeList} />
 										</Panel>
 										<Panel
 											className="viewCreation-accordian viewCreation-filesPanel"
