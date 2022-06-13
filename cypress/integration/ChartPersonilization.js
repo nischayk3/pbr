@@ -28,7 +28,7 @@ describe('Renders chart personalization', () => {
   })
 
   it('Loads Chart personalization page correctly', () => {
-    cy.visit('http://localhost/#/dashboard/workspace')
+    cy.visit('http://nginx/#/dashboard/workspace')
     cy.wait(5000)
   })
 
