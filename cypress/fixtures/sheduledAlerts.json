@@ -1,0 +1,100 @@
+{
+    "Data": [
+        {
+            "app_data": "CHART",
+            "app_id": "C252",
+            "app_type": "CHART",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "Fahad",
+            "created_on": "2022-05-31T05:47:35.294345Z",
+            "creator_email": "fahad.siddiqui@mareana.com",
+            "cust_key": "1000",
+            "dag_id": "C252_CHART_271",
+            "email_config": {
+                "attachment": "",
+                "created_by": "Fahad",
+                "daily_frequency": "Every Day",
+                "data_table": true,
+                "email_list": [
+                    "fahad.siddiqui@mareana.com"
+                ],
+                "frequency_unit": "Daily",
+                "scheduled_start": "2022-05-31",
+                "scheduled_time": "11:19:00",
+                "selected_alert": [
+                    "Limits"
+                ],
+                "selected_days_obj": {
+                    "Friday": false,
+                    "Monday": false,
+                    "Saturday": false,
+                    "Sunday": false,
+                    "Thursday": false,
+                    "Tuesday": false,
+                    "Wednesday": false
+                },
+                "subject": "Update For C252"
+            },
+            "frequency": "19 11 * * *",
+            "frequency_unit": "Daily",
+            "job_id": 271,
+            "job_status": "scheduled",
+            "job_type": "email",
+            "notify_emails": [
+                "fahad.siddiqui@mareana.com"
+            ],
+            "scheduled_end": "2030-12-12T00:00:00Z",
+            "scheduled_start": "2022-05-31T00:00:00Z"
+        },
+        {
+            "app_data": "CHART",
+            "app_id": "C252",
+            "app_type": "CHART",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "Fahad",
+            "created_on": "2022-05-31T05:47:30.104854Z",
+            "creator_email": "fahad.siddiqui@mareana.com",
+            "cust_key": "1000",
+            "dag_id": "C252_CHART_270",
+            "email_config": {
+                "attachment": "",
+                "created_by": "Fahad",
+                "daily_frequency": "Every Day",
+                "data_table": true,
+                "email_list": [
+                    "fahad.siddiqui@mareana.com"
+                ],
+                "frequency_unit": "Daily",
+                "scheduled_start": "2022-05-31",
+                "scheduled_time": "11:19:00",
+                "selected_alert": [
+                    "Limits"
+                ],
+                "selected_days_obj": {
+                    "Friday": false,
+                    "Monday": false,
+                    "Saturday": false,
+                    "Sunday": false,
+                    "Thursday": false,
+                    "Tuesday": false,
+                    "Wednesday": false
+                },
+                "subject": "Update For C252"
+            },
+            "frequency": "19 11 * * *",
+            "frequency_unit": "Daily",
+            "job_id": 270,
+            "job_status": "scheduled",
+            "job_type": "email",
+            "notify_emails": [
+                "fahad.siddiqui@mareana.com"
+            ],
+            "scheduled_end": "2030-12-12T00:00:00Z",
+            "scheduled_start": "2022-05-31T00:00:00Z"
+        }
+    ],
+    "Message": "Sucess",
+    "statuscode": 200
+}
