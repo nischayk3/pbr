@@ -31,15 +31,10 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                
                   sh '''#!/bin/bash -x
-                        sudo docker rm $(docker ps -a -q)
-                        npm install 
-                        docker-compose build  --no-cache ui-cypress-test
-                        docker-compose up -d  
-                        ./check-ui.sh
-                        rm -rf coverage
-                        rm -rf .nyc_output
-                        npm run cy:run
-                        docker-compose down -v
+                        sudo docker rm $(sudo docker ps -a -q)
+                        docker-compose build  --no-cache ui-cypress-run
+                        docker-compose up ui-cypress-run
+                        docker-compose down 
                         ls coverage
                  '''  
                      // publish html
@@ -47,7 +42,7 @@ pipeline {
                     allowMissing: false,
                     alwaysLinkToLastBuild: false,
                     keepAll: true,
-                    reportDir: './coverage/lcov-report/',
+                    reportDir: './coverage/',
                     reportFiles: 'index.html',
                     reportName: 'Coverage Report'
                     ]
@@ -62,6 +57,7 @@ pipeline {
        steps {
             withSonarQubeEnv('sonar') {
            sh "${scannerHome}/bin/sonar-scanner"
+           sh "sudo rm -rf coverage/ .nyc_output/ "
          }
       }
     }

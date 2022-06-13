@@ -10,6 +10,7 @@ const InputField = (props) => {
 				type={props.type}
 				defaultValue={props.defaultValue}
 				placeholder={props.placeholder}
+				id={props.id}
 				value={props.value}
 				onChange={props.onChangeInput}
 				disabled={props.disabled}

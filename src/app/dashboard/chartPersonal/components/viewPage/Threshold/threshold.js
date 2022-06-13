@@ -211,6 +211,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
               <InputField
                 placeholder="Enter Number"
                 value={thresValues.valueNum}
+                id="threshold_value"
                 onChangeInput={(e) =>
                   setThresvalues({ ...thresValues, valueNum: e.target.value })
                 }

@@ -226,7 +226,7 @@ class Uploader extends Component {
 							primaryFileId: res.data.file_pointer,
 							uploadFilesResponse: res,
 							toastVariant: 'error',
-							nextStepDisabled: false,
+							nextStepDisabled: true,
 						});
 						this.props.hideLoader()
 					} else if (res && res.statuscode === 200) {
@@ -529,6 +529,7 @@ class Uploader extends Component {
 			signatureReason: '',
 			signatureScreen: '',
 			selectedFileList: [],
+			nextStepDisabled:false
 		});
 	};
 
@@ -600,7 +601,7 @@ class Uploader extends Component {
 	nextStep = (e, step) => {
 		if (step === 0) {
 			this.setState({
-				nextStepDisabled: false,
+				nextStepDisabled: true,
 				currentStep: this.state.currentStep + 1,
 			});
 		} else if (step === 1) {
@@ -865,7 +866,7 @@ class Uploader extends Component {
 													<Space direction='horizontal'>
 														<Button
 															type='primary'
-															onClick={() => this.approveDataFile()}>
+															onClick={() => { this.approveDataFile(); this.setState({ nextStepDisabled: false }) }}>
 															Continue
 														</Button>
 														<Button
@@ -1100,6 +1101,7 @@ class Uploader extends Component {
 													<>
 														<Button
 															type='primary'
+															id="auth_with_ad"
 															style={{
 																backgroundColor: '#093185',
 															}}
@@ -1108,6 +1110,7 @@ class Uploader extends Component {
 														</Button>
 														<Button
 															type='primary'
+															id="auth_without_ad"
 															style={{
 																backgroundColor: '#093185',
 															}}
@@ -1195,6 +1198,7 @@ class Uploader extends Component {
 													<>
 														<Button
 															type='primary'
+															id="auth_with_ad"
 															style={{
 																backgroundColor: '#093185',
 															}}
@@ -1203,6 +1207,7 @@ class Uploader extends Component {
 														</Button>
 														<Button
 															type='primary'
+															id="auth_without_ad"
 															style={{
 																backgroundColor: '#093185',
 															}}
@@ -1361,6 +1366,7 @@ class Uploader extends Component {
 														<>
 															<Button
 																type='primary'
+																id="auth_with_ad"
 																style={{
 																	backgroundColor: '#093185',
 																}}
@@ -1369,6 +1375,7 @@ class Uploader extends Component {
 															</Button>
 															<Button
 																type='primary'
+																id="auth_without_ad"
 																style={{
 																	backgroundColor: '#093185',
 																}}
