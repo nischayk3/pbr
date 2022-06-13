@@ -634,7 +634,7 @@ function PaperBatchRecordsTemplate() {
 
         getImage()
         const list = document.getElementsByTagName("canvas")[0]
-        // getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
+        getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode,pageNumber-1);
         let obj = {
             material_num: matBatch.material_num,
             batch: matBatch.batch
@@ -782,19 +782,19 @@ function PaperBatchRecordsTemplate() {
 
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
-            // getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
+            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode,pageNumber-1);
             setImageWidth(list?.width)
             setimageHeight(list?.height)
         }, 3000)
 
     }, [document.getElementsByTagName("canvas")[0]]);
 
-    useEffect(() => {
-        if (imageWidth !== undefined && imageHeight !== undefined) {
-            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode,pageNumber-1);
-        }
+    // useEffect(() => {
+    //     if (imageWidth !== undefined && imageHeight !== undefined) {
+    //         getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode,pageNumber-1);
+    //     }
 
-    }, [imageWidth, imageHeight]);
+    // }, [imageWidth, imageHeight]);
 
 
 
