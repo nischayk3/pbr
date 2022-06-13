@@ -124,7 +124,7 @@ function PaperBatchRecords() {
 			dispatch(showLoader());
 			const tableResponse = await getPbrTemplateData(req);
 			const tableColumn = tableColumns(tableResponse?.Data)
-			let newArray1 = tableColumn.filter(item => item.dataIndex != 'changed_by' && item.dataIndex != 'changed_on' && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
+			let newArray1 = tableColumn.filter(item => item.dataIndex != 'created_by' && item.dataIndex != 'changed_on' && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
 			let columns = [];
 			newArray1.map(item => {
 				let { title, dataIndex } = item;
@@ -140,26 +140,7 @@ function PaperBatchRecords() {
 					},
 
 				};
-				if (item.dataIndex === "pbr_template_disp_id") {
-					obj.render = (text, row, index) => {
-						return (
-							<a onClick={() => {
-								let obj =
-								{
-									material_num: row?.product_num,
-									batch: row?.batch_num
-								}
-								dispatch(loadMatBatchInfo(obj))
-								history.push(`/dashboard/pbr_template?file=${row.pbr_template_info[0].filename}&temp_disp_id=${row.pbr_template_disp_id}&tempalteName=${row.pbr_template_name}`)
-								dispatch(loadTemplateInfo(row.pbr_template_info))
-
-
-							}} className='review-submission'>{text}</a>
-						)
-
-					}
-				}
-				if (item.dataIndex === "created_by") {
+				if (item.dataIndex === "changed_by") {
 					obj.render = (text, row, index) => {
 						return (
 							<div>
@@ -176,6 +157,7 @@ function PaperBatchRecords() {
 				}
 				columns.push(obj)
 			})
+            
 			if (tableResponse['status-code'] === 200) {
 				setTemplateColumns(columns)
 				setTemplateData(tableResponse.Data);
@@ -201,7 +183,7 @@ function PaperBatchRecords() {
 	const getViewData = async () => {
 		let res = await getDataView()
 		setDataView(res.Data)
-		setFileName(res?.Data[0]?.filename)
+		setFileName(res?.Data[0]?.actual_filename)
 		setMatBatch({
 			material_num: res?.Data[0]?.product_num,
 			batch: res?.Data[0].batch_num,
@@ -413,7 +395,7 @@ function PaperBatchRecords() {
 		});
 	};
 	const onRadioChange = (val) => {
-		let arr = dataView.filter(item => item.filename === val)
+		let arr = dataView.filter(item => item.actual_filename === val)
 		setMatBatch({
 			material_num: arr[0]?.product_num,
 			batch: arr[0]?.batch_num,
@@ -426,7 +408,9 @@ function PaperBatchRecords() {
 		let obj =
 		{
 			material_num: value?.product_num,
-			batch: value?.batch_num
+			batch: value?.batch_num,
+            site: value?.site_code
+
 		}
         let obj2 = {
             pbrDisplayId:value?.pbr_template_disp_id,
@@ -516,6 +500,15 @@ function PaperBatchRecords() {
 											? templateData
 											: filterTableLanding}
 										scroll={{ x: 2000, y: 650 }}
+                                        onRow={(record, rowIndex) => {
+											return {
+												onClick: event => {
+                                                    handleClickTiles(record)
+													// history.push(`${match.url}/${record.pbr_template_disp_id}?file=${record?.pbr_template_info?.pbrTemplateInfo[0].filename}&temp_disp_id=${record.pbr_template_disp_id}&tempalteName=${record.pbr_template_name}&fromScreen=Workspace`)
+												}, // click row
+                                                
+											}
+										}}
 									/>
 								) : (
 									<></>
@@ -647,13 +640,13 @@ function PaperBatchRecords() {
 											label='Material number'
 										// name='materialNumber'
 										>
-											<Input value={matBatch?.material_num} />
+											<Input value={matBatch?.material_num} disabled/>
 										</Form.Item>
 										<Form.Item
 											label='Batch number'
 										// name='batchNumber'
 										>
-											<Input value={matBatch?.batch} />
+											<Input value={matBatch?.batch} disabled/>
 										</Form.Item>
 									</div>
 								</Form>
@@ -669,10 +662,10 @@ function PaperBatchRecords() {
 									}}
 								>
 									{dataView.map((item, index) => (
-										<Radio.Button value={`${item.filename}`} >
+										<Radio.Button value={`${item.actual_filename}`} >
 											<div className='pdfListBlock'>
 												<img src={pdfIcon} alt='pdfIcon' />
-												<span>{item.filename.split('_')[0]}</span>
+												<span>{item?.actual_filename}</span>
 											</div>
 										</Radio.Button>
 									))}

@@ -22,32 +22,126 @@ describe("Genealogy", () => {
   })
 
   it("visiting genealogy screen",()=>{
-
     const url = Cypress.config().baseUrl
     cy.visit(url + '/#/dashboard/genealogy')
     cy.log('Load Landing Page')
     cy.url().should('eq', url + '/#/dashboard/genealogy')
-    
-    
+
   });
 
-  // it("genealogy filter",()=>{
-  //   /* geneaology tab */
+  it("selection plant",()=>{
+      cy.get(
+        ":nth-child(1) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
+      ).click();
+      cy.get("#rc_select_0").clear();
+      cy.get("#rc_select_0").type("1338");
+      cy.wait(3000);
+      cy.get(".ant-select-item-option-content").click({ force: true });
+  });
+
+  it("Selecting product",()=>{
+    cy.get(
+      ":nth-child(2) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
+    ).click();
+    cy.get("#rc_select_1").clear();
+    cy.get("#rc_select_1").type("1089084");
+    cy.wait(4000)
+    cy.get(".ant-select-item-option-content").eq(1).click({force:true})
+  })
+
+  it("Selecting Batch",()=>{
+    cy.get(
+      ":nth-child(3) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
+    ).click();
+    cy.get("#rc_select_2").clear();
+    cy.get("#rc_select_2").type("394154");
+    cy.wait(4000)
+    cy.get(".ant-select-item-option-content").eq(2).click({force:true})
+  })
+
+  it("Selecting Product type",()=>{
+    cy.get('.ant-select-selection-overflow').click();
+    cy.get("#rc_select_3").clear();
+    cy.get("#rc_select_3").type("RAW");
+    cy.wait(4000)
+    cy.get(".ant-select-item-option-content").eq(3).click({force:true})
+  });
+
+  it("Search backword filters",()=>{
+    cy.get("#genealogy-search").click()
+    cy.wait(3000)
+  });
+
+  it("Opening Drawer",()=>{
+    cy.get('#1091460 > #material-img').click();
+    cy.get("#view-details-popup").click();
+  });
+
+  it("click forward genealogy",()=>{
+    cy.get(".ant-drawer-mask").eq(0).click();
+    cy.get('#1091460 > #material-img').click();
+    cy.get("#forward-genealogy-popup").click();
+    cy.wait(3000)
+  })
+
+  // Gives bad request
+  // it("search forward from filter",()=>{
+  //   cy.get("#rc-tabs-0-tab-1").click()
+  //   cy.get(".toggleLabel").eq(1).click()
+  //   cy.wait(3000)
+  //   cy.get("#genealogy-search").click()
+  //   cy.wait(3000)
+
+  // })
+
+  // it("Clear filters",()=>{
+  //   cy.get("#clear-search").click()
+  // })
+
+  // it("search genealogy backwork",()=>{
+
+  //   cy.log("selectiong plant")
   //   cy.get(
   //     ":nth-child(1) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
   //   ).click();
   //   cy.get("#rc_select_0").clear();
   //   cy.get("#rc_select_0").type("1338");
-  //   cy.wait(2000);
+  //   cy.wait(3000);
   //   cy.get(".ant-select-item-option-content").click({ force: true });
+
+
+  //   cy.log("selectiong product")
   //   cy.get(
   //     ":nth-child(2) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
   //   ).click();
   //   cy.get("#rc_select_1").clear();
   //   cy.get("#rc_select_1").type("1089084");
+  //   cy.wait(4000)
+  //   cy.get(".ant-select-item-option-content").eq(1).click({force:true})
+    
+
+  //   cy.log("selecting Batch")
   //   cy.get(
-  //     ":nth-child(5) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item > .ant-select-item-option-content"
-  //   ).click({ force: true });
+  //     ":nth-child(3) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
+  //   ).click();
+  //   cy.get("#rc_select_2").clear();
+  //   cy.get("#rc_select_2").type("394154");
+  //   cy.wait(4000)
+  //   cy.get(".ant-select-item-option-content").eq(2).click({force:true})
+
+
+  //   cy.log("selection product type")
+  //   cy.get('.ant-select-selection-overflow').click();
+  //   cy.get("#rc_select_3").clear();
+  //   cy.get("#rc_select_3").type("RAW");
+  //   cy.wait(4000)
+  //   cy.get(".ant-select-item-option-content").eq(3).click({force:true})
+
+
+  // })
+
+  // it("genealogy filter",()=>{
+  //   /* geneaology tab */
   //   cy.get(
   //     ":nth-child(3) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
   //   ).click();
