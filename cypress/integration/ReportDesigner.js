@@ -85,7 +85,9 @@ describe("Report Designer", () => {
     cy.get('.chart-name > :nth-child(1) > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click({ force: true })
     cy.get('.ant-btn-primary > span').click()
     cy.get('.charttile-content').click();
+    cy.wait(1000)
     cy.get('#rc-tabs-2-tab-Exclusion').click();
+    cy.wait(500)
     cy.get('#rc-tabs-2-tab-Violation').click();
     cy.get('[style="border: 1px solid rgb(72, 107, 201); margin-bottom: 30px; min-height: 160px; border-radius: 4px; margin-top: 20px;"] > :nth-child(6) > .anticon > svg').click()
     cy.get('.ant-tooltip-open > .anticon > svg').click();
@@ -121,13 +123,14 @@ describe("Report Designer", () => {
     cy.log('Opening a report template')
     cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
     cy.visit(url + '/#/dashboard/report_designer')
+    cy.wait(1000)
     cy.get(':nth-child(1) > .chart-tiles').click();
     cy.wait(5000)
     cy.get('.ant-switch-handle').click();
+    cy.wait(1000)
     cy.get('.sub-header-btns > :nth-child(1) > span').click();
+    cy.wait(1000)
     cy.get('.ant-modal-close-x').click();
-    /* ==== Generated with Cypress Studio ==== */
-    cy.get('.sub-header-btns > :nth-child(1) > span').click();
-    /* ==== End Cypress Studio ==== */
+    cy.get('[style="display: grid; grid-template-columns: 1fr 1fr;"] > :nth-child(2) > .anticon > svg').click();
   });
 });
