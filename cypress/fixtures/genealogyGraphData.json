@@ -1,0 +1,245 @@
+{
+	"data": [{
+		"OpenNC": false,
+		"batchNo": "394154",
+		"children": [{
+			"children": [{
+				"OpenNC": false,
+				"batchNo": "393485",
+				"id": "7795",
+				"level": 2,
+				"matDesc": "CARIBBEAN AROMA",
+				"matNo": "1091460",
+				"mat_type": "RAW",
+				"nodeId": "1338|1091460|393485",
+				"plant": "1338",
+				"type": "Material"
+			}, {
+				"OpenNC": false,
+				"batchNo": "392646",
+				"id": "13547",
+				"level": 2,
+				"matDesc": "GOMME ARABIQUE PULVERISEE",
+				"matNo": "1091462",
+				"mat_type": "RAW",
+				"nodeId": "1338|1091462|392646",
+				"plant": "1338",
+				"type": "Material"
+			}, {
+				"OpenNC": false,
+				"batchNo": "393951",
+				"id": "4374",
+				"level": 2,
+				"matDesc": "CITRIQUE AC. ANHYDRE GRAN",
+				"matNo": "1086270",
+				"mat_type": "RAW",
+				"nodeId": "1338|1086270|393951",
+				"plant": "1338",
+				"type": "Material"
+			}, {
+				"OpenNC": false,
+				"batchNo": "393631",
+				"id": "44672",
+				"level": 2,
+				"matDesc": "SUGAR SUPERFINE BIG BAG QUOTA",
+				"matNo": "1223625",
+				"mat_type": "RAW",
+				"nodeId": "1338|1223625|393631",
+				"plant": "1338",
+				"type": "Material"
+			}, {
+				"OpenNC": false,
+				"batchNo": "391996",
+				"id": "14701",
+				"level": 2,
+				"matDesc": "ASCORBIQUE AC. CRIST. BIG BAG",
+				"matNo": "1101738",
+				"mat_type": "RAW",
+				"nodeId": "1338|1101738|391996",
+				"plant": "1338",
+				"type": "Material"
+			}, {
+				"OpenNC": false,
+				"batchNo": "390288",
+				"id": "18771",
+				"level": 2,
+				"matDesc": "SODIUM SACCHARIN",
+				"matNo": "1144279",
+				"mat_type": "RAW",
+				"nodeId": "1338|1144279|390288",
+				"plant": "1338",
+				"type": "Material"
+			}, {
+				"OpenNC": false,
+				"batchNo": "394584",
+				"children": [{
+					"children": [{
+						"OpenNC": false,
+						"batchNo": "384671",
+						"id": "14565",
+						"level": 4,
+						"matDesc": "EAU PURIFIEE GASCOGNE",
+						"matNo": "1091535",
+						"mat_type": "RAW",
+						"nodeId": "1338|1091535|384671",
+						"plant": "1338",
+						"type": "Material"
+					}, {
+						"OpenNC": false,
+						"batchNo": "392121",
+						"id": "7856",
+						"level": 4,
+						"matDesc": "PHENIRAMINE MALEATE",
+						"matNo": "1091500",
+						"mat_type": "RAW",
+						"nodeId": "1338|1091500|392121",
+						"plant": "1338",
+						"type": "Material"
+					}],
+					"id": "330659",
+					"level": null,
+					"plant": "1338",
+					"poNo": "102280835",
+					"relationshipMap": {
+						"330659-14565": {
+							"endNodeId": "330659",
+							"id": "184647",
+							"qty": 92.54,
+							"startNodeId": "14565",
+							"type": "Input",
+							"unit": "KG"
+						},
+						"330659-7856": {
+							"endNodeId": "330659",
+							"id": "180455",
+							"qty": 208.11,
+							"startNodeId": "7856",
+							"type": "Input",
+							"unit": "KG"
+						}
+					},
+					"type": "Process Order"
+				}],
+				"id": "10136",
+				"level": null,
+				"matDesc": "SOLUTION FERVEX",
+				"matNo": "1109504",
+				"mat_type": "HALB",
+				"nodeId": "1338|1109504|394584",
+				"plant": "1338",
+				"relationshipMap": {
+					"10136-330659": {
+						"endNodeId": "10136",
+						"id": "568080",
+						"qty": 231.28,
+						"startNodeId": "330659",
+						"type": "Output",
+						"unit": "KG"
+					}
+				},
+				"type": "Material"
+			}, {
+				"OpenNC": false,
+				"batchNo": "392819",
+				"id": "10960",
+				"level": 2,
+				"matDesc": "PARACETAMOL CRISTA FIN FERVEX",
+				"matNo": "1130181",
+				"mat_type": "RAW",
+				"nodeId": "1338|1130181|392819",
+				"plant": "1338",
+				"type": "Material"
+			}],
+			"id": "277131",
+			"level": null,
+			"plant": "1338",
+			"poNo": "102279687",
+			"relationshipMap": {
+				"277131-10136": {
+					"endNodeId": "277131",
+					"id": "179639",
+					"qty": 12.58,
+					"startNodeId": "10136",
+					"type": "Input",
+					"unit": "KG"
+				},
+				"277131-10960": {
+					"endNodeId": "277131",
+					"id": "170136",
+					"qty": 150.0,
+					"startNodeId": "10960",
+					"type": "Input",
+					"unit": "KG"
+				},
+				"277131-13547": {
+					"endNodeId": "277131",
+					"id": "188808",
+					"qty": 29.9,
+					"startNodeId": "13547",
+					"type": "Input",
+					"unit": "KG"
+				},
+				"277131-14701": {
+					"endNodeId": "277131",
+					"id": "161315",
+					"qty": 59.0,
+					"startNodeId": "14701",
+					"type": "Input",
+					"unit": "KG"
+				},
+				"277131-18771": {
+					"endNodeId": "277131",
+					"id": "177127",
+					"qty": 6.0,
+					"startNodeId": "18771",
+					"type": "Input",
+					"unit": "KG"
+				},
+				"277131-4374": {
+					"endNodeId": "277131",
+					"id": "179638",
+					"qty": 59.0,
+					"startNodeId": "4374",
+					"type": "Input",
+					"unit": "KG"
+				},
+				"277131-44672": {
+					"endNodeId": "277131",
+					"id": "188809",
+					"qty": 3448.6,
+					"startNodeId": "44672",
+					"type": "Input",
+					"unit": "KG"
+				},
+				"277131-7795": {
+					"endNodeId": "277131",
+					"id": "170135",
+					"qty": 149.0,
+					"startNodeId": "7795",
+					"type": "Input",
+					"unit": "KG"
+				}
+			},
+			"type": "Process Order"
+		}],
+		"id": "12029",
+		"level": null,
+		"matDesc": "ACETAMINOPHEN BLEND 500MG FINAL FOR SACH",
+		"matNo": "1089084",
+		"mat_type": "HALB",
+		"nodeId": "1338|1089084|394154",
+		"plant": "1338",
+		"relationshipMap": {
+			"12029-277131": {
+				"endNodeId": "12029",
+				"id": "554683",
+				"qty": 3908.0,
+				"startNodeId": "277131",
+				"type": "Output",
+				"unit": "KG"
+			}
+		},
+		"type": "Material"
+	}],
+	"statuscode": 200
+}
