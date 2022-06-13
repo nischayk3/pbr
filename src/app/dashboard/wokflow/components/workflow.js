@@ -53,7 +53,7 @@ const Workflow = () => {
 	}, []);
 
 	useEffect(() => {
-		if (cardTitle != "") {
+		if (cardTitle != "" && cardTitle !== "Param Data Approval") {
 			cardTableData();
 		}
 	}, [cardTitle, activeTab]);

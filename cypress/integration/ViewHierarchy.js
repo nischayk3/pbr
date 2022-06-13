@@ -91,12 +91,6 @@ describe("Renders the view Hierarachy page", () => {
     cy.wait(5000)
     cy.get(':nth-child(1) > .chart-tiles').click();
     cy.wait(4000)
-    cy.get('[data-row-key="1"] > :nth-child(1) > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click({ force: true });
-    cy.get('.ant-btn-primary > span').click({ force: true });
-    cy.wait(4000)
-    cy.get('#rc-tabs-0-tab-Process\\ steps').click();
-    cy.get('[data-row-key="1"] > :nth-child(1) > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click({ force: true });
-    cy.get('.ant-btn-primary > span').click({ force: true });
     /* ==== End Cypress Studio ==== */
   });
 
