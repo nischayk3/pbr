@@ -253,7 +253,7 @@ class Uploader extends Component {
 							nextStepDisabled: false,
 						});
 						this.props.hideLoader()
-					} else if (res === 'Internal Server Error') {
+					}else{
 						this.setState({
 							toastOpen: true,
 							showLoader: false,
@@ -309,7 +309,7 @@ class Uploader extends Component {
 					}
 				);
 				this.props.showNotification('success', response.message);
-			} else if (response === 'Internal Server Error') {
+			} else {
 				this.setState({
 					toastOpen: true,
 					showLoader: false,
@@ -383,9 +383,6 @@ class Uploader extends Component {
 						toastVariant: 'error',
 						isModalVisible: false,
 						nextStepDisabled: true,
-					},
-					() => {
-						console.log('state update', this.state);
 					}
 				);
 				this.props.hideLoader()
