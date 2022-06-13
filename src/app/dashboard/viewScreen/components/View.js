@@ -148,6 +148,25 @@ const ViewCreation = (props) => {
 		loadMolecule(_reqMol)
 	}
 
+	//tree node click
+	const hierarchyProcessClick = (molecule_name, process_step, field) => {
+		console.log("view,field", molecule_name, process_step, field)
+		const _reqMol = {
+			molecule_name: molecule_name,
+			process_id: process_step
+		}
+		loadMolecule(_reqMol)
+	}
+	//tree node click
+	const hierarchyProductClick = (molecule_name, process_step, product_num, field) => {
+		console.log("view,field", molecule_name, process_step, field)
+		const _reqMol = {
+			molecule_name: molecule_name,
+			process_id: process_step,
+			product_num: product_num
+		}
+		loadMolecule(_reqMol)
+	}
 
 	const getNewData = (el) => {
 		getData.current = el;
@@ -400,7 +419,11 @@ const ViewCreation = (props) => {
 												materialsList={materialsList}
 												parentBatches={parentBatches}
 											/> */}
-											<ProcessHierarchy moleculeList={moleculeList} />
+											<ProcessHierarchy
+												moleculeList={moleculeList}
+												callbackProcessClick={hierarchyProcessClick}
+												callbackProductClick={hierarchyProductClick}
+											/>
 										</Panel>
 										<Panel
 											className="viewCreation-accordian viewCreation-filesPanel"

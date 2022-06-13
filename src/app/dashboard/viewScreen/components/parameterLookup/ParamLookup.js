@@ -44,7 +44,7 @@ const ParamLookup = (props) => {
 			const moleculeRes = await getMoleculeList(_reqMolecule);
 			console.log("moleculeResmoleculeRes", moleculeRes);
 			if (moleculeRes.Status === 200) {
-				setMoleculeList(moleculeRes.Data);
+				setMoleculeList(moleculeRes.Data.hierarchy);
 				dispatch(hideLoader());
 			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
 				dispatch(hideLoader());

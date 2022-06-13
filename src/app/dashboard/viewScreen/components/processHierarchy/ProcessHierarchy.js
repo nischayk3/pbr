@@ -12,7 +12,7 @@ import './ProcessHierarchy.scss'
 
 const ProcessHierarchy = (props) => {
 	const { moleculeList } = props;
-	const treeMap = moleculeList;
+	const treeMap = moleculeList && moleculeList.hierarchy;
 
 	const toggler = document.getElementsByClassName("caret");
 	let i;
@@ -23,28 +23,45 @@ const ProcessHierarchy = (props) => {
 		});
 	}
 
+	//onClick node 
+	const onClickProcessStep = (value1, value2, field) => {
+		console.log("onClickNode", value1, value2, field)
+		if (field === 'process_step') {
+			props.callbackProcessClick(value1, value2, field)
+		}
+	}
+
+	//onClick node 
+	const onClickProductDes = (value1, value2, value3, field) => {
+		console.log("onClickNode", value1, value2, field)
+		if (field === 'product_desc') {
+			props.callbackProductClick(value1, value2, value3, field)
+		}
+	}
+
 	return (
 		<div className="custom-treenode">
-			{treeMap && treeMap.length > 0 ? (
+			{/* {treeMap && treeMap.length > 0 ? (
 				<div>
-					{treeMap && treeMap.map((item, index) => {
+					{treeMap.map((item, index) => {
 						return (
 							<ul id="process-treenode">
-								<li><span class="caret">{item.process_step}</span>
-									<ul class="nested">
-										<li>Water</li>
-										<li>Coffee</li>
-										<li><span class="caret">Tea</span>
-											<ul class="nested">
-												<li>Black Tea</li>
-												<li>White Tea</li>
-												<li><span class="caret">Green Tea</span>
-													<ul class="nested">
-														<li>Sencha</li>
-														<li>Gyokuro</li>
-														<li>Matcha</li>
-														<li>Pi Lo Chun</li>
-													</ul>
+								<li>
+									<span
+										className="caret"
+										onClick={e => onClickProcessStep(item.ds_name, item.process_step_int_id, 'process_step')}>
+										{item.process_step}
+									</span>
+									<ul className="nested">
+										<li>
+											<span
+												className="caret"
+												onClick={e => onClickProductDes(item.ds_name, item.process_step_int_id, item.product_num, 'product_desc')}>
+												{item && item.product_desc}
+											</span>
+											<ul className="nested">
+												<li>
+													<span>{item.parameter_name} {item.coverage}</span>
 												</li>
 											</ul>
 										</li>
@@ -56,7 +73,7 @@ const ProcessHierarchy = (props) => {
 				</div>
 			) : (
 				<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-			)}
+			)} */}
 		</div>
 
 	);
