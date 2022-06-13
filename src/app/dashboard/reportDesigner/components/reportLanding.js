@@ -40,6 +40,7 @@ export default function ReportLanding(props) {
 	const [activeTab, setActiveTab] = useState('Design Report Template');
 	const [reportSearch, setReportSearch] = useState('')
 	const [genSearch, setReportGen] = useState('')
+	const [letDis, setLetDis] = useState(false)
 
 
 	const { TabPane } = Tabs;
@@ -196,14 +197,17 @@ export default function ReportLanding(props) {
 
 	const getLoadReportGenerator = async report_id => {
 		dispatch(showNotification('success', report_id + ' selected'));
+		setLetDis(true)
 		dispatch(showLoader());
 		let req = { report_displ_id: report_id };
 		let data = await loadReportGen(req);
 		if (data.report_generator) dispatch(sendReport(data.report_generator.data));
 		if (data.Status == 200 || data.report_generator) {
-			history.push({
-				pathname: '/dashboard/report_generator',
-			});
+			// history.push({
+			// 	pathname: '/dashboard/report_generator',
+			// });
+			dispatch(hideLoader());
+			setLetDis(false)
 		} else {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', data.Message));
@@ -211,7 +215,7 @@ export default function ReportLanding(props) {
 	};
 	const NewReportGenerator = async report_id => {
 		dispatch(showNotification('success', report_id + ' selected'));
-
+		setLetDis(true)
 		dispatch(showLoader());
 		let req = { report_displ_id: report_id };
 		let data = await loadReportGen(req);
@@ -219,6 +223,7 @@ export default function ReportLanding(props) {
 		if (data.Status == 200 || data.report_generator) {
 			dispatch(hideLoader());
 			dispatch(showNotification('success', `Loaded ${report_id}`));
+			setLetDis(false)
 		} else {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', data.Message));
@@ -422,6 +427,7 @@ export default function ReportLanding(props) {
 														onClick={() => {
 															getLoadReportGenerator(i.rep_disp_id);
 															setReportId(i.rep_disp_id);
+															setLetDis(true)
 														}}>
 														<div
 															className={
@@ -475,6 +481,7 @@ export default function ReportLanding(props) {
 									marginLeft: '88%',
 									marginTop: '70px',
 								}}
+								disabled={letDis}
 								onClick={() => {
 									history.push({
 										pathname: '/dashboard/report_generator',
