@@ -1,21 +1,10 @@
 {
-<<<<<<< HEAD
-	"baseUrl": "http://localhost",
+	"baseUrl": "http://nginx",
 	"integrationFolder": "cypress/integration",
 	"fixturesFolder": "cypress/fixtures",
 	"supportFile": "cypress/support/index.js",
 	"pluginsFile": "cypress/plugins/index.js",
 	"video": false,
 	"experimentalStudio": true,
-	"defaultCommandTimeout": 4000
-=======
-  "baseUrl": "http://nginx",
-  "integrationFolder": "cypress/integration",
-  "fixturesFolder": "cypress/fixtures",
-  "supportFile": "cypress/support/index.js",
-  "pluginsFile": "cypress/plugins/index.js",
-  "video": false,
-  "experimentalStudio": true,
-  "defaultCommandTimeout": 10000
->>>>>>> 75fee5159bec5ea994b7cdb9af600bab173ef364
+	"defaultCommandTimeout": 10000
 }
