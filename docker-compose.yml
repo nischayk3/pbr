@@ -12,15 +12,32 @@ services:
       dockerfile: Dockerfile-start-server
     environment:
       - NODE_PATH=src/
-    ports:
-      - 3030:3030
+    command: [" npm run start"]
+  
   nginx:
     container_name: nginx
     image: nginx:1.19
     restart: always
-    ports:
-      - 80:80
     volumes:
       - ./nginx-conf:/etc/nginx/conf.d
+    depends_on:
+      - ui-cypress-test
+  
+  ui-cypress-run:
+    container_name: ui-cypress-run
+    build:
+      context: .
+      dockerfile: Dockerfile-start-server
+    environment:
+      - NODE_PATH=src/
+    command: ["./check-ui.sh"]
+    volumes:
+      - ./coverage/:/usr/apps/coverage/
+      - ./dist/:/usr/apps/dist/
+      - ./.nyc_output/:/usr/apps/.nyc_output/
+    depends_on:
+      -  ui-cypress-test
+      - nginx
+
 
 

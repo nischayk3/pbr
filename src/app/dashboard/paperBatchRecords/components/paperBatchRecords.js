@@ -42,7 +42,7 @@ import pdfIcon from '../../../../assets/images/pdfIcon.svg';
 import { getPbrTemplateData, getDataView } from '../../../../services/pbrService';
 import { tableColumns } from '../../../../utils/TableColumns'
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { loadTemplateInfo, loadMatBatchInfo, loadPageIdentifier } from '../../../../duck/actions/pbrAction';
+import { loadTemplateInfo, loadMatBatchInfo, loadPageIdentifier,loadTempAdditionalData } from '../../../../duck/actions/pbrAction';
 import StatusBlock from '../../../../components/StatusBlock/statusBlock'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper'
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader'
@@ -146,8 +146,8 @@ function PaperBatchRecords() {
 							<a onClick={() => {
 								let obj =
 								{
-									material_num: row?.material,
-									batch: row?.batch
+									material_num: row?.product_num,
+									batch: row?.batch_num
 								}
 								dispatch(loadMatBatchInfo(obj))
 								history.push(`/dashboard/pbr_template?file=${row.pbr_template_info[0].filename}&temp_disp_id=${row.pbr_template_disp_id}&tempalteName=${row.pbr_template_name}`)
@@ -425,13 +425,21 @@ function PaperBatchRecords() {
 		// history.push(`${match.url}/0`);
 		let obj =
 		{
-			material_num: value?.material,
-			batch: value?.batch
+			material_num: value?.product_num,
+			batch: value?.batch_num
 		}
+        let obj2 = {
+            pbrDisplayId:value?.pbr_template_disp_id,
+            pbrTempId:value.pbr_temp_int_id,
+            pbrTemplateStatus:value.pbr_template_status,
+            pbrVersion:value?.pbr_template_version
+        }
 		dispatch(loadPageIdentifier(value?.pbr_template_info?.pbrPageIdentifier))
 		dispatch(loadMatBatchInfo(obj))
+        dispatch(loadTempAdditionalData(obj2))
+        dispatch(loadTemplateInfo(value?.pbr_template_info?.pbrTemplateInfo))
 		history.push(`${match.url}/${value.pbr_template_disp_id}?file=${value?.pbr_template_info?.pbrTemplateInfo[0].filename}&temp_disp_id=${value.pbr_template_disp_id}&tempalteName=${value.pbr_template_name}&fromScreen=Workspace`)
-		dispatch(loadTemplateInfo(value?.pbr_template_info?.pbrTemplateInfo))
+		
 
 	}
 	const landingSearch = value => {

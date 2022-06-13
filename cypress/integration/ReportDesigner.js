@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 describe("Report", () => {
+=======
+Cypress.on('uncaught:exception', (err, runnable) => {
+  return false;
+});
+
+describe("Report Designer", () => {
+>>>>>>> d903cd34952b3c6358248fb80817e352047a35dd
   beforeEach(() => {
     cy.viewport(1280, 720)
     localStorage.setItem("test_enabled", true);

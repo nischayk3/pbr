@@ -31,6 +31,7 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                
                   sh '''#!/bin/bash -x
+<<<<<<< HEAD
                         sudo docker rm $(docker ps -a -q)
                         npm install 
                         docker-compose build  --no-cache ui-cypress-test
@@ -40,6 +41,24 @@ pipeline {
                         docker-compose down -v
                         ls coverage
                  '''       
+=======
+                        sudo docker rm $(sudo docker ps -a -q)
+                        docker-compose build  --no-cache ui-cypress-run
+                        docker-compose up ui-cypress-run
+                        docker-compose down 
+                        ls coverage
+                 '''  
+                     // publish html
+                    publishHTML target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: './coverage/',
+                    reportFiles: 'index.html',
+                    reportName: 'Coverage Report'
+                    ]
+
+>>>>>>> d903cd34952b3c6358248fb80817e352047a35dd
                 }
               }
            }  
@@ -50,6 +69,7 @@ pipeline {
        steps {
             withSonarQubeEnv('sonar') {
            sh "${scannerHome}/bin/sonar-scanner"
+           sh "sudo rm -rf coverage/ .nyc_output/ "
          }
       }
     }

@@ -79,6 +79,7 @@ function PaperBatchRecordsTemplate() {
     const templateInfo = useSelector((state) => state?.pbrReducer?.templateData)
     const matBatch = useSelector((state) => state?.pbrReducer?.matBatchInfo)
     const pageIdentifier = useSelector((state) => state?.pbrReducer?.pageIdentifier)
+    const additionalData = useSelector((state) => state?.pbrReducer?.tempAdditional)
     const location = useLocation()
     const { id } = useParams()
     const dispatch = useDispatch();
@@ -140,8 +141,8 @@ function PaperBatchRecordsTemplate() {
     });
     const [fileList, setFileList] = useState([]);
     const [modalData, setModalData] = useState([]);
-    const [imageWidth, setImageWidth] = useState(868);
-    const [imageHeight, setimageHeight] = useState(1123);
+    const [imageWidth, setImageWidth] = useState(842);
+    const [imageHeight, setimageHeight] = useState(1089);
     const [origianalResponse, setOrigianalResponse] = useState({});
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [tableLoading, setTableLoading] = useState(false);
@@ -155,9 +156,9 @@ function PaperBatchRecordsTemplate() {
     const [isPublish, setIsPublish] = useState(false);
     const [approveReject, setApproveReject] = useState("");
     const [publishResponse, setPublishResponse] = useState({});
-    const [templateId, setTemplateId] = useState("C116");
-    const [templateVersion, setTemplateVersion] = useState("1");
-    const [templateStatus, setTemplateStatus] = useState("DRFT");
+    const [templateId, setTemplateId] = useState("");
+    const [templateVersion, setTemplateVersion] = useState("");
+    const [templateStatus, setTemplateStatus] = useState("");
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
         setRightPanelCollapsed(!rightPanelCollapsed);
@@ -577,13 +578,14 @@ function PaperBatchRecordsTemplate() {
                 filename: `${params?.file?.split('_')[0]}_page-0.jpeg.json`,
                 bbox_type: mode,
                 action_type: params?.temp_disp_id ? "edit" : "create",
-                temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : ""
+                temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : "",
+                temp_version: additionalData?.pbrVersion ? additionalData?.pbrVersion : 0
             };
             const batchRes = await getBoundingBoxData(_reqBatch);
             setOrigianalResponse(batchRes)
             let areasArr = [];
-            let width1 = width ? width : 856
-            let height1 = height ? height : 1108
+            let width1 = width ? width : 800
+            let height1 = height ? height : 100
             if (batchRes.Data.length > 0) {
 
                 batchRes.Data.forEach((e) => {
@@ -631,12 +633,17 @@ function PaperBatchRecordsTemplate() {
 
         getImage()
         const list = document.getElementsByTagName("canvas")[0]
-        getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
+        // getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
         let obj = {
             material_num: matBatch.material_num,
             batch: matBatch.batch
         }
         setTemplateInitialData(obj)
+        setTemplateStatus(additionalData?.pbrTemplateStatus)
+        setTemplateId(additionalData?.pbrDisplayId)
+        setTemplateVersion(additionalData?.pbrVersion)
+        
+
         if (Object.keys(pageIdentifier).length > 0) {
             let obj1 = {
                 key: pageIdentifier.keys[0],
@@ -644,7 +651,7 @@ function PaperBatchRecordsTemplate() {
             }
             setPageIdentifierData(obj1)
         }
-
+        setTemplateStatus()
         if (templateInfo) {
             let obj = {}
             templateInfo.forEach((item, index) => {
@@ -770,12 +777,19 @@ function PaperBatchRecordsTemplate() {
 
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
-            getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
+            // getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
             setImageWidth(list?.width)
             setimageHeight(list?.height)
         }, 3000)
 
     }, [document.getElementsByTagName("canvas")[0]]);
+
+    useEffect(() => {
+        if(imageWidth !== undefined && imageHeight!==undefined){
+            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode);
+        }
+
+    }, [imageWidth,imageHeight]);
 
 
 
@@ -795,7 +809,6 @@ function PaperBatchRecordsTemplate() {
                 item['lineWidth'] = 1
             }
         })
-        console.log("updateObj", updateObj)
         setAreasMap(updateObj)
         let obj = {
             snippetID: area.snippetID,
@@ -903,14 +916,18 @@ function PaperBatchRecordsTemplate() {
                 let _reqBatch = {
                     pbrTemplateName: params.tempalteName,
                     custKey: 'PBR',
-                    pbrTemplateVersion: '1',
-                    pbrTemplateStatus: 'DRFT',
+                    pbrTemplateVersion: 1,
+                    // pbrTemplateStatus: 'DRFT',
                     createdBy: login_response?.email_id,
                     changedBy: login_response?.firstname,
                     templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
                     material: matBatch?.material_num,
                     batch: matBatch?.batch,
-                    site_code: matBatch?.site
+                    siteCode: matBatch?.site,
+                    actionType:params?.temp_disp_id ? "edit" : "create",
+                    pbrDisplayId:additionalData?.pbrDisplayId ?additionalData?.pbrDisplayId : "" ,
+                    pbrTempId:additionalData?.pbrTempId ? additionalData?.pbrTempId : 0,
+                    pbrTemplateStatus:additionalData?.pbrTemplateStatus ? additionalData?.pbrTemplateStatus : "DRFT"
                 };
                 let arr = [];
                 formValues.forEach((ele, index) => {
@@ -1023,6 +1040,9 @@ function PaperBatchRecordsTemplate() {
                 const batchRes = await savePbrTemplate(_reqBatch);
                 if (batchRes.Status === 202) {
                     message.success(batchRes.Message);
+                    setTemplateId(batchRes?.Data?.tempDispId)
+                    setTemplateVersion(batchRes?.Data?.tempVersion)
+                    setTemplateStatus(batchRes?.Data?.tempStatus)
                     dispatch(hideLoader());
                     dispatch(showNotification('success', batchRes.Message));
                 } else {
@@ -1465,8 +1485,8 @@ function PaperBatchRecordsTemplate() {
                     </div> */}
                     <BreadCrumbWrapper
                         urlName={`/dashboard/paper_batch_records/${id}`}
-                        value={id}
-                        data="Untitled"
+                        value={templateId ? templateId : "New"}
+                        data={templateId ? templateId : "New"}
                     />
                 </div>
                 <div className='sub-header'>
@@ -1532,7 +1552,7 @@ function PaperBatchRecordsTemplate() {
                                         // labelCol={{ span: 8 }}
                                         // wrapperCol={{ span: 16 }}
                                         layout='vertical'
-                                        initialValues={{ material_num: matBatch?.material_num, batch: matBatch?.batch, template_name: params?.tempalteName, status: "Draft" }}
+                                        initialValues={{ material_num: matBatch?.material_num, batch: matBatch?.batch, template_name: params?.tempalteName, status: templateStatus  ? templateStatus : additionalData?.pbrTemplateStatus}}
                                     >
                                         {/* <Form.Item
                                             name='template_id'
