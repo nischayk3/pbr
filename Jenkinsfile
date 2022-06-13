@@ -14,13 +14,9 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                
                   sh '''#!/bin/bash -x
-                        curl -sL https://rpm.nodesource.com/setup_12.x | sudo bash -
-                        sudo yum install -y nodejs install gcc-c++ make xorg-x11-server-Xvfb gtk2-devel gtk3-devel libnotify-devel GConf2 nss libXScrnSaver alsa-lib
                         sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
                         sudo chmod +x /usr/local/bin/docker-compose
                         docker-compose version
-                        node --version
-                        npm --version
                  '''       
                 }
               }
@@ -31,15 +27,10 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                
                   sh '''#!/bin/bash -x
-                        sudo docker rm $(docker ps -a -q)
-                        npm install 
-                        docker-compose build  --no-cache ui-cypress-test
-                        docker-compose up -d  
-                        ./check-ui.sh
-                        rm -rf coverage
-                        rm -rf .nyc_output
-                        DEBUG=code-coverage npm run cy:run
-                        docker-compose down -v
+                        sudo docker rm $(sudo docker ps -a -q)
+                        docker-compose build  --no-cache ui-cypress-run
+                        docker-compose up ui-cypress-run
+                        docker-compose down 
                         ls coverage
                  '''  
                      // publish html
@@ -47,7 +38,7 @@ pipeline {
                     allowMissing: false,
                     alwaysLinkToLastBuild: false,
                     keepAll: true,
-                    reportDir: './coverage/lcov-report/',
+                    reportDir: './coverage/',
                     reportFiles: 'index.html',
                     reportName: 'Coverage Report'
                     ]
@@ -62,6 +53,7 @@ pipeline {
        steps {
             withSonarQubeEnv('sonar') {
            sh "${scannerHome}/bin/sonar-scanner"
+           sh "sudo rm -rf coverage/ .nyc_output/ dist/"
          }
       }
     }
@@ -112,10 +104,4 @@ pipeline {
                  }
             }
     }
-      post {
-        always {
-            archiveArtifacts artifacts: 'coverage/', onlyIfSuccessful: true
-        }
-    }
 }
-

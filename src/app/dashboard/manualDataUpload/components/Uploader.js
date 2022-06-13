@@ -529,6 +529,7 @@ class Uploader extends Component {
 			signatureReason: '',
 			signatureScreen: '',
 			selectedFileList: [],
+			nextStepDisabled:false
 		});
 	};
 
@@ -1100,6 +1101,7 @@ class Uploader extends Component {
 													<>
 														<Button
 															type='primary'
+															id="auth_with_ad"
 															style={{
 																backgroundColor: '#093185',
 															}}
@@ -1108,6 +1110,7 @@ class Uploader extends Component {
 														</Button>
 														<Button
 															type='primary'
+															id="auth_without_ad"
 															style={{
 																backgroundColor: '#093185',
 															}}
@@ -1195,6 +1198,7 @@ class Uploader extends Component {
 													<>
 														<Button
 															type='primary'
+															id="auth_with_ad"
 															style={{
 																backgroundColor: '#093185',
 															}}
@@ -1203,6 +1207,7 @@ class Uploader extends Component {
 														</Button>
 														<Button
 															type='primary'
+															id="auth_without_ad"
 															style={{
 																backgroundColor: '#093185',
 															}}
@@ -1361,6 +1366,7 @@ class Uploader extends Component {
 														<>
 															<Button
 																type='primary'
+																id="auth_with_ad"
 																style={{
 																	backgroundColor: '#093185',
 																}}
@@ -1369,6 +1375,7 @@ class Uploader extends Component {
 															</Button>
 															<Button
 																type='primary'
+																id="auth_without_ad"
 																style={{
 																	backgroundColor: '#093185',
 																}}

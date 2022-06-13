@@ -89,11 +89,15 @@
     "moment": "^2.29.2",
     "start-server-and-test": "^1.11.3"
   },
-  "nyc": {
-    "report-dir": "coverage",
-    "include": "./src/**",
-    "reporter": [
-      "lcov"
-    ]
+   "nyc": {
+     "all": true,
+    "sourceMap": false,
+    "instrument": true,
+    "require": [
+    "babel-register"
+  ],
+  "include": [
+    "src/**/*.js"
+  ]
   }
 }

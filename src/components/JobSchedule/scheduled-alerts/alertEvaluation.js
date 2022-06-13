@@ -184,12 +184,12 @@ const alertEvaluation = (props) => {
 				cron_string = time_split[1] + " " + time_split[0] + " * * 1-5";
 			}
 			if (radio == 3) {
-				if (f == "Minutes") {
-					cron_string = `*/${everyDayValuee}  * * * *`;
-				}
-				if (f == "Seconds") {
-					cron_string = `*/${everyDayValuee}  * * * *`;
-				}
+				// if (f == "Minutes") {
+				// 	cron_string = `*/${everyDayValuee}  * * * *`;
+				// }
+				// if (f == "Seconds") {
+				// 	cron_string = `*/${everyDayValuee}  * * * *`;
+				// }
 				if (f == "Hour") {
 					// cron_string = '*' + ' ' + time_split[0] + ' * * *'
 					cron_string = `* */${everyDayValuee}  * * *`;
@@ -482,6 +482,7 @@ const alertEvaluation = (props) => {
 																	setEveryDayValues(e.target.value)
 																}
 																style={{ height: "36px" }}
+																id="everyFewTimeUnits"
 																placeholder="4"
 															/>
 														</span>
@@ -657,13 +658,13 @@ const alertEvaluation = (props) => {
 						}}
 					>
 						<Button
-							className="custom-secondary-btn"
+							className="custom-secondary-btn schedule-notification-different"
 							onClick={() => handleModalClose(false)}
 						>
 							Different
 						</Button>
 						<Button
-							className="custom-secondary-btn"
+							className="custom-secondary-btn schedule-notification-same"
 							onClick={() => handleModalClose(true)}
 						>
 							Same

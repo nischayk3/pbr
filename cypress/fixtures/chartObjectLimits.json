@@ -1,0 +1,865 @@
+{
+    "data": [
+        {
+            "alerts": [],
+            "chart_description": "NEW_CHART_DESCRIPTION",
+            "chart_id": "",
+            "chart_mapping": {
+                "x": {
+                    "function_id": null,
+                    "function_name": "batch_num"
+                },
+                "y": {
+                    "function_id": "1",
+                    "function_name": "CARB_NORMAL"
+                }
+            },
+            "chart_name": "NEW_CHART",
+            "chart_status": 0,
+            "chart_type": "process control",
+            "chart_version": "",
+            "data": [
+                {
+                    "marker": {
+                        "color": "#376dd4",
+                        "size": 15
+                    },
+                    "mode": "markers",
+                    "name": "Normal",
+                    "text": [
+                        "ABR9492",
+                        "ABT9564",
+                        "ABT9565",
+                        "ABY0086",
+                        "ABY0088",
+                        "ABY0089"
+                    ],
+                    "type": "scatter",
+                    "x": [
+                        "ABR9492",
+                        "ABT9564",
+                        "ABT9565",
+                        "ABY0086",
+                        "ABY0088",
+                        "ABY0089"
+                    ],
+                    "y": [
+                        10.135000000000002,
+                        10.192499999999999,
+                        10.159999999999998,
+                        10.1075,
+                        10.135555555555555,
+                        10.17
+                    ]
+                },
+                {
+                    "marker": {
+                        "color": "rgb(210, 0, 0)",
+                        "size": 15
+                    },
+                    "mode": "markers",
+                    "name": "Violations",
+                    "text": [
+                        "ABL2258",
+                        "ABL2259",
+                        "ABL2261",
+                        "ABL2264",
+                        "ABR9486",
+                        "ABR9487",
+                        "ABR9491",
+                        "ABT9563",
+                        "ABT9566",
+                        "ABT9567",
+                        "ABV4289",
+                        "ABV4290",
+                        "ABV4292",
+                        "ABV4293",
+                        "ABV4294",
+                        "ABV4295",
+                        "ABV4296",
+                        "ABV4297",
+                        "ABV4298",
+                        "ABV4299",
+                        "ABY0079",
+                        "ABY0080",
+                        "ABY0081",
+                        "ABY0082",
+                        "ABY0083",
+                        "ABY0084",
+                        "ACB4375"
+                    ],
+                    "type": "scatter",
+                    "x": [
+                        "ABL2258",
+                        "ABL2259",
+                        "ABL2261",
+                        "ABL2264",
+                        "ABR9486",
+                        "ABR9487",
+                        "ABR9491",
+                        "ABT9563",
+                        "ABT9566",
+                        "ABT9567",
+                        "ABV4289",
+                        "ABV4290",
+                        "ABV4292",
+                        "ABV4293",
+                        "ABV4294",
+                        "ABV4295",
+                        "ABV4296",
+                        "ABV4297",
+                        "ABV4298",
+                        "ABV4299",
+                        "ABY0079",
+                        "ABY0080",
+                        "ABY0081",
+                        "ABY0082",
+                        "ABY0083",
+                        "ABY0084",
+                        "ACB4375"
+                    ],
+                    "y": [
+                        9.969999999999999,
+                        9.969999999999999,
+                        9.983333333333333,
+                        9.979999999999999,
+                        10.0725,
+                        10.036666666666665,
+                        10.227500000000001,
+                        10.212,
+                        10.07,
+                        10.06,
+                        10.003333333333334,
+                        10.032499999999999,
+                        10.049999999999999,
+                        10.049999999999999,
+                        10.078333333333333,
+                        10.088,
+                        10.088,
+                        10.088,
+                        10.09,
+                        10.09142857142857,
+                        10.07,
+                        10.07,
+                        10.2175935,
+                        10.2175935,
+                        10.2175935,
+                        10.071428571428571,
+                        10.360000000000001
+                    ]
+                },
+                {
+                    "line": {
+                        "color": "#2196F3"
+                    },
+                    "mode": "lines",
+                    "name": "Upper Control",
+                    "type": "scatter",
+                    "x": [
+                        "ABL2258",
+                        "ABL2259",
+                        "ABL2261",
+                        "ABL2264",
+                        "ABR9486",
+                        "ABR9487",
+                        "ABR9491",
+                        "ABR9492",
+                        "ABT9563",
+                        "ABT9564",
+                        "ABT9565",
+                        "ABT9566",
+                        "ABT9567",
+                        "ABV4289",
+                        "ABV4290",
+                        "ABV4293",
+                        "ABV4292",
+                        "ABV4294",
+                        "ABV4295",
+                        "ABV4296",
+                        "ABV4297",
+                        "ABV4298",
+                        "ABY0080",
+                        "ABV4299",
+                        "ABY0079",
+                        "ABY0084",
+                        "ABY0081",
+                        "ABY0082",
+                        "ABY0083",
+                        "ACB4375",
+                        "ABY0088",
+                        "ABY0086",
+                        "ABY0089"
+                    ],
+                    "y": [
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2,
+                        10.2
+                    ]
+                },
+                {
+                    "line": {
+                        "color": "#1976D2"
+                    },
+                    "mode": "lines",
+                    "name": "Lower Control",
+                    "type": "scatter",
+                    "x": [
+                        "ABL2258",
+                        "ABL2259",
+                        "ABL2261",
+                        "ABL2264",
+                        "ABR9486",
+                        "ABR9487",
+                        "ABR9491",
+                        "ABR9492",
+                        "ABT9563",
+                        "ABT9564",
+                        "ABT9565",
+                        "ABT9566",
+                        "ABT9567",
+                        "ABV4289",
+                        "ABV4290",
+                        "ABV4293",
+                        "ABV4292",
+                        "ABV4294",
+                        "ABV4295",
+                        "ABV4296",
+                        "ABV4297",
+                        "ABV4298",
+                        "ABY0080",
+                        "ABV4299",
+                        "ABY0079",
+                        "ABY0084",
+                        "ABY0081",
+                        "ABY0082",
+                        "ABY0083",
+                        "ACB4375",
+                        "ABY0088",
+                        "ABY0086",
+                        "ABY0089"
+                    ],
+                    "y": [
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1,
+                        10.1
+                    ]
+                },
+                {
+                    "line": {
+                        "color": "rgb(0, 0, 0)"
+                    },
+                    "mode": "lines",
+                    "name": "mean",
+                    "type": "scatter",
+                    "x": [
+                        "ABL2258",
+                        "ABL2259",
+                        "ABL2261",
+                        "ABL2264",
+                        "ABR9486",
+                        "ABR9487",
+                        "ABR9491",
+                        "ABR9492",
+                        "ABT9563",
+                        "ABT9564",
+                        "ABT9565",
+                        "ABT9566",
+                        "ABT9567",
+                        "ABV4289",
+                        "ABV4290",
+                        "ABV4293",
+                        "ABV4292",
+                        "ABV4294",
+                        "ABV4295",
+                        "ABV4296",
+                        "ABV4297",
+                        "ABV4298",
+                        "ABY0080",
+                        "ABV4299",
+                        "ABY0079",
+                        "ABY0084",
+                        "ABY0081",
+                        "ABY0082",
+                        "ABY0083",
+                        "ACB4375",
+                        "ABY0088",
+                        "ABY0086",
+                        "ABY0089"
+                    ],
+                    "y": [
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404,
+                        10.102010905002404
+                    ]
+                }
+            ],
+            "data_filter": {
+                "date_range": "",
+                "site": "",
+                "unapproved_data": 0
+            },
+            "date": null,
+            "end_date": null,
+            "exclusions": [],
+            "extras": {
+                "coverage": [
+                    {
+                        "batchstats": "33/33",
+                        "coverage_metric_percent": "100.0%",
+                        "function_id": "1",
+                        "function_name": "CARB_NORMAL"
+                    },
+                    {
+                        "batchstats": "33/33",
+                        "coverage_metric_percent": "100.0%",
+                        "function_id": "2",
+                        "function_name": "NORMAL_MUL_HEAVY"
+                    }
+                ],
+                "data_table": [
+                    {
+                        "CARB_NORMAL": "9.970",
+                        "batch_num": "ABL2258",
+                        "recorded_date_CARB_NORMAL": "2020-01-16T10:53:04Z"
+                    },
+                    {
+                        "CARB_NORMAL": "9.970",
+                        "batch_num": "ABL2259",
+                        "recorded_date_CARB_NORMAL": "2020-01-16T10:53:04Z"
+                    },
+                    {
+                        "CARB_NORMAL": "9.983",
+                        "batch_num": "ABL2261",
+                        "recorded_date_CARB_NORMAL": "2020-02-18T11:03:16Z"
+                    },
+                    {
+                        "CARB_NORMAL": "9.980",
+                        "batch_num": "ABL2264",
+                        "recorded_date_CARB_NORMAL": "2020-03-02T11:09:18Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.072",
+                        "batch_num": "ABR9486",
+                        "recorded_date_CARB_NORMAL": "2020-09-30T13:43:14Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.037",
+                        "batch_num": "ABR9487",
+                        "recorded_date_CARB_NORMAL": "2020-09-30T13:43:14Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.228",
+                        "batch_num": "ABR9491",
+                        "recorded_date_CARB_NORMAL": "2020-10-13T09:15:31Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.135",
+                        "batch_num": "ABR9492",
+                        "recorded_date_CARB_NORMAL": "2020-10-27T08:10:18Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.212",
+                        "batch_num": "ABT9563",
+                        "recorded_date_CARB_NORMAL": "2021-01-04T15:09:18Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.192",
+                        "batch_num": "ABT9564",
+                        "recorded_date_CARB_NORMAL": "2021-01-04T15:09:18Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.160",
+                        "batch_num": "ABT9565",
+                        "recorded_date_CARB_NORMAL": "2021-01-04T15:09:18Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.070",
+                        "batch_num": "ABT9566",
+                        "recorded_date_CARB_NORMAL": "2021-01-22T14:10:13Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.060",
+                        "batch_num": "ABT9567",
+                        "recorded_date_CARB_NORMAL": "2021-02-03T08:21:19Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.003",
+                        "batch_num": "ABV4289",
+                        "recorded_date_CARB_NORMAL": "2021-02-03T08:21:19Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.032",
+                        "batch_num": "ABV4290",
+                        "recorded_date_CARB_NORMAL": "2021-04-15T10:18:09Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.050",
+                        "batch_num": "ABV4292",
+                        "recorded_date_CARB_NORMAL": "2021-04-19T10:26:45Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.050",
+                        "batch_num": "ABV4293",
+                        "recorded_date_CARB_NORMAL": "2021-04-19T10:26:45Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.078",
+                        "batch_num": "ABV4294",
+                        "recorded_date_CARB_NORMAL": "2021-04-26T07:59:48Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.088",
+                        "batch_num": "ABV4295",
+                        "recorded_date_CARB_NORMAL": "2021-04-26T07:59:48Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.088",
+                        "batch_num": "ABV4296",
+                        "recorded_date_CARB_NORMAL": "2021-04-26T07:59:48Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.088",
+                        "batch_num": "ABV4297",
+                        "recorded_date_CARB_NORMAL": "2021-04-26T07:59:48Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.090",
+                        "batch_num": "ABV4298",
+                        "recorded_date_CARB_NORMAL": "2021-05-13T10:15:54Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.091",
+                        "batch_num": "ABV4299",
+                        "recorded_date_CARB_NORMAL": "2021-05-17T08:40:20Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.070",
+                        "batch_num": "ABY0079",
+                        "recorded_date_CARB_NORMAL": "2021-05-17T08:40:20Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.070",
+                        "batch_num": "ABY0080",
+                        "recorded_date_CARB_NORMAL": "2021-05-17T08:40:20Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.218",
+                        "batch_num": "ABY0081",
+                        "recorded_date_CARB_NORMAL": "2021-06-15T09:42:17Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.218",
+                        "batch_num": "ABY0082",
+                        "recorded_date_CARB_NORMAL": "2021-06-15T09:42:17Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.218",
+                        "batch_num": "ABY0083",
+                        "recorded_date_CARB_NORMAL": "2021-06-15T09:42:17Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.071",
+                        "batch_num": "ABY0084",
+                        "recorded_date_CARB_NORMAL": "2021-06-09T10:18:11Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.108",
+                        "batch_num": "ABY0086",
+                        "recorded_date_CARB_NORMAL": "2021-07-12T11:17:07Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.136",
+                        "batch_num": "ABY0088",
+                        "recorded_date_CARB_NORMAL": "2021-07-12T11:17:07Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.170",
+                        "batch_num": "ABY0089",
+                        "recorded_date_CARB_NORMAL": "2021-08-18T10:48:42Z"
+                    },
+                    {
+                        "CARB_NORMAL": "10.360",
+                        "batch_num": "ACB4375",
+                        "recorded_date_CARB_NORMAL": "2021-07-08T06:49:19Z"
+                    }
+                ]
+            },
+            "layout": {
+                "annotations": [],
+                "height": 400,
+                "legend": {
+                    "bgcolor": "#FFFFFF",
+                    "bordercolor": "#FFFFFF",
+                    "borderwidth": 2,
+                    "orientation": "v",
+                    "title": {
+                        "font": {
+                            "color": "#000000",
+                            "size": 10
+                        },
+                        "text": ""
+                    }
+                },
+                "plot_bgcolor": "white",
+                "showlegend": true,
+                "width": 930,
+                "xaxis": {
+                    "gridcolor": "#d9d9d9",
+                    "showgrid": true,
+                    "showline": true,
+                    "showticklabels": true,
+                    "title": {
+                        "font": {
+                            "color": "#000000",
+                            "size": 15
+                        },
+                        "text": "Batch"
+                    },
+                    "visible": true
+                },
+                "yaxis": {
+                    "gridcolor": "#d9d9d9",
+                    "showgrid": true,
+                    "showline": true,
+                    "showticklabels": true,
+                    "title": {
+                        "font": {
+                            "color": "#000000",
+                            "size": 15
+                        },
+                        "text": "CARB_NORMAL"
+                    },
+                    "visible": true
+                }
+            },
+            "limits": {
+                "control": [
+                    {
+                        "lower": 10.1,
+                        "upper": 10.2,
+                        "valid_timestamp": "2022-01-04T18:30:00Z"
+                    }
+                ],
+                "specification": [],
+                "warning": []
+            },
+            "site": null,
+            "start_date": null,
+            "thresholds": [],
+            "unapprove_data": false,
+            "view_disp_id": "V238",
+            "view_id": "V238",
+            "view_name": "CARB_NORMAL_HEAVY_2_FUNCTION",
+            "view_status": "APRD",
+            "view_version": 1,
+            "violations": [
+                {
+                    "batch_num": "ABL2258",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2020-01-16T10:53:04Z",
+                    "value": "9.970",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABL2259",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2020-01-16T10:53:04Z",
+                    "value": "9.970",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABL2261",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2020-02-18T11:03:16Z",
+                    "value": "9.983",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABL2264",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2020-03-02T11:09:18Z",
+                    "value": "9.980",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABR9486",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2020-09-30T13:43:14Z",
+                    "value": "10.072",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABR9487",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2020-09-30T13:43:14Z",
+                    "value": "10.037",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABR9491",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2020-10-13T09:15:31Z",
+                    "value": "10.228",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABT9563",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-01-04T15:09:18Z",
+                    "value": "10.212",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABT9566",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-01-22T14:10:13Z",
+                    "value": "10.070",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABT9567",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-02-03T08:21:19Z",
+                    "value": "10.060",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABV4289",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-02-03T08:21:19Z",
+                    "value": "10.003",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABV4290",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-04-15T10:18:09Z",
+                    "value": "10.032",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABV4292",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-04-19T10:26:45Z",
+                    "value": "10.050",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABV4293",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-04-19T10:26:45Z",
+                    "value": "10.050",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABV4294",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-04-26T07:59:48Z",
+                    "value": "10.078",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABV4295",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-04-26T07:59:48Z",
+                    "value": "10.088",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABV4296",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-04-26T07:59:48Z",
+                    "value": "10.088",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABV4297",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-04-26T07:59:48Z",
+                    "value": "10.088",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABV4298",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-05-13T10:15:54Z",
+                    "value": "10.090",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABV4299",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-05-17T08:40:20Z",
+                    "value": "10.091",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABY0079",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-05-17T08:40:20Z",
+                    "value": "10.070",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABY0080",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-05-17T08:40:20Z",
+                    "value": "10.070",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABY0081",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-06-15T09:42:17Z",
+                    "value": "10.218",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABY0082",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-06-15T09:42:17Z",
+                    "value": "10.218",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABY0083",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-06-15T09:42:17Z",
+                    "value": "10.218",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ABY0084",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-06-09T10:18:11Z",
+                    "value": "10.071",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                },
+                {
+                    "batch_num": "ACB4375",
+                    "function_name": "CARB_NORMAL",
+                    "recorded_date": "2021-07-08T06:49:19Z",
+                    "value": "10.360",
+                    "violation_name": "control",
+                    "violation_type": "limits"
+                }
+            ]
+        }
+    ]
+}

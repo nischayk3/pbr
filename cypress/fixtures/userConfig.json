@@ -1,0 +1,1124 @@
+{
+    "message": {
+        "columns": [
+            {
+                "align": "center",
+                "dataIndex": "user",
+                "editable": true,
+                "label": "User",
+                "name": "user",
+                "title": "User",
+                "type": "input"
+            },
+            {
+                "align": "center",
+                "dataIndex": "role",
+                "label": "Role",
+                "mode": "single",
+                "name": "role",
+                "options": [
+                    {
+                        "label": "TEST_USER",
+                        "value": "TEST_USER"
+                    },
+                    {
+                        "label": "CMO",
+                        "value": "CMO"
+                    },
+                    {
+                        "label": "ADMIN",
+                        "value": "ADMIN"
+                    },
+                    {
+                        "label": "USER",
+                        "value": "USER"
+                    },
+                    {
+                        "label": "TEST_CMO",
+                        "value": "TEST_CMO"
+                    },
+                    {
+                        "label": "ALL_ACCESS",
+                        "value": "ALL_ACCESS"
+                    },
+                    {
+                        "label": "NEW_ROLE",
+                        "value": "NEW_ROLE"
+                    },
+                    {
+                        "label": "TEST_ADMIN",
+                        "value": "TEST_ADMIN"
+                    }
+                ],
+                "title": "Role",
+                "type": "select"
+            },
+            {
+                "align": "center",
+                "dataIndex": "approver_resource",
+                "label": "Approver Resource",
+                "mode": "multiple",
+                "name": "approver_resource",
+                "options": [
+                    {
+                        "label": "AUDIT_REPORT",
+                        "value": "AUDIT_REPORT"
+                    },
+                    {
+                        "label": "GENEALOGY",
+                        "value": "GENEALOGY"
+                    },
+                    {
+                        "label": "ANALYTICS",
+                        "value": "ANALYTICS"
+                    },
+                    {
+                        "label": "REPORT_GENERATOR",
+                        "value": "REPORT_GENERATOR"
+                    },
+                    {
+                        "label": "REPORT_DESIGNER",
+                        "value": "REPORT_DESIGNER"
+                    },
+                    {
+                        "label": "WORKITEMS",
+                        "value": "WORKITEMS"
+                    },
+                    {
+                        "label": "CHART",
+                        "value": "CHART"
+                    },
+                    {
+                        "label": "DASHBOARD",
+                        "value": "DASHBOARD"
+                    },
+                    {
+                        "label": "VIEW",
+                        "value": "VIEW"
+                    },
+                    {
+                        "label": "CONFIGURATION",
+                        "value": "CONFIGURATION"
+                    },
+                    {
+                        "label": "SYSTEM_ERRORS",
+                        "value": "SYSTEM_ERRORS"
+                    },
+                    {
+                        "label": "FILE_UPLOAD",
+                        "value": "FILE_UPLOAD"
+                    }
+                ],
+                "title": "Approver Resource",
+                "type": "select"
+            },
+            {
+                "align": "center",
+                "children": [
+                    {
+                        "align": "center",
+                        "dataIndex": "molecule",
+                        "label": "Molecule",
+                        "mode": "multiple",
+                        "name": "molecule",
+                        "options": [
+                            {
+                                "label": "BELATACEPT",
+                                "value": "BELATACEPT"
+                            },
+                            {
+                                "label": "BELATACEPT_1",
+                                "value": "BELATACEPT_1"
+                            },
+                            {
+                                "label": "View Hier",
+                                "value": "View Hier"
+                            }
+                        ],
+                        "title": "Molecule",
+                        "type": "select"
+                    },
+                    {
+                        "align": "center",
+                        "dataIndex": "site",
+                        "label": "Site",
+                        "mode": "multiple",
+                        "name": "site",
+                        "options": [
+                            {
+                                "label": "2021",
+                                "value": "2021"
+                            },
+                            {
+                                "label": "1213",
+                                "value": "1213"
+                            },
+                            {
+                                "label": "1749",
+                                "value": "1749"
+                            },
+                            {
+                                "label": "1762",
+                                "value": "1762"
+                            },
+                            {
+                                "label": "1574",
+                                "value": "1574"
+                            },
+                            {
+                                "label": "1680",
+                                "value": "1680"
+                            },
+                            {
+                                "label": "2024",
+                                "value": "2024"
+                            },
+                            {
+                                "label": "1760",
+                                "value": "1760"
+                            },
+                            {
+                                "label": "8550",
+                                "value": "8550"
+                            },
+                            {
+                                "label": "1624",
+                                "value": "1624"
+                            },
+                            {
+                                "label": "8559",
+                                "value": "8559"
+                            },
+                            {
+                                "label": "2019",
+                                "value": "2019"
+                            },
+                            {
+                                "label": "1610",
+                                "value": "1610"
+                            },
+                            {
+                                "label": "1148",
+                                "value": "1148"
+                            },
+                            {
+                                "label": "1563",
+                                "value": "1563"
+                            },
+                            {
+                                "label": "1386",
+                                "value": "1386"
+                            },
+                            {
+                                "label": "1726",
+                                "value": "1726"
+                            },
+                            {
+                                "label": "1651",
+                                "value": "1651"
+                            },
+                            {
+                                "label": "1725",
+                                "value": "1725"
+                            },
+                            {
+                                "label": "2017",
+                                "value": "2017"
+                            },
+                            {
+                                "label": "8510",
+                                "value": "8510"
+                            },
+                            {
+                                "label": "1744",
+                                "value": "1744"
+                            },
+                            {
+                                "label": "8516",
+                                "value": "8516"
+                            },
+                            {
+                                "label": "1738",
+                                "value": "1738"
+                            },
+                            {
+                                "label": "1745",
+                                "value": "1745"
+                            },
+                            {
+                                "label": "1007",
+                                "value": "1007"
+                            },
+                            {
+                                "label": "1608",
+                                "value": "1608"
+                            },
+                            {
+                                "label": "1747",
+                                "value": "1747"
+                            },
+                            {
+                                "label": "1244",
+                                "value": "1244"
+                            },
+                            {
+                                "label": "1549",
+                                "value": "1549"
+                            },
+                            {
+                                "label": "1420",
+                                "value": "1420"
+                            },
+                            {
+                                "label": "1508",
+                                "value": "1508"
+                            },
+                            {
+                                "label": "8531",
+                                "value": "8531"
+                            },
+                            {
+                                "label": "1493",
+                                "value": "1493"
+                            },
+                            {
+                                "label": "8552",
+                                "value": "8552"
+                            },
+                            {
+                                "label": "1647",
+                                "value": "1647"
+                            },
+                            {
+                                "label": "8528",
+                                "value": "8528"
+                            },
+                            {
+                                "label": "1052",
+                                "value": "1052"
+                            },
+                            {
+                                "label": "1255",
+                                "value": "1255"
+                            },
+                            {
+                                "label": "1656",
+                                "value": "1656"
+                            },
+                            {
+                                "label": "1396",
+                                "value": "1396"
+                            },
+                            {
+                                "label": "2523",
+                                "value": "2523"
+                            },
+                            {
+                                "label": "1269",
+                                "value": "1269"
+                            },
+                            {
+                                "label": "1557",
+                                "value": "1557"
+                            },
+                            {
+                                "label": "1728",
+                                "value": "1728"
+                            },
+                            {
+                                "label": "1742",
+                                "value": "1742"
+                            },
+                            {
+                                "label": "8535",
+                                "value": "8535"
+                            },
+                            {
+                                "label": "1340",
+                                "value": "1340"
+                            },
+                            {
+                                "label": "1748",
+                                "value": "1748"
+                            },
+                            {
+                                "label": "1761",
+                                "value": "1761"
+                            },
+                            {
+                                "label": "1322",
+                                "value": "1322"
+                            },
+                            {
+                                "label": "1333",
+                                "value": "1333"
+                            },
+                            {
+                                "label": "2013",
+                                "value": "2013"
+                            },
+                            {
+                                "label": "1724",
+                                "value": "1724"
+                            },
+                            {
+                                "label": "1553",
+                                "value": "1553"
+                            },
+                            {
+                                "label": "8517",
+                                "value": "8517"
+                            },
+                            {
+                                "label": "1671",
+                                "value": "1671"
+                            },
+                            {
+                                "label": "8515",
+                                "value": "8515"
+                            },
+                            {
+                                "label": "1513",
+                                "value": "1513"
+                            },
+                            {
+                                "label": "1393",
+                                "value": "1393"
+                            },
+                            {
+                                "label": "8511",
+                                "value": "8511"
+                            },
+                            {
+                                "label": "1643",
+                                "value": "1643"
+                            },
+                            {
+                                "label": "1718",
+                                "value": "1718"
+                            },
+                            {
+                                "label": "1735",
+                                "value": "1735"
+                            },
+                            {
+                                "label": "1720",
+                                "value": "1720"
+                            },
+                            {
+                                "label": "8527",
+                                "value": "8527"
+                            },
+                            {
+                                "label": "1727",
+                                "value": "1727"
+                            },
+                            {
+                                "label": "1736",
+                                "value": "1736"
+                            },
+                            {
+                                "label": "1609",
+                                "value": "1609"
+                            },
+                            {
+                                "label": "1763",
+                                "value": "1763"
+                            },
+                            {
+                                "label": "1147",
+                                "value": "1147"
+                            },
+                            {
+                                "label": "1559",
+                                "value": "1559"
+                            },
+                            {
+                                "label": "1657",
+                                "value": "1657"
+                            },
+                            {
+                                "label": "1328",
+                                "value": "1328"
+                            },
+                            {
+                                "label": "2022",
+                                "value": "2022"
+                            },
+                            {
+                                "label": "8549",
+                                "value": "8549"
+                            },
+                            {
+                                "label": "1750",
+                                "value": "1750"
+                            },
+                            {
+                                "label": "2018",
+                                "value": "2018"
+                            },
+                            {
+                                "label": "1708",
+                                "value": "1708"
+                            },
+                            {
+                                "label": "1641",
+                                "value": "1641"
+                            },
+                            {
+                                "label": "1731",
+                                "value": "1731"
+                            },
+                            {
+                                "label": "1685",
+                                "value": "1685"
+                            },
+                            {
+                                "label": "1741",
+                                "value": "1741"
+                            },
+                            {
+                                "label": "1338",
+                                "value": "1338"
+                            },
+                            {
+                                "label": "1655",
+                                "value": "1655"
+                            },
+                            {
+                                "label": "2014",
+                                "value": "2014"
+                            },
+                            {
+                                "label": "2016",
+                                "value": "2016"
+                            },
+                            {
+                                "label": "1554",
+                                "value": "1554"
+                            },
+                            {
+                                "label": "1681",
+                                "value": "1681"
+                            },
+                            {
+                                "label": "2015",
+                                "value": "2015"
+                            },
+                            {
+                                "label": "1764",
+                                "value": "1764"
+                            },
+                            {
+                                "label": "1746",
+                                "value": "1746"
+                            },
+                            {
+                                "label": "1754",
+                                "value": "1754"
+                            },
+                            {
+                                "label": "1037",
+                                "value": "1037"
+                            },
+                            {
+                                "label": "8536",
+                                "value": "8536"
+                            },
+                            {
+                                "label": "8529",
+                                "value": "8529"
+                            },
+                            {
+                                "label": "8545",
+                                "value": "8545"
+                            },
+                            {
+                                "label": "1550",
+                                "value": "1550"
+                            },
+                            {
+                                "label": "1737",
+                                "value": "1737"
+                            },
+                            {
+                                "label": "1722",
+                                "value": "1722"
+                            },
+                            {
+                                "label": "8540",
+                                "value": "8540"
+                            },
+                            {
+                                "label": "1552",
+                                "value": "1552"
+                            },
+                            {
+                                "label": "1752",
+                                "value": "1752"
+                            },
+                            {
+                                "label": "1721",
+                                "value": "1721"
+                            },
+                            {
+                                "label": "1238",
+                                "value": "1238"
+                            },
+                            {
+                                "label": "1551",
+                                "value": "1551"
+                            },
+                            {
+                                "label": "1395",
+                                "value": "1395"
+                            },
+                            {
+                                "label": "1597",
+                                "value": "1597"
+                            },
+                            {
+                                "label": "1487",
+                                "value": "1487"
+                            }
+                        ],
+                        "title": "Site",
+                        "type": "select"
+                    },
+                    {
+                        "children": [
+                            {
+                                "align": "center",
+                                "dataIndex": "approved",
+                                "label": "Approved",
+                                "name": "approved",
+                                "title": "Approved",
+                                "toggleTextFalse": "",
+                                "toggleTextTrue": "",
+                                "type": "toggle"
+                            },
+                            {
+                                "align": "center",
+                                "dataIndex": "unapproved",
+                                "label": "Unapproved",
+                                "name": "unapproved",
+                                "title": "Unapproved",
+                                "toggleTextFalse": "",
+                                "toggleTextTrue": "",
+                                "type": "toggle"
+                            }
+                        ],
+                        "dataIndex": "data_access",
+                        "title": "Data Access",
+                        "type": "parent"
+                    }
+                ],
+                "dataIndex": "allowed_access_to",
+                "title": "Allowed access to",
+                "type": "parent"
+            },
+            {
+                "align": "center",
+                "dataIndex": "lock_user",
+                "label": "Lock User",
+                "name": "lock_user",
+                "title": "Lock User",
+                "toggleTextFalse": "",
+                "toggleTextTrue": "",
+                "type": "toggle"
+            }
+        ],
+        "dataSource": [
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "vimal@mareana.com",
+                "user_id": 2
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "ADMIN"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "system@mareana.com",
+                "user_id": 3
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "ALL_ACCESS"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "dinesh.jinjala@mareana.com",
+                "user_id": 4
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "fahad.siddiqui@mareana.com",
+                "user_id": 5
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "someswara.rao@mareana.com",
+                "user_id": 6
+            },
+            {
+                "approved": true,
+                "approver_resource": [
+                    "PARAM_DATA"
+                ],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "mihir.bagga@mareana.com",
+                "user_id": 7
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "vinay.reddy@mareana.com",
+                "user_id": 9
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "binkita.tiwari@mareana.com",
+                "user_id": 10
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "sudeep.raj@mareana.com",
+                "user_id": 11
+            },
+            {
+                "approved": true,
+                "approver_resource": [
+                    "PARAM_DATA"
+                ],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "prince.vashishth@mareana.com",
+                "user_id": 12
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "krishnatheja.vanka@mareana.com",
+                "user_id": 13
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "bhanu.thareja@mareana.com",
+                "user_id": 14
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "rahul.neogi@mareana.com",
+                "user_id": 15
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "sandeep.pandey@mareana.com",
+                "user_id": 16
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "demo@mareana.com",
+                "user_id": 17
+            },
+            {
+                "approved": true,
+                "approver_resource": [
+                    "ALL"
+                ],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "krishnapriyam@mareana.com",
+                "user_id": 18
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "atul.mishra@mareana.com",
+                "user_id": 20
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "muskan.gupta@mareana.com",
+                "user_id": 21
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "sayed.bakash@mareana.com",
+                "user_id": 22
+            },
+            {
+                "approved": true,
+                "approver_resource": [
+                    "PARAM_DATA"
+                ],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "dinesh.kumar@mareana.com",
+                "user_id": 24
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "swopna.mohanty@mareana.com",
+                "user_id": 25
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "ramakant.sinha@mareana.com",
+                "user_id": 26
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "rajesh.pinku@mareana.com",
+                "user_id": 27
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "bishal.bhowmik@mareana.com",
+                "user_id": 28
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "kyle.caspary@mareana.com",
+                "user_id": 29
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "prabhat@mareana.com",
+                "user_id": 30
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "yash.madhogaria@mareana.com",
+                "user_id": 31
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "gourab.chowdhury@mareana.com",
+                "user_id": 32
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "nischay.kumar@mareana.com",
+                "user_id": 33
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "prashant@mareana.com",
+                "user_id": 35
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "vitthal@mareana.com",
+                "user_id": 36
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": false,
+                "molecule": [],
+                "role": [
+                    "TEST_ADMIN"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "krishnariyam@mareana.com",
+                "user_id": 73
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "sharmila.jr@mareana.com",
+                "user_id": 74
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "TEST_ADMIN"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "srikanth.bhoomeni@mareana.com",
+                "user_id": 75
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "USER"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "suma.patil@mareana.com",
+                "user_id": 82
+            },
+            {
+                "approved": true,
+                "approver_resource": [],
+                "lock_user": null,
+                "molecule": [],
+                "role": [
+                    "ADMIN"
+                ],
+                "site": [],
+                "unapproved": true,
+                "user": "ramaa.rao@mareana.com",
+                "user_id": 83
+            }
+        ],
+        "deleteActionColumn": true,
+        "rowInitialData": {
+            "approved": false,
+            "approver_resource": [],
+            "lock_user": false,
+            "molecule": [],
+            "role": [],
+            "site": [],
+            "unapproved": true,
+            "updated": false,
+            "user": "username@gmail.com",
+            "user_id": null
+        }
+    },
+    "statuscode": 200
+}
