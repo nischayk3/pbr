@@ -27,6 +27,17 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                
                   sh '''#!/bin/bash -x
+<<<<<<< HEAD
+                        sudo docker rm $(docker ps -a -q)
+                        npm install 
+                        docker-compose build  --no-cache ui-cypress-test
+                        docker-compose up -d  
+                        ./check-ui.sh
+                        npm run cy:run
+                        docker-compose down -v
+                        ls coverage
+                 '''       
+=======
                         sudo docker rm $(sudo docker ps -a -q)
                         docker-compose build  --no-cache ui-cypress-run
                         docker-compose up ui-cypress-run
@@ -43,6 +54,7 @@ pipeline {
                     reportName: 'Coverage Report'
                     ]
 
+>>>>>>> d903cd34952b3c6358248fb80817e352047a35dd
                 }
               }
            }  

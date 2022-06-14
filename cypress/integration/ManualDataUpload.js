@@ -31,12 +31,18 @@ describe('Manual data upload', () => {
         
       });
 
+      it("click on cancel button",()=>{
+        cy.get("#cancel-next").click()
+        cy.reload()
+        cy.wait(3000)
+        
+      })
+
         it("download template",()=>{
               cy.get('.ant-btn > a').click();
               cy.get('.ant-btn-primary > :nth-child(1)').click();
         });
-
-        it("Un authorized user check",()=>{
+      it("Un authorized user check",()=>{
           cy.wait(3000)
           cy.log("Un Authorized user")
           cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/cypress_manual_duplicate_no_approved_and_approved_data.xlsx'},{ force: true })
@@ -123,7 +129,6 @@ describe('Manual data upload', () => {
         cy.log("replicating final approved data api")
         cy.reload()
         cy.wait(3000)
-        cy.wait(3000)
         cy.log("load duplicate approved records again")
         cy.get('.ant-btn-primary > :nth-child(1)').click();
         cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
@@ -132,10 +137,10 @@ describe('Manual data upload', () => {
 
         cy.log("continute to digital gisnature")
         cy.get('.ant-space-item').eq(0).click()
-        cy.wait(10000)
+        cy.wait(7000)
         cy.get('.ant-btn-primary').eq(1).click();
         
-        cy.wait(10000)
+        cy.wait(7000)
         cy.log("click on digital signature button")
         cy.get('.ant-space-item').eq(0).click()
        
@@ -159,7 +164,7 @@ describe('Manual data upload', () => {
         cy.get('.ant-select-selection-item').click();
         cy.get('.ant-select-item-option-content').eq(0).click();
         cy.get('.signature-modal > .ant-btn-primary > span').click();
-        cy.wait(6000)
+        cy.wait(5000)
         
         cy.get("#nextButton").click()
         cy.log("click on digital signature button")
@@ -184,7 +189,6 @@ describe('Manual data upload', () => {
         cy.log("replicating final approved data api")
         cy.reload()
         cy.wait(3000)
-        cy.wait(3000)
         cy.intercept(
           {
             method: 'POST', 
@@ -201,10 +205,10 @@ describe('Manual data upload', () => {
   
         cy.log("continute to digital gisnature")
         cy.get('.ant-space-item').eq(0).click()
-        cy.wait(10000)
+        cy.wait(7000)
         cy.get('.ant-btn-primary').eq(1).click();
         
-        cy.wait(10000)
+        cy.wait(7000)
         cy.log("click on digital signature button")
         cy.get('.ant-space-item').eq(0).click()
        
@@ -228,7 +232,7 @@ describe('Manual data upload', () => {
         cy.get('.ant-select-selection-item').click();
         cy.get('.ant-select-item-option-content').eq(0).click();
         cy.get('.signature-modal > .ant-btn-primary > span').click();
-        cy.wait(10000)
+        cy.wait(7000)
         
         cy.get("#nextButton").click()
         cy.log("click on digital signature button")
@@ -255,7 +259,6 @@ describe('Manual data upload', () => {
         cy.log("replicating final approved data api")
         cy.reload()
         cy.wait(3000)
-        cy.wait(3000)
         cy.intercept(
           {
             method: 'POST', 
@@ -275,10 +278,10 @@ describe('Manual data upload', () => {
   
         cy.log("continute to digital gisnature")
         cy.get('.ant-space-item').eq(0).click()
-        cy.wait(10000)
+        cy.wait(7000)
         cy.get('.ant-btn-primary').eq(1).click();
         
-        cy.wait(10000)
+        cy.wait(7000)
         cy.log("click on digital signature button")
         cy.get('.ant-space-item').eq(0).click()
        
@@ -302,7 +305,7 @@ describe('Manual data upload', () => {
         cy.get('.ant-select-selection-item').click();
         cy.get('.ant-select-item-option-content').eq(0).click();
         cy.get('.signature-modal > .ant-btn-primary > span').click();
-        cy.wait(10000)
+        cy.wait(7000)
         
         cy.get("#nextButton").click()
         cy.log("click on digital signature button")
@@ -331,7 +334,7 @@ describe('Manual data upload', () => {
         cy.wait(3000)
         cy.log("load duplicate approved records again")
         cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
-        cy.wait(10000)
+        cy.wait(7000)
         cy.log("continute to digital gisnature")
         cy.get('.ant-space-item').eq(0).click()
         cy.wait(3000)
@@ -379,7 +382,7 @@ describe('Manual data upload', () => {
         cy.wait(3000)
         cy.log("load duplicate approved records again")
         cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
-        cy.wait(10000)
+        cy.wait(7000)
         cy.log("continute to digital gisnature")
         cy.get('.ant-space-item').eq(0).click()
         cy.wait(3000)
@@ -437,7 +440,6 @@ describe('Manual data upload', () => {
       cy.log("login-pass api 300")
       cy.reload()
       cy.wait(3000)
-      cy.wait(3000)
       cy.intercept(
         {
           method: 'GET', 
@@ -452,10 +454,10 @@ describe('Manual data upload', () => {
 
       cy.log("continute to digital gisnature")
       cy.get('.ant-space-item').eq(0).click()
-      cy.wait(10000)
+      cy.wait(7000)
       cy.get('.ant-btn-primary').eq(1).click();
       
-      cy.wait(10000)
+      cy.wait(7000)
       cy.log("click on digital signature button")
       cy.get('.ant-space-item').eq(0).click()
      
@@ -583,4 +585,27 @@ describe('Manual data upload', () => {
         ).as('file-upload')
         cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/cypress_300_status.xlsx'},{ force: true })    
     });
+
+
+    it("file upload internal server",()=>{
+
+      cy.reload()
+      cy.wait(4000)
+      cy.get('.ant-btn-primary > :nth-child(1)').click();
+      cy.intercept(
+        {
+          method: 'POST', 
+          url: '/services/v1/upload-file',
+         
+        },
+        {data:{
+          statuscode:201,
+          message:"test cases"
+          }
+        }
+      ).as('file-upload')
+      cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/res_200.xlsx'},{ force: true })
+      
+       cy.get('.ant-btn-primary').eq(1).click();
+  });
 });
