@@ -32,6 +32,7 @@ describe('Manual data upload', () => {
       });
 
       it("click on cancel button",()=>{
+        cy.wait(3000)
         cy.get("#cancel-next").click()
         cy.reload()
         cy.wait(3000)
