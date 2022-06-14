@@ -25,7 +25,7 @@ const BreadCrumbWrapper = (props) => {
 		);
 	});
 	const breadcrumbItems = [
-		<Link to="/dashboard/dashboard">
+		<Link to="/dashboard/workspace">
 			<HomeOutlined />
 		</Link>
 	].concat(extraBreadcrumbItems);
