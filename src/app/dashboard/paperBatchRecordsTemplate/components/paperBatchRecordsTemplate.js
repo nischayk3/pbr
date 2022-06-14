@@ -782,7 +782,6 @@ function PaperBatchRecordsTemplate() {
 
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
-            console.log("demmo", list?.width, list?.height)
             // getBoundingBoxDataInfo(list?.height, list?.height, selectedMode,pageNumber-1);
             setImageWidth(list?.width)
             setimageHeight(list?.height)
