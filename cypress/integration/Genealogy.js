@@ -34,6 +34,8 @@ describe("Genealogy", () => {
 		cy.visit(url + '/#/dashboard/genealogy')
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/genealogy')
+		cy.intercept('GET', '/services/v1/product-type-genealogy', { fixture: 'genealogyFilterProductType.json' })
+
 	});
 
 	it("Select plant", () => {
@@ -67,6 +69,7 @@ describe("Genealogy", () => {
 		cy.get('.ant-select-selection-overflow').click();
 		cy.get("#rc_select_3").clear();
 		cy.get("#rc_select_3").type("RAW");
+		cy.wait(4000)
 		cy.get(".ant-select-item-option-content").eq(3).click({ force: true })
 	});
 
@@ -82,10 +85,14 @@ describe("Genealogy", () => {
 
 	});
 
-	// it("Opening Drawer", () => {
-	// 	cy.get('#1091460 > #material-img').click();
-	// 	cy.get("#view-details-popup").click();
-	// });
+	it("Opening Drawer", () => {
+		cy.get('#1091460 > #material-img').click();
+		cy.get("#view-details-popup").click();
+	});
+
+	it("expand drawer",()=>{
+		cy.get('.expand-drawer > img').click()
+	})
 
 	// it("click forward genealogy", () => {
 	// 	cy.get(".ant-drawer-mask").eq(0).click();
