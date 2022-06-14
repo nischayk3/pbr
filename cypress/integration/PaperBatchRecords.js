@@ -37,10 +37,10 @@ describe('PBR', () => {
     })
 
     it('Load Screen Header', () => {
-        cy.get("#login-btn", { timeout: 2000 }).click();
-        cy.wait(5000)
-        cy.get(':nth-child(8) > .ant-menu-submenu-title',{timeout:20000}).click({ force: true });
-        cy.get('#paper\\ batch\\ records > .ant-menu-title-content > a',{timeout:20000}).click({ force: true});
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/paper_batch_records')
+        cy.log('Load Landing Page')
+        cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
        
         const date = new Date();
         const month = date.toLocaleString('default', { month: 'long' });
@@ -55,7 +55,7 @@ describe('PBR', () => {
         cy.get('.screen_header_username').should("have.text", "Howdy Fahad,")
 
         cy.log('Verify Header Text')
-        cy.get('.screen_header_text').should("have.text", "In the mood to draw up some snippets today?")
+        cy.get('.screen_header_text').should("have.text", "In the mood to draw up some template today?")
 
         cy.log('Verify Current Date')
         cy.get('.screen_header_resultdate').should("have.text", currentDate)
@@ -64,39 +64,63 @@ describe('PBR', () => {
     it('Load Landing Page Table Component', () => {
     	cy.log('Load Search Bar')
     	cy.log('Search View Id In Search Component')
-    	cy.get("#login-btn", { timeout: 2000 }).click();
-    	cy.get(':nth-child(8) > .ant-menu-submenu-title',{timeout:20000}).click({ force: true });
-        cy.get('#paper\\ batch\\ records > .ant-menu-title-content > a',{timeout:20000}).click({ force: true});
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/paper_batch_records')
+        cy.log('Load Landing Page')
+        cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
     	cy.wait(6000);
-    	cy.get(".ant-input-affix-wrapper").type("C104").click({ force: true })
+    	cy.get(".ant-input-affix-wrapper").type("P137").click({ force: true })
     	cy.get(".ant-input-search-button").click()
 
     })
 
     it('Recently Created Dashboard', () => {
     	cy.log('Recent View Verify')
-    	cy.get("#login-btn", { timeout: 2000 }).click();
-    	cy.get(':nth-child(8) > .ant-menu-submenu-title',{timeout:20000}).click({ force: true });
-        cy.get('#paper\\ batch\\ records > .ant-menu-title-content > a',{timeout:20000}).click({ force: true});
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/paper_batch_records')
+        cy.log('Load Landing Page')
+        cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
     	cy.wait(6000);
     	cy.get(':nth-child(1) > .chart-tiles').should('have.length', 1)
     })
 
-    // it('Create New Template', () => {
-    //     cy.log('Recent View Verify')
-    //     cy.get("#login-btn", { timeout: 2000 }).click();
-    //     cy.get(':nth-child(8) > .ant-menu-submenu-title',{timeout:20000}).click({ force: true });
-    //     cy.get('#paper\\ batch\\ records > .ant-menu-title-content > a',{timeout:20000}).click({ force: true});
+    it('Create New Template', () => {
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/paper_batch_records')
+        cy.log('Load Landing Page')
+        cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
+        cy.wait(6000);
 
-    //     /* ==== Generated with Cypress Studio ==== */
-    //     cy.get('[d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"]',{timeout:20000}).click({ force: true });
-    //     cy.get('#basic_templateName',{timeout:20000}).type('test0009')
-    //     // cy.get('#basic_templateName').type('test0009');
-    //     cy.get(':nth-child(8) > :nth-child(2) > .pdfListBlock > span',{timeout:20000}).click({ force: true });
-    //     cy.get(':nth-child(8) > .ant-radio-button > .ant-radio-button-input').check();
-    //     cy.get('.ant-modal-footer > .ant-btn > span',{timeout:20000}).click({ force: true });
-    //     /* ==== End Cypress Studio ==== */
-    // })
+        /* ==== Generated with Cypress Studio ==== */
+        cy.get('[d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"]').click({ force: true });
+        cy.get('#basic_templateName').clear();
+        cy.get('#basic_templateName').type('test');
+        cy.get(':nth-child(1) > :nth-child(2) > .pdfListBlock > span').click({ force: true });
+        cy.get(':nth-child(1) > .ant-radio-button > .ant-radio-button-input').check({ force: true });
+        cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
+        /* ==== End Cypress Studio ==== */
+    })
+    it('Create and save new template', () => {
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/paper_batch_records')
+        cy.log('Load Landing Page')
+        cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
+        cy.wait(6000);
+
+        /* ==== Generated with Cypress Studio ==== */
+        cy.get('[d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"]').click({ force: true });
+        cy.get('#basic_templateName').clear();
+        cy.get('#basic_templateName').type('test');
+        cy.get(':nth-child(1) > :nth-child(2) > .pdfListBlock > span').click({ force: true });
+        cy.get(':nth-child(1) > .ant-radio-button > .ant-radio-button-input').check({ force: true });
+        cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
+
+
+        /* ==== Generated with Cypress Studio ==== */
+        
+        
+        /* ==== End Cypress Studio ==== */
+    })
 
     // it("should login successfully using Ad", () => {
 
