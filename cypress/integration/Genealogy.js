@@ -80,19 +80,71 @@ describe("Genealogy", () => {
 
 	it("Verfiy backword tree", () => {
 		cy.get('.tab-label').should("have.text", "1089084 - backward")
-
 		cy.log('Verify first node');
 
 	});
 
-	it("Opening Drawer", () => {
+	it("Opening Drawer on click of material node", () => {
 		cy.get('#1091460 > #material-img').click();
 		cy.get("#view-details-popup").click();
 	});
-
-	it("expand drawer",()=>{
-		cy.get('.expand-drawer > img').click()
+	it("closing drawer",()=>{
+		cy.get(':nth-child(3) > .ant-drawer > .ant-drawer-mask').click()
 	})
+
+	it("click on process order",()=>{
+		cy.get('#102279687 > #process-img').click()
+		cy.get("#view-details-popup").click();
+	});
+	it("closing drawer",()=>{
+		cy.get(':nth-child(3) > .ant-drawer > .ant-drawer-mask').click()
+	});
+
+	it("click on backward from node popup",()=>{
+		cy.get('#1091460 > #material-img').click();
+		cy.get('#backword-genealogy-popup > span').click()
+	})
+
+	it("click on purchase order",()=>{
+		cy.get("#process-img").click();
+		cy.get("#view-details-popup").click();
+	});
+
+	it("closing drawer",()=>{
+		cy.get(':nth-child(3) > .ant-drawer > .ant-drawer-mask').click()
+	});
+
+	it("click on forward from node popup",()=>{
+		cy.get('#1091460 > #material-img').click();
+		cy.get('#forward-genealogy-popup > span').click();
+	})
+
+	it("fileupload",()=>{
+		cy.get('#1091460 > #material-img').click();
+		cy.get('#upload-file-popup').click();
+
+	})
+
+	// it("Select wrong file in popup",()=>{
+	// 	cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
+	// 	cy.wait(3000)
+	// 	cy.get('.upload-btn > :nth-child(1) > span').click()
+
+	// });
+
+	it("Select multi file in popup",()=>{
+		cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/batch_record_1.pdf'},{ force: true })
+		cy.wait(3000)
+		cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/batch_record_1.pdf'},{ force: true })
+		cy.wait(3000)
+		cy.get('.upload-btn > :nth-child(1) > span').click()
+
+	});
+
+	
+	// it("expand drawer",()=>{
+	// 	cy.get('.expand-drawer > img').click()
+	// })
 
 	// it("click forward genealogy", () => {
 	// 	cy.get(".ant-drawer-mask").eq(0).click();
