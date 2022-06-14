@@ -29,7 +29,7 @@ describe("Renders the view Hierarachy page", () => {
 
   it("Renders View Hierarchy", () => {
     const url = Cypress.config().baseUrl
-    cy.visit(url + '/#/dashboard/molecule_hierarchy_configuration');
+    cy.visit(url + '/#/dashboard/molecule_hierarchy_configuration')
     cy.get('.create-new > .anticon > svg').click();
     cy.get('.input-ant > .ant-input').clear();
     cy.get('.input-ant > .ant-input').type('drug1');
@@ -64,7 +64,8 @@ describe("Renders the view Hierarachy page", () => {
   });
 
   it('load_data', function () {
-    cy.visit('http://localhost/#/dashboard/molecule_hierarchy_configuration');
+    const url = Cypress.config().baseUrl
+    cy.visit(url + '/#/dashboard/molecule_hierarchy_configuration')
     cy.intercept('GET', 'drug-substance', { fixture: 'view-hierarchy.json' })
     cy.wait(3000)
     cy.get('.ant-input').clear();
@@ -84,7 +85,8 @@ describe("Renders the view Hierarachy page", () => {
     cy.get('.ant-tabs-extra-content > .ant-btn > span').click();
   })
   it('load_data via tile', function () {
-    cy.visit('http://localhost/#/dashboard/molecule_hierarchy_configuration');
+    const url = Cypress.config().baseUrl
+    cy.visit(url + '/#/dashboard/molecule_hierarchy_configuration')
     cy.intercept('GET', 'drug-substance', { fixture: 'view-hierarchy.json' })
     /* ==== Generated with Cypress Studio ==== */
     cy.get('.ant-input').click();
