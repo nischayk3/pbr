@@ -7,13 +7,13 @@ import {
   showNotification,
 } from '../../../../duck/actions/commonActions';
 import Highlighter from 'react-highlight-words';
-import { Card, Table, Button, Col, Row, Checkbox , Input, Space} from 'antd';
+import { Card, Table, Button, Col, Row, Checkbox, Input, Space } from 'antd';
 import { getPbrReviewerData, updateApprove } from '../../../../services/pbrService'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
 import Plot from 'react-plotly.js';
 import './styles.scss'
-import { ArrowLeftOutlined , SearchOutlined} from '@ant-design/icons';
+import { ArrowLeftOutlined, SearchOutlined } from '@ant-design/icons';
 const { Search } = Input;
 
 function PbrReviewer() {
@@ -28,8 +28,10 @@ function PbrReviewer() {
   const [pieChartData, setPieChartData] = useState([0, 0]);
   const [pieChartData1, setPieChartData1] = useState([0, 0, 0]);
   const [searchText, setSearchText] = useState("");
+  const [showReset, setShowReset] = useState(false);
+  const [showResetConfidence, setShowResetConfidence] = useState(false);
   let [filteredData] = useState();
- 
+
   const history = useHistory();
   useEffect(() => {
     cardTableData()
@@ -56,17 +58,14 @@ function PbrReviewer() {
   };
 
   const showfilterData = async (value) => {
-
+    setShowReset(true)
     let obj = { status: value.toLowerCase() }
-
     let res = await getPbrReviewerData(obj)
-
     setTemplateData(res.Data);
-
-
   };
-  const showfilters = async (value) => {
 
+  const showfilters = async (value) => {
+    setShowResetConfidence(true)
     let obj = { confidence: value.toLowerCase() }
     let res = await getPbrReviewerData(obj)
     setTemplateData(res.Data);
@@ -82,38 +81,38 @@ function PbrReviewer() {
 
   };
   const eSignId = async (esign) => {
-		console.log("esign", esign);
-		let req = {
-			id: arr,
-			recorded_date: "",
-			recorded_time: "",
-			snippet_value: "",
-			status: "approved",
-			uom: ""
-		}
-		if (esign) {
-			let res = await updateApprove(req)
+    console.log("esign", esign);
+    let req = {
+      id: arr,
+      recorded_date: "",
+      recorded_time: "",
+      snippet_value: "",
+      status: "approved",
+      uom: ""
+    }
+    if (esign) {
+      let res = await updateApprove(req)
 
-			if (res.Status == "202") {
+      if (res.Status == "202") {
 
-				dispatch(showNotification("success", "Approved Successfully")),
-					dispatch(showLoader());
+        dispatch(showNotification("success", "Approved Successfully")),
+          dispatch(showLoader());
 
-				setTimeout(() => window.location.reload(),
-					1000
-				);
-			}
-		}
+        setTimeout(() => window.location.reload(),
+          1000
+        );
+      }
+    }
 
-	};
+  };
   const handleClose = () => {
-		setIsPublish(false);
-	};
+    setIsPublish(false);
+  };
 
   const showApproved = async () => {
 
     setIsPublish(true);
-		setApproveReject("A");
+    setApproveReject("A");
     // let req = {
     //   id: arr,
     //   recorded_date: "",
@@ -165,7 +164,7 @@ function PbrReviewer() {
 
   const chart1 = async (res) => {
 
-    
+
 
     let obj = await getPbrReviewerData(res);
 
@@ -180,7 +179,7 @@ function PbrReviewer() {
 
     });
 
-    
+
 
     let medcount = 0;
     jsondata.forEach(item => {
@@ -199,7 +198,7 @@ function PbrReviewer() {
     });
 
     setPieChartData1([lowcount, medcount, highcount]);
-     };
+  };
   let appchart1 = [{
     values: pieChartData1,
     labels: ["Low", "Medium", "High"],
@@ -218,11 +217,8 @@ function PbrReviewer() {
       }
 
     },
-
-    hoverinfo: 'label+percent+name',
     hole: .7,
     type: 'pie',
-
   }]
 
   let appchart = [{
@@ -233,10 +229,14 @@ function PbrReviewer() {
       line: {
         color: 'white',
         width: 2
+      },
+      layout: {
+        x: 1,
+        xanchor: 'right',
+        y: 1
       }
     },
     type: 'pie',
-
     hole: .7,
 
   }]
@@ -276,18 +276,18 @@ function PbrReviewer() {
       sortDirections: ['descend', 'ascend'],
     },
     {
-			title: 'Snippet Value',
-			key: 'snippet_image',
-			dataIndex: 'snippet_image',
-			...getColumnSearchProps('snippet_image'),
-			sorter: (a, b) => a.snippet_image.length - b.snippet_image.length,
-			sortDirections: ['descend', 'ascend'],
-			render: (text, record, index) => {
-				return (
-					<img src={`data:image/png;base64,${text}`} width="50%" height="15%" />
-				)
-			}
-		},
+      title: 'Snippet Value',
+      key: 'snippet_image',
+      dataIndex: 'snippet_image',
+      ...getColumnSearchProps('snippet_image'),
+      sorter: (a, b) => a.snippet_image.length - b.snippet_image.length,
+      sortDirections: ['descend', 'ascend'],
+      render: (text, record, index) => {
+        return (
+          <img src={`data:image/png;base64,${text}`} width="80%" height="80%" />
+        )
+      }
+    },
     {
       title: 'Confidence',
       key: 'confidence',
@@ -328,13 +328,16 @@ function PbrReviewer() {
 
     },
     {
-      title: 'Updated by',
-      key: 'username',
-      dataIndex: 'username',
-      ...getColumnSearchProps('username'),
-      sorter: (a, b) => a.username.length - b.username.length,
+      title: 'Site',
+      key: 'site_code',
+      dataIndex: 'site_code',
+      ...getColumnSearchProps('site_code'),
+      sorter: (a, b) => a.site_code.length - b.site_code.length,
       sortDirections: ['descend', 'ascend'],
     },
+
+
+
     {
       title: 'Product',
       key: 'product_num',
@@ -357,6 +360,22 @@ function PbrReviewer() {
       // }
     },
     {
+      title: 'Batch',
+      key: 'batch_num',
+      dataIndex: 'batch_num',
+      ...getColumnSearchProps('batch_num'),
+      sorter: (a, b) => a.batch_num.length - b.batch_num.length,
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'Updated by',
+      key: 'username',
+      dataIndex: 'username',
+      ...getColumnSearchProps('username'),
+      sorter: (a, b) => a.username.length - b.username.length,
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
       title: 'Action',
       key: 'operation',
       fixed: 'right',
@@ -366,7 +385,7 @@ function PbrReviewer() {
           <a
             style={{ color: "#1890ff" }}
             onClick={() => {
-              history.push(`/dashBoard/pbr_update?id=${record.id}`);
+              window.open(`/#/dashBoard/pbr_update?id=${record.id}`)
             }}
 
           >
@@ -376,7 +395,7 @@ function PbrReviewer() {
       }
     },
 
-    
+
 
 
 
@@ -453,127 +472,126 @@ function PbrReviewer() {
   function getColumnSearchProps(dataIndex) {
     return {
       filterDropdown: ({
-          setSelectedKeys,
-          selectedKeys,
-          confirm,
-          clearFilters,
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
       }) => (
-          <div style={{ padding: 8 }}>
-              <Input
-                  placeholder={`Search ${dataIndex}`}
-                  value={selectedKeys[0]}
-                  onChange={(e) =>
-                      setSelectedKeys(
-                          e.target.value ? [e.target.value] : []
-                      )
-                  }
-                  onPressEnter={() =>
-                      handleSearch(selectedKeys, confirm, dataIndex)
-                  }
-                  style={{
-                      marginBottom: 8,
-                      display: 'block',
-                  }}
-              />
-              <Space>
-                  <Button
-                      type='primary'
-                      onClick={() =>
-                          handleSearch(selectedKeys, confirm, dataIndex)
-                      }
-                      icon={<SearchOutlined />}
-                      size='small'
-                      style={{ width: 90 }}
-                  >
-                      Search
-                  </Button>
-                  <Button
-                      onClick={() => handleReset(clearFilters)}
-                      size='small'
-                      style={{ width: 90 }}
-                  >
-                      Reset
-                  </Button>
-                  <Button
-                      type='link'
-                      size='small'
-                      onClick={() => {
-                          confirm({ closeDropdown: false });
-                          setSearchText(selectedKeys[0]);
-                          setSearchedColumn(dataIndex);
-                      }}
-                  >
-                      Filter
-                  </Button>
-              </Space>
-          </div>
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder={`Search ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(
+                e.target.value ? [e.target.value] : []
+              )
+            }
+            onPressEnter={() =>
+              handleSearch(selectedKeys, confirm, dataIndex)
+            }
+            style={{
+              marginBottom: 8,
+              display: 'block',
+            }}
+          />
+          <Space>
+            <Button
+              type='primary'
+              onClick={() =>
+                handleSearch(selectedKeys, confirm, dataIndex)
+              }
+              icon={<SearchOutlined />}
+              size='small'
+              style={{ width: 90 }}
+            >
+              Search
+            </Button>
+            <Button
+              onClick={() => handleReset(clearFilters)}
+              size='small'
+              style={{ width: 90 }}
+            >
+              Reset
+            </Button>
+            <Button
+              type='link'
+              size='small'
+              onClick={() => {
+                confirm({ closeDropdown: false });
+                setSearchText(selectedKeys[0]);
+                setSearchedColumn(dataIndex);
+              }}
+            >
+              Filter
+            </Button>
+          </Space>
+        </div>
       ),
       filterIcon: (filtered) => (
-          <SearchOutlined
-              style={{ color: filtered ? '#1890ff' : undefined }}
-          />
+        <SearchOutlined
+          style={{ color: filtered ? '#1890ff' : undefined }}
+        />
       ),
       onFilter: (value, record) =>
-          record[dataIndex]
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase()),
+        record[dataIndex]
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase()),
       onFilterDropdownVisibleChange: (visible) => {
-          if (visible) {
-              // setTimeout(() => this.searchInput.select());
-          }
+        if (visible) {
+          // setTimeout(() => this.searchInput.select());
+        }
       },
       render: (text) =>
-          searchedColumn === dataIndex ? (
-              <Highlighter
-                  highlightStyle={{
-                      backgroundColor: '#ffc069',
-                      padding: 0,
-                  }}
-                  searchWords={[searchText]}
-                  autoEscape
-                  textToHighlight={text.toString()}
-              />
-          ) : (
-              text
-          ),
-  };
+        searchedColumn === dataIndex ? (
+          <Highlighter
+            highlightStyle={{
+              backgroundColor: '#ffc069',
+              padding: 0,
+            }}
+            searchWords={[searchText]}
+            autoEscape
+            textToHighlight={text.toString()}
+          />
+        ) : (
+          text
+        ),
+    };
 
   };
   function handleSearch(selectedKeys, confirm, dataIndex) {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
-}
+  }
 
-function handleReset(clearFilters) {
+  function handleReset(clearFilters) {
     clearFilters();
     setSearchText('');
-}
+  }
 
   const landingSearch = value => {
     setSearchedLanding(true);
     const tableData = templateData;
     const filterTable = tableData.filter(o =>
-        Object.keys(o).some(k =>
-            String(o[k]).toLowerCase().includes(value.toLowerCase())
-        )
+      Object.keys(o).some(k =>
+        String(o[k]).toLowerCase().includes(value.toLowerCase())
+      )
     );
     setFilterTableLanding(filterTable);
-};
+  };
+
+  const resetConfidence = () => {
+    setShowReset(false)
+    setShowResetConfidence(false)
+    cardTableData()
+
+  }
 
   return (
     <>
       <BreadCrumbWrapper />
       <div className='custom-wrapper'>
-        <div className='sub-header'>
-          <div className='sub-header-title'>
-            <ArrowLeftOutlined className='header-icon' />
-            <span className='header-title'>
-              Review Data
-            </span>
-          </div>
-        </div>
         <div className='custom-content-layout'>
 
           <div className='review-wrapper'>
@@ -584,11 +602,11 @@ function handleReset(clearFilters) {
                 <Row gutter={16}>
                   <Col span={12}>
                     <Card className="review-card1" >
-                      <div id="my-div" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                      <div id="my-div" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 200 }}>
                         <h3>Status</h3>
-                        {/* {this.state.resetStatus && (
-                  <p className="status" onClick={this.resetStatus}>Reset</p>
-                )}    */}
+                        {showReset && (
+                          <p className="status" onClick={resetConfidence}>Reset</p>
+                        )}
                         <Plot
                           data={appchart}
                           onClick={(e) => showfilterData(e.points[0].label)}
@@ -607,8 +625,11 @@ function handleReset(clearFilters) {
                   </Col>
                   <Col span={12}>
                     <Card className="review-card2">
-                      <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                      <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 200 }}>
                         <h3>Confidence</h3>
+                        {showResetConfidence && (
+                          <p className="status" onClick={resetConfidence}>Reset</p>
+                        )}
 
                         <Plot
                           data={appchart1}
@@ -620,7 +641,7 @@ function handleReset(clearFilters) {
                               y: 0.5
 
                             }, paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: ''
-                          }}/>
+                          }} />
                       </div>
                     </Card>
                   </Col>
@@ -630,20 +651,20 @@ function handleReset(clearFilters) {
 
               <div style={{ marginTop: 20 }}>
                 <div>
-                
-              <Search
-                                    className='dashboard-search'
-                                    placeholder='Search by template ID, name, creator or date of creation'
-                                    allowClear
-                                    enterButton='Search'
-                                    size='large'
-                                    icon={<SearchOutlined/>}
-                                    onSearch={landingSearch}
-                                />
+
+                  <Search
+                    className='dashboard-search'
+                    placeholder='Search by template ID, name, creator or date of creation'
+                    allowClear
+                    enterButton='Search'
+                    size='large'
+                    icon={<SearchOutlined />}
+                    onSearch={landingSearch}
+                  />
 
 
-                                </div>
-              <Button style={{
+                </div>
+                <Button style={{
                   margin: "7px",
                   right: 8,
                   borderRadius: "5px",
@@ -656,10 +677,10 @@ function handleReset(clearFilters) {
                   onClick={showApproved}
 
                 >Approve</Button>
-                
-              
-                                 
-                
+
+
+
+
                 <Table
                   columns={columns2}
                   dataSource={filterTableLanding === null
@@ -667,11 +688,11 @@ function handleReset(clearFilters) {
                     : filterTableLanding}
                   pagination={{ pageSize: 5 }}
                   scroll={{
-                    x: 1300,
+                    x: 1500,
                   }}
                   style={{ border: '1px solid #ececec', borderRadius: '2px' }}
                 />
-               
+
               </div>
             </div>
           </div>
@@ -681,13 +702,13 @@ function handleReset(clearFilters) {
         </div>
       </div>
       <Signature
-				isPublish={isPublish}
-				status={approveReject}
-				handleClose={handleClose}
-				eSignId={eSignId}
-				screenName="Pbr Creation"
-				appType="VIEW"
-			/>
+        isPublish={isPublish}
+        status={approveReject}
+        handleClose={handleClose}
+        eSignId={eSignId}
+        screenName="Pbr Creation"
+        appType="VIEW"
+      />
     </>
   )
 }
