@@ -13,7 +13,7 @@ const App = () => {
 
 	const match = useRouteMatch();
 	const showLoading = useSelector((state) => state.commonReducer.showLoading);
-	console.log("showLoadingggggggggggg", showLoading)
+
 	return (
 		<>
 			<Loading show={showLoading} />
