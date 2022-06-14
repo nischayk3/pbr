@@ -1,14 +1,6 @@
 Cypress.on("uncaught:exception", (err, runnable) => {
 	return false;
 });
-
-Cypress.Commands.add("multiselect", (options) => {
-	options.forEach((option) => {
-		cy.log(option)
-		cy.get('.ant-select-item-option').contains(option).click()
-	});
-});
-
 describe("Genealogy", () => {
 	beforeEach(() => {
 		localStorage.setItem("test_enabled", true);
@@ -34,6 +26,7 @@ describe("Genealogy", () => {
 		cy.visit(url + '/#/dashboard/genealogy')
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/genealogy')
+		cy.wait(6000)
 		cy.intercept('GET', '/services/v1/product-type-genealogy', { fixture: 'genealogyFilterProductType.json' })
 
 	});
@@ -44,6 +37,7 @@ describe("Genealogy", () => {
 		).click();
 		cy.get("#rc_select_0").clear();
 		cy.get("#rc_select_0").type("1338");
+		cy.wait(4000)
 		cy.get(".ant-select-item-option-content").click({ force: true });
 	});
 
@@ -53,6 +47,7 @@ describe("Genealogy", () => {
 		).click();
 		cy.get("#rc_select_1").clear();
 		cy.get("#rc_select_1").type("1089084");
+		cy.wait(4000)
 		cy.get(".ant-select-item-option-content").eq(1).click({ force: true })
 	})
 
@@ -62,6 +57,7 @@ describe("Genealogy", () => {
 		).click();
 		cy.get("#rc_select_2").clear();
 		cy.get("#rc_select_2").type("394154");
+		cy.wait(4000)
 		cy.get(".ant-select-item-option-content").eq(2).click({ force: true })
 		cy.wait(4000)
 	})
@@ -83,6 +79,7 @@ describe("Genealogy", () => {
 
 	it("Opening Drawer on click of material node", () => {
 		cy.get('#1091460 > #material-img').click();
+		cy.wait(3000)
 		cy.get("#view-details-popup").click();
 	});
 	it("closing drawer",()=>{
