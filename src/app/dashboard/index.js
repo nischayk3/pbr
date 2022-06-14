@@ -14,14 +14,14 @@ import SuspenseWrapper from '../../components/SuspenseWrapper';
 import LoginRedirect from '../user/login/redirect';
 import RedirectSign from '../user/login/redirectSign';
 import ViewPage from './chartPersonal/components/viewPage/ViewPage';
-import UserRolesAndAccess from '../../pages/UserRolesAndAccess/UserRolesAndAccess';
-import UserConfiguration from '../../pages/UserRolesAndAccess/UserConfiguration/UserConfiguration';
-import RolesAndAccess from '../../pages/UserRolesAndAccess/RolesAndAccess/RolesAndAccess';
-import ScreenControls from '../../pages/UserRolesAndAccess/ScreenControls/ScreenControls';
+import UserRolesAndAccess from './UserRolesAndAccess/UserRolesAndAccess';
+import UserConfiguration from './UserRolesAndAccess/UserConfiguration/UserConfiguration';
+import RolesAndAccess from './UserRolesAndAccess/RolesAndAccess/RolesAndAccess';
+import ScreenControls from './UserRolesAndAccess/ScreenControls/ScreenControls';
 // import PaperBatchRecords from './paperBatchRecords';
 import PaperBatchRecordsTemplate from './paperBatchRecordsTemplate';
-import Analysis from '../../pages/Analysis/Analysis';
-import AnalysisModel from '../../pages/Analysis/AnalysisModel/AnalysisModel'
+import Analysis from './Analysis/Analysis';
+import AnalysisModel from './Analysis/AnalysisModel/AnalysisModel'
 import PbrReviewer from './pbrReviewer';
 import './dashboard.scss';
 import PythonNotebook from './pythonNotebook/pythonNotebook';
@@ -155,7 +155,7 @@ const Dashboard = () => {
 									render={({ match: { url } }) => (
 										<>
 											<Route path={`${url}/`} component={PaperBatchRecords} exact />
-											<Route path={`${url}/:id`} component={PaperBatchRecordsTemplate } />
+											<Route path={`${url}/:id`} component={PaperBatchRecordsTemplate} />
 										</>
 									)}
 								/>
