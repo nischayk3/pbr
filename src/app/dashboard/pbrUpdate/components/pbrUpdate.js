@@ -8,9 +8,9 @@ import {
   showNotification,
 } from '../../../../duck/actions/commonActions';
 import { useLocation, useParams } from "react-router";
-import { getPbrReviewerData, updateApprove, getImagePbr } from '../../../../services/pbrService'
+import { getPbrReviewerData, updateApprove, getImage } from '../../../../services/pbrService'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-import queryString  from "query-string";
+import queryString from "query-string";
 import './styles.scss';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { ArrowLeftOutlined, SearchOutlined } from '@ant-design/icons';
@@ -23,7 +23,7 @@ const PbrUpdate = () => {
   const [templateData, setTemplateData] = useState([]);
   const [displayImage, setDisplayImage] = useState("");
   const [editingRow, setEditingRow] = useState(null);
-  const[imagepdf, setImagePdf] = useState([]);
+  const [imagepdf, setImagePdf] = useState("");
   const history = useHistory();
   const [textInput, setTextInput] = useState({
     id: "",
@@ -41,29 +41,33 @@ const PbrUpdate = () => {
   useEffect(() => {
 
     loadTableData();
- 
+
   }, []);
-  
+
   const loadTableData = async () => {
 
     let req = { id: params.id }
     let res = await getPbrReviewerData(req);
     setTemplateData(res.Data);
-    if (res.Data.length > 0) {
-      res.Data.forEach((i) => {
-          if (i.key_ !== null) {
-              res.Data.forEach((item) => {
-      
-      let antdObj = {};
-      antdObj["file_path"] = item.file_path;
-      let file = `${MDH_APP_PYTHON_SERVICE}/pbr/udh/get_file_page_image?filename=${item.file_path?.split('_')[0]}.pdf&pageId=1`;
-      setImagePdf(file);
+    let filename = res.Data[0].file_path;
+    getImage(filename);
 
-         });
-  
-}});
+    // if (res.Data.length > 0) {
+    //   res.Data.forEach((i) => {
+    //     if (i.key_ !== null) {
+    //       res.Data.forEach((item) => {
 
-    }
+    //         let antdObj = {};
+    //         antdObj["file_path"] = item.file_path;
+    //         let file = `${MDH_APP_PYTHON_SERVICE}/pbr/udh/get_file_page_image?filename=${item.file_path?.split('_')[0]}.pdf&pageId=1`;
+    //         setImagePdf(file);
+
+    //       });
+
+    //     }
+    //   });
+
+    // }
 
 
 
@@ -71,7 +75,41 @@ const PbrUpdate = () => {
 
   };
 
- 
+  // const getImagePdf = async (file) => {
+
+  //   let res = {
+  //     filename: `${file.split('_')[0]}.pdf`,
+  //     pageId: 1
+  //   };
+
+
+  //   let obj = await getImage(res);
+
+  //   setImagePdf(window.webkitURL.createObjectURL(obj));
+
+  // }
+
+
+  const getImage = async (val) => {
+    var requestOptions = {
+      method: "GET",
+      response: "image/jpeg",
+      psId: "",
+      redirect: "follow",
+    };
+    let response = await fetch(
+      MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${val.split('_')[0]}.pdf&pageId=1`,
+      requestOptions
+    )
+      .then((response) => response)
+      .then((result) => result)
+      .catch((error) => console.log("error", error));
+    let res = await response.blob();
+    setImagePdf(window.webkitURL.createObjectURL(res));
+
+  }
+
+
 
 
   const handleEdit = async (record) => {
@@ -84,34 +122,34 @@ const PbrUpdate = () => {
       uom: textInput.uomnum,
     });
   }
-  
-  const handleChangeDate = (index, event, dateString, timeString) => {
-   
 
-   if(dateString != undefined){
-    const rowsInput = [textInput];
+  const handleChangeDate = (index, event, dateString, timeString) => {
+
+
+    if (dateString != undefined) {
+      const rowsInput = [textInput];
       rowsInput[index]["recordedDate"] = dateString._d.toLocaleDateString();
     }
-    
-}
 
-const handleChangeTime = (index, event, dateString) => {
-
- if(dateString != undefined){
-  const rowsInput = [textInput];
-    rowsInput[index]["recordedTime"] = dateString._d.toLocaleTimeString();
   }
-}
 
-  const handleChange = ( event ) => {
-  const value = event.target.value;
-      setTextInput({
-        ...textInput, [event.target.name]: value
-      });
+  const handleChangeTime = (index, event, dateString) => {
+
+    if (dateString != undefined) {
+      const rowsInput = [textInput];
+      rowsInput[index]["recordedTime"] = dateString._d.toLocaleTimeString();
+    }
+  }
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setTextInput({
+      ...textInput, [event.target.name]: value
+    });
   };
-   
 
-  
+
+
 
   const handleClick = async (event, record) => {
 
@@ -132,7 +170,7 @@ const handleChangeTime = (index, event, dateString) => {
     };
 
     let res = await updateApprove(formvalues);
- 
+
     if (res.Status == "202") {
 
       dispatch(showNotification("success", "Updated Successfully")),
@@ -148,13 +186,13 @@ const handleChangeTime = (index, event, dateString) => {
 
 
   const columns = [
-    
+
     {
       title: "Id",
       dataIndex: "id",
       key: "id",
       width: "5%",
-      },
+    },
     {
       title: "Recorded Date",
       dataIndex: "recorded_date",
@@ -177,7 +215,7 @@ const handleChangeTime = (index, event, dateString) => {
           return <p>{text}</p>;
         }
       },
-      
+
     },
     {
       title: "Recorded Time",
@@ -203,7 +241,7 @@ const handleChangeTime = (index, event, dateString) => {
         }
       },
 
-       },
+    },
     {
       title: "snippet value",
       dataIndex: "snippet_value",
@@ -233,6 +271,11 @@ const handleChangeTime = (index, event, dateString) => {
       title: "Value Image",
       dataIndex: "snippet_image",
       key: "snippet_image",
+      render: (text, record, index) => {
+        return (
+          <img src={`data:image/png;base64,${text}`} width="50%" height="15%" />
+        )
+      }
 
     },
     {
@@ -256,7 +299,7 @@ const handleChangeTime = (index, event, dateString) => {
           return <p>{text}</p>;
         }
       },
-      
+
 
     },
     {
@@ -272,7 +315,7 @@ const handleChangeTime = (index, event, dateString) => {
               Edit
             </Button>
 
-            
+
           </>
         );
       },
@@ -310,18 +353,12 @@ const handleChangeTime = (index, event, dateString) => {
               />
             </Col>
             <Col span={12}>
-              <div className='' style={{ display: "flex", marginBottom: "20px", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                <Input.Search
-                  className='modal-table-search'
-                  size='middle'
-                  placeholder='Search any content in the document'
-                  enterButton={<SearchOutlined />}
+              <div className='' style={{ display: "flex", marginBottom: "20px", flexDirection: "row", justifyContent: "right", alignItems: "center" }}>
 
-
-                />
                 <Button style={{
                   borderColor: '#093185',
                   color: '#093185',
+                  marginRight: '20px',
                   backgroundColor: '#fff',
                 }}
                   type='primary'><a
@@ -342,8 +379,8 @@ const handleChangeTime = (index, event, dateString) => {
 
                   type='primary'>Save Changes</Button>
               </div>
-              <iframe src={imagepdf} width="650px" height="600px" type="application/pdf">
-              </iframe>
+              <img src={imagepdf} width="750px" height="700px" type="application/pdf" />
+              
             </Col>
           </Row>
         </div>

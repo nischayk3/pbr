@@ -10,6 +10,7 @@ import Highlighter from 'react-highlight-words';
 import { Card, Table, Button, Col, Row, Checkbox , Input, Space} from 'antd';
 import { getPbrReviewerData, updateApprove } from '../../../../services/pbrService'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import Signature from "../../../../components/ElectronicSignature/signature";
 import Plot from 'react-plotly.js';
 import './styles.scss'
 import { ArrowLeftOutlined , SearchOutlined} from '@ant-design/icons';
@@ -21,8 +22,9 @@ function PbrReviewer() {
   const [searchedColumn, setSearchedColumn] = useState('');
   const [arr, setArr] = useState([]);
   const [searchedLanding, setSearchedLanding] = useState(false);
+  const [approveReject, setApproveReject] = useState("");
   const [filterTableLanding, setFilterTableLanding] = useState(null);
- 
+  const [isPublish, setIsPublish] = useState(false);
   const [pieChartData, setPieChartData] = useState([0, 0]);
   const [pieChartData1, setPieChartData1] = useState([0, 0, 0]);
   const [searchText, setSearchText] = useState("");
@@ -65,7 +67,7 @@ function PbrReviewer() {
   };
   const showfilters = async (value) => {
 
-    let obj = { confidence: value }
+    let obj = { confidence: value.toLowerCase() }
     let res = await getPbrReviewerData(obj)
     setTemplateData(res.Data);
 
@@ -79,27 +81,58 @@ function PbrReviewer() {
     setArr(resp);
 
   };
+  const eSignId = async (esign) => {
+		console.log("esign", esign);
+		let req = {
+			id: arr,
+			recorded_date: "",
+			recorded_time: "",
+			snippet_value: "",
+			status: "approved",
+			uom: ""
+		}
+		if (esign) {
+			let res = await updateApprove(req)
+
+			if (res.Status == "202") {
+
+				dispatch(showNotification("success", "Approved Successfully")),
+					dispatch(showLoader());
+
+				setTimeout(() => window.location.reload(),
+					1000
+				);
+			}
+		}
+
+	};
+  const handleClose = () => {
+		setIsPublish(false);
+	};
 
   const showApproved = async () => {
-    let req = {
-      id: arr,
-      recorded_date: "",
-      recorded_time: "",
-      snippet_value: "",
-      status: "approved",
-      uom: ""
-    }
-    let res = await updateApprove(req)
 
-    if (res.Status == "202") {
+    setIsPublish(true);
+		setApproveReject("A");
+    // let req = {
+    //   id: arr,
+    //   recorded_date: "",
+    //   recorded_time: "",
+    //   snippet_value: "",
+    //   status: "approved",
+    //   uom: ""
+    // }
+    // let res = await updateApprove(req)
 
-      dispatch(showNotification("success", "Approved Successfully")),
-        dispatch(showLoader());
+    // if (res.Status == "202") {
 
-      setTimeout(() => window.location.reload(),
-        1000
-      );
-    }
+    //   dispatch(showNotification("success", "Approved Successfully")),
+    //     dispatch(showLoader());
+
+    //   setTimeout(() => window.location.reload(),
+    //     1000
+    //   );
+    // }
 
   };
 
@@ -132,12 +165,14 @@ function PbrReviewer() {
 
   const chart1 = async (res) => {
 
+    
+
     let obj = await getPbrReviewerData(res);
 
     let jsondata = obj.Data;
     let highcount = 0;
     jsondata.forEach(item => {
-      if (item.confidence === "High") {
+      if (item.confidence === "high") {
 
         highcount++;
 
@@ -145,9 +180,11 @@ function PbrReviewer() {
 
     });
 
+    
+
     let medcount = 0;
     jsondata.forEach(item => {
-      if (item.confidence === "Medium") {
+      if (item.confidence === "medium") {
         medcount++;
       }
 
@@ -155,15 +192,14 @@ function PbrReviewer() {
 
     let lowcount = 0;
     jsondata.forEach(item => {
-      if (item.confidence === "Low") {
+      if (item.confidence === "low") {
         lowcount++;
       }
 
     });
 
     setPieChartData1([lowcount, medcount, highcount]);
-
-  };
+     };
   let appchart1 = [{
     values: pieChartData1,
     labels: ["Low", "Medium", "High"],
@@ -240,18 +276,18 @@ function PbrReviewer() {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'Snippet Value',
-      key: 'snippet_image',
-      dataIndex: 'snippet_image',
-      ...getColumnSearchProps('snippet_image'),
-      sorter: (a, b) => a.snippet_image.length - b.snippet_image.length,
-      sortDirections: ['descend', 'ascend'],
-      render: (text, record, index) => {
-        return (
-          <img src={`https://cpv-poc.mareana.com/bms_poc_snippets/${text}`} width="50%" height="15%" />
-        )
-      }
-    },
+			title: 'Snippet Value',
+			key: 'snippet_image',
+			dataIndex: 'snippet_image',
+			...getColumnSearchProps('snippet_image'),
+			sorter: (a, b) => a.snippet_image.length - b.snippet_image.length,
+			sortDirections: ['descend', 'ascend'],
+			render: (text, record, index) => {
+				return (
+					<img src={`data:image/png;base64,${text}`} width="50%" height="15%" />
+				)
+			}
+		},
     {
       title: 'Confidence',
       key: 'confidence',
@@ -581,7 +617,6 @@ function handleReset(clearFilters) {
                             showlegend: true,
                             legend: {
                               x: 1.3,
-                              //xanchor: 'right',
                               y: 0.5
 
                             }, paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: ''
@@ -645,6 +680,14 @@ function handleReset(clearFilters) {
 
         </div>
       </div>
+      <Signature
+				isPublish={isPublish}
+				status={approveReject}
+				handleClose={handleClose}
+				eSignId={eSignId}
+				screenName="Pbr Creation"
+				appType="VIEW"
+			/>
     </>
   )
 }
