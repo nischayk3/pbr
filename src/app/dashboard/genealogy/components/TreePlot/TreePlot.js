@@ -1586,6 +1586,7 @@ function TreePlot(props) {
             <>
               <Button
                 type="primary"
+                id="backword-genealogy-popup"
                 onClick={() => {
                   onClickView("backward");
                 }}
@@ -1594,6 +1595,7 @@ function TreePlot(props) {
               </Button>
               <Button
                 type="primary"
+                id="forward-genealogy-popup"
                 onClick={() => {
                   onClickView("forward");
                 }}
@@ -1604,6 +1606,7 @@ function TreePlot(props) {
           )}
           <Button
             type="primary"
+            id="view-details-popup"
             onClick={() => {
               onClickView("view");
             }}
@@ -1612,6 +1615,7 @@ function TreePlot(props) {
           </Button>
           <Button
             type="primary"
+            id="upload-file-popup"
             onClick={() => {
               onClickView("upload_files");
             }}

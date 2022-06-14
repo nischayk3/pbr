@@ -21,68 +21,68 @@ describe("Report", () => {
             })
         );
     })
-    it('Renders Report Landing Page ', () => {
-        const url = Cypress.config().baseUrl
-        cy.log('Opening a report template')
-        cy.visit(url + '/#/dashboard/report_designer')
-        cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
+    // it('Renders Report Landing Page ', () => {
+    //     const url = Cypress.config().baseUrl
+    //     cy.log('Opening a report template')
+    //     cy.visit(url + '/#/dashboard/report_designer')
+    //     cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
 
-        cy.get('.ant-tabs-nav-list > :nth-child(2)').click();
-        cy.wait(1000)
-        cy.get('#rc-tabs-0-panel-Generate\\ Report\\ Variant > .create-new > .anticon > svg').click();
-        cy.wait(1000)
-        cy.get('.ant-input-wrapper > .ant-input').clear();
-        cy.get('.ant-input-wrapper > .ant-input').type('r391{enter}', { force: true });
-        cy.get('.ant-input-wrapper > .ant-input').clear();
-        cy.get('.ant-input-wrapper > .ant-input').type('r391{enter}', { force: true });
+    //     cy.get('.ant-tabs-nav-list > :nth-child(2)').click();
+    //     cy.wait(1000)
+    //     cy.get('#rc-tabs-0-panel-Generate\\ Report\\ Variant > .create-new > .anticon > svg').click();
+    //     cy.wait(1000)
+    //     cy.get('.ant-input-wrapper > .ant-input').clear();
+    //     cy.get('.ant-input-wrapper > .ant-input').type('r391{enter}', { force: true });
+    //     cy.get('.ant-input-wrapper > .ant-input').clear();
+    //     cy.get('.ant-input-wrapper > .ant-input').type('r391{enter}', { force: true });
 
-        cy.get('.ant-btn > .anticon > svg').click({ force: true });
-        cy.intercept('GET', '**/report-load?report_displ_id=R391', { fixture: 'reportGenLoad.json' })
-        cy.get('.ant-table-row > :nth-child(1)').click();
-        cy.wait(2000)
-        cy.get('[style="background-color: rgb(9, 49, 133); color: white; border-radius: 4px; margin-left: 88%; margin-top: 70px;"] > span').click();
-        cy.wait(1000)
-        cy.get(':nth-child(1) > .ant-collapse-item > .ant-collapse-header').click();
-        cy.get('.ant-input').click();
-        cy.wait(1000)
-        cy.get(':nth-child(2) > .ant-collapse-item > .ant-collapse-header > .chart-names').click();
-        cy.wait(1000)
-        cy.get(':nth-child(1) > .chart-name-rep > .tag-div > :nth-child(1) > .anticon > svg > path').click();
-        cy.wait(1000)
-        cy.get('#rc-tabs-1-tab-Exclusion').click();
-        cy.wait(1000)
-        cy.get('#rc-tabs-1-tab-Violation').click();
-        cy.wait(1000)
+    //     cy.get('.ant-btn > .anticon > svg').click({ force: true });
+    //     cy.intercept('GET', '**/report-load?report_displ_id=R391', { fixture: 'reportGenLoad.json' })
+    //     cy.get('.ant-table-row > :nth-child(1)').click();
+    //     cy.wait(2000)
+    //     cy.get('[style="background-color: rgb(9, 49, 133); color: white; border-radius: 4px; margin-left: 88%; margin-top: 70px;"] > span').click();
+    //     cy.wait(1000)
+    //     cy.get(':nth-child(1) > .ant-collapse-item > .ant-collapse-header').click();
+    //     cy.get('.ant-input').click();
+    //     cy.wait(1000)
+    //     cy.get(':nth-child(2) > .ant-collapse-item > .ant-collapse-header > .chart-names').click();
+    //     cy.wait(1000)
+    //     cy.get(':nth-child(1) > .chart-name-rep > .tag-div > :nth-child(1) > .anticon > svg > path').click();
+    //     cy.wait(1000)
+    //     cy.get('#rc-tabs-1-tab-Exclusion').click();
+    //     cy.wait(1000)
+    //     cy.get('#rc-tabs-1-tab-Violation').click();
+    //     cy.wait(1000)
 
-        cy.get(':nth-child(1) > .chart-name-rep > .tag-div > :nth-child(2) > .anticon > svg').click();
-        cy.get(':nth-child(1) > .chart-name-rep > .tag-div > :nth-child(3) > .anticon > svg').click();
-        cy.get('[style="margin-left: 16px; margin-right: 16px;"]').click();
-        cy.wait(2000)
-        cy.get('.ant-modal-close-x').click();
-        cy.get('.report-secondary-btn > :nth-child(2)').click();
-        cy.log("Downloading report")
-        cy.wait(2000)
+    //     cy.get(':nth-child(1) > .chart-name-rep > .tag-div > :nth-child(2) > .anticon > svg').click();
+    //     cy.get(':nth-child(1) > .chart-name-rep > .tag-div > :nth-child(3) > .anticon > svg').click();
+    //     cy.get('[style="margin-left: 16px; margin-right: 16px;"]').click();
+    //     cy.wait(2000)
+    //     cy.get('.ant-modal-close-x').click();
+    //     cy.get('.report-secondary-btn > :nth-child(2)').click();
+    //     cy.log("Downloading report")
+    //     cy.wait(2000)
 
-        cy.get('.sub-header-btns > :nth-child(1) > span').click();
-        cy.get('.ant-select-selection-overflow').click();
-        cy.get('.ant-select-item-option-content').click();
-        cy.get('.email-content').click();
-        cy.get('#rc-tabs-3-tab-email_schedule').click();
-        cy.get('[style="width: 300px;"] > .ant-picker > .ant-picker-input > input').click();
-        cy.get('.ant-picker-today-btn').click();
-        cy.get('.ant-select-selector > .ant-select-selection-item').click();
-        cy.get(':nth-child(2) > :nth-child(1) > .ant-picker > .ant-picker-input > input').click();
-        cy.get('.ant-picker-now-btn').click();
-        cy.get('.schedule-evalutaion-button').click();
+    //     cy.get('.sub-header-btns > :nth-child(1) > span').click();
+    //     cy.get('.ant-select-selection-overflow').click();
+    //     cy.get('.ant-select-item-option-content').click();
+    //     cy.get('.email-content').click();
+    //     cy.get('#rc-tabs-3-tab-email_schedule').click();
+    //     cy.get('[style="width: 300px;"] > .ant-picker > .ant-picker-input > input').click();
+    //     cy.get('.ant-picker-today-btn').click();
+    //     cy.get('.ant-select-selector > .ant-select-selection-item').click();
+    //     cy.get(':nth-child(2) > :nth-child(1) > .ant-picker > .ant-picker-input > input').click();
+    //     cy.get('.ant-picker-now-btn').click();
+    //     cy.get('.schedule-evalutaion-button').click();
 
-        cy.get('[style="color: grey; font-family: Roboto; font-style: normal; font-weight: 400; font-size: 16px;"] > [style="font-size: 17px; margin-bottom: 20px;"]').click();
+    //     cy.get('[style="color: grey; font-family: Roboto; font-style: normal; font-weight: 400; font-size: 16px;"] > [style="font-size: 17px; margin-bottom: 20px;"]').click();
 
-        cy.wait(5000)
-        cy.get(':nth-child(1) > [style="text-align: center;"] > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click();
-        cy.get('.ant-popover-buttons > .ant-btn-primary > span').click();
-        cy.wait(2000)
-        cy.get(':nth-child(1) > :nth-child(2) > u > a').click();
-    })
+    //     cy.wait(5000)
+    //     cy.get(':nth-child(1) > [style="text-align: center;"] > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click();
+    //     cy.get('.ant-popover-buttons > .ant-btn-primary > span').click();
+    //     cy.wait(2000)
+    //     cy.get(':nth-child(1) > :nth-child(2) > u > a').click();
+    // })
     it('Load Report generator via search', () => {
         const url = Cypress.config().baseUrl
         cy.log('Opening a report template')
@@ -94,9 +94,10 @@ describe("Report", () => {
         cy.get('.ant-input').clear();
         cy.get('.ant-input').type('R391{enter}');
         cy.get('.ant-table-row > :nth-child(1) > div').click();
-        cy.get(':nth-child(1) > .ant-collapse-item > .ant-collapse-header > div > .anticon > svg').click();
-        cy.get('.ant-input').click();
-        cy.get('.ant-input').type('hello');
+        cy.get('.ant-table-row > :nth-child(2)').click();
+        cy.wait(5000)
+        // cy.get('.ant-input').click();
+        // cy.get('.ant-input').type('hello');
     })
     it('Load Report Generator via tile ', () => {
         const url = Cypress.config().baseUrl

@@ -106,7 +106,7 @@ function ReportGenerator(props) {
 	};
 
 	const ReportData = repotData;
-	const [chart, setCharts] = useState([]);
+	// const [chart, setCharts] = useState([]);
 	const [table, setTable] = useState([]);
 	const [isSave, setIsSave] = useState(false);
 	const [reportId, setReportId] = useState('');

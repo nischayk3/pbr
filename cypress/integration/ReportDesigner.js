@@ -1,12 +1,8 @@
-<<<<<<< HEAD
-describe("Report", () => {
-=======
 Cypress.on('uncaught:exception', (err, runnable) => {
   return false;
 });
 
 describe("Report Designer", () => {
->>>>>>> d903cd34952b3c6358248fb80817e352047a35dd
   beforeEach(() => {
     cy.viewport(1280, 720)
     localStorage.setItem("test_enabled", true);
@@ -81,56 +77,46 @@ describe("Report Designer", () => {
     cy.wait(1000)
     cy.get(':nth-child(2) > [style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;"]').click();
     cy.get('.add-chart').click();
+    cy.get('.charttile-content').click();
+    cy.get('.chart-name > :nth-child(1) > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click({ force: true })
+    cy.get('.ant-btn-primary > span').click()
+    cy.get('.charttile-content').click();
+    cy.wait(1000)
+    cy.get('#rc-tabs-2-tab-Exclusion').click();
+    cy.wait(500)
+    cy.get('#rc-tabs-2-tab-Violation').click();
+    cy.get('[style="border: 1px solid rgb(72, 107, 201); margin-bottom: 30px; min-height: 160px; border-radius: 4px; margin-top: 20px;"] > :nth-child(6) > .anticon > svg').click()
+    cy.get('.ant-tooltip-open > .anticon > svg').click();
+    cy.get(':nth-child(3) > [style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;"] > [style="margin-left: 15%;"] > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click();
+    cy.get('.ant-btn-primary > span').click();
+    cy.get('[style="border: 1px solid rgb(72, 107, 201); margin-bottom: 30px; min-height: 160px; border-radius: 4px; margin-top: 20px;"] > [style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;"] > [style="margin-left: 15%;"] > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click();
+    cy.get('.ant-btn-primary > span').click();
+    cy.wait(2000)
+  });
+  it("Saving report", () => {
+    cy.get('.sub-header-btns > :nth-child(1) > span').click()
     cy.wait(1000)
     cy.get('.charttile-content').click();
+    cy.wait(1000)
+    cy.get('.ant-input').clear();
+    cy.get('.ant-input').type('R391{enter}');
+    cy.get('.ant-table-row > :nth-child(1) > div').click();
+  });
+
+  it("Load Report via tile", () => {
+    const url = Cypress.config().baseUrl
+    cy.log('Opening a report template')
+    cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
+    cy.visit(url + '/#/dashboard/report_designer')
+    cy.wait(1000)
+    cy.get(':nth-child(1) > .chart-tiles').click();
+    cy.wait(5000)
+    cy.get('.ant-switch-handle').click();
     cy.wait(1000)
     cy.get('.sub-header-btns > :nth-child(1) > span').click();
     cy.wait(1000)
     cy.get('.ant-modal-close-x').click();
-    cy.wait(2000)
-    cy.get('.chart-name > :nth-child(1) > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click();
-    // cy.get(':nth-child(1) > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click();
-    cy.get('.ant-btn-primary > span').click();
-    /* ==== Generated with Cypress Studio ==== */
-    cy.get('.charttile-content').click();
-    cy.get('.ant-tabs-nav-list > :nth-child(1)')
-    cy.get('.ant-tabs-nav-list > :nth-child(2)')
-
-    cy.get('.custom-wrapper').click();
-    cy.get('#report_designer > .ant-menu-title-content').click();
-    cy.get('#report_designer > .ant-menu-title-content > a').click();
-    cy.wait(500)
-    cy.get(':nth-child(3) > .ant-breadcrumb-link > a').click();
-    cy.wait(500)
-    // cy.get('.ant-input-affix-wrapper').click();
-    // cy.get('.ant-input').clear();
-    // cy.get('.ant-input').type('R219{enter}', { force: true });
-    // cy.wait(500)
-    // cy.wait(500)
-    // cy.get('#rc-tabs-0-tab-Generate\\ Report\\ Variant').click();
-    // cy.get('#rc-tabs-0-tab-Design\\ Report\\ Template').click();
-    cy.get(':nth-child(4) > .tile > :nth-child(1) > .chart-tiles').click();
-    cy.get('.sub-header-btns > :nth-child(1) > span').click();
-    /* ==== End Cypress Studio ==== */
-    /* ==== Generated with Cypress Studio ==== */
-    cy.get(':nth-child(1) > [style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;"] > [style="display: grid; grid-template-columns: 1fr 1fr;"] > :nth-child(2) > .anticon > svg').click()
-    cy.get('.add-chart').click()
-    cy.get('.add-chart').click()
-
-    /* ==== End Cypress Studio ==== */
-    /* ==== Generated with Cypress Studio ==== */
-    cy.get('.sub-header-btns > .anticon-ellipsis > svg > path').click();
-    cy.get('.ant-dropdown-menu-title-content').click();
-    /* ==== End Cypress Studio ==== */
-    /* ==== Generated with Cypress Studio ==== */
-    cy.get('#report_designer > .ant-menu-title-content > a').click();
-    // cy.get(':nth-child(3) > .ant-breadcrumb-link > a').click();
-    // // cy.get('.ant-input-wrapper > .ant-input').clear();
-    // cy.get('.ant-input').type('R391{enter}', { force: true });
-    // cy.get('#rc-tabs-0-tab-Generate\\ Report\\ Variant').click();
-    // cy.get('.ant-input').clear();
-    // cy.get('.ant-input-wrapper > .ant-input').type('R391{enter}');
-    /* ==== End Cypress Studio ==== */
+    cy.get('[style="display: grid; grid-template-columns: 1fr 1fr;"] > :nth-child(2) > .anticon > svg').click();
   });
 
   /* ==== Test Created with Cypress Studio ==== */
