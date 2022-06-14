@@ -63,6 +63,7 @@ describe("Genealogy", () => {
 		cy.get("#rc_select_2").clear();
 		cy.get("#rc_select_2").type("394154");
 		cy.get(".ant-select-item-option-content").eq(2).click({ force: true })
+		cy.wait(4000)
 	})
 
 	it("Selecting Product type", () => {
@@ -76,13 +77,9 @@ describe("Genealogy", () => {
 	it("Search backword filters", () => {
 		cy.get("#genealogy-search").click()
 		cy.intercept('GET', '**/genealogy?levels=5&batch_id=1338%7C1089084%7C394154&backward=true&mat_type=%27RAW%27', { fixture: 'backward.json' })
+		cy.wait(6000)
 	});
 
-	it("Verfiy backword tree", () => {
-		cy.get('.tab-label').should("have.text", "1089084 - backward")
-		cy.log('Verify first node');
-
-	});
 
 	it("Opening Drawer on click of material node", () => {
 		cy.get('#1091460 > #material-img').click();
