@@ -42,6 +42,19 @@ export const getPbrReviewerData = (_queryParam) => {
 		}
 	);
 };
+export const getImage = (_queryParam) => {
+	return Service.get(
+		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_file_page_image',
+		_queryParam
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
 export const updateApprove = (_queryParam) => {
 	return Service.put(
 		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr',
