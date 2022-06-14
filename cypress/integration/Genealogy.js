@@ -83,6 +83,7 @@ describe("Genealogy", () => {
 		cy.get("#view-details-popup").click();
 	});
 	it("closing drawer",()=>{
+		cy.wait(5000)
 		cy.get(':nth-child(3) > .ant-drawer > .ant-drawer-mask').click()
 	})
 
@@ -91,6 +92,7 @@ describe("Genealogy", () => {
 		cy.get("#view-details-popup").click();
 	});
 	it("closing drawer",()=>{
+		cy.wait(5000)
 		cy.get(':nth-child(3) > .ant-drawer > .ant-drawer-mask').click()
 	});
 
@@ -100,11 +102,13 @@ describe("Genealogy", () => {
 	})
 
 	it("click on purchase order",()=>{
+		cy.wait(5000)
 		cy.get("#process-img").click();
 		cy.get("#view-details-popup").click();
 	});
 
 	it("closing drawer",()=>{
+		cy.wait(5000)
 		cy.get(':nth-child(3) > .ant-drawer > .ant-drawer-mask').click()
 	});
 
@@ -114,7 +118,9 @@ describe("Genealogy", () => {
 	})
 
 	it("fileupload",()=>{
+		cy.wait(3000)
 		cy.get('#1091460 > #material-img').click();
+		cy.wait(3000)
 		cy.get('#upload-file-popup').click();
 
 	})
@@ -127,6 +133,7 @@ describe("Genealogy", () => {
 	// });
 
 	it("Select multi file in popup",()=>{
+		cy.wait(5000)
 		cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/batch_record_1.pdf'},{ force: true })
 		cy.wait(3000)
 		cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/batch_record_1.pdf'},{ force: true })
