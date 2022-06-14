@@ -77,13 +77,11 @@ function Genealogy() {
 	const [isFileUploaded, setIsFileUploaded] = useState(false);
 	const [uploadedFileInfo, setUploadedFileInfo] = useState([]);
 	const [fileMessage, setFileMessage] = useState('');
-
-
+	const [fileUploadResponse, setFileUploadResponse] = useState('');
 
 	const dispatch = useDispatch();
 
 	const onClickNode = node => {
-
 		if (node.clickType === 'backward') {
 			setGenealogyData([]);
 			let _reqBackward = {
@@ -408,22 +406,25 @@ function Genealogy() {
 				const fileName = [];
 				const fileSize = [];
 				setUploading(false);
+				setFileUploadResponse(fileResponse.Status)
+				setFileMessage(fileResponse.Message)
 				const duplicateFile = fileResponse.data
 				setUploadedFileInfo(duplicateFile);
-				setFileMessage('');
 				const filterDuplicateFile = uploadFileDetail.filter(item => !duplicateFile.includes(item.fileName))
 				filterDuplicateFile.map((item) => {
 					fileName.push(item.fileName)
 					fileSize.push(item.fileSize)
 				})
 				let login_response = JSON.parse(localStorage.getItem('login_details'));
+				console.log("login_response", login_response)
 				const data = fileData && fileData.split('|');
 				setIsUploadVisible(false)
+				setIsFileUploaded(true);
 				if (fileName !== null) {
 					const reqData = {
 						batchNum: data[2],
 						changedBy: null,
-						createdBy: login_response.firstname + login_response.lastname,
+						createdBy: login_response.email_id,
 						custKey: '1000',
 						filename: fileName,
 						fileSize: fileSize,
@@ -434,8 +435,9 @@ function Genealogy() {
 					};
 					geanealogyFileDataUpload(reqData);
 				}
-				setIsFileUploaded(true);
+
 			} else if (fileResponse.Status === 200) {
+				setFileUploadResponse(fileResponse.Status)
 				setUploading(false);
 				setUploadedFileInfo(fileResponse.Data);
 				setIsUploadVisible(false);
@@ -462,7 +464,6 @@ function Genealogy() {
 			if (dataResponse.Status === 202) {
 				dispatch(showNotification('success', dataResponse.Message));
 			} else {
-				setIsFileUploaded(false);
 				dispatch(showNotification('error', dataResponse.Message));
 			}
 		} catch (error) {
@@ -562,13 +563,12 @@ function Genealogy() {
 	const handleCancel = () => {
 		setIsUploadVisible(false);
 		setUploading(false);
-
+		setUploadFileName([])
 	};
 	const handleCancelSuccess = () => {
-
 		setIsFileUploaded(false);
 	};
-	console.log("isFileUploaded", isFileUploaded)
+	console.log("uploadedFileInfo", fileUploadResponse, uploadedFileInfo)
 	return (
 		<div className='custom-wrapper'>
 			<BreadCrumbWrapper />
@@ -672,7 +672,7 @@ function Genealogy() {
 									<div className='file-upload-section'>
 										<div className='upload-btn'>
 											<Button
-												disabled={uploadFileName.length === 0}
+												disabled={uploadFileName.length <= 0}
 												loading={uploading}
 												onClick={() => handleClickUpload()}>
 												{uploading ? 'Uploading' : 'Upload'}
@@ -684,35 +684,39 @@ function Genealogy() {
 
 							</Modal>
 							<Modal
-								width={520}
+								width={500}
 								visible={isFileUploaded}
 								onCancel={handleCancelSuccess}
 								footer={null}>
-								<Result
+								{fileUploadResponse === 200 && (
+									<Result
+										status="error"
+										title={fileMessage}
+									>
+										{fileMessage && (
+											<div className="desc">
+												{uploadedFileInfo && uploadedFileInfo.map((item) => (
+													<Paragraph>
+														<p>{item}</p>
+													</Paragraph>
+												))}
+											</div>
+										)}
+									</Result>
+								)}
+								{fileUploadResponse === 202 && (<Result
 									status="success"
 									title="Successfully File Uploaded!"
-
+									subTitle={uploadedFileInfo.length > 0 ? fileMessage : ''}
 								>
-									{fileMessage && (
-										<div className="desc">
+									{uploadedFileInfo && (<div className="desc">
+										{uploadedFileInfo.map((item) => (
 											<Paragraph>
-												<Text
-													strong
-													style={{
-														fontSize: 16,
-													}}
-												>
-													{fileMessage}
-												</Text>
+												<p>{item}</p>
 											</Paragraph>
-											{uploadedFileInfo && uploadedFileInfo.map((item) => (
-												<Paragraph>
-													<p>{item}</p>
-												</Paragraph>
-											))}
-										</div>
-									)}
-								</Result>
+										))}
+									</div>)}
+								</Result>)}
 							</Modal>
 						</>
 					</TabPane>
