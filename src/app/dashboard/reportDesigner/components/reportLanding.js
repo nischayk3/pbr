@@ -228,6 +228,7 @@ export default function ReportLanding(props) {
 			dispatch(hideLoader());
 			dispatch(showNotification('success', `Loaded ${report_id}`));
 			setLetDis(false)
+
 		} else {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', data.Message));
@@ -439,7 +440,7 @@ export default function ReportLanding(props) {
 															setReportIds(i.rep_disp_id);
 															setReportId(i.rep_disp_id)
 															setLetDis(true)
-															getLoadReportGenerator(i.rep_disp_id, false);
+															NewReportGenerator(i.rep_disp_id);
 														}}>
 														<div
 															className={
@@ -496,7 +497,7 @@ export default function ReportLanding(props) {
 								disabled={letDis}
 								onClick={() => {
 									history.push({
-										pathname: '/dashboard/report_generator',
+										pathname: `/dashboard/report_generator/${reportId}`,
 									});
 								}}>
 								Let's Go!
