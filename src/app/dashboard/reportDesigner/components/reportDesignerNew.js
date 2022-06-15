@@ -8,14 +8,13 @@
 import './stylesNew.scss';
 import React, { useEffect, useState } from 'react';
 import {
-	BlockOutlined,
+	// BlockOutlined,
 	CloudUploadOutlined,
 	EllipsisOutlined,
 } from '@ant-design/icons';
 import { useLocation } from 'react-router';
 import {
 	Form,
-	Select,
 	Button,
 	Empty,
 	Dropdown,
@@ -45,61 +44,6 @@ import queryString from 'query-string';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { loadReport } from '../../../../services/reportDesignerServices';
 
-//Columns For The view Selection modal
-// const columns = [
-// 	{
-// 		title: 'Report ID',
-// 		dataIndex: 'rep_disp_id',
-// 		key: 'rep_disp_id',
-// 		render: (text, record) => {
-// 			return {
-// 				props: {
-// 					style: { background: record.color },
-// 				},
-// 				children: <div>{text}</div>,
-// 			};
-// 		},
-// 	},
-// 	{
-// 		title: 'Report Name',
-// 		dataIndex: 'rep_name',
-// 		key: 'rep_name',
-// 		render: (text, record) => {
-// 			return {
-// 				props: {
-// 					style: { background: record.color },
-// 				},
-// 				children: <div>{text}</div>,
-// 			};
-// 		},
-// 	},
-// 	{
-// 		title: 'Report Status',
-// 		dataIndex: 'rep_status',
-// 		key: 'rep_status',
-// 		render: (text, record) => {
-// 			return {
-// 				props: {
-// 					style: { background: record.color },
-// 				},
-// 				children: <div>{text}</div>,
-// 			};
-// 		},
-// 	},
-// 	{
-// 		title: 'Created By',
-// 		dataIndex: 'created_by',
-// 		key: 'created_by',
-// 		render: (text, record) => {
-// 			return {
-// 				props: {
-// 					style: { background: record.color },
-// 				},
-// 				children: <div>{text}</div>,
-// 			};
-// 		},
-// 	},
-// ];
 
 function ReportDesignerNew(props) {
 
