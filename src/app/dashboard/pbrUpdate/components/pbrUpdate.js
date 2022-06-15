@@ -325,18 +325,10 @@ const PbrUpdate = () => {
   ]
 
   return (
-    <>
+    <div className='pbr-container'>
       <BreadCrumbWrapper />
       <div className='custom-wrapper'>
-        <div className='sub-header'>
-          <div className='sub-header-title'>
-            <ArrowLeftOutlined className='header-icon' />
-            <span className='header-title'>
-              Edit Data
-            </span>
-          </div>
-        </div>
-
+      
         <div style={{ marginTop: 20 }}>
 
           <Row gutter={16}>
@@ -379,13 +371,16 @@ const PbrUpdate = () => {
 
                   type='primary'>Save Changes</Button>
               </div>
-              <img src={imagepdf} width="750px" height="700px" type="application/pdf" />
-              
+              <div>
+                <img src={imagepdf}  width="100%" height="100%"/>
+              </div>
+
+
             </Col>
           </Row>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

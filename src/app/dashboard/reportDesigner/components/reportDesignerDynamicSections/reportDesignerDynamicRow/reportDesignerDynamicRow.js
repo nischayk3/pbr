@@ -6,18 +6,8 @@ import './styles.scss';
 function ReportDesignerDynamicRow(props) {
 	const { fieldKey } = props;
 
-	const isEditableHandler = (prev, current, name, fieldKeys) => {
-		let res = prev['response'];
-		let dynamic_rows = res[fieldKeys] ? res[fieldKeys] : [];
-		let dynamic_rows_row = dynamic_rows['dymamic_rows']
-			? dynamic_rows['dymamic_rows']
-			: [];
-		let res_curr = current['response'];
-		let dynamic_rows_curr = res_curr[fieldKeys] ? res[fieldKeys] : [];
-		let dynamic_rows_row_curr = dynamic_rows_curr['dymamic_rows']
-			? dynamic_rows['dymamic_rows']
-			: [];
-		let value_curr = dynamic_rows_row_curr[name] ? dynamic_rows_row[name] : [];
+	const isEditableHandler = (_prev, _current, _name, _fieldKeys) => {
+		let value_curr = [];
 		return value_curr ? value_curr : false;
 	};
 
