@@ -279,9 +279,9 @@ function PbrReviewer() {
       title: 'Snippet Value',
       key: 'snippet_image',
       dataIndex: 'snippet_image',
-      ...getColumnSearchProps('snippet_image'),
-      sorter: (a, b) => a.snippet_image.length - b.snippet_image.length,
-      sortDirections: ['descend', 'ascend'],
+      // ...getColumnSearchProps('snippet_image'),
+      // sorter: (a, b) => a.snippet_image.length - b.snippet_image.length,
+      // sortDirections: ['descend', 'ascend'],
       render: (text, record, index) => {
         return (
           <img src={`data:image/png;base64,${text}`} width="80%" height="80%" />
@@ -603,7 +603,7 @@ function PbrReviewer() {
                   <Col span={12}>
                     <Card className="review-card1" >
                       <div id="my-div" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 200 }}>
-                        <h3>Status</h3>
+                        <h3 className="status_pos">Status</h3>
                         {showReset && (
                           <p className="status" onClick={resetConfidence}>Reset</p>
                         )}
@@ -626,7 +626,7 @@ function PbrReviewer() {
                   <Col span={12}>
                     <Card className="review-card2">
                       <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 200 }}>
-                        <h3>Confidence</h3>
+                        <h3 className="status_pos">Confidence</h3>
                         {showResetConfidence && (
                           <p className="status" onClick={resetConfidence}>Reset</p>
                         )}
