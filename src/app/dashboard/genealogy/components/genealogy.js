@@ -376,27 +376,27 @@ function Genealogy() {
 		remove(targetKey);
 	};
 
-	const downloadFile = async val => {
-		let uri =
-			'SELECT * FROM tran_product_params WHERE batch_num=' + `'${limsBatch}'`;
-		let login_response = JSON.parse(localStorage.getItem('login_details'));
-		let req = {
-			export_csv: true,
-			query: uri,
-			table_name: 'tran_product_params',
-			'x-access-token': login_response.token ? login_response.token : '',
-			'resource-name': 'GENEALOGY'
-		};
-		try {
-			dispatch(showLoader());
-			const download = await downloadDataTable(req);
+	// const downloadFile = async val => {
+	// 	let uri =
+	// 		'SELECT * FROM tran_product_params WHERE batch_num=' + `'${limsBatch}'`;
+	// 	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	// 	let req = {
+	// 		export_csv: true,
+	// 		query: uri,
+	// 		table_name: 'tran_product_params',
+	// 		'x-access-token': login_response.token ? login_response.token : '',
+	// 		'resource-name': 'GENEALOGY'
+	// 	};
+	// 	try {
+	// 		dispatch(showLoader());
+	// 		const download = await downloadDataTable(req);
 
-			dispatch(hideLoader());
-		} catch (error) {
-			dispatch(hideLoader());
-			dispatch(showNotification('error', 'error'));
-		}
-	};
+	// 		dispatch(hideLoader());
+	// 	} catch (error) {
+	// 		dispatch(hideLoader());
+	// 		dispatch(showNotification('error', 'error'));
+	// 	}
+	// };
 
 	const fileUpload = async _fileRequest => {
 		try {
@@ -634,7 +634,7 @@ function Genealogy() {
 								batchInfo={batchInfo}
 								processInput={processInput}
 								processOutput={processOutput}
-								fileDownload={downloadFile}
+								//fileDownload={downloadFile}
 								productCode={productCode}
 								nodeTitle={nodeTitle}
 								productType={chartType}
