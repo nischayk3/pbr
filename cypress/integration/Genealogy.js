@@ -18,10 +18,10 @@ describe("Genealogy", () => {
 					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
 			})
 		);
-		cy.intercept('POST', '**/genealogy-filter', { fixture: 'genealogy-filter.json' })
 	})
 
 	it("Render genealogy screen", () => {
+		cy.intercept('POST', '/services/v1//genealogy-filter', { fixture: 'genealogy-filter.json' })
 		cy.intercept('GET', '/services/v1/product-type-genealogy', { fixture: 'genealogyFilterProductType.json' })
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/genealogy')
@@ -72,9 +72,9 @@ describe("Genealogy", () => {
 	});
 
 	it("Search backword filters", () => {
-		cy.get("#genealogy-search").click()
 		cy.intercept('GET', 'v1/genealogy?levels=*', { fixture: 'backward.json' })
-		cy.wait(10000)
+		cy.get("#genealogy-search").click()
+		cy.wait(6000)
 	});
 
 
