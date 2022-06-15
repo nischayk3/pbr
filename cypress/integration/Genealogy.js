@@ -27,7 +27,7 @@ describe("Genealogy", () => {
 		cy.visit(url + '/#/dashboard/genealogy')
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/genealogy')
-		cy.wait(6000)
+		cy.wait(10000)
 		
 
 	});
@@ -73,13 +73,14 @@ describe("Genealogy", () => {
 
 	it("Search backword filters", () => {
 		cy.intercept('GET', 'v1/genealogy?levels=*', { fixture: 'backward.json' })
+		cy.wait(2000)
 		cy.get("#genealogy-search").click()
 		cy.wait(6000)
 	});
 
 
 	it("Opening Drawer on click of material node", () => {
-		cy.get('#1091460 > #material-img').click();
+		cy.get('#1091535 > #material-img').click();
 		cy.wait(3000)
 		cy.get("#view-details-popup").click();
 	});
