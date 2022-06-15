@@ -191,7 +191,67 @@ const PbrUpdate = () => {
       title: "Id",
       dataIndex: "id",
       key: "id",
-      width: "5%",
+      // width: "5%",
+    },
+    {
+      title: "Product",
+      dataIndex: "product_num",
+      key: "product_num",
+      // width: "5%",
+    },
+    {
+      title: "Batch",
+      dataIndex: "batch_num",
+      key: "batch_num",
+      // width: "5%",
+    },
+    {
+      title: "Site",
+      dataIndex: "site_code",
+      key: "site_code",
+      // width: "5%",
+    },
+    {
+      title: "Anchor",
+      dataIndex: "anchor_key",
+      key: "anchor_key",
+      // width: "5%",
+    },
+    {
+      title: "snippet value",
+      dataIndex: "snippet_value",
+      key: "snippet_value",
+
+      render: (text, record) => {
+        if (editingRow === record.key) {
+          return (
+            <Form.Item>
+              <Input
+                defaultValue={record.snippet_value}
+                type="text"
+                name="snippetValue"
+                onChange={handleChange}
+              />
+            </Form.Item>
+
+          );
+        } else {
+          return <p>{text}</p>;
+        }
+      },
+
+
+    },
+    {
+      title: "Value Image",
+      dataIndex: "snippet_image",
+      key: "snippet_image",
+      render: (text, record, index) => {
+        return (
+          <img src={`data:image/png;base64,${text}`} width="50%" height="15%" />
+        )
+      }
+
     },
     {
       title: "Recorded Date",
@@ -242,42 +302,8 @@ const PbrUpdate = () => {
       },
 
     },
-    {
-      title: "snippet value",
-      dataIndex: "snippet_value",
-      key: "snippet_value",
-
-      render: (text, record) => {
-        if (editingRow === record.key) {
-          return (
-            <Form.Item>
-              <Input
-                defaultValue={record.snippet_value}
-                type="text"
-                name="snippetValue"
-                onChange={handleChange}
-              />
-            </Form.Item>
-
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-
-
-    },
-    {
-      title: "Value Image",
-      dataIndex: "snippet_image",
-      key: "snippet_image",
-      render: (text, record, index) => {
-        return (
-          <img src={`data:image/png;base64,${text}`} width="50%" height="15%" />
-        )
-      }
-
-    },
+   
+    
     {
       title: "UOM",
       dataIndex: "uom",
@@ -304,6 +330,8 @@ const PbrUpdate = () => {
     },
     {
       title: "Actions",
+      fixed: 'right',
+      width:"5%",
       render: (_, record) => {
         return (
           <>
@@ -341,6 +369,7 @@ const PbrUpdate = () => {
                 columns={columns}
                 dataSource={templateData}
                 pagination={false}
+                scroll={{x:1700}}
                 style={{ border: '1px solid #ececec', borderRadius: '2px' }}
               />
             </Col>

@@ -80,7 +80,7 @@ describe('Dashboard', () => {
 		cy.wait(2000);
 		cy.get('.create-new > .anticon > svg').click();
 		cy.wait(2000);
-		cy.get('.ant-modal-close-x > .anticon > svg > path').click();
+		cy.get('.ant-modal-close-x').click();
 
 
 	})
