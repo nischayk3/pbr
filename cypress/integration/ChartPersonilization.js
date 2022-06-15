@@ -28,7 +28,7 @@ describe('Renders chart personalization', () => {
   })
 
   it('Loads Chart personalization page correctly', () => {
-    cy.visit('http://nginx/#/dashboard/workspace')
+    cy.visit('http://localhost/#/dashboard/workspace')
     cy.wait(5000)
   })
 
@@ -504,21 +504,18 @@ describe('Renders chart personalization', () => {
 
                     cy.wait(500)
                     cy.log('Opening scheduled alerts')
-                    cy.intercept('GET', '/services/v1/jobs?app_type=CHART&app_id=*').as('jobs')
+                    cy.intercept('GET', '/services/v1/jobs?app_type=CHART&app_id=*', { fixture: 'scheduledAlerts.json' }).as('jobs')
 
                     cy.get('.ant-tabs-left > :nth-child(1) > .ant-tabs-nav-wrap > .ant-tabs-nav-list > :nth-child(2)').click()
                     cy.wait('@jobs').then(() => {
 
                       cy.intercept('DELETE', '/services/v1/jobs').as('scheduleDelete')
-                      cy.intercept('GET', '/services/v1/jobs?app_type=CHART&app_id=*').as('jobs')
-                      cy.get('.schedule-alerts .schedule-table .ant-table-row .anticon.anticon-delete').first().click()
+                      cy.intercept('GET', '/services/v1/jobs?app_type=CHART&app_id=*', { fixture: 'scheduledAlertsRecall.json' }).as('jobs')
+                      cy.get('.schedule-table .ant-table-tbody > .ant-table-row-level-0').first().get('.anticon.anticon-delete').first().click()
                       cy.get('.ant-popover-buttons > .ant-btn-primary').click()
                       cy.wait('@scheduleDelete')
                       cy.wait('@jobs').then(() => {
                         cy.intercept('GET', '/services/v1/jobs?app_type=CHART&dag_id=*').as('dagId')
-                        cy.get('.schedule-alerts .schedule-table .ant-table-row .ant-table-cell').eq(1).get('u > a').first().click()
-                        cy.wait('@dagId')
-                        cy.wait(500)
                         cy.log('Closing modal')
                         cy.get('.ant-modal-close-icon').first().click()
                       })
