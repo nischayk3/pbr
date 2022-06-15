@@ -28,13 +28,14 @@ describe('Renders chart personalization', () => {
   })
 
   it('Loads Chart personalization page correctly', () => {
-    cy.visit('http://localhost/#/dashboard/workspace')
+    const url = Cypress.config().baseUrl
+    cy.visit(url + '/#/dashboard/workspace')
     cy.wait(5000)
   })
 
   it('Chart Personalization working correctly', () => {
     cy.intercept('GET', '/services/v1/chart-list?chart_status=ALL', { fixture: 'chartList.json' }).as('chartList')
-    
+
     cy.get('.ant-layout-sider > .ant-layout-sider-children > ul li').eq(1).trigger('mouseover')
     cy.get('.ant-layout-sider > .ant-layout-sider-children > ul li').eq(1).click()
     cy.get('#chart_personalization').click()
@@ -229,14 +230,14 @@ describe('Renders chart personalization', () => {
     cy.get('.ant-table-tbody .ant-input').eq(0).type('10.1', { force: true })
     cy.get('.ant-table-tbody .ant-input').eq(1).type('10.2', { force: true })
 
-    cy.get('.ant-table-tbody .ant-picker').first().click()
-    cy.wait(500)
-    cy.get('.ant-picker-today-btn').eq(0).click()
+    // cy.get('.ant-table-tbody .ant-picker').first().click()
+    // cy.get('.ant-picker-today-btn').eq(0).click()
 
-    cy.wait(500)
     cy.intercept('POST', '/services/v1/chart-object', { fixture: 'chartObjectLimits.json' }).as('chartObjectLimits')
-    cy.get('.table-bottom .ant-btn').eq(0).click()
-    cy.wait('@chartObjectLimits')
+    cy.get('.control-header > .ant-btn').click()
+    cy.wait('@chartObjectLimits').then(() => {
+      cy.log('Limits applied')
+    })
   })
 
   it('Changing display is working correctly', () => {
@@ -254,14 +255,24 @@ describe('Renders chart personalization', () => {
     cy.get(':nth-child(1) > .ant-col-16 > .input_field > .ant-input').type('500')
 
     cy.wait(500)
+    cy.log('Changing marker shape')
+    cy.get('.figure-container .select_field').eq(0).click()
+    cy.get('[title="triangle-up"] > .ant-select-item-option-content').click()
+
+    cy.wait(500)
+    cy.log('Changing violations shape')
+    cy.get('.figure-container .select_field').eq(1).click()
+    cy.get('[title="triangle-down"] > .ant-select-item-option-content').eq(1).click()
+
+    cy.wait(500)
     cy.log('Changing plot color')
     cy.get(':nth-child(3) > .ant-col-16 > .container > [type="text"]').clear()
     cy.get(':nth-child(3) > .ant-col-16 > .container > [type="text"]').type('#EEEEEE')
 
     cy.wait(500)
     cy.log('Adding title')
-    cy.get(':nth-child(8) > .ant-col-16 > .input_field > .ant-input').clear()
-    cy.get(':nth-child(8) > .ant-col-16 > .input_field > .ant-input').type('NEW CHART')
+    cy.get(':nth-child(13) > .ant-col-16 > .input_field > .ant-input').clear()
+    cy.get(':nth-child(13) > .ant-col-16 > .input_field > .ant-input').type('NEW CHART')
 
     cy.wait(500)
     cy.log('Opening Legend')
@@ -511,7 +522,7 @@ describe('Renders chart personalization', () => {
 
                       cy.intercept('DELETE', '/services/v1/jobs').as('scheduleDelete')
                       cy.intercept('GET', '/services/v1/jobs?app_type=CHART&app_id=*', { fixture: 'scheduledAlertsRecall.json' }).as('jobs')
-                      cy.get('.schedule-table .ant-table-tbody > .ant-table-row-level-0').first().get('.anticon.anticon-delete').first().click()
+                      cy.get('.schedule-table .ant-table-tbody > .ant-table-row-level-0').first().get('.anticon.anticon-delete').eq(1).click()
                       cy.get('.ant-popover-buttons > .ant-btn-primary').click()
                       cy.wait('@scheduleDelete')
                       cy.wait('@jobs').then(() => {
