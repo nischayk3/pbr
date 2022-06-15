@@ -272,6 +272,8 @@ export default function ReportLanding(props) {
 							enterButton='Search'
 							size='large'
 							onSearch={search}
+							onChange={(e) => setReportSearch(e.target.value)}
+							value={reportSearch}
 						/>
 						{searched ? (
 							<Table
@@ -285,6 +287,8 @@ export default function ReportLanding(props) {
 										activeTab == 'Design Report Template'
 											? getLoadReport(record.rep_disp_id)
 											: getLoadReportGenerator(record.rep_disp_id);
+										setReportSearch(record.rep_disp_id)
+										setReportGen(record.rep_disp_id)
 									},
 								})}
 							/>
@@ -409,6 +413,8 @@ export default function ReportLanding(props) {
 									<Input.Search
 										onSearch={onSearch}
 										placeholder='Search by report ID or name'
+										onChange={(e) => setReportGen(e.target.value)}
+										value={genSearch}
 									/>
 								</Row>
 								<div className='landing-tiles'>
@@ -459,6 +465,7 @@ export default function ReportLanding(props) {
 										onRow={record => ({
 											onClick: e => {
 												NewReportGenerator(record.rep_disp_id);
+												setReportGen(record.rep_disp_id)
 											},
 										})}
 									/>
