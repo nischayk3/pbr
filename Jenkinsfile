@@ -3,31 +3,19 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'registry.cloud.mareana.com/mdh-cpv/dev'
     }
-    agent { label 'cpv_node' } 
+    agent { label 'cpv_node_ui' } 
     options {
         ansiColor('xterm')
     }
-    stages {
-    stage("Installing Pre-requisites") {
-         
-            steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-               
-                  sh '''#!/bin/bash -x
-                        sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-                        sudo chmod +x /usr/local/bin/docker-compose
-                        docker-compose version
-                 '''       
-                }
-              }
-           }  
+    stages {    
     stage("Code Coverage") {
          
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                
                   sh '''#!/bin/bash -x
-                        sudo docker rm $(sudo docker ps -a -q)
+                        sudo docker ps | xargs docker stop 
+                        sudo docker ps -a | xargs docker rm
                         docker-compose build  --no-cache ui-cypress-run
                         docker-compose up ui-cypress-run
                         docker-compose down 
@@ -38,7 +26,7 @@ pipeline {
                     allowMissing: false,
                     alwaysLinkToLastBuild: false,
                     keepAll: true,
-                    reportDir: './coverage/',
+                    reportDir: './coverage/lcov-report/',
                     reportFiles: 'index.html',
                     reportName: 'Coverage Report'
                     ]
