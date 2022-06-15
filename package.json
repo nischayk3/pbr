@@ -89,15 +89,15 @@
     "moment": "^2.29.2",
     "start-server-and-test": "^1.11.3"
   },
-   "nyc": {
-     "all": true,
+  "nyc": {
+    "all": true,
     "sourceMap": false,
     "instrument": true,
     "require": [
-    "babel-register"
-  ],
-  "include": [
-    "src/**/*.js"
-  ]
+      "babel-register"
+    ],
+    "include": [
+      "src/**/*.js"
+    ]
   }
 }
