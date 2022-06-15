@@ -573,14 +573,14 @@ function PaperBatchRecordsTemplate() {
     /**
      * TODO: get boundingBoxData info
      */
-    const getBoundingBoxDataInfo = async (width, height, mode,pageNumber=0) => {
+    const getBoundingBoxDataInfo = async (width, height, mode, pageNumber = 0) => {
         try {
             let _reqBatch = {
                 filename: `${params?.file?.split('.')[0]}_page-${pageNumber}.jpeg.json`,
                 bbox_type: mode,
                 action_type: params?.temp_disp_id ? "edit" : "create",
                 temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : "",
-                temp_version: additionalData?.pbrVersion ? additionalData?.pbrVersion : 0
+                temp_version: params?.temp_disp_id ? 1 : 0
             };
             const batchRes = await getBoundingBoxData(_reqBatch);
             setOrigianalResponse(batchRes)
@@ -633,8 +633,8 @@ function PaperBatchRecordsTemplate() {
     useEffect(() => {
 
         getImage()
-        const list = document.getElementsByTagName("canvas")[0]
-        getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode,pageNumber-1);
+        // const list = document.getElementsByTagName("canvas")[0]
+        // getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode,pageNumber-1);
         let obj = {
             material_num: matBatch.material_num,
             batch: matBatch.batch
@@ -760,7 +760,7 @@ function PaperBatchRecordsTemplate() {
             redirect: "follow",
         };
         let response = await fetch(
-            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${params?.file.split(".")[0]}.pdf&pageId=${val?val:pageNumber}`,
+            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${params?.file.split(".")[0]}.pdf&pageId=${val ? val : pageNumber}`,
             requestOptions
         )
             .then((response) => response)
@@ -768,13 +768,13 @@ function PaperBatchRecordsTemplate() {
             .catch((error) => console.log("error", error));
 
         let res = await response.blob();
-        if(res.type=== "application/json"){
+        if (res.type === "application/json") {
             openNotification("Page number not valid")
-        }else{
+        } else {
             setDisplayImage(window.webkitURL.createObjectURL(res))
         }
 
-        
+
     }
 
 
@@ -782,19 +782,23 @@ function PaperBatchRecordsTemplate() {
 
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
-            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode,pageNumber-1);
+            // getBoundingBoxDataInfo(list?.height, list?.height, selectedMode,pageNumber-1);
             setImageWidth(list?.width)
             setimageHeight(list?.height)
+
         }, 3000)
+        // const list = document.getElementsByTagName("canvas")[0]
+        // let demo = document.querySelectorAll('img[usemap=#my-map]');
+        // setImageWidth(list?.width)
+        // setimageHeight(list?.height)
+    }, [document.getElementsByTagName("canvas")[0], displayImage]);
 
-    }, [document.getElementsByTagName("canvas")[0]]);
+    useEffect(() => {
+        if (imageWidth !== 0 && imageHeight !== 0) {
+            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1);
+        }
 
-    // useEffect(() => {
-    //     if (imageWidth !== undefined && imageHeight !== undefined) {
-    //         getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode,pageNumber-1);
-    //     }
-
-    // }, [imageWidth, imageHeight]);
+    }, [imageWidth, imageHeight, displayImage]);
 
 
 
@@ -920,7 +924,7 @@ function PaperBatchRecordsTemplate() {
                 let login_response = JSON.parse(localStorage.getItem('login_details'));
                 let _reqBatch = {
                     pbrTemplateName: params.tempalteName,
-                    custKey: 'PBR',
+                    custKey: '1000',
                     pbrTemplateVersion: 1,
                     // pbrTemplateStatus: 'DRFT',
                     createdBy: login_response?.email_id,
@@ -1116,7 +1120,7 @@ function PaperBatchRecordsTemplate() {
             description: val ? val : disc,
             btn,
             key,
-            style:{zIndex:99999},
+            style: { zIndex: 99999 },
             type: "error",
             placement: "top",
             onClose: close,
@@ -1235,13 +1239,13 @@ function PaperBatchRecordsTemplate() {
             setFileList(res.Found_file_list)
             setSearchedFileList(res.Searched_file_list)
             dispatch(hideLoader());
-           
+
         } else {
             setFileList(res.Found_file_list)
             setSearchedFileList(res.Searched_file_list)
             dispatch(showNotification('error', 'No Data Found'))
             dispatch(hideLoader());
-            
+
         }
 
     }
@@ -1484,12 +1488,12 @@ function PaperBatchRecordsTemplate() {
     const handlePageChange = (val) => {
         // setDisplayImage("")
         setAreasMap({ ...areasMap, areas: [] });
-        if( val < 1){
+        if (val < 1) {
             alert("minium page 1")
-        }else{
+        } else {
             getImage(val)
             setPageNumber(val)
-            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode,val-1);
+            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, val - 1);
         }
 
     }
@@ -1525,7 +1529,7 @@ function PaperBatchRecordsTemplate() {
                                     }}>
                                     Publish
                                 </Button>
-                                <Button style={{ margin: "0px 16px" }} className='custom-primary-btn'>Batch Process</Button>
+                                <Button style={{ margin: "0px 16px" }} onClick={batchProcess} className='custom-primary-btn'>Batch Process</Button>
                             </div>)
                             : (
                                 <div className='btns'>
@@ -1574,7 +1578,7 @@ function PaperBatchRecordsTemplate() {
                                         // labelCol={{ span: 8 }}
                                         // wrapperCol={{ span: 16 }}
                                         layout='vertical'
-                                        initialValues={{ material_num: matBatch?.material_num, batch: matBatch?.batch, template_name: params?.tempalteName, status: additionalData?.pbrTemplateStatus ? additionalData?.pbrTemplateStatus : templateStatus,template_id: params?.temp_disp_id?params?.temp_disp_id:templateId}}
+                                        initialValues={{ material_num: matBatch?.material_num, batch: matBatch?.batch, template_name: params?.tempalteName, status: additionalData?.pbrTemplateStatus ? additionalData?.pbrTemplateStatus : templateStatus, template_id: params?.temp_disp_id ? params?.temp_disp_id : templateId }}
                                     >
                                         <Form.Item
                                             name='template_id'
@@ -2529,7 +2533,7 @@ function PaperBatchRecordsTemplate() {
                                                                 <Form.Item>
                                                                     <div
                                                                         className='firstParameter-para'
-                                                                        style={{pointerEvents:params.fromScreen === "Workflow" ? "none" : "all"}}
+                                                                        style={{ pointerEvents: params.fromScreen === "Workflow" ? "none" : "all" }}
                                                                         onClick={() => {
                                                                             if (activeNumber === 0) {
                                                                                 parameterAddingHandler()
@@ -2566,7 +2570,7 @@ function PaperBatchRecordsTemplate() {
                                                         type='default'
                                                         className='saveSnippetsBtn'
                                                         onClick={() => saveTemplateHandler()}
-                                                        disabled = {params?.fromScreen === "Workflow" ? true:false}
+                                                        disabled={params?.fromScreen === "Workflow" ? true : false}
                                                     >
                                                         Save
                                                     </Button>
@@ -2594,9 +2598,9 @@ function PaperBatchRecordsTemplate() {
 
                                         </p>
                                         <div>
-                                            <LeftOutlined className='icon_size' onClick={()=>handlePageChange(pageNumber-1)}/>
-                                            <Input style={{ width: 35 }} value={pageNumber} onChange={()=>handlePageChange}/>
-                                            <RightOutlined className='icon_size' onClick={()=>handlePageChange(pageNumber+1)}/>
+                                            <LeftOutlined className='icon_size' onClick={() => handlePageChange(pageNumber - 1)} />
+                                            <Input style={{ width: 35 }} value={pageNumber} onChange={() => handlePageChange} />
+                                            <RightOutlined className='icon_size' onClick={() => handlePageChange(pageNumber + 1)} />
                                         </div>
 
                                     </div>
@@ -2636,16 +2640,16 @@ function PaperBatchRecordsTemplate() {
                                 <div className='snippetsImg'></div>
                             </div>
                             <div className='pdfToImgBlock' onClick={onClickImage}>
-                                {areasMap.areas.length > 0 && (
-                                    <ImageMapper
-                                        id='imageMApper'
-                                        className='pdfToImageWrapper'
-                                        src={displayImage}
-                                        map={areasMap}
-                                        // onLoad={() => load()}
-                                        onClick={area => clicked(area)}
-                                    />
-                                )}
+                                {/* {areasMap.areas.length > 0 && ( */}
+                                <ImageMapper
+                                    id='imageMApper'
+                                    className='pdfToImageWrapper'
+                                    src={displayImage}
+                                    map={areasMap}
+                                    // onLoad={() => load()}
+                                    onClick={area => clicked(area)}
+                                />
+                                {/* )} */}
                             </div>
                         </div>
                     </div>
