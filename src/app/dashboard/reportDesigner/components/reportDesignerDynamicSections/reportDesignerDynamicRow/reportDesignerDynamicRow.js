@@ -7,8 +7,7 @@ function ReportDesignerDynamicRow(props) {
 	const { fieldKey } = props;
 
 	const isEditableHandler = (_prev, _current, _name, _fieldKeys) => {
-		let value_curr = [];
-		return value_curr ? value_curr : false;
+		return true;
 	};
 
 	return (

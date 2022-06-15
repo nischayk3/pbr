@@ -1,0 +1,105 @@
+{
+    "Data": [
+        {
+            "app_data": "CHART",
+            "app_id": "C303",
+            "app_type": "CHART",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "Bhanu",
+            "created_on": "2022-06-09T07:11:23.804009Z",
+            "creator_email": "bhanu.thareja@mareana.com",
+            "cust_key": "1000",
+            "dag_id": "C303_CHART_422",
+            "email_config": {
+                "frequency": "27 13 * * 1-5",
+                "scheduled_time": "13:27:49",
+                "selected_days_obj": {
+                    "Friday": false,
+                    "Monday": false,
+                    "Saturday": false,
+                    "Sunday": false,
+                    "Thursday": false,
+                    "Tuesday": false,
+                    "Wednesday": false
+                }
+            },
+            "frequency": "27 13 * * 1-5",
+            "frequency_unit": "Daily",
+            "job_id": 422,
+            "job_status": "scheduled",
+            "job_type": "event",
+            "notify_emails": [],
+            "scheduled_end": "2030-12-12T00:00:00Z",
+            "scheduled_start": "2022-06-08T00:00:00Z"
+        },
+        {
+            "app_data": "CHART",
+            "app_id": "C303",
+            "app_type": "CHART",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "Bhanu",
+            "created_on": "2022-06-08T07:58:24.385412Z",
+            "creator_email": "bhanu.thareja@mareana.com",
+            "cust_key": "1000",
+            "dag_id": "C303_CHART_394",
+            "email_config": {
+                "frequency": "27 13 * * *",
+                "scheduled_time": "13:27:49",
+                "selected_days_obj": {
+                    "Friday": false,
+                    "Monday": false,
+                    "Saturday": false,
+                    "Sunday": false,
+                    "Thursday": false,
+                    "Tuesday": false,
+                    "Wednesday": false
+                }
+            },
+            "frequency": "27 13 * * *",
+            "frequency_unit": "Daily",
+            "job_id": 394,
+            "job_status": "scheduled",
+            "job_type": "event",
+            "notify_emails": [],
+            "scheduled_end": "2030-12-12T00:00:00Z",
+            "scheduled_start": "2022-06-08T00:00:00Z"
+        },
+        {
+            "app_data": "CHART",
+            "app_id": "C303",
+            "app_type": "CHART",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "Bhanu",
+            "created_on": "2022-06-08T07:58:12.438295Z",
+            "creator_email": "bhanu.thareja@mareana.com",
+            "cust_key": "1000",
+            "dag_id": "C303_CHART_393",
+            "email_config": {
+                "frequency": "27 13 * * *",
+                "scheduled_time": "13:27:49",
+                "selected_days_obj": {
+                    "Friday": false,
+                    "Monday": false,
+                    "Saturday": false,
+                    "Sunday": false,
+                    "Thursday": false,
+                    "Tuesday": false,
+                    "Wednesday": false
+                }
+            },
+            "frequency": "27 13 * * *",
+            "frequency_unit": "Daily",
+            "job_id": 393,
+            "job_status": "scheduled",
+            "job_type": "event",
+            "notify_emails": [],
+            "scheduled_end": "2030-12-12T00:00:00Z",
+            "scheduled_start": "2022-06-08T00:00:00Z"
+        }
+    ],
+    "Message": "Sucess",
+    "statuscode": 200
+}

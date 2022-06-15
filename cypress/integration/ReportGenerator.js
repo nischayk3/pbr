@@ -95,10 +95,10 @@ describe("Report", () => {
         cy.get('.ant-input').clear();
         cy.get('.ant-input').type('R391{enter}');
         cy.get('.ant-table-row > :nth-child(1) > div').click();
-        cy.get('.ant-table-row > :nth-child(2)').click();
         cy.wait(5000)
-        // cy.get('.ant-input').click();
-        // cy.get('.ant-input').type('hello');
+        cy.get(':nth-child(1) > .ant-collapse-item > .ant-collapse-header > div > .anticon > svg').click();
+        cy.get('.ant-input').clear()
+        cy.get('.ant-input').type('key1')
     })
     it('Load Report Generator via tile ', () => {
         const url = Cypress.config().baseUrl
@@ -110,5 +110,30 @@ describe("Report", () => {
         cy.wait(1000)
         cy.get('#rc-tabs-0-panel-Generate\\ Report\\ Variant > .tile > :nth-child(1) > .chart-tiles').click();
     })
+    it("Close Modal", () => {
+        const url = Cypress.config().baseUrl
+        cy.log('Opening a report template')
+        cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
+        cy.visit(url + '/#/dashboard/report_designer')
+        cy.get('.ant-tabs-nav-list > :nth-child(2)').click();
+        cy.wait(1000)
+        cy.get('#rc-tabs-0-panel-Generate\\ Report\\ Variant > .create-new > .anticon > svg').click();
+        cy.get('.ant-modal-close-x').click();
+    });
+
+    it("Create via Modal", () => {
+        const url = Cypress.config().baseUrl
+        cy.log('Opening a report template')
+        cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
+        cy.visit(url + '/#/dashboard/report_designer')
+        cy.get('.ant-tabs-nav-list > :nth-child(2)').click();
+        cy.wait(1000)
+        cy.get('#rc-tabs-0-panel-Generate\\ Report\\ Variant > .create-new > .anticon > svg').click();
+        cy.wait(500);
+        cy.get(':nth-child(1) > .landing-tile').click()
+        cy.wait(4000)
+        cy.get('[style="background-color: rgb(9, 49, 133); color: white; border-radius: 4px; margin-left: 88%; margin-top: 70px;"] > span').click()
+
+    });
 
 });
