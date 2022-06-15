@@ -72,8 +72,8 @@
 
 		p.ant-upload-text {
 			font-family: var(--primary-font-family);
-			font-weight: 400;
-			font-size: 11px;
+			font-weight: 400 !important;
+			font-size: 11px !important;
 			color: #000000;
 		}
 
@@ -92,8 +92,8 @@
 			align-items: center;
 			justify-content: center;
 			font-family: var(--primary-font-family);
-			font-weight: 400;
-			font-size: 11px;
+			font-weight: 400 !important;
+			font-size: 11px !important;
 			color: #575757;
 		}
 	}
@@ -101,7 +101,7 @@
 
 .hierarchyBlock {
 	font-family: var(--primary-font-family);
-	font-weight: 400;
+	font-weight: 400 !important;
 	font-size: 14px;
 	color: #000000;
 
@@ -127,8 +127,8 @@ button.saveSnippetsBtn {
 	width: 100%;
 	margin-top: 15px;
 	font-family: var(--primary-font-family);
-	font-weight: 400;
-	font-size: 14px;
+	font-weight: 400 !important;
+	font-size: 14px !important;
 	color: #262626;
 	border: 1px solid #486bc9;
 	border-radius: 4px;
@@ -144,8 +144,8 @@ button.saveSnippetsBtn {
 button.defineTableBtn {
 	background-color: var(--primary-color);
 	border-radius: 4px;
-	font-weight: 400;
-	font-size: 14px;
+	font-weight: 400 !important;
+	font-size: 14px !important;
 	line-height: 22px;
 	font-family: var(--primary-font-family);
 }
@@ -165,8 +165,8 @@ button.defineTableBtn {
 	.ant-collapse-header {
 		background-color: #f1f7ff;
 		font-family: var(--secondary-font-family);
-		font-weight: 500;
-		font-size: 16px;
+		font-weight: 500 !important;
+		font-size: 16px !important;
 		color: #4d4d4d !important;
 	}
 
@@ -186,8 +186,8 @@ button.defineTableBtn {
 		p.pbrCenterPanelHeader-para {
 			margin: 0px;
 			font-family: var(--secondary-font-family);
-			font-weight: 500;
-			font-size: 16px;
+			font-weight: 500 !important;
+			font-size: 16px !important;
 			color: #4d4d4d !important;
 			cursor: pointer;
 
@@ -195,8 +195,8 @@ button.defineTableBtn {
 				color: var(--primary-color);
 				margin-left: 30px;
 				font-family: var(--primary-font-family);
-				font-weight: 400;
-				font-size: 14px;
+				font-weight: 400 !important;
+				font-size: 14px !important;
 			}
 		}
 	}
@@ -204,8 +204,8 @@ button.defineTableBtn {
 
 label {
 	font-family: var(--primary-font-family);
-	font-size: 14px;
-	font-weight: 400;
+	font-size: 14px !important;
+	font-weight: 400 !important;
 	color: #262626 !important;
 	line-height: 22px;
 }
@@ -273,8 +273,8 @@ label {
 		p {
 			color: #787878;
 			font-family: var(--primary-font-family);
-			font-size: 14px;
-			font-weight: 400;
+			font-size: 14px !important;
+			font-weight: 400 !important;
 			border-radius: 4px;
 			background: #ffffff;
 			border: 1px dashed #d9d9d9;
@@ -302,12 +302,12 @@ label {
 	.drawSnippet {
 		span {
 			margin-right: 6px;
-			font-size: 16px;
+			font-size: 16px !important;
 		}
 	}
 }
 .cropSnippet {
-	font-size: 20px;
+	font-size: 20px !important;
 	margin-top: 2px;
 }
 .template_input {
@@ -319,6 +319,13 @@ label {
 	justify-content: space-between;
 }
 .icon_size {
-	font-size: 16px;
+	font-size: 16px !important;
 	cursor: pointer;
+}
+.pbr-content-layout {
+	overflow-y: scroll;
+	height: 90vh
+}
+.ant-notification {
+	z-index :9999999 !important
 }

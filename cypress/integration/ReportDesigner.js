@@ -131,8 +131,6 @@ describe("Report Designer", () => {
     cy.get('.sub-header-btns > :nth-child(1) > span').click();
     cy.wait(1000)
     cy.get('.ant-modal-close-x').click();
-    // /* ==== Generated with Cypress Studio ==== */
-    // cy.get('.sub-header-btns > :nth-child(1) > span').click();
-    // /* ==== End Cypress Studio ==== */
+    cy.get('[style="display: grid; grid-template-columns: 1fr 1fr;"] > :nth-child(2) > .anticon > svg').click();
   });
 });

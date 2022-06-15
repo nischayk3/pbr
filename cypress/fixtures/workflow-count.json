@@ -4,7 +4,12 @@
 			"application_type": "CHART",
 			"item_count": 2.0,
 			"text": "Chart Approval"
-		}	
+		},
+		{
+			"application_type": "PARAM",
+			"item_count": 2,
+			"text": "Param Data Approval"
+		}
 	],
 	"counts": [
 		{

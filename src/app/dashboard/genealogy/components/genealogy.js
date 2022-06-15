@@ -8,11 +8,10 @@
 
 import React, { useState } from 'react';
 import {
-
 	DownloadOutlined,
 	InboxOutlined
 } from '@ant-design/icons';
-import { Button, Modal, Tabs, Upload } from 'antd';
+import { Button, Modal, Tabs, Upload, Result, Typography } from 'antd';
 import { useDispatch } from 'react-redux';
 import batchIcon from '../../../../assets/images/material.png';
 import {
@@ -40,6 +39,7 @@ import TreePlot from './TreePlot/TreePlot';
 import Filter from './genealogyFilter';
 
 const { TabPane } = Tabs;
+const { Paragraph, Text } = Typography;
 const { Dragger } = Upload;
 
 let initialPanes = [
@@ -74,11 +74,14 @@ function Genealogy() {
 	const [uploadId, setUploadId] = useState('');
 	const [collapseKey, setCollapseKey] = useState('0');
 	const [nodeTitle, setNodeTitle] = useState('');
+	const [isFileUploaded, setIsFileUploaded] = useState(false);
+	const [uploadedFileInfo, setUploadedFileInfo] = useState([]);
+	const [fileMessage, setFileMessage] = useState('');
+	const [fileUploadResponse, setFileUploadResponse] = useState('');
 
 	const dispatch = useDispatch();
 
 	const onClickNode = node => {
-
 		if (node.clickType === 'backward') {
 			setGenealogyData([]);
 			let _reqBackward = {
@@ -175,7 +178,7 @@ function Genealogy() {
 
 			setUploadId(uploadNodeId);
 			setIsUploadVisible(true);
-
+			setIsFileUploaded(false)
 		}
 	};
 
@@ -373,27 +376,27 @@ function Genealogy() {
 		remove(targetKey);
 	};
 
-	const downloadFile = async val => {
-		let uri =
-			'SELECT * FROM tran_product_params WHERE batch_num=' + `'${limsBatch}'`;
-		let login_response = JSON.parse(localStorage.getItem('login_details'));
-		let req = {
-			export_csv: true,
-			query: uri,
-			table_name: 'tran_product_params',
-			'x-access-token': login_response.token ? login_response.token : '',
-			'resource-name': 'GENEALOGY'
-		};
-		try {
-			dispatch(showLoader());
-			const download = await downloadDataTable(req);
+	// const downloadFile = async val => {
+	// 	let uri =
+	// 		'SELECT * FROM tran_product_params WHERE batch_num=' + `'${limsBatch}'`;
+	// 	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	// 	let req = {
+	// 		export_csv: true,
+	// 		query: uri,
+	// 		table_name: 'tran_product_params',
+	// 		'x-access-token': login_response.token ? login_response.token : '',
+	// 		'resource-name': 'GENEALOGY'
+	// 	};
+	// 	try {
+	// 		dispatch(showLoader());
+	// 		const download = await downloadDataTable(req);
 
-			dispatch(hideLoader());
-		} catch (error) {
-			dispatch(hideLoader());
-			dispatch(showNotification('error', 'error'));
-		}
-	};
+	// 		dispatch(hideLoader());
+	// 	} catch (error) {
+	// 		dispatch(hideLoader());
+	// 		dispatch(showNotification('error', 'error'));
+	// 	}
+	// };
 
 	const fileUpload = async _fileRequest => {
 		try {
@@ -403,24 +406,26 @@ function Genealogy() {
 				const fileName = [];
 				const fileSize = [];
 				setUploading(false);
-				dispatch(showNotification('success', fileResponse.Message));
+				setFileUploadResponse(fileResponse.Status)
+				setFileMessage(fileResponse.Message)
 				const duplicateFile = fileResponse.data
+				setUploadedFileInfo(duplicateFile);
 				const filterDuplicateFile = uploadFileDetail.filter(item => !duplicateFile.includes(item.fileName))
-				console.log("filterDuplicateFile", filterDuplicateFile)
 				filterDuplicateFile.map((item) => {
 					fileName.push(item.fileName)
 					fileSize.push(item.fileSize)
 				})
 				let login_response = JSON.parse(localStorage.getItem('login_details'));
+				console.log("login_response", login_response)
 				const data = fileData && fileData.split('|');
-				console.log("filterDuplicateFile", filterDuplicateFile)
-				console.log("fileName", fileName, fileSize)
+				setIsUploadVisible(false)
+				setIsFileUploaded(true);
 				if (fileName !== null) {
 					const reqData = {
 						batchNum: data[2],
 						changedBy: null,
-						createdBy: login_response.firstname + login_response.lastname,
-						custKey: '123',
+						createdBy: login_response.email_id,
+						custKey: '1000',
 						filename: fileName,
 						fileSize: fileSize,
 						productNum: data[1],
@@ -431,7 +436,20 @@ function Genealogy() {
 					geanealogyFileDataUpload(reqData);
 				}
 
+			} else if (fileResponse.Status === 200) {
+				setFileUploadResponse(fileResponse.Status)
+				setUploading(false);
+				setUploadedFileInfo(fileResponse.Data);
+				setIsUploadVisible(false);
+				setIsFileUploaded(true);
+				setFileMessage(fileResponse.Message);
+			} else if (fileResponse === 'Internal Server Error') {
+				setUploading(false);
+				setFileMessage('')
+				dispatch(showNotification('error', 'Internal Server Error'));
 			} else {
+				setFileMessage('')
+				setUploading(false);
 				dispatch(showNotification('error', fileResponse.Message));
 			}
 		} catch (error) {
@@ -455,10 +473,8 @@ function Genealogy() {
 	};
 
 	const handleClickUpload = () => {
-
 		const file = uploadFile;
 		fileUpload(file);
-
 	};
 
 	const remove = targetKey => {
@@ -514,14 +530,10 @@ function Genealogy() {
 			const fileName = [];
 			const fileSize = [];
 			const fileDetail = [];
-
 			const nodeFileData = fileData && fileData.split('|');
-
 			var formData = new FormData();
-
 			info && info.fileList.map((item) => {
 				formData.append('file', item.originFileObj);
-
 				fileDetail.push({
 					fileName: item.name,
 					fileSize: item.size
@@ -529,16 +541,13 @@ function Genealogy() {
 				fileName.push(item.name)
 				fileSize.push(item.size)
 			})
-
 			formData.append('fileSize', fileSize)
 			formData.append('batchNum', nodeFileData[2])
 			formData.append('productNum', nodeFileData[1])
 			setUploadFileDetail(fileDetail);
 			setUploadFileName(fileName);
 			setUploadFile(formData);
-			dispatch(
-				showNotification('error', `${info.file.name} file uploaded successfully.`)
-			);
+
 		},
 		onDrop(e) {
 			console.log('Dropped files', e.dataTransfer.files);
@@ -554,9 +563,12 @@ function Genealogy() {
 	const handleCancel = () => {
 		setIsUploadVisible(false);
 		setUploading(false);
-
+		setUploadFileName([])
 	};
-
+	const handleCancelSuccess = () => {
+		setIsFileUploaded(false);
+	};
+	console.log("uploadedFileInfo", fileUploadResponse, uploadedFileInfo)
 	return (
 		<div className='custom-wrapper'>
 			<BreadCrumbWrapper />
@@ -622,7 +634,7 @@ function Genealogy() {
 								batchInfo={batchInfo}
 								processInput={processInput}
 								processOutput={processOutput}
-								fileDownload={downloadFile}
+								//fileDownload={downloadFile}
 								productCode={productCode}
 								nodeTitle={nodeTitle}
 								productType={chartType}
@@ -656,11 +668,11 @@ function Genealogy() {
 										or other band files
 									</p>
 								</Dragger>
-								{uploadFileName.length > 0 ? (
+								{uploadFileName.length > 0 && (
 									<div className='file-upload-section'>
 										<div className='upload-btn'>
 											<Button
-												disabled={uploadFileName.length === 0}
+												disabled={uploadFileName.length <= 0}
 												loading={uploading}
 												onClick={() => handleClickUpload()}>
 												{uploading ? 'Uploading' : 'Upload'}
@@ -668,7 +680,43 @@ function Genealogy() {
 											<Button onClick={handleCancel}>Cancel</Button>
 										</div>
 									</div>
-								) : null}
+								)}
+
+							</Modal>
+							<Modal
+								width={500}
+								visible={isFileUploaded}
+								onCancel={handleCancelSuccess}
+								footer={null}>
+								{fileUploadResponse === 200 && (
+									<Result
+										status="error"
+										title={fileMessage}
+									>
+										{fileMessage && (
+											<div className="desc">
+												{uploadedFileInfo && uploadedFileInfo.map((item) => (
+													<Paragraph>
+														<p>{item}</p>
+													</Paragraph>
+												))}
+											</div>
+										)}
+									</Result>
+								)}
+								{fileUploadResponse === 202 && (<Result
+									status="success"
+									title="Successfully File Uploaded!"
+									subTitle={uploadedFileInfo.length > 0 ? fileMessage : ''}
+								>
+									{uploadedFileInfo && (<div className="desc">
+										{uploadedFileInfo.map((item) => (
+											<Paragraph>
+												<p>{item}</p>
+											</Paragraph>
+										))}
+									</div>)}
+								</Result>)}
 							</Modal>
 						</>
 					</TabPane>

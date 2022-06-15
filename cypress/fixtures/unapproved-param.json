@@ -1,0 +1,116 @@
+{
+	"Data": [
+		{
+			"batch_num": "ABL12470",
+			"created_by": "dinesh.kumar@mareana.com",
+			"parameter_name": "ASSAY 1DECPT",
+			"parameter_value": "8",
+			"prod_param_id": 9077,
+			"product_num": "13322454",
+			"recorded_date": "2019-11-05T10:12:00Z",
+			"site_code": "1255",
+			"uom_code": "%"
+		},
+		{
+			"batch_num": "ABL12461",
+			"created_by": "dinesh.kumar@mareana.com",
+			"parameter_name": "ASSAY 1DECPT",
+			"parameter_value": "8",
+			"prod_param_id": 9068,
+			"product_num": "13322454",
+			"recorded_date": "2019-11-05T10:12:00Z",
+			"site_code": "1255",
+			"uom_code": "%"
+		},
+		{
+			"batch_num": "ABL12462",
+			"created_by": "dinesh.kumar@mareana.com",
+			"parameter_name": "ASSAY 1DECPT",
+			"parameter_value": "8",
+			"prod_param_id": 9069,
+			"product_num": "13322454",
+			"recorded_date": "2019-11-05T10:12:00Z",
+			"site_code": "1255",
+			"uom_code": "%"
+		},
+		{
+			"batch_num": "ABL12463",
+			"created_by": "dinesh.kumar@mareana.com",
+			"parameter_name": "ASSAY 1DECPT",
+			"parameter_value": "8",
+			"prod_param_id": 9070,
+			"product_num": "13322454",
+			"recorded_date": "2019-11-05T10:12:00Z",
+			"site_code": "1255",
+			"uom_code": "%"
+		},
+		{
+			"batch_num": "ABL12464",
+			"created_by": "dinesh.kumar@mareana.com",
+			"parameter_name": "ASSAY 1DECPT",
+			"parameter_value": "8",
+			"prod_param_id": 9071,
+			"product_num": "13322454",
+			"recorded_date": "2019-11-05T10:12:00Z",
+			"site_code": "1255",
+			"uom_code": "%"
+		},
+		{
+			"batch_num": "ABL12465",
+			"created_by": "dinesh.kumar@mareana.com",
+			"parameter_name": "ASSAY 1DECPT",
+			"parameter_value": "8",
+			"prod_param_id": 9072,
+			"product_num": "13322454",
+			"recorded_date": "2019-11-05T10:12:00Z",
+			"site_code": "1255",
+			"uom_code": "%"
+		},
+		{
+			"batch_num": "ABL12466",
+			"created_by": "dinesh.kumar@mareana.com",
+			"parameter_name": "ASSAY 1DECPT",
+			"parameter_value": "8",
+			"prod_param_id": 9073,
+			"product_num": "13322454",
+			"recorded_date": "2019-11-05T10:12:00Z",
+			"site_code": "1255",
+			"uom_code": "%"
+		},
+		{
+			"batch_num": "ABL12467",
+			"created_by": "dinesh.kumar@mareana.com",
+			"parameter_name": "ASSAY 1DECPT",
+			"parameter_value": "8",
+			"prod_param_id": 9074,
+			"product_num": "13322454",
+			"recorded_date": "2019-11-05T10:12:00Z",
+			"site_code": "1255",
+			"uom_code": "%"
+		},
+		{
+			"batch_num": "ABL12468",
+			"created_by": "dinesh.kumar@mareana.com",
+			"parameter_name": "ASSAY 1DECPT",
+			"parameter_value": "8",
+			"prod_param_id": 9075,
+			"product_num": "13322454",
+			"recorded_date": "2019-11-05T10:12:00Z",
+			"site_code": "1255",
+			"uom_code": "%"
+		},
+		{
+			"batch_num": "ABL12469",
+			"created_by": "dinesh.kumar@mareana.com",
+			"parameter_name": "ASSAY 1DECPT",
+			"parameter_value": "8",
+			"prod_param_id": 9076,
+			"product_num": "13322454",
+			"recorded_date": "2019-11-05T10:12:00Z",
+			"site_code": "1255",
+			"uom_code": "%"
+		}
+	],
+	"Message": "Sucess",
+	"statuscode": 200
+}
