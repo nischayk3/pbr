@@ -157,7 +157,7 @@ function PaperBatchRecords() {
 				}
 				columns.push(obj)
 			})
-            
+
 			if (tableResponse['status-code'] === 200) {
 				setTemplateColumns(columns)
 				setTemplateData(tableResponse.Data);
@@ -654,7 +654,7 @@ function PaperBatchRecords() {
 							<Row>
 								<Radio.Group
 									// onChange={onChange}
-									defaultValue={dataView[0]?.filename}
+									defaultValue={dataView[0]?.actual_filename}
 									className='radioPdfBlock'
 									onChange={(e) => {
 										setFileName(e.target.value)

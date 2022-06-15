@@ -143,7 +143,7 @@ function PaperBatchRecordsTemplate() {
     const [modalData, setModalData] = useState([]);
     const [imageWidth, setImageWidth] = useState(842);
     const [imageHeight, setimageHeight] = useState(1089);
-    const [origianalResponse, setOrigianalResponse] = useState({});
+    const [pageLimit, setPageLimit] = useState(1);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [tableLoading, setTableLoading] = useState(false);
     const [searchedFileList, setSearchedFileList] = useState("");
@@ -583,7 +583,7 @@ function PaperBatchRecordsTemplate() {
                 temp_version: params?.temp_disp_id ? 1 : 0
             };
             const batchRes = await getBoundingBoxData(_reqBatch);
-            setOrigianalResponse(batchRes)
+            setPageLimit(batchRes?.Page)
             let areasArr = [];
             let width1 = width ? width : 848
             let height1 = height ? height : 1097
@@ -1489,11 +1489,32 @@ function PaperBatchRecordsTemplate() {
         // setDisplayImage("")
         setAreasMap({ ...areasMap, areas: [] });
         if (val < 1) {
-            alert("minium page 1")
+            dispatch(showNotification('error', 'Minium page 1'))
         } else {
-            getImage(val)
+            if (val > pageLimit) {
+                dispatch(showNotification('error', `Maximum page ${pageLimit}`))
+            } else {
+                getImage(val)
+                setPageNumber(val)
+                getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, val - 1);
+            }
+
+        }
+
+    }
+    const handlePageTextChange = (val) => {
+        if (val === "") {
+            dispatch(showNotification('error', `Minium page number 1`))
             setPageNumber(val)
-            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, val - 1);
+        } else if (Number(val) > pageLimit) {
+            dispatch(showNotification('error', `Maximum page ${pageLimit}`))
+        } else if (Number(val) < 1) {
+            dispatch(showNotification('error', 'Minium page 1'))
+        } else {
+            let num = Number(val)
+            getImage(num)
+            setPageNumber(num)
+            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, num - 1);
         }
 
     }
@@ -2598,8 +2619,8 @@ function PaperBatchRecordsTemplate() {
 
                                         </p>
                                         <div>
-                                            <LeftOutlined className='icon_size' onClick={() => handlePageChange(pageNumber - 1)} />
-                                            <Input style={{ width: 35 }} value={pageNumber} onChange={() => handlePageChange} />
+                                            <LeftOutlined disabled={true} className='icon_size' onClick={() => handlePageChange(pageNumber - 1)} />
+                                            <Input style={{ width: 35 }} value={pageNumber} onChange={(e) => handlePageTextChange(e.target.value)} />
                                             <RightOutlined className='icon_size' onClick={() => handlePageChange(pageNumber + 1)} />
                                         </div>
 
