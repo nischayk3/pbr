@@ -9,6 +9,11 @@
 			"application_type": "PARAM",
 			"item_count": 2,
 			"text": "Param Data Approval"
+		},
+		{
+			"application_type": "VIEW",
+			"item_count": 2,
+			"text": "View Approval"
 		}
 	],
 	"counts": [

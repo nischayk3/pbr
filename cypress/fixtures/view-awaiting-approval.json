@@ -1,0 +1,86 @@
+{
+	"Data": {
+		"config": [
+			{
+				"display_name": "Action",
+				"field_name": "appl_url",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Event Id",
+				"field_name": "event_id",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Application Type",
+				"field_name": "application_type",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Id",
+				"field_name": "Id",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "View Name",
+				"field_name": "view_name",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Version",
+				"field_name": "version",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Product Number",
+				"field_name": "product_num",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Creator",
+				"field_name": "created_by",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Creation Date",
+				"field_name": "created_on",
+				"id": 1234,
+				"visible": true
+			}
+		],
+		"data": [
+			{
+				"Id": "V259",
+				"appl_url": "/dashboard/view_creation",
+				"application_type": "VIEW",
+				"created_by": "vinay.reddy@mareana.com",
+				"created_on": "2022-05-14T03:37:11.927808+00:00",
+				"event_id": 90,
+				"product_num": "BELATACEPT",
+				"version": 1,
+				"view_name": "New2222"
+			},
+			{
+				"Id": "V261",
+				"appl_url": "/dashboard/view_creation",
+				"application_type": "VIEW",
+				"created_by": "mihir.bagga@mareana.com",
+				"created_on": "2022-05-14T07:30:36.829230+00:00",
+				"event_id": 91,
+				"product_num": "BELATACEPT",
+				"version": 1,
+				"view_name": "View_Function_click"
+			}
+		]
+	},
+	"Message": "Sucess",
+	"status-code": 200
+}
