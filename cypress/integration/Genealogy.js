@@ -74,9 +74,11 @@ describe("Genealogy", () => {
 		cy.get("#rc_select_3").type("RAW");
 		cy.wait(4000)
 		cy.get(".ant-select-item-option-content").eq(3).click({ force: true })
+
 	});
 
 	it("search again",()=>{
+		cy.wait(10000)
 		cy.get('#genealogy-search').click()
 		cy.wait(6000)
 		cy.get('#102279687 > #process-img').click()
