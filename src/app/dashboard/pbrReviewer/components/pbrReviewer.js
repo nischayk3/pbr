@@ -672,10 +672,10 @@ function PbrReviewer() {
                   background: "#ffffff",
                   borderColor: "#303f9f",
                   color: "#303f9f"
-
+                  
                 }}
                   onClick={showApproved}
-
+                  disabled={arr?.length == 0 ? true : false }
                 >Approve</Button>
 
 
@@ -707,7 +707,7 @@ function PbrReviewer() {
         handleClose={handleClose}
         eSignId={eSignId}
         screenName="Pbr Creation"
-        appType="VIEW"
+        appType="PBR"
       />
     </>
   )
