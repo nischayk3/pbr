@@ -27,10 +27,80 @@ describe("Genealogy", () => {
 		cy.visit(url + '/#/dashboard/genealogy')
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/genealogy')
-		cy.wait(10000)
+		
 		
 
 	});
+
+	it("reload",()=>{
+		cy.reload()
+		cy.wait(3000)
+	})
+
+		it("Select plant", () => {
+		cy.get(
+			":nth-child(1) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
+		).click();
+		cy.get("#rc_select_0").clear();
+		cy.get("#rc_select_0").type("1338");
+		cy.wait(4000)
+		cy.get(".ant-select-item-option-content").click({ force: true });
+	});
+
+	it("Selecting product", () => {
+		cy.get(
+			":nth-child(2) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
+		).click();
+		cy.get("#rc_select_1").clear();
+		cy.get("#rc_select_1").type("1089084");
+		cy.wait(4000)
+		cy.get(".ant-select-item-option-content").eq(1).click({ force: true })
+	})
+
+	it("Selecting Batch", () => {
+		cy.get(
+			":nth-child(3) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
+		).click();
+		cy.get("#rc_select_2").clear();
+		cy.get("#rc_select_2").type("394154");
+		cy.wait(4000)
+		cy.get(".ant-select-item-option-content").eq(2).click({ force: true })
+		cy.wait(4000)
+	})
+
+	it("Selecting Product type", () => {
+		cy.get('.ant-select-selection-overflow').click();
+		cy.get("#rc_select_3").clear();
+		cy.get("#rc_select_3").type("RAW");
+		cy.wait(4000)
+		cy.get(".ant-select-item-option-content").eq(3).click({ force: true })
+	});
+
+	it("search again",()=>{
+		cy.get('#genealogy-search').click()
+		cy.wait(6000)
+		cy.get('#102279687 > #process-img').click()
+		cy.get('#view-details-popup > span').click()
+		cy.wait(6000)
+		cy.get('.expand-drawer > img').click()
+		cy.wait(3000)
+		cy.get('.popout-table > .ant-collapse > :nth-child(1) > .ant-collapse-header > .panel-header').click()
+	})
+
+	it("search node",()=>{
+		cy.get('.ant-tabs-nav-list > :nth-child(2)').click()
+		cy.wait(3000)
+		cy.get('#rc_select_4').click();
+        cy.get('[style="height: 888px; position: relative; overflow: hidden;"] > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
+        cy.get('.search-tree > .anticon > svg').click();
+        cy.get('.close-searchicon > .anticon > svg').click();
+	});
+
+
+	it("reload",()=>{
+		cy.reload()
+		cy.wait(6000)
+	})
 
 	it("Select plant", () => {
 		cy.get(
@@ -168,69 +238,6 @@ describe("Genealogy", () => {
 		cy.get('#clear-search > span').click()
 	})
 
-	it("reload",()=>{
-		cy.reload()
-		cy.wait(3000)
-	})
-
-		it("Select plant", () => {
-		cy.get(
-			":nth-child(1) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
-		).click();
-		cy.get("#rc_select_0").clear();
-		cy.get("#rc_select_0").type("1338");
-		cy.wait(4000)
-		cy.get(".ant-select-item-option-content").click({ force: true });
-	});
-
-	it("Selecting product", () => {
-		cy.get(
-			":nth-child(2) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
-		).click();
-		cy.get("#rc_select_1").clear();
-		cy.get("#rc_select_1").type("1089084");
-		cy.wait(4000)
-		cy.get(".ant-select-item-option-content").eq(1).click({ force: true })
-	})
-
-	it("Selecting Batch", () => {
-		cy.get(
-			":nth-child(3) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
-		).click();
-		cy.get("#rc_select_2").clear();
-		cy.get("#rc_select_2").type("394154");
-		cy.wait(4000)
-		cy.get(".ant-select-item-option-content").eq(2).click({ force: true })
-		cy.wait(4000)
-	})
-
-	it("Selecting Product type", () => {
-		cy.get('.ant-select-selection-overflow').click();
-		cy.get("#rc_select_3").clear();
-		cy.get("#rc_select_3").type("RAW");
-		cy.wait(4000)
-		cy.get(".ant-select-item-option-content").eq(3).click({ force: true })
-	});
-
-	it("search again",()=>{
-		cy.get('#genealogy-search').click()
-		cy.wait(6000)
-		cy.get('#102279687 > #process-img').click()
-		cy.get('#view-details-popup > span').click()
-		cy.wait(6000)
-		cy.get('.expand-drawer > img').click()
-		cy.wait(3000)
-		cy.get('.popout-table > .ant-collapse > :nth-child(1) > .ant-collapse-header > .panel-header').click()
-	})
-
-	it("search node",()=>{
-		cy.get('.ant-tabs-nav-list > :nth-child(2)').click()
-		cy.wait(3000)
-		cy.get('#rc_select_4').click();
-        cy.get('[style="height: 888px; position: relative; overflow: hidden;"] > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
-        cy.get('.search-tree > .anticon > svg').click();
-        cy.get('.close-searchicon > .anticon > svg').click();
-	});
 
 	// })
 	// it("expand drawer",()=>{
