@@ -141,8 +141,8 @@ function PaperBatchRecordsTemplate() {
     });
     const [fileList, setFileList] = useState([]);
     const [modalData, setModalData] = useState([]);
-    const [imageWidth, setImageWidth] = useState(842);
-    const [imageHeight, setimageHeight] = useState(1089);
+    const [imageWidth, setImageWidth] = useState(0);
+    const [imageHeight, setimageHeight] = useState(0);
     const [pageLimit, setPageLimit] = useState(1);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [tableLoading, setTableLoading] = useState(false);
@@ -160,6 +160,7 @@ function PaperBatchRecordsTemplate() {
     const [templateVersion, setTemplateVersion] = useState("");
     const [templateStatus, setTemplateStatus] = useState("DRFT");
     const [pageNumber, setPageNumber] = useState(1);
+    const [originalResponse, setOriginalResponse] = useState({});
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
         setRightPanelCollapsed(!rightPanelCollapsed);
@@ -173,45 +174,22 @@ function PaperBatchRecordsTemplate() {
     const parameterAddingHandler = (a) => {
         setFileList([])
         if (activeNumber !== 0) {
-            if ((formValues[activeNumber - 1]?.name === "" || formValues[activeNumber - 1]?.name === undefined) ||
-                (formValues[activeNumber - 1]?.method === "" || formValues[activeNumber - 1]?.method === undefined)
-            ) {
-                setCallAdd(true)
-                openNotification()
-                let param = { anchorValue: '', anchorId: '' };
-                let obj = { ...parameterValue };
-                obj[`param${activeNumber + 1}`] = param;
-                setParameterValue(obj);
-                setActiveNumber(activeNumber + 1);
-
-            } else {
-                setCallAdd(false)
-                let param = { anchorValue: '', anchorId: '' };
-                let obj = { ...parameterValue };
-                obj[`param${activeNumber + 1}`] = param;
-                setParameterValue(obj);
-                setActiveNumber(activeNumber + 1);
-            }
-
+            setCallAdd(false)
+            let param = { anchorValue: '', anchorId: '' };
+            let obj = { ...parameterValue };
+            obj[`param${activeNumber + 1}`] = param;
+            setParameterValue(obj);
+            setActiveNumber(activeNumber + 1);
         } else {
             let openKey = parseInt(open) + 1
             setParamaterAdded(true);
             setOpen([`${openKey}`]);
             let key = Object.keys(parameterValue).length;
             let param = { anchorValue: '', anchorId: '' };
-            let val = `param${key}`;
-            let obj = { ...parameterValue };
-            if (activeNumber === 0) {
-                setParameterValue({ ...parameterValue, param1: param });
-                setActiveNumber(activeNumber + 1);
-            } else {
-                obj[`param${activeNumber + 1}`] = param;
-                setParameterValue(obj);
-                setActiveNumber(activeNumber + 1);
-            }
+            setParameterValue({ ...parameterValue, param1: param });
+            setActiveNumber(activeNumber + 1);
+
         }
-
-
     };
 
     const DraggerInputHandlerAnchor = (e, val) => {
@@ -583,6 +561,7 @@ function PaperBatchRecordsTemplate() {
                 temp_version: params?.temp_disp_id ? 1 : 0
             };
             const batchRes = await getBoundingBoxData(_reqBatch);
+            setOriginalResponse(batchRes)
             setPageLimit(batchRes?.Page)
             let areasArr = [];
             let width1 = width ? width : 848
@@ -634,7 +613,7 @@ function PaperBatchRecordsTemplate() {
 
         getImage()
         // const list = document.getElementsByTagName("canvas")[0]
-        // getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode,pageNumber-1);
+        getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1);
         let obj = {
             material_num: matBatch.material_num,
             batch: matBatch.batch
@@ -782,23 +761,51 @@ function PaperBatchRecordsTemplate() {
 
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
-            // getBoundingBoxDataInfo(list?.height, list?.height, selectedMode,pageNumber-1);
             setImageWidth(list?.width)
             setimageHeight(list?.height)
-
         }, 3000)
-        // const list = document.getElementsByTagName("canvas")[0]
-        // let demo = document.querySelectorAll('img[usemap=#my-map]');
-        // setImageWidth(list?.width)
-        // setimageHeight(list?.height)
     }, [document.getElementsByTagName("canvas")[0], displayImage]);
 
     useEffect(() => {
         if (imageWidth !== 0 && imageHeight !== 0) {
-            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1);
+            if (Object.keys(originalResponse).length>0) {
+                setAreasMap({ ...areasMap, areas: [] });
+                let areasArr = [];
+                originalResponse.Data.forEach((e) => {
+                    let x1 = e.key_left * imageWidth;
+                    let x2 = (e.key_left + e.key_width) * imageWidth;
+                    let y1 = e.key_top * imageHeight;
+                    let y2 = (e.key_top + e.key_height) * imageHeight;
+                    let obj = {
+                        snippetID: e.key_snippet_id,
+                        areaValue: e.key_text,
+                        shape: 'rect',
+                        coords: [x1, y1, x2, y2],
+                        preFillColor: 'transparent',
+                        fillColor: 'transparent',
+                        strokeColor: 'blue',
+                    };
+                    let valuex1 = e.value_left * imageWidth;
+                    let valuex2 = (e.value_left + e.value_width) * imageWidth;
+                    let valuey1 = e.value_top * imageHeight;
+                    let valuey2 = (e.value_top + e.value_height) * imageHeight;
+                    let obj1 = {
+                        snippetID: e.value_snippet_id,
+                        areaValue: e.value_text,
+                        shape: 'rect',
+                        coords: [valuex1, valuey1, valuex2, valuey2],
+                        preFillColor: 'transparent',
+                        fillColor: 'transparent',
+                        strokeColor: 'blue',
+                    };
+                    areasArr.push(obj);
+                    areasArr.push(obj1);
+                });
+                setAreasMap({ ...areasMap, areas: areasArr });
+            }
         }
 
-    }, [imageWidth, imageHeight, displayImage]);
+    }, [imageWidth, imageHeight, originalResponse]);
 
 
 

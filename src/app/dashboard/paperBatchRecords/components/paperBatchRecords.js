@@ -440,32 +440,11 @@ function PaperBatchRecords() {
 	return (
 		<div className='pbr-container'>
 			<div className='custom-wrapper pbr-wrapper'>
-				{/* <div className='sub-header'>
-                    <div className='sub-header-title'>
-                        <ArrowLeftOutlined className='header-icon' />
-                        <span className='header-title'>
-                            Paper Batch Records
-                        </span>
-                    </div>
-                </div> */}
+				
 				<BreadCrumbWrapper />
 			</div>
 			<Row className='p-28'>
 				<Col span={24} className='banner'>
-					{/* <Card bordered={false}>
-                        <div className='card-body-div'>
-                            <div className='text-descp'>
-                                <h2>
-                                    Howdy {localStorage.getItem('username')},
-                                </h2>
-                                <p>
-                                    In the mood to draw up some snippets today?
-                                </p>
-                            </div>
-                            <img src={illustrations} alt='banner' />
-                            <h6>{resultDate}</h6>
-                        </div>
-                    </Card> */}
 					<ScreenHeader
 						bannerbg={{
 							background:
@@ -504,8 +483,8 @@ function PaperBatchRecords() {
 											return {
 												onClick: event => {
                                                     handleClickTiles(record)
-													// history.push(`${match.url}/${record.pbr_template_disp_id}?file=${record?.pbr_template_info?.pbrTemplateInfo[0].filename}&temp_disp_id=${record.pbr_template_disp_id}&tempalteName=${record.pbr_template_name}&fromScreen=Workspace`)
-												}, // click row
+													
+												}, 
                                                 
 											}
 										}}
@@ -547,20 +526,7 @@ function PaperBatchRecords() {
 										</dl>
 									</Col>
 								</Row>
-								{/* <div className='card-legends'>
-                                    <h3>Recently created templates</h3>
-                                    <div className='legends'>
-                                        <p>
-                                            <span className='drft'></span>Draft
-                                        </p>
-                                        <p>
-                                            <span className='await'></span>Awaiting approval
-                                        </p>
-                                        <p>
-                                            <span className='aprv'></span>Approved
-                                        </p>
-                                    </div>
-                                </div> */}
+								
 								<Divider />
 								<Row gutter={24}>
 									{templateData &&
@@ -653,7 +619,6 @@ function PaperBatchRecords() {
 							</Row>
 							<Row>
 								<Radio.Group
-									// onChange={onChange}
 									defaultValue={dataView[0]?.actual_filename}
 									className='radioPdfBlock'
 									onChange={(e) => {
@@ -673,31 +638,6 @@ function PaperBatchRecords() {
 							</Row>
 						</Col>
 					</Row>
-
-					{/* <Row>
-                        <Col span={12}></Col>
-                        <Col span={12} className='newTemplate-contentBlock'>
-                            <Radio.Group
-                                // onChange={onChange}
-                                defaultValue={dataView[0]?.filename}
-                                className='radioPdfBlock'
-                                onChange={(e) => {
-                                    setFileName(e.target.value)
-                                    onRadioChange(e.target.value)
-                                }}
-                            >
-                                {dataView.map((item, index) => (
-                                    <Radio.Button value={`${item.filename}`} >
-                                        <div className='pdfListBlock'>
-                                            <img src={pdfIcon} alt='pdfIcon' />
-                                            <span>{item.filename.split('_')[0]}</span>
-                                        </div>
-                                    </Radio.Button>
-                                ))}
-                            </Radio.Group>
-                        </Col>
-                    </Row> */}
-
 				</div>
 			</Modal>
 		</div>
