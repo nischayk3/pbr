@@ -72,6 +72,22 @@ describe('Dashboard', () => {
 		cy.get(".ant-input-search-button").click()
 
 	})
+	it('Click on Table row', () => {
+		cy.log('Load Search Bar')
+		cy.log('Search View Id In Search Component')
+		cy.get("#login-btn", { timeout: 2000 }).click();
+		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
+		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
+		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
+		cy.wait(6000);
+		cy.get(".ant-input-affix-wrapper").type("D132").click({ force: true })
+		cy.wait(6000);
+		cy.get(".ant-input-search-button").click()
+		cy.wait(6000);
+		cy.get('.ant-table-row > :nth-child(2) > div').click();
+
+
+	})
 	it('Close Modal', () => {
 		cy.get("#login-btn", { timeout: 2000 }).click();
 		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
@@ -80,7 +96,7 @@ describe('Dashboard', () => {
 		cy.wait(2000);
 		cy.get('.create-new > .anticon > svg').click();
 		cy.wait(2000);
-		cy.get('.ant-modal-close-x > .anticon > svg > path').click();
+		cy.get('.ant-modal-close-x').click();
 
 
 	})
