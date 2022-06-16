@@ -45,7 +45,7 @@ describe("Report", () => {
         cy.get(':nth-child(1) > .ant-collapse-item > .ant-collapse-header').click();
         cy.get('.ant-input').click();
         cy.wait(1000)
-        cy.get(':nth-child(2) > .ant-collapse-item > .ant-collapse-header > .chart-names').click();
+        cy.get(':nth-child(2) > .ant-collapse-item > .ant-collapse-header > div').click();
         cy.wait(1000)
         cy.get(':nth-child(1) > .chart-name-rep > .tag-div > :nth-child(1) > .anticon > svg > path').click();
         cy.wait(1000)
