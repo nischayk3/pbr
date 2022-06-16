@@ -145,4 +145,32 @@ describe("Report Designer", () => {
     cy.get('[style="display: grid; grid-template-columns: 1fr 1fr;"] > :nth-child(2) > .anticon > svg').click();
     /* ==== End Cypress Studio ==== */
   });
+  it("Publish Report via search", () => {
+    const url = Cypress.config().baseUrl
+    cy.log('Opening a report template')
+    cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
+    cy.visit(url + '/#/dashboard/report_designer')
+    cy.wait(1000)
+    cy.get('.ant-input').clear();
+    cy.get('.ant-input').type('R391{enter}');
+    cy.get('.ant-table-row > :nth-child(1) > div').click();
+    cy.wait(6000)
+    cy.get('.report-secondary-btn').click()
+  });
+  it("Save as", () => {
+    const url = Cypress.config().baseUrl
+    cy.log('Opening a report template')
+    cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
+    cy.visit(url + '/#/dashboard/report_designer')
+    cy.wait(1000)
+    cy.get('.ant-input').clear();
+    cy.get('.ant-input').type('R391{enter}');
+    cy.get('.ant-table-row > :nth-child(1) > div').click();
+    cy.wait(6000)
+    cy.get('.ant-switch-handle').click()
+    cy.wait(500)
+    cy.get('.sub-header-btns > .anticon-ellipsis > svg').click()
+    cy.get('.ant-dropdown-menu-title-content').click();
+  });
+
 });
