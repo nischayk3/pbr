@@ -112,6 +112,7 @@ class Uploader extends Component {
 			selectedFileList: [],
 			nextStepDisabled: false,
 			isAuth: false,
+			approvedDataStatus: ''
 		});
 	};
 
@@ -254,7 +255,7 @@ class Uploader extends Component {
 						});
 						this.props.hideLoader()
 					}/* istanbul ignore next */
-					else{
+					else {
 						this.setState({
 							toastOpen: true,
 							showLoader: false,
@@ -365,7 +366,7 @@ class Uploader extends Component {
 					}
 				);
 				this.props.hideLoader()
-			} 
+			}
 			else {
 				this.setState(
 					{
@@ -422,7 +423,7 @@ class Uploader extends Component {
 				});
 				this.props.hideLoader()
 				this.props.showNotification('error', response.data.message);
-			} 
+			}
 		});
 	};
 
@@ -493,7 +494,7 @@ class Uploader extends Component {
 			signatureReason: '',
 			signatureScreen: '',
 			selectedFileList: [],
-			nextStepDisabled:false
+			nextStepDisabled: false
 		});
 	};
 
@@ -587,7 +588,6 @@ class Uploader extends Component {
 				this.setState({
 					currentStep: this.state.currentStep + 2,
 					nextStepDisabled: true,
-					
 				});
 				/* istanbul ignore next */
 			} else if (this.state.onChangeStatus === 201) {
@@ -612,7 +612,7 @@ class Uploader extends Component {
 			this.setState({
 				currentStep: this.state.currentStep + 1,
 			});
-		} 
+		}
 	};
 
 	prevStep = () => {
