@@ -592,7 +592,7 @@ function PaperBatchRecords() {
 											rules={[
 												{
 													required: true,
-													message: 'Please input your password!',
+													message: 'Please input Template Name',
 												},
 											]}
 

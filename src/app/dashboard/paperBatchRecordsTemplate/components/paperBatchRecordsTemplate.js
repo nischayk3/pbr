@@ -613,7 +613,7 @@ function PaperBatchRecordsTemplate() {
 
         getImage()
         // const list = document.getElementsByTagName("canvas")[0]
-        getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1);
+        // getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1);
         let obj = {
             material_num: matBatch.material_num,
             batch: matBatch.batch
@@ -684,7 +684,7 @@ function PaperBatchRecordsTemplate() {
     }, []);
 
     useEffect(() => {
-        if (templateInfo?.length > 0) {
+        if (templateInfo?.length > 0 && imageWidth !== 0 && imageHeight !== 0) {
             let arr = templateInfo.map((item, index) => ({
                 name: item.name,
                 method: item.method,
@@ -729,7 +729,7 @@ function PaperBatchRecordsTemplate() {
             dispatch(loadTemplateInfo([]))
         }
 
-    }, [areasMap])
+    }, [areasMap,imageWidth,imageHeight])
 
     const getImage = async (val) => {
         var requestOptions = {
@@ -752,13 +752,9 @@ function PaperBatchRecordsTemplate() {
         } else {
             setDisplayImage(window.webkitURL.createObjectURL(res))
         }
-
-
     }
 
-
     useEffect(() => {
-
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
             setImageWidth(list?.width)
@@ -768,44 +764,14 @@ function PaperBatchRecordsTemplate() {
 
     useEffect(() => {
         if (imageWidth !== 0 && imageHeight !== 0) {
-            if (Object.keys(originalResponse).length>0) {
-                setAreasMap({ ...areasMap, areas: [] });
-                let areasArr = [];
-                originalResponse.Data.forEach((e) => {
-                    let x1 = e.key_left * imageWidth;
-                    let x2 = (e.key_left + e.key_width) * imageWidth;
-                    let y1 = e.key_top * imageHeight;
-                    let y2 = (e.key_top + e.key_height) * imageHeight;
-                    let obj = {
-                        snippetID: e.key_snippet_id,
-                        areaValue: e.key_text,
-                        shape: 'rect',
-                        coords: [x1, y1, x2, y2],
-                        preFillColor: 'transparent',
-                        fillColor: 'transparent',
-                        strokeColor: 'blue',
-                    };
-                    let valuex1 = e.value_left * imageWidth;
-                    let valuex2 = (e.value_left + e.value_width) * imageWidth;
-                    let valuey1 = e.value_top * imageHeight;
-                    let valuey2 = (e.value_top + e.value_height) * imageHeight;
-                    let obj1 = {
-                        snippetID: e.value_snippet_id,
-                        areaValue: e.value_text,
-                        shape: 'rect',
-                        coords: [valuex1, valuey1, valuex2, valuey2],
-                        preFillColor: 'transparent',
-                        fillColor: 'transparent',
-                        strokeColor: 'blue',
-                    };
-                    areasArr.push(obj);
-                    areasArr.push(obj1);
-                });
-                setAreasMap({ ...areasMap, areas: areasArr });
+            for(let i= 0;i<2;i++){
+                setTimeout(() => {
+                    getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1);
+                }, i *1000)
+                
             }
         }
-
-    }, [imageWidth, imageHeight, originalResponse]);
+    }, [imageWidth, imageHeight]);
 
 
 
@@ -1454,7 +1420,7 @@ function PaperBatchRecordsTemplate() {
         setSelectedMode(item.key)
         setMenuKey(item.key)
         setAreasMap({ ...areasMap, areas: [] });
-        getBoundingBoxDataInfo(imageWidth, imageHeight, item.key)
+        getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, item.key);
 
     }
     const handleClose = () => {
@@ -2650,15 +2616,6 @@ function PaperBatchRecordsTemplate() {
                                             <ImCrop />
                                         </Dropdown>
                                     </div>
-                                    {/* <div className='undoSnippet'>
-                                        <img src={undoImg} className='panelCenterImg' />
-                                    </div>
-                                    <div className='redoSnippet'>
-                                        <img src={redoImg} className='panelCenterImg' />
-                                    </div>
-                                    <div className='contrastSnippet'>
-                                        <img src={contrastImg} className='panelCenterImg' />
-                                    </div> */}
                                 </Col>
                             </Row>
                         </div>
