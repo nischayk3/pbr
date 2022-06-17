@@ -28,9 +28,9 @@ function GenealogyDrawer(props) {
 		setVisible(false);
 		props.drawerClose(false);
 	};
-	const downloadFile = () => {
-		props.fileDownload(true);
-	};
+	// const downloadFile = () => {
+	// 	props.fileDownload(true);
+	// };
 
 	return (
 		<Drawer
@@ -42,7 +42,7 @@ function GenealogyDrawer(props) {
 						<p>
 							{props.nodeTitle} - {props.type}
 						</p>
-						<span onClick={downloadFile}>
+						<span >
 							<DownloadOutlined />
 						</span>
 					</div>
