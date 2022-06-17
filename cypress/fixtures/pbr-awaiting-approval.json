@@ -1,0 +1,178 @@
+{
+	"Data": {
+		"config": [
+			{
+				"display_name": "Action",
+				"field_name": "appl_url",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "filename",
+				"field_name": "filename",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Event Id",
+				"field_name": "event_id",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Application type",
+				"field_name": "application_type",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Site",
+				"field_name": "site_code",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Product",
+				"field_name": "product_num",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "pbr_template_info",
+				"field_name": "pbr_template_info",
+				"id": 1234,
+				"visible": false
+			},
+			{
+				"display_name": "Batch",
+				"field_name": "batch_num",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Created Date",
+				"field_name": "created_on",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Id",
+				"field_name": "Id",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "version",
+				"field_name": "version",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Pbr template name",
+				"field_name": "pbr_template_name",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "created_by",
+				"field_name": "created_by",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Created Date",
+				"field_name": "created_on",
+				"id": 1234,
+				"visible": true
+			}
+		],
+		"data": [
+			{
+				"Id": "P147",
+				"appl_url": "/dashboard/paper_batch_records",
+				"application_type": "PBR",
+				"batch_num": "390288",
+				"created_by": "binkita.tiwari@mareana.com",
+				"created_on": "2022-06-15T08:49:22.229416+00:00",
+				"event_id": 150,
+				"filename": "batch_record_8.pdf",
+				"pbr_template_info": {
+					"pbrPageIdentifier": {
+						"condition": "AND",
+						"keys": []
+					},
+					"pbrTemplateInfo": [
+						{
+							"color": "blue",
+							"filename": "batch_record_8.pdf",
+							"method": "absolute_coordinate",
+							"name": "123",
+							"param_key_height": 0.021038854559478525,
+							"param_key_left": 0.2718540132045746,
+							"param_key_snippet_id": 123,
+							"param_key_text": "001",
+							"param_key_top": 0.09205177141272498,
+							"param_key_width": 0.0470572113990783,
+							"param_page": 1,
+							"param_value_height": 0.01997097834296847,
+							"param_value_left": 0.382748544216156,
+							"param_value_rule": {},
+							"param_value_snippet_id": 124,
+							"param_value_text": "B001",
+							"param_value_top": 0.09227395303871314,
+							"param_value_width": 0.06070093810558305
+						}
+					]
+				},
+				"pbr_template_name": "test_1",
+				"product_num": "1144279",
+				"site_code": "1338",
+				"version": 1
+			},
+			{
+				"Id": "P151",
+				"appl_url": "/dashboard/paper_batch_records",
+				"application_type": "PBR",
+				"batch_num": "392646",
+				"created_by": "binkita.tiwari@mareana.com",
+				"created_on": "2022-06-16T08:02:27.309862+00:00",
+				"event_id": 153,
+				"filename": "batch_record_8.pdf",
+				"pbr_template_info": {
+					"pbrPageIdentifier": {
+						"condition": "AND",
+						"keys": []
+					},
+					"pbrTemplateInfo": [
+						{
+							"color": "blue",
+							"filename": "batch_record_4 - Copy.pdf",
+							"method": "absolute_coordinate",
+							"name": "sadsad",
+							"param_key_height": 0.010482325218617897,
+							"param_key_left": 0.1329527497291565,
+							"param_key_snippet_id": 99,
+							"param_key_text": "Document",
+							"param_key_top": 0.0527866370975971,
+							"param_key_width": 0.0786731168627739,
+							"param_page": 1,
+							"param_value_height": 0.0103724263608455,
+							"param_value_left": 0.2442951202392578,
+							"param_value_rule": {},
+							"param_value_snippet_id": 101,
+							"param_value_text": "MBR-0001",
+							"param_value_top": 0.0528034009039402,
+							"param_value_width": 0.07359027862548814
+						}
+					]
+				},
+				"pbr_template_name": "test",
+				"product_num": "1091462",
+				"site_code": "1338",
+				"version": 1
+			}
+		]
+	},
+	"Message": "Sucess",
+	"status-code": 200
+}
