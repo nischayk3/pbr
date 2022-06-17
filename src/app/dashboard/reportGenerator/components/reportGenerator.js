@@ -9,7 +9,7 @@
 import './styles.scss';
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Collapse, Input, Tag } from 'antd';
-import { FileTextOutlined } from '@ant-design/icons';
+import { FileTextOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 // import { getReports } from '../../../../services/reportDesignerServices';
 import ReportGeneratorForm from '../components/reportGeneratorForm';
@@ -28,6 +28,7 @@ import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import JobSchedule from '../../../../components/JobSchedule';
 import FileSaver from 'file-saver';
 import axios from 'axios';
+import Signature from '../../../../components/ElectronicSignature/signature';
 
 const { Panel } = Collapse;
 
@@ -110,8 +111,13 @@ function ReportGenerator(props) {
 	const [table, setTable] = useState([]);
 	const [isSave, setIsSave] = useState(false);
 	const [reportId, setReportId] = useState('');
+	const [isPublish, setIsPublish] = useState(false);
+	const [publishResponse, setPublishResponse] = useState({});
+	const [status, setStatus] = useState('')
 	const [reportName, setReportName] = useState('');
 	const [reportStatus, setReportStatus] = useState('');
+	const [approveReject, setApproveReject] = useState('')
+
 	// const [reportList, setReportList] = useState('');
 	const [chartLayout, setChartLayout] = useState({});
 	const selectedDays = {
@@ -157,6 +163,13 @@ function ReportGenerator(props) {
 	// 	});
 	// 	return res;
 	// };
+	const PublishResponse = (res) => {
+		setPublishResponse(res)
+		setStatus(res.rep_stauts)
+	}
+	const handleClose = () => {
+		setIsPublish(false)
+	};
 
 	const makeArrayOfObject = ar => {
 		let res = [];
@@ -367,7 +380,24 @@ function ReportGenerator(props) {
 							</Button>
 						</>
 					) : (
-						<></>
+						<>
+							<Button
+								className='report-secondary-btn'
+								onClick={() => {
+									setIsPublish(true);
+									setApproveReject('P');
+								}}
+								style={{ marginRight: '16px', marginTop: '2px' }}>
+								<CloudUploadOutlined
+									style={{
+										color: '#093185',
+										fontSize: '16px',
+										marginTop: '2px',
+									}}
+								/>
+								Publish
+							</Button>
+						</>
 					)}
 					<Button
 						className='report-secondary-btn'
@@ -382,7 +412,7 @@ function ReportGenerator(props) {
 			<div className='custom-content-layout'>
 				<div className='report-card'>
 					<Card title='Generate new report variant' className='generator-card'>
-						<ReportGeneratorForm />
+						<ReportGeneratorForm stat={status} />
 						<div className='table-card'>
 							{table.length > 0 &&
 								table.map(i => (
@@ -499,6 +529,16 @@ function ReportGenerator(props) {
 				handleCancel={handleCancel}
 				id={reportId}
 				name={reportName}
+			/>
+			<Signature
+				isPublish={isPublish}
+				handleClose={handleClose}
+				screenName='Report Designer'
+				PublishResponse={PublishResponse}
+				appType='REPORT'
+				dispId={reportId}
+				version={0}
+				status={approveReject}
 			/>
 		</div>
 	);
