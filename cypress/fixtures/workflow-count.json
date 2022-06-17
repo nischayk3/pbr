@@ -14,6 +14,16 @@
 			"application_type": "VIEW",
 			"item_count": 2,
 			"text": "View Approval"
+		},
+		{
+			"application_type": "REPORT",
+			"item_count": 2,
+			"text": "Report Approval"
+		},
+		{
+			"application_type": "PBR",
+			"item_count": 2,
+			"text": "PBR Approval"
 		}
 	],
 	"counts": [
