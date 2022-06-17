@@ -623,9 +623,9 @@ function ReportDesignerNew(props) {
 	// 	dispatch(hideLoader())
 	// }
 
-	const isStyledDifferently = (rowObject, index) => {
-		return rowObject.isActive ? true : false;
-	}
+	// const isStyledDifferently = (rowObject, index) => {
+	// 	return rowObject.isActive ? true : false;
+	// }
 
 	return (
 		<div className='custom-wrapper'>
