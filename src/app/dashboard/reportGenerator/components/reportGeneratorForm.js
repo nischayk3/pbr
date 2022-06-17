@@ -7,9 +7,9 @@
  */
 import './headerstyle.scss';
 import React, { useState, useEffect } from 'react';
-import {
-    Typography
-} from 'antd';
+// import {
+//     Typography
+// } from 'antd';
 import { useSelector } from 'react-redux';
 
 // const { Text } = Typography
