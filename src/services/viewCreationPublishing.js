@@ -38,7 +38,7 @@ export const getViewConfig = request => {
 };
 
 export const getMoleculeList = (request) => {
-	return Service.get(
+	return Service.post(
 		BMS_APP_PYTHON_SERVICE + '/molecules3',
 		request,
 		request_headers

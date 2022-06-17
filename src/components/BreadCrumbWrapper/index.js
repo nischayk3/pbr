@@ -19,7 +19,7 @@ const BreadCrumbWrapper = (props) => {
 	const extraBreadcrumbItems = pathSnippets.map((_, index) => {
 		const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
 		return (
-			<Breadcrumb.Item key={url}>
+			<Breadcrumb.Item key={index}>
 				<Link to={url}>{breadcrumbNameMap[url]}</Link>
 			</Breadcrumb.Item>
 		);

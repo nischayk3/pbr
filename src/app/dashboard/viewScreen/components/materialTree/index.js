@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Tag, Tree } from "antd";
 import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
+
 import {
 	batchCoverage,
 	sendSelectedParamData
@@ -22,55 +23,69 @@ let selectedData = [];
 let finalData = [];
 const MaterialTree = (props) => {
 	const dispatch = useDispatch();
-	const { materialsList, parentBatches } = props;
+	const { moleculeList } = props;
 	const [selectedKeys, setSelectedKeys] = useState([]);
-	const [checkedKeys, setCheckedKeys] = useState([]);
+	//const [checkedKeys, setCheckedKeys] = useState([]);
 	const [count, setCount] = useState("");
 	const selectedTableData = useSelector(
 		(state) => state.viewCreationReducer.selectedParamData
 	);
 
-	const onSelect = (keys) => {
-		setSelectedKeys(keys);
+	const onSelect = (selectedKe, info) => {
+
+		props.callbackProcessClick(info.node.dataRef)
+		setSelectedKeys(selectedKe);
 	};
-	const onCheck = (oncheckkey) => {
-		setCheckedKeys(oncheckkey);
-	};
-	const handleClickParam = (e, keys, param, record) => {
+
+	const handleClickParam = (keys, param, record) => {
+		console.log("param, record", keys, param, record)
+		console.log("  record", record)
+		console.log("selectedData", selectedData)
+		console.log("selectedTableData", selectedTableData)
 		const existing = selectedData.find((item) => item.key === keys);
+
 		if (existing === undefined) {
 			let rowData = {};
 			let batchData = {};
 			let newBatchData = {};
+
 			setKey.push(keys);
+			//let tree = [...moleculeList.hierarchy];
+			let molBatch = [...moleculeList.mol_batches];
+			selectedData.push(record)
+			// tree.forEach((a) => {
+			// 	a.children.forEach((b) => {
+			// 		b.children.forEach((c) => {
+			// 			if (c.key === keys) {
+			// 				selectedData.push(c);
+			// 			}
+			// 		});
+			// 	});
+			// });
+			// molBatch.map((el) => {
+			// 	if (record.batches.includes(el.batch)) {
+			// 		return (
+			// 			batchData[el.batch] = true,
+			// 			newBatchData[el.batch] = true
+			// 		)
+			// 	} else {
+			// 		return (
+			// 			batchData[el.batch] = false,
+			// 			newBatchData[el.batch] = false
+			// 		)
+			// 	}
+			// });
 
-			let tree = [...materialsList];
-			let molBatch = [...parentBatches];
-
-			tree.forEach((a) => {
-				a.children.forEach((b) => {
-					b.children.forEach((c) => {
-						if (c.key === keys) {
-							selectedData.push(c);
-						}
-					});
-				});
-			});
-			molBatch.map((el) => {
+			molBatch.forEach((el) => {
 				if (record.batches.includes(el.batch)) {
-					return (
-						batchData[el.batch] = true,
-						newBatchData[el.batch] = true
-					)
+					batchData[el.batch] = true;
 				} else {
-					return (
-						batchData[el.batch] = false,
-						newBatchData[el.batch] = false
-					)
+					batchData[el.batch] = false;
 				}
-			});
-			batchData["id"] = count;
-
+				return batchData
+			})
+			// batchData["id"] = count;
+			console.log("batchData", batchData)
 			setCount(count + 1);
 			const indexDuplicate = selectedData.findIndex(
 				(x) => x.parameter_name == param
@@ -81,7 +96,7 @@ const MaterialTree = (props) => {
 				rowData.sourceType = "material";
 				rowData.parameter_name = record.parameter_name;
 				rowData.coverage = record.coverage;
-				rowData.key = record.key;
+				rowData.key = record.process_step_int_id + '_' + record.parameter_name;
 				rowData.primary = 0;
 				rowData.aggregation = "";
 
@@ -95,7 +110,9 @@ const MaterialTree = (props) => {
 					});
 				}
 				finalData.push(data);
-				dispatch(batchCoverage(newBatchData));
+				console.log('data', data)
+				console.log("finalData", finalData)
+				dispatch(batchCoverage(batchData));
 				dispatch(sendSelectedParamData(finalData));
 			} else {
 				dispatch(showNotification("error", "Function already exists"));
@@ -104,7 +121,10 @@ const MaterialTree = (props) => {
 			dispatch(showNotification("error", "Parameter already exists"));
 		}
 	};
-	const treeMap = materialsList;
+
+
+
+	const treeMap = moleculeList.hierarchy;
 
 	useEffect(() => {
 		finalData = [];
@@ -114,21 +134,24 @@ const MaterialTree = (props) => {
 	return (
 		<div className="custom-treenode">
 			{treeMap &&
-				treeMap.map((item, index) => {
+				treeMap.map((item, ele1) => {
 					return (
 						<Tree
 							onSelect={onSelect}
-							onCheck={onCheck}
-							checkedKeys={checkedKeys}
-							selectedKeys={selectedKeys}
 						>
-							<TreeNode title={item.process_step} key={item.key + index}>
-								{item.children.map((a) => {
+							<TreeNode
+								title={item.process_step}
+								key={'frstEle-' + ele1}
+								dataRef={item}
+
+							>
+								{item && item.children && item.children.map((a, ele2) => {
 									return (
-										<TreeNode title={a.product_description} key={a.key + index}>
-											{a.children.map((b) => {
+										<TreeNode title={a.product_desc} dataRef={a} key={'secondEle-' + ele2}>
+											{a && a.children && a.children.map((b, ele3) => {
 												return (
 													<TreeNode
+														key={'thirdEle-' + ele3}
 														title={
 															<div className="treenode-block">
 																<div className="tree-block-param">
@@ -140,8 +163,7 @@ const MaterialTree = (props) => {
 																<span
 																	onClick={(e) =>
 																		handleClickParam(
-																			e,
-																			b.key,
+																			'thirdEle-' + ele3,
 																			b.parameter_name,
 																			b
 																		)
@@ -155,7 +177,7 @@ const MaterialTree = (props) => {
 																</span>
 															</div>
 														}
-														key={b.key + index}
+
 														className="tree-index"
 													/>
 												);
@@ -169,7 +191,6 @@ const MaterialTree = (props) => {
 				})}
 
 		</div>
-
 	);
 };
 

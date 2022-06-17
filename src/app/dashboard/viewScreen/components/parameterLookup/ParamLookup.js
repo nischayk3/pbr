@@ -28,7 +28,10 @@ const ParamLookup = (props) => {
 
 	//moleculelist api call
 	useEffect(() => {
-		const reqMol = {}
+		const reqMol = {
+			'data': {},
+			'parameters': {}
+		}
 		loadMolecule(reqMol)
 	}, [])
 

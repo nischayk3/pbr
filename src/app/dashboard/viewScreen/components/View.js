@@ -87,13 +87,13 @@ const ViewCreation = (props) => {
 		setParamTableData(selectedTableData);
 	}, [selectedTableData]);
 
-	useEffect(() => {
-		form.setFieldsValue({
-			viewId: viewDisplayId,
-			status: viewStatus,
-			version: viewVersion
-		});
-	}, [viewDisplayId, viewStatus, viewVersion]);
+	// useEffect(() => {
+	// 	form.setFieldsValue({
+	// 		viewId: viewDisplayId,
+	// 		status: viewStatus,
+	// 		version: viewVersion
+	// 	});
+	// }, [viewDisplayId, viewStatus, viewVersion]);
 
 	// useEffect(() => {
 	// 	onMoleculeIdChanged();
@@ -142,20 +142,43 @@ const ViewCreation = (props) => {
 	//selected molecule 
 	const getMoleculeId = (mol) => {
 		const _reqMol = {
-			molecule_name: mol
+			'data': {
+			},
+			'parameters': { 'molecule_name': mol }
 		}
 		setMoleculeId(mol)
 		loadMolecule(_reqMol)
 	}
 
 	//tree node click
-	const hierarchyProcessClick = (molecule_name, process_step, field) => {
-		console.log("view,field", molecule_name, process_step, field)
-		const _reqMol = {
-			molecule_name: molecule_name,
-			process_id: process_step
+	const hierarchyProcessClick = (treeinfo) => {
+		console.log("treeinfo, ", moleculeList.hierarchy, moleculeList)
+		if (treeinfo && treeinfo.process_step) {
+			const _reqMol = {
+				'data': {
+					'hierarchy': moleculeList.hierarchy
+				},
+				'parameters': {
+					'molecule_name': treeinfo.ds_name,
+					'process_step_int_id': treeinfo.process_step_int_id
+				}
+
+			}
+			loadMolecule(_reqMol)
 		}
-		loadMolecule(_reqMol)
+		if (treeinfo && treeinfo.product_num) {
+			const _reqMol = {
+				'data': {
+					'hierarchy': moleculeList.hierarchy
+				},
+				'parameters': {
+					'molecule_name': treeinfo.ds_name,
+					'process_step_int_id': parseInt(treeinfo.process_step_int_id),
+					'product_num': treeinfo.product_num
+				}
+			}
+			loadMolecule(_reqMol)
+		}
 	}
 	//tree node click
 	const hierarchyProductClick = (molecule_name, process_step, product_num, field) => {
@@ -172,7 +195,7 @@ const ViewCreation = (props) => {
 		getData.current = el;
 	};
 
-	const [form] = Form.useForm();
+	//const [form] = Form.useForm();
 
 	const onApprove = (item) => {
 		localStorage.setItem("status", item);
@@ -415,15 +438,17 @@ const ViewCreation = (props) => {
 											header="Process hierarchy"
 											key="1"
 										>
-											{/* <MaterialTree
+											<MaterialTree
+												moleculeList={moleculeList}
+												callbackProcessClick={hierarchyProcessClick}
 												materialsList={materialsList}
 												parentBatches={parentBatches}
-											/> */}
-											<ProcessHierarchy
+											/>
+											{/* <ProcessHierarchy
 												moleculeList={moleculeList}
 												callbackProcessClick={hierarchyProcessClick}
 												callbackProductClick={hierarchyProductClick}
-											/>
+											/> */}
 										</Panel>
 										<Panel
 											className="viewCreation-accordian viewCreation-filesPanel"
