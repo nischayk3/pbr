@@ -71,7 +71,7 @@ function ReportGeneratorForm(props) {
                 <span className="report-heading">  View <span className="colon" >:</span> {viewId}</span>
             </div>
             <div className="report-name">
-                <span className="report-heading">   Status <span className="colon">:</span> {reportStatus}</span>
+                <span className="report-heading">   Status <span className="colon">:</span> {props.stat ? props.stat : reportStatus}</span>
             </div>
         </div>
     );
