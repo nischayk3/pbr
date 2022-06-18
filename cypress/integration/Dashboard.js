@@ -164,11 +164,18 @@ describe('Dashboard', () => {
 		// /* ==== Generated with Cypress Studio ==== */
 		// //creating a new chart with date filters
 		cy.get('.before-new-card > .anticon > svg').click();
+		cy.wait(4000);
+		cy.get('.select_field > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
+		cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+		cy.wait(4000);
 		cy.get('.ant-input').click();
 		cy.wait(6000);
 		cy.get('.ant-input-wrapper > .ant-input').type('C263{enter}');
 		cy.get('.ant-table-row > :nth-child(2)').click();
 		//cy.get('[data-row-key="0"] > :nth-child(1)').click();
+		cy.wait(6000);
+		cy.get('.ant-col-8 > .show-data > .ant-switch > .ant-switch-handle').click();
+		cy.wait(6000);
 		cy.get(':nth-child(3) > .ant-picker > .ant-picker-input > input').click();
 		cy.get('.ant-picker-super-prev-icon').click();
 		cy.get('.ant-picker-super-prev-icon').click();
