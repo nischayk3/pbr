@@ -7,6 +7,7 @@ import { postChartPlotData } from "../../../../../../services/chartPersonalizati
 import {
   showLoader,
   hideLoader,
+  showNotification,
 } from "../../../../../../duck/actions/commonActions";
 import { useDispatch } from "react-redux";
 import moment from "moment";
@@ -84,7 +85,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
           if (record.key === data.key) {
             return (
               <Input
-                type="text"
+                type="number"
                 name="lower"
                 value={data.lower}
                 onChange={(e) => handleChange(index, e)}
@@ -102,8 +103,13 @@ const Limits = ({ postChartData, setPostChartData }) => {
           if (record.key === data.key) {
             return (
               <Input
-                type="text"
+                type="number"
                 name="upper"
+                status={
+                  data.upper &&
+                  Number(data.lower) > Number(data.upper) &&
+                  "error"
+                }
                 value={data.upper}
                 onChange={(e) => handleChange(index, e)}
               />
@@ -159,7 +165,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
           if (record.key === data.key) {
             return (
               <Input
-                type="text"
+                type="number"
                 name="lower"
                 value={data.lower}
                 onChange={(e) => handleSpecChange(index, e)}
@@ -178,8 +184,13 @@ const Limits = ({ postChartData, setPostChartData }) => {
           if (record.key === data.key) {
             return (
               <Input
-                type="text"
+                type="number"
                 name="upper"
+                status={
+                  data.upper &&
+                  Number(data.lower) > Number(data.upper) &&
+                  "error"
+                }
                 value={data.upper}
                 onChange={(e) => handleSpecChange(index, e)}
               />
@@ -234,7 +245,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
           if (record.key === data.key) {
             return (
               <Input
-                type="text"
+                type="number"
                 name="lower"
                 value={data.lower}
                 onChange={(e) => handleWarnChange(index, e)}
@@ -253,8 +264,13 @@ const Limits = ({ postChartData, setPostChartData }) => {
           if (record.key === data.key) {
             return (
               <Input
-                type="text"
+                type="number"
                 name="upper"
+                status={
+                  data.upper &&
+                  Number(data.lower) > Number(data.upper) &&
+                  "error"
+                }
                 value={data.upper}
                 onChange={(e) => handleWarnChange(index, e)}
               />
@@ -336,22 +352,61 @@ const Limits = ({ postChartData, setPostChartData }) => {
     setWarningSource(dataSource.filter((item) => item.key !== key));
     warningCount.current = warningCount.current - 1;
   };
-
+  console.log(controlSource, "control");
   const onApplyClick = async () => {
     const data = {
       control: JSON.parse(JSON.stringify(controlSource)),
       specification: JSON.parse(JSON.stringify(specificationSource)),
       warning: JSON.parse(JSON.stringify(warningSource)),
     };
+    let access = false;
     data.control.forEach((ele) => {
-      ele.upper = Number(ele.upper);
-      ele.lower = Number(ele.lower);
+      if (Number(ele.lower) && Number(ele.upper)) {
+        if (Number(ele.lower) >= Number(ele.upper)) {
+          access = true;
+          dispatch(
+            showNotification(
+              "error",
+              "Control limts lower limit should be less than upper limit"
+            )
+          );
+        }
+      } else {
+        access = true;
+        dispatch(
+          showNotification(
+            "error",
+            "Both upper and lower limits should present in control limits"
+          )
+        );
+      }
+      ele.upper = ele.upper ? Number(ele.upper) : "";
+      ele.lower = ele.lower ? Number(ele.lower) : "";
       ele.valid_timestamp = ele.valid_timestamp
         ? new Date(ele.valid_timestamp).toISOString()
         : null;
       delete ele.key;
     });
     data.specification.forEach((ele) => {
+      if (Number(ele.lower) && Number(ele.upper)) {
+        if (Number(ele.lower) >= Number(ele.upper)) {
+          access = true;
+          dispatch(
+            showNotification(
+              "error",
+              "Specification limts lower limit should be less than upper limit"
+            )
+          );
+        }
+      } else {
+        access = true;
+        dispatch(
+          showNotification(
+            "error",
+            "Both upper and lower limits should present in specification limits"
+          )
+        );
+      }
       ele.upper = Number(ele.upper);
       ele.lower = Number(ele.lower);
       ele.valid_timestamp = ele.valid_timestamp
@@ -360,6 +415,25 @@ const Limits = ({ postChartData, setPostChartData }) => {
       delete ele.key;
     });
     data.warning.forEach((ele) => {
+      if (Number(ele.lower) && Number(ele.upper)) {
+        if (Number(ele.lower) >= Number(ele.upper)) {
+          access = true;
+          dispatch(
+            showNotification(
+              "error",
+              "Warning limts lower limit should be less than upper limit"
+            )
+          );
+        }
+      } else {
+        access = true;
+        dispatch(
+          showNotification(
+            "error",
+            "Both upper and lower limits should present in warning limits"
+          )
+        );
+      }
       ele.upper = Number(ele.upper);
       ele.lower = Number(ele.lower);
       ele.valid_timestamp = ele.valid_timestamp
@@ -367,6 +441,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
         : null;
       delete ele.key;
     });
+    if (access) {
+      return false;
+    }
     const newArr = [...postChartData.data];
     newArr[0].limits = JSON.parse(JSON.stringify(data));
     setPostChartData({ ...postChartData, data: newArr });
