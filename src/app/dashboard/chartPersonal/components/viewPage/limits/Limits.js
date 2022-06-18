@@ -352,7 +352,6 @@ const Limits = ({ postChartData, setPostChartData }) => {
     setWarningSource(dataSource.filter((item) => item.key !== key));
     warningCount.current = warningCount.current - 1;
   };
-  console.log(controlSource, "control");
   const onApplyClick = async () => {
     const data = {
       control: JSON.parse(JSON.stringify(controlSource)),
