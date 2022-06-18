@@ -141,9 +141,9 @@ function PaperBatchRecordsTemplate() {
     });
     const [fileList, setFileList] = useState([]);
     const [modalData, setModalData] = useState([]);
-    const [imageWidth, setImageWidth] = useState(842);
-    const [imageHeight, setimageHeight] = useState(1089);
-    const [origianalResponse, setOrigianalResponse] = useState({});
+    const [imageWidth, setImageWidth] = useState(0);
+    const [imageHeight, setimageHeight] = useState(0);
+    const [pageLimit, setPageLimit] = useState(1);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [tableLoading, setTableLoading] = useState(false);
     const [searchedFileList, setSearchedFileList] = useState("");
@@ -160,6 +160,7 @@ function PaperBatchRecordsTemplate() {
     const [templateVersion, setTemplateVersion] = useState("");
     const [templateStatus, setTemplateStatus] = useState("DRFT");
     const [pageNumber, setPageNumber] = useState(1);
+    const [originalResponse, setOriginalResponse] = useState({});
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
         setRightPanelCollapsed(!rightPanelCollapsed);
@@ -173,45 +174,22 @@ function PaperBatchRecordsTemplate() {
     const parameterAddingHandler = (a) => {
         setFileList([])
         if (activeNumber !== 0) {
-            if ((formValues[activeNumber - 1]?.name === "" || formValues[activeNumber - 1]?.name === undefined) ||
-                (formValues[activeNumber - 1]?.method === "" || formValues[activeNumber - 1]?.method === undefined)
-            ) {
-                setCallAdd(true)
-                openNotification()
-                let param = { anchorValue: '', anchorId: '' };
-                let obj = { ...parameterValue };
-                obj[`param${activeNumber + 1}`] = param;
-                setParameterValue(obj);
-                setActiveNumber(activeNumber + 1);
-
-            } else {
-                setCallAdd(false)
-                let param = { anchorValue: '', anchorId: '' };
-                let obj = { ...parameterValue };
-                obj[`param${activeNumber + 1}`] = param;
-                setParameterValue(obj);
-                setActiveNumber(activeNumber + 1);
-            }
-
+            setCallAdd(false)
+            let param = { anchorValue: '', anchorId: '' };
+            let obj = { ...parameterValue };
+            obj[`param${activeNumber + 1}`] = param;
+            setParameterValue(obj);
+            setActiveNumber(activeNumber + 1);
         } else {
             let openKey = parseInt(open) + 1
             setParamaterAdded(true);
             setOpen([`${openKey}`]);
             let key = Object.keys(parameterValue).length;
             let param = { anchorValue: '', anchorId: '' };
-            let val = `param${key}`;
-            let obj = { ...parameterValue };
-            if (activeNumber === 0) {
-                setParameterValue({ ...parameterValue, param1: param });
-                setActiveNumber(activeNumber + 1);
-            } else {
-                obj[`param${activeNumber + 1}`] = param;
-                setParameterValue(obj);
-                setActiveNumber(activeNumber + 1);
-            }
+            setParameterValue({ ...parameterValue, param1: param });
+            setActiveNumber(activeNumber + 1);
+
         }
-
-
     };
 
     const DraggerInputHandlerAnchor = (e, val) => {
@@ -573,17 +551,18 @@ function PaperBatchRecordsTemplate() {
     /**
      * TODO: get boundingBoxData info
      */
-    const getBoundingBoxDataInfo = async (width, height, mode,pageNumber=0) => {
+    const getBoundingBoxDataInfo = async (width, height, mode, pageNumber = 0) => {
         try {
             let _reqBatch = {
                 filename: `${params?.file?.split('.')[0]}_page-${pageNumber}.jpeg.json`,
                 bbox_type: mode,
                 action_type: params?.temp_disp_id ? "edit" : "create",
                 temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : "",
-                temp_version: additionalData?.pbrVersion ? additionalData?.pbrVersion : 0
+                temp_version: params?.temp_disp_id ? 1 : 0
             };
             const batchRes = await getBoundingBoxData(_reqBatch);
-            setOrigianalResponse(batchRes)
+            setOriginalResponse(batchRes)
+            setPageLimit(batchRes?.Page)
             let areasArr = [];
             let width1 = width ? width : 848
             let height1 = height ? height : 1097
@@ -633,8 +612,8 @@ function PaperBatchRecordsTemplate() {
     useEffect(() => {
 
         getImage()
-        const list = document.getElementsByTagName("canvas")[0]
-        // getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
+        // const list = document.getElementsByTagName("canvas")[0]
+        getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1);
         let obj = {
             material_num: matBatch.material_num,
             batch: matBatch.batch
@@ -760,7 +739,7 @@ function PaperBatchRecordsTemplate() {
             redirect: "follow",
         };
         let response = await fetch(
-            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${params?.file.split(".")[0]}.pdf&pageId=${val?val:pageNumber}`,
+            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${params?.file.split(".")[0]}.pdf&pageId=${val ? val : pageNumber}`,
             requestOptions
         )
             .then((response) => response)
@@ -768,13 +747,13 @@ function PaperBatchRecordsTemplate() {
             .catch((error) => console.log("error", error));
 
         let res = await response.blob();
-        if(res.type=== "application/json"){
+        if (res.type === "application/json") {
             openNotification("Page number not valid")
-        }else{
+        } else {
             setDisplayImage(window.webkitURL.createObjectURL(res))
         }
 
-        
+
     }
 
 
@@ -782,19 +761,51 @@ function PaperBatchRecordsTemplate() {
 
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
-            // getBoundingBoxDataInfo(list?.width, list?.height, selectedMode);
             setImageWidth(list?.width)
             setimageHeight(list?.height)
         }, 3000)
-
-    }, [document.getElementsByTagName("canvas")[0]]);
+    }, [document.getElementsByTagName("canvas")[0], displayImage]);
 
     useEffect(() => {
-        if (imageWidth !== undefined && imageHeight !== undefined) {
-            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode,pageNumber-1);
+        if (imageWidth !== 0 && imageHeight !== 0) {
+            if (Object.keys(originalResponse).length>0) {
+                setAreasMap({ ...areasMap, areas: [] });
+                let areasArr = [];
+                originalResponse.Data.forEach((e) => {
+                    let x1 = e.key_left * imageWidth;
+                    let x2 = (e.key_left + e.key_width) * imageWidth;
+                    let y1 = e.key_top * imageHeight;
+                    let y2 = (e.key_top + e.key_height) * imageHeight;
+                    let obj = {
+                        snippetID: e.key_snippet_id,
+                        areaValue: e.key_text,
+                        shape: 'rect',
+                        coords: [x1, y1, x2, y2],
+                        preFillColor: 'transparent',
+                        fillColor: 'transparent',
+                        strokeColor: 'blue',
+                    };
+                    let valuex1 = e.value_left * imageWidth;
+                    let valuex2 = (e.value_left + e.value_width) * imageWidth;
+                    let valuey1 = e.value_top * imageHeight;
+                    let valuey2 = (e.value_top + e.value_height) * imageHeight;
+                    let obj1 = {
+                        snippetID: e.value_snippet_id,
+                        areaValue: e.value_text,
+                        shape: 'rect',
+                        coords: [valuex1, valuey1, valuex2, valuey2],
+                        preFillColor: 'transparent',
+                        fillColor: 'transparent',
+                        strokeColor: 'blue',
+                    };
+                    areasArr.push(obj);
+                    areasArr.push(obj1);
+                });
+                setAreasMap({ ...areasMap, areas: areasArr });
+            }
         }
 
-    }, [imageWidth, imageHeight]);
+    }, [imageWidth, imageHeight, originalResponse]);
 
 
 
@@ -920,7 +931,7 @@ function PaperBatchRecordsTemplate() {
                 let login_response = JSON.parse(localStorage.getItem('login_details'));
                 let _reqBatch = {
                     pbrTemplateName: params.tempalteName,
-                    custKey: 'PBR',
+                    custKey: '1000',
                     pbrTemplateVersion: 1,
                     // pbrTemplateStatus: 'DRFT',
                     createdBy: login_response?.email_id,
@@ -1116,7 +1127,7 @@ function PaperBatchRecordsTemplate() {
             description: val ? val : disc,
             btn,
             key,
-            style:{zIndex:99999},
+            style: { zIndex: 99999 },
             type: "error",
             placement: "top",
             onClose: close,
@@ -1235,13 +1246,13 @@ function PaperBatchRecordsTemplate() {
             setFileList(res.Found_file_list)
             setSearchedFileList(res.Searched_file_list)
             dispatch(hideLoader());
-           
+
         } else {
             setFileList(res.Found_file_list)
             setSearchedFileList(res.Searched_file_list)
             dispatch(showNotification('error', 'No Data Found'))
             dispatch(hideLoader());
-            
+
         }
 
     }
@@ -1484,12 +1495,33 @@ function PaperBatchRecordsTemplate() {
     const handlePageChange = (val) => {
         // setDisplayImage("")
         setAreasMap({ ...areasMap, areas: [] });
-        if( val < 1){
-            alert("minium page 1")
-        }else{
-            getImage(val)
+        if (val < 1) {
+            dispatch(showNotification('error', 'Minium page 1'))
+        } else {
+            if (val > pageLimit) {
+                dispatch(showNotification('error', `Maximum page ${pageLimit}`))
+            } else {
+                getImage(val)
+                setPageNumber(val)
+                getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, val - 1);
+            }
+
+        }
+
+    }
+    const handlePageTextChange = (val) => {
+        if (val === "") {
+            dispatch(showNotification('error', `Minium page number 1`))
             setPageNumber(val)
-            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode,val-1);
+        } else if (Number(val) > pageLimit) {
+            dispatch(showNotification('error', `Maximum page ${pageLimit}`))
+        } else if (Number(val) < 1) {
+            dispatch(showNotification('error', 'Minium page 1'))
+        } else {
+            let num = Number(val)
+            getImage(num)
+            setPageNumber(num)
+            getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, num - 1);
         }
 
     }
@@ -1525,7 +1557,7 @@ function PaperBatchRecordsTemplate() {
                                     }}>
                                     Publish
                                 </Button>
-                                <Button style={{ margin: "0px 16px" }} className='custom-primary-btn'>Batch Process</Button>
+                                <Button style={{ margin: "0px 16px" }} onClick={batchProcess} className='custom-primary-btn'>Batch Process</Button>
                             </div>)
                             : (
                                 <div className='btns'>
@@ -1574,7 +1606,7 @@ function PaperBatchRecordsTemplate() {
                                         // labelCol={{ span: 8 }}
                                         // wrapperCol={{ span: 16 }}
                                         layout='vertical'
-                                        initialValues={{ material_num: matBatch?.material_num, batch: matBatch?.batch, template_name: params?.tempalteName, status: additionalData?.pbrTemplateStatus ? additionalData?.pbrTemplateStatus : templateStatus,template_id: params?.temp_disp_id?params?.temp_disp_id:templateId}}
+                                        initialValues={{ material_num: matBatch?.material_num, batch: matBatch?.batch, template_name: params?.tempalteName, status: additionalData?.pbrTemplateStatus ? additionalData?.pbrTemplateStatus : templateStatus, template_id: params?.temp_disp_id ? params?.temp_disp_id : templateId }}
                                     >
                                         <Form.Item
                                             name='template_id'
@@ -2529,7 +2561,7 @@ function PaperBatchRecordsTemplate() {
                                                                 <Form.Item>
                                                                     <div
                                                                         className='firstParameter-para'
-                                                                        style={{pointerEvents:params.fromScreen === "Workflow" ? "none" : "all"}}
+                                                                        style={{ pointerEvents: params.fromScreen === "Workflow" ? "none" : "all" }}
                                                                         onClick={() => {
                                                                             if (activeNumber === 0) {
                                                                                 parameterAddingHandler()
@@ -2566,7 +2598,7 @@ function PaperBatchRecordsTemplate() {
                                                         type='default'
                                                         className='saveSnippetsBtn'
                                                         onClick={() => saveTemplateHandler()}
-                                                        disabled = {params?.fromScreen === "Workflow" ? true:false}
+                                                        disabled={params?.fromScreen === "Workflow" ? true : false}
                                                     >
                                                         Save
                                                     </Button>
@@ -2594,9 +2626,9 @@ function PaperBatchRecordsTemplate() {
 
                                         </p>
                                         <div>
-                                            <LeftOutlined className='icon_size' onClick={()=>handlePageChange(pageNumber-1)}/>
-                                            <Input style={{ width: 35 }} value={pageNumber} onChange={()=>handlePageChange}/>
-                                            <RightOutlined className='icon_size' onClick={()=>handlePageChange(pageNumber+1)}/>
+                                            <LeftOutlined disabled={true} className='icon_size' onClick={() => handlePageChange(pageNumber - 1)} />
+                                            <Input style={{ width: 35 }} value={pageNumber} onChange={(e) => handlePageTextChange(e.target.value)} />
+                                            <RightOutlined className='icon_size' onClick={() => handlePageChange(pageNumber + 1)} />
                                         </div>
 
                                     </div>
@@ -2636,16 +2668,16 @@ function PaperBatchRecordsTemplate() {
                                 <div className='snippetsImg'></div>
                             </div>
                             <div className='pdfToImgBlock' onClick={onClickImage}>
-                                {areasMap.areas.length > 0 && (
-                                    <ImageMapper
-                                        id='imageMApper'
-                                        className='pdfToImageWrapper'
-                                        src={displayImage}
-                                        map={areasMap}
-                                        // onLoad={() => load()}
-                                        onClick={area => clicked(area)}
-                                    />
-                                )}
+                                {/* {areasMap.areas.length > 0 && ( */}
+                                <ImageMapper
+                                    id='imageMApper'
+                                    className='pdfToImageWrapper'
+                                    src={displayImage}
+                                    map={areasMap}
+                                    // onLoad={() => load()}
+                                    onClick={area => clicked(area)}
+                                />
+                                {/* )} */}
                             </div>
                         </div>
                     </div>

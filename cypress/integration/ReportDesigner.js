@@ -131,8 +131,46 @@ describe("Report Designer", () => {
     cy.get('.sub-header-btns > :nth-child(1) > span').click();
     cy.wait(1000)
     cy.get('.ant-modal-close-x').click();
-    // /* ==== Generated with Cypress Studio ==== */
-    // cy.get('.sub-header-btns > :nth-child(1) > span').click();
-    // /* ==== End Cypress Studio ==== */
+    cy.get('[style="display: grid; grid-template-columns: 1fr 1fr;"] > :nth-child(2) > .anticon > svg').click();
+    cy.wait(500)
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get(':nth-child(1) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > #report-generator-form_response_0_select > .charttile-content').click();
+    cy.wait(500)
+    /* ==== End Cypress Studio ==== */
+    /* ==== Generated with Cypress Studio ==== */
+    /* ==== End Cypress Studio ==== */
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get(':nth-child(2) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > #report-generator-form_response_0_select').click();
+    cy.wait(500)
+    cy.get('[style="display: grid; grid-template-columns: 1fr 1fr;"] > :nth-child(2) > .anticon > svg').click();
+    /* ==== End Cypress Studio ==== */
   });
+  it("Publish Report via search", () => {
+    const url = Cypress.config().baseUrl
+    cy.log('Opening a report template')
+    cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
+    cy.visit(url + '/#/dashboard/report_designer')
+    cy.wait(1000)
+    cy.get('.ant-input').clear();
+    cy.get('.ant-input').type('R391{enter}');
+    cy.get('.ant-table-row > :nth-child(1) > div').click();
+    cy.wait(6000)
+    cy.get('.report-secondary-btn').click()
+  });
+  it("Save as", () => {
+    const url = Cypress.config().baseUrl
+    cy.log('Opening a report template')
+    cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
+    cy.visit(url + '/#/dashboard/report_designer')
+    cy.wait(1000)
+    cy.get('.ant-input').clear();
+    cy.get('.ant-input').type('R391{enter}');
+    cy.get('.ant-table-row > :nth-child(1) > div').click();
+    cy.wait(6000)
+    cy.get('.ant-switch-handle').click()
+    cy.wait(500)
+    cy.get('.sub-header-btns > .anticon-ellipsis > svg').click()
+    cy.get('.ant-dropdown-menu-title-content').click();
+  });
+
 });

@@ -6,7 +6,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe('Dashboard', () => {
 	// it("should login successfully using Ad", () => {
 	beforeEach(() => {
-		cy.viewport(1280, 720);
+		cy.viewport(1400, 720);
 		cy.visit("/");
 		cy.url().should("include", "/user/login");
 		localStorage.setItem("test_enabled", true);
@@ -70,6 +70,34 @@ describe('Dashboard', () => {
 		cy.wait(6000);
 		cy.get(".ant-input-affix-wrapper").type("D132").click({ force: true })
 		cy.get(".ant-input-search-button").click()
+
+	})
+	it('Click on Table row', () => {
+		cy.log('Load Search Bar')
+		cy.log('Search View Id In Search Component')
+		cy.get("#login-btn", { timeout: 2000 }).click();
+		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
+		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
+		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
+		cy.wait(6000);
+		cy.get(".ant-input-affix-wrapper").type("D132").click({ force: true })
+		cy.wait(6000);
+		cy.get(".ant-input-search-button").click()
+		cy.wait(6000);
+		cy.get('.ant-table-row > :nth-child(2) > div').click();
+
+
+	})
+	it('Close Modal', () => {
+		cy.get("#login-btn", { timeout: 2000 }).click();
+		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
+		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
+		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
+		cy.wait(2000);
+		cy.get('.create-new > .anticon > svg').click();
+		cy.wait(2000);
+		cy.get('.ant-modal-close-x').click();
+
 
 	})
 
@@ -136,11 +164,18 @@ describe('Dashboard', () => {
 		// /* ==== Generated with Cypress Studio ==== */
 		// //creating a new chart with date filters
 		cy.get('.before-new-card > .anticon > svg').click();
+		cy.wait(4000);
+		cy.get('.select_field > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
+		cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+		cy.wait(4000);
 		cy.get('.ant-input').click();
 		cy.wait(6000);
 		cy.get('.ant-input-wrapper > .ant-input').type('C263{enter}');
 		cy.get('.ant-table-row > :nth-child(2)').click();
 		//cy.get('[data-row-key="0"] > :nth-child(1)').click();
+		cy.wait(6000);
+		cy.get('.ant-col-8 > .show-data > .ant-switch > .ant-switch-handle').click();
+		cy.wait(6000);
 		cy.get(':nth-child(3) > .ant-picker > .ant-picker-input > input').click();
 		cy.get('.ant-picker-super-prev-icon').click();
 		cy.get('.ant-picker-super-prev-icon').click();
@@ -171,6 +206,28 @@ describe('Dashboard', () => {
 		/* ==== End Cypress Studio ==== */
 
 	});
+	it('Checbox and site change', () => {
+		cy.get("#login-btn", { timeout: 2000 }).click();
+		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
+		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
+		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
+		cy.get('.create-new > .anticon > svg', { timeout: 10000 }).click({ force: true });
+		cy.get(':nth-child(1) > :nth-child(2) > :nth-child(1) > .ant-input').clear();
+		cy.get(':nth-child(1) > :nth-child(2) > :nth-child(1) > .ant-input').type('new dashboard');
+		cy.get('.ant-input-wrapper > .ant-input').click();
+		cy.wait(6000);
+		cy.get('.ant-input-wrapper > .ant-input').type('C263{enter}');
+		cy.get('.ant-table-row > :nth-child(2)').click();
+		cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
+		cy.get('[style="margin-left: 20px; margin-right: 20px;"] > .anticon > svg > path').click({ force: true });
+		cy.get('.ant-col-8 > .show-data > .ant-switch > .ant-switch-handle').click();
+		cy.get('.ant-col > .ant-btn > span').click();
+		cy.get('.global-filters > :nth-child(1) > .show-data > .ant-switch > .ant-switch-handle').click();
+		cy.wait(4000);
+		cy.get('[style="display: flex; flex-direction: row;"] > :nth-child(1) > .anticon > svg').click();
+
+
+	})
 
 
 });
