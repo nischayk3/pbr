@@ -73,7 +73,9 @@ const LoadTable = ({ chartList }) => {
         rowKey="key"
         onRow={(record) => ({
           onClick: () => {
-            history.push(`${match.url}/${record.chart_disp_id}`);
+            history.push(
+              `${match.url}/${record.chart_disp_id}/${record.chart_version}`
+            );
           },
         })}
       />
