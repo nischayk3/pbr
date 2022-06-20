@@ -42,7 +42,7 @@ import pdfIcon from '../../../../assets/images/pdfIcon.svg';
 import { getPbrTemplateData, getDataView } from '../../../../services/pbrService';
 import { tableColumns } from '../../../../utils/TableColumns'
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { loadTemplateInfo, loadMatBatchInfo, loadPageIdentifier,loadTempAdditionalData } from '../../../../duck/actions/pbrAction';
+import { loadTemplateInfo, loadMatBatchInfo, loadPageIdentifier, loadTempAdditionalData } from '../../../../duck/actions/pbrAction';
 import StatusBlock from '../../../../components/StatusBlock/statusBlock'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper'
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader'
@@ -100,6 +100,7 @@ function PaperBatchRecords() {
 		useState(null);
 	const [form] = Form.useForm();
 	const [templateData, setTemplateData] = useState([])
+	const [loadTiles, setLoadTiles] = useState([])
 	const [templateColumns, setTemplateColumns] = useState([])
 	const [dataView, setDataView] = useState([])
 	const [fileName, setFileName] = useState("")
@@ -119,10 +120,11 @@ function PaperBatchRecords() {
 	}, []);
 
 	const getTemplateData = async () => {
-		let req = ``
+		let req = { limit: 8 }
 		try {
 			dispatch(showLoader());
-			const tableResponse = await getPbrTemplateData(req);
+			const tableResponse = await getPbrTemplateData();
+			const tilesData = await getPbrTemplateData(req);
 			const tableColumn = tableColumns(tableResponse?.Data)
 			let newArray1 = tableColumn.filter(item => item.dataIndex != 'created_by' && item.dataIndex != 'changed_on' && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
 			let columns = [];
@@ -140,6 +142,15 @@ function PaperBatchRecords() {
 					},
 
 				};
+				if (item.dataIndex === "created_on") {
+					obj.render = (text, row, index) => {
+						let date1 = new Date(text)
+						return (
+							<div>{date1.toISOString().substring(0, 20)}</div>
+						)
+
+					}
+				}
 				if (item.dataIndex === "changed_by") {
 					obj.render = (text, row, index) => {
 						return (
@@ -161,10 +172,12 @@ function PaperBatchRecords() {
 			if (tableResponse['status-code'] === 200) {
 				setTemplateColumns(columns)
 				setTemplateData(tableResponse.Data);
+				setLoadTiles(tilesData.Data)
 				dispatch(hideLoader());
 			}
 			else if (tableResponse['status-code'] === 404) {
 				setTemplateData(tableResponse.Data);
+				setLoadTiles(tilesData.Data)
 				dispatch(hideLoader());
 				dispatch(showNotification('error', tableResponse.Message));
 			}
@@ -409,21 +422,21 @@ function PaperBatchRecords() {
 		{
 			material_num: value?.product_num,
 			batch: value?.batch_num,
-            site: value?.site_code
+			site: value?.site_code
 
 		}
-        let obj2 = {
-            pbrDisplayId:value?.pbr_template_disp_id,
-            pbrTempId:value.pbr_temp_int_id,
-            pbrTemplateStatus:value.pbr_template_status,
-            pbrVersion:value?.pbr_template_version
-        }
+		let obj2 = {
+			pbrDisplayId: value?.pbr_template_disp_id,
+			pbrTempId: value.pbr_temp_int_id,
+			pbrTemplateStatus: value.pbr_template_status,
+			pbrVersion: value?.pbr_template_version
+		}
 		dispatch(loadPageIdentifier(value?.pbr_template_info?.pbrPageIdentifier))
 		dispatch(loadMatBatchInfo(obj))
-        dispatch(loadTempAdditionalData(obj2))
-        dispatch(loadTemplateInfo(value?.pbr_template_info?.pbrTemplateInfo))
+		dispatch(loadTempAdditionalData(obj2))
+		dispatch(loadTemplateInfo(value?.pbr_template_info?.pbrTemplateInfo))
 		history.push(`${match.url}/${value.pbr_template_disp_id}?file=${value?.pbr_template_info?.pbrTemplateInfo[0].filename}&temp_disp_id=${value.pbr_template_disp_id}&tempalteName=${value.pbr_template_name}&fromScreen=Workspace`)
-		
+
 
 	}
 	const landingSearch = value => {
@@ -440,7 +453,7 @@ function PaperBatchRecords() {
 	return (
 		<div className='pbr-container'>
 			<div className='custom-wrapper pbr-wrapper'>
-				
+
 				<BreadCrumbWrapper />
 			</div>
 			<Row className='p-28'>
@@ -479,13 +492,13 @@ function PaperBatchRecords() {
 											? templateData
 											: filterTableLanding}
 										scroll={{ x: 2000, y: 650 }}
-                                        onRow={(record, rowIndex) => {
+										onRow={(record, rowIndex) => {
 											return {
 												onClick: event => {
-                                                    handleClickTiles(record)
-													
-												}, 
-                                                
+													handleClickTiles(record)
+
+												},
+
 											}
 										}}
 									/>
@@ -526,12 +539,12 @@ function PaperBatchRecords() {
 										</dl>
 									</Col>
 								</Row>
-								
+
 								<Divider />
 								<Row gutter={24}>
-									{templateData &&
-										templateData.length > 0 &&
-										templateData.map((el, index) => {
+									{loadTiles &&
+										loadTiles.length > 0 &&
+										loadTiles.map((el, index) => {
 											return (
 												<Col
 													className='gutter-row'
@@ -592,7 +605,7 @@ function PaperBatchRecords() {
 											rules={[
 												{
 													required: true,
-													message: 'Please input your password!',
+													message: 'Please input Template Name',
 												},
 											]}
 
@@ -606,13 +619,13 @@ function PaperBatchRecords() {
 											label='Material number'
 										// name='materialNumber'
 										>
-											<Input value={matBatch?.material_num} disabled/>
+											<Input value={matBatch?.material_num} disabled />
 										</Form.Item>
 										<Form.Item
 											label='Batch number'
 										// name='batchNumber'
 										>
-											<Input value={matBatch?.batch} disabled/>
+											<Input value={matBatch?.batch} disabled />
 										</Form.Item>
 									</div>
 								</Form>
