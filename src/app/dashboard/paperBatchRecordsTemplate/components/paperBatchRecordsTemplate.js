@@ -68,6 +68,7 @@ import {
 } from '../../../../services/pbrService';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
+import { method } from 'lodash';
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Dragger } = Upload;
@@ -622,7 +623,7 @@ function PaperBatchRecordsTemplate() {
             template_id: params?.temp_disp_id ? params?.temp_disp_id : templateId
         }
         templateForm.setFieldsValue(template)
-        setTemplateFormData(templateForm)
+        setTemplateFormData(template)
     }, [matBatch, templateId, templateStatus])
 
     useEffect(() => {
@@ -684,6 +685,8 @@ function PaperBatchRecordsTemplate() {
                     let obj = {
                         name: item.name,
                         method: item.method,
+                        regex: item.param_value_regex,
+                        AnchorDirection: item.param_value_direction,
                         param_rule: item?.param_value_rule?.rule_name,
                         param_valueArea: item?.param_value_rule?.regex_text,
                         param_max: item?.param_value_rule?.range_max,
@@ -759,6 +762,7 @@ function PaperBatchRecordsTemplate() {
             setFormValues(arr)
             setActiveNumber(templateInfo?.length)
             setParamaterAdded(true)
+            setTemplateInfo([])
             dispatch(loadTemplateInfo([]))
         }
 
@@ -913,155 +917,224 @@ function PaperBatchRecordsTemplate() {
             setFormValues(arr)
             setParameterValue(obj1);
         }
-        
+
     };
 
+    const validation = () => {
+
+        let str = "Please enter"
+        let para = ""
+        let validate = true
+        formValues.forEach((ele, index) => {
+            let check = {
+                Name: false,
+                Method: false,
+                Anchor: false,
+                AnchorValue: false,
+            }
+            if (ele.name) {
+                check.Name = true
+                if (ele.method) {
+                    check.Method = true
+                    if (ele.method === "regex") {
+                        if (parameterFormData[index]?.regex) {
+                            check.Regex = true
+                        } else {
+                            check.Regex = false
+                        }
+                    } if (ele.method === "relative_direction") {
+                        if (parameterFormData[index]?.AnchorDirection) {
+                            check.AnchorDirection = true
+                        } else {
+                            check.AnchorDirection = false
+                        }
+
+                    }
+                    if (ele?.values?.anchorValue) {
+                        check.Anchor = true
+                    }
+                    if (ele?.values?.anchorId) {
+                        check.AnchorValue = true
+                    }
+                }
+            }
+            Object.keys(check).forEach(function (key) {
+                if (check[key] == false) {
+                    str += ` ${key}`
+                    validate = false
+                    para = index
+
+                }
+
+            });
+
+        })
+        if (validate) {
+            return true
+        } else {
+            str += ` in parameter ${parameterFormData[para]?.name}`
+            openNotification(str)
+            return false
+        }
+
+    }
+
     const savePbrTemplateDataInfo = async () => {
-        if (formValues.length > 0 ) {
-            try {
-                dispatch(showLoader());
-                let login_response = JSON.parse(localStorage.getItem('login_details'));
-                let _reqBatch = {
-                    pbrTemplateName: params.tempalteName,
-                    custKey: '1000',
-                    pbrTemplateVersion: 1,
-                    // pbrTemplateStatus: 'DRFT',
-                    createdBy: login_response?.email_id,
-                    changedBy: login_response?.firstname,
-                    templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
-                    material: matBatch?.material_num,
-                    batch: matBatch?.batch,
-                    siteCode: matBatch?.site,
-                    actionType: params?.temp_disp_id ? "edit" : "create",
-                    pbrDisplayId: additionalData?.pbrDisplayId ? additionalData?.pbrDisplayId : "",
-                    pbrTempId: additionalData?.pbrTempId ? additionalData?.pbrTempId : 0,
-                    pbrTemplateStatus: additionalData?.pbrTemplateStatus ? additionalData?.pbrTemplateStatus : "DRFT"
-                };
-                let arr = [];
-                formValues.forEach((ele, index) => {
-                    let obj = {
-                        method: ele.method,
-                        filename: params?.file,
-                        name: ele.name,
-                        param_value_direction: parameterFormData[index]?.AnchorDirection,
-                        param_value_regex: parameterFormData[index]?.regex
-                    }
-                    if (ele.values) {
-                        obj['color'] = "blue"
-                        obj['param_key_height'] = (ele?.values?.anchorCoords[3] - ele?.values?.anchorCoords[1]) / imageHeight
-                        obj['param_key_left'] = ele?.values?.anchorCoords[0] / imageWidth
-                        obj['param_key_text'] = ele?.values?.anchorValue
-                        obj['param_key_top'] = ele?.values?.anchorCoords[1] / imageHeight
-                        obj['param_key_width'] = (ele?.values?.anchorCoords[2] - ele?.values?.anchorCoords[0]) / imageWidth
-                        obj['param_page'] = 1
-                        obj['param_key_snippet_id'] = ele?.values?.snippetID
-                        obj['param_value_height'] = (ele?.values?.valueCoords[3] - ele?.values?.valueCoords[1]) / imageHeight
-                        obj['param_value_left'] = ele?.values?.valueCoords[0] / imageWidth
-                        obj['param_value_text'] = ele?.values?.anchorId
-                        obj['param_value_top'] = ele?.values?.valueCoords[1] / imageHeight
-                        obj['param_value_width'] = (ele?.values?.valueCoords[2] - ele?.values?.valueCoords[0]) / imageWidth
-                        obj['param_value_snippet_id'] = ele?.values?.valueSnippetID
-                        obj['param_value_rule'] = {
-                            rule_name: parameterFormData[index]?.param_rule, regex_text: parameterFormData[index]?.param_valueArea,
-                            range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max,
-                            factor: parameterFormData[index]?.param_valueTransformation, transformation: parameterFormData[index]?.param_transformation
+        if (formValues.length > 0) {
+            let validate = validation()
+            if (validate) {
+                try {
+                    dispatch(showLoader());
+                    let login_response = JSON.parse(localStorage.getItem('login_details'));
+                    let _reqBatch = {
+                        pbrTemplateName: params.tempalteName,
+                        custKey: '1000',
+                        pbrTemplateVersion: 1,
+                        // pbrTemplateStatus: 'DRFT',
+                        createdBy: login_response?.email_id,
+                        changedBy: login_response?.firstname,
+                        templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
+                        material: matBatch?.material_num,
+                        batch: matBatch?.batch,
+                        siteCode: matBatch?.site,
+                        actionType: templateId != "New" ? "edit" : "create",
+                        pbrDisplayId: additionalData?.pbrDisplayId ? additionalData?.pbrDisplayId : "",
+                        pbrTempId: additionalData?.pbrTempId ? additionalData?.pbrTempId : 0,
+                        pbrTemplateStatus: additionalData?.pbrTemplateStatus ? additionalData?.pbrTemplateStatus : "DRFT"
+                    };
+                    let arr = [];
+                    formValues.forEach((ele, index) => {
+                        let obj = {
+                            method: ele.method,
+                            filename: params?.file,
+                            name: ele.name,
+                            param_value_direction: parameterFormData[index]?.AnchorDirection,
+                            param_value_regex: parameterFormData[index]?.regex
                         }
-                    }
-                    if (ele.unitValues) {
-                        obj['uom_key_height'] = (ele?.unitValues?.coords[3] - ele?.unitValues?.coords[1]) / imageHeight
-                        obj['uom_key_left'] = ele?.unitValues?.coords[0] / imageWidth
-                        obj['uom_key_text'] = ele?.unitValues?.unitAnchor
-                        obj['uom_key_top'] = ele?.unitValues?.coords[1] / imageHeight
-                        obj['uom_key_width'] = (ele?.unitValues?.coords[2] - ele?.unitValues?.coords[0]) / imageWidth
-                        obj['uom_page'] = 1
-                        obj['uom_key_snippet_id'] = ele?.unitValues?.snippetID
-                        obj['uom_value_height'] = (ele?.unitValues?.valueCoords[3] - ele?.unitValues?.valueCoords[1]) / imageHeight
-                        obj['uom_value_left'] = ele?.unitValues?.valueCoords[0] / imageWidth
-                        obj['uom_value_text'] = ele?.unitValues?.unitId
-                        obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / imageHeight
-                        obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / imageWidth
-                        obj['uom_value_snippet_id'] = ele?.values?.valueSnippetID
-                        obj['uom_value_rule'] = {
-                            rule_name: parameterFormData[index]?.uom_rule, regex_text: parameterFormData[index]?.uom_valueArea,
-                            range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max,
-                            factor: parameterFormData[index]?.uom_valueTransformation, transformation: parameterFormData[index]?.uom_transformation
+                        if (ele.values) {
+                            obj['color'] = "blue"
+                            obj['param_key_height'] = (ele?.values?.anchorCoords[3] - ele?.values?.anchorCoords[1]) / imageHeight
+                            obj['param_key_left'] = ele?.values?.anchorCoords[0] / imageWidth
+                            obj['param_key_text'] = ele?.values?.anchorValue
+                            obj['param_key_top'] = ele?.values?.anchorCoords[1] / imageHeight
+                            obj['param_key_width'] = (ele?.values?.anchorCoords[2] - ele?.values?.anchorCoords[0]) / imageWidth
+                            obj['param_page'] = 1
+                            obj['param_key_snippet_id'] = ele?.values?.snippetID
+                            obj['param_value_height'] = (ele?.values?.valueCoords[3] - ele?.values?.valueCoords[1]) / imageHeight
+                            obj['param_value_left'] = ele?.values?.valueCoords[0] / imageWidth
+                            obj['param_value_text'] = ele?.values?.anchorId
+                            obj['param_value_top'] = ele?.values?.valueCoords[1] / imageHeight
+                            obj['param_value_width'] = (ele?.values?.valueCoords[2] - ele?.values?.valueCoords[0]) / imageWidth
+                            obj['param_value_snippet_id'] = ele?.values?.valueSnippetID
+                            obj['param_value_rule'] = {
+                                rule_name: parameterFormData[index]?.param_rule, regex_text: parameterFormData[index]?.param_valueArea,
+                                range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max,
+                                factor: parameterFormData[index]?.param_valueTransformation, transformation: parameterFormData[index]?.param_transformation
+                            }
                         }
+                        if (ele.unitValues) {
+                            obj['uom_key_height'] = (ele?.unitValues?.coords[3] - ele?.unitValues?.coords[1]) / imageHeight
+                            obj['uom_key_left'] = ele?.unitValues?.coords[0] / imageWidth
+                            obj['uom_key_text'] = ele?.unitValues?.unitAnchor
+                            obj['uom_key_top'] = ele?.unitValues?.coords[1] / imageHeight
+                            obj['uom_key_width'] = (ele?.unitValues?.coords[2] - ele?.unitValues?.coords[0]) / imageWidth
+                            obj['uom_page'] = 1
+                            obj['uom_key_snippet_id'] = ele?.unitValues?.snippetID
+                            obj['uom_value_height'] = (ele?.unitValues?.valueCoords[3] - ele?.unitValues?.valueCoords[1]) / imageHeight
+                            obj['uom_value_left'] = ele?.unitValues?.valueCoords[0] / imageWidth
+                            obj['uom_value_text'] = ele?.unitValues?.unitId
+                            obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / imageHeight
+                            obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / imageWidth
+                            obj['uom_value_snippet_id'] = ele?.unitValues?.valueSnippetID
+                            obj['uom_value_rule'] = {
+                                rule_name: parameterFormData[index]?.uom_rule, regex_text: parameterFormData[index]?.uom_valueArea,
+                                range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max,
+                                factor: parameterFormData[index]?.uom_valueTransformation, transformation: parameterFormData[index]?.uom_transformation
+                            }
 
-                    }
-                    if (ele.timeValues) {
-                        obj['time_key_height'] = (ele?.timeValues?.coords[3] - ele?.timeValues?.coords[1]) / imageHeight
-                        obj['time_key_left'] = ele?.timeValues?.coords[0] / imageWidth
-                        obj['time_key_text'] = ele?.timeValues?.timeAnchor
-                        obj['time_key_top'] = ele?.timeValues?.coords[1] / imageHeight
-                        obj['time_key_width'] = (ele?.timeValues?.coords[2] - ele?.timeValues?.coords[0]) / imageWidth
-                        obj['time_page'] = 1
-                        obj['time_key_snippet_id'] = ele?.timeValues?.snippetID
-                        obj['time_value_height'] = (ele?.timeValues?.valueCoords[3] - ele?.timeValues?.valueCoords[1]) / imageHeight
-                        obj['time_value_left'] = ele?.timeValues?.valueCoords[0] / imageWidth
-                        obj['time_value_text'] = ele?.timeValues?.timeId
-                        obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / imageHeight
-                        obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / imageWidth
-                        obj['time_value_snippet_id'] = ele?.values?.valueSnippetID
-                        obj['time_value_rule'] = {
-                            rule_name: parameterFormData[index]?.time_rule, regex_text: parameterFormData[index]?.time_valueArea,
-                            range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max,
-                            factor: parameterFormData[index]?.time_valueTransformation, transformation: parameterFormData[index]?.time_transformation
                         }
+                        if (ele.timeValues) {
+                            obj['time_key_height'] = (ele?.timeValues?.coords[3] - ele?.timeValues?.coords[1]) / imageHeight
+                            obj['time_key_left'] = ele?.timeValues?.coords[0] / imageWidth
+                            obj['time_key_text'] = ele?.timeValues?.timeAnchor
+                            obj['time_key_top'] = ele?.timeValues?.coords[1] / imageHeight
+                            obj['time_key_width'] = (ele?.timeValues?.coords[2] - ele?.timeValues?.coords[0]) / imageWidth
+                            obj['time_page'] = 1
+                            obj['time_key_snippet_id'] = ele?.timeValues?.snippetID
+                            obj['time_value_height'] = (ele?.timeValues?.valueCoords[3] - ele?.timeValues?.valueCoords[1]) / imageHeight
+                            obj['time_value_left'] = ele?.timeValues?.valueCoords[0] / imageWidth
+                            obj['time_value_text'] = ele?.timeValues?.timeId
+                            obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / imageHeight
+                            obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / imageWidth
+                            obj['time_value_snippet_id'] = ele?.timeValues?.valueSnippetID
+                            obj['time_value_rule'] = {
+                                rule_name: parameterFormData[index]?.time_rule, regex_text: parameterFormData[index]?.time_valueArea,
+                                range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max,
+                                factor: parameterFormData[index]?.time_valueTransformation, transformation: parameterFormData[index]?.time_transformation
+                            }
 
-                    }
-                    if (ele.dateValues) {
-                        obj['date_key_height'] = (ele?.dateValues?.coords[3] - ele?.dateValues?.coords[1]) / imageHeight
-                        obj['date_key_left'] = ele?.dateValues?.coords[0] / imageWidth
-                        obj['date_key_text'] = ele?.dateValues?.dateAnchor
-                        obj['date_key_top'] = ele?.dateValues?.coords[1] / imageHeight
-                        obj['date_key_width'] = (ele?.dateValues?.coords[2] - ele?.dateValues?.coords[0]) / imageWidth
-                        obj['date_page'] = 1
-                        obj['date_key_snippet_id'] = ele?.dateValues?.snippetID
-                        obj['date_value_height'] = (ele?.dateValues?.valueCoords[3] - ele?.dateValues?.valueCoords[1]) / imageHeight
-                        obj['date_value_left'] = ele?.dateValues?.valueCoords[0] / imageWidth
-                        obj['date_value_text'] = ele?.dateValues?.dateId
-                        obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / imageHeight
-                        obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / imageWidth
-                        obj['date_value_snippet_id'] = ele?.values?.valueSnippetID
-                        obj['date_value_rule'] = {
-                            rule_name: parameterFormData[index]?.date_rule, regex_text: parameterFormData[index]?.date_valueArea,
-                            range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max,
-                            factor: parameterFormData[index]?.date_valueTransformation, transformation: parameterFormData[index]?.date_transformation
                         }
+                        if (ele.dateValues) {
+                            obj['date_key_height'] = (ele?.dateValues?.coords[3] - ele?.dateValues?.coords[1]) / imageHeight
+                            obj['date_key_left'] = ele?.dateValues?.coords[0] / imageWidth
+                            obj['date_key_text'] = ele?.dateValues?.dateAnchor
+                            obj['date_key_top'] = ele?.dateValues?.coords[1] / imageHeight
+                            obj['date_key_width'] = (ele?.dateValues?.coords[2] - ele?.dateValues?.coords[0]) / imageWidth
+                            obj['date_page'] = 1
+                            obj['date_key_snippet_id'] = ele?.dateValues?.snippetID
+                            obj['date_value_height'] = (ele?.dateValues?.valueCoords[3] - ele?.dateValues?.valueCoords[1]) / imageHeight
+                            obj['date_value_left'] = ele?.dateValues?.valueCoords[0] / imageWidth
+                            obj['date_value_text'] = ele?.dateValues?.dateId
+                            obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / imageHeight
+                            obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / imageWidth
+                            obj['date_value_snippet_id'] = ele?.dateValues?.valueSnippetID
+                            obj['date_value_rule'] = {
+                                rule_name: parameterFormData[index]?.date_rule, regex_text: parameterFormData[index]?.date_valueArea,
+                                range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max,
+                                factor: parameterFormData[index]?.date_valueTransformation, transformation: parameterFormData[index]?.date_transformation
+                            }
 
+                        }
+                        arr.push(obj);
+                    });
+                    let obj1 = {
+                        keys: [],
+                        condition: "AND"
                     }
-                    arr.push(obj);
-                });
-                let obj1 = {
-                    keys: [],
-                    condition: "AND"
-                }
-                Object.entries(pageIdentifierData).forEach(item => {
-                    if (item[0] != "page_id" && item[1]) {
-                        obj1.keys.push(item[1])
-                    }
-                })
-                _reqBatch.templateInfo.pbrTemplateInfo = arr;
-                _reqBatch.templateInfo.pbrPageIdentifier = obj1;
+                    Object.entries(pageIdentifierData).forEach(item => {
+                        if (item[0] != "page_id" && item[1]) {
+                            obj1.keys.push(item[1])
+                        }
+                    })
+                    _reqBatch.templateInfo.pbrTemplateInfo = arr;
+                    _reqBatch.templateInfo.pbrPageIdentifier = obj1;
 
-                //api call
-                const batchRes = await savePbrTemplate(_reqBatch);
-                if (batchRes.Status === 202) {
-                    message.success(batchRes.Message);
-                    setTemplateId(batchRes?.Data?.tempDispId)
-                    setTemplateVersion(batchRes?.Data?.tempVersion)
-                    setTemplateStatus(batchRes?.Data?.tempStatus)
+                    //api call
+                    const batchRes = await savePbrTemplate(_reqBatch);
+                    if (batchRes.Status === 202) {
+                        let additional = {
+                            pbrDisplayId: batchRes?.Data?.tempDispId,
+                            pbrTempId: Number(batchRes?.Data?.tempDispId.replace(/\D/g, '')),
+                            pbrTemplateStatus: batchRes?.Data?.tempStatus,
+                            pbrVersion: batchRes?.Data?.tempVersion
+                        }
+                        setAdditionalData(additional)
+                        message.success(batchRes.Message);
+                        setTemplateId(batchRes?.Data?.tempDispId)
+                        setTemplateVersion(batchRes?.Data?.tempVersion)
+                        setTemplateStatus(batchRes?.Data?.tempStatus)
+                        dispatch(hideLoader());
+                        dispatch(showNotification('success', batchRes?.Message));
+                    } else {
+                        message.error(batchRes.Message);
+                        dispatch(hideLoader());
+                        dispatch(showNotification('error', batchRes?.detail));
+                    }
+
+                } catch (error) {
                     dispatch(hideLoader());
-                    dispatch(showNotification('success', batchRes?.Message));
-                } else {
-                    message.error(batchRes.Message);
-                    dispatch(hideLoader());
-                    dispatch(showNotification('error', batchRes?.detail));
+                    dispatch(showNotification('error', 'No Data Found'));
                 }
-
-            } catch (error) {
-                dispatch(hideLoader());
-                dispatch(showNotification('error', 'No Data Found'));
             }
         } else {
             openNotification('Please Create Template Before Save')
@@ -1090,7 +1163,7 @@ function PaperBatchRecordsTemplate() {
     };
 
     const handleValuesChange = (changedValues, values) => {
-        console.log("changedValues", changedValues, values)
+        // console.log("changedValues", changedValues, values)
     };
     const parameterValuesChange = (changedValues, values) => {
         // console.log("changedValues", changedValues, values)
@@ -1248,6 +1321,7 @@ function PaperBatchRecordsTemplate() {
         }
 
     }
+
     const showModal = async () => {
         setIsModalVisible(true);
         setTableLoading(true)
@@ -1451,7 +1525,7 @@ function PaperBatchRecordsTemplate() {
             }, i * 1000)
         }
     }
-    
+
     const handleClose = () => {
         setIsPublish(false);
     };
@@ -1502,7 +1576,7 @@ function PaperBatchRecordsTemplate() {
                     setTimeout(() => {
                         getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, val - 1);
                     }, i * 1000)
-    
+
                 }
             }
 
@@ -1549,7 +1623,7 @@ function PaperBatchRecordsTemplate() {
                             (<div className='btns'>
                                 <Button
                                     className='custom-secondary-btn'
-                                    disabled={templateStatus !="DRFT"}
+                                    disabled={templateStatus != "DRFT"}
                                     onClick={() => {
                                         setIsPublish(true);
                                         setApproveReject("P");
@@ -1612,7 +1686,7 @@ function PaperBatchRecordsTemplate() {
                                             label="Template ID"
                                             style={{ marginBottom: 10 }}
                                         >
-                                            <Input disabled/>
+                                            <Input disabled />
                                         </Form.Item>
                                         <Form.Item
                                             name='template_name'
@@ -1691,18 +1765,21 @@ function PaperBatchRecordsTemplate() {
                                                     <Form.List name="users">
                                                         {(fields, { add, remove }) => (
                                                             <>
-                                                                <Collapse accordion expandIconPosition='right' onChange={(val) => setActiveKey(val)}>
+                                                                <Collapse accordion expandIconPosition='right' onChange={(val) => {
+                                                                    setActiveKey(val)
+                                                                    setFileList([])
+                                                                }}>
                                                                     {fields.map(({ key, name, ...restField }) => (
 
                                                                         // <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                                                                        <Panel header={`Parameter ${key + 1} created`} key={`${key}`} style={{ maxHeight: 500, overflow: "scroll" }}>
+                                                                        <Panel header={parameterFormData[key]?.name ? `Parameter - ${parameterFormData[key]?.name}` : `Parameter ${key + 1} created`} key={`${key}`} style={{ maxHeight: 500, overflow: "scroll" }}>
                                                                             <div className='addParameterBlock'>
                                                                                 <div className='parameterAdded-block'>
                                                                                     <Form.Item
                                                                                         {...restField}
                                                                                         name={[name, 'name']}
                                                                                         label="Name"
-                                                                                        rules={[{ required: true, message: 'Missing first name' }]}
+                                                                                        rules={[{ required: true, message: 'Please enter parameter name' }]}
                                                                                     >
                                                                                         <Input
                                                                                             placeholder='Enter name'
@@ -1723,7 +1800,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         {...restField}
                                                                                         name={[name, 'method']}
                                                                                         label="Method"
-                                                                                        rules={[{ required: true, message: 'method' }]}
+                                                                                        rules={[{ required: true, message: 'Select Method' }]}
                                                                                     >
                                                                                         <Select placeholder="Select Method" onChange={(e, value) => onChangeChart(e, 'method', key, value)} allowClear={true}>
                                                                                             <Option value='absolute_coordinate'>
@@ -2103,7 +2180,7 @@ function PaperBatchRecordsTemplate() {
                                                                                             name={[name, 'uom_valueTransformation']}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
-                                                                                        
+
                                                                                     </div>
                                                                                     <div className='parameterAddingBlock parameterValueBlock'>
                                                                                         <p>
@@ -2263,7 +2340,7 @@ function PaperBatchRecordsTemplate() {
                                                                                             name={[name, 'time_valueTransformation']}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
-                                                                                       
+
                                                                                     </div>
                                                                                     <div className='parameterAddingBlock parameterValueBlock'>
                                                                                         <p>
@@ -2427,7 +2504,7 @@ function PaperBatchRecordsTemplate() {
                                                                                             name={[name, 'date_valueTransformation']}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
-                                                                                       
+
                                                                                         <Button type='primary' className='defineTableBtn' onClick={findTemplate}>
                                                                                             <MonitorOutlined /> Find
                                                                                         </Button>
@@ -2470,7 +2547,7 @@ function PaperBatchRecordsTemplate() {
 
                                                                         }}
                                                                         type="primary"
-                                                                        htmlType="submit"
+                                                                        htmltype="submit"
                                                                     >
                                                                         <p>
                                                                             {paramaterAdded
@@ -2677,7 +2754,7 @@ function PaperBatchRecordsTemplate() {
                                                     {clickedSnippetId ? clickedSnippetId : "Document"}
                                                 </div>
                                             </div>
-                                            
+
                                         </Form>
                                     </div>
                                 </Panel>

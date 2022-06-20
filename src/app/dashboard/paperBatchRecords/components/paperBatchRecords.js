@@ -32,7 +32,8 @@ import {
 	Space,
 	Radio,
 	notification,
-	Avatar
+	Avatar,
+	Select
 } from 'antd';
 import { useDispatch } from 'react-redux';
 import Highlighter from 'react-highlight-words';
@@ -107,6 +108,7 @@ function PaperBatchRecords() {
 	const [templateName, seTemplateName] = useState("")
 	const [searchedLanding, setSearchedLanding] = useState(false);
 	const [filterTableLanding, setFilterTableLanding] = useState(null);
+	const [materialDropown, setMaterialDropown] = useState([]);
 	const [matBatch, setMatBatch] = useState({
 		material_num: "",
 		batch: ""
@@ -193,8 +195,12 @@ function PaperBatchRecords() {
 		return colors[index % 4];
 	};
 
-	const getViewData = async () => {
-		let res = await getDataView()
+	const getImageData = async (val) => {
+		let req = {
+			actionType: "get_product",
+			productNum: val
+		}
+		let res = await getDataView(req)
 		setDataView(res.Data)
 		setFileName(res?.Data[0]?.actual_filename)
 		setMatBatch({
@@ -202,6 +208,17 @@ function PaperBatchRecords() {
 			batch: res?.Data[0].batch_num,
 			site: res?.Data[0].site_code
 		})
+	}
+
+	const getViewData = async () => {
+		let req = {
+			actionType: "get_product_num",
+			productNum: ""
+		}
+		let res = await getDataView(req)
+		setMaterialDropown(res.Data)
+		getImageData(res.Data[0]?.label)
+		
 
 	}
 
@@ -360,7 +377,7 @@ function PaperBatchRecords() {
 	};
 
 	const handleTemplateSubmit = () => {
-		if (templateName == "") {
+		if (templateName == "" || templateName == undefined) {
 			openNotification()
 		} else {
 			history.push(`${match.url}/Untitled?file=${fileName}&tempalteName=${templateName}&fromScreen=Workspace`);
@@ -378,7 +395,8 @@ function PaperBatchRecords() {
 		setTableDataSourceFiltered(filterdDataArr);
 	}
 	const handleValuesChange = (changedValues, values) => {
-		seTemplateName(changedValues?.templateName)
+		console.log("changedValues", changedValues, values)
+		seTemplateName(values?.templateName)
 
 	};
 	const onFinish = (values) => {
@@ -449,6 +467,10 @@ function PaperBatchRecords() {
 		);
 		setFilterTableLanding(filterTable);
 	};
+
+	const handleMaterialChange = (val) =>{
+		getImageData(val)
+	}
 
 	return (
 		<div className='pbr-container'>
@@ -526,7 +548,7 @@ function PaperBatchRecords() {
 							<Col span={12} className='p36'>
 								<Row gutter={16} className="title">
 									<Col span={8}>
-										<h3>Recently created charts</h3>
+										<h3 style={{fontSize:14}}>Recently created templates</h3>
 									</Col>
 									<Col span={14} className="title-legends">
 										<dl>
@@ -575,7 +597,7 @@ function PaperBatchRecords() {
 						type='primary'
 						className='templateSubmitBtn'
 						onClick={handleTemplateSubmit}
-						onValuesChange={handleValuesChange}
+					// onValuesChange={handleValuesChange}
 					>
 						Lets Go!
 					</Button>,
@@ -592,11 +614,11 @@ function PaperBatchRecords() {
 							<Row>
 								<Form
 									layout='vertical'
-									form={form}
 									className='formNewTemplate'
 									name="basic"
 									onValuesChange={handleValuesChange}
 									onFinish={onFinish}
+									initialValues={{ materialNumber: materialDropown[0]?.label }}
 								>
 									<div className='formNewTemplateDiv'>
 										<Form.Item
@@ -605,7 +627,7 @@ function PaperBatchRecords() {
 											rules={[
 												{
 													required: true,
-													message: 'Please input Template Name',
+													message: 'Please enter template name',
 												},
 											]}
 
@@ -617,13 +639,22 @@ function PaperBatchRecords() {
 										</Form.Item>
 										<Form.Item
 											label='Material number'
-										// name='materialNumber'
+											name='materialNumber'
+											rules={[
+												{
+													required: true,
+													message: 'Please select material',
+												},
+											]}
 										>
-											<Input value={matBatch?.material_num} disabled />
+											{/* <Input value={matBatch?.material_num} disabled /> */}
+											<Select options={materialDropown} onChange={(val)=>handleMaterialChange(val)}>
+
+											</Select>
 										</Form.Item>
 										<Form.Item
 											label='Batch number'
-										// name='batchNumber'
+											// name='batchNumber'
 										>
 											<Input value={matBatch?.batch} disabled />
 										</Form.Item>
@@ -632,7 +663,7 @@ function PaperBatchRecords() {
 							</Row>
 							<Row>
 								<Radio.Group
-									defaultValue={dataView[0]?.actual_filename}
+									value={fileName}
 									className='radioPdfBlock'
 									onChange={(e) => {
 										setFileName(e.target.value)
