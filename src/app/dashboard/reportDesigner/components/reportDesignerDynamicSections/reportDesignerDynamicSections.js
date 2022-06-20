@@ -11,6 +11,9 @@ import checkIcon from '../../../../../assets/images/checkbox.svg'
 function ReportDesignerDynamicSections(props) {
     useEffect(() => {
         LoadData()
+        if (props.show) {
+            setEditable(true)
+        }
     })
 
     const dispatch = useDispatch();
@@ -168,7 +171,7 @@ function ReportDesignerDynamicSections(props) {
         setShowChart(props.sectionAddedCharts)
         setAddedKeys(props.sectionKeys)
     }
-    console.log(currentSection)
+    console.log(props.show)
 
     return (
         <div className="reportDesigner-dynamicSections bg-white">
@@ -186,9 +189,9 @@ function ReportDesignerDynamicSections(props) {
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '10px' }}>
                                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
                                                 <Form.Item {...restField} name={[name, 'sectionName']}>
-                                                    <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px', marginRight: '20px' }} className="input-section" disabled={props.show} disabled={editable} />
+                                                    <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px', marginRight: '20px' }} className="input-section" disabled={editable} />
                                                 </Form.Item>
-                                                <Tooltip placement="topLeft" title="Edit Section Name">    <EditOutlined style={{ marginTop: '7px', marginLeft: '0px', color: '#949494', fontSize: '16px' }} onClick={() => handleEdit(editable)} /> </Tooltip>
+                                                <Tooltip disabled={props.show} placement="topLeft" title="Edit Section Name">    <EditOutlined style={{ marginTop: '7px', marginLeft: '0px', color: '#949494', fontSize: '16px' }} onClick={() => handleEdit(editable)} /> </Tooltip>
                                             </div>
                                             {name > 0 ?
                                                 <div className="add-chart" onClick={() => trackCharts(name)} ><span style={{ marginRight: '4px' }}><PlusOutlined style={{ fontSize: '14px' }} /></span>  Add chart  </div> : <></>

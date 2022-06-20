@@ -241,6 +241,38 @@ describe("Workflow", () => {
 
 	});
 
+	it("Clicking Report Approval", () => {
+		cy.wait(6000);
+		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
+		const url = Cypress.config().baseUrl
+		cy.visit(url + '/#/dashboard/workflow')
+		cy.log('Load Landing Page')
+		cy.url().should('eq', url + '/#/dashboard/workflow')
+		cy.wait(6000);
+		cy.intercept('GET', 'services/v1/approvals/REPORT/awaiting_approval', { fixture: 'report-awaiting-approval.json' })
+		cy.wait(6000);
+		//cy.get('.card_desc').click();
+		cy.get(':nth-child(4) > .approval-cards > .card_desc').click();
+		cy.wait(6000);
+		cy.get(':nth-child(2) > .ant-table-cell-fix-left > .review-submission').click();
+
+	});
+	it("Clicking PBR Approval", () => {
+		cy.wait(6000);
+		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
+		const url = Cypress.config().baseUrl
+		cy.visit(url + '/#/dashboard/workflow')
+		cy.log('Load Landing Page')
+		cy.url().should('eq', url + '/#/dashboard/workflow')
+		cy.wait(6000);
+		cy.intercept('GET', 'services/v1/approvals/PBR/awaiting_approval', { fixture: 'pbr-awaiting-approval.json' })
+		cy.wait(6000);
+		//cy.get('.card_desc').click();
+		cy.get(':nth-child(5) > .approval-cards > .card_desc').click();
+		cy.wait(6000);
+		cy.get(':nth-child(2) > .ant-table-cell-fix-left > .review-submission').click();
+
+	});
 
 
 });
