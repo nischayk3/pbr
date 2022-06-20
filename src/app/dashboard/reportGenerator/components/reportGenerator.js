@@ -112,7 +112,7 @@ function ReportGenerator(props) {
 	const [isSave, setIsSave] = useState(false);
 	const [reportId, setReportId] = useState('');
 	const [isPublish, setIsPublish] = useState(false);
-	const [publishResponse, setPublishResponse] = useState({});
+	// const [publishResponse, setPublishResponse] = useState({});
 	const [status, setStatus] = useState('')
 	const [reportName, setReportName] = useState('');
 	const [reportStatus, setReportStatus] = useState('');
@@ -164,7 +164,7 @@ function ReportGenerator(props) {
 	// 	return res;
 	// };
 	const PublishResponse = (res) => {
-		setPublishResponse(res)
+		// setPublishResponse(res)
 		setStatus(res.rep_stauts)
 	}
 	const handleClose = () => {
