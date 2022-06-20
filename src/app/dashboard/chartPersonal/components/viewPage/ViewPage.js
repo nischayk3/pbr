@@ -123,7 +123,9 @@ const ViewPage = () => {
           }
         } else {
           dispatch(showNotification("success", "Chart created successfully"));
-          history.push(`/dashboard/chart_personalization/${viewRes.chart_id}`);
+          history.push(
+            `/dashboard/chart_personalization/${viewRes.chart_id}/${viewRes.chart_version}`
+          );
         }
       }
       dispatch(hideLoader());
