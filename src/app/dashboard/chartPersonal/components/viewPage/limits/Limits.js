@@ -98,6 +98,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
+            // if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+            //   return <p>{data.lower}</p>
+            // }
             return (
               <Input
                 type="text"
@@ -116,6 +119,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
+            // if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+            //   return <p>{data.upper}</p>
+            // }
             return (
               <Input
                 type="text"
@@ -135,11 +141,14 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
+            // if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+            //   return <p>{data.valid_timestamp ? (data.valid_timestamp) : ""}</p>
+            // }
             return (
               <DatePicker
                 type="text"
                 name="valid_timestamp"
-                defaultValue={
+                value={
                   data.valid_timestamp ? moment(data.valid_timestamp) : ""
                 }
                 onChange={(dateString) => handleChange(index, "", dateString)}
@@ -216,7 +225,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
               <DatePicker
                 type="text"
                 name="valid_timestamp"
-                defaultValue={
+                value={
                   data.valid_timestamp ? moment(data.valid_timestamp) : ""
                 }
                 onChange={(dateString) => handleChange(index, "", dateString)}
@@ -294,7 +303,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
               <DatePicker
                 type="text"
                 name="valid_timestamp"
-                defaultValue={
+                value={
                   data.valid_timestamp ? moment(data.valid_timestamp) : ""
                 }
                 onChange={(dateString) =>
