@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router";
+import queryString from "query-string";
 import "./limitsStyles.scss";
 //antd imports
 import { Button, Table, Popconfirm, DatePicker, Input } from "antd";
@@ -14,6 +16,9 @@ import moment from "moment";
 //main component
 const Limits = ({ postChartData, setPostChartData }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const params = queryString.parse(location.search);
+ 
   //states for table data
   const [controlSource, setControlSource] = useState([]);
   const [specificationSource, setSpecificationSource] = useState([]);
@@ -24,6 +29,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
 
   //function to change control limit input values
   const handleChange = (index, event, dateString) => {
+    if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+      return
+    }
     if (dateString) {
       const rowsInput = [...controlSource];
       rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
@@ -37,6 +45,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
 
   //function to change specification limit input values
   const handleSpecChange = (index, event, dateString) => {
+    if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+      return
+    }
     if (dateString) {
       const rowsInput = [...specificationSource];
       rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
@@ -50,6 +61,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
 
   // function for change of warn input values
   const handleWarnChange = (index, event, dateString) => {
+    if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+      return
+    }
     if (dateString) {
       const rowsInput = [...warningSource];
       rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
@@ -69,9 +83,11 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (_, record) => (
         <Popconfirm
           title="Sure to delete?"
+          disabled={Object.keys(params).length > 0 && params.fromScreen !== "Workspace"}
           onConfirm={() => handleDelete(record.key)}
         >
-          <DeleteTwoTone twoToneColor="red" />
+          <DeleteTwoTone twoToneColor={Object.keys(params).length > 0 &&
+            params.fromScreen !== "Workspace" ? 'lightgrey' : 'red'} />
         </Popconfirm>
       ),
     },
@@ -143,9 +159,11 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (_, record) => (
         <Popconfirm
           title="Sure to delete?"
+          disabled={Object.keys(params).length > 0 && params.fromScreen !== "Workspace"}
           onConfirm={() => handleSpecifyDelete(record.key)}
         >
-          <DeleteTwoTone twoToneColor="red" />
+          <DeleteTwoTone twoToneColor={Object.keys(params).length > 0 &&
+            params.fromScreen !== "Workspace" ? 'lightgrey' : 'red'} />
         </Popconfirm>
       ),
     },
@@ -218,9 +236,11 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (_, record) => (
         <Popconfirm
           title="Sure to delete?"
+          disabled={Object.keys(params).length > 0 && params.fromScreen !== "Workspace"}
           onConfirm={() => handleWarningDelete(record.key)}
         >
-          <DeleteTwoTone twoToneColor="red" />
+          <DeleteTwoTone twoToneColor={Object.keys(params).length > 0 &&
+            params.fromScreen !== "Workspace" ? 'lightgrey' : 'red'} />
         </Popconfirm>
       ),
     },
@@ -431,7 +451,8 @@ const Limits = ({ postChartData, setPostChartData }) => {
         <div className="table-bottom">
           <div className="control-header">
             <p>Control limit</p>
-            <Button className="custom-primary-btn" onClick={onApplyClick}>
+            <Button className="custom-primary-btn" disabled={Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"} onClick={onApplyClick}>
               Apply
             </Button>
           </div>
@@ -441,7 +462,8 @@ const Limits = ({ postChartData, setPostChartData }) => {
             columns={columns}
           />
           <div className="add-button">
-            <Button onClick={() => handleAdd()}>
+            <Button onClick={() => handleAdd()} disabled={Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"}>
               <PlusOutlined />
               Add new row
             </Button>
@@ -455,7 +477,8 @@ const Limits = ({ postChartData, setPostChartData }) => {
             columns={specColumns}
           />
           <div className="add-button">
-            <Button onClick={() => handleSpecAdd()}>
+            <Button onClick={() => handleSpecAdd()} disabled={Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"}>
               <PlusOutlined />
               Add new row
             </Button>
@@ -469,7 +492,8 @@ const Limits = ({ postChartData, setPostChartData }) => {
             columns={warnColumns}
           />
           <div className="add-button">
-            <Button onClick={() => handleWarnAdd()}>
+            <Button onClick={() => handleWarnAdd()} disabled={Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"}>
               <PlusOutlined />
               Add new row
             </Button>

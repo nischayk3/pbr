@@ -230,9 +230,6 @@ describe('Renders chart personalization', () => {
     cy.get('.ant-table-tbody .ant-input').eq(0).type('10.1', { force: true })
     cy.get('.ant-table-tbody .ant-input').eq(1).type('10.2', { force: true })
 
-    // cy.get('.ant-table-tbody .ant-picker').first().click()
-    // cy.get('.ant-picker-today-btn').eq(0).click()
-
     cy.intercept('POST', '/services/v1/chart-object', { fixture: 'chartObjectLimits.json' }).as('chartObjectLimits')
     cy.get('.control-header > .ant-btn').click()
     cy.wait('@chartObjectLimits').then(() => {
@@ -249,44 +246,93 @@ describe('Renders chart personalization', () => {
     cy.log('Opening Figure')
     cy.get('.ant-collapse-item').first().click()
 
-    cy.wait(500)
+
     cy.log('Changing height')
     cy.get(':nth-child(1) > .ant-col-16 > .input_field > .ant-input').clear()
     cy.get(':nth-child(1) > .ant-col-16 > .input_field > .ant-input').type('500')
 
-    cy.wait(500)
+    cy.log('Changing width')
+    cy.get(':nth-child(2) > .ant-col-16 > .input_field > .ant-input').clear()
+    cy.get(':nth-child(2) > .ant-col-16 > .input_field > .ant-input').type('1200')
+
+
+    // cy.log('Changing plot color')
+    // cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(1).clear()
+    // cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(1).type('#EEEEEE')
+
+    cy.log('Changing plot color')
+    cy.get(':nth-child(3) > .ant-col-16 > .container > [type="text"]').clear()
+    cy.get(':nth-child(3) > .ant-col-16 > .container > [type="text"]').type('#EEEEEE')
+  
     cy.log('Changing marker shape')
     cy.get('.figure-container .select_field').eq(0).click()
     cy.get('[title="triangle-up"] > .ant-select-item-option-content').click()
 
-    cy.wait(500)
+
+    cy.log('Changing marker color')
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(1).clear()
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(1).type('#228B22')
+
+
+    cy.log('Changing marker size')
+    cy.get('.figure-container .figure-inputs .input_field').eq(2).clear()
+    cy.get('.figure-container .figure-inputs .input_field').eq(2).type('18')
+
+
     cy.log('Changing violations shape')
     cy.get('.figure-container .select_field').eq(1).click()
     cy.get('[title="triangle-down"] > .ant-select-item-option-content').eq(1).click()
 
-    cy.wait(500)
-    cy.log('Changing plot color')
-    cy.get(':nth-child(3) > .ant-col-16 > .container > [type="text"]').clear()
-    cy.get(':nth-child(3) > .ant-col-16 > .container > [type="text"]').type('#EEEEEE')
 
-    cy.wait(500)
+    cy.log('Changing violations color')
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(2).clear()
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(2).type('#FFA500')
+
+
+    cy.log('Changing violations size')
+    cy.get('.figure-container .figure-inputs .input_field').eq(3)
+    cy.get('.figure-container .figure-inputs .input_field').eq(3).clear()
+    cy.get('.figure-container .figure-inputs .input_field').eq(3).type('18')
+
+
+
     cy.log('Adding title')
     cy.get(':nth-child(13) > .ant-col-16 > .input_field > .ant-input').clear()
     cy.get(':nth-child(13) > .ant-col-16 > .input_field > .ant-input').type('NEW CHART')
+
+    cy.log('Changing font size')
+    cy.get(':nth-child(14) > .ant-col-16 > .input_field > .ant-input').clear()
+    cy.get(':nth-child(14) > .ant-col-16 > .input_field > .ant-input').type('24')
 
     cy.wait(500)
     cy.log('Opening Legend')
     cy.get('.ant-collapse-item').eq(1).click()
 
-    cy.wait(500)
+
     cy.get(':nth-child(3) > .ant-col-16 > .input_field > .ant-input').clear()
     cy.get(':nth-child(3) > .ant-col-16 > .input_field > .ant-input').type('Legend!')
+
+    cy.get(':nth-child(4) > .ant-col-16 > .input_field > .ant-input').clear()
+    cy.get(':nth-child(4) > .ant-col-16 > .input_field > .ant-input').type('10')
+
+    cy.log('Changing legend color')
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(4)
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(4).type('#F2F2F2')
+  
+
+    cy.log('Changing border color')
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(5).clear()
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(5).type('#F2F2F2')
+
+    cy.log('Changing background color')
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(6).clear()
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(6).type('#F2F2F2')
+
 
     cy.wait(500)
     cy.log('Opening Axis')
     cy.get('.ant-collapse-item').eq(2).click()
 
-    cy.wait(500)
     cy.log('Hiding X-axis grid lines')
     cy.get('.figure-container .ant-switch').eq(1).click({ force: true })
   })
