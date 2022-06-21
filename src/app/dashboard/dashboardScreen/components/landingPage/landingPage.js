@@ -114,7 +114,7 @@ export default function landingPage(props) {
 				String(o[k]).toLowerCase().includes(value.toLowerCase())
 			)
 		);
-		
+
 		setFilterTableLanding(filterTable);
 	};
 
@@ -371,14 +371,14 @@ export default function landingPage(props) {
 												</span>
 											</p>
 										</Col>
-										<Col span={12}>
+										{/* <Col span={12}>
 											<div style={{ width: '146px', height: '84px' }}>
 												<ScatterPlot
 													data={props.plotData}
 													layout={props.plotLayout}
 												/>
 											</div>
-										</Col>
+										</Col> */}
 									</Row>
 								)}
 							</Col>
