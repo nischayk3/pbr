@@ -349,7 +349,7 @@ export default function landingPage(props) {
 										/>
 									)}
 								</Row>
-								{props.viewData.chartDispId && (
+								{/* {props.viewData.chartDispId && (
 									<Row className='chart-view'>
 										<Col span={12}>
 											<p className='chart-preview-text'>
@@ -371,16 +371,16 @@ export default function landingPage(props) {
 												</span>
 											</p>
 										</Col>
-										{/* <Col span={12}>
+										<Col span={12}>
 											<div style={{ width: '146px', height: '84px' }}>
 												<ScatterPlot
 													data={props.plotData}
 													layout={props.plotLayout}
 												/>
 											</div>
-										</Col> */}
+										</Col>
 									</Row>
-								)}
+								)} */}
 							</Col>
 						</Row>
 					</div>
