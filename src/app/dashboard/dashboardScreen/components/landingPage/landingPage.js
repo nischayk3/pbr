@@ -349,7 +349,7 @@ export default function landingPage(props) {
 										/>
 									)}
 								</Row>
-								{props.viewData.chartDispId && (
+								{/* {props.viewData.chartDispId && (
 									<Row className='chart-view'>
 										<Col span={12}>
 											<p className='chart-preview-text'>
@@ -380,7 +380,7 @@ export default function landingPage(props) {
 											</div>
 										</Col>
 									</Row>
-								)}
+								)} */}
 							</Col>
 						</Row>
 					</div>
