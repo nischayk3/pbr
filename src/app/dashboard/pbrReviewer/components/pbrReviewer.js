@@ -7,7 +7,7 @@ import {
   showNotification,
 } from '../../../../duck/actions/commonActions';
 import Highlighter from 'react-highlight-words';
-import { Card, Table, Button, Col, Row, Checkbox, Input, Space } from 'antd';
+import { Card, Table, Button, Col, Row, Checkbox, Input, Space, Affix } from 'antd';
 import { getPbrReviewerData, updateApprove } from '../../../../services/pbrService'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
@@ -19,6 +19,7 @@ const { Search } = Input;
 function PbrReviewer() {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([])
+  const [container, setContainer] = useState(null);
   const [searchedColumn, setSearchedColumn] = useState('');
   const [arr, setArr] = useState([]);
   const [searchedLanding, setSearchedLanding] = useState(false);
@@ -217,7 +218,7 @@ function PbrReviewer() {
       }
 
     },
-    hole: .7,
+    hole: .6,
     type: 'pie',
   }]
 
@@ -368,11 +369,11 @@ function PbrReviewer() {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'Updated by',
-      key: 'username',
-      dataIndex: 'username',
-      ...getColumnSearchProps('username'),
-      sorter: (a, b) => a.username.length - b.username.length,
+      title: 'created By',
+      key: 'created_by',
+      dataIndex: 'created_by',
+      ...getColumnSearchProps('created_by'),
+      sorter: (a, b) => a.created_by.length - b.created_by.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -597,10 +598,13 @@ function PbrReviewer() {
           <div className='review-wrapper'>
             <div className='content_section' >
 
-              <div>
-
+            <div className="scrollable-container" >
+            <div className="background">
+            <Affix offsetTop={150} onChange={(affixed) => console.log(affixed)}>
+              
                 <Row gutter={16}>
                   <Col span={12}>
+                  
                     <Card className="review-card1" >
                       <div id="my-div" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 200 }}>
                         <h3 className="status_pos">Status</h3>
@@ -646,13 +650,14 @@ function PbrReviewer() {
                     </Card>
                   </Col>
                 </Row>
-
+                </Affix>
               </div>
 
               <div style={{ marginTop: 20 }}>
                 <div>
-
-                  <Search
+                    <Row justify="space-around" align="middle">
+                      <Col span={22}>
+                      <Search
                     className='dashboard-search'
                     placeholder='Search by template ID, name, creator or date of creation'
                     allowClear
@@ -661,11 +666,10 @@ function PbrReviewer() {
                     icon={<SearchOutlined />}
                     onSearch={landingSearch}
                   />
-
-
-                </div>
-                <Button style={{
-                  margin: "7px",
+                      </Col>
+                      <Col span={2} >
+                      <Button style={{
+                  margin: "7px 20px",
                   right: 8,
                   borderRadius: "5px",
                   textTransform: "none",
@@ -677,6 +681,14 @@ function PbrReviewer() {
                   onClick={showApproved}
                   disabled={arr?.length == 0 ? true : false }
                 >Approve</Button>
+                      </Col>
+                      </Row>          
+                 
+                
+
+
+                </div>
+               
 
 
 
@@ -689,10 +701,12 @@ function PbrReviewer() {
                   pagination={{ pageSize: 5 }}
                   scroll={{
                     x: 1500,
+                    y:300,
                   }}
                   style={{ border: '1px solid #ececec', borderRadius: '2px' }}
                 />
 
+              </div>
               </div>
             </div>
           </div>

@@ -32,7 +32,8 @@ import {
 	Space,
 	Radio,
 	notification,
-	Avatar
+	Avatar,
+	Select
 } from 'antd';
 import { useDispatch } from 'react-redux';
 import Highlighter from 'react-highlight-words';
@@ -42,7 +43,7 @@ import pdfIcon from '../../../../assets/images/pdfIcon.svg';
 import { getPbrTemplateData, getDataView } from '../../../../services/pbrService';
 import { tableColumns } from '../../../../utils/TableColumns'
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { loadTemplateInfo, loadMatBatchInfo, loadPageIdentifier,loadTempAdditionalData } from '../../../../duck/actions/pbrAction';
+import { loadTemplateInfo, loadMatBatchInfo, loadPageIdentifier, loadTempAdditionalData } from '../../../../duck/actions/pbrAction';
 import StatusBlock from '../../../../components/StatusBlock/statusBlock'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper'
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader'
@@ -100,12 +101,14 @@ function PaperBatchRecords() {
 		useState(null);
 	const [form] = Form.useForm();
 	const [templateData, setTemplateData] = useState([])
+	const [loadTiles, setLoadTiles] = useState([])
 	const [templateColumns, setTemplateColumns] = useState([])
 	const [dataView, setDataView] = useState([])
 	const [fileName, setFileName] = useState("")
 	const [templateName, seTemplateName] = useState("")
 	const [searchedLanding, setSearchedLanding] = useState(false);
 	const [filterTableLanding, setFilterTableLanding] = useState(null);
+	const [materialDropown, setMaterialDropown] = useState([]);
 	const [matBatch, setMatBatch] = useState({
 		material_num: "",
 		batch: ""
@@ -119,10 +122,11 @@ function PaperBatchRecords() {
 	}, []);
 
 	const getTemplateData = async () => {
-		let req = ``
+		let req = { limit: 8 }
 		try {
 			dispatch(showLoader());
-			const tableResponse = await getPbrTemplateData(req);
+			const tableResponse = await getPbrTemplateData();
+			const tilesData = await getPbrTemplateData(req);
 			const tableColumn = tableColumns(tableResponse?.Data)
 			let newArray1 = tableColumn.filter(item => item.dataIndex != 'created_by' && item.dataIndex != 'changed_on' && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
 			let columns = [];
@@ -140,6 +144,15 @@ function PaperBatchRecords() {
 					},
 
 				};
+				if (item.dataIndex === "created_on") {
+					obj.render = (text, row, index) => {
+						let date1 = new Date(text)
+						return (
+							<div>{date1.toISOString().substring(0, 20)}</div>
+						)
+
+					}
+				}
 				if (item.dataIndex === "changed_by") {
 					obj.render = (text, row, index) => {
 						return (
@@ -161,10 +174,12 @@ function PaperBatchRecords() {
 			if (tableResponse['status-code'] === 200) {
 				setTemplateColumns(columns)
 				setTemplateData(tableResponse.Data);
+				setLoadTiles(tilesData.Data)
 				dispatch(hideLoader());
 			}
 			else if (tableResponse['status-code'] === 404) {
 				setTemplateData(tableResponse.Data);
+				setLoadTiles(tilesData.Data)
 				dispatch(hideLoader());
 				dispatch(showNotification('error', tableResponse.Message));
 			}
@@ -180,8 +195,12 @@ function PaperBatchRecords() {
 		return colors[index % 4];
 	};
 
-	const getViewData = async () => {
-		let res = await getDataView()
+	const getImageData = async (val) => {
+		let req = {
+			actionType: "get_product",
+			productNum: val
+		}
+		let res = await getDataView(req)
 		setDataView(res.Data)
 		setFileName(res?.Data[0]?.actual_filename)
 		setMatBatch({
@@ -189,6 +208,17 @@ function PaperBatchRecords() {
 			batch: res?.Data[0].batch_num,
 			site: res?.Data[0].site_code
 		})
+	}
+
+	const getViewData = async () => {
+		let req = {
+			actionType: "get_product_num",
+			productNum: ""
+		}
+		let res = await getDataView(req)
+		setMaterialDropown(res.Data)
+		getImageData(res.Data[0]?.label)
+		
 
 	}
 
@@ -347,7 +377,7 @@ function PaperBatchRecords() {
 	};
 
 	const handleTemplateSubmit = () => {
-		if (templateName == "") {
+		if (templateName == "" || templateName == undefined) {
 			openNotification()
 		} else {
 			history.push(`${match.url}/Untitled?file=${fileName}&tempalteName=${templateName}&fromScreen=Workspace`);
@@ -365,7 +395,8 @@ function PaperBatchRecords() {
 		setTableDataSourceFiltered(filterdDataArr);
 	}
 	const handleValuesChange = (changedValues, values) => {
-		seTemplateName(changedValues?.templateName)
+		console.log("changedValues", changedValues, values)
+		seTemplateName(values?.templateName)
 
 	};
 	const onFinish = (values) => {
@@ -409,21 +440,21 @@ function PaperBatchRecords() {
 		{
 			material_num: value?.product_num,
 			batch: value?.batch_num,
-            site: value?.site_code
+			site: value?.site_code
 
 		}
-        let obj2 = {
-            pbrDisplayId:value?.pbr_template_disp_id,
-            pbrTempId:value.pbr_temp_int_id,
-            pbrTemplateStatus:value.pbr_template_status,
-            pbrVersion:value?.pbr_template_version
-        }
+		let obj2 = {
+			pbrDisplayId: value?.pbr_template_disp_id,
+			pbrTempId: value.pbr_temp_int_id,
+			pbrTemplateStatus: value.pbr_template_status,
+			pbrVersion: value?.pbr_template_version
+		}
 		dispatch(loadPageIdentifier(value?.pbr_template_info?.pbrPageIdentifier))
 		dispatch(loadMatBatchInfo(obj))
-        dispatch(loadTempAdditionalData(obj2))
-        dispatch(loadTemplateInfo(value?.pbr_template_info?.pbrTemplateInfo))
+		dispatch(loadTempAdditionalData(obj2))
+		dispatch(loadTemplateInfo(value?.pbr_template_info?.pbrTemplateInfo))
 		history.push(`${match.url}/${value.pbr_template_disp_id}?file=${value?.pbr_template_info?.pbrTemplateInfo[0].filename}&temp_disp_id=${value.pbr_template_disp_id}&tempalteName=${value.pbr_template_name}&fromScreen=Workspace`)
-		
+
 
 	}
 	const landingSearch = value => {
@@ -437,10 +468,14 @@ function PaperBatchRecords() {
 		setFilterTableLanding(filterTable);
 	};
 
+	const handleMaterialChange = (val) =>{
+		getImageData(val)
+	}
+
 	return (
 		<div className='pbr-container'>
 			<div className='custom-wrapper pbr-wrapper'>
-				
+
 				<BreadCrumbWrapper />
 			</div>
 			<Row className='p-28'>
@@ -479,13 +514,13 @@ function PaperBatchRecords() {
 											? templateData
 											: filterTableLanding}
 										scroll={{ x: 2000, y: 650 }}
-                                        onRow={(record, rowIndex) => {
+										onRow={(record, rowIndex) => {
 											return {
 												onClick: event => {
-                                                    handleClickTiles(record)
-													
-												}, 
-                                                
+													handleClickTiles(record)
+
+												},
+
 											}
 										}}
 									/>
@@ -513,7 +548,7 @@ function PaperBatchRecords() {
 							<Col span={12} className='p36'>
 								<Row gutter={16} className="title">
 									<Col span={8}>
-										<h3>Recently created charts</h3>
+										<h3 style={{fontSize:14}}>Recently created templates</h3>
 									</Col>
 									<Col span={14} className="title-legends">
 										<dl>
@@ -526,12 +561,12 @@ function PaperBatchRecords() {
 										</dl>
 									</Col>
 								</Row>
-								
+
 								<Divider />
 								<Row gutter={24}>
-									{templateData &&
-										templateData.length > 0 &&
-										templateData.map((el, index) => {
+									{loadTiles &&
+										loadTiles.length > 0 &&
+										loadTiles.map((el, index) => {
 											return (
 												<Col
 													className='gutter-row'
@@ -562,7 +597,7 @@ function PaperBatchRecords() {
 						type='primary'
 						className='templateSubmitBtn'
 						onClick={handleTemplateSubmit}
-						onValuesChange={handleValuesChange}
+					// onValuesChange={handleValuesChange}
 					>
 						Lets Go!
 					</Button>,
@@ -579,11 +614,11 @@ function PaperBatchRecords() {
 							<Row>
 								<Form
 									layout='vertical'
-									form={form}
 									className='formNewTemplate'
 									name="basic"
 									onValuesChange={handleValuesChange}
 									onFinish={onFinish}
+									initialValues={{ materialNumber: materialDropown[0]?.label }}
 								>
 									<div className='formNewTemplateDiv'>
 										<Form.Item
@@ -592,7 +627,7 @@ function PaperBatchRecords() {
 											rules={[
 												{
 													required: true,
-													message: 'Please input your password!',
+													message: 'Please enter template name',
 												},
 											]}
 
@@ -604,22 +639,31 @@ function PaperBatchRecords() {
 										</Form.Item>
 										<Form.Item
 											label='Material number'
-										// name='materialNumber'
+											name='materialNumber'
+											rules={[
+												{
+													required: true,
+													message: 'Please select material',
+												},
+											]}
 										>
-											<Input value={matBatch?.material_num} disabled/>
+											{/* <Input value={matBatch?.material_num} disabled /> */}
+											<Select options={materialDropown} onChange={(val)=>handleMaterialChange(val)}>
+
+											</Select>
 										</Form.Item>
 										<Form.Item
 											label='Batch number'
-										// name='batchNumber'
+											// name='batchNumber'
 										>
-											<Input value={matBatch?.batch} disabled/>
+											<Input value={matBatch?.batch} disabled />
 										</Form.Item>
 									</div>
 								</Form>
 							</Row>
 							<Row>
 								<Radio.Group
-									defaultValue={dataView[0]?.actual_filename}
+									value={fileName}
 									className='radioPdfBlock'
 									onChange={(e) => {
 										setFileName(e.target.value)
