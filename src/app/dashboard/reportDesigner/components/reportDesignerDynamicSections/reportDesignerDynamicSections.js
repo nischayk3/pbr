@@ -78,44 +78,46 @@ function ReportDesignerDynamicSections(props) {
     }
 
     const addChart = (chartName, section) => {
-        setCurrentSection(section)
-        extract(chartName)
-        if (chartName && chartName[0] == '<') {
-            chartName = extract(chartName)
-        }
-        dispatch(showLoader())
-        section = section + 1
-        if (`${section}` in addedCharts) {
-
-            if (addedCharts[`${section}`].includes(chartName)) {
-                dispatch(showNotification('error', 'Chart already added'))
-                dispatch(hideLoader())
+        if (!props.show) {
+            setCurrentSection(section)
+            extract(chartName)
+            if (chartName && chartName[0] == '<') {
+                chartName = extract(chartName)
             }
-            else {
-                addedCharts[`${section}`].push(chartName)
-                setAddedCharts(addedCharts)
-                dispatch(hideLoader())
+            dispatch(showLoader())
+            section = section + 1
+            if (`${section}` in addedCharts) {
 
-            }
-        }
-        else {
+                if (addedCharts[`${section}`].includes(chartName)) {
+                    dispatch(showNotification('error', 'Chart already added'))
+                    dispatch(hideLoader())
+                }
+                else {
+                    addedCharts[`${section}`].push(chartName)
+                    setAddedCharts(addedCharts)
+                    dispatch(hideLoader())
 
-            if (addedCharts && !addedCharts[`${section}`]) {
-                addedCharts[`${section}`] = []
-                addedCharts[`${section}`].push(chartName)
-                props.setSectionCharts(chartName, addedCharts)
-                setAddedCharts(addedCharts)
-                dispatch(hideLoader())
+                }
             }
             else {
 
-                addedCharts[`${section}`].push(chartName)
-                setAddedCharts(addedCharts)
-            }
-            dispatch(hideLoader())
-        }
+                if (addedCharts && !addedCharts[`${section}`]) {
+                    addedCharts[`${section}`] = []
+                    addedCharts[`${section}`].push(chartName)
+                    props.setSectionCharts(chartName, addedCharts)
+                    setAddedCharts(addedCharts)
+                    dispatch(hideLoader())
+                }
+                else {
 
-        props.setSectionCharts(chartName, addedCharts)
+                    addedCharts[`${section}`].push(chartName)
+                    setAddedCharts(addedCharts)
+                }
+                dispatch(hideLoader())
+            }
+
+            props.setSectionCharts(chartName, addedCharts)
+        }
 
     }
 
@@ -171,7 +173,6 @@ function ReportDesignerDynamicSections(props) {
         setShowChart(props.sectionAddedCharts)
         setAddedKeys(props.sectionKeys)
     }
-    console.log(props.show)
 
     return (
         <div className="reportDesigner-dynamicSections bg-white">
@@ -189,7 +190,7 @@ function ReportDesignerDynamicSections(props) {
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '10px' }}>
                                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
                                                 <Form.Item {...restField} name={[name, 'sectionName']}>
-                                                    <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px', marginRight: '20px' }} className="input-section" disabled={editable} />
+                                                    <Input placeholder="Section" style={{ width: '150px', marginBottom: '10px', marginLeft: '35px', marginRight: '20px' }} className="input-section" disabled={props.show} disabled={editable} />
                                                 </Form.Item>
                                                 <Tooltip disabled={props.show} placement="topLeft" title="Edit Section Name">    <EditOutlined style={{ marginTop: '7px', marginLeft: '0px', color: '#949494', fontSize: '16px' }} onClick={() => handleEdit(editable)} /> </Tooltip>
                                             </div>

@@ -108,6 +108,8 @@ const alertEvaluation = (props) => {
 			Friday: false,
 			Saturday: false,
 		});
+		setEveryDayValue("")
+		setSelectedTimeRange("Hour")
 	};
 
 	const checkValidRequest = () => {

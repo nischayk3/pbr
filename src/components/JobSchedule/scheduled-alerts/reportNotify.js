@@ -211,6 +211,8 @@ const ReportNotify = (props) => {
       Friday: false,
       Saturday: false,
     });
+    setEveryDayValue("")
+    setSelectedTimeRange("Hour")
   };
 
 

@@ -210,6 +210,7 @@ function ReportGenerator(props) {
 	};
 
 	const getTableData = (obj, rep_layout) => {
+		console.log(obj, rep_layout)
 		obj = obj.layout_info;
 		let headingList = [];
 		let allSections = [];
@@ -225,14 +226,16 @@ function ReportGenerator(props) {
 		let headingSection = obj['sections'] ? obj['sections'] : [];
 		allSections = [...allSections, ...headingSection];
 
-
 		for (let i = 0; i < allSections.length; i++) {
-			allSections[i].charts = rep_layout[i + 1] ? rep_layout[i + 1] : [];
+			if (allSections[i].charts)
+				allSections[i].charts = rep_layout[i + 1] ? rep_layout[i + 1] : [];
 		}
+
 		return allSections;
 	};
 
 	const unloadTest = ReportDatas => {
+		console.log(ReportDatas)
 		dispatch(showLoader());
 		setReportId(ReportDatas['rep_disp_id'] ? ReportDatas['rep_disp_id'] : '');
 		if (ReportDatas.layout_info && ReportDatas.layout_info.charts_layout)
@@ -355,7 +358,7 @@ function ReportGenerator(props) {
 			}
 		}
 	};
-
+	console.log(table)
 	return (
 		<div className='custom-wrapper'>
 			<div className='sub-header' style={{ paddingRight: '24px' }}>
@@ -414,7 +417,7 @@ function ReportGenerator(props) {
 					<Card title='Generate new report variant' className='generator-card'>
 						<ReportGeneratorForm stat={status} />
 						<div className='table-card'>
-							{table.length > 0 &&
+							{table && table.length > 0 &&
 								table.map(i => (
 									<Collapse
 										key={i.heading}

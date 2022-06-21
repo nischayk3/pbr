@@ -316,7 +316,7 @@ const ChartNotify = (props) => {
 
   const onClear = () => {
     setEmailList([]);
-    setSelectedSchedule("");
+    setSelectedSchedule("Repeat Once");
     setScheduleEmailStartDate("");
     setScheduleEmailTime("");
     setRadioValue("");
@@ -330,6 +330,8 @@ const ChartNotify = (props) => {
       Friday: false,
       Saturday: false,
     });
+    setEveryDayValue("")
+    setSelectedTimeRange("Hour")
   };
   const checkValidRequest = () => {
     if (radioValue == 3 && everyDayValue.length <= 0) {
