@@ -200,17 +200,12 @@ function ReportGenerator(props) {
 
 	const updateChartLayout = (chartt, section, param) => {
 		section = section + 1;
-		console.log(chartLayout)
-		console.log(chartt, section, param)
-		console.log(chartLayout[section])
+
 		let objIndex = chartLayout[section].findIndex(obj => obj.chart == chartt);
-		console.log(objIndex)
-		console.log(chartLayout[section][objIndex][`${param}`] = false)
 		chartLayout[section][objIndex][`${param}`] = false;
 	};
 
 	const getTableData = (obj, rep_layout) => {
-		console.log(obj, rep_layout)
 		obj = obj.layout_info;
 		let headingList = [];
 		let allSections = [];
@@ -235,7 +230,6 @@ function ReportGenerator(props) {
 	};
 
 	const unloadTest = ReportDatas => {
-		console.log(ReportDatas)
 		dispatch(showLoader());
 		setReportId(ReportDatas['rep_disp_id'] ? ReportDatas['rep_disp_id'] : '');
 		if (ReportDatas.layout_info && ReportDatas.layout_info.charts_layout)
@@ -358,7 +352,6 @@ function ReportGenerator(props) {
 			}
 		}
 	};
-	console.log(table)
 	return (
 		<div className='custom-wrapper'>
 			<div className='sub-header' style={{ paddingRight: '24px' }}>
