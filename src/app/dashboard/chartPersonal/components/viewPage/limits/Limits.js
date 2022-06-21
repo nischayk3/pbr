@@ -19,7 +19,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const params = queryString.parse(location.search);
- 
+
   //states for table data
   const [controlSource, setControlSource] = useState([]);
   const [specificationSource, setSpecificationSource] = useState([]);
@@ -30,9 +30,6 @@ const Limits = ({ postChartData, setPostChartData }) => {
 
   //function to change control limit input values
   const handleChange = (index, event, dateString) => {
-    if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
-      return
-    }
     if (dateString) {
       const rowsInput = [...controlSource];
       rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
@@ -46,9 +43,6 @@ const Limits = ({ postChartData, setPostChartData }) => {
 
   //function to change specification limit input values
   const handleSpecChange = (index, event, dateString) => {
-    if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
-      return
-    }
     if (dateString) {
       const rowsInput = [...specificationSource];
       rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
@@ -62,9 +56,6 @@ const Limits = ({ postChartData, setPostChartData }) => {
 
   // function for change of warn input values
   const handleWarnChange = (index, event, dateString) => {
-    if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
-      return
-    }
     if (dateString) {
       const rowsInput = [...warningSource];
       rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
@@ -99,9 +90,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
-            // if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
-            //   return <p>{data.lower}</p>
-            // }
+            if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+              return <p style={{margin: '0'}}>{data.lower}</p>
+            }
             return (
               <Input
                 type="number"
@@ -120,9 +111,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
-            // if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
-            //   return <p>{data.upper}</p>
-            // }
+            if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+              return <p style={{margin: '0'}}>{data.upper}</p>
+            }
             return (
               <Input
                 type="number"
@@ -147,9 +138,18 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
-            // if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
-            //   return <p>{data.valid_timestamp ? (data.valid_timestamp) : ""}</p>
-            // }
+            if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+              if (!data.valid_timestamp) {
+                return ""
+              } else {
+                const d = new Date(data.valid_timestamp)
+                const year = d.getFullYear()
+                const month = d.getMonth()
+                const day = d.getDate()
+                return <p style={{margin: '0'}}>{`${year}-${month + 1}-${day}`}</p>
+              }
+            }
+
             return (
               <DatePicker
                 type="text"
