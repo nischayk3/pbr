@@ -41,8 +41,7 @@ export default function ReportLanding(props) {
 	const [reportSearch, setReportSearch] = useState('')
 	const [genSearch, setReportGen] = useState('')
 	const [letDis, setLetDis] = useState(false)
-
-
+	const [reportId, setReportIds] = useState('')
 	const { TabPane } = Tabs;
 	const history = useHistory();
 	const dispatch = useDispatch();
@@ -189,13 +188,16 @@ export default function ReportLanding(props) {
 		if (data.Status == 200 || data.report_designer) {
 			props.getReportData(data);
 			props.changeScreen();
+			history.push({
+				pathname: `/dashboard/report_designer/${report_id}`,
+			});
 		} else {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', data.Message));
 		}
 	};
 
-	const getLoadReportGenerator = async report_id => {
+	const getLoadReportGenerator = async (report_id, b) => {
 		dispatch(showNotification('success', report_id + ' selected'));
 		setLetDis(true)
 		dispatch(showLoader());
@@ -203,9 +205,11 @@ export default function ReportLanding(props) {
 		let data = await loadReportGen(req);
 		if (data.report_generator) dispatch(sendReport(data.report_generator.data));
 		if (data.Status == 200 || data.report_generator) {
-			// history.push({
-			// 	pathname: '/dashboard/report_generator',
-			// });
+			if (b) {
+				history.push({
+					pathname: `/dashboard/report_generator/${report_id}`,
+				});
+			}
 			dispatch(hideLoader());
 			setLetDis(false)
 		} else {
@@ -224,6 +228,7 @@ export default function ReportLanding(props) {
 			dispatch(hideLoader());
 			dispatch(showNotification('success', `Loaded ${report_id}`));
 			setLetDis(false)
+
 		} else {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', data.Message));
@@ -247,7 +252,10 @@ export default function ReportLanding(props) {
 			<div className='custom-wrapper'>
 				<div className='sub-header'>
 					<div className='sub-header-title'>
-						<BreadCrumbWrapper />
+						<BreadCrumbWrapper urlName={activeTab == 'Design Report Template' ?
+							`/dashboard/report_designer/${reportId}` : `/dashboard/report_generator/${reportId}`}
+							value={reportId}
+							data="Untitled" />
 					</div>
 				</div>
 				<div className='landing-screen-header'>
@@ -272,6 +280,8 @@ export default function ReportLanding(props) {
 							enterButton='Search'
 							size='large'
 							onSearch={search}
+							onChange={(e) => setReportSearch(e.target.value)}
+							value={reportSearch}
 						/>
 						{searched ? (
 							<Table
@@ -284,7 +294,10 @@ export default function ReportLanding(props) {
 									onClick: e => {
 										activeTab == 'Design Report Template'
 											? getLoadReport(record.rep_disp_id)
-											: getLoadReportGenerator(record.rep_disp_id);
+											: getLoadReportGenerator(record.rep_disp_id, true);
+										setReportSearch(record.rep_disp_id)
+										setReportGen(record.rep_disp_id)
+										setReportIds(record.rep_disp_id)
 									},
 								})}
 							/>
@@ -329,6 +342,7 @@ export default function ReportLanding(props) {
 														<div
 															onClick={() => {
 																getLoadReport(i.rep_disp_id);
+																setReportIds(i.rep_disp_id)
 															}}>
 															<StatusBlock
 																id={i.rep_disp_id}
@@ -375,7 +389,8 @@ export default function ReportLanding(props) {
 												index < 8 && (
 													<div
 														onClick={() => {
-															getLoadReportGenerator(i.rep_disp_id);
+															getLoadReportGenerator(i.rep_disp_id, true);
+															setReportIds(i.rep_disp_id)
 														}}>
 														<StatusBlock
 															id={i.rep_disp_id}
@@ -409,6 +424,8 @@ export default function ReportLanding(props) {
 									<Input.Search
 										onSearch={onSearch}
 										placeholder='Search by report ID or name'
+										onChange={(e) => setReportGen(e.target.value)}
+										value={genSearch}
 									/>
 								</Row>
 								<div className='landing-tiles'>
@@ -420,9 +437,10 @@ export default function ReportLanding(props) {
 												index < 4 && (
 													<div
 														onClick={() => {
-															getLoadReportGenerator(i.rep_disp_id);
-															setReportId(i.rep_disp_id);
+															setReportIds(i.rep_disp_id);
+															setReportId(i.rep_disp_id)
 															setLetDis(true)
+															NewReportGenerator(i.rep_disp_id);
 														}}>
 														<div
 															className={
@@ -459,6 +477,7 @@ export default function ReportLanding(props) {
 										onRow={record => ({
 											onClick: e => {
 												NewReportGenerator(record.rep_disp_id);
+												setReportGen(record.rep_disp_id)
 											},
 										})}
 									/>
@@ -478,7 +497,7 @@ export default function ReportLanding(props) {
 								disabled={letDis}
 								onClick={() => {
 									history.push({
-										pathname: '/dashboard/report_generator',
+										pathname: `/dashboard/report_generator/${reportId}`,
 									});
 								}}>
 								Let's Go!

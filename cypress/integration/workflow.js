@@ -30,6 +30,25 @@ describe("Workflow", () => {
 		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
 
 	});
+	it('Load Screen Header', () => {
+		const date = new Date();
+		const month = date.toLocaleString('default', { month: 'long' });
+		const latestDate = date.getDate();
+		const year = date.getFullYear();
+		const currentDate = month + ' ' + latestDate + ',' + ' ' + year;
+
+		cy.log('Verify Screen Header Component')
+		cy.get('.screen_header_head')
+
+		cy.log('Verify User Name')
+		cy.get('.screen_header_username').should("have.text", "Hello Fahad!")
+
+		cy.log('Verify Header Text')
+		cy.get('.screen_header_text').should("have.text", "Today is a great day to approve some records! Lets take look")
+
+		cy.log('Verify Current Date')
+		cy.get('.screen_header_resultdate').should("have.text", currentDate)
+	})
 
 	it("Chart Approval click", () => {
 		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
@@ -64,7 +83,7 @@ describe("Workflow", () => {
 
 	});
 
-	it("Filter/Search a value on column", () => {
+	it("Search a value on column", () => {
 		cy.wait(6000);
 		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
 		const url = Cypress.config().baseUrl
@@ -82,6 +101,26 @@ describe("Workflow", () => {
 		cy.get('.ant-input').clear();
 		cy.get('.ant-input').type('chart');
 		cy.get('.ant-btn > :nth-child(2)').click();
+
+	});
+	it("Filter a value on column", () => {
+		cy.wait(6000);
+		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
+		const url = Cypress.config().baseUrl
+		cy.visit(url + '/#/dashboard/workflow')
+		cy.log('Load Landing Page')
+		cy.url().should('eq', url + '/#/dashboard/workflow')
+		cy.wait(6000);
+		cy.intercept('GET', 'services/v1/approvals/CHART/recently_approval', { fixture: 'recently-approved.json' })
+		cy.intercept('GET', 'services/v1/approvals/CHART/awaiting_approval', { fixture: 'awaiting-approval.json' })
+		cy.wait(6000);
+		//cy.get('.card_desc').click();
+		cy.get(':nth-child(1) > .approval-cards > .card_desc').click();
+		cy.wait(6000);
+		cy.get(':nth-child(5) > .ant-table-filter-column > .ant-dropdown-trigger > .anticon > svg').click();
+		cy.get('.ant-input').clear();
+		cy.get('.ant-input').type('chart');
+		cy.get(':nth-child(3) > .ant-btn > span').click();
 
 	});
 
@@ -185,26 +224,57 @@ describe("Workflow", () => {
 
 	});
 
+	it("Clicking View Approval", () => {
+		cy.wait(6000);
+		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
+		const url = Cypress.config().baseUrl
+		cy.visit(url + '/#/dashboard/workflow')
+		cy.log('Load Landing Page')
+		cy.url().should('eq', url + '/#/dashboard/workflow')
+		cy.wait(6000);
+		cy.intercept('GET', 'services/v1/approvals/VIEW/awaiting_approval', { fixture: 'view-awaiting-approval.json' })
+		cy.wait(6000);
+		//cy.get('.card_desc').click();
+		cy.get(':nth-child(3) > .approval-cards > .card_desc').click();
+		cy.wait(6000);
+		cy.get(':nth-child(2) > .ant-table-cell-fix-left > .review-submission').click();
 
-	it('Load Screen Header', () => {
-		const date = new Date();
-		const month = date.toLocaleString('default', { month: 'long' });
-		const latestDate = date.getDate();
-		const year = date.getFullYear();
-		const currentDate = month + ' ' + latestDate + ',' + ' ' + year;
+	});
 
-		cy.log('Verify Screen Header Component')
-		cy.get('.screen_header_head')
+	it("Clicking Report Approval", () => {
+		cy.wait(6000);
+		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
+		const url = Cypress.config().baseUrl
+		cy.visit(url + '/#/dashboard/workflow')
+		cy.log('Load Landing Page')
+		cy.url().should('eq', url + '/#/dashboard/workflow')
+		cy.wait(6000);
+		cy.intercept('GET', 'services/v1/approvals/REPORT/awaiting_approval', { fixture: 'report-awaiting-approval.json' })
+		cy.wait(6000);
+		//cy.get('.card_desc').click();
+		cy.get(':nth-child(4) > .approval-cards > .card_desc').click();
+		cy.wait(6000);
+		cy.get(':nth-child(2) > .ant-table-cell-fix-left > .review-submission').click();
 
-		cy.log('Verify User Name')
-		cy.get('.screen_header_username').should("have.text", "Hello Fahad!")
+	});
+	it("Clicking PBR Approval", () => {
+		cy.wait(6000);
+		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
+		const url = Cypress.config().baseUrl
+		cy.visit(url + '/#/dashboard/workflow')
+		cy.log('Load Landing Page')
+		cy.url().should('eq', url + '/#/dashboard/workflow')
+		cy.wait(6000);
+		cy.intercept('GET', 'services/v1/approvals/PBR/awaiting_approval', { fixture: 'pbr-awaiting-approval.json' })
+		cy.wait(6000);
+		//cy.get('.card_desc').click();
+		cy.get(':nth-child(5) > .approval-cards > .card_desc').click();
+		cy.wait(6000);
+		cy.get(':nth-child(2) > .ant-table-cell-fix-left > .review-submission').click();
 
-		cy.log('Verify Header Text')
-		cy.get('.screen_header_text').should("have.text", "Today is a great day to approve some records! Lets take look")
+	});
 
-		cy.log('Verify Current Date')
-		cy.get('.screen_header_resultdate').should("have.text", currentDate)
-	})
+
 });
 
 

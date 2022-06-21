@@ -7,12 +7,12 @@
  */
 import './headerstyle.scss';
 import React, { useState, useEffect } from 'react';
-import {
-    Typography
-} from 'antd';
+// import {
+//     Typography
+// } from 'antd';
 import { useSelector } from 'react-redux';
 
-const { Text } = Typography
+// const { Text } = Typography
 
 function ReportGeneratorForm(props) {
 
@@ -46,12 +46,12 @@ function ReportGeneratorForm(props) {
                 setViewId(view_id)
             }
         }
-        else {
-            if (ReportData['view_disp_id'])
-                setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
-            else
-                setViewId(ReportData['view_id'] ? ReportData['view_id'] : '')
-        }
+        // else {
+        //     if (ReportData['view_disp_id'])
+        //         setViewId(ReportData['view_disp_id'] && ReportData['view_version'] ? ReportData['view_disp_id'] + '-' + ReportData['view_version'] : '')
+        //     else
+        //         setViewId(ReportData['view_id'] ? ReportData['view_id'] : '')
+        // }
 
         setVariantname(ReportData['variant_name'] ? ReportData['variant_name'] : user + '_variant')
     }
@@ -71,7 +71,7 @@ function ReportGeneratorForm(props) {
                 <span className="report-heading">  View <span className="colon" >:</span> {viewId}</span>
             </div>
             <div className="report-name">
-                <span className="report-heading">   Status <span className="colon">:</span> {reportStatus}</span>
+                <span className="report-heading">   Status <span className="colon">:</span> {props.stat ? props.stat : reportStatus}</span>
             </div>
         </div>
     );

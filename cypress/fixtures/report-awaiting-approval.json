@@ -1,0 +1,70 @@
+{
+	"Data": {
+		"config": [
+			{
+				"display_name": "Action",
+				"field_name": "appl_url",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Event Id",
+				"field_name": "event_id",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Application Type",
+				"field_name": "application_type",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Id",
+				"field_name": "Id",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Report Name",
+				"field_name": "rep_name",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Creator",
+				"field_name": "created_by",
+				"id": 1234,
+				"visible": true
+			},
+			{
+				"display_name": "Creation Date",
+				"field_name": "created_on",
+				"id": 1234,
+				"visible": true
+			}
+		],
+		"data": [
+			{
+				"Id": "R116",
+				"appl_url": "/dashboard/report_designer",
+				"application_type": "REPORT",
+				"created_by": "binkita.tiwari@mareana.com",
+				"created_on": "2022-03-11T14:10:36.824287+00:00",
+				"event_id": 42,
+				"rep_name": "rEPort"
+			},
+			{
+				"Id": "R112",
+				"appl_url": "/dashboard/report_designer",
+				"application_type": "REPORT",
+				"created_by": "demo",
+				"created_on": "2022-03-09T10:30:35.021322+00:00",
+				"event_id": 25,
+				"rep_name": "REPORT"
+			}
+		]
+	},
+	"Message": "Sucess",
+	"status-code": 200
+}

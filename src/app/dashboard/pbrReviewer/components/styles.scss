@@ -24,7 +24,7 @@
 
 .review-card1 {
 	//width: 401px;
-	//height: 220px;
+	height: 190px;
 	box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
 	box-sizing: border-box;
 	border-radius: 4px;
@@ -33,7 +33,7 @@
 
 .review-card2 {
 	//width: 428px;
-	// height: 220px;
+	height: 190px;
 	background: linear-gradient(360deg, #e7e6ff 0%, #fff4f4 100%);
 	box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
 	box-sizing: border-box;
@@ -45,3 +45,13 @@
     right: 1.2em;
     position: absolute;
 }
+.status_pos{
+	position: absolute;
+    top: 1.2em;
+    margin-right: 400px;
+}
+
+.ant-layout-content .custom-wrapper .custom-content-layout{
+	overflow:hidden !important;
+}
+.background .ant-card-body{padding: 0px;}
