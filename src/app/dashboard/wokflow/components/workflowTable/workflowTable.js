@@ -30,14 +30,14 @@ function WorkflowTable(props) {
 			setSelectedKeys,
 			selectedKeys,
 			confirm,
-			clearFilters
+			clearFilters,
 		}) => (
 			<div style={{ padding: 8 }}>
 				<Input
-					ref={node => (searchInput = node)}
+					ref={(node) => (searchInput = node)}
 					placeholder={`Search ${dataIndex}`}
 					value={selectedKeys[0]}
-					onChange={e =>
+					onChange={(e) =>
 						setSelectedKeys(e.target.value ? [e.target.value] : [])
 					}
 					onPressEnter={() =>
@@ -65,19 +65,15 @@ function WorkflowTable(props) {
 						}
 						icon={<SearchOutlined />}
 						size="small"
-						style={{ width: 90 }}>
+						style={{ width: 90 }}
+					>
 						Search
 					</Button>
 					<Button
-						onClick={() =>
-							handleReset(
-								clearFilters,
-								setSearchText
-
-							)
-						}
+						onClick={() => handleReset(clearFilters, setSearchText)}
 						size="small"
-						style={{ width: 90 }}>
+						style={{ width: 90 }}
+					>
 						Reset
 					</Button>
 					<Button
@@ -87,13 +83,14 @@ function WorkflowTable(props) {
 							confirm({ closeDropdown: false });
 							setSearchText(selectedKeys[0]);
 							setSearchedColumn(dataIndex);
-						}}>
+						}}
+					>
 						Filter
 					</Button>
 				</Space>
 			</div>
 		),
-		filterIcon: filtered => (
+		filterIcon: (filtered) => (
 			<SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
 		),
 		onFilter: (value, record) =>
@@ -103,12 +100,12 @@ function WorkflowTable(props) {
 					.toLowerCase()
 					.includes(value.toLowerCase())
 				: "",
-		onFilterDropdownVisibleChange: visible => {
+		onFilterDropdownVisibleChange: (visible) => {
 			if (visible) {
 				setTimeout(() => searchInput.select(), 100);
 			}
 		},
-		render: text =>
+		render: (text) =>
 			searchedColumn === dataIndex ? (
 				<Highlighter
 					highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
@@ -118,7 +115,7 @@ function WorkflowTable(props) {
 				/>
 			) : (
 				text
-			)
+			),
 	});
 
 	const handleSearch = (
@@ -171,7 +168,7 @@ function WorkflowTable(props) {
 	//     }
 	// ]
 
-	const getRandomColor = index => {
+	const getRandomColor = (index) => {
 		// var letters = '0123456789ABCDEF';
 		// var color = '#';
 		// for (var i = 0; i < 6; i++) {
@@ -185,12 +182,11 @@ function WorkflowTable(props) {
 	const updateTableColumns = () => {
 		let columns = [];
 		if (props.activeTab === "1") {
-			props.columns.map(i => {
+			props.columns.map((i) => {
 				let { display_name, field_name } = i;
 
 				if (i.visible) {
 					let obj = {
-
 						dataIndex: field_name,
 						key: i.field_name,
 						width:
@@ -216,21 +212,23 @@ function WorkflowTable(props) {
 									? 1
 									: a.field_name.toString().localeCompare(b.field_name);
 						},
-						title: display_name
+						title: display_name,
 					};
 
 					if (i.field_name === "appl_url") {
 						obj.fixed = "left";
 						obj.render = (text, row, index) => {
+							console.log(row, "row");
 							if (text == "/dashboard/chart_personalization") {
 								return (
 									<a
 										onClick={() =>
 											history.push(
-												`${text}/${row.Id}?id=${row.Id}&version=${row.version}`
+												`${text}/${row.Id}/${row.version}?id=${row.Id}&version=${row.version}`
 											)
 										}
-										className="review-submission">
+										className="review-submission"
+									>
 										Review Submission
 									</a>
 								);
@@ -242,7 +240,8 @@ function WorkflowTable(props) {
 												`${text}/${row.Id}&${row.version}?id=${row.Id}&version=${row.version}`
 											)
 										}
-										className="review-submission">
+										className="review-submission"
+									>
 										Review Submission
 									</a>
 								);
@@ -251,10 +250,11 @@ function WorkflowTable(props) {
 									<a
 										onClick={() =>
 											history.push(
-												`${text}/${row.Id}?id=${row.Id}&temp_disp_id=${row.Id}&file=${row.filename}&fromScreen=Workflow&version=${row.version}`
+												`${text}/${row.Id}?id=${row.Id}&temp_disp_id=${row.Id}&file=${row.filename}&fromScreen=Workflow&version=${row.version}&tempalteName=${row.pbr_template_name}`
 											)
 										}
-										className="review-submission">
+										className="review-submission"
+									>
 										Review Submission
 									</a>
 								);
@@ -266,7 +266,8 @@ function WorkflowTable(props) {
 												`${text}?id=${row.Id}&version=${row.version}`
 											)
 										}
-										className="review-submission">
+										className="review-submission"
+									>
 										Review Submission
 									</a>
 								);
@@ -280,7 +281,8 @@ function WorkflowTable(props) {
 								<div>
 									<Avatar
 										className="avatar-icon"
-										style={{ backgroundColor: getRandomColor(index + 1) }}>
+										style={{ backgroundColor: getRandomColor(index + 1) }}
+									>
 										{text.split("")[0].toUpperCase()}{" "}
 									</Avatar>
 									<span className="avatar-text">{text}</span>
@@ -299,7 +301,7 @@ function WorkflowTable(props) {
 				}
 			});
 		} else {
-			props.columns.map(i => {
+			props.columns.map((i) => {
 				let { display_name, field_name } = i;
 
 				if (i.visible) {
@@ -326,7 +328,7 @@ function WorkflowTable(props) {
 									? 1
 									: a.field_name.toString().localeCompare(b.field_name);
 						},
-						title: display_name
+						title: display_name,
 					};
 
 					if (i.field_name === "created_by") {
@@ -335,7 +337,8 @@ function WorkflowTable(props) {
 								<div>
 									<Avatar
 										className="avatar-icon"
-										style={{ backgroundColor: getRandomColor(index + 1) }}>
+										style={{ backgroundColor: getRandomColor(index + 1) }}
+									>
 										{text.split("")[0].toUpperCase()}{" "}
 									</Avatar>
 									<span className="avatar-text">{text}</span>

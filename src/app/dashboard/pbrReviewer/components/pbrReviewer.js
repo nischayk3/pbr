@@ -7,7 +7,7 @@ import {
   showNotification,
 } from '../../../../duck/actions/commonActions';
 import Highlighter from 'react-highlight-words';
-import { Card, Table, Button, Col, Row, Checkbox, Input, Space } from 'antd';
+import { Card, Table, Button, Col, Row, Checkbox, Input, Space, Affix } from 'antd';
 import { getPbrReviewerData, updateApprove } from '../../../../services/pbrService'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
@@ -19,12 +19,14 @@ const { Search } = Input;
 function PbrReviewer() {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([])
+  const [container, setContainer] = useState(null);
   const [searchedColumn, setSearchedColumn] = useState('');
   const [arr, setArr] = useState([]);
   const [searchedLanding, setSearchedLanding] = useState(false);
   const [approveReject, setApproveReject] = useState("");
   const [filterTableLanding, setFilterTableLanding] = useState(null);
   const [isPublish, setIsPublish] = useState(false);
+  const [statusreq, setStatusReq] = useState({});
   const [pieChartData, setPieChartData] = useState([0, 0]);
   const [pieChartData1, setPieChartData1] = useState([0, 0, 0]);
   const [searchText, setSearchText] = useState("");
@@ -59,17 +61,18 @@ function PbrReviewer() {
 
   const showfilterData = async (value) => {
     setShowReset(true)
-    let obj = { status: value.toLowerCase() }
+    let obj = { ...statusreq, status: value.toLowerCase() }
     let res = await getPbrReviewerData(obj)
     setTemplateData(res.Data);
+    setStatusReq(obj)
   };
 
   const showfilters = async (value) => {
     setShowResetConfidence(true)
-    let obj = { confidence: value.toLowerCase() }
+    let obj = { ...statusreq, confidence: value.toLowerCase() }
     let res = await getPbrReviewerData(obj)
     setTemplateData(res.Data);
-
+    setStatusReq(obj)
 
   };
 
@@ -217,7 +220,7 @@ function PbrReviewer() {
       }
 
     },
-    hole: .7,
+    hole: .6,
     type: 'pie',
   }]
 
@@ -368,11 +371,11 @@ function PbrReviewer() {
       sortDirections: ['descend', 'ascend'],
     },
     {
-      title: 'Updated by',
-      key: 'username',
-      dataIndex: 'username',
-      ...getColumnSearchProps('username'),
-      sorter: (a, b) => a.username.length - b.username.length,
+      title: 'created By',
+      key: 'created_by',
+      dataIndex: 'created_by',
+      ...getColumnSearchProps('created_by'),
+      sorter: (a, b) => a.created_by.length - b.created_by.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -581,10 +584,28 @@ function PbrReviewer() {
     setFilterTableLanding(filterTable);
   };
 
-  const resetConfidence = () => {
-    setShowReset(false)
+  const resetConfidence = async () => {
+    //setShowReset(false)
+    let obj = { ...statusreq }
+    delete obj["confidence"]
+    let res = await getPbrReviewerData(obj)
+    setTemplateData(res.Data);
+    setStatusReq(obj)
     setShowResetConfidence(false)
-    cardTableData()
+    // cardTableData()
+
+
+  }
+  const resetStatus = async () => {
+    let obj = { ...statusreq }
+    delete obj["status"]
+    let res = await getPbrReviewerData(obj)
+    setTemplateData(res.Data);
+    setStatusReq(obj)
+    setShowReset(false)
+    // setShowResetConfidence(false)
+    //cardTableData()
+
 
   }
 
@@ -597,102 +618,119 @@ function PbrReviewer() {
           <div className='review-wrapper'>
             <div className='content_section' >
 
-              <div>
+              <div className="scrollable-container" >
+                <div className="background" style={{
+                  display: 'block', width: '100%',
+                  padding: 30, height: 220,
+                  scrollBehavior: 'auto'
+                }}>
+                  <Affix>
 
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <Card className="review-card1" >
-                      <div id="my-div" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 200 }}>
-                        <h3 className="status_pos">Status</h3>
-                        {showReset && (
-                          <p className="status" onClick={resetConfidence}>Reset</p>
-                        )}
-                        <Plot
-                          data={appchart}
-                          onClick={(e) => showfilterData(e.points[0].label)}
-                          layout={{
-                            showlegend: true,
-                            legend: {
-                              x: 1.3,
-                              xanchor: 'left',
-                              y: 0.5
+                    <Row gutter={16}>
+                      <Col span={12}>
 
-                            }, paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: ''
-                          }} />
+                        <Card className="review-card1" >
+                          <div id="my-div" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 200 }}>
+                            <h3 className="status_pos">Status</h3>
+                            {showReset && (
+                              <p className="status" onClick={resetStatus}>Reset</p>
+                            )}
+                            <Plot
+                              data={appchart}
+                              onClick={(e) => showfilterData(e.points[0].label)}
+                              layout={{
+                                showlegend: true,
+                                legend: {
+                                  x: 1.3,
+                                  xanchor: 'left',
+                                  y: 0.5
 
-                      </div>
-                    </Card>
-                  </Col>
-                  <Col span={12}>
-                    <Card className="review-card2">
-                      <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 200 }}>
-                        <h3 className="status_pos">Confidence</h3>
-                        {showResetConfidence && (
-                          <p className="status" onClick={resetConfidence}>Reset</p>
-                        )}
+                                }, paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: ''
+                              }} />
 
-                        <Plot
-                          data={appchart1}
-                          onClick={(e) => showfilters(e.points[0].label)}
-                          layout={{
-                            showlegend: true,
-                            legend: {
-                              x: 1.3,
-                              y: 0.5
+                          </div>
+                        </Card>
+                      </Col>
+                      <Col span={12}>
+                        <Card className="review-card2">
+                          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 200 }}>
+                            <h3 className="status_pos">Confidence</h3>
+                            {showResetConfidence && (
+                              <p className="status" onClick={resetConfidence}>Reset</p>
+                            )}
 
-                            }, paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: ''
-                          }} />
-                      </div>
-                    </Card>
-                  </Col>
-                </Row>
+                            <Plot
+                              data={appchart1}
+                              onClick={(e) => showfilters(e.points[0].label)}
+                              layout={{
+                                showlegend: true,
+                                legend: {
+                                  x: 1.3,
+                                  y: 0.5
 
-              </div>
+                                }, paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: ''
+                              }} />
+                          </div>
+                        </Card>
+                      </Col>
+                    </Row>
+                  </Affix>
+                </div>
 
-              <div style={{ marginTop: 20 }}>
-                <div>
+                <div style={{ marginTop: 20 }}>
+                  <div>
+                    <Row justify="space-around" align="middle">
+                      <Col span={22}>
+                        <Search
+                          className='dashboard-search'
+                          placeholder='Search by template ID, name, creator or date of creation'
+                          allowClear
+                          enterButton='Search'
+                          size='large'
+                          icon={<SearchOutlined />}
+                          onSearch={landingSearch}
+                        />
+                      </Col>
+                      <Col span={2} >
+                        <Button style={{
+                          margin: "7px 20px",
+                          right: 8,
+                          borderRadius: "5px",
+                          textTransform: "none",
+                          background: "#ffffff",
+                          borderColor: "#303f9f",
+                          color: "#303f9f"
 
-                  <Search
-                    className='dashboard-search'
-                    placeholder='Search by template ID, name, creator or date of creation'
-                    allowClear
-                    enterButton='Search'
-                    size='large'
-                    icon={<SearchOutlined />}
-                    onSearch={landingSearch}
+                        }}
+                          onClick={showApproved}
+                          disabled={arr?.length == 0 ? true : false}
+                        >Approve</Button>
+                      </Col>
+                    </Row>
+
+
+
+
+                  </div>
+
+
+
+
+
+                  <Table
+                    columns={columns2}
+                    dataSource={filterTableLanding === null
+                      ? templateData
+                      : filterTableLanding}
+                    pagination={{ pageSize: 5 }}
+                    scroll={{
+                      x: 1500,
+                      y: 300,
+                    }}
+                    style={{ border: '1px solid #ececec', borderRadius: '2px' }}
                   />
 
-
                 </div>
-                <Button style={{
-                  margin: "7px",
-                  right: 8,
-                  borderRadius: "5px",
-                  textTransform: "none",
-                  background: "#ffffff",
-                  borderColor: "#303f9f",
-                  color: "#303f9f"
-                  
-                }}
-                  onClick={showApproved}
-                  disabled={arr?.length == 0 ? true : false }
-                >Approve</Button>
-
-
-
-
-                <Table
-                  columns={columns2}
-                  dataSource={filterTableLanding === null
-                    ? templateData
-                    : filterTableLanding}
-                  pagination={{ pageSize: 5 }}
-                  scroll={{
-                    x: 1500,
-                  }}
-                  style={{ border: '1px solid #ececec', borderRadius: '2px' }}
-                />
-
               </div>
             </div>
           </div>

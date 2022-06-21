@@ -27,18 +27,10 @@ describe('Renders chart personalization', () => {
     );
   })
 
-  it('Loads Chart personalization page correctly', () => {
-    const url = Cypress.config().baseUrl
-    cy.visit(url + '/#/dashboard/workspace')
-    cy.wait(5000)
-  })
-
   it('Chart Personalization working correctly', () => {
+    const url = Cypress.config().baseUrl
+    cy.visit(url + '/#/dashboard/chart_personalization')
     cy.intercept('GET', '/services/v1/chart-list?chart_status=ALL', { fixture: 'chartList.json' }).as('chartList')
-
-    cy.get('.ant-layout-sider > .ant-layout-sider-children > ul li').eq(1).trigger('mouseover')
-    cy.get('.ant-layout-sider > .ant-layout-sider-children > ul li').eq(1).click()
-    cy.get('#chart_personalization').click()
 
     cy.wait('@chartList').then(() => {
       cy.log('Focusing on search input and waiting for data')
@@ -63,40 +55,47 @@ describe('Renders chart personalization', () => {
       cy.intercept('GET', '/services/v1/chart-object?chartId=*').as('chartId')
       cy.get('.ant-table-row').first().click()
       cy.wait('@chartId').then(() => {
-        cy.intercept('GET', '/services/v1/chart-list?chart_status=ALL', { fixture: 'chartList.json' }).as('chartList2')
-        cy.go('back')
-        cy.wait('@chartList2').then(() => {
-          cy.log('Back on chart personalization page')
-        })
+        cy.log('Back on chart personalization page')
       })
     })
   })
 
   it('Chart Personalization page tile selection working correctly', () => {
-    cy.log('clicking on first tile')
-    cy.intercept('GET', '/services/v1/chart-object?chartId=*').as('chartId')
-    cy.get('.chart-tiles').eq(1).click()
-    cy.wait('@chartId').then(() => {
-      cy.wait(2000)
-      cy.get('.cartesianlayer > .subplot > .plot > .scatterlayer > .trace > .points > path.point').eq(4).click({ force: true, multiple: true })
-      cy.log('Opening rules tab')
-      cy.intercept('GET', '/services/v1/rules', { fixture: 'chartPersonalizationRules.json' }).as('rulesPreload')
-      cy.get('.ant-tabs-tab').eq(4).click({ force: true })
-      cy.wait('@rulesPreload').then(() => {
-        cy.log('rules loaded')
-        cy.go('back')
+    const url = Cypress.config().baseUrl
+    cy.visit(url + '/#/dashboard/chart_personalization')
+    cy.intercept('GET', '/services/v1/chart-list?chart_status=ALL', { fixture: 'chartList.json' }).as('chartList')
+
+    cy.wait('@chartList').then(() => {
+      cy.log('clicking on first tile')
+      cy.intercept('GET', '/services/v1/chart-object?chartId=*').as('chartId')
+      cy.get('.chart-tiles').eq(1).click()
+      cy.wait('@chartId').then(() => {
+        cy.get('.chart-table').scrollTo('top')
+        cy.get('.cartesianlayer > .subplot > .plot > .scatterlayer > .trace > .points > path.point').eq(1).click({ force: true, multiple: true })
+        cy.get('.cartesianlayer > .subplot > .plot > .scatterlayer > .trace > .points > path.point').eq(2).click({ force: true, multiple: true })
+        cy.log('Opening rules tab')
+        cy.intercept('GET', '/services/v1/rules', { fixture: 'chartPersonalizationRules.json' }).as('rulesPreload')
+        cy.get('.ant-tabs-tab').eq(4).click({ force: true })
+        cy.wait('@rulesPreload').then(() => {
+          cy.log('rules loaded')
+        })
       })
     })
   })
 
   it('Chart Personalization redirecting on create new correctly', () => {
-    cy.intercept('GET', '/services/v1/views-list?vew_status=APRD', { fixture: 'viewListAPRD.json' }).as('viewList')
-    cy.intercept('GET', '/services/v1/site_ids?view_id=', { fixture: 'siteIdsEQUALS.json' }).as('siteIds')
-    cy.get('.create-new').first().click()
-    cy.log('Waiting for view-list and site_ids apis to finish')
+    const url = Cypress.config().baseUrl
+    cy.visit(url + '/#/dashboard/chart_personalization')
+    cy.intercept('GET', '/services/v1/chart-list?chart_status=ALL', { fixture: 'chartList.json' }).as('chartList')
 
-    cy.wait('@viewList')
-    cy.wait('@siteIds')
+    cy.wait('@chartList').then(() => {
+      cy.intercept('GET', '/services/v1/views-list?vew_status=APRD', { fixture: 'viewListAPRD.json' }).as('viewList')
+      cy.intercept('GET', '/services/v1/site_ids?view_id=', { fixture: 'siteIdsEQUALS.json' }).as('siteIds')
+      cy.get('.create-new').first().click()
+      cy.log('Waiting for view-list and site_ids apis to finish')
+      cy.wait('@viewList')
+      cy.wait('@siteIds')
+    })
   })
 
   it('View is working correctly', () => {
@@ -222,17 +221,50 @@ describe('Renders chart personalization', () => {
     cy.get('.ant-tabs-tab').eq(1).click({ force: true })
 
     cy.wait(500)
-    cy.log('Adding Control limit')
+    cy.log('Adding control limit')
     cy.get('.table-bottom .ant-btn').eq(1).click()
 
-    cy.wait(500)
     cy.get('.control-header').first().scrollIntoView()
     cy.get('.ant-table-tbody .ant-input').eq(0).type('10.1', { force: true })
     cy.get('.ant-table-tbody .ant-input').eq(1).type('10.2', { force: true })
 
-    // cy.get('.ant-table-tbody .ant-picker').first().click()
-    // cy.get('.ant-picker-today-btn').eq(0).click()
+    cy.log('Adding second control limit')
+    cy.get('.table-bottom .ant-btn').eq(1).click()
+    cy.get('.ant-table-tbody .ant-input').eq(2).type('10.1', { force: true })
+    cy.get('.ant-table-tbody .ant-input').eq(3).type('10.2', { force: true })
 
+    cy.log('Deleting second control limit')
+    cy.get('.control-header').first().scrollIntoView()
+    cy.get('[data-row-key="2"] > :nth-child(1)').click()
+    cy.get('.ant-btn-primary').click()
+
+    cy.log('Adding specification')
+    cy.get('.table-bottom .ant-btn').eq(2).click()
+    cy.get('.ant-table-tbody .ant-input').eq(2).type('10.1', { force: true })
+    cy.get('.ant-table-tbody .ant-input').eq(3).type('10.2', { force: true })
+
+    cy.log('Adding second specification')
+    cy.get('.table-bottom .ant-btn').eq(2).click()
+    cy.get('.ant-table-tbody .ant-input').eq(4).type('10.1', { force: true })
+    cy.get('.ant-table-tbody .ant-input').eq(5).type('10.2', { force: true })
+
+    cy.log('Deleting second specification')
+    cy.get('[data-row-key="2"] > :nth-child(1)').click()
+    cy.get('.ant-btn-primary').click()
+
+    cy.log('Adding Warning')
+    cy.get('.table-bottom .ant-btn').eq(3).click()
+    cy.get('.ant-table-tbody .ant-input').eq(4).type('10.1', { force: true })
+    cy.get('.ant-table-tbody .ant-input').eq(5).type('10.2', { force: true })
+
+    cy.log('Adding second warning')
+    cy.get('.table-bottom .ant-btn').eq(3).click()
+    cy.get('.ant-table-tbody .ant-input').eq(6).type('10.1', { force: true })
+    cy.get('.ant-table-tbody .ant-input').eq(7).type('10.2', { force: true })
+
+    cy.log('Deleting second warning')
+    cy.get('[data-row-key="2"] > :nth-child(1)').click()
+    cy.get('.ant-btn-primary').click()
     cy.intercept('POST', '/services/v1/chart-object', { fixture: 'chartObjectLimits.json' }).as('chartObjectLimits')
     cy.get('.control-header > .ant-btn').click()
     cy.wait('@chartObjectLimits').then(() => {
@@ -242,51 +274,96 @@ describe('Renders chart personalization', () => {
 
   it('Changing display is working correctly', () => {
     cy.wait(500)
-    cy.log('Opening limits tab')
+    cy.log('Opening display tab')
     cy.get('.ant-tabs-tab').eq(2).click({ force: true })
 
     cy.wait(500)
     cy.log('Opening Figure')
     cy.get('.ant-collapse-item').first().click()
 
-    cy.wait(500)
+
     cy.log('Changing height')
     cy.get(':nth-child(1) > .ant-col-16 > .input_field > .ant-input').clear()
     cy.get(':nth-child(1) > .ant-col-16 > .input_field > .ant-input').type('500')
 
-    cy.wait(500)
-    cy.log('Changing marker shape')
-    cy.get('.figure-container .select_field').eq(0).click()
-    cy.get('[title="triangle-up"] > .ant-select-item-option-content').click()
+    cy.log('Changing width')
+    cy.get(':nth-child(2) > .ant-col-16 > .input_field > .ant-input').clear()
+    cy.get(':nth-child(2) > .ant-col-16 > .input_field > .ant-input').type('1200')
 
-    cy.wait(500)
-    cy.log('Changing violations shape')
-    cy.get('.figure-container .select_field').eq(1).click()
-    cy.get('[title="triangle-down"] > .ant-select-item-option-content').eq(1).click()
 
-    cy.wait(500)
     cy.log('Changing plot color')
     cy.get(':nth-child(3) > .ant-col-16 > .container > [type="text"]').clear()
     cy.get(':nth-child(3) > .ant-col-16 > .container > [type="text"]').type('#EEEEEE')
 
-    cy.wait(500)
+    cy.log('Changing marker shape')
+    cy.get('.figure-container .select_field').eq(0).click()
+    cy.get('[title="triangle-up"] > .ant-select-item-option-content').click()
+
+
+    cy.log('Changing marker color')
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(1).clear()
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(1).type('#228B22')
+
+
+    cy.log('Changing marker size')
+    cy.get('.figure-container .figure-inputs .input_field').eq(2).clear()
+    cy.get('.figure-container .figure-inputs .input_field').eq(2).type('18')
+
+
+    cy.log('Changing violations shape')
+    cy.get('.figure-container .select_field').eq(1).click()
+    cy.get('[title="triangle-down"] > .ant-select-item-option-content').eq(1).click()
+
+
+    cy.log('Changing violations color')
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(2).clear()
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(2).type('#FFA500')
+
+
+    cy.log('Changing violations size')
+    cy.get('.figure-container .figure-inputs .input_field').eq(3)
+    cy.get('.figure-container .figure-inputs .input_field').eq(3).clear()
+    cy.get('.figure-container .figure-inputs .input_field').eq(3).type('18')
+
+
+
     cy.log('Adding title')
     cy.get(':nth-child(13) > .ant-col-16 > .input_field > .ant-input').clear()
     cy.get(':nth-child(13) > .ant-col-16 > .input_field > .ant-input').type('NEW CHART')
+
+    cy.log('Changing font size')
+    cy.get(':nth-child(14) > .ant-col-16 > .input_field > .ant-input').clear()
+    cy.get(':nth-child(14) > .ant-col-16 > .input_field > .ant-input').type('24')
 
     cy.wait(500)
     cy.log('Opening Legend')
     cy.get('.ant-collapse-item').eq(1).click()
 
-    cy.wait(500)
+
     cy.get(':nth-child(3) > .ant-col-16 > .input_field > .ant-input').clear()
     cy.get(':nth-child(3) > .ant-col-16 > .input_field > .ant-input').type('Legend!')
+
+    cy.get(':nth-child(4) > .ant-col-16 > .input_field > .ant-input').clear()
+    cy.get(':nth-child(4) > .ant-col-16 > .input_field > .ant-input').type('10')
+
+    cy.log('Changing legend color')
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(4).clear()
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(4).type('#F2F2F2')
+
+
+    cy.log('Changing border color')
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(5).clear()
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(5).type('#F2F2F2')
+
+    cy.log('Changing background color')
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(6).clear()
+    cy.get('.figure-container .figure-inputs .container input[type="text"]').eq(6).type('#F2F2F2')
+
 
     cy.wait(500)
     cy.log('Opening Axis')
     cy.get('.ant-collapse-item').eq(2).click()
 
-    cy.wait(500)
     cy.log('Hiding X-axis grid lines')
     cy.get('.figure-container .ant-switch').eq(1).click({ force: true })
   })
@@ -541,11 +618,34 @@ describe('Renders chart personalization', () => {
     })
   })
 
-  // it('Saves correctly', () => {
-  //   cy.wait(1000)
-  //   cy.log('Saving chart')
-  //   cy.intercept('PUT', '/services/v1/chart-object', { fixture: 'saveChart.json' }).as('saveChart')
-  //   cy.get('.ant-btn').eq(3).click()
-  //   cy.wait('@saveChart')
-  // })
+  it('Saves correctly', () => {
+    cy.log('Saving chart')
+    cy.intercept('PUT', '/services/v1/chart-object', { fixture: 'saveChart.json' }).as('saveChart')
+    cy.get('.ant-btn').eq(3).click()
+    cy.wait('@saveChart')
+  })
+
+  it('Publishes correctly', () => {
+    cy.log('Publishing chart')
+    cy.get('.ant-btn').eq(4).click()
+
+    cy.wait(500)
+    cy.get('.ant-modal-content .ant-modal-close-x')
+    cy.get('.ant-modal-content .ant-modal-close-x').last().click()
+
+    cy.wait(500)
+    cy.get('.ant-btn').eq(4).click()
+
+    cy.get('.sign-cols > :nth-child(1) > .ant-input').type('bhanu.thareja@mareana.com')
+    cy.get('.sign-cols > :nth-child(2) > .ant-input').type('1@Gam95367')
+
+    cy.intercept('GET', '/auth/login-pass', { fixture: 'authenticateWithAD.json' }).as('authenticateWithAD')
+    cy.get('.ant-modal-footer > :nth-child(1)').click()
+    cy.wait('@authenticateWithAD').then(() => {
+      cy.get('.electronic-sig > :nth-child(2) > .ant-select > .ant-select-selector').click()
+      cy.get('[title="I am an approver"]').click()
+      cy.intercept('PUT', '/services/v1/workflow-publish-event').as('publish')
+      cy.get('.ant-modal-footer > .custom-secondary-btn').click()
+    })
+  })
 })
