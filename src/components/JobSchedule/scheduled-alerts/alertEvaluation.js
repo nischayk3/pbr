@@ -321,7 +321,9 @@ const alertEvaluation = (props) => {
 			}
 		}
 		else {
-			dispatch(showNotification("error", 'Required fields are missing'));
+			dispatch(
+				showNotification("error", 'Required Fields are missing')
+			)
 		}
 	};
 	const changeTab = (activeKey) => {
