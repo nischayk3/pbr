@@ -190,6 +190,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         specificationSource.map((data, index) => {
           if (record.key === data.key) {
+            if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+              return <p style={{margin: '0'}}>{data.lower}</p>
+            }
             return (
               <Input
                 type="number"
@@ -208,6 +211,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
       width: "100",
       render: (text, record) =>
         specificationSource.map((data, index) => {
+          if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+            return <p style={{margin: '0'}}>{data.upper}</p>
+          }
           if (record.key === data.key) {
             return (
               <Input
@@ -232,6 +238,17 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         specificationSource.map((data, index) => {
           if (record.key === data.key) {
+            if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+              if (!data.valid_timestamp) {
+                return ""
+              } else {
+                const d = new Date(data.valid_timestamp)
+                const year = d.getFullYear()
+                const month = d.getMonth()
+                const day = d.getDate()
+                return <p style={{margin: '0'}}>{`${year}-${month + 1}-${day}`}</p>
+              }
+            }
             return (
               <DatePicker
                 type="text"
@@ -272,6 +289,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         warningSource.map((data, index) => {
           if (record.key === data.key) {
+            if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+              return <p style={{margin: '0'}}>{data.lower}</p>
+            }
             return (
               <Input
                 type="number"
@@ -291,6 +311,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         warningSource.map((data, index) => {
           if (record.key === data.key) {
+            if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+              return <p style={{margin: '0'}}>{data.upper}</p>
+            }
             return (
               <Input
                 type="number"
@@ -315,6 +338,17 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         warningSource.map((data, index) => {
           if (record.key === data.key) {
+            if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+              if (!data.valid_timestamp) {
+                return ""
+              } else {
+                const d = new Date(data.valid_timestamp)
+                const year = d.getFullYear()
+                const month = d.getMonth()
+                const day = d.getDate()
+                return <p style={{margin: '0'}}>{`${year}-${month + 1}-${day}`}</p>
+              }
+            }
             return (
               <DatePicker
                 type="text"
