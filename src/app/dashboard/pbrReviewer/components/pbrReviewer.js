@@ -62,8 +62,7 @@ function PbrReviewer() {
   const showfilterData = async (value) => {
     setShowReset(true)
     let obj = { ...statusreq, status: value.toLowerCase() }
-    let res = await getPbrRe
-    viewerData(obj)
+    let res = await getPbrReviewerData(obj)
     setTemplateData(res.Data);
     setStatusReq(obj)
   };
