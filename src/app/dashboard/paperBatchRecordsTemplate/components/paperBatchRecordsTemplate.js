@@ -618,13 +618,15 @@ function PaperBatchRecordsTemplate() {
         let template = {
             material_num: matBatch.material_num,
             batch: matBatch.batch,
+            site: matBatch.site,
             template_name: params?.tempalteName,
             status: templateStatus,
-            template_id: params?.temp_disp_id ? params?.temp_disp_id : templateId
+            template_id: params?.temp_disp_id ? params?.temp_disp_id : templateId,
+            version: templateVersion ? templateVersion : "1"
         }
         templateForm.setFieldsValue(template)
         setTemplateFormData(template)
-    }, [matBatch, templateId, templateStatus])
+    }, [matBatch, templateId, templateStatus, templateVersion])
 
     useEffect(() => {
 
@@ -632,7 +634,8 @@ function PaperBatchRecordsTemplate() {
         // let loadData =  getIdTemplateData()
         const getIdTemplateData = async () => {
             let req = {
-                template_displ_id: params?.temp_disp_id
+                template_displ_id: params?.temp_disp_id,
+                version:params?.version
             }
             let res = await getPbrTemplateData(req)
             let loadData = res.Data
@@ -1361,7 +1364,7 @@ function PaperBatchRecordsTemplate() {
                 obj['param_value_rule'] = {
                     rule_name: parameterFormData[index]?.param_rule, regex_text: parameterFormData[index]?.param_valueArea,
                     range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max,
-                    factor: parameterFormData[index]?.param_valueTransformation, transformation: parameterFormData[activeKey]?.param_transformation
+                    factor: parameterFormData[index]?.param_valueTransformation, transformation: parameterFormData[index]?.param_transformation
                 }
 
             }
@@ -1382,7 +1385,7 @@ function PaperBatchRecordsTemplate() {
                 obj['uom_value_rule'] = {
                     rule_name: parameterFormData[index]?.uom_rule, regex_text: parameterFormData[index]?.uom_valueArea,
                     range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max,
-                    factor: parameterFormData[index]?.uom_valueTransformation, transformation: parameterFormData[activeKey]?.uom_transformation
+                    factor: parameterFormData[index]?.uom_valueTransformation, transformation: parameterFormData[index]?.uom_transformation
                 }
 
             }
@@ -1403,7 +1406,7 @@ function PaperBatchRecordsTemplate() {
                 obj['time_value_rule'] = {
                     rule_name: parameterFormData[index]?.time_rule, regex_text: parameterFormData[index]?.time_valueArea,
                     range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max,
-                    factor: parameterFormData[index]?.time_valueTransformation, transformation: parameterFormData[activeKey]?.time_transformation
+                    factor: parameterFormData[index]?.time_valueTransformation, transformation: parameterFormData[index]?.time_transformation
                 }
 
             }
@@ -1424,7 +1427,7 @@ function PaperBatchRecordsTemplate() {
                 obj['date_value_rule'] = {
                     rule_name: parameterFormData[index]?.date_rule, regex_text: parameterFormData[index]?.date_valueArea,
                     range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max,
-                    factor: parameterFormData[index]?.date_valueTransformation, transformation: parameterFormData[activeKey]?.date_transformation
+                    factor: parameterFormData[index]?.date_valueTransformation, transformation: parameterFormData[index]?.date_transformation
                 }
 
             }
@@ -1468,7 +1471,7 @@ function PaperBatchRecordsTemplate() {
             title: 'File Name',
             dataIndex: 'file_path',
             key: 'name',
-            render: (text) => text.split('_')[0]
+            render: (text) => text.split('.')[0]
         },
         {
             title: 'Key',
@@ -1624,13 +1627,14 @@ function PaperBatchRecordsTemplate() {
                                 <Button
                                     className='custom-secondary-btn'
                                     disabled={templateStatus != "DRFT"}
+                                    style={{ margin: "0px 16px" }}
                                     onClick={() => {
                                         setIsPublish(true);
                                         setApproveReject("P");
                                     }}>
                                     Publish
                                 </Button>
-                                <Button style={{ margin: "0px 16px" }} onClick={batchProcess} className='custom-primary-btn'>Batch Process</Button>
+                                {/* <Button style={{ margin: "0px 16px" }} onClick={batchProcess} className='custom-primary-btn'>Batch Process</Button> */}
                             </div>)
                             : (
                                 <div className='btns'>
@@ -1712,8 +1716,16 @@ function PaperBatchRecordsTemplate() {
                                             {/* <Input/> */}
                                         </Form.Item>
                                         <Form.Item
-                                            name='batch'
-                                            label="Batch"
+                                            name='site'
+                                            label="Site"
+                                            style={{ marginBottom: 10 }}
+                                        >
+                                            <Input disabled />
+                                            {/* <Input/> */}
+                                        </Form.Item>
+                                        <Form.Item
+                                            name='version'
+                                            label="Version"
                                             style={{ marginBottom: 10 }}
                                         >
                                             <Input disabled />
@@ -1755,7 +1767,7 @@ function PaperBatchRecordsTemplate() {
                                         </Form>
                                     </div>
                                 </Panel>
-                                <Panel header='Add Parameter' key='3'>
+                                <Panel header='Parameter' key='3'>
                                     <Form onValuesChange={parameterValuesChange} name="dynamic_form_nest_item" onFinish={onFinish}
                                         initialValues={formLoadParameter}
                                         autoComplete="off">
