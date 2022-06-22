@@ -4,6 +4,7 @@ import { Row, Col, Button } from "antd";
 import SelectField from "../../../../../../components/SelectField/SelectField";
 import InputField from "../../../../../../components/InputField/InputField";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router";
 import {
   showLoader,
   hideLoader,
@@ -14,6 +15,7 @@ import { postChartPlotData } from "../../../../../../services/chartPersonalizati
 
 const Threshold = ({ postChartData, setPostChartData }) => {
   const dispatch = useDispatch();
+  
   const mathList = [
     "Lesser than",
     "Greater than",
@@ -27,6 +29,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
     math: null,
     valueNum: null,
   });
+  const location = useLocation();
   const params = queryString.parse(location.search);
   const onReset = async () => {
     setThresvalues({
@@ -184,6 +187,8 @@ const Threshold = ({ postChartData, setPostChartData }) => {
               <p>Parameter</p>
               <SelectField
                 placeholder="Select"
+                disabled={Object.keys(params).length > 0 &&
+                  params.fromScreen !== "Workspace"}
                 selectedValue={thresValues.parameter}
                 onChangeSelect={(e) =>
                   setThresvalues({ ...thresValues, parameter: e })
@@ -197,6 +202,8 @@ const Threshold = ({ postChartData, setPostChartData }) => {
               <p>Math Symbols</p>
               <SelectField
                 placeholder="Select"
+                disabled={Object.keys(params).length > 0 &&
+                  params.fromScreen !== "Workspace"}
                 selectedValue={thresValues.math}
                 onChangeSelect={(e) =>
                   setThresvalues({ ...thresValues, math: e })
@@ -212,8 +219,12 @@ const Threshold = ({ postChartData, setPostChartData }) => {
                 placeholder="Enter Number"
                 value={thresValues.valueNum}
                 id="threshold_value"
-                onChangeInput={(e) =>
-                  setThresvalues({ ...thresValues, valueNum: e.target.value })
+                onChangeInput={(e) => {
+                  if ((Object.keys(params).length > 0 &&
+                    params.fromScreen !== "Workspace")) {
+                    setThresvalues({ ...thresValues, valueNum: e.target.value })
+                  }
+                }
                 }
               />
             </Col>
