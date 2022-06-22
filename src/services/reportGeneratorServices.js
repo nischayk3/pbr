@@ -79,3 +79,14 @@ export const latexReport = (request, headers) => {
 		}
 	);
 };
+
+export const getReportGen = (request) => {
+	return Service.get(BMS_APP_PYTHON_SERVICE + "/reports", request, request_headers).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};

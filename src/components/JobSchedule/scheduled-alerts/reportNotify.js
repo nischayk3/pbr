@@ -211,6 +211,8 @@ const ReportNotify = (props) => {
       Friday: false,
       Saturday: false,
     });
+    setEveryDayValue("")
+    setSelectedTimeRange("Hour")
   };
 
 
@@ -328,7 +330,9 @@ const ReportNotify = (props) => {
       }
     }
     else {
-      showNotification("error", 'Required Fields are missing')
+      dispatch(
+        showNotification("error", 'Required Fields are missing')
+      )
     }
   };
   // const changeTab = (activeKey) => {

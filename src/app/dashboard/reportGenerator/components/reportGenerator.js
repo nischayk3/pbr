@@ -200,12 +200,8 @@ function ReportGenerator(props) {
 
 	const updateChartLayout = (chartt, section, param) => {
 		section = section + 1;
-		console.log(chartLayout)
-		console.log(chartt, section, param)
-		console.log(chartLayout[section])
+
 		let objIndex = chartLayout[section].findIndex(obj => obj.chart == chartt);
-		console.log(objIndex)
-		console.log(chartLayout[section][objIndex][`${param}`] = false)
 		chartLayout[section][objIndex][`${param}`] = false;
 	};
 
@@ -225,10 +221,11 @@ function ReportGenerator(props) {
 		let headingSection = obj['sections'] ? obj['sections'] : [];
 		allSections = [...allSections, ...headingSection];
 
-
 		for (let i = 0; i < allSections.length; i++) {
-			allSections[i].charts = rep_layout[i + 1] ? rep_layout[i + 1] : [];
+			if (allSections[i].charts)
+				allSections[i].charts = rep_layout[i + 1] ? rep_layout[i + 1] : [];
 		}
+
 		return allSections;
 	};
 
@@ -355,7 +352,6 @@ function ReportGenerator(props) {
 			}
 		}
 	};
-
 	return (
 		<div className='custom-wrapper'>
 			<div className='sub-header' style={{ paddingRight: '24px' }}>
@@ -414,7 +410,7 @@ function ReportGenerator(props) {
 					<Card title='Generate new report variant' className='generator-card'>
 						<ReportGeneratorForm stat={status} />
 						<div className='table-card'>
-							{table.length > 0 &&
+							{table && table.length > 0 &&
 								table.map(i => (
 									<Collapse
 										key={i.heading}
