@@ -77,7 +77,6 @@ const Display = ({ postChartData, setPostChartData }) => {
     setPostChartData(chartData);
   };
   const handleMarkerSizeChange = (e, type) => {
-    console.log('handleMarkerSizeChange::')
     const chartData = JSON.parse(JSON.stringify(postChartData));
     chartData.data.forEach((element) => {
       element.data.forEach((item) => {

@@ -19,7 +19,6 @@ const { Search } = Input;
 function PbrReviewer() {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([])
-  const [container, setContainer] = useState(null);
   const [searchedColumn, setSearchedColumn] = useState('');
   const [arr, setArr] = useState([]);
   const [searchedLanding, setSearchedLanding] = useState(false);
@@ -84,8 +83,8 @@ function PbrReviewer() {
 
   };
   const eSignId = async (esign) => {
-    console.log("esign", esign);
     let req = {
+      changed_by:"",
       id: arr,
       recorded_date: "",
       recorded_time: "",
@@ -266,7 +265,7 @@ function PbrReviewer() {
       key: 'anchor_key',
       dataIndex: 'anchor_key',
       ...getColumnSearchProps('anchor_key'),
-      sorter: (a, b) => a.anchor_key.length - b.anchor_key.length,
+      sorter: (a, b) => a.anchor_key?.length - b.anchor_key?.length,
       sortDirections: ['descend', 'ascend'],
     },
 
@@ -275,7 +274,7 @@ function PbrReviewer() {
       key: 'snippet_value',
       dataIndex: 'snippet_value',
       ...getColumnSearchProps('snippet_value'),
-      sorter: (a, b) => a.snippet_value.length - b.snippet_value.length,
+      sorter: (a, b) => a.snippet_value?.length - b.snippet_value?.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -296,7 +295,7 @@ function PbrReviewer() {
       key: 'confidence',
       dataIndex: 'confidence',
       ...getColumnSearchProps('confidence'),
-      sorter: (a, b) => a.confidence - b.confidence,
+      sorter: (a, b) => a.confidence?.length - b.confidence?.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -304,7 +303,7 @@ function PbrReviewer() {
       key: 'file_path',
       dataIndex: 'file_path',
       ...getColumnSearchProps('file_path'),
-      sorter: (a, b) => a.file_path.length - b.file_path.length,
+      sorter: (a, b) => a.file_path?.length - b.file_path?.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -312,7 +311,7 @@ function PbrReviewer() {
       key: 'status',
       dataIndex: 'status',
       ...getColumnSearchProps('status'),
-      sorter: (a, b) => a.status.length - b.status.length,
+      sorter: (a, b) => a.status?.length - b.status?.length,
       sortDirections: ['descend', 'ascend'],
       render: (text, record, index) => {
         if (record.status == "approved") {
@@ -335,7 +334,7 @@ function PbrReviewer() {
       key: 'site_code',
       dataIndex: 'site_code',
       ...getColumnSearchProps('site_code'),
-      sorter: (a, b) => a.site_code.length - b.site_code.length,
+      sorter: (a, b) => a.site_code - b.site_code,
       sortDirections: ['descend', 'ascend'],
     },
 
@@ -346,7 +345,7 @@ function PbrReviewer() {
       key: 'product_num',
       dataIndex: 'product_num',
       ...getColumnSearchProps('product_num'),
-      sorter: (a, b) => a.product_num.length - b.product_num.length,
+      sorter: (a, b) => a.product_num - b.product_num,
       sortDirections: ['descend', 'ascend'],
       // render: (text, record, index) => {
       //   return (
@@ -367,7 +366,7 @@ function PbrReviewer() {
       key: 'batch_num',
       dataIndex: 'batch_num',
       ...getColumnSearchProps('batch_num'),
-      sorter: (a, b) => a.batch_num.length - b.batch_num.length,
+      sorter: (a, b) => a.batch_num - b.batch_num,
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -375,7 +374,7 @@ function PbrReviewer() {
       key: 'created_by',
       dataIndex: 'created_by',
       ...getColumnSearchProps('created_by'),
-      sorter: (a, b) => a.created_by.length - b.created_by.length,
+      sorter: (a, b) => a.created_by?.length - b.created_by?.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -392,7 +391,7 @@ function PbrReviewer() {
             }}
 
           >
-            Edit
+            Review
           </a>
         )
       }
@@ -537,9 +536,11 @@ function PbrReviewer() {
       ),
       onFilter: (value, record) =>
         record[dataIndex]
+        ? record[dataIndex]
           .toString()
           .toLowerCase()
-          .includes(value.toLowerCase()),
+          .includes(value.toLowerCase())
+          : "",
       onFilterDropdownVisibleChange: (visible) => {
         if (visible) {
           // setTimeout(() => this.searchInput.select());
@@ -619,12 +620,14 @@ function PbrReviewer() {
             <div className='content_section' >
 
               <div className="scrollable-container" >
-                <div className="background" style={{
-                  display: 'block', width: '100%',
-                  padding: 30, height: 220,
-                  scrollBehavior: 'auto'
-                }}>
-                  <Affix>
+                <div className="background" 
+                // style={{
+                //   display: 'block', width: '100%',
+                //   padding: 30, height: 220,
+                //   scrollBehavior: 'auto'
+                // }}
+                >
+                  
 
                     <Row gutter={16}>
                       <Col span={12}>
@@ -674,7 +677,7 @@ function PbrReviewer() {
                         </Card>
                       </Col>
                     </Row>
-                  </Affix>
+                  
                 </div>
 
                 <div style={{ marginTop: 20 }}>

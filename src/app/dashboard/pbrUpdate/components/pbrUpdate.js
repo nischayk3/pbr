@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Row, Col, Button, Input, Form, DatePicker, TimePicker } from 'antd';
+import { Table, Row, Col, Button, Modal, Input, Form, DatePicker, TimePicker } from 'antd';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import {
@@ -21,11 +21,14 @@ import { useHistory } from 'react-router';
 const PbrUpdate = () => {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([]);
+  const [modalData, setModalData] = useState([]);
   const [displayImage, setDisplayImage] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingRow, setEditingRow] = useState(null);
   const [imagepdf, setImagePdf] = useState("");
   const history = useHistory();
   const [textInput, setTextInput] = useState({
+    changed_by: "",
     id: "",
     recordedDate: "",
     recordedTime: "",
@@ -44,13 +47,20 @@ const PbrUpdate = () => {
 
   }, []);
 
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+
   const loadTableData = async () => {
 
     let req = { id: params.id }
     let res = await getPbrReviewerData(req);
     setTemplateData(res.Data);
+
     let filename = res.Data[0].file_path;
     getImage(filename);
+
 
     // if (res.Data.length > 0) {
     //   res.Data.forEach((i) => {
@@ -89,6 +99,95 @@ const PbrUpdate = () => {
 
   // }
 
+  const modalcolumns = [
+    {
+      title: "User",
+      dataIndex: "created_by",
+      key: "created_by",
+      defaultSortOrder: "descend",
+      onHeaderCell: (column) => {
+        return {
+          onClick: (e) => {
+            this.loadData(column.dataIndex);
+          }
+        };
+      },
+    },
+    {
+      title: "Event",
+      dataIndex: "activity",
+      key: "3",
+      defaultSortOrder: "descend",
+      onHeaderCell: (column) => {
+        return {
+          onClick: (e) => {
+            this.loadData(column.dataIndex);
+          }
+        };
+      },
+    },
+    {
+      title: "Old Value",
+      dataIndex: "old_value",
+      key: "3",
+      defaultSortOrder: "descend",
+      onHeaderCell: (column) => {
+        return {
+          onClick: (e) => {
+            this.loadData(column.dataIndex);
+          }
+        };
+      },
+      className: "old_value_class",
+
+      sorter: (a, b) => a.old_value - b.old_value
+    },
+    {
+      title: "New Value",
+      dataIndex: "new_value",
+      key: "3",
+      defaultSortOrder: "descend",
+      className: "old_value_class",
+      onHeaderCell: (column) => {
+        return {
+          onClick: (e) => {
+            this.loadData(column.dataIndex);
+          }
+        };
+      },
+      sorter: (a, b) => a.new_value - b.new_value
+    },
+    {
+      title: "Reason For Change",
+      dataIndex: "reason",
+      key: "2",
+      defaultSortOrder: "descend",
+      onHeaderCell: (column) => {
+        return {
+          onClick: (e) => {
+            this.loadData(column.dataIndex);
+          }
+        };
+      },
+    },
+    {
+      title: "Changed On",
+      dataIndex: "entry_date",
+      key: "1",
+      width: 200,
+      defaultSortOrder: "descend",
+      onHeaderCell: (column) => {
+        return {
+          onClick: (e) => {
+            this.loadData(column.dataIndex);
+          }
+        };
+      },
+      sorter: (a, b) => new Date(a.entry_date) - new Date(b.entry_date),
+      render: (text) => moment(text).format("YYYY-MM-DD")
+    },
+
+  ]
 
   const getImage = async (val) => {
     var requestOptions = {
@@ -116,6 +215,7 @@ const PbrUpdate = () => {
     setEditingRow(record.key);
 
     form.setFieldsValue({
+      changed_by: textInput.changedBy,
       recorded_date: textInput.recordedDate,
       recorded_time: textInput.recordedTime,
       snippet_value: textInput.snippetValue,
@@ -123,23 +223,23 @@ const PbrUpdate = () => {
     });
   }
 
-  const handleChangeDate = (index, event, dateString, timeString) => {
+  // const handleChangeDate = (index, event, dateString, timeString) => {
 
 
-    if (dateString != undefined) {
-      const rowsInput = [textInput];
-      rowsInput[index]["recordedDate"] = dateString._d.toLocaleDateString();
-    }
+  //   if (dateString != undefined) {
+  //     const rowsInput = [textInput];
+  //     rowsInput[index]["recordedDate"] = dateString._d.toLocaleDateString();
+  //   }
 
-  }
+  // }
 
-  const handleChangeTime = (index, event, dateString) => {
+  // const handleChangeTime = (index, event, dateString) => {
 
-    if (dateString != undefined) {
-      const rowsInput = [textInput];
-      rowsInput[index]["recordedTime"] = dateString._d.toLocaleTimeString();
-    }
-  }
+  //   if (dateString != undefined) {
+  //     const rowsInput = [textInput];
+  //     rowsInput[index]["recordedTime"] = dateString._d.toLocaleTimeString();
+  //   }
+  // }
 
   const handleChange = (event) => {
     const value = event.target.value;
@@ -162,6 +262,7 @@ const PbrUpdate = () => {
     let numberArray = resp.map(Number)
     let formvalues = {
       id: numberArray,
+      changed_by: textInput.changedBy,
       recorded_date: textInput.recordedDate,
       recorded_time: textInput.recordedTime,
       snippet_value: textInput.snippetValue,
@@ -193,30 +294,7 @@ const PbrUpdate = () => {
       key: "id",
       // width: "5%",
     },
-    {
-      title: "Product",
-      dataIndex: "product_num",
-      key: "product_num",
-      // width: "5%",
-    },
-    {
-      title: "Batch",
-      dataIndex: "batch_num",
-      key: "batch_num",
-      // width: "5%",
-    },
-    {
-      title: "Site",
-      dataIndex: "site_code",
-      key: "site_code",
-      // width: "5%",
-    },
-    {
-      title: "Anchor",
-      dataIndex: "anchor_key",
-      key: "anchor_key",
-      // width: "5%",
-    },
+
     {
       title: "snippet value",
       dataIndex: "snippet_value",
@@ -257,18 +335,28 @@ const PbrUpdate = () => {
       title: "Recorded Date",
       dataIndex: "recorded_date",
       key: "recorded_date",
-      render: (text, record, index) => {
+      render: (text, record) => {
         if (editingRow === record.key) {
           return (
+            <Form.Item>
+              <Input
+                defaultValue={record.recorded_date}
+                type="text"
+                name="recordedDate"
+                onChange={handleChange}
+              />
+            </Form.Item>
 
-            <DatePicker
-              type="text"
-              name="recordedDate"
-              defaultValue={
-                record.recorded_date ? moment(record.recorded_date) : ""
-              }
-              onChange={(dateString) => handleChangeDate(index, "", dateString)}
-            />
+            // <Input
+            //   type="text"
+            //   name="recordedDate"
+            //   defaultValue={record.snippet_value}
+            //   onChange={handleChange}
+            //   // defaultValue={
+            //   //   record.recorded_date ? moment(record.recorded_date) : ""
+            //   // }
+            //   // onChange={(dateString) => handleChangeDate(index, "", dateString)}
+            // />
 
           );
         } else {
@@ -281,18 +369,27 @@ const PbrUpdate = () => {
       title: "Recorded Time",
       dataIndex: "recorded_time",
       key: "recorded_time",
-      render: (text, record, index) => {
+      render: (text, record) => {
         if (editingRow === record.key) {
           return (
 
-            <TimePicker
-              name="recordedTime"
-              onChange={(timeString) => handleChangeTime(index, "", timeString)}
+            <Form.Item>
+              <Input
+                defaultValue={record.recorded_time}
+                type="text"
+                name="recordedTime"
+                onChange={handleChange}
+              />
+            </Form.Item>
+
+            // <TimePicker
+            //   name="recordedTime"
+            //   onChange={(timeString) => handleChangeTime(index, "", timeString)}
 
 
-              defaultValue={moment(record.recorded_time, 'HH:mm')}
+            //   defaultValue={moment(record.recorded_time, 'HH:mm')}
 
-            />
+            // />
           );
 
         }
@@ -302,8 +399,8 @@ const PbrUpdate = () => {
       },
 
     },
-   
-    
+
+
     {
       title: "UOM",
       dataIndex: "uom",
@@ -329,9 +426,33 @@ const PbrUpdate = () => {
 
     },
     {
+      title: "Updated By",
+      dataIndex: "changed_by",
+      key: "changed_by",
+      render: (text, record) => {
+        if (editingRow === record.key) {
+          return (
+            <Form.Item>
+              <Input
+                defaultValue={record.changed_by}
+                type="text"
+                name="changedBy"
+                onChange={handleChange}
+
+              />
+            </Form.Item>
+          );
+        } else {
+          return <p>{text}</p>;
+        }
+      },
+
+
+    },
+    {
       title: "Actions",
       fixed: 'right',
-      width:"5%",
+      width: "5%",
       render: (_, record) => {
         return (
           <>
@@ -356,7 +477,7 @@ const PbrUpdate = () => {
     <div className='pbr-container'>
       <BreadCrumbWrapper />
       <div className='custom-wrapper'>
-      
+      <div className='content_section' >
         <div style={{ marginTop: 20 }}>
 
           <Row gutter={16}>
@@ -369,7 +490,7 @@ const PbrUpdate = () => {
                 columns={columns}
                 dataSource={templateData}
                 pagination={false}
-                scroll={{x:1700}}
+
                 style={{ border: '1px solid #ececec', borderRadius: '2px' }}
               />
             </Col>
@@ -377,23 +498,35 @@ const PbrUpdate = () => {
               <div className='' style={{ display: "flex", marginBottom: "20px", flexDirection: "row", justifyContent: "right", alignItems: "center" }}>
 
                 <Button style={{
-                  borderColor: '#093185',
-                  color: '#093185',
-                  marginRight: '20px',
-                  backgroundColor: '#fff',
+                  borderRadius: "5px",
+                  textTransform: "none",
+                  background: "#ffffff",
+                  borderColor: "#303f9f",
+                  color: "#303f9f",
+                  marginRight: '15px',
+                  
                 }}
-                  type='primary'><a
-                    style={{ color: "#1890ff" }}
+                  type='primary'>
+                  <a
+                    style={{ color: "#303f9f" }}
+                    // onClick={() => {
+                    //   setIsModalVisible(true)
+                    // history.push({
+                    //     pathname: '/dashboard/molecule_hierarchy_configurations/untilted_view',
+                    // });
+                    // }}
                     onClick={() => {
                       history.push(`/dashBoard/audit_trail_report`);
                     }}
-
                   >
+
                     View Auditlogs
                   </a></Button>
                 <Button style={{
-                  backgroundColor: '#093185',
+                  backgroundColor: '#303f9f',
                   color: '#ffffff',
+                  borderColor: "#303f9f",
+                  borderRadius: "5px",
 
                 }}
                   onClick={handleClick}
@@ -401,7 +534,7 @@ const PbrUpdate = () => {
                   type='primary'>Save Changes</Button>
               </div>
               <div>
-                <img src={imagepdf}  width="100%" height="100%"/>
+                <img src={imagepdf} width="100%" height="100%" />
               </div>
 
 
@@ -409,6 +542,21 @@ const PbrUpdate = () => {
           </Row>
         </div>
       </div>
+      </div>
+      <Modal
+        title='Preview'
+        visible={isModalVisible}
+        //onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}>
+        <Table
+          className='pbrTemplates-table'
+          columns={modalcolumns}
+          dataSource={modalData}
+          pagination={false}
+
+        />
+      </Modal>
     </div>
   )
 }
