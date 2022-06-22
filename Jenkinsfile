@@ -8,7 +8,7 @@ pipeline {
         ansiColor('xterm')
     }
     stages {    
-    stage("Code Coverage") {
+   /* stage("Code Coverage") {
          
            steps {
                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -33,7 +33,7 @@ pipeline {
 
                }
              }
-          }  
+          }  */
       stage('Sonarqube Analysis') {
         environment {
            scannerHome = tool 'SonarQubeScanner'
