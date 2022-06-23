@@ -134,9 +134,10 @@ div#federalDiv {
 	border-radius: 5px;
 	position: relative;
 	left: 10%;
-	> div {
-		> svg {
-			> g {
+
+	>div {
+		>svg {
+			>g {
 				transform: translate(2%, 47%) scale(0.15) !important;
 			}
 		}
@@ -144,7 +145,7 @@ div#federalDiv {
 }
 
 #tooltip-modal {
-	> div {
+	>div {
 		background-color: transparent !important;
 	}
 }
@@ -186,6 +187,7 @@ div#federalDiv {
 	// stroke-linecap: round !important;
 	// opacity: 0.7 !important;
 }
+
 .additionalParentForwardLink {
 	fill: none;
 	stroke: #08c6ff;
@@ -201,6 +203,7 @@ div#federalDiv {
 	color: white !important;
 	border-bottom: 0px !important;
 }
+
 a:hover {
 	text-decoration: none;
 }
@@ -223,6 +226,7 @@ h2 {
 	font-weight: normal;
 	font-size: 25px;
 }
+
 h2:hover {
 	cursor: pointer;
 }
@@ -258,6 +262,7 @@ h2:hover {
 	cursor: pointer;
 	background-color: #309f9f;
 }
+
 .context-menu-child {
 	display: none;
 	position: absolute;
@@ -287,6 +292,7 @@ h2:hover {
 	cursor: pointer;
 	background-color: #7fffd4;
 }
+
 /* Colors */
 
 div.popup {
@@ -305,34 +311,41 @@ div.popup {
 	box-shadow: 0px 9px 28px 8px rgba(0, 0, 0, 0.05),
 		0px 6px 16px rgba(0, 0, 0, 0.08), 0px 3px 6px -4px rgba(0, 0, 0, 0.12);
 	border-radius: 2px;
+
 	ul {
 		padding: 10px 12px !important;
+
 		li {
 			display: grid;
 			grid-template-columns: 30px 200px;
 			grid-gap: 8px 13px;
 			padding-bottom: 10px !important;
 			text-align: left;
+
 			img {
 				width: 19px;
 				height: 21px;
 			}
+
 			span {
 				width: 20px;
 				height: 20px;
 			}
+
 			.batch_icon {
 				width: 20px;
 				height: 20px;
 				background: #6c534e;
 				border-radius: 50px;
 			}
+
 			.batch_icon_non {
 				width: 20px;
 				height: 20px;
 				background: #e3170a;
 				border-radius: 50px;
 			}
+
 			.anticon-plus {
 				font-size: 12px;
 				font-weight: 600;
@@ -341,6 +354,7 @@ div.popup {
 				color: #fff;
 				padding: 4px;
 			}
+
 			.anticon-minus {
 				font-size: 12px;
 				background: #6c534e;
@@ -349,10 +363,12 @@ div.popup {
 				color: #fff;
 				padding: 4px;
 			}
+
 			.anticon-warning {
 				font-size: 16px;
 				color: #e3170a;
 			}
+
 			p {
 				font-family: Roboto;
 				font-style: normal;
@@ -385,6 +401,7 @@ div.popup {
 	left: 118px;
 	bottom: 60px;
 }
+
 // #treeWrapper {
 //   position: relative;
 // }
@@ -392,6 +409,7 @@ div.popup {
 	position: relative;
 	min-height: 750px;
 }
+
 .drag-search {
 	position: absolute;
 	cursor: move;
@@ -403,6 +421,7 @@ div.popup {
 
 	margin: auto;
 	user-select: none;
+
 	.drag-search_head {
 		background: #486bc9;
 		font-family: var(--secondary-font-family);
@@ -427,7 +446,8 @@ div.popup {
 	background: #ffffff;
 	box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.24);
 	border-radius: 4px;
-	> button {
+
+	>button {
 		margin: 1px 0;
 		width: 100%;
 		background: #fff;
@@ -438,10 +458,12 @@ div.popup {
 		border: 0;
 		text-align: left;
 	}
-	> button:nth-child(4) {
+
+	>button:nth-child(4) {
 		border: 0 !important;
 		box-shadow: none;
 	}
+
 	:hover {
 		background-color: transparent;
 		color: var(--primary-color);
@@ -461,6 +483,7 @@ div.gbttooltip {
 	padding: 12px 24px;
 	opacity: 0;
 }
+
 div.headerattribute {
 	font-family: var(--primary-font-family);
 	font-style: normal;
@@ -475,6 +498,7 @@ div.headerattribute {
 .select-allowclear {
 	position: relative;
 	display: flex;
+
 	.close-searchicon {
 		border: 0;
 		position: absolute;
