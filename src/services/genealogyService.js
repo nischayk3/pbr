@@ -1,6 +1,8 @@
 import {
 	BMS_APP_PYTHON_SERVICE,
-	MDH_APP_PYTHON_SERVICE
+	MDH_APP_PYTHON_SERVICE,
+	MDH_APP_GENEALOGY,
+
 } from '../constants/apiBaseUrl';
 import Service from './AjaxService';
 
@@ -50,7 +52,7 @@ export const getGenealogyProductType = _queryParam => {
 
 export const getBackwardData = _queryParam => {
 	return Service.get(
-		MDH_APP_PYTHON_SERVICE + '/mdhgenealogy/v1/genealogy',
+		MDH_APP_GENEALOGY + 'genealogy',
 		_queryParam,
 		request_headers
 	).then(
@@ -65,7 +67,7 @@ export const getBackwardData = _queryParam => {
 
 export const getForwardData = _queryParam => {
 	return Service.get(
-		MDH_APP_PYTHON_SERVICE + '/mdhgenealogy/v1/genealogy',
+		MDH_APP_GENEALOGY + 'genealogy',
 		_queryParam,
 		request_headers
 	).then(
@@ -83,7 +85,7 @@ export const getForwardData = _queryParam => {
  */
 export const getBatchInfo = _queryParam => {
 	return Service.get(
-		MDH_APP_PYTHON_SERVICE + '/mdhgenealogy/v1/batch-info',
+		MDH_APP_GENEALOGY + 'batch-info',
 		_queryParam,
 		request_headers
 	).then(
@@ -99,10 +101,9 @@ export const getBatchInfo = _queryParam => {
 /**
  * TODO: get Input Proces Order & From Process Order details
  */
-
 export const getProcessInfo = _queryParam => {
 	return Service.get(
-		MDH_APP_PYTHON_SERVICE + '/mdhgenealogy/v1/process-info',
+		MDH_APP_GENEALOGY + 'process-info',
 		_queryParam,
 		request_headers
 	).then(
@@ -116,7 +117,6 @@ export const getProcessInfo = _queryParam => {
 };
 
 //download data table
-
 export const downloadDataTable = request => {
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + '/download-data',

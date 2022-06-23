@@ -106,7 +106,7 @@ class AuditTrials extends React.Component {
 							}
 						};
 					},
-					sorter: (a, b) =>  a.user_id.localeCompare(b.user_id)
+					sorter: (a, b) => a.user_id.localeCompare(b.user_id)
 				},
 				{
 					title: "Event",
@@ -253,7 +253,7 @@ class AuditTrials extends React.Component {
 
 		let endPoint = "/services/v1/audit-information?";
 		let baseUrl = MDH_APP_PYTHON_SERVICE + endPoint;
-
+		console.log("baseUrl", baseUrl)
 		let startDate =
 			this.state.selectedDate.length > 0
 				? this.state.selectedDate[0]
