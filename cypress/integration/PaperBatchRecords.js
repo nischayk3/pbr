@@ -131,7 +131,7 @@ describe('PBR', () => {
         cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').click({force:true});
         cy.get('[coords="112.1646672189235,57.75071974843737,177.8917653262614,69.12309839390213"]').click({force:true});
         cy.get(':nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').click({force:true});
-        cy.get('[coords="205.9177034795284,57.737608179450035,267.68761689960945,69.00609723292283"]').click({force:true});
+        cy.get('[coords="205.69649124145508,57.55570698529482,267.6595058441161,68.86165171861641"]').click({force:true});
         cy.get('.pbrCenterPanelHeader-para').click();
         cy.get('.ant-modal-close-x').click();
         cy.get(':nth-child(7) > .ant-btn').click({force:true});
@@ -153,7 +153,7 @@ describe('PBR', () => {
         /* ==== Generated with Cypress Studio ==== */
         cy.get(':nth-child(1) > .chart-tiles').click();
         cy.get('.pbrTemplateLeft > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .ant-collapse > .ant-collapse-item-active > .ant-collapse-header').click();
-        cy.get(':nth-child(2) > .ant-collapse-header').click();
+        cy.get(':nth-child(2) > .ant-collapse-header').click({force:true});
         cy.get('#page_identifier_key').clear();
         cy.get('#page_identifier_key').type('1. Virus filtration');
         cy.get('#page_identifier_key_2').clear();
@@ -186,7 +186,7 @@ describe('PBR', () => {
 
         /* ==== Generated with Cypress Studio ==== */
         cy.get(':nth-child(3) > .ant-collapse-header').click();
-        cy.get('.firstParameter-para > p').click();
+        cy.get('.firstParameter-para > p').click({force:true});
         cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header > .ant-collapse-header-text').click();
         cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header > .ant-collapse-header-text').click();
         cy.get('.firstParameter-para > p').click();
@@ -210,7 +210,7 @@ describe('PBR', () => {
 
         /* ==== Generated with Cypress Studio ==== */
         cy.get(':nth-child(3) > .ant-collapse-header').click();
-        cy.get('.firstParameter-para > p').click();
+        cy.get('.firstParameter-para > p').click({force:true});
         cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header > .ant-collapse-header-text').click();
         cy.get(':nth-child(1) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').click();
         cy.get('[coords="305.73044443130493,57.42703981697556,359.3141876310109,68.98802669718857"]').click({force:true});
@@ -234,7 +234,7 @@ describe('PBR', () => {
         /* ==== Generated with Cypress Studio ==== */
         /* ==== Generated with Cypress Studio ==== */
         cy.get(':nth-child(3) > .ant-collapse-header').click();
-        cy.get('.firstParameter-para > p').click();
+        cy.get('.firstParameter-para > p').click({force:true});
         cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header > .ant-collapse-header-text').click();
         cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').click();
         cy.get('[coords="409.7616002559662,57.580265291035175,466.13211452960957,68.88628209941082"]').click({ force: true });
@@ -267,7 +267,7 @@ describe('PBR', () => {
 
         /* ==== Generated with Cypress Studio ==== */
         cy.get(':nth-child(3) > .ant-collapse-header').click();
-        cy.get('.firstParameter-para > p').click();
+        cy.get('.firstParameter-para > p').click({force:true});
         cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header').click();
         cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').click();
         cy.get('[coords="597.2250137329102,57.67178233712908,648.5210151225327,68.81591958925124"]').click({ force: true });
@@ -334,7 +334,7 @@ describe('PBR', () => {
         cy.get(':nth-child(3) > .ant-collapse-header').click();
         cy.get('.pbrTemplateLeft > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > :nth-child(2) > .ant-collapse-item-active > .ant-collapse-header').click();
         cy.get(':nth-child(3) > .ant-collapse-header').click();
-        cy.get('.firstParameter-para > p').click();
+        cy.get('.firstParameter-para > p').click({force:true});
         cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header > .ant-collapse-header-text').click();
         cy.get('#dynamic_form_nest_item_users_0_name').clear();
         cy.get('#dynamic_form_nest_item_users_0_name').type('asdf');

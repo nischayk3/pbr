@@ -46,7 +46,7 @@ const { TabPane } = Tabs;
 
 //main component
 const ViewPage = () => {
-  const { id } = useParams();
+  const { id, versionId } = useParams();
   const history = useHistory();
   //state for chart json data
   const [postChartData, setPostChartData] = useState({});
@@ -59,7 +59,6 @@ const ViewPage = () => {
   const location = useLocation();
 
   const params = queryString.parse(location.search);
-
   const callback = () => {};
 
   const handleCancel = () => {
@@ -124,7 +123,9 @@ const ViewPage = () => {
           }
         } else {
           dispatch(showNotification("success", "Chart created successfully"));
-          history.push(`/dashboard/chart_personalization/${viewRes.chart_id}`);
+          history.push(
+            `/dashboard/chart_personalization/${viewRes.chart_id}/${viewRes.chart_version}`
+          );
         }
       }
       dispatch(hideLoader());
@@ -141,10 +142,9 @@ const ViewPage = () => {
   const PublishResponse = (res) => {
     setPublishResponse(res);
   };
-
   //function for getting chart data
   const getChart = async () => {
-    const req = { chartId: id };
+    const req = { chartId: id, version: versionId };
     try {
       const viewRes = await getChartPlotData(req);
       setPostChartData(viewRes);

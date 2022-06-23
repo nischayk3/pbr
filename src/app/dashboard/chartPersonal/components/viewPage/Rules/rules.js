@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { useLocation } from "react-router";
 import "./styles.scss";
 import { Button, Checkbox, Collapse, Input, Skeleton, Row, Col } from "antd";
 import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
@@ -23,6 +24,7 @@ const rules = ({ postChartData, setPostChartData }) => {
   const [loadRuleList, setLoadRuleList] = useState({});
   const dispatch = useDispatch();
   const { id } = useParams();
+  const location = useLocation();
   const params = queryString.parse(location.search);
 
   const getRules = async () => {
@@ -220,7 +222,7 @@ const rules = ({ postChartData, setPostChartData }) => {
                                   <span key={key1} style={{ color: "red" }}>
                                     <Input
                                       type="number"
-                                      defaultValue={item.default_params[key1]}
+                                      value={item.default_params[key1]}
                                       onChange={(e) =>
                                         handleChange(e, item.rule_id, key1)
                                       }

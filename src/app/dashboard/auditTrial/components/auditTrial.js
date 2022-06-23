@@ -106,7 +106,7 @@ class AuditTrials extends React.Component {
 							}
 						};
 					},
-					sorter: (a, b) => a.user_id - b.user_id
+					sorter: (a, b) => a.user_id.localeCompare(b.user_id)
 				},
 				{
 					title: "Event",
@@ -120,7 +120,7 @@ class AuditTrials extends React.Component {
 							}
 						};
 					},
-					sorter: (a, b) => a.activity - b.activity
+					sorter: (a, b) => a.activity.localeCompare(b.activity)
 				},
 				{
 					title: "Old Value",
@@ -165,7 +165,7 @@ class AuditTrials extends React.Component {
 							}
 						};
 					},
-					sorter: (a, b) => a.reason - b.reason
+					sorter: (a, b) => a.reason.localeCompare(b.reason)
 				},
 				{
 					title: "Changed On",
@@ -180,7 +180,7 @@ class AuditTrials extends React.Component {
 							}
 						};
 					},
-					sorter: (a, b) => a.entry_date - b.entry_date,
+					sorter: (a, b) => new Date(a.entry_date) - new Date(b.entry_date),
 					render: (text) => moment(text).format("YYYY-MM-DD")
 				},
 				{
@@ -195,7 +195,7 @@ class AuditTrials extends React.Component {
 							}
 						};
 					},
-					sorter: (a, b) => a.table_name - b.table_name
+					sorter: (a, b) => a.table_name.localeCompare(b.table_name)
 				}
 			],
 
@@ -253,7 +253,7 @@ class AuditTrials extends React.Component {
 
 		let endPoint = "/services/v1/audit-information?";
 		let baseUrl = MDH_APP_PYTHON_SERVICE + endPoint;
-
+		console.log("baseUrl", baseUrl)
 		let startDate =
 			this.state.selectedDate.length > 0
 				? this.state.selectedDate[0]
