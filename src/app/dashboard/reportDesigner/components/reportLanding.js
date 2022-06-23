@@ -16,7 +16,7 @@ import { getReports } from '../../../../services/reportDesignerServices';
 import './landing.scss';
 import StatusBlock from '../../../../components/StatusBlock/statusBlock';
 import { loadReport } from '../../../../services/reportDesignerServices';
-import { loadReportGen } from '../../../../services/reportGeneratorServices';
+import { loadReportGen, getReportGen } from '../../../../services/reportGeneratorServices';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
@@ -119,6 +119,7 @@ export default function ReportLanding(props) {
 	useEffect(() => {
 		// updateDate();
 		getReportList();
+		// getReportGens();
 	}, []);
 
 	// const updateDate = () => {
@@ -178,6 +179,16 @@ export default function ReportLanding(props) {
 			else setReportList([]);
 		});
 	};
+
+	// const getReportGens = () => {
+	// 	let req = { rep_status: 'all' };
+	// 	getReportGen(req).then(res => {
+	// 		// if (res['status-code'] == 200) setReportList(res['Data']);
+	// 		// else setReportList([]);
+	// 		console.log(res)
+	// 	});
+
+	// }
 
 	const getLoadReport = async report_id => {
 		dispatch(showNotification('success', report_id + ' selected'));

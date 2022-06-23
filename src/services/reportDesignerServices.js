@@ -36,7 +36,7 @@ export const getCharts = (request) => {
 };
 
 export const getReports = (request) => {
-	return Service.get(BMS_APP_PYTHON_SERVICE + "/reports", request).then(
+	return Service.get(BMS_APP_PYTHON_SERVICE + "/reports", request, request_headers).then(
 		(response) => {
 			return response.data;
 		},

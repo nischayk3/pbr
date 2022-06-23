@@ -116,10 +116,12 @@ function ReportDesignerNew(props) {
 
 	useEffect(() => {
 		if (loadData) {
+			console.log('load')
 			let data = loadData.report_designer ? loadData.report_designer : {}
-			if (data.data)
+			if (data.data) {
 				LoadData(data.data)
-			setReportData(data.data)
+				setReportData(data.data)
+			}
 		}
 	}, []
 	);
@@ -180,28 +182,45 @@ function ReportDesignerNew(props) {
 	// }
 
 	const checkChanges = (reportData, mainJson) => {
+		console.log(reportData, mainJson, sectionCharts)
+
+		let layout_change = false
+		let new_charts_added = selectedSectionCharts.length > 0
+
 		let json_data = reportData
 		let jayson = mainJson
-
 		json_data = json_data['layout_info'] ? json_data['layout_info'] : {}
 		json_data = json_data['layout_info'] ? json_data['layout_info'] : {}
-
 
 		if (Object.keys(json_data).length > 0 && Object.keys(jayson).length > 0) {
-			return true
+			layout_change = true
 		}
 		else if (Object.keys(json_data).length == 0 && Object.keys(jayson).length == 0) {
-			return true
+			layout_change = true
 		}
 		else if (Object.keys(json_data).length == 0 && Object.keys(jayson).length > 0) {
-			return true
+			layout_change = true
 		}
-		else
-			return false
+
+		if (layout_change && new_charts_added)
+			return [true, jayson]
+		if (!layout_change && new_charts_added) {
+			setMainJson({ ...json_data })
+
+			return [true, json_data]
+		}
+		if (layout_change && !new_charts_added) {
+			return [true, jayson]
+		}
+		if (!layout_change && !new_charts_added)
+			return [false, {}]
+
+		// else
+		// 	return false
 	};
 
 	const mapViewList = viewList && viewList.length > 0 ? viewList : []
-	const mapReportList = reportList && reportList.length > 0 ? reportList : []
+	// const mapReportList = reportList && reportList.length > 0 ? reportList : []
 
 	// const OnNewClick = () => {
 	// 	setIsNew(true);
@@ -265,18 +284,18 @@ function ReportDesignerNew(props) {
 	//   setIsPublish(true)
 	// };
 
-	const getReportData = async (rep_id, rep_status) => {
-		// message.success(`${rep_id} selected`)
-		let req = { rep_status: rep_status ? rep_status : 'DRFT' };
-		if (rep_id)
-			req['rep_disp_id'] = rep_id
-		let data = await getReports(req)
+	// const getReportData = async (rep_id, rep_status) => {
+	// 	// message.success(`${rep_id} selected`)
+	// 	let req = { rep_status: rep_status ? rep_status : 'DRFT' };
+	// 	if (rep_id)
+	// 		req['rep_disp_id'] = rep_id
+	// 	let data = await getReports(req)
 
-		if (data['Data']) {
-			setReportData(data['Data']);
-			return data['Data']
-		}
-	};
+	// 	if (data['Data']) {
+	// 		setReportData(data['Data']);
+	// 		return data['Data']
+	// 	}
+	// };
 
 
 	//Get charts based on viewId-version
@@ -365,11 +384,14 @@ function ReportDesignerNew(props) {
 	// Saving the json
 	const PrepareJson = (formData, saveType) => {
 		let check = false
-		if (isLoad)
-			check = checkChanges(reportData, formData)
+		let lay_data = {}
+		if (isLoad) {
+			let response_changes = checkChanges(reportData, formData)
+			check = response_changes[0]
+			lay_data = response_changes[1]
+		}
 		else
 			check = true
-
 		if (check) {
 			let obj = {}
 			obj['view_disp_id'] = viewId;
@@ -396,10 +418,10 @@ function ReportDesignerNew(props) {
 				obj['saveType'] = saveType
 			}
 
-			obj['layout_info'] = { 'layout_info': formData, 'chart_details': selectedChartList, 'add_charts_layout': sectionAddedCharts, 'add_keys_layout': sectionKeys, 'charts_layout': sectionCharts };
+			obj['layout_info'] = { 'layout_info': isLoad ? lay_data : formData, 'chart_details': selectedChartList, 'add_charts_layout': sectionAddedCharts, 'add_keys_layout': sectionKeys, 'charts_layout': sectionCharts };
 			let req = {}
 			req['data'] = obj
-
+			console.log(req)
 			if (reportName.length > 0) {
 				saveReportDesign(req).then((res) => {
 					if (res && res['msg'] && res['msg'] == 'success') {
