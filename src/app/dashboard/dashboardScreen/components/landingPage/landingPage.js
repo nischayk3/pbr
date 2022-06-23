@@ -235,7 +235,7 @@ export default function landingPage(props) {
 											return {
 												onClick: event => {
 													history.push(
-														`/dashboard/dashboard?id=${record.dashboard_disp_id}&version=${record.dashboard_version}`
+														`/dashboard/dashboard/${record.dashboard_disp_id}?id=${record.dashboard_disp_id}&version=${record.dashboard_version}`
 													);
 													window.location.reload();
 												}, // click row
@@ -278,7 +278,7 @@ export default function landingPage(props) {
 														className='chart-tiles'
 														onClick={() => {
 															history.push(
-																`/dashboard/dashboard?id=${el.dashboard_disp_id}&version=${el.dashboard_version}`
+																`/dashboard/dashboard/${el.dashboard_disp_id}?id=${el.dashboard_disp_id}&version=${el.dashboard_version}`
 															);
 															window.location.reload();
 														}}>
