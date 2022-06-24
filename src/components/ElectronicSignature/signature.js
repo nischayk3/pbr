@@ -208,7 +208,7 @@ function Signature(props) {
 								disabled={username == '' || password == ''}
 								onClick={() => authenticateUserWithoutAD()}
 							>
-								Authenticate
+								Authenticate without AD
 							</Button>
 						]
 				}
