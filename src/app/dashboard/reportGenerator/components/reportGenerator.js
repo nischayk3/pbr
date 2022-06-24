@@ -222,7 +222,7 @@ function ReportGenerator(props) {
 		allSections = [...allSections, ...headingSection];
 
 		for (let i = 0; i < allSections.length; i++) {
-			if (allSections[i].charts)
+			if (allSections[i])
 				allSections[i].charts = rep_layout[i + 1] ? rep_layout[i + 1] : [];
 		}
 
@@ -352,6 +352,8 @@ function ReportGenerator(props) {
 			}
 		}
 	};
+
+	console.log(table)
 	return (
 		<div className='custom-wrapper'>
 			<div className='sub-header' style={{ paddingRight: '24px' }}>

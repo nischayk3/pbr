@@ -119,7 +119,7 @@ export default function ReportLanding(props) {
 	useEffect(() => {
 		// updateDate();
 		getReportList();
-		// getReportGens();
+		getReportGens();
 	}, []);
 
 	// const updateDate = () => {
@@ -180,15 +180,15 @@ export default function ReportLanding(props) {
 		});
 	};
 
-	// const getReportGens = () => {
-	// 	let req = { rep_status: 'all' };
-	// 	getReportGen(req).then(res => {
-	// 		// if (res['status-code'] == 200) setReportList(res['Data']);
-	// 		// else setReportList([]);
-	// 		console.log(res)
-	// 	});
+	const getReportGens = () => {
+		let req = { rep_status: 'all' };
+		getReportGen(req).then(res => {
+			// if (res['status-code'] == 200) setReportList(res['Data']);
+			// else setReportList([]);
+			console.log(res)
+		});
 
-	// }
+	}
 
 	const getLoadReport = async report_id => {
 		dispatch(showNotification('success', report_id + ' selected'));

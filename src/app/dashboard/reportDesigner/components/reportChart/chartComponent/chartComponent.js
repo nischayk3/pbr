@@ -78,9 +78,9 @@ const chartComponent = (props) => {
 					setViolation(chartResponse.data[0].violations)
 					setViolationColumns(getColumns(chartResponse.data[0].violations))
 				}
-				if (chartResponse.data[0].exclusion) {
-					setExclusion(chartResponse.data[0].exclusion)
-					setExclusionColumns(getColumns(chartResponse.data[0].exclusion))
+				if (chartResponse.data[0].exclusions) {
+					setExclusion(chartResponse.data[0].exclusions)
+					setExclusionColumns(getColumns(chartResponse.data[0].exclusions))
 				}
 				const layout = {
 					xaxis: chartResponse.data[0].layout.xaxis,
