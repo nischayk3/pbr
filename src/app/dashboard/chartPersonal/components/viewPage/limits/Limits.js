@@ -29,42 +29,48 @@ const Limits = ({ postChartData, setPostChartData }) => {
   const warningCount = useRef(0);
 
   //function to change control limit input values
-  const handleChange = (index, event, dateString) => {
-    if (dateString) {
-      const rowsInput = [...controlSource];
-      rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
-    } else {
-      const { name, value } = event.target;
-      const rowsInput = [...controlSource];
-      rowsInput[index][name] = value;
-      setControlSource(rowsInput);
+  const handleChange = (index, event, dateString, type) => {
+    const rowsInput = [...controlSource];
+    if (!dateString) {
+      rowsInput[index]["valid_timestamp"] = null;
     }
+    if (dateString && type === "date") {
+      rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
+    } else if (type === "limits") {
+      const { name, value } = event.target;
+      rowsInput[index][name] = value;
+    }
+    setControlSource(rowsInput);
   };
 
   //function to change specification limit input values
-  const handleSpecChange = (index, event, dateString) => {
-    if (dateString) {
-      const rowsInput = [...specificationSource];
-      rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
-    } else {
-      const { name, value } = event.target;
-      const rowsInput = [...specificationSource];
-      rowsInput[index][name] = value;
-      setSpecificationSource(rowsInput);
+  const handleSpecChange = (index, event, dateString, type) => {
+    const rowsInput = [...specificationSource];
+    if (!dateString) {
+      rowsInput[index]["valid_timestamp"] = null;
     }
+    if (dateString && type === "date") {
+      rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
+    } else if (type === "limits") {
+      const { name, value } = event.target;
+      rowsInput[index][name] = value;
+    }
+    setSpecificationSource(rowsInput);
   };
 
   // function for change of warn input values
-  const handleWarnChange = (index, event, dateString) => {
-    if (dateString) {
-      const rowsInput = [...warningSource];
-      rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
-    } else {
-      const { name, value } = event.target;
-      const rowsInput = [...warningSource];
-      rowsInput[index][name] = value;
-      setWarningSource(rowsInput);
+  const handleWarnChange = (index, event, dateString, type) => {
+    const rowsInput = [...warningSource];
+    if (!dateString) {
+      rowsInput[index]["valid_timestamp"] = null;
     }
+    if (dateString && type === "date") {
+      rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
+    } else if (type === "limits") {
+      const { name, value } = event.target;
+      rowsInput[index][name] = value;
+    }
+    setWarningSource(rowsInput);
   };
 
   //columns array for control table
@@ -75,11 +81,19 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (_, record) => (
         <Popconfirm
           title="Sure to delete?"
-          disabled={Object.keys(params).length > 0 && params.fromScreen !== "Workspace"}
+          disabled={
+            Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
+          }
           onConfirm={() => handleDelete(record.key)}
         >
-          <DeleteTwoTone twoToneColor={Object.keys(params).length > 0 &&
-            params.fromScreen !== "Workspace" ? 'lightgrey' : 'red'} />
+          <DeleteTwoTone
+            twoToneColor={
+              Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"
+                ? "lightgrey"
+                : "red"
+            }
+          />
         </Popconfirm>
       ),
     },
@@ -90,15 +104,18 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
-            if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
-              return <p style={{margin: '0'}}>{data.lower}</p>
+            if (
+              Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"
+            ) {
+              return <p style={{ margin: "0" }}>{data.lower}</p>;
             }
             return (
               <Input
                 type="number"
                 name="lower"
                 value={data.lower}
-                onChange={(e) => handleChange(index, e)}
+                onChange={(e) => handleChange(index, e, "", "limits")}
               />
             );
           }
@@ -111,8 +128,11 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
-            if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
-              return <p style={{margin: '0'}}>{data.upper}</p>
+            if (
+              Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"
+            ) {
+              return <p style={{ margin: "0" }}>{data.upper}</p>;
             }
             return (
               <Input
@@ -124,7 +144,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
                   "error"
                 }
                 value={data.upper}
-                onChange={(e) => handleChange(index, e)}
+                onChange={(e) => handleChange(index, e, "", "limits")}
               />
             );
           }
@@ -138,15 +158,20 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         controlSource.map((data, index) => {
           if (record.key === data.key) {
-            if (Object.keys(params).length > 0 && params.fromScreen !== "Workspace") {
+            if (
+              Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"
+            ) {
               if (!data.valid_timestamp) {
-                return ""
+                return "";
               } else {
-                const d = new Date(data.valid_timestamp)
-                const year = d.getFullYear()
-                const month = d.getMonth()
-                const day = d.getDate()
-                return <p style={{margin: '0'}}>{`${year}-${month + 1}-${day}`}</p>
+                const d = new Date(data.valid_timestamp);
+                const year = d.getFullYear();
+                const month = d.getMonth();
+                const day = d.getDate();
+                return (
+                  <p style={{ margin: "0" }}>{`${year}-${month + 1}-${day}`}</p>
+                );
               }
             }
 
@@ -154,10 +179,12 @@ const Limits = ({ postChartData, setPostChartData }) => {
               <DatePicker
                 type="text"
                 name="valid_timestamp"
-                value={
+                defaultValue={
                   data.valid_timestamp ? moment(data.valid_timestamp) : ""
                 }
-                onChange={(dateString) => handleChange(index, "", dateString)}
+                onChange={(dateString) =>
+                  handleChange(index, "", dateString, "date")
+                }
               />
             );
           }
@@ -174,11 +201,19 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (_, record) => (
         <Popconfirm
           title="Sure to delete?"
-          disabled={Object.keys(params).length > 0 && params.fromScreen !== "Workspace"}
+          disabled={
+            Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
+          }
           onConfirm={() => handleSpecifyDelete(record.key)}
         >
-          <DeleteTwoTone twoToneColor={Object.keys(params).length > 0 &&
-            params.fromScreen !== "Workspace" ? 'lightgrey' : 'red'} />
+          <DeleteTwoTone
+            twoToneColor={
+              Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"
+                ? "lightgrey"
+                : "red"
+            }
+          />
         </Popconfirm>
       ),
     },
@@ -190,12 +225,18 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         specificationSource.map((data, index) => {
           if (record.key === data.key) {
+            if (
+              Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"
+            ) {
+              return <p style={{ margin: "0" }}>{data.lower}</p>;
+            }
             return (
               <Input
                 type="number"
                 name="lower"
                 value={data.lower}
-                onChange={(e) => handleSpecChange(index, e)}
+                onChange={(e) => handleSpecChange(index, e, "", "limits")}
               />
             );
           }
@@ -208,6 +249,12 @@ const Limits = ({ postChartData, setPostChartData }) => {
       width: "100",
       render: (text, record) =>
         specificationSource.map((data, index) => {
+          if (
+            Object.keys(params).length > 0 &&
+            params.fromScreen !== "Workspace"
+          ) {
+            return <p style={{ margin: "0" }}>{data.upper}</p>;
+          }
           if (record.key === data.key) {
             return (
               <Input
@@ -219,7 +266,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
                   "error"
                 }
                 value={data.upper}
-                onChange={(e) => handleSpecChange(index, e)}
+                onChange={(e) => handleSpecChange(index, e, "", "limits")}
               />
             );
           }
@@ -232,14 +279,32 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         specificationSource.map((data, index) => {
           if (record.key === data.key) {
+            if (
+              Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"
+            ) {
+              if (!data.valid_timestamp) {
+                return "";
+              } else {
+                const d = new Date(data.valid_timestamp);
+                const year = d.getFullYear();
+                const month = d.getMonth();
+                const day = d.getDate();
+                return (
+                  <p style={{ margin: "0" }}>{`${year}-${month + 1}-${day}`}</p>
+                );
+              }
+            }
             return (
               <DatePicker
                 type="text"
                 name="valid_timestamp"
-                value={
+                defaultValue={
                   data.valid_timestamp ? moment(data.valid_timestamp) : ""
                 }
-                onChange={(dateString) => handleChange(index, "", dateString)}
+                onChange={(dateString) =>
+                  handleChange(index, "", dateString, "date")
+                }
               />
             );
           }
@@ -256,11 +321,19 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (_, record) => (
         <Popconfirm
           title="Sure to delete?"
-          disabled={Object.keys(params).length > 0 && params.fromScreen !== "Workspace"}
+          disabled={
+            Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
+          }
           onConfirm={() => handleWarningDelete(record.key)}
         >
-          <DeleteTwoTone twoToneColor={Object.keys(params).length > 0 &&
-            params.fromScreen !== "Workspace" ? 'lightgrey' : 'red'} />
+          <DeleteTwoTone
+            twoToneColor={
+              Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"
+                ? "lightgrey"
+                : "red"
+            }
+          />
         </Popconfirm>
       ),
     },
@@ -272,12 +345,18 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         warningSource.map((data, index) => {
           if (record.key === data.key) {
+            if (
+              Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"
+            ) {
+              return <p style={{ margin: "0" }}>{data.lower}</p>;
+            }
             return (
               <Input
                 type="number"
                 name="lower"
                 value={data.lower}
-                onChange={(e) => handleWarnChange(index, e)}
+                onChange={(e) => handleWarnChange(index, e, "", "limits")}
               />
             );
           }
@@ -291,6 +370,12 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         warningSource.map((data, index) => {
           if (record.key === data.key) {
+            if (
+              Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"
+            ) {
+              return <p style={{ margin: "0" }}>{data.upper}</p>;
+            }
             return (
               <Input
                 type="number"
@@ -301,7 +386,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
                   "error"
                 }
                 value={data.upper}
-                onChange={(e) => handleWarnChange(index, e)}
+                onChange={(e) => handleWarnChange(index, e, "", "limits")}
               />
             );
           }
@@ -315,15 +400,31 @@ const Limits = ({ postChartData, setPostChartData }) => {
       render: (text, record) =>
         warningSource.map((data, index) => {
           if (record.key === data.key) {
+            if (
+              Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace"
+            ) {
+              if (!data.valid_timestamp) {
+                return "";
+              } else {
+                const d = new Date(data.valid_timestamp);
+                const year = d.getFullYear();
+                const month = d.getMonth();
+                const day = d.getDate();
+                return (
+                  <p style={{ margin: "0" }}>{`${year}-${month + 1}-${day}`}</p>
+                );
+              }
+            }
             return (
               <DatePicker
                 type="text"
                 name="valid_timestamp"
-                value={
+                defaultValue={
                   data.valid_timestamp ? moment(data.valid_timestamp) : ""
                 }
                 onChange={(dateString) =>
-                  handleWarnChange(index, "", dateString)
+                  handleWarnChange(index, "", dateString, "date")
                 }
               />
             );
@@ -389,6 +490,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
     };
     let access = false;
     data.control.forEach((ele) => {
+      console.log(ele.valid_timestamp, "ele.valid_timestamp");
       if (Number(ele.lower) && Number(ele.upper)) {
         if (Number(ele.lower) >= Number(ele.upper)) {
           access = true;
@@ -536,8 +638,14 @@ const Limits = ({ postChartData, setPostChartData }) => {
         <div className="table-bottom">
           <div className="control-header">
             <p>Control limit</p>
-            <Button className="custom-primary-btn" disabled={Object.keys(params).length > 0 &&
-              params.fromScreen !== "Workspace"} onClick={onApplyClick}>
+            <Button
+              className="custom-primary-btn"
+              disabled={
+                Object.keys(params).length > 0 &&
+                params.fromScreen !== "Workspace"
+              }
+              onClick={onApplyClick}
+            >
               Apply
             </Button>
           </div>
@@ -547,8 +655,13 @@ const Limits = ({ postChartData, setPostChartData }) => {
             columns={columns}
           />
           <div className="add-button">
-            <Button onClick={() => handleAdd()} disabled={Object.keys(params).length > 0 &&
-              params.fromScreen !== "Workspace"}>
+            <Button
+              onClick={() => handleAdd()}
+              disabled={
+                Object.keys(params).length > 0 &&
+                params.fromScreen !== "Workspace"
+              }
+            >
               <PlusOutlined />
               Add new row
             </Button>
@@ -562,8 +675,13 @@ const Limits = ({ postChartData, setPostChartData }) => {
             columns={specColumns}
           />
           <div className="add-button">
-            <Button onClick={() => handleSpecAdd()} disabled={Object.keys(params).length > 0 &&
-              params.fromScreen !== "Workspace"}>
+            <Button
+              onClick={() => handleSpecAdd()}
+              disabled={
+                Object.keys(params).length > 0 &&
+                params.fromScreen !== "Workspace"
+              }
+            >
               <PlusOutlined />
               Add new row
             </Button>
@@ -577,8 +695,13 @@ const Limits = ({ postChartData, setPostChartData }) => {
             columns={warnColumns}
           />
           <div className="add-button">
-            <Button onClick={() => handleWarnAdd()} disabled={Object.keys(params).length > 0 &&
-              params.fromScreen !== "Workspace"}>
+            <Button
+              onClick={() => handleWarnAdd()}
+              disabled={
+                Object.keys(params).length > 0 &&
+                params.fromScreen !== "Workspace"
+              }
+            >
               <PlusOutlined />
               Add new row
             </Button>

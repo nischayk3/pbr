@@ -453,7 +453,7 @@ function PaperBatchRecords() {
 		dispatch(loadMatBatchInfo(obj))
 		dispatch(loadTempAdditionalData(obj2))
 		dispatch(loadTemplateInfo(value?.pbr_template_info?.pbrTemplateInfo))
-		history.push(`${match.url}/${value.pbr_template_disp_id}?file=${value?.pbr_template_info?.pbrTemplateInfo[0].filename}&temp_disp_id=${value.pbr_template_disp_id}&tempalteName=${value.pbr_template_name}&fromScreen=Workspace`)
+		history.push(`${match.url}/${value.pbr_template_disp_id}?file=${value?.pbr_template_info?.pbrTemplateInfo[0].filename}&temp_disp_id=${value.pbr_template_disp_id}&tempalteName=${value.pbr_template_name}&fromScreen=Workspace&version=${value.pbr_template_version}`)
 
 
 	}
@@ -496,8 +496,8 @@ function PaperBatchRecords() {
 				<Col span={24}>
 					<Card bordered={false}>
 						<Row>
-							<Col span={6} />
-							<Col span={12} className='p36'>
+							<Col span={4} />
+							<Col span={16} className='p36'>
 								<Search
 									className='dashboard-search'
 									placeholder='Search by template ID, name, creator or date of creation'
@@ -528,11 +528,11 @@ function PaperBatchRecords() {
 									<></>
 								)}
 							</Col>
-							<Col span={6} />
+							<Col span={4} />
 						</Row>
 						<Row>
-							<Col span={6} />
-							<Col span={12} className='p36'>
+							<Col span={4} />
+							<Col span={16} className='p36'>
 								<div
 									className='create-new'
 									onClick={newTemplateModalHandler}
@@ -541,11 +541,11 @@ function PaperBatchRecords() {
 									<p>Create new template</p>
 								</div>
 							</Col>
-							<Col span={6} />
+							<Col span={4} />
 						</Row>
 						<Row className='recent-charts'>
-							<Col span={6} />
-							<Col span={12} className='p36'>
+							<Col span={4} />
+							<Col span={16} className='p36'>
 								<Row gutter={16} className="title">
 									<Col span={8}>
 										<h3 style={{fontSize:14}}>Recently created templates</h3>
@@ -570,7 +570,7 @@ function PaperBatchRecords() {
 											return (
 												<Col
 													className='gutter-row'
-													span={8}
+													span={6}
 													style={{ marginTop: '10px' }}
 													key={index}>
 													<StatusBlock id={el.pbr_template_disp_id} name={el.pbr_template_name} status={el.pbr_template_status} handleClickTiles={() => handleClickTiles(el)} />
@@ -579,7 +579,7 @@ function PaperBatchRecords() {
 										})}
 								</Row>
 							</Col>
-							<Col span={6} />
+							<Col span={4} />
 						</Row>
 					</Card>
 				</Col>
