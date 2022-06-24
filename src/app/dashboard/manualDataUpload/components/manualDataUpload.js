@@ -1073,6 +1073,7 @@ class Uploader extends Component {
 															style={{
 																backgroundColor: '#093185',
 															}}
+															disabled={username == '' || password == ''}
 															onClick={() => this.onAuthenticate()}>
 															Authenticate with AD
 														</Button>
@@ -1082,6 +1083,7 @@ class Uploader extends Component {
 															style={{
 																backgroundColor: '#093185',
 															}}
+															disabled={username == '' || password == ''}
 															onClick={() => this.onAuthenticateWithoutAD()}>
 															Authenticate without AD
 														</Button>
@@ -1170,6 +1172,7 @@ class Uploader extends Component {
 															style={{
 																backgroundColor: '#093185',
 															}}
+															disabled={username == '' || password == ''}
 															onClick={() => this.onAuthenticate()}>
 															Authenticate with AD
 														</Button>
@@ -1179,6 +1182,7 @@ class Uploader extends Component {
 															style={{
 																backgroundColor: '#093185',
 															}}
+															disabled={username == '' || password == ''}
 															onClick={() => this.onAuthenticateWithoutAD()}>
 															Authenticate without AD
 														</Button>
@@ -1338,6 +1342,7 @@ class Uploader extends Component {
 																style={{
 																	backgroundColor: '#093185',
 																}}
+																disabled={username == '' || password == ''}
 																onClick={() => this.onAuthenticate()}>
 																Authenticate with AD
 															</Button>
@@ -1347,6 +1352,7 @@ class Uploader extends Component {
 																style={{
 																	backgroundColor: '#093185',
 																}}
+																disabled={username == '' || password == ''}
 																onClick={() => this.onAuthenticateWithoutAD()}>
 																Authenticate without AD
 															</Button>
