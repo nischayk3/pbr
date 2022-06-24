@@ -197,6 +197,7 @@ function Signature(props) {
 							<Button
 								className="custom-secondary-btn"
 								key="3"
+								disabled={username == '' || password == ''}
 								onClick={() => authenticateUser()}
 							>
 								Authenticate with AD
@@ -204,6 +205,7 @@ function Signature(props) {
 							<Button
 								className="custom-secondary-btn"
 								key="4"
+								disabled={username == '' || password == ''}
 								onClick={() => authenticateUserWithoutAD()}
 							>
 								Authenticate
