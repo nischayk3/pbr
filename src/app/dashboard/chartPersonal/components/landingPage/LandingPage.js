@@ -37,7 +37,7 @@ const LandingPage = () => {
   date = date.toDateString().substring(4, 15);
 
   const lastUpdatedChartsViews = async () => {
-    let req = { limit: 5 };
+    let req = { limit: 8 };
     try {
       dispatch(showLoader());
       const chartResponse = await getUpdatedChartsViewsData(req);
@@ -113,7 +113,7 @@ const LandingPage = () => {
             <div className="card-body-div">
               <div className="text-descp">
                 <h2>Howdy {localStorage.getItem("username")},</h2>
-                <p>Let's personalise some charts today!</p>
+                <p>Let's personalize some charts today!</p>
               </div>
               <img src={Banner} alt="banner" />
               <h6>{date}</h6>
