@@ -18,7 +18,7 @@ export default function Landing(props) {
 	const [filterTable, setFilterTable] = useState(null);
 	const [lastEightView, setLastEightView] = useState([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
-	const [hierarchyName, setHierarchyName] = useState('Untilted')
+	const [hierarchyName, setHierarchyName] = useState('')
 	const dispatch = useDispatch()
 
 	const history = useHistory();
@@ -37,7 +37,7 @@ export default function Landing(props) {
 	const loadHier = async (ds_name) => {
 		dispatch(loadDrug(true))
 		history.push({
-			pathname: `/dashboard/molecule_hierarchy_configurations/${ds_name}`,
+			pathname: `/dashboard/molecule_hierarchy_configuration/${ds_name}`,
 		});
 	}
 
@@ -233,9 +233,9 @@ export default function Landing(props) {
 					visible={isModalVisible}
 					onCancel={handleCancel}
 					footer={[
-						<Button className="custom-primary-button" onClick={() => {
+						<Button disabled={!hierarchyName.length > 0} className="custom-primary-button" onClick={() => {
 							history.push({
-								pathname: '/dashboard/molecule_hierarchy_configurations/untitled_view',
+								pathname: '/dashboard/molecule_hierarchy_configuration/untitled_view',
 							});
 						}}>Let's Go!</Button>
 					]}>
