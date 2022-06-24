@@ -353,7 +353,6 @@ function ReportGenerator(props) {
 		}
 	};
 
-	console.log(table)
 	return (
 		<div className='custom-wrapper'>
 			<div className='sub-header' style={{ paddingRight: '24px' }}>
