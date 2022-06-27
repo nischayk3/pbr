@@ -291,13 +291,11 @@ function Hierarchy() {
 
 
 	const handleAdd = () => {
-		console.log(moleculeData, count)
 		const newData = {
 			key: count,
 			site_code: "",
 			product_num: ""
 		};
-		console.log([...moleculeData, newData])
 		setMoleculeData([...moleculeData, newData]);
 		setCount(count + 1);
 	};
