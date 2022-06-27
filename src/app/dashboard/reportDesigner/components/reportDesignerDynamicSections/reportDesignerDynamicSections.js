@@ -244,7 +244,7 @@ function ReportDesignerDynamicSections(props) {
                                         }
                                         <div >
                                             <div className="chart-block">
-                                                {showChart[name] ?
+                                                {name > 0 && showChart[name] ?
                                                     list.map((i) =>
                                                     (<Form.Item {...restField} name={[name, 'select']}>
                                                         <div className={chartAddCheck(i, name) ? "chart-tiless" : "chart-tilesss"} onClick={(e) => addChart(e.target.innerHTML, name)}>
