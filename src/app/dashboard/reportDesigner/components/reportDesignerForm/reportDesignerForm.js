@@ -119,6 +119,7 @@ function ReportDesignerForm(props) {
 							dropdownStyle={{ border: '10' }}
 							notFoundContent="No Result"
 							placeholder="Select Multiple Charts"
+							disabled={props.show}
 							value={selectedChartList}
 							onChange={handleChange}
 							style={{ width: '100%', position: 'relative', height: '75px', overflow: 'auto' }}
