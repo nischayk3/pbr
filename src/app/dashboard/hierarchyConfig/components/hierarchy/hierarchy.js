@@ -33,6 +33,9 @@ function Hierarchy() {
 	const [stepCount, setStepCount] = useState(1);
 	const [tableData, setTableData] = useState([]);
 	const [activeTab, setActiveTab] = useState("Plant and molecules");
+	const [onceSaved, setOnceSaved] = useState(false);
+	const [stepSaved, setStepSaved] = useState(false);
+
 	const [del, setDel] = useState([])
 	const [deleted, setDeleted] = useState([])
 	const dispatch = useDispatch();
@@ -335,11 +338,12 @@ function Hierarchy() {
 		const dataSource = [...moleculeData];
 		let deleted_data = [...del]
 		setMoleculeData(dataSource.filter((item) => item.key !== key));
-		setCount(count - 1);
+		// setCount(count - 1);
 		let obj = {}
 		obj[`${record.product_num}`] = record.site_code
 		deleted_data.push(obj)
 		setDel(deleted_data)
+
 
 	};
 
@@ -351,7 +355,7 @@ function Hierarchy() {
 		deleted_data.push(obj)
 		setDeleted(deleted_data)
 		setStepData(dataSource.filter((item) => item.key !== key));
-		setStepCount(stepCount - 1);
+		// setStepCount(stepCount - 1);
 	};
 
 	const handleChangeTab = (value) => {
@@ -375,14 +379,15 @@ function Hierarchy() {
 			let req = {
 				ds_name: hierarchyName,
 				product_num: moleculeData.map((i) => { return parseInt(i.product_num); }),
-				site_code: moleculeData.map((i) => { return parseInt(i.site_code); }),
-				delete_row: del.length > 0 ? del : false
+				site_code: moleculeData.map((i) => { return i.site_code; }),
+				delete_row: !onceSaved && !load_drug ? [] : del.length > 0 ? del : []
 			};
 			let response = await putMolecule(req);
 			if (response["statuscode"] == 200) {
 				dispatch(showNotification('success', "Saved"))
 				setDeleted([])
 				setDel([])
+				setOnceSaved(true)
 			}
 			else {
 				dispatch(showNotification('error', response.message))
@@ -393,13 +398,14 @@ function Hierarchy() {
 				ds_name: hierarchyName,
 				seq_no: stepData.map((i) => { return parseInt(i.seq_no); }),
 				process_step: stepData.map((i) => { return i.process_step; }),
-				delete_row: deleted.length > 0 ? deleted : false
+				delete_row: !stepSaved && !load_drug ? [] : deleted.length > 0 ? deleted : []
 			};
 			let response = await putProcessStep(req);
 			if (response["status-code"] == 200) {
 				dispatch(showNotification('success', "Saved"))
 				setDeleted([])
 				setDel([])
+				setStepSaved(true)
 			}
 			else {
 				dispatch(showNotification('error', response.message))
@@ -412,12 +418,13 @@ function Hierarchy() {
 				process_step: tableData.map((i) => { return i.process_step ? i.process_step : ""; }),
 				site_num: tableData.map((i) => { return i.site_num ? i.site_num : ""; }),
 				molecule_num: tableData.map((i) => { return i.parent_product_num ? i.parent_product_num : ""; }),
-				delete_row: false
+				delete_row: []
 			};
 
 			let response = await putProcessStepMap(req);
 			if (response["status-code"] == 200) {
 				dispatch(showNotification('success', "Saved"))
+				setOnceSaved(true)
 
 			}
 			else {
