@@ -78,7 +78,7 @@ function ReportDesignerNew(props) {
 	const [sectionAddedCharts, setSectionAddedCharts] = useState({})
 	const [chartsLayout, setChartsLayout] = useState({})
 	const [currentSection, setCurrentSection] = useState()
-	const [sections, setSections] = useState({})
+	// const [sections, setSections] = useState({})
 
 
 	const [form] = Form.useForm();
@@ -163,7 +163,7 @@ function ReportDesignerNew(props) {
 	}
 
 
-	const checkChanges = (reportData, mainJson) => {
+	const checkChanges = (reportData, mainJson, save_Type) => {
 		let layout_change = false
 		let new_charts_added = selectedSectionCharts.length > 0
 
@@ -197,7 +197,9 @@ function ReportDesignerNew(props) {
 			return [true, json_data]
 		}
 		if (!layout_change && !new_charts_added)
-			return [false, {}]
+			return [true, json_data]
+		// if (!layout_change && !new_charts_added)
+		// 	return [false, {}]
 
 		// else
 		// 	return false
@@ -240,7 +242,6 @@ function ReportDesignerNew(props) {
 		// message.success(`${version} selected`)
 		let req = version;
 		getCharts(req).then((res) => {
-
 			if (res['status-code'] === 200)
 				setChartList(res['data']);
 			else
@@ -309,7 +310,7 @@ function ReportDesignerNew(props) {
 		let check = false
 		let lay_data = {}
 		if (isLoad) {
-			let response_changes = checkChanges(reportData, formData)
+			let response_changes = checkChanges(reportData, formData, saveType)
 			check = response_changes[0]
 			lay_data = response_changes[1]
 		}
@@ -482,7 +483,6 @@ function ReportDesignerNew(props) {
 			dispatch(hideLoader())
 		}, 3000);
 	}
-
 
 
 	return (
