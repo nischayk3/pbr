@@ -4,29 +4,35 @@ import { Button } from "antd";
 
 const CreateVariable = (props) => {
 	return (
-		<div className={props.className}>
-			{props.title === "Create Variable" && (
-				<div onClick={props.addVariable}>
-					<PlusOutlined />
-					<p>Create Variable</p>
-				</div>
-			)}
-			{props.title === "Select parameters" && (
-				<>
-					<PlusOutlined />
-					<p>Select parameters</p>
-				</>
-			)}
-			{props.title === "Done" && (
-				<Button
-					type="text"
-					onClick={props.createVar}
-					className="custom-primary-btn "
-				>
-					Done
-				</Button>
-			)}
-		</div>
+		<div className={props.className} style={{ pointerEvents: props.fromWorkflowScreen ? "none" : "auto" }}>
+			{
+				props.title === "Create Variable" && (
+					<div onClick={props.addVariable} >
+						<PlusOutlined />
+						<p>Create Variable</p>
+					</div>
+				)
+			}
+			{
+				props.title === "Select parameters" && (
+					<>
+						<PlusOutlined />
+						<p>Select parameters</p>
+					</>
+				)
+			}
+			{
+				props.title === "Done" && (
+					<Button
+						type="text"
+						onClick={props.createVar}
+						className="custom-primary-btn "
+					>
+						Done
+					</Button>
+				)
+			}
+		</div >
 	);
 };
 

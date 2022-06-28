@@ -43,7 +43,7 @@ function ParameterLookup(props) {
 		try {
 			dispatch(showLoader());
 			const moleculeRes = await getMoleculeList(req);
-			console.log("moleculeResmoleculeRes", moleculeRes);
+
 			if (moleculeRes.Status === 200) {
 				setMoleculeList(moleculeRes.Data);
 				dispatch(hideLoader());

@@ -221,7 +221,7 @@ export default function Landing() {
 													viewVersion: i.view_version,
 												},
 											}}
-										//	to={`${match.url}/${i.view_disp_id}&${i.view_version}`}
+
 										>
 
 											<StatusBlock

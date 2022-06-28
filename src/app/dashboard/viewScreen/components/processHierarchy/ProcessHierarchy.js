@@ -24,20 +24,20 @@ const ProcessHierarchy = (props) => {
 	}
 
 	//onClick node 
-	const onClickProcessStep = (value1, value2, field) => {
-		console.log("onClickNode", value1, value2, field)
-		if (field === 'process_step') {
-			props.callbackProcessClick(value1, value2, field)
-		}
-	}
+	// const onClickProcessStep = (value1, value2, field) => {
+
+	// 	if (field === 'process_step') {
+	// 		props.callbackProcessClick(value1, value2, field)
+	// 	}
+	// }
 
 	//onClick node 
-	const onClickProductDes = (value1, value2, value3, field) => {
-		console.log("onClickNode", value1, value2, field)
-		if (field === 'product_desc') {
-			props.callbackProductClick(value1, value2, value3, field)
-		}
-	}
+	// const onClickProductDes = (value1, value2, value3, field) => {
+	// 	console.log("onClickNode", value1, value2, field)
+	// 	if (field === 'product_desc') {
+	// 		props.callbackProductClick(value1, value2, value3, field)
+	// 	}
+	// }
 
 	return (
 		<div className="custom-treenode">
