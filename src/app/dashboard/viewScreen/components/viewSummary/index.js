@@ -12,6 +12,7 @@ import { setViewFunctionName } from "../../../../../duck/actions/viewAction";
 import { showNotification } from "../../../../../duck/actions/commonActions";
 
 const ViewSummaryData = (props) => {
+
 	const dispatch = useDispatch();
 	let columns = [];
 	const summaryTableData = useSelector(
@@ -30,13 +31,15 @@ const ViewSummaryData = (props) => {
 
 	useEffect(() => {
 		if (functionName !== "") {
-			let fun_table = [...funTableData]
-			console.log(fun_table)
+
+			//	let fun_table = [...funTableData]
+			let fun_table = [...summaryTableData]
 			setFunTableData(fun_table);
 		}
 	}, [summaryTableData]);
 
 	useEffect(() => {
+
 		if (funTableData.length > 0) {
 			const objKey =
 				funTableData !== undefined && funTableData.length > 0
@@ -108,6 +111,7 @@ const ViewSummaryData = (props) => {
 	}, [funTableData]);
 
 	useEffect(() => {
+
 		if (isLoadView) {
 			let fun = [];
 			let funData = [];
@@ -160,7 +164,7 @@ const ViewSummaryData = (props) => {
 						})
 					)
 				});
-				console.log(mergeArr)
+
 				setTableColumn(columns);
 				setFunTableData(mergeArr);
 			}
@@ -182,7 +186,6 @@ const ViewSummaryData = (props) => {
 
 		setTableColumn(newColumns);
 	};
-	console.log(funTableData)
 
 	return (
 		<Card title="View Summary">

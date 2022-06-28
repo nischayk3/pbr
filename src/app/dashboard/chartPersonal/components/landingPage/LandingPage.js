@@ -64,7 +64,7 @@ const LandingPage = () => {
   };
 
   const onClickAdd = () => {
-    history.push(`${match.url}/0/0`);
+    history.push(`${match.url}/0`);
   };
   //function to handle search
   const searchTable = (value) => {
@@ -176,7 +176,7 @@ const LandingPage = () => {
                         return (
                           <Link
                             key={ele.chart_disp_id}
-                            to={`${match.url}/${ele.chart_disp_id}/${ele.chart_version}`}
+                            to={`${match.url}/${ele.chart_disp_id}&${ele.chart_version}`}
                           >
                             <Col span={6} style={{ marginTop: "10px" }}>
                               <div className="chart-tiles">

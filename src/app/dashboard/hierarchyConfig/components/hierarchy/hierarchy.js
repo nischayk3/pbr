@@ -102,6 +102,15 @@ function Hierarchy() {
 		}
 		dispatch(hideLoader());
 	};
+
+	const validate = (keyCount, keyData, keyName) => {
+		let data = [...keyData]
+		let latest_data = data[keyCount]
+		if (latest_data[keyName] != '')
+			return true
+		else
+			return false
+	}
 	const plantMoleculeColumns =
 		[
 			{
@@ -291,23 +300,35 @@ function Hierarchy() {
 
 
 	const handleAdd = () => {
-		const newData = {
-			key: count,
-			site_code: "",
-			product_num: ""
-		};
-		setMoleculeData([...moleculeData, newData]);
-		setCount(count + 1);
+		let is_add = count <= 1 ? true : validate(count - 2, moleculeData, 'product_num')
+		if (is_add) {
+			const newData = {
+				key: count,
+				site_code: "",
+				product_num: ""
+			};
+			setMoleculeData([...moleculeData, newData]);
+			setCount(count + 1);
+		}
+		else {
+			dispatch(showNotification('error', 'Previous Row is empty'))
+		}
 	};
 
 	const handleStepAdd = () => {
-		const newData = {
-			key: stepCount,
-			seq_no: "",
-			process_step: ""
-		};
-		setStepData([...stepData, newData]);
-		setStepCount(stepCount + 1);
+		let is_add = stepCount <= 1 ? true : validate(stepCount - 2, stepData, 'seq_no')
+		if (is_add) {
+			const newData = {
+				key: stepCount,
+				seq_no: "",
+				process_step: ""
+			};
+			setStepData([...stepData, newData]);
+			setStepCount(stepCount + 1);
+		}
+		else {
+			dispatch(showNotification('error', 'Previous Row is empty'))
+		}
 	};
 
 	const handleChange = (index, event) => {

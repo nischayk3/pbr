@@ -94,7 +94,9 @@ describe("Report", () => {
         cy.wait(1000)
         cy.get('.ant-input').clear();
         cy.get('.ant-input').type('R391{enter}');
-        cy.get('.ant-table-row > :nth-child(1) > div').click();
+
+        cy.get('.ant-table-row > :nth-child(1)').click();
+        // cy.get('.ant-table-row > :nth-child(1) > div').click();
         cy.wait(5000)
         cy.get(':nth-child(1) > .ant-collapse-item > .ant-collapse-header > div > .anticon > svg').click();
         cy.get('.ant-input').clear()

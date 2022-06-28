@@ -125,6 +125,9 @@ function ReportDesignerDynamicSections(props) {
     }
 
     const deleteSection = (sectionNum) => {
+        if (sectionNum == 0)
+            setShowAddSection(false)
+
         dispatch(showLoader())
         let section = { ...addedCharts }
         section[sectionNum + 1] = []
@@ -166,7 +169,7 @@ function ReportDesignerDynamicSections(props) {
         setAddedKeys(props.sectionKeys)
     }
 
-
+    console.log(showAddSection)
     return (
         <div className="reportDesigner-dynamicSections bg-white">
             <Card className="reportTableCard" title="Report Table" >

@@ -10,8 +10,8 @@ import VariableCard from "./variableCard";
 import Modal from "../../../../../components/Modal/Modal";
 import InputField from "../../../../../components/InputField/InputField";
 
+let variableData = [];
 const MathEditor = (props) => {
-	let variableData = [];
 
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
 	const selectedParameters = useSelector(
@@ -28,6 +28,8 @@ const MathEditor = (props) => {
 	const [paramData, setParamData] = useState({});
 	const [selectedVar, setSelectedVar] = useState("");
 	const [variableName, setVariableName] = useState("");
+	const [showVariable, setShowVariable] = useState(false);
+
 
 	const { Panel } = Collapse;
 	const {
@@ -40,10 +42,6 @@ const MathEditor = (props) => {
 		materialId,
 	} = props;
 
-	function callback(key) {
-		// console.log(key);
-	}
-
 	const content = (
 		<div className="script-info">
 			<p className="script-help">
@@ -55,11 +53,11 @@ const MathEditor = (props) => {
 				<br />
 				e.g:1 : isnull and fillna will fill null data with given values.
 				<br />
-        if V1.isnull().sum().sum() > 0:
+				if V1.isnull().sum().sum() `{'>'}` 0:
 				<br />
 				V1.fillna(0)
 				<br />
-        if V2.isnull().sum().sum() > 0:
+				if V2.isnull().sum().sum() `{'>'}` 0:
 				<br />
 				V2.fillna(0)
 				<br />
@@ -72,7 +70,7 @@ const MathEditor = (props) => {
 				<br />
 				b = V2
 				<br />
-        a[V1 > 0.0235] = b[V1 > 0.0235] <br />
+				a[V1 `{'>'}` 0.0235] = b[V1 `{'>'}` 0.0235] <br />
 				result = a<br />
 				<br />
 				e.g:3: To find any power of values
@@ -121,11 +119,11 @@ const MathEditor = (props) => {
 			setVarData([]);
 		}
 	}, [isNew]);
+
 	useEffect(() => {
 		if (isLoadView) {
 			let paramKey = [];
 			const viewJsonData = [selectedParameters];
-
 			viewJsonData.forEach((element, index) => {
 				paramKey.push(Object.keys(element.parameters));
 			});
@@ -139,7 +137,16 @@ const MathEditor = (props) => {
 					var_data.push(obj);
 				}
 				variableData = [...var_data];
-				setVarData(var_data);
+
+				if (var_data.length > 0) {
+					setShowVariable(false);
+				}
+				const newVar_data = [...var_data]
+				setTimeout(() => {
+					setShowVariable(true);
+					setVarData(newVar_data);
+				}, 200)
+
 			}
 
 			if (
@@ -150,6 +157,7 @@ const MathEditor = (props) => {
 			}
 		}
 	}, [isLoadView]);
+
 
 	const addVariable = () => {
 		setCardTitle("Select parameters");
@@ -184,7 +192,8 @@ const MathEditor = (props) => {
 		setParamData(data);
 	};
 
-	const setVariable = (data) => {
+	const editVariable = (data) => {
+
 		setSelectedVar(data);
 	};
 	const deleteVariable = (param) => {
@@ -206,8 +215,9 @@ const MathEditor = (props) => {
 			return ele.variableName !== param;
 		});
 
-		variableData = varDataArr;
-		setVarData(varArr);
+		variableData = [...varDataArr];
+		const newVar = [...varArr]
+		setVarData(newVar);
 	};
 
 	const addVariableName = () => {
@@ -221,42 +231,47 @@ const MathEditor = (props) => {
 			<Collapse
 				className="viewCreation-accordian "
 				defaultActiveKey={["1"]}
-				onChange={callback}
+
 			>
 				<Panel
 					className="viewCreation-materialsPanel"
 					header={
 						<span>
-							Script Editor{" "}
+							Script Editor
 							<Popover content={content} title={false} trigger="hover">
-								{" "}
-								<InfoCircleOutlined />{" "}
+								<InfoCircleOutlined />
 							</Popover>
 						</span>
 					}
 					key="1"
 				>
-					<MathFunction data={paramData} materialId={materialId} />
+					<MathFunction data={paramData} materialId={materialId} fromWorkflowScreen={props.fromWorkflowScreen} />
 					<div className="variable-wrapper">
 						<CreateVariable
 							addVariable={addVariable}
 							title={cardTitle}
 							createVar={addVariableName}
 							className={"add-var_block add-var_block_bg"}
+							fromWorkflowScreen={props.fromWorkflowScreen}
 						/>
-						{varData.map((item, index) => {
-							return (
-								<VariableCard
-									key={index}
-									item={item}
-									variableName={item.variableName}
-									deleteVariable={deleteVariable}
-									setVariable={setVariable}
-								/>
-							);
-						})}
+						{showVariable && (
+							varData.map((item, index) => {
+								return (
+									<VariableCard
+										id={item.id}
+										// item={item}
+										variableName={item.variableName}
+										deleteVariable={deleteVariable}
+										editVariable={editVariable}
+										fromWorkflowScreen={props.fromWorkflowScreen}
+									/>
+								);
+							})
+						)}
+
 					</div>
 					<MemoizedParameterTable
+						fromWorkflowScreen={props.fromWorkflowScreen}
 						variableCreate={variableCreate}
 						setVariableCreate={setVariableCreate}
 						callbackCheckbox={callbackCheckbox}
