@@ -21,7 +21,7 @@ describe("Genealogy", () => {
 	})
 
 	it("Render genealogy screen", () => {
-		cy.intercept('POST', '/services/v1//genealogy-filter', { fixture: 'genealogy-filter.json' })
+		cy.intercept('POST', '/services/v1//genealogy-filter', { fixture: 'genealogyFilter.json' })
 		cy.intercept('GET', '/services/v1/product-type-genealogy', { fixture: 'genealogyFilterProductType.json' })
 		cy.intercept('GET', 'v1/genealogy?levels=*', { fixture: 'backward.json' })
 		const url = Cypress.config().baseUrl
@@ -275,6 +275,67 @@ it("searching node",()=>{
 		cy.reload()
 		cy.wait(3000)
 	})
+
+	
+	it("genealogy 400 error on backward search",()=>{
+		cy.intercept(
+			          {
+			            method: 'GET', 
+			            url: '/mdhgenealogy/v1/genealogy?levels=5&batch_id=1338%7C1089084%7C394154&backward=true&mat_type=%27RAW%27',
+					   
+			          },
+							{
+								"detail": "Genealogy with batchId: 1338|1089084|394154 and levels 5 not found",
+								"status": 400,
+								"title": "Bad Request",
+								"type": "about:blank"
+							  }
+			        ).as('genealogy-serach')
+	})
+
+	it("Select plant", () => {
+		cy.get(
+			":nth-child(1) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
+		).click();
+		cy.get("#rc_select_0").clear();
+		cy.get("#rc_select_0").type("1338");
+		cy.wait(4000)
+		cy.get(".ant-select-item-option-content").click({ force: true });
+		cy.wait(4000)
+	});
+
+	it("Selecting product", () => {
+		cy.get(
+			":nth-child(2) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
+		).click();
+		cy.get("#rc_select_1").clear();
+		cy.get("#rc_select_1").type("1089084");
+		cy.wait(4000)
+		cy.get(".ant-select-item-option-content").eq(1).click({ force: true })
+		cy.wait(4000)
+	})
+
+	it("Selecting Batch", () => {
+		cy.get(
+			":nth-child(3) > .search-block > .ant-select > .ant-select-selector > .ant-select-selection-item"
+		).click();
+		cy.get("#rc_select_2").clear();
+		cy.get("#rc_select_2").type("394154");
+		cy.wait(4000)
+		cy.get(".ant-select-item-option-content").eq(2).click({ force: true })
+		cy.wait(4000)
+	})
+
+	it("Selecting Product type", () => {
+		cy.get('.ant-select-selection-overflow').click();
+		cy.get("#rc_select_3").clear();
+		cy.get("#rc_select_3").type("RAW");
+		cy.wait(4000)
+		cy.get(".ant-select-item-option-content").eq(3).click({ force: true })
+		cy.wait(4000)
+
+	});
+
 it("click on search button",()=>{
 	cy.get('#genealogy-search').click({ force: true })
 	cy.wait(6000)
