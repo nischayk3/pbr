@@ -175,12 +175,25 @@ const Dashboard = () => {
                 <Route key="faq" path={`${match.url}/faq`}>
                   <Faq />
                 </Route>
-                <Route
+                {/* <Route
                   key="hierarchy"
                   path={`${match.url}/molecule_hierarchy_configuration`}
                 >
+
                   <Hierarchy />
-                </Route>
+                </Route> */}
+                <Route
+                  path={`${match.url}/molecule_hierarchy_configuration`}
+                  render={({ match: { url } }) => (
+                    <>
+                      <Route path={`${url}/`} component={Hierarchy} exact />
+                      <Route
+                        path={`${url}/:id`}
+                        component={HierarchyMain}
+                      />
+                    </>
+                  )}
+                />
                 <Route
                   key="userRolesAndAccess"
                   path={`${match.url}/user-roles-and-access`}
@@ -213,12 +226,12 @@ const Dashboard = () => {
                   path={`${match.url}/analysis/:id`}
                   component={AnalysisModel}
                 />
-                <Route
+                {/* <Route
                   key="hierarchy_main"
                   path={`${match.url}/molecule_hierarchy_configurations`}
                 >
                   <HierarchyMain />
-                </Route>
+                </Route> */}
                 <Route
                   key="data_science_studio"
                   path={`${match.url}/pythonNoteBook`}

@@ -1028,7 +1028,7 @@ class Uploader extends Component {
 												</div>
 												{isAuth && (
 													<div>
-														<p>Reason</p>
+														<p>Signing</p>
 														<Select
 															placeholder='Select a reason'
 															value={signatureReason}
@@ -1057,7 +1057,7 @@ class Uploader extends Component {
 																backgroundColor: '#093185',
 															}}
 															onClick={() => this.updateFileApproveData()}>
-															Ok
+															Confirm
 														</Button>
 														<Button
 															className='custom-primary-btn'
@@ -1073,6 +1073,7 @@ class Uploader extends Component {
 															style={{
 																backgroundColor: '#093185',
 															}}
+															disabled={username == '' || password == ''}
 															onClick={() => this.onAuthenticate()}>
 															Authenticate with AD
 														</Button>
@@ -1082,6 +1083,7 @@ class Uploader extends Component {
 															style={{
 																backgroundColor: '#093185',
 															}}
+															disabled={username == '' || password == ''}
 															onClick={() => this.onAuthenticateWithoutAD()}>
 															Authenticate without AD
 														</Button>
@@ -1125,7 +1127,7 @@ class Uploader extends Component {
 												</div>
 												{isAuth && (
 													<div>
-														<p>Reason</p>
+														<p>Signing</p>
 														<Select
 															placeholder='Select a reason'
 															value={signatureReason}
@@ -1154,7 +1156,7 @@ class Uploader extends Component {
 																backgroundColor: '#093185',
 															}}
 															onClick={() => this.approveDataFile()}>
-															Ok
+															Confirm
 														</Button>
 														<Button
 															className='custom-primary-btn'
@@ -1170,6 +1172,7 @@ class Uploader extends Component {
 															style={{
 																backgroundColor: '#093185',
 															}}
+															disabled={username == '' || password == ''}
 															onClick={() => this.onAuthenticate()}>
 															Authenticate with AD
 														</Button>
@@ -1179,6 +1182,7 @@ class Uploader extends Component {
 															style={{
 																backgroundColor: '#093185',
 															}}
+															disabled={username == '' || password == ''}
 															onClick={() => this.onAuthenticateWithoutAD()}>
 															Authenticate without AD
 														</Button>
@@ -1293,7 +1297,7 @@ class Uploader extends Component {
 													</div>
 													{isAuth && (
 														<div>
-															<p>Reason</p>
+															<p>Signing</p>
 															<Select
 																placeholder='Select a reason'
 																value={signatureReason1}
@@ -1322,7 +1326,7 @@ class Uploader extends Component {
 																	backgroundColor: '#093185',
 																}}
 																onClick={() => this.finalFileUploadData()}>
-																Ok
+																Confirm
 															</Button>
 															<Button
 																className='custom-primary-btn'
@@ -1338,6 +1342,7 @@ class Uploader extends Component {
 																style={{
 																	backgroundColor: '#093185',
 																}}
+																disabled={username == '' || password == ''}
 																onClick={() => this.onAuthenticate()}>
 																Authenticate with AD
 															</Button>
@@ -1347,6 +1352,7 @@ class Uploader extends Component {
 																style={{
 																	backgroundColor: '#093185',
 																}}
+																disabled={username == '' || password == ''}
 																onClick={() => this.onAuthenticateWithoutAD()}>
 																Authenticate without AD
 															</Button>

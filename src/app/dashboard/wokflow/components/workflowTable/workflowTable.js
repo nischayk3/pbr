@@ -263,7 +263,9 @@ function WorkflowTable(props) {
                   <a
                     onClick={() =>
                       history.push(
-                        `${text}?id=${row.Id}&version=${row.version}`
+                        `${text}?id=${row.Id}&version=${
+                          row.version ? row.version : "0"
+                        }`
                       )
                     }
                     className="review-submission"
