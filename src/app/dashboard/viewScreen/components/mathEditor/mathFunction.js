@@ -169,6 +169,7 @@ const MathFunction = (props) => {
 				) : (
 					<div className="script-editor-wrapper">
 						<CodeEditor
+							disabled={props.fromWorkflowScreen}
 							value={mathEditorValue}
 							language="py"
 							placeholder="Please enter the script"
@@ -190,6 +191,7 @@ const MathFunction = (props) => {
 									onClick={functionEvaluate}
 									type="text"
 									className="custom-eval-btn"
+									disabled={props.fromWorkflowScreen}
 								>
 									Function Evaluate
 								</Button>
@@ -197,6 +199,7 @@ const MathFunction = (props) => {
 									onClick={showModal}
 									type="text"
 									disabled={!isFunction}
+
 									className={
 										!isFunction
 											? "custom-eval-btn-disable"

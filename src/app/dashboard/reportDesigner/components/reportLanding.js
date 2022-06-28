@@ -443,9 +443,9 @@ export default function ReportLanding(props) {
 								</Row>
 								<div className='landing-tiles'>
 									{!newsearched &&
-										reportGenList &&
-										reportGenList.length > 0 &&
-										reportGenList.map(
+										reportList &&
+										reportList.length > 0 &&
+										reportList.map(
 											(i, index) =>
 												index < 4 && (
 													<div
@@ -485,7 +485,7 @@ export default function ReportLanding(props) {
 										columns={columns}
 										scroll={{ y: 150, x: 800 }}
 										// style={{  height: 'auto' }}
-										dataSource={filterTable === null ? reportGenList : filterTable}
+										dataSource={filterTable === null ? reportList : filterTable}
 										pagination={false}
 										onRow={record => ({
 											onClick: e => {
