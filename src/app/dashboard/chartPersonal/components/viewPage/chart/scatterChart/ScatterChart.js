@@ -59,39 +59,41 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
   const [exclusionTable, setExclusionTable] = useState([]);
 
   const chartNodeClicked = (data) => {
-    postChartData.data.forEach((ele) => {
-      ele.extras.data_table.forEach((el) => {
-        if (el.batch_num === data.text) {
-          setExclusionValues({
-            ...exclusionValues,
-            batchId: data.text,
-            productCode: ele.view_name,
-            parameterValue:
-              ele.chart_type === "process control"
-                ? data.y
-                : `(${data.x},${data.y})`,
-            notes: "",
-            unit: el.uom_code,
-            excludeRecord: false,
-            parameterName:
-              ele.chart_type === "process control"
-                ? ele.chart_mapping.y.function_name
-                : `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
-            testDate:
-              ele.chart_type === "process control"
-                ? new Date(
-                    el["recorded_date_" + ele.chart_mapping.y.function_name]
-                  ).toLocaleDateString()
-                : `(${new Date(
-                    el["recorded_date_" + ele.chart_mapping.x.function_name]
-                  ).toLocaleDateString()},${new Date(
-                    el["recorded_date_" + ele.chart_mapping.y.function_name]
-                  ).toLocaleDateString()})`,
-          });
-        }
+    if (data && data.data && data.data.name !== "mean") {
+      postChartData.data.forEach((ele) => {
+        ele.extras.data_table.forEach((el) => {
+          if (el.batch_num === data.text) {
+            setExclusionValues({
+              ...exclusionValues,
+              batchId: data.text,
+              productCode: ele.view_name,
+              parameterValue:
+                ele.chart_type === "process control"
+                  ? data.y
+                  : `(${data.x},${data.y})`,
+              notes: "",
+              unit: el.uom_code,
+              excludeRecord: false,
+              parameterName:
+                ele.chart_type === "process control"
+                  ? ele.chart_mapping.y.function_name
+                  : `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
+              testDate:
+                ele.chart_type === "process control"
+                  ? new Date(
+                      el["recorded_date_" + ele.chart_mapping.y.function_name]
+                    ).toLocaleDateString()
+                  : `(${new Date(
+                      el["recorded_date_" + ele.chart_mapping.x.function_name]
+                    ).toLocaleDateString()},${new Date(
+                      el["recorded_date_" + ele.chart_mapping.y.function_name]
+                    ).toLocaleDateString()})`,
+            });
+          }
+        });
       });
-    });
-    setIsModalVisible(true);
+      setIsModalVisible(true);
+    }
   };
   const handleCloseModal = () => {
     setIsModalVisible(false);

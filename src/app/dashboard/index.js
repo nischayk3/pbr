@@ -92,10 +92,7 @@ const Dashboard = () => {
                   render={({ match: { url } }) => (
                     <>
                       <Route path={`${url}/`} component={ChartPersonal} exact />
-                      <Route
-                        path={`${url}/:id/:versionId`}
-                        component={ViewPage}
-                      />
+                      <Route path={`${url}/:id`} component={ViewPage} />
                     </>
                   )}
                 />

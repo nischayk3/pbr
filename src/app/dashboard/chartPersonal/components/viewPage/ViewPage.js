@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router";
 import "./viewPageStyles.scss";
 import { useHistory, useParams } from "react-router-dom";
@@ -46,10 +46,11 @@ const { TabPane } = Tabs;
 
 //main component
 const ViewPage = () => {
-  const { id, versionId } = useParams();
+  const { id } = useParams();
   const history = useHistory();
   //state for chart json data
   const [postChartData, setPostChartData] = useState({});
+  const chartDetails = useRef({ chartId: "", chartVersion: "" });
   const [alertModal, setAlertModal] = useState(false);
   const [isPublish, setIsPublish] = useState(false);
   const [publishResponse, setPublishResponse] = useState({});
@@ -57,7 +58,6 @@ const ViewPage = () => {
 
   const dispatch = useDispatch();
   const location = useLocation();
-
   const params = queryString.parse(location.search);
   const callback = () => {};
 
@@ -118,13 +118,13 @@ const ViewPage = () => {
               showNotification("success", "New Chart created successfully")
             );
             history.push(
-              `/dashboard/chart_personalization/${viewRes.chart_id}`
+              `/dashboard/chart_personalization/${viewRes.chart_id}&${viewRes.chart_version}`
             );
           }
         } else {
           dispatch(showNotification("success", "Chart created successfully"));
           history.push(
-            `/dashboard/chart_personalization/${viewRes.chart_id}/${viewRes.chart_version}`
+            `/dashboard/chart_personalization/${viewRes.chart_id}&${viewRes.chart_version}`
           );
         }
       }
@@ -144,7 +144,10 @@ const ViewPage = () => {
   };
   //function for getting chart data
   const getChart = async () => {
-    const req = { chartId: id, version: versionId };
+    const req = {
+      chartId: chartDetails.current.chartId,
+      version: chartDetails.current.chartVersion,
+    };
     try {
       const viewRes = await getChartPlotData(req);
       setPostChartData(viewRes);
@@ -158,6 +161,9 @@ const ViewPage = () => {
       const newObj = JSON.parse(JSON.stringify(chartJson));
       setPostChartData(newObj);
     } else {
+      const value = id.split("&");
+      chartDetails.current.chartId = value[0];
+      chartDetails.current.chartVersion = value[1];
       getChart();
     }
   }, [id]);
@@ -167,7 +173,7 @@ const ViewPage = () => {
       <div className="sub-header">
         <BreadCrumbWrapper
           urlName={`/dashboard/chart_personalization/${id}`}
-          value={id}
+          value={chartDetails.current.chartId}
           data="Untitled"
         />
         <div className="btns">
