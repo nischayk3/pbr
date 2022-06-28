@@ -46,7 +46,6 @@ const initState = {
 	viewFunctionName: '',
 	mathValue: '',
 	loadResponse: []
-
 };
 
 export default (state = initState, action) => {
