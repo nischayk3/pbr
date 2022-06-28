@@ -35,6 +35,7 @@ export default function landingPage(props) {
 	const [chartSearch, setChartSearch] = useState(false);
 	const [searchTableData, setSearchTableData] = useState([]);
 	const [dashboardData, setDashboardData] = useState([]);
+	const [dashboardTilesData, setDashboardTilesData] = useState([]);
 	const [searchedLanding, setSearchedLanding] = useState(false);
 	const [filterTableLanding, setFilterTableLanding] = useState(null);
 	const ref = useRef(null);
@@ -135,6 +136,7 @@ export default function landingPage(props) {
 	useEffect(() => {
 		updateDate();
 		dashboardRes();
+		dashboardTiles();
 		document.addEventListener('mousedown', closeTableView);
 	}, []);
 	const updateDate = () => {
@@ -153,6 +155,19 @@ export default function landingPage(props) {
 			dispatch(showLoader());
 			const dashboardRes = await getDashboard(req);
 			setDashboardData(dashboardRes.data);
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification('error', 'Unable to fetch coverages'));
+		}
+	};
+	//get dashboard tiles
+	const dashboardTiles = async () => {
+		let req = { limit: 8 };
+		try {
+			dispatch(showLoader());
+			const dashboardRes = await getDashboard(req);
+			setDashboardTilesData(dashboardRes.data);
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
@@ -235,7 +250,7 @@ export default function landingPage(props) {
 											return {
 												onClick: event => {
 													history.push(
-														`/dashboard/dashboard?id=${record.dashboard_disp_id}&version=${record.dashboard_version}`
+														`/dashboard/dashboard/${record.dashboard_disp_id}?id=${record.dashboard_disp_id}&version=${record.dashboard_version}`
 													);
 													window.location.reload();
 												}, // click row
@@ -265,9 +280,9 @@ export default function landingPage(props) {
 								<h3>Recently created dashboard</h3>
 								<Divider />
 								<Row gutter={24}>
-									{dashboardData &&
-										dashboardData.length > 0 &&
-										dashboardData.map((el, index) => {
+									{dashboardTilesData &&
+										dashboardTilesData.length > 0 &&
+										dashboardTilesData.map((el, index) => {
 											return (
 												<Col
 													className='gutter-row'
@@ -278,7 +293,7 @@ export default function landingPage(props) {
 														className='chart-tiles'
 														onClick={() => {
 															history.push(
-																`/dashboard/dashboard?id=${el.dashboard_disp_id}&version=${el.dashboard_version}`
+																`/dashboard/dashboard/${el.dashboard_disp_id}?id=${el.dashboard_disp_id}&version=${el.dashboard_version}`
 															);
 															window.location.reload();
 														}}>

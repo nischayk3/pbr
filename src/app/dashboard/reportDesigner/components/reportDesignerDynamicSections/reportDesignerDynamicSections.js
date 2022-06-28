@@ -7,6 +7,7 @@ import Chart from '../reportChart/chartComponent/chartComponent'
 import { showLoader, hideLoader, showNotification } from '../../../../../duck/actions/commonActions';
 import { useDispatch } from 'react-redux';
 import checkIcon from '../../../../../assets/images/checkbox.svg'
+import { loadedLayout } from '../../../../../duck/actions/reportDesignerAction';
 
 function ReportDesignerDynamicSections(props) {
     useEffect(() => {
@@ -24,13 +25,15 @@ function ReportDesignerDynamicSections(props) {
     const [editable, setEditable] = useState(false)
 
     const { list, setCurrentSection, currentSection } = props;
+
     const deleteChart = (chartName, section) => {
         dispatch(showLoader())
         section = section + 1
         let charts_all = { ...addedCharts }
         let chart_index = charts_all[`${section}`].indexOf(chartName)
         if (chart_index > -1) {
-            charts_all[`${section}`].splice(chart_index, 1)  // 2nd parameter means remove one item only
+            charts_all[`${section}`].splice(chart_index, 1)
+            dispatch(loadedLayout(true)) // 2nd parameter means remove one item only
         }
         setAddedCharts(charts_all)
         dispatch(hideLoader())
@@ -121,50 +124,42 @@ function ReportDesignerDynamicSections(props) {
 
     }
 
+    const deleteSection = (sectionNum) => {
+        if (sectionNum == 0)
+            setShowAddSection(false)
+
+        dispatch(showLoader())
+        let section = { ...addedCharts }
+        section[sectionNum + 1] = []
+        function deleteAndShift(object, key) {
+            delete object[key];
+            while (++key in object) {
+                object[key - 1] = object[key];
+                delete object[key];
+            }
+        }
+        deleteAndShift(section, sectionNum + 1)
+        props.deleteSection(section)
+        setAddedCharts(section)
+        dispatch(hideLoader())
+
+    }
+
     const sectionAddKey = (section) => {
 
         dispatch(showLoader())
         section = section - 1
-        // if (`${section}` in addedKeys) {
-        //     if (addedKeys[`${section}`]) {
-        //         addedKeys[`${section}`] = false
-        //         setAddedKeys(addedKeys)
-        //         dispatch(hideLoader())
-        //     }
-        //     else {
-        //         addedKeys[`${section}`] = true
-        //         setAddedKeys(addedKeys)
-        //         dispatch(hideLoader())
-        //     }
-        // }
-        // else {
         addedKeys[`${section}`] = true
         setAddedKeys(addedKeys)
         dispatch(hideLoader())
-        // }
         props.setSectionAddKey(addedKeys)
     }
 
     const trackCharts = (section) => {
         dispatch(showLoader())
-
-        // if (`${section}` in addedKeys) {
-        //     if (showChart[`${section}`]) {
-        //         showChart[`${section}`] = false
-        //         setShowChart(showChart)
-        //         dispatch(hideLoader())
-        //     }
-        //     else {
-        //         showChart[`${section}`] = true
-        //         setShowChart(showChart)
-        //         dispatch(hideLoader())
-        //     }
-        // }
-        // else {
         showChart[`${section}`] = true
         setShowChart(showChart)
         dispatch(hideLoader())
-        // }
         props.setSectionAddCharts(showChart)
     }
 
@@ -174,6 +169,7 @@ function ReportDesignerDynamicSections(props) {
         setAddedKeys(props.sectionKeys)
     }
 
+    console.log(showAddSection)
     return (
         <div className="reportDesigner-dynamicSections bg-white">
             <Card className="reportTableCard" title="Report Table" >
@@ -199,13 +195,13 @@ function ReportDesignerDynamicSections(props) {
                                             }
                                             {name > 0 ?
                                                 <div style={{ marginLeft: '15%' }}>
-                                                    <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
+                                                    <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => { remove(name); deleteSection(name) }} disabled={props.show}>
                                                         <DeleteTwoTone twoToneColor="red" style={{ fontSize: '18px', marginTop: '5px' }} />
                                                     </Popconfirm>
                                                 </div>
                                                 :
                                                 <div style={{ marginLeft: '194%' }}>
-                                                    <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => remove(name)} disabled={props.show}>
+                                                    <Popconfirm title="Are you Sure you want to delete the section?" onConfirm={() => { remove(name); deleteSection(name) }} disabled={props.show}>
                                                         <DeleteTwoTone twoToneColor="red" style={{ fontSize: '18px', marginTop: '5px' }} />
                                                     </Popconfirm>
                                                 </div>
@@ -222,7 +218,6 @@ function ReportDesignerDynamicSections(props) {
                                                         <p>Add key and value</p>
                                                     </div>
                                                 </div>
-                                                {/* <div style={{ height: '100px', width: '140px', opacity: '1px', border: '1px dashed #D9D9D9', padding: '0 10px', marginTop: '30px', alignContent: 'center', justifyContent: 'center' }} onClick={() => sectionAddKey(name + 1)}> <PlusOutlined style={{ color: 'gray', marginTop: '25px', fontSize: '16px' }} /> <br />Add key and value</div> */}
                                             </center> :
                                             <></>
                                         }
@@ -248,15 +243,11 @@ function ReportDesignerDynamicSections(props) {
                                                         </tbody>
                                                     </table>
                                                 </Space>
-                                                {/* <center>
-                                                    <PlusOutlined style={{ color: 'gray' }} />
-                                                    <div>Click on add chart to add charts in the section</div>
-                                                </center> */}
                                             </> : <></>
                                         }
                                         <div >
                                             <div className="chart-block">
-                                                {showChart[name] ?
+                                                {name > 0 && showChart[name] ?
                                                     list.map((i) =>
                                                     (<Form.Item {...restField} name={[name, 'select']}>
                                                         <div className={chartAddCheck(i, name) ? "chart-tiless" : "chart-tilesss"} onClick={(e) => addChart(e.target.innerHTML, name)}>
@@ -267,7 +258,6 @@ function ReportDesignerDynamicSections(props) {
                                                     )
                                                     ) : <></>
                                                 }
-                                                {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: 0, right: 0, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> <u disabled={props.show}></u> */}
                                             </div>
                                         </div>
                                         {props.charts_layout[`${name + 1}`] && props.charts_layout[`${name + 1}`].map((i) =>
@@ -283,7 +273,7 @@ function ReportDesignerDynamicSections(props) {
 
                                     </div>
                                 ))}
-                                <Form.Item >
+                                <Form.Item>
                                     {showAddSection ? <></> :
                                         <p disabled={props.show}>
                                             <center>
@@ -294,7 +284,6 @@ function ReportDesignerDynamicSections(props) {
                                                     <p>Add section</p>
                                                 </div>
                                             </center>
-                                            {/* <PlusOutlined twoToneColor="#eb2f96" style={{ fontSize: '16px', marginLeft: '10px', color: '#093185', background: "white", position: "absolute", bottom: -10, right: -10, padding: "2px", borderRadius: "50px" }} onClick={() => add()} /> */}
                                         </p>
                                     }
                                 </Form.Item>

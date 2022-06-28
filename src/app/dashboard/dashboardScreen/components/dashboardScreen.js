@@ -53,7 +53,7 @@ const DashboardScreen = () => {
 	const settingDashboardName = value => {
 		setdashboardName(value);
 	};
-	
+
 
 	const chartCard = value => {
 		setShowChartCard(value);
@@ -65,7 +65,7 @@ const DashboardScreen = () => {
 	}, []);
 
 	useEffect(() => {
-		
+
 		if (viewData.chartDispId != '') {
 			getChartData();
 		}
@@ -126,7 +126,7 @@ const DashboardScreen = () => {
 
 	//get chart data to plot
 	const getChartData = async () => {
-		
+
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		let req = { chartId: viewData.chartDispId };
 		let headers = {
@@ -183,7 +183,7 @@ const DashboardScreen = () => {
 	};
 
 	const handleSave = async value => {
-		
+
 		let json = ref.current.getChildState();
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		let headers = {
@@ -198,7 +198,7 @@ const DashboardScreen = () => {
 		try {
 			dispatch(showLoader());
 			let res = await saveDashboardData(req, headers);
-			
+
 			if (res.statuscode == 200) {
 				dispatch(hideLoader());
 				dispatch(
@@ -227,17 +227,21 @@ const DashboardScreen = () => {
 		setShowSaveModal(false);
 	};
 	const onChangeInputSaveAs = e => {
-		
+
 		setdashboardName(e.target.value);
 	};
 	return (
 		<div className='custom-wrapper'>
 			{/* <BreadCrumbWrapper /> */}
 			<div className='sub-header'>
-				<div onClick={()=>window.location.reload()}>
-				<BreadCrumbWrapper />
+				<div onClick={() => window.location.reload()}>
+					<BreadCrumbWrapper
+						urlName={`/dashboard/dashboard/${dashboardId}`}
+						value={dashboardId}
+						data="Untitled"
+					/>
 				</div>
-				
+
 				{/* <div className='sub-header-title'>
                     <ArrowLeftOutlined className='header-icon' onClick={onBackArrowClick} /> &nbsp;
                     <span className='header-title'>Dashboard</span>

@@ -8,12 +8,12 @@
  */
 import "./hierStyle.scss";
 import { DeleteTwoTone, PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Input, Modal, Popconfirm, Row, Select, Table, Tabs, message } from "antd";
+import { Button, Card, Col, Input, Modal, Popconfirm, Row, Select, Table, Tabs } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Banner from "../../../../../assets/images/Popup-Side.svg";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
-import { hideLoader, showLoader } from "../../../../../duck/actions/commonActions";
+import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
 import { getProcessStep, getProcessStepMap, putMolecule, putProcessStep, putProcessStepMap, getAllViews } from "../../../../../services/viewHierarchyServices";
 // import Display from "../display/display";
 import { sendDrugSub } from '../../../../../duck/actions/viewHierarchyAction'
@@ -33,6 +33,11 @@ function Hierarchy() {
 	const [stepCount, setStepCount] = useState(1);
 	const [tableData, setTableData] = useState([]);
 	const [activeTab, setActiveTab] = useState("Plant and molecules");
+	const [onceSaved, setOnceSaved] = useState(false);
+	const [stepSaved, setStepSaved] = useState(false);
+
+	const [del, setDel] = useState([])
+	const [deleted, setDeleted] = useState([])
 	const dispatch = useDispatch();
 	const hier_name = useSelector((state) => state.viewHierarchy.drugName);
 	const load_drug = useSelector((state) => state.viewHierarchy.drugLoad);
@@ -41,8 +46,10 @@ function Hierarchy() {
 	useEffect(() => {
 		handleAdd();
 		handleStepAdd();
-		if (hier_name)
-			setHierarchyName(hier_name);
+		if (hier_name) {
+			let name = hier_name.replace(/%20/g, " ");
+			setHierarchyName(name);
+		}
 	}, []);
 
 	useEffect(() => {
@@ -64,9 +71,10 @@ function Hierarchy() {
 		dispatch(showLoader())
 		if (param.length > 0 && param != 'untitled_view') {
 			param = param[param.length - 1]
-			dispatch(sendDrugSub(param))
-			setHierarchyName(param)
-			let req = { ds_name: param }
+			let name = param.replace(/%20/g, " ");
+			dispatch(sendDrugSub(name))
+			setHierarchyName(name)
+			let req = { ds_name: name }
 			let res = await getAllViews(req)
 			let res_step = await getProcessStep(req)
 
@@ -94,6 +102,15 @@ function Hierarchy() {
 		}
 		dispatch(hideLoader());
 	};
+
+	const validate = (keyCount, keyData, keyName) => {
+		let data = [...keyData]
+		let latest_data = data[keyCount]
+		if (latest_data[keyName] != '')
+			return true
+		else
+			return false
+	}
 	const plantMoleculeColumns =
 		[
 			{
@@ -103,7 +120,7 @@ function Hierarchy() {
 				render: (_, record) => (
 					<Popconfirm
 						title="Sure to delete?"
-						onConfirm={() => handleDelete(record.key)}
+						onConfirm={() => handleDelete(record.key, record)}
 					>
 						<DeleteTwoTone twoToneColor="red" />
 					</Popconfirm>
@@ -159,7 +176,7 @@ function Hierarchy() {
 				render: (_, record) => (
 					<Popconfirm
 						title="Sure to delete?"
-						onConfirm={() => handleStepDelete(record.key)}
+						onConfirm={() => handleStepDelete(record.key, record)}
 					>
 						<DeleteTwoTone twoToneColor="red" />
 					</Popconfirm>
@@ -283,23 +300,35 @@ function Hierarchy() {
 
 
 	const handleAdd = () => {
-		const newData = {
-			key: count,
-			site_code: "",
-			product_num: ""
-		};
-		setMoleculeData([...moleculeData, newData]);
-		setCount(count + 1);
+		let is_add = count <= 1 ? true : validate(count - 2, moleculeData, 'product_num')
+		if (is_add) {
+			const newData = {
+				key: count,
+				site_code: "",
+				product_num: ""
+			};
+			setMoleculeData([...moleculeData, newData]);
+			setCount(count + 1);
+		}
+		else {
+			dispatch(showNotification('error', 'Previous Row is empty'))
+		}
 	};
 
 	const handleStepAdd = () => {
-		const newData = {
-			key: stepCount,
-			seq_no: "",
-			process_step: ""
-		};
-		setStepData([...stepData, newData]);
-		setStepCount(stepCount + 1);
+		let is_add = stepCount <= 1 ? true : validate(stepCount - 2, stepData, 'seq_no')
+		if (is_add) {
+			const newData = {
+				key: stepCount,
+				seq_no: "",
+				process_step: ""
+			};
+			setStepData([...stepData, newData]);
+			setStepCount(stepCount + 1);
+		}
+		else {
+			dispatch(showNotification('error', 'Previous Row is empty'))
+		}
 	};
 
 	const handleChange = (index, event) => {
@@ -326,16 +355,28 @@ function Hierarchy() {
 		setStepData(rowsInput);
 	};
 
-	const handleDelete = (key) => {
+	const handleDelete = (key, record) => {
 		const dataSource = [...moleculeData];
+		let deleted_data = [...del]
 		setMoleculeData(dataSource.filter((item) => item.key !== key));
-		setCount(count - 1);
+		// setCount(count - 1);
+		let obj = {}
+		obj[`${record.product_num}`] = record.site_code
+		deleted_data.push(obj)
+		setDel(deleted_data)
+
+
 	};
 
-	const handleStepDelete = (key) => {
+	const handleStepDelete = (key, record) => {
 		const dataSource = [...stepData];
+		let deleted_data = [...deleted]
+		let obj = {}
+		obj[`${record.seq_no}`] = record.process_step
+		deleted_data.push(obj)
+		setDeleted(deleted_data)
 		setStepData(dataSource.filter((item) => item.key !== key));
-		setStepCount(stepCount - 1);
+		// setStepCount(stepCount - 1);
 	};
 
 	const handleChangeTab = (value) => {
@@ -359,15 +400,18 @@ function Hierarchy() {
 			let req = {
 				ds_name: hierarchyName,
 				product_num: moleculeData.map((i) => { return parseInt(i.product_num); }),
-				site_code: moleculeData.map((i) => { return parseInt(i.site_code); }),
-				delete_row: false
+				site_code: moleculeData.map((i) => { return i.site_code; }),
+				delete_row: !onceSaved && !load_drug ? [] : del.length > 0 ? del : []
 			};
 			let response = await putMolecule(req);
 			if (response["statuscode"] == 200) {
-				message.success("Saved");
+				dispatch(showNotification('success', "Saved"))
+				setDeleted([])
+				setDel([])
+				setOnceSaved(true)
 			}
 			else {
-				message.error(response.message);
+				dispatch(showNotification('error', response.message))
 			}
 		}
 		if (activeTab == "Process steps") {
@@ -375,14 +419,17 @@ function Hierarchy() {
 				ds_name: hierarchyName,
 				seq_no: stepData.map((i) => { return parseInt(i.seq_no); }),
 				process_step: stepData.map((i) => { return i.process_step; }),
-				delete_row: false
+				delete_row: !stepSaved && !load_drug ? [] : deleted.length > 0 ? deleted : []
 			};
 			let response = await putProcessStep(req);
 			if (response["status-code"] == 200) {
-				message.success("Saved");
+				dispatch(showNotification('success', "Saved"))
+				setDeleted([])
+				setDel([])
+				setStepSaved(true)
 			}
 			else {
-				message.error(response.message);
+				dispatch(showNotification('error', response.message))
 			}
 		}
 		if (activeTab == "Process step mapping") {
@@ -392,25 +439,29 @@ function Hierarchy() {
 				process_step: tableData.map((i) => { return i.process_step ? i.process_step : ""; }),
 				site_num: tableData.map((i) => { return i.site_num ? i.site_num : ""; }),
 				molecule_num: tableData.map((i) => { return i.parent_product_num ? i.parent_product_num : ""; }),
-				delete_row: false
+				delete_row: []
 			};
 
 			let response = await putProcessStepMap(req);
 			if (response["status-code"] == 200) {
-				message.success("Saved");
+				dispatch(showNotification('success', "Saved"))
+				setOnceSaved(true)
+
 			}
 			else {
-				message.error(response.message);
+				dispatch(showNotification('error', response.message))
 			}
 		}
 	};
 
 
-
 	return (
 
 		<div className="custom-wrapper">
-			<BreadCrumbWrapper />
+			<BreadCrumbWrapper urlName={
+				`/dashboard/molecule_hierarchy_configuration/${hierarchyName}`}
+				value={hierarchyName}
+				data="Untitled" />
 			<div className="custom-content-layout">
 				{/* {!show ? */}
 				<Card

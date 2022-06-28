@@ -42,9 +42,9 @@ const { TabPane } = Tabs;
 const { Paragraph, Text } = Typography;
 const { Dragger } = Upload;
 
-let initialPanes = [
-	{ title: ' ', content: '', key: '1', closable: false, class: '' }
-];
+// let initialPanes = [
+// 	{ title: ' ', content: '', key: '1', closable: false, class: '' }
+// ];
 function Genealogy() {
 	const [chartType, setchartType] = useState('backward');
 	const [isBackward, setisBackward] = useState(true);
@@ -59,7 +59,7 @@ function Genealogy() {
 	const [processOutput, setProcessOutput] = useState([]);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [isDrawerRef, setIsDrawerRef] = useState(false);
-	const [panes, setPanes] = useState(initialPanes);
+	const [panes, setPanes] = useState([]);
 	const [limsBatchInfo, setLimsBatchInfo] = useState([]);
 	const [pbrBatchData, setPbrBatchData] = useState([]);
 	const [showView, setShowView] = useState(false);
@@ -216,18 +216,18 @@ function Genealogy() {
 			setProductCode(product[0]);
 		}
 
-		if (isDrawerRef === false) {
-			initialPanes.push({
-				title: '',
-				content: '',
-				key: '2',
-				closable: true,
-				class: 'tree-wrap site-drawer-render-in-current-wrapper'
-			});
-			setPanes(initialPanes);
-		} else {
-			console.log(isDrawerRef);
-		}
+		// if (isDrawerRef === false) {
+		// 	initialPanes.push({
+		// 		title: '',
+		// 		content: '',
+		// 		key: '2',
+		// 		closable: true,
+		// 		class: 'tree-wrap site-drawer-render-in-current-wrapper'
+		// 	});
+		// 	setPanes(initialPanes);
+		// } else {
+		// 	console.log(isDrawerRef);
+		// }
 	};
 	/**
 	 * TODO: get backward genealogy data from selected parameters or from on node click
@@ -484,20 +484,20 @@ function Genealogy() {
 				lastIndex = i - 1;
 			}
 		});
-		initialPanes.forEach((pane, i) => {
-			if (pane.key === targetKey) {
-				lastIndex = i - 1;
-			}
-		});
+		// initialPanes.forEach((pane, i) => {
+		// 	if (pane.key === targetKey) {
+		// 		lastIndex = i - 1;
+		// 	}
+		// });
 		const newPanes = panes.filter(pane => pane.key !== targetKey);
-		const newInitPanes = initialPanes.filter(pane => pane.key !== targetKey);
-		if (newInitPanes.length && newActiveKey === targetKey) {
-			if (lastIndex >= 0) {
-				newActiveKey = newInitPanes[lastIndex].key;
-			} else {
-				newActiveKey = newInitPanes[0].key;
-			}
-		}
+		//const newInitPanes = initialPanes.filter(pane => pane.key !== targetKey);
+		// if (newInitPanes.length && newActiveKey === targetKey) {
+		// 	if (lastIndex >= 0) {
+		// 		newActiveKey = newInitPanes[lastIndex].key;
+		// 	} else {
+		// 		newActiveKey = newInitPanes[0].key;
+		// 	}
+		// }
 		if (newPanes.length && newActiveKey === targetKey) {
 			if (lastIndex >= 0) {
 				newActiveKey = newPanes[lastIndex].key;
@@ -506,7 +506,7 @@ function Genealogy() {
 			}
 		}
 
-		initialPanes = newInitPanes;
+		//initialPanes = newInitPanes;
 		setIsDrawerRef(false);
 		setPanes(newPanes);
 		setActivateKey(newActiveKey);
