@@ -34,6 +34,8 @@ export default function ReportLanding(props) {
 	const [searched, setSearched] = useState(false);
 	const [newsearched, setNewSearched] = useState(false);
 	const [reportList, setReportList] = useState([]);
+	const [reportGenList, setReportGenList] = useState([]);
+
 	const [filterTable, setFilterTable] = useState(null);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [selectedReportId, setSelectedReportId] = useState('');
@@ -52,9 +54,9 @@ export default function ReportLanding(props) {
 	const columns = [
 		{
 			title: 'Name',
-			dataIndex: 'rep_name',
+			dataIndex: activeTab == 'Design Report Template' ? 'rep_name' : 'variant_name',
 			width: '200px',
-			key: 'rep_name',
+			key: activeTab == 'Design Report Template' ? 'rep_name' : 'variant_name',
 			render: (text, record) => {
 				return {
 					props: {
@@ -119,7 +121,7 @@ export default function ReportLanding(props) {
 	useEffect(() => {
 		// updateDate();
 		getReportList();
-		// getReportGens();
+		getReportGens();
 	}, []);
 
 	// const updateDate = () => {
@@ -144,7 +146,7 @@ export default function ReportLanding(props) {
 		if (value == '') setSearched(false);
 		else {
 			setSearched(true);
-			const tableData = reportList;
+			const tableData = activeTab == 'Design Report Template' ? reportList : reportGenList;
 			const filterTableData = tableData.filter(o =>
 				Object.keys(o).some(k =>
 					String(o[k]).toLowerCase().includes(value.toLowerCase())
@@ -157,7 +159,7 @@ export default function ReportLanding(props) {
 		if (value == '') setNewSearched(false);
 		else {
 			setNewSearched(true);
-			const tableData = reportList;
+			const tableData = reportGenList;
 			const filterTableData = tableData.filter(o =>
 				Object.keys(o).some(k =>
 					String(o[k]).toLowerCase().includes(value.toLowerCase())
@@ -180,15 +182,15 @@ export default function ReportLanding(props) {
 		});
 	};
 
-	// const getReportGens = () => {
-	// 	let req = { rep_status: 'all' };
-	// 	getReportGen(req).then(res => {
-	// 		// if (res['status-code'] == 200) setReportList(res['Data']);
-	// 		// else setReportList([]);
-	// 		console.log(res)
-	// 	});
+	const getReportGens = () => {
+		let req = { rep_status: 'all' };
+		getReportGen(req).then(res => {
+			if (res['status-code'] == 200)
+				setReportGenList(res['Data']);
+			else setReportList([]);
+		});
 
-	// }
+	}
 
 	const getLoadReport = async report_id => {
 		dispatch(showNotification('success', report_id + ' selected'));
@@ -299,8 +301,8 @@ export default function ReportLanding(props) {
 								className='landing-table'
 								columns={columns}
 								scroll={{ y: 150, x: 800 }}
-								pagination={false}
-								dataSource={filterTable === null ? reportList : filterTable}
+								// pagination={false}
+								dataSource={filterTable === null ? activeTab == 'Design Report Template' ? reportList : reportGenList : filterTable}
 								onRow={record => ({
 									onClick: e => {
 										activeTab == 'Design Report Template'
@@ -393,9 +395,9 @@ export default function ReportLanding(props) {
 									</div>
 								</div>
 								<div className='tile'>
-									{reportList &&
-										reportList.length > 0 &&
-										reportList.map(
+									{reportGenList &&
+										reportGenList.length > 0 &&
+										reportGenList.map(
 											(i, index) =>
 												index < 8 && (
 													<div
@@ -441,9 +443,9 @@ export default function ReportLanding(props) {
 								</Row>
 								<div className='landing-tiles'>
 									{!newsearched &&
-										reportList &&
-										reportList.length > 0 &&
-										reportList.map(
+										reportGenList &&
+										reportGenList.length > 0 &&
+										reportGenList.map(
 											(i, index) =>
 												index < 4 && (
 													<div
@@ -483,7 +485,7 @@ export default function ReportLanding(props) {
 										columns={columns}
 										scroll={{ y: 150, x: 800 }}
 										// style={{  height: 'auto' }}
-										dataSource={filterTable === null ? reportList : filterTable}
+										dataSource={filterTable === null ? reportGenList : filterTable}
 										pagination={false}
 										onRow={record => ({
 											onClick: e => {
