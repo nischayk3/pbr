@@ -74,7 +74,7 @@ const LoadTable = ({ chartList }) => {
         onRow={(record) => ({
           onClick: () => {
             history.push(
-              `${match.url}/${record.chart_disp_id}/${record.chart_version}`
+              `${match.url}/${record.chart_disp_id}&${record.chart_version}`
             );
           },
         })}
