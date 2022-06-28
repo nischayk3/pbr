@@ -6,28 +6,7 @@ import './styles.scss';
 const { Option } = Select;
 const { Text } = Typography;
 
-// const columns = [
-// 	{
-// 		title: 'Product Num',
-// 		dataIndex: 'product_num',
-// 		key: 'name',
-// 	},
-// 	{
-// 		title: 'View',
-// 		dataIndex: 'view',
-// 		key: 'view_disp_id',
-// 	},
-// 	{
-// 		title: 'View Name',
-// 		dataIndex: 'view_name',
-// 		key: 'view_name',
-// 	},
-// 	{
-// 		title: 'Created By',
-// 		dataIndex: 'created_by',
-// 		key: 'created_by',
-// 	},
-// ];
+
 function ReportDesignerForm(props) {
 	const {
 		setViewId,
@@ -40,7 +19,8 @@ function ReportDesignerForm(props) {
 		viewIdVersion,
 		setViewIdVersion,
 		setSelectedChartList,
-		selectedChartList
+		selectedChartList,
+		isLoad
 	} = props;
 	const [chartsList, setChartList] = useState([])
 
@@ -62,7 +42,6 @@ function ReportDesignerForm(props) {
 				setChartList([]);
 		});
 	};
-
 	return (
 		<Card className="reportInfoCard" title="Report Info" >
 			<div className='reportDesigner-grid'>
@@ -125,9 +104,15 @@ function ReportDesignerForm(props) {
 							style={{ width: '100%', position: 'relative', height: '75px', overflow: 'auto' }}
 							maxTagCount="responsive"
 						>
-							{chartsList.length > 0 ? chartsList.map(item => (
+							{!isLoad ? chartsList.length > 0 ? chartsList.map(item => (
 								<Option value={item} key={item}>
 									{item}
+								</Option>
+							)) : <Option >
+
+							</Option> : props.chartList.length > 0 ? props.chartList.map(i => (
+								<Option value={i} key={i}>
+									{i}
 								</Option>
 							)) : <Option >
 

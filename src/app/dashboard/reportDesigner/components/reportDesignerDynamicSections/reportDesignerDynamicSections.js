@@ -17,14 +17,27 @@ function ReportDesignerDynamicSections(props) {
         }
     })
 
+
+
     const dispatch = useDispatch();
     const [addedCharts, setAddedCharts] = useState(props.chart_layout ? props.chart_layout : {})
     const [addedKeys, setAddedKeys] = useState({})
     const [showChart, setShowChart] = useState({})
     const [showAddSection, setShowAddSection] = useState(false)
+    const [sectionName, setSectionName] = useState(false)
+
     const [editable, setEditable] = useState(false)
 
     const { list, setCurrentSection, currentSection } = props;
+
+    useEffect(() => {
+        if (sectionName >= 0) {
+            setShowAddSection(true)
+        }
+        else
+            setShowAddSection(false);
+
+    }, [sectionName])
 
     const deleteChart = (chartName, section) => {
         dispatch(showLoader())
@@ -125,6 +138,9 @@ function ReportDesignerDynamicSections(props) {
     }
 
     const deleteSection = (sectionNum) => {
+        if (sectionNum == 0) {
+            setShowAddSection(false)
+        }
         dispatch(showLoader())
         let section = { ...addedCharts }
         section[sectionNum + 1] = []
@@ -166,7 +182,6 @@ function ReportDesignerDynamicSections(props) {
         setAddedKeys(props.sectionKeys)
     }
 
-
     return (
         <div className="reportDesigner-dynamicSections bg-white">
             <Card className="reportTableCard" title="Report Table" >
@@ -177,7 +192,7 @@ function ReportDesignerDynamicSections(props) {
                                 {fields.map(({ key, name, ...restField }) => (
                                     <div style={{ border: currentSection == name ? "1px solid #486BC9" : "1px solid #E3E3E3", marginBottom: "30px", minHeight: "160px", borderRadius: "4px", marginTop: '20px' }}>
 
-                                        {name >= 0 ? setShowAddSection(true) : setShowAddSection(false)}
+                                        {setSectionName(name)}
                                         <p className="section-name">Section {name + 1} </p>
 
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '10px' }}>
