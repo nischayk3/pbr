@@ -17,15 +17,24 @@
 		.ant-col.ant-form-item-label {
 			padding-bottom: 0px;
 		}
+
 		p {
 			margin: 0;
 			width: 100px;
 		}
 	}
+
 	.ant-col.ant-form-item-label {
 		width: 65px;
 	}
+
 	.ant-col.ant-form-item-control {
 		width: 185px;
+	}
+}
+
+.param-select {
+	.select_field_search {
+		width: 100%;
 	}
 }
