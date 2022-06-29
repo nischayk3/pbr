@@ -143,14 +143,14 @@ const Sidebar = () => {
 					id="1"
 					onClick={() => window.location.reload()}
 				>
-					<Link to="/dashboard/report_designer">Report designer</Link>
+					<Link to="/dashboard/report_designer">Report Designer</Link>
 				</Menu.Item>
 				<Menu.Item
 					key="report_generator"
 					icon={<BlockOutlined className="menu-icons" />}
 					id="1"
 				>
-					<Link to="/dashboard/report_designer">Report generator</Link>
+					<Link to="/dashboard/report_designer">Report Generator</Link>
 				</Menu.Item>
 				<SubMenu
 					key="sub5"
@@ -170,7 +170,7 @@ const Sidebar = () => {
 						icon={<FundOutlined className="menu-icons" />}
 						id="analysis"
 					>
-						<Link to="/dashboard/analysis">Auto ML analytics</Link>
+						<Link to="/dashboard/analysis">Auto ML Analytics</Link>
 					</Menu.Item>
 				</SubMenu>
 				<SubMenu
@@ -184,7 +184,7 @@ const Sidebar = () => {
 						icon={<DiffOutlined className="menu-icons" />}
 						id="paper batch records"
 					>
-						<Link to="/dashboard/paper_batch_records">Create template</Link>
+						<Link to="/dashboard/paper_batch_records">Create Template</Link>
 					</Menu.Item>
 					<Menu.Item
 						key="pbr_reviewer"
@@ -199,7 +199,7 @@ const Sidebar = () => {
 					icon={<TeamOutlined className="menu-icons" />}
 					id="user-roles-and-access"
 				>
-					<Link to="/dashboard/user-roles-and-access">Roles and access</Link>
+					<Link to="/dashboard/user-roles-and-access">Roles and Access</Link>
 				</Menu.Item>
 			</Menu>
 		</Sider>
