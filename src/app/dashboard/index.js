@@ -45,6 +45,8 @@ const Hierarchy = lazy(() => import("./hierarchyConfig"));
 const HierarchyMain = lazy(() =>
   import("./hierarchyConfig/components/hierarchy/hierarchy")
 );
+const DesignCharts = lazy(() => import('./reportDesigner/components/reportDesignerNew'));
+
 const Faq = lazy(() => import("./faq"));
 const { Content } = Layout;
 
@@ -96,12 +98,24 @@ const Dashboard = () => {
                     </>
                   )}
                 />
-                <Route
+                {/* <Route
                   key="report_designer"
                   path={`${match.url}/report_designer`}
                 >
                   <ReportDesigner />
-                </Route>
+                </Route> */}
+                {/* <Route
+                  path={`${match.url}/molecule_hierarchy_configuration`}
+                  render={({ match: { url } }) => (
+                    <>
+                      <Route path={`${url}/`} component={Hierarchy} exact />
+                      <Route
+                        path={`${url}/:id`}
+                        component={HierarchyMain}
+                      />
+                    </>
+                  )}
+                /> */}
                 <Route
                   key="audit_trail_report"
                   path={`${match.url}/audit_trail_report`}
@@ -175,6 +189,30 @@ const Dashboard = () => {
                 <Route key="faq" path={`${match.url}/faq`}>
                   <Faq />
                 </Route>
+                {/* <Route
+                  path={`${match.url}/molecule_hierarchy_configuration`}
+                  render={({ match: { url } }) => (
+                    <>
+                      <Route path={`${url}/`} component={Hierarchy} exact />
+                      <Route
+                        path={`${url}/:id`}
+                        component={HierarchyMain}
+                      />
+                    </>
+                  )}
+                /> */}
+                <Route
+                  path={`${match.url}/report_designer`}
+                  render={({ match: { url } }) => (
+                    <>
+                      <Route path={`${url}/`} component={ReportDesigner} exact />
+                      <Route
+                        path={`${url}/:id`}
+                        component={DesignCharts}
+                      />
+                    </>
+                  )}
+                />
                 {/* <Route
                   key="hierarchy"
                   path={`${match.url}/molecule_hierarchy_configuration`}

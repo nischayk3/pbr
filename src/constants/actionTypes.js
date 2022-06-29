@@ -48,6 +48,8 @@ export const PARAMETER_TABLE_DATA = 'PARAMETER_TABLE_DATA';
 export const SELECTED_REPORT_ID = 'SELECTED_REPORT_ID';
 export const SCREEN_CHANGE = 'SCREEN_CHANGE';
 export const LOADED_LAYOUT = 'LOADED_LAYOUT';
+export const REPORT_LOAD = 'REPORT_LOAD';
+
 
 //login page actions
 export const LOGIN_DETAILS = 'LOGIN_DETAILS';

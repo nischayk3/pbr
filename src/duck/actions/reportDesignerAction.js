@@ -1,4 +1,4 @@
-import { SCREEN_CHANGE, SELECTED_REPORT_ID, LOADED_LAYOUT } from '../../constants/actionTypes'
+import { SCREEN_CHANGE, SELECTED_REPORT_ID, LOADED_LAYOUT, REPORT_LOAD } from '../../constants/actionTypes'
 
 export const sendReport = (payload) => ({
 	type: SELECTED_REPORT_ID,
@@ -12,6 +12,11 @@ export const screenChange = (payload) => ({
 
 export const loadedLayout = (payload) => ({
 	type: LOADED_LAYOUT,
+	payload
+});
+
+export const reportLoad = (payload) => ({
+	type: REPORT_LOAD,
 	payload
 });
 

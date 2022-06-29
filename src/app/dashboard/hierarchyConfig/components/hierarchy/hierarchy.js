@@ -439,7 +439,7 @@ function Hierarchy() {
 				process_step: tableData.map((i) => { return i.process_step ? i.process_step : ""; }),
 				site_num: tableData.map((i) => { return i.site_num ? i.site_num : ""; }),
 				molecule_num: tableData.map((i) => { return i.parent_product_num ? i.parent_product_num : ""; }),
-				delete_row: []
+				delete_row: false
 			};
 
 			let response = await putProcessStepMap(req);
