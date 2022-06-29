@@ -38,3 +38,15 @@ export const getAuthenticateWithoutAD = (request, header) => {
 		}
 	);
 };
+
+//register api
+export const createAccount = (request, headers) => {
+	return Service.post(BMS_APP_LOGIN_PASS + '/register', request, headers).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};

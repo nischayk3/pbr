@@ -621,7 +621,7 @@ class AuditTrials extends React.Component {
 										this.handleFilter();
 									}}
 								>
-									Filter
+									Run
 								</Button>
 								<Button
 									style={{
