@@ -91,6 +91,10 @@ function ReportGenerator(props) {
 	const repotData = useSelector(
 		state => state.reportDesignerReducer.reportData
 	);
+	const screenChange = useSelector(
+		state => state.reportDesignerReducer.screen
+	);
+
 
 	// function onChange(checkedValues, i) {
 	// 	update_object(checkedValues, i);
@@ -360,7 +364,7 @@ function ReportGenerator(props) {
 					<BreadCrumbWrapper />
 				</div>
 				<div className='sub-header-btns'>
-					{!props.screenChange ? (
+					{!screenChange ? (
 						<>
 							<Button
 								className='report-primary-btn'

@@ -429,6 +429,7 @@ const ViewCreation = (props) => {
 
 						<Button
 							className="view-publish-btn"
+							disabled={viewStatus === 'AWAP' || viewStatus === 'APRD'}
 							onClick={() => {
 								setIsPublish(true);
 								setApproveReject("P");

@@ -169,7 +169,6 @@ function ReportDesignerDynamicSections(props) {
         setAddedKeys(props.sectionKeys)
     }
 
-    console.log(showAddSection)
     return (
         <div className="reportDesigner-dynamicSections bg-white">
             <Card className="reportTableCard" title="Report Table" >
