@@ -23,7 +23,7 @@ const Notification = () => {
 			setAlertType(noticeType);
 			setTimeout(() => {
 				dispatch(hideNotification());
-			}, 5000);
+			}, 7000);
 		}
 	}, [description, dispatch, message, type]);
 	const hide = () => {

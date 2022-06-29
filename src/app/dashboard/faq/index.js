@@ -60,7 +60,7 @@ const FaqMain = () => {
 	return (
 		<>
 			<BreadCrumbWrapper />
-			<div style={{ padding: '20px' }}>
+			<div className='faq-wrapper'>
 				<ScreenHeader
 					bannerbg={{
 						background: 'linear-gradient(180deg, #E7E6FF 0%, #FFF4F4 100%)',

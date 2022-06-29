@@ -18,6 +18,7 @@ let paramType = "";
 let counter = 0;
 
 const ParameterTable = (props) => {
+
 	const paramReducer = useSelector((state) => state.viewCreationReducer);
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
 	const selectedTableData = useSelector(
@@ -67,7 +68,6 @@ const ParameterTable = (props) => {
 		viewJson,
 		setViewJson,
 		varClick,
-
 		variableName
 	} = props;
 
@@ -91,6 +91,8 @@ const ParameterTable = (props) => {
 			render: (text, record, index) => {
 				return (
 					<Radio
+						// checked={paramType === record.parameter_name}
+						disabled={props.fromWorkflowScreen}
 						checked={paramType === record.parameter_name}
 						onChange={(e) =>
 							onRadioChange({
@@ -114,6 +116,7 @@ const ParameterTable = (props) => {
 			render: (text, record, index) => {
 				return (
 					<Select
+						disabled={props.fromWorkflowScreen}
 						style={{ width: "100px" }}
 						placeholder="Aggregation"
 						onChange={(e, value) => {
@@ -292,6 +295,7 @@ const ParameterTable = (props) => {
 	}, [variableCreate]);
 
 	useEffect(() => {
+
 		sortArray(props.selectedVar, props.selectedData);
 	}, [props.selectedVar]);
 
@@ -331,6 +335,7 @@ const ParameterTable = (props) => {
 
 		return [].concat.apply([], final_arr);
 	};
+
 	useEffect(() => {
 		if (saveFunction) {
 			counter++;
@@ -382,7 +387,7 @@ const ParameterTable = (props) => {
 			newPrimaryData[index].primary = 1;
 			let radioObj = [record];
 			radioObj.forEach((element) => {
-				element.primary = 0;
+				element.primary = index;
 			});
 
 			setTableData(newPrimaryData);
@@ -418,14 +423,18 @@ const ParameterTable = (props) => {
 	};
 
 	const sortArray = (selectedVar, selectedData) => {
+
 		let filterData = [...tableData];
+
 		var parameterArray =
 			selectedData &&
 			selectedData[selectedVar] &&
 			selectedData[selectedVar].map(function (el) {
 				return el.parameter_name;
 			});
+
 		if (parameterArray && parameterArray.length > 0) {
+			paramType = parameterArray[0];
 			let selected_row = [];
 			for (let i = 0; i < parameterArray.length; i++) {
 				let itemToFind = parameterArray[i];
@@ -446,7 +455,7 @@ const ParameterTable = (props) => {
 	const handleAggregationChange = (text, record, value, index) => {
 		let newAggrValue = [...tableData];
 		newAggrValue[index].aggregation =
-			value.value !== undefined ? value.value : "";
+			value.value !== undefined ? value.value : value;
 		setTableData(newAggrValue);
 	};
 
@@ -489,18 +498,15 @@ const ParameterTable = (props) => {
 							const rowData = [...selectedRows];
 							rowData.forEach((element, index) => {
 								let paramsObj = {};
-								const materialKey = element.key.split("-");
 								paramsObj["source_type"] = element.sourceType;
-								paramsObj["material_id"] =
-									element.sourceType == "file"
-										? element.material_id
-										: materialKey[1];
+								paramsObj["material_id"] = element.material_id
 								paramsObj["parameter_name"] = element.parameter_name;
 								paramsObj["batch_exclude"] = [];
 								paramsObj["priority"] = index;
 								paramsObj["aggregation"] = element.aggregation;
 								paramArr.push(paramsObj);
 							});
+
 							setParameters(paramArr);
 							props.callbackCheckbox(true);
 							setSelectedRowKeys(selectedRowKeys);

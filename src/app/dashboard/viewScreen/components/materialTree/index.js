@@ -11,158 +11,158 @@ import { Tag, Tree } from "antd";
 import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
 import {
 	batchCoverage,
-	sendSelectedParamData
+	sendSelectedParamData,
 } from "../../../../../duck/actions/viewAction";
 import "./style.scss";
-import { showNotification } from "../../../../../duck/actions/commonActions";
+import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
+import { getParameterBatches } from "../../../../../services/viewCreationPublishing";
 
 const { TreeNode } = Tree;
 let setKey = [];
 let selectedData = [];
 let finalData = [];
 const MaterialTree = (props) => {
+
 	const dispatch = useDispatch();
-	const { materialsList, parentBatches } = props;
+	const { moleculeList } = props;
 	const [selectedKeys, setSelectedKeys] = useState([]);
-	const [checkedKeys, setCheckedKeys] = useState([]);
+	const [treeMap, setTreeMap] = useState([]);
 	const [count, setCount] = useState("");
 	const selectedTableData = useSelector(
 		(state) => state.viewCreationReducer.selectedParamData
 	);
 
-	const onSelect = (keys) => {
-		setSelectedKeys(keys);
+	useEffect(() => {
+
+		setTreeMap(moleculeList.hierarchy)
+	}, [moleculeList])
+
+	const onSelect = (selectedKe, info) => {
+		props.callbackProcessClick(info.node.dataRef);
+		setSelectedKeys(selectedKe);
 	};
-	const onCheck = (oncheckkey) => {
-		setCheckedKeys(oncheckkey);
-	};
-	const handleClickParam = (e, keys, param, record) => {
+
+	const handleClickParam = async (keys, param, record) => {
 		const existing = selectedData.find((item) => item.key === keys);
-		if (existing === undefined) {
-			let rowData = {};
-			let batchData = {};
-			let newBatchData = {};
-			setKey.push(keys);
+		try {
+			const paramObj = {
+				"resource-name": "VIEW",
+				molecule_name: record.ds_name,
+				process_id: record.process_step_int_id,
+				product_num: record.product_num,
+				parameter_name: record.parameter_name,
+			};
+			dispatch(showLoader());
+			const getMolbatchData = await getParameterBatches(paramObj);
+			if (existing === undefined) {
+				let rowData = {};
+				let batchData = {};
+				setKey.push(keys);
+				let molBatch = getMolbatchData.Data.batches;
+				dispatch(hideLoader());
+				selectedData.push(record);
+				setCount(count + 1);
 
-			let tree = [...materialsList];
-			let molBatch = [...parentBatches];
+				const indexDuplicate = selectedData.findIndex(
+					(x) => x.parameter_name == param
+				);
+				if (indexDuplicate != -1) {
 
-			tree.forEach((a) => {
-				a.children.forEach((b) => {
-					b.children.forEach((c) => {
-						if (c.key === keys) {
-							selectedData.push(c);
-						}
-					});
-				});
-			});
-			molBatch.map((el) => {
-				if (record.batches.includes(el.batch)) {
-					return (
-						batchData[el.batch] = true,
-						newBatchData[el.batch] = true
-					)
+					rowData = Object.assign(molBatch);
+					rowData.sourceType = "material";
+					rowData.parameter_name = record.parameter_name;
+					rowData.coverage = record.coverage;
+					rowData.key =
+						record.process_step_int_id + "_" + record.parameter_name;
+					rowData.primary = 0;
+					rowData.aggregation = "";
+					rowData.material_id = record.product_num;
+
+					let data = { ...rowData };
+					if (selectedTableData && selectedTableData.length !== 0) {
+						selectedTableData.forEach((ele) => {
+							const tempObj = finalData.find((item) => item.key === ele.key);
+							if (tempObj === undefined) {
+								finalData.push(ele);
+							}
+						});
+					}
+					finalData.push(data);
+					dispatch(sendSelectedParamData(finalData));
+					dispatch(batchCoverage(batchData));
 				} else {
-					return (
-						batchData[el.batch] = false,
-						newBatchData[el.batch] = false
-					)
+					dispatch(showNotification("error", "Function already exists"));
 				}
-			});
-			batchData["id"] = count;
-
-			setCount(count + 1);
-			const indexDuplicate = selectedData.findIndex(
-				(x) => x.parameter_name == param
-			);
-
-			if (indexDuplicate != -1) {
-				rowData = Object.assign(batchData);
-				rowData.sourceType = "material";
-				rowData.parameter_name = record.parameter_name;
-				rowData.coverage = record.coverage;
-				rowData.key = record.key;
-				rowData.primary = 0;
-				rowData.aggregation = "";
-
-				let data = { ...rowData };
-				if (selectedTableData && selectedTableData.length !== 0) {
-					selectedTableData.forEach((ele) => {
-						const tempObj = finalData.find((item) => item.key === ele.key);
-						if (tempObj === undefined) {
-							finalData.push(ele);
-						}
-					});
-				}
-				finalData.push(data);
-				dispatch(batchCoverage(newBatchData));
-				dispatch(sendSelectedParamData(finalData));
 			} else {
-				dispatch(showNotification("error", "Function already exists"));
+				dispatch(showNotification("error", "Parameter already exists"));
 			}
-		} else {
-			dispatch(showNotification("error", "Parameter already exists"));
+		} catch (err) {
+			dispatch(showNotification("error", "Adding parameter failed"));
 		}
 	};
-	const treeMap = materialsList;
 
-	useEffect(() => {
-		finalData = [];
-		selectedData = [];
-	});
+
 
 	return (
 		<div className="custom-treenode">
 			{treeMap &&
-				treeMap.map((item, index) => {
+				treeMap.map((item, ele1) => {
 					return (
-						<Tree
-							onSelect={onSelect}
-							onCheck={onCheck}
-							checkedKeys={checkedKeys}
-							selectedKeys={selectedKeys}
-						>
-							<TreeNode title={item.process_step} key={item.key + index}>
-								{item.children.map((a) => {
-									return (
-										<TreeNode title={a.product_description} key={a.key + index}>
-											{a.children.map((b) => {
-												return (
-													<TreeNode
-														title={
-															<div className="treenode-block">
-																<div className="tree-block-param">
-																	<Tag color="geekblue">{b.parameter_name}</Tag>
-																	<p className="treenode-coverage">
-																		{b.coverage}
-																	</p>
-																</div>
-																<span
-																	onClick={(e) =>
-																		handleClickParam(
-																			e,
-																			b.key,
-																			b.parameter_name,
-																			b
-																		)
-																	}
-																>
-																	{!selectedKeys ? (
-																		<CheckOutlined />
-																	) : (
-																		<PlusOutlined />
-																	)}
-																</span>
-															</div>
-														}
-														key={b.key + index}
-														className="tree-index"
-													/>
-												);
-											})}
-										</TreeNode>
-									);
-								})}
+						<Tree onSelect={onSelect}>
+							<TreeNode
+								title={item.process_step}
+								key={"frstEle-" + ele1}
+								dataRef={item}
+							>
+								{item &&
+									item.children &&
+									item.children.map((a, ele2) => {
+										return (
+											<TreeNode
+												title={a.product_desc}
+												dataRef={a}
+												key={"secondEle-" + ele2}
+											>
+												{a &&
+													a.children &&
+													a.children.map((b, ele3) => {
+														return (
+															<TreeNode
+																key={"thirdEle-" + ele3}
+																title={
+																	<div className="treenode-block">
+																		<div className="tree-block-param">
+																			<Tag color="geekblue">
+																				{b.parameter_name}
+																			</Tag>
+																			<p className="treenode-coverage">
+																				{b.coverage}
+																			</p>
+																		</div>
+																		<span
+																			onClick={(e) =>
+																				handleClickParam(
+																					"thirdEle-" + ele3,
+																					b.parameter_name,
+																					b
+																				)
+																			}
+																		>
+																			{!selectedKeys ? (
+																				<CheckOutlined />
+																			) : (
+																				<PlusOutlined />
+																			)}
+																		</span>
+																	</div>
+																}
+																className="tree-index"
+															/>
+														);
+													})}
+											</TreeNode>
+										);
+									})}
 							</TreeNode>
 						</Tree>
 					);
