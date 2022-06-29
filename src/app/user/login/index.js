@@ -105,7 +105,7 @@ const Login = () => {
 	const forgotPassword = () => {
 		setVisible(true);
 		setForgotPasswordFlag(true);
-		setSuccessfulAccountCreationFlag(false)
+		setSuccessfulAccountCreationFlag(false);
 	}
 	const registerAccount = async () => {
 		let req = {};
@@ -117,7 +117,8 @@ const Login = () => {
 			dispatch(showLoader());
 			const res = await createAccount(req, header);
 			if (res.Status == 200) {
-				setSuccessfulAccountCreationFlag(true)
+				setSuccessfulAccountCreationFlag(true);
+				dispatch(hideLoader());
 			} else {
 				dispatch(showNotification("error", "Error while registering the user"));
 				dispatch(hideLoader());
@@ -173,7 +174,7 @@ const Login = () => {
 							<Checkbox color="primary" checked>
 								Remember me
 							</Checkbox>
-							<p onClick={forgotPassword}>Forgot your password?</p>
+							<p onClick={forgotPassword} style={{ cursor: 'pointer' }}>Forgot your password?</p>
 						</div>
 
 						<Button className="login-btn" onClick={() => handleLogin()}>Log In</Button>
@@ -242,7 +243,7 @@ const Login = () => {
 			</div>
 			<div>
 				<Modal
-					title={forgotPasswordFlag ? 'Forgot Password' : successfulAccountCreationFlag ? '' : 'Signup'}
+					title={forgotPasswordFlag && successfulAccountCreationFlag == false ? 'Forgot Password' : successfulAccountCreationFlag ? '' : 'Signup'}
 					visible={visible}
 					onCancel={handleCancel}
 					footer={false}

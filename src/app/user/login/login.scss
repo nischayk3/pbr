@@ -126,6 +126,7 @@
 		font-size: 16px;
 		text-align: center;
 		color: var(--primary-color);
+		cursor: pointer;
 	}
 }
 
@@ -287,7 +288,8 @@
     	justify-content: center;
     	align-items: center;
 		width:673px;
-		padding: 50px 80px 116px 80px;
+		height:482px;
+		//padding: 50px 80px 116px 80px;
 	}
 	.ant-modal-header{
 		background-color: #f2fbff;
@@ -320,7 +322,7 @@ align-items: center;
 color: #A0A0A0;
 	}
 	.signup-center{
-        width:360px;
+        width:400px;
         .login-input {
             width: 100%;
             padding: 28px 0 0 0;
