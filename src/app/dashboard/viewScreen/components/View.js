@@ -57,7 +57,7 @@ const ViewCreation = (props) => {
 	const viewState = useSelector((state) => state.viewCreationReducer);
 	const dispatch = useDispatch();
 	const [count, setCount] = useState(1);
-	const [moleculeList, setMoleculeList] = useState([]);
+	const [moleculeList, setMoleculeList] = useState({});
 	const [isPublish, setIsPublish] = useState(false);
 	const [moleculeId, setMoleculeId] = useState();
 	const [materialsList, setMaterialsList] = useState([]);
@@ -124,10 +124,9 @@ const ViewCreation = (props) => {
 		try {
 			dispatch(showLoader());
 			const moleculeRes = await getMoleculeList(_reqMolecule);
-
 			if (moleculeRes.Status === 200) {
-
-				setMoleculeList(moleculeRes.Data);
+				console.log("moleculeRes", moleculeRes);
+				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes.Data }));
 				if (moleculeRes.Data && moleculeRes.Data.mol_batches && moleculeRes.Data.mol_batches.length > 0) {
 					setViewSummaryBatch(moleculeRes.Data.mol_batches);
 				}
@@ -149,22 +148,19 @@ const ViewCreation = (props) => {
 	const filterLoadMolecule = async (_reqMolecule) => {
 		try {
 			dispatch(showLoader());
-			const moleculeRes = await getMoleculeList(_reqMolecule);
-			if (moleculeRes.Status === 200) {
-				setTimeout(() => {
-					setMoleculeList([])
-				}, 200)
-				setMoleculeList(moleculeRes.Data);
-				if (moleculeRes.Data && moleculeRes.Data.mol_batches && moleculeRes.Data.mol_batches.length > 0) {
-					setViewSummaryBatch(moleculeRes.Data.mol_batches);
+			const moleculeRes1 = await getMoleculeList(_reqMolecule);
+			if (moleculeRes1.Status === 200) {
+				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes1.Data }));
+				if (moleculeRes1.Data && moleculeRes1.Data.mol_batches && moleculeRes1.Data.mol_batches.length > 0) {
+					setViewSummaryBatch(moleculeRes1.Data.mol_batches);
 				}
 				dispatch(hideLoader());
-			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
+			} else if (moleculeRes1.Status === 401 && moleculeRes1.Status === 400) {
 				dispatch(hideLoader());
 				dispatch(showNotification("error", "No Data Found"));
 			} else {
 				dispatch(hideLoader());
-				dispatch(showNotification("error", moleculeRes.Message));
+				dispatch(showNotification("error", moleculeRes1.Message));
 			}
 		} catch (error) {
 			dispatch(hideLoader());
