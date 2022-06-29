@@ -231,7 +231,7 @@ export default function landingPage(props) {
 							<Col span={12} className='p36'>
 								<Search
 									className='dashboard-search'
-									placeholder='Search by dashboard ID or name'
+									placeholder='Search by ID or name'
 									allowClear
 									enterButton='Search'
 									size='large'
@@ -269,7 +269,7 @@ export default function landingPage(props) {
 							<Col span={12} className='p36'>
 								<div className='create-new' onClick={() => showModal()}>
 									<PlusOutlined />
-									<p>Create new dashboard</p>
+									<p>Create new configuration</p>
 								</div>
 							</Col>
 							<Col span={6} />
@@ -277,7 +277,7 @@ export default function landingPage(props) {
 						<Row className='dashboard-recent-charts'>
 							<Col span={6} />
 							<Col span={12} className='p36'>
-								<h3>Recently created dashboard</h3>
+								<h3>Recently configured charts</h3>
 								<Divider />
 								<Row gutter={24}>
 									{dashboardTilesData &&
