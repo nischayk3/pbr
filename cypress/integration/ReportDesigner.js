@@ -134,14 +134,14 @@ describe("Report Designer", () => {
     cy.get('[style="display: grid; grid-template-columns: 1fr 1fr;"] > :nth-child(2) > .anticon > svg').click();
     cy.wait(500)
     /* ==== Generated with Cypress Studio ==== */
-    cy.get(':nth-child(1) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > #report-generator-form_response_0_select > .charttile-content').click();
-    cy.wait(500)
+    // cy.get(':nth-child(1) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > #report-generator-form_response_0_select > .charttile-content').click();
+    // cy.wait(500)
     /* ==== End Cypress Studio ==== */
     /* ==== Generated with Cypress Studio ==== */
     /* ==== End Cypress Studio ==== */
     /* ==== Generated with Cypress Studio ==== */
-    cy.get(':nth-child(2) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > #report-generator-form_response_0_select').click();
-    cy.wait(500)
+    // cy.get(':nth-child(2) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > #report-generator-form_response_0_select').click();
+    // cy.wait(500)
     cy.get('[style="display: grid; grid-template-columns: 1fr 1fr;"] > :nth-child(2) > .anticon > svg').click();
     /* ==== End Cypress Studio ==== */
   });

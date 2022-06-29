@@ -5,7 +5,12 @@
 		padding: 0px !important;
 	}
 }
-
+.faq-wrapper{
+	min-height: calc(100vh - 120px);
+    overflow-y: scroll;
+    height: calc(100vh - 120px);
+	padding: 20px;
+}
 .search-header {
 	font-family: var(--primary-font-family);
 	font-style: normal;
@@ -44,7 +49,4 @@
 	color: rgba(0, 0, 0, 0.85);
 	margin-top: 20px;
 }
-.question-pannel {
-	overflow: auto;
-	height: 200px;
-}
+

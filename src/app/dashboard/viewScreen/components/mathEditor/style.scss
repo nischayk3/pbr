@@ -298,3 +298,34 @@ span.statusClosed {
 		right: 25px;
 	}
 }
+
+.w-tc-editor {
+	font-family: var(--primary-font-family) !important;
+	border: 1px solid #797979 !important;
+	border-radius: 4px;
+	background-color: #fff !important;
+
+	textarea {
+		font-style: italic !important;
+		font-weight: 300 !important;
+		font-size: 14px !important;
+		line-height: 22px !important;
+		/* identical to box height, or 157% */
+		letter-spacing: 0.01em !important;
+		color: #000000 !important;
+	}
+
+	.w-tc-editor-preview {
+		.code-highlight {
+			.code-line {
+				font-style: italic !important;
+				font-weight: 300 !important;
+				font-size: 14px !important;
+				line-height: 22px !important;
+				/* identical to box height, or 157% */
+				letter-spacing: 0.01em !important;
+				color: #000000 !important;
+			}
+		}
+	}
+}
