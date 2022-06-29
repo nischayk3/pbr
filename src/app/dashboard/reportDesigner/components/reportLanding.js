@@ -20,7 +20,7 @@ import { loadReportGen, getReportGen } from '../../../../services/reportGenerato
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { sendReport } from '../../../../duck/actions/reportDesignerAction';
+import { sendReport, reportLoad, screenChange } from '../../../../duck/actions/reportDesignerAction';
 import {
 	showLoader,
 	hideLoader,
@@ -42,7 +42,7 @@ export default function ReportLanding(props) {
 	const [activeTab, setActiveTab] = useState('Design Report Template');
 	const [reportSearch, setReportSearch] = useState('')
 	const [genSearch, setReportGen] = useState('')
-	const [letDis, setLetDis] = useState(false)
+	const [letDis, setLetDis] = useState(true)
 	const [reportId, setReportIds] = useState('')
 	const { TabPane } = Tabs;
 	const history = useHistory();
@@ -51,12 +51,79 @@ export default function ReportLanding(props) {
 		setActiveTab(value);
 	};
 
+	const columnsFilter = [
+		{
+			title: 'Name',
+			dataIndex: 'variant_name',
+			width: '200px',
+			key: 'variant_name',
+			render: (text, record) => {
+				return {
+					props: {
+						style: { background: record.color },
+					},
+					children: <div>{text}</div>,
+				};
+			},
+		},
+		{
+			title: 'ID',
+			dataIndex: 'rep_disp_id',
+			width: '100px',
+			key: 'rep_disp_id',
+			render: (text, record) => {
+				return {
+					props: {
+						style: { background: record.color },
+					},
+					children: <div>{text}</div>,
+				};
+			},
+		},
+		{
+			title: 'Status',
+			dataIndex: 'rep_status',
+			width: '100px',
+			key: 'rep_status',
+			render: (text, record) => {
+				return {
+					props: {
+						style: { background: record.color },
+					},
+					children: <div>{text}</div>,
+				};
+			},
+		},
+		{
+			title: 'Creator',
+			dataIndex: 'created_by',
+			key: 'created_by',
+			width: '200px',
+			render: (text, row, index) => {
+				return (
+					<div>
+						<Avatar
+							className='avatar-icon'
+							style={{
+								backgroundColor: getRandomColor(index + 1),
+							}}>
+							{text.split('')[0].toUpperCase()}{' '}
+						</Avatar>
+						<span className='avatar-text' style={{ marginLeft: '5px' }}>
+							{text.split(/[.@]/)[0]}
+						</span>
+					</div>
+				);
+			},
+		},
+	];
+
 	const columns = [
 		{
 			title: 'Name',
-			dataIndex: activeTab == 'Design Report Template' ? 'rep_name' : 'variant_name',
+			dataIndex: 'rep_name',
 			width: '200px',
-			key: activeTab == 'Design Report Template' ? 'rep_name' : 'variant_name',
+			key: 'rep_name',
 			render: (text, record) => {
 				return {
 					props: {
@@ -159,7 +226,7 @@ export default function ReportLanding(props) {
 		if (value == '') setNewSearched(false);
 		else {
 			setNewSearched(true);
-			const tableData = reportGenList;
+			const tableData = reportList;
 			const filterTableData = tableData.filter(o =>
 				Object.keys(o).some(k =>
 					String(o[k]).toLowerCase().includes(value.toLowerCase())
@@ -194,13 +261,13 @@ export default function ReportLanding(props) {
 
 	const getLoadReport = async report_id => {
 		dispatch(showNotification('success', report_id + ' selected'));
-
 		dispatch(showLoader());
 		let req = { report_displ_id: report_id };
 		let data = await loadReport(req);
 		if (data.Status == 200 || data.report_designer) {
-			props.getReportData(data);
-			props.changeScreen();
+			// props.getReportData(data);
+			dispatch(reportLoad(data))
+			// props.changeScreen();
 			history.push({
 				pathname: `/dashboard/report_designer/${report_id}`,
 			});
@@ -299,7 +366,7 @@ export default function ReportLanding(props) {
 						{searched ? (
 							<Table
 								className='landing-table'
-								columns={columns}
+								columns={activeTab == 'Design Report Template' ? columns : columnsFilter}
 								scroll={{ y: 150, x: 800 }}
 								// pagination={false}
 								dataSource={filterTable === null ? activeTab == 'Design Report Template' ? reportList : reportGenList : filterTable}
@@ -326,7 +393,13 @@ export default function ReportLanding(props) {
 								key='Design Report Template'>
 								<div
 									className='create-new'
-									onClick={() => props.changeScreen()}>
+									onClick={() => {
+										history.push({
+											pathname: `/dashboard/report_designer/untitled`,
+										});
+										dispatch(reportLoad({}));
+									}}
+								>
 									<PlusOutlined />
 									<p>Design new report</p>
 								</div>
@@ -402,6 +475,7 @@ export default function ReportLanding(props) {
 												index < 8 && (
 													<div
 														onClick={() => {
+															dispatch(screenChange(false));
 															getLoadReportGenerator(i.rep_disp_id, true);
 															setReportIds(i.rep_disp_id)
 														}}>
@@ -486,7 +560,7 @@ export default function ReportLanding(props) {
 										scroll={{ y: 150, x: 800 }}
 										// style={{  height: 'auto' }}
 										dataSource={filterTable === null ? reportList : filterTable}
-										pagination={false}
+										// pagination={false}
 										onRow={record => ({
 											onClick: e => {
 												NewReportGenerator(record.rep_disp_id);
@@ -509,6 +583,7 @@ export default function ReportLanding(props) {
 								}}
 								disabled={letDis}
 								onClick={() => {
+									dispatch(screenChange(false));
 									history.push({
 										pathname: `/dashboard/report_generator/${reportId}`,
 									});

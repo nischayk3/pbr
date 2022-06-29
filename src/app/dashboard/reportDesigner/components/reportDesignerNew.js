@@ -25,7 +25,7 @@ import {
 	getViews,
 	getCharts,
 	saveReportDesign,
-	getReports,
+	// getReports,
 } from '../../../../services/reportDesignerServices';
 import SaveModal from '../../../../components/SaveModal/saveModal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,6 +33,7 @@ import {
 	sendReport,
 	screenChange,
 } from '../../../../duck/actions/reportDesignerAction';
+import { useHistory } from 'react-router';
 import {
 	showLoader,
 	hideLoader,
@@ -46,11 +47,14 @@ import { loadReport } from '../../../../services/reportDesignerServices';
 
 function ReportDesignerNew(props) {
 
-	const { loadData } = props
+	const loadData = useSelector(
+		state => state.reportDesignerReducer.reportLoad
+	);
 	const location = useLocation()
 	const chart_deleted = useSelector(
 		state => state.reportDesignerReducer.layout
 	);
+	const history = useHistory();
 
 	const loading = false;
 	const [isLoad, setIsLoad] = useState(false);
@@ -489,9 +493,9 @@ function ReportDesignerNew(props) {
 		<div className='custom-wrapper'>
 			<div className='sub-header' style={{ paddingRight: '24px' }}>
 				<div className='sub-header-title'>
-					<div onClick={() => window.location.reload()}>
-						<BreadCrumbWrapper />
-					</div>
+					{/* <div onClick={() => window.location.reload()}> */}
+					<BreadCrumbWrapper />
+					{/* </div> */}
 				</div>
 				<div className='sub-header-btns'>
 					{(isLoad || isNew) && !params ? (
@@ -517,7 +521,11 @@ function ReportDesignerNew(props) {
 							<Button
 								style={{ marginLeft: '16px', marginRight: '16px' }}
 								className='report-primary-btn'
-								onClick={() => dispatch(screenChange(true))}
+								onClick={() => {
+									dispatch(screenChange(true)); history.push({
+										pathname: `/dashboard/report_generator/${reportId}`,
+									})
+								}}
 								disabled={!isSaved}>
 								Preview
 							</Button>
@@ -527,6 +535,7 @@ function ReportDesignerNew(props) {
 									setIsPublish(true);
 									setApproveReject('P');
 								}}
+								disabled={status == "AWAP" || status == 'APRD'}
 								style={{ marginRight: '16px' }}>
 								<CloudUploadOutlined
 									style={{

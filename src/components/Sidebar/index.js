@@ -141,7 +141,7 @@ const Sidebar = () => {
 					key="report_designer"
 					icon={<AppstoreAddOutlined className="menu-icons" />}
 					id="1"
-					onClick={() => window.location.reload()}
+				// onClick={() => window.location.reload()}
 				>
 					<Link to="/dashboard/report_designer">Report Designer</Link>
 				</Menu.Item>
