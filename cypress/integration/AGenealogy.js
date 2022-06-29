@@ -86,9 +86,7 @@ it("click on search button",()=>{
 	cy.wait(6000)
 })
 it("searching node",()=>{
-
 	
-		
 		cy.get('#102279687 > #process-img').click({ force: true })
 		cy.get('#view-details-popup > span').click({ force: true })
 		cy.wait(6000)
