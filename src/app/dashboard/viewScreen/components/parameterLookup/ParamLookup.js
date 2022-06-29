@@ -49,6 +49,10 @@ const ParamLookup = (props) => {
 		props.callbackMoleculeId(e)
 	}
 
+	const clearSearch = (e) => {
+		setFilterValue('')
+	}
+
 	//Moleculelist api call
 	const loadMolecule = async (_reqMolecule) => {
 		try {
@@ -139,19 +143,13 @@ const ParamLookup = (props) => {
 			</div>
 			<div className="param-select">
 				<p>Filters</p>
-				{/* <Search
-					placeholder="Search"
-					onSearch={onSearch}
-					disabled={props.fromWorkflowScreen}
-				// onChange={onSearchChange}
-				// onSearch={searchTable}
-				/> */}
+
 				<SelectSearchField
 					showSearch
 					placeholder='Search Molecule'
 					onChangeSelect={e => onChangeParam(e)}
 					onSearchSelect={type => onSearchParam(type)}
-					//handleClearSearch={e => clearSearch(e, )}
+					handleClearSearch={e => clearSearch(e)}
 					options={optionsMolecule}
 					selectedValue={filterValue}
 				/>
