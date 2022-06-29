@@ -422,8 +422,6 @@ function Genealogy() {
 				setIsFileUploaded(true);
 				if (fileName !== null) {
 					const reqData = {
-						batchNum: data[2],
-						changedBy: null,
 						createdBy: login_response.email_id,
 						custKey: '1000',
 						filename: fileName,
@@ -464,6 +462,7 @@ function Genealogy() {
 			if (dataResponse.Status === 202) {
 				dispatch(showNotification('success', dataResponse.Message));
 			} else {
+				setIsFileUploaded(false);
 				dispatch(showNotification('error', dataResponse.Message));
 			}
 		} catch (error) {

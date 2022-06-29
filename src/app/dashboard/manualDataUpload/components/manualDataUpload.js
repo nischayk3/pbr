@@ -610,6 +610,7 @@ class Uploader extends Component {
 			/* istanbul ignore next */
 		} else if (step === 2 || step === 3) {
 			this.setState({
+				nextStepDisabled: true,
 				currentStep: this.state.currentStep + 1,
 			});
 		}
@@ -617,6 +618,7 @@ class Uploader extends Component {
 
 	prevStep = () => {
 		this.setState({
+			nextStepDisabled: false,
 			currentStep: this.state.currentStep - 1,
 		});
 	};

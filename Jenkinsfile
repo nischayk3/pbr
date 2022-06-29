@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'registry.cloud.mareana.com/mdh-cpv/dev'
     }
-    agent { label 'cpv_node' } 
+    agent { label 'cpv_node_ui' } 
     options {
         ansiColor('xterm')
     }

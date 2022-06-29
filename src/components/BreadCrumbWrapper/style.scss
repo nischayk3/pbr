@@ -9,6 +9,7 @@
 
 	position: sticky;
 }
+
 .ant-breadcrumb-link {
 	a {
 		font-family: var(--primary-font-family);
@@ -19,7 +20,15 @@
 		/* identical to box height, or 157% */
 		color: #000000;
 	}
+
 	span {
 		color: #093185;
 	}
 }
+
+
+// .ant-breadcrumb li:last-child {
+// 	a {
+// 		pointer-events: none;
+// 	}
+// }
