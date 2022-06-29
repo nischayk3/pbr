@@ -1,5 +1,5 @@
 {
-	"/dashboard/dashboard": "Dashboard",
+	"/dashboard/dashboard": "Chart configurator",
 	"/dashboard/audit_trail_report": "Audit Trail Report",
 	"/dashboard/system_error_report": "System Error Report",
 	"/dashboard/data_load": "Data Load",
@@ -31,6 +31,4 @@
 	"/dashboard/pbr_reviewer": "PBR Reviewer",
 	"/dashboard/pbr_update": "PBR Update",
 	"/dashboard/paper_batch_records": "PBR Template"
-	
-	
 }
