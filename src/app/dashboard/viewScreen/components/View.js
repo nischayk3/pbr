@@ -10,7 +10,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useParams, useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { Button, Collapse, Form, Modal } from "antd";
+import { Button, Collapse, Modal } from "antd";
 import "./styles.scss";
 import queryString from "query-string";
 import {
@@ -19,8 +19,6 @@ import {
 	saveFunction,
 } from "../../../../services/viewCreationPublishing";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
-import { sendUrl } from "../../../../duck/actions/loginAction";
-import { loginUrl } from "../../../../services/loginService";
 import InputField from "../../../../components/InputField/InputField";
 import {
 	hideLoader,
@@ -39,10 +37,9 @@ import MaterialTree from "./materialTree";
 import { MemoizedMathEditor } from "./mathEditor";
 import { MemoizedViewSummaryData } from "./viewSummary/index";
 import viewdatajson from "./view.json";
-import ParameterLookup from "./parameterLookup/ParameterLookup";
 import FileUpload from "./fileUpload/FileUpload";
 import ParamLookup from "./parameterLookup/ParamLookup";
-import ProcessHierarchy from "./processHierarchy/ProcessHierarchy";
+
 
 const { Panel } = Collapse;
 
@@ -62,8 +59,6 @@ const ViewCreation = (props) => {
 	const [moleculeId, setMoleculeId] = useState();
 	const [materialsList, setMaterialsList] = useState([]);
 	const getData = useRef();
-	const [filterdData, setFilterdData] = useState(null);
-	const [dataLoadingState, setDataLoadingState] = useState(false);
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
 	const [parentBatches, setParentBatches] = useState([]);
 	const [viewSummaryBatch, setViewSummaryBatch] = useState([]);
@@ -81,6 +76,8 @@ const ViewCreation = (props) => {
 	const [approveReject, setApproveReject] = useState("");
 	const [isEditView, setIsEditView] = useState(false);
 	const [fromWorkflowScreen, setFromWorkflowScreen] = useState(false);
+	const [filterParam, setFilterParam] = useState("");
+
 	const { id } = useParams();
 
 	const parameters = queryString.parse(location.search);
@@ -125,7 +122,7 @@ const ViewCreation = (props) => {
 			dispatch(showLoader());
 			const moleculeRes = await getMoleculeList(_reqMolecule);
 			if (moleculeRes.Status === 200) {
-				console.log("moleculeRes", moleculeRes);
+
 				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes.Data }));
 				if (moleculeRes.Data && moleculeRes.Data.mol_batches && moleculeRes.Data.mol_batches.length > 0) {
 					setViewSummaryBatch(moleculeRes.Data.mol_batches);
@@ -145,7 +142,43 @@ const ViewCreation = (props) => {
 	};
 
 	//Moleculelist api call
-	const filterLoadMolecule = async (_reqMolecule) => {
+	const filterLoadMolecule = async (_reqMolecule, filterSplitValue) => {
+		try {
+			dispatch(showLoader());
+			const moleculeRes = await getMoleculeList(_reqMolecule);
+			if (moleculeRes.Status === 200) {
+				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes.Data }));
+				const filterParameters = filterParam !== undefined && filterParam !== null ? filterParam : ''
+
+				const _filterReq2 = {
+					data: {
+						hierarchy: moleculeRes.Data.hierarchy,
+					},
+					parameters: {
+						molecule_name: filterSplitValue[3],
+						process_step_int_id: parseInt(filterSplitValue[0]),
+						product_num: filterSplitValue[1],
+					},
+				}
+				filterLoadMolecule1(_filterReq2)
+				if (moleculeRes.Data && moleculeRes.Data.mol_batches && moleculeRes.Data.mol_batches.length > 0) {
+					setViewSummaryBatch(moleculeRes.Data.mol_batches);
+				}
+				dispatch(hideLoader());
+			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
+				dispatch(hideLoader());
+				dispatch(showNotification("error", "No Data Found"));
+			} else {
+				dispatch(hideLoader());
+				dispatch(showNotification("error", moleculeRes.Message));
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", error));
+		}
+	};
+
+	const filterLoadMolecule1 = async (_reqMolecule) => {
 		try {
 			dispatch(showLoader());
 			const moleculeRes1 = await getMoleculeList(_reqMolecule);
@@ -207,9 +240,10 @@ const ViewCreation = (props) => {
 		}
 	};
 
-
 	const filterMolequles = async (filterValue) => {
 		const filterSplit = filterValue && filterValue.split('_')
+
+		setFilterParam(filterSplit)
 		const _filterReq1 = {
 			data: {
 				hierarchy: moleculeList.hierarchy,
@@ -217,24 +251,9 @@ const ViewCreation = (props) => {
 			parameters: {
 				molecule_name: filterSplit[3],
 				process_step_int_id: parseInt(filterSplit[0]),
-
 			},
 		}
-		const _filterReq2 = {
-			data: {
-				hierarchy: moleculeList.hierarchy,
-			},
-			parameters: {
-				molecule_name: filterSplit[3],
-				process_step_int_id: parseInt(filterSplit[0]),
-				product_num: filterSplit[1],
-			},
-		}
-
-		const filterRes1 = await filterLoadMolecule(_filterReq1)
-		const filterRes2 = await filterLoadMolecule(_filterReq2)
-
-
+		await filterLoadMolecule(_filterReq1, filterSplit)
 	}
 
 	const getNewData = (el) => {
@@ -350,17 +369,6 @@ const ViewCreation = (props) => {
 			if (loadViewRes.view_name) {
 				setViewName(loadViewRes.view_name);
 			}
-			// Object.entries(loadViewRes).forEach(([key, value], index) => {
-			// 	// if (key === 'view_version') {
-			// 	// 	setViewVersion(value);
-			// 	// } else if (key === 'material_id') {
-			// 	// 	setMoleculeId(value);
-			// 	// } else if (key === 'view_status') {
-			// 	// 	setViewStatus(value);
-			// 	// } else if (key === 'view_name') {
-			// 	// 	setViewName(value);
-			// 	// }
-			// });
 			dispatch(sendSelectedParamData(loadViewRes["all_parameters"]));
 			dispatch(hideLoader());
 		} catch (err) {
@@ -391,7 +399,6 @@ const ViewCreation = (props) => {
 								setIsPublish(true);
 								setApproveReject("R");
 							}}
-
 						>
 							Reject
 						</Button>
@@ -401,7 +408,6 @@ const ViewCreation = (props) => {
 								setIsPublish(true);
 								setApproveReject("A");
 							}}
-
 						>
 							Approve
 						</Button>
@@ -490,11 +496,7 @@ const ViewCreation = (props) => {
 												materialsList={materialsList}
 												parentBatches={parentBatches}
 											/>
-											{/* <ProcessHierarchy
-												moleculeList={moleculeList}
-												callbackProcessClick={hierarchyProcessClick}
-												callbackProductClick={hierarchyProductClick}
-											/> */}
+
 										</Panel>
 										<Panel
 											className="viewCreation-accordian viewCreation-filesPanel"
