@@ -95,10 +95,8 @@ const ParamLookup = (props) => {
 
 
 	const onChangeParam = (value) => {
-
 		setFilterValue(value)
 		props.callbackFilter(value)
-
 	}
 
 	const onSearchParam = debounce((type) => {

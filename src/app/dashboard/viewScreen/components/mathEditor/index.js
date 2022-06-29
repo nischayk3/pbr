@@ -254,7 +254,7 @@ const MathEditor = (props) => {
 							className={"add-var_block add-var_block_bg"}
 							fromWorkflowScreen={props.fromWorkflowScreen}
 						/>
-						{showVariable && (
+						{varData && (
 							varData.map((item, index) => {
 								return (
 									<VariableCard

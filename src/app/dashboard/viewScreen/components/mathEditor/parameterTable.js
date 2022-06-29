@@ -335,6 +335,7 @@ const ParameterTable = (props) => {
 
 		return [].concat.apply([], final_arr);
 	};
+
 	useEffect(() => {
 		if (saveFunction) {
 			counter++;
@@ -452,9 +453,10 @@ const ParameterTable = (props) => {
 	};
 
 	const handleAggregationChange = (text, record, value, index) => {
+		console.log("handleAggregationChange", value);
 		let newAggrValue = [...tableData];
 		newAggrValue[index].aggregation =
-			value.value !== undefined ? value.value : "";
+			value.value !== undefined ? value.value : value;
 		setTableData(newAggrValue);
 	};
 
@@ -497,12 +499,8 @@ const ParameterTable = (props) => {
 							const rowData = [...selectedRows];
 							rowData.forEach((element, index) => {
 								let paramsObj = {};
-								//const materialKey = element.key.split("-");
 								paramsObj["source_type"] = element.sourceType;
 								paramsObj["material_id"] = element.material_id
-								// element.sourceType == "file"
-								// 	? element.material_id
-								// 	: element.material_id;
 								paramsObj["parameter_name"] = element.parameter_name;
 								paramsObj["batch_exclude"] = [];
 								paramsObj["priority"] = index;
