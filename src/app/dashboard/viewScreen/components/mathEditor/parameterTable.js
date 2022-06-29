@@ -453,7 +453,6 @@ const ParameterTable = (props) => {
 	};
 
 	const handleAggregationChange = (text, record, value, index) => {
-		console.log("handleAggregationChange", value);
 		let newAggrValue = [...tableData];
 		newAggrValue[index].aggregation =
 			value.value !== undefined ? value.value : value;
