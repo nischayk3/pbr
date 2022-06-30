@@ -164,9 +164,6 @@ const rules = ({ postChartData, setPostChartData }) => {
                       <p>{loadRuleList[ele].length >= 1 && `${ele} Rule`}</p>
                     </Col>
                     <Col span={14} className="rules-selected">
-                      {/* {loadRuleList[ele].map((item) => {
-						  return <span>{item.rule_disp_id}, </span>;
-						})} */}
                       {loadRuleList[ele].map((tag, i) => (
                         <span key={i}>
                           {i > 0 && ", "}
@@ -261,7 +258,7 @@ const rules = ({ postChartData, setPostChartData }) => {
               </Collapse>
               {Number(id) !== 0 && Object.keys(loadRuleList).length !== 0 && (
                 <div className="selected-rules">
-                  <h3>Selected Rules</h3>
+                  {loadRuleList && <h3>Selected Rules</h3>}
                   {Object.keys(loadRuleList).map((ele, index) => {
                     if (loadRuleList[ele].length >= 1) {
                       return (
@@ -273,15 +270,14 @@ const rules = ({ postChartData, setPostChartData }) => {
                               </p>
                             </Col>
                             <Col span={14} className="rules-selected">
-                              {loadRuleList[ele].map((item) => {
-                                return <span>{item.rule_disp_id}, </span>;
+                              {loadRuleList[ele].map((tag, i) => {
+                                return (
+                                  <span key={i}>
+                                    {i > 0 && ", "}
+                                    {tag.rule_disp_id}
+                                  </span>
+                                );
                               })}
-                              {loadRuleList[ele].map((tag, i) => (
-                                <span key={i}>
-                                  {i > 0 && ", "}
-                                  {tag.rule_disp_id}
-                                </span>
-                              ))}
                             </Col>
                           </Row>
                         </div>

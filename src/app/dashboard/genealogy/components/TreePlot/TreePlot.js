@@ -149,6 +149,7 @@ function TreePlot(props) {
     }
   };
 
+  /* istanbul ignore next */
   const handleTreeSearch = () => {
     let svgNodeClass = document.querySelectorAll(".node");
     for (let i = 0; i < svgNodeClass.length; i++) {

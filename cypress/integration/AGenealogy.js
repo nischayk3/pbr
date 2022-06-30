@@ -85,17 +85,15 @@ it("click on search button",()=>{
 	cy.get('#genealogy-search').click({ force: true })
 	cy.wait(6000)
 })
-it("searching node",()=>{
-
+// it("searching node",()=>{
 	
-		
-		cy.get('#102279687 > #process-img').click({ force: true })
-		cy.get('#view-details-popup > span').click({ force: true })
-		cy.wait(6000)
-		cy.get('.expand-drawer > img').click({ force: true })
-		cy.wait(3000)
-		cy.get('.popout-table > .ant-collapse > :nth-child(1) > .ant-collapse-header > .panel-header').click()
-})
+// 		cy.get('#102279687 > #process-img').click({ force: true })
+// 		cy.get('#view-details-popup > span').click({ force: true })
+// 		cy.wait(6000)
+// 		cy.get('.expand-drawer > img').click({ force: true })
+// 		cy.wait(3000)
+// 		cy.get('.popout-table > .ant-collapse > :nth-child(1) > .ant-collapse-header > .panel-header').click()
+// })
 	
 
 	it("search again",()=>{
@@ -208,12 +206,12 @@ it("searching node",()=>{
 	});
 
 
-	it("click on forward from node popup",()=>{
-		cy.wait(5000)
-		cy.get('#1091460 > #material-img').click();
-		cy.get(3000)
-		cy.get('#forward-genealogy-popup > span').click();
-	})
+	// it("click on forward from node popup",()=>{
+	// 	cy.wait(5000)
+	// 	cy.get('#1091460 > #material-img').click();
+	// 	cy.get(3000)
+	// 	cy.get('#forward-genealogy-popup > span').click();
+	// })
 
 	// it("fileupload",()=>{
 	// 	cy.wait(3000)
@@ -352,6 +350,18 @@ it("click on search button",()=>{
 	cy.get('#genealogy-search').click({ force: true })
 	cy.wait(6000)
 })
+
+it("Click on node",()=>{
+	cy.reload()
+	cy.wait(3000)
+})
+
+it("Reload final",()=>{
+	cy.reload()
+	cy.wait(3000)
+})
+
+
 
 	
 
