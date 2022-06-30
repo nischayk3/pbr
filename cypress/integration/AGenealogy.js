@@ -206,12 +206,12 @@ it("searching node",()=>{
 	});
 
 
-	it("click on forward from node popup",()=>{
-		cy.wait(5000)
-		cy.get('#1091460 > #material-img').click();
-		cy.get(3000)
-		cy.get('#forward-genealogy-popup > span').click();
-	})
+	// it("click on forward from node popup",()=>{
+	// 	cy.wait(5000)
+	// 	cy.get('#1091460 > #material-img').click();
+	// 	cy.get(3000)
+	// 	cy.get('#forward-genealogy-popup > span').click();
+	// })
 
 	// it("fileupload",()=>{
 	// 	cy.wait(3000)
