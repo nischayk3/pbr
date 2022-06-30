@@ -64,8 +64,8 @@ const ViewCreation = (props) => {
 	const [viewSummaryBatch, setViewSummaryBatch] = useState([]);
 	const [newBatchData, setNewBatchData] = useState([]);
 	const [viewDisplayId, setViewDisplayId] = useState("");
-	const [viewStatus, setViewStatus] = useState();
-	const [viewVersion, setViewVersion] = useState();
+	const [viewStatus, setViewStatus] = useState('');
+	const [viewVersion, setViewVersion] = useState('');
 	const [filesListTree, setFilesListTree] = useState([]);
 	const [viewSummaryTable, setViewSummaryTable] = useState([]);
 	const [paramTableData, setParamTableData] = useState([]);
@@ -274,12 +274,10 @@ const ViewCreation = (props) => {
 			element.functions = viewState.functions;
 			element.parameters = viewState.parameters;
 			element.all_parameters = viewState.selectedParamData;
-			element.view_disp_id = viewDisplayId;
-			element.view_status = viewStatus;
 			element.material_id = moleculeId;
 			element.files = selectedFiles;
 		});
-
+		console.log("viewDataaaaaaaa", viewData);
 		const _req = {
 			data: viewData[0],
 		};
@@ -414,13 +412,13 @@ const ViewCreation = (props) => {
 					</div>
 				) : (
 					<div className="viewCreation-btns">
-						<Button
+						{/* <Button
 							className="viewCreation-saveBtn"
 							// disabled={!viewDisplayId}
 							onClick={handleSaveVisible}
 						>
 							Share
-						</Button>
+						</Button> */}
 						<Button
 							className="viewCreation-saveBtn"
 							// disabled={!viewDisplayId}
@@ -431,6 +429,7 @@ const ViewCreation = (props) => {
 
 						<Button
 							className="view-publish-btn"
+							disabled={viewStatus === 'AWAP' || viewStatus === 'APRD'}
 							onClick={() => {
 								setIsPublish(true);
 								setApproveReject("P");

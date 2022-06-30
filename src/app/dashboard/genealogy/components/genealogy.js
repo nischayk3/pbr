@@ -398,6 +398,7 @@ function Genealogy() {
 	// 	}
 	// };
 
+	/* istanbul ignore next */
 	const fileUpload = async _fileRequest => {
 		try {
 			setUploading(true);
@@ -456,6 +457,7 @@ function Genealogy() {
 		}
 	};
 
+	/* istanbul ignore next */
 	const geanealogyFileDataUpload = async _dataReq => {
 		try {
 			const dataResponse = await genealogyDataUpload(_dataReq);
@@ -471,11 +473,12 @@ function Genealogy() {
 		}
 	};
 
+	/* istanbul ignore next */
 	const handleClickUpload = () => {
 		const file = uploadFile;
 		fileUpload(file);
 	};
-
+	/* istanbul ignore next */
 	const remove = targetKey => {
 		let newActiveKey = activateKey;
 		let lastIndex;
@@ -512,6 +515,7 @@ function Genealogy() {
 		setActivateKey(newActiveKey);
 	};
 
+	/* istanbul ignore next */
 	const files = {
 		name: 'file',
 		multiple: true,

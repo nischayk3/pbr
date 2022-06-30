@@ -123,7 +123,9 @@ const MathEditor = (props) => {
 	useEffect(() => {
 		if (isLoadView) {
 			let paramKey = [];
-			const viewJsonData = [selectedParameters];
+			// const viewJsonData = [selectedParameters];
+			const viewJsonData = [...viewJson];
+			console.log("......selectedParameters", selectedParameters);
 			viewJsonData.forEach((element, index) => {
 				paramKey.push(Object.keys(element.parameters));
 			});

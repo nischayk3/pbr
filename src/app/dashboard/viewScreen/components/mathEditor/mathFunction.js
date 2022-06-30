@@ -244,9 +244,9 @@ const MathFunction = (props) => {
 							>
 								Cancel
 							</Button>
-							<Button type="text" className="custom-primary-btn ">
+							{/* <Button type="text" className="custom-primary-btn ">
 								Save as a copy
-							</Button>
+							</Button> */}
 							<Button
 								onClick={() => {
 									handleSave();

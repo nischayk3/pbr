@@ -149,6 +149,7 @@ function TreePlot(props) {
     }
   };
 
+  /* istanbul ignore next */
   const handleTreeSearch = () => {
     let svgNodeClass = document.querySelectorAll(".node");
     for (let i = 0; i < svgNodeClass.length; i++) {
@@ -249,6 +250,7 @@ function TreePlot(props) {
     }
   };
 
+  /* istanbul ignore next */
   const handleClearSearch = () => {
     setsearchValue("");
     if (props.chartType === "backward") {
@@ -508,6 +510,7 @@ function TreePlot(props) {
             .attr("class", "grabbable");
         };
         //zoom
+		/* istanbul ignore next */
         function zoom() {
           var scale = d3.event.scale;
           var translation = d3.event.translate;
@@ -1080,6 +1083,7 @@ function TreePlot(props) {
           .remove();
 
         // Stash the old positions for transition.
+		/* istanbul ignore next */
         nodes.forEach(function (d) {
           d.x0 = d.x;
           d.y0 = d.y;
@@ -1133,6 +1137,7 @@ function TreePlot(props) {
           THIS.update(d);
         }
 
+		/* istanbul ignore next */
         function node_onMouseOver(d) {
           toolTip.transition().duration(200).style("opacity", ".9");
           if (

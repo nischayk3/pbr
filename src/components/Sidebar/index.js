@@ -61,21 +61,6 @@ const cpvMenu = [
   },
 ];
 
-const paperBatchMenu = [
-  {
-    key: "paper-batch-records",
-    icon: <DiffOutlined className="menu-icons" />,
-    title: "Create Template",
-    linkTo: "/dashboard/paper_batch_records",
-  },
-  {
-    key: "pbr_reviewer",
-    icon: <CheckCircleOutlined className="menu-icons" />,
-    title: "Approve",
-    linkTo: "/dashboard/pbr_reviewer",
-  },
-];
-
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(true);
   const mouseHover = () => {
@@ -161,7 +146,7 @@ const Sidebar = () => {
           key="report_designer"
           icon={<AppstoreAddOutlined className="menu-icons" />}
           id="1"
-          onClick={() => window.location.reload()}
+          // onClick={() => window.location.reload()}
         >
           <Link to="/dashboard/report_designer">Report Designer</Link>
         </Menu.Item>
@@ -199,11 +184,20 @@ const Sidebar = () => {
           icon={<FileProtectOutlined className="menu-icons" />}
           title="Paper batch records"
         >
-          {paperBatchMenu.map((item) => (
-            <Menu.Item key={item.key} icon={item.icon} id={item.key}>
-              <Link to={item.linkTo}>{item.title}</Link>
-            </Menu.Item>
-          ))}
+          <Menu.Item
+            key="paper-batch-records"
+            icon={<DiffOutlined className="menu-icons" />}
+            id="paper batch records"
+          >
+            <Link to="/dashboard/paper_batch_records">Create Template</Link>
+          </Menu.Item>
+          <Menu.Item
+            key="pbr_reviewer"
+            icon={<CheckCircleOutlined className="menu-icons" />}
+            id="pbr_reviewer"
+          >
+            <Link to="/dashboard/pbr_reviewer">Approve</Link>
+          </Menu.Item>
         </SubMenu>
         <Menu.Item
           key="user-roles-and-access"
