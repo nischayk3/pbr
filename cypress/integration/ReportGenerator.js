@@ -23,10 +23,9 @@ describe("Report", () => {
     })
     it('Renders Report Landing Page ', () => {
         const url = Cypress.config().baseUrl
+        cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
         cy.log('Opening a report template')
         cy.visit(url + '/#/dashboard/report_designer')
-        cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
-
         cy.get('.ant-tabs-nav-list > :nth-child(2)').click();
         cy.wait(1000)
         cy.get('#rc-tabs-0-panel-Generate\\ Report\\ Variant > .create-new > .anticon > svg').click();
