@@ -61,6 +61,8 @@ const ViewCreation = (props) => {
 	const getData = useRef();
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
 	const [parentBatches, setParentBatches] = useState([]);
+	const [molBatches, setMolBatches] = useState([]);
+
 	const [viewSummaryBatch, setViewSummaryBatch] = useState([]);
 	const [newBatchData, setNewBatchData] = useState([]);
 	const [viewDisplayId, setViewDisplayId] = useState("");
@@ -126,6 +128,8 @@ const ViewCreation = (props) => {
 				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes.Data }));
 				if (moleculeRes.Data && moleculeRes.Data.mol_batches && moleculeRes.Data.mol_batches.length > 0) {
 					setViewSummaryBatch(moleculeRes.Data.mol_batches);
+					setParentBatches(moleculeRes.Data.mol_batches)
+					setMolBatches(moleculeRes.Data.mol_batches)
 				}
 				dispatch(hideLoader());
 			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
@@ -277,7 +281,7 @@ const ViewCreation = (props) => {
 			element.material_id = moleculeId;
 			element.files = selectedFiles;
 		});
-		console.log("viewDataaaaaaaa", viewData);
+
 		const _req = {
 			data: viewData[0],
 		};
@@ -383,9 +387,13 @@ const ViewCreation = (props) => {
 		setViewStatus(res.rep_stauts);
 	};
 
+
 	return (
 		<div className=" viewCreation-container">
-			<BreadCrumbWrapper />
+			<BreadCrumbWrapper
+				urlName={`/dashboard/view_creation/${viewDisplayId}&1`}
+				value={viewDisplayId}
+				data="Untitled" />
 			<div className="breadcrumbs-btn">
 				{Object.keys(parameters) &&
 					Object.keys(parameters).length > 0 &&
@@ -535,6 +543,8 @@ const ViewCreation = (props) => {
 								//	primarySelected={primarySelect}
 								newBatchData={newBatchData}
 								parentBatches={parentBatches}
+								molBatches={molBatches}
+								setMolBatches={setMolBatches}
 								viewSummaryBatch={viewSummaryBatch}
 								setViewSummaryBatch={setViewSummaryBatch}
 								viewJson={viewJson}
