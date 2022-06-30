@@ -1,5 +1,6 @@
 import {
 	BATCH_COVERAGE_DATA,
+	BATCH_DATA,
 	FUNCTION_MAP,
 	FUNCTION_NAME,
 	IS_LOAD_VIEW,
@@ -66,6 +67,11 @@ export const batchCoverage = payload => ({
 	type: BATCH_COVERAGE_DATA,
 	payload
 });
+
+export const getBatchData = payload => ({
+	type: BATCH_DATA,
+	payload
+})
 
 export const createVariable = payload => ({
 	type: SELECTED_VARIABLE,

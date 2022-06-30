@@ -35,13 +35,15 @@ const MathEditor = (props) => {
 	const {
 		newBatchData,
 		parentBatches,
+		molBatches,
+		setMolBatches,
 		viewJson,
 		setViewJson,
 		viewSummaryBatch,
 		setViewSummaryBatch,
 		materialId,
 	} = props;
-
+	console.log("propsssssssss matheditor", props);
 	const content = (
 		<div className="script-info">
 			<p className="script-help">
@@ -282,6 +284,8 @@ const MathEditor = (props) => {
 						rowDisable={rowDisable}
 						newBatchData={newBatchData}
 						parentBatches={parentBatches}
+						setMolBatches={setMolBatches}
+						molBatches={molBatches}
 						ischeckBox={ischeckBox}
 						viewJson={viewJson}
 						setViewJson={setViewJson}
