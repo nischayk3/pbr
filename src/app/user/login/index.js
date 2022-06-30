@@ -244,6 +244,7 @@ const Login = () => {
 			<div>
 				<Modal
 					title={forgotPasswordFlag && successfulAccountCreationFlag == false ? 'Forgot Password' : successfulAccountCreationFlag ? '' : 'Signup'}
+					style={{right:80,top:120}}
 					visible={visible}
 					onCancel={handleCancel}
 					footer={false}
