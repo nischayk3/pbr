@@ -42,6 +42,7 @@ export const SEND_CHART_LAYOUT = 'SEND_CHART_LAYOUT';
 
 export const GET_BATCH_COVERAGE = 'GET_BATCH_COVERAGE';
 export const PARAMETER_TABLE_DATA = 'PARAMETER_TABLE_DATA';
+export const BATCH_DATA = 'BATCH_DATA'
 
 // Report Designer Actions
 
@@ -80,8 +81,6 @@ export const NEW_COLUMN = 'NEW_COLUMN';
 export const VIEW_FUNCTION_NAME = 'VIEW_FUNCTION_NAME';
 export const MATH_VALUE = 'MATH_VALUE';
 export const LOAD_VIEW_RESPONSE = 'LOAD_VIEW_RESPONSE';
-
-
 
 export const DRUG_SUBSTANCE = 'DRUG_SUBSTANCE';
 export const DRUG_LOAD = 'DRUG_LOAD';
