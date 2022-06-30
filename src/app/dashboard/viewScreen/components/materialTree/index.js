@@ -92,7 +92,7 @@ const MaterialTree = (props) => {
 					}
 					finalData.push(data);
 
-					console.log("finalData....", finalData);
+
 					dispatch(sendSelectedParamData(finalData));
 
 					//dispatch(batchCoverage(getMolbatchData));

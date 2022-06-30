@@ -281,7 +281,7 @@ const ViewCreation = (props) => {
 			element.material_id = moleculeId;
 			element.files = selectedFiles;
 		});
-		console.log("viewDataaaaaaaa", viewData);
+
 		const _req = {
 			data: viewData[0],
 		};
@@ -387,7 +387,6 @@ const ViewCreation = (props) => {
 		setViewStatus(res.rep_stauts);
 	};
 
-	console.log("mol batchesss view", molBatches);
 
 	return (
 		<div className=" viewCreation-container">

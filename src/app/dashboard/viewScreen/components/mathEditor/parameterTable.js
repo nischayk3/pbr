@@ -76,7 +76,7 @@ const ParameterTable = (props) => {
 		molBatches,
 		setMolBatches,
 	} = props;
-	console.log("paramter table propssssss", props);
+
 	const Option = Select;
 	const dispatch = useDispatch();
 
@@ -243,7 +243,7 @@ const ParameterTable = (props) => {
 		let batchArr = []
 		let allMolBatches = molBatches && molBatches.map((e) => e.batch)
 		let totalMolBatches = molBatches
-		console.log("molBatches");
+
 		totalMolBatches && totalMolBatches.forEach((ele) => {
 			let batchObj = {}
 			Object.entries(getBatchData.batches).forEach(([key, value]) => {
@@ -257,7 +257,7 @@ const ParameterTable = (props) => {
 			})
 			batchArr.push(batchObj)
 		})
-		console.log("batchArr", batchArr);
+
 
 		const molBatchMerge = totalMolBatches.map((item, i) =>
 			Object.assign({}, item, batchArr[i])
@@ -270,7 +270,7 @@ const ParameterTable = (props) => {
 
 			molColumn.map((ele, i) => {
 				if (ele !== 'batch') {
-					console.log("eleeeeeeee", ele);
+
 					return (
 						batchColumn.push({
 							title: (
@@ -452,8 +452,7 @@ const ParameterTable = (props) => {
 			let functionTable = [...viewSummaryBatch];
 
 			let new_column_data = newColumnData.map((e) => e.batch_num);
-			console.log("new_column_data", new_column_data);
-			console.log("functionTable", functionTable);
+
 			functionTable.forEach((item) => {
 				let obj = {};
 				Object.entries(primarySelectedData).forEach(([key]) => {
@@ -462,14 +461,14 @@ const ParameterTable = (props) => {
 						else obj[functionName] = false;
 					}
 				});
-				console.log("obj", obj);
+
 				arr.push(obj);
 			});
-			console.log("arr", arr);
+
 			const arr3 = functionTable.map((item, i) =>
 				Object.assign({}, item, arr[i])
 			);
-			console.log("arr3", arr3);
+
 			setViewSummaryBatch(arr3);
 			dispatch(createSummaryData(arr3));
 

@@ -43,7 +43,7 @@ const MathEditor = (props) => {
 		setViewSummaryBatch,
 		materialId,
 	} = props;
-	console.log("propsssssssss matheditor", props);
+
 	const content = (
 		<div className="script-info">
 			<p className="script-help">
@@ -127,7 +127,7 @@ const MathEditor = (props) => {
 			let paramKey = [];
 			// const viewJsonData = [selectedParameters];
 			const viewJsonData = [...viewJson];
-			console.log("......selectedParameters", selectedParameters);
+
 			viewJsonData.forEach((element, index) => {
 				paramKey.push(Object.keys(element.parameters));
 			});
