@@ -80,7 +80,7 @@ describe("Report", () => {
         cy.get(':nth-child(1) > [style="text-align: center;"] > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click();
         cy.get('.ant-popover-buttons > .ant-btn-primary > span').click();
         cy.wait(2000)
-        cy.get(':nth-child(1) > :nth-child(2) > u > a').click();
+        // cy.get(':nth-child(1) > :nth-child(2) > u > a').click();
     })
 
     it('Load Report generator via search', () => {
