@@ -6,6 +6,7 @@ import { Collapse, Row, Col } from "antd";
 const { Panel } = Collapse;
 import { initialLayout } from "./displayFunctions";
 
+/* istanbul ignore next */
 const DisplayApprover = ({ postChartData, setPostChartData }) => {
   const [layoutDataApprover, setLayoutDataApprover] = useState(initialLayout);
   useEffect(() => {

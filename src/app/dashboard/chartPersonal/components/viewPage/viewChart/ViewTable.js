@@ -3,7 +3,7 @@ import { Button, Table, Avatar } from "antd";
 import { showNotification } from "../../../../../../duck/actions/commonActions";
 //redux
 import { useDispatch } from "react-redux";
-
+/* istanbul ignore next */
 const ViewTable = ({
   searchTableData,
   deepSearch1,
