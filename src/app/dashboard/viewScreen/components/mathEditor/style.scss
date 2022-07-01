@@ -359,7 +359,6 @@ span.statusClosed {
 }
 
 .batch-table-block {
-	padding: 20px 0 0 0;
 	overflow: hidden;
 
 	.batch-table-footer {
@@ -369,5 +368,11 @@ span.statusClosed {
 			margin: 0px 4px;
 		}
 
+	}
+}
+
+.batch-modal {
+	.ant-input-group-wrapper {
+		width: 50%;
 	}
 }
