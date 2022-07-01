@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Checkbox, Empty, Radio, Select, Table, Modal, Button, Tag } from "antd";
+import { Checkbox, Empty, Radio, Select, Table, Modal, Button, Tag, Input } from "antd";
 import { CheckOutlined, CloseOutlined, RightCircleOutlined } from "@ant-design/icons";
 import {
 	createSummaryData,
@@ -15,7 +15,6 @@ import { hideLoader } from "../../../../../duck/actions/commonActions";
 
 let paramType = "";
 let counter = 0;
-
 
 const ParameterTable = (props) => {
 	const paramReducer = useSelector((state) => state.viewCreationReducer);
@@ -58,7 +57,6 @@ const ParameterTable = (props) => {
 	const [isBatchTableVisible, setIsBatchTableVisible] = useState(false);
 	const [fun, setFun] = useState({});
 	const [filterTable, setFilterTable] = useState([]);
-	const [batchTableData, setBatchTableData] = useState([]);
 	const [molBatchColumn, setMolBatchColumn] = useState([]);
 
 
@@ -78,6 +76,7 @@ const ParameterTable = (props) => {
 	} = props;
 
 	const Option = Select;
+	const { Search } = Input;
 	const dispatch = useDispatch();
 
 	let columns = [
@@ -92,7 +91,7 @@ const ParameterTable = (props) => {
 			title: "PRIMARY",
 			dataIndex: "primary",
 			key: "primary",
-			width: 100,
+			width: 80,
 			fixed: "left",
 			render: (text, record, index) => {
 				return (
@@ -151,7 +150,6 @@ const ParameterTable = (props) => {
 		}
 	];
 
-
 	let batchColumn = [
 		{
 			title: "BATCHES",
@@ -160,8 +158,6 @@ const ParameterTable = (props) => {
 			width: 80,
 		}
 	]
-
-
 
 	const data =
 		tableData !== undefined && tableData.length > 0
@@ -172,7 +168,8 @@ const ParameterTable = (props) => {
 		return self.indexOf(value) === index;
 	};
 
-	const paramColumn = data && data.filter(uniqueArr);
+	const uniqueCol = data && data.filter(uniqueArr);
+	const paramColumn = uniqueCol.slice(0, 10)
 
 	paramColumn.map((item) => {
 		if (
@@ -194,6 +191,7 @@ const ParameterTable = (props) => {
 					key: `${item}-4`,
 					width: 80,
 					render: (value, record, rowIndex) => {
+
 						if (!rowDisable) {
 							if (value) {
 								return (
@@ -258,7 +256,6 @@ const ParameterTable = (props) => {
 			batchArr.push(batchObj)
 		})
 
-
 		const molBatchMerge = totalMolBatches.map((item, i) =>
 			Object.assign({}, item, batchArr[i])
 		);
@@ -267,7 +264,6 @@ const ParameterTable = (props) => {
 		if (molBatchMerge.length > 0) {
 			const molObjKey = molBatchMerge !== undefined && molBatchMerge.length > 0 ? Object.keys(molBatchMerge[0]) : []
 			const molColumn = molObjKey.filter(uniqueArr);
-
 			molColumn.map((ele, i) => {
 				if (ele !== 'batch') {
 
@@ -287,12 +283,13 @@ const ParameterTable = (props) => {
 							key: `${ele}-${i}`,
 							width: 80,
 							render: (value, record, rowIndex) => {
+								console.log("value, record, rowIndex", value, record, rowIndex, rowDisable);
 								if (!rowDisable) {
 									if (value) {
 										return (
 											<Checkbox
 												className="custom-check"
-												onChange={(e) => onChangeBatch(e, record, rowIndex, item)}
+												onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
 												checked={value}
 											/>
 										);
@@ -300,7 +297,7 @@ const ParameterTable = (props) => {
 										return (
 											<Checkbox
 												className="custom-check"
-												onChange={(e) => onChangeBatch(e, record, rowIndex, item)}
+												onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
 											/>
 										);
 									} else {
@@ -379,7 +376,6 @@ const ParameterTable = (props) => {
 	useEffect(() => {
 		let count = 0;
 		let varArr = [];
-
 		if (variableCreate === true) {
 			count++;
 			const varParameter = [...parameters];
@@ -402,7 +398,6 @@ const ParameterTable = (props) => {
 	}, [variableCreate]);
 
 	useEffect(() => {
-
 		sortArray(props.selectedVar, props.selectedData);
 	}, [props.selectedVar]);
 
@@ -461,7 +456,6 @@ const ParameterTable = (props) => {
 						else obj[functionName] = false;
 					}
 				});
-
 				arr.push(obj);
 			});
 
@@ -558,12 +552,6 @@ const ParameterTable = (props) => {
 		dispatch(hideLoader());
 	};
 
-	// const handleAggregationChange = (text, record, value, index) => {
-	// 	let newAggrValue = [...tableData];
-	// 	newAggrValue[index].aggregation =
-	// 		value.value !== undefined ? value.value : value;
-	// 	setTableData(newAggrValue);
-	// };
 
 	const handleAggregationChange = (text, record, value, index) => {
 		let newAggrValue = [...tableData];
@@ -603,6 +591,20 @@ const ParameterTable = (props) => {
 		setIsBatchTableVisible(false);
 	}
 
+	const TableSearch = value => {
+		const tableData = [...molBatches];
+		// if (value == '') {
+		// setMolBatches(molBatchMerge);
+		// }
+		const filterTable = tableData.filter(o =>
+			Object.keys(o).some(k =>
+				String(o[k]).toLowerCase().includes(value.toLowerCase())
+			)
+
+		);
+		setMolBatches(filterTable);
+	};
+	console.log("rowDisableeeeeeee", rowDisable);
 	return (
 		<>
 			<div className="param-table">
@@ -642,7 +644,6 @@ const ParameterTable = (props) => {
 									paramsObj["aggregation"] = element.aggregation;
 									paramArr.push(paramsObj);
 								});
-
 								setParameters(paramArr);
 								props.callbackCheckbox(true);
 								setSelectedRowKeys(selectedRowKeys);
@@ -663,13 +664,23 @@ const ParameterTable = (props) => {
 				)}
 			</div>
 			<Modal
-				title=""
+				title={(
+					<Search
+						placeholder='Search'
+						allowClear
+						//enterButton='Search'
+						// size='large'
+						onSearch={TableSearch}
+					/>
+				)}
 				width={700}
 				visible={isBatchTableVisible}
 				onCancel={handleTableCancel}
 				footer={null}
+				className="batch-modal"
 			>
 				<div className="batch-table-block">
+
 					<Table
 						columns={molBatchColumn}
 						dataSource={molBatches}

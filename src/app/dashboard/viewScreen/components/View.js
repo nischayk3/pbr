@@ -217,6 +217,7 @@ const ViewCreation = (props) => {
 
 	//tree node click
 	const hierarchyProcessClick = (treeinfo) => {
+		console.log("treeinfo", treeinfo);
 		if (treeinfo && treeinfo.process_step) {
 			const _reqMol = {
 				data: {
@@ -420,16 +421,8 @@ const ViewCreation = (props) => {
 					</div>
 				) : (
 					<div className="viewCreation-btns">
-						{/* <Button
-							className="viewCreation-saveBtn"
-							// disabled={!viewDisplayId}
-							onClick={handleSaveVisible}
-						>
-							Share
-						</Button> */}
 						<Button
 							className="viewCreation-saveBtn"
-							// disabled={!viewDisplayId}
 							onClick={handleSaveVisible}
 						>
 							Save
@@ -455,26 +448,6 @@ const ViewCreation = (props) => {
 					<div className="viewCreation-leftBlocks bg-white">
 						<div className="viewCreation-parameterLookup">
 							<h4 className="viewCreation-blockHeader">Parameter Lookup</h4>
-							{/* <ParameterLookup
-								moleculeList={moleculeList}
-								setMoleculeList={setMoleculeList}
-								moleculeId={moleculeId}
-								setMoleculeId={setMoleculeId}
-								materialsList={materialsList}
-								setMaterialsList={setMaterialsList}
-								filterdData={filterdData}
-								setFilterdData={setFilterdData}
-								dataLoadingState={dataLoadingState}
-								setDataLoadingState={setDataLoadingState}
-								parentBatches={parentBatches}
-								setParentBatches={setParentBatches}
-								viewSummaryBatch={viewSummaryBatch}
-								setViewSummaryBatch={setViewSummaryBatch}
-								viewSummaryTable={viewSummaryTable}
-								setViewSummaryTable={setViewSummaryTable}
-								form={form}
-
-							/> */}
 							<ParamLookup
 								callbackMoleculeId={getMoleculeId}
 								callbackFilter={filterMolequles}
@@ -540,7 +513,6 @@ const ViewCreation = (props) => {
 							<MemoizedMathEditor
 								fromWorkflowScreen={fromWorkflowScreen}
 								paramTableData={paramTableData}
-								//	primarySelected={primarySelect}
 								newBatchData={newBatchData}
 								parentBatches={parentBatches}
 								molBatches={molBatches}

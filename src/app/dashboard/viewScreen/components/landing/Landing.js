@@ -108,9 +108,21 @@ export default function Landing() {
 	};
 
 	const search = (value) => {
+		let arr = [];
 		setSearched(true);
-		const tableData = viewList;
-		const filterTableSearch = tableData.filter((o) =>
+		const tableData = [...viewList];
+
+		tableData.map((el) => {
+			let obj = {};
+			obj['view_disp_id'] = el.view_disp_id;
+			obj['view'] = el.view;
+			obj['view_name'] = el.view_name;
+			obj['view_status'] = el.view_status;
+			obj['created_by'] = el.created_by;
+			arr.push(obj);
+		})
+
+		const filterTableSearch = arr.filter((o) =>
 			Object.keys(o).some((k) =>
 				String(o[k]).toLowerCase().includes(value.toLowerCase())
 			)
@@ -221,7 +233,7 @@ export default function Landing() {
 													viewVersion: i.view_version,
 												},
 											}}
-
+										//	to={`${match.url}/${i.view_disp_id}&${i.view_version}`}
 										>
 
 											<StatusBlock
