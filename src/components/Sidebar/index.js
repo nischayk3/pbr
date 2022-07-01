@@ -182,7 +182,7 @@ const Sidebar = () => {
           key="sub6"
           mode="inline"
           icon={<FileProtectOutlined className="menu-icons" />}
-          title="Paper batch records"
+          title="Paper Batch Records"
         >
           <Menu.Item
             key="paper-batch-records"
