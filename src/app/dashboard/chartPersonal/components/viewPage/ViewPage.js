@@ -55,6 +55,7 @@ const ViewPage = () => {
   const [isPublish, setIsPublish] = useState(false);
   const [publishResponse, setPublishResponse] = useState({});
   const [approveReject, setApproveReject] = useState("");
+  const [disablePublishButton, setDisablePublishButton] = useState(false);
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -168,6 +169,16 @@ const ViewPage = () => {
     }
   }, [id]);
 
+  useEffect(()=>{
+	postChartData && postChartData.data && postChartData.data.forEach((el)=>{
+		if(el.chart_status==='APRD' || el.chart_status==='AWAP' ){
+			setDisablePublishButton(true);
+		}else{
+			setDisablePublishButton(false);
+		}
+	})
+  },[postChartData])
+
   return (
     <div className="custom-wrapper bread-wrapper">
       <div className="sub-header">
@@ -206,6 +217,7 @@ const ViewPage = () => {
               <Button onClick={() => saveAs("saveas")}>Save As</Button>
               <Button onClick={() => saveAs("save")}>Save</Button>
               <Button
+			  	disabled={disablePublishButton}
                 onClick={() => {
                   setIsPublish(true);
                   setApproveReject("P");

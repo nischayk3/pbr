@@ -31,7 +31,6 @@ const ViewSummaryData = (props) => {
 
 	useEffect(() => {
 		if (functionName !== "") {
-
 			//	let fun_table = [...funTableData]
 			let fun_table = [...summaryTableData]
 			setFunTableData(fun_table);
@@ -39,7 +38,6 @@ const ViewSummaryData = (props) => {
 	}, [summaryTableData]);
 
 	useEffect(() => {
-
 		if (funTableData.length > 0) {
 			const objKey =
 				funTableData !== undefined && funTableData.length > 0
@@ -111,12 +109,13 @@ const ViewSummaryData = (props) => {
 	}, [funTableData]);
 
 	useEffect(() => {
-
 		if (isLoadView) {
+
 			let fun = [];
 			let funData = [];
 
 			const loadViewJson = [...viewJson];
+
 			let functions_name =
 				loadViewJson[0] && loadViewJson[0].functions
 					? loadViewJson[0].functions
@@ -128,6 +127,7 @@ const ViewSummaryData = (props) => {
 					return fun.push(element.name);
 				});
 			}
+
 			if (parentBatches.length > 0) {
 				const loadTableData =
 					parentBatches !== undefined && parentBatches.length > 0

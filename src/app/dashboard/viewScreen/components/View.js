@@ -61,11 +61,13 @@ const ViewCreation = (props) => {
 	const getData = useRef();
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
 	const [parentBatches, setParentBatches] = useState([]);
+	const [molBatches, setMolBatches] = useState([]);
+
 	const [viewSummaryBatch, setViewSummaryBatch] = useState([]);
 	const [newBatchData, setNewBatchData] = useState([]);
 	const [viewDisplayId, setViewDisplayId] = useState("");
-	const [viewStatus, setViewStatus] = useState();
-	const [viewVersion, setViewVersion] = useState();
+	const [viewStatus, setViewStatus] = useState('');
+	const [viewVersion, setViewVersion] = useState('');
 	const [filesListTree, setFilesListTree] = useState([]);
 	const [viewSummaryTable, setViewSummaryTable] = useState([]);
 	const [paramTableData, setParamTableData] = useState([]);
@@ -126,6 +128,8 @@ const ViewCreation = (props) => {
 				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes.Data }));
 				if (moleculeRes.Data && moleculeRes.Data.mol_batches && moleculeRes.Data.mol_batches.length > 0) {
 					setViewSummaryBatch(moleculeRes.Data.mol_batches);
+					setParentBatches(moleculeRes.Data.mol_batches)
+					setMolBatches(moleculeRes.Data.mol_batches)
 				}
 				dispatch(hideLoader());
 			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
@@ -213,6 +217,7 @@ const ViewCreation = (props) => {
 
 	//tree node click
 	const hierarchyProcessClick = (treeinfo) => {
+		console.log("treeinfo", treeinfo);
 		if (treeinfo && treeinfo.process_step) {
 			const _reqMol = {
 				data: {
@@ -274,8 +279,6 @@ const ViewCreation = (props) => {
 			element.functions = viewState.functions;
 			element.parameters = viewState.parameters;
 			element.all_parameters = viewState.selectedParamData;
-			element.view_disp_id = viewDisplayId;
-			element.view_status = viewStatus;
 			element.material_id = moleculeId;
 			element.files = selectedFiles;
 		});
@@ -385,9 +388,13 @@ const ViewCreation = (props) => {
 		setViewStatus(res.rep_stauts);
 	};
 
+
 	return (
 		<div className=" viewCreation-container">
-			<BreadCrumbWrapper />
+			<BreadCrumbWrapper
+				urlName={`/dashboard/view_creation/${viewDisplayId}&1`}
+				value={viewDisplayId}
+				data="Untitled" />
 			<div className="breadcrumbs-btn">
 				{Object.keys(parameters) &&
 					Object.keys(parameters).length > 0 &&
@@ -416,14 +423,6 @@ const ViewCreation = (props) => {
 					<div className="viewCreation-btns">
 						<Button
 							className="viewCreation-saveBtn"
-							// disabled={!viewDisplayId}
-							onClick={handleSaveVisible}
-						>
-							Share
-						</Button>
-						<Button
-							className="viewCreation-saveBtn"
-							// disabled={!viewDisplayId}
 							onClick={handleSaveVisible}
 						>
 							Save
@@ -431,6 +430,7 @@ const ViewCreation = (props) => {
 
 						<Button
 							className="view-publish-btn"
+							disabled={viewStatus === 'AWAP' || viewStatus === 'APRD'}
 							onClick={() => {
 								setIsPublish(true);
 								setApproveReject("P");
@@ -448,26 +448,6 @@ const ViewCreation = (props) => {
 					<div className="viewCreation-leftBlocks bg-white">
 						<div className="viewCreation-parameterLookup">
 							<h4 className="viewCreation-blockHeader">Parameter Lookup</h4>
-							{/* <ParameterLookup
-								moleculeList={moleculeList}
-								setMoleculeList={setMoleculeList}
-								moleculeId={moleculeId}
-								setMoleculeId={setMoleculeId}
-								materialsList={materialsList}
-								setMaterialsList={setMaterialsList}
-								filterdData={filterdData}
-								setFilterdData={setFilterdData}
-								dataLoadingState={dataLoadingState}
-								setDataLoadingState={setDataLoadingState}
-								parentBatches={parentBatches}
-								setParentBatches={setParentBatches}
-								viewSummaryBatch={viewSummaryBatch}
-								setViewSummaryBatch={setViewSummaryBatch}
-								viewSummaryTable={viewSummaryTable}
-								setViewSummaryTable={setViewSummaryTable}
-								form={form}
-
-							/> */}
 							<ParamLookup
 								callbackMoleculeId={getMoleculeId}
 								callbackFilter={filterMolequles}
@@ -533,9 +513,10 @@ const ViewCreation = (props) => {
 							<MemoizedMathEditor
 								fromWorkflowScreen={fromWorkflowScreen}
 								paramTableData={paramTableData}
-								//	primarySelected={primarySelect}
 								newBatchData={newBatchData}
 								parentBatches={parentBatches}
+								molBatches={molBatches}
+								setMolBatches={setMolBatches}
 								viewSummaryBatch={viewSummaryBatch}
 								setViewSummaryBatch={setViewSummaryBatch}
 								viewJson={viewJson}

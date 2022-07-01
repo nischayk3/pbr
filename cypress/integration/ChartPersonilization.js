@@ -85,18 +85,14 @@ describe('Renders chart personalization', () => {
 
   it('Chart Personalization redirecting on create new correctly', () => {
     const url = Cypress.config().baseUrl
-    cy.visit(url + '/#/dashboard/chart_personalization')
     cy.intercept('GET', '/services/v1/chart-list?chart_status=ALL', { fixture: 'chartList.json' }).as('chartList')
-
-    cy.wait('@chartList').then(() => {
-      cy.intercept('GET', '/services/v1/views-list?vew_status=APRD', { fixture: 'viewListAPRD.json' }).as('viewList')
-      cy.intercept('GET', '/services/v1/site_ids?view_id=', { fixture: 'siteIdsEQUALS.json' }).as('siteIds')
-      cy.get('.create-new').first().click()
-      cy.log('Waiting for view-list and site_ids apis to finish')
-      cy.wait('@viewList')
-      cy.wait('@siteIds')
+    cy.intercept('GET', '/services/v1/views-list?vew_status=APRD', { fixture: 'viewListAPRD.json' }).as('viewList')
+    cy.intercept('GET', '/services/v1/site_ids?view_id=', { fixture: 'siteIdsEQUALS.json' }).as('siteIds')
+    cy.visit(url + '/#/dashboard/chart_personalization')
+    cy.wait(5000)
+    cy.get('.create-new').first().click()
     })
-  })
+
 
   it('View is working correctly', () => {
     cy.wait(1000)
@@ -620,9 +616,10 @@ describe('Renders chart personalization', () => {
 
   it('Saves correctly', () => {
     cy.log('Saving chart')
-    cy.intercept('PUT', '/services/v1/chart-object', { fixture: 'saveChart.json' }).as('saveChart')
+    // cy.intercept('PUT', '/services/v1/chart-object', { fixture: 'saveChart.json' }).as('saveChart')
+    cy.wait(3000)
     cy.get('.ant-btn').eq(3).click()
-    cy.wait('@saveChart')
+    cy.wait(5000)
   })
 
   it('Publishes correctly', () => {

@@ -19,6 +19,7 @@ const { TabPane } = Tabs;
 const alertList = ['Limits', 'Rules', 'Threshold'];
 const scheduleList = ['Repeat Once', 'Daily', 'Weekly', 'Monthly'];
 const timeRange = ['Hour', 'Minutes', 'Seconds'];
+/* istanbul ignore next */
 const alertEvaluation = () => {
 	const [selectedAlert, setSelectedAlert] = useState('');
 	const [selectedSchedule, setSelectedSchedule] = useState('');

@@ -85,17 +85,15 @@ it("click on search button",()=>{
 	cy.get('#genealogy-search').click({ force: true })
 	cy.wait(6000)
 })
-it("searching node",()=>{
-
+// it("searching node",()=>{
 	
-		
-		cy.get('#102279687 > #process-img').click({ force: true })
-		cy.get('#view-details-popup > span').click({ force: true })
-		cy.wait(6000)
-		cy.get('.expand-drawer > img').click({ force: true })
-		cy.wait(3000)
-		cy.get('.popout-table > .ant-collapse > :nth-child(1) > .ant-collapse-header > .panel-header').click()
-})
+// 		cy.get('#102279687 > #process-img').click({ force: true })
+// 		cy.get('#view-details-popup > span').click({ force: true })
+// 		cy.wait(6000)
+// 		cy.get('.expand-drawer > img').click({ force: true })
+// 		cy.wait(3000)
+// 		cy.get('.popout-table > .ant-collapse > :nth-child(1) > .ant-collapse-header > .panel-header').click()
+// })
 	
 
 	it("search again",()=>{
@@ -184,14 +182,21 @@ it("searching node",()=>{
 		cy.get(':nth-child(3) > .ant-drawer > .ant-drawer-mask').click()
 	});
 
-	it("click on backward from node popup",()=>{
+	it("click on material node image",()=>{
 		cy.get('#1091460 > #material-img').click();
+	})
+
+	it("click on backward from node popup",()=>{
 		cy.get('#backword-genealogy-popup > span').click()
 	})
 
-	it("click on purchase order",()=>{
+	it("click on process image",()=>{
 		cy.wait(5000)
 		cy.get("#process-img").click();
+	})
+
+	it("click on purchase order",()=>{
+		
 		cy.get("#view-details-popup").click();
 	});
 
@@ -200,18 +205,21 @@ it("searching node",()=>{
 		cy.get(':nth-child(3) > .ant-drawer > .ant-drawer-mask').click()
 	});
 
-	it("click on forward from node popup",()=>{
-		cy.get('#1091460 > #material-img').click();
-		cy.get('#forward-genealogy-popup > span').click();
-	})
 
-	it("fileupload",()=>{
-		cy.wait(3000)
-		cy.get('#1091460 > #material-img').click();
-		cy.wait(3000)
-		cy.get('#upload-file-popup').click();
+	// it("click on forward from node popup",()=>{
+	// 	cy.wait(5000)
+	// 	cy.get('#1091460 > #material-img').click();
+	// 	cy.get(3000)
+	// 	cy.get('#forward-genealogy-popup > span').click();
+	// })
 
-	})
+	// it("fileupload",()=>{
+	// 	cy.wait(3000)
+	// 	cy.get('#1091460 > #material-img').click();
+	// 	cy.wait(3000)
+	// 	cy.get('#upload-file-popup').click();
+
+	// })
 
 	// // it("Select wrong file in popup",()=>{
 	// // 	cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/cypres_manual_duplicate_approved_data.xlsx'},{ force: true })
@@ -220,20 +228,20 @@ it("searching node",()=>{
 
 	// // });
 
-	it("Select multi file in popup",()=>{
-		cy.wait(5000)
-		cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/batch_record_1.pdf'},{ force: true })
-		cy.wait(3000)
-		cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/batch_record_1.pdf'},{ force: true })
-		cy.wait(3000)
-		cy.get('.upload-btn > :nth-child(1) > span').click()
+	// it("Select multi file in popup",()=>{
+	// 	cy.wait(5000)
+	// 	cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/batch_record_1.pdf'},{ force: true })
+	// 	cy.wait(3000)
+	// 	cy.get('input[type=file]').selectFile({contents:'cypress/filefortest/batch_record_1.pdf'},{ force: true })
+	// 	cy.wait(3000)
+	// 	cy.get('.upload-btn > :nth-child(1) > span').click()
 
-	});
+	// });
 
-	it("closing file popup",()=>{
-		cy.wait(3000)
-		cy.get('.ant-modal-close-x').click()
-	})
+	// it("closing file popup",()=>{
+	// 	cy.wait(3000)
+	// 	cy.get('.ant-modal-close-x').click()
+	// })
 	it("going back to filter screen",()=>{
 		cy.get('#rc-tabs-0-tab-1').click()
 	})
@@ -269,7 +277,9 @@ it("searching node",()=>{
 	  cy.get("#clear-search").click()
 	})
 
-
+	it("search item",()=>{
+		cy.get("#clear-search").click()
+	})
 
 	it("reload for backward 404",()=>{
 		cy.reload()
@@ -340,6 +350,18 @@ it("click on search button",()=>{
 	cy.get('#genealogy-search').click({ force: true })
 	cy.wait(6000)
 })
+
+it("Click on node",()=>{
+	cy.reload()
+	cy.wait(3000)
+})
+
+it("Reload final",()=>{
+	cy.reload()
+	cy.wait(3000)
+})
+
+
 
 	
 

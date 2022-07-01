@@ -108,15 +108,28 @@ export default function landingPage(props) {
 
 	//landing page search
 	const landingSearch = value => {
-		setSearchedLanding(true);
-		const tableData = dashboardData;
-		const filterTable = tableData.filter(o =>
-			Object.keys(o).some(k =>
-				String(o[k]).toLowerCase().includes(value.toLowerCase())
-			)
-		);
+		let arr = [];
+		if (value == '') {
+			setSearchedLanding(false);
+		} else {
+			setSearchedLanding(true);
+			const tableData = [...dashboardData];
+			tableData.map((el) => {
+				let obj = {};
+				obj['dashboard_disp_id'] = el.dashboard_disp_id;
+				obj['dashboard_name'] = el.dashboard_name;
+				obj['dashboard_status'] = el.dashboard_status;
+				obj['created_by'] = el.created_by;
+				arr.push(obj);
+			})
+			const filterTable = arr.filter(o =>
+				Object.keys(o).some(k =>
+					String(o[k]).toLowerCase().includes(value.toLowerCase())
+				)
+			);
 
-		setFilterTableLanding(filterTable);
+			setFilterTableLanding(filterTable);
+		}
 	};
 
 	const showModal = () => {
@@ -219,7 +232,7 @@ export default function landingPage(props) {
 						'linear-gradient(180deg, rgba(199, 144, 129, 0.15) 0%, rgba(223, 165, 121, 0.56) 100%)',
 				}}
 				title={`Howdy ${localStorage.getItem('username')},`}
-				description='Lets get designing some report templates'
+				description='Time to draw up some charts? Lets go!'
 				source={illustrations}
 				sourceClass='dashboard-image'
 			/>
@@ -286,7 +299,7 @@ export default function landingPage(props) {
 											return (
 												<Col
 													className='gutter-row'
-													span={8}
+													span={6}
 													style={{ marginTop: '10px' }}
 													key={index}>
 													<div
@@ -313,7 +326,7 @@ export default function landingPage(props) {
 			{isModalVisible && (
 				<Modal
 					className='dashboard-landing-modal'
-					title='Create new dashboard'
+					title='Create new configuration'
 					visible={isModalVisible}
 					//onOk={handleOk}
 					onCancel={handleCancel}
@@ -335,9 +348,9 @@ export default function landingPage(props) {
 							</Col>
 							<Col span={12}>
 								<Row>
-									<p>Let's give your dashboard a name</p>
+									<p>Let's give your configurator a name</p>
 									<Input
-										placeholder='Enter Dashboard Name'
+										placeholder='Enter Configurator Name'
 										onChange={handleDashboardName}
 										value={props.dashboardName}
 									/>

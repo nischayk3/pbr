@@ -14,6 +14,7 @@ import { postChartPlotData } from "../../../../../../services/chartPersonalizati
 
 const { TextArea } = Input;
 //main component
+/* istanbul ignore next */
 const ExclusionPopup = ({
   exclusionValues,
   setIsModalVisible,

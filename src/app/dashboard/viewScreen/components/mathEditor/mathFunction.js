@@ -244,9 +244,9 @@ const MathFunction = (props) => {
 							>
 								Cancel
 							</Button>
-							<Button type="text" className="custom-primary-btn ">
+							{/* <Button type="text" className="custom-primary-btn ">
 								Save as a copy
-							</Button>
+							</Button> */}
 							<Button
 								onClick={() => {
 									handleSave();
@@ -268,9 +268,13 @@ const MathFunction = (props) => {
 				footer={null}
 			>
 				<Table
-					className="eval-table"
 					columns={DataColumns}
 					dataSource={evalTable}
+					size="small"
+					scroll={{ y: 450 }}
+					rowClassName={(index) =>
+						index % 2 === 0 ? "table-row-light" : "table-row-dark"
+					}
 				/>
 			</Modal>
 		</>

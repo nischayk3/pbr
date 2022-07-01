@@ -35,6 +35,8 @@ const MathEditor = (props) => {
 	const {
 		newBatchData,
 		parentBatches,
+		molBatches,
+		setMolBatches,
 		viewJson,
 		setViewJson,
 		viewSummaryBatch,
@@ -123,7 +125,9 @@ const MathEditor = (props) => {
 	useEffect(() => {
 		if (isLoadView) {
 			let paramKey = [];
-			const viewJsonData = [selectedParameters];
+			// const viewJsonData = [selectedParameters];
+			const viewJsonData = [...viewJson];
+
 			viewJsonData.forEach((element, index) => {
 				paramKey.push(Object.keys(element.parameters));
 			});
@@ -280,6 +284,8 @@ const MathEditor = (props) => {
 						rowDisable={rowDisable}
 						newBatchData={newBatchData}
 						parentBatches={parentBatches}
+						setMolBatches={setMolBatches}
+						molBatches={molBatches}
 						ischeckBox={ischeckBox}
 						viewJson={viewJson}
 						setViewJson={setViewJson}

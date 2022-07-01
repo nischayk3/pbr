@@ -1,6 +1,7 @@
 import { FUNCTION_TEXT, MOLECULE_ID } from "../types/types";
 import {
 	BATCH_COVERAGE_DATA,
+	BATCH_DATA,
 	FUNCTION_MAP,
 	FUNCTION_NAME,
 	IS_LOAD_VIEW,
@@ -45,7 +46,8 @@ const initState = {
 	newColumn: [],
 	viewFunctionName: '',
 	mathValue: '',
-	loadResponse: []
+	loadResponse: [],
+	batchData: []
 };
 
 export default (state = initState, action) => {
@@ -94,6 +96,8 @@ export default (state = initState, action) => {
 			return { ...state, mathValue: action.payload };
 		case LOAD_VIEW_RESPONSE:
 			return { ...state, loadResponse: action.payload };
+		case BATCH_DATA:
+			return { ...state, batchData: action.payload };
 		case RESET_VIEW:
 			return initState;
 		default:

@@ -338,6 +338,8 @@ function Genealogy() {
 	/**
 	 *TODO: get PBR Data output of node
 	 */
+
+	/* istanbul ignore next */
 	const getPBRData = async _reqPbrBatch => {
 		console.log("getPBRData", _reqPbrBatch);
 		try {
@@ -357,6 +359,7 @@ function Genealogy() {
 		}
 	};
 
+	/* istanbul ignore next */
 	const isDrawerVisible = val => {
 		setIsDrawer(val);
 		setShowView(true);
@@ -398,6 +401,7 @@ function Genealogy() {
 	// 	}
 	// };
 
+	/* istanbul ignore next */
 	const fileUpload = async _fileRequest => {
 		try {
 			setUploading(true);
@@ -456,6 +460,7 @@ function Genealogy() {
 		}
 	};
 
+	/* istanbul ignore next */
 	const geanealogyFileDataUpload = async _dataReq => {
 		try {
 			const dataResponse = await genealogyDataUpload(_dataReq);
@@ -471,11 +476,12 @@ function Genealogy() {
 		}
 	};
 
+	/* istanbul ignore next */
 	const handleClickUpload = () => {
 		const file = uploadFile;
 		fileUpload(file);
 	};
-
+	/* istanbul ignore next */
 	const remove = targetKey => {
 		let newActiveKey = activateKey;
 		let lastIndex;
@@ -512,6 +518,7 @@ function Genealogy() {
 		setActivateKey(newActiveKey);
 	};
 
+	/* istanbul ignore next */
 	const files = {
 		name: 'file',
 		multiple: true,
@@ -553,17 +560,21 @@ function Genealogy() {
 		}
 	};
 
+	/* istanbul ignore next */
 	const dummyRequest = ({ onSuccess }) => {
 		setTimeout(() => {
 			onSuccess('ok');
 		}, 0);
 	};
 
+	/* istanbul ignore next */
 	const handleCancel = () => {
 		setIsUploadVisible(false);
 		setUploading(false);
 		setUploadFileName([])
 	};
+
+	/* istanbul ignore next */
 	const handleCancelSuccess = () => {
 		setIsFileUploaded(false);
 	};

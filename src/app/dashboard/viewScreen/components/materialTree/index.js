@@ -11,6 +11,7 @@ import { Tag, Tree } from "antd";
 import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
 import {
 	batchCoverage,
+	getBatchData,
 	sendSelectedParamData,
 } from "../../../../../duck/actions/viewAction";
 import "./style.scss";
@@ -54,11 +55,14 @@ const MaterialTree = (props) => {
 			};
 			dispatch(showLoader());
 			const getMolbatchData = await getParameterBatches(paramObj);
+
 			if (existing === undefined) {
+				const batchData = { ...getMolbatchData.Data }
+				dispatch(getBatchData(batchData))
 				let rowData = {};
-				let batchData = {};
+
 				setKey.push(keys);
-				let molBatch = getMolbatchData.Data.batches;
+				let molBatch = { ...getMolbatchData.Data.batches };
 				dispatch(hideLoader());
 				selectedData.push(record);
 				setCount(count + 1);
@@ -67,7 +71,6 @@ const MaterialTree = (props) => {
 					(x) => x.parameter_name == param
 				);
 				if (indexDuplicate != -1) {
-
 					rowData = Object.assign(molBatch);
 					rowData.sourceType = "material";
 					rowData.parameter_name = record.parameter_name;
@@ -88,8 +91,11 @@ const MaterialTree = (props) => {
 						});
 					}
 					finalData.push(data);
+
+
 					dispatch(sendSelectedParamData(finalData));
-					dispatch(batchCoverage(batchData));
+
+					//dispatch(batchCoverage(getMolbatchData));
 				} else {
 					dispatch(showNotification("error", "Function already exists"));
 				}
