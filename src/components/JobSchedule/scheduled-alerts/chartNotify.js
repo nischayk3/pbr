@@ -334,11 +334,20 @@ const ChartNotify = (props) => {
     setSelectedTimeRange("Hour")
   };
   const checkValidRequest = () => {
-    if (radioValue == 3 && everyDayValue.length <= 0) {
-      return false
+    if (selectedSchedule == 'Weekly') {
+      let arr = Object.keys(selectedDays).filter((k) => selectedDays[k] === true)
+      if (arr.length > 0)
+        return true
+      else
+        return false
     }
-    else
-      return true
+    else {
+      if (radioValue == 3 && everyDayValue.length <= 0) {
+        return false
+      }
+      else
+        return true
+    }
   }
 
   const SaveData = async () => {

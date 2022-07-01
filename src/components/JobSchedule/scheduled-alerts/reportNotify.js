@@ -186,13 +186,25 @@ const ReportNotify = (props) => {
   };
 
   const unLoad = (data) => {
+    onClear()
+    dispatch(showLoader())
     data = data[0];
     setEmailList(data.notify_emails);
-    setSelectedSchedule(data.frequency_unit);
+    if (data.frequency_unit == 'Once') {
+      setSelectedSchedule('Repeat Once');
+    }
+    else
+      setSelectedSchedule(data.frequency_unit ? data.frequency_unit : '');
     setScheduleEmailStartDate(data.email_config.scheduled_start);
     setScheduleEmailTime(data.email_config.scheduled_time);
     setRadioValue(data.email_config.daily_frequency);
+    if (data.email_config.daily_frequency == 3) {
+      setEveryDayValue(data.email_config.every_day_value)
+      handleSelectTimeChange(data.email_config.time_range)
+    }
     setSelectedDays(data.email_config.selected_days_obj);
+    dispatch(hideLoader())
+
   };
 
   const onClear = () => {
@@ -201,7 +213,7 @@ const ReportNotify = (props) => {
     setSelectedSchedule("Repeat Once");
     setScheduleEmailTime("");
     setRadioValue("");
-    setSelectedTimeRange("")
+    // setSelectedTimeRange("")
     setSelectedDays({
       Sunday: false,
       Monday: false,
@@ -212,7 +224,7 @@ const ReportNotify = (props) => {
       Saturday: false,
     });
     setEveryDayValue("")
-    setSelectedTimeRange("Hour")
+    handleSelectTimeChange("Hour")
   };
 
 
@@ -227,15 +239,24 @@ const ReportNotify = (props) => {
   const handleSelectTimeChange = (e) => {
     setSelectedTimeRange(e);
   };
-  const handleReceipientsChange = (value) => {
-    setEmailList(value);
-  };
+  // const handleReceipientsChange = (value) => {
+  //   setEmailList(value);
+  // };
   const checkValidRequest = () => {
-    if (radioValue == 3 && everyDayValue.length <= 0) {
-      return false
+    if (selectedSchedule == 'Weekly') {
+      let arr = Object.keys(selectedDays).filter((k) => selectedDays[k] === true)
+      if (arr.length > 0)
+        return true
+      else
+        return false
     }
-    else
-      return true
+    else {
+      if (radioValue == 3 && everyDayValue.length <= 0) {
+        return false
+      }
+      else
+        return true
+    }
   }
 
 
@@ -279,8 +300,12 @@ const ReportNotify = (props) => {
       }
       if (selectedSchedule == "Daily") {
         if (radioValue == 3) {
-          email_config["daily_frequency"] =
-            "Every" + " " + everyDayValue + " " + selectedTimeRange;
+          // email_config["daily_frequency"] =
+          //   "Every" + " " + everyDayValue + " " + selectedTimeRange;
+          email_config["daily_frequency"] = radioValue;
+          email_config["every_day_value"] = everyDayValue;
+          email_config["time_range"] = selectedTimeRange;
+
         } else {
           email_config["daily_frequency"] = radioValue;
         }
@@ -295,7 +320,7 @@ const ReportNotify = (props) => {
           selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
           radioValue,
           selectedTimeRange,
-          Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
+          selectedDays ? Object.keys(selectedDays).filter((k) => selectedDays[k] === true) : [],
           everyDayValue
         );
       req["frequency_unit"] =
@@ -362,7 +387,7 @@ const ReportNotify = (props) => {
   const handleChange = (selectedItems) => {
     setEmailList(selectedItems);
   };
-
+  console.log(selectedTimeRange)
   return (
     <div className="report-notify">
       <Tabs
@@ -580,9 +605,10 @@ const ReportNotify = (props) => {
                             <div style={{ width: "100px", marginTop: "15px" }}>
                               <SelectField
                                 // className='alerts-radio'
-                                placeholder=""
+                                placeholder="Hour"
                                 selectList={timeRange}
                                 value={selectedTimeRange}
+                                defaultValue={selectedTimeRange}
                                 onChangeSelect={(e) =>
                                   handleSelectTimeChange(e)
                                 }
@@ -601,7 +627,7 @@ const ReportNotify = (props) => {
                 <div className="select-days">
                   <Button
                     className={
-                      selectedDays["Sunday"]
+                      selectedDays && selectedDays["Sunday"]
                         ? "selected-day-buttons-one"
                         : "day-buttons-one"
                     }
@@ -611,7 +637,7 @@ const ReportNotify = (props) => {
                   </Button>
                   <Button
                     className={
-                      selectedDays["Monday"]
+                      selectedDays && selectedDays["Monday"]
                         ? "selected-day-buttons-report"
                         : "day-buttons-report"
                     }
@@ -621,7 +647,7 @@ const ReportNotify = (props) => {
                   </Button>
                   <Button
                     className={
-                      selectedDays["Tuesday"]
+                      selectedDays && selectedDays["Tuesday"]
                         ? "selected-day-buttons-report"
                         : "day-buttons-report"
                     }
@@ -631,7 +657,7 @@ const ReportNotify = (props) => {
                   </Button>
                   <Button
                     className={
-                      selectedDays["Wednesday"]
+                      selectedDays && selectedDays["Wednesday"]
                         ? "selected-day-buttons-report"
                         : "day-buttons-report"
                     }
@@ -641,7 +667,7 @@ const ReportNotify = (props) => {
                   </Button>
                   <Button
                     className={
-                      selectedDays["Thursday"]
+                      selectedDays && selectedDays["Thursday"]
                         ? "selected-day-buttons-report"
                         : "day-buttons-report"
                     }
@@ -651,7 +677,7 @@ const ReportNotify = (props) => {
                   </Button>
                   <Button
                     className={
-                      selectedDays["Friday"]
+                      selectedDays && selectedDays["Friday"]
                         ? "selected-day-buttons-report"
                         : "day-buttons-report"
                     }
@@ -661,7 +687,7 @@ const ReportNotify = (props) => {
                   </Button>
                   <Button
                     className={
-                      selectedDays["Saturday"]
+                      selectedDays && selectedDays["Saturday"]
                         ? "selected-day-buttons-report"
                         : "day-buttons-report"
                     }
@@ -674,7 +700,7 @@ const ReportNotify = (props) => {
                 ""
               )}
             </div>
-            <div>
+            {/* <div>
               {showReceipients && (
                 <>
                   <Select
@@ -698,7 +724,7 @@ const ReportNotify = (props) => {
                   <Divider />
                 </>
               )}
-            </div>
+            </div> */}
           </div>
         </TabPane>
       </Tabs>

@@ -55,7 +55,7 @@ export const BMS_APP_PYTHON_SERVICE = `${process.env.REACT_APP_PYTHON_SERVICES +
 	}`;
 
 //MDH Genealogy python
-export const MDH_APP_PYTHON_SERVICE = "https://bms-cpvdev.mareana.com";
+export const MDH_APP_PYTHON_SERVICE = 'http://localhost';
 
 export const MDH_APP_GENEALOGY = `${process.env.REACT_APP_GENEALOGY}`
 
