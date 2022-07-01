@@ -58,7 +58,6 @@ const ParameterTable = (props) => {
 	const [isBatchTableVisible, setIsBatchTableVisible] = useState(false);
 	const [fun, setFun] = useState({});
 	const [filterTable, setFilterTable] = useState([]);
-	const [batchTableData, setBatchTableData] = useState([]);
 	const [molBatchColumn, setMolBatchColumn] = useState([]);
 
 
@@ -92,7 +91,7 @@ const ParameterTable = (props) => {
 			title: "PRIMARY",
 			dataIndex: "primary",
 			key: "primary",
-			width: 100,
+			width: 80,
 			fixed: "left",
 			render: (text, record, index) => {
 				return (
@@ -151,7 +150,6 @@ const ParameterTable = (props) => {
 		}
 	];
 
-
 	let batchColumn = [
 		{
 			title: "BATCHES",
@@ -160,8 +158,6 @@ const ParameterTable = (props) => {
 			width: 80,
 		}
 	]
-
-
 
 	const data =
 		tableData !== undefined && tableData.length > 0
@@ -172,7 +168,8 @@ const ParameterTable = (props) => {
 		return self.indexOf(value) === index;
 	};
 
-	const paramColumn = data && data.filter(uniqueArr);
+	const uniqueCol = data && data.filter(uniqueArr);
+	const paramColumn = uniqueCol.slice(0, 10)
 
 	paramColumn.map((item) => {
 		if (
@@ -194,6 +191,7 @@ const ParameterTable = (props) => {
 					key: `${item}-4`,
 					width: 80,
 					render: (value, record, rowIndex) => {
+
 						if (!rowDisable) {
 							if (value) {
 								return (
@@ -287,12 +285,13 @@ const ParameterTable = (props) => {
 							key: `${ele}-${i}`,
 							width: 80,
 							render: (value, record, rowIndex) => {
+								console.log("value, record, rowIndex", value, record, rowIndex, rowDisable);
 								if (!rowDisable) {
 									if (value) {
 										return (
 											<Checkbox
 												className="custom-check"
-												onChange={(e) => onChangeBatch(e, record, rowIndex, item)}
+												onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
 												checked={value}
 											/>
 										);
@@ -300,7 +299,7 @@ const ParameterTable = (props) => {
 										return (
 											<Checkbox
 												className="custom-check"
-												onChange={(e) => onChangeBatch(e, record, rowIndex, item)}
+												onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
 											/>
 										);
 									} else {
@@ -603,6 +602,7 @@ const ParameterTable = (props) => {
 		setIsBatchTableVisible(false);
 	}
 
+	console.log("rowDisableeeeeeee", rowDisable);
 	return (
 		<>
 			<div className="param-table">
