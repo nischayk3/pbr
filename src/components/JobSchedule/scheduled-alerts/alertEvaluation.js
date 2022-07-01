@@ -47,7 +47,7 @@ const alertEvaluation = (props) => {
 	const dispatch = useDispatch();
 
 	const [selectedSchedule, setSelectedSchedule] = useState("Repeat Once");
-	const [selectedTimeRange, setSelectedTimeRange] = useState("Hour");
+	const [selectedTimeRange, setSelectedTimeRange] = useState("");
 	const showReceipients = false;
 	const [radioValue, setRadioValue] = useState(null);
 	const [emailList, setEmailList] = useState([]);
@@ -69,6 +69,9 @@ const alertEvaluation = (props) => {
 	// const [scheduleEmailTime, setScheduleEmailTime] = useState("");
 	const [everyDayValue, setEveryDayValue] = useState("");
 	const [emailLoad, setEmailLoad] = useState({});
+	const [isLoad, setIsLoad] = useState(false);
+
+
 
 	let days_obj = {
 		Sunday: 0,
@@ -81,7 +84,7 @@ const alertEvaluation = (props) => {
 	};
 
 	useEffect(() => {
-		if (activeTab == "email" && scheduleStartDate.length > 0) {
+		if (activeTab == "email" && scheduleStartDate.length > 0 && !isLoad) {
 			setModal(true);
 		}
 	});
@@ -113,11 +116,21 @@ const alertEvaluation = (props) => {
 	};
 
 	const checkValidRequest = () => {
-		if (radioValue == 3 && everyDayValue.length <= 0) {
-			return false
+		if (selectedSchedule == 'Weekly') {
+			let arr = Object.keys(selectedDays).filter((k) => selectedDays[k] === true)
+			console.log(arr)
+			if (arr.length > 0)
+				return true
+			else
+				return false
 		}
-		else
-			return true
+		else {
+			if (radioValue == 3 && everyDayValue.length <= 0) {
+				return false
+			}
+			else
+				return true
+		}
 	}
 	const getJobs = async (job) => {
 		dispatch(showLoader());
@@ -132,6 +145,7 @@ const alertEvaluation = (props) => {
 		let get_response = await getJob(req, request_headers);
 		try {
 			if (get_response.Data) {
+				setIsLoad(true)
 				unLoad(get_response.Data);
 			}
 
@@ -149,21 +163,31 @@ const alertEvaluation = (props) => {
 	const unLoad = (data) => {
 		dispatch(showLoader());
 		data = data[0];
-
-		if (data.job_type == "email") {
+		if (data && data.job_type && data.job_type == "email") {
 			setActiveTab("email");
 			setEmailLoad(data);
+			setModal(false)
 		} else {
-			if (data.email_config.selected_days_obj)
-				setSelectedDays(data.email_config.selected_days_obj);
-
-			setSelectedSchedule(data.frequency_unit);
-			setScheduleStartDate(data.scheduled_start);
-			setScheduleTime(data.email_config.scheduled_time);
+			if (data) {
+				if (data.email_config.selected_days_obj)
+					setSelectedDays(data.email_config.selected_days_obj);
+				if (data.frequency_unit == 'Once') {
+					setSelectedSchedule('Repeat Once');
+				}
+				else
+					setSelectedSchedule(data.frequency_unit ? data.frequency_unit : '');
+				setRadioValue(data.email_config.daily_frequency);
+				setScheduleStartDate(data.scheduled_start);
+				setScheduleTime(data.email_config.scheduled_time);
+				if (data.email_config.daily_frequency == 3) {
+					setEveryDayValue(data.email_config.every_day_value)
+					setSelectedTimeRange(data.email_config.time_range)
+				}
+			}
+			// setRadioValue(data.email_config.daily_frequency)
+			// setSelectedDays(data.email_config.selected_days_obj)
+			dispatch(hideLoader());
 		}
-		// setRadioValue(data.email_config.daily_frequency)
-		// setSelectedDays(data.email_config.selected_days_obj)
-		dispatch(hideLoader());
 	};
 	const convertExpresion = (
 		date,
@@ -174,9 +198,11 @@ const alertEvaluation = (props) => {
 		days,
 		everyDayValuee
 	) => {
+
 		let cron_string = "";
 		let time_split = time.split(":");
 		let date_split = date.split("-");
+
 
 		if (frequency == "Daily") {
 			if (radio == "Every Day") {
@@ -186,12 +212,12 @@ const alertEvaluation = (props) => {
 				cron_string = time_split[1] + " " + time_split[0] + " * * 1-5";
 			}
 			if (radio == 3) {
-				// if (f == "Minutes") {
-				// 	cron_string = `*/${everyDayValuee}  * * * *`;
-				// }
-				// if (f == "Seconds") {
-				// 	cron_string = `*/${everyDayValuee}  * * * *`;
-				// }
+				if (f == "Minutes") {
+					cron_string = `*/${everyDayValuee}  * * * *`;
+				}
+				if (f == "Seconds") {
+					cron_string = `*/${everyDayValuee}  * * * *`;
+				}
 				if (f == "Hour") {
 					// cron_string = '*' + ' ' + time_split[0] + ' * * *'
 					cron_string = `* */${everyDayValuee}  * * *`;
@@ -280,13 +306,16 @@ const alertEvaluation = (props) => {
 			let email_config = {};
 			email_config["scheduled_time"] = scheduleTime;
 			email_config["selected_days_obj"] = selectedDays;
+			email_config["daily_frequency"] = radioValue;
+			email_config["every_day_value"] = everyDayValue;
+			email_config["time_range"] = selectedTimeRange;
 			email_config["frequency"] = convertExpresion(
 				scheduleStartDate,
 				scheduleTime,
 				selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
 				radioValue,
 				selectedTimeRange,
-				Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
+				selectedDays ? Object.keys(selectedDays).filter((k) => selectedDays[k] === true) : [],
 				everyDayValue
 			);
 			req["email_config"] = email_config;
@@ -299,7 +328,7 @@ const alertEvaluation = (props) => {
 						selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
 						radioValue,
 						selectedTimeRange,
-						Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
+						selectedDays ? Object.keys(selectedDays).filter((k) => selectedDays[k] === true) : [],
 						everyDayValue
 					);
 			req["frequency_unit"] =
@@ -316,6 +345,7 @@ const alertEvaluation = (props) => {
 
 			if (res.Status == 200) {
 				dispatch(showNotification("success", "Saved"));
+				setIsLoad(false)
 			} else {
 				dispatch(showNotification("error", res.Message));
 			}
@@ -335,14 +365,16 @@ const alertEvaluation = (props) => {
 		// setstartTimeIso(moment(date).toISOString());
 	};
 
-	// const onChangeEmailStart = (date, dateString) => {
-	// 	setScheduleEmailStartDate(dateString);
-	// 	// setstartTimeIso(moment(date).toISOString());
-	// };
 	const onChangeTime = (date, dateString) => {
 		setScheduleTime(dateString);
 		// setstartTimeIso(moment(date).toISOString());
 	};
+
+	// const onChangeEmailStart = (date, dateString) => {
+	// 	setScheduleEmailStartDate(dateString);
+	// 	// setstartTimeIso(moment(date).toISOString());
+	// };
+
 	// const onChangeEmailTime = (date, dateString) => {
 	// 	setScheduleEmailTime(dateString);
 	// 	// setstartTimeIso(moment(date).toISOString());
@@ -493,9 +525,10 @@ const alertEvaluation = (props) => {
 														<div style={{ width: "102px", marginTop: "18px" }}>
 															<SelectField
 																className="alerts-radio"
-																defaultValue={selectedTimeRange}
+																// defaultValue={selectedTimeRange}
+																placeholder="Hour"
 																selectList={timeRange}
-																value={selectedTimeRange}
+																selectedValue={selectedTimeRange}
 																onChangeSelect={(e) =>
 																	handleSelectTimeChange(e)
 																}
@@ -515,7 +548,7 @@ const alertEvaluation = (props) => {
 									<div className="select-days">
 										<Button
 											className={
-												selectedDays["Sunday"]
+												selectedDays && selectedDays["Sunday"]
 													? "selected-day-buttons-alert-one"
 													: "day-buttons-alert-one"
 											}
@@ -525,7 +558,7 @@ const alertEvaluation = (props) => {
 										</Button>
 										<Button
 											className={
-												selectedDays["Monday"]
+												selectedDays && selectedDays["Monday"]
 													? "selected-day-buttons"
 													: "day-buttons"
 											}
@@ -535,7 +568,7 @@ const alertEvaluation = (props) => {
 										</Button>
 										<Button
 											className={
-												selectedDays["Tuesday"]
+												selectedDays && selectedDays["Tuesday"]
 													? "selected-day-buttons"
 													: "day-buttons"
 											}
@@ -545,7 +578,7 @@ const alertEvaluation = (props) => {
 										</Button>
 										<Button
 											className={
-												selectedDays["Wednesday"]
+												selectedDays && selectedDays["Wednesday"]
 													? "selected-day-buttons"
 													: "day-buttons"
 											}
@@ -555,7 +588,7 @@ const alertEvaluation = (props) => {
 										</Button>
 										<Button
 											className={
-												selectedDays["Thursday"]
+												selectedDays && selectedDays["Thursday"]
 													? "selected-day-buttons"
 													: "day-buttons"
 											}
@@ -565,7 +598,7 @@ const alertEvaluation = (props) => {
 										</Button>
 										<Button
 											className={
-												selectedDays["Friday"]
+												selectedDays && selectedDays["Friday"]
 													? "selected-day-buttons"
 													: "day-buttons"
 											}
@@ -575,7 +608,7 @@ const alertEvaluation = (props) => {
 										</Button>
 										<Button
 											className={
-												selectedDays["Saturday"]
+												selectedDays && selectedDays["Saturday"]
 													? "selected-day-buttons"
 													: "day-buttons"
 											}
