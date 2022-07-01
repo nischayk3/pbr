@@ -249,8 +249,8 @@ const Dashboard = () => {
                   component={RolesAndAccess}
                 />
                 <Route
-                  key="screen-controls"
-                  path={`${match.url}/user-roles-and-access/screen-controls`}
+                  key="application-controls"
+                  path={`${match.url}/user-roles-and-access/application-controls`}
                   component={ScreenControls}
                 />
                 <Route
