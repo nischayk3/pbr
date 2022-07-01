@@ -113,7 +113,7 @@ const ParamLookup = (props) => {
 				searchMolequles(filterPayload)
 			}
 		}
-	}, 500)
+	}, 1000)
 
 	const optionsMolecule = filterMol.map((item, index) => (
 		<Select.Option key={index} value={item.process_step_intid + '_' + item.product_num + '_' + item.parameter_name + '_' + item.ds_name}>
