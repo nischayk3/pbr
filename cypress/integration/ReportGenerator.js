@@ -37,7 +37,7 @@ describe("Report", () => {
 
         cy.get('.ant-btn > .anticon > svg').click({ force: true });
         cy.intercept('GET', '**/report-load?report_displ_id=R391', { fixture: 'reportGenLoad.json' })
-        cy.get('.ant-table-row > :nth-child(1)').click();
+        cy.get('.ant-table-tbody > :nth-child(2) > :nth-child(2) > div').click()
         cy.wait(2000)
         cy.get('[style="background-color: rgb(9, 49, 133); color: white; border-radius: 4px; margin-left: 88%; margin-top: 70px;"] > span').click();
         cy.wait(1000)
