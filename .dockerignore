@@ -1,6 +1,8 @@
 #node_modules
 npm-debug.log
 build
+yarn.lock
+package-lock.json
 .dockerignore
 **/.git
 **/.DS_Store

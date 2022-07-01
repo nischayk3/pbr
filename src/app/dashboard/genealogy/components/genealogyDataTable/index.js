@@ -59,6 +59,7 @@ function GenealogyDataTable(props) {
 		{ title: "Qty", dataIndex: "qty", key: "9", width: 70 }
 	];
 
+
 	const batchEquColumn = [
 		{ title: "Process Order", dataIndex: "po_no", key: "1", width: 80 },
 		{
@@ -131,6 +132,7 @@ function GenealogyDataTable(props) {
 		props.pbrBatchData
 	]);
 
+	/* istanbul ignore next */
 	const callback = (key) => {
 		props.setCollapseKey(key);
 	};

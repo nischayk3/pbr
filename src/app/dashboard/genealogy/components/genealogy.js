@@ -338,6 +338,8 @@ function Genealogy() {
 	/**
 	 *TODO: get PBR Data output of node
 	 */
+
+	/* istanbul ignore next */
 	const getPBRData = async _reqPbrBatch => {
 		console.log("getPBRData", _reqPbrBatch);
 		try {
@@ -357,6 +359,7 @@ function Genealogy() {
 		}
 	};
 
+	/* istanbul ignore next */
 	const isDrawerVisible = val => {
 		setIsDrawer(val);
 		setShowView(true);
@@ -557,17 +560,21 @@ function Genealogy() {
 		}
 	};
 
+	/* istanbul ignore next */
 	const dummyRequest = ({ onSuccess }) => {
 		setTimeout(() => {
 			onSuccess('ok');
 		}, 0);
 	};
 
+	/* istanbul ignore next */
 	const handleCancel = () => {
 		setIsUploadVisible(false);
 		setUploading(false);
 		setUploadFileName([])
 	};
+
+	/* istanbul ignore next */
 	const handleCancelSuccess = () => {
 		setIsFileUploaded(false);
 	};

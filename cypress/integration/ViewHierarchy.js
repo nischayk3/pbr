@@ -4,6 +4,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 describe("Renders the view Hierarachy page", () => {
   beforeEach(() => {
+    cy.viewport(1280, 720)
     localStorage.setItem("test_enabled", true);
     localStorage.setItem("user", "fahad.siddiqui@mareana.com");
     localStorage.setItem(
@@ -30,10 +31,11 @@ describe("Renders the view Hierarachy page", () => {
   it("Renders View Hierarchy", () => {
     const url = Cypress.config().baseUrl
     cy.visit(url + '/#/dashboard/molecule_hierarchy_configuration')
-    cy.get('.create-new > .anticon > svg').click();
+    cy.wait(5000)
+    cy.get('.create-new > .anticon > svg').click({force:true});
     cy.get('.input-ant > .ant-input').clear();
     cy.get('.input-ant > .ant-input').type('drug1');
-    cy.get('.ant-modal-footer > .ant-btn > span').click();
+    cy.get('.ant-modal-footer > .ant-btn > span').click({force:true});
     cy.get(':nth-child(2) > .ant-input').clear();
     cy.get(':nth-child(2) > .ant-input').type('A');
     cy.get(':nth-child(3) > .ant-input').clear();
@@ -43,30 +45,30 @@ describe("Renders the view Hierarachy page", () => {
     cy.get('[data-row-key="2"] > :nth-child(2) > .ant-input').type('B');
     cy.get('[data-row-key="2"] > :nth-child(3) > .ant-input').clear();
     cy.get('[data-row-key="2"] > :nth-child(3) > .ant-input').type('2443');
-    cy.get('.ant-tabs-extra-content > .ant-btn').click();
-    cy.get('[data-row-key="2"] > :nth-child(1) > .anticon > svg').click();
-    cy.get('.ant-btn-primary > span').click();
-    cy.get('.ant-tabs-extra-content > .ant-btn').click();
-    cy.get('.tab-button-text').click();
+    cy.get('.ant-tabs-extra-content > .ant-btn').click({force:true});
+    cy.get('[data-row-key="2"] > :nth-child(1) > .anticon > svg').click({force:true});
+    cy.get('.ant-btn-primary > span').click({force:true});
+    cy.get('.ant-tabs-extra-content > .ant-btn').click({force:true});
+    cy.get('.tab-button-text').click({force:true});
     cy.get('#rc-tabs-0-panel-Process\\ steps > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > .ant-table-row > :nth-child(2) > .ant-input').clear();
     cy.get('#rc-tabs-0-panel-Process\\ steps > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > .ant-table-row > :nth-child(2) > .ant-input').type('a');
     cy.get('#rc-tabs-0-panel-Process\\ steps > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > .ant-table-row > :nth-child(3) > .ant-input').clear();
     cy.get('#rc-tabs-0-panel-Process\\ steps > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > .ant-table-row > :nth-child(3) > .ant-input').type('2333');
-    cy.get('.ant-tabs-extra-content > .ant-btn').click();
-    cy.get('#rc-tabs-0-panel-Process\\ steps > .add-button > .ant-btn > :nth-child(2)').click();
+    cy.get('.ant-tabs-extra-content > .ant-btn').click({force:true});
+    cy.get('#rc-tabs-0-panel-Process\\ steps > .add-button > .ant-btn > :nth-child(2)').click({force:true});
     cy.get('[data-row-key="2"] > :nth-child(2) > .ant-input').clear();
     cy.get('[data-row-key="2"] > :nth-child(2) > .ant-input').type('b');
     cy.get('[data-row-key="2"] > :nth-child(3) > .ant-input').clear();
     cy.get('[data-row-key="2"] > :nth-child(3) > .ant-input').type('2333');
-    cy.get('.ant-tabs-extra-content > .ant-btn > span').click();
-    cy.get('[data-row-key="2"] > :nth-child(1)').click();
-    cy.get('#rc-tabs-0-panel-Process\\ steps > .tab-title > .ant-btn > .tab-button-text').click();
+    cy.get('.ant-tabs-extra-content > .ant-btn > span').click({force:true});
+    cy.get('[data-row-key="2"] > :nth-child(1)').click({force:true});
+    cy.get('#rc-tabs-0-panel-Process\\ steps > .tab-title > .ant-btn > .tab-button-text').click({force:true});
   });
 
   it('load_data', function () {
     const url = Cypress.config().baseUrl
-    cy.visit(url + '/#/dashboard/molecule_hierarchy_configuration')
     cy.intercept('GET', 'drug-substance', { fixture: 'view-hierarchy.json' })
+    cy.visit(url + '/#/dashboard/molecule_hierarchy_configuration')
     cy.wait(3000)
     cy.get('.ant-input').clear();
     cy.get('.ant-input').type('BELA{enter}');
