@@ -47,7 +47,7 @@ const alertEvaluation = (props) => {
 	const dispatch = useDispatch();
 
 	const [selectedSchedule, setSelectedSchedule] = useState("Repeat Once");
-	const [selectedTimeRange, setSelectedTimeRange] = useState("Hour");
+	const [selectedTimeRange, setSelectedTimeRange] = useState("");
 	const showReceipients = false;
 	const [radioValue, setRadioValue] = useState(null);
 	const [emailList, setEmailList] = useState([]);
@@ -198,15 +198,7 @@ const alertEvaluation = (props) => {
 		days,
 		everyDayValuee
 	) => {
-		console.log(
-			date,
-			time,
-			frequency,
-			radio,
-			f,
-			days,
-			everyDayValuee
-		)
+
 		let cron_string = "";
 		let time_split = time.split(":");
 		let date_split = date.split("-");
@@ -395,7 +387,6 @@ const alertEvaluation = (props) => {
 	// const handleChange = (selectedItems) => {
 	// 	setEmailList(selectedItems);
 	// };
-	console.log(selectedTimeRange)
 	return (
 		<div className="chart-notify">
 			<Tabs
@@ -534,9 +525,10 @@ const alertEvaluation = (props) => {
 														<div style={{ width: "102px", marginTop: "18px" }}>
 															<SelectField
 																className="alerts-radio"
-																defaultValue={selectedTimeRange}
+																// defaultValue={selectedTimeRange}
+																placeholder="Hour"
 																selectList={timeRange}
-																value={selectedTimeRange}
+																selectedValue={selectedTimeRange}
 																onChangeSelect={(e) =>
 																	handleSelectTimeChange(e)
 																}

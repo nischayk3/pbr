@@ -219,12 +219,22 @@ const ChartNotify = (props) => {
 
   const unLoad = (data) => {
     if (data) {
+
       if (data.notify_emails) setEmailList(data.notify_emails);
-      if (data.frequency_unit) setSelectedSchedule(data.frequency_unit);
+      if (data.frequency_unit == 'Once') {
+        setSelectedSchedule('Repeat Once');
+      }
+      else
+        setSelectedSchedule(data.frequency_unit ? data.frequency_unit : '');
+
 
       if (data.email_config) {
         // if (data.email_config.scheduled_start)
         // 	setScheduleStartDate(data.email_config.scheduled_start);
+        if (data.email_config.daily_frequency == 3) {
+          setEveryDayValue(data.email_config.every_day_value)
+          handleSelectTimeChange(data.email_config.time_range)
+        }
         if (data.email_config.scheduled_time)
           setScheduleEmailTime(data.email_config.scheduled_time);
         setRadioValue(data.email_config.daily_frequency);
@@ -393,8 +403,10 @@ const ChartNotify = (props) => {
       }
       if (selectedSchedule == "Daily") {
         if (radioValue == 3) {
-          email_config["daily_frequency"] =
-            "Every" + " " + everyDayValue + " " + selectedTimeRange;
+          email_config["daily_frequency"] = radioValue;
+          email_config["every_day_value"] = everyDayValue;
+          email_config["time_range"] = selectedTimeRange;
+
         } else {
           email_config["daily_frequency"] = radioValue;
         }
@@ -410,7 +422,7 @@ const ChartNotify = (props) => {
             selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule,
             radioValue,
             selectedTimeRange,
-            Object.keys(selectedDays).filter((k) => selectedDays[k] === true),
+            selectedDays ? Object.keys(selectedDays).filter((k) => selectedDays[k] === true) : [],
             everyDayValue
           );
       req["frequency_unit"] =
@@ -759,7 +771,7 @@ const ChartNotify = (props) => {
                               style={{
                                 width: "40px",
                                 marginRight: "20px",
-                                marginTop: "12px",
+                                marginTop: "18px",
                               }}
                             >
                               <InputField
@@ -773,9 +785,9 @@ const ChartNotify = (props) => {
                             <div style={{ width: "100px", marginTop: "18px" }}>
                               <SelectField
                                 className="alert-radio"
-                                placeholder=""
+                                placeholder="Hour"
                                 selectList={timeRange}
-                                value={selectedTimeRange}
+                                selectedValue={selectedTimeRange}
                                 onChangeSelect={(e) =>
                                   handleSelectTimeChange(e)
                                 }
@@ -794,7 +806,7 @@ const ChartNotify = (props) => {
                 <div className="select-days">
                   <Button
                     className={
-                      selectedDays["Sunday"]
+                      selectedDays && selectedDays["Sunday"]
                         ? "selected-day-buttons-chart-one"
                         : "day-buttons-chart-one"
                     }
@@ -804,7 +816,7 @@ const ChartNotify = (props) => {
                   </Button>
                   <Button
                     className={
-                      selectedDays["Monday"]
+                      selectedDays && selectedDays["Monday"]
                         ? "selected-day-buttons-chart"
                         : "day-buttons-chart"
                     }
@@ -814,7 +826,7 @@ const ChartNotify = (props) => {
                   </Button>
                   <Button
                     className={
-                      selectedDays["Tuesday"]
+                      selectedDays && selectedDays["Tuesday"]
                         ? "selected-day-buttons-chart"
                         : "day-buttons-chart"
                     }
@@ -824,7 +836,7 @@ const ChartNotify = (props) => {
                   </Button>
                   <Button
                     className={
-                      selectedDays["Wednesday"]
+                      selectedDays && selectedDays["Wednesday"]
                         ? "selected-day-buttons-chart"
                         : "day-buttons-chart"
                     }
@@ -834,7 +846,7 @@ const ChartNotify = (props) => {
                   </Button>
                   <Button
                     className={
-                      selectedDays["Thursday"]
+                      selectedDays && selectedDays["Thursday"]
                         ? "selected-day-buttons-chart"
                         : "day-buttons-chart"
                     }
@@ -844,7 +856,7 @@ const ChartNotify = (props) => {
                   </Button>
                   <Button
                     className={
-                      selectedDays["Friday"]
+                      selectedDays && selectedDays["Friday"]
                         ? "selected-day-buttons-chart"
                         : "day-buttons-chart"
                     }
@@ -854,7 +866,7 @@ const ChartNotify = (props) => {
                   </Button>
                   <Button
                     className={
-                      selectedDays["Saturday"]
+                      selectedDays && selectedDays["Saturday"]
                         ? "selected-day-buttons-chart"
                         : "day-buttons-chart"
                     }

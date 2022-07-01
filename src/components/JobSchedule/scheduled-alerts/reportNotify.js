@@ -367,7 +367,6 @@ const ReportNotify = (props) => {
 
 
   const onChangeEmailStart = (date, dateString) => {
-    console.log(dateString)
     setScheduleEmailStartDate(dateString);
     // setstartTimeIso(moment(date).toISOString());
   };
@@ -387,7 +386,6 @@ const ReportNotify = (props) => {
   const handleChange = (selectedItems) => {
     setEmailList(selectedItems);
   };
-  console.log(selectedTimeRange)
   return (
     <div className="report-notify">
       <Tabs
@@ -607,8 +605,8 @@ const ReportNotify = (props) => {
                                 // className='alerts-radio'
                                 placeholder="Hour"
                                 selectList={timeRange}
-                                value={selectedTimeRange}
-                                defaultValue={selectedTimeRange}
+                                selectedValue={selectedTimeRange}
+                                // defaultValue={selectedTimeRange}
                                 onChangeSelect={(e) =>
                                   handleSelectTimeChange(e)
                                 }
