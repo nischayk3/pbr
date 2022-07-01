@@ -210,11 +210,21 @@ export default function ReportLanding(props) {
 	};
 
 	const search = value => {
+		let arr = []
 		if (value == '') setSearched(false);
 		else {
 			setSearched(true);
-			const tableData = activeTab == 'Design Report Template' ? reportList : reportGenList;
-			const filterTableData = tableData.filter(o =>
+			const tableData = activeTab == 'Design Report Template' ? [...reportList] : [...reportGenList];
+			tableData.map((el) => {
+				let obj = {};
+				obj['rep_disp_id'] = el.rep_disp_id;
+				obj[activeTab == 'Design Report Template' ? 'rep_name' : 'variant_name'] = activeTab == 'Design Report Template' ? el.rep_name : el.variant_name
+				obj['rep_status'] = el.rep_status;
+				obj['created_by'] = el.created_by;
+				arr.push(obj);
+			})
+			console.log(tableData)
+			const filterTableData = arr.filter(o =>
 				Object.keys(o).some(k =>
 					String(o[k]).toLowerCase().includes(value.toLowerCase())
 				)
@@ -223,11 +233,20 @@ export default function ReportLanding(props) {
 		}
 	};
 	const onSearch = value => {
+		let arr = []
 		if (value == '') setNewSearched(false);
 		else {
 			setNewSearched(true);
-			const tableData = reportList;
-			const filterTableData = tableData.filter(o =>
+			const tableData = [...reportList];
+			tableData.map((el) => {
+				let obj = {};
+				obj['rep_disp_id'] = el.rep_disp_id;
+				obj['rep_name'] = el.rep_name;
+				obj['rep_status'] = el.rep_status;
+				obj['created_by'] = el.created_by;
+				arr.push(obj);
+			})
+			const filterTableData = arr.filter(o =>
 				Object.keys(o).some(k =>
 					String(o[k]).toLowerCase().includes(value.toLowerCase())
 				)
@@ -455,7 +474,7 @@ export default function ReportLanding(props) {
 								<br />
 								<div className='card-legends'>
 									<h3 className='recent'>Recently created reports</h3>
-									<div className='legends'>
+									{/* <div className='legends'>
 										<p>
 											<span className='drft'></span>Draft
 										</p>
@@ -465,7 +484,7 @@ export default function ReportLanding(props) {
 										<p>
 											<span className='aprv'></span>Approved
 										</p>
-									</div>
+									</div> */}
 								</div>
 								<div className='tile'>
 									{reportGenList &&
@@ -481,7 +500,7 @@ export default function ReportLanding(props) {
 														}}>
 														<StatusBlock
 															id={i.rep_disp_id}
-															status={i.rep_status}
+														// status={i.rep_status}
 														/>
 													</div>
 												)
