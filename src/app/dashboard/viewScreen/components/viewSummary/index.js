@@ -105,6 +105,8 @@ const ViewSummaryData = (props) => {
 
 			const tableColumns = [...columns];
 			setTableColumn(tableColumns);
+
+
 		}
 	}, [funTableData]);
 
@@ -127,6 +129,7 @@ const ViewSummaryData = (props) => {
 					return fun.push(element.name);
 				});
 			}
+
 
 			if (parentBatches.length > 0) {
 				const loadTableData =

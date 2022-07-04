@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox, Empty, Radio, Select, Table, Modal, Button, Tag, Input } from "antd";
-import { CheckOutlined, CloseOutlined, RightCircleOutlined } from "@ant-design/icons";
+import { CheckOutlined, CloseOutlined, RightCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import {
 	createSummaryData,
 	createVariable,
 	isNewView,
 	selectParamType,
+	sendSelectedParamData,
 	setMathValue,
 	viewFunctionMap,
 	viewParamMap
@@ -75,11 +76,21 @@ const ParameterTable = (props) => {
 		setMolBatches,
 	} = props;
 
+
+
 	const Option = Select;
 	const { Search } = Input;
 	const dispatch = useDispatch();
 
 	let columns = [
+		{
+			title: "",
+			dataIndex: "delete",
+			key: "delete",
+			width: 40,
+			fixed: "left",
+			render: (value, record) => <DeleteOutlined onClick={() => deleteParameter(record.key)} className="delete-param" />
+		},
 		{
 			title: "PARAMETER NAME",
 			dataIndex: "parameter_name",
@@ -283,7 +294,7 @@ const ParameterTable = (props) => {
 							key: `${ele}-${i}`,
 							width: 80,
 							render: (value, record, rowIndex) => {
-								console.log("value, record, rowIndex", value, record, rowIndex, rowDisable);
+
 								if (!rowDisable) {
 									if (value) {
 										return (
@@ -440,14 +451,22 @@ const ParameterTable = (props) => {
 
 	useEffect(() => {
 		if (saveFunction) {
+
 			counter++;
 			let arr = [];
 
-			let primarySelectedData = { ...selectedPrimaryData };
+			let primarySelectedData;
+			if (selectedPrimaryData.length > 0) {
+				primarySelectedData = { ...selectedPrimaryData };
+			} else {
+				const viewLoadJson = [...viewJson];
+				const allParameter = viewLoadJson[0].all_parameters
+				primarySelectedData = { ...allParameter && allParameter[0] }
+
+			}
 			let functionTable = [...viewSummaryBatch];
 
 			let new_column_data = newColumnData.map((e) => e.batch_num);
-
 			functionTable.forEach((item) => {
 				let obj = {};
 				Object.entries(primarySelectedData).forEach(([key]) => {
@@ -552,7 +571,6 @@ const ParameterTable = (props) => {
 		dispatch(hideLoader());
 	};
 
-
 	const handleAggregationChange = (text, record, value, index) => {
 		let newAggrValue = [...tableData];
 		let newParamArr = [...parameters]
@@ -592,19 +610,29 @@ const ParameterTable = (props) => {
 	}
 
 	const TableSearch = value => {
-		const tableData = [...molBatches];
+		const tableDataSearch = [...molBatches];
 		// if (value == '') {
 		// setMolBatches(molBatchMerge);
 		// }
-		const filterTable = tableData.filter(o =>
+		const searchTable = tableDataSearch.filter(o =>
 			Object.keys(o).some(k =>
 				String(o[k]).toLowerCase().includes(value.toLowerCase())
 			)
 
 		);
-		setMolBatches(filterTable);
+		setMolBatches(searchTable);
 	};
-	console.log("rowDisableeeeeeee", rowDisable);
+
+	const deleteParameter = (id) => {
+
+		const deleteRecord = tableData.filter(item => item.key !== id)
+		//setTableData(ele => ele.filter(item => item.key !== id));
+
+		setTableData(deleteRecord)
+		dispatch(sendSelectedParamData(deleteRecord));
+	}
+
+
 	return (
 		<>
 			<div className="param-table">
