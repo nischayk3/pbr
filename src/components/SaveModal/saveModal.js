@@ -4,7 +4,7 @@ import { CheckCircleOutlined } from '@ant-design/icons';
 import './styles.scss';
 
 function SaveModal(props) {
-	const { isSave, setIsSave, id } = props
+	const { isSave, setIsSave, id, load } = props
 	const handleCancel = () => {
 		setIsSave(false);
 	};
@@ -28,7 +28,7 @@ function SaveModal(props) {
 						/> <br />
 						{id ? <b style={{ marginTop: '10px' }}>Report ID :{id}</b> : <></>}
 						<br />
-						<p style={{ marginTop: '7px' }}>New report is created successfully</p>
+						<p style={{ marginTop: '7px' }}>{!load ? "New report is created successfully" : "Report updated successfully"}</p>
 					</center>
 				</div>
 

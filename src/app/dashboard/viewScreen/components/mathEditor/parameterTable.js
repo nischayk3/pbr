@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Checkbox, Empty, Radio, Select, Table } from "antd";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { Checkbox, Empty, Radio, Select, Table, Modal, Button, Tag, Input } from "antd";
+import { CheckOutlined, CloseOutlined, RightCircleOutlined } from "@ant-design/icons";
 import {
 	createSummaryData,
 	createVariable,
@@ -14,11 +14,9 @@ import {
 import { hideLoader } from "../../../../../duck/actions/commonActions";
 
 let paramType = "";
-
 let counter = 0;
 
 const ParameterTable = (props) => {
-
 	const paramReducer = useSelector((state) => state.viewCreationReducer);
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
 	const selectedTableData = useSelector(
@@ -45,6 +43,8 @@ const ParameterTable = (props) => {
 		(state) => state.viewCreationReducer.parameters
 	);
 
+	const getBatchData = useSelector((state) => state.viewCreationReducer.batchData)
+
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [tableData, setTableData] = useState([]);
 	const [selectedPrimaryData, setSelectedPrimaryData] = useState([]);
@@ -54,24 +54,29 @@ const ParameterTable = (props) => {
 	const [variableParam, setVariableParam] = useState(
 		parameter_obj ? parameter_obj : {}
 	);
+	const [isBatchTableVisible, setIsBatchTableVisible] = useState(false);
 	const [fun, setFun] = useState({});
 	const [filterTable, setFilterTable] = useState([]);
+	const [molBatchColumn, setMolBatchColumn] = useState([]);
+
 
 	const {
 		rowDisable,
 		variableCreate,
 		setVariableCreate,
-
 		viewSummaryBatch,
 		setViewSummaryBatch,
 		ischeckBox,
 		viewJson,
 		setViewJson,
 		varClick,
-		variableName
+		variableName,
+		molBatches,
+		setMolBatches,
 	} = props;
 
 	const Option = Select;
+	const { Search } = Input;
 	const dispatch = useDispatch();
 
 	let columns = [
@@ -86,7 +91,7 @@ const ParameterTable = (props) => {
 			title: "PRIMARY",
 			dataIndex: "primary",
 			key: "primary",
-			width: 100,
+			width: 80,
 			fixed: "left",
 			render: (text, record, index) => {
 				return (
@@ -145,6 +150,15 @@ const ParameterTable = (props) => {
 		}
 	];
 
+	let batchColumn = [
+		{
+			title: "BATCHES",
+			dataIndex: "batch",
+			key: "batch",
+			width: 80,
+		}
+	]
+
 	const data =
 		tableData !== undefined && tableData.length > 0
 			? Object.keys(tableData[tableData.length - 1])
@@ -154,7 +168,8 @@ const ParameterTable = (props) => {
 		return self.indexOf(value) === index;
 	};
 
-	const paramColumn = data && data.filter(uniqueArr);
+	const uniqueCol = data && data.filter(uniqueArr);
+	const paramColumn = uniqueCol.slice(0, 10)
 
 	paramColumn.map((item) => {
 		if (
@@ -176,6 +191,7 @@ const ParameterTable = (props) => {
 					key: `${item}-4`,
 					width: 80,
 					render: (value, record, rowIndex) => {
+
 						if (!rowDisable) {
 							if (value) {
 								return (
@@ -214,19 +230,107 @@ const ParameterTable = (props) => {
 								);
 							}
 						}
-						// else if (value === '') {
-						// 	return (
-						// 		<Checkbox
-						// 			className='custom-check'
-						// 			onChange={e => onChangeBatch(e, record, rowIndex, item)}
-						// 		/>
-						// 	);
-						// }
+
 					}
 				})
 			)
 		}
 	});
+
+	useEffect(() => {
+		let batchArr = []
+		let allMolBatches = molBatches && molBatches.map((e) => e.batch)
+		let totalMolBatches = molBatches
+
+		totalMolBatches && totalMolBatches.forEach((ele) => {
+			let batchObj = {}
+			Object.entries(getBatchData.batches).forEach(([key, value]) => {
+				if (key === ele.batch) {
+					if (allMolBatches.includes(key)) {
+						// batchObj['batch'] = key;
+						batchObj[getBatchData.parameter_name] = value;
+					}
+				}
+
+			})
+			batchArr.push(batchObj)
+		})
+
+		const molBatchMerge = totalMolBatches.map((item, i) =>
+			Object.assign({}, item, batchArr[i])
+		);
+		setMolBatches(molBatchMerge)
+
+		if (molBatchMerge.length > 0) {
+			const molObjKey = molBatchMerge !== undefined && molBatchMerge.length > 0 ? Object.keys(molBatchMerge[0]) : []
+			const molColumn = molObjKey.filter(uniqueArr);
+			molColumn.map((ele, i) => {
+				if (ele !== 'batch') {
+
+					return (
+						batchColumn.push({
+							title: (
+								<div className="treenode-block-batch">
+									<div className="tree-block-param-batch">
+										<Tag color="geekblue">
+											{ele}
+										</Tag>
+
+									</div>
+								</div>
+							),
+							dataIndex: ele,
+							key: `${ele}-${i}`,
+							width: 80,
+							render: (value, record, rowIndex) => {
+								console.log("value, record, rowIndex", value, record, rowIndex, rowDisable);
+								if (!rowDisable) {
+									if (value) {
+										return (
+											<Checkbox
+												className="custom-check"
+												onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
+												checked={value}
+											/>
+										);
+									} else if (value === "") {
+										return (
+											<Checkbox
+												className="custom-check"
+												onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
+											/>
+										);
+									} else {
+										return (
+											<span className="batchClosed">
+												<CloseOutlined />
+											</span>
+										);
+									}
+								} else {
+									if (value) {
+										return (
+											<span className="batchChecked">
+												<CheckOutlined />
+											</span>
+										);
+									} else {
+										return (
+											<span className="batchClosed">
+												<CloseOutlined />
+											</span>
+										);
+									}
+								}
+
+							}
+						})
+					)
+				}
+			})
+		}
+		setMolBatchColumn([...batchColumn])
+	}, [getBatchData])
 
 	useEffect(() => {
 		if (ischeckBox) {
@@ -272,7 +376,6 @@ const ParameterTable = (props) => {
 	useEffect(() => {
 		let count = 0;
 		let varArr = [];
-
 		if (variableCreate === true) {
 			count++;
 			const varParameter = [...parameters];
@@ -295,7 +398,6 @@ const ParameterTable = (props) => {
 	}, [variableCreate]);
 
 	useEffect(() => {
-
 		sortArray(props.selectedVar, props.selectedData);
 	}, [props.selectedVar]);
 
@@ -345,6 +447,7 @@ const ParameterTable = (props) => {
 			let functionTable = [...viewSummaryBatch];
 
 			let new_column_data = newColumnData.map((e) => e.batch_num);
+
 			functionTable.forEach((item) => {
 				let obj = {};
 				Object.entries(primarySelectedData).forEach(([key]) => {
@@ -368,7 +471,6 @@ const ParameterTable = (props) => {
 			let funObj1 = {};
 			funObj1["name"] = functionName;
 			funObj1["defination"] = paramReducer.funDetails;
-			//`{${'V' + counter}}`;
 			fun[counter] = funObj1;
 
 			const varData = [...viewJson];
@@ -383,7 +485,6 @@ const ParameterTable = (props) => {
 	const onRadioChange = ({ checked, type, primary, record, index }) => {
 		if (checked) {
 			const newPrimaryData = [...tableData];
-
 			newPrimaryData[index].primary = 1;
 			let radioObj = [record];
 			radioObj.forEach((element) => {
@@ -423,7 +524,6 @@ const ParameterTable = (props) => {
 	};
 
 	const sortArray = (selectedVar, selectedData) => {
-
 		let filterData = [...tableData];
 
 		var parameterArray =
@@ -452,10 +552,19 @@ const ParameterTable = (props) => {
 		dispatch(hideLoader());
 	};
 
+
 	const handleAggregationChange = (text, record, value, index) => {
 		let newAggrValue = [...tableData];
+		let newParamArr = [...parameters]
+		let param_name = newAggrValue[index].parameter_name
 		newAggrValue[index].aggregation =
 			value.value !== undefined ? value.value : value;
+		for (var i = 0; i < newParamArr.length; i++) {
+			if (newParamArr[i].parameter_name == param_name) {
+				newParamArr[i].aggregation = value.value !== undefined ? value.value : value;
+			}
+		}
+		setParameters(newParamArr);
 		setTableData(newAggrValue);
 	};
 
@@ -473,58 +582,132 @@ const ParameterTable = (props) => {
 		setTableData(batchRecord);
 	};
 
+	const isModalBatch = (e) => {
+		setIsBatchTableVisible(true);
+
+	}
+
+	const handleTableCancel = () => {
+		setIsBatchTableVisible(false);
+	}
+
+	const TableSearch = value => {
+		const tableData = [...molBatches];
+		// if (value == '') {
+		// setMolBatches(molBatchMerge);
+		// }
+		const filterTable = tableData.filter(o =>
+			Object.keys(o).some(k =>
+				String(o[k]).toLowerCase().includes(value.toLowerCase())
+			)
+
+		);
+		setMolBatches(filterTable);
+	};
+	console.log("rowDisableeeeeeee", rowDisable);
 	return (
 		<>
-			{reloadTable && (
-				<Table
-					rowClassName={(index) =>
-						index % 2 === 0 ? "table-row-light" : "table-row-dark"
-					}
-					locale={{
-						emptyText: (
-							<Empty
-								image={Empty.PRESENTED_IMAGE_SIMPLE}
-								description={
-									<span>Add parameters from under the Process Hierarchy</span>
-								}
-							/>
-						)
-					}}
-					//rowKey='key'
-					rowSelection={{
-						selectedRowKeys,
-						onChange: (selectedRowKeys, selectedRows) => {
-							let paramArr = [];
-							const rowData = [...selectedRows];
-							rowData.forEach((element, index) => {
-								let paramsObj = {};
-								paramsObj["source_type"] = element.sourceType;
-								paramsObj["material_id"] = element.material_id
-								paramsObj["parameter_name"] = element.parameter_name;
-								paramsObj["batch_exclude"] = [];
-								paramsObj["priority"] = index;
-								paramsObj["aggregation"] = element.aggregation;
-								paramArr.push(paramsObj);
-							});
-
-							setParameters(paramArr);
-							props.callbackCheckbox(true);
-							setSelectedRowKeys(selectedRowKeys);
-						},
-						getCheckboxProps: (record) => {
-							return {
-								disabled: rowDisable
-							};
+			<div className="param-table">
+				<div className="param-column">
+					<span onClick={(e) => isModalBatch(e)}>
+						<RightCircleOutlined className="right-circle" />
+					</span>
+				</div>
+				{reloadTable && (
+					<Table
+						rowClassName={(index) =>
+							index % 2 === 0 ? "table-row-light" : "table-row-dark"
 						}
-					}}
-					columns={columns}
-					dataSource={filterTable.length > 0 ? filterTable : tableData}
-					size="small"
-					scroll={{ y: 450 }}
-					pagination={false}
-					loading={isLoading}
-				/>
-			)}
+						locale={{
+							emptyText: (
+								<Empty
+									image={Empty.PRESENTED_IMAGE_SIMPLE}
+									description={
+										<span>Add parameters from under the Process Hierarchy</span>
+									}
+								/>
+							)
+						}}
+						//rowKey='key'
+						rowSelection={{
+							selectedRowKeys,
+							onChange: (selectedRowKeys, selectedRows) => {
+								let paramArr = [];
+								const rowData = [...selectedRows];
+								rowData.forEach((element, index) => {
+									let paramsObj = {};
+									paramsObj["source_type"] = element.sourceType;
+									paramsObj["material_id"] = element.material_id
+									paramsObj["parameter_name"] = element.parameter_name;
+									paramsObj["batch_exclude"] = [];
+									paramsObj["priority"] = index;
+									paramsObj["aggregation"] = element.aggregation;
+									paramArr.push(paramsObj);
+								});
+								setParameters(paramArr);
+								props.callbackCheckbox(true);
+								setSelectedRowKeys(selectedRowKeys);
+							},
+							getCheckboxProps: (record) => {
+								return {
+									disabled: rowDisable
+								};
+							}
+						}}
+						columns={columns}
+						dataSource={filterTable.length > 0 ? filterTable : tableData}
+						size="small"
+						scroll={{ y: 450 }}
+						pagination={false}
+						loading={isLoading}
+					/>
+				)}
+			</div>
+			<Modal
+				title={(
+					<Search
+						placeholder='Search'
+						allowClear
+						//enterButton='Search'
+						// size='large'
+						onSearch={TableSearch}
+					/>
+				)}
+				width={700}
+				visible={isBatchTableVisible}
+				onCancel={handleTableCancel}
+				footer={null}
+				className="batch-modal"
+			>
+				<div className="batch-table-block">
+
+					<Table
+						columns={molBatchColumn}
+						dataSource={molBatches}
+						size="small"
+						scroll={{ y: 450 }}
+						rowClassName={(index) =>
+							index % 2 === 0 ? "table-row-light" : "table-row-dark"
+						}
+					/>
+					<div className="batch-table-footer">
+						<Button
+							onClick={handleTableCancel}
+							type="text"
+							className="custom-primary-btn "
+						>
+							Apply
+						</Button>
+						<Button
+							onClick={handleTableCancel}
+							type="text"
+							className="custom-primary-btn "
+						>
+							Back
+						</Button>
+					</div>
+				</div>
+			</Modal>
 		</>
 	);
 };

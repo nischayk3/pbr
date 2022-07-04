@@ -329,3 +329,50 @@ span.statusClosed {
 		}
 	}
 }
+
+.param-table {
+	position: relative;
+
+	.param-column {
+		position: absolute;
+		right: 0;
+		z-index: 1;
+		background: #f0f7fa;
+		padding: 7px 18px;
+
+		.right-circle {
+			font-size: 18px;
+			margin: 3px 0;
+			color: #486BC9;
+			cursor: pointer;
+		}
+	}
+}
+
+.treenode-block-batch {
+	display: flex;
+	justify-content: space-between;
+
+	.tree-block-param-batch {
+		display: flex;
+	}
+}
+
+.batch-table-block {
+	overflow: hidden;
+
+	.batch-table-footer {
+		float: right;
+
+		button {
+			margin: 0px 4px;
+		}
+
+	}
+}
+
+.batch-modal {
+	.ant-input-group-wrapper {
+		width: 50%;
+	}
+}

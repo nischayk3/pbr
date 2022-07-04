@@ -653,7 +653,7 @@ function ReportDesignerNew(props) {
 				) : (
 					<></>
 				)}
-				<SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} />
+				<SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} load={isLoad} />
 			</div>
 			<Signature
 				isPublish={isPublish}
