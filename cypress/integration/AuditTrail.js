@@ -35,8 +35,8 @@ describe('Audit Trail', () => {
     cy.log("selecting daterange")
     cy.get('.ant-picker-input').first().click()
     cy.get('.ant-picker-header-prev-btn').first().click()
-    cy.get('.ant-picker-cell').eq(0).click()
-    cy.get('.ant-picker-cell').eq(6).click()
+    cy.get('.ant-picker-cell').eq(7).click()
+    cy.get('.ant-picker-cell').eq(12).click()
   });
   it("selecting user",()=>{
     cy.log("selecting user")
