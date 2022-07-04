@@ -224,7 +224,8 @@ class EditableTable extends Component {
                     style={{ marginBottom: 16 }}
                     id="editable-table-button-add-new-user"
                 >
-                    Add new user
+                   {this.props.screens === "Roles" ? "Add new role" : "Add new user" }
+
                 </Button>
                 <Button
                     type="primary"

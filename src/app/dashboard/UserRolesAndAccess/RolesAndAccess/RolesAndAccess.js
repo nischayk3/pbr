@@ -24,6 +24,7 @@ const RolesAndAccess = () => {
 					getTableData={getRoleConfiguartions}
 					saveTableData={saveRoleConfiguartions}
 					deleteTableRow={deleteRoleConfiguartions}
+					screens = {"Roles"}
 				/>
 			</div>
 		</>
