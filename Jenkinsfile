@@ -7,44 +7,44 @@ pipeline {
     options {
         ansiColor('xterm')
     }
-    // stages {    
-    //   stage("Code Coverage") {
+    stages {    
+      stage("Code Coverage") {
          
-    //        steps {
-    //            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+           steps {
+               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                
-    //              sh '''#!/bin/bash -x
-    //                    sudo docker ps | xargs docker stop 
-    //                    sudo docker ps -a | xargs docker rm
-    //                    docker-compose build  --no-cache ui-cypress-run
-    //                    docker-compose up ui-cypress-run
-    //                    docker-compose down 
-    //                    ls coverage
-    //             '''  
-    //                  publish html
-    //                publishHTML target: [
-    //                allowMissing: false,
-    //                alwaysLinkToLastBuild: false,
-    //                keepAll: true,
-    //                reportDir: './coverage/lcov-report/',
-    //                reportFiles: 'index.html',
-    //                reportName: 'Coverage Report'
-    //                ]
+                 sh '''#!/bin/bash -x
+                       sudo docker ps | xargs docker stop 
+                       sudo docker ps -a | xargs docker rm
+                       docker-compose build  --no-cache ui-cypress-run
+                       docker-compose up ui-cypress-run
+                       docker-compose down 
+                       ls coverage
+                '''  
+                     publish html
+                   publishHTML target: [
+                   allowMissing: false,
+                   alwaysLinkToLastBuild: false,
+                   keepAll: true,
+                   reportDir: './coverage/lcov-report/',
+                   reportFiles: 'index.html',
+                   reportName: 'Coverage Report'
+                   ]
 
-    //            }
-    //          }
-    //       }  
-    //   stage('Sonarqube Analysis') {
-    //     environment {
-    //        scannerHome = tool 'SonarQubeScanner'
-    //   }    
-    //    steps {
-    //         withSonarQubeEnv('sonar') {
-    //        sh "${scannerHome}/bin/sonar-scanner"
-    //        sh "sudo rm -rf coverage/ .nyc_output/ dist/"
-    //      }
-    //   }
-    // }
+               }
+             }
+          }  
+      stage('Sonarqube Analysis') {
+        environment {
+           scannerHome = tool 'SonarQubeScanner'
+      }    
+       steps {
+            withSonarQubeEnv('sonar') {
+           sh "${scannerHome}/bin/sonar-scanner"
+           sh "sudo rm -rf coverage/ .nyc_output/ dist/"
+         }
+      }
+    }
     
      
       stage("Quality Gate Status Check") {
