@@ -426,7 +426,9 @@ function Genealogy() {
 				setIsFileUploaded(true);
 				if (fileName !== null) {
 					const reqData = {
-						createdBy: login_response.email_id,
+						batchNum: data[2],
+						changedBy: null,
+						createdBy: login_response.firstname + login_response.lastname,
 						custKey: '1000',
 						filename: fileName,
 						fileSize: fileSize,
@@ -459,6 +461,7 @@ function Genealogy() {
 			dispatch(showNotification('error', error));
 		}
 	};
+
 
 	/* istanbul ignore next */
 	const geanealogyFileDataUpload = async _dataReq => {
