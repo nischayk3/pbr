@@ -54,7 +54,7 @@ describe('Dashboard', () => {
 		cy.get('.screen_header_username').should("have.text", "Howdy Fahad,")
 
 		cy.log('Verify Header Text')
-		cy.get('.screen_header_text').should("have.text", "Lets get designing some report templates")
+		cy.get('.screen_header_text').should("have.text", "Time to draw up some charts? Lets go!")
 
 		cy.log('Verify Current Date')
 		cy.get('.screen_header_resultdate').should("have.text", currentDate)
