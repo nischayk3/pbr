@@ -215,7 +215,7 @@ export default function ReportLanding(props) {
 		else {
 			setSearched(true);
 			const tableData = activeTab == 'Design Report Template' ? [...reportList] : [...reportGenList];
-			tableData.map((el) => {
+			tableData.forEach((el) => {
 				let obj = {};
 				obj['rep_disp_id'] = el.rep_disp_id;
 				obj[activeTab == 'Design Report Template' ? 'rep_name' : 'variant_name'] = activeTab == 'Design Report Template' ? el.rep_name : el.variant_name
@@ -223,7 +223,7 @@ export default function ReportLanding(props) {
 				obj['created_by'] = el.created_by;
 				arr.push(obj);
 			})
-			console.log(tableData)
+
 			const filterTableData = arr.filter(o =>
 				Object.keys(o).some(k =>
 					String(o[k]).toLowerCase().includes(value.toLowerCase())
@@ -238,7 +238,7 @@ export default function ReportLanding(props) {
 		else {
 			setNewSearched(true);
 			const tableData = [...reportList];
-			tableData.map((el) => {
+			tableData.forEach((el) => {
 				let obj = {};
 				obj['rep_disp_id'] = el.rep_disp_id;
 				obj['rep_name'] = el.rep_name;
