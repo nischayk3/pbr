@@ -155,7 +155,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       // setviewTableData(antdDataTable);
 
       dispatch(hideLoader());
-    } catch (error) {
+    } catch (error) { /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification("error", error.message));
     }
@@ -186,12 +186,13 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       newArr[0] = viewRes.data[0];
       setPostChartData({ ...postChartData, data: newArr });
       dispatch(hideLoader());
-    } catch (error) {
+    } catch (error) { /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification("error", "Unable to fetch coverages"));
     }
   };
 
+  /* istanbul ignore next */
   const getFilterData = async () => {
     try {
       dispatch(showLoader());
@@ -211,7 +212,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
         setPostChartData({ ...postChartData, data: newArr });
       }
       dispatch(hideLoader());
-    } catch {
+    } catch { /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification("error", "Unable to fetch coverages"));
     }
@@ -263,7 +264,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     try {
       const siteRes = await getSiteId(obj);
       setSiteList(siteRes.Data);
-    } catch (error) {
+    } catch (error) { /* istanbul ignore next */
       dispatch(showNotification("error", "Unable to fetch sites"));
     }
   };
@@ -383,6 +384,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
         <Col ref={ref} span={24} className="search-table">
           <p>View ID</p>
           <Search
+            className="viewSearch"
             placeholder="Search"
             onFocus={onFocus}
             value={viewData.searchValue}

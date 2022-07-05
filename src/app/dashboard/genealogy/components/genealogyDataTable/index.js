@@ -8,6 +8,7 @@
 import { Button, Collapse, Table } from "antd";
 import React, { useEffect, useState } from "react";
 
+/* istanbul ignore next */
 function GenealogyDataTable(props) {
 	const [batchData, setbatchData] = useState({});
 	const [limsBatchData, setLimsBatchData] = useState([]);
