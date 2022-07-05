@@ -32,7 +32,7 @@ export const getTableData = _queryParam => {
 		'content-type': 'application/json',
 		'x-access-token': login_response.token ? login_response.token : '',
 		'resource-name': 'WORKITEMS',
-		username: localStorage.getItem('user')
+		// username: localStorage.getItem('user')
 	}).then(
 		response => {
 			return response.data;
