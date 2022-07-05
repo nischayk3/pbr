@@ -81,11 +81,6 @@ const ParameterTable = ({
 	const [filterTable, setFilterTable] = useState([]);
 	const [molBatchColumn, setMolBatchColumn] = useState([]);
 
-
-
-
-
-
 	const Option = Select;
 	const { Search } = Input;
 	const dispatch = useDispatch();
@@ -257,7 +252,8 @@ const ParameterTable = ({
 	});
 
 	useEffect(() => {
-		if (getBatchData.length > 0) {
+		if (Object.keys(getBatchData).length > 0) {
+
 			let batchArr = []
 			let allMolBatches = molBatches && molBatches.map((e) => e.batch)
 			let totalMolBatches = molBatches

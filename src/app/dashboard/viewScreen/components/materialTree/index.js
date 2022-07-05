@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Tag, Tree } from "antd";
 import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
 import {
-	batchCoverage,
 	getBatchData,
 	sendSelectedParamData,
 } from "../../../../../duck/actions/viewAction";
@@ -113,10 +112,11 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 			{treeMap &&
 				treeMap.map((item, ele1) => {
 					return (
-						<Tree onSelect={onSelect}>
+						<Tree onSelect={onSelect} >
 							<TreeNode
 								title={item.process_step}
 								key={"frstEle-" + ele1}
+
 								dataRef={item}
 							>
 								{item &&
@@ -126,6 +126,7 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 											<TreeNode
 												title={a.product_desc}
 												dataRef={a}
+
 												key={"secondEle-" + ele2}
 											>
 												{a &&
@@ -133,6 +134,7 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 													a.children.map((b, ele3) => {
 														return (
 															<TreeNode
+
 																key={"thirdEle-" + ele3}
 																title={
 																	<div className="treenode-block">
