@@ -22,10 +22,12 @@ const { TreeNode } = Tree;
 let setKey = [];
 let selectedData = [];
 let finalData = [];
-const MaterialTree = (props) => {
+const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue }) => {
+
+	const { hierarchy } = moleculeList;
 
 	const dispatch = useDispatch();
-	const { moleculeList, highlightFilterValue } = props;
+
 	const [selectedKeys, setSelectedKeys] = useState([]);
 	const [treeMap, setTreeMap] = useState([]);
 	const [count, setCount] = useState("");
@@ -34,11 +36,11 @@ const MaterialTree = (props) => {
 	);
 
 	useEffect(() => {
-		setTreeMap(moleculeList.hierarchy)
-	}, [moleculeList])
+		setTreeMap(hierarchy)
+	}, [hierarchy])
 
 	const onSelect = (selectedKe, info) => {
-		props.callbackProcessClick(info.node.dataRef);
+		callbackProcessClick(info.node.dataRef);
 		setSelectedKeys(selectedKe);
 	};
 

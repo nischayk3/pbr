@@ -2,19 +2,19 @@ import React from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 
-const CreateVariable = (props) => {
+const CreateVariable = ({ addVariable, title, createVar, className, fromWorkflowScreen }) => {
 	return (
-		<div className={props.className} style={{ pointerEvents: props.fromWorkflowScreen ? "none" : "auto" }}>
+		<div className={className} style={{ pointerEvents: fromWorkflowScreen ? "none" : "auto" }}>
 			{
-				props.title === "Create Variable" && (
-					<div onClick={props.addVariable} >
+				title === "Create Variable" && (
+					<div onClick={addVariable} >
 						<PlusOutlined />
 						<p>Create Variable</p>
 					</div>
 				)
 			}
 			{
-				props.title === "Select parameters" && (
+				title === "Select parameters" && (
 					<>
 						<PlusOutlined />
 						<p>Select parameters</p>
@@ -22,10 +22,10 @@ const CreateVariable = (props) => {
 				)
 			}
 			{
-				props.title === "Done" && (
+				title === "Done" && (
 					<Button
 						type="text"
-						onClick={props.createVar}
+						onClick={createVar}
 						className="custom-primary-btn "
 					>
 						Done
