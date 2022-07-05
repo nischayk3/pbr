@@ -3,6 +3,7 @@ import { Breadcrumb } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { HomeOutlined } from "@ant-design/icons";
 import breadcrumbNameMap from "./map.json";
+import { v1 as uuid } from 'uuid'
 import "./style.scss";
 
 const BreadCrumbWrapper = (props) => {
@@ -25,7 +26,7 @@ const BreadCrumbWrapper = (props) => {
 		);
 	});
 	const breadcrumbItems = [
-		<Link to="/dashboard/workspace">
+		<Link key={uuid()} to="/dashboard/workspace">
 			<HomeOutlined />
 		</Link>
 	].concat(extraBreadcrumbItems);
