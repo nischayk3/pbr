@@ -78,14 +78,16 @@ function Hierarchy() {
 			let res = await getAllViews(req)
 			let res_step = await getProcessStep(req)
 
-			if (res['status-code'] == 200 && res_step['statuscode'] == 200) {
+			if (res['status-code'] == 200) {
 				let data_molecule = [...res.Data]
-				let data_step = [...res_step.data]
 				data_molecule = data_molecule.map((v, index) => ({ ...v, key: index + 1 }))
-				data_step = data_step.map((v, index) => ({ ...v, key: index + 1 }))
 				setCount(Math.max(...data_molecule.map(o => o.key)) + 1)
-				setStepCount(Math.max(...data_step.map(o => o.key)) + 1)
 				setMoleculeData(data_molecule)
+			}
+			if (res_step['statuscode'] == 200) {
+				let data_step = [...res_step.data]
+				data_step = data_step.map((v, index) => ({ ...v, key: index + 1 }))
+				setStepCount(Math.max(...data_step.map(o => o.key)) + 1)
 				setStepData(data_step)
 			}
 		}
