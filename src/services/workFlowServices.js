@@ -30,6 +30,8 @@ export const getCountData = _queryParam => {
 export const getTableData = _queryParam => {
 	return Service.get(BMS_APP_PYTHON_SERVICE + '/approvals' + _queryParam, '', {
 		'content-type': 'application/json',
+		'x-access-token': login_response.token ? login_response.token : '',
+		'resource-name': 'WORKITEMS',
 		username: localStorage.getItem('user')
 	}).then(
 		response => {

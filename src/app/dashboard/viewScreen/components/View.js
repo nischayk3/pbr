@@ -62,7 +62,7 @@ const ViewCreation = (props) => {
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
 	const [parentBatches, setParentBatches] = useState([]);
 	const [molBatches, setMolBatches] = useState([]);
-
+	const [highlightFilterValue, setHighlightFilterValue] = useState("");
 	const [viewSummaryBatch, setViewSummaryBatch] = useState([]);
 	const [newBatchData, setNewBatchData] = useState([]);
 	const [viewDisplayId, setViewDisplayId] = useState("");
@@ -217,7 +217,7 @@ const ViewCreation = (props) => {
 
 	//tree node click
 	const hierarchyProcessClick = (treeinfo) => {
-		console.log("treeinfo", treeinfo);
+
 		if (treeinfo && treeinfo.process_step) {
 			const _reqMol = {
 				data: {
@@ -247,7 +247,7 @@ const ViewCreation = (props) => {
 
 	const filterMolequles = async (filterValue) => {
 		const filterSplit = filterValue && filterValue.split('_')
-
+		setHighlightFilterValue(filterSplit[2])
 		setFilterParam(filterSplit)
 		const _filterReq1 = {
 			data: {
@@ -475,6 +475,7 @@ const ViewCreation = (props) => {
 												callbackProcessClick={hierarchyProcessClick}
 												materialsList={materialsList}
 												parentBatches={parentBatches}
+												highlightFilterValue={highlightFilterValue}
 											/>
 
 										</Panel>
