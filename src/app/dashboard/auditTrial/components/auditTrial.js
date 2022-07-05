@@ -136,7 +136,7 @@ class AuditTrials extends React.Component {
 					},
 					className: "old_value_class",
 
-					sorter: (a, b) => a.old_value - b.old_value
+					sorter: (a, b) => a.old_value.localeCompare(b.old_value)
 				},
 				{
 					title: "New Value",
@@ -151,7 +151,7 @@ class AuditTrials extends React.Component {
 							}
 						};
 					},
-					sorter: (a, b) => a.new_value - b.new_value
+					sorter: (a, b) =>a.new_value.localeCompare(b.new_value)
 				},
 				{
 					title: "Reason For Change",
@@ -253,7 +253,6 @@ class AuditTrials extends React.Component {
 
 		let endPoint = "/services/v1/audit-information?";
 		let baseUrl = MDH_APP_PYTHON_SERVICE + endPoint;
-		console.log("baseUrl", baseUrl)
 		let startDate =
 			this.state.selectedDate.length > 0
 				? this.state.selectedDate[0]
