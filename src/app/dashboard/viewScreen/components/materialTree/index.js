@@ -22,10 +22,12 @@ const { TreeNode } = Tree;
 let setKey = [];
 let selectedData = [];
 let finalData = [];
-const MaterialTree = (props) => {
+const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue }) => {
+
+	const { hierarchy } = moleculeList;
 
 	const dispatch = useDispatch();
-	const { moleculeList } = props;
+
 	const [selectedKeys, setSelectedKeys] = useState([]);
 	const [treeMap, setTreeMap] = useState([]);
 	const [count, setCount] = useState("");
@@ -34,12 +36,11 @@ const MaterialTree = (props) => {
 	);
 
 	useEffect(() => {
-
-		setTreeMap(moleculeList.hierarchy)
-	}, [moleculeList])
+		setTreeMap(hierarchy)
+	}, [hierarchy])
 
 	const onSelect = (selectedKe, info) => {
-		props.callbackProcessClick(info.node.dataRef);
+		callbackProcessClick(info.node.dataRef);
 		setSelectedKeys(selectedKe);
 	};
 
@@ -107,8 +108,6 @@ const MaterialTree = (props) => {
 		}
 	};
 
-
-
 	return (
 		<div className="custom-treenode">
 			{treeMap &&
@@ -138,7 +137,7 @@ const MaterialTree = (props) => {
 																title={
 																	<div className="treenode-block">
 																		<div className="tree-block-param">
-																			<Tag color="geekblue">
+																			<Tag color={b.parameter_name === highlightFilterValue ? ' ' : "geekblue"}>
 																				{b.parameter_name}
 																			</Tag>
 																			<p className="treenode-coverage">

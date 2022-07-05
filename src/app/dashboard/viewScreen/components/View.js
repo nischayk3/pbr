@@ -62,7 +62,7 @@ const ViewCreation = (props) => {
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
 	const [parentBatches, setParentBatches] = useState([]);
 	const [molBatches, setMolBatches] = useState([]);
-
+	const [highlightFilterValue, setHighlightFilterValue] = useState("");
 	const [viewSummaryBatch, setViewSummaryBatch] = useState([]);
 	const [newBatchData, setNewBatchData] = useState([]);
 	const [viewDisplayId, setViewDisplayId] = useState("");
@@ -217,7 +217,7 @@ const ViewCreation = (props) => {
 
 	//tree node click
 	const hierarchyProcessClick = (treeinfo) => {
-		console.log("treeinfo", treeinfo);
+
 		if (treeinfo && treeinfo.process_step) {
 			const _reqMol = {
 				data: {
@@ -247,7 +247,7 @@ const ViewCreation = (props) => {
 
 	const filterMolequles = async (filterValue) => {
 		const filterSplit = filterValue && filterValue.split('_')
-
+		setHighlightFilterValue(filterSplit[2])
 		setFilterParam(filterSplit)
 		const _filterReq1 = {
 			data: {
@@ -322,6 +322,10 @@ const ViewCreation = (props) => {
 						`View Id: ${response.view_disp_id} have been successfully saved`
 					)
 				);
+
+				history.push({
+					pathname: `/dashboard/view_creation/${response.view_disp_id}&1`,
+				})
 			} else if (response.data.statuscode === 400) {
 				dispatch(showNotification("error", response.data.message));
 			}
@@ -470,11 +474,12 @@ const ViewCreation = (props) => {
 											key="1"
 										>
 											<MaterialTree
-												fromWorkflowScreen={fromWorkflowScreen}
+												//fromWorkflowScreen={fromWorkflowScreen}
 												moleculeList={moleculeList}
 												callbackProcessClick={hierarchyProcessClick}
-												materialsList={materialsList}
-												parentBatches={parentBatches}
+												//	materialsList={materialsList}
+												//parentBatches={parentBatches}
+												highlightFilterValue={highlightFilterValue}
 											/>
 
 										</Panel>
@@ -500,6 +505,8 @@ const ViewCreation = (props) => {
 												count={count}
 												setCount={setCount}
 												getNewData={(el) => getNewData(el)}
+												setMolBatches={setMolBatches}
+												setViewSummaryBatch={setViewSummaryBatch}
 											/>
 										</Panel>
 									</>
@@ -512,8 +519,8 @@ const ViewCreation = (props) => {
 						<div className="viewCreation-rightBlocks">
 							<MemoizedMathEditor
 								fromWorkflowScreen={fromWorkflowScreen}
-								paramTableData={paramTableData}
-								newBatchData={newBatchData}
+								//paramTableData={paramTableData}
+								//newBatchData={newBatchData}
 								parentBatches={parentBatches}
 								molBatches={molBatches}
 								setMolBatches={setMolBatches}
@@ -524,9 +531,8 @@ const ViewCreation = (props) => {
 								materialId={moleculeId}
 							/>
 							<MemoizedViewSummaryData
-								fromWorkflowScreen={fromWorkflowScreen}
 								viewJson={viewJson}
-								setViewJson={setViewJson}
+								//setViewJson={setViewJson}
 								parentBatches={parentBatches}
 								viewDisplayId={viewDisplayId}
 								viewStatus={viewStatus}

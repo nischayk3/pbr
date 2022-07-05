@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox, Empty, Radio, Select, Table, Modal, Button, Tag, Input } from "antd";
-import { CheckOutlined, CloseOutlined, RightCircleOutlined } from "@ant-design/icons";
+import { CheckOutlined, CloseOutlined, RightCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import {
 	createSummaryData,
 	createVariable,
 	isNewView,
 	selectParamType,
+	sendSelectedParamData,
 	setMathValue,
 	viewFunctionMap,
 	viewParamMap
@@ -16,7 +17,28 @@ import { hideLoader } from "../../../../../duck/actions/commonActions";
 let paramType = "";
 let counter = 0;
 
-const ParameterTable = (props) => {
+const ParameterTable = ({
+	variableCreate,
+	setVariableCreate,
+	viewSummaryBatch,
+	setViewSummaryBatch,
+	ischeckBox,
+	viewJson,
+	setViewJson,
+	//newBatchData,
+	parentBatches,
+	varClick,
+	getParamData,
+	selectedData,
+	variableName,
+	selectedVar,
+	//materialId,
+	molBatches,
+	setMolBatches,
+	fromWorkflowScreen,
+	callbackCheckbox,
+	//setVarClick,
+	rowDisable }) => {
 	const paramReducer = useSelector((state) => state.viewCreationReducer);
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
 	const selectedTableData = useSelector(
@@ -60,26 +82,23 @@ const ParameterTable = (props) => {
 	const [molBatchColumn, setMolBatchColumn] = useState([]);
 
 
-	const {
-		rowDisable,
-		variableCreate,
-		setVariableCreate,
-		viewSummaryBatch,
-		setViewSummaryBatch,
-		ischeckBox,
-		viewJson,
-		setViewJson,
-		varClick,
-		variableName,
-		molBatches,
-		setMolBatches,
-	} = props;
+
+
+
 
 	const Option = Select;
 	const { Search } = Input;
 	const dispatch = useDispatch();
 
 	let columns = [
+		{
+			title: "",
+			dataIndex: "delete",
+			key: "delete",
+			width: 40,
+			fixed: "left",
+			render: (value, record) => <DeleteOutlined onClick={() => deleteParameter(record.key)} className="delete-param" />
+		},
 		{
 			title: "PARAMETER NAME",
 			dataIndex: "parameter_name",
@@ -97,7 +116,7 @@ const ParameterTable = (props) => {
 				return (
 					<Radio
 						// checked={paramType === record.parameter_name}
-						disabled={props.fromWorkflowScreen}
+						disabled={fromWorkflowScreen}
 						checked={paramType === record.parameter_name}
 						onChange={(e) =>
 							onRadioChange({
@@ -121,7 +140,7 @@ const ParameterTable = (props) => {
 			render: (text, record, index) => {
 				return (
 					<Select
-						disabled={props.fromWorkflowScreen}
+						disabled={fromWorkflowScreen}
 						style={{ width: "100px" }}
 						placeholder="Aggregation"
 						onChange={(e, value) => {
@@ -238,110 +257,110 @@ const ParameterTable = (props) => {
 	});
 
 	useEffect(() => {
-		let batchArr = []
-		let allMolBatches = molBatches && molBatches.map((e) => e.batch)
-		let totalMolBatches = molBatches
+		if (getBatchData.length > 0) {
+			let batchArr = []
+			let allMolBatches = molBatches && molBatches.map((e) => e.batch)
+			let totalMolBatches = molBatches
 
-		totalMolBatches && totalMolBatches.forEach((ele) => {
-			let batchObj = {}
-			Object.entries(getBatchData.batches).forEach(([key, value]) => {
-				if (key === ele.batch) {
-					if (allMolBatches.includes(key)) {
-						// batchObj['batch'] = key;
-						batchObj[getBatchData.parameter_name] = value;
+			totalMolBatches && totalMolBatches.forEach((ele) => {
+				let batchObj = {}
+				Object.entries(getBatchData.batches).forEach(([key, value]) => {
+					if (key === ele.batch) {
+						if (allMolBatches.includes(key)) {
+							// batchObj['batch'] = key;
+							batchObj[getBatchData.parameter_name] = value;
+						}
 					}
-				}
 
+				})
+				batchArr.push(batchObj)
 			})
-			batchArr.push(batchObj)
-		})
 
-		const molBatchMerge = totalMolBatches.map((item, i) =>
-			Object.assign({}, item, batchArr[i])
-		);
-		setMolBatches(molBatchMerge)
+			const molBatchMerge = totalMolBatches.map((item, i) =>
+				Object.assign({}, item, batchArr[i])
+			);
+			setMolBatches(molBatchMerge)
 
-		if (molBatchMerge.length > 0) {
-			const molObjKey = molBatchMerge !== undefined && molBatchMerge.length > 0 ? Object.keys(molBatchMerge[0]) : []
-			const molColumn = molObjKey.filter(uniqueArr);
-			molColumn.map((ele, i) => {
-				if (ele !== 'batch') {
+			if (molBatchMerge.length > 0) {
+				const molObjKey = molBatchMerge !== undefined && molBatchMerge.length > 0 ? Object.keys(molBatchMerge[0]) : []
+				const molColumn = molObjKey.filter(uniqueArr);
+				molColumn.map((ele, i) => {
+					if (ele !== 'batch') {
 
-					return (
-						batchColumn.push({
-							title: (
-								<div className="treenode-block-batch">
-									<div className="tree-block-param-batch">
-										<Tag color="geekblue">
-											{ele}
-										</Tag>
+						return (
+							batchColumn.push({
+								title: (
+									<div className="treenode-block-batch">
+										<div className="tree-block-param-batch">
+											<Tag color="geekblue">
+												{ele}
+											</Tag>
 
+										</div>
 									</div>
-								</div>
-							),
-							dataIndex: ele,
-							key: `${ele}-${i}`,
-							width: 80,
-							render: (value, record, rowIndex) => {
-								console.log("value, record, rowIndex", value, record, rowIndex, rowDisable);
-								if (!rowDisable) {
-									if (value) {
-										return (
-											<Checkbox
-												className="custom-check"
-												onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
-												checked={value}
-											/>
-										);
-									} else if (value === "") {
-										return (
-											<Checkbox
-												className="custom-check"
-												onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
-											/>
-										);
-									} else {
-										return (
-											<span className="batchClosed">
-												<CloseOutlined />
-											</span>
-										);
-									}
-								} else {
-									if (value) {
-										return (
-											<span className="batchChecked">
-												<CheckOutlined />
-											</span>
-										);
-									} else {
-										return (
-											<span className="batchClosed">
-												<CloseOutlined />
-											</span>
-										);
-									}
-								}
+								),
+								dataIndex: ele,
+								key: `${ele}-${i}`,
+								width: 80,
+								render: (value, record, rowIndex) => {
 
-							}
-						})
-					)
-				}
-			})
+									if (!rowDisable) {
+										if (value) {
+											return (
+												<Checkbox
+													className="custom-check"
+													onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
+													checked={value}
+												/>
+											);
+										} else if (value === "") {
+											return (
+												<Checkbox
+													className="custom-check"
+													onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
+												/>
+											);
+										} else {
+											return (
+												<span className="batchClosed">
+													<CloseOutlined />
+												</span>
+											);
+										}
+									} else {
+										if (value) {
+											return (
+												<span className="batchChecked">
+													<CheckOutlined />
+												</span>
+											);
+										} else {
+											return (
+												<span className="batchClosed">
+													<CloseOutlined />
+												</span>
+											);
+										}
+									}
+
+								}
+							})
+						)
+					}
+				})
+			}
+			setMolBatchColumn([...batchColumn])
 		}
-		setMolBatchColumn([...batchColumn])
 	}, [getBatchData])
 
 	useEffect(() => {
 		if (ischeckBox) {
 			setReloadTable(false);
 			setIsLoading(true);
-			if (ischeckBox) {
-				setInterval(() => {
-					setReloadTable(true);
-					setIsLoading(false);
-				}, 300);
-			}
+			setInterval(() => {
+				setReloadTable(true);
+				setIsLoading(false);
+			}, 300);
 		}
 	}, [ischeckBox]);
 
@@ -376,7 +395,7 @@ const ParameterTable = (props) => {
 	useEffect(() => {
 		let count = 0;
 		let varArr = [];
-		if (variableCreate === true) {
+		if (variableCreate) {
 			count++;
 			const varParameter = [...parameters];
 			varParameter.forEach((element) => {
@@ -393,13 +412,13 @@ const ParameterTable = (props) => {
 			dispatch(createVariable(variableParam));
 			dispatch(viewParamMap(variableParam));
 			setVariableCreate(false);
-			props.getParamData(variableParam);
+			getParamData(variableParam);
 		}
 	}, [variableCreate]);
 
 	useEffect(() => {
-		sortArray(props.selectedVar, props.selectedData);
-	}, [props.selectedVar]);
+		sortArray(selectedVar, selectedData);
+	}, [selectedVar]);
 
 	useEffect(() => {
 		// sortArray(props.selectedVar, props.selectedData);
@@ -440,14 +459,23 @@ const ParameterTable = (props) => {
 
 	useEffect(() => {
 		if (saveFunction) {
+
 			counter++;
 			let arr = [];
 
-			let primarySelectedData = { ...selectedPrimaryData };
+			let primarySelectedData;
+			if (Object.keys(selectedPrimaryData).length > 0) {
+				primarySelectedData = { ...selectedPrimaryData };
+			} else {
+				const viewLoadJson = [...viewJson];
+				const allParameter = viewLoadJson[0].all_parameters
+				primarySelectedData = { ...allParameter && allParameter[0] }
+
+			}
+
 			let functionTable = [...viewSummaryBatch];
-
+			//let new_column_data = parentBatches.map((e) => e.batch);
 			let new_column_data = newColumnData.map((e) => e.batch_num);
-
 			functionTable.forEach((item) => {
 				let obj = {};
 				Object.entries(primarySelectedData).forEach(([key]) => {
@@ -552,7 +580,6 @@ const ParameterTable = (props) => {
 		dispatch(hideLoader());
 	};
 
-
 	const handleAggregationChange = (text, record, value, index) => {
 		let newAggrValue = [...tableData];
 		let newParamArr = [...parameters]
@@ -592,19 +619,29 @@ const ParameterTable = (props) => {
 	}
 
 	const TableSearch = value => {
-		const tableData = [...molBatches];
+		const tableDataSearch = [...molBatches];
 		// if (value == '') {
 		// setMolBatches(molBatchMerge);
 		// }
-		const filterTable = tableData.filter(o =>
+		const searchTable = tableDataSearch.filter(o =>
 			Object.keys(o).some(k =>
 				String(o[k]).toLowerCase().includes(value.toLowerCase())
 			)
 
 		);
-		setMolBatches(filterTable);
+		setMolBatches(searchTable);
 	};
-	console.log("rowDisableeeeeeee", rowDisable);
+
+	const deleteParameter = (id) => {
+
+		const deleteRecord = tableData.filter(item => item.key !== id)
+		//setTableData(ele => ele.filter(item => item.key !== id));
+
+		setTableData(deleteRecord)
+		dispatch(sendSelectedParamData(deleteRecord));
+	}
+
+
 	return (
 		<>
 			<div className="param-table">
@@ -645,7 +682,7 @@ const ParameterTable = (props) => {
 									paramArr.push(paramsObj);
 								});
 								setParameters(paramArr);
-								props.callbackCheckbox(true);
+								callbackCheckbox(true);
 								setSelectedRowKeys(selectedRowKeys);
 							},
 							getCheckboxProps: (record) => {

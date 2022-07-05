@@ -11,7 +11,7 @@ import "./styles.scss";
 import { setViewFunctionName } from "../../../../../duck/actions/viewAction";
 import { showNotification } from "../../../../../duck/actions/commonActions";
 
-const ViewSummaryData = (props) => {
+const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, parentBatches }) => {
 
 	const dispatch = useDispatch();
 	let columns = [];
@@ -26,8 +26,6 @@ const ViewSummaryData = (props) => {
 
 	const [funTableData, setFunTableData] = useState([]);
 
-	const { viewDisplayId, viewStatus, viewVersion, viewJson, parentBatches } =
-		props;
 
 	useEffect(() => {
 		if (functionName !== "") {
@@ -105,6 +103,8 @@ const ViewSummaryData = (props) => {
 
 			const tableColumns = [...columns];
 			setTableColumn(tableColumns);
+
+
 		}
 	}, [funTableData]);
 
@@ -127,6 +127,7 @@ const ViewSummaryData = (props) => {
 					return fun.push(element.name);
 				});
 			}
+
 
 			if (parentBatches.length > 0) {
 				const loadTableData =

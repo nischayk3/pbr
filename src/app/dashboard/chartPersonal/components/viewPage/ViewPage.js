@@ -93,6 +93,13 @@ const ViewPage = () => {
     }
     let access = false;
     postData.data.forEach((element) => {
+      if (element.view_id === "") {
+        dispatch(
+          showNotification("error", "Select the view to save the chart")
+        );
+        access = true;
+        return;
+      }
       if (element.chart_name === "") {
         dispatch(showNotification("error", "Chart name required"));
         access = true;
@@ -169,15 +176,17 @@ const ViewPage = () => {
     }
   }, [id]);
 
-  useEffect(()=>{
-	postChartData && postChartData.data && postChartData.data.forEach((el)=>{
-		if(el.chart_status==='APRD' || el.chart_status==='AWAP' ){
-			setDisablePublishButton(true);
-		}else{
-			setDisablePublishButton(false);
-		}
-	})
-  },[postChartData])
+  useEffect(() => {
+    postChartData &&
+      postChartData.data &&
+      postChartData.data.forEach((el) => {
+        if (el.chart_status === "APRD" || el.chart_status === "AWAP") {
+          setDisablePublishButton(true);
+        } else {
+          setDisablePublishButton(false);
+        }
+      });
+  }, [postChartData]);
 
   return (
     <div className="custom-wrapper bread-wrapper">
@@ -217,7 +226,7 @@ const ViewPage = () => {
               <Button onClick={() => saveAs("saveas")}>Save As</Button>
               <Button onClick={() => saveAs("save")}>Save</Button>
               <Button
-			  	disabled={disablePublishButton}
+                disabled={disablePublishButton}
                 onClick={() => {
                   setIsPublish(true);
                   setApproveReject("P");

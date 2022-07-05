@@ -11,7 +11,16 @@ import Modal from "../../../../../components/Modal/Modal";
 import InputField from "../../../../../components/InputField/InputField";
 
 let variableData = [];
-const MathEditor = (props) => {
+const MathEditor = ({
+	molBatches,
+	setMolBatches,
+	viewJson,
+	setViewJson,
+	viewSummaryBatch,
+	setViewSummaryBatch,
+	materialId,
+	parentBatches,
+	fromWorkflowScreen }) => {
 
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
 	const selectedParameters = useSelector(
@@ -32,17 +41,7 @@ const MathEditor = (props) => {
 
 
 	const { Panel } = Collapse;
-	const {
-		newBatchData,
-		parentBatches,
-		molBatches,
-		setMolBatches,
-		viewJson,
-		setViewJson,
-		viewSummaryBatch,
-		setViewSummaryBatch,
-		materialId,
-	} = props;
+
 
 	const content = (
 		<div className="script-info">
@@ -249,14 +248,14 @@ const MathEditor = (props) => {
 					}
 					key="1"
 				>
-					<MathFunction data={paramData} materialId={materialId} fromWorkflowScreen={props.fromWorkflowScreen} />
+					<MathFunction data={paramData} materialId={materialId} fromWorkflowScreen={fromWorkflowScreen} />
 					<div className="variable-wrapper">
 						<CreateVariable
 							addVariable={addVariable}
 							title={cardTitle}
 							createVar={addVariableName}
 							className={"add-var_block add-var_block_bg"}
-							fromWorkflowScreen={props.fromWorkflowScreen}
+							fromWorkflowScreen={fromWorkflowScreen}
 						/>
 						{varData && (
 							varData.map((item, index) => {
@@ -267,7 +266,7 @@ const MathEditor = (props) => {
 										variableName={item.variableName}
 										deleteVariable={deleteVariable}
 										editVariable={editVariable}
-										fromWorkflowScreen={props.fromWorkflowScreen}
+									//	fromWorkflowScreen={fromWorkflowScreen}
 									/>
 								);
 							})
@@ -275,14 +274,14 @@ const MathEditor = (props) => {
 
 					</div>
 					<MemoizedParameterTable
-						fromWorkflowScreen={props.fromWorkflowScreen}
+						fromWorkflowScreen={fromWorkflowScreen}
 						variableCreate={variableCreate}
 						setVariableCreate={setVariableCreate}
 						callbackCheckbox={callbackCheckbox}
 						varClick={varClick}
-						setVarClick={setVarClick}
+						//setVarClick={setVarClick}
 						rowDisable={rowDisable}
-						newBatchData={newBatchData}
+						//newBatchData={newBatchData}
 						parentBatches={parentBatches}
 						setMolBatches={setMolBatches}
 						molBatches={molBatches}
@@ -294,7 +293,7 @@ const MathEditor = (props) => {
 						getParamData={getParamData}
 						selectedData={paramData}
 						selectedVar={selectedVar}
-						materialId={materialId}
+						//materialId={materialId}
 						variableName={variableName}
 					/>
 				</Panel>

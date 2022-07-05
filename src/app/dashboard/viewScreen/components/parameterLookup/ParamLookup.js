@@ -18,13 +18,13 @@ import {
 import SelectSearchField from "../../../../../components/SelectSearchField/SelectSearchField";
 import debounce from "lodash/debounce";
 
-const ParamLookup = (props) => {
+const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMoleculeId, isEditView, fromWorkflowScreen }) => {
 	const { Search } = Input;
 	const { Option } = Select;
 
 	const dispatch = useDispatch();
 
-	const [moleculeId, setMoleculeId] = useState("");
+	// const [moleculeId, setMoleculeId] = useState("");
 	const [moleculeList, setMoleculeList] = useState([]);
 	const [filterMol, setFilterMol] = useState([]);
 	const [filterValue, setFilterValue] = useState('');
@@ -32,8 +32,8 @@ const ParamLookup = (props) => {
 
 	//moleculelist api call
 	useEffect(() => {
-		if (props.isEditView) {
-			setMoleculeId(props.moleculeId);
+		if (isEditView) {
+			setMoleculeId(moleculeId);
 		} else {
 			const reqMol = {
 				'data': {},
@@ -42,11 +42,11 @@ const ParamLookup = (props) => {
 			loadMolecule(reqMol)
 		}
 
-	}, [props.isEditView])
+	}, [isEditView])
 
 	const onChangeMolecule = (e) => {
 		setMoleculeId(e)
-		props.callbackMoleculeId(e)
+		callbackMoleculeId(e)
 	}
 
 	const clearSearch = (e) => {
@@ -100,7 +100,7 @@ const ParamLookup = (props) => {
 
 	const onChangeParam = (value) => {
 		setFilterValue(value)
-		props.callbackFilter(value)
+		callbackFilter(value)
 	}
 
 	const onSearchParam = debounce((type) => {
@@ -130,7 +130,7 @@ const ParamLookup = (props) => {
 					style={{ width: "100%" }}
 					onChange={onChangeMolecule}
 					value={moleculeId}
-					disabled={props.fromWorkflowScreen}
+					disabled={fromWorkflowScreen}
 				>
 					{moleculeList.map((item, i) => {
 						return (
