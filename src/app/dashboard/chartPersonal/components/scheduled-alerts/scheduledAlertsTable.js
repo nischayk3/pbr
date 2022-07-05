@@ -1,6 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 
+/* istanbul ignore next */
 export default function scheduledAlertsTable() {
   const columns = [
     {
