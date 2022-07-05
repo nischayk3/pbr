@@ -49,11 +49,11 @@ const UserRolesAndAccess = () => {
 						</div>
 						<p>Roles And Access</p>
 					</Col>
-					<Col span={4} onClick={() => redirectTo('screen-controls')}>
+					<Col span={4} onClick={() => redirectTo('application-controls')}>
 						<div className='create-new'>
 							<img src={ScreenAccessImage} alt="ScreenAccessControls" width="98%" />
 						</div>
-						<p>Screen Controls</p>
+						<p>Application Controls</p>
 					</Col>
 				</Row>
 

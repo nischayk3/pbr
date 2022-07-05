@@ -163,8 +163,8 @@ describe('Renders the view config page', () => {
 
     it('Loads screen controls page correctly', () => {
         cy.log('Clicking on Screen Controls')
-        cy.contains('Screen Controls').click()
-        cy.url().should('include', '/screen-controls')
+        cy.contains('Application Controls').click()
+        cy.url().should('include', '/application-controls')
         cy.wait(2000)
 
 

@@ -180,7 +180,7 @@ const ChartNotify = (props) => {
     setpdf(!value);
   };
   useEffect(() => {
-    if (props.data) {
+    if (props.data && Object.keys(props.data).length > 0) {
       unLoad(props.data);
     }
   }, [props.data]);
@@ -218,14 +218,15 @@ const ChartNotify = (props) => {
   };
 
   const unLoad = (data) => {
+    onClear()
+
     if (data) {
 
       if (data.notify_emails) setEmailList(data.notify_emails);
       if (data.frequency_unit == 'Once') {
         setSelectedSchedule('Repeat Once');
       }
-      else
-        setSelectedSchedule(data.frequency_unit ? data.frequency_unit : '');
+      setSelectedSchedule(data.frequency_unit ? data.frequency_unit : '');
 
 
       if (data.email_config) {
@@ -252,6 +253,7 @@ const ChartNotify = (props) => {
   };
 
   const handleSelectScheduleChange = (e) => {
+
     setSelectedSchedule(e);
   };
   const handleSelectAlertChange = (e) => {
@@ -325,6 +327,7 @@ const ChartNotify = (props) => {
   };
 
   const onClear = () => {
+
     setEmailList([]);
     setSelectedSchedule("Repeat Once");
     setScheduleEmailStartDate("");
@@ -480,7 +483,6 @@ const ChartNotify = (props) => {
   const handleChange = (selectedItems) => {
     setEmailList(selectedItems);
   };
-
   return (
     <div className="chart_notify-notify">
       <Tabs
@@ -706,7 +708,7 @@ const ChartNotify = (props) => {
                 <Col className="gutter-row" span={4}>
                   <div className="select-report-antd">
                     <Select
-                      placeholder=""
+                      placeholder="Schedule"
                       value={selectedSchedule}
                       onChange={(e) => handleSelectScheduleChange(e)}
                       style={{
