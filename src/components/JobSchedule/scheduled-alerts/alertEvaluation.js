@@ -145,6 +145,7 @@ const alertEvaluation = (props) => {
 		let get_response = await getJob(req, request_headers);
 		try {
 			if (get_response.Data) {
+				onClear()
 				setIsLoad(true)
 				unLoad(get_response.Data);
 			}
@@ -451,6 +452,7 @@ const alertEvaluation = (props) => {
 											// onClear={()=>setSelectedSchedule('Repeat Once')}
 											defaultValue={selectedSchedule}
 											className="antd-selectors"
+
 										>
 											{scheduleList &&
 												scheduleList.map((item) => (

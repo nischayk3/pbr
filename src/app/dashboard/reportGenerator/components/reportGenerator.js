@@ -361,7 +361,11 @@ function ReportGenerator(props) {
 		<div className='custom-wrapper'>
 			<div className='sub-header' style={{ paddingRight: '24px' }}>
 				<div className='sub-header-title'>
-					<BreadCrumbWrapper />
+					<BreadCrumbWrapper
+						urlName={
+							`/dashboard/report_generator/${reportId}`}
+						value={reportId}
+						data="Untitled" />
 				</div>
 				<div className='sub-header-btns'>
 					{!screenChange ? (
