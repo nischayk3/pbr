@@ -5,11 +5,7 @@ import { Avatar, Input, Table } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import illustrations from "../../../../../assets/images/ViewCreation_bannerillustration.png";
 import "./styles.scss";
-//import StatusBlock from "../../../../../components/StatusBlock/statusBlock";
 import { getViews } from "../../../../../services/viewCreationPublishing";
-import Loading from "../../../../../components/Loading"
-//import ScreenHeader from "../../../../../components/ScreenHeader/screenHeader";
-
 import {
 	hideLoader,
 	showLoader,
