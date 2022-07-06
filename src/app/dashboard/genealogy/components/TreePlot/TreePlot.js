@@ -136,6 +136,7 @@ function TreePlot(props) {
     console.log(text);
   };
 
+  /* istanbul ignore next */
   const onChangeParam = (value) => {
     if (value !== null && value !== undefined) {
       let splitvalue = value.split("---");
@@ -1024,6 +1025,7 @@ function TreePlot(props) {
               d.source.relationshipMap[d.source.id + "-" + d.target.id].unit;
             var purchaseOrder = "";
 
+            /* istanbul ignore next */
             if (THIS.type === "forward") {
               material = d.source.matNo || "Not Available";
               processOrder = d.source.poNo || "Not Available";
@@ -1083,7 +1085,7 @@ function TreePlot(props) {
           .remove();
 
         // Stash the old positions for transition.
-		/* istanbul ignore next */
+		    /* istanbul ignore next */
         nodes.forEach(function (d) {
           d.x0 = d.x;
           d.y0 = d.y;
@@ -1091,6 +1093,7 @@ function TreePlot(props) {
 
         // On Node Click Event
         //toggle children click
+        /* istanbul ignore next */
         function node_onClick(d, id) {
           //let lastClickD = null;
           //let nExpand = d3.select("#node-" + id);
