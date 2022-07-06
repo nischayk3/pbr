@@ -38,10 +38,12 @@ function PbrReviewer() {
     cardTableData()
   }, []);
   const cardTableData = async () => {
-    let req = ``
+    // let req = ``
     try {
+      let username = localStorage.getItem('user')
+      // let req = { createdBy: username.toLowerCase() }
       dispatch(showLoader());
-      const tableResponse = await getPbrReviewerData(req);
+      const tableResponse = await getPbrReviewerData();
       if (tableResponse['status-code'] === 200) {
         setTemplateData(tableResponse.Data);
         dispatch(hideLoader());
@@ -50,59 +52,74 @@ function PbrReviewer() {
         dispatch(hideLoader());
         setTemplateData(tableResponse.Data);
         dispatch(showNotification('error', tableResponse.Message));
+      } else {
+        dispatch(hideLoader());
       }
     }
     catch (error) {
       dispatch(hideLoader());
       dispatch(showNotification('error', error.Message));
     }
+
+
   };
 
   const showfilterData = async (value) => {
+    dispatch(showLoader());
     setShowReset(true)
     let obj = { ...statusreq, status: value.toLowerCase() }
     let res = await getPbrReviewerData(obj)
     setTemplateData(res.Data);
     setStatusReq(obj)
+    dispatch(hideLoader());
   };
 
   const showfilters = async (value) => {
+    dispatch(showLoader());
     setShowResetConfidence(true)
-    let obj = { ...statusreq, confidence: value.toLowerCase() }
+    let obj = { ...statusreq, confidence: value }
     let res = await getPbrReviewerData(obj)
     setTemplateData(res.Data);
     setStatusReq(obj)
+    dispatch(hideLoader());
 
   };
 
   const updateStatus = (e, record) => {
-
     let resp = [...arr];
-    resp.push(record.id);
-    setArr(resp);
+    if (resp.includes(record.id)) {
+      const newArr = resp.filter(e => e !== record.id)
+      setArr(newArr);
+    } else {
+      resp.push(record.id);
+      setArr(resp);
+    }
+
 
   };
   const eSignId = async (esign) => {
+    dispatch(showLoader());
+    let login_response = JSON.parse(localStorage.getItem('login_details'));
     let req = {
-      changed_by:"",
+      changed_by: login_response?.email_id,
       id: arr,
-      recorded_date: "",
-      recorded_time: "",
-      snippet_value: "",
+      recorded_date: null,
+      recorded_time: null,
+      snippet_value: null,
       status: "approved",
-      uom: ""
+      uom: null
     }
     if (esign) {
       let res = await updateApprove(req)
 
       if (res.Status == "202") {
-
+        dispatch(hideLoader());
         dispatch(showNotification("success", "Approved Successfully")),
-          dispatch(showLoader());
 
-        setTimeout(() => window.location.reload(),
-          1000
-        );
+
+          setTimeout(() => window.location.reload(),
+            1000
+          );
       }
     }
 
@@ -173,8 +190,7 @@ function PbrReviewer() {
     let jsondata = obj.Data;
     let highcount = 0;
     jsondata.forEach(item => {
-      if (item.confidence === "high") {
-
+      if (item.confidence === "High") {
         highcount++;
 
       }
@@ -185,7 +201,7 @@ function PbrReviewer() {
 
     let medcount = 0;
     jsondata.forEach(item => {
-      if (item.confidence === "medium") {
+      if (item.confidence === "Medium") {
         medcount++;
       }
 
@@ -193,14 +209,14 @@ function PbrReviewer() {
 
     let lowcount = 0;
     jsondata.forEach(item => {
-      if (item.confidence === "low") {
+      if (item.confidence === "Low") {
         lowcount++;
       }
 
     });
-
     setPieChartData1([lowcount, medcount, highcount]);
   };
+
   let appchart1 = [{
     values: pieChartData1,
     labels: ["Low", "Medium", "High"],
@@ -219,7 +235,7 @@ function PbrReviewer() {
       }
 
     },
-    hole: .6,
+    hole: .7,
     type: 'pie',
   }]
 
@@ -238,8 +254,8 @@ function PbrReviewer() {
         y: 1
       }
     },
-    type: 'pie',
     hole: .7,
+    type: 'pie',
 
   }]
 
@@ -251,7 +267,6 @@ function PbrReviewer() {
   }, []);
 
   const columns2 = [
-
     {
       title: 'ID',
       key: 'id',
@@ -302,6 +317,7 @@ function PbrReviewer() {
       title: 'File Path',
       key: 'file_path',
       dataIndex: 'file_path',
+      // width:"17%",
       ...getColumnSearchProps('file_path'),
       sorter: (a, b) => a.file_path?.length - b.file_path?.length,
       sortDirections: ['descend', 'ascend'],
@@ -373,6 +389,7 @@ function PbrReviewer() {
       title: 'created By',
       key: 'created_by',
       dataIndex: 'created_by',
+      // width:"10%",
       ...getColumnSearchProps('created_by'),
       sorter: (a, b) => a.created_by?.length - b.created_by?.length,
       sortDirections: ['descend', 'ascend'],
@@ -387,7 +404,7 @@ function PbrReviewer() {
           <a
             style={{ color: "#1890ff" }}
             onClick={() => {
-              window.open(`/#/dashBoard/pbr_update?id=${record.id}`)
+              window.open(`/#/dashboard/pbr_update?id=${record.id}`)
             }}
 
           >
@@ -536,10 +553,10 @@ function PbrReviewer() {
       ),
       onFilter: (value, record) =>
         record[dataIndex]
-        ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+          ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
           : "",
       onFilterDropdownVisibleChange: (visible) => {
         if (visible) {
@@ -571,22 +588,31 @@ function PbrReviewer() {
 
   function handleReset(clearFilters) {
     clearFilters();
-    setSearchText('');
+    setSearchText("");
   }
 
   const landingSearch = value => {
-    setSearchedLanding(true);
-    const tableData = templateData;
-    const filterTable = tableData.filter(o =>
-      Object.keys(o).some(k =>
-        String(o[k]).toLowerCase().includes(value.toLowerCase())
-      )
-    );
-    setFilterTableLanding(filterTable);
+    console.log("vla", value)
+    if (value == "") {
+      setFilterTableLanding(null);
+    } else {
+      setSearchedLanding(true);
+      const tableData = templateData;
+      const newArray = tableData.map(({ created_on, changed_on, snippet_image,recorded_date,recorded_time, ...keepAttrs }) => keepAttrs)
+      const filterTable = newArray.filter(o =>
+        Object.keys(o).some(k => {
+          return String(o[k]).toLowerCase().includes(String(value).toLowerCase())
+        }
+        )
+      );
+      setFilterTableLanding(filterTable);
+    }
+
   };
 
   const resetConfidence = async () => {
     //setShowReset(false)
+    dispatch(showLoader());
     let obj = { ...statusreq }
     delete obj["confidence"]
     let res = await getPbrReviewerData(obj)
@@ -594,10 +620,11 @@ function PbrReviewer() {
     setStatusReq(obj)
     setShowResetConfidence(false)
     // cardTableData()
-
+    dispatch(hideLoader());
 
   }
   const resetStatus = async () => {
+    dispatch(showLoader());
     let obj = { ...statusreq }
     delete obj["status"]
     let res = await getPbrReviewerData(obj)
@@ -606,7 +633,7 @@ function PbrReviewer() {
     setShowReset(false)
     // setShowResetConfidence(false)
     //cardTableData()
-
+    dispatch(hideLoader());
 
   }
 
@@ -614,121 +641,114 @@ function PbrReviewer() {
     <>
       <BreadCrumbWrapper />
       <div className='custom-wrapper'>
-        <div className='custom-content-layout'>
+        <div className='custom-content-layout' style={{ overflowY: "hidden" }}>
+          <div className="background"
+          // style={{
+          //   display: 'block', width: '100%',
+          //   padding: 30, height: 220,
+          //   scrollBehavior: 'auto'
+          // }}
+          >
 
+
+            <Row gutter={16}>
+              <Col span={12}>
+
+                <Card className="review-card1" >
+                  <div id="my-div" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 150 }}>
+                    <h3 className="status_pos">Status</h3>
+                    {showReset && (
+                      <p className="status" onClick={resetStatus}>Reset</p>
+                    )}
+                    <Plot
+                      data={appchart}
+                      onClick={(e) => showfilterData(e.points[0].label)}
+                      layout={{
+                        showlegend: true,
+                        legend: {
+                          x: 1.3,
+                          xanchor: 'left',
+                          y: 0.5
+
+                        }, paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: ''
+                      }} />
+
+                  </div>
+                </Card>
+              </Col>
+              <Col span={12}>
+                <Card className="review-card2">
+                  <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 150 }}>
+                    <h3 className="status_pos">Confidence</h3>
+                    {showResetConfidence && (
+                      <p className="status" onClick={resetConfidence}>Reset</p>
+                    )}
+
+                    <Plot
+                      data={appchart1}
+                      onClick={(e) => showfilters(e.points[0].label)}
+                      layout={{
+                        showlegend: true,
+                        legend: {
+                          x: 1.3,
+                          y: 0.5
+
+                        }, paper_bgcolor: "rgba(0,0,0,0)", width: 380, title: ''
+                      }} />
+                  </div>
+                </Card>
+              </Col>
+            </Row>
+
+          </div>
           <div className='review-wrapper'>
             <div className='content_section' >
 
               <div className="scrollable-container" >
-                <div className="background" 
-                // style={{
-                //   display: 'block', width: '100%',
-                //   padding: 30, height: 220,
-                //   scrollBehavior: 'auto'
-                // }}
-                >
-                  
 
-                    <Row gutter={16}>
-                      <Col span={12}>
 
-                        <Card className="review-card1" >
-                          <div id="my-div" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 200 }}>
-                            <h3 className="status_pos">Status</h3>
-                            {showReset && (
-                              <p className="status" onClick={resetStatus}>Reset</p>
-                            )}
-                            <Plot
-                              data={appchart}
-                              onClick={(e) => showfilterData(e.points[0].label)}
-                              layout={{
-                                showlegend: true,
-                                legend: {
-                                  x: 1.3,
-                                  xanchor: 'left',
-                                  y: 0.5
 
-                                }, paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: ''
-                              }} />
+                <div>
+                  <Row justify="space-around" align="middle">
+                    <Col span={22}>
+                      <Search
+                        className='dashboard-search'
+                        placeholder='Search by template ID, name, creator or date of creation'
+                        allowClear
+                        enterButton='Search'
+                        size='large'
+                        icon={<SearchOutlined />}
+                        onSearch={landingSearch}
+                      />
+                    </Col>
+                    <Col span={2} >
+                      <Button style={{
+                        margin: "7px 20px",
+                        right: 8,
+                        borderRadius: "5px",
+                        textTransform: "none",
+                        background: "#ffffff",
+                        borderColor: "#303f9f",
+                        color: "#303f9f"
 
-                          </div>
-                        </Card>
-                      </Col>
-                      <Col span={12}>
-                        <Card className="review-card2">
-                          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 200 }}>
-                            <h3 className="status_pos">Confidence</h3>
-                            {showResetConfidence && (
-                              <p className="status" onClick={resetConfidence}>Reset</p>
-                            )}
-
-                            <Plot
-                              data={appchart1}
-                              onClick={(e) => showfilters(e.points[0].label)}
-                              layout={{
-                                showlegend: true,
-                                legend: {
-                                  x: 1.3,
-                                  y: 0.5
-
-                                }, paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: ''
-                              }} />
-                          </div>
-                        </Card>
-                      </Col>
-                    </Row>
-                  
+                      }}
+                        onClick={showApproved}
+                        disabled={arr?.length == 0 ? true : false}
+                      >Approve</Button>
+                    </Col>
+                  </Row>
                 </div>
-
-                <div style={{ marginTop: 20 }}>
-                  <div>
-                    <Row justify="space-around" align="middle">
-                      <Col span={22}>
-                        <Search
-                          className='dashboard-search'
-                          placeholder='Search by template ID, name, creator or date of creation'
-                          allowClear
-                          enterButton='Search'
-                          size='large'
-                          icon={<SearchOutlined />}
-                          onSearch={landingSearch}
-                        />
-                      </Col>
-                      <Col span={2} >
-                        <Button style={{
-                          margin: "7px 20px",
-                          right: 8,
-                          borderRadius: "5px",
-                          textTransform: "none",
-                          background: "#ffffff",
-                          borderColor: "#303f9f",
-                          color: "#303f9f"
-
-                        }}
-                          onClick={showApproved}
-                          disabled={arr?.length == 0 ? true : false}
-                        >Approve</Button>
-                      </Col>
-                    </Row>
-
-
-
-
-                  </div>
-
-
-
-
-
+                <div >
                   <Table
                     columns={columns2}
+                    className="pbr_reviewer_table"
                     dataSource={filterTableLanding === null
                       ? templateData
                       : filterTableLanding}
-                    pagination={{ pageSize: 5 }}
+                    pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '50', '100', '200'] }}
                     scroll={{
-                      x: 1500,
-                      y: 300,
+                      x: 1800,
+                      y: 220,
                     }}
                     style={{ border: '1px solid #ececec', borderRadius: '2px' }}
                   />

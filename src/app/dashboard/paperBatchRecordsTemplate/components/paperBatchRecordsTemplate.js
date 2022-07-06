@@ -84,6 +84,7 @@ function PaperBatchRecordsTemplate() {
     const dispatch = useDispatch();
     const params = QueryString.parse(location.search)
     const [templateForm] = Form.useForm();
+    const [parameterForm] = Form.useForm();
     const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false);
     const [rightPanelCollapsed, setRightPanelCollapsed] = useState(true);
     const [paramaterAdded, setParamaterAdded] = useState(false);
@@ -183,6 +184,12 @@ function PaperBatchRecordsTemplate() {
             obj[`param${activeNumber + 1}`] = param;
             setParameterValue(obj);
             setActiveNumber(activeNumber + 1);
+            if (activeKey == NaN || activeKey == undefined) {
+                setActiveKey(activeNumber)
+            } else {
+                setActiveKey(activeKey + 1)
+            }
+
         } else {
             let openKey = parseInt(open) + 1
             setParamaterAdded(true);
@@ -191,7 +198,7 @@ function PaperBatchRecordsTemplate() {
             let param = { anchorValue: '', anchorId: '' };
             setParameterValue({ ...parameterValue, param1: param });
             setActiveNumber(activeNumber + 1);
-
+            // setActiveKey(activeKey +1)
         }
     };
 
@@ -353,13 +360,13 @@ function PaperBatchRecordsTemplate() {
             };
             setParameterValue(obj2);
         } else if (field === 'method') {
-            arr[key] = { ...arr[key], method: value.value }
+            arr[key] = { ...arr[key], method: value?.value }
             setFormValues(arr)
         } else if (field === 'anchor_dir') {
-            arr[key] = { ...arr[key], anchor_dir: value.value }
+            arr[key] = { ...arr[key], anchor_dir: value?.value }
             setFormValues(arr)
         } else if (field === 'param_rule') {
-            arr[key] = { ...arr[key], values: { ...arr[key]?.values, param_rule: value.value } }
+            arr[key] = { ...arr[key], values: { ...arr[key]?.values, param_rule: value?.value } }
             setFormValues(arr)
         } else if (field === 'RegEx') {
             arr[key] = { ...arr[key], RegEx: e.target.value }
@@ -559,7 +566,8 @@ function PaperBatchRecordsTemplate() {
             let _reqBatch = {
                 filename: `${params?.file?.split('.')[0]}_page-${pageNumber}.jpeg.json`,
                 bbox_type: mode,
-                action_type: params?.temp_disp_id ? "edit" : "create",
+                // action_type: params?.temp_disp_id ? "edit" : "create",
+                action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "saved" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? "edit" : "create",
                 temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : "",
                 temp_version: params?.temp_disp_id ? 1 : 0
             };
@@ -635,7 +643,7 @@ function PaperBatchRecordsTemplate() {
         const getIdTemplateData = async () => {
             let req = {
                 template_displ_id: params?.temp_disp_id,
-                version:params?.version
+                version: params?.version
             }
             let res = await getPbrTemplateData(req)
             let loadData = res.Data
@@ -691,6 +699,8 @@ function PaperBatchRecordsTemplate() {
                         regex: item.param_value_regex,
                         AnchorDirection: item.param_value_direction,
                         param_rule: item?.param_value_rule?.rule_name,
+                        param_key: item?.param_key_text,
+                        param_snippet_value: item?.param_value_text,
                         param_valueArea: item?.param_value_rule?.regex_text,
                         param_max: item?.param_value_rule?.range_max,
                         param_min: item?.param_value_rule?.range_min,
@@ -710,6 +720,10 @@ function PaperBatchRecordsTemplate() {
                         date_max: item?.date_value_rule?.range_max,
                         date_min: item?.date_value_rule?.range_min,
                         date_valueTransformation: item?.date_value_rule?.factor,
+                        time_transformation: item?.time_value_rule?.transformation,
+                        date_transformation: item?.date_value_rule?.transformation,
+                        uom_transformation: item?.uom_value_rule?.transformation,
+                        param_transformation: item?.param_value_rule?.transformation,
 
                     }
                     demoValues.users.push(obj)
@@ -795,10 +809,12 @@ function PaperBatchRecordsTemplate() {
     }
 
     useEffect(() => {
+
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
             setImageWidth(list?.width)
             setimageHeight(list?.height)
+
         }, 3000)
     }, [document.getElementsByTagName("canvas")[0], displayImage]);
 
@@ -848,6 +864,9 @@ function PaperBatchRecordsTemplate() {
             arr[activeKey] = { ...arr[activeKey], values: { ...arr[activeKey]?.values, anchorValue: area.areaValue, snippetID: area.snippetID, anchorCoords: area.coords } }
             setParameterValue(obj1);
             setFormValues(arr)
+            let fields = parameterForm.getFieldsValue()
+            fields.users[activeKey]["param_key"] = area.areaValue
+            parameterForm.setFieldsValue(fields)
 
         } else if (DraggerActiveMultiple.unit) {
             let obj1 = { ...parameterValue };
@@ -889,6 +908,9 @@ function PaperBatchRecordsTemplate() {
             arr[activeKey] = { ...arr[activeKey], values: { ...arr[activeKey]?.values, anchorId: area.areaValue, valueSnippetID: area.snippetID, valueCoords: area.coords } }
             setFormValues(arr)
             setParameterValue(obj1);
+            let fields = parameterForm.getFieldsValue()
+            fields.users[activeKey]["param_snippet_value"] = area.areaValue
+            parameterForm.setFieldsValue(fields)
         } else if (DraggerActiveMultiple.unitSnippet) {
             let obj1 = { ...parameterValue };
             obj1[`param${Number(activeKey) + 1}`] = {
@@ -923,247 +945,203 @@ function PaperBatchRecordsTemplate() {
 
     };
 
-    const validation = () => {
-
-        let str = "Please enter"
-        let para = ""
-        let validate = true
-        formValues.forEach((ele, index) => {
-            let check = {
-                Name: false,
-                Method: false,
-                Anchor: false,
-                AnchorValue: false,
-            }
-            if (ele.name) {
-                check.Name = true
-                if (ele.method) {
-                    check.Method = true
-                    if (ele.method === "regex") {
-                        if (parameterFormData[index]?.regex) {
-                            check.Regex = true
-                        } else {
-                            check.Regex = false
-                        }
-                    } if (ele.method === "relative_direction") {
-                        if (parameterFormData[index]?.AnchorDirection) {
-                            check.AnchorDirection = true
-                        } else {
-                            check.AnchorDirection = false
-                        }
-
-                    }
-                    if (ele?.values?.anchorValue) {
-                        check.Anchor = true
-                    }
-                    if (ele?.values?.anchorId) {
-                        check.AnchorValue = true
-                    }
-                }
-            }
-            Object.keys(check).forEach(function (key) {
-                if (check[key] == false) {
-                    str += ` ${key}`
-                    validate = false
-                    para = index
-
-                }
-
-            });
-
-        })
-        if (validate) {
-            return true
-        } else {
-            str += ` in parameter ${parameterFormData[para]?.name}`
-            openNotification(str)
-            return false
-        }
-
-    }
-
     const savePbrTemplateDataInfo = async () => {
         if (formValues.length > 0) {
-            let validate = validation()
-            if (validate) {
-                try {
-                    dispatch(showLoader());
-                    let login_response = JSON.parse(localStorage.getItem('login_details'));
-                    let _reqBatch = {
-                        pbrTemplateName: params.tempalteName,
-                        custKey: '1000',
-                        pbrTemplateVersion: 1,
-                        // pbrTemplateStatus: 'DRFT',
-                        createdBy: login_response?.email_id,
-                        changedBy: login_response?.firstname,
-                        templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
-                        material: matBatch?.material_num,
-                        batch: matBatch?.batch,
-                        siteCode: matBatch?.site,
-                        actionType: templateId != "New" ? "edit" : "create",
-                        pbrDisplayId: additionalData?.pbrDisplayId ? additionalData?.pbrDisplayId : "",
-                        pbrTempId: additionalData?.pbrTempId ? additionalData?.pbrTempId : 0,
-                        pbrTemplateStatus: additionalData?.pbrTemplateStatus ? additionalData?.pbrTemplateStatus : "DRFT"
-                    };
-                    let arr = [];
-                    formValues.forEach((ele, index) => {
-                        let obj = {
-                            method: ele.method,
-                            filename: params?.file,
-                            name: ele.name,
-                            param_value_direction: parameterFormData[index]?.AnchorDirection,
-                            param_value_regex: parameterFormData[index]?.regex
-                        }
-                        if (ele.values) {
-                            obj['color'] = "blue"
-                            obj['param_key_height'] = (ele?.values?.anchorCoords[3] - ele?.values?.anchorCoords[1]) / imageHeight
-                            obj['param_key_left'] = ele?.values?.anchorCoords[0] / imageWidth
-                            obj['param_key_text'] = ele?.values?.anchorValue
-                            obj['param_key_top'] = ele?.values?.anchorCoords[1] / imageHeight
-                            obj['param_key_width'] = (ele?.values?.anchorCoords[2] - ele?.values?.anchorCoords[0]) / imageWidth
-                            obj['param_page'] = 1
-                            obj['param_key_snippet_id'] = ele?.values?.snippetID
-                            obj['param_value_height'] = (ele?.values?.valueCoords[3] - ele?.values?.valueCoords[1]) / imageHeight
-                            obj['param_value_left'] = ele?.values?.valueCoords[0] / imageWidth
-                            obj['param_value_text'] = ele?.values?.anchorId
-                            obj['param_value_top'] = ele?.values?.valueCoords[1] / imageHeight
-                            obj['param_value_width'] = (ele?.values?.valueCoords[2] - ele?.values?.valueCoords[0]) / imageWidth
-                            obj['param_value_snippet_id'] = ele?.values?.valueSnippetID
-                            obj['param_value_rule'] = {
-                                rule_name: parameterFormData[index]?.param_rule, regex_text: parameterFormData[index]?.param_valueArea,
-                                range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max,
-                                factor: parameterFormData[index]?.param_valueTransformation, transformation: parameterFormData[index]?.param_transformation
-                            }
-                        }
-                        if (ele.unitValues) {
-                            obj['uom_key_height'] = (ele?.unitValues?.coords[3] - ele?.unitValues?.coords[1]) / imageHeight
-                            obj['uom_key_left'] = ele?.unitValues?.coords[0] / imageWidth
-                            obj['uom_key_text'] = ele?.unitValues?.unitAnchor
-                            obj['uom_key_top'] = ele?.unitValues?.coords[1] / imageHeight
-                            obj['uom_key_width'] = (ele?.unitValues?.coords[2] - ele?.unitValues?.coords[0]) / imageWidth
-                            obj['uom_page'] = 1
-                            obj['uom_key_snippet_id'] = ele?.unitValues?.snippetID
-                            obj['uom_value_height'] = (ele?.unitValues?.valueCoords[3] - ele?.unitValues?.valueCoords[1]) / imageHeight
-                            obj['uom_value_left'] = ele?.unitValues?.valueCoords[0] / imageWidth
-                            obj['uom_value_text'] = ele?.unitValues?.unitId
-                            obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / imageHeight
-                            obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / imageWidth
-                            obj['uom_value_snippet_id'] = ele?.unitValues?.valueSnippetID
-                            obj['uom_value_rule'] = {
-                                rule_name: parameterFormData[index]?.uom_rule, regex_text: parameterFormData[index]?.uom_valueArea,
-                                range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max,
-                                factor: parameterFormData[index]?.uom_valueTransformation, transformation: parameterFormData[index]?.uom_transformation
-                            }
-
-                        }
-                        if (ele.timeValues) {
-                            obj['time_key_height'] = (ele?.timeValues?.coords[3] - ele?.timeValues?.coords[1]) / imageHeight
-                            obj['time_key_left'] = ele?.timeValues?.coords[0] / imageWidth
-                            obj['time_key_text'] = ele?.timeValues?.timeAnchor
-                            obj['time_key_top'] = ele?.timeValues?.coords[1] / imageHeight
-                            obj['time_key_width'] = (ele?.timeValues?.coords[2] - ele?.timeValues?.coords[0]) / imageWidth
-                            obj['time_page'] = 1
-                            obj['time_key_snippet_id'] = ele?.timeValues?.snippetID
-                            obj['time_value_height'] = (ele?.timeValues?.valueCoords[3] - ele?.timeValues?.valueCoords[1]) / imageHeight
-                            obj['time_value_left'] = ele?.timeValues?.valueCoords[0] / imageWidth
-                            obj['time_value_text'] = ele?.timeValues?.timeId
-                            obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / imageHeight
-                            obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / imageWidth
-                            obj['time_value_snippet_id'] = ele?.timeValues?.valueSnippetID
-                            obj['time_value_rule'] = {
-                                rule_name: parameterFormData[index]?.time_rule, regex_text: parameterFormData[index]?.time_valueArea,
-                                range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max,
-                                factor: parameterFormData[index]?.time_valueTransformation, transformation: parameterFormData[index]?.time_transformation
-                            }
-
-                        }
-                        if (ele.dateValues) {
-                            obj['date_key_height'] = (ele?.dateValues?.coords[3] - ele?.dateValues?.coords[1]) / imageHeight
-                            obj['date_key_left'] = ele?.dateValues?.coords[0] / imageWidth
-                            obj['date_key_text'] = ele?.dateValues?.dateAnchor
-                            obj['date_key_top'] = ele?.dateValues?.coords[1] / imageHeight
-                            obj['date_key_width'] = (ele?.dateValues?.coords[2] - ele?.dateValues?.coords[0]) / imageWidth
-                            obj['date_page'] = 1
-                            obj['date_key_snippet_id'] = ele?.dateValues?.snippetID
-                            obj['date_value_height'] = (ele?.dateValues?.valueCoords[3] - ele?.dateValues?.valueCoords[1]) / imageHeight
-                            obj['date_value_left'] = ele?.dateValues?.valueCoords[0] / imageWidth
-                            obj['date_value_text'] = ele?.dateValues?.dateId
-                            obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / imageHeight
-                            obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / imageWidth
-                            obj['date_value_snippet_id'] = ele?.dateValues?.valueSnippetID
-                            obj['date_value_rule'] = {
-                                rule_name: parameterFormData[index]?.date_rule, regex_text: parameterFormData[index]?.date_valueArea,
-                                range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max,
-                                factor: parameterFormData[index]?.date_valueTransformation, transformation: parameterFormData[index]?.date_transformation
-                            }
-
-                        }
-                        arr.push(obj);
-                    });
-                    let obj1 = {
-                        keys: [],
-                        condition: "AND"
+            // let validate = validation()
+            try {
+                dispatch(showLoader());
+                let login_response = JSON.parse(localStorage.getItem('login_details'));
+                let _reqBatch = {
+                    pbrTemplateName: params.tempalteName,
+                    custKey: '1000',
+                    pbrTemplateVersion: 1,
+                    // pbrTemplateStatus: 'DRFT',
+                    createdBy: login_response?.email_id,
+                    changedBy: params.temp_disp_id ? login_response?.email_id : "",
+                    templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
+                    material: matBatch?.material_num,
+                    batch: matBatch?.batch,
+                    siteCode: matBatch?.site,
+                    actionType: templateId != "New" ? "edit" : "create",
+                    pbrDisplayId: additionalData?.pbrDisplayId ? additionalData?.pbrDisplayId : "",
+                    pbrTempId: additionalData?.pbrTempId ? additionalData?.pbrTempId : 0,
+                    pbrTemplateStatus: additionalData?.pbrTemplateStatus ? additionalData?.pbrTemplateStatus : "DRFT"
+                };
+                let arr = [];
+                formValues.forEach((ele, index) => {
+                    let obj = {
+                        method: ele.method,
+                        filename: params?.file,
+                        name: ele.name,
+                        param_value_direction: parameterFormData[index]?.AnchorDirection,
+                        param_value_regex: parameterFormData[index]?.regex
                     }
-                    Object.entries(pageIdentifierData).forEach(item => {
-                        if (item[0] != "page_id" && item[1]) {
-                            obj1.keys.push(item[1])
+                    if (ele.values) {
+                        obj['color'] = "blue"
+                        obj['param_key_height'] = (ele?.values?.anchorCoords[3] - ele?.values?.anchorCoords[1]) / imageHeight
+                        obj['param_key_left'] = ele?.values?.anchorCoords[0] / imageWidth
+                        obj['param_key_text'] = ele?.values?.anchorValue
+                        obj['param_key_top'] = ele?.values?.anchorCoords[1] / imageHeight
+                        obj['param_key_width'] = (ele?.values?.anchorCoords[2] - ele?.values?.anchorCoords[0]) / imageWidth
+                        obj['param_page'] = 1
+                        obj['param_key_snippet_id'] = ele?.values?.snippetID
+                        obj['param_value_height'] = (ele?.values?.valueCoords[3] - ele?.values?.valueCoords[1]) / imageHeight
+                        obj['param_value_left'] = ele?.values?.valueCoords[0] / imageWidth
+                        obj['param_value_text'] = ele?.values?.anchorId
+                        obj['param_value_top'] = ele?.values?.valueCoords[1] / imageHeight
+                        obj['param_value_width'] = (ele?.values?.valueCoords[2] - ele?.values?.valueCoords[0]) / imageWidth
+                        obj['param_value_snippet_id'] = ele?.values?.valueSnippetID
+                        obj['param_value_rule'] = {
+                            rule_name: parameterFormData[index]?.param_rule, regex_text: parameterFormData[index]?.param_valueArea,
+                            range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max,
+                            factor: parameterFormData[index]?.param_valueTransformation, transformation: parameterFormData[index]?.param_transformation
                         }
-                    })
-                    _reqBatch.templateInfo.pbrTemplateInfo = arr;
-                    _reqBatch.templateInfo.pbrPageIdentifier = obj1;
-
-                    //api call
-                    const batchRes = await savePbrTemplate(_reqBatch);
-                    if (batchRes.Status === 202) {
-                        let additional = {
-                            pbrDisplayId: batchRes?.Data?.tempDispId,
-                            pbrTempId: Number(batchRes?.Data?.tempDispId.replace(/\D/g, '')),
-                            pbrTemplateStatus: batchRes?.Data?.tempStatus,
-                            pbrVersion: batchRes?.Data?.tempVersion
-                        }
-                        setAdditionalData(additional)
-                        message.success(batchRes.Message);
-                        setTemplateId(batchRes?.Data?.tempDispId)
-                        setTemplateVersion(batchRes?.Data?.tempVersion)
-                        setTemplateStatus(batchRes?.Data?.tempStatus)
-                        dispatch(hideLoader());
-                        dispatch(showNotification('success', batchRes?.Message));
-                    } else {
-                        message.error(batchRes.Message);
-                        dispatch(hideLoader());
-                        dispatch(showNotification('error', batchRes?.detail));
                     }
+                    if (ele.unitValues) {
+                        obj['uom_key_height'] = (ele?.unitValues?.coords[3] - ele?.unitValues?.coords[1]) / imageHeight
+                        obj['uom_key_left'] = ele?.unitValues?.coords[0] / imageWidth
+                        obj['uom_key_text'] = ele?.unitValues?.unitAnchor
+                        obj['uom_key_top'] = ele?.unitValues?.coords[1] / imageHeight
+                        obj['uom_key_width'] = (ele?.unitValues?.coords[2] - ele?.unitValues?.coords[0]) / imageWidth
+                        obj['uom_page'] = 1
+                        obj['uom_key_snippet_id'] = ele?.unitValues?.snippetID
+                        obj['uom_value_height'] = (ele?.unitValues?.valueCoords[3] - ele?.unitValues?.valueCoords[1]) / imageHeight
+                        obj['uom_value_left'] = ele?.unitValues?.valueCoords[0] / imageWidth
+                        obj['uom_value_text'] = ele?.unitValues?.unitId
+                        obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / imageHeight
+                        obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / imageWidth
+                        obj['uom_value_snippet_id'] = ele?.unitValues?.valueSnippetID
+                        obj['uom_value_rule'] = {
+                            rule_name: parameterFormData[index]?.uom_rule, regex_text: parameterFormData[index]?.uom_valueArea,
+                            range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max,
+                            factor: parameterFormData[index]?.uom_valueTransformation, transformation: parameterFormData[index]?.uom_transformation
+                        }
 
-                } catch (error) {
-                    dispatch(hideLoader());
-                    dispatch(showNotification('error', 'No Data Found'));
+                    }
+                    if (ele.timeValues) {
+                        obj['time_key_height'] = (ele?.timeValues?.coords[3] - ele?.timeValues?.coords[1]) / imageHeight
+                        obj['time_key_left'] = ele?.timeValues?.coords[0] / imageWidth
+                        obj['time_key_text'] = ele?.timeValues?.timeAnchor
+                        obj['time_key_top'] = ele?.timeValues?.coords[1] / imageHeight
+                        obj['time_key_width'] = (ele?.timeValues?.coords[2] - ele?.timeValues?.coords[0]) / imageWidth
+                        obj['time_page'] = 1
+                        obj['time_key_snippet_id'] = ele?.timeValues?.snippetID
+                        obj['time_value_height'] = (ele?.timeValues?.valueCoords[3] - ele?.timeValues?.valueCoords[1]) / imageHeight
+                        obj['time_value_left'] = ele?.timeValues?.valueCoords[0] / imageWidth
+                        obj['time_value_text'] = ele?.timeValues?.timeId
+                        obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / imageHeight
+                        obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / imageWidth
+                        obj['time_value_snippet_id'] = ele?.timeValues?.valueSnippetID
+                        obj['time_value_rule'] = {
+                            rule_name: parameterFormData[index]?.time_rule, regex_text: parameterFormData[index]?.time_valueArea,
+                            range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max,
+                            factor: parameterFormData[index]?.time_valueTransformation, transformation: parameterFormData[index]?.time_transformation
+                        }
+
+                    }
+                    if (ele.dateValues) {
+                        obj['date_key_height'] = (ele?.dateValues?.coords[3] - ele?.dateValues?.coords[1]) / imageHeight
+                        obj['date_key_left'] = ele?.dateValues?.coords[0] / imageWidth
+                        obj['date_key_text'] = ele?.dateValues?.dateAnchor
+                        obj['date_key_top'] = ele?.dateValues?.coords[1] / imageHeight
+                        obj['date_key_width'] = (ele?.dateValues?.coords[2] - ele?.dateValues?.coords[0]) / imageWidth
+                        obj['date_page'] = 1
+                        obj['date_key_snippet_id'] = ele?.dateValues?.snippetID
+                        obj['date_value_height'] = (ele?.dateValues?.valueCoords[3] - ele?.dateValues?.valueCoords[1]) / imageHeight
+                        obj['date_value_left'] = ele?.dateValues?.valueCoords[0] / imageWidth
+                        obj['date_value_text'] = ele?.dateValues?.dateId
+                        obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / imageHeight
+                        obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / imageWidth
+                        obj['date_value_snippet_id'] = ele?.dateValues?.valueSnippetID
+                        obj['date_value_rule'] = {
+                            rule_name: parameterFormData[index]?.date_rule, regex_text: parameterFormData[index]?.date_valueArea,
+                            range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max,
+                            factor: parameterFormData[index]?.date_valueTransformation, transformation: parameterFormData[index]?.date_transformation
+                        }
+
+                    }
+                    arr.push(obj);
+                });
+                let obj1 = {
+                    keys: [],
+                    condition: "AND"
                 }
+                Object.entries(pageIdentifierData).forEach(item => {
+                    if (item[0] != "page_id" && item[1]) {
+                        obj1.keys.push(item[1])
+                    }
+                })
+                _reqBatch.templateInfo.pbrTemplateInfo = arr;
+                _reqBatch.templateInfo.pbrPageIdentifier = obj1;
+
+                //api call
+                const batchRes = await savePbrTemplate(_reqBatch);
+                if (batchRes.Status === 202) {
+                    let additional = {
+                        pbrDisplayId: batchRes?.Data?.tempDispId,
+                        pbrTempId: Number(batchRes?.Data?.tempDispId.replace(/\D/g, '')),
+                        pbrTemplateStatus: batchRes?.Data?.tempStatus,
+                        pbrVersion: batchRes?.Data?.tempVersion
+                    }
+                    setAdditionalData(additional)
+                    message.success(batchRes.Message);
+                    setTemplateId(batchRes?.Data?.tempDispId)
+                    setTemplateVersion(batchRes?.Data?.tempVersion)
+                    setTemplateStatus(batchRes?.Data?.tempStatus)
+                    dispatch(hideLoader());
+                    dispatch(showNotification('success', batchRes?.Message));
+                } else {
+                    message.error(batchRes.Message);
+                    dispatch(hideLoader());
+                    dispatch(showNotification('error', batchRes?.detail));
+                }
+
+            } catch (error) {
+                dispatch(hideLoader());
+                dispatch(showNotification('error', 'No Data Found'));
             }
         } else {
-            openNotification('Please Create Template Before Save')
+            openNotification('Create at least one Parameter before save')
         }
     };
-    const saveTemplateHandler = () => {
-        savePbrTemplateDataInfo();
-    };
-    const batchProcess = async () => {
-        dispatch(showLoader());
-        let req = ""
-        let res = await processBatchRecord(req)
-        if (res.Found_file_list.length > 0) {
-            message.success(res.Message);
-            dispatch(hideLoader());
-        } else {
-            message.error(res.Message);
-            dispatch(hideLoader());
-        }
-        dispatch(hideLoader());
+    // const saveTemplateHandler = () => {
+    //     savePbrTemplateDataInfo();
+    // };
+    // const batchProcess = async () => {
+    //     dispatch(showLoader());
+    //     let req = ""
+    //     let res = await processBatchRecord(req)
+    //     if (res.Found_file_list.length > 0) {
+    //         message.success(res.Message);
+    //         dispatch(hideLoader());
+    //     } else {
+    //         message.error(res.Message);
+    //         dispatch(hideLoader());
+    //     }
+    //     dispatch(hideLoader());
 
 
-    };
+    // };
     const onFinish = values => {
         console.log('Received values of form:', values);
     };
+    const parameterFormFinish = values => {
+        savePbrTemplateDataInfo()
+    };
+
+    const handleOnFinishFailed = ({ values, errorFields, outOfDate }) => {
+        let str = "Please enter "
+        errorFields.forEach(item => {
+            str += item.name[2] + ","
+        })
+        let newstr = str.replace("name", "Name").replace("method", "Method").replace("param_key", "Anchor").replace("param_snippet_value", "Anchor Value")
+            .replace("param_min", "Min").replace("param_max", "Max").replace("param_valueArea", "Regex").replace("param_valueArea", "Regex")
+            .replace("param_valueTransformation", "Transformation")
+
+        openNotification(newstr)
+
+    }
+
 
     const handleValuesChange = (changedValues, values) => {
         // console.log("changedValues", changedValues, values)
@@ -1381,7 +1359,7 @@ function PaperBatchRecordsTemplate() {
                 obj['uom_value_text'] = ele?.unitValues?.unitId
                 obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / imageHeight
                 obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / imageWidth
-                obj['uom_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
+                obj['uom_value_snippet_id'] = ele?.unitValues?.valueSnippetID / imageWidth
                 obj['uom_value_rule'] = {
                     rule_name: parameterFormData[index]?.uom_rule, regex_text: parameterFormData[index]?.uom_valueArea,
                     range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max,
@@ -1402,7 +1380,7 @@ function PaperBatchRecordsTemplate() {
                 obj['time_value_text'] = ele?.timeValues?.timeId
                 obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / imageHeight
                 obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / imageWidth
-                obj['time_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
+                obj['time_value_snippet_id'] = ele?.timeValues?.valueSnippetID / imageWidth
                 obj['time_value_rule'] = {
                     rule_name: parameterFormData[index]?.time_rule, regex_text: parameterFormData[index]?.time_valueArea,
                     range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max,
@@ -1423,7 +1401,7 @@ function PaperBatchRecordsTemplate() {
                 obj['date_value_text'] = ele?.dateValues?.dateId
                 obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / imageHeight
                 obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / imageWidth
-                obj['date_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
+                obj['date_value_snippet_id'] = ele?.dateValues?.valueSnippetID / imageWidth
                 obj['date_value_rule'] = {
                     rule_name: parameterFormData[index]?.date_rule, regex_text: parameterFormData[index]?.date_valueArea,
                     range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max,
@@ -1510,13 +1488,13 @@ function PaperBatchRecordsTemplate() {
         },
         {
             title: 'Date',
-            dataIndex: 'date',
-            key: 'date',
+            dataIndex: 'recorded_date',
+            key: 'recorded_date',
         },
         {
             title: 'Time',
-            dataIndex: 'time',
-            key: 'time',
+            dataIndex: 'recorded_time',
+            key: 'recorded_time',
         },
     ];
     const handleMenuChange = (item) => {
@@ -1624,6 +1602,12 @@ function PaperBatchRecordsTemplate() {
                             Object.keys(params).length > 0 &&
                             params.fromScreen !== "Workflow" ?
                             (<div className='btns'>
+                                <Button className='custom-primary-btn'
+                                    type='default'
+                                    form="myForm"
+                                    key="submit"
+                                    htmlType="submit"
+                                    disabled={params?.fromScreen === "Workflow" ? true : false}>Save</Button>
                                 <Button
                                     className='custom-secondary-btn'
                                     disabled={templateStatus != "DRFT"}
@@ -1634,7 +1618,7 @@ function PaperBatchRecordsTemplate() {
                                     }}>
                                     Publish
                                 </Button>
-                                {/* <Button style={{ margin: "0px 16px" }} onClick={batchProcess} className='custom-primary-btn'>Batch Process</Button> */}
+
                             </div>)
                             : (
                                 <div className='btns'>
@@ -1768,8 +1752,12 @@ function PaperBatchRecordsTemplate() {
                                     </div>
                                 </Panel>
                                 <Panel header='Parameter' key='3'>
-                                    <Form onValuesChange={parameterValuesChange} name="dynamic_form_nest_item" onFinish={onFinish}
+                                    <Form onValuesChange={parameterValuesChange} name="dynamic_form_nest_item" onFinish={parameterFormFinish}
                                         initialValues={formLoadParameter}
+                                        layout='vertical'
+                                        id="myForm"
+                                        onFinishFailed={handleOnFinishFailed}
+                                        form={parameterForm}
                                         autoComplete="off">
                                         <div className='addParameterContainer'>
                                             <div className='addParameterBlock'>
@@ -1777,14 +1765,18 @@ function PaperBatchRecordsTemplate() {
                                                     <Form.List name="users">
                                                         {(fields, { add, remove }) => (
                                                             <>
-                                                                <Collapse accordion expandIconPosition='right' onChange={(val) => {
-                                                                    setActiveKey(val)
+                                                                <Collapse activeKey={activeKey} accordion expandIconPosition='right' onChange={(val) => {
+                                                                    if (val !== undefined) {
+                                                                        setActiveKey(Number(val))
+                                                                    } else {
+                                                                        setActiveKey(val)
+                                                                    }
                                                                     setFileList([])
                                                                 }}>
                                                                     {fields.map(({ key, name, ...restField }) => (
 
                                                                         // <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                                                                        <Panel header={parameterFormData[key]?.name ? `Parameter - ${parameterFormData[key]?.name}` : `Parameter ${key + 1} created`} key={`${key}`} style={{ maxHeight: 500, overflow: "scroll" }}>
+                                                                        <Panel header={parameterFormData[key]?.name ? `${parameterFormData[key]?.name}` : `Parameter ${key + 1} created`} key={`${key}`} style={{ maxHeight: 500, overflow: "scroll" }}>
                                                                             <div className='addParameterBlock'>
                                                                                 <div className='parameterAdded-block'>
                                                                                     <Form.Item
@@ -1804,7 +1796,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     key
                                                                                                 )
                                                                                             }
-                                                                                            style={{ marginLeft: 10, width: 200 }}
+                                                                                        // style={{ marginLeft: 10, width: 200 }}
 
                                                                                         />
                                                                                     </Form.Item>
@@ -1835,6 +1827,7 @@ function PaperBatchRecordsTemplate() {
                                                                                     {formValues[key]?.method === "relative_direction" &&
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'AnchorDirection']}
+                                                                                            rules={[{ required: true, message: 'Select Anchor Direction' }]}
                                                                                         // label="AnchorDirection"
                                                                                         >
 
@@ -1856,6 +1849,7 @@ function PaperBatchRecordsTemplate() {
                                                                                     {formValues[key]?.method === "regex" &&
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'regex']}
+                                                                                            rules={[{ required: true, message: 'Enter Regex' }]}
                                                                                         // label="AnchorDirection"
                                                                                         >
 
@@ -1887,8 +1881,8 @@ function PaperBatchRecordsTemplate() {
                                                                                             >
                                                                                                 <Form.Item
                                                                                                     {...restField}
-                                                                                                // name={[name, 'param_key']}
-                                                                                                // rules={[{ required: true, message: 'Missing last name' }]}
+                                                                                                    name={[name, 'param_key']}
+                                                                                                    rules={[{ required: true, message: 'Enter Anchor Value' }]}
                                                                                                 >
                                                                                                     <Input
                                                                                                         value={
@@ -1933,6 +1927,8 @@ function PaperBatchRecordsTemplate() {
                                                                                                 </span>
                                                                                                 <Form.Item
                                                                                                     {...restField}
+                                                                                                    name={[name, 'param_snippet_value']}
+                                                                                                    rules={[{ required: true, message: 'Enter Anchor Snippet Value' }]}
                                                                                                 >
                                                                                                     <Input
                                                                                                         value={
@@ -1955,7 +1951,8 @@ function PaperBatchRecordsTemplate() {
                                                                                             </p>
                                                                                         </Dragger>
                                                                                         <Form.Item  {...restField}
-                                                                                            name={[name, 'param_rule']}>
+                                                                                            name={[name, 'param_rule']}
+                                                                                        >
                                                                                             <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'param_rule', key, value)}>
                                                                                                 <Option value='date'>
                                                                                                     Date
@@ -1974,7 +1971,8 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Col span={11}>
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'param_min']}
-                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' }]}
+                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        { required: true, message: 'Enter min value' }]}
                                                                                                     >
 
                                                                                                         <Input placeholder='Min' />
@@ -1985,13 +1983,13 @@ function PaperBatchRecordsTemplate() {
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'param_max']}
                                                                                                         rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        { required: true, message: 'Enter max value' },
                                                                                                         () => ({
                                                                                                             validator(_, value) {
                                                                                                                 if (!value) {
                                                                                                                     return Promise.reject();
                                                                                                                 }
-
-                                                                                                                if (value < parameterFormData[key]?.param_min) {
+                                                                                                                if (Number(value) < Number(parameterFormData[key]?.param_min)) {
                                                                                                                     return Promise.reject("Enter value greater then Min");
                                                                                                                 }
                                                                                                                 return Promise.resolve();
@@ -2004,7 +2002,8 @@ function PaperBatchRecordsTemplate() {
                                                                                                 </Col>
                                                                                             </Row> :
                                                                                             <Form.Item {...restField}
-                                                                                                name={[name, 'param_valueArea']}>
+                                                                                                name={[name, 'param_valueArea']}
+                                                                                                rules={[{ required: parameterFormData[key]?.param_rule ? true : false, message: 'Enter value' }]}>
                                                                                                 <Input placeholder='Enter expression' />
                                                                                             </Form.Item>}
 
@@ -2026,7 +2025,8 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Select>
                                                                                         </Form.Item>
                                                                                         <Form.Item {...restField}
-                                                                                            name={[name, 'param_valueTransformation']}>
+                                                                                            name={[name, 'param_valueTransformation']}
+                                                                                            rules={[{ required: parameterFormData[key]?.param_transformation ? true : false, message: 'Enter transformation' }]}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
 
@@ -2121,7 +2121,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Dragger>
                                                                                         <Form.Item  {...restField}
                                                                                             name={[name, 'uom_rule']}>
-                                                                                            <Select placeholder="Rule" onChange={(e, value) => onChangeChart(e, 'uom_rule', key, value)}>
+                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'uom_rule', key, value)}>
                                                                                                 <Option value='date'>
                                                                                                     Date
                                                                                                 </Option>
@@ -2139,7 +2139,8 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Col span={11}>
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'uom_min']}
-                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' }]}
+                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        { required: true, message: 'Enter min value' }]}
                                                                                                     >
                                                                                                         <Input placeholder='Min' />
                                                                                                     </Form.Item>
@@ -2149,13 +2150,13 @@ function PaperBatchRecordsTemplate() {
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'uom_max']}
                                                                                                         rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        { required: true, message: 'Enter max value' },
                                                                                                         () => ({
                                                                                                             validator(_, value) {
                                                                                                                 if (!value) {
                                                                                                                     return Promise.reject();
                                                                                                                 }
-
-                                                                                                                if (value < parameterFormData[key]?.uom_min) {
+                                                                                                                if (Number(value) < Number(parameterFormData[key]?.uom_min)) {
                                                                                                                     return Promise.reject("Enter value greater then Min");
                                                                                                                 }
                                                                                                                 return Promise.resolve();
@@ -2168,7 +2169,8 @@ function PaperBatchRecordsTemplate() {
                                                                                                 </Col>
                                                                                             </Row> :
                                                                                             <Form.Item {...restField}
-                                                                                                name={[name, 'uom_valueArea']}>
+                                                                                                name={[name, 'uom_valueArea']}
+                                                                                                rules={[{ required: parameterFormData[key]?.uom_rule ? true : false, message: 'Enter value' }]}>
                                                                                                 <Input placeholder='Enter expression' />
                                                                                             </Form.Item>}
                                                                                         <Form.Item  {...restField}
@@ -2189,7 +2191,8 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Select>
                                                                                         </Form.Item>
                                                                                         <Form.Item {...restField}
-                                                                                            name={[name, 'uom_valueTransformation']}>
+                                                                                            name={[name, 'uom_valueTransformation']}
+                                                                                            rules={[{ required: parameterFormData[key]?.uom_transformation ? true : false, message: 'Enter transformation' }]}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
 
@@ -2283,7 +2286,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Dragger>
                                                                                         <Form.Item  {...restField}
                                                                                             name={[name, 'time_rule']}>
-                                                                                            <Select placeholder="Rule" onChange={(e, value) => onChangeChart(e, 'time_rule', key, value)}>
+                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'time_rule', key, value)}>
 
                                                                                                 <Option value='range'>
                                                                                                     Range
@@ -2299,7 +2302,8 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Col span={11}>
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'time_min']}
-                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' }]}
+                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        { required: true, message: 'Enter min value' }]}
                                                                                                     >
                                                                                                         <Input placeholder='Min' />
                                                                                                     </Form.Item>
@@ -2309,13 +2313,13 @@ function PaperBatchRecordsTemplate() {
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'time_max']}
                                                                                                         rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        { required: true, message: 'Enter max value' },
                                                                                                         () => ({
                                                                                                             validator(_, value) {
                                                                                                                 if (!value) {
                                                                                                                     return Promise.reject();
                                                                                                                 }
-
-                                                                                                                if (value < parameterFormData[key]?.time_min) {
+                                                                                                                if (Number(value) < Number(parameterFormData[key]?.time_min)) {
                                                                                                                     return Promise.reject("Enter value greater then Min");
                                                                                                                 }
                                                                                                                 return Promise.resolve();
@@ -2328,7 +2332,8 @@ function PaperBatchRecordsTemplate() {
                                                                                                 </Col>
                                                                                             </Row> :
                                                                                             <Form.Item {...restField}
-                                                                                                name={[name, 'time_valueArea']}>
+                                                                                                name={[name, 'time_valueArea']}
+                                                                                                rules={[{ required: parameterFormData[key]?.time_rule ? true : false, message: 'Enter value' }]}>
                                                                                                 <Input placeholder='Enter expression' />
                                                                                             </Form.Item>}
                                                                                         <Form.Item  {...restField}
@@ -2349,7 +2354,8 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Select>
                                                                                         </Form.Item>
                                                                                         <Form.Item {...restField}
-                                                                                            name={[name, 'time_valueTransformation']}>
+                                                                                            name={[name, 'time_valueTransformation']}
+                                                                                            rules={[{ required: parameterFormData[key]?.time_transformation ? true : false, message: 'Enter transformation' }]}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
 
@@ -2445,7 +2451,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Dragger>
                                                                                         <Form.Item  {...restField}
                                                                                             name={[name, 'date_rule']}>
-                                                                                            <Select placeholder="Rule" onChange={(e, value) => onChangeChart(e, 'date_rule', key, value)}>
+                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'date_rule', key, value)}>
                                                                                                 <Option value='date'>
                                                                                                     Date
                                                                                                 </Option>
@@ -2463,7 +2469,8 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Col span={11}>
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'date_min']}
-                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' }]}
+                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        { required: true, message: 'Enter min value' }]}
                                                                                                     >
                                                                                                         <Input placeholder='Min' />
                                                                                                     </Form.Item>
@@ -2473,16 +2480,15 @@ function PaperBatchRecordsTemplate() {
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'date_max']}
                                                                                                         rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        { required: true, message: 'Enter nax value' },
                                                                                                         () => ({
                                                                                                             validator(_, value) {
                                                                                                                 if (!value) {
                                                                                                                     return Promise.reject();
                                                                                                                 }
-
-                                                                                                                if (value < parameterFormData[key]?.time_min) {
+                                                                                                                if (Number(value) < Number(parameterFormData[key]?.date_min)) {
                                                                                                                     return Promise.reject("Enter value greater then Min");
-                                                                                                                }
-                                                                                                                return Promise.resolve();
+                                                                                                                } return Promise.resolve();
                                                                                                             },
                                                                                                         })
                                                                                                         ]}
@@ -2492,7 +2498,8 @@ function PaperBatchRecordsTemplate() {
                                                                                                 </Col>
                                                                                             </Row> :
                                                                                             <Form.Item {...restField}
-                                                                                                name={[name, 'date_valueArea']}>
+                                                                                                name={[name, 'date_valueArea']}
+                                                                                                rules={[{ required: parameterFormData[key]?.date_rule ? true : false, message: 'Enter value' }]}>
                                                                                                 <Input placeholder='Enter expression' />
                                                                                             </Form.Item>}
                                                                                         <Form.Item  {...restField}
@@ -2513,7 +2520,8 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Select>
                                                                                         </Form.Item>
                                                                                         <Form.Item {...restField}
-                                                                                            name={[name, 'date_valueTransformation']}>
+                                                                                            name={[name, 'date_valueTransformation']}
+                                                                                            rules={[{ required: parameterFormData[key]?.date_transformation ? true : false, message: 'Enter transformation' }]}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
 
@@ -2573,16 +2581,20 @@ function PaperBatchRecordsTemplate() {
                                                         )}
                                                     </Form.List>
                                                 </div>
-                                                <div className='saveSnippetsBlock'>
+                                                {/* <div className='saveSnippetsBlock'>
                                                     <Button
                                                         type='default'
+                                                        form="myForm"
+                                                        key="submit"
+                                                        htmlType="submit"
                                                         className='saveSnippetsBtn'
-                                                        onClick={() => saveTemplateHandler()}
+                                                        // onClick={() => saveTemplateHandler()}
+                                                        // onClick={() => parameterForm.submit()}
                                                         disabled={params?.fromScreen === "Workflow" ? true : false}
                                                     >
                                                         Save
                                                     </Button>
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
                                     </Form>
@@ -2685,9 +2697,10 @@ function PaperBatchRecordsTemplate() {
                                             // form={form}
                                             className='formNewTemplate'>
                                             <InputField
+                                                disabled
                                                 value={areasMapObject.snippetID}
                                                 label='Snippet ID'
-                                                placeholder='Enter Snippet ID'
+                                                placeholder='Snippet ID'
                                                 onChangeInput={e => {
                                                     onChangeChart(e, 'snippetId');
                                                 }}
@@ -2695,7 +2708,7 @@ function PaperBatchRecordsTemplate() {
                                             <InputField
                                                 value={areasMapObject.areaValue}
                                                 label='Key 1'
-                                                placeholder='Enter Key 1'
+                                                placeholder='Key 1'
                                                 onChangeInput={e => {
                                                     onChangeChart(e, 'snippetKey1');
                                                 }}
@@ -2766,7 +2779,6 @@ function PaperBatchRecordsTemplate() {
                                                     {clickedSnippetId ? clickedSnippetId : "Document"}
                                                 </div>
                                             </div>
-
                                         </Form>
                                     </div>
                                 </Panel>

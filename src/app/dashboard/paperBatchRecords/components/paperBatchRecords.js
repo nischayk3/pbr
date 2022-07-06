@@ -128,7 +128,7 @@ function PaperBatchRecords() {
 			const tableResponse = await getPbrTemplateData();
 			const tilesData = await getPbrTemplateData(req);
 			const tableColumn = tableColumns(tableResponse?.Data)
-			let newArray1 = tableColumn.filter(item => item.dataIndex != 'created_by' && item.dataIndex != 'changed_on' && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
+			let newArray1 = tableColumn.filter(item => item.dataIndex != 'changed_by' && item.dataIndex != 'changed_on' && item.dataIndex != 'cust_key' && item.dataIndex != 'pbr_template_info')
 			let columns = [];
 			newArray1.map(item => {
 				let { title, dataIndex } = item;
@@ -136,13 +136,6 @@ function PaperBatchRecords() {
 					title: title,
 					dataIndex: dataIndex,
 					key: dataIndex,
-					// ...getColumnSearchProps(dataIndex, refSearchInput, searchText, setSearchText, searchedColumn, setSearchedColumn),
-					sorter: (a, b) => {
-
-						return a.dataIndex === null || a.dataIndex === undefined || a.dataIndex === "" ? -1 : b.dataIndex == null || b.dataIndex == undefined || b.dataIndex == "" ? 1 : a.dataIndex.toString().localeCompare(b.dataIndex)
-
-					},
-
 				};
 				if (item.dataIndex === "created_on") {
 					obj.render = (text, row, index) => {
@@ -153,7 +146,7 @@ function PaperBatchRecords() {
 
 					}
 				}
-				if (item.dataIndex === "changed_by") {
+				if (item.dataIndex === "created_by") {
 					obj.render = (text, row, index) => {
 						return (
 							<div>
@@ -162,7 +155,7 @@ function PaperBatchRecords() {
 									style={{ backgroundColor: getRandomColor(index + 1) }}>
 									{text?.split('')[0]?.toUpperCase()}{' '}
 								</Avatar>
-								<span className='avatar-text' style={{ marginLeft: 10 }}>{text}</span>
+								<span className='avatar-text' style={{ marginLeft: 10 }}>{text.split('@')[0]}</span>
 							</div>
 						)
 
@@ -222,142 +215,6 @@ function PaperBatchRecords() {
 
 	}
 
-	function getColumnSearchProps(dataIndex) {
-		return {
-			filterDropdown: ({
-				setSelectedKeys,
-				selectedKeys,
-				confirm,
-				clearFilters,
-			}) => (
-				<div style={{ padding: 8 }}>
-					<Input
-						placeholder={`Search ${dataIndex}`}
-						value={selectedKeys[0]}
-						onChange={(e) =>
-							setSelectedKeys(
-								e.target.value ? [e.target.value] : []
-							)
-						}
-						onPressEnter={() =>
-							handleSearch(selectedKeys, confirm, dataIndex)
-						}
-						style={{
-							marginBottom: 8,
-							display: 'block',
-						}}
-					/>
-					<Space>
-						<Button
-							type='primary'
-							onClick={() =>
-								handleSearch(selectedKeys, confirm, dataIndex)
-							}
-							icon={<SearchOutlined />}
-							size='small'
-							style={{ width: 90 }}
-						>
-							Search
-						</Button>
-						<Button
-							onClick={() => handleReset(clearFilters)}
-							size='small'
-							style={{ width: 90 }}
-						>
-							Reset
-						</Button>
-						<Button
-							type='link'
-							size='small'
-							onClick={() => {
-								confirm({ closeDropdown: false });
-								setSearchText(selectedKeys[0]);
-								setSearchedColumn(dataIndex);
-							}}
-						>
-							Filter
-						</Button>
-					</Space>
-				</div>
-			),
-			filterIcon: (filtered) => (
-				<SearchOutlined
-					style={{ color: filtered ? '#1890ff' : undefined }}
-				/>
-			),
-			onFilter: (value, record) =>
-				record[dataIndex]
-					.toString()
-					.toLowerCase()
-					.includes(value.toLowerCase()),
-			onFilterDropdownVisibleChange: (visible) => {
-				if (visible) {
-					// setTimeout(() => this.searchInput.select());
-				}
-			},
-			render: (text) =>
-				searchedColumn === dataIndex ? (
-					<Highlighter
-						highlightStyle={{
-							backgroundColor: '#ffc069',
-							padding: 0,
-						}}
-						searchWords={[searchText]}
-						autoEscape
-						textToHighlight={text.toString()}
-					/>
-				) : (
-					text
-				),
-		};
-	}
-
-	function handleSearch(selectedKeys, confirm, dataIndex) {
-		confirm();
-		setSearchText(selectedKeys[0]);
-		setSearchedColumn(dataIndex);
-	}
-
-	function handleReset(clearFilters) {
-		clearFilters();
-		setSearchText('');
-	}
-
-	const columns = [
-		{
-			title: 'Name',
-			dataIndex: 'name',
-			key: 'name',
-			...getColumnSearchProps('name'),
-			sorter: (a, b) => a.name.length - b.name.length,
-			sortDirections: ['descend', 'ascend'],
-		},
-		{
-			title: 'ID',
-			dataIndex: 'id',
-			key: 'id',
-			...getColumnSearchProps('id'),
-			sorter: (a, b) => a.id.length - b.id.length,
-			sortDirections: ['descend', 'ascend'],
-		},
-		{
-			title: 'Creator',
-			dataIndex: 'creator',
-			key: 'creator',
-			...getColumnSearchProps('creator'),
-			sorter: (a, b) => a.creator.length - b.creator.length,
-			sortDirections: ['descend', 'ascend'],
-		},
-		{
-			title: 'Created on',
-			dataIndex: 'createdOn',
-			key: 'createdOn',
-			...getColumnSearchProps('createdOn'),
-			sorter: (a, b) => a.createdOn.length - b.createdOn.length,
-			sortDirections: ['descend', 'ascend'],
-		},
-	];
-
 	const updateDate = () => {
 		const date = new Date();
 		const month = date.toLocaleString('default', { month: 'long' });
@@ -386,18 +243,8 @@ function PaperBatchRecords() {
 
 	};
 
-	function globalTemplateSearch(value) {
-		const filterdDataArr = tableDataSource.filter((o) =>
-			Object.keys(o).some((k) =>
-				String(o[k]).toLowerCase().includes(value.toLowerCase())
-			)
-		);
-		setTableDataSourceFiltered(filterdDataArr);
-	}
 	const handleValuesChange = (changedValues, values) => {
-		console.log("changedValues", changedValues, values)
 		seTemplateName(values?.templateName)
-
 	};
 	const onFinish = (values) => {
 		console.log('Success:', values);
@@ -435,7 +282,6 @@ function PaperBatchRecords() {
 	}
 
 	const handleClickTiles = (value) => {
-		// history.push(`${match.url}/0`);
 		let obj =
 		{
 			material_num: value?.product_num,
@@ -458,14 +304,20 @@ function PaperBatchRecords() {
 
 	}
 	const landingSearch = value => {
-		setSearchedLanding(true);
-		const tableData = templateData;
-		const filterTable = tableData.filter(o =>
-			Object.keys(o).some(k =>
-				String(o[k]).toLowerCase().includes(value.toLowerCase())
-			)
-		);
-		setFilterTableLanding(filterTable);
+
+		if(value == ""){
+			setSearchedLanding(false);
+		}else{
+			setSearchedLanding(true);
+			const tableData = templateData;
+			const filterTable = tableData.filter(o =>
+				Object.keys(o).some(k =>
+					String(o[k]).toLowerCase().includes(value.toLowerCase())
+				)
+			);
+			setFilterTableLanding(filterTable);
+		}
+		
 	};
 
 	const handleMaterialChange = (val) =>{
