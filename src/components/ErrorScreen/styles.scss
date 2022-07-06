@@ -1,0 +1,32 @@
+.errorContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    .error-content {
+        text-align: center;
+        h3{
+            margin-top: 0.5rem;
+            margin-bottom: 0px !important;
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 24px;
+            line-height: 32px;
+        }
+        p{
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 22px;
+            color: #8C8C8C;
+            width: 302px;
+        }
+        button {
+            background: #093185;
+            border-radius: 2px;
+            color: #FFFFFF
+        }
+    }
+}
