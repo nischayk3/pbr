@@ -1,4 +1,4 @@
-import React, { lazy, useEffect } from "react";
+import React, { lazy, useEffect, useState } from "react";
 import {
   Route,
   Switch,
@@ -25,6 +25,9 @@ import AnalysisModel from "./Analysis/AnalysisModel/AnalysisModel";
 import PbrReviewer from "./pbrReviewer";
 import "./dashboard.scss";
 import PythonNotebook from "./pythonNotebook/pythonNotebook";
+import PrivateRoute from "./ProtectedRoute";
+import { getAuthorisedPermission } from "../../services/authProvider";
+import UnAuthorisedScreen from "./unAuthorised";
 // DASHBOARD ROUTE COMPONENTS
 
 const ManualDataUpload = lazy(() => import("./manualDataUpload"));
@@ -45,7 +48,9 @@ const Hierarchy = lazy(() => import("./hierarchyConfig"));
 const HierarchyMain = lazy(() =>
   import("./hierarchyConfig/components/hierarchy/hierarchy")
 );
-const DesignCharts = lazy(() => import('./reportDesigner/components/reportDesignerNew'));
+const DesignCharts = lazy(() =>
+  import("./reportDesigner/components/reportDesignerNew")
+);
 
 const Faq = lazy(() => import("./faq"));
 const { Content } = Layout;
@@ -55,12 +60,65 @@ const Dashboard = () => {
   const history = useHistory();
   const location = useLocation();
   const screen = location.pathname.split("/");
+  const [authorised, setAuthorised] = useState(true);
 
   useEffect(() => {
     // if (!Auth.isAuthenticated()) {
     //   history.push('/user/login');
     // }
   }, [history]);
+
+  const requiredAuth = async (resource) => {
+    let authResponse = {};
+    try {
+      // dispatch(showLoader());
+      authResponse = await getAuthorisedPermission("", resource);
+      if (authResponse.status === 200) {
+        setAuthorised(true);
+        // dispatch(hideLoader());
+      } else {
+        setAuthorised(false);
+        // dispatch(hideLoader());
+      }
+    } catch (err) {
+      setAuthorised(false);
+      // dispatch(hideLoader());
+    }
+  };
+
+  useEffect(() => {
+    setAuthorised(true);
+    let view;
+    if (location.pathname.includes("chart_personalization")) {
+      view = "CHART";
+    } else if (location.pathname.includes("view_creation")) {
+      view = "VIEW";
+    } else if (location.pathname.includes("genealogy")) {
+      view = "GENEALOGY";
+    } else if (location.pathname.includes("workflow")) {
+      view = "WORKITEMS";
+    } else if (location.pathname.includes("molecule_hierarchy_configuration")) {
+      view = "CONFIGURATION";
+    } else if (location.pathname.includes("audit_trail_report")) {
+      view = "AUDIT_REPORT";
+    } else if (location.pathname.includes("manual_data_upload")) {
+      view = "FILE_UPLOAD";
+    } else if (location.pathname.includes("report_designer")) {
+      view = "REPORT_DESIGNER";
+    } else if (location.pathname.includes("analysis")) {
+      view = "ANALYTICS";
+    } else if (location.pathname.includes("paper_batch_records")) {
+      view = "PBR";
+    } else if (location.pathname.includes("pbr_reviewer")) {
+      view = "PBR";
+    } else if (location.pathname.includes("user-roles-and-access")) {
+      view = "CONFIGURATION";
+    }
+    if (view && view.length > 1) {
+      requiredAuth(view);
+    }
+  }, [location]);
+
   return (
     <>
       <Layout style={{ minHeight: "100vh" }}>
@@ -72,19 +130,29 @@ const Dashboard = () => {
             {/* <BreadCrumbWrapper /> */}
             <SuspenseWrapper>
               <Switch>
-                <Route
+                <Route key="unauthorised" path={`${match.url}/unauthorised`}>
+                  <UnAuthorisedScreen />
+                </Route>
+                <PrivateRoute
                   key="manual_data_upload"
                   path={`${match.url}/manual_data_upload`}
-                >
-                  <ManualDataUpload />
-                </Route>
-
+                  component={ManualDataUpload}
+                  authorised={authorised}
+                />
                 <Route
                   path={`${match.url}/view_creation`}
                   render={({ match: { url } }) => (
                     <>
-                      <Route path={`${url}/`} component={ViewLanding} exact />
-                      <Route path={`${url}/:id`} component={View} />
+                      <PrivateRoute
+                        path={`${url}/`}
+                        exact
+                        authorised={authorised}
+                      >
+                        <ViewLanding />
+                      </PrivateRoute>
+                      <PrivateRoute path={`${url}/:id`} authorised={authorised}>
+                        <View />
+                      </PrivateRoute>
                     </>
                   )}
                 />
@@ -93,8 +161,17 @@ const Dashboard = () => {
                   path={`${match.url}/chart_personalization`}
                   render={({ match: { url } }) => (
                     <>
-                      <Route path={`${url}/`} component={ChartPersonal} exact />
-                      <Route path={`${url}/:id`} component={ViewPage} />
+                      <PrivateRoute
+                        path={`${url}/`}
+                        component={ChartPersonal}
+                        exact
+                        authorised={authorised}
+                      />
+                      <PrivateRoute
+                        path={`${url}/:id`}
+                        component={ViewPage}
+                        authorised={authorised}
+                      />
                     </>
                   )}
                 />
@@ -116,12 +193,13 @@ const Dashboard = () => {
                     </>
                   )}
                 /> */}
-                <Route
+                <PrivateRoute
                   key="audit_trail_report"
                   path={`${match.url}/audit_trail_report`}
+                  authorised={authorised}
                 >
                   <AuditTrial />
-                </Route>
+                </PrivateRoute>
                 <Route key="audit_logs" path={`${match.url}/audit_logs`}>
                   <Audit />
                 </Route>
@@ -134,12 +212,18 @@ const Dashboard = () => {
                 >
                   <ReportGenerator />
                 </Route>
-                <Route key="genealogy" path={`${match.url}/genealogy`}>
-                  <Genealogy />
-                </Route>
-                <Route key="workflow" path={`${match.url}/workflow`}>
-                  <Workflow />
-                </Route>
+                <PrivateRoute
+                  key="genealogy"
+                  path={`${match.url}/genealogy`}
+                  authorised={authorised}
+                  component={Genealogy}
+                />
+                <PrivateRoute
+                  key="workflow"
+                  path={`${match.url}/workflow`}
+                  authorised={authorised}
+                  component={Workflow}
+                />
                 <Route key="workspace" path={`${match.url}/workspace`}>
                   <Workspace />
                 </Route>
@@ -151,10 +235,12 @@ const Dashboard = () => {
 									path={`${match.url}/paper_batch_records`}>
 									<PaperBatchRecords />
 								</Route> */}
-                <Route key="pbr_reviewer" path={`${match.url}/pbr_reviewer`}>
-                  <PbrReviewer />
-                </Route>
-
+                <PrivateRoute
+                  key="pbr_reviewer"
+                  component={PbrReviewer}
+                  authorised={authorised}
+                  path={`${match.url}/pbr_reviewer`}
+                />
                 {/* <Route key='audit_logs' path={`${match.url}/audit_logs`}>
 									<Audit />
 								</Route> */}
@@ -168,13 +254,15 @@ const Dashboard = () => {
                   path={`${match.url}/paper_batch_records`}
                   render={({ match: { url } }) => (
                     <>
-                      <Route
+                      <PrivateRoute
                         path={`${url}/`}
+                        authorised={authorised}
                         component={PaperBatchRecords}
                         exact
                       />
-                      <Route
+                      <PrivateRoute
                         path={`${url}/:id`}
+                        authorised={authorised}
                         component={PaperBatchRecordsTemplate}
                       />
                     </>
@@ -205,11 +293,12 @@ const Dashboard = () => {
                   path={`${match.url}/report_designer`}
                   render={({ match: { url } }) => (
                     <>
-                      <Route path={`${url}/`} component={ReportDesigner} exact />
                       <Route
-                        path={`${url}/:id`}
-                        component={DesignCharts}
+                        path={`${url}/`}
+                        component={ReportDesigner}
+                        exact
                       />
+                      <Route path={`${url}/:id`} component={DesignCharts} />
                     </>
                   )}
                 />
@@ -224,45 +313,56 @@ const Dashboard = () => {
                   path={`${match.url}/molecule_hierarchy_configuration`}
                   render={({ match: { url } }) => (
                     <>
-                      <Route path={`${url}/`} component={Hierarchy} exact />
-                      <Route
-                        path={`${url}/:id`}
-                        component={HierarchyMain}
-                      />
+                      <PrivateRoute
+                        path={`${url}/`}
+                        exact
+                        authorised={authorised}
+                      >
+                        <Hierarchy />
+                      </PrivateRoute>
+                      <PrivateRoute path={`${url}/:id`} authorised={authorised}>
+                        <HierarchyMain />
+                      </PrivateRoute>
                     </>
                   )}
                 />
-                <Route
+                <PrivateRoute
                   key="userRolesAndAccess"
                   path={`${match.url}/user-roles-and-access`}
                   exact
                   component={UserRolesAndAccess}
+                  authorised={authorised}
                 />
-                <Route
+                <PrivateRoute
                   key="user-configuration"
                   path={`${match.url}/user-roles-and-access/user-configuration`}
                   component={UserConfiguration}
+                  authorised={authorised}
                 />
-                <Route
+                <PrivateRoute
                   key="roles-and-access"
                   path={`${match.url}/user-roles-and-access/roles-and-access`}
                   component={RolesAndAccess}
+                  authorised={authorised}
                 />
-                <Route
+                <PrivateRoute
                   key="screen-controls"
                   path={`${match.url}/user-roles-and-access/screen-controls`}
                   component={ScreenControls}
+                  authorised={authorised}
                 />
-                <Route
+                <PrivateRoute
                   key={"analysis"}
                   path={`${match.url}/analysis`}
                   component={Analysis}
                   exact
+                  authorised={authorised}
                 />
-                <Route
+                <PrivateRoute
                   key={"analysis-model"}
                   path={`${match.url}/analysis/:id`}
                   component={AnalysisModel}
+                  authorised={authorised}
                 />
                 {/* <Route
                   key="hierarchy_main"
