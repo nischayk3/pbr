@@ -99,13 +99,13 @@ class AuditTrials extends React.Component {
 					dataIndex: "user_id",
 					key: "2",
 					defaultSortOrder: "descend",
-					onHeaderCell: (column) => {
-						return {
-							onClick: (e) => {
-								this.loadData(column.dataIndex);
-							}
-						};
-					},
+					// onHeaderCell: (column) => {
+					// 	return {
+					// 		onClick: (e) => {
+					// 			this.loadData(column.dataIndex);
+					// 		}
+					// 	};
+					// },
 					sorter: (a, b) => a.user_id.localeCompare(b.user_id)
 				},
 				{
@@ -113,13 +113,13 @@ class AuditTrials extends React.Component {
 					dataIndex: "activity",
 					key: "3",
 					defaultSortOrder: "descend",
-					onHeaderCell: (column) => {
-						return {
-							onClick: (e) => {
-								this.loadData(column.dataIndex);
-							}
-						};
-					},
+					// onHeaderCell: (column) => {
+					// 	return {
+					// 		onClick: (e) => {
+					// 			this.loadData(column.dataIndex);
+					// 		}
+					// 	};
+					// },
 					sorter: (a, b) => a.activity.localeCompare(b.activity)
 				},
 				{
@@ -127,13 +127,13 @@ class AuditTrials extends React.Component {
 					dataIndex: "old_value",
 					key: "3",
 					defaultSortOrder: "descend",
-					onHeaderCell: (column) => {
-						return {
-							onClick: (e) => {
-								this.loadData(column.dataIndex);
-							}
-						};
-					},
+					// onHeaderCell: (column) => {
+					// 	return {
+					// 		onClick: (e) => {
+					// 			this.loadData(column.dataIndex);
+					// 		}
+					// 	};
+					// },
 					className: "old_value_class",
 
 					sorter: (a, b) => a.old_value.localeCompare(b.old_value)
@@ -144,27 +144,47 @@ class AuditTrials extends React.Component {
 					key: "3",
 					defaultSortOrder: "descend",
 					className: "old_value_class",
-					onHeaderCell: (column) => {
-						return {
-							onClick: (e) => {
-								this.loadData(column.dataIndex);
-							}
-						};
-					},
-					sorter: (a, b) =>a.new_value.localeCompare(b.new_value)
+					// onHeaderCell: (column) => {
+					// 	return {
+					// 		onClick: (e) => {
+					// 			this.loadData(column.dataIndex);
+					// 		}
+					// 	};
+					// },
+					sorter: (a, b) => {
+
+						return a.new_value === null ||
+
+							a.new_value === undefined ||
+
+							a.new_value === ""
+
+							? -1
+
+							: b.new_value == null ||
+
+								b.new_value == undefined ||
+
+								b.new_value == ""
+
+								? 1
+
+								: a.new_value.toString().localeCompare(b.new_value);
+
+					}, 
 				},
 				{
 					title: "Reason For Change",
 					dataIndex: "reason",
 					key: "2",
 					defaultSortOrder: "descend",
-					onHeaderCell: (column) => {
-						return {
-							onClick: (e) => {
-								this.loadData(column.dataIndex);
-							}
-						};
-					},
+					// onHeaderCell: (column) => {
+					// 	return {
+					// 		onClick: (e) => {
+					// 			this.loadData(column.dataIndex);
+					// 		}
+					// 	};
+					// },
 					sorter: (a, b) => a.reason.localeCompare(b.reason)
 				},
 				{
@@ -173,13 +193,13 @@ class AuditTrials extends React.Component {
 					key: "1",
 					width: 200,
 					defaultSortOrder: "descend",
-					onHeaderCell: (column) => {
-						return {
-							onClick: (e) => {
-								this.loadData(column.dataIndex);
-							}
-						};
-					},
+					// onHeaderCell: (column) => {
+					// 	return {
+					// 		onClick: (e) => {
+					// 			this.loadData(column.dataIndex);
+					// 		}
+					// 	};
+					// },
 					sorter: (a, b) => new Date(a.entry_date) - new Date(b.entry_date),
 					render: (text) => moment(text).format("YYYY-MM-DD")
 				},
@@ -188,13 +208,13 @@ class AuditTrials extends React.Component {
 					dataIndex: "table_name",
 					key: "4",
 					defaultSortOrder: "descend",
-					onHeaderCell: (column) => {
-						return {
-							onClick: (e) => {
-								this.loadData(column.dataIndex);
-							}
-						};
-					},
+					// onHeaderCell: (column) => {
+					// 	return {
+					// 		onClick: (e) => {
+					// 			this.loadData(column.dataIndex);
+					// 		}
+					// 	};
+					// },
 					sorter: (a, b) => a.table_name.localeCompare(b.table_name)
 				}
 			],
@@ -685,6 +705,7 @@ class AuditTrials extends React.Component {
 								columns={columns}
 								dataSource={filterTable === null ? tableData : filterTable}
 								scroll={{ x: 400 }}
+								pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '50', '100', '200'] }}
 								bordered
 							/>
 						</div>
