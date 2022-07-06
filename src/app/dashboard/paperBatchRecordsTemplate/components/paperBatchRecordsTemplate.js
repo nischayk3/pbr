@@ -1885,6 +1885,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     rules={[{ required: true, message: 'Enter Anchor Value' }]}
                                                                                                 >
                                                                                                     <Input
+                                                                                                        id="form_input1"
                                                                                                         value={
                                                                                                             parameterValue[`param${key + 1}`]?.anchorValue
                                                                                                         }
@@ -1931,6 +1932,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     rules={[{ required: true, message: 'Enter Anchor Snippet Value' }]}
                                                                                                 >
                                                                                                     <Input
+                                                                                                        id="form_input2"
                                                                                                         value={
                                                                                                             parameterValue[`param${key + 1}`]?.anchorId
 
@@ -1953,7 +1955,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         <Form.Item  {...restField}
                                                                                             name={[name, 'param_rule']}
                                                                                         >
-                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'param_rule', key, value)}>
+                                                                                            <Select id="rule1" placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'param_rule', key, value)}>
                                                                                                 <Option value='date'>
                                                                                                     Date
                                                                                                 </Option>
@@ -2058,6 +2060,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <Input
+                                                                                                    id="form_input3"
                                                                                                     value={
                                                                                                         parameterValue[`param${key + 1}`]?.unitAnchor
                                                                                                     }
@@ -2102,6 +2105,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     number */}
                                                                                                 </span>
                                                                                                 <Input
+                                                                                                    id="form_input4"
                                                                                                     value={
                                                                                                         parameterValue[`param${key + 1}`]?.unitId
 
@@ -2224,6 +2228,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <Input
+                                                                                                    id="form_input5"
                                                                                                     value={
                                                                                                         parameterValue[`param${key + 1}`]?.timeAnchor
                                                                                                     }
@@ -2268,6 +2273,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     number */}
                                                                                                 </span>
                                                                                                 <InputField
+                                                                                                    id="form_input6"
                                                                                                     value={
                                                                                                         parameterValue[`param${key + 1}`]?.timeId
                                                                                                     }
@@ -2387,6 +2393,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 style={{ pointerEvents: "auto" }}
                                                                                             >
                                                                                                 <InputField
+                                                                                                    id="form_input7"
                                                                                                     value={
                                                                                                         parameterValue[`param${key + 1}`]?.dateAnchor
 
@@ -2432,6 +2439,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     number */}
                                                                                                 </span>
                                                                                                 <InputField
+                                                                                                    id="form_input8"
                                                                                                     value={
                                                                                                         parameterValue[`param${key + 1}`]?.dateId
 
