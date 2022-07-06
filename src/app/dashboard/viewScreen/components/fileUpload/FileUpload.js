@@ -40,24 +40,7 @@ import {
 } from "../../../../../duck/actions/commonActions";
 const { Panel } = Collapse;
 const { Dragger } = Upload;
-function FileUpload(props) {
-	const {
-		viewSummaryTable,
-
-		parentBatches,
-		setParentBatches,
-
-		setNewBatchData,
-
-		setFunctionEditorViewState,
-		filesListTree,
-		setFilesListTree,
-		count,
-		setCount,
-
-		selectedFiles,
-		setSelectedFiles
-	} = props;
+function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSummaryTable, parentBatches, setParentBatches, setNewBatchData, setFunctionEditorViewState, filesListTree, setFilesListTree, setViewSummaryBatch, setMolBatches }) {
 
 	const [uploadModalVisible, setUploadModalVisible] = useState(false);
 	const [uploadBtnDisabled, setUploadBtnDisabled] = useState(true);
@@ -160,8 +143,10 @@ function FileUpload(props) {
 			let batchData = {};
 			let newBatchData = [];
 			let molBatch = [...parentBatches, ...coverage_lists];
-			setParentBatches(molBatch);
 
+			setParentBatches(molBatch);
+			setViewSummaryBatch(molBatch)
+			setMolBatches(molBatch)
 			molBatch.map((el) => {
 				if (record.coverage_list.includes(el.batch)) {
 					return (
@@ -217,6 +202,7 @@ function FileUpload(props) {
 			dispatch(showNotification("error", "Parameter already exists"));
 		}
 	};
+
 	const genExtra = (File_id) => (
 		<div
 			className="fileUpload-panelHeader"
@@ -357,6 +343,7 @@ function FileUpload(props) {
 		adHocFilesParameterTree(req).then((res) => {
 			const date = new Date();
 			res.timeStamp = date.toISOString();
+
 			setFilesListTree([...filesListTree, res]);
 			if (res.Status === 404) {
 				dispatch(showNotification("error", res.Message));

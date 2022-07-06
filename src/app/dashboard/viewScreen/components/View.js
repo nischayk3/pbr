@@ -11,6 +11,7 @@ import { useLocation, useParams, useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Collapse, Modal } from "antd";
+import { v1 as uuid } from 'uuid'
 import "./styles.scss";
 import queryString from "query-string";
 import {
@@ -57,7 +58,6 @@ const ViewCreation = (props) => {
 	const [moleculeList, setMoleculeList] = useState({});
 	const [isPublish, setIsPublish] = useState(false);
 	const [moleculeId, setMoleculeId] = useState();
-	const [materialsList, setMaterialsList] = useState([]);
 	const getData = useRef();
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
 	const [parentBatches, setParentBatches] = useState([]);
@@ -322,6 +322,10 @@ const ViewCreation = (props) => {
 						`View Id: ${response.view_disp_id} have been successfully saved`
 					)
 				);
+
+				history.push({
+					pathname: `/dashboard/view_creation/${response.view_disp_id}&1`,
+				})
 			} else if (response.data.statuscode === 400) {
 				dispatch(showNotification("error", response.data.message));
 			}
@@ -395,6 +399,7 @@ const ViewCreation = (props) => {
 				urlName={`/dashboard/view_creation/${viewDisplayId}&1`}
 				value={viewDisplayId}
 				data="Untitled" />
+
 			<div className="breadcrumbs-btn">
 				{Object.keys(parameters) &&
 					Object.keys(parameters).length > 0 &&
@@ -470,11 +475,12 @@ const ViewCreation = (props) => {
 											key="1"
 										>
 											<MaterialTree
-												fromWorkflowScreen={fromWorkflowScreen}
+
+												//fromWorkflowScreen={fromWorkflowScreen}
 												moleculeList={moleculeList}
 												callbackProcessClick={hierarchyProcessClick}
-												materialsList={materialsList}
-												parentBatches={parentBatches}
+												//	materialsList={materialsList}
+												//parentBatches={parentBatches}
 												highlightFilterValue={highlightFilterValue}
 											/>
 
@@ -501,6 +507,8 @@ const ViewCreation = (props) => {
 												count={count}
 												setCount={setCount}
 												getNewData={(el) => getNewData(el)}
+												setMolBatches={setMolBatches}
+												setViewSummaryBatch={setViewSummaryBatch}
 											/>
 										</Panel>
 									</>
@@ -513,8 +521,8 @@ const ViewCreation = (props) => {
 						<div className="viewCreation-rightBlocks">
 							<MemoizedMathEditor
 								fromWorkflowScreen={fromWorkflowScreen}
-								paramTableData={paramTableData}
-								newBatchData={newBatchData}
+								//paramTableData={paramTableData}
+								//newBatchData={newBatchData}
 								parentBatches={parentBatches}
 								molBatches={molBatches}
 								setMolBatches={setMolBatches}
@@ -525,9 +533,8 @@ const ViewCreation = (props) => {
 								materialId={moleculeId}
 							/>
 							<MemoizedViewSummaryData
-								fromWorkflowScreen={fromWorkflowScreen}
 								viewJson={viewJson}
-								setViewJson={setViewJson}
+								//setViewJson={setViewJson}
 								parentBatches={parentBatches}
 								viewDisplayId={viewDisplayId}
 								viewStatus={viewStatus}

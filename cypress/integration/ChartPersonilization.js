@@ -97,14 +97,15 @@ describe('Renders chart personalization', () => {
   it('View is working correctly', () => {
     cy.wait(1000)
 
-    cy.log('Focussing on search to get list of view Ids')
-    cy.get('input[type="text"]').focus()
+    // cy.log('Focussing on search to get list of view Ids')
+    // cy.get('input[type="text"]').focus()
 
     cy.wait(500)
     cy.log('Inputing View Id')
-    cy.get('input[type="text"]').type('v238')
+    cy.get('input[type="text"]').click()
+    cy.get('input[type="text"]').type("V238")
 
-    cy.wait(500)
+    cy.wait(3000)
     cy.log('Searching for a View Id')
     cy.get('.ant-input-search-button').first().click()
 
@@ -136,8 +137,8 @@ describe('Renders chart personalization', () => {
         cy.log('Selecting date range')
         cy.get('.ant-picker-range').click()
         cy.get('.ant-picker-header-prev-btn').first().click()
-        cy.get('.ant-picker-cell').eq(0).click()
-        cy.get('.ant-picker-cell').eq(6).click()
+        cy.get('.ant-picker-cell').eq(7).click()
+        cy.get('.ant-picker-cell').eq(12).click()
 
         cy.wait(500)
         cy.log('Hovering over tags')

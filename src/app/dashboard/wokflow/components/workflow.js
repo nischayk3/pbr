@@ -300,8 +300,14 @@ const Workflow = () => {
 											rowSelection={{
 												selectedRowKeys,
 												onChange: (selectedRowKeys, selectedRows) => {
-													setIsApprove(false);
-													setSelectedRowKeys(selectedRowKeys);
+													if (selectedRowKeys.length == 0) {
+														setIsApprove(true);
+														setSelectedRowKeys(selectedRowKeys);
+													} else {
+														setIsApprove(false);
+														setSelectedRowKeys(selectedRowKeys);
+													}
+
 												},
 											}}
 											className="approval-table"

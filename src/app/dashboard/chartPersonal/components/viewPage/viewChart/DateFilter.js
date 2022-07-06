@@ -4,6 +4,7 @@ import moment from "moment";
 import InputField from "../../../../../../components/InputField/InputField";
 import SelectField from "../../../../../../components/SelectField/SelectField";
 
+/* istanbul ignore next */
 const DateFilter = ({
   batchFilters,
   setBatchFilters,

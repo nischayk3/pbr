@@ -137,7 +137,7 @@ const ViewPage = () => {
         }
       }
       dispatch(hideLoader());
-    } catch (error) {
+    } catch (error) { /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification("error", "Chart creation failed"));
     }
@@ -159,7 +159,7 @@ const ViewPage = () => {
     try {
       const viewRes = await getChartPlotData(req);
       setPostChartData(viewRes);
-    } catch (err) {
+    } catch (err) {/* istanbul ignore next */
       dispatch(showNotification("error", "Load chart failed"));
     }
   };

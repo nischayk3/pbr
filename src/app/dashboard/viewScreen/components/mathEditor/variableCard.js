@@ -2,20 +2,20 @@ import React from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Tooltip } from "antd";
 
-const VariableCard = (props) => {
+const VariableCard = ({ id, variableName, deleteVariable, editVariable }) => {
 
 	return (
-		<Tooltip title={<span>{props.variableName}</span>} key={props.id}>
-			<div className="var_block_card" key={props.id}>
-				<p>{props.variableName}</p>
+		<Tooltip title={<span>{variableName}</span>} key={id}>
+			<div className="var_block_card" key={id}>
+				<p>{variableName}</p>
 				<div className="var-btn">
 					<Button>
 						<EditOutlined
 							className="edit"
-							onClick={() => props.editVariable(props.variableName)}
+							onClick={() => editVariable(variableName)}
 						/>
 					</Button>
-					<Button onClick={(e) => props.deleteVariable(props.variableName)}>
+					<Button onClick={(e) => deleteVariable(variableName)}>
 						<DeleteOutlined className="delete" />
 					</Button>
 				</div>

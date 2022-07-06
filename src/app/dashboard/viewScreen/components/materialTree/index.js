@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Tag, Tree } from "antd";
 import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
 import {
-	batchCoverage,
 	getBatchData,
 	sendSelectedParamData,
 } from "../../../../../duck/actions/viewAction";
@@ -22,10 +21,12 @@ const { TreeNode } = Tree;
 let setKey = [];
 let selectedData = [];
 let finalData = [];
-const MaterialTree = (props) => {
+const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue }) => {
+
+	const { hierarchy } = moleculeList;
 
 	const dispatch = useDispatch();
-	const { moleculeList, highlightFilterValue } = props;
+
 	const [selectedKeys, setSelectedKeys] = useState([]);
 	const [treeMap, setTreeMap] = useState([]);
 	const [count, setCount] = useState("");
@@ -34,11 +35,11 @@ const MaterialTree = (props) => {
 	);
 
 	useEffect(() => {
-		setTreeMap(moleculeList.hierarchy)
-	}, [moleculeList])
+		setTreeMap(hierarchy)
+	}, [hierarchy])
 
 	const onSelect = (selectedKe, info) => {
-		props.callbackProcessClick(info.node.dataRef);
+		callbackProcessClick(info.node.dataRef);
 		setSelectedKeys(selectedKe);
 	};
 
@@ -111,10 +112,11 @@ const MaterialTree = (props) => {
 			{treeMap &&
 				treeMap.map((item, ele1) => {
 					return (
-						<Tree onSelect={onSelect}>
+						<Tree onSelect={onSelect} >
 							<TreeNode
 								title={item.process_step}
 								key={"frstEle-" + ele1}
+
 								dataRef={item}
 							>
 								{item &&
@@ -124,6 +126,7 @@ const MaterialTree = (props) => {
 											<TreeNode
 												title={a.product_desc}
 												dataRef={a}
+
 												key={"secondEle-" + ele2}
 											>
 												{a &&
@@ -131,6 +134,7 @@ const MaterialTree = (props) => {
 													a.children.map((b, ele3) => {
 														return (
 															<TreeNode
+
 																key={"thirdEle-" + ele3}
 																title={
 																	<div className="treenode-block">

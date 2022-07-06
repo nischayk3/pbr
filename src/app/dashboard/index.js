@@ -346,6 +346,12 @@ const Dashboard = () => {
                   authorised={authorised}
                 />
                 <PrivateRoute
+                  key="application-controls"
+                  path={`${match.url}/user-roles-and-access/application-controls`}
+                  component={ScreenControls}
+                  authorised={authorised}
+                />
+                <PrivateRoute
                   key="screen-controls"
                   path={`${match.url}/user-roles-and-access/screen-controls`}
                   component={ScreenControls}

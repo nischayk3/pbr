@@ -357,6 +357,9 @@ function ReportDesignerNew(props) {
 						setStatus(res['rep_stauts'])
 						setIsSave(true)
 						setIsSaved(true)
+						history.push({
+							pathname: `/dashboard/report_designer/${res['rep_disp_id']}`,
+						})
 					}
 					else
 						dispatch(showNotification('error', 'Not Saved'));
@@ -494,7 +497,11 @@ function ReportDesignerNew(props) {
 			<div className='sub-header' style={{ paddingRight: '24px' }}>
 				<div className='sub-header-title'>
 					{/* <div onClick={() => window.location.reload()}> */}
-					<BreadCrumbWrapper />
+					<BreadCrumbWrapper
+						urlName={
+							`/dashboard/report_designer/${reportId}`}
+						value={reportId}
+						data="Untitled" />
 					{/* </div> */}
 				</div>
 				<div className='sub-header-btns'>
