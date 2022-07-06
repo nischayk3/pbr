@@ -60,6 +60,16 @@ const PbrUpdate = () => {
 
     let filename = res.Data[0].file_path;
     getImage(filename);
+    let obj = {
+      changed_by: res.Data[0].changed_by == null ? "" : res.Data[0].changed_by,
+      id: res.Data[0].id == null ? "" : res.Data[0].id,
+      recordedDate: res.Data[0].recorded_date == null ? "" : res.Data[0].recorded_date,
+      recordedTime: res.Data[0].recorded_time == null ? "" : res.Data[0].recorded_time,
+      snippetValue: res.Data[0].snippet_value == null ? "" : res.Data[0].snippet_value,
+      status: res.Data[0].status = null ? "" : res.Data[0].status,
+      uomnum: res.Data[0].uom = null ? "" : res.Data[0].uom
+    }
+    setTextInput(obj)
 
 
     // if (res.Data.length > 0) {
@@ -248,38 +258,35 @@ const PbrUpdate = () => {
     });
   };
 
-
-
-
   const handleClick = async (event, record) => {
-
+    dispatch(showLoader());
     event.preventDefault();
 
     let resp = [...idarr];
     resp.push(params.id);
     setIdArr(resp);
-
     let numberArray = resp.map(Number)
     let formvalues = {
       id: numberArray,
-      changed_by: textInput.changedBy,
+      changed_by: localStorage.getItem('user'),
       recorded_date: textInput.recordedDate,
       recorded_time: textInput.recordedTime,
       snippet_value: textInput.snippetValue,
-      status: null,
+      status: textInput.status,
       uom: textInput.uomnum,
     };
 
     let res = await updateApprove(formvalues);
 
     if (res.Status == "202") {
+      dispatch(hideLoader());
+      dispatch(showNotification("success", "Updated Successfully"))
+      setEditingRow(null)
+      loadTableData()
 
-      dispatch(showNotification("success", "Updated Successfully")),
-        dispatch(showLoader());
-      setTimeout(() => window.location.reload(),
-        1000
-      );
-
+    } else {
+      dispatch(hideLoader());
+      dispatch(showNotification("erroe", "Error while updtating"))
     }
 
   };
@@ -429,30 +436,30 @@ const PbrUpdate = () => {
       title: "Updated By",
       dataIndex: "changed_by",
       key: "changed_by",
-      render: (text, record) => {
-        if (editingRow === record.key) {
-          return (
-            <Form.Item>
-              <Input
-                defaultValue={record.changed_by}
-                type="text"
-                name="changedBy"
-                onChange={handleChange}
+      // render: (text, record) => {
+      //   if (editingRow === record.key) {
+      //     return (
+      //       <Form.Item>
+      //         <Input
+      //           defaultValue={record.changed_by}
+      //           type="text"
+      //           name="changedBy"
+      //           onChange={handleChange}
 
-              />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
+      //         />
+      //       </Form.Item>
+      //     );
+      //   } else {
+      //     return <p>{text}</p>;
+      //   }
+      // },
 
 
     },
     {
       title: "Actions",
       fixed: 'right',
-      width: "5%",
+      width: "9%",
       render: (_, record) => {
         return (
           <>
@@ -475,73 +482,77 @@ const PbrUpdate = () => {
 
   return (
     <div className='pbr-container'>
-      <BreadCrumbWrapper />
+      <BreadCrumbWrapper
+        urlName={`/dashboard/pbr_update/${params.id}`}
+        value={params.id}
+        data={params.id}
+      />
       <div className='custom-wrapper'>
-      <div className='content_section' >
-        <div style={{ marginTop: 20 }}>
+        <div className='content_section' >
+          <div style={{ marginTop: 20 }}>
 
-          <Row gutter={16}>
-            <Col span={12}>
-              <h3 style={{ marginBottom: "20px" }}>You may edit the selected unstructured data here.</h3>
-
-
-              <Table
-                className='edit-table'
-                columns={columns}
-                dataSource={templateData}
-                pagination={false}
-
-                style={{ border: '1px solid #ececec', borderRadius: '2px' }}
-              />
-            </Col>
-            <Col span={12}>
-              <div className='' style={{ display: "flex", marginBottom: "20px", flexDirection: "row", justifyContent: "right", alignItems: "center" }}>
-
-                <Button style={{
-                  borderRadius: "5px",
-                  textTransform: "none",
-                  background: "#ffffff",
-                  borderColor: "#303f9f",
-                  color: "#303f9f",
-                  marginRight: '15px',
-                  
-                }}
-                  type='primary'>
-                  <a
-                    style={{ color: "#303f9f" }}
-                    // onClick={() => {
-                    //   setIsModalVisible(true)
-                    // history.push({
-                    //     pathname: '/dashboard/molecule_hierarchy_configurations/untilted_view',
-                    // });
-                    // }}
-                    onClick={() => {
-                      history.push(`/dashBoard/audit_trail_report`);
-                    }}
-                  >
-
-                    View Auditlogs
-                  </a></Button>
-                <Button style={{
-                  backgroundColor: '#303f9f',
-                  color: '#ffffff',
-                  borderColor: "#303f9f",
-                  borderRadius: "5px",
-
-                }}
-                  onClick={handleClick}
-
-                  type='primary'>Save Changes</Button>
-              </div>
-              <div>
-                <img src={imagepdf} width="100%" height="100%" />
-              </div>
+            <Row gutter={16}>
+              <Col span={12}>
+                <h3 style={{ marginBottom: "20px" }}>You may edit the selected unstructured data here.</h3>
 
 
-            </Col>
-          </Row>
+                <Table
+                  className='edit-table'
+                  columns={columns}
+                  dataSource={templateData}
+                  pagination={false}
+                  scroll={{ x: 1000 }}
+                  style={{ border: '1px solid #ececec', borderRadius: '2px' }}
+                />
+              </Col>
+              <Col span={12}>
+                <div className='' style={{ display: "flex", marginBottom: "20px", flexDirection: "row", justifyContent: "right", alignItems: "center" }}>
+
+                  <Button style={{
+                    borderRadius: "5px",
+                    textTransform: "none",
+                    background: "#ffffff",
+                    borderColor: "#303f9f",
+                    color: "#303f9f",
+                    marginRight: '15px',
+
+                  }}
+                    type='primary'>
+                    <a
+                      style={{ color: "#303f9f" }}
+                      // onClick={() => {
+                      //   setIsModalVisible(true)
+                      // history.push({
+                      //     pathname: '/dashboard/molecule_hierarchy_configurations/untilted_view',
+                      // });
+                      // }}
+                      onClick={() => {
+                        history.push(`/dashboard/audit_trail_report`);
+                      }}
+                    >
+
+                      View Auditlogs
+                    </a></Button>
+                  <Button style={{
+                    backgroundColor: '#303f9f',
+                    color: '#ffffff',
+                    borderColor: "#303f9f",
+                    borderRadius: "5px",
+
+                  }}
+                    onClick={handleClick}
+
+                    type='primary'>Save Changes</Button>
+                </div>
+                <div>
+                  <img src={imagepdf} width="100%" height="100%" />
+                </div>
+
+
+              </Col>
+            </Row>
+          </div>
         </div>
-      </div>
       </div>
       <Modal
         title='Preview'
