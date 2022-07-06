@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import React, { useEffect, useState, lazy } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import { Avatar, Input, Table } from "antd";

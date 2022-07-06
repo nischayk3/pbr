@@ -168,53 +168,47 @@ const MathFunction = (props) => {
 					/>
 				) : (
 					<div className="script-editor-wrapper">
-						<CodeEditor
-							disabled={props.fromWorkflowScreen}
-							value={mathEditorValue}
-							language="py"
-							placeholder="Please enter the script"
-							onChange={(e) => handleChangeFunction(e)}
-							padding={15}
-							style={{
-								fontSize: 12,
-								backgroundColor: "#f5f5f5",
-								fontFamily:
-									"ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
-								color: "black",
-								border: ".5px solid black"
-							}}
-						/>
-
-						<span>
-							<>
-								<Button
-									onClick={functionEvaluate}
-									type="text"
-									className="custom-eval-btn"
-									disabled={props.fromWorkflowScreen}
-								>
-									Function Evaluate
-								</Button>
-								<Button
-									onClick={showModal}
-									type="text"
-									disabled={!isFunction}
-
-									className={
-										!isFunction
-											? "custom-eval-btn-disable"
-											: "custom-secondary-eval-btn"
-									}
-								>
-									Create
-								</Button>
-							</>
+						<div className="script-editor">
+							<CodeEditor
+								disabled={props.fromWorkflowScreen}
+								value={mathEditorValue}
+								language="py"
+								placeholder="Please enter the script"
+								onChange={(e) => handleChangeFunction(e)}
+								padding={15}
+								style={{
+									fontSize: 12,
+									backgroundColor: "#f5f5f5",
+									fontFamily:
+										"ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
+									color: "black",
+									border: ".5px solid black"
+								}}
+							/>
 							<img
 								className="keyboard-icon"
 								src={FunctionKey}
 								alt="keyboard-icon"
 							/>
-						</span>
+						</div>
+						<div className="script-btn">
+							<Button
+								onClick={functionEvaluate}
+								type="text"
+								className="custom-secondary-btn-link"
+								disabled={props.fromWorkflowScreen}
+							>
+								Evaluate function
+							</Button>
+							<Button
+								onClick={showModal}
+								type="text"
+								disabled={!isFunction}
+								className='custom-secondary-btn'
+							>
+								Create function
+							</Button>
+						</div>
 					</div>
 				)}
 			</div>

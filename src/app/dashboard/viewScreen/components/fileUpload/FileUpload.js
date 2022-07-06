@@ -26,7 +26,8 @@ import {
 import { deleteAdHocFile } from "../../../../../duck/actions/fileUploadAction";
 import {
 	batchCoverage,
-	sendSelectedParamData
+	sendSelectedParamData,
+	sendTotalMolBatches
 } from "../../../../../duck/actions/viewAction";
 import {
 	adHocFileUpload,
@@ -40,20 +41,21 @@ import {
 } from "../../../../../duck/actions/commonActions";
 const { Panel } = Collapse;
 const { Dragger } = Upload;
-function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSummaryTable, parentBatches, setParentBatches, setNewBatchData, setFunctionEditorViewState, filesListTree, setFilesListTree, setViewSummaryBatch, setMolBatches }) {
-
+function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSummaryTable, parentBatches, setParentBatches, setNewBatchData, setFunctionEditorViewState, filesListTree, setFilesListTree, setViewSummaryBatch, setMolBatches, viewJson }) {
 	const [uploadModalVisible, setUploadModalVisible] = useState(false);
 	const [uploadBtnDisabled, setUploadBtnDisabled] = useState(true);
 	const [selectedAdHocFileList, setSelectedAdHocFileList] = useState([]);
 	const [selectedFileId, setSelectedFileId] = useState("");
+	const [fileBatch, setFileBatch] = useState([]);
+
 	const selectedTableData = useSelector(
 		(state) => state.viewCreationReducer.selectedParamData
 	);
 	const finalData = useRef([]);
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
+	const totalBatch = useSelector((state) => state.viewCreationReducer.totalMolBatches);
 
 	const dispatch = useDispatch();
-
 	const columns = [
 		{
 			title: "Parameter",
@@ -101,18 +103,37 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 
 	useEffect(() => {
 		if (isLoadView) {
-			let selected_keys = Object.keys(selectedFiles);
+			const loadFile = [...viewJson]
+			const fileId = loadFile[0].files
 			dispatch(showLoader());
-			if (selected_keys.length > 0) {
-				selected_keys.map((i) =>
+
+			if (Object.keys(fileId).length > 0) {
+				Object.entries(fileId).forEach(([key, value]) => {
 					adHocFilesParameterTree({
-						file_id: parseInt(i),
-						detailedCoverage: true
+						file_id: parseInt(key),
+						detailedCoverage: value
 					}).then((res) => {
-						const date = new Date();
-						res.timeStamp = date.toISOString();
-						filesListTree.push(res);
-						setFilesListTree(filesListTree);
+						if (res.Status === 200) {
+							const totalFileBatch = []
+							const date = new Date();
+							res.timeStamp = date.toISOString();
+							filesListTree.push(res);
+							setFilesListTree(filesListTree);
+							const batchRes = res.Data.forEach((ele) => {
+								ele.coverage_list.forEach((item) => {
+									totalFileBatch.push(item)
+								})
+							})
+							const filteredBatch = totalFileBatch && totalFileBatch.filter(function (item, pos) {
+								return totalFileBatch.indexOf(item) == pos;
+							});
+
+							const mapBatch = filteredBatch.map((ele) => {
+								return { batch: ele }
+							})
+							setFileBatch(mapBatch)
+							console.log("mapBatch", mapBatch);
+						}
 						if (res.Status === 404) {
 							dispatch(showNotification("error", "Unable to Load Files"));
 						}
@@ -120,13 +141,20 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 							dispatch(showNotification("error", "UnAuthorized User"));
 						}
 					})
-				);
+				})
+
 			}
 			setTimeout(() => {
 				dispatch(hideLoader());
 			}, 1000);
+
 		}
 	}, [isLoadView]);
+
+	useEffect(() => {
+		const mergeBatch = [...fileBatch, ...totalBatch];
+		setParentBatches(mergeBatch)
+	}, [totalBatch])
 
 	const parameterPassHandler = (record, index) => {
 		const selectedParam = finalData.current.find(
