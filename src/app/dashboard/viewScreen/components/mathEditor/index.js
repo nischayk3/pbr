@@ -29,7 +29,7 @@ const MathEditor = ({
 	const [varData, setVarData] = useState(variableData);
 	const [count, setCount] = useState(1);
 	const [cardTitle, setCardTitle] = useState("Create Variable");
-	const [rowDisable, setRowDisable] = useState(true);
+	const [rowDisable, setRowDisable] = useState(false);
 	const [variableCreate, setVariableCreate] = useState(false);
 	const [ischeckBox, setIscheckBox] = useState(false);
 	const [createNameModal, setCreateNameModal] = useState(false);
@@ -163,8 +163,8 @@ const MathEditor = ({
 
 
 	const addVariable = () => {
-		setCardTitle("Select parameters");
-		setRowDisable(false);
+
+		setRowDisable(true);
 		setIscheckBox(true);
 	};
 
@@ -227,8 +227,6 @@ const MathEditor = ({
 		setVariableName("");
 		setCreateNameModal(!createNameModal);
 	};
-
-
 	return (
 		<>
 			<Collapse

@@ -21,7 +21,8 @@ import {
 	VIEW_FUNCTION_MAP,
 	VIEW_FUNCTION_NAME,
 	VIEW_PARAM_DATA,
-	VIEW_PARAM_MAP
+	VIEW_PARAM_MAP,
+	TOTAL_MOL_BATCHES,
 } from '../../constants/actionTypes';
 
 const initState = {
@@ -47,7 +48,8 @@ const initState = {
 	viewFunctionName: '',
 	mathValue: '',
 	loadResponse: [],
-	batchData: []
+	batchData: [],
+	totalMolBatches: []
 };
 
 export default (state = initState, action) => {
@@ -98,6 +100,8 @@ export default (state = initState, action) => {
 			return { ...state, loadResponse: action.payload };
 		case BATCH_DATA:
 			return { ...state, batchData: action.payload };
+		case TOTAL_MOL_BATCHES:
+			return { ...state, totalMolBatches: action.payload };
 		case RESET_VIEW:
 			return initState;
 		default:

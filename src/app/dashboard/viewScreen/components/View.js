@@ -11,7 +11,6 @@ import { useLocation, useParams, useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Collapse, Modal } from "antd";
-import { v1 as uuid } from 'uuid'
 import "./styles.scss";
 import queryString from "query-string";
 import {
@@ -29,6 +28,7 @@ import {
 import {
 	isLoadView,
 	sendSelectedParamData,
+	sendTotalMolBatches,
 	setViewResposne,
 	viewFunctionMap,
 	viewParamMap,
@@ -126,10 +126,12 @@ const ViewCreation = (props) => {
 			if (moleculeRes.Status === 200) {
 
 				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes.Data }));
-				if (moleculeRes.Data && moleculeRes.Data.mol_batches && moleculeRes.Data.mol_batches.length > 0) {
+				if (moleculeRes.Data.mol_batches && moleculeRes.Data.mol_batches.length > 0) {
+
 					setViewSummaryBatch(moleculeRes.Data.mol_batches);
 					setParentBatches(moleculeRes.Data.mol_batches)
 					setMolBatches(moleculeRes.Data.mol_batches)
+					dispatch(sendTotalMolBatches(moleculeRes.Data.mol_batches))
 				}
 				dispatch(hideLoader());
 			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
@@ -464,8 +466,8 @@ const ViewCreation = (props) => {
 						<div className="viewCreation-materials">
 							<Collapse
 								className="viewCreation-accordian "
-								defaultActiveKey={["1"]}
-								expandIconPosition="right"
+								defaultActiveKey={["1", "2"]}
+							//expandIconPosition="right"
 							>
 								{moleculeId && (
 									<>
@@ -509,6 +511,7 @@ const ViewCreation = (props) => {
 												getNewData={(el) => getNewData(el)}
 												setMolBatches={setMolBatches}
 												setViewSummaryBatch={setViewSummaryBatch}
+												viewJson={viewJson}
 											/>
 										</Panel>
 									</>

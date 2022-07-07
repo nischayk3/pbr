@@ -39,6 +39,7 @@ const ParameterTable = ({
 	callbackCheckbox,
 	//setVarClick,
 	rowDisable }) => {
+
 	const paramReducer = useSelector((state) => state.viewCreationReducer);
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
 	const selectedTableData = useSelector(
@@ -219,7 +220,7 @@ const ParameterTable = ({
 					key: `${item}-4`,
 					width: 80,
 					render: (value, record, rowIndex) => {
-						if (!rowDisable) {
+						if (rowDisable) {
 							if (value) {
 								return (
 									<Checkbox
@@ -294,7 +295,6 @@ const ParameterTable = ({
 				const molColumn = molObjKey.filter(uniqueArr);
 				molColumn.map((ele, i) => {
 					if (ele !== 'batch') {
-
 						return (
 							batchColumn.push({
 								title: (
@@ -311,8 +311,7 @@ const ParameterTable = ({
 								key: `${ele}-${i}`,
 								width: 80,
 								render: (value, record, rowIndex) => {
-
-									if (!rowDisable) {
+									if (rowDisable) {
 										if (value) {
 											return (
 												<Checkbox
@@ -648,9 +647,6 @@ const ParameterTable = ({
 		setTableData(deleteRecord)
 		dispatch(sendSelectedParamData(deleteRecord));
 	}
-
-
-
 	return (
 		<>
 			<div className="param-table">
@@ -695,11 +691,11 @@ const ParameterTable = ({
 								setIsParamSelected(false);
 								setSelectedRowKeys(selectedRowKeys);
 							},
-							getCheckboxProps: (record) => {
-								return {
-									disabled: rowDisable
-								};
-							}
+							// getCheckboxProps: (record) => {
+							// 	return {
+							// 		disabled: rowDisable
+							// 	};
+							// }
 						}}
 						columns={columns}
 						dataSource={filterTable.length > 0 ? filterTable : tableData}
