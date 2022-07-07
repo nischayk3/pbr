@@ -25,19 +25,12 @@ const ParameterTable = ({
 	ischeckBox,
 	viewJson,
 	setViewJson,
-	//newBatchData,
-	parentBatches,
 	varClick,
 	getParamData,
 	selectedData,
 	variableName,
 	selectedVar,
-	//materialId,
-	molBatches,
-	setMolBatches,
-	fromWorkflowScreen,
 	callbackCheckbox,
-	//setVarClick,
 	rowDisable }) => {
 
 	const paramReducer = useSelector((state) => state.viewCreationReducer);
@@ -65,13 +58,13 @@ const ParameterTable = ({
 	const parameter_obj = useSelector(
 		(state) => state.viewCreationReducer.parameters
 	);
-
+	const totalBatch = useSelector((state) => state.viewCreationReducer.totalMolBatches);
+	const totalFileBatch = useSelector((state) => state.viewCreationReducer.totalFileBatches);
 	const getBatchData = useSelector((state) => state.viewCreationReducer.batchData)
 
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [tableData, setTableData] = useState([]);
 	const [selectedPrimaryData, setSelectedPrimaryData] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
 	const [reloadTable, setReloadTable] = useState(true);
 	const [parameters, setParameters] = useState({});
 	const [variableParam, setVariableParam] = useState(
@@ -82,6 +75,7 @@ const ParameterTable = ({
 	const [filterTable, setFilterTable] = useState([]);
 	const [molBatchColumn, setMolBatchColumn] = useState([]);
 	const [isParamSelected, setIsParamSelected] = useState(true);
+	const [totalMolBatch, setTotalMolBatch] = useState([]);
 
 
 	const Option = Select;
@@ -268,13 +262,17 @@ const ParameterTable = ({
 	});
 
 	useEffect(() => {
+		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
+			setTotalMolBatch([...totalBatch, ...totalFileBatch]);
+		}
+	}, [totalBatch, totalFileBatch])
 
+	useEffect(() => {
 		if (selectedTableData.length > 0) {
-			console.log("selectedTableData", selectedTableData);
 			let batchArr = []
-			let allMolBatches = parentBatches && parentBatches.map((e) => e.batch)
-			console.log("allMolBatches", parentBatches);
-			let totalMolBatches = parentBatches
+			let totalMolBatches = [...totalMolBatch]
+			let allMolBatches = totalMolBatches && totalMolBatches.map((e) => e.batch)
+
 			totalMolBatches && totalMolBatches.forEach((ele) => {
 
 				let batchObj = {}
@@ -282,7 +280,7 @@ const ParameterTable = ({
 					Object.entries(item).forEach(([key, value]) => {
 						if (key === ele.batch) {
 							if (allMolBatches.includes(key)) {
-								// batchObj['batch'] = key;
+
 								batchObj[item.parameter_name] = value;
 							}
 						}
@@ -290,22 +288,12 @@ const ParameterTable = ({
 				})
 				batchArr.push(batchObj)
 			})
-			console.log("batchArr", batchArr);
-			// Object.entries(getBatchData.batches).forEach(([key, value]) => {
-			// 	if (key === ele.batch) {
-			// 		if (allMolBatches.includes(key)) {
-			// 			// batchObj['batch'] = key;
-			// 			batchObj[getBatchData.parameter_name] = value;
-			// 		}
-			// 	}
-			// })
-
-
 
 			const molBatchMerge = totalMolBatches.map((item, i) =>
 				Object.assign({}, item, batchArr[i])
 			);
-			setMolBatches(molBatchMerge)
+
+
 
 			if (molBatchMerge.length > 0) {
 				const molObjKey = molBatchMerge !== undefined && molBatchMerge.length > 0 ? Object.keys(molBatchMerge[0]) : []
@@ -473,15 +461,15 @@ const ParameterTable = ({
 		// 	}
 		// 	setMolBatchColumn([...batchColumn])
 		// }
-	}, [getBatchData, selectedTableData])
+	}, [getBatchData, selectedTableData, totalMolBatch])
 
 	useEffect(() => {
 		if (ischeckBox) {
 			setReloadTable(false);
-			setIsLoading(true);
+
 			setInterval(() => {
 				setReloadTable(true);
-				setIsLoading(false);
+
 			}, 300);
 		}
 	}, [ischeckBox]);
@@ -596,7 +584,6 @@ const ParameterTable = ({
 			}
 
 			let functionTable = [...viewSummaryBatch];
-			//let new_column_data = parentBatches.map((e) => e.batch);
 			let new_column_data = newColumnData.map((e) => e.batch_num);
 			functionTable.forEach((item) => {
 				let obj = {};
@@ -744,14 +731,14 @@ const ParameterTable = ({
 	}
 
 	const TableSearch = value => {
-		const tableDataSearch = [...molBatches];
+		const tableDataSearch = [...totalMolBatch];
 		const searchTable = tableDataSearch.filter(o =>
 			Object.keys(o).some(k =>
 				String(o[k]).toLowerCase().includes(value.toLowerCase())
 			)
 
 		);
-		setMolBatches(searchTable);
+		setTotalMolBatch(searchTable);
 	};
 
 	const deleteParameter = (id) => {
@@ -839,7 +826,7 @@ const ParameterTable = ({
 
 					<Table
 						columns={molBatchColumn}
-						dataSource={molBatches}
+						dataSource={totalMolBatch}
 						size="small"
 						scroll={{ y: 450 }}
 						rowClassName={(index) =>
