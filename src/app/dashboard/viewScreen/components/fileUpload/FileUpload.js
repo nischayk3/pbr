@@ -27,6 +27,7 @@ import { deleteAdHocFile } from "../../../../../duck/actions/fileUploadAction";
 import {
 	batchCoverage,
 	sendSelectedParamData,
+	sendTotalFileBatches,
 	sendTotalMolBatches
 } from "../../../../../duck/actions/viewAction";
 import {
@@ -41,7 +42,7 @@ import {
 } from "../../../../../duck/actions/commonActions";
 const { Panel } = Collapse;
 const { Dragger } = Upload;
-function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSummaryTable, parentBatches, setParentBatches, setNewBatchData, setFunctionEditorViewState, filesListTree, setFilesListTree, setViewSummaryBatch, setMolBatches, viewJson }) {
+function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSummaryTable, setNewBatchData, setFunctionEditorViewState, filesListTree, setFilesListTree, setViewSummaryBatch, viewJson }) {
 	const [uploadModalVisible, setUploadModalVisible] = useState(false);
 	const [uploadBtnDisabled, setUploadBtnDisabled] = useState(true);
 	const [selectedAdHocFileList, setSelectedAdHocFileList] = useState([]);
@@ -132,7 +133,8 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 								return { batch: ele }
 							})
 							setFileBatch(mapBatch)
-							console.log("mapBatch", mapBatch);
+							dispatch(sendTotalFileBatches(mapBatch))
+
 						}
 						if (res.Status === 404) {
 							dispatch(showNotification("error", "Unable to Load Files"));
@@ -151,10 +153,12 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		}
 	}, [isLoadView]);
 
-	useEffect(() => {
-		const mergeBatch = [...fileBatch, ...totalBatch];
-		setParentBatches(mergeBatch)
-	}, [totalBatch])
+	// useEffect(() => {
+	// 	const mergeBatch = [...fileBatch, ...totalBatch];
+	// 	console.log("fileBatch totalBatch", fileBatch, totalBatch);
+	// 	// dispatch(sendTotalMolBatches(mergeBatch))
+
+	// }, [totalBatch])
 
 	const parameterPassHandler = (record, index) => {
 		const selectedParam = finalData.current.find(
@@ -170,11 +174,10 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			let rowData = {};
 			let batchData = {};
 			let newBatchData = [];
-			let molBatch = [...parentBatches, ...coverage_lists];
+			let molBatch = [...totalBatch, ...fileBatch];
 
-			setParentBatches(molBatch);
 			setViewSummaryBatch(molBatch)
-			setMolBatches(molBatch)
+
 			molBatch.map((el) => {
 				if (record.coverage_list.includes(el.batch)) {
 					return (
