@@ -267,6 +267,11 @@ const ParameterTable = ({
 		}
 	}, [totalBatch, totalFileBatch])
 
+
+	useEffect(() => {
+		setTableData([...selectedTableData]);
+	}, [selectedTableData])
+
 	useEffect(() => {
 		if (selectedTableData.length > 0) {
 			let batchArr = []
@@ -743,8 +748,8 @@ const ParameterTable = ({
 
 	const deleteParameter = (id) => {
 		const deleteRecord = tableData.filter(item => item.key !== id)
-		setTableData(deleteRecord)
-		dispatch(sendSelectedParamData(deleteRecord));
+		setTableData([...deleteRecord])
+		dispatch(sendSelectedParamData([...deleteRecord]));
 	}
 	return (
 		<>
@@ -834,20 +839,19 @@ const ParameterTable = ({
 						}
 					/>
 					<div className="batch-table-footer">
-						<Button
+						{rowDisable ? (<Button
 							onClick={handleTableCancel}
 							type="text"
 							className="custom-primary-btn "
 						>
 							Apply
-						</Button>
-						<Button
+						</Button>) : (<Button
 							onClick={handleTableCancel}
 							type="text"
 							className="custom-primary-btn "
 						>
 							Back
-						</Button>
+						</Button>)}
 					</div>
 				</div>
 			</Modal>

@@ -41,7 +41,6 @@ import viewdatajson from "./view.json";
 import FileUpload from "./fileUpload/FileUpload";
 import ParamLookup from "./parameterLookup/ParamLookup";
 
-
 const { Panel } = Collapse;
 
 const ViewCreation = () => {
@@ -511,20 +510,24 @@ const ViewCreation = () => {
 
 					{loadBatches && loadBatches.length > 0 && (
 						<div className="viewCreation-rightBlocks">
-							<MemoizedMathEditor
-								fromWorkflowScreen={fromWorkflowScreen}
-								viewSummaryBatch={viewSummaryBatch}
-								setViewSummaryBatch={setViewSummaryBatch}
-								viewJson={viewJson}
-								setViewJson={setViewJson}
-								materialId={moleculeId}
-							/>
-							<MemoizedViewSummaryData
-								viewJson={viewJson}
-								viewDisplayId={viewDisplayId}
-								viewStatus={viewStatus}
-								viewVersion={viewVersion}
-							/>
+							{paramTableData && paramTableData.length > 0 && (
+								<>
+									<MemoizedMathEditor
+										fromWorkflowScreen={fromWorkflowScreen}
+										viewSummaryBatch={viewSummaryBatch}
+										setViewSummaryBatch={setViewSummaryBatch}
+										viewJson={viewJson}
+										setViewJson={setViewJson}
+										materialId={moleculeId}
+									/>
+									<MemoizedViewSummaryData
+										viewJson={viewJson}
+										viewDisplayId={viewDisplayId}
+										viewStatus={viewStatus}
+										viewVersion={viewVersion}
+									/>
+								</>
+							)}
 						</div>
 					)}
 				</div>
