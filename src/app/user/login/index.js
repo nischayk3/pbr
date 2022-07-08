@@ -160,7 +160,7 @@ const Login = () => {
 						</div>
 
 						<div className="login-input">
-							<Input
+							<Input.Password 
 								className="input-prefix"
 								placeholder="Enter password: **********"
 								prefix={<LockOutlined />}

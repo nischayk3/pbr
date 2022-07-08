@@ -20,7 +20,9 @@ import {
 	VIEW_FUNCTION_MAP,
 	VIEW_FUNCTION_NAME,
 	VIEW_PARAM_DATA,
-	VIEW_PARAM_MAP
+	VIEW_PARAM_MAP,
+	TOTAL_MOL_BATCHES,
+	TOTAL_FILE_BATCHES,
 } from '../../constants/actionTypes';
 
 export const saveViewFunction = payload => ({
@@ -131,3 +133,13 @@ export const setViewResposne = payload => ({
 	type: LOAD_VIEW_RESPONSE,
 	payload
 });
+
+export const sendTotalMolBatches = payload => ({
+	type: TOTAL_MOL_BATCHES,
+	payload
+})
+
+export const sendTotalFileBatches = payload => ({
+	type: TOTAL_FILE_BATCHES,
+	payload
+})

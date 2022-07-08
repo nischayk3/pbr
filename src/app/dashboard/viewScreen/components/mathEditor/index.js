@@ -12,14 +12,11 @@ import InputField from "../../../../../components/InputField/InputField";
 
 let variableData = [];
 const MathEditor = ({
-	molBatches,
-	setMolBatches,
 	viewJson,
 	setViewJson,
 	viewSummaryBatch,
 	setViewSummaryBatch,
 	materialId,
-	parentBatches,
 	fromWorkflowScreen }) => {
 
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
@@ -29,7 +26,7 @@ const MathEditor = ({
 	const [varData, setVarData] = useState(variableData);
 	const [count, setCount] = useState(1);
 	const [cardTitle, setCardTitle] = useState("Create Variable");
-	const [rowDisable, setRowDisable] = useState(true);
+	const [rowDisable, setRowDisable] = useState(false);
 	const [variableCreate, setVariableCreate] = useState(false);
 	const [ischeckBox, setIscheckBox] = useState(false);
 	const [createNameModal, setCreateNameModal] = useState(false);
@@ -163,8 +160,8 @@ const MathEditor = ({
 
 
 	const addVariable = () => {
-		setCardTitle("Select parameters");
-		setRowDisable(false);
+
+		setRowDisable(true);
 		setIscheckBox(true);
 	};
 
@@ -227,8 +224,6 @@ const MathEditor = ({
 		setVariableName("");
 		setCreateNameModal(!createNameModal);
 	};
-
-
 	return (
 		<>
 			<Collapse
@@ -279,12 +274,7 @@ const MathEditor = ({
 						setVariableCreate={setVariableCreate}
 						callbackCheckbox={callbackCheckbox}
 						varClick={varClick}
-						//setVarClick={setVarClick}
 						rowDisable={rowDisable}
-						//newBatchData={newBatchData}
-						parentBatches={parentBatches}
-						setMolBatches={setMolBatches}
-						molBatches={molBatches}
 						ischeckBox={ischeckBox}
 						viewJson={viewJson}
 						setViewJson={setViewJson}
@@ -293,7 +283,6 @@ const MathEditor = ({
 						getParamData={getParamData}
 						selectedData={paramData}
 						selectedVar={selectedVar}
-						//materialId={materialId}
 						variableName={variableName}
 					/>
 				</Panel>
