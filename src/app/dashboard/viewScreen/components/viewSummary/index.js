@@ -11,7 +11,7 @@ import "./styles.scss";
 import { setViewFunctionName } from "../../../../../duck/actions/viewAction";
 import { showNotification } from "../../../../../duck/actions/commonActions";
 
-const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, parentBatches }) => {
+const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, parentBatches, fromWorkflowScreen }) => {
 
 	const dispatch = useDispatch();
 	let columns = [];
@@ -34,7 +34,6 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, par
 			setFunTableData(fun_table);
 		}
 	}, [summaryTableData]);
-
 	useEffect(() => {
 		if (funTableData.length > 0) {
 			const objKey =
@@ -64,9 +63,14 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, par
 							title: (
 								<div className="summary-column">
 									<p>{item.toUpperCase().replace("_", " ")}</p>
-									<span onClick={() => handleRemoveColumn(item)}>
-										<DeleteOutlined className="delete" />
-									</span>
+									{fromWorkflowScreen ?
+										<span >
+											<DeleteOutlined className="delete" />
+										</span> :
+										<span onClick={() => handleRemoveColumn(item)}>
+											<DeleteOutlined className="delete" />
+										</span>
+									}
 								</div>
 							),
 							dataIndex: item,

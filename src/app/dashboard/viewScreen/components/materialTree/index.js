@@ -21,7 +21,7 @@ const { TreeNode } = Tree;
 let setKey = [];
 let selectedData = [];
 let finalData = [];
-const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue }) => {
+const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue, fromWorkflowScreen }) => {
 
 	const { hierarchy } = moleculeList;
 
@@ -147,18 +147,20 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 																			</p>
 																		</div>
 																		<span
-																			onClick={(e) =>
-																				handleClickParam(
-																					"thirdEle-" + ele3,
-																					b.parameter_name,
-																					b
-																				)
+																			onClick={(e) => {
+																				!fromWorkflowScreen ?
+																					handleClickParam(
+																						"thirdEle-" + ele3,
+																						b.parameter_name,
+																						b
+																					) : ''
+																			}
 																			}
 																		>
 																			{!selectedKeys ? (
 																				<CheckOutlined />
 																			) : (
-																				<PlusOutlined />
+																				<PlusOutlined disabled={fromWorkflowScreen} />
 																			)}
 																		</span>
 																	</div>

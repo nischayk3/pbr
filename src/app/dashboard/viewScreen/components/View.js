@@ -476,7 +476,7 @@ const ViewCreation = (props) => {
 										>
 											<MaterialTree
 
-												//fromWorkflowScreen={fromWorkflowScreen}
+												fromWorkflowScreen={fromWorkflowScreen}
 												moleculeList={moleculeList}
 												callbackProcessClick={hierarchyProcessClick}
 												//	materialsList={materialsList}
@@ -539,6 +539,8 @@ const ViewCreation = (props) => {
 								viewDisplayId={viewDisplayId}
 								viewStatus={viewStatus}
 								viewVersion={viewVersion}
+								fromWorkflowScreen={fromWorkflowScreen}
+
 							/>
 						</div>
 					)}

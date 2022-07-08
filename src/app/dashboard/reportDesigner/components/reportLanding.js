@@ -29,8 +29,9 @@ import {
 import Banner from '../../../../assets/images/Popup-Side.svg';
 import checkIcon from '../../../../assets/images/checkbox.svg';
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
-
+import { useLocation } from "react-router-dom";
 export default function ReportLanding(props) {
+	const location = useLocation()
 	const [searched, setSearched] = useState(false);
 	const [newsearched, setNewSearched] = useState(false);
 	const [reportList, setReportList] = useState([]);
@@ -51,6 +52,14 @@ export default function ReportLanding(props) {
 		setActiveTab(value);
 	};
 
+	useEffect(() => {
+		if (location.pathname.includes('report_generator')) {
+			setActiveTab('Generate Report Variant')
+		}
+		if (location.pathname.includes('report_designer')) {
+			setActiveTab('Design Report Template')
+		}
+	}, [location])
 	const columnsFilter = [
 		{
 			title: 'Name',

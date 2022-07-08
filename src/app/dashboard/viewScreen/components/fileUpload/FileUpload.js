@@ -40,7 +40,7 @@ import {
 } from "../../../../../duck/actions/commonActions";
 const { Panel } = Collapse;
 const { Dragger } = Upload;
-function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSummaryTable, parentBatches, setParentBatches, setNewBatchData, setFunctionEditorViewState, filesListTree, setFilesListTree, setViewSummaryBatch, setMolBatches }) {
+function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSummaryTable, parentBatches, fromWorkflowScreen, setParentBatches, setNewBatchData, setFunctionEditorViewState, filesListTree, setFilesListTree, setViewSummaryBatch, setMolBatches }) {
 
 	const [uploadModalVisible, setUploadModalVisible] = useState(false);
 	const [uploadBtnDisabled, setUploadBtnDisabled] = useState(true);
@@ -232,6 +232,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 					onConfirm={() => confirm(File_id)}
 					okText="Yes"
 					cancelText="No"
+					disabled={fromWorkflowScreen}
 				>
 					<DeleteOutlined />
 				</Popconfirm>
@@ -353,17 +354,16 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			}
 		});
 	};
-
 	return (
 		<div className="materials-wrapper fileUpload-wrapper">
 			<div className="materials-uploadDownloadFiles">
 				<div className="materials-uploadFiles">
-					<Button icon={<UploadOutlined />} onClick={onClickUpload}>
+					<Button disabled={fromWorkflowScreen} icon={<UploadOutlined />} onClick={onClickUpload}>
 						Upload
 					</Button>
 				</div>
 				<div className="materials-downloadFiles">
-					<Button type="text" className="viewCreation-downloadBtn">
+					<Button type="text" className="viewCreation-downloadBtn" disabled={fromWorkflowScreen}>
 						<a
 							href={require("../../../../../assets/xlsx/template_view_file_upload.xlsx")}
 							download="template_view_file_upload.xlsx"

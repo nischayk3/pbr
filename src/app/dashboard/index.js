@@ -128,12 +128,24 @@ const Dashboard = () => {
                 <Route key="pbr_update" path={`${match.url}/pbr_update`}>
                   <PbrUpdate />
                 </Route>
-                <Route
+                {/* <Route
                   key="report_generator"
                   path={`${match.url}/report_generator`}
                 >
                   <ReportGenerator />
-                </Route>
+                </Route> */}
+                <Route
+                  path={`${match.url}/report_generator`}
+                  render={({ match: { url } }) => (
+                    <>
+                      <Route path={`${url}/`} component={ReportDesigner} exact />
+                      <Route
+                        path={`${url}/:id`}
+                        component={ReportGenerator}
+                      />
+                    </>
+                  )}
+                />
                 <Route key="genealogy" path={`${match.url}/genealogy`}>
                   <Genealogy />
                 </Route>

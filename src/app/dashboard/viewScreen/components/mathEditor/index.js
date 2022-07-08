@@ -266,7 +266,7 @@ const MathEditor = ({
 										variableName={item.variableName}
 										deleteVariable={deleteVariable}
 										editVariable={editVariable}
-									//	fromWorkflowScreen={fromWorkflowScreen}
+										fromWorkflowScreen={fromWorkflowScreen}
 									/>
 								);
 							})
