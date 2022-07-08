@@ -1,4 +1,4 @@
-import { SCREEN_CHANGE, SELECTED_REPORT_ID, LOADED_LAYOUT, REPORT_LOAD } from '../../constants/actionTypes';
+import { SCREEN_CHANGE, SELECTED_REPORT_ID, LOADED_LAYOUT, REPORT_LOAD, GEN_LOAD } from '../../constants/actionTypes';
 
 const initialState = {
 	reportData: {},
@@ -6,6 +6,7 @@ const initialState = {
 	loginDetails: {},
 	layout: false,
 	reportLoad: {},
+	genLoad: false,
 };
 
 export default (state = initialState, action) => {
@@ -18,7 +19,10 @@ export default (state = initialState, action) => {
 			return { ...state, layout: action.payload };
 		case REPORT_LOAD:
 			return { ...state, reportLoad: action.payload };
+		case GEN_LOAD:
+			return { ...state, genLoad: action.payload };
 		default:
 			return state;
+
 	}
 };
