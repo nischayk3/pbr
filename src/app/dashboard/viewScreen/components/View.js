@@ -472,6 +472,7 @@ const ViewCreation = () => {
 											key="1"
 										>
 											<MaterialTree
+												fromWorkflowScreen={fromWorkflowScreen}
 												moleculeList={moleculeList}
 												callbackProcessClick={hierarchyProcessClick}
 												highlightFilterValue={highlightFilterValue}
@@ -525,13 +526,15 @@ const ViewCreation = () => {
 										viewDisplayId={viewDisplayId}
 										viewStatus={viewStatus}
 										viewVersion={viewVersion}
+										fromWorkflowScreen={fromWorkflowScreen}
+
 									/>
 								</>
 							)}
 						</div>
 					)}
 				</div>
-			</div>
+			</div >
 
 			<Signature
 				isPublish={isPublish}
@@ -591,7 +594,7 @@ const ViewCreation = () => {
 					</div>
 				</div>
 			</Modal>
-		</div>
+		</div >
 	);
 };
 

@@ -95,6 +95,10 @@ function ReportGenerator(props) {
 		state => state.reportDesignerReducer.screen
 	);
 
+	const genLoad = useSelector(
+		state => state.reportDesignerReducer.genLoad
+	);
+
 
 	// function onChange(checkedValues, i) {
 	// 	update_object(checkedValues, i);
@@ -527,7 +531,7 @@ function ReportGenerator(props) {
 					</Card>
 				</div>
 			</div>
-			<SaveModal isSave={isSave} setIsSave={setIsSave} id={''} />
+			<SaveModal isSave={isSave} setIsSave={setIsSave} id={''} load={genLoad} />
 			<JobSchedule
 				visible={alertVisible}
 				app_type='REPORT'

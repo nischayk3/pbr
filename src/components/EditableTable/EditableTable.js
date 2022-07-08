@@ -181,7 +181,14 @@ class EditableTable extends Component {
             await this.props.saveTableData(tableData)
             this.setState({ tableDataChanged: false })
         } catch (err) {
-            this.props.showNotification('error', err.message)
+            if (err.message.includes('400')) {
+                this.props.showNotification('error', 'User already registered')
+            }
+            if (err.message.includes('500')) {
+                this.props.showNotification('error', 'Error while saving')
+            }
+            else
+                this.props.showNotification('error', err.message)
         } finally {
             this.props.hideLoader()
         }
@@ -224,7 +231,7 @@ class EditableTable extends Component {
                     style={{ marginBottom: 16 }}
                     id="editable-table-button-add-new-user"
                 >
-                   {this.props.screens === "Roles" ? "Add new role" : "Add new user" }
+                    {this.props.screens === "Roles" ? "Add new role" : "Add new user"}
 
                 </Button>
                 <Button
