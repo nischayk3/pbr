@@ -76,6 +76,7 @@ const ParameterTable = ({
 	const [molBatchColumn, setMolBatchColumn] = useState([]);
 	const [isParamSelected, setIsParamSelected] = useState(true);
 	const [totalMolBatch, setTotalMolBatch] = useState([]);
+	const [isMolBatchUpdate, setIsMolBatchUpdate] = useState([]);
 
 
 	const Option = Select;
@@ -195,6 +196,7 @@ const ParameterTable = ({
 	const paramColumn = uniqueCol.slice(0, 10)
 
 	paramColumn.map((item) => {
+
 		if (
 			item === "parameter_name" ||
 			item === "primary" ||
@@ -214,6 +216,7 @@ const ParameterTable = ({
 					key: `${item}-4`,
 					width: 80,
 					render: (value, record, rowIndex) => {
+						//console.log("rowwwwwwwwwww", value, record, rowIndex);
 						if (rowDisable) {
 							if (value) {
 								return (
@@ -279,13 +282,11 @@ const ParameterTable = ({
 			let allMolBatches = totalMolBatches && totalMolBatches.map((e) => e.batch)
 
 			totalMolBatches && totalMolBatches.forEach((ele) => {
-
 				let batchObj = {}
 				selectedTableData.forEach((item) => {
 					Object.entries(item).forEach(([key, value]) => {
 						if (key === ele.batch) {
 							if (allMolBatches.includes(key)) {
-
 								batchObj[item.parameter_name] = value;
 							}
 						}
@@ -298,13 +299,16 @@ const ParameterTable = ({
 				Object.assign({}, item, batchArr[i])
 			);
 
-
-
 			if (molBatchMerge.length > 0) {
 				const molObjKey = molBatchMerge !== undefined && molBatchMerge.length > 0 ? Object.keys(molBatchMerge[0]) : []
 				const molColumn = molObjKey.filter(uniqueArr);
+
 				molColumn.map((ele, i) => {
-					if (ele !== 'batch') {
+
+					if (ele === 'batch') {
+						console.log("i");
+					} else {
+
 						return (
 							batchColumn.push({
 								title: (
@@ -313,7 +317,6 @@ const ParameterTable = ({
 											<Tag color="geekblue">
 												{ele}
 											</Tag>
-
 										</div>
 									</div>
 								),
@@ -321,26 +324,31 @@ const ParameterTable = ({
 								key: `${ele}-${i}`,
 								width: 80,
 								render: (value, record, rowIndex) => {
+									console.log("value0", value, record, rowIndex);
 									if (rowDisable) {
 										if (value) {
+											console.log("rowDisable", rowDisable);
+											console.log("value1", value);
 											return (
 												<Checkbox
-													disabled={isParamSelected}
+													// disabled={isParamSelected}
 													className="custom-check"
-													onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
+													onChange={(e) => onChangeBatchPopup(e, record, rowIndex, ele)}
 													checked={value}
 												/>
 											);
 										} else if (value === "") {
+											console.log("value2", value);
 											return (
 												<Checkbox
-													disabled={isParamSelected}
+													// disabled={isParamSelected}
 													className="custom-check"
-													onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
+													onChange={(e) => onChangeBatchPopup(e, record, rowIndex, ele)}
 													checked={value === "" ? false : true}
 												/>
 											);
 										} else {
+											console.log("value3", value);
 											return (
 												<span className="batchClosed">
 													<CloseOutlined />
@@ -349,12 +357,14 @@ const ParameterTable = ({
 										}
 									} else {
 										if (value) {
+											console.log("value4", value);
 											return (
 												<span className="batchChecked">
 													<CheckOutlined />
 												</span>
 											);
 										} else {
+											console.log("value5", value);
 											return (
 												<span className="batchClosed">
 													<CloseOutlined />
@@ -370,103 +380,9 @@ const ParameterTable = ({
 				})
 			}
 			setMolBatchColumn([...batchColumn])
-
+			setIsMolBatchUpdate([...molBatchMerge])
 		}
-
-		// if (Object.keys(getBatchData).length > 0) {
-		// 	let batchArr = []
-		// 	let allMolBatches = molBatches && molBatches.map((e) => e.batch)
-		// 	let totalMolBatches = molBatches
-		// 	totalMolBatches && totalMolBatches.forEach((ele) => {
-		// 		let batchObj = {}
-		// 		Object.entries(getBatchData.batches).forEach(([key, value]) => {
-		// 			if (key === ele.batch) {
-		// 				if (allMolBatches.includes(key)) {
-		// 					// batchObj['batch'] = key;
-		// 					batchObj[getBatchData.parameter_name] = value;
-		// 				}
-		// 			}
-		// 		})
-		// 		batchArr.push(batchObj)
-		// 	})
-
-		// 	const molBatchMerge = totalMolBatches.map((item, i) =>
-		// 		Object.assign({}, item, batchArr[i])
-		// 	);
-		// 	setMolBatches(molBatchMerge)
-
-		// 	if (molBatchMerge.length > 0) {
-		// 		const molObjKey = molBatchMerge !== undefined && molBatchMerge.length > 0 ? Object.keys(molBatchMerge[0]) : []
-		// 		const molColumn = molObjKey.filter(uniqueArr);
-		// 		molColumn.map((ele, i) => {
-		// 			if (ele !== 'batch') {
-		// 				return (
-		// 					batchColumn.push({
-		// 						title: (
-		// 							<div className="treenode-block-batch">
-		// 								<div className="tree-block-param-batch">
-		// 									<Tag color="geekblue">
-		// 										{ele}
-		// 									</Tag>
-
-		// 								</div>
-		// 							</div>
-		// 						),
-		// 						dataIndex: ele,
-		// 						key: `${ele}-${i}`,
-		// 						width: 80,
-		// 						render: (value, record, rowIndex) => {
-		// 							if (rowDisable) {
-		// 								if (value) {
-		// 									return (
-		// 										<Checkbox
-		// 											disabled={isParamSelected}
-		// 											className="custom-check"
-		// 											onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
-		// 											checked={value}
-		// 										/>
-		// 									);
-		// 								} else if (value === "") {
-		// 									return (
-		// 										<Checkbox
-		// 											disabled={isParamSelected}
-		// 											className="custom-check"
-		// 											onChange={(e) => onChangeBatch(e, record, rowIndex, ele)}
-		// 											checked={value === "" ? false : true}
-		// 										/>
-		// 									);
-		// 								} else {
-		// 									return (
-		// 										<span className="batchClosed">
-		// 											<CloseOutlined />
-		// 										</span>
-		// 									);
-		// 								}
-		// 							} else {
-		// 								if (value) {
-		// 									return (
-		// 										<span className="batchChecked">
-		// 											<CheckOutlined />
-		// 										</span>
-		// 									);
-		// 								} else {
-		// 									return (
-		// 										<span className="batchClosed">
-		// 											<CloseOutlined />
-		// 										</span>
-		// 									);
-		// 								}
-		// 							}
-
-		// 						}
-		// 					})
-		// 				)
-		// 			}
-		// 		})
-		// 	}
-		// 	setMolBatchColumn([...batchColumn])
-		// }
-	}, [getBatchData, selectedTableData, totalMolBatch])
+	}, [selectedTableData, totalMolBatch, rowDisable])
 
 	useEffect(() => {
 		if (ischeckBox) {
@@ -710,10 +626,10 @@ const ParameterTable = ({
 	};
 
 	const onChangeBatch = (e, record, rowIndex, key) => {
-
+		console.log("e, record, rowIndex, key", e, record, rowIndex, key);
 		const batchRecord = [...tableData];
 		batchRecord[rowIndex][key] = e.target.checked == false ? "" : e.target.checked;
-
+		console.log("parameters", parameters, batchRecord);
 		const batchExcludeJson = [...parameters];
 		batchExcludeJson.forEach((element) => {
 
@@ -722,10 +638,26 @@ const ParameterTable = ({
 			}
 		});
 
+
 		setParameters(batchExcludeJson);
 		setTableData(batchRecord);
 	};
 
+	const onChangeBatchPopup = (e, record, rowIndex, key) => {
+		console.log("parameters", parameters);
+		console.log("e, record, rowIndex, key", record, rowIndex, key);
+		const batchRecordPopup = [...tableData];
+		batchRecordPopup[rowIndex][key] = e.target.checked == false ? "" : e.target.checked;
+		console.log("batchRecordPopup", batchRecordPopup);
+		const batchExcludeJsonPopup = [...parameters];
+		batchExcludeJsonPopup.forEach((element) => {
+			if (element.parameter_name === record.parameter_name) {
+				element.batch_exclude.push(key);
+			}
+		});
+		setParameters(batchExcludeJsonPopup);
+		setTableData(batchRecordPopup);
+	}
 	const isModalBatch = (e) => {
 		setIsBatchTableVisible(true);
 
@@ -751,6 +683,8 @@ const ParameterTable = ({
 		setTableData([...deleteRecord])
 		dispatch(sendSelectedParamData([...deleteRecord]));
 	}
+
+
 	return (
 		<>
 			<div className="param-table">
@@ -806,7 +740,6 @@ const ParameterTable = ({
 						size="small"
 						scroll={{ y: 450 }}
 						pagination={false}
-
 						className="custom-param-table"
 					/>
 				)}
@@ -831,12 +764,14 @@ const ParameterTable = ({
 
 					<Table
 						columns={molBatchColumn}
-						dataSource={totalMolBatch}
+						dataSource={isMolBatchUpdate}
 						size="small"
 						scroll={{ y: 450 }}
 						rowClassName={(index) =>
 							index % 2 === 0 ? "table-row-light" : "table-row-dark"
+
 						}
+
 					/>
 					<div className="batch-table-footer">
 						{rowDisable ? (<Button
