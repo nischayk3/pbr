@@ -153,22 +153,17 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		}
 	}, [isLoadView]);
 
-	// useEffect(() => {
-	// 	const mergeBatch = [...fileBatch, ...totalBatch];
-	// 	console.log("fileBatch totalBatch", fileBatch, totalBatch);
-	// 	// dispatch(sendTotalMolBatches(mergeBatch))
 
-	// }, [totalBatch])
 
 	const parameterPassHandler = (record, index) => {
 		const selectedParam = finalData.current.find(
 			(item) => String(item.parameter_name) === String(record.param)
 		);
 
-		let coverage_lists = record.coverage_list;
-		coverage_lists = coverage_lists.map((i) => {
-			return { batch: i };
-		});
+		// let coverage_lists = record.coverage_list;
+		// coverage_lists = coverage_lists.map((i) => {
+		// 	return { batch: i };
+		// });
 
 		if (selectedParam === undefined) {
 			let rowData = {};

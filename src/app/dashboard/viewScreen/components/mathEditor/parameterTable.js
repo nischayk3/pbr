@@ -31,6 +31,7 @@ const ParameterTable = ({
 	variableName,
 	selectedVar,
 	callbackCheckbox,
+	fromWorkflowScreen,
 	rowDisable }) => {
 
 	const paramReducer = useSelector((state) => state.viewCreationReducer);
@@ -218,7 +219,7 @@ const ParameterTable = ({
 					key: `${item}-4`,
 					width: 80,
 					render: (value, record, rowIndex) => {
-						//console.log("rowwwwwwwwwww", value, record, rowIndex);
+
 						if (rowDisable) {
 							if (value) {
 								return (
@@ -304,13 +305,10 @@ const ParameterTable = ({
 			if (molBatchMerge.length > 0) {
 				const molObjKey = molBatchMerge !== undefined && molBatchMerge.length > 0 ? Object.keys(molBatchMerge[0]) : []
 				const molColumn = molObjKey.filter(uniqueArr);
-
 				molColumn.map((ele, i) => {
-
 					if (ele === 'batch') {
 						console.log("i");
 					} else {
-
 						return (
 							batchColumn.push({
 								title: (
@@ -326,11 +324,10 @@ const ParameterTable = ({
 								key: `${ele}-${i}`,
 								width: 80,
 								render: (value, record, rowIndex) => {
-									console.log("value0", value, record, rowIndex);
+
 									if (rowDisable) {
 										if (value) {
-											console.log("rowDisable", rowDisable);
-											console.log("value1", value);
+
 											return (
 												<Checkbox
 													// disabled={isParamSelected}
@@ -340,7 +337,7 @@ const ParameterTable = ({
 												/>
 											);
 										} else if (value === "") {
-											console.log("value2", value);
+
 											return (
 												<Checkbox
 													// disabled={isParamSelected}
@@ -350,7 +347,7 @@ const ParameterTable = ({
 												/>
 											);
 										} else {
-											console.log("value3", value);
+
 											return (
 												<span className="batchClosed">
 													<CloseOutlined />
@@ -359,14 +356,14 @@ const ParameterTable = ({
 										}
 									} else {
 										if (value) {
-											console.log("value4", value);
+
 											return (
 												<span className="batchChecked">
 													<CheckOutlined />
 												</span>
 											);
 										} else {
-											console.log("value5", value);
+
 											return (
 												<span className="batchClosed">
 													<CloseOutlined />
@@ -384,7 +381,7 @@ const ParameterTable = ({
 			setMolBatchColumn([...batchColumn])
 			setIsMolBatchUpdate([...molBatchMerge])
 		}
-	}, [selectedTableData, totalMolBatch, rowDisable])
+	}, [selectedTableData, totalMolBatch, rowDisable, tableData])
 
 	useEffect(() => {
 		if (ischeckBox) {
@@ -628,10 +625,10 @@ const ParameterTable = ({
 	};
 
 	const onChangeBatch = (e, record, rowIndex, key) => {
-		console.log("e, record, rowIndex, key", e, record, rowIndex, key);
+
 		const batchRecord = [...tableData];
 		batchRecord[rowIndex][key] = e.target.checked == false ? "" : e.target.checked;
-		console.log("parameters", parameters, batchRecord);
+
 		const batchExcludeJson = [...parameters];
 		batchExcludeJson.forEach((element) => {
 
@@ -646,19 +643,42 @@ const ParameterTable = ({
 	};
 
 	const onChangeBatchPopup = (e, record, rowIndex, key) => {
-		console.log("parameters", parameters);
-		console.log("e, record, rowIndex, key", record, rowIndex, key);
+		const parameterArrray = [];
+
 		const batchRecordPopup = [...tableData];
-		batchRecordPopup[rowIndex][key] = e.target.checked == false ? "" : e.target.checked;
-		console.log("batchRecordPopup", batchRecordPopup);
-		const batchExcludeJsonPopup = [...parameters];
+		//batchRecordPopup[rowIndex][key] = e.target.checked == false ? "" : e.target.checked;
+
+		batchRecordPopup.forEach((ele) => {
+
+			if (ele.parameter_name === key) {
+
+				ele[record.batch] = e.target.checked == false ? "" : e.target.checked;
+			}
+		})
+
+		batchRecordPopup.forEach((ele) => {
+			const parameterObj = {};
+			if (ele.parameter_name === key) {
+				parameterObj["source_type"] = ele.sourceType;
+				parameterObj["material_id"] = ele.material_id
+				parameterObj["parameter_name"] = ele.parameter_name;
+				parameterObj["batch_exclude"] = [];
+				parameterObj["priority"] = ele.primary;
+				parameterObj["aggregation"] = ele.aggregation;
+				parameterArrray.push(parameterObj)
+			}
+		})
+
+		const batchExcludeJsonPopup = [...parameterArrray];
 		batchExcludeJsonPopup.forEach((element) => {
-			if (element.parameter_name === record.parameter_name) {
-				element.batch_exclude.push(key);
+			if (element.parameter_name === key) {
+				element.batch_exclude.push(record.batch);
 			}
 		});
-		setParameters(batchExcludeJsonPopup);
-		setTableData(batchRecordPopup);
+
+
+		setParameters([...batchExcludeJsonPopup]);
+		setTableData([...batchRecordPopup]);
 	}
 	const isModalBatch = (e) => {
 		setIsBatchTableVisible(true);
