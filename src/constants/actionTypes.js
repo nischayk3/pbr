@@ -52,6 +52,8 @@ export const SELECTED_REPORT_ID = 'SELECTED_REPORT_ID';
 export const SCREEN_CHANGE = 'SCREEN_CHANGE';
 export const LOADED_LAYOUT = 'LOADED_LAYOUT';
 export const REPORT_LOAD = 'REPORT_LOAD';
+export const GEN_LOAD = 'GEN_LOAD';
+
 
 
 //login page actions

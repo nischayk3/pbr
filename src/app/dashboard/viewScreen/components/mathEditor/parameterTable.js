@@ -90,7 +90,9 @@ const ParameterTable = ({
 			key: "delete",
 			width: 40,
 			fixed: "left",
-			render: (value, record) => <DeleteOutlined onClick={() => deleteParameter(record.key)} className="delete-param" />
+			render: (value, record) => fromWorkflowScreen ? <DeleteOutlined disabled={isParamSelected}
+				className="delete-param" /> : <DeleteOutlined onClick={() => deleteParameter(record.key)}
+					className="delete-param" />
 		},
 		{
 			title: "PARAMETER NAME",
