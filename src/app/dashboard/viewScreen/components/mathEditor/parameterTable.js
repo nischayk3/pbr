@@ -78,7 +78,7 @@ const ParameterTable = ({
 	const [isParamSelected, setIsParamSelected] = useState(true);
 	const [totalMolBatch, setTotalMolBatch] = useState([]);
 	const [isMolBatchUpdate, setIsMolBatchUpdate] = useState([]);
-
+	const [filterMolTable, setFilterMolTable] = useState(null);
 
 	const Option = Select;
 	const { Search } = Input;
@@ -268,6 +268,7 @@ const ParameterTable = ({
 	});
 
 	useEffect(() => {
+
 		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
 			setTotalMolBatch([...totalBatch, ...totalFileBatch]);
 		}
@@ -275,6 +276,7 @@ const ParameterTable = ({
 
 
 	useEffect(() => {
+
 		setTableData([...selectedTableData]);
 	}, [selectedTableData])
 
@@ -384,6 +386,7 @@ const ParameterTable = ({
 	}, [selectedTableData, totalMolBatch, rowDisable, tableData])
 
 	useEffect(() => {
+
 		if (ischeckBox) {
 			setReloadTable(false);
 
@@ -395,12 +398,14 @@ const ParameterTable = ({
 	}, [ischeckBox]);
 
 	useEffect(() => {
+
 		if (paramReducer.selectedParamData) {
 			setTableData([...selectedTableData]);
 		}
 	}, [paramReducer]);
 
 	useEffect(() => {
+
 		if (isLoadView) {
 			//	onChangeColumnsHandler();
 			setTableData([...selectedTableData]);
@@ -408,6 +413,7 @@ const ParameterTable = ({
 	}, [isLoadView]);
 
 	useEffect(() => {
+
 		if (!isNew) {
 			//	onChangeColumnsHandler();
 			setTableData([]);
@@ -417,12 +423,14 @@ const ParameterTable = ({
 	}, [!isNew]);
 
 	useEffect(() => {
+
 		if (!varClick) {
 			setSelectedRowKeys([]);
 		}
 	}, [varClick]);
 
 	useEffect(() => {
+
 		let count = 0;
 		let varArr = [];
 		if (variableCreate) {
@@ -447,10 +455,12 @@ const ParameterTable = ({
 	}, [variableCreate]);
 
 	useEffect(() => {
+
 		sortArray(selectedVar, selectedData);
 	}, [selectedVar]);
 
 	useEffect(() => {
+
 		// sortArray(props.selectedVar, props.selectedData);
 		let defination = "";
 		let m = Object.values(functions_obj);
@@ -690,14 +700,13 @@ const ParameterTable = ({
 	}
 
 	const TableSearch = value => {
-		const tableDataSearch = [...totalMolBatch];
+		const tableDataSearch = [...isMolBatchUpdate];
 		const searchTable = tableDataSearch.filter(o =>
 			Object.keys(o).some(k =>
 				String(o[k]).toLowerCase().includes(value.toLowerCase())
 			)
-
 		);
-		setTotalMolBatch(searchTable);
+		setFilterMolTable(searchTable)
 	};
 
 	const deleteParameter = (id) => {
@@ -786,7 +795,7 @@ const ParameterTable = ({
 
 					<Table
 						columns={molBatchColumn}
-						dataSource={isMolBatchUpdate}
+						dataSource={filterMolTable === null ? isMolBatchUpdate : filterMolTable}
 						size="small"
 						scroll={{ y: 450 }}
 						rowClassName={(index) =>
