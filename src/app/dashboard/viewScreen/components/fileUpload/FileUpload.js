@@ -28,7 +28,6 @@ import {
 	batchCoverage,
 	sendSelectedParamData,
 	sendTotalFileBatches,
-	sendTotalMolBatches
 } from "../../../../../duck/actions/viewAction";
 import {
 	adHocFileUpload,
@@ -115,6 +114,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 						detailedCoverage: value
 					}).then((res) => {
 						if (res.Status === 200) {
+							dispatch(hideLoader());
 							const totalFileBatch = []
 							const date = new Date();
 							res.timeStamp = date.toISOString();
@@ -137,38 +137,30 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 
 						}
 						if (res.Status === 404) {
+							dispatch(hideLoader());
 							dispatch(showNotification("error", "Unable to Load Files"));
 						}
 						if (res.Status === 401) {
+							dispatch(hideLoader());
 							dispatch(showNotification("error", "UnAuthorized User"));
 						}
 					})
 				})
-
 			}
-			setTimeout(() => {
-				dispatch(hideLoader());
-			}, 1000);
-
 		}
 	}, [isLoadView]);
 
-	// useEffect(() => {
-	// 	const mergeBatch = [...fileBatch, ...totalBatch];
-	// 	console.log("fileBatch totalBatch", fileBatch, totalBatch);
-	// 	// dispatch(sendTotalMolBatches(mergeBatch))
 
-	// }, [totalBatch])
 
 	const parameterPassHandler = (record, index) => {
 		const selectedParam = finalData.current.find(
 			(item) => String(item.parameter_name) === String(record.param)
 		);
 
-		let coverage_lists = record.coverage_list;
-		coverage_lists = coverage_lists.map((i) => {
-			return { batch: i };
-		});
+		// let coverage_lists = record.coverage_list;
+		// coverage_lists = coverage_lists.map((i) => {
+		// 	return { batch: i };
+		// });
 
 		if (selectedParam === undefined) {
 			let rowData = {};
@@ -332,7 +324,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		var today = new Date();
 		today.setDate(today.getDate());
 		const nextState = {};
-
+		dispatch(showLoader());
 		if (info.file.status === "uploading") {
 			setSelectedAdHocFileList([info.file]);
 			nextState.selectedAdHocFileList = [info.file];
@@ -346,17 +338,22 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			formData.append("username", localStorage.getItem("username"));
 			adHocFileUpload(formData).then((res) => {
 				if (res.Status === 202) {
+					dispatch(hideLoader());
 					dispatch(showNotification("success", res.Message));
+
 					setUploadBtnDisabled(false);
 					setSelectedFileId(res.File_id);
 					selectedFiles[`${res.File_id}`] = true;
 					setSelectedFiles(selectedFiles);
+
 				}
 				if (res.Status === 400) {
+					dispatch(hideLoader());
 					dispatch(showNotification("error", res.Message));
 					setUploadBtnDisabled(true);
 				}
 				if (res.Status === 401) {
+					dispatch(hideLoader());
 					dispatch(showNotification("error", "UnAuthorized User"));
 					setUploadBtnDisabled(true);
 				}
