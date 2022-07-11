@@ -7,7 +7,7 @@
  */
 import React, { useState, useEffect } from "react";
 import "./styles.scss";
-import { Input, Select } from "antd";
+import { Select } from "antd";
 import { filterMolequles, getMoleculeList } from "../../../../../services/viewCreationPublishing";
 import { useDispatch } from "react-redux";
 import {
@@ -19,7 +19,7 @@ import SelectSearchField from "../../../../../components/SelectSearchField/Selec
 import debounce from "lodash/debounce";
 
 const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMoleculeId, isEditView, fromWorkflowScreen }) => {
-	const { Search } = Input;
+
 	const { Option } = Select;
 
 	const dispatch = useDispatch();

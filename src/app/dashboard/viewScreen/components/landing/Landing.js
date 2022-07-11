@@ -129,14 +129,14 @@ export default function Landing() {
 	const getViewsList = async () => {
 		let req = {};
 		try {
-			//dispatch(showLoader());
+			dispatch(showLoader());
 			const getViewRes = await getViews(req);
 			const viewRes = getViewRes["Data"];
 			const viewResRev = viewRes.reverse();
 			const lastEight = viewResRev.slice(Math.max(viewResRev.length - 8, 1));
 			setViewList(viewResRev);
 			setLastEightView(lastEight && lastEight.reverse());
-			//dispatch(hideLoader());
+			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
@@ -189,7 +189,7 @@ export default function Landing() {
 						className="create-new"
 						onClick={() => {
 							history.push(`${match.url}/0`);
-							dispatch(resetView());
+							dispatch(resetView(true));
 							dispatch(isLoadView(false));
 							dispatch(sendSelectedParamData([]));
 						}}

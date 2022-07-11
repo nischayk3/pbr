@@ -12,14 +12,11 @@ import InputField from "../../../../../components/InputField/InputField";
 
 let variableData = [];
 const MathEditor = ({
-	molBatches,
-	setMolBatches,
 	viewJson,
 	setViewJson,
 	viewSummaryBatch,
 	setViewSummaryBatch,
 	materialId,
-	parentBatches,
 	fromWorkflowScreen }) => {
 
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
@@ -264,7 +261,7 @@ const MathEditor = ({
 										variableName={item.variableName}
 										deleteVariable={deleteVariable}
 										editVariable={editVariable}
-									//	fromWorkflowScreen={fromWorkflowScreen}
+										fromWorkflowScreen={fromWorkflowScreen}
 									/>
 								);
 							})
@@ -277,12 +274,7 @@ const MathEditor = ({
 						setVariableCreate={setVariableCreate}
 						callbackCheckbox={callbackCheckbox}
 						varClick={varClick}
-						//setVarClick={setVarClick}
 						rowDisable={rowDisable}
-						//newBatchData={newBatchData}
-						parentBatches={parentBatches}
-						setMolBatches={setMolBatches}
-						molBatches={molBatches}
 						ischeckBox={ischeckBox}
 						viewJson={viewJson}
 						setViewJson={setViewJson}
@@ -291,7 +283,6 @@ const MathEditor = ({
 						getParamData={getParamData}
 						selectedData={paramData}
 						selectedVar={selectedVar}
-						//materialId={materialId}
 						variableName={variableName}
 					/>
 				</Panel>

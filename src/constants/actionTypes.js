@@ -44,6 +44,7 @@ export const GET_BATCH_COVERAGE = 'GET_BATCH_COVERAGE';
 export const PARAMETER_TABLE_DATA = 'PARAMETER_TABLE_DATA';
 export const BATCH_DATA = 'BATCH_DATA';
 export const TOTAL_MOL_BATCHES = 'TOTAL_MOL_BATCHES';
+export const TOTAL_FILE_BATCHES = 'TOTAL_FILE_BATCHES';
 
 // Report Designer Actions
 
@@ -51,6 +52,8 @@ export const SELECTED_REPORT_ID = 'SELECTED_REPORT_ID';
 export const SCREEN_CHANGE = 'SCREEN_CHANGE';
 export const LOADED_LAYOUT = 'LOADED_LAYOUT';
 export const REPORT_LOAD = 'REPORT_LOAD';
+export const GEN_LOAD = 'GEN_LOAD';
+
 
 
 //login page actions

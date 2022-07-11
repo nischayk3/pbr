@@ -41,10 +41,9 @@ import viewdatajson from "./view.json";
 import FileUpload from "./fileUpload/FileUpload";
 import ParamLookup from "./parameterLookup/ParamLookup";
 
-
 const { Panel } = Collapse;
 
-const ViewCreation = (props) => {
+const ViewCreation = () => {
 	const location = useLocation();
 	const history = useHistory();
 
@@ -60,8 +59,6 @@ const ViewCreation = (props) => {
 	const [moleculeId, setMoleculeId] = useState();
 	const getData = useRef();
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
-	const [parentBatches, setParentBatches] = useState([]);
-	const [molBatches, setMolBatches] = useState([]);
 	const [highlightFilterValue, setHighlightFilterValue] = useState("");
 	const [viewSummaryBatch, setViewSummaryBatch] = useState([]);
 	const [newBatchData, setNewBatchData] = useState([]);
@@ -79,6 +76,7 @@ const ViewCreation = (props) => {
 	const [isEditView, setIsEditView] = useState(false);
 	const [fromWorkflowScreen, setFromWorkflowScreen] = useState(false);
 	const [filterParam, setFilterParam] = useState("");
+	const [loadBatches, setLoadBatches] = useState([]);
 
 	const { id } = useParams();
 
@@ -109,7 +107,7 @@ const ViewCreation = (props) => {
 			};
 			setViewDisplayId(tempId);
 			setViewVersion(version);
-
+			dispatch(isLoadView(true));
 			loadView(_reqLoad);
 
 		} else {
@@ -127,10 +125,8 @@ const ViewCreation = (props) => {
 
 				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes.Data }));
 				if (moleculeRes.Data.mol_batches && moleculeRes.Data.mol_batches.length > 0) {
-
+					setLoadBatches(moleculeRes.Data.mol_batches)
 					setViewSummaryBatch(moleculeRes.Data.mol_batches);
-					setParentBatches(moleculeRes.Data.mol_batches)
-					setMolBatches(moleculeRes.Data.mol_batches)
 					dispatch(sendTotalMolBatches(moleculeRes.Data.mol_batches))
 				}
 				dispatch(hideLoader());
@@ -350,7 +346,6 @@ const ViewCreation = (props) => {
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
 			setViewJson([loadViewRes]);
-			dispatch(isLoadView(true));
 			dispatch(setViewResposne(loadViewRes));
 
 			if (loadViewRes.material_id !== "") {
@@ -477,12 +472,9 @@ const ViewCreation = (props) => {
 											key="1"
 										>
 											<MaterialTree
-
-												//fromWorkflowScreen={fromWorkflowScreen}
+												fromWorkflowScreen={fromWorkflowScreen}
 												moleculeList={moleculeList}
 												callbackProcessClick={hierarchyProcessClick}
-												//	materialsList={materialsList}
-												//parentBatches={parentBatches}
 												highlightFilterValue={highlightFilterValue}
 											/>
 
@@ -496,8 +488,6 @@ const ViewCreation = (props) => {
 												fromWorkflowScreen={fromWorkflowScreen}
 												viewSummaryTable={viewSummaryTable}
 												setViewSummaryTable={setViewSummaryTable}
-												parentBatches={parentBatches}
-												setParentBatches={setParentBatches}
 												newBatchData={newBatchData}
 												setNewBatchData={setNewBatchData}
 												functionEditorViewState={functionEditorViewState}
@@ -509,7 +499,6 @@ const ViewCreation = (props) => {
 												count={count}
 												setCount={setCount}
 												getNewData={(el) => getNewData(el)}
-												setMolBatches={setMolBatches}
 												setViewSummaryBatch={setViewSummaryBatch}
 												viewJson={viewJson}
 											/>
@@ -520,33 +509,32 @@ const ViewCreation = (props) => {
 						</div>
 					</div>
 
-					{paramTableData && paramTableData.length > 0 && (
+					{loadBatches && loadBatches.length > 0 && (
 						<div className="viewCreation-rightBlocks">
-							<MemoizedMathEditor
-								fromWorkflowScreen={fromWorkflowScreen}
-								//paramTableData={paramTableData}
-								//newBatchData={newBatchData}
-								parentBatches={parentBatches}
-								molBatches={molBatches}
-								setMolBatches={setMolBatches}
-								viewSummaryBatch={viewSummaryBatch}
-								setViewSummaryBatch={setViewSummaryBatch}
-								viewJson={viewJson}
-								setViewJson={setViewJson}
-								materialId={moleculeId}
-							/>
-							<MemoizedViewSummaryData
-								viewJson={viewJson}
-								//setViewJson={setViewJson}
-								parentBatches={parentBatches}
-								viewDisplayId={viewDisplayId}
-								viewStatus={viewStatus}
-								viewVersion={viewVersion}
-							/>
+							{paramTableData && paramTableData.length > 0 && (
+								<>
+									<MemoizedMathEditor
+										fromWorkflowScreen={fromWorkflowScreen}
+										viewSummaryBatch={viewSummaryBatch}
+										setViewSummaryBatch={setViewSummaryBatch}
+										viewJson={viewJson}
+										setViewJson={setViewJson}
+										materialId={moleculeId}
+									/>
+									<MemoizedViewSummaryData
+										viewJson={viewJson}
+										viewDisplayId={viewDisplayId}
+										viewStatus={viewStatus}
+										viewVersion={viewVersion}
+										fromWorkflowScreen={fromWorkflowScreen}
+
+									/>
+								</>
+							)}
 						</div>
 					)}
 				</div>
-			</div>
+			</div >
 
 			<Signature
 				isPublish={isPublish}
@@ -606,7 +594,7 @@ const ViewCreation = (props) => {
 					</div>
 				</div>
 			</Modal>
-		</div>
+		</div >
 	);
 };
 

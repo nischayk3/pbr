@@ -11,7 +11,7 @@ import "./styles.scss";
 import { setViewFunctionName } from "../../../../../duck/actions/viewAction";
 import { showNotification } from "../../../../../duck/actions/commonActions";
 
-const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, parentBatches }) => {
+const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fromWorkflowScreen }) => {
 
 	const dispatch = useDispatch();
 	let columns = [];
@@ -21,11 +21,19 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, par
 	const functionName = useSelector(
 		(state) => state.viewCreationReducer.functionName
 	);
+	const totalBatch = useSelector((state) => state.viewCreationReducer.totalMolBatches);
+	const totalFileBatch = useSelector((state) => state.viewCreationReducer.totalFileBatches);
+
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
 	const [tableColumn, setTableColumn] = useState(columns);
-
 	const [funTableData, setFunTableData] = useState([]);
+	const [totalMolBatch, setTotalMolBatch] = useState([]);
 
+	useEffect(() => {
+		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
+			setTotalMolBatch([...totalBatch, ...totalFileBatch]);
+		}
+	}, [totalBatch, totalFileBatch])
 
 	useEffect(() => {
 		if (functionName !== "") {
@@ -34,7 +42,6 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, par
 			setFunTableData(fun_table);
 		}
 	}, [summaryTableData]);
-
 	useEffect(() => {
 		if (funTableData.length > 0) {
 			const objKey =
@@ -64,9 +71,14 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, par
 							title: (
 								<div className="summary-column">
 									<p>{item.toUpperCase().replace("_", " ")}</p>
-									<span onClick={() => handleRemoveColumn(item)}>
-										<DeleteOutlined className="delete" />
-									</span>
+									{fromWorkflowScreen ?
+										<span >
+											<DeleteOutlined className="delete" />
+										</span> :
+										<span onClick={() => handleRemoveColumn(item)}>
+											<DeleteOutlined className="delete" />
+										</span>
+									}
 								</div>
 							),
 							dataIndex: item,
@@ -129,10 +141,10 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, par
 			}
 
 
-			if (parentBatches.length > 0) {
+			if (totalMolBatch.length > 0) {
 				const loadTableData =
-					parentBatches !== undefined && parentBatches.length > 0
-						? parentBatches
+					totalMolBatch !== undefined && totalMolBatch.length > 0
+						? totalMolBatch
 						: {};
 
 				loadTableData.forEach((element) => {
@@ -170,7 +182,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, par
 				setFunTableData(mergeArr);
 			}
 		}
-	}, [isLoadView, parentBatches]);
+	}, [isLoadView, totalMolBatch]);
 
 	const handleRemoveColumn = (item) => {
 		let newColumns = [];

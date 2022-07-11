@@ -23,6 +23,7 @@ import {
 	VIEW_PARAM_DATA,
 	VIEW_PARAM_MAP,
 	TOTAL_MOL_BATCHES,
+	TOTAL_FILE_BATCHES,
 } from '../../constants/actionTypes';
 
 const initState = {
@@ -49,7 +50,8 @@ const initState = {
 	mathValue: '',
 	loadResponse: [],
 	batchData: [],
-	totalMolBatches: []
+	totalMolBatches: [],
+	totalFileBatches: [],
 };
 
 export default (state = initState, action) => {
@@ -102,6 +104,8 @@ export default (state = initState, action) => {
 			return { ...state, batchData: action.payload };
 		case TOTAL_MOL_BATCHES:
 			return { ...state, totalMolBatches: action.payload };
+		case TOTAL_FILE_BATCHES:
+			return { ...state, totalFileBatches: action.payload };
 		case RESET_VIEW:
 			return initState;
 		default:
