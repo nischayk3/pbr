@@ -6,6 +6,11 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe('PBR', () => {
     // it("should login successfully using Ad", () => {
     beforeEach(() => {
+        cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_product&productNum=1091460', { fixture: 'paperBatchFileList' })
+        cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_product_num&productNum=', { fixture: 'productNum' })
+        cy.intercept('GET', '/pbr/udh/pbr_template', { fixture: 'paperBatchLanding' })
+        cy.intercept('GET', '/pbr/udh/pbr_template?limit=8', { fixture: 'paperBatchLmitList' }).as("limitlist")
+        cy.intercept('POST', '/pbr/udh/ocr-json-extraction', { fixture: 'pbrBoundingBox' })
         cy.viewport(1366, 768);
         localStorage.setItem("test_enabled", true);
         localStorage.setItem("user", "fahad.siddiqui@mareana.com");
@@ -24,12 +29,10 @@ describe('PBR', () => {
         );
     })
     it('Load View Landing Page Correctly', () => {
-        cy.intercept('GET', '/pbr/udh/get_data_view', { fixture: 'paperBatchFileList.json' })
-        cy.intercept('GET', '/pbr/udh/pbr_template', { fixture: 'paperBatchLanding.json' })
-        cy.intercept('POST', '**/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' })
+        
         
         const url = Cypress.config().baseUrl
-       
+
         cy.visit(url + '/#/dashboard/paper_batch_records')
 
         cy.log('Load Landing Page')
@@ -61,22 +64,19 @@ describe('PBR', () => {
     //     cy.get('.screen_header_resultdate').should("have.text", currentDate)
     // })
 
-    it('Load Landing Page Table Component', () => {
-        // cy.log('Load Search Bar')
-        // cy.log('Search View Id In Search Component')
-        // const url = Cypress.config().baseUrl
-        // cy.visit(url + '/#/dashboard/paper_batch_records')
-        // cy.log('Load Landing Page')
-        // cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
-        
-        cy.intercept('GET', '**/get_data_view', { fixture: 'paperBatchFileList.json' })
-        cy.intercept('GET', '**/pbr_template', { fixture: 'paperBatchLanding.json' })
-        cy.intercept('POST', '**/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' })
-        cy.wait(6000);
-        cy.get(".ant-input-affix-wrapper").type("P137").click({ force: true })
-        cy.get(".ant-input-search-button").click()
+    // it('Load Landing Page Table Component', () => {
+    //     // cy.log('Load Search Bar')
+    //     // cy.log('Search View Id In Search Component')
+    //     // const url = Cypress.config().baseUrl
+    //     // cy.visit(url + '/#/dashboard/paper_batch_records')
+    //     // cy.log('Load Landing Page')
+    //     // cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
 
-    })
+    //     cy.wait(6000);
+    //     // cy.get(".ant-input-affix-wrapper").type("P137").click({ force: true })
+    //     // cy.get(".ant-input-search-button").click()
+
+    // })
 
     // it('Recently Created Dashboard', () => {
     // 	cy.log('Recent View Verify')
@@ -96,7 +96,16 @@ describe('PBR', () => {
 
         // cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
         cy.wait(6000);
-        cy.intercept('POST', '/pbr/udh/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' }).as("boundingBox")
+        cy.intercept(
+            {
+                method: 'POST',
+                path: 'pbr/udh/ocr-json-extraction',
+            },
+            {
+                fixture: 'pbrBoundingBox',
+            },
+        ).as('saveDocument')
+        // cy.intercept('POST', '/pbr/udh/ocr-json-extraction', { fixture: 'pbrBoundingBox' }).as("boundingBox")
         /* ==== Generated with Cypress Studio ==== */
         cy.get('.create-new').click({ force: true });
         cy.get('#basic_templateName').clear();
@@ -131,14 +140,42 @@ describe('PBR', () => {
     //     cy.get('.ant-table-tbody > :nth-child(2) > :nth-child(3) > div').click();
 
     // })
-    it('Add Value', () => {
 
+    it("click of parameter pannel", () => {
+        cy.wait(6000);
+        cy.get('#parameter-panel > .ant-collapse-header').click({ force: true });
+
+    })
+
+    it("click on add on first parameter", () => {
+        cy.wait(3000);
+        cy.get('.firstParameter-para > p').click({ force: true });
+    })
+
+    it("Adding method parameters", () => {
+        cy.get('#dynamic_form_nest_item_users_0_name').clear();
+        cy.get('#dynamic_form_nest_item_users_0_name').type('para1');
+        cy.get('#dynamic_form_nest_item_users_0_method').click({ force: true });
+        cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click({ force: true });
+    })
+
+    it("adding input 1", () => {
+        cy.get('#form_input1').click({ force: true });
+        cy.get('#form_input1').type("Document")
+    })
+
+    it("adding input 2", () => {
+        cy.get('#form_input2').click({ force: true });
+        cy.get('#form_input2').type("MBR-0001")
+    })
+    it('selecting date', () => {
+        cy.wait(6000);
         // const url = Cypress.config().baseUrl
         // cy.visit(url + '/#/dashboard/paper_batch_records')
         // cy.log('Load Landing Page')
 
         // cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
-        cy.wait(6000);
+
 
         /* ==== Generated with Cypress Studio ==== */
         // cy.get('.create-new').click({ force: true });
@@ -149,37 +186,38 @@ describe('PBR', () => {
         // cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
         // cy.intercept('POST', '**/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' })
         // cy.wait(6000);
-
+        // cy.wait(6000);
         /* ==== Generated with Cypress Studio ==== */
         // cy.get(':nth-child(3) > .ant-collapse-header').click();
-        cy.get('.ant-layout-sider-children > :nth-child(2) > :nth-child(3) > :nth-child(1)').click();
-        cy.wait(6000);
-        cy.get('.firstParameter-para > p').click();
+        // cy.get('.firstParameter-para > p').click({ force: true });
         /* ==== Generated with Cypress Studio ==== */
-        cy.get('#dynamic_form_nest_item_users_0_name').clear();
-        cy.get('#dynamic_form_nest_item_users_0_name').type('para1');
-        cy.get('#dynamic_form_nest_item_users_0_method').click();
-        cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
-        cy.get('#form_input1').click();
-        cy.get('map[name = my-map] > area').eq(0).click({ force: true });
+        // cy.get('#dynamic_form_nest_item_users_0_name').clear();
+        // cy.get('#dynamic_form_nest_item_users_0_name').type('para1');
+        // cy.get('#dynamic_form_nest_item_users_0_method').click({ force: true });
+        // cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click({ force: true });
+
         // cy.get('[coords="111.94621527194977,57.53743443638084,178.1889796704054,68.96316892467435"]').click({ force: true });
-        cy.get('#form_input2').click();
-        cy.get('map[name = my-map] > area').eq(4).click({ force: true });
+
         // cy.get('rule1').click({ force: true })
         // cy.get('[coords="205.69649124145508,57.55570698529482,267.6595058441161,68.86165171861641"]').click({ force: true });
         cy.get(':nth-child(3) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
         cy.get('.ant-select-item-option').eq(5).click({ force: true })
         // cy.get('.ant-select-item-option-active').click({ force: true });
-        cy.get('#dynamic_form_nest_item_users_0_param_valueArea').clear();
-        cy.get('#dynamic_form_nest_item_users_0_param_valueArea').type('12/10/12022');
+
         // cy.get('.custom-primary-btn > span').click();
         /* ==== End Cypress Studio ==== */
     })
+
+    it("entering date", () => {
+        cy.wait(3000)
+        cy.get('#dynamic_form_nest_item_users_0_param_valueArea').clear();
+        cy.get('#dynamic_form_nest_item_users_0_param_valueArea').type('12/10/12022');
+    })
     it("Add UOM", () => {
-        cy.get('#form_input3').click();
-        cy.get('map[name = my-map] > area').eq(8).click({ force: true });
-        cy.get('#form_input4').click();
-        cy.get('map[name = my-map] > area').eq(10).click({ force: true });
+        cy.get('#form_input3').click({ force: true });
+        cy.get('#form_input3').type("1.0")
+        cy.get('#form_input4').click({ force: true });
+        cy.get('#form_input4').type("Effective")
         cy.get(':nth-child(5) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
         cy.get('.ant-select-item-option-content').eq(10).click({ force: true })
         cy.get('#dynamic_form_nest_item_users_0_uom_valueTransformation').clear();
@@ -188,9 +226,9 @@ describe('PBR', () => {
 
     it("Add Time", () => {
         cy.get('#form_input5').click();
-        cy.get('map[name = my-map] > area').eq(12).click({ force: true });
+        cy.get('#form_input5').type("Date:")
         cy.get('#form_input6').click();
-        cy.get('map[name = my-map] > area').eq(14).click({ force: true });
+        cy.get('#form_input6').type("01AUG2021");
         cy.get(':nth-child(6) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
         cy.get('.ant-select-item-option-content').eq(6).click({ force: true })
         cy.get('#dynamic_form_nest_item_users_0_param_min').clear();
@@ -201,44 +239,146 @@ describe('PBR', () => {
 
     it("Add Date", () => {
         cy.get('#form_input7').click();
-        cy.get('map[name = my-map] > area').eq(16).click({ force: true });
+        cy.get('#form_input7').type("Process");
         cy.get('#form_input8').click();
-        cy.get('map[name = my-map] > area').eq(18).click({ force: true });
+        cy.get('#form_input8').type("Stage:")
     })
 
     it("Find and preview", () => {
+        cy.intercept(
+            {
+                method: 'POST',
+                path: '/pbr/udh/extract_from_template_find',
+            },
+            {
+                fixture: 'paperFind',
+            },
+        ).as('findDocument')
         cy.get('.defineTableBtn').click();
-        cy.wait(6000);
-        cy.get('. pbrCenterPanelHeader-para').click();
+        cy.wait(6000)
+        cy.intercept(
+            {
+                method: 'POST',
+                path: '/pbr/udh/extract_from_template_find',
+            },
+            {
+                fixture: 'paperPreview',
+            },
+        ).as('previewDocument')
+        cy.wait(6000)
+        cy.get('.pbrCenterPanelHeader-para').click();
+
+
     })
 
+    it("closing preview popup", () => {
+        cy.wait(3000)
+        cy.get('.ant-modal-close-x').click({ force: true })
+    })
 
-    // it("Edit Created Template", () => {
-    //     cy.log('Edit Created Template')
-    //     const url = Cypress.config().baseUrl
-    //     cy.visit(url + '/#/dashboard/paper_batch_records')
-    //     cy.intercept('GET', '**/pbr_template', { fixture: 'paperBatchLanding.json' })
-    //     cy.log('Load Landing Page')
-    //     cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
-    //     cy.wait(6000);
+    it("Save template", () => {
 
+        cy.intercept(
+            {
+                method: 'PUT',
+                path: 'pbr/udh/save_records',
+            },
+            {
+                fixture: 'savePbrTemplate',
+            },
+        ).as('saveDocument')
+        cy.wait(6000)
+        cy.get("#saveButton").click({ force: true })
+    })
 
-    //     /* ==== Generated with Cypress Studio ==== */
-    //     cy.get(':nth-child(1) > .chart-tiles').click();
-    //     cy.get('.pbrTemplateLeft > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .ant-collapse > .ant-collapse-item-active > .ant-collapse-header').click();
-    //     cy.get(':nth-child(2) > .ant-collapse-header').click({force:true});
-    //     cy.get('#page_identifier_key').clear();
-    //     cy.get('#page_identifier_key').type('1. Virus filtration');
-    //     cy.get('#page_identifier_key_2').clear();
-    //     cy.get('#page_identifier_key_2').type('Filter Lot Number:');
-    //     cy.get('.pbrTemplateLeft > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .ant-collapse > .ant-collapse-item-active > .ant-collapse-header').click();
-    //     cy.get('.pbrCenterPanelHeader-para').click();
-    //     cy.get('.ant-modal-close-x > .anticon > svg').click();
-    //     cy.get(':nth-child(3) > .ant-collapse-header').click();
-    //     cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header').click({multiple:true});
-    //     cy.get('.ant-btn > :nth-child(2)').click({multiple:true,force:true});
+    it("handle toggel", () => {
+        cy.get('.pbrTemplateRight > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .trigger > .panelImg').click({ force: true })
+        cy.wait(2000)
+        cy.get('.pbrTemplateLeft > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .trigger > .panelImg').click({ force: true })
+    })
 
-    // });
+    it("add multiple parameter", () => {
+        cy.get('.firstParameter-para > p').click({ force: true })
+        cy.wait(2000)
+        cy.get('.firstParameter-para > p').click({ force: true })
+
+    })
+
+    it("Click publish", () => {
+        cy.get("#publisgButton").click({ force: true })
+        cy.get(':nth-child(10) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x > .anticon > svg > path').click({ force: true })
+    })
+
+    it("Edit Created Template", () => {
+        // cy.log('Edit Created Template')
+        // const url = Cypress.config().baseUrl
+        // cy.visit(url + '/#/dashboard/paper_batch_records')
+        cy.go("back")
+        cy.intercept(
+            {
+                method: 'GET',
+                path: 'pbr/udh/pbr_template',
+            },
+            {
+                fixture: 'paperBatchLanding',
+            },
+        ).as('saveDocument')
+        // cy.intercept('GET', '**/pbr_template', { fixture: 'paperBatchLanding.json' })
+        cy.log('Load Landing Page')
+        // cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
+        cy.wait(6000);
+
+        cy.get('.chart-tiles').eq(0).click({ force: true });
+        cy.get('#page-Identifier > .ant-collapse-header').click({ force: true });
+        cy.wait(6000);
+        // cy.get(':nth-child(2) > .ant-collapse-header').click({force:true});
+        cy.get('#page_identifier_key').clear();
+        cy.get('#page_identifier_key').type('1. Virus filtration');
+        cy.get('#page_identifier_key_2').clear();
+        cy.get('#page_identifier_key_2').type('Filter Lot Number:');
+        cy.wait(3000);
+        cy.get('#parameter-panel > .ant-collapse-header').click({ force: true });
+        cy.wait(3000);
+        cy.get('.firstParameter-para > p').click({ force: true });
+        // cy.get('.pbrTemplateLeft > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .ant-collapse > .ant-collapse-item-active > .ant-collapse-header').click();
+        // cy.get('.pbrCenterPanelHeader-para').click();
+        // cy.get('.ant-modal-close-x > .anticon > svg').click();
+        // cy.get(':nth-child(3) > .ant-collapse-header').click();
+        // cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header').click({multiple:true});
+        // cy.get('.ant-btn > :nth-child(2)').click({multiple:true,force:true});
+
+    });
+    it("Save Edited template", () => {
+
+        cy.intercept(
+            {
+                method: 'PUT',
+                path: 'pbr/udh/save_records',
+            },
+            {
+                fixture: 'savePbrTemplate',
+            },
+        ).as('saveDocument')
+        cy.wait(6000)
+        cy.get("#saveButton").click({ force: true })
+    })
+    it('Create without name', () => {
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/paper_batch_records')
+        cy.log('Load Landing Page')
+        cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
+        cy.wait(6000);
+        cy.intercept('POST', '/pbr/udh/ocr-json-extraction', { fixture: 'pbrBoundingBox' }).as("boundingBox")
+        cy.get('.create-new').click({ force: true });
+        cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
+        cy.get('.ant-modal-close-x > .anticon > svg').click({ force: true });
+    })
+    it('Load Landing Page Table Component', () => {
+        cy.wait(2000);
+        cy.get(".ant-input-affix-wrapper").type("P").click({ force: true })
+        cy.get(".ant-input-search-button").click({ force: true })
+
+    })
 
     // it("Toggle and add parameter", () => {
     //     cy.log('Toggle and add parameter')
