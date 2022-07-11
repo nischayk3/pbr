@@ -31,6 +31,7 @@ const ParameterTable = ({
 	variableName,
 	selectedVar,
 	callbackCheckbox,
+	fromWorkflowScreen,
 	rowDisable }) => {
 
 	const paramReducer = useSelector((state) => state.viewCreationReducer);
