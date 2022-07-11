@@ -146,7 +146,7 @@ const Sidebar = () => {
           key="report_designer"
           icon={<AppstoreAddOutlined className="menu-icons" />}
           id="1"
-          // onClick={() => window.location.reload()}
+        // onClick={() => window.location.reload()}
         >
           <Link to="/dashboard/report_designer">Report Designer</Link>
         </Menu.Item>
@@ -155,7 +155,7 @@ const Sidebar = () => {
           icon={<BlockOutlined className="menu-icons" />}
           id="1"
         >
-          <Link to="/dashboard/report_designer">Report Generator</Link>
+          <Link to="/dashboard/report_generator">Report Generator</Link>
         </Menu.Item>
         <SubMenu
           key="sub5"

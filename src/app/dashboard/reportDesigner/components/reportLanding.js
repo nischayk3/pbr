@@ -20,7 +20,7 @@ import { loadReportGen, getReportGen } from '../../../../services/reportGenerato
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { sendReport, reportLoad, screenChange } from '../../../../duck/actions/reportDesignerAction';
+import { sendReport, reportLoad, screenChange, genLoad } from '../../../../duck/actions/reportDesignerAction';
 import {
 	showLoader,
 	hideLoader,
@@ -29,8 +29,9 @@ import {
 import Banner from '../../../../assets/images/Popup-Side.svg';
 import checkIcon from '../../../../assets/images/checkbox.svg';
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
-
+import { useLocation } from "react-router-dom";
 export default function ReportLanding(props) {
+	const location = useLocation()
 	const [searched, setSearched] = useState(false);
 	const [newsearched, setNewSearched] = useState(false);
 	const [reportList, setReportList] = useState([]);
@@ -51,6 +52,14 @@ export default function ReportLanding(props) {
 		setActiveTab(value);
 	};
 
+	useEffect(() => {
+		if (location.pathname.includes('report_generator')) {
+			setActiveTab('Generate Report Variant')
+		}
+		if (location.pathname.includes('report_designer')) {
+			setActiveTab('Design Report Template')
+		}
+	}, [location])
 	const columnsFilter = [
 		{
 			title: 'Name',
@@ -311,6 +320,7 @@ export default function ReportLanding(props) {
 			}
 			dispatch(hideLoader());
 			setLetDis(false)
+			dispatch(genLoad(true))
 		} else {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', data.Message));
@@ -327,6 +337,7 @@ export default function ReportLanding(props) {
 			dispatch(hideLoader());
 			dispatch(showNotification('success', `Loaded ${report_id}`));
 			setLetDis(false)
+			dispatch(genLoad(false))
 
 		} else {
 			dispatch(hideLoader());
@@ -584,6 +595,8 @@ export default function ReportLanding(props) {
 											onClick: e => {
 												NewReportGenerator(record.rep_disp_id);
 												setReportGen(record.rep_disp_id)
+												setReportIds(record.rep_disp_id);
+												setReportId(record.rep_disp_id)
 											},
 										})}
 									/>
