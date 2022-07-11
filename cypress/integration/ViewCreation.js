@@ -8,7 +8,7 @@ Cypress.Commands.add("multiselect", (options) => {
 
 describe("Render View Creation Page", () => {
 	beforeEach(() => {
-		cy.viewport(1280, 720)
+		cy.viewport(1360, 780)
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
 		localStorage.setItem("username", "Fahad");
@@ -29,11 +29,15 @@ describe("Render View Creation Page", () => {
 
 	it('Load View Landing Page Correctly', () => {
 		const url = Cypress.config().baseUrl
-		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' })
-		cy.visit(url + '/#/dashboard/view_creation')
+		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
 
-		cy.log('Load Landing Page')
-		cy.url().should('eq', url + '/#/dashboard/view_creation')
+		cy.wait(20000).then(() => {
+			cy.visit(url + '/#/dashboard/view_creation')
+
+			cy.log('Load Landing Page')
+			cy.url().should('eq', url + '/#/dashboard/view_creation')
+		})
+
 	})
 
 
@@ -60,6 +64,7 @@ describe("Render View Creation Page", () => {
 	it('Load Landing Page Table Component', () => {
 		cy.log('Load Search Bar')
 		cy.log('Search View Id In Search Component')
+		cy.get("input[placeholder='Search by view ID or name']").clear()
 		cy.get("input[placeholder='Search by view ID or name']").type("V288")
 		cy.get(".ant-input-search-button").click()
 
@@ -78,83 +83,115 @@ describe("Render View Creation Page", () => {
 	it('Load View Landing Page Correctly', () => {
 		cy.log('Create a New View Creation')
 		cy.get('.create-new > .anticon > svg').click({ force: true });
-		cy.wait(3000)
+
 	})
 
 	it('Create a New View', () => {
 		const url = Cypress.config().baseUrl
-		cy.wait(100)
-		cy.intercept('GET', '**/molecules2?user_id=fahad.siddiqui%40mareana.com', { fixture: 'listMolecule.json' })
-		cy.wait(100)
-		cy.visit(url + '/#/dashboard/view_creation/0')
-
-		cy.log('Verify New View Creation URL ')
-		cy.url().should('eq', url + '/#/dashboard/view_creation/0')
+		cy.intercept('POST', '**/molecules3', { fixture: 'listMolecule.json' })
+		cy.wait(20000).then(() => {
+			cy.log('Verify New View Creation URL ')
+			cy.url().should('eq', url + '/#/dashboard/view_creation/0')
+		})
 	})
 
 	it('Render Parameter Lookup', () => {
-		cy.wait(100)
-		cy.intercept('GET', '**/molecules2?molecule_name=BELATACEPT', { fixture: 'moleculeData.json' })
-		cy.wait(100)
-		cy.log('Select a Molecule')
-		cy.get('#rc_select_0').click({ force: true })
-		cy.get('div[title="BELATACEPT"]').click({ force: true })
+		cy.wait(500).then(() => {
+			cy.log('Select a Molecule')
+			cy.get('#rc_select_0').click({ force: true })
+			cy.get('div[title="BELATACEPT"]').click({ force: true })
 
-		cy.log('Verify Selected Molecule')
-		cy.get('.ant-select-selection-item').should("have.text", "BELATACEPT")
+			cy.log('Verify Selected Molecule')
+			cy.get('.ant-select-selection-item').should("have.text", "BELATACEPT")
+		})
+		cy.intercept('POST', '**/molecules3', { fixture: 'moleculeData.json' })
 	})
 
 	it('Render Process Hierarchy', () => {
 		cy.log('Load Process Hierarchy')
 
-		cy.log('Verify Tree Render')
-		cy.get('.ant-tree').should('have.length', 1)
-
 		cy.log('Verify first treenode title')
-		cy.get('.ant-tree-title').should('have.text', '140L')
+		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', '140L')
 
 		cy.log('Click first treenode')
+		cy.intercept('POST', '**/molecules3', { fixture: 'firstNodeMol.json' }).as('firstNodeMol')
+		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').click()
 		cy.get('.ant-tree-switcher > .anticon > svg > path').click()
 
-		cy.log('Verify second treenode title')
-		cy.get('.ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', 'SODIUM CARBONATE ANHYDROUS NF/EP')
+		cy.wait('@firstNodeMol').then(() => {
+			cy.log('Verify second treenode title')
+			cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', 'SODIUM CARBONATE ANHYDROUS NF/EP')
+		})
 
-		cy.wait(2000)
+		cy.intercept('POST', '**/molecules3', { fixture: 'secondNodeMol.json' }).as('secondNodeMol')
+
 		cy.log('Click second treenode')
-		cy.get('.ant-tree-treenode-switcher-close > .ant-tree-switcher > .anticon > svg').trigger("click");
+		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').click({ force: true })
 
-		cy.log('Verify tree node length');
-		cy.get('.tree-index').should('have.length', 4)
+		cy.get('.ant-tree-treenode-switcher-close > .ant-tree-switcher > .anticon > svg').click()
+		cy.wait('@secondNodeMol').then(() => {
+			cy.log('Verify third treenode title')
+			cy.log('Verify first tree index name');
+			cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .ant-tag').should('have.text', 'ARSENIC')
+			cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .treenode-coverage').should('have.text', '3%(1/33)')
+			cy.wait(100)
+		})
 
-		cy.log('Verify first tree index name');
-		cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .ant-tag').should('have.text', 'ARSENIC')
-		cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .treenode-coverage').should('have.text', '93%(31/33)')
-		cy.wait(100)
-
-		cy.log('Verify second tree index name');
-		cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .ant-tag').should('have.text', 'ASSAY 1DECPT')
-		cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .treenode-coverage').should('have.text', '96%(32/33)')
-		cy.wait(100)
-
-		cy.log('Verify third tree index name');
-		cy.get(':nth-child(5) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .ant-tag').should('have.text', 'ASSAY TITRIMETRIC')
-		cy.get(':nth-child(5) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .treenode-coverage').should('have.text', '96%(32/33)')
-		cy.wait(100)
-
-		cy.log('Verify fourth tree index name');
-		cy.get(':nth-child(6) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .ant-tag').should('have.text', 'CHLORIDES')
-		cy.get(':nth-child(6) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .treenode-coverage').should('have.text', '96%(32/33)')
-		cy.wait(100)
-
-		cy.log("Select first tree node")
+		cy.log('Click on Paramter')
 		cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click()
-		cy.wait(1000)
 
-		cy.log("Select second tree node")
-		cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click()
-		cy.wait(1000)
+		cy.get('.viewCreation-materials > .ant-collapse-icon-position-left > .viewCreation-materialsPanel > .ant-collapse-header').click()
 	})
 
+	it('Filter Paramter lookup ', () => {
+		cy.log('Filter Molecule')
+		cy.get('.search-block > .ant-select > .ant-select-selector > .ant-select-selection-item').click({ force: true });
+		cy.get("#rc_select_1").clear();
+
+		cy.log('Type Molecule Name')
+		cy.get("#rc_select_1").type("ARSENIC");
+		cy.wait(700)
+		cy.get('[title="2_1176024_ARSENIC"] > .ant-select-item-option-content').click({ force: true });
+
+		cy.log('Clear Molecule')
+		cy.get('.search-block > .ant-btn > .anticon > svg').click()
+	})
+
+	it('Download Template File ', () => {
+		cy.log('verify download template')
+		cy.get('#download-temp').click()
+	})
+
+	it('File Upload ', () => {
+		cy.log('Click Upload Button')
+
+		cy.get('.materials-uploadFiles > .ant-btn').click()
+
+		cy.log('File Upload Popup Open')
+		cy.get('.fileUploadModal').should('be.visible')
+
+		cy.log('Select a file')
+		cy.get('input[type=file]').selectFile({ contents: 'cypress/filefortest/cypress_mol_batch_file.xlsx' }, { force: true })
+
+		cy.log('Verfiy Uploaded File')
+		cy.get('.ant-upload-list-item-name').should('have.text', 'cypress_mol_batch_file.xlsx')
+
+		cy.log('Upload file Id')
+		cy.get('#upload-file > span').click()
+
+		cy.get('.panelHeader_span').should('have.text', 'cypress_mol_batch_file')
+		cy.get('.materials-wrapper > .ant-collapse > .ant-collapse-item > .ant-collapse-header > :nth-child(1) > .anticon > svg').click()
+
+		cy.get('.ant-table-tbody > :nth-child(1) > :nth-child(1) > .ant-tag').should('have.text', 'AMMONIUM -A')
+		cy.get('.ant-table-content > table > .ant-table-tbody > :nth-child(1) > :nth-child(2)').should('have.text', '44.44 %')
+		cy.get('.ant-table-content > table > .ant-table-tbody > :nth-child(1) > :nth-child(3)').should('have.text', '4/9')
+
+		cy.log('Select File Parameter')
+		cy.get(':nth-child(1) > :nth-child(4) > .material-addIcon > .anticon > svg').click()
+
+		cy.get('.viewCreation-accordian > [role="button"] > div > .anticon > svg').click()
+
+	})
 
 	it('Render Script Editor & View Summary', () => {
 		cy.log('verify right container')
@@ -169,26 +206,19 @@ describe("Render View Creation Page", () => {
 		cy.get('.add-var_block').should('be.visible')
 
 		cy.log('Verify Create Variable Card text name')
-		cy.get('.add-var_block > div > .anticon > svg').should('be.visible')
-		cy.get('.add-var_block > div > p').should("have.text", "Create Variable")
 
 		cy.log("Click on card to create a variable")
 		cy.get('.add-var_block > div > p').click()
 
-		cy.log('Verify Select Parameter Card text name')
-		cy.get('.add-var_block > p').should("have.text", "Select parameters")
+		cy.log('Click On checkbox to select a parameter')
+		cy.get('[data-row-key="2_ARSENIC"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
+		cy.get('[data-row-key="1322454-AMMONIUM -A"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
 
-		cy.log('Select a parameter from table')
-		cy.get('[data-row-key="140L-1176024-ARSENIC"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
-		cy.get('[data-row-key="140L-1176024-ASSAY 1DECPT"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
-
-		cy.get('[data-row-key="140L-1176024-ARSENIC"] > [style="position: sticky; left: 182px;"] > .ant-radio-wrapper > .ant-radio > .ant-radio-input').check();
-
-		cy.get('#rc_select_3').click({ force: true })
-		cy.get('div[title="Mean"]').click({ force: true })
-		// cy.get('#rc_select_4').click({ force: true })
-		// cy.get('div[title="Mean"]').click({ force: true })
-		cy.get('[data-row-key="140L-1176024-ARSENIC"] > :nth-child(5) > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check()
+		cy.log('Select a primary')
+		cy.get('[data-row-key="2_ARSENIC"] > [style="position: sticky; left: 221.992px;"] > .ant-radio-wrapper > .ant-radio > .ant-radio-input').check();
+		cy.log('Select a Aggregation')
+		cy.get('[data-row-key="2_ARSENIC"] > .ant-table-cell-fix-left-last > .ant-select > .ant-select-selector').click({ force: true })
+		cy.get('div[title="Mean"]').click({ multiple: true })
 
 		cy.log('Verify Done Card & Click On')
 		cy.get('.add-var_block > .ant-btn > span').should("have.text", "Done")
@@ -218,70 +248,62 @@ describe("Render View Creation Page", () => {
 	it('Render Function Evaluation', () => {
 		cy.intercept('GET', '**/view-evaluate', { fixture: 'funEvalutionData.json' });
 		cy.log('Validate Function');
-		cy.get(':nth-child(2) > .custom-eval-btn').click();
+		cy.get('.custom-secondary-btn-link > span').click();
 
 		cy.log('Function data modal open');
 		cy.get('.ant-modal-content').should('be.visible');
 
 		cy.wait(2000);
 		cy.log('Function Modal Closed');
-		cy.get('.ant-modal-close-x > .anticon > svg ').click();
+		cy.get('.eval-func-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x > .anticon > svg').click();
 	})
 
 	it('Render Function Creation', () => {
 		cy.log('Function Modal Open');
-		cy.get('.custom-secondary-eval-btn > span').click();
+		cy.get('.custom-secondary-btn> span').click();
 
 		cy.log('Enter function name');
 		cy.get('.function-input > .input_field > .ant-input').type('function_1');
 
 		cy.log("Save Function")
-		cy.get('.custom-secondary-btn > span').click({ force: true })
+		cy.get('.function-btn > .ant-btn-text > span').click({ force: true })
 	})
 
-	// 	it('Load View Creation Page Correctly', () => {
-
-
-
-
-	// 		cy.log('Select a Parameter From View Hierarchy')
-	// 		cy.get(':nth-child(1) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-switcher > .anticon > svg').click({ force: true });
-	// 		cy.wait(4000)
-	// 		cy.get(':nth-child(2) > .ant-tree-switcher > .anticon > svg').click({ force: true });
-	// 		cy.wait(4000)
-	// 		cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click();
-	// 		cy.wait(4000)
-	// 		cy.get(':nth-child(5) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2)').click();
-	// 		cy.wait(4000)
-
-	// 		cy.get('.add-var_block > div').click();
-	// 		cy.wait(4000)
-
-	// 		cy.get('[data-row-key="140L-1176024-ASSAY 1DECPT"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
-	// 		cy.get('[data-row-key="140L-1176024-ASSAY 1DECPT"] > [style="position: sticky; left: 182px;"] > .ant-radio-wrapper > .ant-radio > .ant-radio-inner').check();
-	// 		cy.wait(2000)
-
-	// 		cy.get('#rc_select_3').click();
-	// 		cy.get(':nth-child(5) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
-	// 		cy.wait(4000)
-
-	// 		cy.get('.add-var_block > .ant-btn > span').click();
-	// 		cy.get('.input_field > .ant-input').clear();
-	// 		cy.get('.input_field > .ant-input').type('var1');
-	// 		cy.get('.variable-name-popup > .ant-btn > span').click();
-	// 		cy.get('[data-row-key="140L-1176024-ASSAY 1DECPT"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
-	// 		cy.get('.add-var_block > .ant-btn > span').click();
-	// 		cy.get('.input_field > .ant-input').clear();
-	// 		cy.get('.input_field > .ant-input').type('var2');
-	// 		cy.get('.variable-name-popup > .ant-btn > span').click();
-	// 		cy.get('.w-tc-editor-text').click();
-	// 		cy.get(':nth-child(2) > .custom-eval-btn > span').click();
-	// 		cy.get('.ant-modal-close-x > .anticon > svg').click();
-	// 		cy.get('.custom-secondary-eval-btn > span').click();
-	// 		cy.get('.function-input > .input_field > .ant-input').clear();
-	// 		cy.get('.function-input > .input_field > .ant-input').type('func1');
-	// 		cy.get('.custom-secondary-btn > span').click();
-	// 		cy.get('.summary-column > p').click();
-	// 		cy.get('.summary-column > :nth-child(2) > .anticon > svg').click();
-	// 	})
 });
+
+
+// describe("Render View Creation Load", () => {
+// 	beforeEach(() => {
+// 		cy.viewport(1360, 780)
+// 		localStorage.setItem("test_enabled", true);
+// 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+// 		localStorage.setItem("username", "Fahad");
+// 		localStorage.setItem(
+// 			"login_details",
+// 			JSON.stringify({
+// 				ad_role: false,
+// 				email_id: "fahad.siddiqui@mareana.com",
+// 				firstname: "Fahad",
+// 				lastname: "siddiqui",
+// 				mdh_role: "USER",
+// 				screen_set: "1000_USER",
+// 				token:
+// 					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
+// 			})
+// 		);
+// 	})
+
+
+// 	it('Load View Landing Page Correctly', () => {
+// 		const url = Cypress.config().baseUrl
+// 		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
+
+// 		cy.wait(20000).then(() => {
+// 			cy.visit(url + '/#/dashboard/view_creation')
+
+// 			cy.log('Load Landing Page')
+// 			cy.url().should('eq', url + '/#/dashboard/view_creation')
+// 		})
+
+// 	})
+// })

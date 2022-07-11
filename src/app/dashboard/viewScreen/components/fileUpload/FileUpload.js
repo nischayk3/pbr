@@ -90,9 +90,6 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 						onClick={() => {
 							parameterPassHandler(record, index);
 						}}
-						onKeyDown={() => {
-							parameterPassHandler(record, index);
-						}}
 					>
 						<PlusSquareOutlined />
 					</span>
@@ -393,6 +390,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 				<div className="materials-downloadFiles">
 					<Button type="text" className="viewCreation-downloadBtn" disabled={fromWorkflowScreen}>
 						<a
+							id="download-temp"
 							href={require("../../../../../assets/xlsx/template_view_file_upload.xlsx")}
 							download="template_view_file_upload.xlsx"
 						>
@@ -446,6 +444,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 						Cancel
 					</Button>,
 					<Button
+						id="upload-file"
 						key="submit"
 						type="primary"
 						onClick={handleSubmitUpload}

@@ -1,253 +1,52 @@
 {
-	"data": {
+	"Data": {
 		"hierarchy": [
 			{
-				"children": [
-					{
-						"children": [
-							{
-								"batches": [
-									"ABL2258",
-									"ABL2259",
-									"ABL2261",
-									"ABL2264",
-									"ABR9486",
-									"ABR9487",
-									"ABR9491",
-									"ABR9492",
-									"ABT9563",
-									"ABT9564",
-									"ABT9565",
-									"ABT9566",
-									"ABT9567",
-									"ABV4289",
-									"ABV4290",
-									"ABV4292",
-									"ABV4293",
-									"ABV4294",
-									"ABV4295",
-									"ABV4296",
-									"ABV4297",
-									"ABV4298",
-									"ABV4299",
-									"ABY0079",
-									"ABY0080",
-									"ABY0081",
-									"ABY0082",
-									"ABY0083",
-									"ABY0084",
-									"ABY0086",
-									"ABY0088"
-								],
-								"coverage": "93%(31/33)",
-								"key": "140L-1176024-ARSENIC",
-								"parameter_name": "ARSENIC"
-							},
-							{
-								"batches": [
-									"ABL2258",
-									"ABL2259",
-									"ABL2261",
-									"ABL2264",
-									"ABR9486",
-									"ABR9487",
-									"ABR9491",
-									"ABR9492",
-									"ABT9563",
-									"ABT9564",
-									"ABT9565",
-									"ABT9566",
-									"ABT9567",
-									"ABV4289",
-									"ABV4290",
-									"ABV4292",
-									"ABV4293",
-									"ABV4294",
-									"ABV4295",
-									"ABV4296",
-									"ABV4297",
-									"ABV4298",
-									"ABV4299",
-									"ABY0079",
-									"ABY0080",
-									"ABY0081",
-									"ABY0082",
-									"ABY0083",
-									"ABY0084",
-									"ABY0086",
-									"ABY0088",
-									"ABY0089"
-								],
-								"coverage": "96%(32/33)",
-								"key": "140L-1176024-ASSAY 1DECPT",
-								"parameter_name": "ASSAY 1DECPT"
-							},
-							{
-								"batches": [
-									"ABL2258",
-									"ABL2259",
-									"ABL2261",
-									"ABL2264",
-									"ABR9486",
-									"ABR9487",
-									"ABR9491",
-									"ABR9492",
-									"ABT9563",
-									"ABT9564",
-									"ABT9565",
-									"ABT9566",
-									"ABT9567",
-									"ABV4289",
-									"ABV4290",
-									"ABV4292",
-									"ABV4293",
-									"ABV4294",
-									"ABV4295",
-									"ABV4296",
-									"ABV4297",
-									"ABV4298",
-									"ABV4299",
-									"ABY0079",
-									"ABY0080",
-									"ABY0081",
-									"ABY0082",
-									"ABY0083",
-									"ABY0084",
-									"ABY0086",
-									"ABY0088",
-									"ABY0089"
-								],
-								"coverage": "96%(32/33)",
-								"key": "140L-1176024-ASSAY TITRIMETRIC",
-								"parameter_name": "ASSAY TITRIMETRIC"
-							},
-							{
-								"batches": [
-									"ABL2258",
-									"ABL2259",
-									"ABL2261",
-									"ABL2264",
-									"ABR9486",
-									"ABR9487",
-									"ABR9491",
-									"ABR9492",
-									"ABT9563",
-									"ABT9564",
-									"ABT9565",
-									"ABT9566",
-									"ABT9567",
-									"ABV4289",
-									"ABV4290",
-									"ABV4292",
-									"ABV4293",
-									"ABV4294",
-									"ABV4295",
-									"ABV4296",
-									"ABV4297",
-									"ABV4298",
-									"ABV4299",
-									"ABY0079",
-									"ABY0080",
-									"ABY0081",
-									"ABY0082",
-									"ABY0083",
-									"ABY0084",
-									"ABY0086",
-									"ABY0088",
-									"ABY0089"
-								],
-								"coverage": "96%(32/33)",
-								"key": "140L-1176024-CHLORIDES",
-								"parameter_name": "CHLORIDES"
-							}
-						],
-						"key": "140L-1176024",
-						"product_description": "SODIUM CARBONATE ANHYDROUS NF/EP",
-						"product_num": "1176024"
-					}
-				],
-				"key": "140L",
-				"process_step": "140L"
+				"ds_name": "BELATACEPT",
+				"process_step": "T-Flask",
+				"process_step_int_id": 1,
+				"seq_no": 10
+			},
+			{
+				"ds_name": "BELATACEPT",
+				"process_step": "140L",
+				"process_step_int_id": 2,
+				"seq_no": 20
+			},
+			{
+				"ds_name": "BELATACEPT",
+				"process_step": "1100L",
+				"process_step_int_id": 3,
+				"seq_no": 30
+			},
+			{
+				"ds_name": "BELATACEPT",
+				"process_step": "3000L",
+				"process_step_int_id": 4,
+				"seq_no": 40
+			},
+			{
+				"ds_name": "BELATACEPT",
+				"process_step": "Harvest",
+				"process_step_int_id": 5,
+				"seq_no": 90
 			}
 		],
 		"mol_batches": [
 			{
-				"batch": "ABY0079"
-			},
-			{
-				"batch": "ACB4375"
-			},
-			{
-				"batch": "ABV4295"
-			},
-			{
-				"batch": "ABV4290"
-			},
-			{
-				"batch": "ABV4296"
-			},
-			{
-				"batch": "ABV4298"
-			},
-			{
-				"batch": "ABT9565"
-			},
-			{
-				"batch": "ABV4299"
-			},
-			{
-				"batch": "ABY0080"
-			},
-			{
-				"batch": "ABV4289"
-			},
-			{
-				"batch": "ABT9567"
-			},
-			{
-				"batch": "ABV4294"
-			},
-			{
-				"batch": "ABY0088"
-			},
-			{
-				"batch": "ABR9492"
+				"batch": "ABL2258"
 			},
 			{
 				"batch": "ABL2259"
 			},
 			{
-				"batch": "ABY0089"
-			},
-			{
-				"batch": "ABY0086"
-			},
-			{
-				"batch": "ABV4297"
-			},
-			{
 				"batch": "ABL2261"
 			},
 			{
-				"batch": "ABY0083"
+				"batch": "ABL2264"
 			},
 			{
-				"batch": "ABT9566"
-			},
-			{
-				"batch": "ABY0081"
-			},
-			{
-				"batch": "ABY0082"
-			},
-			{
-				"batch": "ABT9564"
-			},
-			{
-				"batch": "ABL2258"
-			},
-			{
-				"batch": "ABV4292"
+				"batch": "ABR9486"
 			},
 			{
 				"batch": "ABR9487"
@@ -256,21 +55,87 @@
 				"batch": "ABR9491"
 			},
 			{
-				"batch": "ABY0084"
+				"batch": "ABR9492"
 			},
 			{
-				"batch": "ABR9486"
+				"batch": "ABT9563"
 			},
 			{
-				"batch": "ABL2264"
+				"batch": "ABT9564"
+			},
+			{
+				"batch": "ABT9565"
+			},
+			{
+				"batch": "ABT9566"
+			},
+			{
+				"batch": "ABT9567"
+			},
+			{
+				"batch": "ABV4289"
+			},
+			{
+				"batch": "ABV4290"
+			},
+			{
+				"batch": "ABV4292"
 			},
 			{
 				"batch": "ABV4293"
 			},
 			{
-				"batch": "ABT9563"
+				"batch": "ABV4294"
+			},
+			{
+				"batch": "ABV4295"
+			},
+			{
+				"batch": "ABV4296"
+			},
+			{
+				"batch": "ABV4297"
+			},
+			{
+				"batch": "ABV4298"
+			},
+			{
+				"batch": "ABV4299"
+			},
+			{
+				"batch": "ABY0079"
+			},
+			{
+				"batch": "ABY0080"
+			},
+			{
+				"batch": "ABY0081"
+			},
+			{
+				"batch": "ABY0082"
+			},
+			{
+				"batch": "ABY0083"
+			},
+			{
+				"batch": "ABY0084"
+			},
+			{
+				"batch": "ABY0086"
+			},
+			{
+				"batch": "ABY0088"
+			},
+			{
+				"batch": "ABY0089"
+			},
+			{
+				"batch": "ACB4375"
 			}
 		]
 	},
-	"statuscode": 200
+	"LogicTime": 0.003816843032836914,
+	"QueryTime": 0.005207538604736328,
+	"Status": 200,
+	"Time": 0.05342674255371094
 }

@@ -2,60 +2,42 @@
 	"Data": {
 		"hierarchy": [
 			{
-				"coverage": "3%(1/33)",
 				"ds_name": "BELATACEPT",
-				"parameter_name": "ARSENIC",
-				"process_step_int_id": "2",
-				"product_num": "1176024"
+				"process_step": "T-Flask",
+				"process_step_int_id": 1,
+				"seq_no": 10
 			},
 			{
-				"coverage": "3%(1/33)",
+				"children": [
+					{
+						"ds_name": "BELATACEPT",
+						"process_step_int_id": "2",
+						"product_desc": "SODIUM CARBONATE ANHYDROUS NF/EP",
+						"product_num": "1176024"
+					}
+				],
 				"ds_name": "BELATACEPT",
-				"parameter_name": "ASSAY 1DECPT",
-				"process_step_int_id": "2",
-				"product_num": "1176024"
+				"process_step": "140L",
+				"process_step_int_id": 2,
+				"seq_no": 20
 			},
 			{
-				"coverage": "3%(1/33)",
 				"ds_name": "BELATACEPT",
-				"parameter_name": "ASSAY TITRIMETRIC",
-				"process_step_int_id": "2",
-				"product_num": "1176024"
+				"process_step": "1100L",
+				"process_step_int_id": 3,
+				"seq_no": 30
 			},
 			{
-				"coverage": "3%(1/33)",
 				"ds_name": "BELATACEPT",
-				"parameter_name": "CHLORIDES",
-				"process_step_int_id": "2",
-				"product_num": "1176024"
+				"process_step": "3000L",
+				"process_step_int_id": 4,
+				"seq_no": 40
 			},
 			{
-				"coverage": "24%(8/33)",
 				"ds_name": "BELATACEPT",
-				"parameter_name": "CONTAINER NUMBER",
-				"process_step_int_id": "2",
-				"product_num": "1176024"
-			},
-			{
-				"coverage": "3%(1/33)",
-				"ds_name": "BELATACEPT",
-				"parameter_name": "IRON",
-				"process_step_int_id": "2",
-				"product_num": "1176024"
-			},
-			{
-				"coverage": "6%(2/33)",
-				"ds_name": "BELATACEPT",
-				"parameter_name": "LOSS ON DRYING 1DECPT",
-				"process_step_int_id": "2",
-				"product_num": "1176024"
-			},
-			{
-				"coverage": "3%(1/33)",
-				"ds_name": "BELATACEPT",
-				"parameter_name": "SULFATES",
-				"process_step_int_id": "2",
-				"product_num": "1176024"
+				"process_step": "Harvest",
+				"process_step_int_id": 5,
+				"seq_no": 90
 			}
 		],
 		"mol_batches": [
@@ -160,5 +142,8 @@
 			}
 		]
 	},
-	"Status": 200
+	"LogicTime": 0.005112648010253906,
+	"QueryTime": 0.023621320724487305,
+	"Status": 200,
+	"Time": 0.051967620849609375
 }
