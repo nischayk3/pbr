@@ -246,6 +246,7 @@ function PaperBatchRecords() {
 	const handleValuesChange = (changedValues, values) => {
 		seTemplateName(values?.templateName)
 	};
+	 /* istanbul ignore next */
 	const onFinish = (values) => {
 		console.log('Success:', values);
 	};
@@ -272,6 +273,7 @@ function PaperBatchRecords() {
 			onClose: close,
 		});
 	};
+	 /* istanbul ignore next */
 	const onRadioChange = (val) => {
 		let arr = dataView.filter(item => item.actual_filename === val)
 		setMatBatch({
