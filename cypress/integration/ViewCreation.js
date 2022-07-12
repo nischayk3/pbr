@@ -6,6 +6,124 @@ Cypress.Commands.add("multiselect", (options) => {
 });
 
 
+describe("Render View Creation Load Error Log", () => {
+	beforeEach(() => {
+		cy.viewport(1360, 780)
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("username", "Fahad");
+		localStorage.setItem(
+			"login_details",
+			JSON.stringify({
+				ad_role: false,
+				email_id: "fahad.siddiqui@mareana.com",
+				firstname: "Fahad",
+				lastname: "siddiqui",
+				mdh_role: "USER",
+				screen_set: "1000_USER",
+				token:
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
+			})
+		);
+
+		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
+	})
+
+	it('Load View Landing Page Correctly', () => {
+		const url = Cypress.config().baseUrl
+		cy.wait(10000).then(() => {
+			cy.visit(url + '/#/dashboard/view_creation')
+			cy.log('Load Landing Page')
+			cy.url().should('eq', url + '/#/dashboard/view_creation')
+		})
+	})
+
+	it('Load View Landing Page Correctly', () => {
+		cy.log('Create a New View Creation')
+		cy.get('.create-new > .anticon > svg').click({ force: true });
+		cy.intercept('POST', '**/molecules3', { fixture: 'moleculeError401.json' })
+	})
+
+	it('Create a New View', () => {
+		const url = Cypress.config().baseUrl
+		cy.wait(10000).then(() => {
+			cy.log('Verify New View Creation URL ')
+			cy.url().should('eq', url + '/#/dashboard/view_creation/0')
+		})
+
+
+	})
+
+	it('Molecule Error Check', () => {
+		cy.wait(10000).then(() => {
+			cy.log("Verify 401 error")
+		})
+	})
+})
+
+describe("Render View Creation Load", () => {
+	beforeEach(() => {
+		cy.viewport(1360, 780)
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("username", "Fahad");
+		localStorage.setItem(
+			"login_details",
+			JSON.stringify({
+				ad_role: false,
+				email_id: "fahad.siddiqui@mareana.com",
+				firstname: "Fahad",
+				lastname: "siddiqui",
+				mdh_role: "USER",
+				screen_set: "1000_USER",
+				token:
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
+			})
+		);
+	})
+
+
+	it('Load View Landing Page Correctly', () => {
+		const url = Cypress.config().baseUrl
+		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
+
+		cy.wait(20000).then(() => {
+			cy.visit(url + '/#/dashboard/view_creation')
+
+			cy.log('Load Landing Page')
+			cy.url().should('eq', url + '/#/dashboard/view_creation')
+		})
+
+	})
+
+	it('Select View ID', () => {
+		cy.log('Select View ID - V348')
+		cy.get('[href="#/dashboard/view_creation/V348&1"] > .chart-tiles').click()
+	})
+
+
+	it('View Summary Load', () => {
+		cy.log('Verift View Id')
+		cy.get('.view-summary_lable > :nth-child(1) > :nth-child(1)').should("have.text", "View ID : ")
+		cy.get('.view-summary_lable > :nth-child(1) > :nth-child(2)').should("have.text", "V348")
+
+		cy.log('Verift View Status')
+		cy.get('.view-summary_lable > :nth-child(2) > :nth-child(1)').should("have.text", "Status : ")
+		cy.get('.view-summary_lable > :nth-child(2) > :nth-child(2)').should("have.text", "APRD")
+
+		cy.log('Verift View Version')
+		cy.get('.view-summary_lable > :nth-child(3) > :nth-child(1)').should("have.text", "Version : ")
+		cy.get('.view-summary_lable > :nth-child(3) > :nth-child(2)').should("have.text", "1")
+	})
+
+	it('View Summary Delete Function', () => {
+		cy.log('Delete Function')
+		cy.get(':nth-child(2) > .summary-column > :nth-child(2) > .anticon > svg').click()
+	})
+
+
+})
+
 describe("Render View Creation Page", () => {
 	beforeEach(() => {
 		cy.viewport(1360, 780)
@@ -50,9 +168,6 @@ describe("Render View Creation Page", () => {
 
 		cy.log('Verify Screen Header Component')
 		cy.get('.screen_header_head')
-
-		cy.log('Verify User Name')
-		cy.get('.screen_header_username').should("have.text", "Howdy Fahad!")
 
 		cy.log('Verify Header Text')
 		cy.get('.screen_header_text').should("have.text", "Let’s get configuring some Views!")
@@ -313,68 +428,12 @@ describe("Render View Creation Page", () => {
 		cy.get('.function-btn > .ant-btn-text > span').click({ force: true })
 	})
 
+	it('Save View Creation', () => {
+		cy.log('Save Button Click');
+		cy.get('#save-view > span').click()
+
+		cy.log('Enter View Name');
+		cy.get(':nth-child(12) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-body > .function-modal > .function-input > .input_field > .ant-input').type("View Test")
+	})
+
 });
-
-
-describe("Render View Creation Load", () => {
-	beforeEach(() => {
-		cy.viewport(1360, 780)
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		localStorage.setItem("username", "Fahad");
-		localStorage.setItem(
-			"login_details",
-			JSON.stringify({
-				ad_role: false,
-				email_id: "fahad.siddiqui@mareana.com",
-				firstname: "Fahad",
-				lastname: "siddiqui",
-				mdh_role: "USER",
-				screen_set: "1000_USER",
-				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
-			})
-		);
-	})
-
-
-	it('Load View Landing Page Correctly', () => {
-		const url = Cypress.config().baseUrl
-		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
-
-		cy.wait(20000).then(() => {
-			cy.visit(url + '/#/dashboard/view_creation')
-
-			cy.log('Load Landing Page')
-			cy.url().should('eq', url + '/#/dashboard/view_creation')
-		})
-
-	})
-
-	it('Select View ID', () => {
-		cy.log('Select View ID - V348')
-		cy.get('[href="#/dashboard/view_creation/V348&1"] > .chart-tiles').click()
-	})
-
-
-	it('View Summary Load', () => {
-		cy.log('Verift View Id')
-		cy.get('.view-summary_lable > :nth-child(1) > :nth-child(1)').should("have.text", "View ID : ")
-		cy.get('.view-summary_lable > :nth-child(1) > :nth-child(2)').should("have.text", "V348")
-
-		cy.log('Verift View Status')
-		cy.get('.view-summary_lable > :nth-child(2) > :nth-child(1)').should("have.text", "Status : ")
-		cy.get('.view-summary_lable > :nth-child(2) > :nth-child(2)').should("have.text", "APRD")
-
-		cy.log('Verift View Version')
-		cy.get('.view-summary_lable > :nth-child(3) > :nth-child(1)').should("have.text", "Version : ")
-		cy.get('.view-summary_lable > :nth-child(3) > :nth-child(2)').should("have.text", "1")
-	})
-
-	it('View Summary Delete Function', () => {
-		cy.log('Delete Function')
-		cy.get(':nth-child(2) > .summary-column > :nth-child(2) > .anticon > svg').click()
-	})
-
-
-})

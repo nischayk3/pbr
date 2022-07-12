@@ -10,7 +10,6 @@ import VariableCard from "./variableCard";
 import Modal from "../../../../../components/Modal/Modal";
 import InputField from "../../../../../components/InputField/InputField";
 
-let variableData = [];
 const MathEditor = ({
 	viewJson,
 	setViewJson,
@@ -18,6 +17,7 @@ const MathEditor = ({
 	setViewSummaryBatch,
 	materialId,
 	fromWorkflowScreen }) => {
+	let variableData = [];
 
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
 	const selectedParameters = useSelector(
@@ -166,6 +166,7 @@ const MathEditor = ({
 	};
 
 	const createVar = () => {
+
 		if (varData && varData.length > 0) {
 			variableData = [...varData];
 		}

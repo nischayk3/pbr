@@ -15,7 +15,6 @@ import {
 import { hideLoader } from "../../../../../duck/actions/commonActions";
 
 let paramType = "";
-let counter = 0;
 
 const ParameterTable = ({
 	variableCreate,
@@ -33,9 +32,9 @@ const ParameterTable = ({
 	callbackCheckbox,
 	fromWorkflowScreen,
 	rowDisable }) => {
-
 	const paramReducer = useSelector((state) => state.viewCreationReducer);
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
+
 	const selectedTableData = useSelector(
 		(state) => state.viewCreationReducer.selectedParamData
 	);
@@ -80,9 +79,22 @@ const ParameterTable = ({
 	const [isMolBatchUpdate, setIsMolBatchUpdate] = useState([]);
 	const [filterMolTable, setFilterMolTable] = useState(null);
 
+	useEffect(() => {
+
+		if (isLoadView) {
+			//	onChangeColumnsHandler();
+			setTableData([...selectedTableData]);
+			setFun(functions_obj)
+		}
+	}, [isLoadView]);
+
+	const [counter, setCounter] = useState(isLoadView && Object.keys(functions_obj).length > 0 ? parseInt(Object.keys(functions_obj)[Object.keys(functions_obj).length - 1]) + 1 : 0)
+
 	const Option = Select;
 	const { Search } = Input;
 	const dispatch = useDispatch();
+
+
 
 	let columns = [
 		{
@@ -404,13 +416,7 @@ const ParameterTable = ({
 		}
 	}, [paramReducer]);
 
-	useEffect(() => {
 
-		if (isLoadView) {
-			//	onChangeColumnsHandler();
-			setTableData([...selectedTableData]);
-		}
-	}, [isLoadView]);
 
 	useEffect(() => {
 
@@ -499,8 +505,7 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (saveFunction) {
-
-			counter++;
+			setCounter(counter + 1);
 			let arr = [];
 
 			let primarySelectedData;
@@ -514,6 +519,7 @@ const ParameterTable = ({
 			}
 
 			let functionTable = [...viewSummaryBatch];
+
 			let new_column_data = newColumnData.map((e) => e.batch_num);
 			functionTable.forEach((item) => {
 				let obj = {};
@@ -525,7 +531,6 @@ const ParameterTable = ({
 				});
 				arr.push(obj);
 			});
-
 			const arr3 = functionTable.map((item, i) =>
 				Object.assign({}, item, arr[i])
 			);
@@ -714,8 +719,6 @@ const ParameterTable = ({
 		setTableData([...deleteRecord])
 		dispatch(sendSelectedParamData([...deleteRecord]));
 	}
-
-
 	return (
 		<>
 			<div className="param-table">
