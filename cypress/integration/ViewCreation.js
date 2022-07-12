@@ -70,7 +70,6 @@ describe("Render View Creation Page", () => {
 
 		cy.log('Verify Search Result In Table')
 		cy.get('.ant-table-row > :nth-child(1) > div').should("have.text", "V288-1")
-		cy.get('.ant-table-row > :nth-child(2) > div').should("have.text", "demo")
 		cy.get('.ant-table-row > :nth-child(3) > div').should("have.text", "APRD")
 		cy.get('.ant-table-row > :nth-child(4) > div').should("have.text", "K krishnapriyam@mareana.com")
 	})
@@ -139,6 +138,7 @@ describe("Render View Creation Page", () => {
 
 		cy.log('Click on Paramter')
 		cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click()
+		cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click()
 
 		cy.get('.viewCreation-materials > .ant-collapse-icon-position-left > .viewCreation-materialsPanel > .ant-collapse-header').click()
 	})
@@ -180,6 +180,23 @@ describe("Render View Creation Page", () => {
 		cy.get('#upload-file > span').click()
 
 		cy.get('.panelHeader_span').should('have.text', 'cypress_mol_batch_file')
+
+		cy.log('Delete Uploaded File')
+		cy.get('.fileUpload-delete > .anticon > svg').click()
+		cy.get('.ant-popover-inner-content').should('be.visible')
+		cy.get('.ant-popover-buttons > .ant-btn-primary > span').click()
+
+		cy.log("upload file again")
+		cy.get('.materials-uploadFiles > .ant-btn').click()
+
+		cy.log('Select a file')
+		cy.get('input[type=file]').selectFile({ contents: 'cypress/filefortest/cypress_mol_batch_file.xlsx' }, { force: true })
+
+		cy.log('Upload file Id')
+		cy.get('#upload-file > span').click()
+
+		cy.get('.panelHeader_span').should('have.text', 'cypress_mol_batch_file')
+
 		cy.get('.materials-wrapper > .ant-collapse > .ant-collapse-item > .ant-collapse-header > :nth-child(1) > .anticon > svg').click()
 
 		cy.get('.ant-table-tbody > :nth-child(1) > :nth-child(1) > .ant-tag').should('have.text', 'AMMONIUM -A')
@@ -210,6 +227,9 @@ describe("Render View Creation Page", () => {
 		cy.log("Click on card to create a variable")
 		cy.get('.add-var_block > div > p').click()
 
+		cy.log("Delete Parameter")
+		cy.get('[data-row-key="2_ASSAY 1DECPT"] > [style="position: sticky; left: 31.9922px;"] > .anticon > svg').click()
+
 		cy.log('Click On checkbox to select a parameter')
 		cy.get('[data-row-key="2_ARSENIC"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
 		cy.get('[data-row-key="1322454-AMMONIUM -A"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
@@ -239,6 +259,30 @@ describe("Render View Creation Page", () => {
 
 		cy.log("Create A Variable");
 		cy.get('.variable-name-popup > .ant-btn').click();
+
+		cy.log("Click on card to create a variable")
+		cy.get('.add-var_block > div > p').click()
+
+		cy.log('Click On checkbox to select a parameter')
+		cy.get('[data-row-key="1322454-AMMONIUM -A"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
+
+		cy.log('Verify Done Card & Click On')
+		cy.get('.add-var_block > .ant-btn > span').should("have.text", "Done")
+		cy.get('.add-var_block > .ant-btn > span').click()
+
+
+		cy.log("Modal should open")
+		cy.get('.ant-modal-content').should('be.visible')
+
+		cy.log("Add Variable Name");
+		cy.get('.input_field > .ant-input').clear();
+		cy.get('.input_field > .ant-input').type('var2');
+
+		cy.log("Create A Variable");
+		cy.get('.variable-name-popup > .ant-btn').click();
+
+		cy.log('delete variabale')
+		cy.get(':nth-child(3) > .var-btn > :nth-child(2) > .anticon > svg ').click({ force: true })
 
 		cy.log('Enter variable name to script');
 		cy.get('.w-tc-editor-text').type('var1');
@@ -272,38 +316,65 @@ describe("Render View Creation Page", () => {
 });
 
 
-// describe("Render View Creation Load", () => {
-// 	beforeEach(() => {
-// 		cy.viewport(1360, 780)
-// 		localStorage.setItem("test_enabled", true);
-// 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
-// 		localStorage.setItem("username", "Fahad");
-// 		localStorage.setItem(
-// 			"login_details",
-// 			JSON.stringify({
-// 				ad_role: false,
-// 				email_id: "fahad.siddiqui@mareana.com",
-// 				firstname: "Fahad",
-// 				lastname: "siddiqui",
-// 				mdh_role: "USER",
-// 				screen_set: "1000_USER",
-// 				token:
-// 					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
-// 			})
-// 		);
-// 	})
+describe("Render View Creation Load", () => {
+	beforeEach(() => {
+		cy.viewport(1360, 780)
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("username", "Fahad");
+		localStorage.setItem(
+			"login_details",
+			JSON.stringify({
+				ad_role: false,
+				email_id: "fahad.siddiqui@mareana.com",
+				firstname: "Fahad",
+				lastname: "siddiqui",
+				mdh_role: "USER",
+				screen_set: "1000_USER",
+				token:
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
+			})
+		);
+	})
 
 
-// 	it('Load View Landing Page Correctly', () => {
-// 		const url = Cypress.config().baseUrl
-// 		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
+	it('Load View Landing Page Correctly', () => {
+		const url = Cypress.config().baseUrl
+		cy.intercept('GET', '**/views-list', { fixture: 'viewList.json' }).as('viewList')
 
-// 		cy.wait(20000).then(() => {
-// 			cy.visit(url + '/#/dashboard/view_creation')
+		cy.wait(20000).then(() => {
+			cy.visit(url + '/#/dashboard/view_creation')
 
-// 			cy.log('Load Landing Page')
-// 			cy.url().should('eq', url + '/#/dashboard/view_creation')
-// 		})
+			cy.log('Load Landing Page')
+			cy.url().should('eq', url + '/#/dashboard/view_creation')
+		})
 
-// 	})
-// })
+	})
+
+	it('Select View ID', () => {
+		cy.log('Select View ID - V348')
+		cy.get('[href="#/dashboard/view_creation/V348&1"] > .chart-tiles').click()
+	})
+
+
+	it('View Summary Load', () => {
+		cy.log('Verift View Id')
+		cy.get('.view-summary_lable > :nth-child(1) > :nth-child(1)').should("have.text", "View ID : ")
+		cy.get('.view-summary_lable > :nth-child(1) > :nth-child(2)').should("have.text", "V348")
+
+		cy.log('Verift View Status')
+		cy.get('.view-summary_lable > :nth-child(2) > :nth-child(1)').should("have.text", "Status : ")
+		cy.get('.view-summary_lable > :nth-child(2) > :nth-child(2)').should("have.text", "APRD")
+
+		cy.log('Verift View Version')
+		cy.get('.view-summary_lable > :nth-child(3) > :nth-child(1)').should("have.text", "Version : ")
+		cy.get('.view-summary_lable > :nth-child(3) > :nth-child(2)').should("have.text", "1")
+	})
+
+	it('View Summary Delete Function', () => {
+		cy.log('Delete Function')
+		cy.get(':nth-child(2) > .summary-column > :nth-child(2) > .anticon > svg').click()
+	})
+
+
+})

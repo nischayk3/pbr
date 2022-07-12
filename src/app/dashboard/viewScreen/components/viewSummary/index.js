@@ -108,7 +108,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 										<CloseOutlined />
 									</span>
 								),
-							width: 100
+							width: 130
 						})
 					)
 				}
