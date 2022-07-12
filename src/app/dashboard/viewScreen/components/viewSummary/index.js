@@ -38,8 +38,17 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 	useEffect(() => {
 		if (functionName !== "") {
 			//	let fun_table = [...funTableData]
-			let fun_table = [...summaryTableData]
-			console.log("summaryTableData", summaryTableData);
+			let fun_table = [];
+			if (isLoadView) {
+				for (let i = 0; i < summaryTableData.length; i++) {
+					fun_table.push({
+						...summaryTableData[i],
+						...funTableData[i]
+					});
+				}
+			}
+			else
+				fun_table = [...summaryTableData]
 			setFunTableData(fun_table);
 		}
 	}, [summaryTableData]);
@@ -200,6 +209,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 
 		setTableColumn(newColumns);
 	};
+
 
 	return (
 		<Card title="View Summary">
