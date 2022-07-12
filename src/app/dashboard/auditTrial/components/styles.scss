@@ -199,3 +199,9 @@ $secondary: #547e48;
 .filter-header {
 	background-color: white !important;
 }
+.ant-select-single .ant-select-selector {
+    display: block;
+}
+.limitDropdown .ant-select-selector{
+	padding: 0px !important;
+}

@@ -48,14 +48,17 @@ function PbrReviewer() {
         setTemplateData(tableResponse.Data);
         dispatch(hideLoader());
       }
+      /* istanbul ignore next */
       else if (tableResponse['status-code'] === 404) {
         dispatch(hideLoader());
         setTemplateData(tableResponse.Data);
         dispatch(showNotification('error', tableResponse.Message));
+        /* istanbul ignore next */
       } else {
         dispatch(hideLoader());
       }
     }
+    /* istanbul ignore next */
     catch (error) {
       dispatch(hideLoader());
       dispatch(showNotification('error', error.Message));
@@ -97,6 +100,7 @@ function PbrReviewer() {
 
 
   };
+  /* istanbul ignore next */
   const eSignId = async (esign) => {
     dispatch(showLoader());
     let login_response = JSON.parse(localStorage.getItem('login_details'));
@@ -124,43 +128,18 @@ function PbrReviewer() {
     }
 
   };
+  /* istanbul ignore next */
   const handleClose = () => {
     setIsPublish(false);
   };
-
+  /* istanbul ignore next */
   const showApproved = async () => {
-
     setIsPublish(true);
     setApproveReject("A");
-    // let req = {
-    //   id: arr,
-    //   recorded_date: "",
-    //   recorded_time: "",
-    //   snippet_value: "",
-    //   status: "approved",
-    //   uom: ""
-    // }
-    // let res = await updateApprove(req)
-
-    // if (res.Status == "202") {
-
-    //   dispatch(showNotification("success", "Approved Successfully")),
-    //     dispatch(showLoader());
-
-    //   setTimeout(() => window.location.reload(),
-    //     1000
-    //   );
-    // }
-
   };
 
-
-
-
   const chart = async (res) => {
-
     let obj = await getPbrReviewerData(res);
-
     let jsondata = obj.Data;
     let unappcount = 0;
     jsondata.forEach(item => {
@@ -182,22 +161,14 @@ function PbrReviewer() {
 
 
   const chart1 = async (res) => {
-
-
-
     let obj = await getPbrReviewerData(res);
-
     let jsondata = obj.Data;
     let highcount = 0;
     jsondata.forEach(item => {
       if (item.confidence === "High") {
         highcount++;
-
       }
-
     });
-
-
 
     let medcount = 0;
     jsondata.forEach(item => {
@@ -260,12 +231,10 @@ function PbrReviewer() {
   }]
 
   useEffect(() => {
-
     chart();
     chart1();
-
   }, []);
-
+  /* istanbul ignore next */
   const columns2 = [
     {
       title: 'ID',
@@ -353,9 +322,6 @@ function PbrReviewer() {
       sorter: (a, b) => a.site_code - b.site_code,
       sortDirections: ['descend', 'ascend'],
     },
-
-
-
     {
       title: 'Product',
       key: 'product_num',
@@ -363,19 +329,6 @@ function PbrReviewer() {
       ...getColumnSearchProps('product_num'),
       sorter: (a, b) => a.product_num - b.product_num,
       sortDirections: ['descend', 'ascend'],
-      // render: (text, record, index) => {
-      //   return (
-      //     <a
-      //       style={{ color: "#1890ff" }}
-      //       onClick={() => {
-      //         history.push(`/dashBoard/pbr_update?id=${record.id}`);
-      //       }}
-
-      //     >
-      //       {text}
-      //     </a>
-      //   )
-      // }
     },
     {
       title: 'Batch',
@@ -419,75 +372,7 @@ function PbrReviewer() {
 
 
   ]
-  const data1 = [
-    {
-      file_path: 'Batch Record Example 1.pdf',
-      key: 'Product ; value',
-      value: '001',
-      actual_value: 'snippet_Batch_Record_Example_1_1004.png',
-      id: '5',
-      status: <Checkbox />,
-      confidence: 'High',
-      site: "US01",
-      product: 'New Product 001',
-      batch: 'B001',
-      reference_fields: 'asgdsagdsad.pdf',
-
-
-    },
-    {
-      file_path: 'Batch Record Example 1.pdf',
-      attribute_name: 'Balance Readout',
-      key: 'Product ; value',
-      value: '002',
-      actual_value: 'snippet_Batch_Record_Example_1_1004.png',
-      id: '1',
-      status: <Checkbox />,
-      confidence: 'High',
-      site: "US01",
-      product: 'New Product 002',
-      batch: 'B001',
-      reference_fields: 'asgdsagdsad.pdf',
-
-
-    },
-    {
-      file_path: 'Batch Record Example 1.pdf',
-      attribute_name: 'Balance Readout',
-      key: 'Product ; value',
-      value: '003',
-      actual_value: 'snippet_Batch_Record_Example_1_1004.png',
-      status: <Checkbox />,
-      confidence: 'High',
-      site: "US01",
-      product: 'New Product 003',
-      batch: 'B001',
-      reference_fields: 'asgdsagdsad.pdf',
-
-
-    },
-    {
-      file_path: 'Batch Record Example 1.pdf',
-      attribute_name: 'Balance Readout',
-      key: 'Product ; value',
-      value: '004',
-      actual_value: 'snippet_Batch_Record_Example_1_1004.png',
-      id: '3',
-      status: <Checkbox />,
-      confidence: 'High',
-      site: "US01",
-      product: 'New Product 004',
-      batch: 'B001',
-      reference_fields: 'asgdsagdsad.pdf',
-
-
-    },
-
-  ]
-
-
-
-
+  /* istanbul ignore next */
   function getColumnSearchProps(dataIndex) {
     return {
       filterDropdown: ({
@@ -580,12 +465,13 @@ function PbrReviewer() {
     };
 
   };
+  /* istanbul ignore next */
   function handleSearch(selectedKeys, confirm, dataIndex) {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   }
-
+  /* istanbul ignore next */
   function handleReset(clearFilters) {
     clearFilters();
     setSearchText("");
@@ -598,7 +484,7 @@ function PbrReviewer() {
     } else {
       setSearchedLanding(true);
       const tableData = templateData;
-      const newArray = tableData.map(({ created_on, changed_on, snippet_image,recorded_date,recorded_time, ...keepAttrs }) => keepAttrs)
+      const newArray = tableData.map(({ created_on, changed_on, snippet_image, recorded_date, recorded_time, ...keepAttrs }) => keepAttrs)
       const filterTable = newArray.filter(o =>
         Object.keys(o).some(k => {
           return String(o[k]).toLowerCase().includes(String(value).toLowerCase())
@@ -658,7 +544,7 @@ function PbrReviewer() {
                   <div id="my-div" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 150 }}>
                     <h3 className="status_pos">Status</h3>
                     {showReset && (
-                      <p className="status" onClick={resetStatus}>Reset</p>
+                      <p className="status-approved" onClick={resetStatus}>Reset</p>
                     )}
                     <Plot
                       data={appchart}
@@ -681,7 +567,7 @@ function PbrReviewer() {
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 150 }}>
                     <h3 className="status_pos">Confidence</h3>
                     {showResetConfidence && (
-                      <p className="status" onClick={resetConfidence}>Reset</p>
+                      <p className="status-confi" onClick={resetConfidence}>Reset</p>
                     )}
 
                     <Plot
@@ -722,7 +608,7 @@ function PbrReviewer() {
                       />
                     </Col>
                     <Col span={2} >
-                      <Button style={{
+                      <Button id="pbr-approve" style={{
                         margin: "7px 20px",
                         right: 8,
                         borderRadius: "5px",

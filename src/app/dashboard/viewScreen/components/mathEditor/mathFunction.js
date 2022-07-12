@@ -260,6 +260,8 @@ const MathFunction = (props) => {
 				visible={isTabelVisible}
 				onCancel={handleTableCancel}
 				footer={null}
+				className='eval-func-modal'
+
 			>
 				<Table
 					columns={DataColumns}

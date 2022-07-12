@@ -170,14 +170,14 @@ function PaperBatchRecords() {
 				setLoadTiles(tilesData.Data)
 				dispatch(hideLoader());
 			}
-			else if (tableResponse['status-code'] === 404) {
+			else if (tableResponse['status-code'] === 404) {/* istanbul ignore next */
 				setTemplateData(tableResponse.Data);
 				setLoadTiles(tilesData.Data)
 				dispatch(hideLoader());
 				dispatch(showNotification('error', tableResponse.Message));
 			}
 		}
-		catch (error) {
+		catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
 			dispatch(showNotification('error', error.Message));
 		}
@@ -246,6 +246,7 @@ function PaperBatchRecords() {
 	const handleValuesChange = (changedValues, values) => {
 		seTemplateName(values?.templateName)
 	};
+	 /* istanbul ignore next */
 	const onFinish = (values) => {
 		console.log('Success:', values);
 	};
@@ -272,6 +273,7 @@ function PaperBatchRecords() {
 			onClose: close,
 		});
 	};
+	 /* istanbul ignore next */
 	const onRadioChange = (val) => {
 		let arr = dataView.filter(item => item.actual_filename === val)
 		setMatBatch({
