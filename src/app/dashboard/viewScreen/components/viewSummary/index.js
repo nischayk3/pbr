@@ -39,6 +39,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 		if (functionName !== "") {
 			//	let fun_table = [...funTableData]
 			let fun_table = [...summaryTableData]
+			console.log("summaryTableData", summaryTableData);
 			setFunTableData(fun_table);
 		}
 	}, [summaryTableData]);
