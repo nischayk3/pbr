@@ -39,7 +39,7 @@ class AuditTrials extends React.Component {
 			brandListPkg: [],
 			productListPkg: [],
 			questionListPkg: [],
-			selectedLimit :"500",
+			selectedLimit: "500",
 			orderSort: {
 				old_value: 0,
 				activity: 0,
@@ -172,7 +172,7 @@ class AuditTrials extends React.Component {
 
 								: a.new_value.toString().localeCompare(b.new_value);
 
-					}, 
+					},
 				},
 				{
 					title: "Reason For Change",
@@ -319,14 +319,14 @@ class AuditTrials extends React.Component {
 	};
 
 
-	auditHighlight = () => {
+	auditHighlight = (limit="500") => {
 		var today = new Date();
 		today.setDate(today.getDate() + 1);
 		let req = {
 			identification: "10.10.16.30",
 			source_system: "cpv",
 			transactionid: "20200813161038.066",
-			
+
 			// username: this.state.user ? this.state.user.value : "",
 			startdate:
 				this.state.selectedDate.length > 0 && this.state.selectedDate[0]
@@ -341,8 +341,8 @@ class AuditTrials extends React.Component {
 			// activity:this.state.eventType ? this.state.eventType.value : '',
 		};
 
-		if(this.state.selectedLimit != 'all'){
-			req['limit'] = this.state.selectedLimit
+		if (limit != 'all') {
+			req['limit'] = limit
 		}
 		if (this.state.eventType) {
 			req["activity"] = this.state.eventType ? this.state.eventType.value : "";
@@ -463,11 +463,19 @@ class AuditTrials extends React.Component {
 	// };
 
 
-	onlimitChange = (e,value) =>{
-		debugger;
-		this.setState({
-			selectedLimit :value.value == 'all'? value.vale:parseInt(value.value)
-		})
+	onlimitChange = (e, value) => {
+		console.log("valueal", value)
+		if (value != undefined) {
+			this.setState({
+				selectedLimit: value.value == 'all' ? value.value : parseInt(value.value)
+			})
+			this.auditHighlight(value.value)
+		} else {
+			this.setState({
+				selectedLimit: value
+			})
+		}
+
 	}
 
 	onChangeIng = (e, value) => {
@@ -681,7 +689,7 @@ class AuditTrials extends React.Component {
 								</div>
 								<div
 									style={{
-										marginLeft: "100px",
+										// marginLeft: "100px",
 										display: "flex",
 										flexDirection: "row"
 									}}
@@ -692,6 +700,48 @@ class AuditTrials extends React.Component {
 										enterButton
 										onSearch={this.search}
 									/>
+								</div>
+								<div
+									style={{
+										// marginTop: "10px",
+										float: "right",
+										marginRight: "10px"
+									}}
+									className="limitDropdown"
+								>
+									<Select
+										style={{
+											marginLeft: "20px",
+											width: "160px",
+											marginTop: "10px",
+											padding: "0px"
+										}}
+										allowClear
+										// defaultValue={this.state.selectedLimit}value = { this.state.company || undefined }
+										value={this.state.selectedLimit || undefined}
+										placeholder="Limit"
+										onChange={(e, value) => { this.onlimitChange(e, value) }}
+
+									>
+
+										<Option value="100" key="100">
+											100
+										</Option>
+										<Option value="500" key="500">
+											500
+										</Option>
+										<Option value="1000" key="1000">
+											1000
+										</Option>
+										<Option value="10000" key="10000">
+											10000
+										</Option>
+										<Option value="all" key="all">
+											ALL
+										</Option>
+
+									</Select>
+
 								</div>
 								<div
 									style={{
@@ -711,13 +761,14 @@ class AuditTrials extends React.Component {
 											Export
 										</Button>
 									</Dropdown>
-
-									<Select
+									{/* <Select
 										style={{
 											marginLeft: "20px",
-											width:"100px"
+											width:"300px"
 										}}
-										value = {this.state.selectedLimit}
+										allowClear 
+										// defaultValue={this.state.selectedLimit}value = { this.state.company || undefined }
+										// value = {this.state.selectedLimit || undefined}
 										placeholder="Limit"
 										onChange={(e, value) => { this.onlimitChange(e, value) }}
 										
@@ -739,7 +790,7 @@ class AuditTrials extends React.Component {
 										ALL
 									</Option>
 										
-									</Select>
+									</Select> */}
 								</div>
 							</div>
 							<Table
