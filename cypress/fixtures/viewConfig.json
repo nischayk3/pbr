@@ -1,0 +1,4307 @@
+{
+	"all_parameters": [
+		{
+			"ABL2258": true,
+			"ABL2259": false,
+			"ABL2261": false,
+			"ABL2264": false,
+			"ABR9486": false,
+			"ABR9487": false,
+			"ABR9491": false,
+			"ABR9492": false,
+			"ABT9563": false,
+			"ABT9564": false,
+			"ABT9565": false,
+			"ABT9566": false,
+			"ABT9567": false,
+			"ABV4289": false,
+			"ABV4290": false,
+			"ABV4292": false,
+			"ABV4293": false,
+			"ABV4294": false,
+			"ABV4295": false,
+			"ABV4296": false,
+			"ABV4297": false,
+			"ABV4298": false,
+			"ABV4299": false,
+			"ABY0079": false,
+			"ABY0080": false,
+			"ABY0081": false,
+			"ABY0082": false,
+			"ABY0083": false,
+			"ABY0084": false,
+			"ABY0086": false,
+			"ABY0088": false,
+			"ABY0089": false,
+			"ACB4375": false,
+			"aggregation": "Mean",
+			"coverage": "3%(1/33)",
+			"key": "2_ARSENIC",
+			"material_id": "1176024",
+			"parameter_name": "ARSENIC",
+			"primary": 0,
+			"sourceType": "material"
+		},
+		{
+			"ABL2258": true,
+			"ABL2259": false,
+			"ABL2261": false,
+			"ABL2264": false,
+			"ABR9486": false,
+			"ABR9487": false,
+			"ABR9491": false,
+			"ABR9492": false,
+			"ABT9563": false,
+			"ABT9564": false,
+			"ABT9565": false,
+			"ABT9566": false,
+			"ABT9567": false,
+			"ABV4289": false,
+			"ABV4290": false,
+			"ABV4292": false,
+			"ABV4293": false,
+			"ABV4294": false,
+			"ABV4295": false,
+			"ABV4296": false,
+			"ABV4297": false,
+			"ABV4298": false,
+			"ABV4299": false,
+			"ABY0079": false,
+			"ABY0080": false,
+			"ABY0081": false,
+			"ABY0082": false,
+			"ABY0083": false,
+			"ABY0084": false,
+			"ABY0086": false,
+			"ABY0088": false,
+			"ABY0089": false,
+			"ACB4375": false,
+			"aggregation": "Mean",
+			"coverage": "3%(1/33)",
+			"key": "2_ASSAY 1DECPT",
+			"material_id": "1176024",
+			"parameter_name": "ASSAY 1DECPT",
+			"primary": 1,
+			"sourceType": "material"
+		},
+		{
+			"ABL2258": true,
+			"ABL2259": false,
+			"ABL2261": false,
+			"ABL2264": false,
+			"ABR9486": false,
+			"ABR9487": false,
+			"ABR9491": false,
+			"ABR9492": false,
+			"ABT9563": false,
+			"ABT9564": false,
+			"ABT9565": false,
+			"ABT9566": false,
+			"ABT9567": false,
+			"ABV4289": false,
+			"ABV4290": false,
+			"ABV4292": false,
+			"ABV4293": false,
+			"ABV4294": false,
+			"ABV4295": false,
+			"ABV4296": false,
+			"ABV4297": false,
+			"ABV4298": false,
+			"ABV4299": false,
+			"ABY0079": false,
+			"ABY0080": false,
+			"ABY0081": false,
+			"ABY0082": false,
+			"ABY0083": false,
+			"ABY0084": false,
+			"ABY0086": false,
+			"ABY0088": false,
+			"ABY0089": false,
+			"ACB4375": false,
+			"aggregation": "Mean",
+			"coverage": "3%(1/33)",
+			"key": "2_ASSAY TITRIMETRIC",
+			"material_id": "1176024",
+			"parameter_name": "ASSAY TITRIMETRIC",
+			"primary": 0,
+			"sourceType": "material"
+		},
+		{
+			"ABL2258": true,
+			"ABL2259": false,
+			"ABL2261": false,
+			"ABL2264": false,
+			"ABR9486": false,
+			"ABR9487": false,
+			"ABR9491": false,
+			"ABR9492": false,
+			"ABT9563": false,
+			"ABT9564": false,
+			"ABT9565": false,
+			"ABT9566": false,
+			"ABT9567": false,
+			"ABV4289": false,
+			"ABV4290": false,
+			"ABV4292": false,
+			"ABV4293": false,
+			"ABV4294": false,
+			"ABV4295": false,
+			"ABV4296": false,
+			"ABV4297": false,
+			"ABV4298": false,
+			"ABV4299": false,
+			"ABY0079": false,
+			"ABY0080": false,
+			"ABY0081": false,
+			"ABY0082": false,
+			"ABY0083": false,
+			"ABY0084": false,
+			"ABY0086": false,
+			"ABY0088": false,
+			"ABY0089": false,
+			"ACB4375": false,
+			"aggregation": "Mean",
+			"coverage": "3%(1/33)",
+			"key": "2_CHLORIDES",
+			"material_id": "1176024",
+			"parameter_name": "CHLORIDES",
+			"primary": 0,
+			"sourceType": "material"
+		},
+		{
+			"ABL2258": true,
+			"ABL2259": false,
+			"ABL2261": false,
+			"ABL2264": false,
+			"ABR9486": false,
+			"ABR9487": false,
+			"ABR9491": false,
+			"ABR9492": false,
+			"ABT9563": false,
+			"ABT9564": false,
+			"ABT9565": false,
+			"ABT9566": false,
+			"ABT9567": false,
+			"ABV4289": false,
+			"ABV4290": false,
+			"ABV4292": false,
+			"ABV4293": false,
+			"ABV4294": false,
+			"ABV4295": false,
+			"ABV4296": false,
+			"ABV4297": false,
+			"ABV4298": false,
+			"ABV4299": false,
+			"ABY0079": false,
+			"ABY0080": false,
+			"ABY0081": false,
+			"ABY0082": false,
+			"ABY0083": false,
+			"ABY0084": false,
+			"ABY0086": false,
+			"ABY0088": false,
+			"ABY0089": false,
+			"ACB4375": false,
+			"aggregation": "last",
+			"coverage": "3%(1/33)",
+			"key": "2_Hold Time End DT",
+			"material_id": "1176024",
+			"parameter_name": "Hold Time End DT",
+			"primary": 4,
+			"sourceType": "material"
+		},
+		{
+			"ABL2258": true,
+			"ABL2259": false,
+			"ABL2261": false,
+			"ABL2264": false,
+			"ABR9486": false,
+			"ABR9487": false,
+			"ABR9491": false,
+			"ABR9492": false,
+			"ABT9563": false,
+			"ABT9564": false,
+			"ABT9565": false,
+			"ABT9566": false,
+			"ABT9567": false,
+			"ABV4289": false,
+			"ABV4290": false,
+			"ABV4292": false,
+			"ABV4293": false,
+			"ABV4294": false,
+			"ABV4295": false,
+			"ABV4296": false,
+			"ABV4297": false,
+			"ABV4298": false,
+			"ABV4299": false,
+			"ABY0079": false,
+			"ABY0080": false,
+			"ABY0081": false,
+			"ABY0082": false,
+			"ABY0083": false,
+			"ABY0084": false,
+			"ABY0086": false,
+			"ABY0088": false,
+			"ABY0089": false,
+			"ACB4375": false,
+			"aggregation": "last",
+			"coverage": "3%(1/33)",
+			"key": "2_Hold Time Start DT",
+			"material_id": "1176024",
+			"parameter_name": "Hold Time Start DT",
+			"primary": 5,
+			"sourceType": "material"
+		},
+		{
+			"ABL2258": true,
+			"ABL2259": false,
+			"ABL2261": false,
+			"ABL2264": false,
+			"ABR9486": false,
+			"ABR9487": false,
+			"ABR9491": false,
+			"ABR9492": false,
+			"ABT9563": false,
+			"ABT9564": false,
+			"ABT9565": false,
+			"ABT9566": false,
+			"ABT9567": false,
+			"ABV4289": false,
+			"ABV4290": false,
+			"ABV4292": false,
+			"ABV4293": false,
+			"ABV4294": false,
+			"ABV4295": false,
+			"ABV4296": false,
+			"ABV4297": false,
+			"ABV4298": false,
+			"ABV4299": false,
+			"ABY0079": false,
+			"ABY0080": false,
+			"ABY0081": false,
+			"ABY0082": false,
+			"ABY0083": false,
+			"ABY0084": false,
+			"ABY0086": false,
+			"ABY0088": false,
+			"ABY0089": false,
+			"ACB4375": false,
+			"aggregation": "Mean",
+			"coverage": "3%(1/33)",
+			"key": "2_IRON",
+			"material_id": "1176024",
+			"parameter_name": "IRON",
+			"primary": 6,
+			"sourceType": "material"
+		},
+		{
+			"ABL2258": true,
+			"ABL2259": false,
+			"ABL2261": false,
+			"ABL2264": false,
+			"ABR9486": false,
+			"ABR9487": false,
+			"ABR9491": false,
+			"ABR9492": false,
+			"ABT9563": false,
+			"ABT9564": false,
+			"ABT9565": false,
+			"ABT9566": false,
+			"ABT9567": false,
+			"ABV4289": false,
+			"ABV4290": false,
+			"ABV4292": false,
+			"ABV4293": false,
+			"ABV4294": false,
+			"ABV4295": false,
+			"ABV4296": false,
+			"ABV4297": false,
+			"ABV4298": false,
+			"ABV4299": false,
+			"ABY0079": false,
+			"ABY0080": false,
+			"ABY0081": false,
+			"ABY0082": false,
+			"ABY0083": false,
+			"ABY0084": false,
+			"ABY0086": false,
+			"ABY0088": false,
+			"ABY0089": false,
+			"ACB4375": false,
+			"aggregation": "Mean",
+			"coverage": "3%(1/33)",
+			"key": "2_SULFATES",
+			"material_id": "1176024",
+			"parameter_name": "SULFATES",
+			"primary": 7,
+			"sourceType": "material"
+		},
+		{
+			"ABL2258": false,
+			"ABL2259": false,
+			"ABL2261": false,
+			"ABL2264": false,
+			"ABR9486": false,
+			"ABR9487": false,
+			"ABR9491": false,
+			"ABR9492": false,
+			"ABT9563": false,
+			"ABT9564": false,
+			"ABT9565": false,
+			"ABT9566": false,
+			"ABT9567": false,
+			"ABV4289": false,
+			"ABV4290": false,
+			"ABV4292": false,
+			"ABV4293": false,
+			"ABV4294": false,
+			"ABV4295": false,
+			"ABV4296": false,
+			"ABV4297": false,
+			"ABV4298": false,
+			"ABV4299": false,
+			"ABY0079": false,
+			"ABY0080": false,
+			"ABY0081": false,
+			"ABY0082": false,
+			"ABY0083": false,
+			"ABY0084": false,
+			"ABY0086": false,
+			"ABY0088": false,
+			"ABY0089": false,
+			"ACB4375": false,
+			"EWX8000": true,
+			"EWX8001": true,
+			"EWX8002": true,
+			"EWX8003": true,
+			"EWX8004": true,
+			"EWX8005": true,
+			"EWX8006": true,
+			"aggregation": "Mean",
+			"coverage": "100.0 %(7/7)",
+			"id": 1,
+			"key": "1322454-AMMONIUM -N",
+			"material_id": 1116,
+			"parameter_name": "AMMONIUM -N",
+			"primary": 0,
+			"sourceType": "file"
+		},
+		{
+			"ABL2258": false,
+			"ABL2259": false,
+			"ABL2261": false,
+			"ABL2264": false,
+			"ABR9486": false,
+			"ABR9487": false,
+			"ABR9491": false,
+			"ABR9492": false,
+			"ABT9563": false,
+			"ABT9564": false,
+			"ABT9565": false,
+			"ABT9566": false,
+			"ABT9567": false,
+			"ABV4289": false,
+			"ABV4290": false,
+			"ABV4292": false,
+			"ABV4293": false,
+			"ABV4294": false,
+			"ABV4295": false,
+			"ABV4296": false,
+			"ABV4297": false,
+			"ABV4298": false,
+			"ABV4299": false,
+			"ABY0079": false,
+			"ABY0080": false,
+			"ABY0081": false,
+			"ABY0082": false,
+			"ABY0083": false,
+			"ABY0084": false,
+			"ABY0086": false,
+			"ABY0088": false,
+			"ABY0089": false,
+			"ACB4375": false,
+			"EWX8000": true,
+			"EWX8001": true,
+			"EWX8002": true,
+			"EWX8003": true,
+			"EWX8004": true,
+			"EWX8005": true,
+			"EWX8006": false,
+			"aggregation": "Mean",
+			"coverage": "85.71 %(6/7)",
+			"id": 2,
+			"key": "1322454-AMMTEST-OO",
+			"material_id": 1116,
+			"parameter_name": "AMMTEST-OO",
+			"primary": 0,
+			"sourceType": "file"
+		}
+	],
+	"chart_links": [],
+	"coverage": [
+		{
+			"batchstats": "32/33",
+			"coverage_metric_percent": "97.0%",
+			"function_id": "1",
+			"function_name": "arsenic_chlorides"
+		},
+		{
+			"batchstats": "32/33",
+			"coverage_metric_percent": "97.0%",
+			"function_id": "2",
+			"function_name": "assay_1D_Titrimetric"
+		},
+		{
+			"batchstats": "31/33",
+			"coverage_metric_percent": "94.0%",
+			"function_id": "3",
+			"function_name": "days"
+		},
+		{
+			"batchstats": "31/33",
+			"coverage_metric_percent": "94.0%",
+			"function_id": "4",
+			"function_name": "hours"
+		},
+		{
+			"batchstats": "31/33",
+			"coverage_metric_percent": "94.0%",
+			"function_id": "5",
+			"function_name": "minutes"
+		},
+		{
+			"batchstats": "31/33",
+			"coverage_metric_percent": "94.0%",
+			"function_id": "6",
+			"function_name": "seconds"
+		},
+		{
+			"batchstats": "32/33",
+			"coverage_metric_percent": "97.0%",
+			"function_id": "7",
+			"function_name": "iron"
+		},
+		{
+			"batchstats": "32/33",
+			"coverage_metric_percent": "97.0%",
+			"function_id": "8",
+			"function_name": "sulfate"
+		},
+		{
+			"batchstats": "31/33",
+			"coverage_metric_percent": "94.0%",
+			"function_id": "9",
+			"function_name": "approved_with_unapproved"
+		},
+		{
+			"batchstats": "32/33",
+			"coverage_metric_percent": "97.0%",
+			"function_id": "10",
+			"function_name": "yeojohnson"
+		},
+		{
+			"batchstats": "32/33",
+			"coverage_metric_percent": "97.0%",
+			"function_id": "11",
+			"function_name": "boxcox"
+		}
+	],
+	"data_table": [
+		{
+			"approved_with_unapproved": 104.737,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.737,
+			"batch_num": "ABL2258",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 52.0,
+			"iron": 50.0,
+			"minutes": 3120.0,
+			"recorded_date_approved_with_unapproved": "2019-11-04T12:34:58Z",
+			"recorded_date_arsenic_chlorides": "2019-11-04T12:34:58Z",
+			"recorded_date_assay_1D_Titrimetric": "2019-11-04T12:34:58Z",
+			"recorded_date_boxcox": "2019-11-04T12:34:58Z",
+			"recorded_date_days": "2019-11-04T12:34:58Z",
+			"recorded_date_hours": "2019-11-04T12:34:58Z",
+			"recorded_date_iron": "2019-11-04T12:34:58Z",
+			"recorded_date_minutes": "2019-11-04T12:34:58Z",
+			"recorded_date_seconds": "2019-11-04T12:34:58Z",
+			"recorded_date_sulfate": "2019-11-04T12:34:58Z",
+			"recorded_date_yeojohnson": "2019-11-04T12:34:58Z",
+			"seconds": 187200.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.737,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.737,
+			"batch_num": "ABL2259",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 52.0,
+			"iron": 50.0,
+			"minutes": 3120.0,
+			"recorded_date_approved_with_unapproved": "2019-11-04T12:34:58Z",
+			"recorded_date_arsenic_chlorides": "2019-11-04T12:34:58Z",
+			"recorded_date_assay_1D_Titrimetric": "2019-11-04T12:34:58Z",
+			"recorded_date_boxcox": "2019-11-04T12:34:58Z",
+			"recorded_date_days": "2019-11-04T12:34:58Z",
+			"recorded_date_hours": "2019-11-04T12:34:58Z",
+			"recorded_date_iron": "2019-11-04T12:34:58Z",
+			"recorded_date_minutes": "2019-11-04T12:34:58Z",
+			"recorded_date_seconds": "2019-11-04T12:34:58Z",
+			"recorded_date_sulfate": "2019-11-04T12:34:58Z",
+			"recorded_date_yeojohnson": "2019-11-04T12:34:58Z",
+			"seconds": 187200.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.737,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.737,
+			"batch_num": "ABL2261",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 52.0,
+			"iron": 50.0,
+			"minutes": 3120.0,
+			"recorded_date_approved_with_unapproved": "2019-11-04T12:34:58Z",
+			"recorded_date_arsenic_chlorides": "2019-11-04T12:34:58Z",
+			"recorded_date_assay_1D_Titrimetric": "2019-11-04T12:34:58Z",
+			"recorded_date_boxcox": "2019-11-04T12:34:58Z",
+			"recorded_date_days": "2019-11-04T12:34:58Z",
+			"recorded_date_hours": "2019-11-04T12:34:58Z",
+			"recorded_date_iron": "2019-11-04T12:34:58Z",
+			"recorded_date_minutes": "2019-11-04T12:34:58Z",
+			"recorded_date_seconds": "2019-11-04T12:34:58Z",
+			"recorded_date_sulfate": "2019-11-04T12:34:58Z",
+			"recorded_date_yeojohnson": "2019-11-04T12:34:58Z",
+			"seconds": 187200.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.737,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.737,
+			"batch_num": "ABL2264",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 52.0,
+			"iron": 50.0,
+			"minutes": 3120.0,
+			"recorded_date_approved_with_unapproved": "2019-11-04T12:34:58Z",
+			"recorded_date_arsenic_chlorides": "2019-11-04T12:34:58Z",
+			"recorded_date_assay_1D_Titrimetric": "2019-11-04T12:34:58Z",
+			"recorded_date_boxcox": "2019-11-04T12:34:58Z",
+			"recorded_date_days": "2019-11-04T12:34:58Z",
+			"recorded_date_hours": "2019-11-04T12:34:58Z",
+			"recorded_date_iron": "2019-11-04T12:34:58Z",
+			"recorded_date_minutes": "2019-11-04T12:34:58Z",
+			"recorded_date_seconds": "2019-11-04T12:34:58Z",
+			"recorded_date_sulfate": "2019-11-04T12:34:58Z",
+			"recorded_date_yeojohnson": "2019-11-04T12:34:58Z",
+			"seconds": 187200.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.565,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.565,
+			"batch_num": "ABR9486",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 50.0,
+			"iron": 50.0,
+			"minutes": 3000.0,
+			"recorded_date_approved_with_unapproved": "2020-05-20T16:28:40Z",
+			"recorded_date_arsenic_chlorides": "2020-05-20T16:28:40Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-05-20T16:28:40Z",
+			"recorded_date_boxcox": "2020-05-20T16:28:40Z",
+			"recorded_date_days": "2020-05-20T16:28:40Z",
+			"recorded_date_hours": "2020-05-20T16:28:40Z",
+			"recorded_date_iron": "2020-05-20T16:28:40Z",
+			"recorded_date_minutes": "2020-05-20T16:28:40Z",
+			"recorded_date_seconds": "2020-05-20T16:28:40Z",
+			"recorded_date_sulfate": "2020-05-20T16:28:40Z",
+			"recorded_date_yeojohnson": "2020-05-20T16:28:40Z",
+			"seconds": 180000.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.565,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.565,
+			"batch_num": "ABR9487",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 50.0,
+			"iron": 50.0,
+			"minutes": 3000.0,
+			"recorded_date_approved_with_unapproved": "2020-05-20T16:28:40Z",
+			"recorded_date_arsenic_chlorides": "2020-05-20T16:28:40Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-05-20T16:28:40Z",
+			"recorded_date_boxcox": "2020-05-20T16:28:40Z",
+			"recorded_date_days": "2020-05-20T16:28:40Z",
+			"recorded_date_hours": "2020-05-20T16:28:40Z",
+			"recorded_date_iron": "2020-05-20T16:28:40Z",
+			"recorded_date_minutes": "2020-05-20T16:28:40Z",
+			"recorded_date_seconds": "2020-05-20T16:28:40Z",
+			"recorded_date_sulfate": "2020-05-20T16:28:40Z",
+			"recorded_date_yeojohnson": "2020-05-20T16:28:40Z",
+			"seconds": 180000.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.6425,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.642,
+			"batch_num": "ABR9491",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 50.0,
+			"iron": 50.0,
+			"minutes": 3000.0,
+			"recorded_date_approved_with_unapproved": "2020-07-02T15:46:50Z",
+			"recorded_date_arsenic_chlorides": "2020-07-02T15:46:50Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-07-02T15:46:50Z",
+			"recorded_date_boxcox": "2020-07-02T15:46:50Z",
+			"recorded_date_days": "2020-07-02T15:46:50Z",
+			"recorded_date_hours": "2020-07-02T15:46:50Z",
+			"recorded_date_iron": "2020-07-02T15:46:50Z",
+			"recorded_date_minutes": "2020-07-02T15:46:50Z",
+			"recorded_date_seconds": "2020-07-02T15:46:50Z",
+			"recorded_date_sulfate": "2020-07-02T15:46:50Z",
+			"recorded_date_yeojohnson": "2020-07-02T15:46:50Z",
+			"seconds": 180000.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.72,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.72,
+			"batch_num": "ABR9492",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-07-02T15:46:50Z",
+			"recorded_date_arsenic_chlorides": "2020-07-02T15:46:50Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-07-02T15:46:50Z",
+			"recorded_date_boxcox": "2020-07-02T15:46:50Z",
+			"recorded_date_days": "2020-07-02T15:46:50Z",
+			"recorded_date_hours": "2020-07-02T15:46:50Z",
+			"recorded_date_iron": "2020-07-02T15:46:50Z",
+			"recorded_date_minutes": "2020-07-02T15:46:50Z",
+			"recorded_date_seconds": "2020-07-02T15:46:50Z",
+			"recorded_date_sulfate": "2020-07-02T15:46:50Z",
+			"recorded_date_yeojohnson": "2020-07-02T15:46:50Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "%_ANHY",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.702,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.702,
+			"batch_num": "ABT9563",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-07-02T15:46:50Z",
+			"recorded_date_arsenic_chlorides": "2020-07-02T15:46:50Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-07-02T15:46:50Z",
+			"recorded_date_boxcox": "2020-07-02T15:46:50Z",
+			"recorded_date_days": "2020-07-02T15:46:50Z",
+			"recorded_date_hours": "2020-07-02T15:46:50Z",
+			"recorded_date_iron": "2020-07-02T15:46:50Z",
+			"recorded_date_minutes": "2020-07-02T15:46:50Z",
+			"recorded_date_seconds": "2020-07-02T15:46:50Z",
+			"recorded_date_sulfate": "2020-07-02T15:46:50Z",
+			"recorded_date_yeojohnson": "2020-07-02T15:46:50Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.702,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.702,
+			"batch_num": "ABT9564",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-07-02T15:46:50Z",
+			"recorded_date_arsenic_chlorides": "2020-07-02T15:46:50Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-07-02T15:46:50Z",
+			"recorded_date_boxcox": "2020-07-02T15:46:50Z",
+			"recorded_date_days": "2020-07-02T15:46:50Z",
+			"recorded_date_hours": "2020-07-02T15:46:50Z",
+			"recorded_date_iron": "2020-07-02T15:46:50Z",
+			"recorded_date_minutes": "2020-07-02T15:46:50Z",
+			"recorded_date_seconds": "2020-07-02T15:46:50Z",
+			"recorded_date_sulfate": "2020-07-02T15:46:50Z",
+			"recorded_date_yeojohnson": "2020-07-02T15:46:50Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.702,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.702,
+			"batch_num": "ABT9565",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-07-02T15:46:50Z",
+			"recorded_date_arsenic_chlorides": "2020-07-02T15:46:50Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-07-02T15:46:50Z",
+			"recorded_date_boxcox": "2020-07-02T15:46:50Z",
+			"recorded_date_days": "2020-07-02T15:46:50Z",
+			"recorded_date_hours": "2020-07-02T15:46:50Z",
+			"recorded_date_iron": "2020-07-02T15:46:50Z",
+			"recorded_date_minutes": "2020-07-02T15:46:50Z",
+			"recorded_date_seconds": "2020-07-02T15:46:50Z",
+			"recorded_date_sulfate": "2020-07-02T15:46:50Z",
+			"recorded_date_yeojohnson": "2020-07-02T15:46:50Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.702,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.702,
+			"batch_num": "ABT9566",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-07-02T15:46:50Z",
+			"recorded_date_arsenic_chlorides": "2020-07-02T15:46:50Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-07-02T15:46:50Z",
+			"recorded_date_boxcox": "2020-07-02T15:46:50Z",
+			"recorded_date_days": "2020-07-02T15:46:50Z",
+			"recorded_date_hours": "2020-07-02T15:46:50Z",
+			"recorded_date_iron": "2020-07-02T15:46:50Z",
+			"recorded_date_minutes": "2020-07-02T15:46:50Z",
+			"recorded_date_seconds": "2020-07-02T15:46:50Z",
+			"recorded_date_sulfate": "2020-07-02T15:46:50Z",
+			"recorded_date_yeojohnson": "2020-07-02T15:46:50Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABT9567",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABV4289",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABV4290",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABV4292",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABV4293",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABV4294",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABV4295",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABV4296",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABV4297",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABV4298",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABV4299",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABY0079",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABY0080",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABY0081",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABY0082",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABY0083",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABY0084",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.684,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.684,
+			"batch_num": "ABY0086",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "%DRIEDB",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": 104.80799999999999,
+			"arsenic_chlorides": 5.0,
+			"assay_1D_Titrimetric": 99.808,
+			"batch_num": "ABY0088",
+			"boxcox": 0.001,
+			"days": 2.0,
+			"hours": 48.0,
+			"iron": 50.0,
+			"minutes": 2880.0,
+			"recorded_date_approved_with_unapproved": "2020-04-09T16:09:24Z",
+			"recorded_date_arsenic_chlorides": "2020-04-09T16:09:24Z",
+			"recorded_date_assay_1D_Titrimetric": "2020-04-09T16:09:24Z",
+			"recorded_date_boxcox": "2020-04-09T16:09:24Z",
+			"recorded_date_days": "2020-04-09T16:09:24Z",
+			"recorded_date_hours": "2020-04-09T16:09:24Z",
+			"recorded_date_iron": "2020-04-09T16:09:24Z",
+			"recorded_date_minutes": "2020-04-09T16:09:24Z",
+			"recorded_date_seconds": "2020-04-09T16:09:24Z",
+			"recorded_date_sulfate": "2020-04-09T16:09:24Z",
+			"recorded_date_yeojohnson": "2020-04-09T16:09:24Z",
+			"seconds": 172800.0,
+			"sulfate": 250.0,
+			"uom_code": "%_ANHY",
+			"yeojohnson": 0.053
+		},
+		{
+			"approved_with_unapproved": false,
+			"arsenic_chlorides": 125.0,
+			"assay_1D_Titrimetric": 99.932,
+			"batch_num": "ABY0089",
+			"boxcox": 0.001,
+			"days": false,
+			"hours": false,
+			"iron": 50.0,
+			"minutes": false,
+			"recorded_date_approved_with_unapproved": "2021-03-04T15:32:26Z",
+			"recorded_date_arsenic_chlorides": "2021-03-04T15:32:26Z",
+			"recorded_date_assay_1D_Titrimetric": "2021-03-04T15:32:26Z",
+			"recorded_date_boxcox": "2021-03-04T15:32:26Z",
+			"recorded_date_days": "2021-03-04T15:32:26Z",
+			"recorded_date_hours": "2021-03-04T15:32:26Z",
+			"recorded_date_iron": "2021-03-04T15:32:26Z",
+			"recorded_date_minutes": "2021-03-04T15:32:26Z",
+			"recorded_date_seconds": "2021-03-04T15:32:26Z",
+			"recorded_date_sulfate": "2021-03-04T15:32:26Z",
+			"recorded_date_yeojohnson": "2021-03-04T15:32:26Z",
+			"seconds": false,
+			"sulfate": 250.0,
+			"uom_code": "PPM",
+			"yeojohnson": 0.053
+		}
+	],
+	"files": {
+		"1116": true
+	},
+	"functions": {
+		"1": {
+			"defination": "ars_chl",
+			"name": "arsenic_chlorides"
+		},
+		"10": {
+			"defination": "from scipy import stats\noutput = stats.yeojohnson(as_amm_unapp['parameter_value'].to_list())\nresult = pd.DataFrame()\nresult.index = as_amm_unapp.index.to_list()\nresult['parameter_value'] = output[0]\n",
+			"name": "yeojohnson"
+		},
+		"11": {
+			"defination": "from scipy import stats\noutput = stats.boxcox(as_amm_unapp['parameter_value'].to_list())\nresult = pd.DataFrame()\nresult.index = as_amm_unapp.index.to_list()\nresult['parameter_value'] = output[0]\n",
+			"name": "boxcox"
+		},
+		"2": {
+			"defination": "assay_titri",
+			"name": "assay_1D_Titrimetric"
+		},
+		"3": {
+			"defination": "day(end, start)",
+			"name": "days"
+		},
+		"4": {
+			"defination": "hours(end, start)",
+			"name": "hours"
+		},
+		"5": {
+			"defination": "minutes(end, start)",
+			"name": "minutes"
+		},
+		"6": {
+			"defination": "seconds(end, start)",
+			"name": "seconds"
+		},
+		"7": {
+			"defination": "iron",
+			"name": "iron"
+		},
+		"8": {
+			"defination": "sulfate",
+			"name": "sulfate"
+		},
+		"9": {
+			"defination": "as_amm_unapp + ar_amm_app",
+			"name": "approved_with_unapproved"
+		}
+	},
+	"functions_eval": [
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2258",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2259",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2261",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2264",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9486",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9487",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9491",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9492",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9563",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9564",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9565",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9566",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9567",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4289",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4290",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4292",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4293",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4294",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4295",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4296",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4297",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4298",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4299",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0079",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0080",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0081",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0082",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0083",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0084",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0086",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0088",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 5.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0089",
+			"function_index": "1",
+			"parameter": "arsenic_chlorides",
+			"recorded_date": "2021-03-04T15:32:26Z",
+			"value": 125.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2258",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 99.737
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2259",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 99.737
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2261",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 99.737
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2264",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 99.737
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9486",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 99.565
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9487",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 99.565
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9491",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 99.6425
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9492",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 99.72
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9563",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 99.702
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9564",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 99.702
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9565",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 99.702
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9566",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 99.702
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9567",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4289",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4290",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4292",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4293",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4294",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4295",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4296",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4297",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4298",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4299",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0079",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0080",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0081",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0082",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0083",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0084",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0086",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0088",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 99.80799999999999
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0089",
+			"function_index": "2",
+			"parameter": "assay_1D_Titrimetric",
+			"recorded_date": "2021-03-04T15:32:26Z",
+			"value": 99.932
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2258",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2259",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2261",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2264",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9486",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9487",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9491",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9492",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9563",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9564",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9565",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9566",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9567",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4289",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4290",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4292",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4293",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4294",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4295",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4296",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4297",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4298",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4299",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0079",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0080",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0081",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0082",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0083",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0084",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0086",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0088",
+			"function_index": "3",
+			"parameter": "days",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2258",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 52.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2259",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 52.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2261",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 52.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2264",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 52.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9486",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9487",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9491",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9492",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9563",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9564",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9565",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9566",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9567",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4289",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4290",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4292",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4293",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4294",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4295",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4296",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4297",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4298",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4299",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0079",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0080",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0081",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0082",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0083",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0084",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0086",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0088",
+			"function_index": "4",
+			"parameter": "hours",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 48.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2258",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 3120.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2259",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 3120.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2261",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 3120.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2264",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 3120.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9486",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 3000.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9487",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 3000.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9491",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 3000.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9492",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9563",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9564",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9565",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9566",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9567",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4289",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4290",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4292",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4293",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4294",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4295",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4296",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4297",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4298",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4299",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0079",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0080",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0081",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0082",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0083",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0084",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0086",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0088",
+			"function_index": "5",
+			"parameter": "minutes",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 2880.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2258",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 187200.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2259",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 187200.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2261",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 187200.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2264",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 187200.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9486",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 180000.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9487",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 180000.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9491",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 180000.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9492",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9563",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9564",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9565",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9566",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9567",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4289",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4290",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4292",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4293",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4294",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4295",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4296",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4297",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4298",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4299",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0079",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0080",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0081",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0082",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0083",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0084",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0086",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0088",
+			"function_index": "6",
+			"parameter": "seconds",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 172800.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2258",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2259",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2261",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2264",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9486",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9487",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9491",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9492",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9563",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9564",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9565",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9566",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9567",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4289",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4290",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4292",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4293",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4294",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4295",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4296",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4297",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4298",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4299",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0079",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0080",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0081",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0082",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0083",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0084",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0086",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0088",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0089",
+			"function_index": "7",
+			"parameter": "iron",
+			"recorded_date": "2021-03-04T15:32:26Z",
+			"value": 50.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2258",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2259",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2261",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2264",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9486",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9487",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9491",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9492",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9563",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9564",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9565",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9566",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9567",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4289",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4290",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4292",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4293",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4294",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4295",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4296",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4297",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4298",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4299",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0079",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0080",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0081",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0082",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0083",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0084",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0086",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0088",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0089",
+			"function_index": "8",
+			"parameter": "sulfate",
+			"recorded_date": "2021-03-04T15:32:26Z",
+			"value": 250.0
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2258",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 104.737
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2259",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 104.737
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2261",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 104.737
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2264",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 104.737
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9486",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 104.565
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9487",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 104.565
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9491",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 104.6425
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9492",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 104.72
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9563",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 104.702
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9564",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 104.702
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9565",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 104.702
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9566",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 104.702
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9567",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4289",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4290",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4292",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4293",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4294",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4295",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4296",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4297",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4298",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4299",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0079",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0080",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0081",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0082",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0083",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0084",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0086",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.684
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0088",
+			"function_index": "9",
+			"parameter": "approved_with_unapproved",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 104.80799999999999
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2258",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2259",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2261",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2264",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9486",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9487",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9491",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9492",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9563",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9564",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9565",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9566",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9567",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4289",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4290",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4292",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4293",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4294",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4295",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4296",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4297",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4298",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4299",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0079",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0080",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0081",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0082",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0083",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0084",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0086",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0088",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0089",
+			"function_index": "10",
+			"parameter": "yeojohnson",
+			"recorded_date": "2021-03-04T15:32:26Z",
+			"value": 0.05278640538308897
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2258",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2259",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2261",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABL2264",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2019-11-04T12:34:58Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9486",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9487",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-05-20T16:28:40Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9491",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABR9492",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9563",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9564",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9565",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9566",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-07-02T15:46:50Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABT9567",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4289",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4290",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4292",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4293",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4294",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4295",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4296",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4297",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4298",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABV4299",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0079",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0080",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0081",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0082",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0083",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0084",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0086",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0088",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2020-04-09T16:09:24Z",
+			"value": 0.0013607993923983506
+		},
+		{
+			"approval_flag": true,
+			"batch_num": "ABY0089",
+			"function_index": "11",
+			"parameter": "boxcox",
+			"recorded_date": "2021-03-04T15:32:26Z",
+			"value": 0.0013607993923983506
+		}
+	],
+	"material_id": "BELATACEPT",
+	"material_name": "",
+	"parameters": {
+		"ar_amm_app": [
+			{
+				"aggregation": "Mean",
+				"batch_exclude": [],
+				"material_id": "1176024",
+				"parameter_name": "ARSENIC",
+				"priority": 0,
+				"source_type": "material"
+			},
+			{
+				"aggregation": "Mean",
+				"batch_exclude": [],
+				"material_id": 1116,
+				"parameter_name": "AMMONIUM -N",
+				"priority": 1,
+				"source_type": "file"
+			},
+			{
+				"aggregation": "Mean",
+				"batch_exclude": [],
+				"material_id": 1116,
+				"parameter_name": "AMMTEST-OO",
+				"priority": 2,
+				"source_type": "file"
+			}
+		],
+		"ars_chl": [
+			{
+				"aggregation": "Mean",
+				"batch_exclude": [],
+				"material_id": "1176024",
+				"parameter_name": "ARSENIC",
+				"priority": 0,
+				"source_type": "material"
+			},
+			{
+				"aggregation": "Mean",
+				"batch_exclude": [],
+				"material_id": "1176024",
+				"parameter_name": "CHLORIDES",
+				"priority": 1,
+				"source_type": "material"
+			}
+		],
+		"as_amm_unapp": [
+			{
+				"aggregation": "Mean",
+				"batch_exclude": [],
+				"material_id": "1176024",
+				"parameter_name": "ASSAY 1DECPT",
+				"priority": 0,
+				"source_type": "material"
+			},
+			{
+				"aggregation": "Mean",
+				"batch_exclude": [],
+				"material_id": 1116,
+				"parameter_name": "AMMONIUM -N",
+				"priority": 1,
+				"source_type": "file"
+			},
+			{
+				"aggregation": "Mean",
+				"batch_exclude": [],
+				"material_id": 1116,
+				"parameter_name": "AMMTEST-OO",
+				"priority": 2,
+				"source_type": "file"
+			}
+		],
+		"assay_titri": [
+			{
+				"aggregation": "Mean",
+				"batch_exclude": [],
+				"material_id": "1176024",
+				"parameter_name": "ASSAY 1DECPT",
+				"priority": 0,
+				"source_type": "material"
+			},
+			{
+				"aggregation": "Mean",
+				"batch_exclude": [],
+				"material_id": "1176024",
+				"parameter_name": "ASSAY TITRIMETRIC",
+				"priority": 1,
+				"source_type": "material"
+			}
+		],
+		"end": [
+			{
+				"aggregation": "last",
+				"batch_exclude": [],
+				"material_id": "1176024",
+				"parameter_name": "Hold Time End DT",
+				"priority": 0,
+				"source_type": "material"
+			}
+		],
+		"iron": [
+			{
+				"aggregation": "Mean",
+				"batch_exclude": [],
+				"material_id": "1176024",
+				"parameter_name": "IRON",
+				"priority": 0,
+				"source_type": "material"
+			}
+		],
+		"start": [
+			{
+				"aggregation": "last",
+				"batch_exclude": [],
+				"material_id": "1176024",
+				"parameter_name": "Hold Time Start DT",
+				"priority": 0,
+				"source_type": "material"
+			}
+		],
+		"sulfate": [
+			{
+				"aggregation": "Mean",
+				"batch_exclude": [],
+				"material_id": "1176024",
+				"parameter_name": "SULFATES",
+				"priority": 0,
+				"source_type": "material"
+			}
+		]
+	},
+	"view_description": "",
+	"view_disp_id": "V348",
+	"view_name": "Dinesh Complete- All functions",
+	"view_status": "APRD",
+	"view_version": "1"
+}

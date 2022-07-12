@@ -291,13 +291,32 @@ span.statusClosed {
 }
 
 .script-editor-wrapper {
-	position: relative;
 
-	.keyboard-icon {
-		position: absolute;
-		top: 6px;
-		right: 25px;
+	display: flex;
+	gap: 0 16px;
+
+	.script-editor {
+		position: relative;
+		width: 100%;
+		display: grid;
+
+		.keyboard-icon {
+			position: absolute;
+			top: 6px;
+			right: 25px;
+		}
 	}
+
+	.script-btn {
+		.custom-secondary-btn-link {
+			width: 100%;
+		}
+
+		.custom-secondary-btn {
+			width: 100%;
+		}
+	}
+
 }
 
 .w-tc-editor {

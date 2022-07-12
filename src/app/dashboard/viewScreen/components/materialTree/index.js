@@ -20,8 +20,8 @@ import { getParameterBatches } from "../../../../../services/viewCreationPublish
 const { TreeNode } = Tree;
 let setKey = [];
 let selectedData = [];
-let finalData = [];
-const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue }) => {
+
+const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue, fromWorkflowScreen }) => {
 
 	const { hierarchy } = moleculeList;
 
@@ -43,7 +43,10 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 		setSelectedKeys(selectedKe);
 	};
 
+
+
 	const handleClickParam = async (keys, param, record) => {
+		const finalData = [];
 		const existing = selectedData.find((item) => item.key === keys);
 		try {
 			const paramObj = {
@@ -82,6 +85,7 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 					rowData.material_id = record.product_num;
 
 					let data = { ...rowData };
+
 					if (selectedTableData && selectedTableData.length !== 0) {
 						selectedTableData.forEach((ele) => {
 							const tempObj = finalData.find((item) => item.key === ele.key);
@@ -90,11 +94,10 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 							}
 						});
 					}
+
 					finalData.push(data);
 
-
 					dispatch(sendSelectedParamData(finalData));
-
 					//dispatch(batchCoverage(getMolbatchData));
 				} else {
 					dispatch(showNotification("error", "Function already exists"));
@@ -147,18 +150,20 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 																			</p>
 																		</div>
 																		<span
-																			onClick={(e) =>
-																				handleClickParam(
-																					"thirdEle-" + ele3,
-																					b.parameter_name,
-																					b
-																				)
+																			onClick={(e) => {
+																				!fromWorkflowScreen ?
+																					handleClickParam(
+																						"thirdEle-" + ele3,
+																						b.parameter_name,
+																						b
+																					) : ''
+																			}
 																			}
 																		>
 																			{!selectedKeys ? (
 																				<CheckOutlined />
 																			) : (
-																				<PlusOutlined />
+																				<PlusOutlined disabled={fromWorkflowScreen} />
 																			)}
 																		</span>
 																	</div>

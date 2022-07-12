@@ -1,6 +1,7 @@
 //  cpv-layout-content
 .ant-layout-content {
 	padding: 0;
+
 	.custom-wrapper {
 		.sub-header {
 			padding: 10px 0px;
@@ -10,16 +11,20 @@
 			justify-content: space-between;
 			box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
 			height: 50px;
+
 			.sub-header-title {
 				display: flex;
+
 				.bread-crumb-wrapper {
 					box-shadow: none !important;
 				}
+
 				.header-icon {
 					padding: 15px 0;
 					font-size: 20px;
 					color: #262626;
 				}
+
 				.header-title {
 					font-family: var(--primary-font-family) !important;
 					font-style: normal;
@@ -35,12 +40,14 @@
 					margin: 0;
 				}
 			}
+
 			.sub-header-btns {
 				.custom-primary-btn {
 					margin: 0px 6px;
 				}
 			}
 		}
+
 		.custom-content-layout {
 			padding: 8px 29px;
 			min-height: calc(100vh - 120px);
@@ -57,6 +64,7 @@
 	height: 40px !important;
 	border-bottom: 1px solid #d9d9d9 !important;
 	padding: 8px 12px;
+
 	.ant-card-head-title {
 		font-family: var(--secondary-font-family);
 		font-style: normal;
@@ -65,6 +73,7 @@
 		line-height: 22px;
 		padding: 1px 18px;
 	}
+
 	.ant-card-body {
 		padding: 23px 28px;
 		border-radius: 4px;
@@ -92,6 +101,7 @@
 	border-radius: 4px;
 	transition: all 0.3s;
 }
+
 .ant-select-selection-overflow-item .ant-select-selection-item {
 	background-color: #fafafa;
 	margin: 5px;
@@ -127,7 +137,7 @@
 }
 
 .custom-secondary-btn-link {
-	font-family: Roboto;
+	font-family: var(--primary-font-family) !important;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 14px;
@@ -135,6 +145,7 @@
 	/* identical to box height, or 157% */
 	/* Gray / gray-9 */
 	color: #262626;
+
 }
 
 .ant-btn-primary:focus,
@@ -157,11 +168,13 @@
 	border-color: #486bc9;
 	background: #486bc9;
 }
+
 .custom-secondary-btn-link:focus,
 .custom-secondary-btn-link:hover {
 	color: #486bc9;
 }
-.ant-table-thead > tr > th {
+
+.ant-table-thead>tr>th {
 	background: #f2fbff;
 
 	padding: 12px;
@@ -199,6 +212,7 @@
 ::-webkit-scrollbar-thumb:hover {
 	background: #555;
 }
+
 .ant-switch-checked {
 	background-color: var(--primary-color);
 }
@@ -217,10 +231,12 @@
 .table-row-light {
 	background-color: #ffffff;
 }
+
 .table-row-dark {
 	background-color: #f9f9f9;
 }
-.ant-table-small .ant-table-thead > tr > th {
+
+.ant-table-small .ant-table-thead>tr>th {
 	background-color: #f0f7fa;
 	font-family: var(--primary-font-family);
 	font-style: normal;
@@ -231,7 +247,7 @@
 	//padding: 12px 24px !important;
 }
 
-.ant-table-tbody > tr > td {
+.ant-table-tbody>tr>td {
 	border-bottom: 1px solid #f0f0f0;
 	transition: background 0.3s;
 	font-family: var(--primary-font-family);
@@ -242,6 +258,7 @@
 	color: #202020;
 	//	padding: 6px 24px !important;
 }
+
 .ant-table {
 	border: 1px solid #f0f0f0;
 }
@@ -251,6 +268,7 @@
 	background: #f1f7ff;
 	border-bottom: 1px solid #d9d9d9;
 }
+
 .ant-input-textarea {
 	background-color: #baeaff;
 }

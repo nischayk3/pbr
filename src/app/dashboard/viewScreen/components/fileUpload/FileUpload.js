@@ -26,7 +26,8 @@ import {
 import { deleteAdHocFile } from "../../../../../duck/actions/fileUploadAction";
 import {
 	batchCoverage,
-	sendSelectedParamData
+	sendSelectedParamData,
+	sendTotalFileBatches,
 } from "../../../../../duck/actions/viewAction";
 import {
 	adHocFileUpload,
@@ -40,20 +41,21 @@ import {
 } from "../../../../../duck/actions/commonActions";
 const { Panel } = Collapse;
 const { Dragger } = Upload;
-function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSummaryTable, parentBatches, setParentBatches, setNewBatchData, setFunctionEditorViewState, filesListTree, setFilesListTree, setViewSummaryBatch, setMolBatches }) {
-
+function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSummaryTable, setNewBatchData, setFunctionEditorViewState, filesListTree, setFilesListTree, setViewSummaryBatch, viewJson, fromWorkflowScreen }) {
 	const [uploadModalVisible, setUploadModalVisible] = useState(false);
 	const [uploadBtnDisabled, setUploadBtnDisabled] = useState(true);
 	const [selectedAdHocFileList, setSelectedAdHocFileList] = useState([]);
 	const [selectedFileId, setSelectedFileId] = useState("");
+	const [fileBatch, setFileBatch] = useState([]);
+
 	const selectedTableData = useSelector(
 		(state) => state.viewCreationReducer.selectedParamData
 	);
 	const finalData = useRef([]);
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
+	const totalBatch = useSelector((state) => state.viewCreationReducer.totalMolBatches);
 
 	const dispatch = useDispatch();
-
 	const columns = [
 		{
 			title: "Parameter",
@@ -88,9 +90,6 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 						onClick={() => {
 							parameterPassHandler(record, index);
 						}}
-						onKeyDown={() => {
-							parameterPassHandler(record, index);
-						}}
 					>
 						<PlusSquareOutlined />
 					</span>
@@ -101,52 +100,73 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 
 	useEffect(() => {
 		if (isLoadView) {
-			let selected_keys = Object.keys(selectedFiles);
+			const loadFile = [...viewJson]
+			const fileId = loadFile[0].files
 			dispatch(showLoader());
-			if (selected_keys.length > 0) {
-				selected_keys.map((i) =>
+
+			if (Object.keys(fileId).length > 0) {
+				Object.entries(fileId).forEach(([key, value]) => {
 					adHocFilesParameterTree({
-						file_id: parseInt(i),
-						detailedCoverage: true
+						file_id: parseInt(key),
+						detailedCoverage: value
 					}).then((res) => {
-						const date = new Date();
-						res.timeStamp = date.toISOString();
-						filesListTree.push(res);
-						setFilesListTree(filesListTree);
+						if (res.Status === 200) {
+							dispatch(hideLoader());
+							const totalFileBatch = []
+							const date = new Date();
+							res.timeStamp = date.toISOString();
+							filesListTree.push(res);
+							setFilesListTree(filesListTree);
+							const batchRes = res.Data.forEach((ele) => {
+								ele.coverage_list.forEach((item) => {
+									totalFileBatch.push(item)
+								})
+							})
+							const filteredBatch = totalFileBatch && totalFileBatch.filter(function (item, pos) {
+								return totalFileBatch.indexOf(item) == pos;
+							});
+
+							const mapBatch = filteredBatch.map((ele) => {
+								return { batch: ele }
+							})
+							setFileBatch(mapBatch)
+							dispatch(sendTotalFileBatches(mapBatch))
+
+						}
 						if (res.Status === 404) {
+							dispatch(hideLoader());
 							dispatch(showNotification("error", "Unable to Load Files"));
 						}
 						if (res.Status === 401) {
+							dispatch(hideLoader());
 							dispatch(showNotification("error", "UnAuthorized User"));
 						}
 					})
-				);
+				})
 			}
-			setTimeout(() => {
-				dispatch(hideLoader());
-			}, 1000);
 		}
 	}, [isLoadView]);
+
+
 
 	const parameterPassHandler = (record, index) => {
 		const selectedParam = finalData.current.find(
 			(item) => String(item.parameter_name) === String(record.param)
 		);
 
-		let coverage_lists = record.coverage_list;
-		coverage_lists = coverage_lists.map((i) => {
-			return { batch: i };
-		});
+		// let coverage_lists = record.coverage_list;
+		// coverage_lists = coverage_lists.map((i) => {
+		// 	return { batch: i };
+		// });
 
 		if (selectedParam === undefined) {
 			let rowData = {};
 			let batchData = {};
 			let newBatchData = [];
-			let molBatch = [...parentBatches, ...coverage_lists];
+			let molBatch = [...totalBatch, ...fileBatch];
 
-			setParentBatches(molBatch);
 			setViewSummaryBatch(molBatch)
-			setMolBatches(molBatch)
+
 			molBatch.map((el) => {
 				if (record.coverage_list.includes(el.batch)) {
 					return (
@@ -232,6 +252,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 					onConfirm={() => confirm(File_id)}
 					okText="Yes"
 					cancelText="No"
+					disabled={fromWorkflowScreen}
 				>
 					<DeleteOutlined />
 				</Popconfirm>
@@ -300,7 +321,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		var today = new Date();
 		today.setDate(today.getDate());
 		const nextState = {};
-
+		dispatch(showLoader());
 		if (info.file.status === "uploading") {
 			setSelectedAdHocFileList([info.file]);
 			nextState.selectedAdHocFileList = [info.file];
@@ -314,17 +335,22 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			formData.append("username", localStorage.getItem("username"));
 			adHocFileUpload(formData).then((res) => {
 				if (res.Status === 202) {
+					dispatch(hideLoader());
 					dispatch(showNotification("success", res.Message));
+
 					setUploadBtnDisabled(false);
 					setSelectedFileId(res.File_id);
 					selectedFiles[`${res.File_id}`] = true;
 					setSelectedFiles(selectedFiles);
+
 				}
 				if (res.Status === 400) {
+					dispatch(hideLoader());
 					dispatch(showNotification("error", res.Message));
 					setUploadBtnDisabled(true);
 				}
 				if (res.Status === 401) {
+					dispatch(hideLoader());
 					dispatch(showNotification("error", "UnAuthorized User"));
 					setUploadBtnDisabled(true);
 				}
@@ -353,18 +379,18 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			}
 		});
 	};
-
 	return (
 		<div className="materials-wrapper fileUpload-wrapper">
 			<div className="materials-uploadDownloadFiles">
 				<div className="materials-uploadFiles">
-					<Button icon={<UploadOutlined />} onClick={onClickUpload}>
+					<Button disabled={fromWorkflowScreen} icon={<UploadOutlined />} onClick={onClickUpload}>
 						Upload
 					</Button>
 				</div>
 				<div className="materials-downloadFiles">
-					<Button type="text" className="viewCreation-downloadBtn">
+					<Button type="text" className="viewCreation-downloadBtn" disabled={fromWorkflowScreen}>
 						<a
+							id="download-temp"
 							href={require("../../../../../assets/xlsx/template_view_file_upload.xlsx")}
 							download="template_view_file_upload.xlsx"
 						>
@@ -418,6 +444,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 						Cancel
 					</Button>,
 					<Button
+						id="upload-file"
 						key="submit"
 						type="primary"
 						onClick={handleSubmitUpload}
