@@ -15,7 +15,7 @@ import {
 import { hideLoader } from "../../../../../duck/actions/commonActions";
 
 let paramType = "";
-let counter = 0;
+
 
 const ParameterTable = ({
 	variableCreate,
@@ -33,9 +33,9 @@ const ParameterTable = ({
 	callbackCheckbox,
 	fromWorkflowScreen,
 	rowDisable }) => {
-
 	const paramReducer = useSelector((state) => state.viewCreationReducer);
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
+
 	const selectedTableData = useSelector(
 		(state) => state.viewCreationReducer.selectedParamData
 	);
@@ -83,6 +83,8 @@ const ParameterTable = ({
 	const Option = Select;
 	const { Search } = Input;
 	const dispatch = useDispatch();
+	let counter = isLoadView && Object.keys(fun).length > 0 ? Object.keys(fun)[Object.keys(fun).length - 1] : 0;
+
 
 	let columns = [
 		{
@@ -409,6 +411,7 @@ const ParameterTable = ({
 		if (isLoadView) {
 			//	onChangeColumnsHandler();
 			setTableData([...selectedTableData]);
+			setFun(functions_obj)
 		}
 	}, [isLoadView]);
 
@@ -499,7 +502,6 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (saveFunction) {
-
 			counter++;
 			let arr = [];
 
@@ -514,6 +516,7 @@ const ParameterTable = ({
 			}
 
 			let functionTable = [...viewSummaryBatch];
+
 			let new_column_data = newColumnData.map((e) => e.batch_num);
 			functionTable.forEach((item) => {
 				let obj = {};
@@ -525,7 +528,6 @@ const ParameterTable = ({
 				});
 				arr.push(obj);
 			});
-
 			const arr3 = functionTable.map((item, i) =>
 				Object.assign({}, item, arr[i])
 			);
@@ -714,7 +716,6 @@ const ParameterTable = ({
 		setTableData([...deleteRecord])
 		dispatch(sendSelectedParamData([...deleteRecord]));
 	}
-
 
 	return (
 		<>
