@@ -25,7 +25,7 @@
                     "type": "scatter",
                     "mode": "markers",
                     "marker": {
-                        "color": "#D4E2FD",
+                        "color": "#376dd4",
                         "size": 15
                     }
                 }
