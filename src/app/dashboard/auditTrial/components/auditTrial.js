@@ -318,7 +318,7 @@ class AuditTrials extends React.Component {
 		return current && current > moment().endOf("day");
 	};
 
-
+	/* istanbul ignore next */
 	auditHighlight = (limit="500") => {
 		var today = new Date();
 		today.setDate(today.getDate() + 1);
@@ -412,7 +412,7 @@ class AuditTrials extends React.Component {
 					eventList: eventlist
 				});
 			})
-			.catch((error) => {
+			.catch((error) => {/* istanbul ignore next */
 				if (error && error.message) console.warn("Warning", error.message);
 			});
 	};
@@ -462,7 +462,7 @@ class AuditTrials extends React.Component {
 	// 	this.setState({ columns: filtered, checkedColumns: checkedColumns });
 	// };
 
-
+	/* istanbul ignore next */
 	onlimitChange = (e, value) => {
 		console.log("valueal", value)
 		if (value != undefined) {
@@ -556,6 +556,7 @@ class AuditTrials extends React.Component {
 		});
 		this.esgTablePackaging();
 	};
+	/* istanbul ignore next */
 	handleAutoCompleteChange = (state, evt, value) => {
 		if (evt) {
 			if (value === null) {
