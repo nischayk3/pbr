@@ -16,7 +16,6 @@ import { hideLoader } from "../../../../../duck/actions/commonActions";
 
 let paramType = "";
 
-
 const ParameterTable = ({
 	variableCreate,
 	setVariableCreate,
@@ -80,10 +79,21 @@ const ParameterTable = ({
 	const [isMolBatchUpdate, setIsMolBatchUpdate] = useState([]);
 	const [filterMolTable, setFilterMolTable] = useState(null);
 
+	useEffect(() => {
+
+		if (isLoadView) {
+			//	onChangeColumnsHandler();
+			setTableData([...selectedTableData]);
+			setFun(functions_obj)
+		}
+	}, [isLoadView]);
+
+	const [counter, setCounter] = useState(isLoadView && Object.keys(functions_obj).length > 0 ? parseInt(Object.keys(functions_obj)[Object.keys(functions_obj).length - 1]) + 1 : 0)
+
 	const Option = Select;
 	const { Search } = Input;
 	const dispatch = useDispatch();
-	let counter = isLoadView && Object.keys(fun).length > 0 ? Object.keys(fun)[Object.keys(fun).length - 1] : 0;
+
 
 
 	let columns = [
@@ -406,14 +416,7 @@ const ParameterTable = ({
 		}
 	}, [paramReducer]);
 
-	useEffect(() => {
 
-		if (isLoadView) {
-			//	onChangeColumnsHandler();
-			setTableData([...selectedTableData]);
-			setFun(functions_obj)
-		}
-	}, [isLoadView]);
 
 	useEffect(() => {
 
@@ -502,7 +505,7 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (saveFunction) {
-			counter++;
+			setCounter(counter + 1);
 			let arr = [];
 
 			let primarySelectedData;
@@ -716,7 +719,6 @@ const ParameterTable = ({
 		setTableData([...deleteRecord])
 		dispatch(sendSelectedParamData([...deleteRecord]));
 	}
-
 	return (
 		<>
 			<div className="param-table">
