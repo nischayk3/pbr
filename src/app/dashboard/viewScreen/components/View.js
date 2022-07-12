@@ -150,8 +150,6 @@ const ViewCreation = () => {
 			const moleculeRes = await getMoleculeList(_reqMolecule);
 			if (moleculeRes.Status === 200) {
 				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes.Data }));
-				const filterParameters = filterParam !== undefined && filterParam !== null ? filterParam : ''
-
 				const _filterReq2 = {
 					data: {
 						hierarchy: moleculeRes.Data.hierarchy,
@@ -167,12 +165,6 @@ const ViewCreation = () => {
 					setViewSummaryBatch(moleculeRes.Data.mol_batches);
 				}
 				dispatch(hideLoader());
-			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
-				dispatch(hideLoader());
-				dispatch(showNotification("error", "No Data Found"));
-			} else {
-				dispatch(hideLoader());
-				dispatch(showNotification("error", moleculeRes.Message));
 			}
 		} catch (error) {
 			dispatch(hideLoader());
@@ -190,12 +182,6 @@ const ViewCreation = () => {
 					setViewSummaryBatch(moleculeRes1.Data.mol_batches);
 				}
 				dispatch(hideLoader());
-			} else if (moleculeRes1.Status === 401 && moleculeRes1.Status === 400) {
-				dispatch(hideLoader());
-				dispatch(showNotification("error", "No Data Found"));
-			} else {
-				dispatch(hideLoader());
-				dispatch(showNotification("error", moleculeRes1.Message));
 			}
 		} catch (error) {
 			dispatch(hideLoader());
@@ -426,6 +412,7 @@ const ViewCreation = () => {
 						<Button
 							className="viewCreation-saveBtn"
 							onClick={handleSaveVisible}
+							id="save-view"
 						>
 							Save
 						</Button>
