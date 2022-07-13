@@ -118,6 +118,7 @@ function ReportGenerator(props) {
 	// const [chart, setCharts] = useState([]);
 	const [table, setTable] = useState([]);
 	const [isSave, setIsSave] = useState(false);
+	const [isSaved, setIsSaved] = useState(false);
 	const [reportId, setReportId] = useState('');
 	const [isPublish, setIsPublish] = useState(false);
 	// const [publishResponse, setPublishResponse] = useState({});
@@ -361,6 +362,7 @@ function ReportGenerator(props) {
 		}
 	};
 
+
 	return (
 		<div className='custom-wrapper'>
 			<div className='sub-header' style={{ paddingRight: '24px' }}>
@@ -531,7 +533,7 @@ function ReportGenerator(props) {
 					</Card>
 				</div>
 			</div>
-			<SaveModal isSave={isSave} setIsSave={setIsSave} id={''} load={genLoad} />
+			<SaveModal isSave={isSave} setIsSave={setIsSave} setIsSaved={setIsSaved} id={''} load={genLoad || isSaved} />
 			<JobSchedule
 				visible={alertVisible}
 				app_type='REPORT'
