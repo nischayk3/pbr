@@ -60,7 +60,7 @@ const ParameterTable = ({
 	);
 	const totalBatch = useSelector((state) => state.viewCreationReducer.totalMolBatches);
 	const totalFileBatch = useSelector((state) => state.viewCreationReducer.totalFileBatches);
-	const getBatchData = useSelector((state) => state.viewCreationReducer.batchData)
+	//const getBatchData = useSelector((state) => state.viewCreationReducer.batchData)
 
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [tableData, setTableData] = useState([]);
@@ -199,7 +199,7 @@ const ParameterTable = ({
 	]
 
 	const data =
-		tableData !== undefined && tableData.length > 0
+		tableData != undefined && tableData.length > 0
 			? Object.keys(tableData[tableData.length - 1])
 			: [];
 
@@ -207,7 +207,7 @@ const ParameterTable = ({
 		return self.indexOf(value) === index;
 	};
 
-	const uniqueCol = data && data.filter(uniqueArr);
+	const uniqueCol = data.filter(uniqueArr);
 	const paramColumn = uniqueCol.slice(0, 10)
 
 	paramColumn.map((item) => {
@@ -296,9 +296,9 @@ const ParameterTable = ({
 		if (selectedTableData.length > 0) {
 			let batchArr = []
 			let totalMolBatches = [...totalMolBatch]
-			let allMolBatches = totalMolBatches && totalMolBatches.map((e) => e.batch)
+			let allMolBatches = totalMolBatches.map((e) => e.batch)
 
-			totalMolBatches && totalMolBatches.forEach((ele) => {
+			totalMolBatches.forEach((ele) => {
 				let batchObj = {}
 				selectedTableData.forEach((item) => {
 					Object.entries(item).forEach(([key, value]) => {
@@ -317,7 +317,7 @@ const ParameterTable = ({
 			);
 
 			if (molBatchMerge.length > 0) {
-				const molObjKey = molBatchMerge !== undefined && molBatchMerge.length > 0 ? Object.keys(molBatchMerge[0]) : []
+				const molObjKey = molBatchMerge != undefined && molBatchMerge.length > 0 ? Object.keys(molBatchMerge[0]) : []
 				const molColumn = molObjKey.filter(uniqueArr);
 				molColumn.map((ele, i) => {
 					if (ele === 'batch') {
@@ -629,10 +629,10 @@ const ParameterTable = ({
 		let newParamArr = [...parameters]
 		let param_name = newAggrValue[index].parameter_name
 		newAggrValue[index].aggregation =
-			value.value !== undefined ? value.value : value;
+			value.value != undefined ? value.value : value;
 		for (var i = 0; i < newParamArr.length; i++) {
 			if (newParamArr[i].parameter_name == param_name) {
-				newParamArr[i].aggregation = value.value !== undefined ? value.value : value;
+				newParamArr[i].aggregation = value.value != undefined ? value.value : value;
 			}
 		}
 		setParameters(newParamArr);
@@ -715,7 +715,7 @@ const ParameterTable = ({
 	};
 
 	const deleteParameter = (id) => {
-		const deleteRecord = tableData.filter(item => item.key !== id)
+		const deleteRecord = tableData.filter(item => item.key != id)
 		setTableData([...deleteRecord])
 		dispatch(sendSelectedParamData([...deleteRecord]));
 	}

@@ -319,7 +319,7 @@ class AuditTrials extends React.Component {
 	};
 
 
-	auditHighlight = (limit="500") => {
+	auditHighlight = (limit = 500) => {
 		var today = new Date();
 		today.setDate(today.getDate() + 1);
 		let req = {
@@ -412,7 +412,7 @@ class AuditTrials extends React.Component {
 					eventList: eventlist
 				});
 			})
-			.catch((error) => {
+			.catch((error) => {/* istanbul ignore next */
 				if (error && error.message) console.warn("Warning", error.message);
 			});
 	};
@@ -462,7 +462,7 @@ class AuditTrials extends React.Component {
 	// 	this.setState({ columns: filtered, checkedColumns: checkedColumns });
 	// };
 
-
+	/* istanbul ignore next */
 	onlimitChange = (e, value) => {
 		console.log("valueal", value)
 		if (value != undefined) {
@@ -556,6 +556,7 @@ class AuditTrials extends React.Component {
 		});
 		this.esgTablePackaging();
 	};
+	/* istanbul ignore next */
 	handleAutoCompleteChange = (state, evt, value) => {
 		if (evt) {
 			if (value === null) {
@@ -766,14 +767,14 @@ class AuditTrials extends React.Component {
 											marginLeft: "20px",
 											width:"300px"
 										}}
-										allowClear 
+										allowClear
 										// defaultValue={this.state.selectedLimit}value = { this.state.company || undefined }
 										// value = {this.state.selectedLimit || undefined}
 										placeholder="Limit"
 										onChange={(e, value) => { this.onlimitChange(e, value) }}
-										
+
 									>
-										
+
 									<Option value="100" key="100">
 										100
 									</Option>
@@ -789,7 +790,7 @@ class AuditTrials extends React.Component {
 									<Option value="all" key="all">
 										ALL
 									</Option>
-										
+
 									</Select> */}
 								</div>
 							</div>
