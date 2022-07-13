@@ -118,6 +118,7 @@ function ReportGenerator(props) {
 	// const [chart, setCharts] = useState([]);
 	const [table, setTable] = useState([]);
 	const [isSave, setIsSave] = useState(false);
+	const [isSaved, setIsSaved] = useState(false);
 	const [reportId, setReportId] = useState('');
 	const [isPublish, setIsPublish] = useState(false);
 	// const [publishResponse, setPublishResponse] = useState({});
@@ -345,6 +346,7 @@ function ReportGenerator(props) {
 		saveReportGenerator(req).then(res => {
 			if (res.Status == 200) {
 				setIsSave(true);
+				setIsSaved(true)
 			} else {
 				dispatch(showNotification('error', 'Not Saved'));
 			}
@@ -531,7 +533,7 @@ function ReportGenerator(props) {
 					</Card>
 				</div>
 			</div>
-			<SaveModal isSave={isSave} setIsSave={setIsSave} id={''} load={genLoad} />
+			<SaveModal isSave={isSave} setIsSave={setIsSave} id={''} load={genLoad || isSaved} />
 			<JobSchedule
 				visible={alertVisible}
 				app_type='REPORT'
