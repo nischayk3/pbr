@@ -147,12 +147,13 @@ export default function landingPage(props) {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  // useEffect(() => {
-  //   updateDate();
-  //   dashboardRes();
-  //   dashboardTiles();
-  //   document.addEventListener("mousedown", closeTableView);
-  // }, []);
+  useEffect(() => {
+    updateDate();
+    dashboardRes();
+    dashboardTiles();
+    // document.addEventListener("mousedown", closeTableView);
+  }, []);
+
   const updateDate = () => {
     const date = new Date();
     const month = date.toLocaleString("default", { month: "long" });

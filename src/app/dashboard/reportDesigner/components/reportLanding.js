@@ -345,9 +345,9 @@ export default function ReportLanding(props) {
     setLetDis(true);
     dispatch(showLoader());
     let req = { report_displ_id: report_id };
-    let data = await loadReportGen(req);
-    if (data.report_generator) dispatch(sendReport(data.report_generator.data));
-    if (data.Status == 200 || data.report_generator) {
+    let data = await loadReport(req);
+    if (data.report_designer) dispatch(sendReport(data.report_designer.data));
+    if (data.Status == 200 || data.report_designer) {
       dispatch(hideLoader());
       dispatch(showNotification("success", `Loaded ${report_id}`));
       setLetDis(false);
@@ -545,7 +545,7 @@ export default function ReportLanding(props) {
                           >
                             <StatusBlock
                               id={i.rep_disp_id}
-                              // status={i.rep_status}
+                            // status={i.rep_status}
                             />
                           </div>
                         )

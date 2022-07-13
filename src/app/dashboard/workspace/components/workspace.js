@@ -55,12 +55,12 @@ const Workspace = () => {
   const history = useHistory();
 
   useEffect(() => {
-    // updateDate();
-    // getTilesData();
+    updateDate();
+    getTilesData();
     getChartId();
-    // lastUpdatedChartsViews();
-    // getScheduleChartAlertsData();
-    // getScheduleReportAlertsData();
+    lastUpdatedChartsViews();
+    getScheduleChartAlertsData();
+    getScheduleReportAlertsData();
   }, []);
 
   //get todays date
@@ -149,8 +149,8 @@ const Workspace = () => {
       setChartIdException(chartIdResponse.Data);
       setActiveTab(
         chartIdResponse.Data[0]?.chart_disp_id +
-          "_" +
-          chartIdResponse.Data[0]?.chart_version
+        "_" +
+        chartIdResponse.Data[0]?.chart_version
       );
       // dispatch(hideLoader());
     } catch (error) {
@@ -282,9 +282,8 @@ const Workspace = () => {
                 </div>
                 <div className="avatar-block">
                   <p>
-                    {`${
-                      userApproval && userApproval?.length
-                    } People awaiting your approval!`}{" "}
+                    {`${userApproval && userApproval?.length
+                      } People awaiting your approval!`}{" "}
                   </p>
                   <Avatar.Group
                     maxCount={4}

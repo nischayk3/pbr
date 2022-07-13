@@ -40,11 +40,11 @@ describe("Workflow", () => {
 		cy.log('Verify Screen Header Component')
 		cy.get('.screen_header_head')
 
-		cy.log('Verify User Name')
-		cy.get('.screen_header_username').should("have.text", "Hello Fahad!")
+		// cy.log('Verify User Name')
+		// cy.get('.screen_header_username').should("have.text", "Hello Fahad!")
 
-		cy.log('Verify Header Text')
-		cy.get('.screen_header_text').should("have.text", "Today is a great day to approve some records! Lets take look")
+		// cy.log('Verify Header Text')
+		// cy.get('.screen_header_text').should("have.text", "Today is a great day to approve some records! Lets take look")
 
 		cy.log('Verify Current Date')
 		cy.get('.screen_header_resultdate').should("have.text", currentDate)
