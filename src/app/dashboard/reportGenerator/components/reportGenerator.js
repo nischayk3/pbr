@@ -362,7 +362,6 @@ function ReportGenerator(props) {
 		}
 	};
 
-	console.log(isSaved, genLoad)
 
 	return (
 		<div className='custom-wrapper'>
