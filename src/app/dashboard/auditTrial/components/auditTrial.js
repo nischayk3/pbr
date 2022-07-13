@@ -319,7 +319,7 @@ class AuditTrials extends React.Component {
 	};
 
 
-	auditHighlight = (limit="500") => {
+	auditHighlight = (limit = 500) => {
 		var today = new Date();
 		today.setDate(today.getDate() + 1);
 		let req = {
@@ -766,14 +766,14 @@ class AuditTrials extends React.Component {
 											marginLeft: "20px",
 											width:"300px"
 										}}
-										allowClear 
+										allowClear
 										// defaultValue={this.state.selectedLimit}value = { this.state.company || undefined }
 										// value = {this.state.selectedLimit || undefined}
 										placeholder="Limit"
 										onChange={(e, value) => { this.onlimitChange(e, value) }}
-										
+
 									>
-										
+
 									<Option value="100" key="100">
 										100
 									</Option>
@@ -789,7 +789,7 @@ class AuditTrials extends React.Component {
 									<Option value="all" key="all">
 										ALL
 									</Option>
-										
+
 									</Select> */}
 								</div>
 							</div>
