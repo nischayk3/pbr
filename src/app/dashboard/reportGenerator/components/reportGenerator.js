@@ -346,7 +346,7 @@ function ReportGenerator(props) {
 		saveReportGenerator(req).then(res => {
 			if (res.Status == 200) {
 				setIsSave(true);
-				setIsSaved(true)
+				// setIsSaved(true)
 			} else {
 				dispatch(showNotification('error', 'Not Saved'));
 			}
