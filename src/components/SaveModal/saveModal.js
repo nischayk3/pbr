@@ -4,9 +4,10 @@ import { CheckCircleOutlined } from '@ant-design/icons';
 import './styles.scss';
 
 function SaveModal(props) {
-	const { isSave, setIsSave, id, load } = props
+	const { isSave, setIsSave, id, load, setIsSaved } = props
 	const handleCancel = () => {
 		setIsSave(false);
+		setIsSaved(true)
 	};
 
 	return (

@@ -60,6 +60,7 @@ function ReportDesignerNew(props) {
 	const [isLoad, setIsLoad] = useState(false);
 	const [isSave, setIsSave] = useState(false);
 	const [isSaved, setIsSaved] = useState(false);
+	const [issaved, setisSaved] = useState(false);
 	const [reportName, setReportName] = useState('');
 	const isNew = true;
 	const [viewId, setViewId] = useState('');
@@ -660,7 +661,7 @@ function ReportDesignerNew(props) {
 				) : (
 					<></>
 				)}
-				<SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} load={isLoad || isSaved} />
+				<SaveModal isSave={isSave} setIsSave={setIsSave} id={reportId} setIsSaved={setisSaved} load={isLoad || issaved} />
 			</div>
 			<Signature
 				isPublish={isPublish}

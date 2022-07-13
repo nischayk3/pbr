@@ -346,7 +346,6 @@ function ReportGenerator(props) {
 		saveReportGenerator(req).then(res => {
 			if (res.Status == 200) {
 				setIsSave(true);
-				// setIsSaved(true)
 			} else {
 				dispatch(showNotification('error', 'Not Saved'));
 			}
@@ -362,6 +361,8 @@ function ReportGenerator(props) {
 			}
 		}
 	};
+
+	console.log(isSaved, genLoad)
 
 	return (
 		<div className='custom-wrapper'>
@@ -533,7 +534,7 @@ function ReportGenerator(props) {
 					</Card>
 				</div>
 			</div>
-			<SaveModal isSave={isSave} setIsSave={setIsSave} id={''} load={genLoad || isSaved} />
+			<SaveModal isSave={isSave} setIsSave={setIsSave} setIsSaved={setIsSaved} id={''} load={genLoad || isSaved} />
 			<JobSchedule
 				visible={alertVisible}
 				app_type='REPORT'
