@@ -429,11 +429,16 @@ describe("Render View Creation Page", () => {
 	})
 
 	it('Save View Creation', () => {
+		cy.wait(500)
 		cy.log('Save Button Click');
 		cy.get('#save-view > span').click()
 
 		cy.log('Enter View Name');
-		cy.get(':nth-child(12) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-body > .function-modal > .function-input > .input_field > .ant-input').type("View Test")
+		cy.get('#view-name').type("View Test")
+
+		cy.get('#cancel-save > span').click()
 	})
+
+
 
 });
