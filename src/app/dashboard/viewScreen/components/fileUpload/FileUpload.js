@@ -117,12 +117,12 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 							res.timeStamp = date.toISOString();
 							filesListTree.push(res);
 							setFilesListTree(filesListTree);
-							const batchRes = res.Data.forEach((ele) => {
+							res.Data.forEach((ele) => {
 								ele.coverage_list.forEach((item) => {
 									totalFileBatch.push(item)
 								})
 							})
-							const filteredBatch = totalFileBatch && totalFileBatch.filter(function (item, pos) {
+							const filteredBatch = totalFileBatch.filter(function (item, pos) {
 								return totalFileBatch.indexOf(item) == pos;
 							});
 

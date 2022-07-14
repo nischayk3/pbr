@@ -359,8 +359,10 @@ describe("Render View Creation Page", () => {
 		cy.get('.add-var_block > .ant-btn > span').should("have.text", "Done")
 		cy.get('.add-var_block > .ant-btn > span').click()
 
+		cy.wait(1000)
 		cy.log("Modal should open")
 		cy.get('.ant-modal-content').should('be.visible')
+		cy.wait(1000)
 
 		cy.log("Add Variable Name");
 		cy.get('.input_field > .ant-input').clear();
@@ -385,9 +387,10 @@ describe("Render View Creation Page", () => {
 		cy.get('.add-var_block > .ant-btn > span').should("have.text", "Done")
 		cy.get('.add-var_block > .ant-btn > span').click()
 
-
+		cy.wait(1000)
 		cy.log("Modal should open")
 		cy.get('.ant-modal-content').should('be.visible')
+		cy.wait(1000)
 
 		cy.log("Add Variable Name");
 		cy.get('.input_field > .ant-input').clear();
@@ -409,6 +412,7 @@ describe("Render View Creation Page", () => {
 		cy.log('Validate Function');
 		cy.get('.custom-secondary-btn-link > span').click();
 
+		cy.wait(1000)
 		cy.log('Function data modal open');
 		cy.get('.ant-modal-content').should('be.visible');
 
@@ -418,14 +422,17 @@ describe("Render View Creation Page", () => {
 	})
 
 	it('Render Function Creation', () => {
+		cy.wait(2000);
 		cy.log('Function Modal Open');
 		cy.get('.custom-secondary-btn> span').click();
+		cy.wait(2000);
 
 		cy.log('Enter function name');
 		cy.get('.function-input > .input_field > .ant-input').type('function_1');
 
 		cy.log("Save Function")
 		cy.get('.function-btn > .ant-btn-text > span').click({ force: true })
+		cy.wait(2000);
 	})
 
 	it('Save View Creation', () => {
@@ -438,7 +445,4 @@ describe("Render View Creation Page", () => {
 
 		cy.get('#cancel-save > span').click()
 	})
-
-
-
 });
