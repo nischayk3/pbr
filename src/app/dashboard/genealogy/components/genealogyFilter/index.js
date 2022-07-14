@@ -104,6 +104,7 @@ function Filter(props) {
 	};
 
 	const clearSearch = (e, field) => {
+		/* istanbul ignore next */
 		if (field === 'plant') {
 			setselectParam(prevState => {
 				return { ...prevState, plant: '' };
@@ -116,7 +117,8 @@ function Filter(props) {
 				'',
 				''
 			);
-		} else if (field === 'product') {
+		}/* istanbul ignore next */
+		else if (field === 'product') {
 			setselectParam(prevState => {
 				return { ...prevState, productCode: '' };
 			});
@@ -128,7 +130,9 @@ function Filter(props) {
 				'',
 				''
 			);
-		} else if (field === 'batch') {
+		}
+		/* istanbul ignore next */
+		else if (field === 'batch') {
 			setselectParam(prevState => {
 				return { ...prevState, batchNum: '' };
 			});
@@ -215,10 +219,12 @@ function Filter(props) {
 						produtList: filterRes && filterRes.material
 					};
 				});
-			} else if (filterRes.data.statuscode === 400) {
+			}
+			/* istanbul ignore next */
+			else if (filterRes.data.statuscode === 400) {
 				dispatch(showNotification('error', filterRes.data.message));
 			}
-		} catch (err) {
+		} catch (err) {/* istanbul ignore next */
 			dispatch(showNotification('error', err));
 		}
 	};

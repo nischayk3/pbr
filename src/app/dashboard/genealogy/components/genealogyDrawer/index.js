@@ -20,6 +20,7 @@ function GenealogyDrawer(props) {
 		setVisible(props.drawerVisible);
 	}, [props.drawerVisible]);
 
+	/* istanbul ignore next */
 	const expandDrawer = () => {
 		setVisible(false);
 		props.isDrawer(false);
