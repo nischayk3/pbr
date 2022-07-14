@@ -385,6 +385,7 @@ function ReportGenerator(props) {
 							</Button>
 							<Button
 								className='report-primary-btn'
+								disabled={status === "APRD"}
 								style={{ marginLeft: '16px', marginRight: '16px' }}
 								onClick={() => prepareJson()}>
 								Save
