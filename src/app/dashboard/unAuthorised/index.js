@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom";
 
 const UnAuthorisedScreen = () => {
   const handleClick = () => {
-    console.log("clicked");
     return (
       <Redirect
         to={{

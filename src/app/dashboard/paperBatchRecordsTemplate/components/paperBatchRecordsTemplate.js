@@ -560,7 +560,7 @@ function PaperBatchRecordsTemplate() {
     /**
      * TODO: get boundingBoxData info
      */
-
+    /* istanbul ignore next */
     const getBoundingBoxDataInfo = async (width, height, mode, pageNumber = 0) => {
         try {
             let _reqBatch = {
@@ -634,7 +634,7 @@ function PaperBatchRecordsTemplate() {
         setTemplateFormData(template)
     }, [matBatch, templateId, templateStatus, templateVersion])
 
-
+    
     useEffect(() => {
 
         getImage()
@@ -735,7 +735,7 @@ function PaperBatchRecordsTemplate() {
         }
         getIdTemplateData()
     }, []);
-
+   /* istanbul ignore next */
     useEffect(() => {
         if ((templateInfo?.length > 0 && imageWidth !== 0 && imageHeight !== 0) || localStorage.getItem("test_enabled") == !null) {
             let arr = templateInfo.map((item, index) => ({
@@ -818,7 +818,7 @@ function PaperBatchRecordsTemplate() {
 
         }, 3000)
     }, [document.getElementsByTagName("canvas")[0], displayImage]);
-
+   /* istanbul ignore next */
     useEffect(() => {
         if ((imageWidth !== 0 && imageHeight !== 0) || localStorage.getItem("test_enabled") == !null) {
             for (let i = 0; i < 2; i++) {
@@ -829,7 +829,7 @@ function PaperBatchRecordsTemplate() {
         }
     }, [imageWidth, imageHeight]);
 
-    /* istanbul ignore next */
+   /* istanbul ignore next */
     const clicked = (area) => {
         setBoundingBoxClicked(true);
         setClickedSnippetId(area.areaValue);
