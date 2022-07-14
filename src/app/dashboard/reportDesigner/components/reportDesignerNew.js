@@ -510,6 +510,7 @@ function ReportDesignerNew(props) {
 						<>
 							<Button
 								className='report-primary-btn'
+								disabled={status === "APRD"}
 								onClick={() => {
 									PrepareJson(mainJson, 'save');
 								}}>
