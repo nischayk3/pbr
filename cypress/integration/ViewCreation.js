@@ -197,7 +197,7 @@ describe("Render View Creation Page", () => {
 	it('Load View Landing Page Correctly', () => {
 		cy.log('Create a New View Creation')
 		cy.get('.create-new > .anticon > svg').click({ force: true });
-
+		cy.intercept('POST', '**/molecules3', { fixture: 'listMolecule.json' })
 	})
 
 	it('Create a New View', () => {

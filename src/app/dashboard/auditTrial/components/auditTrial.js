@@ -318,7 +318,6 @@ class AuditTrials extends React.Component {
 		return current && current > moment().endOf("day");
 	};
 
-
 	auditHighlight = (limit = 500) => {
 		var today = new Date();
 		today.setDate(today.getDate() + 1);
@@ -342,7 +341,7 @@ class AuditTrials extends React.Component {
 		};
 
 		if (limit != 'all') {
-			req['limit'] = limit
+			req['limit'] = parseInt(limit)
 		}
 		if (this.state.eventType) {
 			req["activity"] = this.state.eventType ? this.state.eventType.value : "";

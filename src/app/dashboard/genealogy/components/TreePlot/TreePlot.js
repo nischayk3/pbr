@@ -616,13 +616,13 @@ function TreePlot(props) {
 						if (d.type === "Material") {
 							batchName = d["nodeId"].split("|");
 							nodeName = batchName[1];
-							return nodeName;
+							return "node-"+nodeName;
 						} else if (d.type === "Process Order") {
 							poName = d.poNo;
-							return poName;
+							return "node-"+poName;
 						} else if (d.type === "Purchase Order") {
 							purchaseOrder = d.pur_ord_no;
-							return purchaseOrder;
+							return "node-"+purchaseOrder;
 						}
 					})
 					.attr("transform", function (d) {
@@ -1095,48 +1095,83 @@ function TreePlot(props) {
 				//toggle children click
 				/* istanbul ignore next */
 				function node_onClick(d, id) {
-					//let lastClickD = null;
-					//let nExpand = d3.select("#node-" + id);
+					let lastClickD = null;
+					var ids = ""
+					if(d.type == "Material"){
+						ids = d.matNo
+					}
+					if(d.type === "Process Order"){
+						ids = d.poNo
+					}
+				if (d.type === "Purchase Order") {
+					ids = d.pur_ord_no;
+					
+				}
+
+					let nExpand = d3.select("#node-" + ids);
 					if (d.children) {
 						d._children = d.children;
 						d.children = null;
 
-						// let nodeExpand = nExpand.selectAll(".expand");
-						// nodeExpand
-						// 	.text(function (a) {
-						// 		var nodeIcon = "";
-						// 		if (a.id === d.id) {
-						// 			nodeIcon = "+";
-						// 		}
-						// 		return nodeIcon;
-						// 	})
-						// 	.attr("class", "collapsed")
-						d3.selectAll(".value-match").attr("display", "none"); // 	.style("fill", "#000")
-						// 	.style("font-size", "16px")
-						// 	.style("font-weight", "700");
+						let nodeExpand = nExpand.selectAll(".expand");
+						nodeExpand
+							.text(function (a) {
+								let textId = "";
+								var nodeIcon = "";
+								if(a.type == "Material"){
+									textId = a.matNo
+								}
+								if(a.type === "Process Order"){
+									textId = a.poNo
+								}
+							if (a.type === "Purchase Order") {
+								textId = a.pur_ord_no;
+								
+							}
+								if (textId === ids) {
+									nodeIcon = "+";
+								}
+								return nodeIcon;
+							})
+							.attr("class", "collapsed")
+							.style("fill", "#000")
+							.style("font-size", "16px")
+							.style("font-weight", "700");
+						d3.selectAll(".value-match").attr("display", "none");
 					} else {
 						d.children = d._children;
 						d._children = null;
 						d3.selectAll(".value-match").attr("display", "block");
-						// let nodeCollappsed = nExpand.selectAll(".collapsed");
-						// nodeCollappsed
-						// 	.text(function (b) {
-						// 		var nodeIconC = "";
-						// 		if (b.id === d.id) {
-						// 			nodeIconC = "−";
-						// 		}
-						// 		return nodeIconC;
-						// 	})
-						// 	.attr("class", "expand")
-						// 	.style("fill", "#000")
-						// 	.style("font-size", "16px")
-						// 	.style("font-weight", "700");
+						let nodeCollappsed = nExpand.selectAll(".collapsed");
+						nodeCollappsed
+							.text(function (b) {
+								let textId = "";
+								var nodeIconC = "";
+								if(b.type == "Material"){
+									textId = b.matNo
+								}
+								if(b.type === "Process Order"){
+									textId = b.poNo
+								}
+							if (b.type === "Purchase Order") {
+								textId = b.pur_ord_no;
+								
+							}
+								if (textId === ids) {
+									nodeIconC = "−";
+								}
+								return nodeIconC;
+							})
+							.attr("class", "expand")
+							.style("fill", "#000")
+							.style("font-size", "16px")
+							.style("font-weight", "700");
 					}
-					// if (lastClickD) {
-					// 	lastClickD._isSelected = false;
-					// }
-					// d._isSelected = true;
-					// lastClickD = d;
+					if (lastClickD) {
+						lastClickD._isSelected = false;
+					}
+					d._isSelected = true;
+					lastClickD = d;
 					THIS.update(d);
 				}
 

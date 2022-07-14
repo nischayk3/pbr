@@ -77,6 +77,7 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 					rowData = Object.assign(molBatch);
 					rowData.sourceType = "material";
 					rowData.parameter_name = record.parameter_name;
+					rowData.process_id = parseInt(record.process_step_int_id);
 					rowData.coverage = record.coverage;
 					rowData.key =
 						record.process_step_int_id + "_" + record.parameter_name;
