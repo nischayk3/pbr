@@ -3,6 +3,9 @@ Cypress.on("uncaught:exception", (err, runnable) => {
 });
 describe("Genealogy", () => {
 	beforeEach(() => {
+		cy.intercept('POST', '/services/v1//genealogy-filter', { fixture: 'genealogyFilter.json' })
+		cy.intercept('GET', '/services/v1/product-type-genealogy', { fixture: 'genealogyFilterProductType.json' })
+		cy.intercept('GET', 'v1/genealogy?levels=*', { fixture: 'backward.json' })
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
 		localStorage.setItem(
@@ -21,9 +24,6 @@ describe("Genealogy", () => {
 	})
 
 	it("Render genealogy screen", () => {
-		cy.intercept('POST', '/services/v1//genealogy-filter', { fixture: 'genealogyFilter.json' })
-		cy.intercept('GET', '/services/v1/product-type-genealogy', { fixture: 'genealogyFilterProductType.json' })
-		cy.intercept('GET', 'v1/genealogy?levels=*', { fixture: 'backward.json' })
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/genealogy')
 		cy.log('Load Landing Page')
@@ -156,7 +156,6 @@ it("click on search button",()=>{
 	});
 
 	it("Search backword filters", () => {
-		cy.intercept('GET', 'v1/genealogy?levels=*', { fixture: 'backward.json' })
 		cy.wait(2000)
 		cy.get("#genealogy-search").click({ force: true })
 		cy.wait(6000)
@@ -164,7 +163,7 @@ it("click on search button",()=>{
 
 
 	it("Opening Drawer on click of material node", () => {
-		cy.get('#1091535 > #material-img').click();
+		cy.get('#node-1091535 > #material-img').click();
 		cy.wait(3000)
 		cy.get("#view-details-popup").click();
 	});
@@ -174,7 +173,7 @@ it("click on search button",()=>{
 	})
 
 	it("click on process order",()=>{
-		cy.get('#102279687 > #process-img').click()
+		cy.get('#node-102279687 > #process-img').click()
 		cy.get("#view-details-popup").click();
 	});
 	it("closing drawer",()=>{
@@ -183,7 +182,7 @@ it("click on search button",()=>{
 	});
 
 	it("click on material node image",()=>{
-		cy.get('#1091460 > #material-img').click();
+		cy.get('#node-1091460 > #material-img').click();
 	})
 
 	it("click on backward from node popup",()=>{
@@ -361,8 +360,5 @@ it("Reload final",()=>{
 	cy.wait(3000)
 })
 
-
-
-	
 
 });
