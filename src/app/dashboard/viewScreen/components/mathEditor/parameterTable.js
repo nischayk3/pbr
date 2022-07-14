@@ -672,10 +672,12 @@ const ParameterTable = ({
 		})
 
 		batchRecordPopup.forEach((ele) => {
+
 			const parameterObj = {};
 			if (ele.parameter_name === key) {
 				parameterObj["source_type"] = ele.sourceType;
-				parameterObj["material_id"] = ele.material_id
+				parameterObj["material_id"] = ele.material_id;
+				parameterObj["process_id"] = ele.process_id;
 				parameterObj["parameter_name"] = ele.parameter_name;
 				parameterObj["batch_exclude"] = [];
 				parameterObj["priority"] = ele.primary;
@@ -748,10 +750,13 @@ const ParameterTable = ({
 							onChange: (selectedRowKeys, selectedRows) => {
 								let paramArr = [];
 								const rowData = [...selectedRows];
+
 								rowData.forEach((element, index) => {
+
 									let paramsObj = {};
 									paramsObj["source_type"] = element.sourceType;
 									paramsObj["material_id"] = element.material_id
+									paramsObj["process_id"] = element.process_id;
 									paramsObj["parameter_name"] = element.parameter_name;
 									paramsObj["batch_exclude"] = [];
 									paramsObj["priority"] = index;
