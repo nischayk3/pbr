@@ -342,7 +342,7 @@ class AuditTrials extends React.Component {
 		};
 
 		if (limit != 'all') {
-			req['limit'] = limit
+			req['limit'] = parseInt(limit)
 		}
 		if (this.state.eventType) {
 			req["activity"] = this.state.eventType ? this.state.eventType.value : "";
