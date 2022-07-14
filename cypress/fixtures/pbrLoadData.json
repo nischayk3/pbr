@@ -1,0 +1,50 @@
+{
+    "Data": [
+        {
+            "batch_num": "394154",
+            "changed_by": null,
+            "changed_on": null,
+            "created_by": "krishnapriyam@mareana.com",
+            "created_on": "2022-07-07T05:56:00.199837+00:00",
+            "cust_key": "1000",
+            "pbr_temp_int_id": 56,
+            "pbr_template_disp_id": "P56",
+            "pbr_template_info": {
+                "pbrPageIdentifier": {
+                    "condition": "AND",
+                    "keys": []
+                },
+                "pbrTemplateInfo": [
+                    {
+                        "color": "blue",
+                        "filename": "Batch Record Example 2.pdf",
+                        "method": "absolute_coordinate",
+                        "name": "param1",
+                        "param_key_height": 0.010350585915148206,
+                        "param_key_left": 0.3961576223373413,
+                        "param_key_snippet_id": 166,
+                        "param_key_text": "Thaw",
+                        "param_key_top": 0.2813073396682739,
+                        "param_key_width": 0.04052047058939927,
+                        "param_page": 1,
+                        "param_value_height": 0.010383605957031198,
+                        "param_value_left": 0.8068254590034485,
+                        "param_value_rule": {},
+                        "param_value_snippet_id": 162,
+                        "param_value_text": "Pass",
+                        "param_value_top": 0.23531381785869587,
+                        "param_value_width": 0.035212229937314855
+                    }
+                ]
+            },
+            "pbr_template_name": "test template1",
+            "pbr_template_status": "AWAP",
+            "pbr_template_uuid": null,
+            "pbr_template_version": 1,
+            "product_num": "1089084",
+            "site_code": "1338"
+        }
+    ],
+    "Message": "Success",
+    "status-code": 200
+}

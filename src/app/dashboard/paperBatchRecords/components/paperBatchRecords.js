@@ -190,7 +190,7 @@ function PaperBatchRecords() {
 
 	const getImageData = async (val) => {
 		let req = {
-			actionType: "get_product",
+			actionType: "get_all",
 			productNum: val
 		}
 		let res = await getDataView(req)
