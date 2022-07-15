@@ -421,12 +421,12 @@ const ReportNotify = (props) => {
             bordered={false}
             onChange={handleChange}
           >
-            <Option
+            {/* <Option
               value="mihir.bagga@mareana.com"
               label="mihir.bagga@mareana.com"
             >
               mihir.bagga@mareana.com
-            </Option>
+            </Option> */}
           </Select>
           <hr style={{ borderTop: "1px solid #dbdbdb", width: '60%', marginRight: '407px' }} />
           <span>

@@ -202,6 +202,11 @@ const Workflow = () => {
   };
 
   const handleClose = () => {
+    setTimeout(() => {
+      console.log('timeout')
+      getTilesData()
+
+    }, 2000)
     setIsPublish(false);
   };
 
