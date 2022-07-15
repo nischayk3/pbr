@@ -106,7 +106,6 @@ const ViewCreation = () => {
 			setViewVersion(version);
 			dispatch(isLoadView(true));
 			loadView(_reqLoad);
-
 		} else {
 			setViewDisplayId(parameters.id);
 			setViewVersion(parameters.version);
@@ -134,7 +133,6 @@ const ViewCreation = () => {
 				dispatch(showNotification("error", "No Data Found"));
 				/* istanbul ignore next */
 			} else {
-
 				dispatch(hideLoader());
 				dispatch(showNotification("error", moleculeRes.Message));
 			}

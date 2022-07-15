@@ -62,13 +62,16 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 			if (moleculeRes.Status === 200) {
 				setMoleculeList(moleculeRes.Data.hierarchy);
 				dispatch(hideLoader());
+				/* istanbul ignore next */
 			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
 				dispatch(hideLoader());
 				dispatch(showNotification("error", "No Data Found"));
+				/* istanbul ignore next */
 			} else {
 				dispatch(hideLoader());
 				dispatch(showNotification("error", moleculeRes.Message));
 			}
+			/* istanbul ignore next */
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
@@ -81,16 +84,19 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 			dispatch(showLoader());
 			const filterMolRes = await filterMolequles(_reqFilterMolecule);
 			if (filterMolRes.Status === 200) {
-
 				setFilterMol(filterMolRes.Data)
 				dispatch(hideLoader());
+				/* istanbul ignore next */
 			} else if (filterMolRes.Status === 401 && filterMolRes.Status === 400) {
 				dispatch(hideLoader());
 				dispatch(showNotification("error", "No Data Found"));
+				/* istanbul ignore next */
 			} else {
+				/* istanbul ignore next */
 				dispatch(hideLoader());
 				dispatch(showNotification("error", filterMolRes.Message));
 			}
+			/* istanbul ignore next */
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
