@@ -32,7 +32,7 @@ const DataColumns = [
 	}
 ];
 
-const MathFunction = (props) => {
+const MathFunction = ({ data, materialId, fromWorkflowScreen }) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [functionName, setFunctionName] = useState("");
 	const [mathEditorValue, setMathEditorValue] = useState("");
@@ -102,9 +102,9 @@ const MathFunction = (props) => {
 
 	const functionEvaluate = async () => {
 		let req = {
-			material_id: props.materialId,
+			material_id: materialId,
 			functions: { 1: { defination: mathEditorValue, name: "function-1" } },
-			parameters: props.data ? props.data : {}
+			parameters: data ? data : {}
 		};
 
 		let evaluate_respone = await viewEvaluate({ data: req });
@@ -170,7 +170,7 @@ const MathFunction = (props) => {
 					<div className="script-editor-wrapper">
 						<div className="script-editor">
 							<CodeEditor
-								disabled={props.fromWorkflowScreen}
+								disabled={fromWorkflowScreen}
 								value={mathEditorValue}
 								language="py"
 								placeholder="Please enter the script"
@@ -196,7 +196,7 @@ const MathFunction = (props) => {
 								onClick={functionEvaluate}
 								type="text"
 								className="custom-secondary-btn-link"
-								disabled={props.fromWorkflowScreen}
+								disabled={fromWorkflowScreen}
 							>
 								Evaluate function
 							</Button>
