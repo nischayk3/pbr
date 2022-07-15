@@ -11,6 +11,9 @@ const statusColor = status => {
 	if (status == 'AWAP' || status == 'unapproved' || status == "Unapproved") {
 		return 'awap';
 	}
+	if (status == 'REJECT') {
+		return 'reject';
+	}
 };
 
 const StatusBlock = props => {

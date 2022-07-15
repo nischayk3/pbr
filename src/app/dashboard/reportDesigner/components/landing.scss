@@ -227,7 +227,7 @@
 	}
 
 	.recent {
-		margin-right: 300px;
+		margin-right: 200px;
 	}
 
 	.recent-report {
@@ -260,24 +260,29 @@
 	.tile {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr;
-		grid-gap: 13px 84px;
+		grid-gap: 10px 40px;
 		margin-top: 24px;
 
 		.awap {
 			background: #f7bb61;
 			align-content: center;
-			font-size: 12px;
+			font-size: 10px;
 		}
 
 		.aprd {
 			background: #a4f588;
-			font-size: 12px;
+			font-size: 10px;
 		}
 
 		.drft {
 			background: #363636;
 			color: white;
-			font-size: 12px;
+			font-size: 10px;
+		}
+		.reject {
+			background: #D64045;
+			color: white;
+			font-size: 10px;
 		}
 	}
 
@@ -365,6 +370,7 @@
 				padding: 0 5px 0 15px;
 				display: flex;
 				margin-left: 0px;
+				font-size: 12px;
 
 				.drft {
 					width: 14px;
@@ -372,7 +378,7 @@
 					border-radius: 50px;
 					background: #363636;
 					display: block;
-					margin: 3px 6px;
+					margin: 2px 6px;
 				}
 
 				.aprv {
@@ -380,7 +386,7 @@
 					height: 14px;
 					border-radius: 50px;
 					background: #a4f588;
-					margin: 3px 6px;
+					margin: 2px 6px;
 					display: block;
 				}
 
@@ -389,7 +395,7 @@
 					height: 14px;
 					border-radius: 50px;
 					background: #f6ba60;
-					margin: 3px 6px;
+					margin: 2px 6px;
 					display: block;
 				}
 			}

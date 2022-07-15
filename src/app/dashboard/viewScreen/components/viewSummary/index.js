@@ -97,7 +97,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 							onHeaderCell: (record) => {
 								return {
 									onClick: (ev) => {
-										dispatch(setViewFunctionName(record.dataIndex));
+										dispatch(setViewFunctionName(!fromWorkflowScreen ? record.dataIndex : ''));
 										dispatch(
 											showNotification(
 												"success",

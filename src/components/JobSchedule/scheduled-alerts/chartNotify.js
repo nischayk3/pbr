@@ -518,12 +518,7 @@ const ChartNotify = (props) => {
             bordered={false}
             onChange={handleChange}
           >
-            <Option
-              value="mihir.bagga@mareana.com"
-              label="mihir.bagga@mareana.com"
-            >
-              mihir.bagga@mareana.com
-            </Option>
+
           </Select>
           <hr style={{ borderTop: "0.5px solid #d9d9d9" }} />
           <div style={{ display: "grid", gridTemplateColumns: "7fr 3fr" }}>

@@ -190,7 +190,7 @@ export default function Landing(props) {
 
           <div className="card-legends">
             <h3 className="recent">Recently created views</h3>
-            <div className="legends">
+            {/* <div className="legends">
               <p>
                 <span className="drft"></span>Draft
               </p>
@@ -200,7 +200,7 @@ export default function Landing(props) {
               <p>
                 <span className="aprv"></span>Approved
               </p>
-            </div>
+            </div> */}
           </div>
 
           <div>
@@ -216,7 +216,7 @@ export default function Landing(props) {
                       key={index}
                       id={i.ds_name}
                       status={i.view_status}
-                      // handleClickTiles={e => handleClickView(e, i)}
+                    // handleClickTiles={e => handleClickView(e, i)}
                     />
                   </div>
                 ))

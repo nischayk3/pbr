@@ -34,35 +34,42 @@ describe("Renders the view Hierarachy page", () => {
     cy.wait(5000)
     cy.get('.create-new > .anticon > svg').click({ force: true });
     cy.get('.input-ant > .ant-input').clear();
-    cy.get('.input-ant > .ant-input').type('drug1');
+    cy.get('.input-ant > .ant-input').type('new_drug');
     cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
     cy.get(':nth-child(2) > .ant-input').clear();
-    cy.get(':nth-child(2) > .ant-input').type('A');
+    cy.get(':nth-child(2) > .ant-input').type('1322454');
     cy.get(':nth-child(3) > .ant-input').clear();
-    cy.get(':nth-child(3) > .ant-input').type('54223');
+    cy.get(':nth-child(3) > .ant-input').type('1255');
     cy.get('.add-button > .ant-btn > :nth-child(2)').click();
     cy.get('[data-row-key="2"] > :nth-child(2) > .ant-input').clear();
-    cy.get('[data-row-key="2"] > :nth-child(2) > .ant-input').type('B');
+    cy.get('[data-row-key="2"] > :nth-child(2) > .ant-input').type('1322454');
     cy.get('[data-row-key="2"] > :nth-child(3) > .ant-input').clear();
-    cy.get('[data-row-key="2"] > :nth-child(3) > .ant-input').type('2443');
+    cy.get('[data-row-key="2"] > :nth-child(3) > .ant-input').type('1256');
     cy.get('.ant-tabs-extra-content > .ant-btn').click({ force: true });
     cy.get('[data-row-key="2"] > :nth-child(1) > .anticon > svg').click({ force: true });
     cy.get('.ant-btn-primary > span').click({ force: true });
     cy.get('.ant-tabs-extra-content > .ant-btn').click({ force: true });
     cy.get('.tab-button-text').click({ force: true });
+    cy.wait(2000)
     cy.get('#rc-tabs-0-panel-Process\\ steps > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > .ant-table-row > :nth-child(2) > .ant-input').clear();
-    cy.get('#rc-tabs-0-panel-Process\\ steps > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > .ant-table-row > :nth-child(2) > .ant-input').type('a');
+    cy.get('#rc-tabs-0-panel-Process\\ steps > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > .ant-table-row > :nth-child(2) > .ant-input').type('1');
     cy.get('#rc-tabs-0-panel-Process\\ steps > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > .ant-table-row > :nth-child(3) > .ant-input').clear();
-    cy.get('#rc-tabs-0-panel-Process\\ steps > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > .ant-table-row > :nth-child(3) > .ant-input').type('2333');
+    cy.get('#rc-tabs-0-panel-Process\\ steps > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > .ant-table-row > :nth-child(3) > .ant-input').type('A');
     cy.get('.ant-tabs-extra-content > .ant-btn').click({ force: true });
     cy.get('#rc-tabs-0-panel-Process\\ steps > .add-button > .ant-btn > :nth-child(2)').click({ force: true });
     cy.get('[data-row-key="2"] > :nth-child(2) > .ant-input').clear();
-    cy.get('[data-row-key="2"] > :nth-child(2) > .ant-input').type('b');
+    cy.get('[data-row-key="2"] > :nth-child(2) > .ant-input').type('2');
     cy.get('[data-row-key="2"] > :nth-child(3) > .ant-input').clear();
-    cy.get('[data-row-key="2"] > :nth-child(3) > .ant-input').type('2333');
+    cy.get('[data-row-key="2"] > :nth-child(3) > .ant-input').type('B');
     cy.get('.ant-tabs-extra-content > .ant-btn > span').click({ force: true });
     cy.get('[data-row-key="2"] > :nth-child(1)').click({ force: true });
+    cy.wait(2000)
     cy.get('#rc-tabs-0-panel-Process\\ steps > .tab-title > .ant-btn > .tab-button-text').click({ force: true });
+    cy.wait(2000)
+    cy.get(':nth-child(1) > [style="text-align: left;"] > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
+    cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+    cy.wait(2000)
+    cy.get('.ant-tabs-extra-content > .ant-btn > span').click();
   });
 
   it('load_data', function () {
@@ -95,6 +102,13 @@ describe("Renders the view Hierarachy page", () => {
     cy.wait(5000)
     cy.get(':nth-child(1) > .chart-tiles').click();
     cy.wait(4000)
+    /* ==== End Cypress Studio ==== */
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get('.add-button > .ant-btn > :nth-child(2)').click();
+    cy.get('.add-button > .ant-btn > :nth-child(2)').click();
+    cy.get('[data-row-key="1"] > :nth-child(1) > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click();
+    cy.get('.ant-btn-primary > span').click();
+    cy.get('.ant-tabs-extra-content > .ant-btn').click();
     /* ==== End Cypress Studio ==== */
   });
 
