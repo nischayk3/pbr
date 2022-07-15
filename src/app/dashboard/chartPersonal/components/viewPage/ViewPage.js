@@ -120,6 +120,7 @@ const ViewPage = () => {
       if (viewRes.statuscode === 200) {
         if (Number(id) !== 0) {
           if (type === "save") {
+            getChart();
             dispatch(showNotification("success", "Chart updated successfully"));
           } else {
             dispatch(
@@ -137,7 +138,8 @@ const ViewPage = () => {
         }
       }
       dispatch(hideLoader());
-    } catch (error) { /* istanbul ignore next */
+    } catch (error) {
+      /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification("error", "Chart creation failed"));
     }
@@ -159,7 +161,8 @@ const ViewPage = () => {
     try {
       const viewRes = await getChartPlotData(req);
       setPostChartData(viewRes);
-    } catch (err) {/* istanbul ignore next */
+    } catch (err) {
+      /* istanbul ignore next */
       dispatch(showNotification("error", "Load chart failed"));
     }
   };

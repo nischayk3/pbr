@@ -158,7 +158,7 @@ const LandingPage = () => {
                     <Col span={8}>
                       <h3>Recently created charts</h3>
                     </Col>
-                    <Col span={14} className="title-legends">
+                    <Col span={16} className="title-legends">
                       <dl>
                         <dt className="grey"></dt>
                         <dd>Draft</dd>
@@ -166,6 +166,8 @@ const LandingPage = () => {
                         <dd>Awaiting Approval</dd>
                         <dt className="green"></dt>
                         <dd>Approved</dd>
+                        <dt className="red"></dt>
+                        <dd>Reject</dd>
                       </dl>
                     </Col>
                   </Row>
@@ -188,9 +190,12 @@ const LandingPage = () => {
                                         ? "#363636"
                                         : ele.chart_status === "AWAP"
                                         ? "#F6BB61"
+                                        : ele.chart_status === "REJECT"
+                                        ? "#D64045"
                                         : "#A4F588",
                                     color:
-                                      ele.chart_status === "DRFT"
+                                      ele.chart_status === "DRFT" ||
+                                      ele.chart_status === "REJECT"
                                         ? "#FFFFFF"
                                         : "#000000",
                                   }}
