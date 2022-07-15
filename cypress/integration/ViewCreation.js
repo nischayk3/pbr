@@ -224,12 +224,16 @@ describe("Render View Creation Page", () => {
 	it('Render Process Hierarchy', () => {
 		cy.log('Load Process Hierarchy')
 
+		cy.wait(500)
 		cy.log('Verify first treenode title')
 		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', '140L')
 
+		cy.wait(500)
 		cy.log('Click first treenode')
 		cy.intercept('POST', '**/molecules3', { fixture: 'firstNodeMol.json' }).as('firstNodeMol')
+		cy.wait(500)
 		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').click()
+		cy.wait(500)
 		cy.get('.ant-tree-switcher > .anticon > svg > path').click()
 
 		cy.wait('@firstNodeMol').then(() => {
@@ -239,9 +243,11 @@ describe("Render View Creation Page", () => {
 
 		cy.intercept('POST', '**/molecules3', { fixture: 'secondNodeMol.json' }).as('secondNodeMol')
 
+		cy.wait(500)
 		cy.log('Click second treenode')
 		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').click({ force: true })
 
+		cy.wait(500)
 		cy.get('.ant-tree-treenode-switcher-close > .ant-tree-switcher > .anticon > svg').click()
 		cy.wait('@secondNodeMol').then(() => {
 			cy.log('Verify third treenode title')
@@ -341,15 +347,15 @@ describe("Render View Creation Page", () => {
 
 		cy.wait(500)
 		cy.log('Verify Create Variable Card text name')
-		cy.get('.add-var_block > div > p').should("have.text", "Create Variable")
+		cy.get('#create-variable > p').should("have.text", "Create Variable")
 
 		cy.wait(500)
 		cy.log("Click on card to create a variable")
-		cy.get('.add-var_block > div > p').click()
+		cy.get('#create-variable > p').click()
 
 		cy.wait(500)
 		cy.log('Verify Select Parameter Card text name')
-		cy.get('.add-var_block > p').should("have.text", "Select parameters")
+		cy.get('#select-parameters').should("have.text", "Select parameters")
 
 		cy.log("Delete Parameter")
 		cy.get('[data-row-key="2_ASSAY 1DECPT"] > [style="position: sticky; left: 31.9922px;"] > .anticon > svg').click()
@@ -381,8 +387,8 @@ describe("Render View Creation Page", () => {
 		cy.get('.batch-table-footer > .ant-btn > span').click()
 		cy.wait(1000)
 		cy.log('Verify Done Card & Click On')
-		cy.get('.add-var_block > .ant-btn > span').should("have.text", "Done")
-		cy.get('.add-var_block > .ant-btn > span').click()
+		cy.get('#done > span').should("have.text", "Done")
+		cy.get('#done > span').click()
 
 		cy.wait(1000)
 		cy.log("Modal should open")
@@ -450,10 +456,10 @@ describe("Render View Creation Page", () => {
 	})
 
 	it('Render Function Creation', () => {
-		cy.wait(2000);
+		cy.wait(1000);
 		cy.log('Function Modal Open');
-		cy.get('.custom-secondary-btn> span').click();
-		cy.wait(2000);
+		cy.get('.custom-secondary-btn> span').click({ force: true })
+		cy.wait(1000);
 
 		cy.log('Enter function name');
 		cy.get('.function-input > .input_field > .ant-input').type('function_1');
