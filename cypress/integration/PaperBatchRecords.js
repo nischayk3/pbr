@@ -12,6 +12,8 @@ describe('PBR', () => {
         cy.intercept('GET', '/pbr/udh/pbr_template?limit=8', { fixture: 'paperBatchLmitList' }).as("limitlist")
         cy.intercept('POST', '/pbr/udh/ocr-json-extraction', { fixture: 'pbrBoundingBox' })
         cy.intercept('GET', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
+        cy.intercept('POST', '/pbr/udh/extract_from_template_find', {fixture:'paperFind'}).as("findDocument")
+            
         cy.viewport(1366, 768);
         localStorage.setItem("test_enabled", true);
         localStorage.setItem("user", "fahad.siddiqui@mareana.com");
@@ -123,15 +125,7 @@ describe('PBR', () => {
     })
 
     it("Find and preview", () => {
-        cy.intercept(
-            {
-                method: 'POST',
-                path: '/pbr/udh/extract_from_template_find',
-            },
-            {
-                fixture: 'paperFind',
-            },
-        ).as('findDocument')
+        cy.wait(3000)
         cy.get('.defineTableBtn').click();
         cy.wait(6000)
         cy.intercept(
@@ -188,7 +182,8 @@ describe('PBR', () => {
     })
 
     it("Edit Created Template", () => {
-        cy.go("back")
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/paper_batch_records')
         cy.intercept(
             {
                 method: 'GET',
