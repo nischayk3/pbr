@@ -60,8 +60,6 @@ const ParameterTable = ({
 	);
 	const totalBatch = useSelector((state) => state.viewCreationReducer.totalMolBatches);
 	const totalFileBatch = useSelector((state) => state.viewCreationReducer.totalFileBatches);
-	//const getBatchData = useSelector((state) => state.viewCreationReducer.batchData)
-
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [tableData, setTableData] = useState([]);
 	const [selectedPrimaryData, setSelectedPrimaryData] = useState([]);
@@ -284,11 +282,11 @@ const ParameterTable = ({
 		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
 			setTotalMolBatch([...totalBatch, ...totalFileBatch]);
 		}
+
 	}, [totalBatch, totalFileBatch])
 
 
 	useEffect(() => {
-
 		setTableData([...selectedTableData]);
 	}, [selectedTableData])
 
@@ -297,7 +295,6 @@ const ParameterTable = ({
 			let batchArr = []
 			let totalMolBatches = [...totalMolBatch]
 			let allMolBatches = totalMolBatches.map((e) => e.batch)
-
 			totalMolBatches.forEach((ele) => {
 				let batchObj = {}
 				selectedTableData.forEach((item) => {
@@ -338,13 +335,12 @@ const ParameterTable = ({
 								key: `${ele}-${i}`,
 								width: 80,
 								render: (value, record, rowIndex) => {
-
 									if (rowDisable) {
 										if (value) {
-
 											return (
 												<Checkbox
 													// disabled={isParamSelected}
+													id="batch-id"
 													className="custom-check"
 													onChange={(e) => onChangeBatchPopup(e, record, rowIndex, ele)}
 													checked={value}
@@ -355,6 +351,7 @@ const ParameterTable = ({
 											return (
 												<Checkbox
 													// disabled={isParamSelected}
+													id="batch-id"
 													className="custom-check"
 													onChange={(e) => onChangeBatchPopup(e, record, rowIndex, ele)}
 													checked={value === "" ? false : true}

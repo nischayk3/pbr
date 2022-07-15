@@ -367,10 +367,26 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		setUploadBtnDisabled(true);
 		let req = { file_id: selectedFileId, detailedCoverage: true };
 		adHocFilesParameterTree(req).then((res) => {
-			const date = new Date();
-			res.timeStamp = date.toISOString();
+			if (res.Status === 200) {
+				const totalFileBatchStore = []
+				const date = new Date();
+				res.timeStamp = date.toISOString();
+				setFilesListTree([...filesListTree, res]);
+				res.Data.forEach((ele) => {
+					ele.coverage_list.forEach((item) => {
+						totalFileBatchStore.push(item)
+					})
+				})
+				const filtereBatch = totalFileBatchStore.filter(function (item, pos) {
+					return totalFileBatchStore.indexOf(item) == pos;
+				});
 
-			setFilesListTree([...filesListTree, res]);
+				const mapBatchFilter = filtereBatch.map((ele) => {
+					return { batch: ele }
+				})
+				setFileBatch(mapBatchFilter)
+				dispatch(sendTotalFileBatches(mapBatchFilter))
+			}
 			if (res.Status === 404) {
 				dispatch(showNotification("error", res.Message));
 			}

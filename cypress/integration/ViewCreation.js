@@ -331,16 +331,25 @@ describe("Render View Creation Page", () => {
 	})
 
 	it('Create a variable', () => {
+		cy.wait(500)
 		cy.log('Verify Variable Wrapper')
 		cy.get('.variable-wrapper').should('be.visible')
 
+		cy.wait(500)
 		cy.log('Verify Create Variable Card')
 		cy.get('.add-var_block').should('be.visible')
 
+		cy.wait(500)
 		cy.log('Verify Create Variable Card text name')
+		cy.get('.add-var_block > div > p').should("have.text", "Create Variable")
 
+		cy.wait(500)
 		cy.log("Click on card to create a variable")
 		cy.get('.add-var_block > div > p').click()
+
+		cy.wait(500)
+		cy.log('Verify Select Parameter Card text name')
+		cy.get('.add-var_block > p').should("have.text", "Select parameters")
 
 		cy.log("Delete Parameter")
 		cy.get('[data-row-key="2_ASSAY 1DECPT"] > [style="position: sticky; left: 31.9922px;"] > .anticon > svg').click()
@@ -351,10 +360,26 @@ describe("Render View Creation Page", () => {
 
 		cy.log('Select a primary')
 		cy.get('[data-row-key="2_ARSENIC"] > [style="position: sticky; left: 221.992px;"] > .ant-radio-wrapper > .ant-radio > .ant-radio-input').check();
+
 		cy.log('Select a Aggregation')
 		cy.get('[data-row-key="2_ARSENIC"] > .ant-table-cell-fix-left-last > .ant-select > .ant-select-selector').click({ force: true })
 		cy.get('div[title="Mean"]').click({ multiple: true })
 
+		cy.wait(500)
+		cy.log('Render popup with volume data')
+		cy.get('.param-column > :nth-child(1) > .anticon > svg').click()
+
+		cy.wait(500)
+		cy.log("Search Batch ABL2258")
+		cy.get('.ant-input-affix-wrapper > .ant-input').type("ABL2258")
+		cy.get('.ant-input-group-addon > .ant-btn > .anticon').click()
+
+		cy.wait(500)
+		cy.log("Change batch value")
+		cy.get('.batch-table-block > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-body > table > .ant-table-tbody > .ant-table-row > :nth-child(2)').click()
+
+		cy.get('.batch-table-footer > .ant-btn > span').click()
+		cy.wait(1000)
 		cy.log('Verify Done Card & Click On')
 		cy.get('.add-var_block > .ant-btn > span').should("have.text", "Done")
 		cy.get('.add-var_block > .ant-btn > span').click()
@@ -399,8 +424,11 @@ describe("Render View Creation Page", () => {
 		cy.log("Create A Variable");
 		cy.get('.variable-name-popup > .ant-btn').click();
 
+		cy.log("Edit Variable")
+		cy.get(':nth-child(3) > .var-btn > #edit-btn > .anticon > svg').click({ force: true })
+
 		cy.log('delete variabale')
-		cy.get(':nth-child(3) > .var-btn > :nth-child(2) > .anticon > svg ').click({ force: true })
+		cy.get(':nth-child(3) > .var-btn > #delete-btn > .anticon > svg').click({ force: true })
 
 		cy.log('Enter variable name to script');
 		cy.get('.w-tc-editor-text').type('var1');
