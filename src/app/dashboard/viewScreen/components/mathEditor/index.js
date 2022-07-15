@@ -152,7 +152,7 @@ const MathEditor = ({
 				viewJsonData[0] &&
 				Object.keys(viewJsonData[0].parameters).length > 0
 			) {
-				console.log("viewJsonData[0].parameters", viewJsonData[0].parameters);
+
 				setParamData(viewJsonData[0].parameters);
 			}
 		}
@@ -189,7 +189,7 @@ const MathEditor = ({
 	};
 
 	const getParamData = (data) => {
-		console.log("dataaaaaaaaa", data);
+
 		setParamData(data);
 	};
 
@@ -209,8 +209,7 @@ const MathEditor = ({
 				lastIndex = i - 1;
 			}
 		});
-		console.log("varData", varData);
-		console.log("variableData", variableData);
+
 		const varArr = varData.filter((ele) => {
 			return ele.variableName !== param;
 		});

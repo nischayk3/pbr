@@ -57,7 +57,6 @@ const ViewCreation = () => {
 	const [moleculeList, setMoleculeList] = useState({});
 	const [isPublish, setIsPublish] = useState(false);
 	const [moleculeId, setMoleculeId] = useState();
-	const getData = useRef();
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
 	const [highlightFilterValue, setHighlightFilterValue] = useState("");
 	const [viewSummaryBatch, setViewSummaryBatch] = useState([]);
@@ -75,7 +74,7 @@ const ViewCreation = () => {
 	const [approveReject, setApproveReject] = useState("");
 	const [isEditView, setIsEditView] = useState(false);
 	const [fromWorkflowScreen, setFromWorkflowScreen] = useState(false);
-	const [filterParam, setFilterParam] = useState("");
+	//const [filterParam, setFilterParam] = useState("");
 	const [loadBatches, setLoadBatches] = useState([]);
 
 	const { id } = useParams();
@@ -94,8 +93,6 @@ const ViewCreation = () => {
 	useEffect(() => {
 		setParamTableData(selectedTableData);
 	}, [selectedTableData]);
-
-
 
 	useEffect(() => {
 		if (Number(id) !== 0) {
@@ -240,7 +237,7 @@ const ViewCreation = () => {
 	const filterMolequles = async (filterValue) => {
 		const filterSplit = filterValue && filterValue.split('_')
 		setHighlightFilterValue(filterSplit[2])
-		setFilterParam(filterSplit)
+		// setFilterParam(filterSplit)
 		const _filterReq1 = {
 			data: {
 				hierarchy: moleculeList.hierarchy,
@@ -252,10 +249,6 @@ const ViewCreation = () => {
 		}
 		await filterLoadMolecule(_filterReq1, filterSplit)
 	}
-
-	const getNewData = (el) => {
-		getData.current = el;
-	};
 
 	const handleSaveVisible = () => {
 		setIsSaveVisible(true);
@@ -303,7 +296,7 @@ const ViewCreation = () => {
 	};
 
 	const viewCreate = async (_reqView) => {
-
+		/* istanbul ignore next */
 		try {
 			const response = await saveFunction(_reqView);
 			if (response.statuscode === 200) {
@@ -496,7 +489,6 @@ const ViewCreation = () => {
 												setFilesListTree={setFilesListTree}
 												count={count}
 												setCount={setCount}
-												getNewData={(el) => getNewData(el)}
 												setViewSummaryBatch={setViewSummaryBatch}
 												viewJson={viewJson}
 											/>

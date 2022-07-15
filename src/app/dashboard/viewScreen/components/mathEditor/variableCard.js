@@ -9,13 +9,13 @@ const VariableCard = ({ id, variableName, deleteVariable, editVariable, fromWork
 			<div className="var_block_card" key={id}>
 				<p>{variableName}</p>
 				<div className="var-btn">
-					<Button disabled={fromWorkflowScreen}>
+					<Button disabled={fromWorkflowScreen} id="edit-btn">
 						<EditOutlined
 							className="edit"
 							onClick={() => editVariable(variableName)}
 						/>
 					</Button>
-					<Button onClick={(e) => deleteVariable(variableName)} disabled={fromWorkflowScreen}>
+					<Button onClick={(e) => deleteVariable(variableName)} disabled={fromWorkflowScreen} id="delete-btn">
 						<DeleteOutlined className="delete" />
 					</Button>
 				</div>
