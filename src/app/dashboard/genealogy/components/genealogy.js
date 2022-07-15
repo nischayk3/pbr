@@ -244,14 +244,20 @@ function Genealogy() {
 				setIsDrawerRef(true);
 				setActivateKey('2');
 				dispatch(hideLoader());
-			} else if (backwardRes.status === 400) {
+			} /* istanbul ignore next */
+			else if (backwardRes.status === 400) {
+				/* istanbul ignore next */
 				setGenealogyData([]);
+				/* istanbul ignore next */
 				dispatch(hideLoader());
+				/* istanbul ignore next */
 				dispatch(showNotification('error', 'No Data Found'));
+				/* istanbul ignore next */
 				setActivateKey('1');
 			}
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification('error', error));
 		}
 	};
@@ -278,6 +284,7 @@ function Genealogy() {
 			dispatch(hideLoader());
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification('error', error));
 		}
 	};
@@ -298,6 +305,7 @@ function Genealogy() {
 			dispatch(hideLoader());
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification('error', 'No Data Found'));
 		}
 	};
@@ -309,12 +317,14 @@ function Genealogy() {
 		try {
 			dispatch(showLoader());
 			const processResInput = await getProcessInfo(_reqProcessInfo);
+			/* istanbul ignore next */
 			if (processResInput.length > 0) {
 				setProcessInput(processResInput);
 			}
 			dispatch(hideLoader());
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification('error', 'No Data Found'));
 		}
 	};
@@ -332,6 +342,7 @@ function Genealogy() {
 			dispatch(hideLoader());
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification('error', 'No Data Found'));
 		}
 	};
@@ -355,6 +366,7 @@ function Genealogy() {
 			dispatch(hideLoader());
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification('error', 'No Data Found'));
 		}
 	};
@@ -375,6 +387,7 @@ function Genealogy() {
 		setActivateKey(key);
 	};
 
+	/* istanbul ignore next */
 	const onEditTab = (targetKey) => {
 		remove(targetKey);
 	};
@@ -458,6 +471,7 @@ function Genealogy() {
 			}
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification('error', error));
 		}
 	};
@@ -475,6 +489,7 @@ function Genealogy() {
 			}
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification('error', error));
 		}
 	};

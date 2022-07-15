@@ -400,7 +400,7 @@ export default function ReportLanding(props) {
         </div>
 
         <Card className="landing-card">
-          <div style={{ width: "900px", marginLeft: "180px" }}>
+          <div style={{ width: "794px", marginLeft: "210px" }}>
             <Input.Search
               placeholder="Search by report ID, report name, chart ID, chart name, creator, status"
               allowClear

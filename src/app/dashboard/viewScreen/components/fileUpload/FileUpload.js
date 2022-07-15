@@ -91,7 +91,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 							parameterPassHandler(record, index);
 						}}
 					>
-						<PlusSquareOutlined />
+						{!fromWorkflowScreen ? <PlusSquareOutlined /> : <> </>}
 					</span>
 				</>
 			)
