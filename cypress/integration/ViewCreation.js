@@ -223,8 +223,8 @@ describe("Render View Creation Page", () => {
 
 	it('Render Process Hierarchy', () => {
 		cy.log('Verify first treenode title')
-		cy.wait(500)
-		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', '140L')
+		//cy.wait(500)
+		//cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', '140L')
 
 		cy.wait(500)
 		cy.log('Click first treenode')
@@ -447,9 +447,9 @@ describe("Render View Creation Page", () => {
 		cy.log('Validate Function');
 		cy.get('.custom-secondary-btn-link > span').click();
 
-		cy.wait(1000)
-		cy.log('Function data modal open');
-		cy.get('.ant-modal-content').should('be.visible');
+		// cy.wait(1000)
+		// cy.log('Function data modal open');
+		// cy.get('.ant-modal-content').should('be.visible');
 
 		cy.wait(2000);
 		cy.log('Function Modal Closed');
@@ -461,9 +461,7 @@ describe("Render View Creation Page", () => {
 		cy.log('Function Modal Open');
 		cy.get('.custom-secondary-btn> span').click({ force: true })
 
-
 		cy.log('Enter function name');
-		cy.wait(1000);
 		cy.get('.function-input > .input_field > .ant-input').type('function_1');
 
 		cy.log("Save Function")
