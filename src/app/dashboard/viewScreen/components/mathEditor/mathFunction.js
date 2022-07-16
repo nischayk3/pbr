@@ -224,6 +224,7 @@ const MathFunction = ({ data, materialId, fromWorkflowScreen }) => {
 					</p>
 					<div className="function-input">
 						<InputField
+							id="function-name"
 							label="Enter function name"
 							placeholder="E.g. Function 1"
 							onChangeInput={(e) => onChangeFunName(e)}
@@ -260,18 +261,29 @@ const MathFunction = ({ data, materialId, fromWorkflowScreen }) => {
 				visible={isTabelVisible}
 				onCancel={handleTableCancel}
 				footer={null}
-				className='eval-func-modal'
-
+				className='batch-modal'
 			>
-				<Table
-					columns={DataColumns}
-					dataSource={evalTable}
-					size="small"
-					scroll={{ y: 450 }}
-					rowClassName={(index) =>
-						index % 2 === 0 ? "table-row-light" : "table-row-dark"
-					}
-				/>
+				<div className="batch-table-block">
+					<Table
+						columns={DataColumns}
+						dataSource={evalTable}
+						size="small"
+						scroll={{ y: 450 }}
+						rowClassName={(index) =>
+							index % 2 === 0 ? "table-row-light" : "table-row-dark"
+						}
+					/>
+					<div className="batch-table-footer">
+						<Button
+							id="cancel-evalution-modal"
+							onClick={handleTableCancel}
+							type="text"
+							className="custom-primary-btn "
+						>
+							Cancel
+						</Button>
+					</div>
+				</div>
 			</Modal>
 		</>
 	);
