@@ -64,16 +64,22 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 				dispatch(hideLoader());
 				/* istanbul ignore next */
 			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
+				/* istanbul ignore next */
 				dispatch(hideLoader());
+				/* istanbul ignore next */
 				dispatch(showNotification("error", "No Data Found"));
 				/* istanbul ignore next */
 			} else {
+				/* istanbul ignore next */
 				dispatch(hideLoader());
+				/* istanbul ignore next */
 				dispatch(showNotification("error", moleculeRes.Message));
 			}
 			/* istanbul ignore next */
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", error));
 		}
 	}
@@ -88,17 +94,22 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 				dispatch(hideLoader());
 				/* istanbul ignore next */
 			} else if (filterMolRes.Status === 401 && filterMolRes.Status === 400) {
+				/* istanbul ignore next */
 				dispatch(hideLoader());
+				/* istanbul ignore next */
 				dispatch(showNotification("error", "No Data Found"));
 				/* istanbul ignore next */
 			} else {
 				/* istanbul ignore next */
 				dispatch(hideLoader());
+				/* istanbul ignore next */
 				dispatch(showNotification("error", filterMolRes.Message));
 			}
 			/* istanbul ignore next */
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", error));
 		}
 	}
