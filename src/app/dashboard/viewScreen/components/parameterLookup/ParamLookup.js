@@ -58,28 +58,21 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 		try {
 			dispatch(showLoader());
 			const moleculeRes = await getMoleculeList(_reqMolecule);
-
+			/* istanbul ignore else  */
 			if (moleculeRes.Status === 200) {
 				setMoleculeList(moleculeRes.Data.hierarchy);
 				dispatch(hideLoader());
-				/* istanbul ignore next */
+				/* istanbul ignore else  */
 			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
-				/* istanbul ignore next */
 				dispatch(hideLoader());
-				/* istanbul ignore next */
 				dispatch(showNotification("error", "No Data Found"));
-				/* istanbul ignore next */
 			} else {
-				/* istanbul ignore next */
 				dispatch(hideLoader());
-				/* istanbul ignore next */
 				dispatch(showNotification("error", moleculeRes.Message));
 			}
 			/* istanbul ignore next */
 		} catch (error) {
-			/* istanbul ignore next */
 			dispatch(hideLoader());
-			/* istanbul ignore next */
 			dispatch(showNotification("error", error));
 		}
 	}
@@ -89,20 +82,16 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 		try {
 			dispatch(showLoader());
 			const filterMolRes = await filterMolequles(_reqFilterMolecule);
+			/* istanbul ignore else  */
 			if (filterMolRes.Status === 200) {
 				setFilterMol(filterMolRes.Data)
 				dispatch(hideLoader());
-				/* istanbul ignore next */
+				/* istanbul ignore else  */
 			} else if (filterMolRes.Status === 401 && filterMolRes.Status === 400) {
-				/* istanbul ignore next */
 				dispatch(hideLoader());
-				/* istanbul ignore next */
 				dispatch(showNotification("error", "No Data Found"));
-				/* istanbul ignore next */
 			} else {
-				/* istanbul ignore next */
 				dispatch(hideLoader());
-				/* istanbul ignore next */
 				dispatch(showNotification("error", filterMolRes.Message));
 			}
 			/* istanbul ignore next */

@@ -607,7 +607,7 @@ function Genealogy() {
 							bannerbg={{
 								background: 'linear-gradient(180deg, #FFFFFF 0%, #B9D6FF 100%)'
 							}}
-							title='Hello there,'
+							title={`Howdy ${localStorage.getItem("username")},`}
 							description='Shall we get down to tracing some batches and materials?'
 							source={genealogyLanding}
 							sourceClass='geanealogy-image'

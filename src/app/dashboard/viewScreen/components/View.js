@@ -117,28 +117,26 @@ const ViewCreation = () => {
 		try {
 			dispatch(showLoader());
 			const moleculeRes = await getMoleculeList(_reqMolecule);
+			/* istanbul ignore else  */
 			if (moleculeRes.Status === 200) {
-
 				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes.Data }));
+				/* istanbul ignore else  */
 				if (moleculeRes.Data.mol_batches && moleculeRes.Data.mol_batches.length > 0) {
 					setLoadBatches(moleculeRes.Data.mol_batches)
 					setViewSummaryBatch(moleculeRes.Data.mol_batches);
 					dispatch(sendTotalMolBatches(moleculeRes.Data.mol_batches))
 				}
 				dispatch(hideLoader());
-				/* istanbul ignore next */
+				/* istanbul ignore else  */
 			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
-
 				dispatch(hideLoader());
 				dispatch(showNotification("error", "No Data Found"));
-				/* istanbul ignore next */
 			} else {
 				dispatch(hideLoader());
 				dispatch(showNotification("error", moleculeRes.Message));
 			}
 			/* istanbul ignore next */
 		} catch (error) {
-
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
 		}
