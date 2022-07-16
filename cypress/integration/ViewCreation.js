@@ -222,10 +222,8 @@ describe("Render View Creation Page", () => {
 	})
 
 	it('Render Process Hierarchy', () => {
-		cy.log('Load Process Hierarchy')
-
-		cy.wait(500)
 		cy.log('Verify first treenode title')
+		cy.wait(500)
 		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', '140L')
 
 		cy.wait(500)
@@ -238,26 +236,29 @@ describe("Render View Creation Page", () => {
 
 		cy.wait('@firstNodeMol').then(() => {
 			cy.log('Verify second treenode title')
+
 			cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', 'SODIUM CARBONATE ANHYDROUS NF/EP')
 		})
 
 		cy.intercept('POST', '**/molecules3', { fixture: 'secondNodeMol.json' }).as('secondNodeMol')
 
-		cy.wait(500)
+
 		cy.log('Click second treenode')
+		cy.wait(500)
 		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').click({ force: true })
 
 		cy.wait(500)
 		cy.get('.ant-tree-treenode-switcher-close > .ant-tree-switcher > .anticon > svg').click()
 		cy.wait('@secondNodeMol').then(() => {
-			cy.log('Verify third treenode title')
 			cy.log('Verify first tree index name');
+			cy.wait(500)
 			cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .ant-tag').should('have.text', 'ARSENIC')
+			cy.wait(500)
 			cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .treenode-coverage').should('have.text', '3%(1/33)')
 			cy.wait(100)
 		})
 
-		cy.log('Click on Paramter')
+		cy.log('Click on Parameter')
 		cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click()
 		cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click()
 
@@ -459,14 +460,16 @@ describe("Render View Creation Page", () => {
 		cy.wait(1000);
 		cy.log('Function Modal Open');
 		cy.get('.custom-secondary-btn> span').click({ force: true })
-		cy.wait(1000);
+
 
 		cy.log('Enter function name');
+		cy.wait(1000);
 		cy.get('.function-input > .input_field > .ant-input').type('function_1');
 
 		cy.log("Save Function")
+		cy.wait(1000);
 		cy.get('.function-btn > .ant-btn-text > span').click({ force: true })
-		cy.wait(2000);
+		cy.wait(1000);
 	})
 
 	it('Save View Creation', () => {
