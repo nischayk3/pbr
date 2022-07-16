@@ -92,8 +92,6 @@ const ParameterTable = ({
 	const { Search } = Input;
 	const dispatch = useDispatch();
 
-
-
 	let columns = [
 		{
 			title: "",

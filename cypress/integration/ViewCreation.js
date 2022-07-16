@@ -232,9 +232,9 @@ describe("Render View Creation Page", () => {
 		cy.wait(500)
 		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').click()
 		cy.wait(500)
-		cy.get('.ant-tree-switcher > .anticon > svg > path').click()
 
 		cy.wait('@firstNodeMol').then(() => {
+			cy.get('.ant-tree-switcher > .anticon > svg > path').click()
 			cy.log('Verify second treenode title')
 
 			cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', 'SODIUM CARBONATE ANHYDROUS NF/EP')
@@ -352,7 +352,7 @@ describe("Render View Creation Page", () => {
 
 		cy.wait(500)
 		cy.log("Click on card to create a variable")
-		cy.get('#create-variable > p').click()
+		cy.get('#create-variable > p').click({ force: true })
 
 		cy.wait(500)
 		cy.log('Verify Select Parameter Card text name')
@@ -451,9 +451,9 @@ describe("Render View Creation Page", () => {
 		// cy.log('Function data modal open');
 		// cy.get('.ant-modal-content').should('be.visible');
 
-		cy.wait(2000);
+		cy.wait(1000);
 		cy.log('Function Modal Closed');
-		cy.get('.eval-func-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x > .anticon > svg').click();
+		cy.get('#cancel-evalution-modal > span').click({ force: true });
 	})
 
 	it('Render Function Creation', () => {
@@ -462,7 +462,7 @@ describe("Render View Creation Page", () => {
 		cy.get('.custom-secondary-btn> span').click({ force: true })
 
 		cy.log('Enter function name');
-		cy.get('.function-input > .input_field > .ant-input').type('function_1');
+		cy.get('#function-name').type('function_1');
 
 		cy.log("Save Function")
 		cy.wait(1000);
