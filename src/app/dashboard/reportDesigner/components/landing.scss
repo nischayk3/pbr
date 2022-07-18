@@ -367,10 +367,11 @@
 			display: flex;
 
 			p {
-				padding: 0 5px 0 15px;
+				padding: 0 0px 0 6px;
 				display: flex;
 				margin-left: 0px;
 				font-size: 12px;
+				
 
 				.drft {
 					width: 14px;
@@ -398,6 +399,14 @@
 					margin: 2px 6px;
 					display: block;
 				}
+					.reject {
+				width: 14px;
+				height: 14px;
+				border-radius: 50px;
+				background: rgb(214, 64, 69);
+				margin: 3px 6px;
+				display: block;
+			}
 			}
 		}
 	}
