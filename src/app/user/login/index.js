@@ -160,7 +160,7 @@ const Login = () => {
 						</div>
 
 						<div className="login-input">
-							<Input.Password 
+							<Input.Password
 								className="input-prefix"
 								placeholder="Enter password: **********"
 								prefix={<LockOutlined />}
@@ -244,7 +244,7 @@ const Login = () => {
 			<div>
 				<Modal
 					title={forgotPasswordFlag && successfulAccountCreationFlag == false ? 'Forgot Password' : successfulAccountCreationFlag ? '' : 'Signup'}
-					style={{right:80,top:120}}
+					style={{ right: 80, top: 120 }}
 					visible={visible}
 					onCancel={handleCancel}
 					footer={false}

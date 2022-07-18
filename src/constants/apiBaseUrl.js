@@ -55,12 +55,13 @@ export const BMS_APP_PYTHON_SERVICE = `${process.env.REACT_APP_PYTHON_SERVICES +
 	}`;
 
 //MDH Genealogy python
-export const MDH_APP_PYTHON_SERVICE = 'https://bms-cpvdev.mareana.com';
+//export const MDH_APP_PYTHON_SERVICE = 'https://bms-cpvdev.mareana.com';
+export const MDH_APP_PYTHON_SERVICE = `${process.env.REACT_APP_URL}`;
 
 export const MDH_APP_GENEALOGY = `${process.env.REACT_APP_GENEALOGY}`
 
-export const MDH_AIRFLOW =
-	"https://bms-cpvdev.mareana.com/airflow/login/?next=https%3A%2F%2Fbms-cpvdev.mareana.com%2Fairflow%2Fhome";
+export const MDH_AIRFLOW = `${process.env.REACT_APP_URL} + "/airflow/login/?next=https%3A%2F%2F" + ${process.env.REACT_APP_URL} + "%2Fairflow%2Fhome"`
+//"https://bms-cpvdev.mareana.com/airflow/login/?next=https%3A%2F%2Fbms-cpvdev.mareana.com%2Fairflow%2Fhome";
 //BMS APP GOOGLE ANALYTICS TRACS ID
 export const GOOGLE_ANALYTICS_ID = `${process.env.REACT_APP_GOOGLE_ANALYTICS_ID}`;
 
