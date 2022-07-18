@@ -61,6 +61,10 @@
 
 .custom-user-roles-wrapper {
 	padding: 0 30px;
+	.ant-table-tbody > tr > td {
+		border-bottom: 2px solid #f0f0f0 !important;
+		border-right: 2px solid #f0f0f0 !important;
+	}
 }
 
 .custom-user-roles-wrapper .ant-row {
@@ -225,3 +229,5 @@ button[role='switch'][aria-checked='true'] {
 	background-color: #fff !important;
 	color: #486bc9 !important;
 }
+
+
