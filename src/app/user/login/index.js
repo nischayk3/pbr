@@ -55,7 +55,7 @@ const Login = () => {
 			if (localStorage.getItem("test_enabled")) {
 				window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
 			} else {
-				window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
+				window.open(`${loginUrl}?is_ui=True&base_url=http://localhost&redirect_url=http://localhost%2F%23%2Fdashboard%2Fredirect`, '_self')
 			}
 		}
 	}
@@ -160,7 +160,7 @@ const Login = () => {
 						</div>
 
 						<div className="login-input">
-							<Input.Password 
+							<Input.Password
 								className="input-prefix"
 								placeholder="Enter password: **********"
 								prefix={<LockOutlined />}
@@ -244,7 +244,7 @@ const Login = () => {
 			<div>
 				<Modal
 					title={forgotPasswordFlag && successfulAccountCreationFlag == false ? 'Forgot Password' : successfulAccountCreationFlag ? '' : 'Signup'}
-					style={{right:80,top:120}}
+					style={{ right: 80, top: 120 }}
 					visible={visible}
 					onCancel={handleCancel}
 					footer={false}

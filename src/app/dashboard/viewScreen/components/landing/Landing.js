@@ -215,6 +215,9 @@ export default function Landing() {
 							<p>
 								<span className="aprv" id="approved"></span>Approved
 							</p>
+							<p>
+								<span className="reject" id="reject"></span>Reject
+							</p>
 						</div>
 					</div>
 
