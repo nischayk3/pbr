@@ -477,6 +477,9 @@ export default function ReportLanding(props) {
                     <p>
                       <span className="aprv"></span>Approved
                     </p>
+                    <p>
+                      <span className="reject" id="reject"></span>Reject
+                    </p>
                   </div>
                 </div>
                 <div>
