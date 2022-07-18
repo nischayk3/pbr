@@ -32,7 +32,7 @@ const DataColumns = [
 	}
 ];
 
-const MathFunction = (props) => {
+const MathFunction = ({ data, materialId, fromWorkflowScreen }) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [functionName, setFunctionName] = useState("");
 	const [mathEditorValue, setMathEditorValue] = useState("");
@@ -102,9 +102,9 @@ const MathFunction = (props) => {
 
 	const functionEvaluate = async () => {
 		let req = {
-			material_id: props.materialId,
+			material_id: materialId,
 			functions: { 1: { defination: mathEditorValue, name: "function-1" } },
-			parameters: props.data ? props.data : {}
+			parameters: data ? data : {}
 		};
 
 		let evaluate_respone = await viewEvaluate({ data: req });
@@ -170,7 +170,7 @@ const MathFunction = (props) => {
 					<div className="script-editor-wrapper">
 						<div className="script-editor">
 							<CodeEditor
-								disabled={props.fromWorkflowScreen}
+								disabled={fromWorkflowScreen}
 								value={mathEditorValue}
 								language="py"
 								placeholder="Please enter the script"
@@ -196,7 +196,7 @@ const MathFunction = (props) => {
 								onClick={functionEvaluate}
 								type="text"
 								className="custom-secondary-btn-link"
-								disabled={props.fromWorkflowScreen}
+								disabled={fromWorkflowScreen}
 							>
 								Evaluate function
 							</Button>
@@ -224,6 +224,7 @@ const MathFunction = (props) => {
 					</p>
 					<div className="function-input">
 						<InputField
+							id="function-name"
 							label="Enter function name"
 							placeholder="E.g. Function 1"
 							onChangeInput={(e) => onChangeFunName(e)}
@@ -260,18 +261,29 @@ const MathFunction = (props) => {
 				visible={isTabelVisible}
 				onCancel={handleTableCancel}
 				footer={null}
-				className='eval-func-modal'
-
+				className='batch-modal'
 			>
-				<Table
-					columns={DataColumns}
-					dataSource={evalTable}
-					size="small"
-					scroll={{ y: 450 }}
-					rowClassName={(index) =>
-						index % 2 === 0 ? "table-row-light" : "table-row-dark"
-					}
-				/>
+				<div className="batch-table-block">
+					<Table
+						columns={DataColumns}
+						dataSource={evalTable}
+						size="small"
+						scroll={{ y: 450 }}
+						rowClassName={(index) =>
+							index % 2 === 0 ? "table-row-light" : "table-row-dark"
+						}
+					/>
+					<div className="batch-table-footer">
+						<Button
+							id="cancel-evalution-modal"
+							onClick={handleTableCancel}
+							type="text"
+							className="custom-primary-btn "
+						>
+							Cancel
+						</Button>
+					</div>
+				</div>
 			</Modal>
 		</>
 	);

@@ -146,13 +146,13 @@ const MathEditor = ({
 					setShowVariable(true);
 					setVarData(newVar_data);
 				}, 200)
-
 			}
 
 			if (
 				viewJsonData[0] &&
 				Object.keys(viewJsonData[0].parameters).length > 0
 			) {
+
 				setParamData(viewJsonData[0].parameters);
 			}
 		}
@@ -160,13 +160,12 @@ const MathEditor = ({
 
 
 	const addVariable = () => {
-
+		setCardTitle("Select parameters");
 		setRowDisable(true);
 		setIscheckBox(true);
 	};
 
 	const createVar = () => {
-
 		if (varData && varData.length > 0) {
 			variableData = [...varData];
 		}
@@ -190,6 +189,7 @@ const MathEditor = ({
 	};
 
 	const getParamData = (data) => {
+
 		setParamData(data);
 	};
 
@@ -209,12 +209,17 @@ const MathEditor = ({
 				lastIndex = i - 1;
 			}
 		});
+
 		const varArr = varData.filter((ele) => {
 			return ele.variableName !== param;
 		});
 		const varDataArr = variableData.filter((ele) => {
 			return ele.variableName !== param;
 		});
+		const parameter = { ...paramData }
+		delete paramData[parameter];
+
+		setParamData(parameter)
 
 		variableData = [...varDataArr];
 		const newVar = [...varArr]
@@ -230,7 +235,6 @@ const MathEditor = ({
 			<Collapse
 				className="viewCreation-accordian "
 				defaultActiveKey={["1"]}
-
 			>
 				<Panel
 					className="viewCreation-materialsPanel"
@@ -244,7 +248,11 @@ const MathEditor = ({
 					}
 					key="1"
 				>
-					<MathFunction data={paramData} materialId={materialId} fromWorkflowScreen={fromWorkflowScreen} />
+					<MathFunction
+						data={paramData}
+						materialId={materialId}
+						fromWorkflowScreen={fromWorkflowScreen}
+					/>
 					<div className="variable-wrapper">
 						<CreateVariable
 							addVariable={addVariable}

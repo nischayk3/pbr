@@ -222,40 +222,48 @@ describe("Render View Creation Page", () => {
 	})
 
 	it('Render Process Hierarchy', () => {
-		cy.log('Load Process Hierarchy')
-
 		cy.log('Verify first treenode title')
-		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', '140L')
+		//cy.wait(500)
+		//cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', '140L')
 
+		cy.wait(500)
 		cy.log('Click first treenode')
 		cy.intercept('POST', '**/molecules3', { fixture: 'firstNodeMol.json' }).as('firstNodeMol')
-		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').click()
-		cy.get('.ant-tree-switcher > .anticon > svg > path').click()
+		cy.wait(500)
+		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').click({ multiple: true })
+		cy.wait(500)
 
 		cy.wait('@firstNodeMol').then(() => {
+			cy.get('.ant-tree-switcher > .anticon > svg > path').click({ multiple: true })
 			cy.log('Verify second treenode title')
+
 			cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', 'SODIUM CARBONATE ANHYDROUS NF/EP')
 		})
 
 		cy.intercept('POST', '**/molecules3', { fixture: 'secondNodeMol.json' }).as('secondNodeMol')
 
-		cy.log('Click second treenode')
-		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').click({ force: true })
 
-		cy.get('.ant-tree-treenode-switcher-close > .ant-tree-switcher > .anticon > svg').click()
+		cy.log('Click second treenode')
+		cy.wait(500)
+		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').click({ multiple: true })
+
+		cy.wait(500)
+		cy.get('.ant-tree-treenode-switcher-close > .ant-tree-switcher > .anticon > svg').click({ multiple: true })
 		cy.wait('@secondNodeMol').then(() => {
-			cy.log('Verify third treenode title')
 			cy.log('Verify first tree index name');
+			cy.wait(500)
 			cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .ant-tag').should('have.text', 'ARSENIC')
+			cy.wait(500)
 			cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > .tree-block-param > .treenode-coverage').should('have.text', '3%(1/33)')
 			cy.wait(100)
 		})
 
-		cy.log('Click on Paramter')
-		cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click()
-		cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click()
-
-		cy.get('.viewCreation-materials > .ant-collapse-icon-position-left > .viewCreation-materialsPanel > .ant-collapse-header').click()
+		cy.log('Click on Parameter')
+		cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click({ multiple: true })
+		cy.wait(500)
+		cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click({ multiple: true })
+		cy.wait(500)
+		cy.get('.viewCreation-materials > .ant-collapse-icon-position-left > .viewCreation-materialsPanel > .ant-collapse-header').click({ multiple: true })
 	})
 
 	it('Filter Paramter lookup ', () => {
@@ -331,16 +339,25 @@ describe("Render View Creation Page", () => {
 	})
 
 	it('Create a variable', () => {
+		cy.wait(500)
 		cy.log('Verify Variable Wrapper')
 		cy.get('.variable-wrapper').should('be.visible')
 
+		cy.wait(500)
 		cy.log('Verify Create Variable Card')
 		cy.get('.add-var_block').should('be.visible')
 
+		cy.wait(500)
 		cy.log('Verify Create Variable Card text name')
+		cy.get('#create-variable > p').should("have.text", "Create Variable")
 
+		cy.wait(500)
 		cy.log("Click on card to create a variable")
-		cy.get('.add-var_block > div > p').click()
+		cy.get('#create-variable > p').click({ force: true })
+
+		cy.wait(500)
+		cy.log('Verify Select Parameter Card text name')
+		cy.get('#select-parameters').should("have.text", "Select parameters")
 
 		cy.log("Delete Parameter")
 		cy.get('[data-row-key="2_ASSAY 1DECPT"] > [style="position: sticky; left: 31.9922px;"] > .anticon > svg').click()
@@ -351,16 +368,34 @@ describe("Render View Creation Page", () => {
 
 		cy.log('Select a primary')
 		cy.get('[data-row-key="2_ARSENIC"] > [style="position: sticky; left: 221.992px;"] > .ant-radio-wrapper > .ant-radio > .ant-radio-input').check();
+
 		cy.log('Select a Aggregation')
 		cy.get('[data-row-key="2_ARSENIC"] > .ant-table-cell-fix-left-last > .ant-select > .ant-select-selector').click({ force: true })
 		cy.get('div[title="Mean"]').click({ multiple: true })
 
-		cy.log('Verify Done Card & Click On')
-		cy.get('.add-var_block > .ant-btn > span').should("have.text", "Done")
-		cy.get('.add-var_block > .ant-btn > span').click()
+		cy.wait(500)
+		cy.log('Render popup with volume data')
+		cy.get('.param-column > :nth-child(1) > .anticon > svg').click()
 
+		cy.wait(500)
+		cy.log("Search Batch ABL2258")
+		cy.get('.ant-input-affix-wrapper > .ant-input').type("ABL2258")
+		cy.get('.ant-input-group-addon > .ant-btn > .anticon').click()
+
+		cy.wait(500)
+		cy.log("Change batch value")
+		cy.get('.batch-table-block > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-body > table > .ant-table-tbody > .ant-table-row > :nth-child(2)').click()
+
+		cy.get('.batch-table-footer > .ant-btn > span').click()
+		cy.wait(1000)
+		cy.log('Verify Done Card & Click On')
+		cy.get('#done > span').should("have.text", "Done")
+		cy.get('#done > span').click()
+
+		cy.wait(1000)
 		cy.log("Modal should open")
 		cy.get('.ant-modal-content').should('be.visible')
+		cy.wait(1000)
 
 		cy.log("Add Variable Name");
 		cy.get('.input_field > .ant-input').clear();
@@ -385,9 +420,10 @@ describe("Render View Creation Page", () => {
 		cy.get('.add-var_block > .ant-btn > span').should("have.text", "Done")
 		cy.get('.add-var_block > .ant-btn > span').click()
 
-
+		cy.wait(1000)
 		cy.log("Modal should open")
 		cy.get('.ant-modal-content').should('be.visible')
+		cy.wait(1000)
 
 		cy.log("Add Variable Name");
 		cy.get('.input_field > .ant-input').clear();
@@ -396,8 +432,11 @@ describe("Render View Creation Page", () => {
 		cy.log("Create A Variable");
 		cy.get('.variable-name-popup > .ant-btn').click();
 
+		cy.log("Edit Variable")
+		cy.get(':nth-child(3) > .var-btn > #edit-btn > .anticon > svg').click({ force: true })
+
 		cy.log('delete variabale')
-		cy.get(':nth-child(3) > .var-btn > :nth-child(2) > .anticon > svg ').click({ force: true })
+		cy.get(':nth-child(3) > .var-btn > #delete-btn > .anticon > svg').click({ force: true })
 
 		cy.log('Enter variable name to script');
 		cy.get('.w-tc-editor-text').type('var1');
@@ -409,23 +448,27 @@ describe("Render View Creation Page", () => {
 		cy.log('Validate Function');
 		cy.get('.custom-secondary-btn-link > span').click();
 
-		cy.log('Function data modal open');
-		cy.get('.ant-modal-content').should('be.visible');
+		// cy.wait(1000)
+		// cy.log('Function data modal open');
+		// cy.get('.ant-modal-content').should('be.visible');
 
-		cy.wait(2000);
+		cy.wait(1000);
 		cy.log('Function Modal Closed');
-		cy.get('.eval-func-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x > .anticon > svg').click();
+		cy.get('#cancel-evalution-modal > span').click({ force: true });
 	})
 
 	it('Render Function Creation', () => {
+		cy.wait(1000);
 		cy.log('Function Modal Open');
-		cy.get('.custom-secondary-btn> span').click();
+		cy.get('.custom-secondary-btn> span').click({ force: true })
 
 		cy.log('Enter function name');
-		cy.get('.function-input > .input_field > .ant-input').type('function_1');
+		cy.get('#function-name').type('function_1');
 
 		cy.log("Save Function")
+		cy.wait(1000);
 		cy.get('.function-btn > .ant-btn-text > span').click({ force: true })
+		cy.wait(1000);
 	})
 
 	it('Save View Creation', () => {
@@ -438,7 +481,4 @@ describe("Render View Creation Page", () => {
 
 		cy.get('#cancel-save > span').click()
 	})
-
-
-
 });

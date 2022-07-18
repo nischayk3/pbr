@@ -919,6 +919,7 @@ function TreePlot(props) {
 				nodeExit.select("text").style("fill-opacity", 1e-6);
 
 				// Update the links…
+				
 				var link = THIS.vis
 					.selectAll("path.link")
 					.data(THIS.tree.links(nodes), function (d) {
@@ -1173,6 +1174,9 @@ function TreePlot(props) {
 					d._isSelected = true;
 					lastClickD = d;
 					THIS.update(d);
+					setTimeout(function(){
+						THIS.update(d);
+					},300)
 				}
 
 				/* istanbul ignore next */

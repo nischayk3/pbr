@@ -57,7 +57,6 @@ const ViewCreation = () => {
 	const [moleculeList, setMoleculeList] = useState({});
 	const [isPublish, setIsPublish] = useState(false);
 	const [moleculeId, setMoleculeId] = useState();
-	const getData = useRef();
 	const [functionEditorViewState, setFunctionEditorViewState] = useState(false);
 	const [highlightFilterValue, setHighlightFilterValue] = useState("");
 	const [viewSummaryBatch, setViewSummaryBatch] = useState([]);
@@ -75,7 +74,7 @@ const ViewCreation = () => {
 	const [approveReject, setApproveReject] = useState("");
 	const [isEditView, setIsEditView] = useState(false);
 	const [fromWorkflowScreen, setFromWorkflowScreen] = useState(false);
-	const [filterParam, setFilterParam] = useState("");
+	//const [filterParam, setFilterParam] = useState("");
 	const [loadBatches, setLoadBatches] = useState([]);
 
 	const { id } = useParams();
@@ -95,8 +94,6 @@ const ViewCreation = () => {
 		setParamTableData(selectedTableData);
 	}, [selectedTableData]);
 
-
-
 	useEffect(() => {
 		if (Number(id) !== 0) {
 			const tempId = id.slice(0, id.indexOf("&"));
@@ -109,7 +106,6 @@ const ViewCreation = () => {
 			setViewVersion(version);
 			dispatch(isLoadView(true));
 			loadView(_reqLoad);
-
 		} else {
 			setViewDisplayId(parameters.id);
 			setViewVersion(parameters.version);
@@ -121,29 +117,26 @@ const ViewCreation = () => {
 		try {
 			dispatch(showLoader());
 			const moleculeRes = await getMoleculeList(_reqMolecule);
+			/* istanbul ignore else  */
 			if (moleculeRes.Status === 200) {
-
 				setMoleculeList(prevMol => ({ ...prevMol, ...moleculeRes.Data }));
+				/* istanbul ignore else  */
 				if (moleculeRes.Data.mol_batches && moleculeRes.Data.mol_batches.length > 0) {
 					setLoadBatches(moleculeRes.Data.mol_batches)
 					setViewSummaryBatch(moleculeRes.Data.mol_batches);
 					dispatch(sendTotalMolBatches(moleculeRes.Data.mol_batches))
 				}
 				dispatch(hideLoader());
-				/* istanbul ignore next */
+				/* istanbul ignore else  */
 			} else if (moleculeRes.Status === 401 && moleculeRes.Status === 400) {
-
 				dispatch(hideLoader());
 				dispatch(showNotification("error", "No Data Found"));
-				/* istanbul ignore next */
 			} else {
-
 				dispatch(hideLoader());
 				dispatch(showNotification("error", moleculeRes.Message));
 			}
 			/* istanbul ignore next */
 		} catch (error) {
-
 			dispatch(hideLoader());
 			dispatch(showNotification("error", error));
 		}
@@ -240,7 +233,7 @@ const ViewCreation = () => {
 	const filterMolequles = async (filterValue) => {
 		const filterSplit = filterValue && filterValue.split('_')
 		setHighlightFilterValue(filterSplit[2])
-		setFilterParam(filterSplit)
+		// setFilterParam(filterSplit)
 		const _filterReq1 = {
 			data: {
 				hierarchy: moleculeList.hierarchy,
@@ -252,10 +245,6 @@ const ViewCreation = () => {
 		}
 		await filterLoadMolecule(_filterReq1, filterSplit)
 	}
-
-	const getNewData = (el) => {
-		getData.current = el;
-	};
 
 	const handleSaveVisible = () => {
 		setIsSaveVisible(true);
@@ -303,7 +292,7 @@ const ViewCreation = () => {
 	};
 
 	const viewCreate = async (_reqView) => {
-
+		/* istanbul ignore next */
 		try {
 			const response = await saveFunction(_reqView);
 			if (response.statuscode === 200) {
@@ -496,7 +485,6 @@ const ViewCreation = () => {
 												setFilesListTree={setFilesListTree}
 												count={count}
 												setCount={setCount}
-												getNewData={(el) => getNewData(el)}
 												setViewSummaryBatch={setViewSummaryBatch}
 												viewJson={viewJson}
 											/>
