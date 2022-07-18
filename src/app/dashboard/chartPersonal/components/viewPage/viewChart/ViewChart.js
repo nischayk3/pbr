@@ -155,7 +155,8 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       // setviewTableData(antdDataTable);
 
       dispatch(hideLoader());
-    } catch (error) { /* istanbul ignore next */
+    } catch (error) {
+      /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification("error", error.message));
     }
@@ -186,7 +187,8 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       newArr[0] = viewRes.data[0];
       setPostChartData({ ...postChartData, data: newArr });
       dispatch(hideLoader());
-    } catch (error) { /* istanbul ignore next */
+    } catch (error) {
+      /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification("error", "Unable to fetch coverages"));
     }
@@ -212,7 +214,8 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
         setPostChartData({ ...postChartData, data: newArr });
       }
       dispatch(hideLoader());
-    } catch { /* istanbul ignore next */
+    } catch {
+      /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification("error", "Unable to fetch coverages"));
     }
@@ -264,7 +267,8 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     try {
       const siteRes = await getSiteId(obj);
       setSiteList(siteRes.Data);
-    } catch (error) { /* istanbul ignore next */
+    } catch (error) {
+      /* istanbul ignore next */
       dispatch(showNotification("error", "Unable to fetch sites"));
     }
   };
@@ -460,7 +464,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       <Divider />
       {postChartData && postChartData.data && postChartData.data[0].view_id ? (
         <>
-          <Row gutter={16} className="filter">
+          <Row gutter={24} className="filter">
             <Col span={11}>
               <Select
                 placeholder="Site"
@@ -480,7 +484,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
               </Select>
             </Col>
             <Col span={13} className="unapproved">
-              <label>Show unapproved data</label>&emsp;&nbsp;
+              <label>Show unapproved data</label>&nbsp;&nbsp;
               <Switch
                 type="primary"
                 size="small"
