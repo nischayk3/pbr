@@ -58,3 +58,5 @@ export const GOOGLE_ANALYTICS_ID = `${process.env.REACT_APP_GOOGLE_ANALYTICS_ID}
 export const LOGIN_URL = "/auth";
 
 console.log("env", process.env)
+
+

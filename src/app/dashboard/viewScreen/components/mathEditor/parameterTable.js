@@ -743,35 +743,37 @@ const ParameterTable = ({
 							)
 						}}
 						//rowKey='key'
-						rowSelection={{
-							selectedRowKeys,
-							onChange: (selectedRowKeys, selectedRows) => {
-								let paramArr = [];
-								const rowData = [...selectedRows];
+						{...(!fromWorkflowScreen && {
+							rowSelection: {
+								selectedRowKeys,
+								onChange: (selectedRowKeys, selectedRows) => {
+									let paramArr = [];
+									const rowData = [...selectedRows];
 
-								rowData.forEach((element, index) => {
+									rowData.forEach((element, index) => {
 
-									let paramsObj = {};
-									paramsObj["source_type"] = element.sourceType;
-									paramsObj["material_id"] = element.material_id
-									paramsObj["process_id"] = element.process_id;
-									paramsObj["parameter_name"] = element.parameter_name;
-									paramsObj["batch_exclude"] = [];
-									paramsObj["priority"] = index;
-									paramsObj["aggregation"] = element.aggregation;
-									paramArr.push(paramsObj);
-								});
-								setParameters(paramArr);
-								callbackCheckbox(true);
-								setIsParamSelected(false);
-								setSelectedRowKeys(selectedRowKeys);
-							},
-							// getCheckboxProps: (record) => {
-							// 	return {
-							// 		disabled: rowDisable
-							// 	};
-							// }
-						}}
+										let paramsObj = {};
+										paramsObj["source_type"] = element.sourceType;
+										paramsObj["material_id"] = element.material_id
+										paramsObj["process_id"] = element.process_id;
+										paramsObj["parameter_name"] = element.parameter_name;
+										paramsObj["batch_exclude"] = [];
+										paramsObj["priority"] = index;
+										paramsObj["aggregation"] = element.aggregation;
+										paramArr.push(paramsObj);
+									});
+									setParameters(paramArr);
+									callbackCheckbox(true);
+									setIsParamSelected(false);
+									setSelectedRowKeys(selectedRowKeys);
+								},
+								// getCheckboxProps: (record) => {
+								// 	return {
+								// 		disabled: rowDisable
+								// 	};
+								// }
+							}
+						})}
 						columns={columns}
 						dataSource={filterTable.length > 0 ? filterTable : tableData}
 						size="small"
