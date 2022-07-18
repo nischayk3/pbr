@@ -66,10 +66,10 @@ describe("Renders the view Hierarachy page", () => {
     cy.wait(2000)
     cy.get('#rc-tabs-0-panel-Process\\ steps > .tab-title > .ant-btn > .tab-button-text').click({ force: true });
     cy.wait(2000)
-    cy.get(':nth-child(1) > [style="text-align: left;"] > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
-    cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
-    cy.wait(2000)
-    cy.get('.ant-tabs-extra-content > .ant-btn > span').click();
+    // cy.get(':nth-child(1) > [style="text-align: left;"] > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
+    // cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+    // cy.wait(2000)
+    // cy.get('.ant-tabs-extra-content > .ant-btn > span').click();
   });
 
   it('load_data', function () {
@@ -89,6 +89,12 @@ describe("Renders the view Hierarachy page", () => {
     // cy.wait(3000)
     // cy.get(':nth-child(1) > [style="text-align: left;"] > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
     // cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get('#rc-tabs-0-tab-Process\\ step\\ mapping').click();
+    cy.get(':nth-child(1) > [style="text-align: left;"] > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
+    cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+    cy.get('.ant-tabs-extra-content > .ant-btn > span').click();
+    /* ==== End Cypress Studio ==== */
   });
   it('Saving', () => {
     cy.get('.ant-tabs-extra-content > .ant-btn > span').click();

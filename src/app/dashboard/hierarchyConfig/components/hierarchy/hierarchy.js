@@ -105,13 +105,18 @@ function Hierarchy() {
 		dispatch(hideLoader());
 	};
 
-	const validate = (keyCount, keyData, keyName) => {
+	const validate = (keyCount, keyData, keyName, currentStep) => {
 		let data = [...keyData]
-		let latest_data = data[keyCount]
-		if (latest_data[keyName] != '')
+		let latest_data = data[data.length - 1]
+		if (!data.length > 0) {
 			return true
-		else
-			return false
+		}
+		else {
+			if (latest_data && latest_data[keyName] != '')
+				return true
+			else
+				return false
+		}
 	}
 	const plantMoleculeColumns =
 		[
@@ -302,7 +307,7 @@ function Hierarchy() {
 
 
 	const handleAdd = () => {
-		let is_add = count <= 1 ? true : validate(count - 2, moleculeData, 'product_num')
+		let is_add = count <= 1 ? true : validate(count - 2, moleculeData, 'product_num', 'mol')
 		if (is_add) {
 			const newData = {
 				key: count,
@@ -318,7 +323,7 @@ function Hierarchy() {
 	};
 
 	const handleStepAdd = () => {
-		let is_add = stepCount <= 1 ? true : validate(stepCount - 2, stepData, 'seq_no')
+		let is_add = stepCount <= 1 ? true : validate(stepCount - 2, stepData, 'seq_no', 'step')
 		if (is_add) {
 			const newData = {
 				key: stepCount,
@@ -455,7 +460,6 @@ function Hierarchy() {
 			}
 		}
 	};
-
 
 	return (
 
