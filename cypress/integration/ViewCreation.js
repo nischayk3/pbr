@@ -230,11 +230,11 @@ describe("Render View Creation Page", () => {
 		cy.log('Click first treenode')
 		cy.intercept('POST', '**/molecules3', { fixture: 'firstNodeMol.json' }).as('firstNodeMol')
 		cy.wait(500)
-		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').click()
+		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode > .ant-tree-node-content-wrapper > .ant-tree-title').click({ multiple: true })
 		cy.wait(500)
 
 		cy.wait('@firstNodeMol').then(() => {
-			cy.get('.ant-tree-switcher > .anticon > svg > path').click()
+			cy.get('.ant-tree-switcher > .anticon > svg > path').click({ multiple: true })
 			cy.log('Verify second treenode title')
 
 			cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').should('have.text', 'SODIUM CARBONATE ANHYDROUS NF/EP')
@@ -245,10 +245,10 @@ describe("Render View Creation Page", () => {
 
 		cy.log('Click second treenode')
 		cy.wait(500)
-		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').click({ force: true })
+		cy.get(':nth-child(2) > .ant-tree-list > .ant-tree-list-holder > :nth-child(1) > .ant-tree-list-holder-inner > .ant-tree-treenode-switcher-close > .ant-tree-node-content-wrapper > .ant-tree-title').click({ multiple: true })
 
 		cy.wait(500)
-		cy.get('.ant-tree-treenode-switcher-close > .ant-tree-switcher > .anticon > svg').click()
+		cy.get('.ant-tree-treenode-switcher-close > .ant-tree-switcher > .anticon > svg').click({ multiple: true })
 		cy.wait('@secondNodeMol').then(() => {
 			cy.log('Verify first tree index name');
 			cy.wait(500)
@@ -259,10 +259,11 @@ describe("Render View Creation Page", () => {
 		})
 
 		cy.log('Click on Parameter')
-		cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click()
-		cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click()
-
-		cy.get('.viewCreation-materials > .ant-collapse-icon-position-left > .viewCreation-materialsPanel > .ant-collapse-header').click()
+		cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click({ multiple: true })
+		cy.wait(500)
+		cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click({ multiple: true })
+		cy.wait(500)
+		cy.get('.viewCreation-materials > .ant-collapse-icon-position-left > .viewCreation-materialsPanel > .ant-collapse-header').click({ multiple: true })
 	})
 
 	it('Filter Paramter lookup ', () => {

@@ -209,6 +209,11 @@
 		background: #363636;
 		color: white;
 	}
+
+	.reject {
+		background: rgb(214, 64, 69);
+		color: white;
+	}
 }
 
 .landing-table {
@@ -279,6 +284,15 @@
 				height: 14px;
 				border-radius: 50px;
 				background: #f6ba60;
+				margin: 3px 6px;
+				display: block;
+			}
+
+			.reject {
+				width: 14px;
+				height: 14px;
+				border-radius: 50px;
+				background: rgb(214, 64, 69);
 				margin: 3px 6px;
 				display: block;
 			}
