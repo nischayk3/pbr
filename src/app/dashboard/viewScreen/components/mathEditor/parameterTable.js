@@ -60,8 +60,6 @@ const ParameterTable = ({
 	);
 	const totalBatch = useSelector((state) => state.viewCreationReducer.totalMolBatches);
 	const totalFileBatch = useSelector((state) => state.viewCreationReducer.totalFileBatches);
-	//const getBatchData = useSelector((state) => state.viewCreationReducer.batchData)
-
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [tableData, setTableData] = useState([]);
 	const [selectedPrimaryData, setSelectedPrimaryData] = useState([]);
@@ -93,8 +91,6 @@ const ParameterTable = ({
 	const Option = Select;
 	const { Search } = Input;
 	const dispatch = useDispatch();
-
-
 
 	let columns = [
 		{
@@ -284,11 +280,11 @@ const ParameterTable = ({
 		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
 			setTotalMolBatch([...totalBatch, ...totalFileBatch]);
 		}
+
 	}, [totalBatch, totalFileBatch])
 
 
 	useEffect(() => {
-
 		setTableData([...selectedTableData]);
 	}, [selectedTableData])
 
@@ -297,7 +293,6 @@ const ParameterTable = ({
 			let batchArr = []
 			let totalMolBatches = [...totalMolBatch]
 			let allMolBatches = totalMolBatches.map((e) => e.batch)
-
 			totalMolBatches.forEach((ele) => {
 				let batchObj = {}
 				selectedTableData.forEach((item) => {
@@ -338,13 +333,12 @@ const ParameterTable = ({
 								key: `${ele}-${i}`,
 								width: 80,
 								render: (value, record, rowIndex) => {
-
 									if (rowDisable) {
 										if (value) {
-
 											return (
 												<Checkbox
 													// disabled={isParamSelected}
+													id="batch-id"
 													className="custom-check"
 													onChange={(e) => onChangeBatchPopup(e, record, rowIndex, ele)}
 													checked={value}
@@ -355,6 +349,7 @@ const ParameterTable = ({
 											return (
 												<Checkbox
 													// disabled={isParamSelected}
+													id="batch-id"
 													className="custom-check"
 													onChange={(e) => onChangeBatchPopup(e, record, rowIndex, ele)}
 													checked={value === "" ? false : true}
@@ -466,7 +461,6 @@ const ParameterTable = ({
 	}, [selectedVar]);
 
 	useEffect(() => {
-
 		// sortArray(props.selectedVar, props.selectedData);
 		let defination = "";
 		let m = Object.values(functions_obj);
@@ -509,9 +503,11 @@ const ParameterTable = ({
 			let arr = [];
 
 			let primarySelectedData;
-			if (Object.keys(selectedPrimaryData).length > 0) {
-				primarySelectedData = { ...selectedPrimaryData };
+			if (tableData.length > 0) {
+
+				primarySelectedData = { ...tableData && tableData[0] };
 			} else {
+
 				const viewLoadJson = [...viewJson];
 				const allParameter = viewLoadJson[0].all_parameters
 				primarySelectedData = { ...allParameter && allParameter[0] }
@@ -521,6 +517,7 @@ const ParameterTable = ({
 			let functionTable = [...viewSummaryBatch];
 
 			let new_column_data = newColumnData.map((e) => e.batch_num);
+
 			functionTable.forEach((item) => {
 				let obj = {};
 				Object.entries(primarySelectedData).forEach(([key]) => {
@@ -531,6 +528,7 @@ const ParameterTable = ({
 				});
 				arr.push(obj);
 			});
+
 			const arr3 = functionTable.map((item, i) =>
 				Object.assign({}, item, arr[i])
 			);

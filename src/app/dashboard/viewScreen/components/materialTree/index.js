@@ -22,11 +22,8 @@ let setKey = [];
 let selectedData = [];
 
 const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue, fromWorkflowScreen }) => {
-
 	const { hierarchy } = moleculeList;
-
 	const dispatch = useDispatch();
-
 	const [selectedKeys, setSelectedKeys] = useState([]);
 	const [treeMap, setTreeMap] = useState([]);
 	const [count, setCount] = useState("");
@@ -42,8 +39,6 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 		callbackProcessClick(info.node.dataRef);
 		setSelectedKeys(selectedKe);
 	};
-
-
 
 	const handleClickParam = async (keys, param, record) => {
 		const finalData = [];
@@ -120,8 +115,8 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 							<TreeNode
 								title={item.process_step}
 								key={"frstEle-" + ele1}
-
 								dataRef={item}
+
 							>
 								{item &&
 									item.children &&
@@ -130,7 +125,6 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 											<TreeNode
 												title={a.product_desc}
 												dataRef={a}
-
 												key={"secondEle-" + ele2}
 											>
 												{a &&
@@ -138,7 +132,6 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 													a.children.map((b, ele3) => {
 														return (
 															<TreeNode
-
 																key={"thirdEle-" + ele3}
 																title={
 																	<div className="treenode-block">
@@ -151,13 +144,13 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 																			</p>
 																		</div>
 																		<span
-																			onClick={(e) => {
+																			onClick={() => {
 																				!fromWorkflowScreen ?
 																					handleClickParam(
 																						"thirdEle-" + ele3,
 																						b.parameter_name,
 																						b
-																					) : ''
+																					) : null
 																			}
 																			}
 																		>
