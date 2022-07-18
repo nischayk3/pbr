@@ -47,7 +47,7 @@ export const BMS_APP_LOGIN_PASS = "/auth";
 export const BMS_APP_PYTHON_SERVICE = `${process.env.REACT_APP_PYTHON_SERVICES + "/v1"}`;
 
 //MDH Genealogy python
-export const MDH_APP_PYTHON_SERVICE = `${process.env.REACT_APP_URL}`;
+export const MDH_APP_PYTHON_SERVICE = window.location.origin;
 
 export const MDH_APP_GENEALOGY = `${process.env.REACT_APP_GENEALOGY}`
 
@@ -58,3 +58,5 @@ export const GOOGLE_ANALYTICS_ID = `${process.env.REACT_APP_GOOGLE_ANALYTICS_ID}
 export const LOGIN_URL = "/auth";
 
 console.log("env", process.env)
+
+
