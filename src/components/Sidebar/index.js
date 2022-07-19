@@ -74,7 +74,7 @@ const Sidebar = () => {
     if (rootKeys.indexOf(latestOpenKey) === -1) {
       setOpenKeys(items);
     } else {
-      setOpenKeys(latestOpenKey ? [latestOpenKey] : defaultOpenKeys);
+      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
     }
   };
   return (
