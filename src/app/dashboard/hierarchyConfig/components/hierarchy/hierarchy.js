@@ -270,8 +270,8 @@ function Hierarchy() {
 		},
 		{
 			title: "Description",
-			dataIndex: "Description",
-			key: "Description",
+			dataIndex: "description",
+			key: "description",
 			width: "200"
 		},
 		{
