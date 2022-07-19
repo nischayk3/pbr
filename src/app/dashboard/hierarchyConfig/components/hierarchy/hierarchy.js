@@ -99,7 +99,13 @@ function Hierarchy() {
 		let req = { ds_name: hierarchyName };
 		let mapResponse = await getProcessStepMap(req);
 		if (mapResponse["status-code"] == 200) {
-			setTableData(mapResponse.Data.data && mapResponse.Data.data[0] ? mapResponse.Data.data[0] : []);
+			let data_response = mapResponse.Data.data && mapResponse.Data.data[0] ? mapResponse.Data.data[0] : []
+			if (data_response) {
+				data_response.forEach(function (row, index) {
+					row.index = index;
+				});
+			}
+			setTableData(data_response ? data_response : []);
 			setStepArray(mapResponse.Data.options);
 		}
 		dispatch(hideLoader());
@@ -230,10 +236,10 @@ function Hierarchy() {
 			}
 		];
 
-	const handleProcessStepChange = (text, index) => {
+	const handleProcessStepChange = (text, index, rec) => {
 		dispatch(showLoader());
 		let newAggrValue = [...tableData];
-		newAggrValue[index].process_step = text ? text.key : "";
+		newAggrValue[rec.index].process_step = text ? text.value : "";
 		// const aggJson = [...parameters];
 		// aggJson[index].aggregation = value.value !== undefined ? value.value : "";
 		// setParameters(aggJson);
@@ -264,8 +270,8 @@ function Hierarchy() {
 		},
 		{
 			title: "Description",
-			dataIndex: "Description",
-			key: "Description",
+			dataIndex: "description",
+			key: "description",
 			width: "200"
 		},
 		{
@@ -283,15 +289,15 @@ function Hierarchy() {
 						dropdownStyle={{ border: "10" }}
 						// value={ }
 						onChange={(e, value) => {
-							handleProcessStepChange(value, index);
+							handleProcessStepChange(value, index, record);
 						}}
-						{...(text && { defaultValue: text })}
+						{...(text && { value: text })}
 						placeholder="Select Step"
 						style={{ width: "100%", borderRadius: "4px", right: "15px" }}
 					>
 						{stepArray && stepArray.length > 0 ? stepArray.map((item, i) => (
 
-							<Option value={i} key={item.process_step}>
+							<Option value={item.process_step} key={i}>
 								{item.process_step}
 							</Option>
 						)) : <Option >
@@ -450,7 +456,7 @@ function Hierarchy() {
 			};
 
 			let response = await putProcessStepMap(req);
-			if (response["status-code"] == 200) {
+			if (response["statuscode"] == 200) {
 				dispatch(showNotification('success', "Saved"))
 				setOnceSaved(true)
 
