@@ -63,8 +63,19 @@ const cpvMenu = [
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(true);
+  const [openKeys, setOpenKeys] = useState([]);
+  const rootKeys = [ "sub2","sub3", "sub4" ,"sub5" , "sub6"];
   const mouseHover = () => {
     setCollapsed(false);
+  };
+   // Open only one submenu at a time
+   const onOpenChange = items => {
+    const latestOpenKey = items.find(key => openKeys.indexOf(key) === -1);
+    if (rootKeys.indexOf(latestOpenKey) === -1) {
+      setOpenKeys(items);
+    } else {
+      setOpenKeys(latestOpenKey ? [latestOpenKey] : defaultOpenKeys);
+    }
   };
   return (
     <Sider
@@ -74,7 +85,7 @@ const Sidebar = () => {
       id="sidebar"
       className={!collapsed ? "collapse-side-bar" : ""}
     >
-      <Menu theme="dark" mode="inline">
+      <Menu theme="dark" mode="inline" openKeys={openKeys} onOpenChange={onOpenChange}>
         <Menu.Item
           key="workspace"
           icon={<AppstoreOutlined className="menu-icons" />}
