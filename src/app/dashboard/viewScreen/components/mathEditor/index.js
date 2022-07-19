@@ -36,9 +36,7 @@ const MathEditor = ({
 	const [variableName, setVariableName] = useState("");
 	const [showVariable, setShowVariable] = useState(false);
 
-
 	const { Panel } = Collapse;
-
 
 	const content = (
 		<div className="script-info">
@@ -123,7 +121,6 @@ const MathEditor = ({
 			let paramKey = [];
 			// const viewJsonData = [selectedParameters];
 			const viewJsonData = [...viewJson];
-
 			viewJsonData.forEach((element, index) => {
 				paramKey.push(Object.keys(element.parameters));
 			});
@@ -152,12 +149,10 @@ const MathEditor = ({
 				viewJsonData[0] &&
 				Object.keys(viewJsonData[0].parameters).length > 0
 			) {
-
 				setParamData(viewJsonData[0].parameters);
 			}
 		}
 	}, [isLoadView]);
-
 
 	const addVariable = () => {
 		setCardTitle("Select parameters");
@@ -194,7 +189,6 @@ const MathEditor = ({
 	};
 
 	const editVariable = (data) => {
-
 		setSelectedVar(data);
 	};
 	const deleteVariable = (param) => {
