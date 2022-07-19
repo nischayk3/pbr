@@ -107,28 +107,28 @@ const Login = () => {
 		setForgotPasswordFlag(true);
 		setSuccessfulAccountCreationFlag(false);
 	}
-	const registerAccount = async () => {
-		let req = {};
-		let header = {
-			username: username
-
-		};
-		try {
-			dispatch(showLoader());
-			const res = await createAccount(req, header);
-			if (res.Status == 200) {
-				setSuccessfulAccountCreationFlag(true);
-				dispatch(hideLoader());
-			} else {
-				dispatch(showNotification("error", "Error while registering the user"));
-				dispatch(hideLoader());
-				history.push("/user/login");
-			}
-		} catch (error) {
-			dispatch(hideLoader());
-			dispatch(showNotification("error", "Error while registering the user"));
-		}
-	}
+  const registerAccount = async () => {
+    let req = {};
+    let header = {
+      username: username,
+      "is-signup": forgotPasswordFlag ? false : true,
+    };
+    try {
+      dispatch(showLoader());
+      const res = await createAccount(req, header);
+      if (res.Status == 200) {
+        setSuccessfulAccountCreationFlag(true);
+        dispatch(hideLoader());
+      } else {
+        dispatch(showNotification("error", res.Message));
+        dispatch(hideLoader());
+        history.push("/user/login");
+      }
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification("error", "Error while registering the user"));
+    }
+  };
 	return (
 		<>
 			<div className="login-wrapper bg-img">
