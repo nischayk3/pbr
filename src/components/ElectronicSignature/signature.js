@@ -171,7 +171,6 @@ function Signature(props) {
 		}
 	}, [])
 
-	console.log(isauth, props.status)
 	return (
 		<div>
 			<Modal
