@@ -32,6 +32,7 @@ class EditableTable extends Component {
     rowsMarkedForDeletion: false,
     visible: false,
     confirmLoading: false,
+    currentPage: 1,
   };
 
   componentDidMount() {
@@ -205,6 +206,7 @@ class EditableTable extends Component {
 
   onAddRow = () => {
     const { dataSource, count } = addRow(this.state);
+    this.setState({ currentPage: 1 });
     this.setState({ dataSource, count }, () => {
       this.initializeTableRender();
       this.setState({ tableDataChanged: true });
@@ -235,6 +237,10 @@ class EditableTable extends Component {
     );
     this.setState({ dataSource, tableDataChanged: true });
   };
+
+  onChangeCurrentPage = (page) => {
+    this.setState({ currentPage: page });
+  }
 
   onSaveTable = async () => {
     const tableData = JSON.parse(JSON.stringify(this.state.dataSource));
@@ -329,6 +335,7 @@ class EditableTable extends Component {
           bordered
           dataSource={dataSource}
           columns={columns}
+          pagination={{ current: this.state.currentPage, onChange:(page) =>this.onChangeCurrentPage(page) }}
           scroll={this.props.screens === "Roles" ? { y: 400 } : { y: 300 }}
         />
 
