@@ -262,13 +262,14 @@ describe("Render View Creation Page", () => {
 	})
 
 	it('Filter Paramter lookup ', () => {
-
+		cy.intercept('GET', '**/molecules_filter?molecule_name=BELATACEPT&search_text=ARSENIC', { fixture: 'filterMolList.json' }).as('filterMolList')
 		cy.log('Filter Molecule')
 		cy.get('#filter-molecule').click({ force: true });
 		cy.get('#filter-molecule').clear();
 		cy.log('Type Molecule Name')
 		cy.get('#filter-molecule').type("ARSENIC");
-		cy.intercept('POST', '**/molecules_filter', { fixture: 'filterMolList.json' }).as('filterMolList')
+		cy.wait(600)
+
 		cy.wait('@filterMolList').then(() => {
 			cy.get('[title="2_1176024_ARSENIC"] > .ant-select-item-option-content').click({ force: true });
 		})
