@@ -93,7 +93,14 @@ class Uploader extends Component {
 		isAuth: false,
 	};
 
-	componentDidMount = () => { };
+	componentDidMount = () => {
+		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
+		if (loginDetails) {
+			this.setState({
+				username: loginDetails.email_id,
+			});
+		}
+	 };
 
 	clearData = () => {
 		this.setState({
@@ -1282,6 +1289,7 @@ class Uploader extends Component {
 																onChange={value =>
 																	this.onChangeField(value, 'username')
 																}
+															    disabled
 															/>
 														</div>
 														<div>
