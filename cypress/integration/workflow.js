@@ -181,9 +181,9 @@ describe("Workflow", () => {
 		cy.get('[data-row-key="9077"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
 		cy.get('.custom-secondary-btn > span').click();
 		//approve a record,electronic signature
-		cy.get(':nth-child(1) > .ant-input').clear();
-		cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
-		cy.get(':nth-child(2) > .ant-input').clear();
+		// cy.get(':nth-child(1) > .ant-input').clear();
+		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
+		// cy.get(':nth-child(2) > .ant-input').clear();
 		cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
 		cy.get('.ant-modal-footer > :nth-child(1) > span').click();
 		cy.get('.ant-select-selector').click();
@@ -210,9 +210,9 @@ describe("Workflow", () => {
 		//reject a record,electronic signature
 		cy.get('.ant-modal-close-x > .anticon > svg > path').click();
 		cy.get('.custom-primary-btn > span').click();
-		cy.get(':nth-child(1) > .ant-input').clear();
-		cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
-		cy.get(':nth-child(2) > .ant-input').clear();
+		// cy.get(':nth-child(1) > .ant-input').clear();
+		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
+		// cy.get(':nth-child(2) > .ant-input').clear();
 		cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
 		cy.get('.ant-modal-footer > :nth-child(1) > span').click();
 		cy.wait(6000);

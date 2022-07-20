@@ -347,20 +347,25 @@ const ChartNotify = (props) => {
     setSelectedTimeRange("Hour")
   };
   const checkValidRequest = () => {
-    if (selectedSchedule == 'Weekly') {
-      let arr = Object.keys(selectedDays).filter((k) => selectedDays[k] === true)
-      if (arr.length > 0)
-        return true
-      else
-        return false
-    }
-    else {
-      if (radioValue == 3 && everyDayValue.length <= 0) {
-        return false
+    if (emailList.length > 0) {
+      if (selectedSchedule == 'Weekly') {
+        let arr = Object.keys(selectedDays).filter((k) => selectedDays[k] === true)
+        if (arr.length > 0)
+          return true
+        else
+          return false
       }
-      else
-        return true
+      else {
+        if (radioValue == 3 && everyDayValue.length <= 0) {
+          return false
+        }
+        else
+          return true
+      }
+      return true
     }
+    else
+      return false
   }
 
   const SaveData = async () => {
@@ -459,7 +464,7 @@ const ChartNotify = (props) => {
     }
     else {
       dispatch(
-        showNotification("error", 'Required Fields are missing')
+        showNotification("error", 'Email or Required Fields are missing')
       )
     }
   };
@@ -510,7 +515,7 @@ const ChartNotify = (props) => {
             placeholder={
               <>
                 <span className="email-recipients">Recipients</span>{" "}
-                <span className="email-recipients-chart">(Optional)</span>
+                {/* <span className="email-recipients-chart">(Optional)</span> */}
               </>
             }
             optionLabelProp="label"
