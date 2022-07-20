@@ -117,6 +117,7 @@ function Signature(props) {
 			if (esign_response.statuscode == 200) {
 				dispatch(showNotification("success", esign_response.message));
 				handleClose();
+				setIsAuth('')
 				let reqs = {};
 				let req1 = {};
 				let user_details = JSON.parse(localStorage.getItem("login_details"));
@@ -169,7 +170,7 @@ function Signature(props) {
 			setUsername(loginDetails.email_id)
 		}
 	}, [])
-	
+
 	return (
 		<div>
 			<Modal

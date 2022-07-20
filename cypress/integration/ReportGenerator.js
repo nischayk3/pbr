@@ -64,6 +64,8 @@ describe("Report", () => {
 
         cy.get('.sub-header-btns > :nth-child(1) > span').click();
         cy.get('.ant-select-selection-overflow').click();
+        cy.get('#rc_select_0').clear();
+        cy.get('#rc_select_0').type('mihir@mareana.com{enter}');
         // cy.get('.ant-select-item-option-content').click();
         // cy.get('.email-content').click();
         cy.get('#rc-tabs-3-tab-email_schedule').click();
@@ -80,7 +82,10 @@ describe("Report", () => {
         cy.get(':nth-child(1) > [style="text-align: center;"] > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click();
         cy.get('.ant-popover-buttons > .ant-btn-primary > span').click();
         cy.wait(2000)
-        // cy.get(':nth-child(1) > :nth-child(2) > u > a').click();
+        cy.get(':nth-child(1) > :nth-child(2) > u > a').click();
+        /* ==== Generated with Cypress Studio ==== */
+
+        /* ==== End Cypress Studio ==== */
     })
 
     it('Load Report generator via search', () => {
