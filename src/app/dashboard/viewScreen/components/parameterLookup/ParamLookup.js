@@ -157,6 +157,7 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 				<p>Filters</p>
 
 				<SelectSearchField
+					id="filter-molecule"
 					showSearch
 					placeholder='Search Molecule'
 					onChangeSelect={e => onChangeParam(e)}

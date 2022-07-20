@@ -151,6 +151,7 @@ const ViewPage = () => {
 
   const PublishResponse = (res) => {
     setPublishResponse(res);
+    getChart();
   };
   //function for getting chart data
   const getChart = async () => {
