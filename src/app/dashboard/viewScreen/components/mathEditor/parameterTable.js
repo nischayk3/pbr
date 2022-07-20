@@ -76,16 +76,6 @@ const ParameterTable = ({
 	const [totalMolBatch, setTotalMolBatch] = useState([]);
 	const [isMolBatchUpdate, setIsMolBatchUpdate] = useState([]);
 	const [filterMolTable, setFilterMolTable] = useState(null);
-
-	useEffect(() => {
-
-		if (isLoadView) {
-			//	onChangeColumnsHandler();
-			setTableData([...selectedTableData]);
-			setFun(functions_obj)
-		}
-	}, [isLoadView]);
-
 	const [counter, setCounter] = useState(isLoadView && Object.keys(functions_obj).length > 0 ? parseInt(Object.keys(functions_obj)[Object.keys(functions_obj).length - 1]) + 1 : 0)
 
 	const Option = Select;
@@ -207,7 +197,6 @@ const ParameterTable = ({
 	const paramColumn = uniqueCol.slice(0, 10)
 
 	paramColumn.map((item) => {
-
 		if (
 			item === "parameter_name" ||
 			item === "primary" ||
@@ -276,7 +265,14 @@ const ParameterTable = ({
 	});
 
 	useEffect(() => {
+		if (isLoadView) {
+			//	onChangeColumnsHandler();
+			setTableData([...selectedTableData]);
+			setFun(functions_obj)
+		}
+	}, [isLoadView]);
 
+	useEffect(() => {
 		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
 			setTotalMolBatch([...totalBatch, ...totalFileBatch]);
 		}
@@ -412,9 +408,7 @@ const ParameterTable = ({
 	}, [paramReducer]);
 
 
-
 	useEffect(() => {
-
 		if (!isNew) {
 			//	onChangeColumnsHandler();
 			setTableData([]);
@@ -690,14 +684,11 @@ const ParameterTable = ({
 				element.batch_exclude.push(record.batch);
 			}
 		});
-
-
 		setParameters([...batchExcludeJsonPopup]);
 		setTableData([...batchRecordPopup]);
 	}
 	const isModalBatch = (e) => {
 		setIsBatchTableVisible(true);
-
 	}
 
 	const handleTableCancel = () => {
@@ -719,6 +710,8 @@ const ParameterTable = ({
 		setTableData([...deleteRecord])
 		dispatch(sendSelectedParamData([...deleteRecord]));
 	}
+
+	console.log("row disableeeeeeee", rowDisable);
 	return (
 		<>
 			<div className="param-table">
@@ -749,9 +742,7 @@ const ParameterTable = ({
 								onChange: (selectedRowKeys, selectedRows) => {
 									let paramArr = [];
 									const rowData = [...selectedRows];
-
 									rowData.forEach((element, index) => {
-
 										let paramsObj = {};
 										paramsObj["source_type"] = element.sourceType;
 										paramsObj["material_id"] = element.material_id
@@ -767,11 +758,11 @@ const ParameterTable = ({
 									setIsParamSelected(false);
 									setSelectedRowKeys(selectedRowKeys);
 								},
-								// getCheckboxProps: (record) => {
-								// 	return {
-								// 		disabled: rowDisable
-								// 	};
-								// }
+								getCheckboxProps: () => {
+									return {
+										disabled: !rowDisable
+									};
+								}
 							}
 						})}
 						columns={columns}
