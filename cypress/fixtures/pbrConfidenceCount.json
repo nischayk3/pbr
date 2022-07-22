@@ -1,0 +1,14 @@
+{
+    "Data": [
+        {
+            "confidence": "High",
+            "count": 141
+        },
+        {
+            "confidence": "Low",
+            "count": 2
+        }
+    ],
+    "Message": "Success",
+    "status-code": 200
+}

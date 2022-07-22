@@ -329,3 +329,10 @@ label {
 .ant-notification {
 	z-index :9999999 !important
 }
+.singleParameterBlock{
+	.ant-collapse-content.ant-collapse-content-active{
+		max-height: 500px;
+		overflow: scroll;
+	}
+	
+}
