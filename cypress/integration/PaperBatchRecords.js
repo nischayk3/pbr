@@ -12,8 +12,6 @@ describe('PBR', () => {
         cy.intercept('GET', '/pbr/udh/pbr_template?limit=8', { fixture: 'paperBatchLmitList' }).as("limitlist")
         cy.intercept('POST', '/pbr/udh/ocr-json-extraction', { fixture: 'pbrBoundingBox' })
         cy.intercept('GET', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
-        cy.intercept('POST', '/pbr/udh/extract_from_template_find', {fixture:'paperFind'}).as("findDocument")
-            
         cy.viewport(1366, 768);
         localStorage.setItem("test_enabled", true);
         localStorage.setItem("user", "fahad.siddiqui@mareana.com");
@@ -125,7 +123,15 @@ describe('PBR', () => {
     })
 
     it("Find and preview", () => {
-        cy.wait(3000)
+        cy.intercept(
+            {
+                method: 'POST',
+                path: '/pbr/udh/extract_from_template_find',
+            },
+            {
+                fixture: 'paperFind',
+            },
+        ).as('findDocument')
         cy.get('.defineTableBtn').click();
         cy.wait(6000)
         cy.intercept(
@@ -178,12 +184,13 @@ describe('PBR', () => {
 
     it("Click publish", () => {
         cy.get("#publisgButton").click({ force: true })
-        cy.get(':nth-child(10) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x > .anticon > svg > path').click({ force: true })
+        cy.wait(2000)
+        // cy.get(':nth-child(10) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x > .anticon > svg > path').click({ force: true })
+        cy.get(':nth-child(9) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x > .anticon > svg > path').click({ force: true })
     })
 
     it("Edit Created Template", () => {
-        const url = Cypress.config().baseUrl
-        cy.visit(url + '/#/dashboard/paper_batch_records')
+        cy.go("back")
         cy.intercept(
             {
                 method: 'GET',
@@ -235,7 +242,7 @@ describe('PBR', () => {
         cy.get('.ant-modal-close-x > .anticon > svg').click({ force: true });
     })
     it('Load Landing Page Table Component', () => {
-        cy.wait(2000);
+        cy.wait(8000);
         cy.get(".ant-input-affix-wrapper").type("P").click({ force: true })
         cy.get(".ant-input-search-button").click({ force: true })
         cy.wait(2000);
@@ -251,38 +258,87 @@ describe('PBR', () => {
         cy.get('#parameter-panel > .ant-collapse-header').click({ force: true });
         cy.wait(3000);
     })
-    it('Click and add', () => {
-        cy.wait(3000);
-        cy.get('#form_input1').clear({ force: true });
-        cy.wait(3000);
-        cy.get('#form_input1').click({ force: true });
-        cy.wait(1000);
-        cy.get('area[shape="rect"]').eq(0).click({ force: true });
-        cy.get('#form_input2').clear({ force: true });
-        cy.wait(3000);
-        cy.get('#form_input2').click({ force: true });
-        cy.wait(1000);
-        cy.get('area[shape="rect"]').eq(2).click({ force: true });
-        cy.get('#form_input3').click({ force: true });
-        cy.get('area[shape="rect"]').eq(4).click({ force: true });
-        cy.get('#form_input4').click({ force: true });
-        cy.get('area[shape="rect"]').eq(6).click({ force: true });
-        cy.get('#form_input5').click({ force: true });
-        cy.get('area[shape="rect"]').eq(8).click({ force: true });
-        cy.get('#form_input6').click({ force: true });
-        cy.get('area[shape="rect"]').eq(10).click({ force: true });
-        cy.get('#form_input7').click({ force: true });
-        cy.get('area[shape="rect"]').eq(12).click({ force: true });
-        cy.get('#form_input8').click({ force: true });
-        cy.get('area[shape="rect"]').eq(14).click({ force: true });
-    })
-
-    // it('Click Find Preview Save', () => {
+    // it('Click and add', () => {
     //     cy.wait(3000);
-    //     cy.get('.defineTableBtn').click({ force: true });
-    //     cy.wait(6000);
-
+    //     cy.get('#form_input1').clear({ force: true });
+    //     cy.wait(3000);
+    //     cy.get('#form_input1').click({ force: true });
+    //     cy.wait(1000);
+    //     cy.get('area[shape="rect"]').eq(0).click({ force: true });
+    //     cy.get('#form_input2').clear({ force: true });
+    //     cy.wait(3000);
+    //     cy.get('#form_input2').click({ force: true });
+    //     cy.wait(1000);
+    //     cy.get('area[shape="rect"]').eq(2).click({ force: true });
+    //     cy.get('#form_input3').click({ force: true });
+    //     cy.get('area[shape="rect"]').eq(4).click({ force: true });
+    //     cy.get('#form_input4').click({ force: true });
+    //     cy.get('area[shape="rect"]').eq(6).click({ force: true });
+    //     cy.get('#form_input5').click({ force: true });
+    //     cy.get('area[shape="rect"]').eq(8).click({ force: true });
+    //     cy.get('#form_input6').click({ force: true });
+    //     cy.get('area[shape="rect"]').eq(10).click({ force: true });
+    //     cy.get('#form_input7').click({ force: true });
+    //     cy.get('area[shape="rect"]').eq(12).click({ force: true });
+    //     cy.get('#form_input8').click({ force: true });
+    //     cy.get('area[shape="rect"]').eq(14).click({ force: true });
     // })
+
+    it('Save without parameter', () => {
+        cy.wait(3000);
+        cy.get('.firstParameter-para > p').click({ force: true });
+        cy.wait(3000);
+        cy.get('.firstParameter-para > p').click({ force: true });
+        cy.get("#saveButton").click({ force: true })
+        cy.wait(3000);
+
+    })
+    it('Delete Parameter', () => {
+        cy.wait(3000);
+        cy.get("#deleteParameter").click({ force: true })
+    })
+    it('Range Validation', () => {
+        cy.wait(6000);
+        cy.get(':nth-child(3) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true });
+        cy.get('.ant-select-item-option').eq(1).click({ force: true })
+        cy.get('#dynamic_form_nest_item_users_0_param_min').clear();
+        cy.get('#dynamic_form_nest_item_users_0_param_min').type(4)
+        cy.get('#dynamic_form_nest_item_users_0_param_max').clear();
+        cy.get('#dynamic_form_nest_item_users_0_param_max').type(2)
+        cy.wait(2000);
+        cy.get(':nth-child(3) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true });
+        cy.get('.ant-select-item-option').eq(7).click({ force: true })
+        cy.get('#dynamic_form_nest_item_users_0_uom_min').clear();
+        cy.get('#dynamic_form_nest_item_users_0_uom_min').type(4)
+        cy.get('#dynamic_form_nest_item_users_0_uom_max').clear();
+        cy.get('#dynamic_form_nest_item_users_0_uom_max').type(2)
+        cy.wait(2000);
+        cy.get(':nth-child(6) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true })
+        cy.get('.ant-select-item-option').eq(12).click({ force: true })
+        cy.get('#dynamic_form_nest_item_users_0_time_min').clear();
+        cy.get('#dynamic_form_nest_item_users_0_time_min').type(4)
+        cy.get('#dynamic_form_nest_item_users_0_time_max').clear();
+        cy.get('#dynamic_form_nest_item_users_0_time_max').type(2)
+        cy.get(':nth-child(7) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true })
+        cy.get('.ant-select-item-option').eq(17).click({ force: true })
+        cy.get('#dynamic_form_nest_item_users_0_date_min').clear();
+        cy.get('#dynamic_form_nest_item_users_0_date_min').type(4)
+        cy.get('#dynamic_form_nest_item_users_0_date_max').clear();
+        cy.get('#dynamic_form_nest_item_users_0_date_max').type(2)
+    })
+    it("Change Coordinates", () => {
+        cy.wait(6000);
+        cy.get('.pbrTemplateRight > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .trigger > .panelImg').click();
+        cy.wait(2000);
+        cy.get('#cord1').clear();
+        cy.get('#cord1').type('120.88259327411652');
+        cy.get('#cord2').clear();
+        cy.get('#cord2').type('120.88259327411652');
+        cy.get('#cord3').clear();
+        cy.get('#cord3').type('120.88259327411652');
+        cy.get('#cord4').clear();
+        cy.get('#cord4').type('120.88259327411652');
+    })
 
 
     // it("Toggle and add parameter", () => {
@@ -403,29 +459,7 @@ describe('PBR', () => {
 
     // })
 
-    // it("Change Coordinates", () => {
-    //     cy.log('Toggle and add parameter')
-    //     const url = Cypress.config().baseUrl
-    //     cy.visit(url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=test&fromScreen=Workspace')
-    //     cy.log('Load Landing Page')
-    //     cy.intercept('POST', '**/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' })
-    //     cy.url().should('eq', url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=test&fromScreen=Workspace')
-    //     cy.wait(6000);
-
-    //     /* ==== Generated with Cypress Studio ==== */
-    //     cy.get('.pbrTemplateRight > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .trigger > .panelImg').click();
-    //     cy.get('[coords="111.94621527194977,57.53743443638084,178.1889796704054,68.96316892467435"]').click({ force: true });
-    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').clear();
-    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').type('120.88259327411652');
-    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').clear();
-    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').type('556.9567814283073');
-    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').clear();
-    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').type('146.49597273766994');
-    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').clear();
-    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').type('78.26721033919598');
-    //     /* ==== End Cypress Studio ==== */
-
-    // })
+    
 
     // it("Add All parameters", () => {
     //     const url = Cypress.config().baseUrl
