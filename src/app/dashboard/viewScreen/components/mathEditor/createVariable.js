@@ -7,9 +7,9 @@ const CreateVariable = ({ addVariable, title, createVar, className, fromWorkflow
 		<div className={className} style={{ pointerEvents: fromWorkflowScreen ? "none" : "auto" }}>
 			{
 				title === "Create Variable" && (
-					<div onClick={addVariable} id="create-variable">
+					<div onClick={addVariable} >
 						<PlusOutlined />
-						<p >Create Variable</p>
+						<p id="create-variable">Create Variable</p>
 					</div>
 				)
 			}

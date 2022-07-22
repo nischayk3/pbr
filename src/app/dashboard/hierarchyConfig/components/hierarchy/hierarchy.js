@@ -99,19 +99,30 @@ function Hierarchy() {
 		let req = { ds_name: hierarchyName };
 		let mapResponse = await getProcessStepMap(req);
 		if (mapResponse["status-code"] == 200) {
-			setTableData(mapResponse.Data.data && mapResponse.Data.data[0] ? mapResponse.Data.data[0] : []);
+			let data_response = mapResponse.Data.data && mapResponse.Data.data[0] ? mapResponse.Data.data[0] : []
+			if (data_response) {
+				data_response.forEach(function (row, index) {
+					row.index = index;
+				});
+			}
+			setTableData(data_response ? data_response : []);
 			setStepArray(mapResponse.Data.options);
 		}
 		dispatch(hideLoader());
 	};
 
-	const validate = (keyCount, keyData, keyName) => {
+	const validate = (keyCount, keyData, keyName, currentStep) => {
 		let data = [...keyData]
-		let latest_data = data[keyCount]
-		if (latest_data[keyName] != '')
+		let latest_data = data[data.length - 1]
+		if (!data.length > 0) {
 			return true
-		else
-			return false
+		}
+		else {
+			if (latest_data && latest_data[keyName] != '')
+				return true
+			else
+				return false
+		}
 	}
 	const plantMoleculeColumns =
 		[
@@ -225,10 +236,10 @@ function Hierarchy() {
 			}
 		];
 
-	const handleProcessStepChange = (text, index) => {
+	const handleProcessStepChange = (text, index, rec) => {
 		dispatch(showLoader());
 		let newAggrValue = [...tableData];
-		newAggrValue[index].process_step = text ? text.key : "";
+		newAggrValue[rec.index].process_step = text ? text.value : "";
 		// const aggJson = [...parameters];
 		// aggJson[index].aggregation = value.value !== undefined ? value.value : "";
 		// setParameters(aggJson);
@@ -259,8 +270,8 @@ function Hierarchy() {
 		},
 		{
 			title: "Description",
-			dataIndex: "Description",
-			key: "Description",
+			dataIndex: "description",
+			key: "description",
 			width: "200"
 		},
 		{
@@ -278,15 +289,15 @@ function Hierarchy() {
 						dropdownStyle={{ border: "10" }}
 						// value={ }
 						onChange={(e, value) => {
-							handleProcessStepChange(value, index);
+							handleProcessStepChange(value, index, record);
 						}}
-						{...(text && { defaultValue: text })}
+						{...(text && { value: text })}
 						placeholder="Select Step"
 						style={{ width: "100%", borderRadius: "4px", right: "15px" }}
 					>
 						{stepArray && stepArray.length > 0 ? stepArray.map((item, i) => (
 
-							<Option value={i} key={item.process_step}>
+							<Option value={item.process_step} key={i}>
 								{item.process_step}
 							</Option>
 						)) : <Option >
@@ -302,7 +313,7 @@ function Hierarchy() {
 
 
 	const handleAdd = () => {
-		let is_add = count <= 1 ? true : validate(count - 2, moleculeData, 'product_num')
+		let is_add = count <= 1 ? true : validate(count - 2, moleculeData, 'product_num', 'mol')
 		if (is_add) {
 			const newData = {
 				key: count,
@@ -318,7 +329,7 @@ function Hierarchy() {
 	};
 
 	const handleStepAdd = () => {
-		let is_add = stepCount <= 1 ? true : validate(stepCount - 2, stepData, 'seq_no')
+		let is_add = stepCount <= 1 ? true : validate(stepCount - 2, stepData, 'seq_no', 'step')
 		if (is_add) {
 			const newData = {
 				key: stepCount,
@@ -445,7 +456,7 @@ function Hierarchy() {
 			};
 
 			let response = await putProcessStepMap(req);
-			if (response["status-code"] == 200) {
+			if (response["statuscode"] == 200) {
 				dispatch(showNotification('success', "Saved"))
 				setOnceSaved(true)
 
@@ -455,7 +466,6 @@ function Hierarchy() {
 			}
 		}
 	};
-
 
 	return (
 

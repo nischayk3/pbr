@@ -84,8 +84,13 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 			const filterMolRes = await filterMolequles(_reqFilterMolecule);
 			/* istanbul ignore else  */
 			if (filterMolRes.Status === 200) {
-				setFilterMol(filterMolRes.Data)
-				dispatch(hideLoader());
+				if (filterMolRes.Data.length > 0) {
+					setFilterMol(filterMolRes.Data)
+					dispatch(hideLoader());
+				} else {
+					dispatch(hideLoader());
+					dispatch(showNotification("error", "No Data Found"));
+				}
 				/* istanbul ignore else  */
 			} else if (filterMolRes.Status === 401 && filterMolRes.Status === 400) {
 				dispatch(hideLoader());
@@ -110,12 +115,13 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 	}
 
 	const onSearchParam = debounce((type) => {
-		if (type !== null) {
+		if (type != "" && type != null) {
 			if (moleculeId !== "") {
 				const filterPayload = {
 					molecule_name: moleculeId,
 					search_text: type
 				}
+
 				searchMolequles(filterPayload)
 			}
 		}
@@ -151,6 +157,7 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 				<p>Filters</p>
 
 				<SelectSearchField
+					id="filter-molecule"
 					showSearch
 					placeholder='Search Molecule'
 					onChangeSelect={e => onChangeParam(e)}

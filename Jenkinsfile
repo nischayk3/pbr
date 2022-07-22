@@ -3,24 +3,24 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'registry.cloud.mareana.com/mdh-cpv/dev'
     }
-    agent { label 'cpv_node_ui' } 
+    agent { label 'cpv_node_ui' }
     options {
         ansiColor('xterm')
     }
-    stages {    
+    stages {
       stage("Code Coverage") {
-         
+
            steps {
                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-               
+
                  sh '''#!/bin/bash -x
-                       sudo docker ps | xargs docker stop 
+                       sudo docker ps | xargs docker stop
                        sudo docker ps -a | xargs docker rm
                        docker-compose build  --no-cache ui-cypress-run
                        docker-compose up ui-cypress-run
-                       docker-compose down 
+                       docker-compose down
                        ls coverage
-                '''  
+                '''
                      publish html
                    publishHTML target: [
                    allowMissing: false,
@@ -33,11 +33,11 @@ pipeline {
 
                }
              }
-          }  
+          }
       stage('Sonarqube Analysis') {
         environment {
            scannerHome = tool 'SonarQubeScanner'
-      }    
+      }
        steps {
             withSonarQubeEnv('sonar') {
            sh "${scannerHome}/bin/sonar-scanner"
@@ -45,10 +45,10 @@ pipeline {
          }
       }
     }
-    
-     
+
+
       stage("Quality Gate Status Check") {
-             
+
             steps {
                  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                   sh '''#!/bin/bash -x
@@ -58,7 +58,7 @@ pipeline {
                         exit 1
                         else
                         echo "Quality Gates Passed"
-                        fi'''       
+                        fi'''
                 }
               }
            }

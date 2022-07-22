@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Button, Input, Modal, Select } from "antd";
 import queryString from "query-string";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router";
 import "./styles.scss";
@@ -117,6 +117,7 @@ function Signature(props) {
 			if (esign_response.statuscode == 200) {
 				dispatch(showNotification("success", esign_response.message));
 				handleClose();
+				setIsAuth('')
 				let reqs = {};
 				let req1 = {};
 				let user_details = JSON.parse(localStorage.getItem("login_details"));
@@ -162,6 +163,13 @@ function Signature(props) {
 			dispatch(showNotification("error", "Error Occured"));
 		}
 	};
+
+	useEffect(() => {
+		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
+		if (loginDetails) {
+			setUsername(loginDetails.email_id)
+		}
+	}, [])
 
 	return (
 		<div>
@@ -219,6 +227,7 @@ function Signature(props) {
 							<p style={{ margin: "8px 0px" }}>User ID</p>
 							<Input
 								value={username}
+								disabled
 								onChange={(e) => setUsername(e.target.value)}
 							/>
 						</div>
