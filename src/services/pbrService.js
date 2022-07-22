@@ -30,8 +30,34 @@ export const savePbrTemplate = (request) => {
 };
 
 export const getPbrReviewerData = (_queryParam) => {
-	return Service.get(
+	return Service.post(
 		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr',
+		_queryParam
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+export const geTemplateDropdown = (_queryParam) => {
+	return Service.get(
+		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_tran_pbr_template_id',
+		_queryParam
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+export const getPieChartData = (_queryParam) => {
+	return Service.post(
+		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr_count',
 		_queryParam
 	).then(
 		(response) => {

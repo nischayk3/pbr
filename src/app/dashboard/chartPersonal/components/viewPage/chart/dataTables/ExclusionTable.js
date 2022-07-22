@@ -33,6 +33,7 @@ const ExclusionTable = ({
       title: item.toUpperCase().replace("_", " "),
       dataIndex: item,
       key: `${item}-${i}`,
+      render : (text) => String(text)
     });
   });
 

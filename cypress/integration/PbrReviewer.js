@@ -7,6 +7,9 @@ describe('PBR', () => {
     beforeEach(() => {
         cy.intercept('GET', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review' })
         cy.intercept('GET', '/pbr/udh/get_cpv_pbr?id=27', { fixture: 'pbrUpdate' })
+        cy.intercept('GET', '/pbr/udh/get_cpv_pbr_count?key=status', { fixture: 'pbrStatusCount' })
+        cy.intercept('GET', '/pbr/udh/get_cpv_pbr_count?key=confidence', { fixture: 'pbrConfidenceCount' })
+        cy.intercept('GET', '/pbr/udh/get_tran_pbr_template_id', { fixture: 'pbrTemplateList' })
         cy.viewport(1366, 768);
         localStorage.setItem("test_enabled", true);
         localStorage.setItem("user", "fahad.siddiqui@mareana.com");
@@ -95,5 +98,16 @@ describe('PBR', () => {
         cy.wait(6000);
         cy.get("#editLogs > a").click({ force: true })
     })
+    it("PBR", () => {
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/pbr_reviewer')
+        cy.log('Load Landing Page')
+        cy.url().should('eq', url + '/#/dashboard/pbr_reviewer')
+        cy.wait(6000);
+        cy.get('.ant-col-4 > .ant-select > .ant-select-selector').click({ force: true })
+        cy.get('.ant-select-item-option').eq(1).click({ force: true })
+        cy.wait(6000);
+        cy.get('.ant-select-clear').click({ force: true })
+    });
 
 });
