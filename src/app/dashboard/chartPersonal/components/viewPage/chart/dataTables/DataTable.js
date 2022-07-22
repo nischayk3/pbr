@@ -24,6 +24,7 @@ const DataTable = ({ postChartData }) => {
       dataIndex: item,
       key: `${item}-${i}`,
       width: item === "uom_code" || item === first ? 150 : 250,
+      render : (text) => String(text)
     });
   });
 
