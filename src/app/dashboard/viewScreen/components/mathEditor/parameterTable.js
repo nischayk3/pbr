@@ -632,18 +632,18 @@ const ParameterTable = ({
 	};
 
 	const onChangeBatch = (e, record, rowIndex, key) => {
-
 		const batchRecord = [...tableData];
 		batchRecord[rowIndex][key] = e.target.checked == false ? "" : e.target.checked;
 
 		const batchExcludeJson = [...parameters];
-		batchExcludeJson.forEach((element) => {
 
+		batchExcludeJson.forEach((element) => {
 			if (element.parameter_name === record.parameter_name) {
-				element.batch_exclude.push(key);
+				if (element.batch_exclude.indexOf(key) === -1) {
+					element.batch_exclude.push(key);
+				}
 			}
 		});
-
 
 		setParameters(batchExcludeJson);
 		setTableData(batchRecord);

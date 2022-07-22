@@ -39,7 +39,8 @@ import {
     MonitorOutlined,
     LeftOutlined,
     RightOutlined,
-    PlusSquareTwoTone
+    PlusSquareTwoTone,
+    DeleteOutlined
 } from '@ant-design/icons';
 
 import {
@@ -183,11 +184,12 @@ function PaperBatchRecordsTemplate() {
             obj[`param${activeNumber + 1}`] = param;
             setParameterValue(obj);
             setActiveNumber(activeNumber + 1);
-            if (activeKey == NaN || activeKey == undefined) {
-                setActiveKey(activeNumber)
-            } else {
-                setActiveKey(activeKey + 1)
-            }
+            setActiveKey(activeKey + 1)
+            // if (activeKey == NaN || activeKey == undefined) {
+            //     setActiveKey(activeNumber)
+            // } else {
+            //     setActiveKey(activeKey + 1)
+            // }
 
         } else {
             let openKey = parseInt(open) + 1
@@ -634,7 +636,7 @@ function PaperBatchRecordsTemplate() {
         setTemplateFormData(template)
     }, [matBatch, templateId, templateStatus, templateVersion])
 
-    
+
     useEffect(() => {
 
         getImage()
@@ -735,7 +737,7 @@ function PaperBatchRecordsTemplate() {
         }
         getIdTemplateData()
     }, []);
-   /* istanbul ignore next */
+    /* istanbul ignore next */
     useEffect(() => {
         if ((templateInfo?.length > 0 && imageWidth !== 0 && imageHeight !== 0) || localStorage.getItem("test_enabled") == !null) {
             let arr = templateInfo.map((item, index) => ({
@@ -818,7 +820,7 @@ function PaperBatchRecordsTemplate() {
 
         }, 3000)
     }, [document.getElementsByTagName("canvas")[0], displayImage]);
-   /* istanbul ignore next */
+    /* istanbul ignore next */
     useEffect(() => {
         if ((imageWidth !== 0 && imageHeight !== 0) || localStorage.getItem("test_enabled") == !null) {
             for (let i = 0; i < 2; i++) {
@@ -829,7 +831,7 @@ function PaperBatchRecordsTemplate() {
         }
     }, [imageWidth, imageHeight]);
 
-   /* istanbul ignore next */
+    /* istanbul ignore next */
     const clicked = (area) => {
         setBoundingBoxClicked(true);
         setClickedSnippetId(area.areaValue);
@@ -1133,6 +1135,9 @@ function PaperBatchRecordsTemplate() {
                 } else {
                     openNotification('Create at least one Parameter before save')
                 }
+            } else {
+                dispatch(hideLoader());
+                openNotification('Create at least one Parameter before save')
             }
 
 
@@ -1169,14 +1174,31 @@ function PaperBatchRecordsTemplate() {
 
     const handleOnFinishFailed = ({ values, errorFields, outOfDate }) => {
         let str = "Please enter "
+        let paraName = errorFields[0].name[1]
         errorFields.forEach(item => {
-            str += item.name[2] + ","
+            if (item.name[1] == paraName) {
+                str += item.name[2] + ","
+            } else {
+                str += "in " + values.users[paraName].name + ", "
+                str += item.name[2] + ","
+                paraName = item.name[1]
+            }
         })
-        let newstr = str.replace("name", "Name").replace("method", "Method").replace("param_key", "Anchor").replace("param_snippet_value", "Anchor Value")
-            .replace("param_min", "Min").replace("param_max", "Max").replace("param_valueArea", "Regex").replace("param_valueArea", "Regex")
-            .replace("param_valueTransformation", "Transformation")
+        str += "in " + values.users[paraName].name
 
-        openNotification(newstr)
+        let newstr = str.replaceAll(/name/ig, "Name").replace(/method/ig, "Method").replace(/param_key/ig, "Anchor").replace(/param_snippet_value/ig, "Anchor Value")
+            .replace(/param_min/ig, "Min").replace(/param_max/ig, "Max")
+            .replace(/param_valueTransformation/ig, "Transformation").replace(/,in/ig, " in")
+
+        let newstr1 = ""
+        values.users.forEach(item => {
+            if (item.param_rule == "date" || item.date_rule == "date" || item.time_rule == "date" || item.uom_rule == "date") {
+                newstr1 = newstr.replaceAll(/param_valueArea/ig, "Date").replaceAll(/uom_valueArea/ig, "Date").replaceAll(/date_valueArea/ig, "Date").replaceAll(/time_valueArea/ig, "Date")
+            } else {
+                newstr1 = newstr.replaceAll(/param_valueArea/ig, "RegEx").replaceAll(/uom_valueArea/ig, "RegEx").replaceAll(/date_valueArea/ig, "RegEx").replaceAll(/time_valueArea/ig, "RegEx")
+            }
+        })
+        openNotification(newstr1)
 
     }
 
@@ -1235,6 +1257,7 @@ function PaperBatchRecordsTemplate() {
         if (localStorage.getItem("test_enabled") == null) {/* istanbul ignore next */
             var obj = {
                 filename: params?.file,
+                name: formValues[activeKey]?.name,
                 method: formValues[activeKey]?.method,
                 param_value_direction: parameterFormData[activeKey]?.AnchorDirection,
                 param_value_regex: parameterFormData[activeKey]?.regex
@@ -1365,6 +1388,7 @@ function PaperBatchRecordsTemplate() {
                 var obj = {
 
                     filename: params?.file,
+                    name: ele.name,
                     method: ele.method,
                     param_value_direction: parameterFormData[index]?.AnchorDirection,
                     param_value_regex: parameterFormData[index]?.regex
@@ -1384,7 +1408,7 @@ function PaperBatchRecordsTemplate() {
                     obj['param_value_text'] = ele?.values?.anchorId
                     obj['param_value_top'] = ele?.values?.valueCoords[1] / imageHeight
                     obj['param_value_width'] = (ele?.values?.valueCoords[2] - ele?.values?.valueCoords[0]) / imageWidth
-                    obj['param_value_snippet_id'] = ele?.values?.valueSnippetID / imageWidth
+                    obj['param_value_snippet_id'] = ele?.values?.valueSnippetID
                     obj['param_value_rule'] = {
                         rule_name: parameterFormData[index]?.param_rule, regex_text: parameterFormData[index]?.param_valueArea,
                         range_min: parameterFormData[index]?.param_min, range_max: parameterFormData[index]?.param_max,
@@ -1405,7 +1429,7 @@ function PaperBatchRecordsTemplate() {
                     obj['uom_value_text'] = ele?.unitValues?.unitId
                     obj['uom_value_top'] = ele?.unitValues?.valueCoords[1] / imageHeight
                     obj['uom_value_width'] = (ele?.unitValues?.valueCoords[2] - ele?.unitValues?.valueCoords[0]) / imageWidth
-                    obj['uom_value_snippet_id'] = ele?.unitValues?.valueSnippetID / imageWidth
+                    obj['uom_value_snippet_id'] = ele?.unitValues?.valueSnippetID
                     obj['uom_value_rule'] = {
                         rule_name: parameterFormData[index]?.uom_rule, regex_text: parameterFormData[index]?.uom_valueArea,
                         range_min: parameterFormData[index]?.uom_min, range_max: parameterFormData[index]?.uom_max,
@@ -1426,7 +1450,7 @@ function PaperBatchRecordsTemplate() {
                     obj['time_value_text'] = ele?.timeValues?.timeId
                     obj['time_value_top'] = ele?.timeValues?.valueCoords[1] / imageHeight
                     obj['time_value_width'] = (ele?.timeValues?.valueCoords[2] - ele?.timeValues?.valueCoords[0]) / imageWidth
-                    obj['time_value_snippet_id'] = ele?.timeValues?.valueSnippetID / imageWidth
+                    obj['time_value_snippet_id'] = ele?.timeValues?.valueSnippetID
                     obj['time_value_rule'] = {
                         rule_name: parameterFormData[index]?.time_rule, regex_text: parameterFormData[index]?.time_valueArea,
                         range_min: parameterFormData[index]?.time_min, range_max: parameterFormData[index]?.time_max,
@@ -1447,7 +1471,7 @@ function PaperBatchRecordsTemplate() {
                     obj['date_value_text'] = ele?.dateValues?.dateId
                     obj['date_value_top'] = ele?.dateValues?.valueCoords[1] / imageHeight
                     obj['date_value_width'] = (ele?.dateValues?.valueCoords[2] - ele?.dateValues?.valueCoords[0]) / imageWidth
-                    obj['date_value_snippet_id'] = ele?.dateValues?.valueSnippetID / imageWidth
+                    obj['date_value_snippet_id'] = ele?.dateValues?.valueSnippetID
                     obj['date_value_rule'] = {
                         rule_name: parameterFormData[index]?.date_rule, regex_text: parameterFormData[index]?.date_valueArea,
                         range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max,
@@ -1640,7 +1664,19 @@ function PaperBatchRecordsTemplate() {
         }
 
     }
-
+    const genExtra = (remove, name, key, restfield) => (
+        <DeleteOutlined
+            id="deleteParameter"
+            onClick={event => {
+                // If you don't want click extra trigger collapse, you can prevent this:
+                remove(name)
+                let arr = [...formValues]
+                arr.splice(name, 1)
+                setFormValues(arr)
+                // event.stopPropagation();
+            }}
+        />
+    );
     return (
         <div className='pbr-content-layout' >
             <div className='custom-wrapper pbr-wrapper'>
@@ -1833,7 +1869,7 @@ function PaperBatchRecordsTemplate() {
                                                                     {fields.map(({ key, name, ...restField }) => (
 
                                                                         // <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                                                                        <Panel header={parameterFormData[key]?.name ? `${parameterFormData[key]?.name}` : `Parameter ${key + 1} created`} key={`${key}`} style={{ maxHeight: 500, overflow: "scroll" }}>
+                                                                        <Panel header={parameterFormData[name]?.name ? `${parameterFormData[name]?.name}` : `Parameter ${name + 1} created`} key={`${name}`} extra={genExtra(remove, name, key, restField)}>
                                                                             <div className='addParameterBlock'>
                                                                                 <div className='parameterAdded-block'>
                                                                                     <Form.Item
@@ -1850,7 +1886,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 onChangeChart(
                                                                                                     e,
                                                                                                     'parameterName',
-                                                                                                    key
+                                                                                                    name
                                                                                                 )
                                                                                             }
                                                                                         // style={{ marginLeft: 10, width: 200 }}
@@ -1863,7 +1899,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         label="Method"
                                                                                         rules={[{ required: true, message: 'Select Method' }]}
                                                                                     >
-                                                                                        <Select placeholder="Select Method" onChange={(e, value) => onChangeChart(e, 'method', key, value)} allowClear={true}>
+                                                                                        <Select placeholder="Select Method" onChange={(e, value) => onChangeChart(e, 'method', name, value)} allowClear={true}>
                                                                                             <Option value='absolute_coordinate'>
                                                                                                 Get By Absolute Coordinate
                                                                                             </Option>
@@ -1881,14 +1917,14 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Option>
                                                                                         </Select>
                                                                                     </Form.Item>
-                                                                                    {formValues[key]?.method === "relative_direction" &&
+                                                                                    {formValues[name]?.method === "relative_direction" &&
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'AnchorDirection']}
                                                                                             rules={[{ required: true, message: 'Select Anchor Direction' }]}
                                                                                         // label="AnchorDirection"
                                                                                         >
 
-                                                                                            <Select placeholder="AnchorDirection" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'anchor_dir', key, value)}>
+                                                                                            <Select placeholder="AnchorDirection" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'anchor_dir', name, value)}>
                                                                                                 <Option value='ABOVE'>
                                                                                                     Above
                                                                                                 </Option>
@@ -1903,7 +1939,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 </Option>
                                                                                             </Select>
                                                                                         </Form.Item>}
-                                                                                    {formValues[key]?.method === "regex" &&
+                                                                                    {formValues[name]?.method === "regex" &&
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'regex']}
                                                                                             rules={[{ required: true, message: 'Enter Regex' }]}
@@ -1944,7 +1980,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     <Input
                                                                                                         id="form_input1"
                                                                                                         value={
-                                                                                                            parameterValue[`param${key + 1}`]?.anchorValue
+                                                                                                            parameterValue[`param${name + 1}`]?.anchorValue
                                                                                                         }
                                                                                                         className='uploadSnippetInput'
                                                                                                         placeholder='Enter Anchor Value'
@@ -1953,7 +1989,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                         ) =>
                                                                                                             onChangeChart(
                                                                                                                 e,
-                                                                                                                'anchorValue', key
+                                                                                                                'anchorValue', name
                                                                                                             )
                                                                                                         }
                                                                                                     />
@@ -1991,7 +2027,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     <Input
                                                                                                         id="form_input2"
                                                                                                         value={
-                                                                                                            parameterValue[`param${key + 1}`]?.anchorId
+                                                                                                            parameterValue[`param${name + 1}`]?.anchorId
 
                                                                                                         }
                                                                                                         className='uploadSnippetInput'
@@ -2001,7 +2037,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                         ) =>
                                                                                                             onChangeChart(
                                                                                                                 e,
-                                                                                                                'snippetValue', key
+                                                                                                                'snippetValue', name
                                                                                                             )
                                                                                                         }
                                                                                                     />
@@ -2012,7 +2048,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         <Form.Item  {...restField}
                                                                                             name={[name, 'param_rule']}
                                                                                         >
-                                                                                            <Select id="rule1" placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'param_rule', key, value)}>
+                                                                                            <Select id="rule1" placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'param_rule', name, value)}>
                                                                                                 <Option value='date'>
                                                                                                     Date
                                                                                                 </Option>
@@ -2025,12 +2061,12 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Select>
                                                                                         </Form.Item>
 
-                                                                                        {parameterFormData[key]?.param_rule === "range" ?
+                                                                                        {parameterFormData[name]?.param_rule === "range" ?
                                                                                             <Row gutter={8}>
                                                                                                 <Col span={11}>
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'param_min']}
-                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
                                                                                                         { required: true, message: 'Enter min value' }]}
                                                                                                     >
 
@@ -2041,14 +2077,14 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Col span={12}>
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'param_max']}
-                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
                                                                                                         { required: true, message: 'Enter max value' },
                                                                                                         () => ({
                                                                                                             validator(_, value) {
                                                                                                                 if (!value) {
                                                                                                                     return Promise.reject();
                                                                                                                 }
-                                                                                                                if (Number(value) < Number(parameterFormData[key]?.param_min)) {
+                                                                                                                if (Number(value) < Number(parameterFormData[name]?.param_min)) {
                                                                                                                     return Promise.reject("Enter value greater then Min");
                                                                                                                 }
                                                                                                                 return Promise.resolve();
@@ -2062,7 +2098,7 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Row> :
                                                                                             <Form.Item {...restField}
                                                                                                 name={[name, 'param_valueArea']}
-                                                                                                rules={[{ required: parameterFormData[key]?.param_rule ? true : false, message: 'Enter value' }]}>
+                                                                                                rules={[{ required: parameterFormData[name]?.param_rule ? true : false, message: 'Enter value' }]}>
                                                                                                 <Input placeholder='Enter expression' />
                                                                                             </Form.Item>}
 
@@ -2085,7 +2121,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Form.Item>
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'param_valueTransformation']}
-                                                                                            rules={[{ required: parameterFormData[key]?.param_transformation ? true : false, message: 'Enter transformation' }]}>
+                                                                                            rules={[{ required: parameterFormData[name]?.param_transformation ? true : false, message: 'Enter transformation' }]}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
 
@@ -2119,7 +2155,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Input
                                                                                                     id="form_input3"
                                                                                                     value={
-                                                                                                        parameterValue[`param${key + 1}`]?.unitAnchor
+                                                                                                        parameterValue[`param${name + 1}`]?.unitAnchor
                                                                                                     }
                                                                                                     className='uploadSnippetInput'
                                                                                                     placeholder='Enter Anchor Value'
@@ -2128,7 +2164,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     ) =>
                                                                                                         onChangeChart(
                                                                                                             e,
-                                                                                                            'uomanchorValue', key
+                                                                                                            'uomanchorValue', name
                                                                                                         )
                                                                                                     }
                                                                                                 />
@@ -2164,7 +2200,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Input
                                                                                                     id="form_input4"
                                                                                                     value={
-                                                                                                        parameterValue[`param${key + 1}`]?.unitId
+                                                                                                        parameterValue[`param${name + 1}`]?.unitId
 
                                                                                                     }
                                                                                                     className='uploadSnippetInput'
@@ -2174,7 +2210,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     ) => {
                                                                                                         onChangeChart(
                                                                                                             e,
-                                                                                                            'uomsnippetValue', key
+                                                                                                            'uomsnippetValue', name
                                                                                                         );
                                                                                                     }}
                                                                                                 />
@@ -2182,7 +2218,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Dragger>
                                                                                         <Form.Item  {...restField}
                                                                                             name={[name, 'uom_rule']}>
-                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'uom_rule', key, value)}>
+                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'uom_rule', name, value)}>
                                                                                                 <Option value='date'>
                                                                                                     Date
                                                                                                 </Option>
@@ -2195,12 +2231,12 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Select>
                                                                                         </Form.Item>
 
-                                                                                        {parameterFormData[key]?.uom_rule === "range" ?
+                                                                                        {parameterFormData[name]?.uom_rule === "range" ?
                                                                                             <Row gutter={8}>
                                                                                                 <Col span={11}>
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'uom_min']}
-                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
                                                                                                         { required: true, message: 'Enter min value' }]}
                                                                                                     >
                                                                                                         <Input placeholder='Min' />
@@ -2210,14 +2246,14 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Col span={12}>
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'uom_max']}
-                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
                                                                                                         { required: true, message: 'Enter max value' },
                                                                                                         () => ({
                                                                                                             validator(_, value) {
                                                                                                                 if (!value) {
                                                                                                                     return Promise.reject();
                                                                                                                 }
-                                                                                                                if (Number(value) < Number(parameterFormData[key]?.uom_min)) {
+                                                                                                                if (Number(value) < Number(parameterFormData[name]?.uom_min)) {
                                                                                                                     return Promise.reject("Enter value greater then Min");
                                                                                                                 }
                                                                                                                 return Promise.resolve();
@@ -2231,7 +2267,7 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Row> :
                                                                                             <Form.Item {...restField}
                                                                                                 name={[name, 'uom_valueArea']}
-                                                                                                rules={[{ required: parameterFormData[key]?.uom_rule ? true : false, message: 'Enter value' }]}>
+                                                                                                rules={[{ required: parameterFormData[name]?.uom_rule ? true : false, message: 'Enter value' }]}>
                                                                                                 <Input placeholder='Enter expression' />
                                                                                             </Form.Item>}
                                                                                         <Form.Item  {...restField}
@@ -2253,7 +2289,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Form.Item>
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'uom_valueTransformation']}
-                                                                                            rules={[{ required: parameterFormData[key]?.uom_transformation ? true : false, message: 'Enter transformation' }]}>
+                                                                                            rules={[{ required: parameterFormData[name]?.uom_transformation ? true : false, message: 'Enter transformation' }]}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
 
@@ -2287,7 +2323,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Input
                                                                                                     id="form_input5"
                                                                                                     value={
-                                                                                                        parameterValue[`param${key + 1}`]?.timeAnchor
+                                                                                                        parameterValue[`param${name + 1}`]?.timeAnchor
                                                                                                     }
                                                                                                     className='uploadSnippetInput'
                                                                                                     placeholder='Enter Anchor Value'
@@ -2296,7 +2332,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     ) =>
                                                                                                         onChangeChart(
                                                                                                             e,
-                                                                                                            'timeanchorValue', key
+                                                                                                            'timeanchorValue', name
                                                                                                         )
                                                                                                     }
                                                                                                 />
@@ -2332,7 +2368,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <InputField
                                                                                                     id="form_input6"
                                                                                                     value={
-                                                                                                        parameterValue[`param${key + 1}`]?.timeId
+                                                                                                        parameterValue[`param${name + 1}`]?.timeId
                                                                                                     }
                                                                                                     className='uploadSnippetInput'
                                                                                                     placeholder='Enter Snippet Value'
@@ -2341,7 +2377,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     ) => {
                                                                                                         onChangeChart(
                                                                                                             e,
-                                                                                                            'timesnippetValue', key
+                                                                                                            'timesnippetValue', name
                                                                                                         );
                                                                                                     }}
                                                                                                 />
@@ -2349,7 +2385,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Dragger>
                                                                                         <Form.Item  {...restField}
                                                                                             name={[name, 'time_rule']}>
-                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'time_rule', key, value)}>
+                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'time_rule', name, value)}>
 
                                                                                                 <Option value='range'>
                                                                                                     Range
@@ -2360,12 +2396,12 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Select>
                                                                                         </Form.Item>
 
-                                                                                        {parameterFormData[key]?.time_rule === "range" ?
+                                                                                        {parameterFormData[name]?.time_rule === "range" ?
                                                                                             <Row gutter={8}>
                                                                                                 <Col span={11}>
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'time_min']}
-                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
                                                                                                         { required: true, message: 'Enter min value' }]}
                                                                                                     >
                                                                                                         <Input placeholder='Min' />
@@ -2375,14 +2411,14 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Col span={12}>
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'time_max']}
-                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
                                                                                                         { required: true, message: 'Enter max value' },
                                                                                                         () => ({
                                                                                                             validator(_, value) {
                                                                                                                 if (!value) {
                                                                                                                     return Promise.reject();
                                                                                                                 }
-                                                                                                                if (Number(value) < Number(parameterFormData[key]?.time_min)) {
+                                                                                                                if (Number(value) < Number(parameterFormData[name]?.time_min)) {
                                                                                                                     return Promise.reject("Enter value greater then Min");
                                                                                                                 }
                                                                                                                 return Promise.resolve();
@@ -2396,7 +2432,7 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Row> :
                                                                                             <Form.Item {...restField}
                                                                                                 name={[name, 'time_valueArea']}
-                                                                                                rules={[{ required: parameterFormData[key]?.time_rule ? true : false, message: 'Enter value' }]}>
+                                                                                                rules={[{ required: parameterFormData[name]?.time_rule ? true : false, message: 'Enter value' }]}>
                                                                                                 <Input placeholder='Enter expression' />
                                                                                             </Form.Item>}
                                                                                         <Form.Item  {...restField}
@@ -2418,7 +2454,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Form.Item>
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'time_valueTransformation']}
-                                                                                            rules={[{ required: parameterFormData[key]?.time_transformation ? true : false, message: 'Enter transformation' }]}>
+                                                                                            rules={[{ required: parameterFormData[name]?.time_transformation ? true : false, message: 'Enter transformation' }]}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
 
@@ -2452,7 +2488,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <InputField
                                                                                                     id="form_input7"
                                                                                                     value={
-                                                                                                        parameterValue[`param${key + 1}`]?.dateAnchor
+                                                                                                        parameterValue[`param${name + 1}`]?.dateAnchor
 
                                                                                                     }
                                                                                                     className='uploadSnippetInput'
@@ -2462,7 +2498,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     ) =>
                                                                                                         onChangeChart(
                                                                                                             e,
-                                                                                                            'dateanchorValue', key
+                                                                                                            'dateanchorValue', name
                                                                                                         )
                                                                                                     }
                                                                                                 />
@@ -2498,7 +2534,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <InputField
                                                                                                     id="form_input8"
                                                                                                     value={
-                                                                                                        parameterValue[`param${key + 1}`]?.dateId
+                                                                                                        parameterValue[`param${name + 1}`]?.dateId
 
                                                                                                     }
                                                                                                     className='uploadSnippetInput'
@@ -2508,7 +2544,7 @@ function PaperBatchRecordsTemplate() {
                                                                                                     ) => {
                                                                                                         onChangeChart(
                                                                                                             e,
-                                                                                                            'datesnippetValue', key
+                                                                                                            'datesnippetValue', name
                                                                                                         );
                                                                                                     }}
                                                                                                 />
@@ -2516,7 +2552,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Dragger>
                                                                                         <Form.Item  {...restField}
                                                                                             name={[name, 'date_rule']}>
-                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'date_rule', key, value)}>
+                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'date_rule', name, value)}>
                                                                                                 <Option value='date'>
                                                                                                     Date
                                                                                                 </Option>
@@ -2529,12 +2565,12 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Select>
                                                                                         </Form.Item>
 
-                                                                                        {parameterFormData[key]?.date_rule === "range" ?
+                                                                                        {parameterFormData[name]?.date_rule === "range" ?
                                                                                             <Row gutter={8}>
                                                                                                 <Col span={11}>
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'date_min']}
-                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
                                                                                                         { required: true, message: 'Enter min value' }]}
                                                                                                     >
                                                                                                         <Input placeholder='Min' />
@@ -2544,14 +2580,14 @@ function PaperBatchRecordsTemplate() {
                                                                                                 <Col span={12}>
                                                                                                     <Form.Item {...restField}
                                                                                                         name={[name, 'date_max']}
-                                                                                                        rules={[{ pattern: new RegExp(/^[0-9]+$/), message: 'The input is not a number' },
+                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
                                                                                                         { required: true, message: 'Enter nax value' },
                                                                                                         () => ({
                                                                                                             validator(_, value) {
                                                                                                                 if (!value) {
                                                                                                                     return Promise.reject();
                                                                                                                 }
-                                                                                                                if (Number(value) < Number(parameterFormData[key]?.date_min)) {
+                                                                                                                if (Number(value) < Number(parameterFormData[name]?.date_min)) {
                                                                                                                     return Promise.reject("Enter value greater then Min");
                                                                                                                 } return Promise.resolve();
                                                                                                             },
@@ -2564,7 +2600,7 @@ function PaperBatchRecordsTemplate() {
                                                                                             </Row> :
                                                                                             <Form.Item {...restField}
                                                                                                 name={[name, 'date_valueArea']}
-                                                                                                rules={[{ required: parameterFormData[key]?.date_rule ? true : false, message: 'Enter value' }]}>
+                                                                                                rules={[{ required: parameterFormData[name]?.date_rule ? true : false, message: 'Enter value' }]}>
                                                                                                 <Input placeholder='Enter expression' />
                                                                                             </Form.Item>}
                                                                                         <Form.Item  {...restField}
@@ -2586,7 +2622,7 @@ function PaperBatchRecordsTemplate() {
                                                                                         </Form.Item>
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'date_valueTransformation']}
-                                                                                            rules={[{ required: parameterFormData[key]?.date_transformation ? true : false, message: 'Enter transformation' }]}>
+                                                                                            rules={[{ required: parameterFormData[name]?.date_transformation ? true : false, message: 'Enter transformation' }]}>
                                                                                             <Input placeholder='Enter transformation' />
                                                                                         </Form.Item>
 
@@ -2616,19 +2652,19 @@ function PaperBatchRecordsTemplate() {
                                                                         className='firstParameter-para'
                                                                         style={{ pointerEvents: params.fromScreen === "Workflow" ? "none" : "all" }}
                                                                         onClick={() => {
-                                                                            if (activeNumber === 0) {
-                                                                                parameterAddingHandler()
-                                                                                add()
-                                                                            } else {
-                                                                                if ((formValues[activeNumber - 1]?.name === "" || formValues[activeNumber - 1]?.name === undefined) ||
-                                                                                    (formValues[activeNumber - 1]?.method === "" || formValues[activeNumber - 1]?.method === undefined)
-                                                                                ) {
-                                                                                    openNotification("Please enter name and method")
-                                                                                } else {
-                                                                                    parameterAddingHandler()
-                                                                                    add()
-                                                                                }
-                                                                            }
+                                                                            // if (activeNumber === 0) {
+                                                                            parameterAddingHandler()
+                                                                            add()
+                                                                            // } else {
+                                                                            //     if ((formValues[activeNumber - 1]?.name === "" || formValues[activeNumber - 1]?.name === undefined) ||
+                                                                            //         (formValues[activeNumber - 1]?.method === "" || formValues[activeNumber - 1]?.method === undefined)
+                                                                            //     ) {
+                                                                            //         openNotification("Please enter name and method")
+                                                                            //     } else {
+                                                                            //         parameterAddingHandler()
+                                                                            //         add()
+                                                                            //     }
+                                                                            // }
 
                                                                         }}
                                                                         type="primary"
@@ -2766,21 +2802,16 @@ function PaperBatchRecordsTemplate() {
                                                 value={areasMapObject.snippetID}
                                                 label='Snippet ID'
                                                 placeholder='Snippet ID'
-                                                onChangeInput={e => {
-                                                    onChangeChart(e, 'snippetId');
-                                                }}
                                             />
                                             <InputField
                                                 value={areasMapObject.areaValue}
                                                 label='Key 1'
                                                 placeholder='Key 1'
-                                                onChangeInput={e => {
-                                                    onChangeChart(e, 'snippetKey1');
-                                                }}
                                                 disabled
                                             />
                                             <div className='secondary-flexBox'>
                                                 <InputField
+                                                    id="cord1"
                                                     value={areasMapObject.coords[0]}
                                                     label='X1'
                                                     placeholder='Enter Value'
@@ -2789,6 +2820,7 @@ function PaperBatchRecordsTemplate() {
                                                     }}
                                                 />
                                                 <InputField
+                                                    id="cord2"
                                                     value={areasMapObject.coords[1]}
                                                     label='Y1'
                                                     placeholder='Enter Value'
@@ -2799,6 +2831,7 @@ function PaperBatchRecordsTemplate() {
                                             </div>
                                             <div className='secondary-flexBox'>
                                                 <InputField
+                                                    id="cord3"
                                                     value={areasMapObject.coords[2]}
                                                     label='X2'
                                                     placeholder='Enter Value'
@@ -2807,6 +2840,7 @@ function PaperBatchRecordsTemplate() {
                                                     }}
                                                 />
                                                 <InputField
+                                                    id="cord4"
                                                     value={areasMapObject.coords[3]}
                                                     label='Y2'
                                                     placeholder='Enter Value'
@@ -2820,9 +2854,6 @@ function PaperBatchRecordsTemplate() {
                                                     value={areasMapObject.areaValue}
                                                     label='Area'
                                                     placeholder='Enter Value'
-                                                    onChangeInput={e => {
-                                                        onChangeChart(e, 'area');
-                                                    }}
                                                     disabled
                                                 />
                                             </div>

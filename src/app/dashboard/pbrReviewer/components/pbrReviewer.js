@@ -7,8 +7,8 @@ import {
   showNotification,
 } from '../../../../duck/actions/commonActions';
 import Highlighter from 'react-highlight-words';
-import { Card, Table, Button, Col, Row, Checkbox, Input, Space, Affix } from 'antd';
-import { getPbrReviewerData, updateApprove } from '../../../../services/pbrService'
+import { Card, Table, Button, Col, Row, Checkbox, Input, Space, Affix, Select } from 'antd';
+import { getPbrReviewerData, updateApprove, getPieChartData, geTemplateDropdown } from '../../../../services/pbrService'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
 import Plot from 'react-plotly.js';
@@ -31,19 +31,32 @@ function PbrReviewer() {
   const [searchText, setSearchText] = useState("");
   const [showReset, setShowReset] = useState(false);
   const [showResetConfidence, setShowResetConfidence] = useState(false);
+  const [templateArray, setTemplateArray] = useState([]);
+  const [selectedTemplateArray, setSelectedTemplateArray] = useState([]);
+  const [reviewerReq, setReviewerReq] = useState({
+    confidence: null,
+    createdBy: null,
+    id: null,
+    limit: null,
+    status: null,
+    template_id: []
+  });
+
   let [filteredData] = useState();
 
   const history = useHistory();
   useEffect(() => {
     cardTableData()
+    getTemplateID()
   }, []);
-  const cardTableData = async () => {
-    // let req = ``
+  const cardTableData = async (val) => {
     try {
-      let username = localStorage.getItem('user')
-      // let req = { createdBy: username.toLowerCase() }
       dispatch(showLoader());
-      const tableResponse = await getPbrReviewerData();
+      let req = {
+        ...reviewerReq,
+        template_id: selectedTemplateArray
+      }
+      const tableResponse = await getPbrReviewerData(val ? val : req);
       if (tableResponse['status-code'] === 200) {
         setTemplateData(tableResponse.Data);
         dispatch(hideLoader());
@@ -63,27 +76,46 @@ function PbrReviewer() {
       dispatch(hideLoader());
       dispatch(showNotification('error', error.Message));
     }
-
-
   };
+
+  const getTemplateID = async () => {
+    dispatch(showLoader());
+    try {
+      let res = await geTemplateDropdown()
+      if (res['status-code'] == 200) {
+        setTemplateArray(res?.Data)
+        dispatch(hideLoader());
+      } else {
+        dispatch(hideLoader());
+        dispatch(showNotification('error', res.Message));
+      }
+    } catch (error) {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', error.Message));
+    }
+  }
 
   const showfilterData = async (value) => {
     dispatch(showLoader());
     setShowReset(true)
-    let obj = { ...statusreq, status: value.toLowerCase() }
+    let obj = {
+      ...reviewerReq, status: value.toLowerCase(), template_id: selectedTemplateArray
+    }
     let res = await getPbrReviewerData(obj)
     setTemplateData(res.Data);
-    setStatusReq(obj)
+    setReviewerReq(obj)
     dispatch(hideLoader());
   };
 
   const showfilters = async (value) => {
     dispatch(showLoader());
     setShowResetConfidence(true)
-    let obj = { ...statusreq, confidence: value }
+    let obj = {
+      ...reviewerReq, confidence: value, template_id: selectedTemplateArray
+    }
     let res = await getPbrReviewerData(obj)
     setTemplateData(res.Data);
-    setStatusReq(obj)
+    setReviewerReq(obj)
     dispatch(hideLoader());
 
   };
@@ -138,61 +170,48 @@ function PbrReviewer() {
     setApproveReject("A");
   };
 
-  const chart = async (res) => {
-    let obj = await getPbrReviewerData(res);
+  const chart = async (val) => {
+    let req = { key: "status", id: selectedTemplateArray }
+    let obj = await getPieChartData(val ? val : req);
     let jsondata = obj.Data;
-    let unappcount = 0;
+    let approved = 0
+    let unapproved = 0
     jsondata.forEach(item => {
-      if (item.status === "unapproved") {
-        unappcount++;
+      if (item.status == "approved") {
+        approved = item.count
+      } else if (item.status == "unapproved") {
+        unapproved = item.count
       }
-    });
-
-    let appcount = 0;
-    jsondata.forEach(item => {
-      if (item.status === "approved") {
-        appcount++;
-      }
-    });
-
-    setPieChartData([unappcount, appcount]);
+    })
+    setPieChartData([approved, unapproved]);
 
   };
 
 
-  const chart1 = async (res) => {
-    let obj = await getPbrReviewerData(res);
+  const chart1 = async (val) => {
+    let req = { key: "confidence", id: selectedTemplateArray }
+    let obj = await getPieChartData(val ? val : req);
     let jsondata = obj.Data;
-    let highcount = 0;
+    let High = 0
+    let Medium = 0
+    let Low = 0
     jsondata.forEach(item => {
-      if (item.confidence === "High") {
-        highcount++;
+      if (item.confidence == "High") {
+        High = item.count
+      } else if (item.confidence == "Low") {
+        Low = item.count
+      } else if(item.confidence == "Medium"){
+        Medium = item.count
       }
-    });
-
-    let medcount = 0;
-    jsondata.forEach(item => {
-      if (item.confidence === "Medium") {
-        medcount++;
-      }
-
-    });
-
-    let lowcount = 0;
-    jsondata.forEach(item => {
-      if (item.confidence === "Low") {
-        lowcount++;
-      }
-
-    });
-    setPieChartData1([lowcount, medcount, highcount]);
+    })
+    setPieChartData1([High,Medium,Low]);
   };
 
   let appchart1 = [{
     values: pieChartData1,
-    labels: ["Low", "Medium", "High"],
+    labels: ["High", "Medium", "Low"],
     marker: {
-      colors: ['#1f77b4', '#ff7f0e', '#2ca02c'],
+      colors: ['#2ca02c', '#ff7f0e', '#1f77b4'],
       line: {
         color: 'white',
         width: 2
@@ -212,9 +231,9 @@ function PbrReviewer() {
 
   let appchart = [{
     values: pieChartData,
-    labels: ["Unapproved", "Approved"],
+    labels: ["Approved", "Unapproved"],
     marker: {
-      colors: ['#ff7f0e', '#2ca02c'],
+      colors: ['#2ca02c', '#ff7f0e'],
       line: {
         color: 'white',
         width: 2
@@ -243,6 +262,61 @@ function PbrReviewer() {
       ...getColumnSearchProps('id'),
       sorter: (a, b) => a.id - b.id,
       sortDirections: ['descend', 'ascend'],
+      width: "5%"
+    },
+    {
+      title: 'Template Id',
+      key: 'template_id',
+      dataIndex: 'template_id',
+      ...getColumnSearchProps('template_id'),
+      sorter: (a, b) => {
+        return a.template_id === null ||
+          a.template_id === undefined ||
+          a.template_id === ""
+          ? -1
+          : b.template_id == null ||
+            b.template_id == undefined ||
+            b.template_id == ""
+            ? 1
+            : a.template_id.toString().localeCompare(b.template_id);
+      },
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'Template Name',
+      key: 'template_name',
+      dataIndex: 'template_name',
+      ...getColumnSearchProps('template_name'),
+      sorter: (a, b) => {
+        return a.template_name === null ||
+          a.template_name === undefined ||
+          a.template_name === ""
+          ? -1
+          : b.template_name == null ||
+            b.template_name == undefined ||
+            b.template_name == ""
+            ? 1
+            : a.template_name.toString().localeCompare(b.template_name);
+      },
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'Parameter Name',
+      key: 'param_name',
+      dataIndex: 'param_name',
+      ...getColumnSearchProps('param_name'),
+      sorter: (a, b) => {
+        return a.param_name === null ||
+          a.param_name === undefined ||
+          a.param_name === ""
+          ? -1
+          : b.param_name == null ||
+            b.param_name == undefined ||
+            b.param_name == ""
+            ? 1
+            : a.param_name.toString().localeCompare(b.param_name);
+      },
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Attribute Name',
@@ -265,9 +339,6 @@ function PbrReviewer() {
       title: 'Snippet Value',
       key: 'snippet_image',
       dataIndex: 'snippet_image',
-      // ...getColumnSearchProps('snippet_image'),
-      // sorter: (a, b) => a.snippet_image.length - b.snippet_image.length,
-      // sortDirections: ['descend', 'ascend'],
       render: (text, record, index) => {
         return (
           <img src={`data:image/png;base64,${text}`} width="80%" height="80%" />
@@ -366,11 +437,6 @@ function PbrReviewer() {
         )
       }
     },
-
-
-
-
-
   ]
   /* istanbul ignore next */
   function getColumnSearchProps(dataIndex) {
@@ -478,7 +544,6 @@ function PbrReviewer() {
   }
 
   const landingSearch = value => {
-    console.log("vla", value)
     if (value == "") {
       setFilterTableLanding(null);
     } else {
@@ -497,30 +562,43 @@ function PbrReviewer() {
   };
 
   const resetConfidence = async () => {
-    //setShowReset(false)
     dispatch(showLoader());
-    let obj = { ...statusreq }
-    delete obj["confidence"]
+    let obj = { ...reviewerReq, confidence: null }
     let res = await getPbrReviewerData(obj)
     setTemplateData(res.Data);
-    setStatusReq(obj)
+    setReviewerReq(obj)
     setShowResetConfidence(false)
-    // cardTableData()
     dispatch(hideLoader());
 
   }
   const resetStatus = async () => {
     dispatch(showLoader());
-    let obj = { ...statusreq }
-    delete obj["status"]
+    let obj = { ...reviewerReq, status: null }
     let res = await getPbrReviewerData(obj)
     setTemplateData(res.Data);
-    setStatusReq(obj)
+    setReviewerReq(obj)
     setShowReset(false)
     // setShowResetConfidence(false)
     //cardTableData()
     dispatch(hideLoader());
 
+  }
+
+  const handleTemplateChange = (val) => {
+    if (val.length == 0) {
+      let req = { ...reviewerReq, template_id: [] }
+      let req1 = { key: "status", id: [] }
+      let req2 = { key: "confidence", id: [] }
+      cardTableData(req)
+      chart(req1)
+      chart1(req2)
+    }
+    setSelectedTemplateArray(val)
+  }
+  const applyTemplateFilter = () => {
+    cardTableData()
+    chart()
+    chart1()
   }
 
   return (
@@ -535,11 +613,8 @@ function PbrReviewer() {
           //   scrollBehavior: 'auto'
           // }}
           >
-
-
             <Row gutter={16}>
               <Col span={12}>
-
                 <Card className="review-card1" >
                   <div id="my-div" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: 150 }}>
                     <h3 className="status_pos">Status</h3>
@@ -556,7 +631,7 @@ function PbrReviewer() {
                           xanchor: 'left',
                           y: 0.5
 
-                        }, paper_bgcolor: "rgba(0,0,0,0)", width: 400, title: ''
+                        }, paper_bgcolor: "rgba(0,0,0,0)", width: 390, title: ''
                       }} />
 
                   </div>
@@ -579,24 +654,19 @@ function PbrReviewer() {
                           x: 1.3,
                           y: 0.5
 
-                        }, paper_bgcolor: "rgba(0,0,0,0)", width: 380, title: ''
+                        }, paper_bgcolor: "rgba(0,0,0,0)", width: 350, title: ''
                       }} />
                   </div>
                 </Card>
               </Col>
             </Row>
-
           </div>
           <div className='review-wrapper'>
             <div className='content_section' >
-
               <div className="scrollable-container" >
-
-
-
                 <div>
                   <Row justify="space-around" align="middle">
-                    <Col span={22}>
+                    <Col span={16}>
                       <Search
                         className='dashboard-search'
                         placeholder='Search by template ID, name, creator or date of creation'
@@ -606,6 +676,24 @@ function PbrReviewer() {
                         icon={<SearchOutlined />}
                         onSearch={landingSearch}
                       />
+                    </Col>
+                    <Col span={4} >
+                      <Select mode='multiple' maxTagCount={1} id="templateDrop" placeholder="Select Template ID" allowClear options={templateArray} onChange={handleTemplateChange} style={{ width: 160, marginLeft: 25 }} />
+                    </Col>
+                    <Col span={2} >
+                      <Button id="applyFilter" style={{
+                        margin: "7px 20px",
+                        right: 8,
+                        borderRadius: "5px",
+                        textTransform: "none",
+                        background: "#ffffff",
+                        borderColor: "#303f9f",
+                        color: "#303f9f"
+
+                      }}
+                        onClick={applyTemplateFilter}
+                        disabled={selectedTemplateArray?.length == 0 ? true : false}
+                      >Apply</Button>
                     </Col>
                     <Col span={2} >
                       <Button id="pbr-approve" style={{
@@ -633,7 +721,7 @@ function PbrReviewer() {
                       : filterTableLanding}
                     pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '50', '100', '200'] }}
                     scroll={{
-                      x: 1800,
+                      x: 2300,
                       y: 220,
                     }}
                     style={{ border: '1px solid #ececec', borderRadius: '2px' }}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Row, Col, Button, Modal, Input, Form, DatePicker, TimePicker } from 'antd';
 import { useDispatch } from 'react-redux';
-import moment from 'moment';
 import {
   hideLoader,
   showLoader,
@@ -13,7 +12,6 @@ import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import queryString from "query-string";
 import './styles.scss';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
-import { ArrowLeftOutlined, SearchOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 
 
@@ -21,9 +19,6 @@ import { useHistory } from 'react-router';
 const PbrUpdate = () => {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([]);
-  const [modalData, setModalData] = useState([]);
-  const [displayImage, setDisplayImage] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingRow, setEditingRow] = useState(null);
   const [imagepdf, setImagePdf] = useState("");
   const history = useHistory();
@@ -38,19 +33,24 @@ const PbrUpdate = () => {
   });
   const [form] = Form.useForm();
   const [idarr, setIdArr] = useState([]);
-  const { id } = useParams();
   const location = useLocation();
   const params = queryString.parse(location.search);
+  
   useEffect(() => {
-
     loadTableData();
-
   }, []);
 
-  
-  const loadTableData = async () => {
 
-    let req = { id: params.id }
+  const loadTableData = async () => {
+    dispatch(showLoader());
+    let req ={
+      confidence: null,
+      createdBy: null,
+      id: Number(params.id),
+      limit: null,
+      status: null,
+      template_id: []
+    } 
     let res = await getPbrReviewerData(req);
     setTemplateData(res.Data);
 
@@ -62,10 +62,11 @@ const PbrUpdate = () => {
       recordedDate: res.Data[0].recorded_date == null ? "" : res.Data[0].recorded_date,
       recordedTime: res.Data[0].recorded_time == null ? "" : res.Data[0].recorded_time,
       snippetValue: res.Data[0].snippet_value == null ? "" : res.Data[0].snippet_value,
-      status: res.Data[0].status = null ? "" : res.Data[0].status,
-      uomnum: res.Data[0].uom = null ? "" : res.Data[0].uom
+      status: res.Data[0].status == null ? "" : res.Data[0].status,
+      uomnum: res.Data[0].uom == null ? "" : res.Data[0].uom
     }
     setTextInput(obj)
+    dispatch(hideLoader());
   };
 
 
@@ -77,7 +78,7 @@ const PbrUpdate = () => {
       redirect: "follow",
     };
     let response = await fetch(
-      MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${val.split('_')[0]}.pdf&pageId=1`,
+      MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${val.split('_page-0')[0]}.pdf&pageId=1`,
       requestOptions
     )
       .then((response) => response)
@@ -88,10 +89,12 @@ const PbrUpdate = () => {
 
   }
 
+  const handleCancel = () => {
+    setEditingRow(null);
+  }
 
   const handleEdit = async (record) => {
     setEditingRow(record.key);
-
     form.setFieldsValue({
       changed_by: textInput.changedBy,
       recorded_date: textInput.recordedDate,
@@ -111,7 +114,6 @@ const PbrUpdate = () => {
   const handleClick = async (event, record) => {
     dispatch(showLoader());
     event.preventDefault();
-
     let resp = [...idarr];
     resp.push(params.id);
     setIdArr(resp);
@@ -125,9 +127,7 @@ const PbrUpdate = () => {
       status: textInput.status,
       uom: textInput.uomnum,
     };
-
     let res = await updateApprove(formvalues);
-
     if (res.Status == "202") {
       dispatch(hideLoader());
       dispatch(showNotification("success", "Updated Successfully"))
@@ -142,18 +142,27 @@ const PbrUpdate = () => {
   };
 
 
-
   const columns = [
     {
       title: "Id",
       dataIndex: "id",
       key: "id",
+      width:"5%"
+    },
+    {
+      title: "Parameter Name",
+      dataIndex: "param_name",
+      key: "param_name",
+    },
+    {
+      title: "Anchor Key",
+      dataIndex: "anchor_key",
+      key: "anchor_key",
     },
     {
       title: "snippet value",
       dataIndex: "snippet_value",
       key: "snippet_value",
-
       render: (text, record) => {
         if (editingRow === record.key) {
           return (
@@ -172,8 +181,6 @@ const PbrUpdate = () => {
           return <p>{text}</p>;
         }
       },
-
-
     },
     {
       title: "Value Image",
@@ -184,7 +191,6 @@ const PbrUpdate = () => {
           <img src={`data:image/png;base64,${text}`} width="50%" height="15%" />
         )
       }
-
     },
     {
       title: "Recorded Date",
@@ -207,7 +213,6 @@ const PbrUpdate = () => {
           return <p>{text}</p>;
         }
       },
-
     },
     {
       title: "Recorded Time",
@@ -227,16 +232,12 @@ const PbrUpdate = () => {
               />
             </Form.Item>
           );
-
         }
         else {
           return <p>{text}</p>;
         }
       },
-
     },
-
-
     {
       title: "UOM",
       dataIndex: "uom",
@@ -273,17 +274,25 @@ const PbrUpdate = () => {
       fixed: 'right',
       width: "9%",
       render: (_, record) => {
-        return (
-          <>
-
+        if (editingRow === record.key) {
+          return (
+            <Button
+              type="link"
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+          );
+        } else {
+          return (
             <Button
               type="link"
               onClick={handleEdit}
             >
               Edit
             </Button>
-          </>
-        );
+          );
+        }
       },
     },
   ]
@@ -302,14 +311,12 @@ const PbrUpdate = () => {
             <Row gutter={16}>
               <Col span={12}>
                 <h3 style={{ marginBottom: "20px" }}>You may edit the selected unstructured data here.</h3>
-
-
                 <Table
                   className='edit-table'
                   columns={columns}
                   dataSource={templateData}
                   pagination={false}
-                  scroll={{ x: 1000 }}
+                  scroll={{ x: 1200 }}
                   style={{ border: '1px solid #ececec', borderRadius: '2px' }}
                 />
               </Col>
@@ -332,7 +339,6 @@ const PbrUpdate = () => {
                         history.push(`/dashboard/audit_trail_report`);
                       }}
                     >
-
                       View Auditlogs
                     </a></Button>
                   <Button id="save_button" style={{
@@ -349,8 +355,6 @@ const PbrUpdate = () => {
                 <div>
                   <img src={imagepdf} width="100%" height="100%" />
                 </div>
-
-
               </Col>
             </Row>
           </div>
