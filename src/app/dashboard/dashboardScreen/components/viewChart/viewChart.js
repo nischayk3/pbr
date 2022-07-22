@@ -542,7 +542,6 @@ const ViewChart = (props, ref) => {
 	};
 
 	const showPreview = async index => {
-		console.log(tempPanels[index].data_filter.date_range)
 		let arr = [...tempPanels];
 		let id = tempPanels[index].chart_id;
 		let payload = {
