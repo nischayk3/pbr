@@ -546,7 +546,7 @@ const ViewChart = (props, ref) => {
 		let id = tempPanels[index].chart_id;
 		let payload = {
 			site: tempPanels[index].data_filter.site,
-			date_range: tempPanels[index].data_filter.date_range,
+			date_range: tempPanels[index].data_filter.date_range == '/' ? '' : tempPanels[index].data_filter.date_range,
 			unapproved_data: tempPanels[index].data_filter.unapproved_data,
 		};
 		dispatch(showLoader());
@@ -671,17 +671,16 @@ const ViewChart = (props, ref) => {
 					) {
 						payload = {
 							site: el.data_filter.site,
-							date_range: el.data_filter.date_range,
+							date_range: el.data_filter.date_range == '/' ? '' : el.data_filter.date_range,
 							unapproved_data: el.data_filter.unapproved_data,
 						};
 					} else {
 						payload = {
 							site: obj.data_filter.site,
-							date_range: obj.data_filter.date_range,
+							date_range: obj.data_filter.date_range == '/' ? '' : obj.data_filter.date_range,
 							unapproved_data: obj.data_filter.unapproved_data,
 						};
 					}
-
 					let res = await getChartData(el.chart_id, payload);
 					dispatch(hideLoader());
 					let chartLayout = {
