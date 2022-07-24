@@ -20,9 +20,9 @@ const MathEditor = ({
 	let variableData = [];
 
 	const isLoadView = useSelector((state) => state.viewCreationReducer.isLoad);
-	const selectedParameters = useSelector(
-		(state) => state.viewCreationReducer.loadResponse
-	);
+	// const selectedParameters = useSelector(
+	// 	(state) => state.viewCreationReducer.loadResponse
+	// );
 	const [varData, setVarData] = useState(variableData);
 	const [count, setCount] = useState(1);
 	const [cardTitle, setCardTitle] = useState("Create Variable");
@@ -191,32 +191,40 @@ const MathEditor = ({
 	const editVariable = (data) => {
 		setSelectedVar(data);
 	};
+
 	const deleteVariable = (param) => {
 		let lastIndex;
+		/* istanbul ignore next */
 		varData.forEach((item, i) => {
 			if (item.variableName === param) {
 				lastIndex = i - 1;
 			}
 		});
 		variableData.forEach((item, i) => {
+			/* istanbul ignore next */
 			if (item.variableName === param) {
 				lastIndex = i - 1;
 			}
 		});
-
+		/* istanbul ignore next */
 		const varArr = varData.filter((ele) => {
 			return ele.variableName !== param;
 		});
+		/* istanbul ignore next */
 		const varDataArr = variableData.filter((ele) => {
 			return ele.variableName !== param;
 		});
+		/* istanbul ignore next */
 		const parameter = { ...paramData }
+		/* istanbul ignore next */
 		delete paramData[parameter];
-
+		/* istanbul ignore next */
 		setParamData(parameter)
-
+		/* istanbul ignore next */
 		variableData = [...varDataArr];
+		/* istanbul ignore next */
 		const newVar = [...varArr]
+		/* istanbul ignore next */
 		setVarData(newVar);
 	};
 

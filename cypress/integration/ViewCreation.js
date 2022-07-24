@@ -255,8 +255,8 @@ describe("Render View Creation Page", () => {
 
 		cy.log('Click on Parameter')
 		cy.get(':nth-child(3) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click({ multiple: true })
-		cy.wait(500)
-		cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click({ multiple: true })
+		// cy.wait(500)
+		// cy.get(':nth-child(4) > .ant-tree-node-content-wrapper > .ant-tree-title > .treenode-block > :nth-child(2) > .anticon > svg').click({ multiple: true })
 		//cy.wait(500)
 		//cy.get('.viewCreation-materials > .ant-collapse-icon-position-left > .viewCreation-materialsPanel > .ant-collapse-header').click({ multiple: true })
 	})
@@ -356,8 +356,8 @@ describe("Render View Creation Page", () => {
 		cy.log('Verify Select Parameter Card text name')
 		cy.get('#select-parameters').should("have.text", "Select parameters")
 
-		cy.log("Delete Parameter")
-		cy.get('[data-row-key="2_ASSAY 1DECPT"] > [style="position: sticky; left: 31.9922px;"] > .anticon > svg').click()
+		// cy.log("Delete Parameter")
+		// cy.get('[data-row-key="2_ASSAY 1DECPT"] > [style="position: sticky; left: 31.9922px;"] > .anticon > svg').click()
 
 		cy.log('Click On checkbox to select a parameter')
 		cy.get('[data-row-key="2_ARSENIC"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
@@ -407,33 +407,33 @@ describe("Render View Creation Page", () => {
 		cy.log("Create A Variable");
 		cy.get('.variable-name-popup > .ant-btn').click();
 
-		cy.log("Click on card to create a variable")
-		cy.get('.add-var_block > div > p').click()
+		// cy.log("Click on card to create a variable")
+		// cy.get('.add-var_block > div > p').click()
 
-		cy.log('Click On checkbox to select a parameter')
-		cy.get('[data-row-key="1322454-AMMONIUM -A"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
+		// cy.log('Click On checkbox to select a parameter')
+		// cy.get('[data-row-key="1322454-AMMONIUM -A"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
 
-		cy.log('Verify Done Card & Click On')
-		cy.get('.add-var_block > .ant-btn > span').should("have.text", "Done")
-		cy.get('.add-var_block > .ant-btn > span').click()
+		// cy.log('Verify Done Card & Click On')
+		// cy.get('.add-var_block > .ant-btn > span').should("have.text", "Done")
+		// cy.get('.add-var_block > .ant-btn > span').click()
 
-		cy.wait(1000)
-		cy.log("Modal should open")
-		cy.get('.ant-modal-content').should('be.visible')
-		cy.wait(1000)
+		// cy.wait(1000)
+		// cy.log("Modal should open")
+		// cy.get('.ant-modal-content').should('be.visible')
+		// cy.wait(1000)
 
-		cy.log("Add Variable Name");
-		cy.get('.input_field > .ant-input').clear();
-		cy.get('.input_field > .ant-input').type('var2');
+		// cy.log("Add Variable Name");
+		// cy.get('.input_field > .ant-input').clear();
+		// cy.get('.input_field > .ant-input').type('var2');
 
-		cy.log("Create A Variable");
-		cy.get('.variable-name-popup > .ant-btn').click();
+		// cy.log("Create A Variable");
+		// cy.get('.variable-name-popup > .ant-btn').click();
 
-		cy.log("Edit Variable")
-		cy.get(':nth-child(3) > .var-btn > #edit-btn > .anticon > svg').click({ force: true })
+		// cy.log("Edit Variable")
+		// cy.get(':nth-child(3) > .var-btn > #edit-btn > .anticon > svg').click({ force: true })
 
-		cy.log('delete variabale')
-		cy.get(':nth-child(3) > .var-btn > #delete-btn > .anticon > svg').click({ force: true })
+		// cy.log('delete variabale')
+		// cy.get(':nth-child(3) > .var-btn > #delete-btn > .anticon > svg').click({ force: true })
 
 		cy.log('Enter variable name to script');
 		cy.get('.w-tc-editor-text').type('var1');

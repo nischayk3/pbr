@@ -361,14 +361,12 @@ const ParameterTable = ({
 										}
 									} else {
 										if (value) {
-
 											return (
 												<span className="batchChecked">
 													<CheckOutlined />
 												</span>
 											);
 										} else {
-
 											return (
 												<span className="batchClosed">
 													<CloseOutlined />
@@ -376,13 +374,13 @@ const ParameterTable = ({
 											);
 										}
 									}
-
 								}
 							})
 						)
 					}
 				})
 			}
+
 			setMolBatchColumn([...batchColumn])
 			setIsMolBatchUpdate([...molBatchMerge])
 		}
@@ -651,40 +649,39 @@ const ParameterTable = ({
 
 	const onChangeBatchPopup = (e, record, rowIndex, key) => {
 		const parameterArrray = [];
-
 		const batchRecordPopup = [...tableData];
 		//batchRecordPopup[rowIndex][key] = e.target.checked == false ? "" : e.target.checked;
 
 		batchRecordPopup.forEach((ele) => {
-
 			if (ele.parameter_name === key) {
-
 				ele[record.batch] = e.target.checked == false ? "" : e.target.checked;
 			}
 		})
 
 		batchRecordPopup.forEach((ele) => {
-
 			const parameterObj = {};
-			if (ele.parameter_name === key) {
-				parameterObj["source_type"] = ele.sourceType;
-				parameterObj["material_id"] = ele.material_id;
-				parameterObj["process_id"] = ele.process_id;
-				parameterObj["parameter_name"] = ele.parameter_name;
-				parameterObj["batch_exclude"] = [];
-				parameterObj["priority"] = ele.primary;
-				parameterObj["aggregation"] = ele.aggregation;
-				parameterArrray.push(parameterObj)
-			}
+			// if (ele.parameter_name === key) {
+			parameterObj["source_type"] = ele.sourceType;
+			parameterObj["material_id"] = ele.material_id;
+			parameterObj["process_id"] = ele.process_id;
+			parameterObj["parameter_name"] = ele.parameter_name;
+			parameterObj["batch_exclude"] = [];
+			parameterObj["priority"] = ele.primary;
+			parameterObj["aggregation"] = ele.aggregation;
+			parameterArrray.push(parameterObj)
+			// }
 		})
 
-		const batchExcludeJsonPopup = [...parameterArrray];
-		batchExcludeJsonPopup.forEach((element) => {
+
+		// const batchExcludeJsonPopup = [...parameterArrray];
+		parameterArrray.forEach((element) => {
 			if (element.parameter_name === key) {
-				element.batch_exclude.push(record.batch);
+				if (element.batch_exclude.indexOf(record.batch) === -1) {
+					element.batch_exclude.push(record.batch);
+				}
 			}
 		});
-		setParameters([...batchExcludeJsonPopup]);
+		setParameters([...parameterArrray]);
 		setTableData([...batchRecordPopup]);
 	}
 	const isModalBatch = (e) => {
@@ -706,12 +703,14 @@ const ParameterTable = ({
 	};
 
 	const deleteParameter = (id) => {
+		/* istanbul ignore next */
 		const deleteRecord = tableData.filter(item => item.key != id)
+		/* istanbul ignore next */
 		setTableData([...deleteRecord])
+		/* istanbul ignore next */
 		dispatch(sendSelectedParamData([...deleteRecord]));
 	}
 
-	console.log("row disableeeeeeee", rowDisable);
 	return (
 		<>
 			<div className="param-table">
@@ -779,8 +778,6 @@ const ParameterTable = ({
 					<Search
 						placeholder='Search'
 						allowClear
-						//enterButton='Search'
-						// size='large'
 						onSearch={TableSearch}
 					/>
 				)}
@@ -791,7 +788,6 @@ const ParameterTable = ({
 				className="batch-modal"
 			>
 				<div className="batch-table-block">
-
 					<Table
 						columns={molBatchColumn}
 						dataSource={filterMolTable === null ? isMolBatchUpdate : filterMolTable}
@@ -801,7 +797,6 @@ const ParameterTable = ({
 							index % 2 === 0 ? "table-row-light" : "table-row-dark"
 
 						}
-
 					/>
 					<div className="batch-table-footer">
 						{rowDisable ? (<Button
