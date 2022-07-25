@@ -62,7 +62,7 @@ function ReportDesignerForm(props) {
 						/>
 					</div>
 					<div>
-						<Text className='filter-text'>View</Text><br />
+						<Text className='filter-text'>View <b style={{ color: 'red' }}>*</b></Text><br />
 						<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }} >
 							<Select
 								placeholder="Select view"
@@ -90,7 +90,7 @@ function ReportDesignerForm(props) {
 						</div>
 					</div>
 					<div>
-						<Text className='filter-text'>Chart ID</Text><br />
+						<Text className='filter-text'>Chart ID <b style={{ color: 'red' }}>*</b></Text><br />
 						<Select
 							row={1}
 							className="filter-button"

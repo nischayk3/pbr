@@ -350,7 +350,7 @@ function ReportDesignerNew(props) {
 			obj['layout_info'] = { 'layout_info': isLoad ? lay_data : formData, 'chart_details': selectedChartList, 'add_charts_layout': sectionAddedCharts, 'add_keys_layout': sectionKeys, 'charts_layout': sectionCharts };
 			let req = {}
 			req['data'] = obj
-			if (reportName.length > 0) {
+			if (reportName.length > 0 && viewId.length > 0 && selectedChartList.length > 0) {
 				saveReportDesign(req).then((res) => {
 					if (res && res['msg'] && res['msg'] == 'success') {
 						setReportId(res['rep_disp_id'])
@@ -363,12 +363,12 @@ function ReportDesignerNew(props) {
 						})
 					}
 					else
-						dispatch(showNotification('error', 'Not Saved'));
+						dispatch(showNotification('error', 'Error While Saving'));
 				})
 				dispatch(sendReport(req['data']))
 			}
 			else {
-				dispatch(showNotification('error', 'Report Name Is Required'));
+				dispatch(showNotification('error', 'Report name, view or chart id Is required'));
 			}
 		}
 		else {

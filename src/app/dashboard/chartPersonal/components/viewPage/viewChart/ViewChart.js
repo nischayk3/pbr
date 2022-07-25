@@ -372,6 +372,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
           searchValue: ele.view_id,
           chartVersion: ele.view_version,
         });
+        setBatchFilters({...batchFilters, unApproved: ele.data_filter.unapproved_data})
         setCoverageTableData(ele.extras.coverage);
       });
   }, [postChartData]);
@@ -488,6 +489,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
               <Switch
                 type="primary"
                 size="small"
+                checked={batchFilters.unApproved === 1}
                 onChange={(e) =>
                   setBatchFilters({
                     ...batchFilters,

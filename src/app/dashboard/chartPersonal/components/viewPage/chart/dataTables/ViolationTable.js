@@ -18,6 +18,7 @@ const ViolationTable = ({ postChartData }) => {
       title: item.toUpperCase().replace("_", " "),
       dataIndex: item,
       key: `${item}-${i}`,
+      render : (text) => String(text)
     });
   });
 
@@ -38,6 +39,9 @@ const ViolationTable = ({ postChartData }) => {
         }
       });
   }, [postChartData]);
+
+  console.log(columns, 'viol');
+  console.log(violationsTable, 'viol');
 
   return (
     <div>

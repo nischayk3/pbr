@@ -65,7 +65,6 @@ const Login = () => {
 		let header = {
 			password: password,
 			username: email
-
 		};
 		try {
 			dispatch(showLoader());
@@ -98,11 +97,13 @@ const Login = () => {
 		setSuccessfulAccountCreationFlag(false)
 	};
 	const showModal = () => {
+		setUsername("");
 		setVisible(true);
 		setForgotPasswordFlag(false);
 		setSuccessfulAccountCreationFlag(false)
 	};
 	const forgotPassword = () => {
+		setUsername("");
 		setVisible(true);
 		setForgotPasswordFlag(true);
 		setSuccessfulAccountCreationFlag(false);
