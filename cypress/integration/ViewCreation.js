@@ -324,12 +324,13 @@ describe("Render View Creation Page", () => {
 
 	})
 
-	it('Render Script Editor & View Summary', () => {
-		cy.log('verify right container')
-		cy.get('.viewCreation-rightBlocks').should('be.visible')
-	})
+	// it('Render Script Editor & View Summary', () => {
+	// 	cy.log('verify right container')
+	// 	cy.get('.viewCreation-rightBlocks').should('be.visible')
+	// })
 
-	it('Create a variable', () => {
+
+	it('Should verify variable card', () => {
 		cy.wait(500)
 		cy.log('Verify Variable Wrapper')
 		cy.get('.variable-wrapper').should('be.visible')
@@ -337,70 +338,102 @@ describe("Render View Creation Page", () => {
 		cy.wait(500)
 		cy.log('Verify Create Variable Card')
 		cy.get('.add-var_block').should('be.visible')
+	})
 
-		// cy.wait(2000)
-		// cy.log('Verify Create Variable Card text name')
-		// cy.get('#create-variable').should("have.text", "Create Variable")
+	it('Click on create variable card', () => {
+		cy.wait(1000)
+		cy.log('Verify Create Variable Card text name')
+		cy.get('#create-variable').should("have.text", "Create Variable")
 
-		cy.wait(2000)
+		cy.wait(1000)
 		cy.log("Click on card to create a variable")
 		cy.get('#create-variable').click({ force: true })
+	})
 
+	it('Verify Select Parameter ', () => {
 		cy.wait(500)
 		cy.log('Verify Select Parameter Card text name')
 		cy.get('#select-parameters').should("have.text", "Select parameters")
+	})
 
+	it('Select parameter checkbox ', () => {
 		cy.log('Click On checkbox to select a parameter')
 		cy.get('[data-row-key="2_ARSENIC"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
 		cy.get('[data-row-key="1322454-AMMONIUM -A"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
+	})
 
+
+	it('Select parameter primary ', () => {
 		cy.log('Select a primary')
-		cy.get('[data-row-key="2_ARSENIC"] > [style="position: sticky; left: 221.992px;"] > .ant-radio-wrapper > .ant-radio > .ant-radio-input').check();
+		//cy.get('[data-row-key="2_ARSENIC"] > [style="position: sticky; left: 221.992px;"] > .ant-radio-wrapper > .ant-radio > #param-radio').check();
+		cy.get('[type="radio"].ant-radio-input').first().check()
+	})
 
+	it('Select parameter Aggregation ', () => {
 		cy.log('Select a Aggregation')
 		cy.get('[data-row-key="2_ARSENIC"] > .ant-table-cell-fix-left-last > .ant-select > .ant-select-selector').click({ force: true })
 		cy.get('div[title="Mean"]').click({ multiple: true })
+	})
 
+	it('Show popup with volumne data', () => {
 		cy.wait(500)
 		cy.log('Render popup with volume data')
 		cy.get('.param-column > :nth-child(1) > .anticon > svg').click()
+	})
 
+	it('Search Batch from table', () => {
 		cy.wait(500)
 		cy.log("Search Batch ABL2258")
 		cy.get('.ant-input-affix-wrapper > .ant-input').type("ABL2258")
 		cy.get('.ant-input-group-addon > .ant-btn > .anticon').click()
+	})
 
+	it('Change batch value', () => {
 		cy.wait(500)
 		cy.log("Change batch value")
 		cy.get('.batch-table-block > .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-body > table > .ant-table-tbody > .ant-table-row > :nth-child(2)').click()
+	})
 
+	it('Verify Done Card & Click On', () => {
 		cy.get('.batch-table-footer > .ant-btn > span').click()
 		cy.wait(1000)
 		cy.log('Verify Done Card & Click On')
 		cy.get('#done > span').should("have.text", "Done")
 		cy.get('#done > span').click()
+	})
 
+
+	it('Modal should open', () => {
 		cy.wait(1000)
 		cy.log("Modal should open")
 		cy.get('.ant-modal-content').should('be.visible')
 		cy.wait(1000)
+	})
 
+	it('Add Variable Name', () => {
 		cy.log("Add Variable Name");
 		cy.get('.input_field > .ant-input').clear();
 		cy.get('.input_field > .ant-input').type('var1');
+	})
 
+	it('Variable Cancel Button', () => {
 		cy.get('.variable-cancel-button > .ant-btn').click();
-		cy.get('.add-var_block > .ant-btn > span').click();
+		cy.get('.add-var_block > .ant-btn > span').click()
+	})
 
+	it('Add Variable Name again', () => {
 		cy.get('.input_field > .ant-input').clear();
 		cy.get('.input_field > .ant-input').type('var1');
+	})
 
+	it('Create Variable again', () => {
 		cy.log("Create A Variable");
 		cy.get('.variable-name-popup > .ant-btn').click();
+	})
 
+	it('Enter variable name to script', () => {
 		cy.log('Enter variable name to script');
 		cy.get('.w-tc-editor-text').type('var1');
-
 	})
 
 	it('Render Function Evaluation', () => {
