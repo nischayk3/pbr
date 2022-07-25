@@ -3,7 +3,8 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 });
 describe('Audit Trail', () => {
   beforeEach(() => {
-
+    cy.intercept('POST', 'services/v1/audit-data-change', { fixture: 'auditTrail-data.json' })
+		cy.intercept('GET', '/services/v1/audit-filter', { fixture: 'auditTrail-filter.json' })
     localStorage.setItem("test_enabled", true);
     localStorage.setItem("user", "fahad.siddiqui@mareana.com");
     localStorage.setItem(
