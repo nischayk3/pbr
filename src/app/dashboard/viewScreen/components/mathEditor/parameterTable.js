@@ -122,6 +122,7 @@ const ParameterTable = ({
 				return (
 					<Radio
 						// checked={paramType === record.parameter_name}
+						id="param-radio"
 						disabled={isParamSelected}
 						checked={paramType === record.parameter_name}
 						onChange={(e) =>
