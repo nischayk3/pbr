@@ -1,0 +1,118 @@
+{
+    "data": [
+        {
+            "activity": [
+                {
+                    "label": null,
+                    "value": null
+                },
+                {
+                    "label": "U",
+                    "value": "U"
+                },
+                {
+                    "label": "I",
+                    "value": "I"
+                }
+            ],
+            "userid": [
+                {
+                    "label": "fahad.siddiqui@mareana.com",
+                    "value": "fahad.siddiqui@mareana.com"
+                },
+                {
+                    "label": "sudeep.raj@mareana.com",
+                    "value": "sudeep.raj@mareana.com"
+                },
+                {
+                    "label": "yash.madhogaria@mareana.com",
+                    "value": "yash.madhogaria@mareana.com"
+                },
+                {
+                    "label": "krishnapriyam@mareana.com",
+                    "value": "krishnapriyam@mareana.com"
+                },
+                {
+                    "label": "dinesh.kumar@mareana.com",
+                    "value": "dinesh.kumar@mareana.com"
+                },
+                {
+                    "label": "dinesh.jinjala@mareana.com",
+                    "value": "dinesh.jinjala@mareana.com"
+                },
+                {
+                    "label": "batch_user1",
+                    "value": "batch_user1"
+                },
+                {
+                    "label": "vimal",
+                    "value": "vimal"
+                },
+                {
+                    "label": "ramaa.rao@mareana.com",
+                    "value": "ramaa.rao@mareana.com"
+                },
+                {
+                    "label": "mihir.bagga@mareana.com",
+                    "value": "mihir.bagga@mareana.com"
+                },
+                {
+                    "label": "someswara.rao@mareana.com",
+                    "value": "someswara.rao@mareana.com"
+                },
+                {
+                    "label": "sterlapu",
+                    "value": "sterlapu"
+                },
+                {
+                    "label": "",
+                    "value": ""
+                },
+                {
+                    "label": "binkita.tiwari@mareana.com",
+                    "value": "binkita.tiwari@mareana.com"
+                },
+                {
+                    "label": "sharmila.jr@mareana.com",
+                    "value": "sharmila.jr@mareana.com"
+                },
+                {
+                    "label": "atul.mishra@mareana.com",
+                    "value": "atul.mishra@mareana.com"
+                },
+                {
+                    "label": "bhanu.thareja@mareana.com",
+                    "value": "bhanu.thareja@mareana.com"
+                },
+                {
+                    "label": "vimal@mareana.com",
+                    "value": "vimal@mareana.com"
+                },
+                {
+                    "label": "prince.vashishth@mareana.com",
+                    "value": "prince.vashishth@mareana.com"
+                },
+                {
+                    "label": "demo",
+                    "value": "demo"
+                },
+                {
+                    "label": "vinay.reddy@mareana.com",
+                    "value": "vinay.reddy@mareana.com"
+                },
+                {
+                    "label": "batch_user",
+                    "value": "batch_user"
+                },
+                {
+                    "label": "muskan.gupta@mareana.com",
+                    "value": "muskan.gupta@mareana.com"
+                },
+                {
+                    "label": "srikanth.bhoomeni@mareana.com",
+                    "value": "srikanth.bhoomeni@mareana.com"
+                }
+            ]
+        }
+    ],
+    "statuscode": 200
