@@ -17,28 +17,28 @@ const QualityTable = () => {
             title: 'Display ID',
             key: 'view_disp_id',
             dataIndex: 'view_disp_id',
-            sorter:(a, b)=>a.view_disp_id.localeCompare(b.view_disp_id),
+            sorter: (a, b) => a.view_disp_id.localeCompare(b.view_disp_id),
         },
         {
             title: 'View Name',
             key: 'view_name',
             dataIndex: 'view_name',
-            sorter:(a, b)=>a.view_name.localeCompare(b.view_name)
-           
+            sorter: (a, b) => a.view_name.localeCompare(b.view_name)
+
         },
         {
             title: 'Version',
             key: 'view_version',
             dataIndex: 'view_version',
-            sorter:(a, b)=>a.view_version-b.view_version
-            
+            sorter: (a, b) => a.view_version - b.view_version
+
         },
         {
             title: 'Product Name',
             key: 'product_num',
             dataIndex: 'product_num',
-            sorter:(a, b)=>a.product_descr.localeCompare(b.product_descr)
-           
+            sorter: (a, b) => a.product_num.localeCompare(b.product_num)
+
         }
     ]
 
@@ -73,7 +73,7 @@ const QualityTable = () => {
                 columns={columns}
                 dataSource={dataSource}
                 pagination={false}
-                scroll={{x:450}}
+                scroll={{ x: 450 }}
                 style={{ border: '1px solid #ececec', borderRadius: '2px' }}
             />
         </div>

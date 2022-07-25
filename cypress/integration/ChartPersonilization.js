@@ -634,7 +634,7 @@ describe('Renders chart personalization', () => {
     cy.wait(500)
     cy.get('.ant-btn').eq(4).click()
 
-    cy.get('.sign-cols > :nth-child(1) > .ant-input').type('bhanu.thareja@mareana.com')
+    //cy.get('.sign-cols > :nth-child(1) > .ant-input').type('bhanu.thareja@mareana.com')
     cy.get('.sign-cols > :nth-child(2) > .ant-input').type('1@Gam95367')
 
     cy.intercept('GET', '/auth/login-pass', { fixture: 'authenticateWithAD.json' }).as('authenticateWithAD')

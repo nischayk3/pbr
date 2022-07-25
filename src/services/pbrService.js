@@ -1,10 +1,18 @@
 import { MDH_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
 import Service from "./AjaxService";
 
+let login_response = JSON.parse(localStorage.getItem('login_details'));
+
+const request_headers = {
+	'x-access-token': login_response.token ? login_response.token : '',
+	'resource-name': 'PBR'
+};
+
 export const getBoundingBoxData = (_queryParam) => {
 	return Service.post(
 		MDH_APP_PYTHON_SERVICE + "/pbr/udh/ocr-json-extraction",
-		_queryParam
+		_queryParam,
+		request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -18,7 +26,8 @@ export const getBoundingBoxData = (_queryParam) => {
 export const savePbrTemplate = (request) => {
 	return Service.put(
 		MDH_APP_PYTHON_SERVICE + "/pbr/udh/save_records",
-		request
+		request,
+		request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -32,7 +41,8 @@ export const savePbrTemplate = (request) => {
 export const getPbrReviewerData = (_queryParam) => {
 	return Service.post(
 		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr',
-		_queryParam
+		_queryParam,
+		request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -45,7 +55,8 @@ export const getPbrReviewerData = (_queryParam) => {
 export const geTemplateDropdown = (_queryParam) => {
 	return Service.get(
 		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_tran_pbr_template_id',
-		_queryParam
+		_queryParam,
+		request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -58,7 +69,8 @@ export const geTemplateDropdown = (_queryParam) => {
 export const getPieChartData = (_queryParam) => {
 	return Service.post(
 		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr_count',
-		_queryParam
+		_queryParam,
+		request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -71,7 +83,8 @@ export const getPieChartData = (_queryParam) => {
 export const getImage = (_queryParam) => {
 	return Service.get(
 		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_file_page_image',
-		_queryParam
+		_queryParam,
+		request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -84,7 +97,8 @@ export const getImage = (_queryParam) => {
 export const updateApprove = (_queryParam) => {
 	return Service.put(
 		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr',
-		_queryParam
+		_queryParam,
+		request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -98,7 +112,8 @@ export const updateApprove = (_queryParam) => {
 export const processBatchRecord = (_queryParam) => {
 	return Service.get(
 		MDH_APP_PYTHON_SERVICE + "/pbr/udh/extract_from_template?save_db=true",
-		_queryParam
+		_queryParam,
+		request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -112,7 +127,8 @@ export const processBatchRecord = (_queryParam) => {
 export const getPbrTemplateData = (_queryParam) => {
 	return Service.get(
 		MDH_APP_PYTHON_SERVICE + "/pbr/udh/pbr_template",
-		_queryParam
+		_queryParam,
+		request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -126,7 +142,8 @@ export const getPbrTemplateData = (_queryParam) => {
 export const getDataView = (_queryParam) => {
 	return Service.get(
 		MDH_APP_PYTHON_SERVICE + "/pbr/udh/get_data_view",
-		_queryParam
+		_queryParam,
+		request_headers
 	).then(
 		(response) => {
 			return response.data;
@@ -140,7 +157,8 @@ export const getDataView = (_queryParam) => {
 export const findParameter = (_queryParam) => {
 	return Service.post(
 		MDH_APP_PYTHON_SERVICE + "/pbr/udh/extract_from_template_find",
-		_queryParam
+		_queryParam,
+		request_headers
 	).then(
 		(response) => {
 			return response.data;
