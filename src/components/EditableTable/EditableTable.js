@@ -246,7 +246,8 @@ class EditableTable extends Component {
 
     const tableData = JSON.parse(JSON.stringify(this.state.dataSource));
     tableData.forEach((obj) => {
-      obj.updated = true
+      if ('updated' in obj)
+        obj.updated = true
       delete obj.key;
     });
     this.props.showLoader();
