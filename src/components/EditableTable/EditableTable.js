@@ -243,22 +243,29 @@ class EditableTable extends Component {
   }
 
   onSaveTable = async () => {
+
     const tableData = JSON.parse(JSON.stringify(this.state.dataSource));
     tableData.forEach((obj) => {
+      obj.updated = true
       delete obj.key;
     });
     this.props.showLoader();
     try {
       const resp = await this.props.saveTableData(tableData);
-      if (resp.statuscode === 200) {
+      if (resp.status === 200) {
         this.setState({ tableDataChanged: false });
+        this.props.showNotification("success", 'Saved');
+
       }
-      if (resp.statuscode === 400) {
+      if (resp.status === 400) {
         this.props.showNotification("error", resp?.message);
       }
     } catch (err) {
       if (err.message.includes("400")) {
         this.props.showNotification("error", "User already registered");
+      }
+      if (err.message.includes("403")) {
+        this.props.showNotification("error", "ACCESS DENIED ! User is not having valid email_address");
       }
       if (err.message.includes("500")) {
         this.props.showNotification("error", "Error while saving");
@@ -335,7 +342,7 @@ class EditableTable extends Component {
           bordered
           dataSource={dataSource}
           columns={columns}
-          pagination={{ current: this.state.currentPage, onChange:(page) =>this.onChangeCurrentPage(page) }}
+          pagination={{ current: this.state.currentPage, onChange: (page) => this.onChangeCurrentPage(page) }}
           scroll={this.props.screens === "Roles" ? { y: 400 } : { y: 300 }}
         />
 

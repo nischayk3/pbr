@@ -790,9 +790,9 @@ const ViewChart = (props, ref) => {
 				}>
 				<div className='global-filters'>
 					<div className='dashboard-filters'>
-						<div style={{ fontSize: '20px', paddingTop: '4px' }}>
+						{/* <div style={{ fontSize: '20px', paddingTop: '4px' }}>
 							<SyncOutlined />
-						</div>
+						</div> */}
 						<div>
 							<Select
 								style={{ width: 120 }}
