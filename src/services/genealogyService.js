@@ -16,7 +16,9 @@ const request_headers = {
 
 const request_header_file = {
 	'content-type': 'application/json',
-	'Content-Type': 'multipart/form-data'
+	'x-access-token': login_response.token ? login_response.token : '',
+	'Content-Type': 'multipart/form-data',
+	'resource-name': 'GENEALOGY'
 };
 //geanealogy plant/product/batch
 
