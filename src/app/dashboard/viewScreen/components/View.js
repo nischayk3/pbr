@@ -6,7 +6,7 @@
  * @Last Changed By - Dinesh
  */
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useParams, useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";

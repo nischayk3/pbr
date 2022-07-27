@@ -34,7 +34,7 @@ const MathEditor = ({
 	const [paramData, setParamData] = useState({});
 	const [selectedVar, setSelectedVar] = useState("");
 	const [variableName, setVariableName] = useState("");
-	const [showVariable, setShowVariable] = useState(false);
+	//const [showVariable, setShowVariable] = useState(false);
 
 	const { Panel } = Collapse;
 
@@ -135,12 +135,12 @@ const MathEditor = ({
 				}
 				variableData = [...var_data];
 
-				if (var_data.length > 0) {
-					setShowVariable(false);
-				}
+				// if (var_data.length > 0) {
+				// 	setShowVariable(false);
+				// }
 				const newVar_data = [...var_data]
 				setTimeout(() => {
-					setShowVariable(true);
+					//setShowVariable(true);
 					setVarData(newVar_data);
 				}, 200)
 			}
