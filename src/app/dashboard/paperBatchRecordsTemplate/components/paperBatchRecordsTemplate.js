@@ -568,6 +568,7 @@ function PaperBatchRecordsTemplate() {
             let _reqBatch = {
                 filename: `${params?.file?.split('.')[0]}_page-${pageNumber}.jpeg.json`,
                 bbox_type: mode,
+                page:1,
                 // action_type: params?.temp_disp_id ? "edit" : "create",
                 action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "saved" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? "edit" : "create",
                 temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : "",
@@ -788,15 +789,22 @@ function PaperBatchRecordsTemplate() {
     }, [areasMap, imageWidth, imageHeight])
 
     const getImage = async (val) => {
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
         var requestOptions = {
             method: "GET",
             response: "image/jpeg",
             psId: "",
             redirect: "follow",
+            headers:new Headers({
+                "x-access-token": login_response?.token ? login_response?.token : '',
+                "resource-name": 'PBR',
+            }),
+        
         };
         let response = await fetch(
             MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${params?.file.split(".")[0]}.pdf&pageId=${val ? val : pageNumber}`,
             requestOptions
+           
         )
             .then((response) => response)
             .then((result) => result)
