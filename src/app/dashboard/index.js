@@ -113,6 +113,10 @@ const Dashboard = () => {
       view = "PBR";
     } else if (location.pathname.includes("user-roles-and-access")) {
       view = "CONFIGURATION";
+    } else if (location.pathname.includes("dashboard/dashboard")) {
+      view = "DASHBOARD";
+    } else if (location.pathname.includes("report_generator")) {
+      view = "REPORT_GENERATOR";
     }
     if (view && view.length > 1) {
       requiredAuth(view);
@@ -197,16 +201,17 @@ const Dashboard = () => {
                   key="audit_trail_report"
                   path={`${match.url}/audit_trail_report`}
                   authorised={authorised}
-                >
-                  <AuditTrial />
-                </PrivateRoute>
+                  component={AuditTrial}
+
+                />
+
                 <Route key="audit_logs" path={`${match.url}/audit_logs`}>
                   <Audit />
                 </Route>
                 <Route key="pbr_update" path={`${match.url}/pbr_update`}>
                   <PbrUpdate />
                 </Route>
-                <Route path={`${match.url}/report_generator`} render={({ match: { url } }) => (<> <Route path={`${url}/`} component={ReportDesigner} exact /> <Route path={`${url}/:id`} component={ReportGenerator} /> </>)} />
+                <Route path={`${match.url}/report_generator`} render={({ match: { url } }) => (<> <PrivateRoute path={`${url}/`} component={ReportDesigner} exact /> <PrivateRoute path={`${url}/:id`} component={ReportGenerator} /> </>)} />
                 <PrivateRoute
                   key="genealogy"
                   path={`${match.url}/genealogy`}
@@ -222,9 +227,8 @@ const Dashboard = () => {
                 <Route key="workspace" path={`${match.url}/workspace`}>
                   <Workspace />
                 </Route>
-                <Route key="dashboard" path={`${match.url}/dashboard`}>
-                  <DashboardScreen />
-                </Route>
+                <PrivateRoute key="dashboard" path={`${match.url}/dashboard`} authorised={authorised} component={DashboardScreen} />
+
                 {/* <Route
 									key='paper_batch_records'
 									path={`${match.url}/paper_batch_records`}>
@@ -288,12 +292,14 @@ const Dashboard = () => {
                   path={`${match.url}/report_designer`}
                   render={({ match: { url } }) => (
                     <>
-                      <Route
+                      <PrivateRoute
                         path={`${url}/`}
                         component={ReportDesigner}
+                        authorised={authorised}
                         exact
                       />
-                      <Route path={`${url}/:id`} component={DesignCharts} />
+                      <PrivateRoute path={`${url}/:id`} component={DesignCharts} authorised={authorised}
+                      />
                     </>
                   )}
                 />
@@ -312,12 +318,10 @@ const Dashboard = () => {
                         path={`${url}/`}
                         exact
                         authorised={authorised}
-                      >
-                        <Hierarchy />
-                      </PrivateRoute>
-                      <PrivateRoute path={`${url}/:id`} authorised={authorised}>
-                        <HierarchyMain />
-                      </PrivateRoute>
+                        component={Hierarchy}
+                      />
+                      <PrivateRoute path={`${url}/:id`} authorised={authorised} component={HierarchyMain} />
+
                     </>
                   )}
                 />
