@@ -203,14 +203,28 @@ const Dashboard = () => {
                   component={AuditTrial}
 
                 />
-
                 <Route key="audit_logs" path={`${match.url}/audit_logs`}>
                   <Audit />
                 </Route>
                 <Route key="pbr_update" path={`${match.url}/pbr_update`}>
                   <PbrUpdate />
                 </Route>
-                <Route path={`${match.url}/report_generator`} render={({ match: { url } }) => (<> <PrivateRoute path={`${url}/`} component={ReportDesigner} exact /> <PrivateRoute path={`${url}/:id`} component={ReportGenerator} /> </>)} />
+                <Route path={`${match.url}/report_generator`}
+                  render={({ match: { url } }) => (
+                    <>
+                      <PrivateRoute
+                        path={`${url}/`}
+                        component={ReportDesigner}
+                        authorised={authorised}
+                        exact
+                      />
+                      <PrivateRoute
+                        path={`${url}/:id`}
+                        component={ReportGenerator}
+                        authorised={authorised}
+                      />
+                    </>
+                  )} />
                 <PrivateRoute
                   key="genealogy"
                   path={`${match.url}/genealogy`}
