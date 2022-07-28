@@ -1,22 +1,22 @@
-import React, { useEffect, useState, lazy } from "react";
+import { PlusOutlined } from "@ant-design/icons";
+import { Avatar, Input, Table } from "antd";
+import React, { lazy, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
-import { Avatar, Input, Table } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import illustrations from "../../../../../assets/images/ViewCreation_bannerillustration.png";
-import "./styles.scss";
-import { getViews } from "../../../../../services/viewCreationPublishing";
 import {
 	hideLoader,
 	showLoader,
-	showNotification,
+	showNotification
 } from "../../../../../duck/actions/commonActions";
 import {
 	isLoadView,
 	isNewView,
 	resetView,
-	sendSelectedParamData,
+	sendSelectedParamData
 } from "../../../../../duck/actions/viewAction";
+import { getViews } from "../../../../../services/viewCreationPublishing";
+import "./styles.scss";
 
 const ScreenHeader = lazy(() =>
 	import("../../../../../components/ScreenHeader/screenHeader")
@@ -136,8 +136,8 @@ export default function Landing() {
 			dispatch(showLoader());
 			const getViewRes = await getViews(req);
 			const viewRes = getViewRes["Data"];
-			const viewResRev = viewRes.reverse();
-			const lastEight = viewResRev.slice(Math.max(viewResRev.length - 8, 1));
+			const viewResRev = viewRes != undefined ? viewRes.reverse() : [];
+			const lastEight = viewResRev && viewResRev.slice(Math.max(viewResRev.length - 8, 1));
 			setViewList(viewResRev);
 			setLastEightView(lastEight && lastEight.reverse());
 			dispatch(hideLoader());
