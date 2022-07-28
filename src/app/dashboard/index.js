@@ -151,12 +151,11 @@ const Dashboard = () => {
                         path={`${url}/`}
                         exact
                         authorised={authorised}
-                      >
-                        <ViewLanding />
-                      </PrivateRoute>
-                      <PrivateRoute path={`${url}/:id`} authorised={authorised}>
-                        <View />
-                      </PrivateRoute>
+                        component={ViewLanding}
+                      />
+
+                      <PrivateRoute path={`${url}/:id`} authorised={authorised} component={View} />
+
                     </>
                   )}
                 />
