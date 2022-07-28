@@ -1,14 +1,14 @@
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { Button, Col, Collapse, Popover, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import InputField from "../../../../../components/InputField/InputField";
+import Modal from "../../../../../components/Modal/Modal";
 import CreateVariable from "./createVariable";
-import { Button, Col, Collapse, Row, Popover } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
-import "./style.scss";
 import MathFunction from "./mathFunction";
 import { MemoizedParameterTable } from "./parameterTable";
+import "./style.scss";
 import VariableCard from "./variableCard";
-import Modal from "../../../../../components/Modal/Modal";
-import InputField from "../../../../../components/InputField/InputField";
 
 const MathEditor = ({
 	viewJson,
@@ -40,72 +40,189 @@ const MathEditor = ({
 
 	const content = (
 		<div className="script-info">
-			<p className="script-help">
-				All variables are dataframes with batch_num and parameter_value.
-				<br />
-				batch_num as index and parameter_value is the value for the variable for
-				given batch.
-				<br />
-				<br />
-				e.g:1 : isnull and fillna will fill null data with given values.
-				<br />
-				if V1.isnull().sum().sum() `{'>'}` 0:
+			<h5>Introduction:</h5>
+			<p>Every variable is a dataframe. Batch Num as index and Parameter Value as the column.</p>
+			<h5>V1:</h5>
+
+			<table className="table-help">
+				<tr>
+					<th>batch_num</th>
+					<th>parameter_value</th>
+				</tr>
+				<tr>
+					<td>ABL2258</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>ABL2259</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>ABL2261</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>ABL2264</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>ABR9486</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>ABR9487</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>ABR9491</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>ABR9492</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>ABT9563</td>
+					<td>5</td>
+				</tr>
+				<tr>
+					<td>ABT9564</td>
+					<td>5</td>
+				</tr>
+			</table>
+
+			<p>We can apply all the function that is related to the dataframe.</p>
+			<h5>Example: 1</h5>
+			<pre>
+				if V1.isnull().sum().sum() > 0:
 				<br />
 				V1.fillna(0)
 				<br />
-				if V2.isnull().sum().sum() `{'>'}` 0:
+				if V2.isnull().sum().sum() > 0:
 				<br />
 				V2.fillna(0)
 				<br />
 				result = V1 + V2
+			</pre>
+
+			<h5>Example: 2</h5>
+			<pre>
+				V1 + V2
+			</pre>
+
+			<h5>Notes</h5>
+			<p>In one-line math function, we don’t need to assign output to result as shown in Example:2. But if we have multiline then final output we have to assign to the result as shown in Example: 1.  </p>
+
+			<h5>Addition:</h5>
+			<p>To add two parameters, we have to do: </p>
+			<pre>V1 + V2</pre>
+
+			<h5>Substraction:</h5>
+			<p>To substract two parameters, we have to do:  </p>
+			<pre>V1 - V2</pre>
+
+			<h5>Division:</h5>
+			<pre>if V2.isnull().sum().sum() > 0:
 				<br />
+				V2.fillna(1)
 				<br />
-				e.g:2 To replace some values of V1 with the values of V2.
+				result = V1 / V2
 				<br />
-				a = V1
+			</pre>
+
+			<h5>Multiplication:</h5>
+			<pre>if V2.isnull().sum().sum() > 0:
+				<br />
+				V2.fillna(1)
+				<br />
+				result = V1 * V2
+				<br />
+			</pre>
+
+			<h5>Power:</h5>
+			<h5>Example 1:</h5>
+			<pre>if var_assay.isnull().sum().sum() > 0:
+				<br />
+				var_assay.fillna(0)
+				<br />
+if var_bact_endotoxin.isnull().sum().sum() > 0:
+				<br />
+				var_bact_endotoxin.fillna(1)
+				<br />
+				result = pow((var_assay / var_bact_endotoxin),2)
+				<br />
+			</pre>
+			<h5>Example 2:</h5>
+			<pre>Pow(V1, 1.2)</pre>
+
+			<h5>Logarithmic: </h5>
+			<p>We can use log from the numpy. Use numpy as np.</p>
+			<pre>np.log(V1) + np.log(V2)</pre>
+
+			<h5>Replace Values with Condition: </h5>
+			<p>e.g Wherever V1>0.0235, we wants values from the V2.</p>
+			<pre>a = V1
 				<br />
 				b = V2
 				<br />
-				a[V1 `{'>'}` 0.0235] = b[V1 `{'>'}` 0.0235] <br />
-				result = a<br />
+				a[V1 > 0.0235] = b[V1 > 0.0235]
 				<br />
-				e.g:3: To find any power of values
+				result = a
+			</pre>
+
+			<h5>Scipy Functions:</h5>
+			<h5>Example with boxcox:</h5>
+			<pre>from scipy import stats
 				<br />
-				pow(V2, 1.2)
+				output = stats.boxcox(V1['parameter_value'].to_list())
 				<br />
+				result = pd.DataFrame()
 				<br />
-				e.g: 4: To find log
+				result.index = V1.index.to_list()
 				<br />
-				np.log(V2)
+				result['parameter_value'] = output[0]
 				<br />
+			</pre>
+
+			<h5>Example with yeojohnson:</h5>
+			<pre>from scipy import stats
 				<br />
-				e.g: 5<br />
-				np.round_(V2)
+				output = stats.yeojohnson(V1['parameter_value'].to_list())
 				<br />
+				result = pd.DataFrame()
 				<br />
-				e.g: add
+				result.index = V1.index.to_list()
 				<br />
-				V1 + V2 <br />
+				result['parameter_value'] = output[0]
 				<br />
-				e.g: sub
-				<br />
-				V1 - V2
-				<br />
-				<br />
-				e.g: multiply
-				<br />
-				V1 * V2
-				<br />
-				<br />
-				e.g: divide
-				<br />
-				V1 / V2
-				<br />
-				<br />
-				e.g polynomial
-				<br />
-				V1**2 + V1*2 + 10
-			</p>
+			</pre>
+
+			<h5>Datetime functions:</h5>
+			<h5>Day:</h5>
+			<pre>day(end, start)</pre>
+
+			<h5>Hours:</h5>
+			<h5>Example 1:</h5>
+			<pre>hours(end, start)</pre>
+			<h5>Example 2:</h5>
+			<pre>(end.parameter_value-start.parameter_value).dt.total_seconds()/3600</pre>
+
+			<h5>Minutes:</h5>
+			<h5>Example 1:</h5>
+			<pre>minutes(end, start)
+			</pre>
+			<h5>Example 2:</h5>
+			<pre>(end.parameter_value-start.parameter_value).dt.total_seconds()/60
+			</pre>
+
+			<h5>Seconds:</h5>
+			<h5>Example 1:</h5>
+			<pre>seconds(end, start)
+			</pre>
+			<h5>Example 2:</h5>
+			<pre>(end.parameter_value-start.parameter_value).dt.total_seconds()
+			</pre>
+
 		</div>
 	);
 	const isNew = useSelector((state) => state.viewCreationReducer.isNew);
