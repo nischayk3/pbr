@@ -154,9 +154,8 @@ const Dashboard = () => {
                         component={ViewLanding}
                       />
 
-                      <PrivateRoute path={`${url}/:id`} authorised={authorised}>
-                        <View />
-                      </PrivateRoute>
+                      <PrivateRoute path={`${url}/:id`} authorised={authorised} component={View} />
+
                     </>
                   )}
                 />
