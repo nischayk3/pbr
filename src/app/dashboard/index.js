@@ -69,7 +69,6 @@ const Dashboard = () => {
   }, [history]);
 
   const requiredAuth = async (resource) => {
-    console.log(resource)
     let authResponse = {};
     try {
       // dispatch(showLoader());
