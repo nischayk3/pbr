@@ -2,28 +2,30 @@ import { Layout } from "antd";
 import React, { lazy, useEffect, useState } from "react";
 import {
 	Route,
-	Switch, useLocation, useRouteMatch
+	Switch,
+	useHistory, useLocation, useRouteMatch
 } from "react-router-dom";
 import HeaderBar from "../../components/Header";
 import Help from "../../components/Help";
 import Sidebar from "../../components/Sidebar";
 import SuspenseWrapper from "../../components/SuspenseWrapper";
-import { getAuthorisedPermission } from "../../services/authProvider";
 import LoginRedirect from "../user/login/redirect";
 import RedirectSign from "../user/login/redirectSign";
+import ViewPage from "./chartPersonal/components/viewPage/ViewPage";
+import RolesAndAccess from "./UserRolesAndAccess/RolesAndAccess/RolesAndAccess";
+import ScreenControls from "./UserRolesAndAccess/ScreenControls/ScreenControls";
+import UserConfiguration from "./UserRolesAndAccess/UserConfiguration/UserConfiguration";
+import UserRolesAndAccess from "./UserRolesAndAccess/UserRolesAndAccess";
+// import PaperBatchRecords from './paperBatchRecords';
+import { getAuthorisedPermission } from "../../services/authProvider";
 import Analysis from "./Analysis/Analysis";
 import AnalysisModel from "./Analysis/AnalysisModel/AnalysisModel";
-import ViewPage from "./chartPersonal/components/viewPage/ViewPage";
 import "./dashboard.scss";
 import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
 import PbrReviewer from "./pbrReviewer";
 import PrivateRoute from "./ProtectedRoute";
 import PythonNotebook from "./pythonNotebook/pythonNotebook";
 import UnAuthorisedScreen from "./unAuthorised";
-import RolesAndAccess from "./UserRolesAndAccess/RolesAndAccess/RolesAndAccess";
-import ScreenControls from "./UserRolesAndAccess/ScreenControls/ScreenControls";
-import UserConfiguration from "./UserRolesAndAccess/UserConfiguration/UserConfiguration";
-import UserRolesAndAccess from "./UserRolesAndAccess/UserRolesAndAccess";
 // DASHBOARD ROUTE COMPONENTS
 
 const ManualDataUpload = lazy(() => import("./manualDataUpload"));
@@ -52,21 +54,32 @@ const { Content } = Layout;
 
 const Dashboard = () => {
 	const match = useRouteMatch();
+	const history = useHistory();
 	const location = useLocation();
 	const screen = location.pathname.split("/");
 	const [authorised, setAuthorised] = useState(true);
 
+	useEffect(() => {
+		// if (!Auth.isAuthenticated()) {
+		//   history.push('/user/login');
+		// }
+	}, [history]);
+
 	const requiredAuth = async (resource) => {
 		let authResponse = {};
 		try {
+			// dispatch(showLoader());
 			authResponse = await getAuthorisedPermission("", resource);
 			if (authResponse.status === 200) {
 				setAuthorised(true);
+				// dispatch(hideLoader());
 			} else {
 				setAuthorised(false);
+				// dispatch(hideLoader());
 			}
 		} catch (err) {
 			setAuthorised(false);
+			// dispatch(hideLoader());
 		}
 	};
 
@@ -135,12 +148,11 @@ const Dashboard = () => {
 												path={`${url}/`}
 												exact
 												authorised={authorised}
-											>
-												<ViewLanding />
-											</PrivateRoute>
-											<PrivateRoute path={`${url}/:id`} authorised={authorised}>
-												<View />
-											</PrivateRoute>
+												component={ViewLanding}
+											/>
+
+											<PrivateRoute path={`${url}/:id`} authorised={authorised} component={View} />
+
 										</>
 									)}
 								/>
@@ -163,7 +175,6 @@ const Dashboard = () => {
 										</>
 									)}
 								/>
-
 								<PrivateRoute
 									key="audit_trail_report"
 									path={`${match.url}/audit_trail_report`}
@@ -171,10 +182,26 @@ const Dashboard = () => {
 									component={AuditTrial}
 
 								/>
+
 								<Route key="pbr_update" path={`${match.url}/pbr_update`}>
 									<PbrUpdate />
 								</Route>
-								<Route path={`${match.url}/report_generator`} render={({ match: { url } }) => (<> <PrivateRoute path={`${url}/`} component={ReportDesigner} exact /> <PrivateRoute path={`${url}/:id`} component={ReportGenerator} /> </>)} />
+								<Route path={`${match.url}/report_generator`}
+									render={({ match: { url } }) => (
+										<>
+											<PrivateRoute
+												path={`${url}/`}
+												component={ReportDesigner}
+												authorised={authorised}
+												exact
+											/>
+											<PrivateRoute
+												path={`${url}/:id`}
+												component={ReportGenerator}
+												authorised={authorised}
+											/>
+										</>
+									)} />
 								<PrivateRoute
 									key="genealogy"
 									path={`${match.url}/genealogy`}
