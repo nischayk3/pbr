@@ -69,6 +69,7 @@ const Dashboard = () => {
   }, [history]);
 
   const requiredAuth = async (resource) => {
+    console.log(resource)
     let authResponse = {};
     try {
       // dispatch(showLoader());
@@ -151,9 +152,9 @@ const Dashboard = () => {
                         path={`${url}/`}
                         exact
                         authorised={authorised}
-                      >
-                        <ViewLanding />
-                      </PrivateRoute>
+                        component={ViewLanding}
+                      />
+
                       <PrivateRoute path={`${url}/:id`} authorised={authorised}>
                         <View />
                       </PrivateRoute>
