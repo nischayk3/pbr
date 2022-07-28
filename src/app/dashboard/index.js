@@ -69,12 +69,10 @@ const Dashboard = () => {
   }, [history]);
 
   const requiredAuth = async (resource) => {
-    console.log(resource)
     let authResponse = {};
     try {
       // dispatch(showLoader());
       authResponse = await getAuthorisedPermission("", resource);
-      console.log(authResponse.status)
       if (authResponse.status === 200) {
         setAuthorised(true);
         // dispatch(hideLoader());
