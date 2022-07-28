@@ -200,11 +200,11 @@ function PbrReviewer() {
         High = item.count
       } else if (item.confidence == "Low") {
         Low = item.count
-      } else if(item.confidence == "Medium"){
+      } else if (item.confidence == "Medium") {
         Medium = item.count
       }
     })
-    setPieChartData1([High,Medium,Low]);
+    setPieChartData1([High, Medium, Low]);
   };
 
   let appchart1 = [{
@@ -341,7 +341,7 @@ function PbrReviewer() {
       dataIndex: 'snippet_image',
       render: (text, record, index) => {
         return (
-          <img src={`data:image/png;base64,${text}`} width="80%" height="80%" />
+          <img src={`data:image/png;base64,${text}`} width="130px" height="40px" />
         )
       }
     },
@@ -662,7 +662,7 @@ function PbrReviewer() {
             </Row>
           </div>
           <div className='review-wrapper'>
-            <div className='content_section' >
+            <div className='content_section' style={{ height: "100vh" }} >
               <div className="scrollable-container" >
                 <div>
                   <Row justify="space-around" align="middle">
@@ -722,7 +722,7 @@ function PbrReviewer() {
                     pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '50', '100', '200'] }}
                     scroll={{
                       x: 2300,
-                      y: 220,
+                      y: 'calc(100vh - 443px)',
                     }}
                     style={{ border: '1px solid #ececec', borderRadius: '2px' }}
                   />
