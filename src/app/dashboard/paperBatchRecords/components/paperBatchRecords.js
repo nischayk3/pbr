@@ -412,6 +412,8 @@ function PaperBatchRecords() {
 											<dd>Awaiting Approval</dd>
 											<dt className="green"></dt>
 											<dd>Approved</dd>
+											<dt className="reject"></dt>
+											<dd>Reject</dd>
 										</dl>
 									</Col>
 								</Row>

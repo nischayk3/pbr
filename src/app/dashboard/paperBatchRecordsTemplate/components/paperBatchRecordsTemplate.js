@@ -22,7 +22,8 @@ import {
     Table,
     Dropdown,
     Menu,
-    InputNumber
+    InputNumber,
+    Switch
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
@@ -51,13 +52,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import panelLeftImg from '../../../../assets/images/panel-leftIcon.svg';
 import panelRightImg from '../../../../assets/images/panel-rightIcon.svg';
-
 import InputField from '../../../../components/InputField/InputField';
 import QueryString from 'query-string';
 import Sider from 'antd/lib/layout/Sider';
 import { ImCrop } from 'react-icons/im';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { loadTemplateInfo, loadMatBatchInfo } from '../../../../duck/actions/pbrAction';
+import TableIdentifier from './tableIdentifier/tableIdentifier'
 import './styles.scss';
 import {
     getBoundingBoxData,
@@ -165,6 +166,8 @@ function PaperBatchRecordsTemplate() {
     const [matBatch, setMatBatch] = useState(mat_batch);
     const [additionalData, setAdditionalData] = useState({});
     const [templateFormData, setTemplateFormData] = useState({})
+    const [showRowColIdentifier, setShowRowColIdentifier] = useState(false)
+    const [clickedTable, setClickedTable] = useState({})
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
         setRightPanelCollapsed(!rightPanelCollapsed);
@@ -565,10 +568,11 @@ function PaperBatchRecordsTemplate() {
     /* istanbul ignore next */
     const getBoundingBoxDataInfo = async (width, height, mode, pageNumber = 0) => {
         try {
+            dispatch(showLoader());
             let _reqBatch = {
                 filename: `${params?.file?.split('.')[0]}_page-${pageNumber}.jpeg.json`,
                 bbox_type: mode,
-                page:1,
+                page: 1,
                 // action_type: params?.temp_disp_id ? "edit" : "create",
                 action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "saved" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? "edit" : "create",
                 temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : "",
@@ -613,9 +617,10 @@ function PaperBatchRecordsTemplate() {
                     areasArr.push(obj1);
                 });
                 setAreasMap({ ...areasMap, areas: areasArr });
+                dispatch(hideLoader());
             } else if (batchRes.status === 404) {
                 setAreasMap();
-
+                dispatch(hideLoader());
             }
         } catch (error) { /* istanbul ignore next */
             dispatch(hideLoader());
@@ -644,6 +649,7 @@ function PaperBatchRecordsTemplate() {
         // let loadData =  getIdTemplateData()
         const params = QueryString.parse(location?.search)
         const getIdTemplateData = async () => {
+            dispatch(showLoader());
             let req = {
                 template_displ_id: params?.temp_disp_id,
                 version: params?.version
@@ -789,22 +795,21 @@ function PaperBatchRecordsTemplate() {
     }, [areasMap, imageWidth, imageHeight])
 
     const getImage = async (val) => {
+        dispatch(showLoader());
         let login_response = JSON.parse(localStorage.getItem('login_details'));
         var requestOptions = {
             method: "GET",
             response: "image/jpeg",
             psId: "",
             redirect: "follow",
-            headers:new Headers({
+            headers: new Headers({
                 "x-access-token": login_response?.token ? login_response?.token : '',
-                "resource-name": 'PBR',
-            }),
-        
+                "resource-name": 'PBR'
+            })
         };
         let response = await fetch(
             MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${params?.file.split(".")[0]}.pdf&pageId=${val ? val : pageNumber}`,
             requestOptions
-           
         )
             .then((response) => response)
             .then((result) => result)
@@ -814,22 +819,25 @@ function PaperBatchRecordsTemplate() {
         /* istanbul ignore next */
         if (res.type === "application/json") {
             openNotification("Page number not valid")
+            dispatch(hideLoader());
         } else {/* istanbul ignore next */
             setDisplayImage(window.webkitURL.createObjectURL(res))
+            // dispatch(hideLoader());
         }
     }
 
     useEffect(() => {
-
+        dispatch(showLoader());
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
             setImageWidth(list?.width)
             setimageHeight(list?.height)
-
+            // dispatch(hideLoader());
         }, 3000)
     }, [document.getElementsByTagName("canvas")[0], displayImage]);
     /* istanbul ignore next */
     useEffect(() => {
+        dispatch(showLoader());
         if ((imageWidth !== 0 && imageHeight !== 0) || localStorage.getItem("test_enabled") == !null) {
             for (let i = 0; i < 2; i++) {
                 setTimeout(() => {
@@ -841,6 +849,9 @@ function PaperBatchRecordsTemplate() {
 
     /* istanbul ignore next */
     const clicked = (area) => {
+        if (showRowColIdentifier) {
+            setClickedTable(area)
+        }
         setBoundingBoxClicked(true);
         setClickedSnippetId(area.areaValue);
         setSnippetNumber(area.snippetID)
@@ -1685,6 +1696,7 @@ function PaperBatchRecordsTemplate() {
             }}
         />
     );
+
     return (
         <div className='pbr-content-layout' >
             <div className='custom-wrapper pbr-wrapper'>
@@ -1762,6 +1774,28 @@ function PaperBatchRecordsTemplate() {
                                 accordion
                                 expandIconPosition='right'
                                 defaultActiveKey={['1']}
+                                onChange={(val) => {
+                                    if (val == 4) {
+                                        setShowRowColIdentifier(true)
+                                        for (let i = 0; i < 2; i++) {
+                                            setTimeout(() => {
+                                                getBoundingBoxDataInfo(imageWidth, imageHeight, "TABLE", pageNumber - 1)
+                                            }, i * 1000)
+                                        }
+                                    } else {
+                                        if (showRowColIdentifier) {
+                                            for (let i = 0; i < 2; i++) {
+                                                setTimeout(() => {
+                                                    getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1)
+                                                }, i * 1000)
+
+                                            }
+                                        }
+                                        setShowRowColIdentifier(false)
+                                    }
+
+                                }}
+
                             >
                                 <Panel header='Template' key='1'>
                                     <Form onValuesChange={handleValuesChange} name="template_desc" onFinish={onFinish}
@@ -2708,6 +2742,43 @@ function PaperBatchRecordsTemplate() {
                                         </div>
                                     </Form>
                                 </Panel>
+                                <Panel id="tableExtraction" header='Table' key='4'>
+                                    <div className='tabletype'>
+                                        <Form
+                                            layout='vertical'
+                                            initialValues={pageIdentifierData}
+                                            className='formNewTemplate'
+                                            onValuesChange={pageIdentifierValueChange} name="page_identifier" onFinish={onFinish}
+                                        >
+                                            <Form.Item
+                                                name='table_id'
+                                                label="Table ID"
+
+                                            >
+                                                <Input />
+                                                {/* <Input/> */}
+                                            </Form.Item>
+                                            <Form.Item
+                                                name='name'
+                                                label="Name"
+
+                                            >
+                                                <Input />
+                                                {/* <Input/> */}
+                                            </Form.Item>
+                                            <Form.Item
+                                                name='multipage'
+                                                label="Multipage Document"
+
+                                            >
+                                                <Select defaultValue={"NO"}>
+                                                    <Option>Yes</Option>
+                                                    <Option>No</Option>
+                                                </Select>
+                                            </Form.Item>
+                                        </Form>
+                                    </div>
+                                </Panel>
                             </Collapse>
                         </Sider>
                     </div>
@@ -2723,9 +2794,8 @@ function PaperBatchRecordsTemplate() {
                                     <div className='preview_page_finder'>
                                         <p className='pbrCenterPanelHeader-para' onClick={showModal}>
                                             Preview
-                                            <span>{params?.file}</span>
-
                                         </p>
+                                        <span style={{ marginTop: 4, marginRight: 30 }}>{params?.file.slice(0, 28)}</span>
                                         <div>
                                             <LeftOutlined disabled={true} className='icon_size' onClick={() => handlePageChange(pageNumber - 1)} />
                                             <Input style={{ width: 35 }} value={pageNumber} onChange={(e) => handlePageTextChange(e.target.value)} />
@@ -2755,10 +2825,9 @@ function PaperBatchRecordsTemplate() {
                             </Row>
                         </div>
                         <div className='pbrCenterPdfBlock'>
-                            <div className='pdfContent'>
-                                <div className='snippetsFound'></div>
-                                <div className='snippetsImg'></div>
-                            </div>
+                            {showRowColIdentifier &&
+                                <TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth} />}
+
                             <div className='pdfToImgBlock' onClick={onClickImage}>
                                 {/* {areasMap.areas.length > 0 && ( */}
                                 <ImageMapper
