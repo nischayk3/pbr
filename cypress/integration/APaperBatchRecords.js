@@ -193,11 +193,6 @@ describe('PBR', () => {
     })
 
     it("Edit Created Template", () => {
-        const url = Cypress.config().baseUrl
-        cy.visit(url + '/#/dashboard/paper_batch_records')
-        cy.log('Load Landing Page')
-        cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
-        cy.wait(3000)
         cy.intercept(
             {
                 method: 'GET',
@@ -207,12 +202,16 @@ describe('PBR', () => {
                 fixture: 'paperBatchLanding',
             },
         ).as('saveDocument')
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/paper_batch_records')
         cy.log('Load Landing Page')
-        cy.wait(6000);
+        cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
+        cy.log('Load Landing Page')
+        cy.wait(60000);
         cy.get('.chart-tiles').eq(0).click({ force: true });
         cy.get('#page-Identifier > .ant-collapse-header').click({ force: true });
         cy.intercept('POST', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
-        cy.wait(6000);
+        cy.wait(10000);
         cy.get('#page_identifier_key').clear({ force: true });
         cy.get('#page_identifier_key').type('1. Virus filtration');
         cy.get('#page_identifier_key_2').clear({ force: true });
@@ -234,7 +233,7 @@ describe('PBR', () => {
                 fixture: 'savePbrTemplate',
             },
         ).as('saveDocument')
-        cy.wait(6000)
+        cy.wait(60000)
         cy.get("#saveButton").click({ force: true })
     })
     it('Create without name', () => {
