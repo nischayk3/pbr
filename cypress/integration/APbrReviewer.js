@@ -109,7 +109,7 @@ describe('PBR', () => {
     it("Navigate to reviewer", () => {
         // cy.get(".ant-table-cell-fix-right > a").eq(0).click({ force: true })
         const url = Cypress.config().baseUrl
-        cy.visit(url + '/#/dashboard/pbr_update?id=27')
+        cy.visit(url + '/#/dashboard/pbr_update?id=185')
         cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbrUpdate' })
         cy.wait(10000);
         
