@@ -65,7 +65,7 @@ describe('PBR', () => {
     })
 
     it("Adding method parameters", () => {
-        cy.get('#dynamic_form_nest_item_users_0_name').clear();
+        cy.get('#dynamic_form_nest_item_users_0_name').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_name').type('para1');
         cy.get('#dynamic_form_nest_item_users_0_method').click({ force: true });
         cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click({ force: true });
@@ -89,7 +89,7 @@ describe('PBR', () => {
 
     it("entering date", () => {
         cy.wait(3000)
-        cy.get('#dynamic_form_nest_item_users_0_param_valueArea').clear();
+        cy.get('#dynamic_form_nest_item_users_0_param_valueArea').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_param_valueArea').type('12/10/12022');
     })
     it("Add UOM", () => {
@@ -100,28 +100,28 @@ describe('PBR', () => {
         cy.get('#dynamic_form_nest_item_users_0_uom_transformation').click({ force: true })
         // cy.get(':nth-child(5) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
         cy.get('.ant-select-item-option-content').eq(10).click({ force: true })
-        cy.get('#dynamic_form_nest_item_users_0_uom_valueTransformation').clear();
+        cy.get('#dynamic_form_nest_item_users_0_uom_valueTransformation').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_uom_valueTransformation').type('10');
     })
 
     it("Add Time", () => {
-        cy.get('#form_input5').click();
+        cy.get('#form_input5').click({ force: true });
         cy.get('#form_input5').type("Date:")
-        cy.get('#form_input6').click();
+        cy.get('#form_input6').click({ force: true });
         cy.get('#form_input6').type("01AUG2021");
         cy.get('#dynamic_form_nest_item_users_0_time_rule').click({ force: true })
         // cy.get(':nth-child(6) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
         cy.get('.ant-select-item-option-content').eq(6).click({ force: true })
-        cy.get('#dynamic_form_nest_item_users_0_param_min').clear();
+        cy.get('#dynamic_form_nest_item_users_0_param_min').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_param_min').type(2)
-        cy.get('#dynamic_form_nest_item_users_0_param_max').clear();
+        cy.get('#dynamic_form_nest_item_users_0_param_max').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_param_max').type(4)
     })
 
     it("Add Date", () => {
-        cy.get('#form_input7').click();
+        cy.get('#form_input7').click({ force: true });
         cy.get('#form_input7').type("Process");
-        cy.get('#form_input8').click();
+        cy.get('#form_input8').click({ force: true });
         cy.get('#form_input8').type("Stage:")
     })
 
