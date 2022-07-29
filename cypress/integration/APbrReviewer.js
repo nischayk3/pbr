@@ -69,7 +69,7 @@ describe('PBR', () => {
         cy.wait(6000);
     });
     it("Search Table", () => {
-        cy.get('.ant-input').clear();
+        cy.get('.ant-input').clear({ force: true });
         cy.get('.ant-input').type('1');
         cy.get('.ant-input-group-addon > .ant-btn > span').click({ force: true });
     })
@@ -116,7 +116,7 @@ describe('PBR', () => {
     })
 
     it("Edit fields", () => {
-        cy.wait(60000);
+        cy.wait(6000);
         cy.get(".ant-table-cell-fix-right > .ant-btn > span").click({ force: true })
         cy.get("#snippetValue").clear({ force: true })
         cy.get("#snippetValue").type("claimss")
@@ -131,7 +131,7 @@ describe('PBR', () => {
     it("Save and Audit logs", () => {
         cy.wait(1000);
         cy.get("#save_button").click({ force: true })
-        cy.wait(60000);
+        cy.wait(6000);
         cy.get("#editLogs > a").click({ force: true })
     })
     it("PBR", () => {
