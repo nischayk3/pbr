@@ -209,10 +209,13 @@ describe('PBR', () => {
         cy.log('Load Landing Page')
     })
 
-    it("Edit Created Template", () => {
+    it("Click on the card",()=>{
         cy.intercept('POST', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
-        cy.wait(60000);
+        cy.wait(6000);
         cy.get('.chart-tiles').eq(0).click({ force: true });
+    })
+
+    it("Edit Created Template", () => {
         cy.get('#page-Identifier > .ant-collapse-header').click({ force: true });
         cy.wait(10000);
         cy.get('#page_identifier_key').clear({ force: true });
@@ -236,7 +239,7 @@ describe('PBR', () => {
                 fixture: 'savePbrTemplate',
             },
         ).as('saveDocument')
-        cy.wait(60000)
+        cy.wait(6000)
         cy.get("#saveButton").click({ force: true })
     })
     it('Create without name', () => {
