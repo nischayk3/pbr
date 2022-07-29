@@ -20,8 +20,8 @@ import RolesAndAccess from "./UserRolesAndAccess/RolesAndAccess/RolesAndAccess";
 import ScreenControls from "./UserRolesAndAccess/ScreenControls/ScreenControls";
 // import PaperBatchRecords from './paperBatchRecords';
 import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
-import Analysis from "./Analysis/Analysis";
-import AnalysisModel from "./Analysis/AnalysisModel/AnalysisModel";
+import Analysis from "./Analysis/components";
+import ViewPageAnalysis from "./Analysis/components/ViewPage";
 import PbrReviewer from "./pbrReviewer";
 import "./dashboard.scss";
 import PythonNotebook from "./pythonNotebook/pythonNotebook";
@@ -206,7 +206,20 @@ const Dashboard = () => {
                 <Route key="pbr_update" path={`${match.url}/pbr_update`}>
                   <PbrUpdate />
                 </Route>
-                <Route path={`${match.url}/report_generator`} render={({ match: { url } }) => (<> <Route path={`${url}/`} component={ReportDesigner} exact /> <Route path={`${url}/:id`} component={ReportGenerator} /> </>)} />
+                <Route
+                  path={`${match.url}/report_generator`}
+                  render={({ match: { url } }) => (
+                    <>
+                      {" "}
+                      <Route
+                        path={`${url}/`}
+                        component={ReportDesigner}
+                        exact
+                      />{" "}
+                      <Route path={`${url}/:id`} component={ReportGenerator} />{" "}
+                    </>
+                  )}
+                />
                 <PrivateRoute
                   key="genealogy"
                   path={`${match.url}/genealogy`}
@@ -352,19 +365,31 @@ const Dashboard = () => {
                   component={ScreenControls}
                   authorised={authorised}
                 />
-                <PrivateRoute
-                  key={"analysis"}
+                <Route
                   path={`${match.url}/analysis`}
-                  component={Analysis}
-                  exact
-                  authorised={authorised}
+                  render={({ match: { url } }) => (
+                    <>
+                      <PrivateRoute
+                        key={"analysis"}
+                        path={`${url}/`}
+                        component={Analysis}
+                        exact
+                        authorised={authorised}
+                      />
+                      <PrivateRoute
+                        path={`${url}/:id`}
+                        component={ViewPageAnalysis}
+                        authorised={authorised}
+                      />
+                    </>
+                  )}
                 />
-                <PrivateRoute
+                {/* <PrivateRoute
                   key={"analysis-model"}
                   path={`${match.url}/analysis/:id`}
                   component={AnalysisModel}
                   authorised={authorised}
-                />
+                /> */}
                 {/* <Route
                   key="hierarchy_main"
                   path={`${match.url}/molecule_hierarchy_configurations`}
