@@ -48,10 +48,13 @@ describe('PBR', () => {
     })
 
     it("Click on the card",()=>{
-        cy.intercept('POST', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
-        cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_all&productNum=1091460', { fixture: 'getDataView' })
         cy.wait(6000);
-        cy.get('.chart-tiles').click({ force: true });
+        cy.get('.ant-input').click({force:true})
+        cy.get('.ant-input').type("p258")
+        cy.get('.ant-input-search-button').click({force:true})
+        cy.get('.ant-table-row > :nth-child(1)').click({force:true})
+        
+        //cy.get('.chart-tiles').click({ force: true });
     })
 
     it("Edit Created Template", () => {
