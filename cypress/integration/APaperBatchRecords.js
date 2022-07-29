@@ -211,6 +211,7 @@ describe('PBR', () => {
 
     it("Click on the card",()=>{
         cy.intercept('POST', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
+        cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_all&productNum=1091460', { fixture: 'getDataView' })
         cy.wait(6000);
         cy.get('.chart-tiles').eq(0).click({ force: true });
     })
