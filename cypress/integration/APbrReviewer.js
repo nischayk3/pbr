@@ -5,19 +5,19 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe('PBR', () => {
     // it("should login successfully using Ad", () => {
     beforeEach(() => {
-         cy.intercept({ method: 'POST', url: '/pbr/udh/get_cpv_pbr_count', times: 1 }, (req) => {
-            req.reply({
-                delay: 1000,
-                fixture: 'pbrStatusCount.json'
-            });
-        }).as("statusCount")
-        cy.intercept({ method: 'POST', url: '/pbr/udh/get_cpv_pbr_count', times: 1 }, (req) => {
-            req.reply({
-                delay: 1000,
-                fixture: 'pbrConfidenceCount.json'
-            });
-        }).as("cofidenceCount")
-        // cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrStatusCount.json' }).as("statusCount")
+        //  cy.intercept({ method: 'POST', url: '/pbr/udh/get_cpv_pbr_count', times: 1 }, (req) => {
+        //     req.reply({
+        //         delay: 1000,
+        //         fixture: 'pbrStatusCount.json'
+        //     });
+        // }).as("statusCount")
+        // cy.intercept({ method: 'POST', url: '/pbr/udh/get_cpv_pbr_count', times: 1 }, (req) => {
+        //     req.reply({
+        //         delay: 1000,
+        //         fixture: 'pbrConfidenceCount.json'
+        //     });
+        // }).as("cofidenceCount")
+        cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrStatusCount.json' }).as("statusCount")
         // cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrConfidenceCount.json' }).as("cofidenceCount")
         // cy.intercept('GET', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review' })
         // cy.intercept('GET', '/pbr/udh/get_cpv_pbr?id=27', { fixture: 'pbrUpdate' })
@@ -91,14 +91,14 @@ describe('PBR', () => {
        
         cy.wait(6000);
     })
-    it("Confidence chart", () => {
-        cy.get(".slice").eq(2).click({ force: true })
-        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
-        cy.wait(6000);
-        cy.get(".status-confi").click({ force: true })
+    // it("Confidence chart", () => {
+    //     cy.get(".slice").eq(2).click({ force: true })
+    //     cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
+    //     cy.wait(6000);
+    //     cy.get(".status-confi").click({ force: true })
        
-        cy.wait(6000);
-    })
+    //     cy.wait(6000);
+    // })
 
     it("Click Approve", () => {
         cy.get('#pbr-approve').click({ force: true })
