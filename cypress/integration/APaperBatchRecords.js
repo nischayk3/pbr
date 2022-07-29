@@ -135,7 +135,7 @@ describe('PBR', () => {
                 fixture: 'paperFind',
             },
         ).as('findDocument')
-        cy.get('.defineTableBtn').click();
+        cy.get('.defineTableBtn').click({ force: true });
         cy.wait(6000)
         cy.intercept(
             {
@@ -147,7 +147,7 @@ describe('PBR', () => {
             },
         ).as('previewDocument')
         cy.wait(6000)
-        cy.get('.pbrCenterPanelHeader-para').click();
+        cy.get('.pbrCenterPanelHeader-para').click({force:true});
 
 
     })
@@ -213,9 +213,9 @@ describe('PBR', () => {
         cy.get('#page-Identifier > .ant-collapse-header').click({ force: true });
         cy.intercept('POST', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
         cy.wait(6000);
-        cy.get('#page_identifier_key').clear();
+        cy.get('#page_identifier_key').clear({ force: true });
         cy.get('#page_identifier_key').type('1. Virus filtration');
-        cy.get('#page_identifier_key_2').clear();
+        cy.get('#page_identifier_key_2').clear({ force: true });
         cy.get('#page_identifier_key_2').type('Filter Lot Number:');
         cy.wait(3000);
         cy.get('#parameter-panel > .ant-collapse-header').click({ force: true });
@@ -284,45 +284,45 @@ describe('PBR', () => {
         cy.get('#rule1').click({ force: true })
         // cy.get(':nth-child(3) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true });
         cy.get('.ant-select-item-option').eq(1).click({ force: true })
-        cy.get('#dynamic_form_nest_item_users_0_param_min').clear();
+        cy.get('#dynamic_form_nest_item_users_0_param_min').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_param_min').type(4)
-        cy.get('#dynamic_form_nest_item_users_0_param_max').clear();
+        cy.get('#dynamic_form_nest_item_users_0_param_max').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_param_max').type(2)
         cy.wait(2000);
         cy.get('#dynamic_form_nest_item_users_0_uom_rule').click({ force: true })
         // cy.get(':nth-child(3) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true });
         cy.get('.ant-select-item-option').eq(4).click({ force: true })
-        cy.get('#dynamic_form_nest_item_users_0_uom_min').clear();
+        cy.get('#dynamic_form_nest_item_users_0_uom_min').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_uom_min').type(4)
-        cy.get('#dynamic_form_nest_item_users_0_uom_max').clear();
+        cy.get('#dynamic_form_nest_item_users_0_uom_max').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_uom_max').type(2)
         cy.wait(2000);
         cy.get('#dynamic_form_nest_item_users_0_time_rule').click({ force: true })
         // cy.get(':nth-child(6) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true })
         cy.get('.ant-select-item-option').eq(6).click({ force: true })
-        cy.get('#dynamic_form_nest_item_users_0_time_min').clear();
+        cy.get('#dynamic_form_nest_item_users_0_time_min').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_time_min').type(4)
-        cy.get('#dynamic_form_nest_item_users_0_time_max').clear();
+        cy.get('#dynamic_form_nest_item_users_0_time_max').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_time_max').type(2)
         cy.get('#dynamic_form_nest_item_users_0_date_rule').click({ force: true })
         // cy.get(':nth-child(7) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true })
         cy.get('.ant-select-item-option').eq(9).click({ force: true })
-        cy.get('#dynamic_form_nest_item_users_0_date_min').clear();
+        cy.get('#dynamic_form_nest_item_users_0_date_min').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_date_min').type(4)
-        cy.get('#dynamic_form_nest_item_users_0_date_max').clear();
+        cy.get('#dynamic_form_nest_item_users_0_date_max').clear({ force: true });
         cy.get('#dynamic_form_nest_item_users_0_date_max').type(2)
     })
     it("Change Coordinates", () => {
         cy.wait(6000);
         cy.get('.pbrTemplateRight > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .trigger > .panelImg').click({ force: true });
         cy.wait(2000);
-        cy.get('#cord1').clear();
+        cy.get('#cord1').clear({ force: true });
         cy.get('#cord1').type('120.88259327411652');
-        cy.get('#cord2').clear();
+        cy.get('#cord2').clear({ force: true });
         cy.get('#cord2').type('120.88259327411652');
-        cy.get('#cord3').clear();
+        cy.get('#cord3').clear({ force: true });
         cy.get('#cord3').type('120.88259327411652');
-        cy.get('#cord4').clear();
+        cy.get('#cord4').clear({ force: true });
         cy.get('#cord4').type('120.88259327411652');
     })
 
