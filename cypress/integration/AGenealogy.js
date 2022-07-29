@@ -169,39 +169,40 @@ it("click on search button",()=>{
 	});
 	it("closing drawer",()=>{
 		cy.wait(5000)
-		cy.get(':nth-child(3) > .ant-drawer > .ant-drawer-mask').click()
+		cy.get('.ant-drawer-mask').click()
 	})
 
 	it("click on process order",()=>{
-		cy.get('#node-102279687 > #process-img').click()
-		cy.get("#view-details-popup").click();
+		cy.wait(5000)
+		cy.get('#node-102279687 > #process-img').click({force:true})
+		cy.get("#view-details-popup").click({force:true});
 	});
 	it("closing drawer",()=>{
 		cy.wait(5000)
-		cy.get(':nth-child(3) > .ant-drawer > .ant-drawer-mask').click()
+		cy.get('.ant-drawer-mask').click({force:true})
 	});
 
 	it("click on material node image",()=>{
-		cy.get('#node-1091460 > #material-img').click();
+		cy.get('#node-1091460 > #material-img').click({force:true});
 	})
 
 	it("click on backward from node popup",()=>{
-		cy.get('#backword-genealogy-popup > span').click()
+		cy.get('#backword-genealogy-popup > span').click({force:true})
 	})
 
 	it("click on process image",()=>{
 		cy.wait(5000)
-		cy.get("#process-img").click();
+		cy.get("#process-img").click({force:true});
 	})
 
 	it("click on purchase order",()=>{
 		
-		cy.get("#view-details-popup").click();
+		cy.get("#view-details-popup").click({force:true});
 	});
 
 	it("closing drawer",()=>{
 		cy.wait(5000)
-		cy.get(':nth-child(3) > .ant-drawer > .ant-drawer-mask').click()
+		cy.get('.ant-drawer-mask').click({force:true})
 	});
 
 
@@ -242,42 +243,43 @@ it("click on search button",()=>{
 	// 	cy.get('.ant-modal-close-x').click()
 	// })
 	it("going back to filter screen",()=>{
-		cy.get('#rc-tabs-0-tab-1').click()
+		cy.get('#rc-tabs-0-tab-1').click({force:true})
 	})
 
 	it("click on forward toggle button in filter",()=>{
-		cy.get(':nth-child(2) > .toggle-text').click()
+		cy.get(':nth-child(2) > .toggle-text').click({force:true})
 		cy.wait(3000)
-		cy.get('#genealogy-search').click()
+		cy.get('#genealogy-search').click({force:true})
 	})
 
 	it("remove product type and search",()=>{
-		cy.get(':nth-child(4) > .search-block > .ant-btn > .anticon > svg').click()
-		cy.get('#genealogy-search').click()
+		cy.get(':nth-child(4) > .search-block > .ant-btn > .anticon > svg').click({force:true})
+		cy.get('#genealogy-search').click({force:true})
 	})
 
 	it("back to filter ",()=>{
-		cy.get('#rc-tabs-0-tab-1').click()
+		cy.get('#rc-tabs-0-tab-1').click({force:true})
 	})
 
 
 	// Gives bad request
 	it("search forward from filter",()=>{
-	  cy.get("#rc-tabs-0-tab-1").click()
-	  cy.get(".toggleLabel").eq(1).click()
+	  cy.get("#rc-tabs-0-tab-1").click({force:true})
+	  cy.get(".toggleLabel").eq(1).click({force:true})
 	  cy.wait(3000)
-	  cy.get("#genealogy-search").click()
+	  cy.get("#genealogy-search").click({force:true})
 	  cy.wait(3000)
 
 	})
 
 	it("Clear filters",()=>{
-	  cy.get('#rc-tabs-0-tab-1').click()
-	  cy.get("#clear-search").click()
+	  cy.get('#rc-tabs-0-tab-1').click({force:true})
+	  cy.get("#clear-search").click({force:true})
 	})
 
 	it("search item",()=>{
-		cy.get("#clear-search").click()
+		cy.wait(3000)
+		cy.get("#clear-search").click({force:true})
 	})
 
 	it("reload for backward 404",()=>{

@@ -62,7 +62,7 @@ const ParameterTable = ({
 	const totalFileBatch = useSelector((state) => state.viewCreationReducer.totalFileBatches);
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [tableData, setTableData] = useState([]);
-	const [selectedPrimaryData, setSelectedPrimaryData] = useState([]);
+	//const [selectedPrimaryData, setSelectedPrimaryData] = useState([]);
 	const [reloadTable, setReloadTable] = useState(true);
 	const [parameters, setParameters] = useState({});
 	const [variableParam, setVariableParam] = useState(
@@ -122,6 +122,7 @@ const ParameterTable = ({
 				return (
 					<Radio
 						// checked={paramType === record.parameter_name}
+						id="param-radio"
 						disabled={isParamSelected}
 						checked={paramType === record.parameter_name}
 						onChange={(e) =>
@@ -554,17 +555,17 @@ const ParameterTable = ({
 			});
 
 			setTableData(newPrimaryData);
-			setSelectedPrimaryData(radioObj[0]);
+			//setSelectedPrimaryData(radioObj[0]);
 			dispatch(selectParamType(type));
 			paramType = type;
 		}
 	};
 
-	const sortFuctionName = (selectedData) => {
+	const sortFuctionName = (selectedDataTable) => {
 		let filterData = [...tableData];
 		var parameterArray =
-			selectedData &&
-			selectedData.map(function (el) {
+			selectedDataTable &&
+			selectedDataTable.map(function (el) {
 				return el.parameter_name;
 			});
 		if (parameterArray && parameterArray.length > 0) {
@@ -585,13 +586,13 @@ const ParameterTable = ({
 		dispatch(hideLoader());
 	};
 
-	const sortArray = (selectedVar, selectedData) => {
+	const sortArray = (selectedVariable, selectedDataParam) => {
 		let filterData = [...tableData];
 
 		var parameterArray =
-			selectedData &&
-			selectedData[selectedVar] &&
-			selectedData[selectedVar].map(function (el) {
+			selectedDataParam &&
+			selectedDataParam[selectedVariable] &&
+			selectedDataParam[selectedVariable].map(function (el) {
 				return el.parameter_name;
 			});
 
@@ -648,9 +649,8 @@ const ParameterTable = ({
 	};
 
 	const onChangeBatchPopup = (e, record, rowIndex, key) => {
-		const parameterArrray = [];
+		const parameterArrray = [...parameters];
 		const batchRecordPopup = [...tableData];
-		//batchRecordPopup[rowIndex][key] = e.target.checked == false ? "" : e.target.checked;
 
 		batchRecordPopup.forEach((ele) => {
 			if (ele.parameter_name === key) {
@@ -658,24 +658,9 @@ const ParameterTable = ({
 			}
 		})
 
-		batchRecordPopup.forEach((ele) => {
-			const parameterObj = {};
-			// if (ele.parameter_name === key) {
-			parameterObj["source_type"] = ele.sourceType;
-			parameterObj["material_id"] = ele.material_id;
-			parameterObj["process_id"] = ele.process_id;
-			parameterObj["parameter_name"] = ele.parameter_name;
-			parameterObj["batch_exclude"] = [];
-			parameterObj["priority"] = ele.primary;
-			parameterObj["aggregation"] = ele.aggregation;
-			parameterArrray.push(parameterObj)
-			// }
-		})
-
-
-		// const batchExcludeJsonPopup = [...parameterArrray];
 		parameterArrray.forEach((element) => {
 			if (element.parameter_name === key) {
+				console.log("element.batch_exclude.indexOf(record.batch)", element.batch_exclude, record.batch);
 				if (element.batch_exclude.indexOf(record.batch) === -1) {
 					element.batch_exclude.push(record.batch);
 				}
@@ -684,6 +669,7 @@ const ParameterTable = ({
 		setParameters([...parameterArrray]);
 		setTableData([...batchRecordPopup]);
 	}
+
 	const isModalBatch = (e) => {
 		setIsBatchTableVisible(true);
 	}

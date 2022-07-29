@@ -18,7 +18,7 @@ import { hideLoader, showLoader, showNotification } from "../../../../../duck/ac
 import { getParameterBatches } from "../../../../../services/viewCreationPublishing";
 
 const { TreeNode } = Tree;
-let setKey = [];
+//let setKey = [];
 let selectedData = [];
 
 const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue, fromWorkflowScreen }) => {
@@ -59,7 +59,7 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 				dispatch(getBatchData(batchData))
 				let rowData = {};
 
-				setKey.push(keys);
+				//setKey.push(keys);
 				let molBatch = { ...getMolbatchData.Data.batches };
 				dispatch(hideLoader());
 				selectedData.push(record);

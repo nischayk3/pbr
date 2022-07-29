@@ -364,6 +364,7 @@ const ViewChart = (props, ref) => {
 		const isChecked = checked ? 1 : 0;
 		let arr = [...tempPanels];
 		arr[index].data_filter.unapproved_data = isChecked;
+		arr[index].data[0].has_unapproved = isChecked == 1 ? true : false
 		setTempPanels(arr);
 	};
 	const onChangeTempCheckbox = checked => {
@@ -789,9 +790,9 @@ const ViewChart = (props, ref) => {
 				}>
 				<div className='global-filters'>
 					<div className='dashboard-filters'>
-						<div style={{ fontSize: '20px', paddingTop: '4px' }}>
+						{/* <div style={{ fontSize: '20px', paddingTop: '4px' }}>
 							<SyncOutlined />
-						</div>
+						</div> */}
 						<div>
 							<Select
 								style={{ width: 120 }}
@@ -1109,7 +1110,7 @@ const ViewChart = (props, ref) => {
 									<div>
 										{isEditable == index && (
 											<ChartFilter
-												checked={tempPanels[index].data_filter.unapproved_data}
+												checked={tempPanels[index].data_filter.unapproved_data || tempPanels[index].data[0].has_unapproved}
 												typeChartValue={tempPanels[index].source_type}
 												checkboxChange={value =>
 													onChangeInnerCheckbox(value, index)

@@ -39,7 +39,7 @@ const MathFunction = ({ data, materialId, fromWorkflowScreen }) => {
 	const [isAlertFunction, setIsAlertFunction] = useState(false);
 	const [isFunction, setIsFunction] = useState(false);
 	const [isEvaluatingFun, setIsEvaluatingFun] = useState(false);
-	const [isFunValidate, setIsFunValidate] = useState(false);
+	//const [isFunValidate, setIsFunValidate] = useState(false);
 	const [isFunctionInvalid, setIsFunctionInvalid] = useState(false);
 	const [isTabelVisible, setIsTableVisible] = useState(false);
 	const [evalTable, setEvalTable] = useState([]);
@@ -142,14 +142,14 @@ const MathFunction = ({ data, materialId, fromWorkflowScreen }) => {
 					</div>
 				) : isEvaluatingFun ? (
 					<Alert message="Evaluating function..." type="info" />
-				) : isFunValidate ? (
-					<Alert
-						closable
-						afterClose={handleCloseError}
-						message="Function valid!"
-						type="success"
-						showIcon
-					/>
+					// ) : isFunValidate ? (
+					// 	<Alert
+					// 		closable
+					// 		afterClose={handleCloseError}
+					// 		message="Function valid!"
+					// 		type="success"
+					// 		showIcon
+					// 	/>
 				) : isFunctionInvalid ? (
 					<Alert
 						closable
