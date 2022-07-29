@@ -82,7 +82,8 @@ describe('PBR', () => {
     })
     it('selecting date', () => {
         cy.wait(6000);
-        cy.get(':nth-child(3) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
+        cy.get('#rule1').click({ force: true })
+        // cy.get(':nth-child(3) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
         cy.get('.ant-select-item-option').eq(5).click({ force: true })
     })
 
@@ -96,7 +97,8 @@ describe('PBR', () => {
         cy.get('#form_input3').type("1.0")
         cy.get('#form_input4').click({ force: true });
         cy.get('#form_input4').type("Effective")
-        cy.get(':nth-child(5) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
+        cy.get('#dynamic_form_nest_item_users_0_uom_transformation').click({ force: true })
+        // cy.get(':nth-child(5) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
         cy.get('.ant-select-item-option-content').eq(10).click({ force: true })
         cy.get('#dynamic_form_nest_item_users_0_uom_valueTransformation').clear();
         cy.get('#dynamic_form_nest_item_users_0_uom_valueTransformation').type('10');
@@ -107,7 +109,8 @@ describe('PBR', () => {
         cy.get('#form_input5').type("Date:")
         cy.get('#form_input6').click();
         cy.get('#form_input6').type("01AUG2021");
-        cy.get(':nth-child(6) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
+        cy.get('#dynamic_form_nest_item_users_0_time_rule').click({ force: true })
+        // cy.get(':nth-child(6) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
         cy.get('.ant-select-item-option-content').eq(6).click({ force: true })
         cy.get('#dynamic_form_nest_item_users_0_param_min').clear();
         cy.get('#dynamic_form_nest_item_users_0_param_min').type(2)
@@ -190,7 +193,11 @@ describe('PBR', () => {
     })
 
     it("Edit Created Template", () => {
-        cy.go("back")
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/paper_batch_records')
+        cy.log('Load Landing Page')
+        cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
+        cy.wait(3000)
         cy.intercept(
             {
                 method: 'GET',
@@ -258,32 +265,7 @@ describe('PBR', () => {
         cy.get('#parameter-panel > .ant-collapse-header').click({ force: true });
         cy.wait(3000);
     })
-    // it('Click and add', () => {
-    //     cy.wait(3000);
-    //     cy.get('#form_input1').clear({ force: true });
-    //     cy.wait(3000);
-    //     cy.get('#form_input1').click({ force: true });
-    //     cy.wait(1000);
-    //     cy.get('area[shape="rect"]').eq(0).click({ force: true });
-    //     cy.get('#form_input2').clear({ force: true });
-    //     cy.wait(3000);
-    //     cy.get('#form_input2').click({ force: true });
-    //     cy.wait(1000);
-    //     cy.get('area[shape="rect"]').eq(2).click({ force: true });
-    //     cy.get('#form_input3').click({ force: true });
-    //     cy.get('area[shape="rect"]').eq(4).click({ force: true });
-    //     cy.get('#form_input4').click({ force: true });
-    //     cy.get('area[shape="rect"]').eq(6).click({ force: true });
-    //     cy.get('#form_input5').click({ force: true });
-    //     cy.get('area[shape="rect"]').eq(8).click({ force: true });
-    //     cy.get('#form_input6').click({ force: true });
-    //     cy.get('area[shape="rect"]').eq(10).click({ force: true });
-    //     cy.get('#form_input7').click({ force: true });
-    //     cy.get('area[shape="rect"]').eq(12).click({ force: true });
-    //     cy.get('#form_input8').click({ force: true });
-    //     cy.get('area[shape="rect"]').eq(14).click({ force: true });
-    // })
-
+    
     it('Save without parameter', () => {
         cy.wait(3000);
         cy.get('.firstParameter-para > p').click({ force: true });
@@ -299,28 +281,32 @@ describe('PBR', () => {
     })
     it('Range Validation', () => {
         cy.wait(6000);
-        cy.get(':nth-child(3) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true });
+        cy.get('#rule1').click({ force: true })
+        // cy.get(':nth-child(3) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true });
         cy.get('.ant-select-item-option').eq(1).click({ force: true })
         cy.get('#dynamic_form_nest_item_users_0_param_min').clear();
         cy.get('#dynamic_form_nest_item_users_0_param_min').type(4)
         cy.get('#dynamic_form_nest_item_users_0_param_max').clear();
         cy.get('#dynamic_form_nest_item_users_0_param_max').type(2)
         cy.wait(2000);
-        cy.get(':nth-child(3) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true });
-        cy.get('.ant-select-item-option').eq(7).click({ force: true })
+        cy.get('#dynamic_form_nest_item_users_0_uom_rule').click({ force: true })
+        // cy.get(':nth-child(3) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true });
+        cy.get('.ant-select-item-option').eq(4).click({ force: true })
         cy.get('#dynamic_form_nest_item_users_0_uom_min').clear();
         cy.get('#dynamic_form_nest_item_users_0_uom_min').type(4)
         cy.get('#dynamic_form_nest_item_users_0_uom_max').clear();
         cy.get('#dynamic_form_nest_item_users_0_uom_max').type(2)
         cy.wait(2000);
-        cy.get(':nth-child(6) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true })
-        cy.get('.ant-select-item-option').eq(12).click({ force: true })
+        cy.get('#dynamic_form_nest_item_users_0_time_rule').click({ force: true })
+        // cy.get(':nth-child(6) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true })
+        cy.get('.ant-select-item-option').eq(6).click({ force: true })
         cy.get('#dynamic_form_nest_item_users_0_time_min').clear();
         cy.get('#dynamic_form_nest_item_users_0_time_min').type(4)
         cy.get('#dynamic_form_nest_item_users_0_time_max').clear();
         cy.get('#dynamic_form_nest_item_users_0_time_max').type(2)
-        cy.get(':nth-child(7) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true })
-        cy.get('.ant-select-item-option').eq(17).click({ force: true })
+        cy.get('#dynamic_form_nest_item_users_0_date_rule').click({ force: true })
+        // cy.get(':nth-child(7) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true })
+        cy.get('.ant-select-item-option').eq(9).click({ force: true })
         cy.get('#dynamic_form_nest_item_users_0_date_min').clear();
         cy.get('#dynamic_form_nest_item_users_0_date_min').type(4)
         cy.get('#dynamic_form_nest_item_users_0_date_max').clear();
@@ -328,7 +314,7 @@ describe('PBR', () => {
     })
     it("Change Coordinates", () => {
         cy.wait(6000);
-        cy.get('.pbrTemplateRight > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .trigger > .panelImg').click();
+        cy.get('.pbrTemplateRight > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .trigger > .panelImg').click({ force: true });
         cy.wait(2000);
         cy.get('#cord1').clear();
         cy.get('#cord1').type('120.88259327411652');
