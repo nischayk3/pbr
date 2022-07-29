@@ -20,7 +20,6 @@ import {
 // import ViewSearchTable from "./viewTable/ViewTable";
 import ViewTable from "../../../../chartPersonal/components/viewPage/viewChart/ViewTable";
 import ViewSearchTable from "../../../../chartPersonal/components/viewPage/viewChart/viewSearchTable";
-import ViewJson from "./view.json";
 import BatchesComponent from "./batchesPage";
 
 const NewPipeline = (props) => {
