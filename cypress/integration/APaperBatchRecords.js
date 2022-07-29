@@ -192,7 +192,7 @@ describe('PBR', () => {
         cy.get(':nth-child(9) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x > .anticon > svg > path').click({ force: true })
     })
 
-    it("Edit Created Template", () => {
+    it("go back to landing page",()=>{
         cy.intercept(
             {
                 method: 'GET',
@@ -207,10 +207,13 @@ describe('PBR', () => {
         cy.log('Load Landing Page')
         cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
         cy.log('Load Landing Page')
+    })
+
+    it("Edit Created Template", () => {
+        cy.intercept('POST', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
         cy.wait(60000);
         cy.get('.chart-tiles').eq(0).click({ force: true });
         cy.get('#page-Identifier > .ant-collapse-header').click({ force: true });
-        cy.intercept('POST', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
         cy.wait(10000);
         cy.get('#page_identifier_key').clear({ force: true });
         cy.get('#page_identifier_key').type('1. Virus filtration');
