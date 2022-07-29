@@ -46,9 +46,11 @@ describe('PBR', () => {
         cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
         cy.log('Load Landing Page')
     })
-
+    it("wait",()=>{
+        cy.wait(60000);
+    })
     it("Click on the card",()=>{
-        cy.wait(6000);
+        
         cy.get('.ant-input').click({force:true})
         cy.get('.ant-input').type("p258")
         cy.get('.ant-input-search-button').click({force:true})
