@@ -265,9 +265,11 @@ function PaperBatchRecordsTemplate() {
     };
     /* istanbul ignore next */
     const onClickImage = (e) => {
+        console.log("dasdasd1111",e)
         var rect = e.target.getBoundingClientRect();
         var x = e.clientX - rect.left;
         var y = e.clientY - rect.top;
+        console.log("dasdasd",x,y)
     };
     /* istanbul ignore next */
     const onChangeChart = (e, field, key, value) => {
@@ -1611,6 +1613,7 @@ function PaperBatchRecordsTemplate() {
         setPublishResponse(res);
         setTemplateStatus(res.rep_stauts);
     };
+    /* istanbul ignore next */
     const modes = (
         <Menu defaultSelectedKeys={["word"]} selectedKeys={[menuKey]} onClick={(item) => handleMenuChange(item)}>
             <Menu.Item key='word'>
@@ -1635,6 +1638,7 @@ function PaperBatchRecordsTemplate() {
         Beijing: ['Tiananmen', 'Great Wall'],
         Shanghai: ['Oriental Pearl', 'The Bund'],
     };
+    /* istanbul ignore next */
     const handleChange = () => {
         form.setFieldsValue({ sights: [] });
     };
@@ -1683,6 +1687,7 @@ function PaperBatchRecordsTemplate() {
         }
 
     }
+    /* istanbul ignore next */
     const genExtra = (remove, name, key, restfield) => (
         <DeleteOutlined
             id="deleteParameter"
@@ -2825,6 +2830,7 @@ function PaperBatchRecordsTemplate() {
                             </Row>
                         </div>
                         <div className='pbrCenterPdfBlock'>
+                            
                             {showRowColIdentifier &&
                                 <TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth} />}
 
