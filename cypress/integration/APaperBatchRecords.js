@@ -48,7 +48,7 @@ describe('PBR', () => {
         cy.log('Load Landing Page')
     })
     it("wait",()=>{
-        cy.wait(6000);
+        cy.wait(60000);
     })
     it("Click on the card",()=>{
         
@@ -62,6 +62,7 @@ describe('PBR', () => {
     })
 
     it("Edit Created Template", () => {
+        cy.wait(6000)
         cy.get('#page-Identifier > .ant-collapse-header').click({ force: true });
         cy.wait(10000);
         cy.get('#page_identifier_key').clear({ force: true });
