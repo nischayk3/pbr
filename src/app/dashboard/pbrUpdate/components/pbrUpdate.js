@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Row, Col, Button, Modal, Input, Form, DatePicker, TimePicker } from 'antd';
+import { Table, Row, Col, Button, Input, Form } from 'antd';
 import { useDispatch } from 'react-redux';
 import {
   hideLoader,
   showLoader,
   showNotification,
 } from '../../../../duck/actions/commonActions';
-import { useLocation, useParams } from "react-router";
-import { getPbrReviewerData, updateApprove, getImage } from '../../../../services/pbrService'
+import { useLocation } from "react-router";
+import { getPbrReviewerData, updateApprove } from '../../../../services/pbrService'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import queryString from "query-string";
 import './styles.scss';
@@ -35,7 +35,7 @@ const PbrUpdate = () => {
   const [idarr, setIdArr] = useState([]);
   const location = useLocation();
   const params = queryString.parse(location.search);
-  
+
   useEffect(() => {
     loadTableData();
   }, []);
@@ -43,14 +43,14 @@ const PbrUpdate = () => {
 
   const loadTableData = async () => {
     dispatch(showLoader());
-    let req ={
+    let req = {
       confidence: null,
       createdBy: null,
       id: Number(params.id),
       limit: null,
       status: null,
       template_id: []
-    } 
+    }
     let res = await getPbrReviewerData(req);
     setTemplateData(res.Data);
 
@@ -71,22 +71,28 @@ const PbrUpdate = () => {
 
 
   const getImage = async (val) => {
+    dispatch(showLoader());
+    let login_response = JSON.parse(localStorage.getItem('login_details'));
     var requestOptions = {
       method: "GET",
       response: "image/jpeg",
       psId: "",
       redirect: "follow",
+      headers: new Headers({
+        "x-access-token": login_response?.token ? login_response?.token : '',
+        "resource-name": 'PBR'
+      })
     };
     let response = await fetch(
       MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${val.split('_page-0')[0]}.pdf&pageId=1`,
       requestOptions
     )
-      .then((response) => response)
+      .then((resp) => resp)
       .then((result) => result)
       .catch((error) => console.log("error", error));
     let res = await response.blob();
     setImagePdf(window.webkitURL.createObjectURL(res));
-
+    dispatch(hideLoader());
   }
 
   const handleCancel = () => {
@@ -147,7 +153,7 @@ const PbrUpdate = () => {
       title: "Id",
       dataIndex: "id",
       key: "id",
-      width:"5%"
+      width: "5%"
     },
     {
       title: "Parameter Name",
@@ -352,8 +358,9 @@ const PbrUpdate = () => {
 
                     type='primary'>Save Changes</Button>
                 </div>
-                <div>
+                <div >
                   <img src={imagepdf} width="100%" height="100%" />
+                  {/* <iframe class="frame" src={imagepdf} width="600px" height="500px" ></iframe> */}
                 </div>
               </Col>
             </Row>
