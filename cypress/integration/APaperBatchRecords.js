@@ -6,11 +6,10 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe('PBR', () => {
     // it("should login successfully using Ad", () => {
     beforeEach(() => {
-        
-        cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_product_num&productNum=', { fixture: 'productNum' }).as("get_data_view")
-        cy.intercept('GET', '/pbr/udh/pbr_template', { fixture: 'paperBatchLanding' }).as("pbr_template")
+        cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_product&productNum=1091460', { fixture: 'paperBatchFileList' })
+        cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_product_num&productNum=', { fixture: 'productNum' })
+        cy.intercept('GET', '/pbr/udh/pbr_template', { fixture: 'paperBatchLanding' })
         cy.intercept('GET', '/pbr/udh/pbr_template?limit=8', { fixture: 'paperBatchLmitList' }).as("limitlist")
-        cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_all&productNum=1091460', { fixture: 'paperBatchFileList' }).as("productNum")
         cy.intercept('POST', '/pbr/udh/ocr-json-extraction', { fixture: 'pbrBoundingBox' })
         cy.intercept('GET', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
         cy.viewport(1366, 768);
@@ -56,9 +55,11 @@ describe('PBR', () => {
         cy.get('.ant-input').type("p258")
         cy.get('.ant-input-search-button').click({force:true})
         cy.wait(6000)
-        // cy.get('.ant-table-row > :nth-child(1)').click({force:true})
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/paper_batch_records/P258?file=Batch%20Record%20Example%203.pdf&temp_disp_id=P258&tempalteName=test&fromScreen=Workspace&version=1')
+       
         
-        cy.get('.chart-tiles').click({force:true})
+        //cy.get('.chart-tiles').click({ force: true });
     })
 
     it("Edit Created Template", () => {
@@ -343,5 +344,364 @@ describe('PBR', () => {
     })
 
    
+
+    // it("Toggle and add parameter", () => {
+    //     cy.log('Toggle and add parameter')
+    //     const url = Cypress.config().baseUrl
+    //     cy.visit(url + '/#/dashboard/paper_batch_records')
+    //     cy.log('Load Landing Page')
+    //     cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
+    //     cy.wait(6000);
+
+    //     cy.get('[d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"]').click({ force: true });
+    //     cy.get('#basic_templateName').clear();
+    //     cy.get('#basic_templateName').type('test');
+    //     cy.get(':nth-child(1) > :nth-child(2) > .pdfListBlock > span').click({ force: true });
+    //     cy.get(':nth-child(1) > .ant-radio-button > .ant-radio-button-input').check({ force: true });
+    //     cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
+    //     cy.intercept('POST', '**/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' })
+    //     cy.wait(6000);
+
+    //     /* ==== Generated with Cypress Studio ==== */
+    //     cy.get(':nth-child(3) > .ant-collapse-header').click();
+    //     cy.get('.firstParameter-para > p').click({force:true});
+    //     cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header > .ant-collapse-header-text').click();
+    //     cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header > .ant-collapse-header-text').click();
+    //     cy.get('.firstParameter-para > p').click();
+    //     cy.get('.ant-notification-notice-btn > .ant-btn > span').click();
+    //     cy.get('.pbrTemplateLeft > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .trigger > .panelImg').click();
+    //     cy.get('.pbrTemplateRight > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .trigger > .panelImg').click();
+    //     cy.get('.pdfToImgBlock > div > img').click();
+    //     cy.get('.firstParameter-para > p').click();
+    //     cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header').click();
+
+    // });
+
+    // it("Add all parameter section", () => {
+    //     cy.log('Toggle and add parameter')
+    //     const url = Cypress.config().baseUrl
+    //     cy.visit(url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=test&fromScreen=Workspace')
+    //     cy.log('Load Landing Page')
+    //     cy.intercept('POST', '**/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' })
+    //     cy.url().should('eq', url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=test&fromScreen=Workspace')
+    //     cy.wait(6000);
+
+    //     /* ==== Generated with Cypress Studio ==== */
+    //     cy.get(':nth-child(3) > .ant-collapse-header').click();
+    //     cy.get('.firstParameter-para > p').click({force:true});
+    //     // cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header > .ant-collapse-header-text').click();
+    //     cy.get(':nth-child(1) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').click();
+    //     cy.get('[coords="305.73044443130493,57.42703981697556,359.3141876310109,68.98802669718857"]').click({force:true});
+    //     cy.get(':nth-child(2) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').click();
+    //     cy.get('[coords="363.9767521619797,58.17100867629048,382.82751093059767,69.43234605714675"]').click({force:true});
+    //     cy.get(':nth-child(3) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click();
+    //     cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+
+
+    // })
+
+    // it("Add value section", () => {
+    //     cy.log('Toggle and add parameter')
+    //     const url = Cypress.config().baseUrl
+    //     cy.visit(url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=test&fromScreen=Workspace')
+    //     cy.log('Load Landing Page')
+    //     cy.intercept('POST', '**/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' })
+    //     cy.url().should('eq', url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=test&fromScreen=Workspace')
+    //     cy.wait(6000);
+
+    //     /* ==== Generated with Cypress Studio ==== */
+    //     /* ==== Generated with Cypress Studio ==== */
+    //     cy.get(':nth-child(3) > .ant-collapse-header').click();
+    //     cy.get('.firstParameter-para > p').click({force:true});
+    //     // cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header > .ant-collapse-header-text').click();
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').click();
+    //     cy.get('[coords="409.7616002559662,57.580265291035175,466.13211452960957,68.88628209941082"]').click({ force: true });
+    //     cy.get(':nth-child(6) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').click();
+    //     cy.get('[coords="506.286269903183,57.52309657633298,579.7775461822747,68.99929273873552"]').click({ force: true });
+    //     cy.get('#dynamic_form_nest_item_users_0_time_rule').click();
+    //     cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+    //     cy.get('#dynamic_form_nest_item_users_0_time_min').clear();
+    //     cy.get('#dynamic_form_nest_item_users_0_time_min').type('1');
+    //     cy.get('#dynamic_form_nest_item_users_0_time_max').clear();
+    //     cy.get('#dynamic_form_nest_item_users_0_time_max').type('2');
+    //     cy.get(':nth-child(6) > :nth-child(7) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click();
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
+    //     cy.get('#dynamic_form_nest_item_users_0_time_valueTransformation').clear();
+    //     cy.get('#dynamic_form_nest_item_users_0_time_valueTransformation').type('111');
+    //     /* ==== End Cypress Studio ==== */
+
+
+
+    // })
+
+    // it("Add Date section", () => {
+    //     cy.log('Toggle and add parameter')
+    //     const url = Cypress.config().baseUrl
+    //     cy.visit(url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=test&fromScreen=Workspace')
+    //     cy.log('Load Landing Page')
+    //     cy.intercept('POST', '**/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' })
+    //     cy.url().should('eq', url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=test&fromScreen=Workspace')
+    //     cy.wait(6000);
+
+    //     /* ==== Generated with Cypress Studio ==== */
+    //     cy.get(':nth-child(3) > .ant-collapse-header').click();
+    //     cy.get('.firstParameter-para > p').click({force:true});
+    //     // cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header').click();
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').click();
+    //     cy.get('[coords="597.2250137329102,57.67178233712908,648.5210151225327,68.81591958925124"]').click({ force: true });
+    //     cy.get(':nth-child(7) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').click();
+    //     cy.get('[coords="730.5601224899292,57.60334555059665,775.6920582279563,68.81478161551048"]').click({ force: true });
+    //     cy.get('#dynamic_form_nest_item_users_0_date_rule').click();
+    //     cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+    //     cy.get('#dynamic_form_nest_item_users_0_date_valueArea').clear();
+    //     cy.get('#dynamic_form_nest_item_users_0_date_valueArea').type('asdad');
+    //     cy.get(':nth-child(7) > :nth-child(7) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click();
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
+    //     cy.get('#dynamic_form_nest_item_users_0_date_valueTransformation').clear();
+    //     cy.get('#dynamic_form_nest_item_users_0_date_valueTransformation').type('111');
+    //     /* ==== End Cypress Studio ==== */
+
+    // })
+
+    
+
+    // it("Add All parameters", () => {
+    //     const url = Cypress.config().baseUrl
+    //     cy.visit(url + '/#/dashboard/paper_batch_records')
+    //     cy.log('Load Landing Page')
+    //     cy.intercept('GET', '**/get_data_view', { fixture: 'paperBatchFileList.json' })
+    //     cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
+    //     cy.wait(6000);
+
+    //     /* ==== Generated with Cypress Studio ==== */
+    //     cy.get('[d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"]').click({ force: true });
+    //     cy.get('#basic_templateName').clear();
+    //     cy.get('#basic_templateName').type('Cy-press-test');
+    //     cy.get(':nth-child(1) > :nth-child(2) > .pdfListBlock > span').click({ force: true });
+    //     cy.get(':nth-child(1) > .ant-radio-button > .ant-radio-button-input').check({ force: true });
+    //     cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
+    //     cy.intercept('POST', '**/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' })
+    //     cy.wait(6000);
+
+    //     /* ==== Generated with Cypress Studio ==== */
+
+    //     /* ==== End Cypress Studio ==== */
+    //     /* ==== Generated with Cypress Studio ==== */
+    //     cy.get(':nth-child(3) > .ant-collapse-header').click();
+    //     cy.get('.pbrTemplateLeft > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > :nth-child(2) > .ant-collapse-item-active > .ant-collapse-header').click();
+    //     cy.get(':nth-child(3) > .ant-collapse-header').click();
+    //     cy.get('.firstParameter-para > p').click({force:true});
+    //     // cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header > .ant-collapse-header-text').click();
+    //     cy.get('#dynamic_form_nest_item_users_0_name').clear();
+    //     cy.get('#dynamic_form_nest_item_users_0_name').type('asdf');
+    //     cy.get('#dynamic_form_nest_item_users_0_method').click();
+    //     cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').click();
+    //     cy.get('[coords="111.94621527194977,57.53743443638084,178.1889796704054,68.96316892467435"]').click({ force: true });
+    //     cy.get(':nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').click();
+    //     cy.get('[coords="205.69649124145508,57.55570698529482,267.6595058441161,68.86165171861641"]').click({ force: true });
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').clear();
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').type('Documents');
+    //     cy.get(':nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').clear();
+    //     cy.get(':nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').type('IDs');
+    //     cy.get(':nth-child(1) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').click();
+    //     cy.get('.pbrTemplateRight > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .trigger > .panelImg').click();
+    //     cy.get('.ant-form > :nth-child(3) > :nth-child(1) > .ant-input').clear();
+    //     cy.get('.ant-form > :nth-child(3) > :nth-child(1) > .ant-input').type('210.74213027954102');
+    //     cy.get('.ant-form > :nth-child(3) > :nth-child(2) > .ant-input').clear();
+    //     cy.get('.ant-form > :nth-child(3) > :nth-child(2) > .ant-input').type('66.97486957535148');
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').type('275.11642265319813');
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').type('69.16671761870377');
+    //     cy.get('.pbrTemplateRight > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .trigger > .panelImg').click();
+    //     /* ==== End Cypress Studio ==== */
+
+    // })
+
+    // it("Add multiple parameters", () => {
+    //     cy.log('Toggle and add parameter')
+    //     const url = Cypress.config().baseUrl
+    //     cy.visit(url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=test&fromScreen=Workspace')
+    //     cy.log('Load Landing Page')
+    //     cy.intercept('POST', '**/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' })
+    //     cy.url().should('eq', url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=test&fromScreen=Workspace')
+    //     cy.wait(6000);
+
+    //     /* ==== Generated with Cypress Studio ==== */
+    //     cy.get(':nth-child(3) > .ant-collapse-header').click();
+    //     cy.get('.firstParameter-para > p').click();
+    //     // cy.get('.singleParameterBlock > .ant-collapse > .ant-collapse-item > .ant-collapse-header').click();
+    //     cy.get('#dynamic_form_nest_item_users_0_name').clear();
+    //     cy.get('#dynamic_form_nest_item_users_0_name').type('asdasd');
+    //     cy.get('#dynamic_form_nest_item_users_0_method').click();
+    //     cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').clear();
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').type('asdasd');
+    //     cy.get(':nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').clear();
+    //     cy.get(':nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').type('dasdsad');
+    //     cy.get(':nth-child(1) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').clear();
+    //     cy.get(':nth-child(1) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').type('dsadas');
+    //     cy.get(':nth-child(2) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').clear();
+    //     cy.get(':nth-child(2) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').type('dasdas');
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').clear();
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').type('dsadsa');
+    //     cy.get(':nth-child(6) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').clear();
+    //     cy.get(':nth-child(6) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').type('dasdsa');
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').clear();
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').type('dsadsa');
+    //     cy.get(':nth-child(7) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').clear();
+    //     cy.get(':nth-child(7) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').type('dasdsa');
+    //     cy.get('.firstParameter-para > p').click();
+    //     // cy.get('.singleParameterBlock > .ant-collapse > :nth-child(2) > .ant-collapse-header > .ant-collapse-header-text').click();
+    //     cy.get('.firstParameter-para > p').click();
+    //     cy.get('#dynamic_form_nest_item_users_1_name').clear();
+    //     cy.get('#dynamic_form_nest_item_users_1_name').type('dasdsa');
+    //     cy.get('#dynamic_form_nest_item_users_1_method').click();
+    //     cy.get(':nth-child(5) > :nth-child(1) > .ant-select-dropdown > :nth-child(1) > .rc-virtual-list > .rc-virtual-list-holder > :nth-child(1) > .rc-virtual-list-holder-inner > .ant-select-item-option-active > .ant-select-item-option-content').click();
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(3) > :nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').clear();
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(3) > :nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').type('dasdas');
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(3) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').clear();
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(3) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-row > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-input').type('dasdsa');
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(5) > :nth-child(1) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').clear();
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(5) > :nth-child(1) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').type('dsadsa');
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(5) > :nth-child(2) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').clear();
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(5) > :nth-child(2) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').type('dsadsa');
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(6) > :nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').clear();
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(6) > :nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').type('dsad');
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(6) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').clear();
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(6) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').type('dsadsa');
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(7) > :nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').clear();
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(7) > :nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').type('dasd');
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(7) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').clear();
+    //     cy.get('.ant-collapse-item-active > .ant-collapse-content > .ant-collapse-content-box > .addParameterBlock > .parameterAdded-block > :nth-child(7) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').type('dsads');
+    //     /* ==== End Cypress Studio ==== */
+    // })
+    // it("Save Multiple", () => {
+    //     const url = Cypress.config().baseUrl
+    //     cy.visit(url + '/#/dashboard/paper_batch_records')
+    //     cy.log('Load Landing Page')
+    //     cy.intercept('GET', '**/get_data_view', { fixture: 'paperBatchFileList.json' })
+    //     cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
+    //     cy.wait(6000);
+
+    //     /* ==== Generated with Cypress Studio ==== */
+    //     cy.get('[d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"]').click({ force: true });
+    //     cy.get('#basic_templateName').clear();
+    //     cy.get('#basic_templateName').type('Cypress-test');
+    //     cy.get(':nth-child(1) > :nth-child(2) > .pdfListBlock > span').click({ force: true });
+    //     cy.get(':nth-child(1) > .ant-radio-button > .ant-radio-button-input').check({ force: true });
+    //     cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
+    //     cy.intercept('POST', '**/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' })
+    //     cy.wait(6000);
+    //     /* ==== Generated with Cypress Studio ==== */
+    //     cy.get(':nth-child(3) > .ant-collapse-header').click();
+    //     cy.get('.firstParameter-para > p').click();
+    //     cy.get('#dynamic_form_nest_item_users_0_name').clear();
+    //     cy.get('#dynamic_form_nest_item_users_0_name').type('para1');
+    //     cy.get('#dynamic_form_nest_item_users_0_method').click();
+    //     cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
+    //     cy.get('#dynamic_form_nest_item_users_0_param_key').click({ force: true });
+    //     cy.get('[coords="111.94621527194977,57.53743443638084,178.1889796704054,68.96316892467435"]').click({ force: true });
+    //     cy.get('#dynamic_form_nest_item_users_0_param_snippet_value').click({ force: true });
+    //     cy.get('[coords="205.69649124145508,57.55570698529482,267.6595058441161,68.86165171861641"]').click({ force: true });
+    //     cy.get(':nth-child(1) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').click({ force: true });
+    //     cy.get('[coords="305.73044443130493,57.42703981697556,359.3141876310109,68.98802669718857"]').click({ force: true });
+    //     cy.get(':nth-child(2) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').click({ force: true });
+    //     cy.get('[coords="363.9767521619797,58.17100867629048,382.82751093059767,69.43234605714675"]').click({ force: true });
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .ant-input').click({ force: true });
+    //     cy.get('[coords="409.7616002559662,57.580265291035175,466.13211452960957,68.88628209941082"]').click({ force: true });
+    //     cy.get(':nth-child(6) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').click({ force: true });
+    //     cy.get('[coords="506.286269903183,57.52309657633298,579.7775461822747,68.99929273873552"]').click({ force: true });
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').click();
+    //     cy.get('.pdfToImgBlock > div > img').click();
+    //     cy.get(':nth-child(3) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').click();
+    //     cy.get('[coords="597.2250137329102,57.67178233712908,648.5210151225327,68.81591958925124"]').click({ force: true });
+    //     cy.get(':nth-child(7) > :nth-child(4) > .ant-upload-drag > .ant-upload > .ant-upload-drag-container > .ant-upload-text-input > .input_field > .ant-input').click();
+    //     cy.get('[coords="697.802242398262,57.54827614873646,725.8861341178416,71.42041257582598"]').click({ force: true });
+    //     cy.get('.ant-btn > :nth-child(2)').click();
+    //     cy.get('.pbrCenterPanelHeader-para').click();
+    //     cy.get('.ant-modal-close-x > .anticon > svg > path').click();
+    //     cy.get('.custom-primary-btn > span').click();
+    //     cy.wait(6000);
+    //     /* ==== End Cypress Studio ==== */
+    // })
+    // it("Edit Created Template", () => {
+    //     cy.log('Edit Created Template')
+    //     const url = Cypress.config().baseUrl
+    //     cy.visit(url + '/#/dashboard/paper_batch_records')
+    //     cy.intercept('GET', '**/pbr_template', { fixture: 'paperBatchLanding.json' })
+    //     cy.log('Load Landing Page')
+    //     cy.url().should('eq', url + '/#/dashboard/paper_batch_records')
+    //     cy.wait(6000);
+
+
+    //     /* ==== Generated with Cypress Studio ==== */
+    //     cy.get(':nth-child(1) > .chart-tiles').click();
+    //     cy.intercept('POST', '**/ocr-json-extraction', { fixture: 'pbrBoundingBox.json' })
+    //     cy.wait(6000);
+    //     /* ==== Generated with Cypress Studio ==== */
+    //     cy.get('.pbrTemplateRight > .pbrPanel > .ant-layout-sider > .ant-layout-sider-children > .trigger > .panelImg').click();
+    //     cy.get('[coords="111.94621527194977,57.53743443638084,178.1889796704054,68.96316892467435"]').click({ force: true })
+    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').type('150.88259327411652');
+    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').type('66.95678142830727');
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').type('178.49597273766994');
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').type('78.26721033919598');
+    //     cy.get('[coords="205.69649124145508,57.55570698529482,267.6595058441161,68.86165171861641"]').click({ force: true });
+    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').type('3.742130279541021');
+    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').type('26.97486957535148');
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').type('235.11642265319813');
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').type('65.16671761870377');
+    //     cy.get('[coords="305.73044443130493,57.42703981697556,359.3141876310109,68.98802669718857"]').click({ force: true });
+    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').type('2.825642108917241');
+    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').type('56.24750088304278');
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').type('355.9002761095761');
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').type('63.29181725345548');
+    //     cy.get('[coords="409.7616002559662,57.580265291035175,466.13211452960957,68.88628209941082"]').click({ force: true });
+    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').type('5.86837840080263');
+    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').type('36.99918004497886');
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').type('261.70330584049213');
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').type('48.19109943602227');
+    //     cy.get('[coords="597.2250137329102,57.67178233712908,648.5210151225327,68.81591958925124"]').click({ force: true });
+    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').type('291.550666809082');
+    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').type('27.08977352455255');
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').type('242.3592952638863');
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').type('28.12144700624044');
+    //     cy.get('[coords="697.802242398262,57.54827614873646,725.8861341178416,71.42041257582598"]').click({ force: true });
+    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(3) > :nth-child(1) > .ant-input').type('291.1722923517227');
+    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(3) > :nth-child(2) > .ant-input').type('26.96751372888683');
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(1) > .ant-input').type('728.9893537461757');
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').clear();
+    //     cy.get(':nth-child(4) > :nth-child(2) > .ant-input').type('20.69965611863874');
+    //     cy.get('.custom-secondary-btn > span').click();
+    //     cy.get('.ant-modal-close-x > .anticon > svg > path').click();
+    //     /* ==== End Cypress Studio ==== */
+
+
+    // });
+
 
 });
