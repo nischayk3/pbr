@@ -19,11 +19,11 @@ describe('PBR', () => {
         // }).as("cofidenceCount")
         cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrStatusCount.json' }).as("statusCount")
         // cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrConfidenceCount.json' }).as("cofidenceCount")
-        // cy.intercept('GET', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review' })
+        cy.intercept('GET', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review' }).as("pbr_review")
         // cy.intercept('GET', '/pbr/udh/get_cpv_pbr?id=27', { fixture: 'pbrUpdate' })
         // cy.intercept('GET', '/pbr/udh/get_cpv_pbr_count?key=status', { fixture: 'pbrStatusCount' })
         // cy.intercept('GET', '/pbr/udh/get_cpv_pbr_count?key=confidence', { fixture: 'pbrConfidenceCount' })
-        cy.intercept('GET', '/pbr/udh/get_tran_pbr_template_id', { fixture: 'pbrTemplateList' })
+        cy.intercept('GET', '/pbr/udh/get_tran_pbr_template_id', { fixture: 'pbrTemplateList' }).as("pbrTemplateList")
         cy.viewport(1366, 768);
         localStorage.setItem("test_enabled", true);
         localStorage.setItem("user", "fahad.siddiqui@mareana.com");
@@ -47,11 +47,11 @@ describe('PBR', () => {
         cy.visit(url + '/#/dashboard/pbr_reviewer')
         cy.log('Load Landing Page')
         cy.url().should('eq', url + '/#/dashboard/pbr_reviewer')
-        cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
+        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' }).as("pbr_review")
         cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrStatusCount.json' }).as("statusCount")
-        cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrConfidenceCount.json' }).as("cofidenceCount")
+        // cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrConfidenceCount.json' }).as("cofidenceCount")
         cy.wait(6000);
-        cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
+        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' }).as("pbr_review")
        
         // cy.intercept({ method: 'POST', url: '/get_cpv_pbr_count', times: 1 }, (req) => {
         //     req.reply({
@@ -75,13 +75,17 @@ describe('PBR', () => {
     })
     it("Select checkbox", () => {
         cy.get('.ant-checkbox-input').eq(1).click({ force: true })
+        cy.get('.ant-checkbox-input').eq(2).click({ force: true })
+        cy.get('.ant-checkbox-input').eq(3).click({ force: true })
+        cy.get('.ant-checkbox-input').eq(1).click({ force: true })
+        cy.get('.ant-checkbox-input').eq(2).click({ force: true })
         cy.get('.ant-input-clear-icon > .anticon > svg').click({ force: true })
         // cy.get('.ant-input').type('23');
         // cy.get('.ant-input-group-addon > .ant-btn > span').click({ force: true });
     })
     it("Status chart", () => {
         cy.get(".slicetext").eq(1).click({ force: true })
-        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
+        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' }).as("pbr_review")
         cy.wait(6000);
         cy.get(".status-approved").click({ force: true })
        
@@ -106,7 +110,7 @@ describe('PBR', () => {
         // cy.get(".ant-table-cell-fix-right > a").eq(0).click({ force: true })
         const url = Cypress.config().baseUrl
         cy.visit(url + '/#/dashboard/pbr_update?id=185')
-        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbrUpdate' })
+        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbrUpdate' }).as("pbrUpdate")
         cy.wait(10000);
         
     })
