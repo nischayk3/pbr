@@ -18,6 +18,7 @@ describe('PBR', () => {
         //     });
         // }).as("cofidenceCount")
         cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrStatusCount.json' }).as("statusCount")
+        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
         // cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrConfidenceCount.json' }).as("cofidenceCount")
         // cy.intercept('GET', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review' })
         // cy.intercept('GET', '/pbr/udh/get_cpv_pbr?id=27', { fixture: 'pbrUpdate' })
@@ -135,6 +136,7 @@ describe('PBR', () => {
         cy.wait(1000);
         cy.get("#save_button").click({ force: true })
         cy.wait(6000);
+        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbrUpdate' })
         cy.get("#editLogs > a").click({ force: true })
     })
     it("PBR", () => {
