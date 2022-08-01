@@ -75,6 +75,10 @@ describe('PBR', () => {
     })
     it("Select checkbox", () => {
         cy.get('.ant-checkbox-input').eq(1).click({ force: true })
+        cy.get('.ant-checkbox-input').eq(2).click({ force: true })
+        cy.get('.ant-checkbox-input').eq(3).click({ force: true })
+        cy.get('.ant-checkbox-input').eq(1).click({ force: true })
+        cy.get('.ant-checkbox-input').eq(2).click({ force: true })
         cy.get('.ant-input-clear-icon > .anticon > svg').click({ force: true })
         // cy.get('.ant-input').type('23');
         // cy.get('.ant-input-group-addon > .ant-btn > span').click({ force: true });
