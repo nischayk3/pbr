@@ -19,7 +19,7 @@ describe('PBR', () => {
         // }).as("cofidenceCount")
         cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrStatusCount.json' }).as("statusCount")
         // cy.intercept('POST', '/pbr/udh/get_cpv_pbr_count', { fixture: 'pbrConfidenceCount.json' }).as("cofidenceCount")
-        cy.intercept('GET', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review' }).as("pbr_review")
+        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review' }).as("pbr_review")
         // cy.intercept('GET', '/pbr/udh/get_cpv_pbr?id=27', { fixture: 'pbrUpdate' })
         // cy.intercept('GET', '/pbr/udh/get_cpv_pbr_count?key=status', { fixture: 'pbrStatusCount' })
         // cy.intercept('GET', '/pbr/udh/get_cpv_pbr_count?key=confidence', { fixture: 'pbrConfidenceCount' })
