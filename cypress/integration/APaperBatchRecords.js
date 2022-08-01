@@ -54,6 +54,7 @@ describe('PBR', () => {
         cy.get('.ant-input').click({force:true})
         cy.get('.ant-input').type("p258")
         cy.get('.ant-input-search-button').click({force:true})
+        cy.wait(6000)
         cy.get('.ant-table-row > :nth-child(1)').click({force:true})
         
         //cy.get('.chart-tiles').click({ force: true });
