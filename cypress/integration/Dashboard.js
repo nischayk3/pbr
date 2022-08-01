@@ -116,16 +116,22 @@ describe('Dashboard', () => {
 		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
 		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
 		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
+		cy.intercept('GET', '**/chart-list?chart_status=ALL', { fixture: 'allChartsDashboard.json' })
+
 		cy.get('.create-new > .anticon > svg', { timeout: 10000 }).click({ force: true });
 		cy.get(':nth-child(1) > :nth-child(2) > :nth-child(1) > .ant-input').clear();
 		cy.get(':nth-child(1) > :nth-child(2) > :nth-child(1) > .ant-input').type('new dashboard');
 		cy.get('.ant-input-wrapper > .ant-input').click();
-		cy.wait(6000);
+		cy.wait(3000);
 		cy.get('.ant-input-wrapper > .ant-input').type('C263{enter}');
 		cy.get('.ant-table-row > :nth-child(2)').click();
 		//cy.get('[data-row-key="0"] > :nth-child(1)').click();
 		//cy.get('[data-row-key="0"]').type("C263").click({ force: true });
 		cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
+		cy.intercept('GET', '**/chart-object?chartId=C263', { fixture: 'chartDashboard.json' })
+		// cy.intercept('GET', '**/chart-list?chart_status=ALL', { fixture: 'chartDashboard.json' })
+
+
 		cy.get('[style="margin-left: 20px; margin-right: 20px;"] > .anticon > svg > path').click({ force: true });
 		cy.get('.select_field > .ant-select > .ant-select-selector').click();
 		cy.get('.ant-col > .ant-btn').click();
@@ -190,28 +196,39 @@ describe('Dashboard', () => {
 
 		// /* ==== Generated with Cypress Studio ==== */
 		// //global date filters
-		cy.get(':nth-child(1) > .ant-picker-input > input').click();
-		cy.get(':nth-child(1) > .ant-picker-cell-start > .ant-picker-cell-inner').click();
-		cy.get(':nth-child(2) > .ant-picker-input > input').click();
-		cy.wait(6000);
-		cy.get('.ant-picker-cell-today > .ant-picker-cell-inner').eq(1).click({ force: true });
-		cy.get('.global-filters > :nth-child(2) > .ant-btn > span').click();
-		cy.get('.btns > [ant-click-animating-without-extra-node="false"] > span').click();
+		// cy.get(':nth-child(1) > .ant-picker-input > input').click({ force: true });
+		// cy.get(':nth-child(1) > .ant-picker-cell-start > .ant-picker-cell-inner').click();
+		// cy.get(':nth-child(2) > .ant-picker-input > input').click();
+		// cy.wait(6000);
+		// cy.get('.ant-picker-cell-today > .ant-picker-cell-inner').eq(1).click({ force: true });
+		// cy.get('.global-filters > :nth-child(2) > .ant-btn > span').click();
+		// cy.get('.btns > [ant-click-animating-without-extra-node="false"] > span').click();
 		/* ==== End Cypress Studio ==== */
 
 		/* ==== Generated with Cypress Studio ==== */
 		//deleting one card when loaded
-		cy.get(':nth-child(2) > .chartCard > .inner-chart-filters > [style="display: flex; flex-direction: row; justify-content: space-between; margin: 5px 7px;"] > :nth-child(2) > [style="margin-left: 10px;"] > .anticon > svg').click();
-		cy.get('.btns > [ant-click-animating-without-extra-node="false"] > span').click();
+		// cy.get(':nth-child(2) > .chartCard > .inner-chart-filters > [style="display: flex; flex-direction: row; justify-content: space-between; margin: 5px 7px;"] > :nth-child(2) > [style="margin-left: 10px;"] > .anticon > svg').click();
+		// cy.get('.btns > [ant-click-animating-without-extra-node="false"] > span').click();
 		/* ==== End Cypress Studio ==== */
 
+		/* ==== Generated with Cypress Studio ==== */
+		// new added
+		cy.get(':nth-child(2) > :nth-child(1) > .ant-picker-input').click();
+		cy.get(':nth-child(8) > :nth-child(1) > .ant-picker-dropdown > .ant-picker-panel-container > .ant-picker-panel > .ant-picker-date-panel > .ant-picker-body > .ant-picker-content > tbody > :nth-child(1) > .ant-picker-cell-start > .ant-picker-cell-inner').click();
+		cy.get(':nth-child(2) > .ant-picker-input').click();
+		cy.get(':nth-child(9) > :nth-child(1) > .ant-picker-dropdown > .ant-picker-panel-container > .ant-picker-panel > .ant-picker-footer > .ant-picker-today-btn').click();
+		/* ==== End Cypress Studio ==== */
 	});
 	it('Checbox and site change', () => {
 		cy.get("#login-btn", { timeout: 2000 }).click();
 		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
 		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
 		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
+		cy.intercept('GET', '**/chart-list?chart_status=ALL', { fixture: 'allChartsDashboard.json' })
+
 		cy.get('.create-new > .anticon > svg', { timeout: 10000 }).click({ force: true });
+		cy.intercept('GET', '**/chart-object?chartId=C263', { fixture: 'chartDashboard.json' })
+
 		cy.get(':nth-child(1) > :nth-child(2) > :nth-child(1) > .ant-input').clear();
 		cy.get(':nth-child(1) > :nth-child(2) > :nth-child(1) > .ant-input').type('new dashboard');
 		cy.get('.ant-input-wrapper > .ant-input').click();
