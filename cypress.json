@@ -1,5 +1,5 @@
 {
-	"baseUrl": "https://mi-devv3-5.mareana.com",
+	"baseUrl": "http://nginx",
 	"integrationFolder": "cypress/integration",
 	"fixturesFolder": "cypress/fixtures",
 	"supportFile": "cypress/support/index.js",
