@@ -61,18 +61,19 @@ function PbrReviewer() {
         setTemplateData(tableResponse.Data);
         dispatch(hideLoader());
       }
-      /* istanbul ignore next */
+      
       else if (tableResponse['status-code'] === 404) {
+        /* istanbul ignore next */
         dispatch(hideLoader());
         setTemplateData(tableResponse.Data);
         dispatch(showNotification('error', tableResponse.Message));
-        /* istanbul ignore next */
       } else {
+        /* istanbul ignore next */
         dispatch(hideLoader());
       }
     }
-    /* istanbul ignore next */
     catch (error) {
+      /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification('error', error.Message));
     }
@@ -90,6 +91,7 @@ function PbrReviewer() {
         dispatch(showNotification('error', res.Message));
       }
     } catch (error) {
+      /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification('error', error.Message));
     }
@@ -106,7 +108,7 @@ function PbrReviewer() {
     setReviewerReq(obj)
     dispatch(hideLoader());
   };
-
+/* istanbul ignore next */
   const showfilters = async (value) => {
     dispatch(showLoader());
     setShowResetConfidence(true)
@@ -200,11 +202,11 @@ function PbrReviewer() {
         High = item.count
       } else if (item.confidence == "Low") {
         Low = item.count
-      } else if(item.confidence == "Medium"){
+      } else if (item.confidence == "Medium") {
         Medium = item.count
       }
     })
-    setPieChartData1([High,Medium,Low]);
+    setPieChartData1([High, Medium, Low]);
   };
 
   let appchart1 = [{
@@ -341,7 +343,7 @@ function PbrReviewer() {
       dataIndex: 'snippet_image',
       render: (text, record, index) => {
         return (
-          <img src={`data:image/png;base64,${text}`} width="80%" height="80%" />
+          <img src={`data:image/png;base64,${text}`} width="130px" height="40px" />
         )
       }
     },
@@ -560,7 +562,7 @@ function PbrReviewer() {
     }
 
   };
-
+/* istanbul ignore next */
   const resetConfidence = async () => {
     dispatch(showLoader());
     let obj = { ...reviewerReq, confidence: null }
@@ -595,6 +597,7 @@ function PbrReviewer() {
     }
     setSelectedTemplateArray(val)
   }
+  /* istanbul ignore next */
   const applyTemplateFilter = () => {
     cardTableData()
     chart()
@@ -662,7 +665,7 @@ function PbrReviewer() {
             </Row>
           </div>
           <div className='review-wrapper'>
-            <div className='content_section' >
+            <div className='content_section' style={{ height: "100vh" }} >
               <div className="scrollable-container" >
                 <div>
                   <Row justify="space-around" align="middle">
@@ -722,7 +725,7 @@ function PbrReviewer() {
                     pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '50', '100', '200'] }}
                     scroll={{
                       x: 2300,
-                      y: 220,
+                      y: 'calc(100vh - 443px)',
                     }}
                     style={{ border: '1px solid #ececec', borderRadius: '2px' }}
                   />

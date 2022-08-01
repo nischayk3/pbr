@@ -8,7 +8,7 @@ const PythonNotebook = () => {
 				src={JUPYTER_NOTEBOOK}
 				width='1300'
 				height='900'
-				frameborder='0'></iframe>
+				frameBorder='0'></iframe>
 		</div>
 	);
 };
