@@ -55,12 +55,15 @@ describe('PBR', () => {
         cy.get('.ant-input').type("p258")
         cy.get('.ant-input-search-button').click({force:true})
         cy.wait(6000)
-        cy.get('.ant-table-row > :nth-child(1)').click({force:true})
+        const url = Cypress.config().baseUrl
+        cy.visit(url + '/#/dashboard/paper_batch_records/P258?file=Batch%20Record%20Example%203.pdf&temp_disp_id=P258&tempalteName=test&fromScreen=Workspace&version=1')
+       
         
         //cy.get('.chart-tiles').click({ force: true });
     })
 
     it("Edit Created Template", () => {
+        cy.wait(6000)
         cy.get('#page-Identifier > .ant-collapse-header').click({ force: true });
         cy.wait(10000);
         cy.get('#page_identifier_key').clear({ force: true });
