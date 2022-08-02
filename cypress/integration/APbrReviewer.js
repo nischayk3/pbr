@@ -94,19 +94,19 @@ describe('PBR', () => {
         
     })
 
-    it("Edit fields", () => {
-        cy.wait(6000);
-        cy.get(".ant-table-cell-fix-right > .ant-btn > span").click({ force: true })
-        cy.get("#snippetValue").clear({ force: true })
-        cy.get("#snippetValue").type("claimss")
-        cy.get("#recordedDate").clear({ force: true })
-        cy.get("#recordedDate").type("08/07/2020")
-        cy.get("#recordedTime").clear({ force: true })
-        cy.get("#recordedTime").type("10:30")
-        cy.get("#uomnum").clear({ force: true })
-        cy.get("#uomnum").type("5.6")
+    // it("Edit fields", () => {
+    //     cy.wait(6000);
+    //     cy.get(".ant-table-cell-fix-right > .ant-btn > span").click({ force: true })
+    //     cy.get("#snippetValue").clear({ force: true })
+    //     cy.get("#snippetValue").type("claimss")
+    //     cy.get("#recordedDate").clear({ force: true })
+    //     cy.get("#recordedDate").type("08/07/2020")
+    //     cy.get("#recordedTime").clear({ force: true })
+    //     cy.get("#recordedTime").type("10:30")
+    //     cy.get("#uomnum").clear({ force: true })
+    //     cy.get("#uomnum").type("5.6")
 
-    })
+    // })
     it("Save and Audit logs", () => {
         cy.wait(1000);
         cy.get("#save_button").click({ force: true })
@@ -114,30 +114,30 @@ describe('PBR', () => {
         cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbrUpdate' })
         cy.get("#editLogs > a").click({ force: true })
     })
-    it("PBR", () => {
+    // it("PBR", () => {
 
-        cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
+    //     cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
 
-        cy.log('Load Landing Page')
+    //     cy.log('Load Landing Page')
 
        
 
-        const url = Cypress.config().baseUrl
+    //     const url = Cypress.config().baseUrl
 
-        cy.visit(url + '/#/dashboard/pbr_reviewer')
+    //     cy.visit(url + '/#/dashboard/pbr_reviewer')
 
-        cy.url().should('eq', url + '/#/dashboard/pbr_reviewer')
+    //     cy.url().should('eq', url + '/#/dashboard/pbr_reviewer')
 
-        cy.wait(6000);
+    //     cy.wait(6000);
 
-        cy.get('.ant-col-4 > .ant-select > .ant-select-selector').click({ force: true })
+    //     cy.get('.ant-col-4 > .ant-select > .ant-select-selector').click({ force: true })
 
-        cy.get('.ant-select-item-option').eq(1).click({ force: true })
+    //     cy.get('.ant-select-item-option').eq(1).click({ force: true })
 
-        cy.wait(6000);
+    //     cy.wait(6000);
 
-        cy.get('.ant-select-clear').click({ force: true })
+    //     cy.get('.ant-select-clear').click({ force: true })
 
-    });
+    // });
 
 });

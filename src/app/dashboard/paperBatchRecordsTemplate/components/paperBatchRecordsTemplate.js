@@ -658,6 +658,7 @@ function PaperBatchRecordsTemplate() {
             }
             let res = await getPbrTemplateData(req)
             let loadData = res.Data
+            /* istanbul ignore next */
             if (params?.temp_disp_id || localStorage.getItem("test_enabled") == !null) {
                 setTemplateInfo(loadData[0]?.pbr_template_info?.pbrTemplateInfo)
                 let loadMatBatch = {
@@ -684,7 +685,7 @@ function PaperBatchRecordsTemplate() {
                     setPageIdentifierData(obj1)
                 }
             }
-
+            /* istanbul ignore next */
             if (params?.temp_disp_id || localStorage.getItem("test_enabled") == !null) {
                 let obj = {}
                 loadData[0]?.pbr_template_info?.pbrTemplateInfo.forEach((item, index) => {

@@ -20,16 +20,16 @@ Cypress.on('uncaught:exception', (err, runnable) => {
       );
     })
 
-        
-    it("should login successfully using Ad", () => {
-
-        const url = Cypress.config().baseUrl
+    it("visit genealogy page",()=>{
+      const url = Cypress.config().baseUrl
         cy.visit(url + '/#/dashboard/genealogy')
         cy.log('Load Landing Page')
-        cy.url().should('eq', url + '/#/dashboard/genealogy')
-        cy.wait(1000)
-
+        cy.wait(10000)
+    })
+        
+    it("should login successfully using Ad", () => {
         cy.log("opening faq drawer")
+        cy.wait(10000)
         cy.get('.hepIcon ').click()
         cy.get('.help_item').eq(0).click()
         cy.get('#helptext').click()
