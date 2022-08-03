@@ -381,7 +381,13 @@ const ViewChart = (props, ref) => {
 	// 	showModal();
 	// };
 	const onChangeStart = (date, dateString) => {
-
+		if (date) {
+			let the_date = moment(date).toISOString()
+			if (!the_date.includes(dateString)) {
+				let split_date = the_date.split('T')
+				date = dateString + 'T' + split_date[1]
+			}
+		}
 		let obj = { ...dashboardInfo };
 		if (obj.data_filter.date_range == '') {
 			obj.data_filter.date_range = `${date ? moment(date).toISOString() : ''}/`;
@@ -393,7 +399,13 @@ const ViewChart = (props, ref) => {
 		setDashboardInfo(obj);
 	};
 	const onChangeEnd = (date, dateString) => {
-
+		if (date) {
+			let the_date = moment(date).toISOString()
+			if (!the_date.includes(dateString)) {
+				let split_date = the_date.split('T')
+				date = dateString + 'T' + split_date[1]
+			}
+		}
 		let obj = { ...dashboardInfo };
 		if (obj.data_filter.date_range == '') {
 			obj.data_filter.date_range = `/${date ? moment(date).toISOString() : ''}`;
@@ -406,6 +418,13 @@ const ViewChart = (props, ref) => {
 	};
 
 	const onInnerStart = (date, dateString, index) => {
+		if (date) {
+			let the_date = moment(date).toISOString()
+			if (!the_date.includes(dateString)) {
+				let split_date = the_date.split('T')
+				date = dateString + 'T' + split_date[1]
+			}
+		}
 
 		let arr = [...tempPanels];
 		if (arr[index].data_filter.date_range == '') {
@@ -419,7 +438,13 @@ const ViewChart = (props, ref) => {
 		setTempPanels(arr);
 	};
 	const onInnerEnd = (date, dateString, index) => {
-
+		if (date) {
+			let the_date = moment(date).toISOString()
+			if (!the_date.includes(dateString)) {
+				let split_date = the_date.split('T')
+				date = dateString + 'T' + split_date[1]
+			}
+		}
 		let arr = [...tempPanels];
 		if (arr[index].data_filter.date_range == '') {
 			arr[index].data_filter.date_range = `/${date ? moment(date).toISOString() : ''
@@ -937,6 +962,7 @@ const ViewChart = (props, ref) => {
 									)
 									: ''
 							}
+							allowClear
 						/>
 
 						<DatePicker
@@ -951,6 +977,7 @@ const ViewChart = (props, ref) => {
 									: ''
 							}
 							style={{ height: '34px' }}
+							allowClear
 						/>
 
 						{/* <RangePicker onChange={(e,value)=>handleDateChangeGlobal(e,value)}
