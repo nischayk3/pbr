@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import "./styles.scss";
 import { Row, Col, Button, Switch, DatePicker, Table, Tag, Select } from "antd";
@@ -14,6 +14,7 @@ import {
   showNotification,
 } from "../../../../../../../duck/actions/commonActions";
 const { RangePicker } = DatePicker;
+import moment from "moment";
 
 const columns = [
   {
@@ -57,24 +58,16 @@ const columns = [
   },
 ];
 
-const coverageTableData = [
-  {
-    batchstats: "44/45",
-    coverage_metric_percent: "98.0%",
-    function_id: "1",
-    function_name: "CARB_NORMAL",
-  },
-  {
-    batchstats: "44/45",
-    coverage_metric_percent: "98.0%",
-    function_id: "2",
-    function_name: "NORMAL_MUL_HEAVY",
-  },
-];
-
 const BatchesComponent = (props) => {
-  const { setShowBatchData, viewData } = props;
+  const { setShowBatchData, viewData, parameterData, onNextClick } = props;
   const [siteList, setSiteList] = useState([]);
+  const [batchFilters, setBatchFilters] = useState({
+    date_range: "",
+    unapproved_data: 0,
+    site: null,
+  });
+  const filterRef = useRef();
+  const dateFormat = "YYYY-MM-DD";
   const dispatch = useDispatch();
   const match = useRouteMatch();
   const history = useHistory();
@@ -85,6 +78,7 @@ const BatchesComponent = (props) => {
       savetype: "saveas",
       view_id: viewData.viewDispId,
       view_version: viewData.viewVersion,
+      data_filter: filterRef.current,
     };
     dispatch(showLoader());
     const apiResponse = await putPipelineObj(req);
@@ -95,6 +89,35 @@ const BatchesComponent = (props) => {
       dispatch(hideLoader());
       dispatch(showNotification("error", "unable to save pipeline"));
     }
+  };
+
+  const handledatechange = (e) => {
+    if (e) {
+      setBatchFilters({
+        ...batchFilters,
+        startDate: e[0].format("YYYY-MM-DD"),
+        endDate: e[1].format("YYYY-MM-DD"),
+      });
+    } else {
+      setBatchFilters({
+        ...batchFilters,
+        startDate: null,
+        endDate: null,
+      });
+    }
+  };
+  const onFilterChange = () => {
+    const dateRange = batchFilters.startDate
+      ? new Date(batchFilters.startDate).toISOString() +
+        "/" +
+        new Date(batchFilters.endDate).toISOString()
+      : "";
+    filterRef.current = {
+      site: batchFilters.site ? batchFilters.site : "",
+      unapproved_data: batchFilters.unapproved_data,
+      date_range: dateRange,
+    };
+    onNextClick(filterRef.current);
   };
 
   //function for getting site-ids
@@ -120,8 +143,8 @@ const BatchesComponent = (props) => {
           <div>
             <Select
               placeholder="Site"
-              // value={batchFilters.site}
-              // onChange={(e) => setBatchFilters({ ...batchFilters, site: e })}
+              value={batchFilters.site}
+              onChange={(e) => setBatchFilters({ ...batchFilters, site: e })}
               style={{ width: "100%", margin: "0px" }}
               allowClear
             >
@@ -138,16 +161,39 @@ const BatchesComponent = (props) => {
         </Col>
         <Col span={6} className="approved-data">
           <div>
-            show approved data &nbsp; <Switch size="small" />
+            show approved data &nbsp;{" "}
+            <Switch
+              size="small"
+              onChange={(e) =>
+                setBatchFilters({
+                  ...batchFilters,
+                  unapproved_data: e === true ? 1 : 0,
+                })
+              }
+            />
           </div>
         </Col>
         <Col span={10}>
           <div className="date-icons">
-            <RangePicker /> <FilterOutlined />
+            <RangePicker
+              value={
+                batchFilters.startDate
+                  ? [
+                      moment(batchFilters.startDate, dateFormat),
+                      moment(batchFilters.endDate, dateFormat),
+                    ]
+                  : ""
+              }
+              format={dateFormat}
+              onChange={(dateString) => handledatechange(dateString)}
+            />{" "}
+            <FilterOutlined />
           </div>
         </Col>
         <Col span={3}>
-          <Button className="custom-primary-btn">Apply</Button>
+          <Button className="custom-primary-btn" onClick={onFilterChange}>
+            Apply
+          </Button>
         </Col>
       </Row>
       <Row>
@@ -155,7 +201,7 @@ const BatchesComponent = (props) => {
           <Table
             pagination={false}
             columns={columns}
-            dataSource={coverageTableData}
+            dataSource={parameterData}
             rowKey={(record) => record.function_name}
           />
         </Col>
@@ -168,7 +214,11 @@ const BatchesComponent = (props) => {
           >
             Back
           </Button>
-          <Button className="custom-secondary-btn" onClick={savePipeline}>
+          <Button
+            className="custom-secondary-btn"
+            disabled={!parameterData.length}
+            onClick={savePipeline}
+          >
             Let's go
           </Button>
         </div>

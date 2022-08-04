@@ -1,9 +1,11 @@
 import React from "react";
 //antd-imports
-import { Button } from "antd";
+import { Button, Tabs } from "antd";
 import { CloudUploadOutlined } from "@ant-design/icons";
+const { TabPane } = Tabs;
 //componenets
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
+import Model from "./model/Model";
 
 const ViewPageAnalysis = () => {
   return (
@@ -27,7 +29,19 @@ const ViewPageAnalysis = () => {
           </div>
         </div>
       </div>
-      <div className="custom-content-layout"></div>
+      <div className="custom-content-layout">
+        <Tabs defaultActiveKey="1">
+          <TabPane tab="Preprocess" key="1">
+            Preprocess
+          </TabPane>
+          <TabPane tab="Model" key="2">
+            <Model />
+          </TabPane>
+          <TabPane tab="Model data" key="3">
+            ModelData
+          </TabPane>
+        </Tabs>
+      </div>
       {/* <Signature
         isPublish={isPublish}
         handleClose={handleClose}
