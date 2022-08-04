@@ -10,11 +10,11 @@ import ColorPicker from "../../../../../../components/ColorPicker/ColorPicker";
 import SelectField from "../../../../../../components/SelectField/SelectField";
 
 const Display = ({ postChartData, setPostChartData }) => {
-  const [layoutData, setLayoutData] = useState(initialLayout);
+  const [layoutData, setLayoutData] = useState(postChartData?.data[0]?.layout);
   const [chartDataMarkers, setChartDataMarkers] = useState({
-    markerSize: null,
-    markerShape: null,
-    markerColor: null,
+    markerSize: 15,
+    markerShape: "circle",
+    markerColor: "#376dd4",
     violationMarkerColor: null,
     violationMarkerSize: null,
     violationMarkerShape: null,
@@ -105,24 +105,15 @@ const Display = ({ postChartData, setPostChartData }) => {
   useEffect(() => {
     if (postChartData.data) {
       const newArr = JSON.parse(JSON.stringify(postChartData));
-      const xvalue = newArr.data[0].layout.xaxis.title.text;
-      const yvalue = newArr.data[0].layout.yaxis.title.text;
-      const annotations = newArr.data[0].layout.annotations;
       const o =
         newArr.data[0].layout.legend.orientation === "v"
           ? "Vertical"
           : "Horizontal";
       setLayoutData({
         ...layoutData,
-        legend: { ...layoutData.legend, orientation: o },
-        xaxis: {
-          ...layoutData.xaxis,
-          title: { ...layoutData.xaxis.title, text: xvalue },
-        },
-        annotations: annotations,
-        yaxis: {
-          ...layoutData.yaxis,
-          title: { ...layoutData.yaxis.title, text: yvalue },
+        legend: {
+          ...layoutData.legend,
+          orientation: o,
         },
       });
       newArr.data[0] &&
@@ -848,7 +839,7 @@ const Display = ({ postChartData, setPostChartData }) => {
                   onChange={(e) =>
                     setLayoutData({
                       ...layoutData,
-                      yaxis: { ...layoutData.xaxis, gridcolor: e.target.value },
+                      yaxis: { ...layoutData.yaxis, gridcolor: e.target.value },
                     })
                   }
                 />
