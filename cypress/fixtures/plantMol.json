@@ -1,0 +1,14 @@
+{
+    "Data": [
+        {
+            "created_by": "dinesh.jinjala@mareana.com",
+            "created_on": "2022-08-02T11:47:02.537569+00:00",
+            "cust_key": "1000",
+            "ds_name": "BELATACEPT",
+            "int_id": 540,
+            "product_num": "1322454",
+            "site_code": "1255"
+        }
+    ],
+    "status-code": 200
+}

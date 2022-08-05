@@ -153,6 +153,7 @@ function Signature(props) {
 					props.PublishResponse(publish_response);
 				} else if (publish_response.Status == 200) {
 					dispatch(showNotification("success", publish_response.Message));
+					props.PublishResponse(publish_response);
 				} else {
 					dispatch(showNotification("error", publish_response.msg));
 				}

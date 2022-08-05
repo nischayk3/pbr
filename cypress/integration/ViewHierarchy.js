@@ -81,8 +81,11 @@ describe("Renders the view Hierarachy page", () => {
     cy.get('.ant-input').type('BELA{enter}');
     cy.get('.ant-input').clear();
     cy.get('.ant-input').type('BELA{enter}');
+    cy.intercept('GET', '**/drug-substance?ds_name=BELATACEPT', { fixture: 'plantMol.json' })
     cy.get('.ant-table-tbody > :nth-child(1) > :nth-child(1)').click();
     cy.wait(3000)
+    cy.intercept('GET', '**/ds-process-step/BELATACEPT?ds_name=BELATACEPT', { fixture: 'processStep.json' })
+
     cy.get('#rc-tabs-0-tab-Process\\ steps').click();
     cy.wait(3000)
     // cy.get('#rc-tabs-0-panel-Process\\ steps > .tab-title > .ant-btn > .tab-button-text').click();
@@ -90,7 +93,10 @@ describe("Renders the view Hierarachy page", () => {
     // cy.get(':nth-child(1) > [style="text-align: left;"] > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
     // cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
     /* ==== Generated with Cypress Studio ==== */
+    cy.intercept('GET', '**/process-step-mapping?ds_name=BELATACEPT', { fixture: 'belatacept.json' })
+
     cy.get('#rc-tabs-0-tab-Process\\ step\\ mapping').click();
+
     cy.get(':nth-child(1) > [style="text-align: left;"] > .ant-select > .ant-select-selector > .ant-select-selection-item').click();
     cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
     cy.get('.ant-tabs-extra-content > .ant-btn > span').click();
