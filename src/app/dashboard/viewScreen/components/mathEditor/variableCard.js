@@ -1,6 +1,6 @@
-import React from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Tooltip } from "antd";
+import React from "react";
 
 const VariableCard = ({ id, variableName, deleteVariable, editVariable, fromWorkflowScreen }) => {
 

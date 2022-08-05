@@ -139,6 +139,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 					: 0;
 
 			const new_column_data = loadViewJson[0] && loadViewJson[0].functions_eval.map((e) => e.batch_num)
+
 			if (functions_name) {
 				functions_name = Object.values(functions_name);
 				functions_name.map((element) => {
