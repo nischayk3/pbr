@@ -7,13 +7,9 @@
  */
 
 import {
-	Button,
-	DatePicker,
-	Dropdown,
-	Input,
+	Button, Input,
 	Menu,
-	Select, Table,
-	Typography
+	Select, Table
 } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -21,17 +17,17 @@ import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import SelectSearchField from "../../../../components/SelectSearchField/SelectSearchField";
 import { MDH_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import {
-	auditDataChange,
 	auditFilter
 } from "../../../../duck/actions/auditTrialAction";
+import { getUserSessions } from "../../../../services/userTrail";
 import "./style.scss";
 
 
 
 const UserTrail = () => {
-	const { RangePicker } = DatePicker;
+
 	const { Option } = Select;
-	const { Text } = Typography;
+
 
 	const userMenu = (
 		<Menu>
@@ -51,87 +47,65 @@ const UserTrail = () => {
 	const [colSort, setColSort] = useState();
 	const [tableData, setTableData] = useState();
 	const [downloadData, setDownloadData] = useState();
-	const [selectedLimit, setSelectedLimit] = useState();
+	const [selectedLimit, setSelectedLimit] = useState("500");
 	const [filterIng, setFilterIng] = useState();
 	const [type, setType] = useState();
-	const [user, setUser] = useState();
 	const [filterPkg, setFilterPkg] = useState();
-	const [filterTable, setFilterTable] = useState();
+	const [filterTable, setFilterTable] = useState(null);
 	const [daterange, setDaterange] = useState([]);
 	const [eventType, setEventType] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [selectedDate, setSelectedDate] = useState("");
 	const [sortState, setSortState] = useState("DESC");
+	const [user, setUser] = useState("");
+
 
 	const columns = [
 		{
-			title: "User",
+			title: "ID",
+			dataIndex: "id",
+			key: "1",
+			defaultSortOrder: "descend",
+			//sorter: (a, b) => a.id.localeCompare(b.id)
+		},
+		{
+			title: "User Id",
 			dataIndex: "user_id",
 			key: "2",
 			defaultSortOrder: "descend",
-			sorter: (a, b) => a.user_id.localeCompare(b.user_id)
+			//sorter: (a, b) => a.user_id.localeCompare(b.user_id)
 		},
 		{
-			title: "Event",
-			dataIndex: "activity",
+			title: "Session Type",
+			dataIndex: "session_type",
 			key: "3",
 			defaultSortOrder: "descend",
-			sorter: (a, b) => a.activity.localeCompare(b.activity)
+			//sorter: (a, b) => a.session_type.localeCompare(b.session_type)
 		},
 		{
-			title: "Old Value",
-			dataIndex: "old_value",
-			key: "3",
-			defaultSortOrder: "descend",
-			className: "old_value_class",
-			sorter: (a, b) => a.old_value.localeCompare(b.old_value)
-		},
-		{
-			title: "New Value",
-			dataIndex: "new_value",
-			key: "3",
-			defaultSortOrder: "descend",
-			className: "old_value_class",
-			sorter: (a, b) => {
-				return a.new_value === null ||
-					a.new_value === undefined ||
-					a.new_value === ""
-					? -1
-					: b.new_value == null ||
-						b.new_value == undefined ||
-						b.new_value == ""
-						? 1
-						: a.new_value.toString().localeCompare(b.new_value);
-			},
-		},
-		{
-			title: "Reason For Change",
-			dataIndex: "reason",
-			key: "2",
-			defaultSortOrder: "descend",
-			sorter: (a, b) => a.reason.localeCompare(b.reason)
-		},
-		{
-			title: "Changed On",
-			dataIndex: "entry_date",
-			key: "1",
-			width: 200,
-			defaultSortOrder: "descend",
-			sorter: (a, b) => new Date(a.entry_date) - new Date(b.entry_date),
-			render: (text) => moment(text).format("YYYY-MM-DD")
-		},
-		{
-			title: "Table Name",
-			dataIndex: "table_name",
+			title: "Date & Time",
+			dataIndex: "session_timestamp",
 			key: "4",
 			defaultSortOrder: "descend",
-			sorter: (a, b) => a.table_name.localeCompare(b.table_name)
-		}
+			render: (text) => moment(text).format("DD-MM-YYYY HH:mm:ss")
+			//sorter: (a, b) => a.session_timestamp.localeCompare(b.session_timestamp)
+		},
+		// {
+		// 	title: "cust_key",
+		// 	dataIndex: "cust_key",
+		// 	key: "5",
+		// 	defaultSortOrder: "descend",
+		// 	sorter: (a, b) => a.cust_key.localeCompare(b.cust_key)
+		// },
+
 	]
 
 	useEffect(() => {
+		const _req = {
+			limit: 500
+		}
 		setInitialColumns(columns)
-		auditHighlight();
+		auditHighlight(_req);
 		onAuditUserAndEventFilter();
 	}, [])
 
@@ -141,21 +115,18 @@ const UserTrail = () => {
 		let headers = {
 			"content-type": "application/json",
 			"x-access-token": login_response.token ? login_response.token : "",
-			"resource-name": "AUDIT_REPORT"
+			"resource-name": "USER_REPORT"
 		};
 
 		let res = await auditFilter(req, headers);
 		if (res.statuscode != 200) {
-			this.props.showNotification("error", res.Message);
+			showNotification("error", res.Message);
 		} else {
 			setUserList(res.data[0].userid)
 			setEventList(res.data[0].activity)
 		}
 	};
 
-	// const loadData = (column) => {
-	// 	this.setState({ colSort: column }, () => this.auditHighlight());
-	// };
 
 	const getExcelFile = (value) => {
 		var today = new Date();
@@ -201,83 +172,28 @@ const UserTrail = () => {
 		window.open(url);
 	};
 
-	const disabledDate = (current) => {
-		// Can not select days before today and today
-		return current && current > moment().endOf("day");
-	};
 
-	const auditHighlight = (limit = 500) => {
-		var today = new Date();
-		today.setDate(today.getDate() + 1);
-		let req = {
-			identification: "10.10.16.30",
-			source_system: "cpv",
-			transactionid: "20200813161038.066",
-			startdate:
-				selectedDate.length > 0 && selectedDate[0]
-					? selectedDate[0]
-					: "2021-09-01",
-			enddate:
-				selectedDate.length > 0 && selectedDate[1]
-					? selectedDate[1]
-					: today.toISOString().slice(0, 10),
-			order_by_col: colSort,
-			order_by_type: sortState
-		};
+	const auditHighlight = (_req) => {
+		getUserSessions(_req).then((res) => {
+			if (res.Status === 200) {
+				let antdDataTable = [];
 
-		if (limit != 'all') {
-			req['limit'] = parseInt(limit)
-		}
-		if (eventType) {
-			req["activity"] = eventType ? eventType.value : "";
-		}
-		if (user) {
-			req["username"] = user ? user.value : "";
-		}
+				res.Data.forEach((item) => {
+					let antdObj = {};
+					antdObj["user_id"] = item.user_id;
+					antdObj["id"] = item.id;
+					antdObj["cust_key"] = item.cust_key;
+					antdObj["session_timestamp"] = item.session_timestamp;
+					antdObj["session_type"] = item.session_type;
+					antdDataTable.push(antdObj);
+				});
+				console.log("antdDataTable", antdDataTable);
+				setTableData(antdDataTable)
+				setDownloadData(tableData)
+			} else {
+				showNotification("error", res.Message);
+			}
 
-		auditDataChange(req).then((res) => {
-			let antdDataTable = [];
-			res.data.forEach((item, key) => {
-				let antdObj = {};
-				let val11 = item.delta.toString();
-				antdObj["key"] = key;
-				antdObj["user_id"] = item.user_id;
-				antdObj["activity"] = item.activity;
-				antdObj["old_value"] = item.old_value;
-				antdObj["entry_date"] = item.entry_date;
-				antdObj["table_name"] = item.table_name;
-				antdObj["reason"] = item.reason;
-				if (val11 === item.new_value) {
-					antdObj["new_value"] = (
-						<p style={{ background: "yellow" }}>{item.new_value}</p>
-					);
-				} else if (item.activity === "U" && item.delta.length > 0) {
-					let val = "";
-					item.delta.forEach((item1) => {
-						if (val.length > 0) {
-							let val1 = val.replace(
-								item1,
-								`<span style='background-color:yellow'>${item1}</span>`
-							);
-							val = val1;
-						} else {
-							let val1 = item.new_value.replace(
-								item1,
-								`<span style='background-color:yellow'>${item1}</span>`
-							);
-							val = val1;
-						}
-					});
-					antdObj["new_value"] = (
-						<p dangerouslySetInnerHTML={{ __html: val }}></p>
-					);
-				} else {
-					antdObj["new_value"] = item.new_value;
-				}
-				antdDataTable.push(antdObj);
-			});
-			setTableData(antdDataTable)
-			setDownloadData(tableData)
 		});
 	};
 
@@ -294,45 +210,42 @@ const UserTrail = () => {
 
 	/* istanbul ignore next */
 	const onlimitChange = (value) => {
-		console.log("valueal", value)
 		if (value != undefined) {
-			setSelectedLimit(value.value == 'all' ? value.value : parseInt(value.value))
-			auditHighlight(value.value)
+			setSelectedLimit(value == 'all' ? value : parseInt(value))
+			const _valueReq = {
+				limit: value,
+				user: user
+			}
+			auditHighlight(_valueReq)
 		} else {
 			setSelectedLimit(value)
 		}
 
 	}
 
-	const onChangeIng = (e, value) => {
+	const onChangeIng = (value, filterType) => {
 		if (value !== null) {
 			let userarr = [];
 			userarr.push({
 				field: "user_id",
 				operator: "IN",
-				value: [value.value.trim()]
+				value: [value.trim()]
 			});
 			setFilterIng(userarr);
-			setType("user")
+			setType(filterType)
 			setUser(value)
 		}
 	};
 
-	const onChangePkg = (value) => {
-		if (value !== null) {
-			let arr = [];
-			arr.push({
-				field: "entry_date",
-				operator: "Between",
-				value: value
-			});
-			setFilterPkg(arr)
-		}
-	};
+
 
 	const handleFilter = () => {
+		const _reqFilter = {
+			limit: selectedLimit,
+			user_id: user
+		}
 		setFilterTable(null)
-		auditHighlight();
+		auditHighlight(_reqFilter);
 	};
 
 
@@ -371,34 +284,22 @@ const UserTrail = () => {
 			{item.value}
 		</Select.Option>
 	));
+
+	console.log("tableData", tableData);
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
 			<div className='custom-content-layout'>
 				<div className='filter-layout'>
-					<div className='filter-drop'>
-						<p>Date</p>
-						<RangePicker
-							value={daterange}
-							onChange={(e, value) => {
-								setSelectedDate(value);
-								setType("date");
-								setDaterange(e);
-								// onChangePkg(e, value);
-							}}
-							disabledDate={disabledDate}
-						/>
-					</div>
+
 					<div className='filter-drop'>
 						<SelectSearchField
 							showSearch
 							label='User *'
 							placeholder='Select'
 							onChangeSelect={value => onChangeIng(value, 'user')}
-							//onSearchSelect={type => onSearchParam(type, 'user')}
 							options={optionsUser}
 							//handleClearSearch={e => clearSearch(e, 'plant')}
-
 							selectedValue={user}
 						/>
 
@@ -427,10 +328,7 @@ const UserTrail = () => {
 				<div className="custom-table-card" style={{ margin: "10px 0" }}>
 					<div className="table-header">
 						<div
-							style={{
-								display: "flex",
-								flexDirection: "row"
-							}}
+							className="child-1"
 						>
 							<Input.Search
 								className="table-search"
@@ -440,20 +338,10 @@ const UserTrail = () => {
 							/>
 						</div>
 						<div
-							style={{
-
-								float: "right",
-								marginRight: "10px"
-							}}
-							className="limitDropdown"
+							className="child-2"
 						>
 							<Select
-								style={{
-									marginLeft: "20px",
-									width: "160px",
-									marginTop: "10px",
-									padding: "0px"
-								}}
+
 								allowClear
 								// defaultValue={selectedLimit}value = { company || undefined }
 								value={selectedLimit || undefined}
@@ -479,14 +367,9 @@ const UserTrail = () => {
 								</Option>
 
 							</Select>
-
 						</div>
-						<div
-							style={{
-								marginTop: "10px",
-								float: "right",
-								marginRight: "10px"
-							}}
+						{/* <div
+							className="child-3"
 						>
 							<Dropdown style={{ color: "#ffffff" }} overlay={userMenu}>
 								<Button
@@ -496,8 +379,7 @@ const UserTrail = () => {
 									Export
 								</Button>
 							</Dropdown>
-
-						</div>
+						</div> */}
 					</div>
 					<Table
 						style={{ margin: "20px" }}

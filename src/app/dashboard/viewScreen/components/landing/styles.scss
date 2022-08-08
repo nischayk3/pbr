@@ -305,3 +305,7 @@
 		background-color: var(--primary-color);
 	}
 }
+
+.ant-table-tbody>tr>td {
+	cursor: pointer;
+}
