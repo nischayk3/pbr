@@ -4,6 +4,7 @@ import {
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { JUPYTER_NOTEBOOK } from '../../constants/apiBaseUrl';
 import "./style.scss";
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -57,6 +58,7 @@ const Sidebar = () => {
 			setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
 		}
 	};
+	console.log("JUPYTER_NOTEBOOK", JUPYTER_NOTEBOOK);
 	return (
 		<Sider
 			collapsed={collapsed}
@@ -166,7 +168,8 @@ const Sidebar = () => {
 						icon={<CodeOutlined className="menu-icons" />}
 						id="data_science_studio"
 					>
-						<Link to="/dashboard/pythonNoteBook">Data Science Studio</Link>
+						<a href={JUPYTER_NOTEBOOK} target="_blank" >Data Science Studio</a>
+						{/* <Link to={JUPYTER_NOTEBOOK} target="_blank"  >Data Science Studio</Link> */}
 					</Menu.Item>
 					<Menu.Item
 						key="analysis"
