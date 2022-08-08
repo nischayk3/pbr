@@ -276,7 +276,18 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
-			setTotalMolBatch([...totalBatch, ...totalFileBatch]);
+			const totalMol = [...totalBatch, ...totalFileBatch]
+
+			const uniqueMol = [];
+			totalMol.filter(function (item) {
+				const i = totalMol.findIndex(x => (x.batch == item.batch));
+				if (i <= -1) {
+					uniqueMol.push(item);
+				}
+				return null;
+			});
+
+			setTotalMolBatch(uniqueMol);
 		}
 
 	}, [totalBatch, totalFileBatch])
