@@ -24,7 +24,7 @@ import "./dashboard.scss";
 import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
 import PbrReviewer from "./pbrReviewer";
 import PrivateRoute from "./ProtectedRoute";
-import PythonNotebook from "./pythonNotebook/pythonNotebook";
+//import PythonNotebook from "./pythonNotebook/pythonNotebook";
 import UnAuthorisedScreen from "./unAuthorised";
 // DASHBOARD ROUTE COMPONENTS
 
@@ -340,11 +340,11 @@ const Dashboard = () => {
 									authorised={authorised}
 								/>
 
-								<Route
+								{/* <Route
 									key="data_science_studio"
 									path={`${match.url}/pythonNoteBook`}
 									component={PythonNotebook}
-								/>
+								/> */}
 							</Switch>
 						</SuspenseWrapper>
 					</Content>
