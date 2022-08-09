@@ -297,7 +297,7 @@ export default function ReportLanding(props) {
     let req = { rep_status: "all" };
     getReportGen(req).then((res) => {
       if (res["status-code"] == 200) setReportGenList(res["Data"]);
-      else setReportList([]);
+      else setReportGenList([]);
     });
   };
 

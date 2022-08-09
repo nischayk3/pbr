@@ -26,7 +26,7 @@ import "./dashboard.scss";
 import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
 import PbrReviewer from "./pbrReviewer";
 import PrivateRoute from "./ProtectedRoute";
-import PythonNotebook from "./pythonNotebook/pythonNotebook";
+//import PythonNotebook from "./pythonNotebook/pythonNotebook";
 import UnAuthorisedScreen from "./unAuthorised";
 // DASHBOARD ROUTE COMPONENTS
 
@@ -50,6 +50,7 @@ const HierarchyMain = lazy(() =>
 const DesignCharts = lazy(() =>
   import("./reportDesigner/components/reportDesignerNew")
 );
+const UserTrail = lazy(() => import("./userTrail"));
 
 const Faq = lazy(() => import("./faq"));
 const { Content } = Layout;
@@ -100,6 +101,8 @@ const Dashboard = () => {
       view = "CONFIGURATION";
     } else if (location.pathname.includes("audit_trail_report")) {
       view = "AUDIT_REPORT";
+    } else if (location.pathname.includes("user_trail_report")) {
+      view = "USER_REPORT";
     } else if (location.pathname.includes("manual_data_upload")) {
       view = "FILE_UPLOAD";
     } else if (location.pathname.includes("report_designer")) {
@@ -229,12 +232,58 @@ const Dashboard = () => {
                   authorised={authorised}
                   component={DashboardScreen}
                 />
-
                 <PrivateRoute
-                  key="pbr_reviewer"
-                  component={PbrReviewer}
+                  key="user_trail_report"
+                  path={`${match.url}/user_trail_report`}
                   authorised={authorised}
-                  path={`${match.url}/pbr_reviewer`}
+                  component={UserTrail}
+                />
+
+                <Route
+                  path={`${match.url}/paper_batch_records`}
+                  render={({ match: { url } }) => (
+                    <>
+                      <PrivateRoute
+                        path={`${url}/`}
+                        authorised={authorised}
+                        component={PaperBatchRecords}
+                        exact
+                      />
+                      <PrivateRoute
+                        path={`${url}/:id`}
+                        authorised={authorised}
+                        component={PaperBatchRecordsTemplate}
+                      />
+                    </>
+                  )}
+                />
+                <Route key="redirect" path={`${match.url}/redirect`}>
+                  <LoginRedirect />
+                </Route>
+                <Route key="redirect_sign" path={`${match.url}/redirect_sign`}>
+                  <RedirectSign />
+                </Route>
+                <Route key="faq" path={`${match.url}/faq`}>
+                  <Faq />
+                </Route>
+
+                <Route
+                  path={`${match.url}/report_designer`}
+                  render={({ match: { url } }) => (
+                    <>
+                      <PrivateRoute
+                        path={`${url}/`}
+                        component={ReportDesigner}
+                        authorised={authorised}
+                        exact
+                      />
+                      <PrivateRoute
+                        path={`${url}/:id`}
+                        component={DesignCharts}
+                        authorised={authorised}
+                      />
+                    </>
+                  )}
                 />
 
                 <Route
@@ -352,11 +401,12 @@ const Dashboard = () => {
                     </>
                   )}
                 />
-                <Route
-                  key="data_science_studio"
-                  path={`${match.url}/pythonNoteBook`}
-                  component={PythonNotebook}
-                />
+
+                {/* <Route
+									key="data_science_studio"
+									path={`${match.url}/pythonNoteBook`}
+									component={PythonNotebook}
+								/> */}
               </Switch>
             </SuspenseWrapper>
           </Content>

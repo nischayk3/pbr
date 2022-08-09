@@ -111,7 +111,9 @@ const MathEditor = ({
 			</pre>
 
 			<h5>Notes</h5>
-			<p>In one-line math function, we don’t need to assign output to result as shown in Example:2. But if we have multiline then final output we have to assign to the result as shown in Example: 1.  </p>
+			<p>In one-line math function, we don’t need to assign output to result as shown in Example:2.
+				<br />
+				But if we have multiline then final output we have to assign to the result as shown in Example: 1.</p>
 
 			<h5>Addition:</h5>
 			<p>To add two parameters, we have to do: </p>
@@ -236,9 +238,8 @@ if var_bact_endotoxin.isnull().sum().sum() > 0:
 	useEffect(() => {
 		if (isLoadView) {
 			let paramKey = [];
-			// const viewJsonData = [selectedParameters];
 			const viewJsonData = [...viewJson];
-			viewJsonData.forEach((element, index) => {
+			viewJsonData.forEach((element) => {
 				paramKey.push(Object.keys(element.parameters));
 			});
 			let var_data = [];
@@ -252,12 +253,8 @@ if var_bact_endotoxin.isnull().sum().sum() > 0:
 				}
 				variableData = [...var_data];
 
-				// if (var_data.length > 0) {
-				// 	setShowVariable(false);
-				// }
 				const newVar_data = [...var_data]
 				setTimeout(() => {
-					//setShowVariable(true);
 					setVarData(newVar_data);
 				}, 200)
 			}
@@ -301,7 +298,6 @@ if var_bact_endotoxin.isnull().sum().sum() > 0:
 	};
 
 	const getParamData = (data) => {
-
 		setParamData(data);
 	};
 
@@ -361,7 +357,7 @@ if var_bact_endotoxin.isnull().sum().sum() > 0:
 						<span>
 							Script Editor
 							<Popover content={content} title={false} trigger="hover">
-								<InfoCircleOutlined />
+								<InfoCircleOutlined style={{ padding: "0 5px" }} />
 							</Popover>
 						</span>
 					}

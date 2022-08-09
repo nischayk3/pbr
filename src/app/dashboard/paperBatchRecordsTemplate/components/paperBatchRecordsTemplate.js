@@ -265,9 +265,11 @@ function PaperBatchRecordsTemplate() {
     };
     /* istanbul ignore next */
     const onClickImage = (e) => {
+        console.log("dasdasd1111",e)
         var rect = e.target.getBoundingClientRect();
         var x = e.clientX - rect.left;
         var y = e.clientY - rect.top;
+        console.log("dasdasd",x,y)
     };
     /* istanbul ignore next */
     const onChangeChart = (e, field, key, value) => {
@@ -656,6 +658,7 @@ function PaperBatchRecordsTemplate() {
             }
             let res = await getPbrTemplateData(req)
             let loadData = res.Data
+            /* istanbul ignore next */
             if (params?.temp_disp_id || localStorage.getItem("test_enabled") == !null) {
                 setTemplateInfo(loadData[0]?.pbr_template_info?.pbrTemplateInfo)
                 let loadMatBatch = {
@@ -682,7 +685,7 @@ function PaperBatchRecordsTemplate() {
                     setPageIdentifierData(obj1)
                 }
             }
-
+            /* istanbul ignore next */
             if (params?.temp_disp_id || localStorage.getItem("test_enabled") == !null) {
                 let obj = {}
                 loadData[0]?.pbr_template_info?.pbrTemplateInfo.forEach((item, index) => {
@@ -1611,6 +1614,7 @@ function PaperBatchRecordsTemplate() {
         setPublishResponse(res);
         setTemplateStatus(res.rep_stauts);
     };
+    /* istanbul ignore next */
     const modes = (
         <Menu defaultSelectedKeys={["word"]} selectedKeys={[menuKey]} onClick={(item) => handleMenuChange(item)}>
             <Menu.Item key='word'>
@@ -1635,6 +1639,7 @@ function PaperBatchRecordsTemplate() {
         Beijing: ['Tiananmen', 'Great Wall'],
         Shanghai: ['Oriental Pearl', 'The Bund'],
     };
+    /* istanbul ignore next */
     const handleChange = () => {
         form.setFieldsValue({ sights: [] });
     };
@@ -1683,6 +1688,7 @@ function PaperBatchRecordsTemplate() {
         }
 
     }
+    /* istanbul ignore next */
     const genExtra = (remove, name, key, restfield) => (
         <DeleteOutlined
             id="deleteParameter"
@@ -2825,6 +2831,7 @@ function PaperBatchRecordsTemplate() {
                             </Row>
                         </div>
                         <div className='pbrCenterPdfBlock'>
+                            
                             {showRowColIdentifier &&
                                 <TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth} />}
 

@@ -1,7 +1,9 @@
+import { CheckOutlined, CloseOutlined, DeleteOutlined, RightCircleOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Empty, Input, Modal, Radio, Select, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Checkbox, Empty, Radio, Select, Table, Modal, Button, Tag, Input } from "antd";
-import { CheckOutlined, CloseOutlined, RightCircleOutlined, DeleteOutlined } from "@ant-design/icons";
+import { v1 as uuid } from "uuid";
+import { hideLoader } from "../../../../../duck/actions/commonActions";
 import {
 	createSummaryData,
 	createVariable,
@@ -12,7 +14,6 @@ import {
 	viewFunctionMap,
 	viewParamMap
 } from "../../../../../duck/actions/viewAction";
-import { hideLoader } from "../../../../../duck/actions/commonActions";
 
 let paramType = "";
 
@@ -267,7 +268,6 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (isLoadView) {
-			//	onChangeColumnsHandler();
 			setTableData([...selectedTableData]);
 			setFun(functions_obj)
 		}
@@ -275,9 +275,9 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
-			setTotalMolBatch([...totalBatch, ...totalFileBatch]);
+			const totalMol = [...totalBatch, ...totalFileBatch]
+			setTotalMolBatch(totalMol);
 		}
-
 	}, [totalBatch, totalFileBatch])
 
 
@@ -337,7 +337,7 @@ const ParameterTable = ({
 													// disabled={isParamSelected}
 													id="batch-id"
 													className="custom-check"
-													onChange={(e) => onChangeBatchPopup(e, record, rowIndex, ele)}
+													onChange={(e) => onChangeBatchPopup(e, record, ele)}
 													checked={value}
 												/>
 											);
@@ -348,7 +348,7 @@ const ParameterTable = ({
 													// disabled={isParamSelected}
 													id="batch-id"
 													className="custom-check"
-													onChange={(e) => onChangeBatchPopup(e, record, rowIndex, ele)}
+													onChange={(e) => onChangeBatchPopup(e, record, ele)}
 													checked={value === "" ? false : true}
 												/>
 											);
@@ -388,7 +388,6 @@ const ParameterTable = ({
 	}, [selectedTableData, totalMolBatch, rowDisable, tableData])
 
 	useEffect(() => {
-
 		if (ischeckBox) {
 			setReloadTable(false);
 
@@ -400,7 +399,6 @@ const ParameterTable = ({
 	}, [ischeckBox]);
 
 	useEffect(() => {
-
 		if (paramReducer.selectedParamData) {
 			setTableData([...selectedTableData]);
 		}
@@ -409,7 +407,6 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (!isNew) {
-			//	onChangeColumnsHandler();
 			setTableData([]);
 			setFilterTable([]);
 			dispatch(isNewView(true));
@@ -417,7 +414,6 @@ const ParameterTable = ({
 	}, [!isNew]);
 
 	useEffect(() => {
-
 		if (!varClick) {
 			setSelectedRowKeys([]);
 		}
@@ -425,21 +421,24 @@ const ParameterTable = ({
 
 	useEffect(() => {
 
-		let count = 0;
-		let varArr = [];
+		const varArr = [];
 		if (variableCreate) {
-			count++;
+
 			const varParameter = [...parameters];
+
 			varParameter.forEach((element) => {
 				varArr.push(element);
 			});
+
 			variableParam[variableName] = varParameter;
+
 			setVariableParam(variableParam);
 
 			const viewDataJson = [...viewJson];
 			viewDataJson.forEach((element) => {
 				return (element.parameters = variableParam);
 			});
+
 			setViewJson(viewDataJson);
 			dispatch(createVariable(variableParam));
 			dispatch(viewParamMap(variableParam));
@@ -449,12 +448,10 @@ const ParameterTable = ({
 	}, [variableCreate]);
 
 	useEffect(() => {
-
 		sortArray(selectedVar, selectedData);
 	}, [selectedVar]);
 
 	useEffect(() => {
-		// sortArray(props.selectedVar, props.selectedData);
 		let defination = "";
 		let m = Object.values(functions_obj);
 		var newArray = m.filter(function (el) {
@@ -497,14 +494,11 @@ const ParameterTable = ({
 
 			let primarySelectedData;
 			if (tableData.length > 0) {
-
 				primarySelectedData = { ...tableData && tableData[0] };
 			} else {
-
 				const viewLoadJson = [...viewJson];
 				const allParameter = viewLoadJson[0].all_parameters
 				primarySelectedData = { ...allParameter && allParameter[0] }
-
 			}
 
 			let functionTable = [...viewSummaryBatch];
@@ -553,9 +547,7 @@ const ParameterTable = ({
 			radioObj.forEach((element) => {
 				element.primary = index;
 			});
-
 			setTableData(newPrimaryData);
-			//setSelectedPrimaryData(radioObj[0]);
 			dispatch(selectParamType(type));
 			paramType = type;
 		}
@@ -648,10 +640,10 @@ const ParameterTable = ({
 		setTableData(batchRecord);
 	};
 
-	const onChangeBatchPopup = (e, record, rowIndex, key) => {
+	const onChangeBatchPopup = (e, record, key) => {
+
 		const parameterArrray = [...parameters];
 		const batchRecordPopup = [...tableData];
-
 		batchRecordPopup.forEach((ele) => {
 			if (ele.parameter_name === key) {
 				ele[record.batch] = e.target.checked == false ? "" : e.target.checked;
@@ -660,17 +652,17 @@ const ParameterTable = ({
 
 		parameterArrray.forEach((element) => {
 			if (element.parameter_name === key) {
-				console.log("element.batch_exclude.indexOf(record.batch)", element.batch_exclude, record.batch);
 				if (element.batch_exclude.indexOf(record.batch) === -1) {
 					element.batch_exclude.push(record.batch);
 				}
 			}
 		});
-		setParameters([...parameterArrray]);
-		setTableData([...batchRecordPopup]);
+
+		setParameters(parameterArrray)
+		setTableData(batchRecordPopup);
 	}
 
-	const isModalBatch = (e) => {
+	const isModalBatch = () => {
 		setIsBatchTableVisible(true);
 	}
 
@@ -725,10 +717,10 @@ const ParameterTable = ({
 							rowSelection: {
 								selectedRowKeys,
 								onChange: (selectedRowKeys, selectedRows) => {
-									let paramArr = [];
+									const paramArr = [];
 									const rowData = [...selectedRows];
 									rowData.forEach((element, index) => {
-										let paramsObj = {};
+										const paramsObj = {};
 										paramsObj["source_type"] = element.sourceType;
 										paramsObj["material_id"] = element.material_id
 										paramsObj["process_id"] = element.process_id;
@@ -736,8 +728,10 @@ const ParameterTable = ({
 										paramsObj["batch_exclude"] = [];
 										paramsObj["priority"] = index;
 										paramsObj["aggregation"] = element.aggregation;
+										paramsObj["key"] = uuid();
 										paramArr.push(paramsObj);
 									});
+
 									setParameters(paramArr);
 									callbackCheckbox(true);
 									setIsParamSelected(false);

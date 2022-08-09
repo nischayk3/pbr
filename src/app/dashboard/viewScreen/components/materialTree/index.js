@@ -5,17 +5,18 @@
  * @Last Modified - 4 April, 2022
  * @Last Changed By - Dinesh
  */
+import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
+import { Tag, Tree } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Tag, Tree } from "antd";
-import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
+import { v1 as uuid } from "uuid";
+import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
 import {
 	getBatchData,
-	sendSelectedParamData,
+	sendSelectedParamData
 } from "../../../../../duck/actions/viewAction";
-import "./style.scss";
-import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
 import { getParameterBatches } from "../../../../../services/viewCreationPublishing";
+import "./style.scss";
 
 const { TreeNode } = Tree;
 //let setKey = [];
@@ -74,8 +75,9 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 					rowData.parameter_name = record.parameter_name;
 					rowData.process_id = parseInt(record.process_step_int_id);
 					rowData.coverage = record.coverage;
-					rowData.key =
-						record.process_step_int_id + "_" + record.parameter_name;
+					// rowData.key =
+					// 	record.process_step_int_id + "_" + record.parameter_name;
+					rowData.key = uuid();
 					rowData.primary = 0;
 					rowData.aggregation = "";
 					rowData.material_id = record.product_num;

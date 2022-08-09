@@ -10,7 +10,7 @@ import {
 } from '../../../../../duck/actions/commonActions';
 
 const { Panel } = Collapse;
-
+/* istanbul ignore next */
 function TableIdentifier(props) {
     let { clickedTable, metaData, imageHeight, imageWidth } = props
     const dispatch = useDispatch();

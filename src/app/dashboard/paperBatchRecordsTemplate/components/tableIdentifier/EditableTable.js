@@ -6,6 +6,7 @@ import './styles.scss';
 const coloptions = [{lable:"Random1",value:"random1"},{lable:"Random2",value:"random2"},{lable:"Rando3",value:"random3"}]
 const rowoptions = [{lable:"rowRandom1",value:"rowRandom1"},{lable:"rowRandom2",value:"rowRandom2"},{lable:"rowRandom3",value:"rowRandom3"}]
 
+/* istanbul ignore next */
 export const EditableUsersTable = props => {
     const { users, add, remove } = props;
     const [editingIndex, setEditingIndex] = useState(0);
