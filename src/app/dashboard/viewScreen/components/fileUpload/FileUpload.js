@@ -155,16 +155,12 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		);
 
 		if (selectedParam === undefined) {
-			const rowData = {};
-			const batchData = {};
-			const newBatchData = [];
+			let rowData = {};
+			let batchData = {};
+			let newBatchData = [];
 			const molBatch = [...totalBatch, ...fileBatch];
-			const uniqueMol = molBatch.filter((x, i) => {
-				return molBatch[i].batch.indexOf(x.batch) === i
-			})
-
-			setViewSummaryBatch(uniqueMol)
-			uniqueMol.map((el) => {
+			setViewSummaryBatch(molBatch)
+			molBatch.map((el) => {
 				if (record.coverage_list.includes(el.batch)) {
 					return (
 						batchData[el.batch] = true,
