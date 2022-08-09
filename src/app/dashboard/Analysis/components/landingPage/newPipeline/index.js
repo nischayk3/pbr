@@ -51,8 +51,8 @@ const NewPipeline = (props) => {
 
     try {
       dispatch(showLoader());
-      // const viewRes = await getViewList(reqView);
-      ViewJson.forEach((item, key) => {
+      const viewRes = await getViewList(reqView);
+      viewRes.Data.forEach((item, key) => {
         let antdObj = {};
         antdObj["key"] = key;
         antdObj["created_by"] = item.created_by;

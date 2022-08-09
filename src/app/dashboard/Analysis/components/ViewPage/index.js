@@ -6,6 +6,7 @@ const { TabPane } = Tabs;
 //componenets
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import Model from "./model/Model";
+import Preprocess from "./preproccessing/Preprocess";
 
 const ViewPageAnalysis = () => {
   return (
@@ -32,7 +33,7 @@ const ViewPageAnalysis = () => {
       <div className="custom-content-layout">
         <Tabs defaultActiveKey="1">
           <TabPane tab="Preprocess" key="1">
-            Preprocess
+            <Preprocess />
           </TabPane>
           <TabPane tab="Model" key="2">
             <Model />
