@@ -25,6 +25,8 @@ const StatusBlock = lazy(() =>
 	import("../../../../../components/StatusBlock/statusBlock")
 );
 
+
+
 export default function Landing() {
 	const [searched, setSearched] = useState(false);
 	const [viewList, setViewList] = useState([]);
@@ -152,7 +154,7 @@ export default function Landing() {
 			const getViewRes = await getViews(req);
 			const viewRes = getViewRes["Data"];
 			const viewResRev = viewRes != undefined ? viewRes.reverse() : [];
-			const lastEight = viewResRev && viewResRev.slice(Math.max(viewResRev.length - 8, 1));
+			const lastEight = viewResRev && viewResRev.slice(Math.max(viewResRev.length - 8, 0));
 			setViewList(viewResRev);
 			setLastEightView(lastEight && lastEight.reverse());
 			dispatch(hideLoader());
@@ -192,7 +194,6 @@ export default function Landing() {
 							dataSource={filterTable === null ? viewList : filterTable}
 							onRow={(record) => ({
 								onClick: () => {
-
 									history.push({
 										pathname: `${match.url}/${record.view_disp_id}&${record.view_version}`,
 										state: {
