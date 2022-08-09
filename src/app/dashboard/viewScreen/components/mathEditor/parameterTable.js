@@ -268,7 +268,6 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (isLoadView) {
-			//	onChangeColumnsHandler();
 			setTableData([...selectedTableData]);
 			setFun(functions_obj)
 		}
@@ -277,19 +276,8 @@ const ParameterTable = ({
 	useEffect(() => {
 		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
 			const totalMol = [...totalBatch, ...totalFileBatch]
-
-			const uniqueMol = [];
-			totalMol.filter(function (item) {
-				const i = totalMol.findIndex(x => (x.batch == item.batch));
-				if (i <= -1) {
-					uniqueMol.push(item);
-				}
-				return null;
-			});
-
-			setTotalMolBatch(uniqueMol);
+			setTotalMolBatch(totalMol);
 		}
-
 	}, [totalBatch, totalFileBatch])
 
 

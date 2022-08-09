@@ -35,16 +35,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 	useEffect(() => {
 		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
 			const uniqueBatch = [...totalBatch, ...totalFileBatch]
-			const uniqueMol = [];
-			uniqueBatch.filter(function (item) {
-				const i = uniqueBatch.findIndex(x => (x.batch == item.batch));
-				if (i <= -1) {
-					uniqueMol.push(item);
-				}
-				return null;
-			});
-
-			setTotalMolBatch(uniqueMol);
+			setTotalMolBatch(uniqueBatch);
 		}
 	}, [totalBatch, totalFileBatch])
 
