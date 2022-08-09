@@ -9,29 +9,45 @@ import { initialLayout } from "./displayFunctions";
 /* istanbul ignore next */
 const DisplayApprover = ({ postChartData, setPostChartData }) => {
   const [layoutDataApprover, setLayoutDataApprover] = useState(initialLayout);
+  const [chartDataMarkersApprover, setChartDataMarkersApprover] = useState({
+    markerSize: 15,
+    markerShape: "",
+    markerColor: "",
+    violationMarkerColor: null,
+    violationMarkerSize: null,
+    violationMarkerShape: null,
+  });
   useEffect(() => {
     if (postChartData.data) {
       const newArrApprover = JSON.parse(JSON.stringify(postChartData));
-      const xvalueApprover = newArrApprover.data[0].layout.xaxis.title.text;
-      const yvalueApprover = newArrApprover.data[0].layout.yaxis.title.text;
-      const annotationsApprover = newArrApprover.data[0].layout.annotations;
       const o =
         newArrApprover.data[0].layout.legend.orientation === "v"
           ? "Vertical"
           : "Horizontal";
-      setLayoutDataApprover({
-        ...layoutDataApprover,
-        legend: { ...layoutDataApprover.legend, orientation: o },
-        xaxis: {
-          ...layoutDataApprover.xaxis,
-          title: { ...layoutDataApprover.xaxis.title, text: xvalueApprover },
-        },
-        annotations: annotationsApprover,
-        yaxis: {
-          ...layoutDataApprover.yaxis,
-          title: { ...layoutDataApprover.yaxis.title, text: yvalueApprover },
-        },
-      });
+      const layout = JSON.parse(JSON.stringify(postChartData?.data[0]?.layout));
+      layout.legend.orientation = o;
+      setLayoutDataApprover(layout);
+      newArrApprover.data[0] &&
+        newArrApprover.data[0].data &&
+        newArrApprover.data[0].data.forEach((ele) => {
+          if (ele.name === "Normal" && ele.mode === "markers") {
+            setChartDataMarkersApprover((prevState) => ({
+              ...prevState,
+              markerSize: ele.marker.size,
+              markerShape: ele.marker.symbol ? ele.marker.symbol : "circle",
+              markerColor: ele.marker.color,
+            }));
+          } else if (ele.name === "Violations" && ele.mode === "markers") {
+            setChartDataMarkersApprover((prevState) => ({
+              ...prevState,
+              violationMarkerSize: ele.marker.size,
+              violationMarkerShape: ele.marker.symbol
+                ? ele.marker.symbol
+                : "circle",
+              violationMarkerColor: ele.marker.color,
+            }));
+          }
+        });
     }
   }, []);
 
@@ -89,6 +105,63 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
                 <p>: {layoutDataApprover.plot_bgcolor || "-"}</p>
               </Col>
             </Row>
+            <div className="figure-inputs header">Marker</div>
+            <Row className="figure-inputs select-top" gutter={16}>
+              <Col span={8}>
+                <label>Shape</label>
+              </Col>
+              <Col span={16}>
+                <p>{chartDataMarkersApprover.markerShape}</p>
+              </Col>
+            </Row>
+            <Row className="figure-inputs select-top" gutter={16}>
+              <Col span={8}>
+                <label>Color</label>
+              </Col>
+              <Col span={16}>
+                <p>{chartDataMarkersApprover.markerColor || "-"}</p>
+              </Col>
+            </Row>
+            <Row className="figure-inputs select-top" gutter={16}>
+              <Col span={8}>
+                <label>Size</label>
+              </Col>
+              <Col span={16}>
+                <p>{chartDataMarkersApprover.markerSize}</p>
+              </Col>
+            </Row>
+            {postChartData &&
+              postChartData.data[0] &&
+              postChartData.data[0].violations &&
+              postChartData.data[0].violations.length > 1 && (
+                <>
+                  <div className="figure-inputs header">Violations</div>
+                  <Row className="figure-inputs select-top" gutter={16}>
+                    <Col span={8}>
+                      <label>Shape</label>
+                    </Col>
+                    <Col span={16}>
+                      <p>{chartDataMarkersApprover.violationMarkerShape}</p>
+                    </Col>
+                  </Row>
+                  <Row className="figure-inputs select-top" gutter={16}>
+                    <Col span={8}>
+                      <label>Color</label>
+                    </Col>
+                    <Col span={16}>
+                      <p>{chartDataMarkersApprover.violationMarkerColor}</p>
+                    </Col>
+                  </Row>
+                  <Row className="figure-inputs select-top" gutter={16}>
+                    <Col span={8}>
+                      <label>Size</label>
+                    </Col>
+                    <Col span={16}>
+                      <p>{chartDataMarkersApprover.violationMarkerSize}</p>
+                    </Col>
+                  </Row>
+                </>
+              )}
             <div className="figure-inputs header">Panel Options</div>
             <Row className="figure-inputs select-top" gutter={16}>
               <Col span={8}>
@@ -127,7 +200,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
               </Col>
               <Col span={16}>
                 <p>
-                  :{" "}
+                  :
                   {layoutDataApprover.showlegend === true ? "Yes" : "No" || "-"}
                 </p>
               </Col>
