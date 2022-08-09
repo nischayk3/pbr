@@ -59,6 +59,8 @@ const ParameterTable = ({
 	const parameter_obj = useSelector(
 		(state) => state.viewCreationReducer.parameters
 	);
+
+
 	const totalBatch = useSelector((state) => state.viewCreationReducer.totalMolBatches);
 	const totalFileBatch = useSelector((state) => state.viewCreationReducer.totalFileBatches);
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -420,7 +422,6 @@ const ParameterTable = ({
 	}, [varClick]);
 
 	useEffect(() => {
-
 		const varArr = [];
 		if (variableCreate) {
 
@@ -489,17 +490,11 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (saveFunction) {
+
 			setCounter(counter + 1);
 			let arr = [];
 
-			let primarySelectedData;
-			if (tableData.length > 0) {
-				primarySelectedData = { ...tableData && tableData[0] };
-			} else {
-				const viewLoadJson = [...viewJson];
-				const allParameter = viewLoadJson[0].all_parameters
-				primarySelectedData = { ...allParameter && allParameter[0] }
-			}
+			let primarySelectedData = [...totalMolBatch]
 
 			let functionTable = [...viewSummaryBatch];
 
@@ -507,9 +502,12 @@ const ParameterTable = ({
 
 			functionTable.forEach((item) => {
 				let obj = {};
-				Object.entries(primarySelectedData).forEach(([key]) => {
-					if (key === item.batch) {
-						if (new_column_data.includes(key)) obj[functionName] = true;
+				Object.entries(primarySelectedData).forEach(([key, value]) => {
+					if (value.batch === item.batch) {
+
+						if (new_column_data.includes(value.batch)) {
+							obj[functionName] = true;
+						}
 						else obj[functionName] = false;
 					}
 				});

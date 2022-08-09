@@ -129,6 +129,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 
 	useEffect(() => {
 		if (isLoadView) {
+
 			let fun = [];
 			let funData = [];
 
@@ -159,7 +160,9 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 					Object.entries(totalMolBatch).forEach(([key, value]) => {
 						if (value.batch === item.batch) {
 							for (let i = 0; i < fun.length; i++) {
-								if (new_column_data.includes(value.batch)) funObj[fun[i]] = true;
+								if (new_column_data.includes(value.batch)) {
+									funObj[fun[i]] = true;
+								}
 								else funObj[fun[i]] = false;
 							}
 							funData.push(funObj);
