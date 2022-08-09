@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Alert, Button, Modal, Table } from "antd";
 import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import CodeEditor from "@uiw/react-textarea-code-editor";
+import { Alert, Button, Modal, Table } from "antd";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import FunctionKey from "../../../../../assets/images/key1.png";
 import InputField from "../../../../../components/InputField/InputField";
+import { showNotification } from "../../../../../duck/actions/commonActions";
 import {
 	saveAsViewFunction,
-	saveViewFunction,
-	sendFunDetails,
-	sendFunctionName,
-	setNewColumn
+	saveViewFunction, sendFunctionName, sendFunDetails, setNewColumn
 } from "../../../../../duck/actions/viewAction";
 import { viewEvaluate } from "../../../../../services/viewCreationPublishing";
-import { showNotification } from "../../../../../duck/actions/commonActions";
 
 const DataColumns = [
 	{

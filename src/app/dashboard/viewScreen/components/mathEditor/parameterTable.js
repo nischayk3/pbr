@@ -2,6 +2,7 @@ import { CheckOutlined, CloseOutlined, DeleteOutlined, RightCircleOutlined } fro
 import { Button, Checkbox, Empty, Input, Modal, Radio, Select, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { v1 as uuid } from "uuid";
 import { hideLoader } from "../../../../../duck/actions/commonActions";
 import {
 	createSummaryData,
@@ -267,7 +268,6 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (isLoadView) {
-			//	onChangeColumnsHandler();
 			setTableData([...selectedTableData]);
 			setFun(functions_obj)
 		}
@@ -275,9 +275,9 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
-			setTotalMolBatch([...totalBatch, ...totalFileBatch]);
+			const totalMol = [...totalBatch, ...totalFileBatch]
+			setTotalMolBatch(totalMol);
 		}
-
 	}, [totalBatch, totalFileBatch])
 
 
@@ -420,21 +420,25 @@ const ParameterTable = ({
 	}, [varClick]);
 
 	useEffect(() => {
-		let count = 0;
-		let varArr = [];
+
+		const varArr = [];
 		if (variableCreate) {
-			count++;
+
 			const varParameter = [...parameters];
+
 			varParameter.forEach((element) => {
 				varArr.push(element);
 			});
+
 			variableParam[variableName] = varParameter;
+
 			setVariableParam(variableParam);
 
 			const viewDataJson = [...viewJson];
 			viewDataJson.forEach((element) => {
 				return (element.parameters = variableParam);
 			});
+
 			setViewJson(viewDataJson);
 			dispatch(createVariable(variableParam));
 			dispatch(viewParamMap(variableParam));
@@ -543,9 +547,7 @@ const ParameterTable = ({
 			radioObj.forEach((element) => {
 				element.primary = index;
 			});
-
 			setTableData(newPrimaryData);
-			//setSelectedPrimaryData(radioObj[0]);
 			dispatch(selectParamType(type));
 			paramType = type;
 		}
@@ -639,6 +641,7 @@ const ParameterTable = ({
 	};
 
 	const onChangeBatchPopup = (e, record, key) => {
+
 		const parameterArrray = [...parameters];
 		const batchRecordPopup = [...tableData];
 		batchRecordPopup.forEach((ele) => {
@@ -646,6 +649,7 @@ const ParameterTable = ({
 				ele[record.batch] = e.target.checked == false ? "" : e.target.checked;
 			}
 		})
+
 		parameterArrray.forEach((element) => {
 			if (element.parameter_name === key) {
 				if (element.batch_exclude.indexOf(record.batch) === -1) {
@@ -653,8 +657,9 @@ const ParameterTable = ({
 				}
 			}
 		});
-		setParameters([...parameterArrray]);
-		setTableData([...batchRecordPopup]);
+
+		setParameters(parameterArrray)
+		setTableData(batchRecordPopup);
 	}
 
 	const isModalBatch = () => {
@@ -712,10 +717,10 @@ const ParameterTable = ({
 							rowSelection: {
 								selectedRowKeys,
 								onChange: (selectedRowKeys, selectedRows) => {
-									let paramArr = [];
+									const paramArr = [];
 									const rowData = [...selectedRows];
 									rowData.forEach((element, index) => {
-										let paramsObj = {};
+										const paramsObj = {};
 										paramsObj["source_type"] = element.sourceType;
 										paramsObj["material_id"] = element.material_id
 										paramsObj["process_id"] = element.process_id;
@@ -723,8 +728,10 @@ const ParameterTable = ({
 										paramsObj["batch_exclude"] = [];
 										paramsObj["priority"] = index;
 										paramsObj["aggregation"] = element.aggregation;
+										paramsObj["key"] = uuid();
 										paramArr.push(paramsObj);
 									});
+
 									setParameters(paramArr);
 									callbackCheckbox(true);
 									setIsParamSelected(false);

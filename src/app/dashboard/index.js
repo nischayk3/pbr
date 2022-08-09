@@ -24,7 +24,7 @@ import "./dashboard.scss";
 import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
 import PbrReviewer from "./pbrReviewer";
 import PrivateRoute from "./ProtectedRoute";
-import PythonNotebook from "./pythonNotebook/pythonNotebook";
+//import PythonNotebook from "./pythonNotebook/pythonNotebook";
 import UnAuthorisedScreen from "./unAuthorised";
 // DASHBOARD ROUTE COMPONENTS
 
@@ -48,6 +48,7 @@ const HierarchyMain = lazy(() =>
 const DesignCharts = lazy(() =>
 	import("./reportDesigner/components/reportDesignerNew")
 );
+const UserTrail = lazy(() => import("./userTrail"))
 
 const Faq = lazy(() => import("./faq"));
 const { Content } = Layout;
@@ -98,6 +99,8 @@ const Dashboard = () => {
 			view = "CONFIGURATION";
 		} else if (location.pathname.includes("audit_trail_report")) {
 			view = "AUDIT_REPORT";
+		} else if (location.pathname.includes("user_trail_report")) {
+			view = "USER_REPORT";
 		} else if (location.pathname.includes("manual_data_upload")) {
 			view = "FILE_UPLOAD";
 		} else if (location.pathname.includes("report_designer")) {
@@ -180,6 +183,13 @@ const Dashboard = () => {
 									path={`${match.url}/audit_trail_report`}
 									authorised={authorised}
 									component={AuditTrial}
+
+								/>
+								<PrivateRoute
+									key="user_trail_report"
+									path={`${match.url}/user_trail_report`}
+									authorised={authorised}
+									component={UserTrail}
 
 								/>
 
@@ -330,11 +340,11 @@ const Dashboard = () => {
 									authorised={authorised}
 								/>
 
-								<Route
+								{/* <Route
 									key="data_science_studio"
 									path={`${match.url}/pythonNoteBook`}
 									component={PythonNotebook}
-								/>
+								/> */}
 							</Switch>
 						</SuspenseWrapper>
 					</Content>
