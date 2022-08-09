@@ -66,25 +66,38 @@ const BatchesComponent = (props) => {
     unapproved_data: 0,
     site: null,
   });
-  const filterRef = useRef();
+  const filterRef = useRef({
+    date_range: "",
+    unapproved_data: 0,
+    site: null,
+  });
   const dateFormat = "YYYY-MM-DD";
   const dispatch = useDispatch();
   const match = useRouteMatch();
   const history = useHistory();
   const savePipeline = async () => {
     const req = {
-      data: [],
+      data: [
+        {
+          data_filter: filterRef.current,
+          datasplit: [],
+          variable_mapping: [],
+          transformation_mapping: [],
+          save_transformation: [],
+          estimator: [],
+          save_model: [],
+        },
+      ],
       pipeline_name: viewData.pipeLineName,
       savetype: "saveas",
       view_id: viewData.viewDispId,
       view_version: viewData.viewVersion,
-      data_filter: filterRef.current,
     };
     dispatch(showLoader());
     const apiResponse = await putPipelineObj(req);
-    if (apiResponse.status === 200) {
+    if (apiResponse?.pipeline_disp_id) {
       dispatch(hideLoader());
-      history.push(`${match.url}/${apiResponse?.data?.pipeline_disp_id}`);
+      history.push(`${match.url}/${apiResponse?.pipeline_disp_id}`);
     } else {
       dispatch(hideLoader());
       dispatch(showNotification("error", "unable to save pipeline"));
