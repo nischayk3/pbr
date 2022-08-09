@@ -17,6 +17,7 @@ import { PlusOutlined } from '@ant-design/icons';
 const { Option } = Select;
 const { Panel } = Collapse;
 
+/* istanbul ignore next */
 function AddParameter(props) {
     const { paramaterAdded, setParamaterAdded } = props;
     const [form] = Form.useForm();

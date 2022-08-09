@@ -10,6 +10,7 @@ import InputField from "../../../../../../components/InputField/InputField";
 import SelectField from "../../../../../../components/SelectField/SelectField";
 //services
 import { getViewList } from "../../../../../../services/analyticsService";
+import { postChartPlotData } from "../../../../../../services/chartPersonalizationService";
 //redux
 import { useDispatch } from "react-redux";
 import {
@@ -20,6 +21,7 @@ import {
 // import ViewSearchTable from "./viewTable/ViewTable";
 import ViewTable from "../../../../chartPersonal/components/viewPage/viewChart/ViewTable";
 import ViewSearchTable from "../../../../chartPersonal/components/viewPage/viewChart/viewSearchTable";
+import ViewJson from "./view.json";
 import BatchesComponent from "./batchesPage";
 
 const NewPipeline = (props) => {
@@ -27,6 +29,7 @@ const NewPipeline = (props) => {
   const [searchTableData, setSearchTableData] = useState([]);
   const [showViewTable, setShowViewTable] = useState(false);
   const [versionList, setVersionList] = useState([0]);
+  const [parameterData, setParameterData] = useState([]);
   const deepSearch1 = useRef(false);
   const searchViewData = useRef([]);
   const [showBatchData, setShowBatchData] = useState(false);
@@ -106,6 +109,47 @@ const NewPipeline = (props) => {
     if (ref.current && !ref.current.contains(e.target)) {
       onBlurOut();
       setSearchTableData(searchViewData.current);
+    }
+  };
+  //onclick of next button
+  const onNextClick = async (batchFilters) => {
+    const reqBody = {
+      data: [
+        {
+          view_id: viewData.viewDispId,
+          view_name: viewData.viewName,
+          view_version: viewData.viewVersion,
+          data_filter: batchFilters
+            ? batchFilters
+            : {
+                date_range: "",
+                unapproved_data: 0,
+                site: "",
+              },
+          data: [
+            {
+              type: "scatter",
+              mode: "markers",
+              marker: {
+                color: "#376dd4",
+                size: 15,
+              },
+            },
+          ],
+        },
+      ],
+    };
+    const apiResponse = await postChartPlotData(reqBody);
+    if (apiResponse && apiResponse.data && apiResponse.data[0]?.extras) {
+      setParameterData(apiResponse?.data[0]?.extras?.coverage);
+      if (showBatchData === false) {
+        setShowBatchData(true);
+      }
+    } else if (apiResponse && apiResponse?.Message) {
+      setParameterData([]);
+      dispatch(showNotification("error", apiResponse?.Message));
+    } else {
+      dispatch(showNotification("error", "Unable to get parameter data"));
     }
   };
 
@@ -219,7 +263,7 @@ const NewPipeline = (props) => {
             <Row className="button-mt">
               <Button
                 className="custom-primary-btn"
-                onClick={() => setShowBatchData(true)}
+                onClick={() => onNextClick("")}
                 disabled={!viewData.pipeLineName || !viewData.viewVersion}
               >
                 Next
@@ -231,6 +275,9 @@ const NewPipeline = (props) => {
         <BatchesComponent
           setShowBatchData={setShowBatchData}
           viewData={viewData}
+          parameterData={parameterData}
+          setParameterData={setParameterData}
+          onNextClick={onNextClick}
         />
       )}
       <Modal

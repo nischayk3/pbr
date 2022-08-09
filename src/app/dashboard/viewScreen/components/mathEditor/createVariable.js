@@ -1,6 +1,6 @@
-import React from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
+import React from "react";
 
 const CreateVariable = ({ addVariable, title, createVar, className, fromWorkflowScreen }) => {
 	return (

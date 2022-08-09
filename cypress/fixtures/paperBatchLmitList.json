@@ -1,52 +1,13 @@
 {
     "Data": [
         {
-            "batch_num": "393485",
-            "changed_by": "",
-            "changed_on": "NaTZ",
-            "created_by": "fahad.siddiqui@mareana.com",
-            "created_on": "2022-07-06T14:28:01.436299+00:00",
-            "cust_key": "1000",
-            "pbr_temp_int_id": 258,
-            "pbr_template_disp_id": "P258",
-            "pbr_template_info": {
-                "pbrPageIdentifier": {
-                    "condition": "AND",
-                    "keys": []
-                },
-                "pbrTemplateInfo": [
-                    {
-                        "color": "blue",
-                        "filename": "Batch Record Example 3.pdf",
-                        "method": "absolute_coordinate",
-                        "name": "para1",
-                        "param_key_height": 0.0099832378327846,
-                        "param_key_left": 0.1636857539415359,
-                        "param_key_snippet_id": 99,
-                        "param_key_text": "Document",
-                        "param_key_top": 0.0335292369127273,
-                        "param_key_width": 0.0731106922030448,
-                        "param_page": 1,
-                        "param_value_height": 0.010051702149212294,
-                        "param_value_left": 0.2675315141677856,
-                        "param_value_rule": {
-                            "regex_text": "12/10/12022"
-                        },
-                        "param_value_snippet_id": 101,
-                        "param_value_text": "MBR-0001",
-                        "param_value_top": 0.0334305018186569,
-                        "param_value_width": 0.06901554018259042
-                    }
-                ]
-            },
-            "pbr_template_name": "test",
-            "pbr_template_status": "DRFT",
-            "pbr_template_uuid": null,
-            "pbr_template_version": 1,
-            "product_num": "1091460",
-            "site_code": "1338"
+            "label": "P259",
+            "value": "P259"
+        },
+        {
+            "label": "P532",
+            "value": "P532"
         }
-
     ],
     "Message": "Success",
     "status-code": 200

@@ -216,7 +216,7 @@ const ViewChart = (props, ref) => {
 			return getChartPlotData(req, headers);
 
 			//dispatch(hideLoader());
-		} catch (error) {
+		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
 			dispatch(showNotification('error', error.Message));
 		}
@@ -245,7 +245,7 @@ const ViewChart = (props, ref) => {
 			let res = await getSiteId(req);
 			setSiteList(res.Data);
 			dispatch(hideLoader());
-		} catch (error) {
+		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
 			dispatch(showNotification('error', 'There is no data'));
 		}
@@ -348,7 +348,7 @@ const ViewChart = (props, ref) => {
 				setTempPanels(newDummy.panels);
 				setDashboardInfo(newDummy);
 				dispatch(hideLoader());
-			} catch (error) {
+			} catch (error) {/* istanbul ignore next */
 				dispatch(hideLoader());
 				dispatch(showNotification('error', 'Unable to fetch data'));
 			}
@@ -381,7 +381,13 @@ const ViewChart = (props, ref) => {
 	// 	showModal();
 	// };
 	const onChangeStart = (date, dateString) => {
-
+		if (date) {
+			let the_date = moment(date).toISOString()
+			if (!the_date.includes(dateString)) {
+				let split_date = the_date.split('T')
+				date = dateString + 'T' + split_date[1]
+			}
+		}
 		let obj = { ...dashboardInfo };
 		if (obj.data_filter.date_range == '') {
 			obj.data_filter.date_range = `${date ? moment(date).toISOString() : ''}/`;
@@ -393,7 +399,13 @@ const ViewChart = (props, ref) => {
 		setDashboardInfo(obj);
 	};
 	const onChangeEnd = (date, dateString) => {
-
+		if (date) {
+			let the_date = moment(date).toISOString()
+			if (!the_date.includes(dateString)) {
+				let split_date = the_date.split('T')
+				date = dateString + 'T' + split_date[1]
+			}
+		}
 		let obj = { ...dashboardInfo };
 		if (obj.data_filter.date_range == '') {
 			obj.data_filter.date_range = `/${date ? moment(date).toISOString() : ''}`;
@@ -406,6 +418,13 @@ const ViewChart = (props, ref) => {
 	};
 
 	const onInnerStart = (date, dateString, index) => {
+		if (date) {
+			let the_date = moment(date).toISOString()
+			if (!the_date.includes(dateString)) {
+				let split_date = the_date.split('T')
+				date = dateString + 'T' + split_date[1]
+			}
+		}
 
 		let arr = [...tempPanels];
 		if (arr[index].data_filter.date_range == '') {
@@ -419,7 +438,13 @@ const ViewChart = (props, ref) => {
 		setTempPanels(arr);
 	};
 	const onInnerEnd = (date, dateString, index) => {
-
+		if (date) {
+			let the_date = moment(date).toISOString()
+			if (!the_date.includes(dateString)) {
+				let split_date = the_date.split('T')
+				date = dateString + 'T' + split_date[1]
+			}
+		}
 		let arr = [...tempPanels];
 		if (arr[index].data_filter.date_range == '') {
 			arr[index].data_filter.date_range = `/${date ? moment(date).toISOString() : ''
@@ -521,17 +546,21 @@ const ViewChart = (props, ref) => {
 		setTempCard(obj);
 	};
 
+	/* istanbul ignore next */
 	const onSiteChange = (e, index) => {
 		let arr = [...tempPanels];
 		tempPanels[index].data_filter.site = e;
 		setTempPanels(arr);
 	};
+
+	/* istanbul ignore next */
 	const onTempSiteChange = e => {
 		let obj = { ...tempCard };
 		obj.data_filter.site = e;
 		setTempCard(obj);
 	};
 
+	/* istanbul ignore next */
 	const removeCard = index => {
 		let arr = [...tempPanels];
 		arr.splice(index, 1);
@@ -579,7 +608,7 @@ const ViewChart = (props, ref) => {
 			});
 			setTempPanels(arr);
 			dispatch(hideLoader());
-		} catch (error) {
+		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
 			dispatch(showNotification('error', 'There is no data'));
 		}
@@ -613,12 +642,13 @@ const ViewChart = (props, ref) => {
 			obj = Object.assign({}, obj, res, { chartLayout: chartLayout });
 			setTempCard(obj);
 			dispatch(hideLoader());
-		} catch (error) {
+		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
 			dispatch(showNotification('error', 'There is no data'));
 		}
 	};
 
+	/* istanbul ignore next */
 	const searchCallback = async (data, index) => {
 		let arr = [...tempPanels];
 		arr[index].chart_id = data.chartDispId;
@@ -641,11 +671,13 @@ const ViewChart = (props, ref) => {
 		setTempCard(obj);
 	};
 
+	
 	const addNewCard = () => {
 		let newDummy = { ...dummy };
 		setTempCard(newDummy.panels[0]);
 	};
 
+	/* istanbul ignore next */
 	const onTempApply = () => {
 		let obj = JSON.parse(JSON.stringify(tempCard));
 		obj.chartLayout.height = 300;
@@ -714,7 +746,7 @@ const ViewChart = (props, ref) => {
 			setTempPanels(arr);
 			setDashboardInfo(obj);
 			//dispatch(hideLoader());
-		} catch (error) {
+		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
 			dispatch(showNotification('error', 'Unable to fetch data'));
 		}
@@ -742,6 +774,7 @@ const ViewChart = (props, ref) => {
 	// 	setTempCard(obj);
 	// };
 
+	/* istanbul ignore next */
 	const onPointSelected = data => {
 
 		if (data && data.points) {
@@ -929,6 +962,7 @@ const ViewChart = (props, ref) => {
 									)
 									: ''
 							}
+							allowClear
 						/>
 
 						<DatePicker
@@ -943,6 +977,7 @@ const ViewChart = (props, ref) => {
 									: ''
 							}
 							style={{ height: '34px' }}
+							allowClear
 						/>
 
 						{/* <RangePicker onChange={(e,value)=>handleDateChangeGlobal(e,value)}

@@ -34,7 +34,7 @@
                 "width": 930,
                 "height": 400,
                 "showlegend": true,
-                "plot_bgcolor": "white",
+                "plot_bgcolor": "#FFFFFF",
                 "annotations":[],
                 "legend": {
                     "title": {
@@ -49,6 +49,13 @@
                     "orientation": "v",
                     "bordercolor": "#FFFFFF"
                 },
+                "title": {
+                    "text": "",
+                    "font": {
+                      "size": 15,
+                      "color": "#000000"
+                    }
+                  },
                 "xaxis": {
                     "title": {
                         "text": "",

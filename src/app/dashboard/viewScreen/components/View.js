@@ -6,24 +6,19 @@
  * @Last Changed By - Dinesh
  */
 
-import React, { useEffect, useState } from "react";
-import { useLocation, useParams, useHistory } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
 import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Collapse, Modal } from "antd";
-import "./styles.scss";
 import queryString from "query-string";
-import {
-	getViewConfig,
-	getMoleculeList,
-	saveFunction,
-} from "../../../../services/viewCreationPublishing";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation, useParams } from "react-router";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
+import Signature from "../../../../components/ElectronicSignature/signature";
 import InputField from "../../../../components/InputField/InputField";
 import {
 	hideLoader,
 	showLoader,
-	showNotification,
+	showNotification
 } from "../../../../duck/actions/commonActions";
 import {
 	isLoadView,
@@ -31,15 +26,18 @@ import {
 	sendTotalMolBatches,
 	setViewResposne,
 	viewFunctionMap,
-	viewParamMap,
+	viewParamMap
 } from "../../../../duck/actions/viewAction";
-import Signature from "../../../../components/ElectronicSignature/signature";
+import {
+	getMoleculeList, getViewConfig, saveFunction
+} from "../../../../services/viewCreationPublishing";
+import FileUpload from "./fileUpload/FileUpload";
 import MaterialTree from "./materialTree";
 import { MemoizedMathEditor } from "./mathEditor";
-import { MemoizedViewSummaryData } from "./viewSummary/index";
-import viewdatajson from "./view.json";
-import FileUpload from "./fileUpload/FileUpload";
 import ParamLookup from "./parameterLookup/ParamLookup";
+import "./styles.scss";
+import viewdatajson from "./view.json";
+import { MemoizedViewSummaryData } from "./viewSummary/index";
 
 const { Panel } = Collapse;
 

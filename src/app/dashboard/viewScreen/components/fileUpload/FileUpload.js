@@ -2,9 +2,6 @@
 // Mareana Software
 // Version 1
 // Last modified - 08 March, 2022
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import "./styles.scss";
 import {
 	DeleteOutlined,
 	DownloadOutlined,
@@ -22,23 +19,26 @@ import {
 	Tooltip,
 	Upload
 } from "antd";
-
-import { deleteAdHocFile } from "../../../../../duck/actions/fileUploadAction";
-import {
-	batchCoverage,
-	sendSelectedParamData,
-	sendTotalFileBatches,
-} from "../../../../../duck/actions/viewAction";
-import {
-	adHocFileUpload,
-	adHocFilesParameterTree
-} from "../../../../../services/viewCreationPublishing";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { v1 as uuid } from "uuid";
 import { MDH_APP_PYTHON_SERVICE } from "../../../../../constants/apiBaseUrl";
 import {
 	hideLoader,
 	showLoader,
 	showNotification
 } from "../../../../../duck/actions/commonActions";
+import { deleteAdHocFile } from "../../../../../duck/actions/fileUploadAction";
+import {
+	batchCoverage,
+	sendSelectedParamData,
+	sendTotalFileBatches
+} from "../../../../../duck/actions/viewAction";
+import {
+	adHocFilesParameterTree, adHocFileUpload
+} from "../../../../../services/viewCreationPublishing";
+import "./styles.scss";
+
 const { Panel } = Collapse;
 const { Dragger } = Upload;
 function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSummaryTable, setNewBatchData, setFunctionEditorViewState, filesListTree, setFilesListTree, setViewSummaryBatch, viewJson, fromWorkflowScreen }) {
@@ -149,26 +149,17 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		}
 	}, [isLoadView]);
 
-
-
-	const parameterPassHandler = (record, index) => {
+	const parameterPassHandler = (record) => {
 		const selectedParam = finalData.current.find(
 			(item) => String(item.parameter_name) === String(record.param)
 		);
-
-		// let coverage_lists = record.coverage_list;
-		// coverage_lists = coverage_lists.map((i) => {
-		// 	return { batch: i };
-		// });
 
 		if (selectedParam === undefined) {
 			let rowData = {};
 			let batchData = {};
 			let newBatchData = [];
-			let molBatch = [...totalBatch, ...fileBatch];
-
+			const molBatch = [...totalBatch, ...fileBatch];
 			setViewSummaryBatch(molBatch)
-
 			molBatch.map((el) => {
 				if (record.coverage_list.includes(el.batch)) {
 					return (
@@ -196,10 +187,12 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 				rowData.parameter_name = record.param;
 				rowData.coverage =
 					`${record.coverage_metric_percent}` + `(${record.coverage_metric})`;
-				rowData.key = `${record.product_num}-${record.param}`;
+				// rowData.key = `${record.product_num}-${record.param}`;
+				rowData.key = uuid();
 				rowData.primary = 0;
 				rowData.aggregation = "";
 				rowData.material_id = selectedFileId;
+				rowData.process_id = null;
 
 				let data = { ...rowData };
 				if (selectedTableData && selectedTableData.length !== 0) {
