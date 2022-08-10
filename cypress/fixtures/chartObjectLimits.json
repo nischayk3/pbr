@@ -577,6 +577,10 @@
             "layout": {
                 "annotations": [],
                 "height": 400,
+                "title": {
+                    "font": {
+                        "color": "#000000", "size": 15}, "text": ""
+                    },
                 "legend": {
                     "bgcolor": "#FFFFFF",
                     "bordercolor": "#FFFFFF",
@@ -590,6 +594,7 @@
                         "text": ""
                     }
                 },
+                
                 "plot_bgcolor": "white",
                 "showlegend": true,
                 "width": 930,
