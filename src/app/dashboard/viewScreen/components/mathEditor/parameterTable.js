@@ -422,32 +422,24 @@ const ParameterTable = ({
 	}, [varClick]);
 
 	useEffect(() => {
-		const varArr = [];
-		if (variableCreate) {
 
-			const varParameter = [...parameters];
-			console.log(varParameter);
-			varParameter.forEach((element) => {
-				varArr.push(element);
-			});
-			console.log(varParameter);
-			console.log(variableParam);
-			console.log(variableName);
-			variableParam[variableName] = varParameter;
-			console.log(variableParam);
-			console.log(varParameter);
-			setVariableParam(variableParam);
+		if (variableCreate) {
+			const varParameter = JSON.parse(JSON.stringify(parameters));
+			const varParam = { ...variableParam, }
+
+			varParam[variableName] = JSON.parse(JSON.stringify(varParameter));
+			setVariableParam(varParam);
 
 			const viewDataJson = [...viewJson];
 			viewDataJson.forEach((element) => {
-				return (element.parameters = variableParam);
+				return (element.parameters = varParam);
 			});
-			console.log(viewDataJson);
+
 			setViewJson(viewDataJson);
-			dispatch(createVariable(variableParam));
-			dispatch(viewParamMap(variableParam));
+			dispatch(createVariable(varParam));
+			dispatch(viewParamMap(varParam));
 			setVariableCreate(false);
-			getParamData(variableParam);
+			getParamData(varParam);
 		}
 	}, [variableCreate]);
 
@@ -644,7 +636,7 @@ const ParameterTable = ({
 
 		const parameterArrray = [...parameters];
 		const batchRecordPopup = [...tableData];
-		console.log(parameterArrray);
+
 		batchRecordPopup.forEach((ele) => {
 			if (ele.parameter_name === key) {
 				ele[record.batch] = e.target.checked == false ? "" : e.target.checked;
@@ -658,7 +650,7 @@ const ParameterTable = ({
 				}
 			}
 		});
-		console.log(parameterArrray);
+
 		setParameters(parameterArrray)
 		setTableData(batchRecordPopup);
 	}

@@ -5,11 +5,11 @@
  * @Last Modified - 15 March, 2022
  * @Last Changed By - Dinesh Kumar
  */
-import React, { useEffect, useState } from "react";
-import { Drawer } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-import popupicon from "../../../../../assets/images/popup.png";
+import { Drawer } from "antd";
+import React, { useEffect, useState } from "react";
 import batchIcon from "../../../../../assets/images/material.png";
+import popupicon from "../../../../../assets/images/popup.png";
 import GenealogyDataTable from "../genealogyDataTable";
 import "./style.scss";
 
@@ -61,6 +61,7 @@ function GenealogyDrawer(props) {
 			onClose={onCloseDrawer}
 			visible={visible}
 			getContainer={false}
+			maskClosable={true}
 			style={{ position: "absolute" }}
 		>
 			<GenealogyDataTable
