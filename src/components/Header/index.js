@@ -1,10 +1,9 @@
-import { LogoutOutlined } from '@ant-design/icons';
-import { Layout } from 'antd';
+import { BellOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Input, Layout } from 'antd';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import mareanaLogo from '../../assets/mareana_logo.png';
-import { adenabled } from '../../config/config';
 import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 import { showNotification } from '../../duck/actions/commonActions';
 import { logoutUrl } from '../../services/loginService';
@@ -12,6 +11,7 @@ import Auth from '../../utils/auth';
 import './style.scss';
 
 const { Header } = Layout;
+const { Search } = Input;
 
 const HeaderBar = () => {
 	const dispatch = useDispatch();
@@ -36,6 +36,7 @@ const HeaderBar = () => {
 			history.push('/');
 		});
 	};
+
 	const adLogout = (tokenExpired) => {
 		if (tokenExpired) {
 			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
@@ -44,6 +45,7 @@ const HeaderBar = () => {
 		window.open(`${logoutUrl}`, '_self')
 		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`, '_self')
 	}
+	const loginResponse = JSON.parse(localStorage.getItem("login_details"))
 
 	return (
 		<Header id='header'>
@@ -52,12 +54,51 @@ const HeaderBar = () => {
 					<img src={mareanaLogo} height='40' alt='menu' />
 				</div>
 			</div>
-			<div
+			<div className="subheader">
+				<Search
+					placeholder="Search"
+					allowClear
+					//onSearch={ }
+					style={{ width: 304 }}
+				/>
+				<BellOutlined style={{ margin: "6px 25px", fontSize: "20px" }} />
+				<div className="custom-menu">
+					<div className="user-name">
+						<Avatar style={{ backgroundColor: "orange" }}>
+							{localStorage.getItem("username") &&
+								localStorage.getItem("username").split("")[0].toUpperCase()}{" "}
+						</Avatar>
+						<p style={{ padding: "0px 10px" }}>
+							{localStorage.getItem("username")}
+						</p>
+					</div>
+					<div className="menu-detail">
+						<div className="avatar-details">
+							<Avatar size={64}
+								style={{
+									padding: "10px 0",
+									margin: "10px 0"
+								}}
+								icon={<UserOutlined />} />
+							<p className="username">	{localStorage.getItem("username")}</p>
+							<p className="email">	{localStorage.getItem("password")}{loginResponse && loginResponse.email_id}</p>
+						</div>
+						<div className="submenu">
+							<p onClick={() => history.push('/dashboard/profile')}><UserOutlined /> Profile</p>
+							<p><SettingOutlined /> Preferences</p>
+						</div>
+						<div className="logout">
+							<p><LogoutOutlined /> Logout</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			{/* <div
 				className='logout-btn'
 				onClick={adenabled ? () => adLogout() : () => Logout()}>
 				<LogoutOutlined />
-			</div>
-		</Header>
+			</div> */}
+		</Header >
 	);
 };
 
