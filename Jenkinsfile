@@ -1,39 +1,39 @@
 //CI-CD script---
 pipeline {
     environment {
-        DOCKER_IMAGE = 'registry.cloud.mareana.com/mdh-cpv/dev'
+        SHARED_IMAGE = 'registry.cloud.mareana.com/mdh-cpv/dev/mdh-cpv-ui-shared'
+        DOCKER_IMAGE = 'registry.cloud.mareana.com/mdh-cpv/dev/mdh-cpv-ui'
     }
     agent { label 'cpv_node_ui' }
     options {
         ansiColor('xterm')
     }
     stages {
-      stage("Code Coverage") {
-
-           steps {
-               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-
-                 sh '''#!/bin/bash -x
-                       sudo docker ps | xargs docker stop
-                       sudo docker ps -a | xargs docker rm
-                       docker-compose build  --no-cache ui-cypress-run
-                       docker-compose up ui-cypress-run
-                       docker-compose down
-                       ls coverage
-                '''
-                     publish html
-                   publishHTML target: [
-                   allowMissing: false,
-                   alwaysLinkToLastBuild: false,
-                   keepAll: true,
-                   reportDir: './coverage/lcov-report/',
-                   reportFiles: 'index.html',
-                   reportName: 'Coverage Report'
-                   ]
-
-               }
-             }
-          }
+     // stage("Code Coverage") {
+//
+  //         steps {
+    //           catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+//
+      //           sh '''#!/bin/bash -x
+        //               docker-compose down -v
+          //             docker-compose build  --no-cache ui-cypress-run
+           //            docker-compose up ui-cypress-run
+            //           docker-compose down
+             //          ls coverage
+              //  '''
+               //      publish html
+                 //  publishHTML target: [
+                //   allowMissing: false,
+              //     alwaysLinkToLastBuild: false,
+                //   keepAll: true,
+                //   reportDir: './coverage/lcov-report/',
+                //   reportFiles: 'index.html',
+        //           reportName: 'Coverage Report'
+          //         ]
+//
+  //             }
+    //         }
+      //    }
       stage('Sonarqube Analysis') {
         environment {
            scannerHome = tool 'SonarQubeScanner'
@@ -64,15 +64,24 @@ pipeline {
            }
           stage("Build Docker Image") {
             steps {
-                sh 'sudo docker build -t  $DOCKER_IMAGE/mdh-cpv-ui:$BUILD_NUMBER --no-cache .'
-                }
+                sh '''#!/bin/bash -x
+                       sudo docker build -t  $SHARED_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-dev .
+                       echo "Changing Docker image in prod dockerfile"
+                       sed -i -e "s@IMAGE@\'"$SHARED_IMAGE:$BUILD_NUMBER"\'@g"  Dockerfile-prod
+                       sudo docker build --build-arg app-dns='mi-devv3-5.mareana.com' --build-arg jupyter-dns='jupyterhub-dev.mareana.com' -t  $DOCKER_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-prod .
+               ''' 
+               }
               }
           stage("Push Docker Image to Docker Registry") {
             steps {
                 withDockerRegistry(credentialsId: 'docker-registry-mareana', url: 'https://registry.cloud.mareana.com') {
-                sh 'docker push $DOCKER_IMAGE/mdh-cpv-ui:$BUILD_NUMBER'
-                sh 'docker rmi $DOCKER_IMAGE/mdh-cpv-ui:$BUILD_NUMBER'
-                }
+                sh '''#!/bin/bash -x
+                     docker push $DOCKER_IMAGE:$BUILD_NUMBER
+                     docker push $SHARED_MAGE:$BUILD_NUMBER
+                     docker rmi $DOCKER_IMAGE:$BUILD_NUMBER
+                     docker rmi $SHARED_IMAGE:$BUILD_NUMBER
+              '''  
+              }
             }
           }
           stage("Deploy to Dev") {
