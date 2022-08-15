@@ -1,6 +1,6 @@
-import { BellOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { BellOutlined, CaretUpOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Input, Layout } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import mareanaLogo from '../../assets/mareana_logo.png';
@@ -16,7 +16,13 @@ const { Search } = Input;
 const HeaderBar = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const [loginDetails, setLoginDetails] = useState({});
+	const [dropdownVisible, setDropdownVisible] = useState(false);
+
+
 	useEffect(() => {
+		const loginResponse = JSON.parse(localStorage.getItem("login_details"))
+		setLoginDetails(loginResponse && loginResponse)
 		document.addEventListener('tokenExpired', () => {
 			if (localStorage.getItem('login_details')) {
 				adLogout('tokenExpired')
@@ -24,9 +30,9 @@ const HeaderBar = () => {
 		})
 	}, [])
 
-	// const toggleCollapsed = () => {
-	// 	dispatch(toggleMenu());
-	// };
+	const dropDownOpen = () => {
+		setDropdownVisible(true)
+	}
 
 	const Logout = () => {
 		// LOGOUT API NOT WORKING
@@ -36,7 +42,19 @@ const HeaderBar = () => {
 			history.push('/');
 		});
 	};
-
+	const useOutsideAlerter = (ref) => {
+		useEffect(() => {
+			function handleClickOutside(event) {
+				if (ref.current && !ref.current.contains(event.target)) {
+					setDropdownVisible(false)
+				}
+			}
+			document.addEventListener("mousedown", handleClickOutside);
+			return () => {
+				document.removeEventListener("mousedown", handleClickOutside);
+			};
+		}, [ref]);
+	}
 	const adLogout = (tokenExpired) => {
 		if (tokenExpired) {
 			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
@@ -45,10 +63,11 @@ const HeaderBar = () => {
 		window.open(`${logoutUrl}`, '_self')
 		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`, '_self')
 	}
-	const loginResponse = JSON.parse(localStorage.getItem("login_details"))
-
+	const wrapperRef = useRef(null);
+	useOutsideAlerter(wrapperRef);
+	console.log("localStorage.get", localStorage.getItem("username"),)
 	return (
-		<Header id='header'>
+		<Header id='header' ref={wrapperRef}>
 			<div id='hamburger' className='inline'>
 				<div className='header-logo'>
 					<img src={mareanaLogo} height='40' alt='menu' />
@@ -63,34 +82,47 @@ const HeaderBar = () => {
 				/>
 				<BellOutlined style={{ margin: "6px 25px", fontSize: "20px" }} />
 				<div className="custom-menu">
-					<div className="user-name">
-						<Avatar style={{ backgroundColor: "orange" }}>
+
+					<div className="user-name" onClick={dropDownOpen}>
+						<Avatar size={22} style={{ backgroundColor: "orange" }}>
 							{localStorage.getItem("username") &&
 								localStorage.getItem("username").split("")[0].toUpperCase()}{" "}
 						</Avatar>
-						<p style={{ padding: "0px 10px" }}>
-							{localStorage.getItem("username")}
+						<p>
+							{loginDetails.firstname} {loginDetails.lastname}
 						</p>
+						<DownOutlined />
 					</div>
-					<div className="menu-detail">
-						<div className="avatar-details">
-							<Avatar size={64}
-								style={{
-									padding: "10px 0",
-									margin: "10px 0"
-								}}
-								icon={<UserOutlined />} />
-							<p className="username">	{localStorage.getItem("username")}</p>
-							<p className="email">	{localStorage.getItem("password")}{loginResponse && loginResponse.email_id}</p>
-						</div>
-						<div className="submenu">
-							<p onClick={() => history.push('/dashboard/profile')}><UserOutlined /> Profile</p>
-							<p><SettingOutlined /> Preferences</p>
-						</div>
-						<div className="logout">
-							<p><LogoutOutlined /> Logout</p>
-						</div>
-					</div>
+					{dropdownVisible && (
+						<>
+							<div className="caret">
+								<CaretUpOutlined />
+							</div>
+							<div className="menu-detail">
+
+								<div className="avatar-details">
+									<Avatar size={64}
+										style={{
+											padding: "10px 0",
+											margin: "10px 0"
+										}}
+										icon={<UserOutlined />} />
+									<p className="username">{loginDetails && loginDetails.firstname} {loginDetails && loginDetails.lastname}</p>
+									<p className="email">{loginDetails && loginDetails.email_id}</p>
+								</div>
+								<div className="submenu">
+									<p onClick={() => {
+										history.push('/dashboard/profile');
+										setDropdownVisible(false)
+									}}><UserOutlined /> Profile</p>
+									<p><SettingOutlined /> Preferences</p>
+								</div>
+								<div className="logout">
+									<p><LogoutOutlined /> Logout</p>
+								</div>
+							</div>
+						</>
+					)}
 				</div>
 			</div>
 			{/* <div
