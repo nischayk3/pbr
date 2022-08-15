@@ -67,6 +67,7 @@ pipeline {
                 withDockerRegistry(credentialsId: 'docker-registry-mareana', url: 'https://registry.cloud.mareana.com') {
                 sh '''#!/bin/bash -x
                        sudo docker build -t  $SHARED_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-dev .
+                       docker push $SHARED_MAGE:$BUILD_NUMBER
                        echo "Changing Docker image in prod dockerfile"
                        sed -i -e "s@IMAGE@\'"$SHARED_IMAGE:$BUILD_NUMBER"\'@g"  Dockerfile-prod
                        sudo docker build --build-arg app_dns=mi-devv3-5.mareana.com --build-arg jupyter_dns=jupyterhub-dev.mareana.com -t  $DOCKER_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-prod .
@@ -80,7 +81,6 @@ pipeline {
                 withDockerRegistry(credentialsId: 'docker-registry-mareana', url: 'https://registry.cloud.mareana.com') {
                 sh '''#!/bin/bash -x
                      docker push $DOCKER_IMAGE:$BUILD_NUMBER
-                     docker push $SHARED_MAGE:$BUILD_NUMBER
                      docker rmi $DOCKER_IMAGE:$BUILD_NUMBER
                      docker rmi $SHARED_IMAGE:$BUILD_NUMBER
               '''  
