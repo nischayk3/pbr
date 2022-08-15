@@ -70,6 +70,7 @@ pipeline {
                        docker push $SHARED_MAGE:$BUILD_NUMBER
                        echo "Changing Docker image in prod dockerfile"
                        sed -i -e "s@IMAGE@\'"$SHARED_IMAGE:$BUILD_NUMBER"\'@g"  Dockerfile-prod
+                       cat Dockerfile-prod
                        sudo docker build --build-arg app_dns=mi-devv3-5.mareana.com --build-arg jupyter_dns=jupyterhub-dev.mareana.com -t  $DOCKER_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-prod .
                ''' 
                }

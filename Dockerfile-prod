@@ -1,4 +1,4 @@
-FROM dev-ui as build
+FROM IMAGE as build
 ARG app_dns
 ARG jupyter_dns
 RUN echo "dns name is ${app_dns}"
