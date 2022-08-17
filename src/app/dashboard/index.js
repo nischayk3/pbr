@@ -49,8 +49,9 @@ const DesignCharts = lazy(() =>
 	import("./reportDesigner/components/reportDesignerNew")
 );
 const UserTrail = lazy(() => import("./userTrail"))
-
 const Faq = lazy(() => import("./faq"));
+const Profile = lazy(() => import("./profile"));
+
 const { Content } = Layout;
 
 const Dashboard = () => {
@@ -192,6 +193,9 @@ const Dashboard = () => {
 									component={UserTrail}
 
 								/>
+								<Route key="profile" path={`${match.url}/profile`}>
+									<Profile />
+								</Route>
 
 								<Route key="pbr_update" path={`${match.url}/pbr_update`}>
 									<PbrUpdate />

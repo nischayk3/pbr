@@ -241,7 +241,7 @@ const UserTrail = () => {
 		</Select.Option>
 	));
 
-	console.log("tableData", tableData);
+
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
