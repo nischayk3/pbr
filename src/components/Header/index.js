@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import mareanaLogo from '../../assets/mareana_logo.png';
+import { adenabled } from '../../config/config';
 import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 import { showNotification } from '../../duck/actions/commonActions';
 import { logoutUrl } from '../../services/loginService';
@@ -22,7 +23,8 @@ const HeaderBar = () => {
 
 	useEffect(() => {
 		const loginResponse = JSON.parse(localStorage.getItem("login_details"))
-		setLoginDetails(loginResponse && loginResponse)
+		console.log("loginResponse", loginResponse);
+		setLoginDetails(loginResponse)
 		document.addEventListener('tokenExpired', () => {
 			if (localStorage.getItem('login_details')) {
 				adLogout('tokenExpired')
@@ -65,7 +67,7 @@ const HeaderBar = () => {
 	}
 	const wrapperRef = useRef(null);
 	useOutsideAlerter(wrapperRef);
-	console.log("localStorage.get", localStorage.getItem("username"),)
+	console.log("localStorage.get", loginDetails)
 	return (
 		<Header id='header' ref={wrapperRef}>
 			<div id='hamburger' className='inline'>
@@ -89,7 +91,7 @@ const HeaderBar = () => {
 								localStorage.getItem("username").split("")[0].toUpperCase()}{" "}
 						</Avatar>
 						<p>
-							{loginDetails.firstname} {loginDetails.lastname}
+							{loginDetails && loginDetails.firstname} {loginDetails && loginDetails.lastname}
 						</p>
 						<DownOutlined />
 					</div>
@@ -117,7 +119,7 @@ const HeaderBar = () => {
 									}}><UserOutlined /> Profile</p>
 									<p><SettingOutlined /> Preferences</p>
 								</div>
-								<div className="logout">
+								<div className="logout" onClick={adenabled ? () => adLogout() : () => Logout()}>
 									<p><LogoutOutlined /> Logout</p>
 								</div>
 							</div>

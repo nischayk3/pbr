@@ -1,6 +1,5 @@
 import {
-	ArrowRightOutlined, BellOutlined,
-	LayoutOutlined
+	ArrowRightOutlined, LayoutOutlined
 } from "@ant-design/icons";
 import {
 	Avatar, Card, Col, Divider,
@@ -12,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import emptyImage from "../../../../assets/images/empty-image.png";
 import illustrations from "../../../../assets/images/Group 33808.svg";
+import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import { MDH_AIRFLOW } from "../../../../constants/apiBaseUrl";
 import {
 	hideLoader,
@@ -184,24 +184,7 @@ const Workspace = () => {
 	};
 	return (
 		<div className="custom-wrapper">
-			<div className="workspace-subheader">
-				<Search
-					placeholder="Search"
-					allowClear
-					//onSearch={ }
-					style={{ width: 304 }}
-				/>
-				<BellOutlined style={{ margin: "0px 25px", fontSize: "20px" }} />
-				<div>
-					<Avatar style={{ backgroundColor: "orange" }}>
-						{localStorage.getItem("username") &&
-							localStorage.getItem("username").split("")[0].toUpperCase()}{" "}
-					</Avatar>
-					<span style={{ padding: "0px 10px" }}>
-						{localStorage.getItem("username")}
-					</span>
-				</div>
-			</div>
+			<BreadCrumbWrapper />
 			<div className="custom-content-layout">
 				<Card className="workspace_head">
 					<div>

@@ -1,10 +1,11 @@
-import { Button, Checkbox, Form, Input, Modal, Alert } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Alert, Button, Checkbox, Form, Input, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { userLogin } from "../../../api/login";
-import Banner from "../../../assets/images/dashboard_login_1.png";
 import SuccessfulImage from "../../../assets/icons/Success_image.png";
+import Banner from "../../../assets/images/dashboard_login_1.png";
 import microsoft from "../../../assets/images/icons8-microsoft-48.png";
 import { adenabled } from "../../../config/config";
 import { MDH_APP_PYTHON_SERVICE } from "../../../constants/apiBaseUrl";
@@ -13,11 +14,10 @@ import {
 	showLoader,
 	showNotification
 } from "../../../duck/actions/commonActions";
+import { sendLoginDetails } from "../../../duck/actions/loginAction";
+import { createAccount, getAuthenticateWithLdap, getAuthenticateWithoutAD, loginUrl } from "../../../services/loginService";
 import Auth from "../../../utils/auth";
 import "./login.scss";
-import { getAuthenticateWithoutAD, loginUrl, createAccount } from "../../../services/loginService";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { sendLoginDetails } from "../../../duck/actions/loginAction";
 
 const Login = () => {
 	const [password, setPassword] = useState("");
@@ -35,6 +35,7 @@ const Login = () => {
 	}, []);
 
 	const onFinish = async values => {
+		console.log("onFinish click");
 		try {
 			dispatch(showLoader());
 			const response = await userLogin(values);
@@ -48,7 +49,9 @@ const Login = () => {
 	};
 
 	const onLogin = async () => {
+		console.log("onLogin click");
 		if (localStorage.getItem("login_details")) {
+
 			history.push("/dashboard/workspace");
 			dispatch(showNotification("success", "Logged In Success"));
 		} else {
@@ -75,6 +78,7 @@ const Login = () => {
 				localStorage.setItem("login_details", JSON.stringify(data));
 				localStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
 				localStorage.setItem("username", data.firstname.replaceAll("^\"|\"$", ""));
+				localStorage.setItem("loginwith", 'WITHOUT_AD')
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
 				history.push("/dashboard/workspace");
 				dispatch(hideLoader());
@@ -87,10 +91,39 @@ const Login = () => {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", "Incorrect credentials"));
 		}
-
-
-
 	};
+
+	const handleLoginLdap = async () => {
+		let req = {};
+		let header = {
+			password: password,
+			username: email
+		};
+		try {
+			dispatch(showLoader());
+			const res = await getAuthenticateWithLdap(req, header);
+
+			let data = res["token"];
+			if (data) {
+				dispatch(sendLoginDetails(data));
+				localStorage.setItem("login_details", JSON.stringify(data));
+				localStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
+				localStorage.setItem("username", data.firstname.replaceAll("^\"|\"$", ""));
+				localStorage.setItem("loginwith", 'LDAP')
+				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
+				history.push("/dashboard/workspace");
+				dispatch(hideLoader());
+			} else {
+				dispatch(showNotification("error", "Error in Login"));
+				dispatch(hideLoader());
+				history.push("/user/login");
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", "Incorrect credentials"));
+		}
+	};
+
 	const handleCancel = () => {
 		setVisible(false);
 		setForgotPasswordFlag(false);
@@ -108,28 +141,28 @@ const Login = () => {
 		setForgotPasswordFlag(true);
 		setSuccessfulAccountCreationFlag(false);
 	}
-  const registerAccount = async () => {
-    let req = {};
-    let header = {
-      username: username,
-      "is-signup": forgotPasswordFlag ? false : true,
-    };
-    try {
-      dispatch(showLoader());
-      const res = await createAccount(req, header);
-      if (res.Status == 200) {
-        setSuccessfulAccountCreationFlag(true);
-        dispatch(hideLoader());
-      } else {
-        dispatch(showNotification("error", res.Message));
-        dispatch(hideLoader());
-        history.push("/user/login");
-      }
-    } catch (error) {
-      dispatch(hideLoader());
-      dispatch(showNotification("error", "Error while registering the user"));
-    }
-  };
+	const registerAccount = async () => {
+		let req = {};
+		let header = {
+			username: username,
+			"is-signup": forgotPasswordFlag ? false : true,
+		};
+		try {
+			dispatch(showLoader());
+			const res = await createAccount(req, header);
+			if (res.Status == 200) {
+				setSuccessfulAccountCreationFlag(true);
+				dispatch(hideLoader());
+			} else {
+				dispatch(showNotification("error", res.Message));
+				dispatch(hideLoader());
+				history.push("/user/login");
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", "Error while registering the user"));
+		}
+	};
 	return (
 		<>
 			<div className="login-wrapper bg-img">
@@ -179,6 +212,11 @@ const Login = () => {
 						</div>
 
 						<Button className="login-btn" onClick={() => handleLogin()}>Log In</Button>
+						<p className="or">Or</p>
+						<Button
+							className="login-btn" onClick={() => handleLoginLdap()} >
+							Sign In with LDAP
+						</Button>
 
 						<p className="signup-text">
 							Don't have an account? <span className="sign-up" onClick={showModal}>Sign up</span>
@@ -223,9 +261,7 @@ const Login = () => {
 										<></>
 									)}
 
-									<Form.Item
-									//  {...tailLayout}
-									>
+									<Form.Item>
 										<Button
 											htmlType="submit"
 											id="login-btn"
@@ -289,9 +325,6 @@ const Login = () => {
 								/>
 
 							</div>
-
-
-
 						)}
 				</Modal>
 			</div>

@@ -1,14 +1,12 @@
-import React, { useEffect } from 'react'
 import { Result } from 'antd';
-import { getSession } from '../../../services/loginService';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import {
-	showNotification,
-	showLoader,
-	hideLoader
+	hideLoader, showLoader, showNotification
 } from '../../../duck/actions/commonActions';
 import { sendLoginDetails } from '../../../duck/actions/loginAction';
+import { getSession } from '../../../services/loginService';
 
 export default function RedirectSign() {
 	const dispatch = useDispatch();
@@ -21,6 +19,9 @@ export default function RedirectSign() {
 		if (data) {
 			dispatch(sendLoginDetails(data))
 			localStorage.setItem('login_details', JSON.stringify(data))
+			localStorage.setItem('user', data.email_id.replaceAll('^"|"$', ''));
+			localStorage.setItem('username', data.firstname.replaceAll('^"|"$', ''));
+			localStorage.setItem("loginwith", 'WITH_AD')
 			dispatch(showNotification('success', `Logined As ${data.email_id}`))
 			dispatch(hideLoader())
 			setIsPublish(true)

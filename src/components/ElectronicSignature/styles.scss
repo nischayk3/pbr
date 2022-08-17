@@ -1,29 +1,32 @@
-.electronic-sig
-{
-    display: grid;
-    grid-template-rows: repeat(2, 1fr);
-    grid-gap: 15px 20px;
-}
-.sign-select
-{
-    width: 200px;
-}
-.sign-cols{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 10px 20px;
+.electronic-sig {
+	display: grid;
+	grid-template-rows: repeat(2, 1fr);
+	grid-gap: 15px 20px;
 }
 
-.electronic-signature-modal{
-    .ant-modal-close-x{
-        margin-top: -5px !important;
-        font-size: 19px;
-    }
-    .ant-modal-footer{
-        padding:10px 24px;
-    }
-    .ant-modal-footer .ant-btn+.ant-btn:not(.ant-dropdown-trigger) {
-        margin-bottom: 0;
-        margin-left: 16px;
-    }
+.sign-select {
+	width: 200px;
+}
+
+.sign-cols {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-gap: 10px 20px;
+}
+
+.electronic-signature-modal {
+	.ant-modal-close-x {
+		margin-top: -5px !important;
+		font-size: 19px;
+	}
+
+	.ant-modal-footer {
+		padding: 10px 24px;
+		overflow: hidden;
+	}
+
+	.ant-modal-footer .ant-btn+.ant-btn:not(.ant-dropdown-trigger) {
+		margin-bottom: 0;
+		margin-left: 16px;
+	}
 }
