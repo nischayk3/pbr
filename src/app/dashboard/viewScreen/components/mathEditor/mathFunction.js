@@ -141,14 +141,7 @@ const MathFunction = ({ data, materialId, fromWorkflowScreen }) => {
 					</div>
 				) : isEvaluatingFun ? (
 					<Alert message="Evaluating function..." type="info" />
-					// ) : isFunValidate ? (
-					// 	<Alert
-					// 		closable
-					// 		afterClose={handleCloseError}
-					// 		message="Function valid!"
-					// 		type="success"
-					// 		showIcon
-					// 	/>
+
 				) : isFunctionInvalid ? (
 					<Alert
 						closable
@@ -238,10 +231,9 @@ const MathFunction = ({ data, materialId, fromWorkflowScreen }) => {
 							>
 								Cancel
 							</Button>
-							{/* <Button type="text" className="custom-primary-btn ">
-								Save as a copy
-							</Button> */}
+
 							<Button
+								disabled={functionName == ""}
 								onClick={() => {
 									handleSave();
 								}}

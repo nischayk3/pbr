@@ -209,7 +209,8 @@ const ParameterTable = ({
 			item === "key" ||
 			item === "sourceType" ||
 			item === "material_id" ||
-			item === "coverage"
+			item === "coverage" ||
+			item === "process_id"
 		) {
 			return console.log('i');
 		} else {
