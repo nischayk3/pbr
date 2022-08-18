@@ -2,6 +2,7 @@
 	min-height: 100px;
 	max-height: 750px;
 	overflow: scroll;
+
 	.title-card {
 		font-family: 'Inter';
 		font-style: normal;
@@ -10,12 +11,14 @@
 		line-height: 19px;
 		color: #000000;
 	}
+
 	.ant-tabs-nav-wrap {
 		height: 50px;
 		padding: 5px 5px 0px 0px;
 		background: none;
 		box-shadow: none;
 	}
+
 	.ant-tabs-tab-btn {
 		font-family: Roboto;
 		font-style: normal;
@@ -24,9 +27,11 @@
 		line-height: 22px;
 		color: rgba(0, 0, 0, 0.85);
 	}
+
 	.ant-tabs-tab-btn:hover {
 		color: rgba(0, 0, 0, 0.85);
 	}
+
 	.ant-tabs-tab-active .ant-tabs-tab-btn {
 		font-family: Roboto;
 		font-style: normal;
@@ -35,9 +40,11 @@
 		line-height: 22px;
 		color: var(--primary-color) !important;
 	}
+
 	.ant-tabs-ink-bar {
 		background: var(--primary-color);
 	}
+
 	.title-button {
 		margin-left: 50%;
 		width: 131px;
@@ -48,14 +55,26 @@
 		font-size: 16px;
 		line-height: 19px;
 		color: var(--primary-color);
+
 		.see-all {
 			margin-left: 13%;
 		}
 	}
+
 	.hier-tab {
+		.popover-hier {
+			left: 1050px;
+
+		}
+
+
+
+
+
 		.ant-tabs-nav-list {
 			margin-left: 1.2%;
 		}
+
 		.ant-tabs-tab-btn[aria-selected='true'] {
 			color: var(--primary-color) !important;
 		}
@@ -71,16 +90,19 @@
 			margin-left: 1.2%;
 			color: #000000;
 		}
+
 		.hierarchy-table {
 			margin-left: 1.2%;
 			width: 1240px;
 			margin-top: 30px;
 		}
+
 		.hierarchy-map-table {
 			margin-left: 1.2%;
 			width: 1240px;
 			margin-top: 10px;
 		}
+
 		.ant-table-cell {
 			font-family: var(--primary-font-family);
 			font-style: normal;
@@ -89,11 +111,13 @@
 			line-height: 22px;
 			color: #141414;
 		}
+
 		.map-grid {
 			display: grid;
 			grid-template-columns: 1.3fr 1fr;
 			grid-gap: 24px;
 		}
+
 		.map-box {
 			width: 200px;
 			height: 351px;
@@ -103,6 +127,7 @@
 			border-radius: 4px;
 			margin-top: 10px;
 		}
+
 		.map-box-text {
 			font-family: var(--primary-font-family);
 			font-style: normal;
@@ -115,6 +140,7 @@
 
 			color: #ffffff;
 		}
+
 		.map-box-tile {
 			align-items: center;
 			padding: 1px 8px 1px 16px;
@@ -125,6 +151,7 @@
 			margin-left: 20px;
 			margin-top: 10px;
 		}
+
 		.map-box-tile-text {
 			font-family: var(--primary-font-family);
 			font-style: normal;
@@ -136,6 +163,7 @@
 
 			color: #000000;
 		}
+
 		.add-button {
 			width: 1240px;
 			margin-left: 1.2%;
@@ -143,6 +171,7 @@
 			border: 1px dashed #d9d9d9;
 			// background-color: black;
 		}
+
 		.add-row-button {
 			align-items: center;
 			padding: 5px 16px;
@@ -165,6 +194,7 @@
 
 			color: var(--primary-color);
 		}
+
 		.tab-button {
 			align-items: center;
 			padding: 5px 18px;
@@ -176,6 +206,7 @@
 			border-radius: 4px;
 			margin-left: 94%;
 		}
+
 		.data-button-one {
 			box-sizing: border-box;
 			align-items: center;
@@ -189,6 +220,7 @@
 			border: 1px solid var(--primary-color);
 			border-radius: 4px;
 		}
+
 		.data-button {
 			box-sizing: border-box;
 			align-items: center;
@@ -202,6 +234,7 @@
 			border: 1px solid var(--primary-color);
 			border-radius: 4px;
 		}
+
 		.tab-button-one {
 			padding: 5px 16px;
 			gap: 8px;
@@ -211,6 +244,7 @@
 			border: 1px solid #d9d9d9;
 			border-radius: 4px;
 		}
+
 		.tab-button-two {
 			padding: 5px 16px;
 			gap: 8px;
@@ -235,6 +269,7 @@
 		}
 	}
 }
+
 .ant-select-selector {
 	font-family: var(--primary-font-family);
 	font-style: normal;
@@ -243,4 +278,11 @@
 	line-height: 19px;
 	color: #262626;
 	margin-left: 10px;
+}
+
+.popover-content {
+	font-family: var(--primary-font-family);
+	font-style: normal;
+	font-weight: 600;
+	font-size: 16px;
 }

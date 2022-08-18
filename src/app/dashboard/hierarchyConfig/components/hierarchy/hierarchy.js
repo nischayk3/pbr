@@ -7,8 +7,8 @@
  * @Last Changed By - @Mihir 
  */
 import "./hierStyle.scss";
-import { DeleteTwoTone, PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Input, Modal, Popconfirm, Row, Select, Table, Tabs } from "antd";
+import { DeleteTwoTone, PlusOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Input, Modal, Popconfirm, Row, Select, Table, Tabs, Popover } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Banner from "../../../../../assets/images/Popup-Side.svg";
@@ -482,7 +482,9 @@ function Hierarchy() {
 				>
 					<Tabs className="hier-tab" activeKey={activeTab} onChange={handleChangeTab} tabBarExtraContent={<Button className="tab-button-two" onClick={() => handleSave()} >Save</Button>}>
 						<TabPane tab="Plant and molecules" key="Plant and molecules">
-							<p className="tab-title"> Enter the product and plant details for {hierarchyName} <Button className="data-button-one"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button> </p>
+							<p className="tab-title"> Enter the product and plant details for {hierarchyName} <Button className="data-button-one"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next </span>} </Button><Popover className="popover-hier" content={<span className="popover-content">Please save the plant and molecules or process steps before moving to process step mapping</span>} title={false} trigger="hover">
+								<InfoCircleOutlined style={{ padding: "0 5px" }} />
+							</Popover> </p>
 							<Table className="hierarchy-table" columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
 							<div className="add-button">
 								<Button
@@ -495,7 +497,9 @@ function Hierarchy() {
 							</div>
 						</TabPane>
 						<TabPane tab="Process steps" key="Process steps">
-							<p className="tab-title">Enter the process step for {hierarchyName} <Button className="data-button"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button></p>
+							<p className="tab-title">Enter the process step for {hierarchyName} <Button className="data-button"> {activeTab == "Process step mapping" ? <span className="tab-button-text">Finish</span> : <span className="tab-button-text" onClick={() => handleNext()}>Next</span>}</Button><Popover className="popover-hier" content={<span className="popover-content">Please save the plant and molecules or process steps before moving to process step mapping</span>} title={false} trigger="hover">
+								<InfoCircleOutlined style={{ padding: "0 5px" }} />
+							</Popover></p>
 							<Table className="hierarchy-table" columns={stepMapColumns} dataSource={stepData} pagination={false} />
 							<div className="add-button">
 								<Button
