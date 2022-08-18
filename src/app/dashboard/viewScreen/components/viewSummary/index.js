@@ -28,9 +28,14 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 	const [funTableData, setFunTableData] = useState([]);
 	const [totalMolBatch, setTotalMolBatch] = useState([]);
 
+	const uniqueArr = (value, index, self) => {
+		return self.indexOf(value) === index;
+	};
+
 	useEffect(() => {
 		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
-			setTotalMolBatch([...totalBatch, ...totalFileBatch]);
+			const uniqueBatch = [...totalBatch, ...totalFileBatch]
+			setTotalMolBatch(uniqueBatch);
 		}
 	}, [totalBatch, totalFileBatch])
 
@@ -57,10 +62,6 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 				funTableData !== undefined && funTableData.length > 0
 					? Object.keys(funTableData[0])
 					: [];
-
-			const uniqueArr = (value, index, self) => {
-				return self.indexOf(value) === index;
-			};
 
 			const summaryColumn = objKey.filter(uniqueArr);
 
@@ -128,6 +129,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 
 	useEffect(() => {
 		if (isLoadView) {
+
 			let fun = [];
 			let funData = [];
 
@@ -138,7 +140,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 					? loadViewJson[0].functions
 					: 0;
 
-			const new_column_data = loadViewJson[0] && loadViewJson[0].functions_eval.map((e) => e.batch_num)
+			const new_column_data = loadViewJson[0] && loadViewJson[0].functions_eval
 
 			if (functions_name) {
 				functions_name = Object.values(functions_name);
@@ -153,17 +155,16 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 						? totalMolBatch
 						: {};
 
-				loadTableData.forEach((item) => {
-					const funObj = {};
-					Object.entries(totalMolBatch).forEach(([key, value]) => {
-						if (value.batch === item.batch) {
-							for (let i = 0; i < fun.length; i++) {
-								if (new_column_data.includes(value.batch)) funObj[fun[i]] = true;
-								else funObj[fun[i]] = false;
-							}
-							funData.push(funObj);
+				totalMolBatch.map((value) => {
+					var funObj = {};
+					for (let i = 0; i < fun.length; i++) {
+						if (new_column_data.filter((item) => { return item.batch_num == value.batch && item.parameter == fun[i] }).length > 0) {
+							funObj[fun[i]] = true;
+						} else {
+							funObj[fun[i]] = false;
 						}
-					});
+					}
+					funData.push(funObj);
 				});
 
 				const mergeArr = loadTableData.map((item, i) =>
@@ -174,9 +175,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 					mergeArr !== undefined && mergeArr.length > 0
 						? Object.keys(mergeArr[0])
 						: [];
-				const uniqueArr = (value, index, self) => {
-					return self.indexOf(value) === index;
-				};
+
 				const funColumn = funKey.filter(uniqueArr);
 
 				funColumn.map((item, i) => {

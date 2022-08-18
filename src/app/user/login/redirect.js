@@ -1,14 +1,12 @@
+import { Button, Result } from 'antd';
 import React, { useEffect } from 'react';
-import { Result, Button } from 'antd';
-import { getSession } from '../../../services/loginService';
-import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import {
-	showNotification,
-	showLoader,
-	hideLoader,
+	hideLoader, showLoader, showNotification
 } from '../../../duck/actions/commonActions';
 import { sendLoginDetails } from '../../../duck/actions/loginAction';
+import { getSession } from '../../../services/loginService';
 
 export default function Redirect(props) {
 	const dispatch = useDispatch();
@@ -23,6 +21,7 @@ export default function Redirect(props) {
 			localStorage.setItem('login_details', JSON.stringify(data));
 			localStorage.setItem('user', data.email_id.replaceAll('^"|"$', ''));
 			localStorage.setItem('username', data.firstname.replaceAll('^"|"$', ''));
+			localStorage.setItem("loginwith", 'WITH_AD')
 			dispatch(showNotification('success', `Logged in as ${data.email_id}`));
 			history.push('/dashboard/workspace');
 			dispatch(hideLoader());

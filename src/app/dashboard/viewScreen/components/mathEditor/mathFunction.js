@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FunctionKey from "../../../../../assets/images/key1.png";
 import InputField from "../../../../../components/InputField/InputField";
-import { showNotification } from "../../../../../duck/actions/commonActions";
+import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
 import {
 	saveAsViewFunction,
 	saveViewFunction, sendFunctionName, sendFunDetails, setNewColumn
@@ -98,6 +98,7 @@ const MathFunction = ({ data, materialId, fromWorkflowScreen }) => {
 	};
 
 	const functionEvaluate = async () => {
+		showLoader();
 		let req = {
 			material_id: materialId,
 			functions: { 1: { defination: mathEditorValue, name: "function-1" } },
@@ -107,6 +108,7 @@ const MathFunction = ({ data, materialId, fromWorkflowScreen }) => {
 		let evaluate_respone = await viewEvaluate({ data: req });
 
 		if (evaluate_respone.view_status == "") {
+			hideLoader();
 			setIsTableVisible(true);
 			if (evaluate_respone.functions) {
 				setEvalTable(evaluate_respone.functions);
@@ -139,14 +141,7 @@ const MathFunction = ({ data, materialId, fromWorkflowScreen }) => {
 					</div>
 				) : isEvaluatingFun ? (
 					<Alert message="Evaluating function..." type="info" />
-					// ) : isFunValidate ? (
-					// 	<Alert
-					// 		closable
-					// 		afterClose={handleCloseError}
-					// 		message="Function valid!"
-					// 		type="success"
-					// 		showIcon
-					// 	/>
+
 				) : isFunctionInvalid ? (
 					<Alert
 						closable
@@ -236,10 +231,9 @@ const MathFunction = ({ data, materialId, fromWorkflowScreen }) => {
 							>
 								Cancel
 							</Button>
-							{/* <Button type="text" className="custom-primary-btn ">
-								Save as a copy
-							</Button> */}
+
 							<Button
+								disabled={functionName == ""}
 								onClick={() => {
 									handleSave();
 								}}

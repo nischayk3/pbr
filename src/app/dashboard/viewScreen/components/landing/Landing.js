@@ -25,6 +25,8 @@ const StatusBlock = lazy(() =>
 	import("../../../../../components/StatusBlock/statusBlock")
 );
 
+
+
 export default function Landing() {
 	const [searched, setSearched] = useState(false);
 	const [viewList, setViewList] = useState([]);
@@ -77,6 +79,20 @@ export default function Landing() {
 			},
 		},
 		{
+			title: "View Version",
+			dataIndex: "view_version",
+			key: "view_version",
+			id: "view_version",
+			render: (text, record) => {
+				return {
+					props: {
+						style: { background: record.color },
+					},
+					children: <div>{text}</div>,
+				};
+			},
+		},
+		{
 			title: "Created By",
 			dataIndex: "created_by",
 			key: "created_by",
@@ -118,6 +134,7 @@ export default function Landing() {
 			obj["view"] = el.view;
 			obj["view_name"] = el.view_name;
 			obj["view_status"] = el.view_status;
+			obj["view_version"] = el.view_version;
 			obj["created_by"] = el.created_by;
 			return arr.push(obj);
 		});
@@ -137,7 +154,7 @@ export default function Landing() {
 			const getViewRes = await getViews(req);
 			const viewRes = getViewRes["Data"];
 			const viewResRev = viewRes != undefined ? viewRes.reverse() : [];
-			const lastEight = viewResRev && viewResRev.slice(Math.max(viewResRev.length - 8, 1));
+			const lastEight = viewResRev && viewResRev.slice(Math.max(viewResRev.length - 8, 0));
 			setViewList(viewResRev);
 			setLastEightView(lastEight && lastEight.reverse());
 			dispatch(hideLoader());
@@ -176,7 +193,7 @@ export default function Landing() {
 							columns={columns}
 							dataSource={filterTable === null ? viewList : filterTable}
 							onRow={(record) => ({
-								onClick: (e) => {
+								onClick: () => {
 									history.push({
 										pathname: `${match.url}/${record.view_disp_id}&${record.view_version}`,
 										state: {
@@ -235,7 +252,7 @@ export default function Landing() {
 													viewVersion: i.view_version,
 												},
 											}}
-										//	to={`${match.url}/${i.view_disp_id}&${i.view_version}`}
+
 										>
 											<StatusBlock
 												key={index}

@@ -260,7 +260,11 @@ const ViewCreation = () => {
 			element.all_parameters = viewState.selectedParamData;
 			element.material_id = moleculeId;
 			element.files = selectedFiles;
+			element.view_disp_id = viewDisplayId;
+			element.view_status = viewStatus;
+			element.view_version = viewVersion;
 		});
+
 
 		const _req = {
 			data: viewData[0],
@@ -277,11 +281,7 @@ const ViewCreation = () => {
 			element.all_parameters = viewState.selectedParamData;
 			element.material_id = moleculeId;
 			element.files = selectedFiles;
-			element.view_disp_id = viewDisplayId;
-			element.view_status = viewStatus;
-			element.view_version = viewVersion;
 		});
-
 		const _req = {
 			data: viewData[0],
 		};

@@ -158,7 +158,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			let rowData = {};
 			let batchData = {};
 			let newBatchData = [];
-			let molBatch = [...totalBatch, ...fileBatch];
+			const molBatch = [...totalBatch, ...fileBatch];
 			setViewSummaryBatch(molBatch)
 			molBatch.map((el) => {
 				if (record.coverage_list.includes(el.batch)) {

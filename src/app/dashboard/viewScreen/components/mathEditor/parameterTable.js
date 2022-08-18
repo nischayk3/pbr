@@ -59,6 +59,8 @@ const ParameterTable = ({
 	const parameter_obj = useSelector(
 		(state) => state.viewCreationReducer.parameters
 	);
+
+
 	const totalBatch = useSelector((state) => state.viewCreationReducer.totalMolBatches);
 	const totalFileBatch = useSelector((state) => state.viewCreationReducer.totalFileBatches);
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -207,7 +209,8 @@ const ParameterTable = ({
 			item === "key" ||
 			item === "sourceType" ||
 			item === "material_id" ||
-			item === "coverage"
+			item === "coverage" ||
+			item === "process_id"
 		) {
 			return console.log('i');
 		} else {
@@ -268,7 +271,6 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (isLoadView) {
-			//	onChangeColumnsHandler();
 			setTableData([...selectedTableData]);
 			setFun(functions_obj)
 		}
@@ -276,9 +278,9 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
-			setTotalMolBatch([...totalBatch, ...totalFileBatch]);
+			const totalMol = [...totalBatch, ...totalFileBatch]
+			setTotalMolBatch(totalMol);
 		}
-
 	}, [totalBatch, totalFileBatch])
 
 
@@ -422,29 +424,23 @@ const ParameterTable = ({
 
 	useEffect(() => {
 
-		const varArr = [];
 		if (variableCreate) {
+			const varParameter = JSON.parse(JSON.stringify(parameters));
+			const varParam = { ...variableParam, }
 
-			const varParameter = [...parameters];
-
-			varParameter.forEach((element) => {
-				varArr.push(element);
-			});
-
-			variableParam[variableName] = varParameter;
-
-			setVariableParam(variableParam);
+			varParam[variableName] = JSON.parse(JSON.stringify(varParameter));
+			setVariableParam(varParam);
 
 			const viewDataJson = [...viewJson];
 			viewDataJson.forEach((element) => {
-				return (element.parameters = variableParam);
+				return (element.parameters = varParam);
 			});
 
 			setViewJson(viewDataJson);
-			dispatch(createVariable(variableParam));
-			dispatch(viewParamMap(variableParam));
+			dispatch(createVariable(varParam));
+			dispatch(viewParamMap(varParam));
 			setVariableCreate(false);
-			getParamData(variableParam);
+			getParamData(varParam);
 		}
 	}, [variableCreate]);
 
@@ -490,17 +486,11 @@ const ParameterTable = ({
 
 	useEffect(() => {
 		if (saveFunction) {
+
 			setCounter(counter + 1);
 			let arr = [];
 
-			let primarySelectedData;
-			if (tableData.length > 0) {
-				primarySelectedData = { ...tableData && tableData[0] };
-			} else {
-				const viewLoadJson = [...viewJson];
-				const allParameter = viewLoadJson[0].all_parameters
-				primarySelectedData = { ...allParameter && allParameter[0] }
-			}
+			let primarySelectedData = [...totalMolBatch]
 
 			let functionTable = [...viewSummaryBatch];
 
@@ -508,9 +498,11 @@ const ParameterTable = ({
 
 			functionTable.forEach((item) => {
 				let obj = {};
-				Object.entries(primarySelectedData).forEach(([key]) => {
-					if (key === item.batch) {
-						if (new_column_data.includes(key)) obj[functionName] = true;
+				Object.entries(primarySelectedData).forEach(([key, value]) => {
+					if (value.batch === item.batch) {
+						if (new_column_data.includes(value.batch)) {
+							return obj[functionName] = true;
+						}
 						else obj[functionName] = false;
 					}
 				});
@@ -645,6 +637,7 @@ const ParameterTable = ({
 
 		const parameterArrray = [...parameters];
 		const batchRecordPopup = [...tableData];
+
 		batchRecordPopup.forEach((ele) => {
 			if (ele.parameter_name === key) {
 				ele[record.batch] = e.target.checked == false ? "" : e.target.checked;

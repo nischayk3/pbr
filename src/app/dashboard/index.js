@@ -24,7 +24,7 @@ import "./dashboard.scss";
 import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
 import PbrReviewer from "./pbrReviewer";
 import PrivateRoute from "./ProtectedRoute";
-import PythonNotebook from "./pythonNotebook/pythonNotebook";
+//import PythonNotebook from "./pythonNotebook/pythonNotebook";
 import UnAuthorisedScreen from "./unAuthorised";
 // DASHBOARD ROUTE COMPONENTS
 
@@ -49,8 +49,9 @@ const DesignCharts = lazy(() =>
 	import("./reportDesigner/components/reportDesignerNew")
 );
 const UserTrail = lazy(() => import("./userTrail"))
-
 const Faq = lazy(() => import("./faq"));
+const Profile = lazy(() => import("./profile"));
+
 const { Content } = Layout;
 
 const Dashboard = () => {
@@ -192,6 +193,9 @@ const Dashboard = () => {
 									component={UserTrail}
 
 								/>
+								<Route key="profile" path={`${match.url}/profile`}>
+									<Profile />
+								</Route>
 
 								<Route key="pbr_update" path={`${match.url}/pbr_update`}>
 									<PbrUpdate />
@@ -340,11 +344,11 @@ const Dashboard = () => {
 									authorised={authorised}
 								/>
 
-								<Route
+								{/* <Route
 									key="data_science_studio"
 									path={`${match.url}/pythonNoteBook`}
 									component={PythonNotebook}
-								/>
+								/> */}
 							</Switch>
 						</SuspenseWrapper>
 					</Content>
