@@ -1,21 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as React from "react";
-import { Form, Table, Select } from "antd";
+import { Form, Table, Select, Input } from "antd";
 import './styles.scss';
 
-const coloptions = [{lable:"Random1",value:"random1"},{lable:"Random2",value:"random2"},{lable:"Rando3",value:"random3"}]
-const rowoptions = [{lable:"rowRandom1",value:"rowRandom1"},{lable:"rowRandom2",value:"rowRandom2"},{lable:"rowRandom3",value:"rowRandom3"}]
+const coloptions = [{ lable: "Combine with", value: "combine_with" }]
+const rowoptions = [{ lable: "All", value: "all" }]
 
-/* istanbul ignore next */
 export const EditableUsersTable = props => {
-    const { users, add, remove } = props;
+    const { users, add, remove, selectedIdentifier, setSelectedRowRows, selectedRowRows,setSelectedRowValues,selectedRowValues } = props;
     const [editingIndex, setEditingIndex] = useState(0);
+    const [paramsOptions, setParamsOptions] = useState([]);
+    const [identifier, setIdentifier] = useState("");
+    const [selectedTableData, setSelectedTableData] = useState(users);
+    const [selectedRowIdentifier, setSelectedRowIdentifier] = useState(selectedRowRows);
+
+
+    useEffect(() => {
+        let arr = users.map(item => ({ lable: item[selectedIdentifier], value: item[selectedIdentifier] }))
+        setParamsOptions(arr)
+    }, [])
+
+    useEffect(()=>{
+        if(selectedRowValues){
+            setSelectedTableData(selectedRowValues)
+        }
+        
+    },[selectedRowValues])
+
+
     const columns = [
         {
             title: "Id",
-            dataIndex: "columnindex",
-            key: "columnindex",
-            align:"center",
+            dataIndex: selectedIdentifier,
+            key: selectedIdentifier,
+            align: "center",
             width: "9%"
         },
         {
@@ -23,47 +41,118 @@ export const EditableUsersTable = props => {
             dataIndex: "cell_text",
             key: "cell_text",
             width: "25%"
+
         },
         {
-            title: "Combine With",
-            dataIndex: "anchor_key",
-            key: "anchor_key",
+            title: "Method",
+            dataIndex: "cell_entitytype",
+            key: "cell_entitytype",
             render: (value, row, index) => {
                 return (
-                    <Form.Item name={[index, "combine_with"]}>
-                        <Select
-                            placeholder="Select"
-                            style={{ width: "80%", marginRight: 8 }}
-                            options={coloptions}
-                        />
-                    </Form.Item>
+                    <Select
+                        allowClear
+                        key={index}
+                        disabled={selectedRowIdentifier?.includes(row.key) ? false : true}
+                        value={row?.method}
+                        placeholder="Select"
+                        style={{ width: "80%", marginRight: 8 }}
+                        options={coloptions}
+                        onChange={(val) => handleMethodChange(val, row.key,"method")}
+                    />
+                );
+            }
+        },
+        {
+            title: "Params",
+            dataIndex: selectedIdentifier,
+            key: selectedIdentifier,
+            width: "15%",
+            render: (value, row, index) => {
+                let newCols = paramsOptions.filter(item => item.lable != row[selectedIdentifier])
+                return (
+                    // <Form.Item name={[index, "params"]} key={index}>
+                    <Select
+                        allowClear
+                        key={index}
+                        disabled={selectedRowIdentifier.includes(row.key) ? false : true}
+                        value={row?.params}
+                        placeholder="Select"
+                        style={{ width: "80%", marginRight: 8 }}
+                        options={newCols}
+                        onChange={(val) => handleMethodChange(val, row.key,"params")}
+                    />
+                    // </Form.Item>
                 );
             }
         },
         {
             title: "Applicable TO",
-            dataIndex: "anchor_key",
-            key: "anchor_key",
+            dataIndex: selectedIdentifier,
+            key: selectedIdentifier,
             render: (value, row, index) => {
                 return (
-                    <Form.Item name={[index, "applicalbe_to"]}>
-                        <Select
-                            placeholder="Select"
-                            style={{ width: "80%", marginRight: 8 }}
-                            options={rowoptions}
-                        />
-                    </Form.Item>
+                    // <Form.Item name={[index, "applicalbe_to"]} key={index}>
+                    <Select
+                        allowClear
+                        key={index}
+                        disabled={selectedRowIdentifier.includes(row.key) ? false : true}
+                        value={row?.applicalbe_to}
+                        placeholder="Select"
+                        style={{ width: "80%", marginRight: 8 }}
+                        options={rowoptions}
+                        onChange={(val) => handleMethodChange(val, row.key,"applicalbe_to")}
+                    />
+                    // </Form.Item>
                 );
             }
         },
     ]
+    const rowSelection = {
+        selectedRowKeys: selectedRowRows,
+        
+        onChange: (selectedRowKeys, selectedRows) => {
+            let newData = selectedTableData
+            newData.forEach(item=>{
+                if(!selectedRowKeys.includes(item.key)){
+                    delete item["method"] 
+                    delete item["params"] 
+                    delete item["applicalbe_to"] 
+                }
+            })
+            setSelectedTableData(newData)
+            setSelectedRowRows(selectedRowKeys)
+
+        },
+        getCheckboxProps: (record) => ({
+            disabled: record.name === 'Disabled User',
+            // Column configuration not to be checked
+            name: record.name,
+        }),
+    };
+
+    const handleMethodChange = (val, index,field) => {
+        let newTableData = selectedRowValues
+        let newData = selectedTableData
+        newData.forEach(item=>{
+            if(item.key == index){
+                item[field] = val
+            }
+        })
+        setSelectedTableData(newData)
+        setSelectedRowValues(newData)
+    }
+
     return (
-        <div style={{height:200,overflowY:"scroll",border:""}}>
+        <div style={{ height: 200, overflowY: "scroll", border: "" }}>
             <Table
+                rowSelection={{
+                    type: "checkbox",
+                    ...rowSelection,
+                }}
                 className='tableIdentifier'
                 columns={columns}
-                dataSource={users}
-                pagination={{ defaultPageSize: 5, showSizeChanger: true, pageSizeOptions: ['5', '10', '50', '100'] }}
+                dataSource={selectedTableData}
+                pagination={{ defaultPageSize: 5, showSizeChanger: true, pageSizeOptions: ['10', '50', '100'] }}
             />
         </div>
 
