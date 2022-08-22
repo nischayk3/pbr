@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button } from "antd";
-import { EditableUsersTable } from "./EditableTable";
+import  {EditableUsersTable}  from "./EditableTable";
 
 const mockData = {
     userlistName: "name",
@@ -15,11 +15,11 @@ const mockData = {
         }
     ]
 };
-/* istanbul ignore next */
+
 export const EditableTableForm = (props) => {
-    let { columnData } = props
+    let { columnData, selectedIdentifier,setSelectedRowRows,selectedRowRows,setSelectedRowValues,selectedRowValues,triggerUpdate} = props
     const [initialColumnData, setInitialColumnData] = useState({ users: columnData })
-    console.log("columnData", columnData)
+
     const onFinish = values => {
         console.log("Received values of form:", values);
     };
@@ -29,7 +29,10 @@ export const EditableTableForm = (props) => {
 
     return (
         <Form name="dynamic_form_item" onFinish={onFinish} initialValues={initialColumnData} onValuesChange={pageIdentifierValueChange}>
-            <EditableUsersTable users={columnData}/>
+            <EditableUsersTable users={columnData} selectedIdentifier={selectedIdentifier} setSelectedRowRows={setSelectedRowRows} 
+            selectedRowRows={selectedRowRows} setSelectedRowValues={setSelectedRowValues} selectedRowValues={selectedRowValues}
+            triggerUpdate={triggerUpdate}/>
         </Form>
+        
     );
 };
