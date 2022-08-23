@@ -17,7 +17,7 @@ import ChartPage from "./viewChart/viewChart";
 import queryString from "query-string";
 import { ShareAltOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import "./styles.scss";
-
+import Sharing from '../../../../components/Sharing/sharing'
 const DashboardScreen = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -45,6 +45,15 @@ const DashboardScreen = () => {
   const [landingChartLayoutY, setLandingChartLayoutY] = useState([]);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [saveType, setSaveType] = useState("");
+  const [isShare, setIsShare] = useState(false)
+
+  const handleShareVisible = () => {
+    setIsShare(true);
+  };
+
+  const handleShareCancel = () => {
+    setIsShare(false)
+  }
 
   //for creating new dashboard name
   const settingDashboardName = (value) => {
@@ -241,6 +250,15 @@ const DashboardScreen = () => {
         {showChartCard && (
           <div className="btns">
             <Button onClick={() => handleSavePopUp("saveAs")}>Save As</Button>
+
+
+            <Button
+              className="viewCreation-saveBtn"
+              onClick={handleShareVisible}
+              id="save-view"
+            >
+              Share
+            </Button>
             {dashboardId && (
               <Button
                 onClick={() => {
@@ -251,6 +269,7 @@ const DashboardScreen = () => {
                 Save
               </Button>
             )}
+
             <ShareAltOutlined style={{ color: "#093185", fontSize: "18px" }} />
           </div>
         )}
@@ -337,6 +356,7 @@ const DashboardScreen = () => {
           )}
         </Modal>
       </div>
+      <Sharing isShare={isShare} handleShareCancel={handleShareCancel} shareSreen="VIEW" />
     </div>
   );
 };
