@@ -10,9 +10,9 @@
 	z-index: 9999;
 	flex-direction: row;
 	justify-content: space-between;
-	button {
-		border: none;
-	}
+
+
+
 	#hamburger {
 		line-height: normal;
 		vertical-align: top;
@@ -34,9 +34,142 @@
 
 .logout-btn {
 	padding: 0 6px;
+
 	span {
 		font-size: 22px;
 		vertical-align: super;
 	}
+
 	cursor: pointer;
+}
+
+.subheader {
+	display: flex;
+}
+
+.custom-menu {
+	position: relative;
+
+	.caret {
+		position: absolute;
+		top: 20px;
+		right: 30px;
+		color: #fff;
+
+	}
+
+	.user-name {
+		display: flex;
+		padding: 5px 0;
+
+		p {
+			padding: 5px 8px;
+			font-family: 'Maven Pro';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 16px;
+			color: #000000;
+			cursor: pointer;
+		}
+
+		span:nth-child(3) {
+			line-height: 34px;
+			cursor: pointer;
+		}
+	}
+
+	.menu-detail {
+		width: 260px;
+		height: 300px;
+		position: absolute;
+		background-color: #fff;
+		box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+		right: 0;
+		top: 50px;
+
+		.avatar-details {
+			text-align: center;
+			border-bottom: 1px solid #D9D9D9;
+			padding: 12px 0;
+
+			.username {
+				font-family: var(--primary-font-family);
+				font-style: normal;
+				font-weight: 500;
+				font-size: 16px;
+				line-height: 19px;
+				margin: 0px;
+				color: #000000;
+				padding: 2px 0;
+
+				span {
+					width: 22px;
+					height: 22px;
+					line-height: 22px;
+					font-size: 14px;
+					background-color: orange;
+					font-weight: 400;
+					padding: 1px;
+					font-family: var(--primary-font-family);
+				}
+			}
+
+			.email {
+				font-family: var(--primary-font-family);
+				font-style: normal;
+				font-weight: 300;
+				font-size: 14px;
+				line-height: 22px;
+				margin: 0px;
+				color: #2B2B2B;
+			}
+		}
+
+		.submenu {
+			border-bottom: 1px solid #D9D9D9;
+			padding: 9px 24px;
+
+			p {
+				margin: 0;
+				padding: 9px 0px;
+
+				span {
+					color: #486BC9;
+					padding: 0 6px;
+				}
+
+				cursor: pointer;
+				font-family: var(--primary-font-family);
+				font-style: normal;
+				font-weight: 400;
+				font-size: 14px;
+				line-height: 22px;
+				/* identical to box height, or 157% */
+				/* Gray / gray-9 */
+				color: #262626;
+			}
+		}
+
+		.logout {
+			padding: 12px 24px;
+
+			p {
+				span {
+					color: #486BC9;
+					padding: 0 6px;
+				}
+
+				cursor: pointer;
+				font-family: var(--primary-font-family);
+				font-style: normal;
+				font-weight: 400;
+				font-size: 14px;
+				line-height: 22px;
+				/* identical to box height, or 157% */
+				/* Gray / gray-9 */
+				color: #262626;
+			}
+		}
+	}
 }

@@ -115,10 +115,17 @@ function PaperBatchRecords() {
 	})
 
 	useEffect(() => {
-		updateDate();
-		getTemplateData();
-		getViewData();
-		setTableDataSource(initialTableDataSource);
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
+		if (login_response) {
+			updateDate();
+			getTemplateData();
+			getViewData();
+			setTableDataSource(initialTableDataSource);
+		}
+		// updateDate();
+		// getTemplateData();
+		// getViewData();
+		// setTableDataSource(initialTableDataSource);
 	}, []);
 
 	const getTemplateData = async () => {

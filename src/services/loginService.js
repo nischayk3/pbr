@@ -39,6 +39,17 @@ export const getAuthenticateWithoutAD = (request, header) => {
 	);
 };
 
+export const getAuthenticateWithLdap = (request, header) => {
+	return Service.get(BMS_APP_LOGIN_PASS + "/ldap_login", request, header).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
 //register api
 export const createAccount = (request, headers) => {
 	return Service.post(BMS_APP_LOGIN_PASS + '/register', request, headers).then(

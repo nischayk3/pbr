@@ -91,6 +91,7 @@ class Uploader extends Component {
 
 		username: '',
 		isAuth: false,
+		loginStatus: ""
 	};
 
 	componentDidMount = () => {
@@ -100,7 +101,7 @@ class Uploader extends Component {
 				username: loginDetails.email_id,
 			});
 		}
-	 };
+	};
 
 	clearData = () => {
 		this.setState({
@@ -1015,6 +1016,7 @@ class Uploader extends Component {
 													<div>
 														<p>Username</p>
 														<Input
+															disabled
 															placeholder='Username'
 															value={username}
 															onChange={value =>
@@ -1114,6 +1116,7 @@ class Uploader extends Component {
 													<div>
 														<p>Username</p>
 														<Input
+															disabled
 															placeholder='Username'
 															value={username}
 															onChange={value =>
@@ -1284,12 +1287,13 @@ class Uploader extends Component {
 														<div>
 															<p>Username</p>
 															<Input
+																disabled
 																placeholder='Username'
 																value={username}
 																onChange={value =>
 																	this.onChangeField(value, 'username')
 																}
-															    disabled
+
 															/>
 														</div>
 														<div>

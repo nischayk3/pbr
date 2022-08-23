@@ -61,19 +61,18 @@ function PbrReviewer() {
         setTemplateData(tableResponse.Data);
         dispatch(hideLoader());
       }
-      
+      /* istanbul ignore next */
       else if (tableResponse['status-code'] === 404) {
-        /* istanbul ignore next */
         dispatch(hideLoader());
         setTemplateData(tableResponse.Data);
         dispatch(showNotification('error', tableResponse.Message));
-      } else {
         /* istanbul ignore next */
+      } else {
         dispatch(hideLoader());
       }
     }
+    /* istanbul ignore next */
     catch (error) {
-      /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification('error', error.Message));
     }
@@ -91,12 +90,11 @@ function PbrReviewer() {
         dispatch(showNotification('error', res.Message));
       }
     } catch (error) {
-      /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification('error', error.Message));
     }
   }
-/* istanbul ignore next */
+
   const showfilterData = async (value) => {
     dispatch(showLoader());
     setShowReset(true)
@@ -108,7 +106,7 @@ function PbrReviewer() {
     setReviewerReq(obj)
     dispatch(hideLoader());
   };
-/* istanbul ignore next */
+
   const showfilters = async (value) => {
     dispatch(showLoader());
     setShowResetConfidence(true)
@@ -121,7 +119,7 @@ function PbrReviewer() {
     dispatch(hideLoader());
 
   };
-/* istanbul ignore next */
+
   const updateStatus = (e, record) => {
     let resp = [...arr];
     if (resp.includes(record.id)) {
@@ -562,7 +560,7 @@ function PbrReviewer() {
     }
 
   };
-/* istanbul ignore next */
+
   const resetConfidence = async () => {
     dispatch(showLoader());
     let obj = { ...reviewerReq, confidence: null }
@@ -573,7 +571,6 @@ function PbrReviewer() {
     dispatch(hideLoader());
 
   }
-  /* istanbul ignore next */
   const resetStatus = async () => {
     dispatch(showLoader());
     let obj = { ...reviewerReq, status: null }
@@ -598,7 +595,6 @@ function PbrReviewer() {
     }
     setSelectedTemplateArray(val)
   }
-  /* istanbul ignore next */
   const applyTemplateFilter = () => {
     cardTableData()
     chart()
