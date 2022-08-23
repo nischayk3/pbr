@@ -237,3 +237,43 @@ export const findParameter = (_queryParam) => {
 		}
 	);
 };
+
+export const findTable = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.post(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/find_table_count",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+export const previewTable = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.post(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/table_processing_index",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};

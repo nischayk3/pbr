@@ -463,7 +463,6 @@ class AuditTrials extends React.Component {
 
 	/* istanbul ignore next */
 	onlimitChange = (e, value) => {
-		console.log("valueal", value)
 		if (value != undefined) {
 			this.setState({
 				selectedLimit: value.value == 'all' ? value.value : parseInt(value.value)

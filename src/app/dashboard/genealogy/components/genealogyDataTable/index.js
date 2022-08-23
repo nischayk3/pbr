@@ -104,7 +104,7 @@ function GenealogyDataTable(props) {
 	];
 
 	useEffect(() => {
-		console.log("props.pbrBatchData12", props.pbrBatchData, props)
+
 		if (props && props.batchInfo) {
 			setbatchData(props.batchInfo);
 		}
@@ -121,7 +121,7 @@ function GenealogyDataTable(props) {
 			setPurchaseData(props.purchaseInfo);
 		}
 		if (props && props.pbrBatchData) {
-			console.log("props.pbrBatchData13", props.pbrBatchData, props)
+
 			setPbrDetails(props.pbrBatchData)
 		}
 	}, [
