@@ -7,6 +7,7 @@ const { TabPane } = Tabs;
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import Model from "./model/Model";
 import Preprocess from "./preproccessing/Preprocess";
+import Transformation from "./transformations";
 
 const ViewPageAnalysis = () => {
   return (
@@ -35,11 +36,14 @@ const ViewPageAnalysis = () => {
           <TabPane tab="Preprocess" key="1">
             <Preprocess />
           </TabPane>
-          <TabPane tab="Model" key="2">
+          <TabPane tab="Model data" key="2">
+            ModelData
+          </TabPane>
+          <TabPane tab="Model" key="3">
             <Model />
           </TabPane>
-          <TabPane tab="Model data" key="3">
-            ModelData
+          <TabPane tab="Transformation" key="4">
+            <Transformation />
           </TabPane>
         </Tabs>
       </div>

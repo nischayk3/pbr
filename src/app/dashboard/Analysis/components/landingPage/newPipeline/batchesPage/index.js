@@ -97,7 +97,10 @@ const BatchesComponent = (props) => {
     const apiResponse = await putPipelineObj(req);
     if (apiResponse?.pipeline_disp_id) {
       dispatch(hideLoader());
-      history.push(`${match.url}/${apiResponse?.pipeline_disp_id}`);
+      history.push({
+        pathname: `${match.url}/${apiResponse?.pipeline_disp_id}`,
+        state: req,
+      });
     } else {
       dispatch(hideLoader());
       dispatch(showNotification("error", "unable to save pipeline"));
