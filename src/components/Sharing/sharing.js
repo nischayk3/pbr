@@ -44,7 +44,7 @@ export default function Sharing(props) {
             <div className="recepients">
                 <p className="recepients-text">Recepients</p>
                 <div className="recepients-input">
-                    <Input style={{ width: '465px' }} bordered={false} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter user email to share" onKeyPress={event => {
+                    <Input style={{ width: '665px' }} bordered={false} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter user email to share" onKeyPress={event => {
                         if (event.key === 'Enter') {
                             addUser(event.target.value)
                         }
@@ -52,7 +52,7 @@ export default function Sharing(props) {
                 </div>
             </div>
             <hr style={{ borderTop: "0.5px solid #d9d9d9" }} />
-            <div className="recepients">
+            <div className="recepients-fixed">
                 <span>
 
                     <Avatar
@@ -67,7 +67,7 @@ export default function Sharing(props) {
                     </Avatar>
                 </span>
                 <p className="email-text">{localStorage.getItem("user")}</p>
-                <p className="owner" style={{ left: '70%' }}>Owner</p>
+                <p className="owner" style={{ marginLeft: '63%' }}>Owner</p>
 
             </div>
             {shareList.map((e, index) =>
@@ -87,7 +87,7 @@ export default function Sharing(props) {
                         </Avatar>
                     </span>
                     <p className="email-text">{e.user}</p>
-                    <Select defaultValue={e.rights} style={{ width: 120, position: 'fixed', left: '63.5%' }} onSelect={(value) => { editUser(value, e) }}>
+                    <Select defaultValue={e.rights} style={{ width: 120, position: 'fixed', marginLeft: '43.5%' }} onSelect={(value) => { editUser(value, e) }}>
                         <Option key='1' value="Editor">Editor</Option>
                         <Option key='2' value="Viewer">Viewer</Option>
                     </Select>
@@ -102,4 +102,5 @@ export default function Sharing(props) {
         </Modal>
     )
 }
+
 

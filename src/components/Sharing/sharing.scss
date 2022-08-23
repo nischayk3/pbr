@@ -1,7 +1,15 @@
 .sharing {
+    margin-right: 40%;
+    margin-top: 5%;
+
     .recepients {
         display: flex;
         margin-top: 5px;
+    }
+
+    .recepients-fixed {
+        display: flex;
+        margin-top: 25px;
     }
 
     .ant-modal-close-x {
@@ -25,7 +33,8 @@
     .ant-modal-content {
         border-radius: 4px;
         height: auto;
-        width: 600px;
+        width: 800px;
+
     }
 
     .recepients-text {
@@ -78,7 +87,7 @@
     }
 
     .copy-input {
-        width: 500px;
+        width: 695px;
     }
 
     .ant-select-selector {
