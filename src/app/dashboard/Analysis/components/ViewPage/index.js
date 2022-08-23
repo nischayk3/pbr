@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 //antd-imports
 import { Button, Tabs } from "antd";
 import { CloudUploadOutlined } from "@ant-design/icons";
@@ -8,8 +8,11 @@ import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import Model from "./model/Model";
 import Preprocess from "./preproccessing/Preprocess";
 import Transformation from "./transformations";
+import ModelData from "./ModelData";
 
 const ViewPageAnalysis = () => {
+  const [modelData, setModelData] = useState();
+  console.log(modelData, "model");
   return (
     <div className="custom-wrapper bread-wrapper">
       <div className="sub-header">
@@ -34,10 +37,10 @@ const ViewPageAnalysis = () => {
       <div className="custom-content-layout">
         <Tabs defaultActiveKey="1">
           <TabPane tab="Preprocess" key="1">
-            <Preprocess />
+            <Preprocess setModelData={setModelData} />
           </TabPane>
           <TabPane tab="Model data" key="2">
-            ModelData
+            <ModelData modelData={modelData} />
           </TabPane>
           <TabPane tab="Model" key="3">
             <Model />

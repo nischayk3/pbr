@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./preprocess.scss";
 import { Row, Col, Button, Table, Select } from "antd";
-import { getPreprocessing } from "../../../../../../services/analyticsService";
+import {
+  getPreprocessing,
+  savePreprocessing,
+} from "../../../../../../services/analyticsService";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -10,7 +13,7 @@ import {
   showNotification,
 } from "../../../../../../duck/actions/commonActions";
 
-const Preprocess = () => {
+const Preprocess = ({ setModelData }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [preprocessData, setPreprocessData] = useState([]);
@@ -43,15 +46,21 @@ const Preprocess = () => {
   });
   columns = columns.filter((ele) => ele.title !== "KEY");
   const getPreprocessingData = async (filter) => {
+    // const request = {
+    //   batch_filter: filter ? filter : [],
+    //   data_filter: location?.state?.data[0]?.data_filter,
+    //   view_disp_id: location?.state?.view_id,
+    //   view_version: location?.state?.view_version,
+    // };
+    // request.data_filter.site = request.data_filter.site
+    //   ? request.data_filter.site
+    //   : "";
     const request = {
       batch_filter: filter ? filter : [],
-      data_filter: location?.state?.data[0]?.data_filter,
-      view_disp_id: location?.state?.view_id,
-      view_version: location?.state?.view_version,
+      data_filter: { date_range: "", unapproved_data: 0, site: "" },
+      view_disp_id: "V238",
+      view_version: 1,
     };
-    request.data_filter.site = request.data_filter.site
-      ? request.data_filter.site
-      : "";
     dispatch(showLoader());
     const apiResponse = await getPreprocessing(request);
     if (apiResponse.Status === 200) {
@@ -114,8 +123,20 @@ const Preprocess = () => {
     ],
   };
 
-  const onSaveClick = () => {
-    console.log(selectedRowKeys, "selected");
+  const onSaveClick = async () => {
+    const req = {
+      analysis_preprocessing: {
+        batch_filter: selectedRowKeys,
+        data_filter: { date_range: "", unapproved_data: 0, site: "" },
+        view_disp_id: "V238",
+        view_version: 1,
+      },
+    };
+    const apiResponse = await savePreprocessing(req);
+    if (apiResponse.Status === 200) {
+      setModelData(apiResponse.html_string);
+    }
+    console.log(apiResponse, "apiResponse");
   };
 
   useEffect(() => {
