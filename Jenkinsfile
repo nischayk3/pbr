@@ -1,8 +1,8 @@
 //CI-CD script---
 pipeline {
     environment {
-        SHARED_IMAGE = 'registry.cloud.mareana.com/mdh-cpv/dev/mdh-cpv-ui-shared'
-        DOCKER_IMAGE = 'registry.cloud.mareana.com/mdh-cpv/dev/mdh-cpv-ui'
+        SHARED_IMAGE = 'registry.cloud.mareana.com/mi-v3-5/dev/mdh-cpv-ui-shared'
+        DOCKER_IMAGE = 'registry.cloud.mareana.com/mi-v3-5/dev/mdh-cpv-ui'
     }
     agent { label 'cpv_node_ui' }
     options {
@@ -67,7 +67,7 @@ pipeline {
                 withDockerRegistry(credentialsId: 'docker-registry-mareana', url: 'https://registry.cloud.mareana.com') {
                 sh '''#!/bin/bash -x
                        sudo docker build -t  $SHARED_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-dev .
-                       docker push $SHARED_MAGE:$BUILD_NUMBER
+                       docker push $SHARED_IMAGE:$BUILD_NUMBER
                        echo "Changing Docker image in prod dockerfile"
                        sed -i -e "s@IMAGE@\'"$SHARED_IMAGE:$BUILD_NUMBER"\'@g"  Dockerfile-prod
                        cat Dockerfile-prod
@@ -104,5 +104,13 @@ pipeline {
                  }
                  }
             }
+           stage("QA promotion") {
+              steps {
+                  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                  sh 'echo "qa promotion" '
+                 }
+                 }
+            }
+
     }
 }

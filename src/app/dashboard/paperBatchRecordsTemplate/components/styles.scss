@@ -17,10 +17,14 @@
 		width: 100% !important;
 		height: 100% !important;
 	}
+	.drawRectangle{
+		width: 100% ;
+		height: 100% ;
+	}
 	img {
 		width: 100%;
 	}
-	canvas {
+	canvas { 
 		width: 100%;
 	}
 }
@@ -335,4 +339,14 @@ label {
 		overflow: scroll;
 	}
 	
+}
+#canvas {
+    width:2000px;
+    height:2000px;
+    border: 10px solid transparent;
+}
+.rectangle {
+    border: 1px solid #FF0000;
+    position: absolute;
+	z-index: 1000000000 ;
 }
