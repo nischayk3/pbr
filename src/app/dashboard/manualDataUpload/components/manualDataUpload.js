@@ -91,16 +91,26 @@ class Uploader extends Component {
 
 		username: '',
 		isAuth: false,
+		loginStatus: "",
 	};
 
 	componentDidMount = () => {
 		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
+		const login_with = localStorage.getItem("loginwith");
+
+		if (login_with) {
+			this.setState({
+				loginStatus: login_with,
+			});
+		}
+
+
 		if (loginDetails) {
 			this.setState({
 				username: loginDetails.email_id,
 			});
 		}
-	 };
+	};
 
 	clearData = () => {
 		this.setState({
@@ -680,6 +690,7 @@ class Uploader extends Component {
 			onChangeStatus,
 			onChangeRes,
 			isAuth,
+			loginStatus
 		} = this.state;
 
 		const { Step } = Steps;
@@ -717,7 +728,6 @@ class Uploader extends Component {
 				format: percent => `${parseFloat(percent.toFixed(2))}%`,
 			},
 		};
-
 		return (
 			<div className='custom-wrapper'>
 				<BreadCrumbWrapper />
@@ -1015,6 +1025,7 @@ class Uploader extends Component {
 													<div>
 														<p>Username</p>
 														<Input
+															disabled
 															placeholder='Username'
 															value={username}
 															onChange={value =>
@@ -1075,7 +1086,7 @@ class Uploader extends Component {
 														</Button>
 													</>
 												) : (
-													<>
+													<> {loginStatus == "WITH_AD" ?
 														<Button
 															type='primary'
 															id="auth_with_ad"
@@ -1086,6 +1097,7 @@ class Uploader extends Component {
 															onClick={() => this.onAuthenticate()}>
 															Authenticate with AD
 														</Button>
+														:
 														<Button
 															type='primary'
 															id="auth_without_ad"
@@ -1096,6 +1108,7 @@ class Uploader extends Component {
 															onClick={() => this.onAuthenticateWithoutAD()}>
 															Authenticate without AD
 														</Button>
+													}
 													</>
 												)}
 											</div>
@@ -1114,6 +1127,7 @@ class Uploader extends Component {
 													<div>
 														<p>Username</p>
 														<Input
+															disabled
 															placeholder='Username'
 															value={username}
 															onChange={value =>
@@ -1174,7 +1188,7 @@ class Uploader extends Component {
 														</Button>
 													</>
 												) : (
-													<>
+													<>{loginStatus == "WITH_AD" ?
 														<Button
 															type='primary'
 															id="auth_with_ad"
@@ -1185,6 +1199,7 @@ class Uploader extends Component {
 															onClick={() => this.onAuthenticate()}>
 															Authenticate with AD
 														</Button>
+														:
 														<Button
 															type='primary'
 															id="auth_without_ad"
@@ -1195,6 +1210,7 @@ class Uploader extends Component {
 															onClick={() => this.onAuthenticateWithoutAD()}>
 															Authenticate without AD
 														</Button>
+													}
 													</>
 												)}
 											</div>
@@ -1284,12 +1300,13 @@ class Uploader extends Component {
 														<div>
 															<p>Username</p>
 															<Input
+																disabled
 																placeholder='Username'
 																value={username}
 																onChange={value =>
 																	this.onChangeField(value, 'username')
 																}
-															    disabled
+
 															/>
 														</div>
 														<div>
@@ -1345,7 +1362,7 @@ class Uploader extends Component {
 															</Button>
 														</>
 													) : (
-														<>
+														<>{loginStatus == "WITH_AD" ?
 															<Button
 																type='primary'
 																id="auth_with_ad"
@@ -1356,6 +1373,7 @@ class Uploader extends Component {
 																onClick={() => this.onAuthenticate()}>
 																Authenticate with AD
 															</Button>
+															:
 															<Button
 																type='primary'
 																id="auth_without_ad"
@@ -1366,6 +1384,7 @@ class Uploader extends Component {
 																onClick={() => this.onAuthenticateWithoutAD()}>
 																Authenticate without AD
 															</Button>
+														}
 														</>
 													)}
 												</div>
