@@ -20,8 +20,8 @@ import UserConfiguration from "./UserRolesAndAccess/UserConfiguration/UserConfig
 import UserRolesAndAccess from "./UserRolesAndAccess/UserRolesAndAccess";
 // import PaperBatchRecords from './paperBatchRecords';
 import { getAuthorisedPermission } from "../../services/authProvider";
-import Analysis from "./Analysis/Analysis";
-import AnalysisModel from "./Analysis/AnalysisModel/AnalysisModel";
+import Analysis from "./Analysis/components";
+import ViewPageAnalysis from "./Analysis/components/ViewPage";
 import "./dashboard.scss";
 import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
 import PbrReviewer from "./pbrReviewer";
@@ -346,18 +346,24 @@ const Dashboard = () => {
                   component={ScreenControls}
                   authorised={authorised}
                 />
-                <PrivateRoute
-                  key={"analysis"}
+                <Route
                   path={`${match.url}/analysis`}
-                  component={Analysis}
-                  exact
-                  authorised={authorised}
-                />
-                <PrivateRoute
-                  key={"analysis-model"}
-                  path={`${match.url}/analysis/:id`}
-                  component={AnalysisModel}
-                  authorised={authorised}
+                  render={({ match: { url } }) => (
+                    <>
+                      <PrivateRoute
+                        key={"analysis"}
+                        path={`${url}/`}
+                        component={Analysis}
+                        exact
+                        authorised={authorised}
+                      />
+                      <PrivateRoute
+                        path={`${url}/:id`}
+                        component={ViewPageAnalysis}
+                        authorised={authorised}
+                      />
+                    </>
+                  )}
                 />
 
                 {/* <Route
