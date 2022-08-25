@@ -12,7 +12,21 @@ const request_headers = {
 
 export const getShare = request => {
     return Service.get(
-        BMS_APP_PYTHON_SERVICE + '/drug-substance',
+        BMS_APP_PYTHON_SERVICE + '/sharing',
+        request,
+        request_headers
+    ).then(
+        response => {
+            return response.data;
+        },
+        error => {
+            return error.response.data;
+        }
+    );
+};
+export const putShare = request => {
+    return Service.put(
+        BMS_APP_PYTHON_SERVICE + '/sharing',
         request,
         request_headers
     ).then(

@@ -2,9 +2,34 @@
     margin-right: 40%;
     margin-top: 5%;
 
+
+
     .recepients {
         display: flex;
         margin-top: 5px;
+
+        .recepients-text {
+
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 300;
+            font-size: 16px;
+            line-height: 22px;
+            color: #000000;
+            margin-top: 6px;
+            margin-left: 7px;
+        }
+
+        .recepients-input {}
+
+        .send-button {
+            width: 88px;
+            height: 32px;
+            background: #093185;
+            border-radius: 4px;
+            color: white;
+            margin-left: 24px;
+        }
     }
 
     .recepients-fixed {
@@ -33,24 +58,13 @@
 
     .ant-modal-content {
         border-radius: 4px;
-        height: auto;
+        max-height: 500px;
+        overflow: scroll;
         width: 800px;
 
     }
 
-    .recepients-text {
 
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 300;
-        font-size: 16px;
-        line-height: 22px;
-        color: #000000;
-        margin-top: 6px;
-        margin-left: 7px;
-    }
-
-    .recepients-input {}
 
     .email-text {
         font-family: 'Roboto';
@@ -104,10 +118,11 @@
 
 
     .ant-select-selector {
+        margin-top: 1px;
         font-family: 'Roboto';
         font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
+        font-weight: 300;
+        font-size: 16px;
         color: #262626;
 
     }

@@ -254,7 +254,7 @@ const DashboardScreen = () => {
 
             <Button
               className="viewCreation-saveBtn"
-              onClick={handleShareVisible}
+              onClick={() => handleShareVisible()}
               id="save-view"
             >
               Share
