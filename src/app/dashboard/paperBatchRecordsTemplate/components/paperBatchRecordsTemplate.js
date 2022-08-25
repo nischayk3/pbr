@@ -908,6 +908,12 @@ function PaperBatchRecordsTemplate() {
         }
     }
 
+    // useEffect(() => {
+    //     if(displayImage!=""){
+    //         dispatch(hideLoader());
+    //     }
+    // },[displayImage])
+
     useEffect(() => {
         // dispatch(showLoader());
         setTimeout(() => {
@@ -3039,6 +3045,7 @@ function PaperBatchRecordsTemplate() {
                     <Modal
                         title='Preview'
                         visible={isModalVisible}
+                        // style={{height:300,overflowY:"scroll"}}
                         onOk={handleOk}
                         onCancel={handleCancel}
                         footer={null}>
@@ -3048,7 +3055,7 @@ function PaperBatchRecordsTemplate() {
                             columns={modalColumns}
                             dataSource={modalData}
                             pagination={false}
-                            scroll={{ x: 1000 }}
+                            scroll={{ x: 1000,y:300 }}
                         />
                     </Modal>
                 </div>
