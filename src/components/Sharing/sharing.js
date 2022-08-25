@@ -40,18 +40,18 @@ export default function Sharing(props) {
 
     }
     return (
-        <Modal className="sharing" title={<><UserAddOutlined /><span className="sharing-modal-title">Share with people</span></>} visible={isShare} onCancel={handleShareCancel} footer={false}>
+        <Modal className="sharing" title={<><UserAddOutlined style={{ marginLeft: '7px' }} /><span className="sharing-modal-title">Share with people</span></>} visible={isShare} onCancel={handleShareCancel} footer={false}>
             <div className="recepients">
                 <p className="recepients-text">Recepients</p>
                 <div className="recepients-input">
-                    <Input style={{ width: '665px' }} bordered={false} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter user email to share" onKeyPress={event => {
+                    <Input style={{ width: '660px' }} bordered={false} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter user email to share" onKeyPress={event => {
                         if (event.key === 'Enter') {
                             addUser(event.target.value)
                         }
                     }} />
                 </div>
             </div>
-            <hr style={{ borderTop: "0.5px solid #d9d9d9" }} />
+            <hr style={{ borderTop: "0.5px solid #d9d9d9", marginLeft: '6px' }} />
             <div className="recepients-fixed">
                 <span>
 
@@ -60,6 +60,7 @@ export default function Sharing(props) {
                             color: "#FFFFFF",
                             backgroundColor: 'red',
                             // marginTop: '5px'
+                            marginLeft: '9px'
                         }}
                         size="small"
                     >
@@ -67,7 +68,7 @@ export default function Sharing(props) {
                     </Avatar>
                 </span>
                 <p className="email-text">{localStorage.getItem("user")}</p>
-                <p className="owner" style={{ marginLeft: '63%' }}>Owner</p>
+                <p className="owner" style={{ marginLeft: '62.3%' }}>Owner</p>
 
             </div>
             {shareList.map((e, index) =>
@@ -79,6 +80,7 @@ export default function Sharing(props) {
                             style={{
                                 color: "#FFFFFF",
                                 backgroundColor: e.color,
+                                marginLeft: '9px'
                                 // marginTop: '5px'
                             }}
                             size="small"
@@ -87,18 +89,21 @@ export default function Sharing(props) {
                         </Avatar>
                     </span>
                     <p className="email-text">{e.user}</p>
-                    <Select defaultValue={e.rights} style={{ width: 120, position: 'fixed', marginLeft: '43.5%' }} onSelect={(value) => { editUser(value, e) }}>
+                    <Select defaultValue={e.rights} style={{ width: 120, position: 'fixed', marginLeft: '43.8%' }} onSelect={(value) => { editUser(value, e) }}>
                         <Option key='1' value="Editor">Editor</Option>
                         <Option key='2' value="Viewer">Viewer</Option>
                     </Select>
                 </div>
+
             )
             )
+
             }
             <div className="copy">
                 <Input className="copy-input" value={copy} onChange={(e) => setCopy(e.target.value)} />
                 <Button className="copy-button" onClick={() => onCopy()}>Copy</Button>
             </div>
+
         </Modal>
     )
 }
