@@ -1,8 +1,8 @@
 //CI-CD script---
 pipeline {
     environment {
-        SHARED_IMAGE = 'registry.cloud.mareana.com/mi-v3-5/dev/mdh-cpv-ui-shared'
-        DOCKER_IMAGE = 'registry.cloud.mareana.com/mi-v3-5/dev/mdh-cpv-ui'
+        SHARED_IMAGE = 'registry.cloud.mareana.com/mi-master/dev/mdh-cpv-ui-shared'
+        DOCKER_IMAGE = 'registry.cloud.mareana.com/mi-master/dev/mdh-cpv-ui'
     }
     agent { label 'cpv_node_ui' }
     options {
@@ -71,13 +71,13 @@ pipeline {
                        echo "Changing Docker image in prod dockerfile"
                        sed -i -e "s@IMAGE@\'"$SHARED_IMAGE:$BUILD_NUMBER"\'@g"  Dockerfile-prod
                        cat Dockerfile-prod
-                       sudo docker build --build-arg app_dns=mi-devv3-5.mareana.com --build-arg jupyter_dns=jupyterhub-dev.mareana.com -t  $DOCKER_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-prod .
+                       sudo docker build --build-arg app_dns=mi-dev.mareana.com --build-arg jupyter_dns=jupyterhub-dev.mareana.com -t  $DOCKER_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-prod .
                ''' 
                }
               }
 
               }
-          stage("Push Docker Image to Docker Registry") {
+          stage("Push Docker Image") {
             steps {
                 withDockerRegistry(credentialsId: 'docker-registry-mareana', url: 'https://registry.cloud.mareana.com') {
                 sh '''#!/bin/bash -x
@@ -104,10 +104,10 @@ pipeline {
                  }
                  }
             }
-           stage("QA promotion") {
+           stage("Promoted to QA") {
               steps {
                   catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                  sh 'echo "qa promotion" '
+                  sh 'echo "promoted to qa" '
                  }
                  }
             }
