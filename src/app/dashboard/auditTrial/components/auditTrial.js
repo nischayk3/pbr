@@ -282,7 +282,7 @@ class AuditTrials extends React.Component {
 			this.state.selectedDate.length > 0
 				? this.state.selectedDate[1]
 				: today.toISOString().slice(0, 10);
-		let tableName = ["Parameter Data"];
+		// let tableName = ["Parameter Data"];
 		let activity = this.state.eventType.value;
 		let userid = this.state.user.value;
 
@@ -300,7 +300,7 @@ class AuditTrials extends React.Component {
 		if (userid) {
 			myUrlWithParams.searchParams.append("userid", userid);
 		}
-		myUrlWithParams.searchParams.append("table_name", tableName);
+		// myUrlWithParams.searchParams.append("table_name", tableName);
 
 		if (value == "excel") {
 			myUrlWithParams.searchParams.append("export_csv", false);
@@ -749,7 +749,7 @@ class AuditTrials extends React.Component {
 										marginRight: "10px"
 									}}
 								>
-									<Dropdown style={{ color: "#ffffff" }} overlay={userMenu}>
+									<Dropdown style={{ color: "#ffffff" }} overlay={userMenu} disabled={tableData.length > 0 ? false : true} >
 										<Button
 											style={{
 												backgroundColor: "#495fc3",
