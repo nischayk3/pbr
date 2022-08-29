@@ -96,6 +96,12 @@ class Uploader extends Component {
 
 	componentDidMount = () => {
 		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
+		const loginWith = localStorage.getItem("loginwith");
+		if (loginWith) {
+			this.setState({
+				loginStatus: loginWith,
+			});
+		}
 		if (loginDetails) {
 			this.setState({
 				username: loginDetails.email_id,
@@ -681,6 +687,7 @@ class Uploader extends Component {
 			onChangeStatus,
 			onChangeRes,
 			isAuth,
+			loginStatus
 		} = this.state;
 
 		const { Step } = Steps;
@@ -1078,26 +1085,29 @@ class Uploader extends Component {
 													</>
 												) : (
 													<>
-														<Button
-															type='primary'
-															id="auth_with_ad"
-															style={{
-																backgroundColor: '#093185',
-															}}
-															disabled={username == '' || password == ''}
-															onClick={() => this.onAuthenticate()}>
-															Authenticate with AD
-														</Button>
-														<Button
-															type='primary'
-															id="auth_without_ad"
-															style={{
-																backgroundColor: '#093185',
-															}}
-															disabled={username == '' || password == ''}
-															onClick={() => this.onAuthenticateWithoutAD()}>
-															Authenticate without AD
-														</Button>
+														{loginStatus == 'WITH_AD' ?
+															<Button
+																type='primary'
+																id="auth_with_ad"
+																style={{
+																	backgroundColor: '#093185',
+																}}
+																disabled={username == '' || password == ''}
+																onClick={() => this.onAuthenticate()}>
+																Authenticate with AD
+															</Button>
+															:
+															<Button
+																type='primary'
+																id="auth_without_ad"
+																style={{
+																	backgroundColor: '#093185',
+																}}
+																disabled={username == '' || password == ''}
+																onClick={() => this.onAuthenticateWithoutAD()}>
+																Authenticate without AD
+															</Button>
+														}
 													</>
 												)}
 											</div>
@@ -1177,7 +1187,7 @@ class Uploader extends Component {
 														</Button>
 													</>
 												) : (
-													<>
+													<>	{loginStatus == 'WITH_AD' ?
 														<Button
 															type='primary'
 															id="auth_with_ad"
@@ -1188,6 +1198,7 @@ class Uploader extends Component {
 															onClick={() => this.onAuthenticate()}>
 															Authenticate with AD
 														</Button>
+														:
 														<Button
 															type='primary'
 															id="auth_without_ad"
@@ -1198,6 +1209,7 @@ class Uploader extends Component {
 															onClick={() => this.onAuthenticateWithoutAD()}>
 															Authenticate without AD
 														</Button>
+													}
 													</>
 												)}
 											</div>
@@ -1349,7 +1361,7 @@ class Uploader extends Component {
 															</Button>
 														</>
 													) : (
-														<>
+														<>	{loginStatus == 'WITH_AD' ?
 															<Button
 																type='primary'
 																id="auth_with_ad"
@@ -1360,6 +1372,7 @@ class Uploader extends Component {
 																onClick={() => this.onAuthenticate()}>
 																Authenticate with AD
 															</Button>
+															:
 															<Button
 																type='primary'
 																id="auth_without_ad"
@@ -1370,6 +1383,7 @@ class Uploader extends Component {
 																onClick={() => this.onAuthenticateWithoutAD()}>
 																Authenticate without AD
 															</Button>
+														}
 														</>
 													)}
 												</div>

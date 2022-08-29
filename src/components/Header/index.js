@@ -17,14 +17,17 @@ const { Search } = Input;
 const HeaderBar = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const [loginDetails, setLoginDetails] = useState({});
+	//const [loginDetails, setLoginDetails] = useState({});
 	const [dropdownVisible, setDropdownVisible] = useState(false);
+	const loginDetails = JSON.parse(localStorage.getItem("login_details"))
+
+	// useEffect(() => {
+	// 	console.log("loginResponse", loginResponse);
+	// 	setLoginDetails(loginResponse)
+	// }, [])
 
 
 	useEffect(() => {
-		const loginResponse = JSON.parse(localStorage.getItem("login_details"))
-		console.log("loginResponse", loginResponse);
-		setLoginDetails(loginResponse)
 		document.addEventListener('tokenExpired', () => {
 			if (localStorage.getItem('login_details')) {
 				adLogout('tokenExpired')
@@ -86,7 +89,7 @@ const HeaderBar = () => {
 				<div className="custom-menu">
 
 					<div className="user-name" onClick={dropDownOpen}>
-						<Avatar size={22} style={{ backgroundColor: "orange" }}>
+						<Avatar size={22} style={{ backgroundColor: "orange", fontSize: "16px", padding: "1px 0" }}>
 							{localStorage.getItem("username") &&
 								localStorage.getItem("username").split("")[0].toUpperCase()}{" "}
 						</Avatar>
@@ -101,7 +104,6 @@ const HeaderBar = () => {
 								<CaretUpOutlined />
 							</div>
 							<div className="menu-detail">
-
 								<div className="avatar-details">
 									<Avatar size={64}
 										style={{
@@ -127,11 +129,7 @@ const HeaderBar = () => {
 					)}
 				</div>
 			</div>
-			{/* <div
-				className='logout-btn'
-				onClick={adenabled ? () => adLogout() : () => Logout()}>
-				<LogoutOutlined />
-			</div> */}
+
 		</Header >
 	);
 };

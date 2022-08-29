@@ -877,7 +877,7 @@ function PaperBatchRecordsTemplate() {
     }, [areasMap, imageWidth, imageHeight])
 
     const getImage = async (val) => {
-        dispatch(showLoader());
+        // dispatch(showLoader());
         let login_response = JSON.parse(localStorage.getItem('login_details'));
         var requestOptions = {
             method: "GET",
@@ -904,12 +904,18 @@ function PaperBatchRecordsTemplate() {
             dispatch(hideLoader());
         } else {/* istanbul ignore next */
             setDisplayImage(window.webkitURL.createObjectURL(res))
-            dispatch(hideLoader());
+            // dispatch(hideLoader());
         }
     }
 
+    // useEffect(() => {
+    //     if(displayImage!=""){
+    //         dispatch(hideLoader());
+    //     }
+    // },[displayImage])
+
     useEffect(() => {
-        dispatch(showLoader());
+        // dispatch(showLoader());
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
             setImageWidth(list?.width)
@@ -1080,10 +1086,10 @@ function PaperBatchRecordsTemplate() {
                     },
 
                 }
-                let arr = item?.tableData?.selectedColValues.filter(item1 => item?.tableData?.selectedColRows.includes(item1.key))
-                let arr1 = item?.tableData?.selectedRowValues.filter(item2 => item?.tableData?.selectedRowRows.includes(item2.key))
+                let arr = item?.tableData?.selectedColValues?.filter(item1 => item?.tableData?.selectedColRows?.includes(item1?.key))
+                let arr1 = item?.tableData?.selectedRowValues?.filter(item2 => item?.tableData?.selectedRowRows?.includes(item2?.key))
 
-                if (arr || arr1) {
+                if (arr) {
                     let cols = arr.map(item => (
                         {
                             col_id: item.columnindex,
@@ -1094,6 +1100,9 @@ function PaperBatchRecordsTemplate() {
                             apply_to: item?.applicalbe_to
                         }
                     ))
+                    obj.column_config.columns = cols
+                }
+                if (arr1) {
                     let rows = arr1.map(item => (
                         {
                             row_id: item.rowindex,
@@ -1104,7 +1113,6 @@ function PaperBatchRecordsTemplate() {
                             apply_to: item?.applicalbe_to
                         }
                     ))
-                    obj.column_config.columns = cols
                     obj.row_config.rows = rows
                 }
                 data.push(obj)
@@ -1130,7 +1138,7 @@ function PaperBatchRecordsTemplate() {
                     // pbrTemplateStatus: 'DRFT',
                     createdBy: login_response?.email_id,
                     changedBy: params.temp_disp_id ? login_response?.email_id : "",
-                    templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {}, pbrTableInfo: [], tableData: formTableData },
+                    templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {}, pbrTableInfo: [], tableData: formTableData,filename: params?.file, },
                     material: matBatch?.material_num,
                     batch: matBatch?.batch,
                     siteCode: matBatch?.site,
@@ -1747,6 +1755,7 @@ function PaperBatchRecordsTemplate() {
                     }, i * 1000)
 
                 }
+                dispatch(hideLoader());
             }
 
         }
@@ -1771,6 +1780,7 @@ function PaperBatchRecordsTemplate() {
                 }, i * 1000)
 
             }
+            dispatch(hideLoader());
         }
 
     }
@@ -3035,6 +3045,7 @@ function PaperBatchRecordsTemplate() {
                     <Modal
                         title='Preview'
                         visible={isModalVisible}
+                        // style={{height:300,overflowY:"scroll"}}
                         onOk={handleOk}
                         onCancel={handleCancel}
                         footer={null}>
@@ -3044,7 +3055,7 @@ function PaperBatchRecordsTemplate() {
                             columns={modalColumns}
                             dataSource={modalData}
                             pagination={false}
-                            scroll={{ x: 1000 }}
+                            scroll={{ x: 1000,y:300 }}
                         />
                     </Modal>
                 </div>

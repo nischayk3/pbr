@@ -1,7 +1,7 @@
 .layout-jumbo-header {
 	background-color: #fff;
 	width: 100%;
-	padding: 42px;
+	padding: 42px 20%;
 	border-radius: 4px;
 
 	.profile-section {
@@ -92,6 +92,10 @@
 		}
 
 		.split-form {
+			.select-field {
+				width: 326px;
+			}
+
 			.input_field {
 				margin: 19px 0;
 
@@ -100,5 +104,24 @@
 				}
 			}
 		}
+	}
+}
+
+.input-pass {
+	width: 320px;
+	margin-bottom: 23px;
+
+	p {
+		margin: 0;
+		font-family: var(--primary-font-family);
+		font-style: normal;
+		font-weight: normal;
+		font-size: 14px;
+		line-height: 22px;
+		color: #262626;
+	}
+
+	>span {
+		margin-top: 8px;
 	}
 }

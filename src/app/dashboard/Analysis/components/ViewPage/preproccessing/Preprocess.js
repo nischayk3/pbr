@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./preprocess.scss";
 import { Row, Col, Button, Table, Select } from "antd";
-import { getPreprocessing } from "../../../../../../services/analyticsService";
+import {
+  getPreprocessing,
+  savePreprocessing,
+} from "../../../../../../services/analyticsService";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -10,7 +13,7 @@ import {
   showNotification,
 } from "../../../../../../duck/actions/commonActions";
 
-const Preprocess = () => {
+const Preprocess = ({ setModelData, setTableKey }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [preprocessData, setPreprocessData] = useState([]);
@@ -87,11 +90,7 @@ const Preprocess = () => {
         onSelect: (changableRowKeys) => {
           let newSelectedRowKeys = [];
           newSelectedRowKeys = changableRowKeys.filter((_, index) => {
-            if (index % 2 !== 0) {
-              return false;
-            }
-
-            return true;
+            return index % 2 !== 0 ? false : true;
           });
           setSelectedRowKeys(newSelectedRowKeys);
         },
@@ -102,11 +101,7 @@ const Preprocess = () => {
         onSelect: (changableRowKeys) => {
           let newSelectedRowKeys = [];
           newSelectedRowKeys = changableRowKeys.filter((_, index) => {
-            if (index % 2 !== 0) {
-              return true;
-            }
-
-            return false;
+            return index % 2 !== 0 ? true : false;
           });
           setSelectedRowKeys(newSelectedRowKeys);
         },
@@ -114,8 +109,26 @@ const Preprocess = () => {
     ],
   };
 
-  const onSaveClick = () => {
-    console.log(selectedRowKeys, "selected");
+  const onSaveClick = async () => {
+    dispatch(showLoader());
+    const req = {
+      analysis_preprocessing: {
+        batch_filter: selectedRowKeys,
+        data_filter: location?.state?.data[0]?.data_filter,
+        view_disp_id: location?.state?.view_id,
+        view_version: location?.state?.view_version,
+      },
+    };
+    const apiResponse = await savePreprocessing(req);
+    const data = await apiResponse;
+    if (apiResponse.Status === 200) {
+      dispatch(hideLoader());
+      setModelData(data.html_string);
+      setTableKey("2");
+    } else {
+      dispatch(hideLoader());
+      dispatch(showNotification("error", "Unable to fetch preprocessing data"));
+    }
   };
 
   useEffect(() => {
@@ -165,7 +178,7 @@ const Preprocess = () => {
             columns={columns}
             dataSource={preprocessData}
             pagination={{ pageSize: 8 }}
-            // rowKey={(record) => record.key}
+            rowKey={(record) => record.key}
             rowSelection={rowSelection}
           />
         </Col>
