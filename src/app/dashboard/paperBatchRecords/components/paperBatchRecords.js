@@ -116,6 +116,7 @@ function PaperBatchRecords() {
 
 	useEffect(() => {
 		let login_response = JSON.parse(localStorage.getItem('login_details'));
+		
 		if (login_response) {
 			updateDate();
 			getTemplateData();
