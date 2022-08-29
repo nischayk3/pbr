@@ -17,6 +17,7 @@ import { MDH_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import {
 	auditFilter
 } from "../../../../duck/actions/auditTrialAction";
+import { showNotification } from "../../../../duck/actions/commonActions";
 import { getUserSessions } from "../../../../services/userTrail";
 import "./style.scss";
 
@@ -61,17 +62,25 @@ const UserTrail = () => {
 		},
 		{
 			title: "Session Type",
-			dataIndex: "session_type",
+			dataIndex: "login_type",
 			key: "3",
 			defaultSortOrder: "descend",
 			//sorter: (a, b) => a.session_type.localeCompare(b.session_type)
 		},
 		{
 			title: "Date & Time",
-			dataIndex: "session_timestamp",
+			dataIndex: "login_timestamp",
 			key: "4",
 			defaultSortOrder: "descend",
 			render: (text) => moment(text).format("DD-MM-YYYY HH:mm:ss")
+			//sorter: (a, b) => a.session_timestamp.localeCompare(b.session_timestamp)
+		},
+		{
+			title: "TimeSpent(in min)",
+			dataIndex: "TimeSpent(in min)",
+			key: "5",
+			defaultSortOrder: "descend",
+			//render: (text) => moment(text).format("DD-MM-YYYY HH:mm:ss")
 			//sorter: (a, b) => a.session_timestamp.localeCompare(b.session_timestamp)
 		},
 
@@ -158,9 +167,9 @@ const UserTrail = () => {
 					let antdObj = {};
 					antdObj["user_id"] = item.user_id;
 					antdObj["id"] = item.id;
-					antdObj["cust_key"] = item.cust_key;
-					antdObj["session_timestamp"] = item.session_timestamp;
-					antdObj["session_type"] = item.session_type;
+					//antdObj["TimeSpent(in min)"] = item.TimeSpent(in min);
+					antdObj["login_timestamp"] = item.login_timestamp;
+					antdObj["login_type"] = item.login_type;
 					antdDataTable.push(antdObj);
 				});
 				setTableData(antdDataTable)
