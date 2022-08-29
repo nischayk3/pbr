@@ -1,0 +1,66 @@
+{
+    "Status": 200,
+    "all_batches": [
+        "ABL2257",
+        "ABL2258",
+        "ABL2259",
+        "ABL2260",
+        "ABL2261",
+        "ABL2262",
+        "ABL2263",
+        "ABL2264",
+        "ABR9486",
+        "ABR9487",
+        "ABR9488",
+        "ABR9489",
+        "ABR9490",
+        "ABR9491",
+        "ABR9492",
+        "ABR9493",
+        "ABT9558",
+        "ABT9559",
+        "ABT9562",
+        "ABT9563",
+        "ABT9564",
+        "ABT9565",
+        "ABT9566",
+        "ABT9567",
+        "ABV4289",
+        "ABV4290",
+        "ABV4292",
+        "ABV4293",
+        "ABV4294",
+        "ABV4295",
+        "ABV4296",
+        "ABV4297",
+        "ABV4298",
+        "ABV4299",
+        "ABY0079",
+        "ABY0080",
+        "ABY0081",
+        "ABY0082",
+        "ABY0083",
+        "ABY0084",
+        "ABY0086",
+        "ABY0088",
+        "ABY0089",
+        "ACB4375"
+    ],
+    "complete_output": [
+        {
+            "CARB_NORMAL": 9.97,
+            "NORMAL_MUL_HEAVY": 15.8851521957,
+            "batch_num": "ABL2257",
+            "recorded_date_CARB_NORMAL": "2020-01-16T10:53:04.000Z",
+            "recorded_date_NORMAL_MUL_HEAVY": "2020-01-16T10:53:04.000Z"
+        }
+    ],
+    "compressed_output": [
+        {
+            "CARB_NORMAL": 9.97,
+            "NORMAL_MUL_HEAVY": 15.8851521957,
+            "batch_num": "ABL2257",
+            "recorded_date": "2020-01-16T10:53:04.000Z"
+        }
+    ]
+}

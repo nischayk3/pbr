@@ -22,6 +22,16 @@ describe('Analysis', () => {
         cy.intercept('GET', '**/views-list?vew_status=APRD', { fixture: 'analysisViewList.json' })
         cy.intercept('GET', '**/chart-object', { fixture: 'analysisChartObjLanding.json' })
         cy.intercept('GET', '**/site_ids?view_id=V238', { fixture: 'analysisSite.json' })
+        cy.intercept('POST', '**/analysis-preprocessing', { fixture: 'analysisPre.json' })
+        cy.intercept('POST', '**/chart-object', { fixture: 'analysisPostChart.json' })
+        cy.intercept('PUT', '**/pipelines', { fixture: 'putPipeline.json' })
+        cy.intercept('POST', '**/model-data', { fixture: 'analysisPostModal.json' })
+
+
+
+
+
+
 
 
     })
@@ -72,24 +82,45 @@ describe('Analysis', () => {
         cy.log('Switch and date range')
         cy.get('.ant-switch').click({ force: true })
         cy.get('.ant-picker').click({ force: true })
-        cy.get('.ant-picker-cell-today > .ant-picker-cell-inner').click({ force: true });
+        cy.get(':nth-child(5) > .ant-picker-cell-today > .ant-picker-cell-inner').click();
+        cy.wait(2000)
+        cy.log('Landing')
         cy.get('.button-gap > .custom-secondary-btn').click({ force: true })
-
-
     })
+    it("Preprocessing Tab", () => {
+        cy.log('Preprocessing Tab')
+        cy.get('.ant-select-selection-overflow').click({ force: true });
+        cy.wait(1000)
+        cy.log('Select Option from  Tab')
+        cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click({ force: true });
+        cy.get(':nth-child(2) > .ant-col > .ant-btn > span').click({ force: true });
+        cy.wait(1000)
+        cy.log('Select checkbox in preprocess Tab')
+        cy.get('.ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check({ force: true });
+        cy.wait(1000)
+        cy.log('Save and move to modal Tab')
+        cy.get('.save-button > .ant-col > .ant-btn').click({ force: true });
+    })
+    it("Modal Tab", () => {
+        cy.log('modal tab is the response from the api itself no function of the tab')
+        cy.wait(5000)
+    })
+
+
 
     it("Search in Analysis Landing Page", () => {
         const url = Cypress.config().baseUrl
         cy.visit(url + '/#/dashboard/analysis')
 
         cy.log('Search in Landing page')
-        cy.get('.ant-input').click({ force: true })
+        cy.get('.ant-col-12 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').click({ force: true })
 
         cy.log('Type in Landing page')
-        cy.get('.ant-input').type('P6{enter}', { force: true })
-
+        cy.get('.ant-col-12 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input').clear({ force: true });
+        cy.get('.ant-col-12 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input').type('P6{enter}', { force: true });
         cy.log('Click on the created pipeline')
-        cy.get('.ant-table-row > :nth-child(1)').click({ force: true })
+        cy.get('.ant-table-row > :nth-child(1)').click({ force: true });
+
 
     })
 });
