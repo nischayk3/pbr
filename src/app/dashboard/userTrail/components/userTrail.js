@@ -7,9 +7,7 @@
  */
 
 import {
-	Button, Input,
-	Menu,
-	Select, Table
+	Button, Input, Select, Table
 } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -19,45 +17,32 @@ import { MDH_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import {
 	auditFilter
 } from "../../../../duck/actions/auditTrialAction";
+import { showNotification } from "../../../../duck/actions/commonActions";
 import { getUserSessions } from "../../../../services/userTrail";
 import "./style.scss";
 
 
 
 const UserTrail = () => {
-
 	const { Option } = Select;
+	// const userMenu = (
+	// 	<Menu>
+	// 		<Menu.Item key="1" onClick={() => getExcelFile("excel")}>
+	// 			Excel
+	// 		</Menu.Item>
+	// 		<Menu.Divider />
+	// 		<Menu.Item key="2" onClick={() => getExcelFile("csv")}>
+	// 			CSV
+	// 		</Menu.Item>
+	// 	</Menu>
+	// );
 
-
-	const userMenu = (
-		<Menu>
-			<Menu.Item key="1" onClick={() => getExcelFile("excel")}>
-				Excel
-			</Menu.Item>
-			<Menu.Divider />
-			<Menu.Item key="2" onClick={() => getExcelFile("csv")}>
-				CSV
-			</Menu.Item>
-		</Menu>
-	);
-
-	const [initialColumns, setInitialColumns] = useState([]);
 	const [userList, setUserList] = useState([]);
-	const [eventList, setEventList] = useState([]);
-	const [colSort, setColSort] = useState();
-	const [tableData, setTableData] = useState();
-	const [downloadData, setDownloadData] = useState();
+	const [tableData, setTableData] = useState([]);
 	const [selectedLimit, setSelectedLimit] = useState("500");
-	const [filterIng, setFilterIng] = useState();
-	const [type, setType] = useState();
-	const [filterPkg, setFilterPkg] = useState();
 	const [filterTable, setFilterTable] = useState(null);
-	const [daterange, setDaterange] = useState([]);
-	const [eventType, setEventType] = useState("");
-	const [loading, setLoading] = useState(false);
-	const [selectedDate, setSelectedDate] = useState("");
-	const [sortState, setSortState] = useState("DESC");
 	const [user, setUser] = useState("");
+
 
 
 	const columns = [
@@ -77,26 +62,28 @@ const UserTrail = () => {
 		},
 		{
 			title: "Session Type",
-			dataIndex: "session_type",
+			dataIndex: "login_type",
 			key: "3",
 			defaultSortOrder: "descend",
 			//sorter: (a, b) => a.session_type.localeCompare(b.session_type)
 		},
 		{
 			title: "Date & Time",
-			dataIndex: "session_timestamp",
+			dataIndex: "login_timestamp",
 			key: "4",
 			defaultSortOrder: "descend",
 			render: (text) => moment(text).format("DD-MM-YYYY HH:mm:ss")
 			//sorter: (a, b) => a.session_timestamp.localeCompare(b.session_timestamp)
 		},
-		// {
-		// 	title: "cust_key",
-		// 	dataIndex: "cust_key",
-		// 	key: "5",
-		// 	defaultSortOrder: "descend",
-		// 	sorter: (a, b) => a.cust_key.localeCompare(b.cust_key)
-		// },
+		{
+			title: "TimeSpent(in min)",
+			dataIndex: "TimeSpent(in min)",
+			key: "5",
+			defaultSortOrder: "descend",
+			//render: (text) => moment(text).format("DD-MM-YYYY HH:mm:ss")
+			//sorter: (a, b) => a.session_timestamp.localeCompare(b.session_timestamp)
+		},
+
 
 	]
 
@@ -104,7 +91,6 @@ const UserTrail = () => {
 		const _req = {
 			limit: 500
 		}
-		setInitialColumns(columns)
 		auditHighlight(_req);
 		onAuditUserAndEventFilter();
 	}, [])
@@ -123,7 +109,7 @@ const UserTrail = () => {
 			showNotification("error", res.Message);
 		} else {
 			setUserList(res.data[0].userid)
-			setEventList(res.data[0].activity)
+
 		}
 	};
 
@@ -177,19 +163,17 @@ const UserTrail = () => {
 		getUserSessions(_req).then((res) => {
 			if (res.Status === 200) {
 				let antdDataTable = [];
-
 				res.Data.forEach((item) => {
 					let antdObj = {};
 					antdObj["user_id"] = item.user_id;
 					antdObj["id"] = item.id;
-					antdObj["cust_key"] = item.cust_key;
-					antdObj["session_timestamp"] = item.session_timestamp;
-					antdObj["session_type"] = item.session_type;
+					//antdObj["TimeSpent(in min)"] = item.TimeSpent(in min);
+					antdObj["login_timestamp"] = item.login_timestamp;
+					antdObj["login_type"] = item.login_type;
 					antdDataTable.push(antdObj);
 				});
-				console.log("antdDataTable", antdDataTable);
 				setTableData(antdDataTable)
-				setDownloadData(tableData)
+				// setDownloadData(tableData)
 			} else {
 				showNotification("error", res.Message);
 			}
@@ -231,8 +215,7 @@ const UserTrail = () => {
 				operator: "IN",
 				value: [value.trim()]
 			});
-			setFilterIng(userarr);
-			setType(filterType)
+			// setFilterIng(userarr);
 			setUser(value)
 		}
 	};
@@ -250,34 +233,16 @@ const UserTrail = () => {
 
 
 	const handleClear = () => {
-		// this.setState(
-		// 	{
-		// 		selectedBrand: "",
-		// 		selectedProduct: "",
-		// 		selectedQuestion: "",
-		// 		selectedAns: "",
-		// 		user: "",
-		// 		daterange: [],
-		// 		selectedDate: [],
-		// 		eventType: "",
-		// 		filterTable: null
-		// 	},
-		// 	() => auditHighlight()
-		// );
+		const _req = {
+			limit: 500
+		}
+		setUser("")
+		setSelectedLimit("500")
+		auditHighlight(_req);
+
 	};
 
-	/* istanbul ignore next */
-	// const handleAutoCompleteChange = (state, evt, value) => {
-	// 	if (evt) {
-	// 		if (value === null) {
-	// 			value = { label: "", value: "" };
-	// 		} else {
-	// 			this.setState({
-	// 				user: value
-	// 			});
-	// 		}
-	// 	}
-	// };
+
 
 	const optionsUser = userList.map((item, index) => (
 		<Select.Option key={index} value={item.value}>
@@ -285,7 +250,7 @@ const UserTrail = () => {
 		</Select.Option>
 	));
 
-	console.log("tableData", tableData);
+
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
@@ -383,7 +348,6 @@ const UserTrail = () => {
 					</div>
 					<Table
 						style={{ margin: "20px" }}
-						loading={loading}
 						size="small"
 						columns={columns}
 						dataSource={filterTable === null ? tableData : filterTable}

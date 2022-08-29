@@ -5,6 +5,7 @@
     .react-flow__node-input {
         padding: 0px;
         width: 50px;
+        font-size: 8px;
     }
     .react-flow__node-output {
         @extend .react-flow__node-input
@@ -12,4 +13,85 @@
     .react-flow__node-default {
         @extend .react-flow__node-input
     } 
+    .operation-row {
+
+         padding: 10px 0px;
+        .title-legends {
+            display: flex;
+            justify-content: flex-end;
+            dl{
+                margin-bottom: 0px !important;
+            }
+            dl dt {
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                vertical-align: middle;
+            }
+            dl dd {
+                display: inline-block;
+                margin: 0px 12px;
+                padding-bottom: 0;
+                vertical-align: middle;
+                font-family: var(--primary-font-family);
+                font-style: normal;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 10px;
+            }
+            dl dt.cream {
+                background: #F7AF9D;
+            }
+            dl dt.violet {
+                background: #846B8A;
+            }
+            dl dt.green {
+                background:#4CA022;
+            }
+            dl dt.pink {
+                background: #FF4D4F;
+            }
+            dl dt.lightGreen {
+                background: #B3F2DD;
+            }
+        }
+        .ml {
+            margin-left: -13px;
+        }
+        .select-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            column-gap: 10px;
+            align-items: center;
+             font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 22px;
+            color: #777777;
+            .ant-select {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.node-container {
+    .node-details-container {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: flex-end;
+        button{
+            margin-right: 12px;
+        }
+        .button-list {
+            align-items: center;
+            justify-content: flex-end;
+        }
+    }
+    .details-box {
+        padding: 8px 0px;
+    }
 }

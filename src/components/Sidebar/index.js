@@ -58,7 +58,6 @@ const Sidebar = () => {
 			setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
 		}
 	};
-	console.log("JUPYTER_NOTEBOOK", JUPYTER_NOTEBOOK);
 	return (
 		<Sider
 			collapsed={collapsed}

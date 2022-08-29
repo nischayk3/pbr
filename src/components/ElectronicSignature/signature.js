@@ -1,10 +1,9 @@
 /* eslint-disable react/prop-types */
 import { Button, Input, Modal, Select } from "antd";
 import queryString from "query-string";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router";
-import "./styles.scss";
 import {
 	hideLoader,
 	showLoader,
@@ -15,7 +14,8 @@ import {
 	eSign,
 	publishEvent
 } from "../../services/electronicSignatureService";
-import { getAuthenticate, getAuthenticateWithoutAD } from "../../services/loginService";
+import { getAuthenticate, getAuthenticateWithLdap, getAuthenticateWithoutAD } from "../../services/loginService";
+import "./styles.scss";
 
 
 const { Option } = Select;
@@ -29,8 +29,22 @@ function Signature(props) {
 	const [username, setUsername] = useState("");
 	const [reason, setReason] = useState("");
 	const [isauth, setIsAuth] = useState("");
+	const [loginStatus, setLoginStatus] = useState("");
+
 
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
+		const status = localStorage.getItem("loginwith")
+		if (status) {
+			setLoginStatus(status);
+		}
+		if (loginDetails) {
+			setUsername(loginDetails.email_id)
+		}
+	}, []);
+
 
 	const authenticateUser = async () => {
 		let req = {};
@@ -67,6 +81,30 @@ function Signature(props) {
 		try {
 			dispatch(showLoader());
 			const res = await getAuthenticateWithoutAD(req, header);
+			if (res.Status != 200) {
+				setIsAuth("");
+				dispatch(showNotification("error", "Incorrect credentials"));
+				handleClose();
+			} else {
+				// eslint-disable-next-line react/prop-types
+				setIsAuth(props.status);
+			}
+			dispatch(hideLoader());
+		} catch (error) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", "Incorrect credentials"));
+		}
+	};
+
+	const authenticateWithLdap = async () => {
+		let req = {};
+		let header = {
+			password: password,
+			username: username
+		};
+		try {
+			dispatch(showLoader());
+			const res = await getAuthenticateWithLdap(req, header);
 			if (res.Status != 200) {
 				setIsAuth("");
 				dispatch(showNotification("error", "Incorrect credentials"));
@@ -165,12 +203,6 @@ function Signature(props) {
 		}
 	};
 
-	useEffect(() => {
-		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
-		if (loginDetails) {
-			setUsername(loginDetails.email_id)
-		}
-	}, [])
 
 	return (
 		<div>
@@ -201,24 +233,35 @@ function Signature(props) {
 							>
 								Confirm
 							</Button>
-						]
-						: [
-							<Button
-								className="custom-secondary-btn"
-								key="3"
-								disabled={username == '' || password == ''}
-								onClick={() => authenticateUser()}
-							>
-								Authenticate with AD
-							</Button>,
-							<Button
-								className="custom-secondary-btn"
-								key="4"
-								disabled={username == '' || password == ''}
-								onClick={() => authenticateUserWithoutAD()}
-							>
-								Authenticate without AD
-							</Button>
+						] : [
+							loginStatus == "WITH_AD" ? (
+								<Button
+									className="custom-secondary-btn"
+									key="3"
+									disabled={username == '' || password == ''}
+									onClick={() => authenticateUser()}
+								>
+									Authenticate with AD
+								</Button>
+							) : loginStatus == "WITHOUT_AD" ? (
+								<Button
+									className="custom-secondary-btn"
+									key="3"
+									disabled={username == '' || password == ''}
+									onClick={() => authenticateUserWithoutAD()}
+								>
+									Authenticate without AD
+								</Button>
+							) : loginStatus == "LDAP" ? (
+								<Button
+									className="custom-secondary-btn"
+									key="3"
+									disabled={username == '' || password == ''}
+									onClick={() => authenticateWithLdap()}
+								>
+									Authenticate with LDAP
+								</Button>
+							) : null
 						]
 				}
 			>
@@ -276,8 +319,8 @@ function Signature(props) {
 						</div>
 					)}
 				</div>
-			</Modal>
-		</div>
+			</Modal >
+		</div >
 	);
 }
 

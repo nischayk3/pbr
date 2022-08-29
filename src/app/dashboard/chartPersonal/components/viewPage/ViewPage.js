@@ -41,6 +41,7 @@ import queryString from "query-string";
 import ViewChartApprover from "./viewChart/ViewChartApprover";
 import ChartApprover from "./chart/ChartApprover";
 import DisplayApprover from "./display/DisplayApprover";
+import Sharing from "../../../../../components/Sharing/sharing";
 
 const { TabPane } = Tabs;
 
@@ -56,16 +57,24 @@ const ViewPage = () => {
   const [publishResponse, setPublishResponse] = useState({});
   const [approveReject, setApproveReject] = useState("");
   const [disablePublishButton, setDisablePublishButton] = useState(false);
+  const [isShare, setIsShare] = useState(false)
 
   const dispatch = useDispatch();
   const location = useLocation();
   const params = queryString.parse(location.search);
-  const callback = () => {};
+  const callback = () => { };
 
   const handleCancel = () => {
     setAlertModal(false);
   };
 
+  const handleShareVisible = () => {
+    setIsShare(true);
+  };
+
+  const handleShareCancel = () => {
+    setIsShare(false)
+  }
   //function for saving chart data
   const saveAs = async (type) => {
     const postData = JSON.parse(JSON.stringify(postChartData));
@@ -202,7 +211,7 @@ const ViewPage = () => {
         />
         <div className="btns">
           {Object.keys(params).length > 0 &&
-          params.fromScreen !== "Workspace" ? (
+            params.fromScreen !== "Workspace" ? (
             <>
               <Button
                 onClick={() => {
@@ -223,7 +232,8 @@ const ViewPage = () => {
             </>
           ) : (
             <div>
-              <Button>Share</Button>
+              <Button onClick={() => handleShareVisible()}
+              >Share</Button>
               <Button onClick={() => setAlertModal(true)}>
                 Schedule Alert
               </Button>
@@ -250,7 +260,7 @@ const ViewPage = () => {
             <Tabs defaultActiveKey="1" onChange={callback}>
               <TabPane tab="View" key="1">
                 {Object.keys(params).length > 0 &&
-                params.fromScreen !== "Workspace" ? (
+                  params.fromScreen !== "Workspace" ? (
                   <ViewChartApprover postChartData={postChartData} />
                 ) : (
                   <ViewChart
@@ -372,6 +382,8 @@ const ViewPage = () => {
         version={postChartData.data && postChartData.data[0].chart_version}
         status={approveReject}
       />
+      <Sharing isShare={isShare} handleShareCancel={handleShareCancel} shareSreen="VIEW" />
+
     </div>
   );
 };

@@ -59,16 +59,19 @@ import { ImCrop } from 'react-icons/im';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { loadTemplateInfo, loadMatBatchInfo } from '../../../../duck/actions/pbrAction';
 import TableIdentifier from './tableIdentifier/tableIdentifier'
-import './styles.scss';
+
 import {
     getBoundingBoxData,
     savePbrTemplate,
     processBatchRecord,
     findParameter,
-    getPbrTemplateData
+    getPbrTemplateData,
+    findTable
 } from '../../../../services/pbrService';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
+import DynamicTableForm from './dynamicTableForm';
+import './styles.scss';
 import { method } from 'lodash';
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -79,6 +82,59 @@ function PaperBatchRecordsTemplate() {
         name: 'my-map',
         areas: [],
     };
+    const initialColumns = [
+        {
+            title: 'File Name',
+            dataIndex: 'file_path',
+            key: 'name',
+            render: (text) => text?.split('.')[0]
+        },
+        {
+            title: 'Key',
+            dataIndex: 'anchor_key',
+            key: 'anchor_key',
+        },
+        {
+            title: 'Value',
+            dataIndex: 'snippet_value',
+            key: 'snippet_value',
+        },
+        {
+            title: 'Product',
+            dataIndex: 'product_num',
+            key: 'product_num',
+        },
+        {
+            title: 'Batch',
+            dataIndex: 'batch_num',
+            key: 'batch_num',
+        },
+        {
+            title: 'Site',
+            dataIndex: 'site_code',
+            key: 'site_code',
+        },
+        {
+            title: 'UOM',
+            dataIndex: 'uom',
+            key: 'uom',
+        },
+        {
+            title: 'Confidence',
+            dataIndex: 'confidence',
+            key: 'confidence',
+        },
+        {
+            title: 'Date',
+            dataIndex: 'recorded_date',
+            key: 'recorded_date',
+        },
+        {
+            title: 'Time',
+            dataIndex: 'recorded_time',
+            key: 'recorded_time',
+        },
+    ];
     const mat_batch = useSelector((state) => state?.pbrReducer?.matBatchInfo)
     const location = useLocation()
     const { id } = useParams()
@@ -168,6 +224,20 @@ function PaperBatchRecordsTemplate() {
     const [templateFormData, setTemplateFormData] = useState({})
     const [showRowColIdentifier, setShowRowColIdentifier] = useState(false)
     const [clickedTable, setClickedTable] = useState({})
+    const [tableFindCount, setTableFindCount] = useState([])
+    const [triggerPreview, setTriggerPreview] = useState(false);
+    const [tableActiveKey, setTableActiveKey] = useState(0);
+    const [formTableData, setFormTableData] = useState([]);
+    const [modalColumns, setModalColumns] = useState(initialColumns);
+    const [sideTableData, setSideTableData] = useState({
+        colPanelValue: [],
+        rowPanelValue: [],
+        selectedColValues: [],
+        selectedRowValues: [],
+        selectedRowRows: []
+    });
+    const [triggerUpdate, setTriggerUpdate] = useState(false);
+    const [initialSideTableData, setInitialSideTableData] = useState({});
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
         setRightPanelCollapsed(!rightPanelCollapsed);
@@ -265,11 +335,9 @@ function PaperBatchRecordsTemplate() {
     };
     /* istanbul ignore next */
     const onClickImage = (e) => {
-        console.log("dasdasd1111",e)
         var rect = e.target.getBoundingClientRect();
         var x = e.clientX - rect.left;
         var y = e.clientY - rect.top;
-        console.log("dasdasd",x,y)
     };
     /* istanbul ignore next */
     const onChangeChart = (e, field, key, value) => {
@@ -576,7 +644,7 @@ function PaperBatchRecordsTemplate() {
                 bbox_type: mode,
                 page: 1,
                 // action_type: params?.temp_disp_id ? "edit" : "create",
-                action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "saved" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? "edit" : "create",
+                action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "saved" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? mode == "TABLE" ? "create" : "edit" : "create",
                 temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : "",
                 temp_version: params?.temp_disp_id ? 1 : 0
             };
@@ -658,7 +726,6 @@ function PaperBatchRecordsTemplate() {
             }
             let res = await getPbrTemplateData(req)
             let loadData = res.Data
-            /* istanbul ignore next */
             if (params?.temp_disp_id || localStorage.getItem("test_enabled") == !null) {
                 setTemplateInfo(loadData[0]?.pbr_template_info?.pbrTemplateInfo)
                 let loadMatBatch = {
@@ -685,7 +752,7 @@ function PaperBatchRecordsTemplate() {
                     setPageIdentifierData(obj1)
                 }
             }
-            /* istanbul ignore next */
+
             if (params?.temp_disp_id || localStorage.getItem("test_enabled") == !null) {
                 let obj = {}
                 loadData[0]?.pbr_template_info?.pbrTemplateInfo.forEach((item, index) => {
@@ -702,6 +769,9 @@ function PaperBatchRecordsTemplate() {
                 })
                 setParameterValue(obj)
                 let demoValues = {
+                    users: []
+                }
+                let table = {
                     users: []
                 }
                 loadData[0]?.pbr_template_info?.pbrTemplateInfo.forEach(item => {
@@ -740,9 +810,18 @@ function PaperBatchRecordsTemplate() {
                     }
                     demoValues.users.push(obj)
                 })
+                loadData[0]?.pbr_template_info?.pbrTableInfo.forEach((item, index) => {
+                    let sideData = {
+                        table_id: item?.table_id,
+                        name: item?.table_name,
+                        tableData: loadData[0]?.pbr_template_info?.tableData[index]?.tableData
+                    }
+                    table.users.push(sideData)
+                })
+                setInitialSideTableData(table)
                 setFormLoadParameter(demoValues)
                 setParameterFormData(demoValues.users)
-
+                setFormTableData(loadData[0]?.pbr_template_info?.tableData)
             }
         }
         getIdTemplateData()
@@ -798,7 +877,7 @@ function PaperBatchRecordsTemplate() {
     }, [areasMap, imageWidth, imageHeight])
 
     const getImage = async (val) => {
-        dispatch(showLoader());
+        // dispatch(showLoader());
         let login_response = JSON.parse(localStorage.getItem('login_details'));
         var requestOptions = {
             method: "GET",
@@ -829,8 +908,14 @@ function PaperBatchRecordsTemplate() {
         }
     }
 
+    // useEffect(() => {
+    //     if(displayImage!=""){
+    //         dispatch(hideLoader());
+    //     }
+    // },[displayImage])
+
     useEffect(() => {
-        dispatch(showLoader());
+        // dispatch(showLoader());
         setTimeout(() => {
             const list = document.getElementsByTagName("canvas")[0]
             setImageWidth(list?.width)
@@ -970,12 +1055,81 @@ function PaperBatchRecordsTemplate() {
         }
 
     };
+    const tableDataReq = () => {
+
+        if (formTableData.length > 0) {
+            let data = []
+            formTableData.forEach(item => {
+                let obj = {
+                    table_id: item?.table_id,
+                    table_name: item?.name,
+                    filename: params?.file,
+                    page: 1,
+                    table_identifier: item?.tableData?.table_identifier,
+                    column_config: {
+                        columns: [],
+                        method: "row_index",
+                        params: {
+                            pk_row_index: item?.tableData?.colPanelValue.pk_index,
+                            start_index: item?.tableData?.colPanelValue.start,
+                            stop_index: item?.tableData?.colPanelValue.stop
+                        }
+                    },
+                    row_config: {
+                        method: "column_index",
+                        params: {
+                            pk_col_index: item?.tableData?.rowPanelValue?.pk_index,
+                            start_index: item?.tableData?.rowPanelValue?.start,
+                            stop_index: item?.tableData?.rowPanelValue?.stop
+                        },
+                        rows: []
+                    },
+
+                }
+                let arr = item?.tableData?.selectedColValues?.filter(item1 => item?.tableData?.selectedColRows?.includes(item1?.key))
+                let arr1 = item?.tableData?.selectedRowValues?.filter(item2 => item?.tableData?.selectedRowRows?.includes(item2?.key))
+
+                if (arr) {
+                    let cols = arr.map(item => (
+                        {
+                            col_id: item.columnindex,
+                            selected: true,
+                            Text: item.cell_text,
+                            method: item?.method,
+                            params: [item?.params],
+                            apply_to: item?.applicalbe_to
+                        }
+                    ))
+                    obj.column_config.columns = cols
+                }
+                if (arr1) {
+                    let rows = arr1.map(item => (
+                        {
+                            row_id: item.rowindex,
+                            selected: true,
+                            Text: item.cell_text,
+                            method: item?.method,
+                            params: [item?.params],
+                            apply_to: item?.applicalbe_to
+                        }
+                    ))
+                    obj.row_config.rows = rows
+                }
+                data.push(obj)
+            })
+            return data
+        } else {
+            return []
+        }
+
+
+    }
     /* istanbul ignore next */
     const savePbrTemplateDataInfo = async () => {
         // let validate = validation()
         try {/* istanbul ignore next */
             dispatch(showLoader());
-            if (formValues.length > 0 && localStorage.getItem("test_enabled") == null) {
+            if (formValues.length > 0 || formTableData.length > 0) {
                 let login_response = JSON.parse(localStorage.getItem('login_details'));
                 let _reqBatch = {
                     pbrTemplateName: params.tempalteName,
@@ -984,7 +1138,7 @@ function PaperBatchRecordsTemplate() {
                     // pbrTemplateStatus: 'DRFT',
                     createdBy: login_response?.email_id,
                     changedBy: params.temp_disp_id ? login_response?.email_id : "",
-                    templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
+                    templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {}, pbrTableInfo: [], tableData: formTableData,filename: params?.file, },
                     material: matBatch?.material_num,
                     batch: matBatch?.batch,
                     siteCode: matBatch?.site,
@@ -1099,7 +1253,8 @@ function PaperBatchRecordsTemplate() {
                 })
                 _reqBatch.templateInfo.pbrTemplateInfo = arr;
                 _reqBatch.templateInfo.pbrPageIdentifier = obj1;
-
+                let tableRer = tableDataReq()
+                _reqBatch.templateInfo.pbrTableInfo = tableRer;
                 //api call
                 const batchRes = await savePbrTemplate(_reqBatch);
                 if (batchRes.Status === 202) {
@@ -1161,8 +1316,6 @@ function PaperBatchRecordsTemplate() {
                 dispatch(hideLoader());
                 openNotification('Create at least one Parameter before save')
             }
-
-
         } catch (error) { /* istanbul ignore next */
             dispatch(hideLoader());
             dispatch(showNotification('error', 'No Data Found'));
@@ -1210,7 +1363,7 @@ function PaperBatchRecordsTemplate() {
 
         let newstr = str.replaceAll(/name/ig, "Name").replace(/method/ig, "Method").replace(/param_key/ig, "Anchor").replace(/param_snippet_value/ig, "Anchor Value")
             .replace(/param_min/ig, "Min").replace(/param_max/ig, "Max")
-            .replace(/param_valueTransformation/ig, "Transformation").replace(/,in/ig, " in")
+            .replace(/param_valueTransformation/ig, "Transformation").replace(/,in/ig, " in").replace(/table_id/ig, "Table Id")
 
         let newstr1 = ""
         values.users.forEach(item => {
@@ -1395,8 +1548,9 @@ function PaperBatchRecordsTemplate() {
     /* istanbul ignore next */
     const showModal = async () => {
         setIsModalVisible(true);
-        setTableLoading(true)
-        if (localStorage.getItem("test_enabled") == null) {/* istanbul ignore next */
+
+        if (!showRowColIdentifier) {
+            setTableLoading(true)
             var req1 = {
                 extraction_type: "custom",
                 templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
@@ -1408,13 +1562,11 @@ function PaperBatchRecordsTemplate() {
             var arr = []
             formValues.forEach((ele, index) => {
                 var obj = {
-
                     filename: params?.file,
                     name: ele.name,
                     method: ele.method,
                     param_value_direction: parameterFormData[index]?.AnchorDirection,
                     param_value_regex: parameterFormData[index]?.regex
-
                 }
                 if (ele.values) {
                     obj['color'] = "blue"
@@ -1499,7 +1651,6 @@ function PaperBatchRecordsTemplate() {
                         range_min: parameterFormData[index]?.date_min, range_max: parameterFormData[index]?.date_max,
                         factor: parameterFormData[index]?.date_valueTransformation, transformation: parameterFormData[index]?.date_transformation
                     }
-
                 }
                 arr.push(obj);
             });
@@ -1512,26 +1663,21 @@ function PaperBatchRecordsTemplate() {
                     obj1.keys.push(item[1])
                 }
             })
-
-            // req1.template_list = arr
             req1.templateInfo.pbrTemplateInfo = arr;
             req1.templateInfo.pbrPageIdentifier = obj1;
-
+            let res = await findParameter(req1)
+            if (res?.Found_file_list?.length > 0) {
+                setModalData(res.Extraction)
+                dispatch(showNotification('success', res?.Message))
+            } else {
+                setModalData(res.Extraction)
+                dispatch(showNotification('error', 'No Data Found'))
+            }
+            setTableLoading(false)
         } else {
-            req1 = {}
+            setTriggerPreview(true)
+            setTableLoading(false)
         }
-
-        let res = await findParameter(req1)
-        if (res?.Found_file_list?.length > 0) {
-            // message.success(res.Message);
-            setModalData(res.Extraction)
-            dispatch(showNotification('success', res?.Message))
-        } else {
-            setModalData(res.Extraction)
-            // message.error(res.Message);
-            dispatch(showNotification('error', 'No Data Found'))
-        }
-        setTableLoading(false)
     };
 
     const handleOk = () => {
@@ -1540,61 +1686,11 @@ function PaperBatchRecordsTemplate() {
 
     const handleCancel = () => {
         setIsModalVisible(false);
+        setTriggerPreview(false)
+        setModalColumns(initialColumns)
 
     };
-    const modalColumns = [
-        {
-            title: 'File Name',
-            dataIndex: 'file_path',
-            key: 'name',
-            render: (text) => text.split('.')[0]
-        },
-        {
-            title: 'Key',
-            dataIndex: 'anchor_key',
-            key: 'anchor_key',
-        },
-        {
-            title: 'Value',
-            dataIndex: 'snippet_value',
-            key: 'snippet_value',
-        },
-        {
-            title: 'Product',
-            dataIndex: 'product_num',
-            key: 'product_num',
-        },
-        {
-            title: 'Batch',
-            dataIndex: 'batch_num',
-            key: 'batch_num',
-        },
-        {
-            title: 'Site',
-            dataIndex: 'site_code',
-            key: 'site_code',
-        },
-        {
-            title: 'UOM',
-            dataIndex: 'uom',
-            key: 'uom',
-        },
-        {
-            title: 'Confidence',
-            dataIndex: 'confidence',
-            key: 'confidence',
-        },
-        {
-            title: 'Date',
-            dataIndex: 'recorded_date',
-            key: 'recorded_date',
-        },
-        {
-            title: 'Time',
-            dataIndex: 'recorded_time',
-            key: 'recorded_time',
-        },
-    ];
+
     /* istanbul ignore next */
     const handleMenuChange = (item) => {
         setSelectedMode(item.key)
@@ -1614,7 +1710,6 @@ function PaperBatchRecordsTemplate() {
         setPublishResponse(res);
         setTemplateStatus(res.rep_stauts);
     };
-    /* istanbul ignore next */
     const modes = (
         <Menu defaultSelectedKeys={["word"]} selectedKeys={[menuKey]} onClick={(item) => handleMenuChange(item)}>
             <Menu.Item key='word'>
@@ -1639,7 +1734,6 @@ function PaperBatchRecordsTemplate() {
         Beijing: ['Tiananmen', 'Great Wall'],
         Shanghai: ['Oriental Pearl', 'The Bund'],
     };
-    /* istanbul ignore next */
     const handleChange = () => {
         form.setFieldsValue({ sights: [] });
     };
@@ -1661,6 +1755,7 @@ function PaperBatchRecordsTemplate() {
                     }, i * 1000)
 
                 }
+                dispatch(hideLoader());
             }
 
         }
@@ -1685,10 +1780,10 @@ function PaperBatchRecordsTemplate() {
                 }, i * 1000)
 
             }
+            dispatch(hideLoader());
         }
 
     }
-    /* istanbul ignore next */
     const genExtra = (remove, name, key, restfield) => (
         <DeleteOutlined
             id="deleteParameter"
@@ -1703,6 +1798,79 @@ function PaperBatchRecordsTemplate() {
         />
     );
 
+    function initDraw(canvas) {
+        function setMousePosition(e) {
+            var ev = e || window.event; //Moz || IE
+            if (ev.pageX) { //Moz
+                mouse.x = ev.pageX + window.pageXOffset;
+                mouse.y = ev.pageY + window.pageYOffset;
+            } else if (ev.clientX) { //IE
+                mouse.x = ev.clientX + document.body.scrollLeft;
+                mouse.y = ev.clientY + document.body.scrollTop;
+            }
+        };
+
+        var mouse = {
+            x: 0,
+            y: 0,
+            startX: 0,
+            startY: 0
+        };
+        var element = null;
+
+        canvas.onmousemove = function (e) {
+            setMousePosition(e);
+            if (element !== null) {
+                element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+                element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+                element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+                element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+            }
+        }
+
+        canvas.onclick = function (e) {
+            if (element !== null) {
+                element = null;
+                canvas.style.cursor = "default";
+            } else {
+                mouse.startX = mouse.x;
+                mouse.startY = mouse.y;
+                element = document.createElement('div');
+                element.className = 'rectangle'
+                element.style.left = mouse.x + 'px';
+                element.style.top = mouse.y + 'px';
+                // element.style.position = "sticky";
+                canvas.appendChild(element)
+                canvas.style.cursor = "crosshair";
+            }
+        }
+    }
+
+    const handleDrawSnippet = () => {
+        initDraw(document.getElementById('drawRectangle'));
+    }
+
+    const handleTableFind = async () => {
+        let req = {
+            batch_num: matBatch?.batch,
+            product_num: matBatch?.material_num,
+            site_code: matBatch?.site,
+            table_identifier: {
+                "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
+                "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
+            },
+        }
+        let res = await findTable(req)
+        if (res["status-code"] == 200) {
+            setTableFindCount(res.Data)
+        } else {
+            dispatch(showNotification('error', res.Message))
+        }
+    }
+
+    const handleSideState = () => {
+        setTriggerUpdate(true)
+    }
     return (
         <div className='pbr-content-layout' >
             <div className='custom-wrapper pbr-wrapper'>
@@ -2750,7 +2918,11 @@ function PaperBatchRecordsTemplate() {
                                 </Panel>
                                 <Panel id="tableExtraction" header='Table' key='4'>
                                     <div className='tabletype'>
-                                        <Form
+                                        <DynamicTableForm handleSideState={handleSideState} sideTableData={sideTableData}
+                                            setTableActiveKey={setTableActiveKey} setFormTableData={setFormTableData} initialSideTableData={initialSideTableData}
+                                            handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish}
+                                        />
+                                        {/* <Form
                                             layout='vertical'
                                             initialValues={pageIdentifierData}
                                             className='formNewTemplate'
@@ -2762,7 +2934,7 @@ function PaperBatchRecordsTemplate() {
 
                                             >
                                                 <Input />
-                                                {/* <Input/> */}
+                                                
                                             </Form.Item>
                                             <Form.Item
                                                 name='name'
@@ -2770,7 +2942,7 @@ function PaperBatchRecordsTemplate() {
 
                                             >
                                                 <Input />
-                                                {/* <Input/> */}
+                                                
                                             </Form.Item>
                                             <Form.Item
                                                 name='multipage'
@@ -2782,7 +2954,19 @@ function PaperBatchRecordsTemplate() {
                                                     <Option>No</Option>
                                                 </Select>
                                             </Form.Item>
-                                        </Form>
+                                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                                <Button disabled={Object.keys(clickedTable).length ? false : true} type='primary' className='defineTableBtn' onClick={handleTableFind}>
+                                                    <MonitorOutlined /> Find
+                                                </Button>
+                                                {tableFindCount?.length > 0 &&
+                                                    <p style={{ marginRight: 90 }}>Found in {`${tableFindCount?.length}`} files</p>
+                                                }
+                                            </div>
+
+                                            <div>{tableFindCount?.map(item => (
+                                                <p>{item?.split('.')[0]}</p>
+                                            ))}</div>
+                                        </Form> */}
                                     </div>
                                 </Panel>
                             </Collapse>
@@ -2815,7 +2999,7 @@ function PaperBatchRecordsTemplate() {
                                     span={12}
                                     className='pbrCenterPanelCol pbrCenterBlockRight'
                                 >
-                                    <div className='drawSnippet'>
+                                    <div className='drawSnippet' onClick={handleDrawSnippet}>
                                         <EditOutlined />
                                         Draw Snippet
                                     </div>
@@ -2830,28 +3014,38 @@ function PaperBatchRecordsTemplate() {
                                 </Col>
                             </Row>
                         </div>
-                        <div className='pbrCenterPdfBlock'>
-                            
-                            {showRowColIdentifier &&
-                                <TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth} />}
+                        <div className='pbrCenterPdfBlock' st>
 
-                            <div className='pdfToImgBlock' onClick={onClickImage}>
-                                {/* {areasMap.areas.length > 0 && ( */}
-                                <ImageMapper
-                                    id='imageMApper'
-                                    className='pdfToImageWrapper'
-                                    src={displayImage}
-                                    map={areasMap}
-                                    // onLoad={() => load()}
-                                    onClick={area => clicked(area)}
-                                />
-                                {/* )} */}
+                            {showRowColIdentifier &&
+                                <TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth}
+                                    triggerPreview={triggerPreview} params={params} triggerUpdate={triggerUpdate} setSideTableData={setSideTableData}
+                                    setTriggerUpdate={setTriggerUpdate} tableActiveKey={tableActiveKey} formTableData={formTableData} setModalData={setModalData} setModalColumns={setModalColumns}
+                                    templateVersion={templateVersion} />}
+
+                            {/* <DrawAnnotations /> */}
+                            {/* <h3>hello</h3> */}
+
+                            <div id='drawRectangle'>
+                                <div className='pdfToImgBlock'>
+
+                                    <ImageMapper
+                                        id='imageMApper'
+                                        className='pdfToImageWrapper'
+                                        src={displayImage}
+                                        map={areasMap}
+                                        // onLoad={() => load()}
+                                        onClick={area => clicked(area)}
+                                    />
+
+                                </div>
                             </div>
+
                         </div>
                     </div>
                     <Modal
                         title='Preview'
                         visible={isModalVisible}
+                        // style={{height:300,overflowY:"scroll"}}
                         onOk={handleOk}
                         onCancel={handleCancel}
                         footer={null}>
@@ -2861,7 +3055,7 @@ function PaperBatchRecordsTemplate() {
                             columns={modalColumns}
                             dataSource={modalData}
                             pagination={false}
-                            scroll={{ x: 1000 }}
+                            scroll={{ x: 1000,y:300 }}
                         />
                     </Modal>
                 </div>

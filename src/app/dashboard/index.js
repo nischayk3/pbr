@@ -51,8 +51,9 @@ const DesignCharts = lazy(() =>
   import("./reportDesigner/components/reportDesignerNew")
 );
 const UserTrail = lazy(() => import("./userTrail"));
-
 const Faq = lazy(() => import("./faq"));
+const Profile = lazy(() => import("./profile"));
+
 const { Content } = Layout;
 
 const Dashboard = () => {
@@ -189,6 +190,15 @@ const Dashboard = () => {
                   authorised={authorised}
                   component={AuditTrial}
                 />
+                <PrivateRoute
+                  key="user_trail_report"
+                  path={`${match.url}/user_trail_report`}
+                  authorised={authorised}
+                  component={UserTrail}
+                />
+                <Route key="profile" path={`${match.url}/profile`}>
+                  <Profile />
+                </Route>
 
                 <Route key="pbr_update" path={`${match.url}/pbr_update`}>
                   <PbrUpdate />
@@ -232,58 +242,12 @@ const Dashboard = () => {
                   authorised={authorised}
                   component={DashboardScreen}
                 />
+
                 <PrivateRoute
-                  key="user_trail_report"
-                  path={`${match.url}/user_trail_report`}
+                  key="pbr_reviewer"
+                  component={PbrReviewer}
                   authorised={authorised}
-                  component={UserTrail}
-                />
-
-                <Route
-                  path={`${match.url}/paper_batch_records`}
-                  render={({ match: { url } }) => (
-                    <>
-                      <PrivateRoute
-                        path={`${url}/`}
-                        authorised={authorised}
-                        component={PaperBatchRecords}
-                        exact
-                      />
-                      <PrivateRoute
-                        path={`${url}/:id`}
-                        authorised={authorised}
-                        component={PaperBatchRecordsTemplate}
-                      />
-                    </>
-                  )}
-                />
-                <Route key="redirect" path={`${match.url}/redirect`}>
-                  <LoginRedirect />
-                </Route>
-                <Route key="redirect_sign" path={`${match.url}/redirect_sign`}>
-                  <RedirectSign />
-                </Route>
-                <Route key="faq" path={`${match.url}/faq`}>
-                  <Faq />
-                </Route>
-
-                <Route
-                  path={`${match.url}/report_designer`}
-                  render={({ match: { url } }) => (
-                    <>
-                      <PrivateRoute
-                        path={`${url}/`}
-                        component={ReportDesigner}
-                        authorised={authorised}
-                        exact
-                      />
-                      <PrivateRoute
-                        path={`${url}/:id`}
-                        component={DesignCharts}
-                        authorised={authorised}
-                      />
-                    </>
-                  )}
+                  path={`${match.url}/pbr_reviewer`}
                 />
 
                 <Route

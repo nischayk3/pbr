@@ -1,7 +1,8 @@
 //CI-CD script---
 pipeline {
     environment {
-        DOCKER_IMAGE = 'registry.cloud.mareana.com/mdh-cpv/dev'
+        SHARED_IMAGE = 'registry.cloud.mareana.com/mi-master/dev/mdh-cpv-ui-shared'
+        DOCKER_IMAGE = 'registry.cloud.mareana.com/mi-master/dev/mdh-cpv-ui'
     }
     agent { label 'cpv_node_ui' }
     options {
@@ -14,14 +15,13 @@ pipeline {
                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 
                  sh '''#!/bin/bash -x
-                       sudo docker ps | xargs docker stop
-                       sudo docker ps -a | xargs docker rm
+                       docker-compose down -v
                        docker-compose build  --no-cache ui-cypress-run
                        docker-compose up ui-cypress-run
                        docker-compose down
                        ls coverage
                 '''
-                     publish html
+                   publish html
                    publishHTML target: [
                    allowMissing: false,
                    alwaysLinkToLastBuild: false,
@@ -64,15 +64,28 @@ pipeline {
            }
           stage("Build Docker Image") {
             steps {
-                sh 'sudo docker build -t  $DOCKER_IMAGE/mdh-cpv-ui:$BUILD_NUMBER --no-cache .'
-                }
+                withDockerRegistry(credentialsId: 'docker-registry-mareana', url: 'https://registry.cloud.mareana.com') {
+                sh '''#!/bin/bash -x
+                       sudo docker build -t  $SHARED_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-dev .
+                       docker push $SHARED_IMAGE:$BUILD_NUMBER
+                       echo "Changing Docker image in prod dockerfile"
+                       sed -i -e "s@IMAGE@\'"$SHARED_IMAGE:$BUILD_NUMBER"\'@g"  Dockerfile-prod
+                       cat Dockerfile-prod
+                       sudo docker build --build-arg app_dns=mi-dev.mareana.com --build-arg jupyter_dns=jupyterhub-dev.mareana.com -t  $DOCKER_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-prod .
+               ''' 
+               }
               }
-          stage("Push Docker Image to Docker Registry") {
+
+              }
+          stage("Push Docker Image") {
             steps {
                 withDockerRegistry(credentialsId: 'docker-registry-mareana', url: 'https://registry.cloud.mareana.com') {
-                sh 'docker push $DOCKER_IMAGE/mdh-cpv-ui:$BUILD_NUMBER'
-                sh 'docker rmi $DOCKER_IMAGE/mdh-cpv-ui:$BUILD_NUMBER'
-                }
+                sh '''#!/bin/bash -x
+                     docker push $DOCKER_IMAGE:$BUILD_NUMBER
+                     docker rmi $DOCKER_IMAGE:$BUILD_NUMBER
+                     docker rmi $SHARED_IMAGE:$BUILD_NUMBER
+              '''  
+              }
             }
           }
           stage("Deploy to Dev") {
@@ -82,7 +95,7 @@ pipeline {
                  sh 'aws eks update-kubeconfig --name eks-cluster --region us-east-1'
                  sh '''#!/bin/bash -x
                        echo "Changing Docker image in deployment yml file"
-                       sed -i -e "s@IMAGE@\'"$DOCKER_IMAGE/mdh-cpv-ui:$BUILD_NUMBER"\'@g"  bms-k8s-dev-deployment.yml
+                       sed -i -e "s@IMAGE@\'"$DOCKER_IMAGE:$BUILD_NUMBER"\'@g"  bms-k8s-dev-deployment.yml
                        echo "Deploying the latest docker image to dev"
                        kubectl apply -f bms-k8s-dev-deployment.yml --record
                        kubectl -n mdh-cpv-dev get pods
@@ -91,5 +104,13 @@ pipeline {
                  }
                  }
             }
+           stage("Promoted to QA") {
+              steps {
+                  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                  sh 'echo "promoted to qa" '
+                 }
+                 }
+            }
+
     }
 }
