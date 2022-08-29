@@ -6,6 +6,7 @@ describe('Manual data upload', () => {
   beforeEach(() => {
     localStorage.setItem("test_enabled", true);
     localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+    localStorage.setItem("loginwith", "WITH_AD");
     localStorage.setItem(
       "login_details",
       JSON.stringify({
@@ -90,29 +91,30 @@ describe('Manual data upload', () => {
     cy.wait(2000)
     cy.get('.ant-space-item').eq(0).click()
   });
-
-  it("digital signature modal with ad input", () => {
-    // cy.get(':nth-child(1) > .ant-input').clear();
-    // cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
-    cy.get(':nth-child(2) > .ant-input').clear();
-    cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
-    cy.get('.signature-modal > #auth_without_ad').click();
-    cy.wait(3000)
-  });
-
-  it("Reopen digital signature popup", () => {
-    cy.wait(2000)
-    cy.get('.ant-space-item').eq(0).click()
-  });
-
-  it("digital signature modal without ad input", () => {
-    // cy.get(':nth-child(1) > .ant-input').clear();
-    // cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
-    cy.get(':nth-child(2) > .ant-input').clear();
-    cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
-    cy.get('.signature-modal > #auth_with_ad').click();
-    cy.wait(3000)
-  });
+  if (localStorage.getItem("loginwith") != 'WITH_AD') {
+    it("digital signature modal with ad input", () => {
+      // cy.get(':nth-child(1) > .ant-input').clear();
+      // cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
+      cy.get(':nth-child(2) > .ant-input').clear();
+      cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
+      cy.get('.signature-modal > #auth_without_ad').click();
+      cy.wait(3000)
+    });
+  }
+  if (localStorage.getItem("loginwith") != 'WITH_AD')
+    it("Reopen digital signature popup", () => {
+      cy.wait(2000)
+      cy.get('.ant-space-item').eq(0).click()
+    });
+  if (localStorage.getItem("loginwith") == 'WITH_AD')
+    it("digital signature modal without ad input", () => {
+      // cy.get(':nth-child(1) > .ant-input').clear();
+      // cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
+      cy.get(':nth-child(2) > .ant-input').clear();
+      cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
+      cy.get('.signature-modal > #auth_with_ad').click();
+      cy.wait(3000)
+    });
 
   it("select reason for Ad signature", () => {
     cy.log("selecting reason")

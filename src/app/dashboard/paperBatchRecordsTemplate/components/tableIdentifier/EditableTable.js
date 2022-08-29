@@ -120,6 +120,7 @@ export const EditableUsersTable = props => {
                 }
             })
             setSelectedTableData(newData)
+            setSelectedRowValues(newData)
             setSelectedRowRows(selectedRowKeys)
 
         },

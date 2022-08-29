@@ -14,7 +14,7 @@ import { Handle } from 'react-flow-renderer';
 const { Panel } = Collapse;
 
 function TableIdentifier(props) {
-    let { clickedTable, metaData, imageHeight, imageWidth, triggerPreview,templateVersion,
+    let { clickedTable, metaData, imageHeight, imageWidth, triggerPreview, templateVersion,
         params, triggerUpdate, setSideTableData, setTriggerUpdate, tableActiveKey, formTableData, setModalData, setModalColumns } = props
     const dispatch = useDispatch();
     const [columnData, setColumnData] = useState([])
@@ -90,7 +90,7 @@ function TableIdentifier(props) {
                     "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
                 },
                 action_type: params?.temp_disp_id ? "edit" : "create",
-                table_id:null,
+                table_id: null,
                 template_id: params?.temp_disp_id ? params?.temp_disp_id : null,
                 version: templateVersion ? templateVersion : null
             }
@@ -125,6 +125,7 @@ function TableIdentifier(props) {
     }
 
     const handlePrewiew = async () => {
+        // dispatch(showLoader());
         let req = {
             column_config: {
                 columns: [],
@@ -153,34 +154,46 @@ function TableIdentifier(props) {
             },
             table_name: "asdas"
         }
-        let arr = selectedColValues.filter(item => selectedColRows.includes(item.key))
-        let arr1 = selectedRowValues.filter(item => selectedRowRows.includes(item.key))
-        let cols = arr.map(item => (
-            {
-                col_id: item.columnindex,
-                selected: true,
-                Text: item.cell_text,
-                method: item?.method,
-                params: [item?.params],
-                apply_to: item?.applicalbe_to
-            }
-        ))
-        let rows = arr1.map(item => (
-            {
-                row_id: item.rowindex,
-                selected: true,
-                Text: item.cell_text,
-                method: item?.method,
-                params: [item?.params],
-                apply_to: item?.applicalbe_to
-            }
-        ))
-        req.column_config.columns = cols
-        req.row_config.rows = rows
+        let arr = selectedColValues?.filter(item => selectedColRows?.includes(item?.key))
+        let arr1 = selectedRowValues?.filter(item => selectedRowRows?.includes(item?.key))
+        if (arr) {
+            let cols = arr.map(item => (
+                {
+                    col_id: item.columnindex,
+                    selected: true,
+                    Text: item.cell_text,
+                    method: item?.method,
+                    params: [item?.params],
+                    apply_to: item?.applicalbe_to
+                }
+            ))
+            req.column_config.columns = cols
+        }
+        if (arr1) {
+            let rows = arr1.map(item => (
+                {
+                    row_id: item.rowindex,
+                    selected: true,
+                    Text: item.cell_text,
+                    method: item?.method,
+                    params: [item?.params],
+                    apply_to: item?.applicalbe_to
+                }
+            ))
+            req.row_config.rows = rows
+        }
         let res = await previewTable(req)
-        let tableColumnsa = tableColumns(res.Data)
-        setModalData(res.Data)
-        setModalColumns(tableColumnsa)
+        if (res["status-code"] == 200) {
+            let tableColumnsa = tableColumns(res?.Data)
+            setModalData(res?.Data)
+            setModalColumns(tableColumnsa)
+            dispatch(hideLoader());
+        } else {
+            dispatch(hideLoader());
+            dispatch(showNotification('error', res.Message));
+        }
+
+        // dispatch(hideLoader());
     }
 
     const genTableExtra = (val, values) => (
@@ -188,13 +201,13 @@ function TableIdentifier(props) {
             <p style={{ marginBottom: 0 }}>{val}</p>
             <Switch size='medium' style={{ marginLeft: val == "Row Identifier" ? 35 : 10 }} />
             <div style={{ marginTop: -5 }}>
-                <Input value={values?.start} placeholder='Start Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
+                <Input disabled={columnData.length > 0 ? "" : "disabled"} value={values?.start} placeholder='Start Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
             </div>
             <div style={{ marginTop: -5 }}>
-                <Input value={values?.stop} placeholder='Stop Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "stop", val)} />
+                <Input disabled={columnData.length > 0 ? "" : "disabled"} value={values?.stop} placeholder='Stop Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "stop", val)} />
             </div>
             <div style={{ marginTop: -5 }}>
-                <Input value={values?.pk_index} placeholder=' PK Row Index' style={{ width: 128, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
+                <Input disabled={columnData.length > 0 ? "" : "disabled"} value={values?.pk_index} placeholder=' PK Row Index' style={{ width: 128, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
             </div>
             {/*  */}
         </div>

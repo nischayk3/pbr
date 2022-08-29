@@ -308,7 +308,7 @@ function PaperBatchRecords() {
 		dispatch(loadMatBatchInfo(obj))
 		dispatch(loadTempAdditionalData(obj2))
 		dispatch(loadTemplateInfo(value?.pbr_template_info?.pbrTemplateInfo))
-		history.push(`${match.url}/${value.pbr_template_disp_id}?file=${value?.pbr_template_info?.pbrTemplateInfo[0].filename}&temp_disp_id=${value.pbr_template_disp_id}&tempalteName=${value.pbr_template_name}&fromScreen=Workspace&version=${value.pbr_template_version}`)
+		history.push(`${match.url}/${value.pbr_template_disp_id}?file=${value?.pbr_template_info?.filename}&temp_disp_id=${value.pbr_template_disp_id}&tempalteName=${value.pbr_template_name}&fromScreen=Workspace&version=${value.pbr_template_version}`)
 
 
 	}
