@@ -13,7 +13,7 @@ import {
   showNotification,
 } from "../../../../../../duck/actions/commonActions";
 
-const Preprocess = ({ setModelData }) => {
+const Preprocess = ({ setModelData, setTableKey }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [preprocessData, setPreprocessData] = useState([]);
@@ -46,21 +46,15 @@ const Preprocess = ({ setModelData }) => {
   });
   columns = columns.filter((ele) => ele.title !== "KEY");
   const getPreprocessingData = async (filter) => {
-    // const request = {
-    //   batch_filter: filter ? filter : [],
-    //   data_filter: location?.state?.data[0]?.data_filter,
-    //   view_disp_id: location?.state?.view_id,
-    //   view_version: location?.state?.view_version,
-    // };
-    // request.data_filter.site = request.data_filter.site
-    //   ? request.data_filter.site
-    //   : "";
     const request = {
       batch_filter: filter ? filter : [],
-      data_filter: { date_range: "", unapproved_data: 0, site: "" },
-      view_disp_id: "V238",
-      view_version: 1,
+      data_filter: location?.state?.data[0]?.data_filter,
+      view_disp_id: location?.state?.view_id,
+      view_version: location?.state?.view_version,
     };
+    request.data_filter.site = request.data_filter.site
+      ? request.data_filter.site
+      : "";
     dispatch(showLoader());
     const apiResponse = await getPreprocessing(request);
     if (apiResponse.Status === 200) {
@@ -96,11 +90,7 @@ const Preprocess = ({ setModelData }) => {
         onSelect: (changableRowKeys) => {
           let newSelectedRowKeys = [];
           newSelectedRowKeys = changableRowKeys.filter((_, index) => {
-            if (index % 2 !== 0) {
-              return false;
-            }
-
-            return true;
+            return index % 2 !== 0 ? false : true;
           });
           setSelectedRowKeys(newSelectedRowKeys);
         },
@@ -111,11 +101,7 @@ const Preprocess = ({ setModelData }) => {
         onSelect: (changableRowKeys) => {
           let newSelectedRowKeys = [];
           newSelectedRowKeys = changableRowKeys.filter((_, index) => {
-            if (index % 2 !== 0) {
-              return true;
-            }
-
-            return false;
+            return index % 2 !== 0 ? true : false;
           });
           setSelectedRowKeys(newSelectedRowKeys);
         },
@@ -124,19 +110,25 @@ const Preprocess = ({ setModelData }) => {
   };
 
   const onSaveClick = async () => {
+    dispatch(showLoader());
     const req = {
       analysis_preprocessing: {
         batch_filter: selectedRowKeys,
-        data_filter: { date_range: "", unapproved_data: 0, site: "" },
-        view_disp_id: "V238",
-        view_version: 1,
+        data_filter: location?.state?.data[0]?.data_filter,
+        view_disp_id: location?.state?.view_id,
+        view_version: location?.state?.view_version,
       },
     };
     const apiResponse = await savePreprocessing(req);
+    const data = await apiResponse;
     if (apiResponse.Status === 200) {
-      setModelData(apiResponse.html_string);
+      dispatch(hideLoader());
+      setModelData(data.html_string);
+      setTableKey("2");
+    } else {
+      dispatch(hideLoader());
+      dispatch(showNotification("error", "Unable to fetch preprocessing data"));
     }
-    console.log(apiResponse, "apiResponse");
   };
 
   useEffect(() => {
@@ -186,7 +178,7 @@ const Preprocess = ({ setModelData }) => {
             columns={columns}
             dataSource={preprocessData}
             pagination={{ pageSize: 8 }}
-            // rowKey={(record) => record.key}
+            rowKey={(record) => record.key}
             rowSelection={rowSelection}
           />
         </Col>

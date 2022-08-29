@@ -12,7 +12,11 @@ import ModelData from "./ModelData";
 
 const ViewPageAnalysis = () => {
   const [modelData, setModelData] = useState();
-  console.log(modelData, "model");
+  const [tableKey, setTableKey] = useState("1");
+  const tabChange = (key) => {
+    setTableKey(key);
+  };
+
   return (
     <div className="custom-wrapper bread-wrapper">
       <div className="sub-header">
@@ -35,9 +39,9 @@ const ViewPageAnalysis = () => {
         </div>
       </div>
       <div className="custom-content-layout">
-        <Tabs defaultActiveKey="1">
+        <Tabs defaultActiveKey="1" activeKey={tableKey} onChange={tabChange}>
           <TabPane tab="Preprocess" key="1">
-            <Preprocess setModelData={setModelData} />
+            <Preprocess setModelData={setModelData} setTableKey={setTableKey} />
           </TabPane>
           <TabPane tab="Model data" key="2">
             <ModelData modelData={modelData} />

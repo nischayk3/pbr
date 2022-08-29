@@ -1,7 +1,8 @@
 import React from "react";
+import "./viewPage.scss";
 
 const ModelData = ({ modelData }) => {
-  return <div dangerouslySetInnerHTML={{ __html: modelData }} />;
+  return <iframe srcdoc={modelData}></iframe>;
 };
 
 export default ModelData;
