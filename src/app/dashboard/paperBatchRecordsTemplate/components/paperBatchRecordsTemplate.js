@@ -1871,7 +1871,7 @@ function PaperBatchRecordsTemplate() {
     const handleSideState = () => {
         setTriggerUpdate(true)
     }
-    
+   
     return (
         <div className='pbr-content-layout' >
             <div className='custom-wrapper pbr-wrapper'>
