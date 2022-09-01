@@ -5,7 +5,7 @@ let login_response = JSON.parse(localStorage.getItem('login_details'));
 
 const request_headers = {
     'content-type': 'application/json',
-    'x-access-token': login_response && login_response.token ? login_response.token : '',
+    'x-access-token': login_response != null && login_response.token ? login_response.token : '',
     'resource-name': 'VIEW'
 };
 
