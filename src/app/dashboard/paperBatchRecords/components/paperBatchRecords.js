@@ -436,7 +436,7 @@ function PaperBatchRecords() {
 													span={6}
 													style={{ marginTop: '10px' }}
 													key={index}>
-													<StatusBlock id={el.pbr_template_disp_id} name={el.pbr_template_name} status={el.pbr_template_status} handleClickTiles={() => handleClickTiles(el)} />
+													<StatusBlock id={`${el.pbr_template_disp_id}-V${el.pbr_template_version}`} name={el.pbr_template_name} status={el.pbr_template_status} handleClickTiles={() => handleClickTiles(el)} />
 												</Col>
 											);
 										})}

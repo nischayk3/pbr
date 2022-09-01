@@ -35,6 +35,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 	useEffect(() => {
 		if (totalBatch.length > 0 || totalFileBatch.length > 0) {
 			const uniqueBatch = [...totalBatch, ...totalFileBatch]
+
 			setTotalMolBatch(uniqueBatch);
 		}
 	}, [totalBatch, totalFileBatch])
@@ -128,7 +129,7 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 	}, [funTableData]);
 
 	useEffect(() => {
-		if (isLoadView) {
+		if (totalMolBatch.length > 0) {
 
 			let fun = [];
 			let funData = [];
@@ -149,50 +150,51 @@ const ViewSummaryData = ({ viewDisplayId, viewStatus, viewVersion, viewJson, fro
 				});
 			}
 
-			if (totalMolBatch.length > 0) {
-				const loadTableData =
-					totalMolBatch !== undefined && totalMolBatch.length > 0
-						? totalMolBatch
-						: {};
 
-				totalMolBatch.map((value) => {
-					var funObj = {};
-					for (let i = 0; i < fun.length; i++) {
-						if (new_column_data.filter((item) => { return item.batch_num == value.batch && item.parameter == fun[i] }).length > 0) {
-							funObj[fun[i]] = true;
-						} else {
-							funObj[fun[i]] = false;
-						}
+			const loadTableData =
+				totalMolBatch !== undefined && totalMolBatch.length > 0
+					? totalMolBatch
+					: {};
+
+			totalMolBatch.map((value) => {
+				var funObj = {};
+				for (let i = 0; i < fun.length; i++) {
+					if (new_column_data.filter((item) => { return item.batch_num == value.batch && item.parameter == fun[i] }).length > 0) {
+						funObj[fun[i]] = true;
+					} else {
+						funObj[fun[i]] = false;
 					}
-					funData.push(funObj);
-				});
+				}
+				funData.push(funObj);
+			});
 
-				const mergeArr = loadTableData.map((item, i) =>
-					Object.assign({}, item, funData[i])
-				);
+			const mergeArr = loadTableData.map((item, i) =>
+				Object.assign({}, item, funData[i])
+			);
 
-				const funKey =
-					mergeArr !== undefined && mergeArr.length > 0
-						? Object.keys(mergeArr[0])
-						: [];
+			const funKey =
+				mergeArr !== undefined && mergeArr.length > 0
+					? Object.keys(mergeArr[0])
+					: [];
 
-				const funColumn = funKey.filter(uniqueArr);
+			const funColumn = funKey.filter(uniqueArr);
 
-				funColumn.map((item, i) => {
-					return (
-						columns.push({
-							title: item.toUpperCase().replace("_", " "),
-							dataIndex: item,
-							key: `${item}-${i}`
-						})
-					)
-				});
+			funColumn.map((item, i) => {
+				return (
+					columns.push({
+						title: item.toUpperCase().replace("_", " "),
+						dataIndex: item,
+						key: `${item}-${i}`
+					})
+				)
+			});
 
-				setTableColumn(columns);
-				setFunTableData(mergeArr);
-			}
+			setTableColumn(columns);
+			setFunTableData(mergeArr);
+
 		}
-	}, [isLoadView, totalMolBatch]);
+
+	}, [totalMolBatch]);
 
 	const handleRemoveColumn = (item) => {
 		let newColumns = [];

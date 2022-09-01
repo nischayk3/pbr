@@ -153,7 +153,7 @@ export const EditableUsersTable = props => {
                 className='tableIdentifier'
                 columns={columns}
                 dataSource={selectedTableData}
-                pagination={{ defaultPageSize: 5, showSizeChanger: true, pageSizeOptions: ['10', '50', '100'] }}
+                pagination={{ defaultPageSize: 100, showSizeChanger: true, pageSizeOptions: ['200', '300', '500'] }}
             />
         </div>
 

@@ -23,6 +23,7 @@ function DynamicTableForm(props) {
     useEffect(() => {
         if (initialSideTableData?.users?.length > 0) {
             setTableData(initialSideTableData?.users)
+            setTableCount(initialSideTableData?.users?.length)
         }
 
     }, [initialSideTableData])

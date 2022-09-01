@@ -111,7 +111,7 @@
 	width: 320px;
 	margin-bottom: 23px;
 
-	p {
+	p:nth-child(1) {
 		margin: 0;
 		font-family: var(--primary-font-family);
 		font-style: normal;
@@ -124,4 +124,16 @@
 	>span {
 		margin-top: 8px;
 	}
+}
+
+.pass-error {
+	margin: 0px;
+	color: #ff4d4f;
+	padding: 6px 0;
+	font-family: var(--primary-font-family);
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 22px;
+	margin-bottom: 7px;
 }

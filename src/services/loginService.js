@@ -1,4 +1,4 @@
-import { BMS_APP_LOGIN_PASS } from "../constants/apiBaseUrl";
+import { BMS_APP_LOGIN_PASS, BMS_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
 import Service from "./AjaxService";
 
 export const loginUrl = BMS_APP_LOGIN_PASS + "/login";
@@ -53,6 +53,25 @@ export const getAuthenticateWithLdap = (request, header) => {
 //register api
 export const createAccount = (request, headers) => {
 	return Service.post(BMS_APP_LOGIN_PASS + '/register', request, headers).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+//password change
+export const passwordChange = (request) => {
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
+
+	const headers = {
+		"content-type": "application/json",
+		"x-access-token": login_response.token ? login_response.token : "",
+		"resource-name": 'USER_REPORT',
+	};
+	return Service.put(BMS_APP_PYTHON_SERVICE + '/password_change', request, headers).then(
 		(response) => {
 			return response.data;
 		},

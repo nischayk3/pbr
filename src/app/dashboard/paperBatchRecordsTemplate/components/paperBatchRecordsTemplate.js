@@ -1871,6 +1871,7 @@ function PaperBatchRecordsTemplate() {
     const handleSideState = () => {
         setTriggerUpdate(true)
     }
+   
     return (
         <div className='pbr-content-layout' >
             <div className='custom-wrapper pbr-wrapper'>
@@ -3020,7 +3021,7 @@ function PaperBatchRecordsTemplate() {
                                 <TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth}
                                     triggerPreview={triggerPreview} params={params} triggerUpdate={triggerUpdate} setSideTableData={setSideTableData}
                                     setTriggerUpdate={setTriggerUpdate} tableActiveKey={tableActiveKey} formTableData={formTableData} setModalData={setModalData} setModalColumns={setModalColumns}
-                                    templateVersion={templateVersion} />}
+                                    templateVersion={templateVersion} initialSideTableData={initialSideTableData}/>}
 
                             {/* <DrawAnnotations /> */}
                             {/* <h3>hello</h3> */}
