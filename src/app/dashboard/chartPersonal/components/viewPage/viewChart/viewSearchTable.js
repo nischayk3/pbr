@@ -68,15 +68,18 @@ const ViewSearchTable = ({
               status: record.view_status,
               searchValue: record.view_disp_id,
               chartVersion: record.view_version,
+              viewVersion: record.view_version,
             });
-            let newArr = [...postChartData.data];
-            newArr.forEach((ele) => {
-              ele.view_id = record.view_disp_id;
-              ele.view_name = record.view_name;
-            });
-            setPostChartData({ ...postChartData, data: newArr });
+            if (postChartData) {
+              let newArr = [...postChartData.data];
+              newArr.forEach((ele) => {
+                ele.view_id = record.view_disp_id;
+                ele.view_name = record.view_name;
+              });
+              setPostChartData({ ...postChartData, data: newArr });
+              setData();
+            }
             setViewSearch(false);
-            setData();
           },
         })}
       />
