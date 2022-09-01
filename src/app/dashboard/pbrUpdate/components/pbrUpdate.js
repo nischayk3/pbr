@@ -84,7 +84,7 @@ const PbrUpdate = () => {
       })
     };
     let response = await fetch(
-      MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${val.split('_page-0')[0]}.pdf&pageId=1`,
+      MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${val.split('_page-')[0]}.pdf&pageId=1`,
       requestOptions
     )
       .then((resp) => resp)
