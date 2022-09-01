@@ -9,7 +9,7 @@ const request_headers = {
 
 export const getUserSessions = (request) => {
 	return Service.get(
-		BMS_APP_PYTHON_SERVICE + "/user_session",
+		BMS_APP_PYTHON_SERVICE + "/user-session",
 		request,
 		request_headers
 	).then(

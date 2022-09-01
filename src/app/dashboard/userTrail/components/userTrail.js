@@ -77,7 +77,7 @@ const UserTrail = () => {
 		},
 		{
 			title: "TimeSpent(in min)",
-			dataIndex: "TimeSpent(in min)",
+			dataIndex: "TimeSpent",
 			key: "5",
 			defaultSortOrder: "descend",
 			//render: (text) => moment(text).format("DD-MM-YYYY HH:mm:ss")
@@ -109,7 +109,6 @@ const UserTrail = () => {
 			showNotification("error", res.Message);
 		} else {
 			setUserList(res.data[0].userid)
-
 		}
 	};
 
@@ -167,7 +166,7 @@ const UserTrail = () => {
 					let antdObj = {};
 					antdObj["user_id"] = item.user_id;
 					antdObj["id"] = item.id;
-					//antdObj["TimeSpent(in min)"] = item.TimeSpent(in min);
+					antdObj["TimeSpent"] = item.TimeSpent;
 					antdObj["login_timestamp"] = item.login_timestamp;
 					antdObj["login_type"] = item.login_type;
 					antdDataTable.push(antdObj);
