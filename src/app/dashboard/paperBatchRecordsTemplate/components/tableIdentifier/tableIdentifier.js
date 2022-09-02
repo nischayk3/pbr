@@ -29,6 +29,7 @@ function TableIdentifier(props) {
     const [rowPanelValue, setRowPanelValue] = useState({});
     const [newEditTemplate, setNewEditTemplate] = useState(false);
     const [tableIdentifierValues, setTableIdentifierValues] = useState({});
+    const [tableID, setTableID] = useState(null);
 
 
     useEffect(() => {
@@ -89,33 +90,38 @@ function TableIdentifier(props) {
 
     }, [triggerUpdate])
 
-    const geTableData = async (clickedTable) => {
+    const geTableData = async (clickedTable,col=1,row=1,table=null) => {
         try {
             dispatch(showLoader());
             let req = {
                 filename: `${metaData?.file?.split('.')[0]}_page-${0}.jpeg.json`,
                 page: 1,
+                config: {
+                    pk_col_index: col,
+                    pk_row_index: row
+                },
                 table_identifier: tableIdentifierValues ? tableIdentifierValues : {
                     "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
                     "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
                 },
                 action_type: params?.temp_disp_id ? newEditTemplate ? "create" : "edit" : "create",
-                table_id: null,
+                table_id: table,
                 template_id: params?.temp_disp_id ? params?.temp_disp_id : null,
                 version: templateVersion ? templateVersion : null
             }
             let res = await getRowColumnData(req)
-            if (res["status-code"] == 200 && !formTableData[tableActiveKey]?.tableData?.selectedRowValues) {
+            if (res["status-code"] == 200 ) {
                 let obj = res.Data1.map((item, index) => ({ ...item, key: index }))
                 let obj2 = res.Data2.map((item, index) => ({ ...item, key: index }))
                 let arr = obj.map((item, index) => index)
                 let arr1 = obj2.map((item1, index1) => index1)
+                setTableID(res?.Table_id)
                 setSelectedColRows(arr)
                 setSelectedRowRows(arr1)
                 setColumnData(obj)
                 setrowData(obj2)
-                setColPanelValue({ start: "1", stop: `${obj.length}`, pk_index: "1" })
-                setRowPanelValue({ start: "1", stop: `${obj2.length}`, pk_index: "1" })
+                setColPanelValue({ start: "1", stop: `${obj.length}`, pk_index: col })
+                setRowPanelValue({ start: "1", stop: `${obj2.length}`, pk_index: row })
                 setSelectedColValues(obj)
                 setSelectedRowValues(obj2)
                 dispatch(hideLoader());
@@ -130,9 +136,9 @@ function TableIdentifier(props) {
 
 
     }
-    const updateCheckbox = (val,obj) => {
+    const updateCheckbox = (val, obj) => {
         let arr = []
-        for(let i=Number(val-1);i<=obj-1;i++){
+        for (let i = Number(val - 1); i <= obj - 1; i++) {
             arr.push(i)
         }
         return arr
@@ -141,23 +147,37 @@ function TableIdentifier(props) {
         if (identifier === "Column Identifier") {
             let obj = { ...colPanelValue }
             obj[field] = val
-            if(field == "start" && val!=undefined && val!=""){
-                let arr = updateCheckbox(val,obj.stop)
+            if (field == "start" && val != undefined && val != "") {
+                let arr = updateCheckbox(val, obj.stop)
                 setSelectedColRows(arr)
-            }else if(field == "stop" && val!=undefined && val!=""){
-                let arr1 = updateCheckbox(obj.start,val)
+            } else if (field == "stop" && val != undefined && val != "") {
+                let arr1 = updateCheckbox(obj.start, val)
                 setSelectedColRows(arr1)
+            } else if (field == "pk_index") {
+                if (val != "" && Number(val) <= Number(rowPanelValue.start)) {
+                    geTableData(clickedTable,Number(val),Number(rowPanelValue.pk_index),tableID)
+                }else if(Number(val) > Number(rowPanelValue.start)){
+                    dispatch(showNotification('error', 'PK_COL_Index out of bound'));
+                }
+
             }
             setColPanelValue(obj)
         } else {
             let obj1 = { ...rowPanelValue }
             obj1[field] = val
-            if(field == "start" && val!=undefined && val!=""){
-                let arr = updateCheckbox(val,obj1.stop)
+            if (field == "start" && val != undefined && val != "") {
+                let arr = updateCheckbox(val, obj1.stop)
                 setSelectedRowRows(arr)
-            }else if(field == "stop" && val!=undefined && val!=""){
-                let arr1 = updateCheckbox(obj1.start,val)
+            } else if (field == "stop" && val != undefined && val != "") {
+                let arr1 = updateCheckbox(obj1.start, val)
                 setSelectedRowRows(arr1)
+            } else if (field == "pk_index") {
+                if (val != "" && Number(val) <= Number(colPanelValue.start)) {
+                    geTableData(clickedTable,Number(colPanelValue.pk_index),Number(val),tableID)
+                }else if(Number(val) > Number(colPanelValue.start)){
+                    dispatch(showNotification('error', 'PK_COL_Index out of bound'));
+                }
+
             }
             setRowPanelValue(obj1)
         }
@@ -241,7 +261,7 @@ function TableIdentifier(props) {
                 <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.stop} placeholder='Stop Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "stop", val)} />
             </div>
             <div style={{ marginTop: -5 }}>
-                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.pk_index} placeholder=' PK Row Index' style={{ width: 128, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
+                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.pk_index} placeholder={val == "Row Identifier"? "PK Col Index":' PK Row Index'} style={{ width: 128, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
             </div>
             {/*  */}
         </div>
