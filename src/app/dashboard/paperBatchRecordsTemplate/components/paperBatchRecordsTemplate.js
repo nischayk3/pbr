@@ -636,7 +636,7 @@ function PaperBatchRecordsTemplate() {
      * TODO: get boundingBoxData info
      */
     /* istanbul ignore next */
-    const getBoundingBoxDataInfo = async (width, height, mode, pageNumber = 0) => {
+    const getBoundingBoxDataInfo = async (width, height, mode, pageNumber = 0,table_identifier={}) => {
         try {
             dispatch(showLoader());
             let _reqBatch = {
@@ -646,7 +646,8 @@ function PaperBatchRecordsTemplate() {
                 // action_type: params?.temp_disp_id ? "edit" : "create",
                 action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "saved" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? mode == "TABLE" ? "create" : "edit" : "create",
                 temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : "",
-                temp_version: params?.temp_disp_id ? 1 : 0
+                temp_version: params?.temp_disp_id ? 1 : 0,
+                table_identifier:table_identifier
             };
             const batchRes = await getBoundingBoxData(_reqBatch);
             setOriginalResponse(batchRes)
@@ -939,6 +940,15 @@ function PaperBatchRecordsTemplate() {
     const clicked = (area) => {
         if (showRowColIdentifier) {
             setClickedTable(area)
+            let table_identifier = {
+                "left": area?.coords[0] / imageWidth, "top": area?.coords[1] / imageHeight,
+                "width": (area?.coords[2] - area?.coords[0]) / imageWidth, "height": (area?.coords[3] - area?.coords[1]) / imageHeight
+            }
+            for (let i = 0; i < 2; i++) {
+                setTimeout(() => {
+                    getBoundingBoxDataInfo(imageWidth, imageHeight, "CELL", pageNumber - 1,table_identifier);
+                }, i * 1000)
+            }
         }
         setBoundingBoxClicked(true);
         setClickedSnippetId(area.areaValue);
@@ -1870,6 +1880,11 @@ function PaperBatchRecordsTemplate() {
 
     const handleSideState = () => {
         setTriggerUpdate(true)
+        for (let i = 0; i < 2; i++) {
+            setTimeout(() => {
+                getBoundingBoxDataInfo(imageWidth, imageHeight, "TABLE", pageNumber - 1);
+            }, i * 1000)
+        }
     }
    
     return (
