@@ -1,4 +1,4 @@
-import { Button, Row, Select, Col, Popover } from "antd";
+import { Button, Row, Select, Col, Drawer, Steps } from "antd";
 import React, { useCallback, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import ReactFlow, {
@@ -10,7 +10,10 @@ import ReactFlow, {
 import "./model.scss";
 import ModalComponent from "../../../../../../components/Modal/Modal";
 import NodeDetails from "./NodeDetails";
-
+import FeatureUnion from "./FeatureUnion";
+import Transformation from "./Transformations";
+import Estimator from "./Estimator";
+const { Step } = Steps;
 const initialNodes = [
   {
     id: "horizontal-1",
@@ -206,21 +209,50 @@ const Model = () => {
   const [nodes, _, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [detailsVisible, setDetailsVisible] = useState(false);
+  const [type, setType] = useState("");
+  const [drawervisible, setDrawerVisible] = useState(false);
   const onConnect = useCallback(
     (params) => setEdges((els) => addEdge(params, els)),
     []
   );
 
+  const onCreateClick = () => {
+    setDrawerVisible(false);
+    setDetailsVisible(false);
+  };
+  const getTitle = () => {
+    let title = "";
+    if (type === "featureUnion") {
+      title = "Feature union - New";
+    } else if (type === "transform") {
+      title = "Transformation - New";
+    } else if (type === "estimator") {
+      title = "Estimator";
+    }
+
+    return title;
+  };
+  const addEstimator = (vartype) => {
+    setDrawerVisible(true);
+    setDetailsVisible(false);
+    setType(vartype);
+  };
   return (
     <div className="model-container">
       <Row className="operation-row" gutter={24}>
         <Col span="3">
-          <Button className="custom-primary-btn">
+          <Button
+            className="custom-primary-btn"
+            onClick={() => addEstimator("estimator")}
+          >
             <PlusOutlined /> Add estimators
           </Button>
         </Col>
         <Col span="4">
-          <Button className="custom-primary-btn">
+          <Button
+            className="custom-primary-btn"
+            onClick={() => addEstimator("featureUnion")}
+          >
             <PlusOutlined /> Create feature union
           </Button>
         </Col>
@@ -265,9 +297,25 @@ const Model = () => {
           centered={true}
           handleCancel={() => setDetailsVisible(false)}
         >
-          <NodeDetails />
+          <NodeDetails addEstimator={addEstimator} />
         </ModalComponent>
       </ReactFlow>
+      <Drawer
+        placement="right"
+        visible={drawervisible}
+        closable={false}
+        className="drawer-d"
+        title={getTitle()}
+        onClose={() => setDrawerVisible(false)}
+      >
+        {type === "featureUnion" && (
+          <FeatureUnion onCreateClick={onCreateClick} />
+        )}
+        {type === "transform" && (
+          <Transformation onCreateClick={onCreateClick} />
+        )}
+        {type === "estimator" && <Estimator />}
+      </Drawer>
     </div>
   );
 };
