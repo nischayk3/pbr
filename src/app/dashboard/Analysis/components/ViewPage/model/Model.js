@@ -1,6 +1,6 @@
 import { Button, Row, Select, Col, Drawer, Steps } from "antd";
 import React, { useCallback, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -12,8 +12,17 @@ import ModalComponent from "../../../../../../components/Modal/Modal";
 import NodeDetails from "./NodeDetails";
 import FeatureUnion from "./FeatureUnion";
 import Transformation from "./Transformations";
+import ColorSelectorNode from "./CustomNode";
+import EstimatorNode from "./EstimatorNode";
+import FeatureUninonNode from "./FeatureUninonNode";
 import Estimator from "./Estimator";
 const { Step } = Steps;
+
+const nodeTypes = {
+  selectorNode: ColorSelectorNode,
+  EstimatorNode: EstimatorNode,
+  FeatureUninonNode: FeatureUninonNode,
+};
 const initialNodes = [
   {
     id: "horizontal-1",
@@ -54,12 +63,12 @@ const initialNodes = [
     targetPosition: "left",
     type: "selectorNode",
     style: {
-      width: "150px",
       background: "#846B8A",
       padding: "8px 0px",
+      width: 150,
     },
-    data: { label: "Simple Imputer" },
-    position: { x: 300, y: 0 },
+    // data: { label: "Simple Imputer" },
+    position: { x: 300, y: -10 },
   },
   {
     id: "horizontal-5",
@@ -105,9 +114,30 @@ const initialNodes = [
     id: "horizontal-7",
     sourcePosition: "right",
     targetPosition: "left",
-    style: { background: "#B3F2DD", border: "none" },
+    type: "EstimatorNode",
+    style: {
+      background: "#B3F2DD",
+      border: "none",
+      padding: "8px",
+      borderRadius: "4px",
+    },
     data: { label: "Select Estimator" },
     position: { x: 550, y: 80 },
+  },
+  {
+    id: "horizontal-10",
+    sourcePosition: "right",
+    targetPosition: "left",
+    type: "FeatureUninonNode",
+    style: {
+      background: "#F7AF9D",
+      padding: "8px 0px",
+      width: 150,
+      border: "none",
+      borderRadius: "4px",
+    },
+    // data: { label: "Simple Imputer" },
+    position: { x: 300, y: 35 },
   },
 ];
 
@@ -144,7 +174,7 @@ const initialEdges = [
     id: "horizontal-e5-7",
     source: "horizontal-5",
     type: "smoothstep",
-    target: "horizontal-7",
+    target: "horizontal-10",
     animated: true,
   },
   {
@@ -158,7 +188,7 @@ const initialEdges = [
     id: "horizontal-e6-7",
     source: "horizontal-6",
     type: "smoothstep",
-    target: "horizontal-7",
+    target: "horizontal-10",
     animated: true,
   },
   {
@@ -199,6 +229,14 @@ const initialEdges = [
   {
     id: "horizontal-e8-7",
     source: "horizontal-8",
+    type: "smoothstep",
+    target: "horizontal-7",
+    animated: true,
+  },
+
+  {
+    id: "horizontal-e10-7",
+    source: "horizontal-10",
     type: "smoothstep",
     target: "horizontal-7",
     animated: true,
@@ -287,6 +325,7 @@ const Model = () => {
         onConnect={onConnect}
         fitView
         onNodeClick={() => setDetailsVisible(true)}
+        nodeTypes={nodeTypes}
         // attributionPosition="top-left"
       >
         <Background variant="dots" gap={25} size={0.3} color="#313131" />
@@ -305,7 +344,12 @@ const Model = () => {
         visible={drawervisible}
         closable={false}
         className="drawer-d"
-        title={getTitle()}
+        title={
+          <div className="title-modal-estimator">
+            {getTitle()}
+            <CloseOutlined onClick={() => setDrawerVisible(false)} />
+          </div>
+        }
         onClose={() => setDrawerVisible(false)}
       >
         {type === "featureUnion" && (

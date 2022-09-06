@@ -197,4 +197,26 @@
     .details-box {
         padding: 8px 0px;
     }
+    .delete-b {
+        color: #FF0000;
+    }
+    .ant-radio-checked .ant-radio-inner {
+        border-color: #188FA7 !important;
+    }
+    .ant-radio-inner:after {
+        background-color: #188FA7 !important;
+    }
+}
+.react-flow__node-selectorNode {
+    font-size: 12px;
+    background: #eee;
+    border: 1px solid #555;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+.title-modal-estimator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

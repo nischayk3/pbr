@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./viewPage.scss";
 //antd-imports
 import { Button, Tabs } from "antd";
 import { CloudUploadOutlined } from "@ant-design/icons";
@@ -18,7 +19,7 @@ const ViewPageAnalysis = () => {
   };
 
   return (
-    <div className="custom-wrapper bread-wrapper">
+    <div className="custom-wrapper bread-wrapper view-analysis-container">
       <div className="sub-header">
         <BreadCrumbWrapper
           urlName={`/dashboard/chart_personalization/${1}`}
@@ -38,8 +39,17 @@ const ViewPageAnalysis = () => {
           </div>
         </div>
       </div>
-      <div className="custom-content-layout">
-        <Tabs defaultActiveKey="1" activeKey={tableKey} onChange={tabChange}>
+      <div className="custom-content-layout menu-tabs-color">
+        <Tabs
+          defaultActiveKey="1"
+          activeKey={tableKey}
+          onChange={tabChange}
+          tabBarExtraContent={
+            tableKey === "4" && (
+              <Button className="save-button-extra">Save</Button>
+            )
+          }
+        >
           <TabPane tab="Preprocess" key="1">
             <Preprocess setModelData={setModelData} setTableKey={setTableKey} />
           </TabPane>
