@@ -1,0 +1,62 @@
+.batch-container {
+    .approved-data {
+        display: flex;
+        align-items: center;
+    }
+    .filter-data {
+        margin-bottom: 30px;
+    }
+    .date-icons {
+        display: flex;
+        align-items: center;
+        font-size: 22px;
+        color: #939393;
+        column-gap: 10px;
+    }
+    .table-data {
+        min-height: 310px;
+        overflow-y: auto;
+        .ant-table {
+			border: none !important;
+		}
+		.ant-table-thead > tr > th {
+			background-color: white;
+			padding: 5px 2px !important;
+		}
+		.ant-table-thead > tr > th:nth-child(2) {
+			padding: 5px 16px !important;
+		}
+        .ant-table-thead > tr > th:nth-child(3) {
+			padding: 5px 16px !important;
+		}
+		.ant-table-tbody > tr > td {
+			padding: 10px 12px !important;
+			border: none !important;
+		}
+		.ant-table-tbody > tr > td:nth-child(2) {
+			padding: 7px 16px !important;
+			.ant-tag-geekblue {
+				font-weight: 500;
+			}
+		}
+        .ant-table-tbody > tr > td:nth-child(3) {
+			padding: 7px 16px !important;
+		}
+    }
+    .apply-btn {
+        button  {
+            border: none !important;
+        }
+    }
+    .buttons {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            padding: 5px 30px !important;
+        }
+        .button-gap {
+            display: flex;
+            column-gap: 16px; 
+        }
+    }
+}
