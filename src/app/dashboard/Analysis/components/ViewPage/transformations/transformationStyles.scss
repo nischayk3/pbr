@@ -3,4 +3,10 @@
 .ant-tabs-left>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane {
     padding-left: 0px !important;
 }
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #093185 !important;
+}
+.ant-tabs-ink-bar {
+    background:#093185 !important;
+}
 }
