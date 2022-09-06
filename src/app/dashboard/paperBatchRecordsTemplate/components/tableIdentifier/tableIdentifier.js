@@ -15,7 +15,8 @@ const { Panel } = Collapse;
 
 function TableIdentifier(props) {
     let { clickedTable, metaData, imageHeight, imageWidth, triggerPreview, templateVersion,
-        params, triggerUpdate, setSideTableData, setTriggerUpdate, tableActiveKey, formTableData, setModalData, setModalColumns } = props
+        params, triggerUpdate, setSideTableData, setTriggerUpdate, tableActiveKey, formTableData,
+        setModalData, setModalColumns, initialSideTableData } = props
     const dispatch = useDispatch();
     const [columnData, setColumnData] = useState([])
     const [rowData, setrowData] = useState([])
@@ -26,6 +27,9 @@ function TableIdentifier(props) {
     const [selectedRowValues, setSelectedRowValues] = useState([]);
     const [colPanelValue, setColPanelValue] = useState({});
     const [rowPanelValue, setRowPanelValue] = useState({});
+    const [newEditTemplate, setNewEditTemplate] = useState(false);
+    const [tableIdentifierValues, setTableIdentifierValues] = useState({});
+    const [tableID, setTableID] = useState(null);
 
 
     useEffect(() => {
@@ -35,11 +39,16 @@ function TableIdentifier(props) {
         setSelectedColValues(formTableData[tableActiveKey]?.tableData?.selectedColValues)
         setSelectedColRows(formTableData[tableActiveKey]?.tableData?.selectedColRows ? formTableData[tableActiveKey]?.tableData?.selectedColRows : [])
         setSelectedRowRows(formTableData[tableActiveKey]?.tableData?.selectedRowRows ? formTableData[tableActiveKey]?.tableData?.selectedRowRows : [])
+        setTableIdentifierValues(formTableData[tableActiveKey]?.tableData?.table_identifier)
     }, [tableActiveKey])
 
     useEffect(() => {
         if (Object.keys(clickedTable).length) {
-            geTableData()
+            setTableIdentifierValues({
+                "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
+                "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
+            })
+            geTableData(clickedTable)
         }
     }, [clickedTable])
 
@@ -58,12 +67,13 @@ function TableIdentifier(props) {
             selectedRowValues: selectedRowValues,
             selectedRowRows: selectedRowRows,
             selectedColRows: selectedColRows,
-            table_identifier: Object.keys(clickedTable).length ? {
-                "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
-                "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
-            } : {},
+            table_identifier: tableIdentifierValues
+            // table_identifier: Object.keys(clickedTable).length ? {
+            //     "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
+            //     "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
+            // } : {},
         })
-    }, [colPanelValue, rowPanelValue, selectedColValues, selectedRowValues, selectedRowRows, selectedColRows])
+    }, [colPanelValue, rowPanelValue, selectedColValues, selectedRowValues, selectedRowRows, selectedColRows, clickedTable])
 
     useEffect(() => {
         if (triggerUpdate) {
@@ -75,35 +85,49 @@ function TableIdentifier(props) {
             setSelectedRowRows([])
             setColumnData([])
             setTriggerUpdate(false)
+            setNewEditTemplate(true)
         }
 
     }, [triggerUpdate])
 
-    const geTableData = async () => {
+    const geTableData = async (clickedTable,col=1,row=1,table=null) => {
         try {
             dispatch(showLoader());
             let req = {
                 filename: `${metaData?.file?.split('.')[0]}_page-${0}.jpeg.json`,
                 page: 1,
-                table_identifier: {
+                config: {
+                    pk_col_index: col,
+                    pk_row_index: row
+                },
+                table_identifier: tableIdentifierValues ? tableIdentifierValues : {
                     "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
                     "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
                 },
-                action_type: params?.temp_disp_id ? "edit" : "create",
-                table_id: null,
+                action_type: params?.temp_disp_id ? newEditTemplate ? "create" : "edit" : "create",
+                table_id: table,
                 template_id: params?.temp_disp_id ? params?.temp_disp_id : null,
                 version: templateVersion ? templateVersion : null
             }
             let res = await getRowColumnData(req)
-            if (res["status-code"] == 200) {
+            if (res["status-code"] == 200 ) {
                 let obj = res.Data1.map((item, index) => ({ ...item, key: index }))
                 let obj2 = res.Data2.map((item, index) => ({ ...item, key: index }))
+                let arr = obj.map((item, index) => index)
+                let arr1 = obj2.map((item1, index1) => index1)
+                setTableID(res?.Table_id)
+                setSelectedColRows(arr)
+                setSelectedRowRows(arr1)
                 setColumnData(obj)
                 setrowData(obj2)
+                setColPanelValue({ start: "1", stop: `${obj.length}`, pk_index: col })
+                setRowPanelValue({ start: "1", stop: `${obj2.length}`, pk_index: row })
+                setSelectedColValues(obj)
+                setSelectedRowValues(obj2)
                 dispatch(hideLoader());
             } else {
                 dispatch(hideLoader());
-                dispatch(showNotification('error', 'No Data Found'));
+                // dispatch(showNotification('error', 'No Data Found'));
             }
         } catch (error) { /* istanbul ignore next */
             dispatch(hideLoader());
@@ -112,14 +136,49 @@ function TableIdentifier(props) {
 
 
     }
+    const updateCheckbox = (val, obj) => {
+        let arr = []
+        for (let i = Number(val - 1); i <= obj - 1; i++) {
+            arr.push(i)
+        }
+        return arr
+    }
     const handleInputChange = (val, field, identifier) => {
         if (identifier === "Column Identifier") {
             let obj = { ...colPanelValue }
             obj[field] = val
+            if (field == "start" && val != undefined && val != "") {
+                let arr = updateCheckbox(val, obj.stop)
+                setSelectedColRows(arr)
+            } else if (field == "stop" && val != undefined && val != "") {
+                let arr1 = updateCheckbox(obj.start, val)
+                setSelectedColRows(arr1)
+            } else if (field == "pk_index") {
+                if (val != "" && Number(val) <= Number(rowPanelValue.start)) {
+                    geTableData(clickedTable,Number(val),Number(rowPanelValue.pk_index),tableID)
+                }else if(Number(val) > Number(rowPanelValue.start)){
+                    dispatch(showNotification('error', 'PK_COL_Index out of bound'));
+                }
+
+            }
             setColPanelValue(obj)
         } else {
             let obj1 = { ...rowPanelValue }
             obj1[field] = val
+            if (field == "start" && val != undefined && val != "") {
+                let arr = updateCheckbox(val, obj1.stop)
+                setSelectedRowRows(arr)
+            } else if (field == "stop" && val != undefined && val != "") {
+                let arr1 = updateCheckbox(obj1.start, val)
+                setSelectedRowRows(arr1)
+            } else if (field == "pk_index") {
+                if (val != "" && Number(val) <= Number(colPanelValue.start)) {
+                    geTableData(clickedTable,Number(colPanelValue.pk_index),Number(val),tableID)
+                }else if(Number(val) > Number(colPanelValue.start)){
+                    dispatch(showNotification('error', 'PK_COL_Index out of bound'));
+                }
+
+            }
             setRowPanelValue(obj1)
         }
     }
@@ -148,10 +207,7 @@ function TableIdentifier(props) {
                 rows: []
             },
             table_id: "",
-            table_identifier: {
-                "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
-                "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
-            },
+            table_identifier: tableIdentifierValues,
             table_name: "asdas"
         }
         let arr = selectedColValues?.filter(item => selectedColRows?.includes(item?.key))
@@ -192,8 +248,6 @@ function TableIdentifier(props) {
             dispatch(hideLoader());
             dispatch(showNotification('error', res.Message));
         }
-
-        // dispatch(hideLoader());
     }
 
     const genTableExtra = (val, values) => (
@@ -201,13 +255,13 @@ function TableIdentifier(props) {
             <p style={{ marginBottom: 0 }}>{val}</p>
             <Switch size='medium' style={{ marginLeft: val == "Row Identifier" ? 35 : 10 }} />
             <div style={{ marginTop: -5 }}>
-                <Input disabled={columnData.length > 0 ? "" : "disabled"} value={values?.start} placeholder='Start Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
+                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.start} placeholder='Start Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
             </div>
             <div style={{ marginTop: -5 }}>
-                <Input disabled={columnData.length > 0 ? "" : "disabled"} value={values?.stop} placeholder='Stop Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "stop", val)} />
+                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.stop} placeholder='Stop Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "stop", val)} />
             </div>
             <div style={{ marginTop: -5 }}>
-                <Input disabled={columnData.length > 0 ? "" : "disabled"} value={values?.pk_index} placeholder=' PK Row Index' style={{ width: 128, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
+                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.pk_index} placeholder={val == "Row Identifier"? "PK Col Index":' PK Row Index'} style={{ width: 128, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
             </div>
             {/*  */}
         </div>
@@ -242,7 +296,7 @@ function TableIdentifier(props) {
             accordion
             expandIconPosition='right'
             style={{ marginTop: 20 }}
-            collapsible={columnData.length > 0 ? "" : "disabled"}
+            collapsible={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"}
             onChange={handleIdentifierChange}
         >
             <Panel id="columns" header={genTableExtra("Column Identifier", colPanelValue)} key='1' >

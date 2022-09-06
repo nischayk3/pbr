@@ -1,0 +1,50 @@
+{
+    "data": [
+        {
+            "data": [
+                {
+                    "marker": {
+                        "color": "#376dd4",
+                        "size": 15
+                    },
+                    "mode": "markers",
+                    "type": "scatter"
+                }
+            ],
+            "data_filter": {
+                "date_range": "",
+                "site": "",
+                "unapproved_data": 0
+            },
+            "date": null,
+            "end_date": null,
+            "extras": {
+                "coverage": [
+                    {
+                        "batchstats": "44/45",
+                        "coverage_metric_percent": "98.0%",
+                        "function_id": "1",
+                        "function_name": "CARB_NORMAL"
+                    },
+                    {
+                        "batchstats": "44/45",
+                        "coverage_metric_percent": "98.0%",
+                        "function_id": "2",
+                        "function_name": "NORMAL_MUL_HEAVY"
+                    }
+                ],
+                "data_table": []
+            },
+            "has_unapproved": false,
+            "site": null,
+            "start_date": null,
+            "unapprove_data": false,
+            "view_disp_id": "V238",
+            "view_id": "V238",
+            "view_name": "CARB_NORMAL_HEAVY_2_FUNCTION",
+            "view_status": "APRD",
+            "view_version": 1,
+            "violations": []
+        }
+    ]
+}

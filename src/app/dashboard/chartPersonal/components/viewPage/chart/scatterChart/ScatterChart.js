@@ -27,11 +27,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
   const chartTypeList = [
     "Scatter Plot",
     "Process Control",
-    "Levey-Jennings Plot",
-    "I-MR Plot",
-    "Trend Control",
-    "KDE Control",
-    "Box Control",
+    "Bar",
+    "Histogram",
+    "Line",
+    "Distribution",
+    "Box",
   ];
   const [axisValues, setAxisValues] = useState({
     xaxis: null,
@@ -124,7 +124,9 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
     };
     newArr.forEach((ele) => {
       ele.chart_type =
-        axisValues.chartType === "Scatter Plot" ? "scatter" : "process control";
+        axisValues.chartType === "Scatter Plot"
+          ? "scatter"
+          : axisValues.chartType?.toLowerCase();
       ele.chart_mapping.x = Object.keys(xAxis).length !== 0 ? xAxis : obj;
       ele.chart_mapping.y = yAxis;
       ele.layout.xaxis.title.text =
@@ -134,6 +136,16 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
           ? "Batch"
           : "Recorded Date";
       ele.layout.yaxis.title.text = yAxis.function_name;
+      ele.data = [
+        {
+          type: "scatter",
+          mode: "markers",
+          marker: {
+            color: "#376dd4",
+            size: 15,
+          },
+        },
+      ];
     });
     setPostChartData({ ...postChartData, data: newArr });
     try {
@@ -142,6 +154,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       let newdataArr = [...postChartData.data];
       newdataArr[0].data = viewRes.data[0].data;
       newdataArr[0].extras = viewRes.data[0].extras;
+      newdataArr[0].layout = viewRes.data[0].layout;
       setPostChartData({ ...postChartData, data: newdataArr });
       setShowChart(true);
       dispatch(hideLoader());
@@ -180,12 +193,20 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             table.push(obj);
           });
         setExclusionTable(table);
-        if (ele.data[0].x && ele.data[0].x.length >= 1) {
+        if (ele?.data[0]?.x && ele?.data[0]?.x?.length >= 1) {
           const chart =
-            ele.chart_type === "scatter" ? "Scatter Plot" : "Process Control";
+            ele.chart_type === "scatter"
+              ? "Scatter Plot"
+              : ele.chart_type.replaceAll(
+                  /\S*/g,
+                  (word) =>
+                    `${word.slice(0, 1).toUpperCase()}${word
+                      .slice(1)
+                      .toLowerCase()}`
+                );
           let xValue = "";
           let yValue = "";
-          if (ele.chart_type === "scatter") {
+          if (ele.chart_type !== "process control") {
             xValue = ele.chart_mapping.x.function_name;
           } else {
             xValue =
@@ -228,7 +249,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       postChartData.data[0].extras.coverage &&
       postChartData.data[0].extras.coverage.forEach((ele) => {
         list.push(ele.function_name);
-        if (axisValues.chartType === "Scatter Plot") {
+        if (axisValues.chartType !== "Process Control") {
           setXAxisList(list);
           setYAxisList(list);
         } else {

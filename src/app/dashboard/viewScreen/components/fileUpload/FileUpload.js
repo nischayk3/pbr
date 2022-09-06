@@ -117,6 +117,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 							res.timeStamp = date.toISOString();
 							filesListTree.push(res);
 							setFilesListTree(filesListTree);
+							setSelectedFileId(JSON.parse(JSON.stringify(res.File_id)))
 							res.Data.forEach((ele) => {
 								ele.coverage_list.forEach((item) => {
 									totalFileBatch.push(item)
@@ -181,7 +182,9 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			const indexDuplicate = viewSummaryTable.findIndex(
 				(x) => x.param == record.param
 			);
+
 			if (indexDuplicate === -1) {
+
 				rowData = Object.assign(batchData);
 				rowData.sourceType = "file";
 				rowData.parameter_name = record.param;
@@ -368,6 +371,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		setSelectedAdHocFileList([]);
 		setUploadModalVisible(false);
 		setUploadBtnDisabled(true);
+
 		let req = { file_id: selectedFileId, detailedCoverage: true };
 		adHocFilesParameterTree(req).then((res) => {
 			/* istanbul ignore next  */
@@ -376,6 +380,8 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 				const date = new Date();
 				res.timeStamp = date.toISOString();
 				setFilesListTree([...filesListTree, res]);
+
+				setSelectedFileId(JSON.parse(JSON.stringify(res.File_id)))
 				res.Data.forEach((ele) => {
 					ele.coverage_list.forEach((item) => {
 						totalFileBatchStore.push(item)
@@ -401,6 +407,8 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			}
 		});
 	};
+
+
 	return (
 		<div className="materials-wrapper fileUpload-wrapper">
 			<div className="materials-uploadDownloadFiles">

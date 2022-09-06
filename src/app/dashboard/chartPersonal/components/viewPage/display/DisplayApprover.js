@@ -9,6 +9,7 @@ import { initialLayout } from "./displayFunctions";
 /* istanbul ignore next */
 const DisplayApprover = ({ postChartData, setPostChartData }) => {
   const [layoutDataApprover, setLayoutDataApprover] = useState(initialLayout);
+  const [sigmaLines, setSigmaLines] = useState(false);
   const [chartDataMarkersApprover, setChartDataMarkersApprover] = useState({
     markerSize: 15,
     markerShape: "",
@@ -25,6 +26,7 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
           ? "Vertical"
           : "Horizontal";
       const layout = JSON.parse(JSON.stringify(postChartData?.data[0]?.layout));
+      setSigmaLines(newArrApprover?.data[0]?.plot_std);
       layout.legend.orientation = o;
       setLayoutDataApprover(layout);
       newArrApprover.data[0] &&
@@ -103,6 +105,14 @@ const DisplayApprover = ({ postChartData, setPostChartData }) => {
               </Col>
               <Col span={16}>
                 <p>: {layoutDataApprover.plot_bgcolor || "-"}</p>
+              </Col>
+            </Row>
+            <Row className="figure-inputs select-top" gutter={16}>
+              <Col span={8}>
+                <label>Sigma lines </label>
+              </Col>
+              <Col span={16}>
+                <p>: {sigmaLines ? "Yes" : "No"}</p>
               </Col>
             </Row>
             <div className="figure-inputs header">Marker</div>

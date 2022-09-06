@@ -9,6 +9,7 @@
             "view_id": "",
             "view_name": "",
             "view_version": "0",
+            "plot_std": false,
             "data_filter": {
                 "date_range": "",
                 "unapproved_data": 0,
