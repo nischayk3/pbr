@@ -4,3 +4,25 @@ iframe {
     border: none;
     margin-top: 8px;
 }
+.view-analysis-container {
+    background: #ffffff;
+}
+.save-button-extra {
+    color: white;
+    background: #093185;
+    border: 1px solid #093185;
+    border-radius: 4px;
+    padding: 5px 22px;
+}
+
+.menu-tabs-color {
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: #093185 !important;
+    }
+    .ant-tabs-ink-bar {
+        background:#093185 !important;
+    }
+    .ant-tabs-top>.ant-tabs-nav:before {
+        border-bottom: 0px !important;
+    }
+}

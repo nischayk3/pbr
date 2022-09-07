@@ -64,11 +64,13 @@ const Profile = () => {
 							<div className="split-form">
 								<div>
 									<InputField
+										id="firstname"
 										label="First name"
 										value={loginDetails && loginDetails.firstname}
 										disabled
 									/>
 									<InputField
+										id="email"
 										label="Email"
 										value={loginDetails && loginDetails.email_id}
 										disabled
@@ -76,6 +78,7 @@ const Profile = () => {
 								</div>
 								<div>
 									<InputField
+										id="lasdtname"
 										label="Last name"
 										value={loginDetails && loginDetails.lastname}
 										disabled

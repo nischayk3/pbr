@@ -1,16 +1,27 @@
 import React from "react";
 import "./model.scss";
-import { Row, Col, Button } from "antd";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { Row, Col, Button, Radio } from "antd";
 
-const NodeDetails = () => {
+const NodeDetails = (props) => {
+  const { addEstimator } = props;
   return (
     <div className="node-container">
       <div className="node-details-container">
         <Row gutter={16}>
           <Col span={24}>
-            <Button className="custom-primary-btn">Make target Variable</Button>
-            <Button className="custom-primary-btn">Add transformation</Button>
+            <Button className="custom-primary-btn">
+              <Radio />
+              Make target Variable
+            </Button>
+            <Button
+              className="custom-primary-btn"
+              onClick={() => addEstimator("transform")}
+            >
+              Add transformation
+            </Button>
             <Button className="custom-primary-btn">Make categorical</Button>
+            <DeleteOutlined className="delete-b" /> &nbsp;
             <span>Remove connectors</span>
           </Col>
         </Row>
