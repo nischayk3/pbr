@@ -5,9 +5,7 @@ import {
 	Dropdown,
 	Input,
 	Menu,
-	Select,
-	Space,
-	Table,
+	Select, Table,
 	Typography
 } from "antd";
 import moment from "moment";
@@ -30,6 +28,9 @@ class AuditTrials extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			dates: [],
+			hackValue: [],
+			setValue: [],
 			brandList: [],
 			eventType: "",
 			productList: [],
@@ -92,7 +93,7 @@ class AuditTrials extends React.Component {
 			user: "",
 			daterange: [],
 			downloadData: [],
-			selectedDate: [],
+
 			// config: [],
 			columns: [
 				{
@@ -275,12 +276,12 @@ class AuditTrials extends React.Component {
 		let endPoint = "/services/v1/audit-information?";
 		let baseUrl = MDH_APP_PYTHON_SERVICE + endPoint;
 		let startDate =
-			this.state.selectedDate.length > 0
-				? this.state.selectedDate[0]
-				: "2021-09-01";
+			this.state.setValue.length > 0
+				? moment(this.state.setValue[0]).format("YYYY-MM-DD")
+				: "2022-09-01";
 		let endDate =
-			this.state.selectedDate.length > 0
-				? this.state.selectedDate[1]
+			this.state.setValue.length > 0
+				? moment(this.state.setValue[1]).format("YYYY-MM-DD")
 				: today.toISOString().slice(0, 10);
 		// let tableName = ["Parameter Data"];
 		let activity = this.state.eventType.value;
@@ -314,8 +315,26 @@ class AuditTrials extends React.Component {
 	};
 
 	disabledDate = (current) => {
-		// Can not select days before today and today
-		return current && current > moment().endOf("day");
+
+		if (!this.state.dates) {
+			return false;
+		}
+
+		const tooLate = this.state.dates[0] && current.diff(this.state.dates[0], 'days') > 90;
+		const tooEarly = this.state.dates[1] && this.state.dates[1].diff(current, 'days') > 90;
+		return !!tooEarly || !!tooLate;
+	};
+
+	onOpenChange = (open) => {
+
+		if (open) {
+			this.setState({
+				dates: [null, null],
+				hackValue: [null, null]
+			})
+		} else {
+			this.setState({ hackValue: [null] })
+		}
 	};
 
 	auditHighlight = (limit = 500) => {
@@ -328,12 +347,12 @@ class AuditTrials extends React.Component {
 
 			// username: this.state.user ? this.state.user.value : "",
 			startdate:
-				this.state.selectedDate.length > 0 && this.state.selectedDate[0]
-					? this.state.selectedDate[0]
-					: "2021-09-01",
+				this.state.setValue.length > 0 && this.state.setValue[0]
+					? moment(this.state.setValue[0]).format("YYYY-MM-DD")
+					: "2022-09-01",
 			enddate:
-				this.state.selectedDate.length > 0 && this.state.selectedDate[1]
-					? this.state.selectedDate[1]
+				this.state.setValue.length > 0 && this.state.setValue[1]
+					? moment(this.state.setValue[1]).format("YYYY-MM-DD")
 					: today.toISOString().slice(0, 10),
 			order_by_col: this.state.colSort,
 			order_by_type: this.state.sortState
@@ -523,9 +542,12 @@ class AuditTrials extends React.Component {
 				selectedAns: "",
 				user: "",
 				daterange: [],
-				selectedDate: [],
+
 				eventType: "",
-				filterTable: null
+				filterTable: null,
+				dates: [],
+				hackValue: [],
+				setValue: [],
 			},
 			() => this.auditHighlight()
 		);
@@ -567,7 +589,10 @@ class AuditTrials extends React.Component {
 		}
 	};
 
+
+
 	render() {
+
 		const { RangePicker } = DatePicker;
 		const { filterTable, tableData, columns } = this.state;
 
@@ -587,32 +612,29 @@ class AuditTrials extends React.Component {
 				<BreadCrumbWrapper />
 				<div className='custom-content-layout'>
 					<div className="divFilterDrop bg-white">
-						<div className="filter-header" style={{ height: "150px" }}>
-							<div className="divFilter-name">
-								<Text>Date</Text>
-								<Text style={{ marginLeft: "15px" }}>User</Text>
-								<Text>Event Type</Text>
-							</div>
+						<div className="filter-header"  >
 							<div className="divFilter">
-								<Space>
+								<div>
+									<p>Date</p>
 									<RangePicker
-										value={this.state.daterange}
-										onChange={(e, value) => {
+										value={this.state.setValue}
+										onChange={(value) => {
 											this.setState({
-												selectedDate: value,
-												type: "date",
-												daterange: e
+												setValue: value
 											});
-											this.onChangePkg(e, value);
+											this.onChangePkg(value);
 										}}
 										disabledDate={this.disabledDate}
+										onOpenChange={this.onOpenChange}
+										onCalendarChange={(val) => this.setState({ dates: val })}
 									/>
-								</Space>
-								<Space>
+								</div>
+								<div>
+									<p>User</p>
 									<Select
 										style={{
-											width: "150px",
-											marginLeft: "20px"
+											width: "100%",
+
 										}}
 										placeholder="User"
 										onChange={(e, value) => { this.onChangeIng(e, value, "user") }}
@@ -627,10 +649,11 @@ class AuditTrials extends React.Component {
 												);
 											})}
 									</Select>
-								</Space>
-								<Space>
+								</div>
+								<div>
+									<p>Event Type</p>
 									<Select
-										style={{ width: "150px" }}
+										style={{ width: "100%" }}
 										placeholder="Event"
 										onChange={(e, value) => {
 											return this.setState({
@@ -648,15 +671,10 @@ class AuditTrials extends React.Component {
 												);
 											})}
 									</Select>
-								</Space>
-							</div>
-							<div className="divFilter-second">
+								</div>
+
 								<Button
-									style={{
-										backgroundColor: "#495fc3",
-										color: "#ffffff",
-										width: "100px"
-									}}
+									className="custom-primary-btn "
 									type="primary"
 									onClick={() => {
 										this.handleFilter();
@@ -665,13 +683,8 @@ class AuditTrials extends React.Component {
 									Run
 								</Button>
 								<Button
-									style={{
-										backgroundColor: "#495fc3",
-										color: "#ffffff",
-										width: "100px"
-									}}
+									className="custom-secondary-btn"
 									type="primary"
-									className="simulate-btn"
 									onClick={() => {
 										this.handleClear();
 									}}

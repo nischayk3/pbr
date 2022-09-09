@@ -184,23 +184,32 @@
 // }
 .divFilter {
 	display: grid;
-	grid-template-columns: 0.15fr 0.15fr 0.15fr;
-	margin-top: 1%;
+	grid-template-columns: 0.20fr 0.20fr 0.20fr 0.15fr 0.15fr;
 	background-color: white;
-	padding: 10px;
+	padding: 24px 16px;
+	border-radius: 4px;
+	grid-gap: 24px;
+
+	>div {
+		>p {
+			font-family: var(--primary-font-family);
+			font-style: normal;
+			font-weight: normal;
+			font-size: 14px;
+			line-height: 22px;
+			color: #262626;
+			margin-bottom: 7px;
+		}
+	}
+
+	button {
+		margin-top: 28px
+	}
 }
 
-.divFilter-name {
-	display: grid;
-	grid-template-columns: 0.15fr 0.15fr 0.15fr;
-	margin-left: 15px;
-}
 
-.divFilter-second {
-	display: grid;
-	grid-template-columns: 0.12fr 0.12fr 0.12fr;
-	padding: 10px;
-}
+
+
 
 .filter-header {
 	background-color: white !important;
