@@ -119,6 +119,7 @@ const NewPipeline = (props) => {
           view_id: viewData.viewDispId,
           view_name: viewData.viewName,
           view_version: viewData.viewVersion,
+          chart_type: "scatter",
           data_filter: batchFilters
             ? batchFilters
             : {
@@ -215,6 +216,7 @@ const NewPipeline = (props) => {
                   onFocus={onFocus}
                   value={viewData.searchValue}
                   onChange={onSearchChange}
+                  onSearch={searchTable}
                 />
                 {showViewTable && (
                   <ViewSearchTable

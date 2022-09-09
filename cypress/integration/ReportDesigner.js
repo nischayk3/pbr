@@ -43,7 +43,8 @@ describe("Report Designer", () => {
     cy.intercept('GET', '**/views-list', { fixture: 'reportView.json' })
     cy.intercept('GET', '**/chart-list/V302-1', { fixture: 'reportChartList.json' })
     cy.get('.ant-input').clear();
-    cy.get('.ant-input').type('Report');
+    // cy.get('.ant-input').type('Report');
+    cy.get(':nth-child(2) > .ant-input').type('Report')
     cy.wait(1000)
     cy.get('#rc_select_0').clear();
     cy.get('#rc_select_0').type('v3');
@@ -113,9 +114,16 @@ describe("Report Designer", () => {
     cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
     cy.visit(url + '/#/dashboard/report_designer')
     cy.wait(1000)
-    cy.get('.ant-input').clear();
-    cy.get('.ant-input').type('R391{enter}');
+    // cy.get('.ant-input').clear();
+    // cy.get('.ant-input').type('R391{enter}');
+    // cy.get('[style="width: 794px; margin-left: 210px;"] > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').clear()
+    // cy.get('[style="width: 794px; margin-left: 210px;"] > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').type('R391{enter}');
+
+    // cy.get('.ant-table-row > :nth-child(1) > div').click();
+    cy.get('[style="width: 794px; margin-left: 210px;"] > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input').clear();
+    cy.get('[style="width: 794px; margin-left: 210px;"] > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input').type('R329{enter}');
     cy.get('.ant-table-row > :nth-child(1) > div').click();
+
   });
 
   it("Load Report via tile", () => {
@@ -151,8 +159,13 @@ describe("Report Designer", () => {
     cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
     cy.visit(url + '/#/dashboard/report_designer')
     cy.wait(1000)
-    cy.get('.ant-input').clear();
-    cy.get('.ant-input').type('R391{enter}');
+    // cy.get('.ant-input').clear();
+    // cy.get('.ant-input').type('R391{enter}');
+    // cy.get('[style="width: 794px; margin-left: 210px;"] > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').clear()
+    // cy.get('[style="width: 794px; margin-left: 210px;"] > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').type('R391{enter}');
+    cy.get('[style="width: 794px; margin-left: 210px;"] > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input').clear();
+    cy.get('[style="width: 794px; margin-left: 210px;"] > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input').type('R329{enter}');
+
     cy.get('.ant-table-row > :nth-child(1) > div').click();
     cy.wait(6000)
     cy.get('.report-secondary-btn').click()
@@ -163,8 +176,13 @@ describe("Report Designer", () => {
     cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
     cy.visit(url + '/#/dashboard/report_designer')
     cy.wait(1000)
-    cy.get('.ant-input').clear();
-    cy.get('.ant-input').type('R391{enter}');
+    // cy.get('.ant-input').clear();
+    // cy.get('[style="width: 794px; margin-left: 210px;"] > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').clear()
+    // cy.get('[style="width: 794px; margin-left: 210px;"] > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').type('R391{enter}');
+    // cy.get('.ant-input').type('R391{enter}');
+    cy.get('[style="width: 794px; margin-left: 210px;"] > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input').clear();
+    cy.get('[style="width: 794px; margin-left: 210px;"] > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input').type('R329{enter}');
+
     cy.get('.ant-table-row > :nth-child(1) > div').click();
     cy.wait(6000)
     cy.get('.ant-switch-handle').click()

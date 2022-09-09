@@ -26,7 +26,9 @@ const TransformationList = ({ type }) => {
           Simple Imputer
         </Tag>
       </div>
-      <MenuOutlined />
+      <div className="icon-menu">
+        <MenuOutlined />
+      </div>
     </div>
   ));
   const SortableList = SortableContainer(({ items }) => {
