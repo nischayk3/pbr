@@ -6,18 +6,18 @@
  * @Last Changed By - Dinesh Kumar
  */
 
-import React, { useEffect, useState } from 'react';
 import { Button, Select } from 'antd';
+import debounce from "lodash/debounce";
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import SelectSearchField from '../../../../../components/SelectSearchField/SelectSearchField';
+import Toggle from '../../../../../components/Toggle';
+import { showNotification } from '../../../../../duck/actions/commonActions.js';
 import {
 	getGeanealogyFilter,
 	getGenealogyProductType
 } from '../../../../../services/genealogyService.js';
 import './style.scss';
-import SelectSearchField from '../../../../../components/SelectSearchField/SelectSearchField';
-import Toggle from '../../../../../components/Toggle';
-import { showNotification } from '../../../../../duck/actions/commonActions.js';
-import debounce from "lodash/debounce";
 
 function Filter(props) {
 	const [disabled, setDisabled] = useState(true);
@@ -53,7 +53,6 @@ function Filter(props) {
 
 	const onChangeParam = (value, field) => {
 		if (value != null) {
-
 			if (field === 'plant') {
 				getGenealogyFilterData(
 					value,
