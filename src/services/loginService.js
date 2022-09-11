@@ -80,3 +80,43 @@ export const passwordChange = (request) => {
 		}
 	);
 };
+
+//get user profilr
+export const getUserProfile = (request) => {
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
+
+	const headers = {
+		"content-type": "application/json",
+		"x-access-token": login_response.token ? login_response.token : "",
+		"resource-name": 'USER_REPORT',
+	};
+	return Service.get(BMS_APP_PYTHON_SERVICE + '/user-profile', request, headers).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+//send user profilr
+export const sendUserProfile = (request) => {
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
+
+	const headers = {
+		"content-type": "application/json",
+		"x-access-token": login_response.token ? login_response.token : "",
+		"resource-name": 'USER_REPORT',
+		'Content-Type': 'multipart/form-data',
+	};
+
+	return Service.post(BMS_APP_PYTHON_SERVICE + '/user-profile', request, headers).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};

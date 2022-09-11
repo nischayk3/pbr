@@ -1,0 +1,50 @@
+{
+    "report_generator": {
+        "data": {
+            "chart_layout": {},
+            "layout_info": {
+                "add_charts_layout": {
+                    "0": true
+                },
+                "add_keys_layout": {
+                    "0": true
+                },
+                "chart_details": [
+                    "C257-Chart-1",
+                    "C285-Scheduleslert-2"
+                ],
+                "charts_layout": [
+                    null,
+                    [
+                        "C257-Chart-1"
+                    ]
+                ],
+                "layout_info": {
+                    "sections": [],
+                    "titlepage": {
+                        "content": [
+                            {
+                                "editable": false,
+                                "id": 1,
+                                "key": "check",
+                                "value": "report"
+                            }
+                        ],
+                        "heading": "Title for report",
+                        "id": 0,
+                        "numbered": true
+                    }
+                }
+            },
+            "rep_disp_id": "R520",
+            "rep_name": "test report",
+            "rep_status": "DRFT",
+            "selected_charts": [],
+            "share": {},
+            "user": "fahad.siddiqui@mareana.com",
+            "view_id-version": [
+                "V238-1"
+            ]
+        }
+    }
+}

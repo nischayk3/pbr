@@ -131,7 +131,7 @@ const Sidebar = () => {
 						icon={<UserOutlined className="menu-icons" />}
 						id="user_trail"
 					>
-						<Link to="/dashboard/user_trail_report">User Trail</Link>
+						<Link to="/dashboard/user_trail_report">User Log History</Link>
 					</Menu.Item>
 					<Menu.Item
 						key="manual_data_upload"
