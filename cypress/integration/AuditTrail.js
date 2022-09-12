@@ -4,7 +4,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe('Audit Trail', () => {
   beforeEach(() => {
     cy.intercept('POST', 'services/v1/audit-data-change', { fixture: 'auditTrail-data.json' })
-		cy.intercept('GET', '/services/v1/audit-filter', { fixture: 'auditTrail-filter.json' })
+    cy.intercept('GET', '/services/v1/audit-filter', { fixture: 'auditTrail-filter.json' })
     localStorage.setItem("test_enabled", true);
     localStorage.setItem("user", "fahad.siddiqui@mareana.com");
     localStorage.setItem(
@@ -21,60 +21,52 @@ describe('Audit Trail', () => {
       })
     );
   })
-  
   it("should login successfully using Ad", () => {
-    
     const url = Cypress.config().baseUrl
-    cy.visit(url +  '/#/dashboard/audit_trail_report')
-		cy.log('Load Landing Page')
-		cy.url().should('eq', url + '/#/dashboard/audit_trail_report')
+    cy.visit(url + '/#/dashboard/audit_trail_report')
+    cy.log('Load Landing Page')
+    cy.url().should('eq', url + '/#/dashboard/audit_trail_report')
     cy.wait(3000)
-   
   });
-
-  it("selecting daterange",()=>{
+  it("selecting daterange", () => {
     cy.log("selecting daterange")
     cy.get('.ant-picker-input').first().click()
     cy.get('.ant-picker-header-prev-btn').first().click()
     cy.get('.ant-picker-cell').eq(7).click()
     cy.get('.ant-picker-cell').eq(12).click()
   });
-  it("selecting user",()=>{
+  it("selecting user", () => {
     cy.log("selecting user")
     cy.get('.ant-select-selection-item').first().click()
     cy.get('.ant-select-item-option').first().click()
     cy.wait(1000)
   });
-
-  it("selecting type",()=>{
+  it("selecting type", () => {
     cy.log("selecting type")
-    cy.get('.ant-select-selection-item').eq(1).click()
+    cy.get('.ant-select-selection-item').eq(1).click({ force: true })
     cy.wait(5000)
-    cy.get('.ant-select-item-option').contains('U').click()
+    cy.get('.ant-select-item-option').contains('U').click({ force: true })
     cy.get('.divFilter-second > :nth-child(1) > span').click({ force: true });
     cy.wait(1000)
-
   });
-  it("clear filter",()=>{
+  it("clear filter", () => {
     cy.log("clearing filter")
     cy.get('.simulate-btn > span').click({ force: true });
   });
-
-  it("searching table",()=>{
+  it("searching table", () => {
     cy.wait(1000)
     cy.log("selecting user")
-    cy.get('.ant-select-selection-item').first().click()
-    cy.get('.ant-select-item-option').first().click()
+    cy.get('.ant-select-selection-item').first().click({ force: true })
+    cy.get('.ant-select-item-option').first().click({ force: true })
     cy.wait(1000)
     cy.log("searching in table")
     cy.get('.ant-input').clear();
-    cy.get('.ant-input').type('ab');
+    cy.get('.ant-input').eq(1).type('ab');
     cy.wait(5000)
-    cy.get('.ant-input-group-addon > .ant-btn').click({ force: true });
+    cy.get('.ant-input-group-addon > .ant-btn').eq(1).click({ force: true });
     cy.wait(5000)
   });
-
-  it("sorting of table and click of cell",()=>{
+  it("sorting of table and click of cell", () => {
     cy.log("sorting of table")
     cy.get(':nth-child(1) > .ant-table-column-sorters').click({ force: true });
     cy.get(':nth-child(2) > .ant-table-column-sorters').click({ force: true });
@@ -90,10 +82,9 @@ describe('Audit Trail', () => {
     cy.get('.ant-btn-primary').eq(3).click()
     cy.wait(1000)
     cy.get('.ant-dropdown-menu-title-content').contains('CSV').click()
-
     cy.log("sorting of table")
     cy.get('.ant-input').clear();
-    cy.get('.ant-input-group-addon > .ant-btn').click({ force: true });
+    cy.get('.ant-input-group-addon > .ant-btn').eq(1).click({ force: true });
     cy.wait(5000)
     cy.get('.ant-table-column-sorter').eq(0).click({ force: true });
     cy.get('.ant-table-column-sorter').eq(1).click({ force: true });
@@ -103,5 +94,4 @@ describe('Audit Trail', () => {
     cy.get('.ant-table-column-sorter').eq(5).click({ force: true });
     cy.get('.ant-table-column-sorter').eq(6).click({ force: true });
   });
-  
 });

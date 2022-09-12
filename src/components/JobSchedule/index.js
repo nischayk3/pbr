@@ -26,6 +26,7 @@ const { TabPane } = Tabs;
 //main component
 const JobSchedule = (props) => {
 
+
 	//for showing schedule alert modal
 	// const [alertModal, setAlertModal] = useState(props.visible);
 	const [activeTab, setActiveTab] = useState('1')
@@ -71,7 +72,7 @@ const JobSchedule = (props) => {
 					key="1"
 				>
 					{props.app_type == 'REPORT' ? <ReportNotify appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId} name={props.name} /> :
-						<AlertEvaluation appType={props.app_type} id={props.id} job={selectedJob} job_id={dagId} name={props.name} />
+						<AlertEvaluation appType={props.app_type} id={props.id + '-' + props.version} job={selectedJob} job_id={dagId} name={props.name} />
 					}
 				</TabPane>
 				<TabPane tab={
