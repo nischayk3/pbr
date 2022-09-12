@@ -1,4 +1,5 @@
 import { Button, Row, Select, Col, Drawer, Steps } from "antd";
+import Sider from "antd/lib/layout/Sider";
 import React, { useCallback, useState } from "react";
 import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import ReactFlow, {
@@ -9,6 +10,7 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import "./model.scss";
 import ModalComponent from "../../../../../../components/Modal/Modal";
+import panelRightImg from "../../../../../../assets/images/panel-rightIcon.svg";
 import NodeDetails from "./NodeDetails";
 import FeatureUnion from "./FeatureUnion";
 import Transformation from "./Transformations";
@@ -247,7 +249,7 @@ const Model = () => {
   const [nodes, _, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [detailsVisible, setDetailsVisible] = useState(false);
-  const [type, setType] = useState("");
+  const [type, setType] = useState("transform");
   const [drawervisible, setDrawerVisible] = useState(false);
   const onConnect = useCallback(
     (params) => setEdges((els) => addEdge(params, els)),
@@ -258,18 +260,7 @@ const Model = () => {
     setDrawerVisible(false);
     setDetailsVisible(false);
   };
-  const getTitle = () => {
-    let title = "";
-    if (type === "featureUnion") {
-      title = "Feature union - New";
-    } else if (type === "transform") {
-      title = "Transformation - New";
-    } else if (type === "estimator") {
-      title = "Estimator";
-    }
 
-    return title;
-  };
   const addEstimator = (vartype) => {
     setDrawerVisible(true);
     setDetailsVisible(false);
@@ -317,49 +308,54 @@ const Model = () => {
           </dl>
         </Col>
       </Row>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        fitView
-        onNodeClick={() => setDetailsVisible(true)}
-        nodeTypes={nodeTypes}
-        // attributionPosition="top-left"
-      >
-        <Background variant="dots" gap={25} size={0.3} color="#313131" />
-        <ModalComponent
-          isModalVisible={detailsVisible}
-          width="800px"
-          title="Details"
-          centered={true}
-          handleCancel={() => setDetailsVisible(false)}
+      <div className="analysisRowContainer">
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          fitView
+          onNodeClick={() => setDetailsVisible(true)}
+          nodeTypes={nodeTypes}
+          // attributionPosition="top-left"
         >
-          <NodeDetails addEstimator={addEstimator} />
-        </ModalComponent>
-      </ReactFlow>
-      <Drawer
-        placement="right"
-        visible={drawervisible}
-        closable={false}
-        className="drawer-d"
-        title={
-          <div className="title-modal-estimator">
-            {getTitle()}
-            <CloseOutlined onClick={() => setDrawerVisible(false)} />
+          <Background variant="dots" gap={25} size={0.3} color="#313131" />
+          <ModalComponent
+            isModalVisible={detailsVisible}
+            width="800px"
+            title="Details"
+            centered={true}
+            handleCancel={() => setDetailsVisible(false)}
+          >
+            <NodeDetails addEstimator={addEstimator} />
+          </ModalComponent>
+        </ReactFlow>
+        <div className="anaylsisRight">
+          <div className="pbrPanel pbrRightPanel">
+            <Sider
+              trigger={null}
+              collapsible
+              collapsed={!drawervisible}
+              className="drawer-d"
+            >
+              <span
+                className="trigger"
+                onClick={() => setDrawerVisible(!drawervisible)}
+              >
+                <img src={panelRightImg} className="panelImg" />
+              </span>
+              {type === "featureUnion" && drawervisible && (
+                <FeatureUnion onCreateClick={onCreateClick} />
+              )}
+              {type === "transform" && drawervisible && (
+                <Transformation onCreateClick={onCreateClick} />
+              )}
+              {type === "estimator" && drawervisible && <Estimator />}
+            </Sider>
           </div>
-        }
-        onClose={() => setDrawerVisible(false)}
-      >
-        {type === "featureUnion" && (
-          <FeatureUnion onCreateClick={onCreateClick} />
-        )}
-        {type === "transform" && (
-          <Transformation onCreateClick={onCreateClick} />
-        )}
-        {type === "estimator" && <Estimator />}
-      </Drawer>
+        </div>
+      </div>
     </div>
   );
 };
