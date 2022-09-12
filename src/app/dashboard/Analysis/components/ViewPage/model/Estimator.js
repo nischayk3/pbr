@@ -6,6 +6,9 @@ import SelectField from "../../../../../../components/SelectField/SelectField";
 const Estimator = () => {
   return (
     <>
+      <div className="drawer-head">
+        <h3>Estimator</h3>
+      </div>
       <div class="container-bar">
         <ul class="progressbar">
           <li class="active"></li>
