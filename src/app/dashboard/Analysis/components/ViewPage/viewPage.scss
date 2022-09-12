@@ -8,11 +8,11 @@ iframe {
     background: #ffffff;
 }
 .save-button-extra {
-    color: white;
-    background: #093185;
-    border: 1px solid #093185;
-    border-radius: 4px;
-    padding: 5px 22px;
+    color: white !important;
+    background: #093185 !important;
+    border: 1px solid #093185 !important;
+    border-radius: 4px !important;
+    padding: 5px 22px !important;
 }
 
 .menu-tabs-color {
@@ -25,4 +25,36 @@ iframe {
     .ant-tabs-top>.ant-tabs-nav:before {
         border-bottom: 0px !important;
     }
+}
+
+.exec-model-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    align-content: center;
+    padding: 0px 20px;
+    font-size: 14px;
+    line-height: 22px;
+    font-family: 'Roboto';
+    font-style: normal;
+    img {
+        height: 162px;
+        width: 193px;
+        margin-bottom: 15px;
+    }
+    p{
+        font-weight: 400;
+    }
+    a {
+        text-decoration: underline;
+        color: #1863BB;
+        font-weight: 500;
+    }
+    .ant-progress {
+        margin-top: 8px;
+        margin-bottom: 15px
+    }
+    // .ant-progress-bg {
+    //    margin-bottom: 15px
+    // }
 }

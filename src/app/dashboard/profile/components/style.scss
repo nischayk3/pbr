@@ -137,3 +137,34 @@
 	line-height: 22px;
 	margin-bottom: 7px;
 }
+
+.profile-avatar {
+	position: relative;
+	width: 137px;
+	margin: 0px auto;
+
+	>img {
+		width: 137px;
+		height: 137px;
+		margin: 10px 0px;
+		border-radius: 100%;
+		border: 2px solid #486BC9;
+	}
+
+	.edit-icon {
+		background: #486BC9;
+		width: 34px;
+		height: 34px;
+		position: absolute;
+		right: 5px;
+		bottom: 10px;
+		border-radius: 50px;
+		cursor: pointer;
+
+		>span {
+			font-size: 16px;
+			color: #fff;
+			padding: 9px 0;
+		}
+	}
+}

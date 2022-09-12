@@ -10,10 +10,13 @@ import Model from "./model/Model";
 import Preprocess from "./preproccessing/Preprocess";
 import Transformation from "./transformations";
 import ModelData from "./ModelData";
+import ModalComponent from "../../../../../components/Modal/Modal";
+import ModelExcecute from "./ModelExcecute";
 
 const ViewPageAnalysis = () => {
   const [modelData, setModelData] = useState();
   const [tableKey, setTableKey] = useState("1");
+  const [exectStart, setExectStart] = useState(false);
   const tabChange = (key) => {
     setTableKey(key);
   };
@@ -31,7 +34,7 @@ const ViewPageAnalysis = () => {
             <Button>Share</Button>
             <Button>Save</Button>
             <Button>Save As</Button>
-            <Button>Execute</Button>
+            <Button onClick={() => setExectStart(true)}>Execute</Button>
             <Button>
               <CloudUploadOutlined />
               Publish
@@ -74,6 +77,9 @@ const ViewPageAnalysis = () => {
         version={postChartData.data && postChartData.data[0].chart_version}
         status={approveReject}
       /> */}
+      <ModalComponent isModalVisible={exectStart} closable={false} centered>
+        <ModelExcecute />
+      </ModalComponent>
     </div>
   );
 };
