@@ -1,6 +1,7 @@
 .model-container {
     .react-flow {
         position: absolute !important;
+        height: 100vh !important;
     }
     .react-flow__node-input {
         padding: 0px;
