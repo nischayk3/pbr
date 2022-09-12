@@ -59,8 +59,8 @@ describe('Dashboard', () => {
 		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
 		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
 		cy.wait(6000);
-		cy.get(".ant-input-affix-wrapper").type("D132").click({ force: true })
-		cy.get(".ant-input-search-button").click()
+		cy.get(".ant-input-affix-wrapper").eq(1).type("D132").click({ force: true })
+		cy.get(".ant-input-search-button").eq(1).click()
 	})
 	it('Click on Table row', () => {
 		cy.log('Load Search Bar')
@@ -71,9 +71,9 @@ describe('Dashboard', () => {
 		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
 		cy.wait(6000);
 		cy.intercept('GET', '**/dashboards', { fixture: 'dashboard.json' })
-		cy.get(".ant-input-affix-wrapper").type("D132").click({ force: true })
+		cy.get(".ant-input-affix-wrapper").eq(1).type("D132").click({ force: true })
 		cy.wait(6000);
-		cy.get(".ant-input-search-button").click({ force: true })
+		cy.get(".ant-input-search-button").eq(1).click({ force: true })
 		cy.wait(6000);
 		cy.get('.ant-table-row > :nth-child(2) > div').click();
 	})
@@ -121,8 +121,8 @@ describe('Dashboard', () => {
 		cy.get('.global-filters > :nth-child(2) > .ant-btn > span').click();
 		cy.wait(6000);
 		cy.get('[d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"]').click();
-		cy.get('.btns > .ant-btn > span').click();
-		cy.get('[style="background-color: rgb(9, 49, 133); color: white; border-radius: 4px;"] > span').click();
+		// cy.get('.btns > .ant-btn > span').click({ force: true });
+		// cy.get('[style="background-color: rgb(9, 49, 133); color: white; border-radius: 4px;"] > span').click({ force: true });
 		// /* ==== Generated with Cypress Studio ==== */
 		cy.get(':nth-child(3) > .ant-breadcrumb-link > a').click({ force: true });
 		cy.wait(6000);
@@ -154,7 +154,7 @@ describe('Dashboard', () => {
 		cy.get('.select_field > .ant-select > .ant-select-selector > .ant-select-selection-item').click({ force: true });
 		cy.get('.ant-select-item-option-active > .ant-select-item-option-content').click();
 		cy.wait(4000);
-		cy.get('.ant-input').click({ force: true });
+		cy.get('.ant-input').eq(1).click({ force: true });
 		cy.wait(6000);
 		cy.get('.ant-input-wrapper > .ant-input').type('C263{enter}');
 		cy.get('.ant-table-row > :nth-child(2)').click({ force: true });
