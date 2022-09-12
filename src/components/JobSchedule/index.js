@@ -26,7 +26,6 @@ const { TabPane } = Tabs;
 //main component
 const JobSchedule = (props) => {
 
-	console.log(props)
 
 	//for showing schedule alert modal
 	// const [alertModal, setAlertModal] = useState(props.visible);
