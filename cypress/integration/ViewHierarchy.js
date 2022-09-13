@@ -77,10 +77,10 @@ describe("Renders the view Hierarachy page", () => {
     cy.intercept('GET', 'drug-substance', { fixture: 'view-hierarchy.json' })
     cy.visit(url + '/#/dashboard/molecule_hierarchy_configuration')
     cy.wait(3000)
-    cy.get('.ant-input').clear();
-    cy.get('.ant-input').type('BELA{enter}');
-    cy.get('.ant-input').clear();
-    cy.get('.ant-input').type('BELA{enter}');
+    cy.get('.ant-input').eq(1).clear();
+    cy.get('.ant-input').eq(1).type('BELA{enter}');
+    cy.get('.ant-input').eq(1).clear();
+    cy.get('.ant-input').eq(1).type('BELA{enter}');
     cy.intercept('GET', '**/drug-substance?ds_name=BELATACEPT', { fixture: 'plantMol.json' })
     cy.get('.ant-table-tbody > :nth-child(1) > :nth-child(1)').click();
     cy.wait(3000)

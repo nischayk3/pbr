@@ -371,6 +371,8 @@ const ViewPage = () => {
         app_type="CHART"
         handleCancel={handleCancel}
         id={postChartData.data && postChartData.data[0].chart_id}
+        version={postChartData.data && postChartData.data[0].chart_version}
+
       />
       <Signature
         isPublish={isPublish}
