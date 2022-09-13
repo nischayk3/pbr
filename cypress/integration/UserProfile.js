@@ -1,3 +1,9 @@
+Cypress.Commands.add("multiselect", (options) => {
+	options.forEach((option) => {
+		cy.log(option)
+		cy.get('.ant-select-item-option').contains(option).click()
+	});
+});
 
 describe("Render View Creation Load Error Log", () => {
 	beforeEach(() => {
@@ -75,19 +81,24 @@ describe("Render View Creation Load Error Log", () => {
 	})
 
 	it('should verify Preference', () => {
+		cy.log('Upload Profile Image')
+		//cy.get('#image-input')
+		cy.get('input[type=file]').selectFile({ contents: 'cypress/filefortest/avatar.png' }, { force: true })
+
 		cy.log('Select Date Format')
 		cy.get('#rc_select_0').click()
-		cy.get("#rc_select_0").clear();
-		cy.get("#rc_select_0").type("MM:DD:YYYY")
+		cy.wait(500)
+		cy.get('.ant-select-item-option').first().click({ force: true })
+
 
 		cy.log('Select Time Zone')
 		cy.get('#rc_select_1').click()
-		cy.get("#rc_select_0").clear();
-		cy.get("#rc_select_0").type("Asia/Kolkata")
+		cy.wait(500)
+		cy.get('.ant-select-item-option').eq(1).click({ force: true })
 
 		cy.log('Select Language')
 		cy.get('#rc_select_2').click()
-		cy.get("#rc_select_0").clear();
-		cy.get("#rc_select_0").type("English (UK)")
+		cy.wait(500)
+		cy.get('.ant-select-item-option').eq(2).click({ force: true })
 	})
 })

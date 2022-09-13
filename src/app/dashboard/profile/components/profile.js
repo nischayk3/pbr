@@ -49,13 +49,14 @@ const Profile = () => {
 
 	const handlePassChange = async () => {
 		const userId = localStorage.getItem("user")
-
+		/* istanbul ignore next */
 		if (newPassword === confirmPassword) {
 			const _req = {
 				"current_password": currentPassword,
 				"new_password": confirmPassword,
 				"user_id": userId
 			}
+			/* istanbul ignore next */
 			const res = await passwordChange(_req);
 		} else {
 			setErrorMsg("Password does not match")
@@ -92,6 +93,7 @@ const Profile = () => {
 		}
 	}
 
+	/* istanbul ignore next */
 	const savePreference = async () => {
 		try {
 			dispatch(showLoader());
@@ -133,17 +135,7 @@ const Profile = () => {
 			reader.readAsDataURL(this.files[0]);
 		});
 	}
-	// const handleChange = e => {
-	// 	console.log("urlllll", URL.createObjectURL(e.target.files[0]), e.target.files);
-	// 	if (e.target.files.length) {
 
-	// 		setImgRes(URL.createObjectURL(e.target.files[0]))
-	// 		setImage({
-	// 			preview: URL.createObjectURL(e.target.files[0]),
-	// 			raw: e.target.files[0]
-	// 		});
-	// 	}
-	// };
 
 	const getProfile = async () => {
 		try {
