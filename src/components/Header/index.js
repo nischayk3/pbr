@@ -87,16 +87,12 @@ const HeaderBar = () => {
 				/>
 				<BellOutlined style={{ margin: "6px 25px", fontSize: "20px" }} />
 				<div className="custom-menu">
-
 					<div className="user-name" onClick={dropDownOpen}>
 						<Avatar size={22} style={{ backgroundColor: "orange", fontSize: "16px", padding: "1px 0" }}>
 							{localStorage.getItem("username") &&
 								localStorage.getItem("username").split("")[0].toUpperCase()}{" "}
 						</Avatar>
-						<p>
-							{loginDetails && loginDetails.firstname} {loginDetails && loginDetails.lastname}
-						</p>
-						<DownOutlined />
+						<DownOutlined className='down-icon' />
 					</div>
 					{dropdownVisible && (
 						<>
