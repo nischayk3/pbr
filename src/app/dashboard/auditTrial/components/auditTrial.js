@@ -627,6 +627,7 @@ class AuditTrials extends React.Component {
 										disabledDate={this.disabledDate}
 										onOpenChange={this.onOpenChange}
 										onCalendarChange={(val) => this.setState({ dates: val })}
+										renderExtraFooter={() => 'User can view maximum 3month data'}
 									/>
 								</div>
 								<div>

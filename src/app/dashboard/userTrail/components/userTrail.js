@@ -13,7 +13,6 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import SelectSearchField from "../../../../components/SelectSearchField/SelectSearchField";
-import { MDH_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import {
 	auditFilter
 } from "../../../../duck/actions/auditTrialAction";
@@ -25,25 +24,11 @@ import "./style.scss";
 
 const UserTrail = () => {
 	const { Option } = Select;
-	// const userMenu = (
-	// 	<Menu>
-	// 		<Menu.Item key="1" onClick={() => getExcelFile("excel")}>
-	// 			Excel
-	// 		</Menu.Item>
-	// 		<Menu.Divider />
-	// 		<Menu.Item key="2" onClick={() => getExcelFile("csv")}>
-	// 			CSV
-	// 		</Menu.Item>
-	// 	</Menu>
-	// );
-
 	const [userList, setUserList] = useState([]);
 	const [tableData, setTableData] = useState([]);
 	const [selectedLimit, setSelectedLimit] = useState("500");
 	const [filterTable, setFilterTable] = useState(null);
 	const [user, setUser] = useState("");
-
-
 
 	const columns = [
 		{
@@ -51,21 +36,18 @@ const UserTrail = () => {
 			dataIndex: "id",
 			key: "1",
 			defaultSortOrder: "descend",
-			//sorter: (a, b) => a.id.localeCompare(b.id)
 		},
 		{
 			title: "User Id",
 			dataIndex: "user_id",
 			key: "2",
 			defaultSortOrder: "descend",
-			//sorter: (a, b) => a.user_id.localeCompare(b.user_id)
 		},
 		{
 			title: "Session Type",
 			dataIndex: "login_type",
 			key: "3",
 			defaultSortOrder: "descend",
-			//sorter: (a, b) => a.session_type.localeCompare(b.session_type)
 		},
 		{
 			title: "Date & Time",
@@ -73,18 +55,13 @@ const UserTrail = () => {
 			key: "4",
 			defaultSortOrder: "descend",
 			render: (text) => moment(text).format("DD-MM-YYYY HH:mm:ss")
-			//sorter: (a, b) => a.session_timestamp.localeCompare(b.session_timestamp)
 		},
 		{
 			title: "TimeSpent(in min)",
 			dataIndex: "TimeSpent",
 			key: "5",
 			defaultSortOrder: "descend",
-			//render: (text) => moment(text).format("DD-MM-YYYY HH:mm:ss")
-			//sorter: (a, b) => a.session_timestamp.localeCompare(b.session_timestamp)
 		},
-
-
 	]
 
 	useEffect(() => {
@@ -112,52 +89,6 @@ const UserTrail = () => {
 		}
 	};
 
-
-	const getExcelFile = (value) => {
-		var today = new Date();
-		today.setDate(today.getDate() + 1);
-		let endPoint = "/services/v1/audit-information?";
-		let baseUrl = MDH_APP_PYTHON_SERVICE + endPoint;
-		let startDate =
-			selectedDate.length > 0
-				? selectedDate[0]
-				: "2021-09-01";
-		let endDate =
-			selectedDate.length > 0
-				? selectedDate[1]
-				: today.toISOString().slice(0, 10);
-		let tableName = ["Parameter Data"];
-		let activity = eventType.value;
-		let userid = user.value;
-
-		const myUrlWithParams = new URL(baseUrl);
-		if (startDate == endDate) {
-			myUrlWithParams.searchParams.append("startdate", startDate);
-		} else {
-			myUrlWithParams.searchParams.append("startdate", startDate);
-			myUrlWithParams.searchParams.append("enddate", endDate);
-		}
-
-		if (activity) {
-			myUrlWithParams.searchParams.append("activity", activity);
-		}
-		if (userid) {
-			myUrlWithParams.searchParams.append("userid", userid);
-		}
-		myUrlWithParams.searchParams.append("table_name", tableName);
-
-		if (value == "excel") {
-			myUrlWithParams.searchParams.append("export_csv", false);
-		}
-		if (value == "csv") {
-			myUrlWithParams.searchParams.append("export_csv", true);
-		}
-
-		let url = myUrlWithParams.href;
-		window.open(url);
-	};
-
-
 	const auditHighlight = (_req) => {
 		getUserSessions(_req).then((res) => {
 			if (res.Status === 200) {
@@ -179,7 +110,6 @@ const UserTrail = () => {
 
 		});
 	};
-
 
 	const search = (value) => {
 		const filterTables = tableData.filter((o) =>
@@ -203,7 +133,6 @@ const UserTrail = () => {
 		} else {
 			setSelectedLimit(value)
 		}
-
 	}
 
 	const onChangeIng = (value, filterType) => {
@@ -219,8 +148,6 @@ const UserTrail = () => {
 		}
 	};
 
-
-
 	const handleFilter = () => {
 		const _reqFilter = {
 			limit: selectedLimit,
@@ -230,7 +157,6 @@ const UserTrail = () => {
 		auditHighlight(_reqFilter);
 	};
 
-
 	const handleClear = () => {
 		const _req = {
 			limit: 500
@@ -238,10 +164,7 @@ const UserTrail = () => {
 		setUser("")
 		setSelectedLimit("500")
 		auditHighlight(_req);
-
 	};
-
-
 
 	const optionsUser = userList.map((item, index) => (
 		<Select.Option key={index} value={item.value}>
@@ -266,7 +189,6 @@ const UserTrail = () => {
 							//handleClearSearch={e => clearSearch(e, 'plant')}
 							selectedValue={user}
 						/>
-
 					</div>
 					<div className="filter-btn">
 						<Button
@@ -291,9 +213,7 @@ const UserTrail = () => {
 				</div>
 				<div className="custom-table-card" style={{ margin: "10px 0" }}>
 					<div className="table-header">
-						<div
-							className="child-1"
-						>
+						<div className="child-1">
 							<Input.Search
 								className="table-search"
 								placeholder="Search by..."
@@ -301,19 +221,13 @@ const UserTrail = () => {
 								onSearch={search}
 							/>
 						</div>
-						<div
-							className="child-2"
-						>
+						<div className="child-2">
 							<Select
-
 								allowClear
-								// defaultValue={selectedLimit}value = { company || undefined }
 								value={selectedLimit || undefined}
 								placeholder="Limit"
 								onChange={(e, value) => { onlimitChange(e, value) }}
-
 							>
-
 								<Option value="100" key="100">
 									100
 								</Option>
@@ -329,21 +243,8 @@ const UserTrail = () => {
 								<Option value="all" key="all">
 									ALL
 								</Option>
-
 							</Select>
 						</div>
-						{/* <div
-							className="child-3"
-						>
-							<Dropdown style={{ color: "#ffffff" }} overlay={userMenu}>
-								<Button
-									className="custom-secondary-btn"
-									type="primary"
-								>
-									Export
-								</Button>
-							</Dropdown>
-						</div> */}
 					</div>
 					<Table
 						style={{ margin: "20px" }}
