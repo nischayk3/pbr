@@ -39,18 +39,18 @@ describe("Render View Creation Load Error Log", () => {
 		cy.get('.email').should("have.text", "fahad.siddiqui@mareana.com")
 
 		cy.get('.submenu > :nth-child(1)').click()
-		cy.wait(4000)
+		cy.wait(2000)
 
 		cy.log('verify basic information')
 
-		cy.log('verify firstname')
-		cy.get('#firstname').should("have.text", "Fahad")
+		// cy.log('verify firstname')
+		// cy.get('#firstname').should("have.text", "Fahad")
 
-		cy.log('verify lastname')
-		cy.get('#lastname').should("have.text", "siddiqui")
+		// cy.log('verify lastname')
+		// cy.get('#lastname').should("have.text", "siddiqui")
 
-		cy.log('verify email')
-		cy.get('#email').should("have.text", "fahad.siddiqui@mareana.com")
+		// cy.log('verify email')
+		// cy.get('#email').should("have.text", "fahad.siddiqui@mareana.com")
 
 	})
 
@@ -64,7 +64,7 @@ describe("Render View Creation Load Error Log", () => {
 
 		cy.log('verify new password')
 		cy.get('.layout-section-wrapper > :nth-child(2) > .split-form > :nth-child(1) > :nth-child(2) > p').should("have.text", "New password")
-		cy.get('.layout-section-wrapper > :nth-child(2) > .split-form > :nth-child(1) > :nth-child(2) > p').type("password1")
+		cy.get(':nth-child(2) > .ant-input-affix-wrapper > .ant-input').type("password1")
 
 		cy.log('verify confirm new passwprd')
 		cy.get(':nth-child(2) > .split-form > :nth-child(1) > :nth-child(3) > p').should("have.text", "Confirm new password")
@@ -72,5 +72,22 @@ describe("Render View Creation Load Error Log", () => {
 
 		cy.log('click save button')
 		cy.get(':nth-child(2) > .split-form > .ant-btn > span').click()
+	})
+
+	it('should verify Preference', () => {
+		cy.log('Select Date Format')
+		cy.get('#rc_select_0').click()
+		cy.get("#rc_select_0").clear();
+		cy.get("#rc_select_0").type("MM:DD:YYYY")
+
+		cy.log('Select Time Zone')
+		cy.get('#rc_select_1').click()
+		cy.get("#rc_select_0").clear();
+		cy.get("#rc_select_0").type("Asia/Kolkata")
+
+		cy.log('Select Language')
+		cy.get('#rc_select_2').click()
+		cy.get("#rc_select_0").clear();
+		cy.get("#rc_select_0").type("English (UK)")
 	})
 })
