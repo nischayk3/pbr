@@ -59,7 +59,7 @@ import { ImCrop } from 'react-icons/im';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { loadTemplateInfo, loadMatBatchInfo } from '../../../../duck/actions/pbrAction';
 import TableIdentifier from './tableIdentifier/tableIdentifier'
-
+import PageIdentifierForm from './pageIdentifierForm'
 import {
     getBoundingBoxData,
     savePbrTemplate,
@@ -238,6 +238,11 @@ function PaperBatchRecordsTemplate() {
     });
     const [triggerUpdate, setTriggerUpdate] = useState(false);
     const [initialSideTableData, setInitialSideTableData] = useState({});
+    const [initialPageIdentifierData, setInitialPageIdentifierData] = useState({users: []});
+    const [mainPanelValue, setMainPanelValue] = useState("")
+    const [pageDragValue, setPageDragValue] = useState({})
+    const [pageIdFormValues, setPageIdFormValues] = useState([])
+    const [pageIdDropdownValues, setPageIdDropdownValues] = useState([])
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
         setRightPanelCollapsed(!rightPanelCollapsed);
@@ -247,6 +252,20 @@ function PaperBatchRecordsTemplate() {
         setRightPanelCollapsed(!rightPanelCollapsed);
         setLeftPanelCollapsed(!leftPanelCollapsed);
     };
+    useEffect(() => {
+        if (pageIdFormValues) {
+            let arr = []
+            pageIdFormValues.forEach(item => {
+                if (item != undefined) {
+                    let obj = { lable: item?.name, value: item?.name }
+                    arr.push(obj)
+                }
+
+            })
+            setPageIdDropdownValues(arr)
+        }
+
+    }, [pageIdFormValues])
 
     const parameterAddingHandler = (a) => {
         setFileList([])
@@ -438,6 +457,9 @@ function PaperBatchRecordsTemplate() {
             setFormValues(arr)
         } else if (field === 'anchor_dir') {
             arr[key] = { ...arr[key], anchor_dir: value?.value }
+            setFormValues(arr)
+        } else if (field === 'pageIdValue') {
+            arr[key] = { ...arr[key], pageIdValue: value?.value }
             setFormValues(arr)
         } else if (field === 'param_rule') {
             arr[key] = { ...arr[key], values: { ...arr[key]?.values, param_rule: value?.value } }
@@ -636,7 +658,7 @@ function PaperBatchRecordsTemplate() {
      * TODO: get boundingBoxData info
      */
     /* istanbul ignore next */
-    const getBoundingBoxDataInfo = async (width, height, mode, pageNumber = 0,table_identifier={}) => {
+    const getBoundingBoxDataInfo = async (width, height, mode, pageNumber = 0, table_identifier = {}) => {
         try {
             dispatch(showLoader());
             let _reqBatch = {
@@ -647,7 +669,7 @@ function PaperBatchRecordsTemplate() {
                 action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "saved" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? mode == "TABLE" ? "create" : "edit" : "create",
                 temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : "",
                 temp_version: params?.temp_disp_id ? 1 : 0,
-                table_identifier:table_identifier
+                table_identifier: table_identifier
             };
             const batchRes = await getBoundingBoxData(_reqBatch);
             setOriginalResponse(batchRes)
@@ -775,10 +797,14 @@ function PaperBatchRecordsTemplate() {
                 let table = {
                     users: []
                 }
+                let pageID = {
+                    users: []
+                }
                 loadData[0]?.pbr_template_info?.pbrTemplateInfo.forEach(item => {
                     let obj = {
                         name: item.name,
                         method: item.method,
+                        pageIdValue:item?.page_name,
                         regex: item.param_value_regex,
                         AnchorDirection: item.param_value_direction,
                         param_rule: item?.param_value_rule?.rule_name,
@@ -815,11 +841,27 @@ function PaperBatchRecordsTemplate() {
                     let sideData = {
                         table_id: item?.table_id,
                         name: item?.table_name,
-                        tableData: loadData[0]?.pbr_template_info?.tableData[index]?.tableData
+                        tableData: loadData[0]?.pbr_template_info?.tableData[index]?.tableData,
+                        pageIdValue:item?.page_name
                     }
                     table.users.push(sideData)
                 })
+                loadData[0]?.pbr_template_info?.pbrPageIdentifier.forEach((item, index) => {
+                    let sideData = {
+                       name:item?.name
+                    }
+                    if(item.keys.length>0){
+                        item.keys.forEach((i,index)=>{
+                            sideData[`key${index+1}`]= i
+                        })
+                       
+                        
+                    }
+                    sideData["keyCount"] = item.keys.length
+                    pageID.users.push(sideData)
+                })
                 setInitialSideTableData(table)
+                setInitialPageIdentifierData(pageID)
                 setFormLoadParameter(demoValues)
                 setParameterFormData(demoValues.users)
                 setFormTableData(loadData[0]?.pbr_template_info?.tableData)
@@ -946,9 +988,12 @@ function PaperBatchRecordsTemplate() {
             }
             for (let i = 0; i < 2; i++) {
                 setTimeout(() => {
-                    getBoundingBoxDataInfo(imageWidth, imageHeight, "CELL", pageNumber - 1,table_identifier);
+                    getBoundingBoxDataInfo(imageWidth, imageHeight, "CELL", pageNumber - 1, table_identifier);
                 }, i * 1000)
             }
+        }
+        if (mainPanelValue == 2) {
+            setPageDragValue(area)
         }
         setBoundingBoxClicked(true);
         setClickedSnippetId(area.areaValue);
@@ -975,7 +1020,7 @@ function PaperBatchRecordsTemplate() {
         };
         setAreasMapObject(obj);
         let filteredArr = [...areasMapFilteredArr];
-        if (DraggerActiveMultiple.value) {
+        if (DraggerActiveMultiple.value && mainPanelValue !== 2) {
             let obj1 = { ...parameterValue };
             obj1[`param${Number(activeKey) + 1}`] = {
                 ...obj1[`param${Number(activeKey) + 1}`],
@@ -989,7 +1034,7 @@ function PaperBatchRecordsTemplate() {
             fields.users[activeKey]["param_key"] = area.areaValue
             parameterForm.setFieldsValue(fields)
 
-        } else if (DraggerActiveMultiple.unit) {
+        } else if (DraggerActiveMultiple.unit && mainPanelValue !== "2") {
             let obj1 = { ...parameterValue };
             obj1[`param${Number(activeKey) + 1}`] = {
                 ...obj1[`param${Number(activeKey) + 1}`],
@@ -999,7 +1044,7 @@ function PaperBatchRecordsTemplate() {
             arr[activeKey] = { ...arr[activeKey], unitValues: { ...arr[activeKey]?.unitValues, unitAnchor: area.areaValue, snippetID: area.snippetID, coords: area.coords } }
             setFormValues(arr)
             setParameterValue(obj1);
-        } else if (DraggerActiveMultiple.time) {
+        } else if (DraggerActiveMultiple.time && mainPanelValue !== "2") {
             let obj1 = { ...parameterValue };
             obj1[`param${Number(activeKey) + 1}`] = {
                 ...obj1[`param${Number(activeKey) + 1}`],
@@ -1009,7 +1054,7 @@ function PaperBatchRecordsTemplate() {
             arr[activeKey] = { ...arr[activeKey], timeValues: { ...arr[activeKey]?.timeValues, timeAnchor: area.areaValue, snippetID: area.snippetID, coords: area.coords } }
             setFormValues(arr)
             setParameterValue(obj1);
-        } else if (DraggerActiveMultiple.date) {
+        } else if (DraggerActiveMultiple.date && mainPanelValue !== "2") {
             let obj1 = { ...parameterValue };
             obj1[`param${Number(activeKey) + 1}`] = {
                 ...obj1[`param${Number(activeKey) + 1}`],
@@ -1019,7 +1064,7 @@ function PaperBatchRecordsTemplate() {
             arr[activeKey] = { ...arr[activeKey], dateValues: { ...arr[activeKey]?.dateValues, dateAnchor: area.areaValue, snippetID: area.snippetID, coords: area.coords } }
             setFormValues(arr)
             setParameterValue(obj1);
-        } else if (DraggerActiveMultiple.valueSnippet) {
+        } else if (DraggerActiveMultiple.valueSnippet && mainPanelValue !== "2") {
             let obj1 = { ...parameterValue };
             obj1[`param${Number(activeKey) + 1}`] = {
                 ...obj1[`param${Number(activeKey) + 1}`],
@@ -1032,7 +1077,7 @@ function PaperBatchRecordsTemplate() {
             let fields = parameterForm.getFieldsValue()
             fields.users[activeKey]["param_snippet_value"] = area.areaValue
             parameterForm.setFieldsValue(fields)
-        } else if (DraggerActiveMultiple.unitSnippet) {
+        } else if (DraggerActiveMultiple.unitSnippet && mainPanelValue !== "2") {
             let obj1 = { ...parameterValue };
             obj1[`param${Number(activeKey) + 1}`] = {
                 ...obj1[`param${Number(activeKey) + 1}`],
@@ -1042,7 +1087,7 @@ function PaperBatchRecordsTemplate() {
             arr[activeKey] = { ...arr[activeKey], unitValues: { ...arr[activeKey]?.unitValues, unitId: area.areaValue, valueSnippetID: area.snippetID, valueCoords: area.coords } }
             setFormValues(arr)
             setParameterValue(obj1);
-        } else if (DraggerActiveMultiple.timeSnippet) {
+        } else if (DraggerActiveMultiple.timeSnippet && mainPanelValue !== "2") {
             let obj1 = { ...parameterValue };
             obj1[`param${Number(activeKey) + 1}`] = {
                 ...obj1[`param${Number(activeKey) + 1}`],
@@ -1052,7 +1097,7 @@ function PaperBatchRecordsTemplate() {
             arr[activeKey] = { ...arr[activeKey], timeValues: { ...arr[activeKey]?.timeValues, timeId: area.areaValue, valueSnippetID: area.snippetID, valueCoords: area.coords } }
             setFormValues(arr)
             setParameterValue(obj1);
-        } else if (DraggerActiveMultiple.dateSnippet) {
+        } else if (DraggerActiveMultiple.dateSnippet && mainPanelValue !== "2") {
             let obj1 = { ...parameterValue };
             obj1[`param${Number(activeKey) + 1}`] = {
                 ...obj1[`param${Number(activeKey) + 1}`],
@@ -1074,6 +1119,7 @@ function PaperBatchRecordsTemplate() {
                     table_id: item?.table_id,
                     table_name: item?.name,
                     filename: params?.file,
+                    page_name:item?.pageIdValue,
                     page: 1,
                     table_identifier: item?.tableData?.table_identifier,
                     column_config: {
@@ -1148,7 +1194,7 @@ function PaperBatchRecordsTemplate() {
                     // pbrTemplateStatus: 'DRFT',
                     createdBy: login_response?.email_id,
                     changedBy: params.temp_disp_id ? login_response?.email_id : "",
-                    templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {}, pbrTableInfo: [], tableData: formTableData,filename: params?.file, },
+                    templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {}, pbrTableInfo: [], tableData: formTableData, filename: params?.file, },
                     material: matBatch?.material_num,
                     batch: matBatch?.batch,
                     siteCode: matBatch?.site,
@@ -1163,6 +1209,7 @@ function PaperBatchRecordsTemplate() {
                         method: ele.method,
                         filename: params?.file,
                         name: ele.name,
+                        page_name: ele?.pageIdValue,
                         param_value_direction: parameterFormData[index]?.AnchorDirection,
                         param_value_regex: parameterFormData[index]?.regex
                     }
@@ -1252,17 +1299,25 @@ function PaperBatchRecordsTemplate() {
                     }
                     arr.push(obj);
                 });
-                let obj1 = {
-                    keys: [],
-                    condition: "AND"
+
+                let pageArr = []
+                if (pageIdFormValues) {
+                    pageIdFormValues.forEach(item => {
+                        let obj = { name: "", keys: [] }
+                        Object.entries(item).forEach(item1 => {
+                            if (item1[0] != "name" && item1[0] != "keyCount") {
+                                obj.keys.push(item1[1])
+                            }
+                            if (item1[0] === "name") {
+                                obj.name = item1[1]
+                            }
+                        })
+                        pageArr.push(obj)
+
+                    })
                 }
-                Object.entries(pageIdentifierData).forEach(item => {
-                    if (item[0] != "page_id" && item[1]) {
-                        obj1.keys.push(item[1])
-                    }
-                })
                 _reqBatch.templateInfo.pbrTemplateInfo = arr;
-                _reqBatch.templateInfo.pbrPageIdentifier = obj1;
+                _reqBatch.templateInfo.pbrPageIdentifier = pageArr;
                 let tableRer = tableDataReq()
                 _reqBatch.templateInfo.pbrTableInfo = tableRer;
                 //api call
@@ -1431,7 +1486,7 @@ function PaperBatchRecordsTemplate() {
             var req = {
                 extraction_type: "all",
                 extraction_filename: `${params?.file?.split('.')[0]}_page-0.jpeg.json`,
-                templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
+                templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: [] },
                 product_num: matBatch?.material_num,
                 batch_num: matBatch?.batch,
                 site_code: matBatch?.site
@@ -1444,6 +1499,7 @@ function PaperBatchRecordsTemplate() {
                 filename: params?.file,
                 name: formValues[activeKey]?.name,
                 method: formValues[activeKey]?.method,
+                page_name:  formValues[activeKey]?.pageIdValue,
                 param_value_direction: parameterFormData[activeKey]?.AnchorDirection,
                 param_value_regex: parameterFormData[activeKey]?.regex
             }
@@ -1524,17 +1580,24 @@ function PaperBatchRecordsTemplate() {
                     factor: parameterFormData[activeKey]?.date_valueTransformation, transformation: parameterFormData[activeKey]?.date_transformation
                 }
             }
-            var obj1 = {
-                keys: [],
-                condition: "AND"
+            let pageArr = []
+            if (pageIdFormValues) {
+                pageIdFormValues.forEach(item => {
+                    let obj = { name: "", keys: [] }
+                    Object.entries(item).forEach(item1 => {
+                        if (item1[0] != "name" && item1[0] != "keyCount") {
+                            obj.keys.push(item1[1])
+                        }
+                        if (item1[0] === "name") {
+                            obj.name = item1[1]
+                        }
+                    })
+                    pageArr.push(obj)
+
+                })
             }
-            Object.entries(pageIdentifierData).forEach(item => {
-                if (item[0] != "page_id" && item[1]) {
-                    obj1.keys.push(item[1])
-                }
-            })
             req.templateInfo.pbrTemplateInfo.push(obj)
-            req.templateInfo.pbrPageIdentifier = obj1
+            req.templateInfo.pbrPageIdentifier = pageArr
         }
 
         // _reqBatch.templateInfo.pbrTemplateInfo = arr;
@@ -1563,7 +1626,7 @@ function PaperBatchRecordsTemplate() {
             setTableLoading(true)
             var req1 = {
                 extraction_type: "custom",
-                templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: {} },
+                templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: [] },
                 extraction_filename: `${params?.file?.split('.')[0]}_page-0.jpeg.json`,
                 product_num: matBatch?.material_num,
                 batch_num: matBatch?.batch,
@@ -1574,6 +1637,7 @@ function PaperBatchRecordsTemplate() {
                 var obj = {
                     filename: params?.file,
                     name: ele.name,
+                    page_name: ele?.pageIdValue,
                     method: ele.method,
                     param_value_direction: parameterFormData[index]?.AnchorDirection,
                     param_value_regex: parameterFormData[index]?.regex
@@ -1664,17 +1728,24 @@ function PaperBatchRecordsTemplate() {
                 }
                 arr.push(obj);
             });
-            var obj1 = {
-                keys: [],
-                condition: "AND"
+            let pageArr = []
+            if (pageIdFormValues) {
+                pageIdFormValues.forEach(item => {
+                    let obj = { name: "", keys: [] }
+                    Object.entries(item).forEach(item1 => {
+                        if (item1[0] != "name" && item1[0] != "keyCount") {
+                            obj.keys.push(item1[1])
+                        }
+                        if (item1[0] === "name") {
+                            obj.name = item1[1]
+                        }
+                    })
+                    pageArr.push(obj)
+
+                })
             }
-            Object.entries(pageIdentifierData).forEach(item => {
-                if (item[0] != "page_id" && item[1]) {
-                    obj1.keys.push(item[1])
-                }
-            })
             req1.templateInfo.pbrTemplateInfo = arr;
-            req1.templateInfo.pbrPageIdentifier = obj1;
+            req1.templateInfo.pbrPageIdentifier = pageArr;
             let res = await findParameter(req1)
             if (res?.Found_file_list?.length > 0) {
                 setModalData(res.Extraction)
@@ -1886,7 +1957,7 @@ function PaperBatchRecordsTemplate() {
             }, i * 1000)
         }
     }
-   
+
     return (
         <div className='pbr-content-layout' >
             <div className='custom-wrapper pbr-wrapper'>
@@ -1965,6 +2036,7 @@ function PaperBatchRecordsTemplate() {
                                 expandIconPosition='right'
                                 defaultActiveKey={['1']}
                                 onChange={(val) => {
+                                    setMainPanelValue(val)
                                     if (val == 4) {
                                         setShowRowColIdentifier(true)
                                         for (let i = 0; i < 2; i++) {
@@ -2043,38 +2115,8 @@ function PaperBatchRecordsTemplate() {
                                     </Form>
                                 </Panel>
                                 <Panel id="page-Identifier" header='Page Identifier' key='2'>
-                                    <div className='pageIdentifierBlock'>
-                                        <Form
-                                            layout='vertical'
-                                            initialValues={pageIdentifierData}
-                                            className='formNewTemplate'
-                                            onValuesChange={pageIdentifierValueChange} name="page_identifier" onFinish={onFinish}
-                                        >
-                                            <Form.Item
-                                                name='page_id'
-                                                label="Page ID"
-
-                                            >
-                                                <Input />
-                                                {/* <Input/> */}
-                                            </Form.Item>
-                                            <Form.Item
-                                                name='key'
-                                                label="Key 1"
-
-                                            >
-                                                <Input />
-                                                {/* <Input/> */}
-                                            </Form.Item>
-                                            <Form.Item
-                                                name='key_2'
-                                                label="Key 2"
-
-                                            >
-                                                <Input />
-                                            </Form.Item>
-                                        </Form>
-                                    </div>
+                                    <PageIdentifierForm pageDragValue={pageDragValue} setPageIdFormValues={setPageIdFormValues}
+                                        handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish} initialPageIdentifierData={initialPageIdentifierData}/>
                                 </Panel>
                                 <Panel id="parameter-panel" header='Parameter' key='3'>
                                     <Form onValuesChange={parameterValuesChange} name="dynamic_form_nest_item" onFinish={parameterFormFinish}
@@ -2179,6 +2221,16 @@ function PaperBatchRecordsTemplate() {
                                                                                         >
 
                                                                                             <Input placeholder='Enter Regex' />
+                                                                                        </Form.Item>}
+                                                                                    {pageIdDropdownValues.length > 0 &&
+                                                                                        <Form.Item {...restField}
+                                                                                            name={[name, 'pageIdValue']}
+                                                                                            label="Page Id"
+                                                                                            rules={[{ required: true, message: 'Enter pageId' }]}
+                                                                                        // label="AnchorDirection"
+                                                                                        >
+
+                                                                                            <Select placeholder='Enter PageID' options={pageIdDropdownValues} onChange={(e, value) => onChangeChart(e, 'pageIdValue', name, value)} />
                                                                                         </Form.Item>}
                                                                                     <div className='parameterAddingBlock parameterValueBlock'>
                                                                                         <p>
@@ -2936,53 +2988,8 @@ function PaperBatchRecordsTemplate() {
                                     <div className='tabletype'>
                                         <DynamicTableForm handleSideState={handleSideState} sideTableData={sideTableData}
                                             setTableActiveKey={setTableActiveKey} setFormTableData={setFormTableData} initialSideTableData={initialSideTableData}
-                                            handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish}
+                                            handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish} pageIdDropdownValues={pageIdDropdownValues}
                                         />
-                                        {/* <Form
-                                            layout='vertical'
-                                            initialValues={pageIdentifierData}
-                                            className='formNewTemplate'
-                                            onValuesChange={pageIdentifierValueChange} name="page_identifier" onFinish={onFinish}
-                                        >
-                                            <Form.Item
-                                                name='table_id'
-                                                label="Table ID"
-
-                                            >
-                                                <Input />
-                                                
-                                            </Form.Item>
-                                            <Form.Item
-                                                name='name'
-                                                label="Name"
-
-                                            >
-                                                <Input />
-                                                
-                                            </Form.Item>
-                                            <Form.Item
-                                                name='multipage'
-                                                label="Multipage Document"
-
-                                            >
-                                                <Select defaultValue={"NO"}>
-                                                    <Option>Yes</Option>
-                                                    <Option>No</Option>
-                                                </Select>
-                                            </Form.Item>
-                                            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                                <Button disabled={Object.keys(clickedTable).length ? false : true} type='primary' className='defineTableBtn' onClick={handleTableFind}>
-                                                    <MonitorOutlined /> Find
-                                                </Button>
-                                                {tableFindCount?.length > 0 &&
-                                                    <p style={{ marginRight: 90 }}>Found in {`${tableFindCount?.length}`} files</p>
-                                                }
-                                            </div>
-
-                                            <div>{tableFindCount?.map(item => (
-                                                <p>{item?.split('.')[0]}</p>
-                                            ))}</div>
-                                        </Form> */}
                                     </div>
                                 </Panel>
                             </Collapse>
@@ -3036,7 +3043,7 @@ function PaperBatchRecordsTemplate() {
                                 <TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth}
                                     triggerPreview={triggerPreview} params={params} triggerUpdate={triggerUpdate} setSideTableData={setSideTableData}
                                     setTriggerUpdate={setTriggerUpdate} tableActiveKey={tableActiveKey} formTableData={formTableData} setModalData={setModalData} setModalColumns={setModalColumns}
-                                    templateVersion={templateVersion} initialSideTableData={initialSideTableData}/>}
+                                    templateVersion={templateVersion} initialSideTableData={initialSideTableData} pageIdFormValues={pageIdFormValues}/>}
 
                             {/* <DrawAnnotations /> */}
                             {/* <h3>hello</h3> */}
@@ -3071,7 +3078,7 @@ function PaperBatchRecordsTemplate() {
                             columns={modalColumns}
                             dataSource={modalData}
                             pagination={false}
-                            scroll={{ x: 1000,y:300 }}
+                            scroll={{ x: 1000, y: 300 }}
                         />
                     </Modal>
                 </div>
