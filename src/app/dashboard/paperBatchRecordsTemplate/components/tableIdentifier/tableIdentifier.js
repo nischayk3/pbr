@@ -16,7 +16,7 @@ const { Panel } = Collapse;
 function TableIdentifier(props) {
     let { clickedTable, metaData, imageHeight, imageWidth, triggerPreview, templateVersion,
         params, triggerUpdate, setSideTableData, setTriggerUpdate, tableActiveKey, formTableData,
-        setModalData, setModalColumns, initialSideTableData } = props
+        setModalData, setModalColumns, initialSideTableData, pageIdFormValues } = props
     const dispatch = useDispatch();
     const [columnData, setColumnData] = useState([])
     const [rowData, setrowData] = useState([])
@@ -90,7 +90,7 @@ function TableIdentifier(props) {
 
     }, [triggerUpdate])
 
-    const geTableData = async (clickedTable,col=1,row=1,table=null) => {
+    const geTableData = async (clickedTable, col = 1, row = 1, table = null) => {
         try {
             dispatch(showLoader());
             let req = {
@@ -110,7 +110,7 @@ function TableIdentifier(props) {
                 version: templateVersion ? templateVersion : null
             }
             let res = await getRowColumnData(req)
-            if (res["status-code"] == 200 ) {
+            if (res["status-code"] == 200) {
                 let obj = res.Data1.map((item, index) => ({ ...item, key: index }))
                 let obj2 = res.Data2.map((item, index) => ({ ...item, key: index }))
                 let arr = obj.map((item, index) => index)
@@ -155,8 +155,8 @@ function TableIdentifier(props) {
                 setSelectedColRows(arr1)
             } else if (field == "pk_index") {
                 if (val != "" && Number(val) <= Number(rowPanelValue.start)) {
-                    geTableData(clickedTable,Number(val),Number(rowPanelValue.pk_index),tableID)
-                }else if(Number(val) > Number(rowPanelValue.start)){
+                    geTableData(clickedTable, Number(val), Number(rowPanelValue.pk_index), tableID)
+                } else if (Number(val) > Number(rowPanelValue.start)) {
                     dispatch(showNotification('error', 'PK_COL_Index out of bound'));
                 }
 
@@ -173,8 +173,8 @@ function TableIdentifier(props) {
                 setSelectedRowRows(arr1)
             } else if (field == "pk_index") {
                 if (val != "" && Number(val) <= Number(colPanelValue.start)) {
-                    geTableData(clickedTable,Number(colPanelValue.pk_index),Number(val),tableID)
-                }else if(Number(val) > Number(colPanelValue.start)){
+                    geTableData(clickedTable, Number(colPanelValue.pk_index), Number(val), tableID)
+                } else if (Number(val) > Number(colPanelValue.start)) {
                     dispatch(showNotification('error', 'PK_COL_Index out of bound'));
                 }
 
@@ -185,6 +185,22 @@ function TableIdentifier(props) {
 
     const handlePrewiew = async () => {
         // dispatch(showLoader());
+        let pageArr = []
+        if (pageIdFormValues) {
+            pageIdFormValues.forEach(item => {
+                let obj = { name: "", keys: [] }
+                Object.entries(item).forEach(item1 => {
+                    if (item1[0] != "name" && item1[0] != "keyCount") {
+                        obj.keys.push(item1[1])
+                    }
+                    if (item1[0] === "name") {
+                        obj.name = item1[1]
+                    }
+                })
+                pageArr.push(obj)
+
+            })
+        }
         let req = {
             column_config: {
                 columns: [],
@@ -208,7 +224,8 @@ function TableIdentifier(props) {
             },
             table_id: "",
             table_identifier: tableIdentifierValues,
-            table_name: "asdas"
+            table_name: "asdas",
+            // page_identifier: pageArr
         }
         let arr = selectedColValues?.filter(item => selectedColRows?.includes(item?.key))
         let arr1 = selectedRowValues?.filter(item => selectedRowRows?.includes(item?.key))
@@ -261,7 +278,7 @@ function TableIdentifier(props) {
                 <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.stop} placeholder='Stop Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "stop", val)} />
             </div>
             <div style={{ marginTop: -5 }}>
-                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.pk_index} placeholder={val == "Row Identifier"? "PK Col Index":' PK Row Index'} style={{ width: 128, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
+                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.pk_index} placeholder={val == "Row Identifier" ? "PK Col Index" : ' PK Row Index'} style={{ width: 128, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
             </div>
             {/*  */}
         </div>

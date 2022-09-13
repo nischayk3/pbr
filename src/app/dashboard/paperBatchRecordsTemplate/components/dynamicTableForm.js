@@ -6,7 +6,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 function DynamicTableForm(props) {
-    let { handleSideState, sideTableData,setTableActiveKey,setFormTableData,initialSideTableData,handleOnFinishFailed,parameterFormFinish } = props
+    let { handleSideState, sideTableData, setTableActiveKey, setFormTableData, initialSideTableData, handleOnFinishFailed, parameterFormFinish,pageIdDropdownValues} = props
     const [tableCount, setTableCount] = useState(0);
     const [tableData, setTableData] = useState([]);
     const [activeKey, setActiveKey] = useState(0);
@@ -91,16 +91,6 @@ function DynamicTableForm(props) {
                                                         >
                                                             <Input
                                                                 placeholder='Table ID'
-                                                            // onChange={(
-                                                            //     e
-                                                            // ) =>
-                                                            //     onChangeChart(
-                                                            //         e,
-                                                            //         'parameterName',
-                                                            //         name
-                                                            //     )
-                                                            // }
-                                                            // style={{ marginLeft: 10, width: 200 }}
 
                                                             />
                                                         </Form.Item>
@@ -112,19 +102,19 @@ function DynamicTableForm(props) {
                                                         >
                                                             <Input
                                                                 placeholder='Name'
-                                                            // onChange={(
-                                                            //     e
-                                                            // ) =>
-                                                            //     onChangeChart(
-                                                            //         e,
-                                                            //         'parameterName',
-                                                            //         name
-                                                            //     )
-                                                            // }
-                                                            // style={{ marginLeft: 10, width: 200 }}
 
                                                             />
                                                         </Form.Item>
+                                                        {pageIdDropdownValues.length > 0 &&
+                                                            <Form.Item {...restField}
+                                                                name={[name, 'pageIdValue']}
+                                                                label="Page Id"
+                                                                rules={[{ required: true, message: 'Enter pageId' }]}
+                                                            // label="AnchorDirection"
+                                                            >
+
+                                                                <Select placeholder='Enter PageID' options={pageIdDropdownValues} />
+                                                            </Form.Item>}
                                                         <Form.Item
                                                             {...restField}
                                                             name={[name, 'multipage']}

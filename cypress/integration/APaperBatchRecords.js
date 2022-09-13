@@ -47,13 +47,14 @@ describe('PBR', () => {
         cy.log('Load Landing Page')
     })
     it("wait",()=>{
-        cy.wait(60000);
+        cy.wait(6000);
     })
     it("Click on the card",()=>{
-        
-        cy.get('.ant-input').click({force:true})
-        cy.get('.ant-input').type("p258")
-        cy.get('.ant-input-search-button').click({force:true})
+        cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input').click({force:true})
+        // cy.get('.ant-input').click({force:true})
+        cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input').type("p258")
+        cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-group-addon > .ant-btn').click({force:true})
+        // cy.get('.ant-input-search-button').click({force:true})
         cy.wait(6000)
         const url = Cypress.config().baseUrl
         cy.visit(url + '/#/dashboard/paper_batch_records/P258?file=Batch%20Record%20Example%203.pdf&temp_disp_id=P258&tempalteName=test&fromScreen=Workspace&version=1')
@@ -103,10 +104,13 @@ describe('PBR', () => {
     })
     it('Load Landing Page Table Component', () => {
         cy.wait(8000);
-        cy.get(".ant-input-affix-wrapper").type("P").click({ force: true })
-        cy.get(".ant-input-search-button").click({ force: true })
+        cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input').type("P").click({ force: true })
+        // cy.get(".ant-input-affix-wrapper").type("P").click({ force: true })
+        // cy.get(".ant-input-search-button").click({ force: true })
+        cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-group-addon > .ant-btn').click({force:true})
         cy.wait(2000);
-        cy.get('.ant-input-clear-icon > .anticon > svg').click({ force: true })
+        // cy.get('.ant-input-clear-icon > .anticon > svg').click({ force: true })
+        cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper > .ant-input-suffix > .ant-input-clear-icon > .anticon > svg > path').click({ force: true })
     })
     it('Visit using url', () => {
         cy.wait(6000);

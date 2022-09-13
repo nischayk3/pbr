@@ -52,9 +52,12 @@ describe('PBR', () => {
        
     });
     it("Search Table", () => {
-        cy.get('.ant-input').clear({ force: true });
-        cy.get('.ant-input').type('1');
-        cy.get('.ant-input-group-addon > .ant-btn > span').click({ force: true });
+        // cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').clear();
+        cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').type('1');
+        // cy.get('.ant-input').clear();
+        // cy.get('.ant-input').type('1');
+        cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-group-addon > .ant-btn').click({ force: true });
+        // cy.get('.ant-input-group-addon > .ant-btn > span').click({ force: true });
     })
     // it("Select checkbox", () => {
     //     cy.get('.ant-checkbox-input').eq(1).click({ force: true })
