@@ -254,6 +254,7 @@ function PaperBatchRecordsTemplate() {
     };
      /* istanbul ignore next */
     useEffect(() => {
+        console.log("pageIdFormValues",pageIdFormValues)
         if (pageIdFormValues) {
             let arr = []
             pageIdFormValues.forEach(item => {
