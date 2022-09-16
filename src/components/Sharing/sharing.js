@@ -18,8 +18,17 @@ export default function Sharing(props) {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if (window.location.href.includes('share')) {
+            setCopy(window.location.href)
+        }
+        else {
+            let url_postfix = props.shareSreen == 'VIEW' ? '?share=true' : '&share=true'
+            setCopy(window.location.href + url_postfix)
+        }
+
         getUsers()
     }, [])
+
 
 
     function generateRandomColor() {
@@ -128,10 +137,10 @@ export default function Sharing(props) {
                             </Avatar>
                         </span>
                         <p className="email-text">{e}</p>
-                        <Select defaultValue={"Viewer"} style={{ width: 120, position: 'absolute', marginLeft: '78.8%' }} >
+                        {/* <Select defaultValue={"Viewer"} style={{ width: 120, position: 'absolute', marginLeft: '78.8%' }} >
                             <Option key='1' value="Editor">Editor</Option>
                             <Option key='2' value="Viewer">Viewer</Option>
-                        </Select>
+                        </Select> */}
                     </div>
                 )
                 )

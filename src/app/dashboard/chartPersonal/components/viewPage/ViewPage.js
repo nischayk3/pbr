@@ -62,6 +62,7 @@ const ViewPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const params = queryString.parse(location.search);
+
   const callback = () => { };
 
   const handleCancel = () => {
@@ -189,6 +190,8 @@ const ViewPage = () => {
     }
   }, [id]);
 
+
+
   useEffect(() => {
     postChartData &&
       postChartData.data &&
@@ -209,50 +212,53 @@ const ViewPage = () => {
           value={chartDetails.current.chartId}
           data="Untitled"
         />
-        <div className="btns">
-          {Object.keys(params).length > 0 &&
-            params.fromScreen !== "Workspace" ? (
-            <>
-              <Button
-                onClick={() => {
-                  setIsPublish(true);
-                  setApproveReject("R");
-                }}
-              >
-                Reject
-              </Button>
-              <Button
-                onClick={() => {
-                  setIsPublish(true);
-                  setApproveReject("A");
-                }}
-              >
-                Approve
-              </Button>
-            </>
-          ) : (
-            <div>
-              <Button onClick={() => handleShareVisible()}
-              >Share</Button>
-              <Button onClick={() => setAlertModal(true)}>
-                Schedule Alert
-              </Button>
-              <Button onClick={() => saveAs("saveas")}>Save As</Button>
-              <Button onClick={() => saveAs("save")}>Save</Button>
-              <Button
-                disabled={disablePublishButton}
-                onClick={() => {
-                  setIsPublish(true);
-                  setApproveReject("P");
-                }}
-              >
-                {" "}
-                <CloudUploadOutlined />
-                Publish
-              </Button>
-            </div>
-          )}
-        </div>
+        {!params['share'] ?
+          <div className="btns">
+            {Object.keys(params).length > 0 &&
+              params.fromScreen !== "Workspace" ? (
+              <>
+                <Button
+                  onClick={() => {
+                    setIsPublish(true);
+                    setApproveReject("R");
+                  }}
+                >
+                  Reject
+                </Button>
+                <Button
+                  onClick={() => {
+                    setIsPublish(true);
+                    setApproveReject("A");
+                  }}
+                >
+                  Approve
+                </Button>
+              </>
+            ) : (
+              <div>
+                <Button onClick={() => handleShareVisible()}
+                >Share</Button>
+                <Button onClick={() => setAlertModal(true)}>
+                  Schedule Alert
+                </Button>
+                <Button onClick={() => saveAs("saveas")}>Save As</Button>
+                <Button onClick={() => saveAs("save")}>Save</Button>
+                <Button
+                  disabled={disablePublishButton}
+                  onClick={() => {
+                    setIsPublish(true);
+                    setApproveReject("P");
+                  }}
+                >
+                  {" "}
+                  <CloudUploadOutlined />
+                  Publish
+                </Button>
+              </div>
+            )}
+          </div> : <div className="btns"><Button onClick={() => handleShareVisible()}
+          >Share</Button></div>
+        }
       </div>
       <div className="custom-content-layout">
         <Row gutter={24}>
