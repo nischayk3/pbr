@@ -254,6 +254,7 @@ function PaperBatchRecordsTemplate() {
     };
      /* istanbul ignore next */
     useEffect(() => {
+        console.log("pageIdFormValues",pageIdFormValues)
         if (pageIdFormValues) {
             let arr = []
             pageIdFormValues.forEach(item => {
@@ -984,7 +985,7 @@ function PaperBatchRecordsTemplate() {
 
     /* istanbul ignore next */
     const clicked = (area) => {
-        if (showRowColIdentifier) {
+        if (showRowColIdentifier && formTableData.length > 0) {
             setClickedTable(area)
             let table_identifier = {
                 "left": area?.coords[0] / imageWidth, "top": area?.coords[1] / imageHeight,
@@ -995,6 +996,8 @@ function PaperBatchRecordsTemplate() {
                     getBoundingBoxDataInfo(imageWidth, imageHeight, "CELL", pageNumber - 1, table_identifier);
                 }, i * 1000)
             }
+        }else{
+            dispatch(showNotification('error', "Create at least one Table Parameter"));
         }
         if (mainPanelValue == 2) {
             setPageDragValue(area)

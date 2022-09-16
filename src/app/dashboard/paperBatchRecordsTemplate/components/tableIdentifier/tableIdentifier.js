@@ -94,8 +94,8 @@ function TableIdentifier(props) {
         try {
             dispatch(showLoader());
             let req = {
-                filename: `${metaData?.file?.split('.')[0]}_page-${pageNumber}.jpeg.json`,
-                page:pageNumber+1,
+                filename: `${metaData?.file?.split('.')[0]}_page-${pageNumber-1}.jpeg.json`,
+                page:pageNumber,
                 config: {
                     pk_col_index: col,
                     pk_row_index: row
@@ -127,7 +127,7 @@ function TableIdentifier(props) {
                 dispatch(hideLoader());
             } else {
                 dispatch(hideLoader());
-                // dispatch(showNotification('error', 'No Data Found'));
+                dispatch(showNotification('error', res.Message));
             }
         } catch (error) { /* istanbul ignore next */
             dispatch(hideLoader());
@@ -201,7 +201,6 @@ function TableIdentifier(props) {
 
             })
         }
-        console.log("formTableData",formTableData)
         let req = {
             column_config: {
                 columns: [],
@@ -212,8 +211,8 @@ function TableIdentifier(props) {
                     stop_index: colPanelValue?.stop
                 }
             },
-            filename: `${params?.file?.split('.')[0]}_page-${pageNumber}.jpeg.json`,
-            page:pageNumber+1,
+            filename: `${params?.file?.split('.')[0]}_page-${pageNumber-1}.jpeg.json`,
+            page:pageNumber,
             row_config: {
                 method: "column_index",
                 params: {
