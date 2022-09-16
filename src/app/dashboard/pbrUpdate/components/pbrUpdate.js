@@ -13,6 +13,7 @@ import queryString from "query-string";
 import './styles.scss';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { useHistory } from 'react-router';
+import EditableRow from './EditTable'
 
 
 
@@ -35,6 +36,7 @@ const PbrUpdate = () => {
   const [idarr, setIdArr] = useState([]);
   const location = useLocation();
   const params = queryString.parse(location.search);
+  let rowArray = ["id", "param_name", "anchor_key", "snippet_value", "snippet_image", "recorded_date", "recorded_time", "uom", "changed_by"]
 
   useEffect(() => {
     loadTableData();
@@ -52,18 +54,22 @@ const PbrUpdate = () => {
       template_id: []
     }
     let res = await getPbrReviewerData(req);
-    setTemplateData(res.Data);
-
+    let arr = []
+    Object.entries(res.Data[0]).forEach(item => {
+      arr.push({ column: item[0], value: item[1] })
+    })
+    arr = arr.filter(i => rowArray.includes(i.column))
+    setTemplateData(arr);
     let filename = res.Data[0].file_path;
     getImage(filename);
     let obj = {
       changed_by: res.Data[0].changed_by == null ? "" : res.Data[0].changed_by,
       id: res.Data[0].id == null ? "" : res.Data[0].id,
-      recordedDate: res.Data[0].recorded_date == null ? "" : res.Data[0].recorded_date,
-      recordedTime: res.Data[0].recorded_time == null ? "" : res.Data[0].recorded_time,
-      snippetValue: res.Data[0].snippet_value == null ? "" : res.Data[0].snippet_value,
+      recorded_date: res.Data[0].recorded_date == null ? "" : res.Data[0].recorded_date,
+      recorded_time: res.Data[0].recorded_time == null ? "" : res.Data[0].recorded_time,
+      snippet_value: res.Data[0].snippet_value == null ? "" : res.Data[0].snippet_value,
       status: res.Data[0].status == null ? "" : res.Data[0].status,
-      uomnum: res.Data[0].uom == null ? "" : res.Data[0].uom
+      uom: res.Data[0].uom == null ? "" : res.Data[0].uom
     }
     setTextInput(obj)
     dispatch(hideLoader());
@@ -95,27 +101,7 @@ const PbrUpdate = () => {
     dispatch(hideLoader());
   }
 
-  const handleCancel = () => {
-    setEditingRow(null);
-  }
-
-  const handleEdit = async (record) => {
-    setEditingRow(record.key);
-    form.setFieldsValue({
-      changed_by: textInput.changedBy,
-      recorded_date: textInput.recordedDate,
-      recorded_time: textInput.recordedTime,
-      snippet_value: textInput.snippetValue,
-      uom: textInput.uomnum,
-    });
-  }
-
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setTextInput({
-      ...textInput, [event.target.name]: value
-    });
-  };
+  
 
   const handleClick = async (event, record) => {
     dispatch(showLoader());
@@ -127,12 +113,13 @@ const PbrUpdate = () => {
     let formvalues = {
       id: numberArray,
       changed_by: localStorage.getItem('user'),
-      recorded_date: textInput.recordedDate,
-      recorded_time: textInput.recordedTime,
-      snippet_value: textInput.snippetValue,
+      recorded_date: textInput.recorded_date,
+      recorded_time: textInput.recorded_time,
+      snippet_value: textInput.snippet_value,
       status: textInput.status,
-      uom: textInput.uomnum,
+      uom: textInput.uom,
     };
+  
     let res = await updateApprove(formvalues);
     if (res.Status == "202") {
       dispatch(hideLoader());
@@ -148,161 +135,6 @@ const PbrUpdate = () => {
   };
 
 
-  const columns = [
-    {
-      title: "Id",
-      dataIndex: "id",
-      key: "id",
-      width: "5%"
-    },
-    {
-      title: "Parameter Name",
-      dataIndex: "param_name",
-      key: "param_name",
-    },
-    {
-      title: "Anchor Key",
-      dataIndex: "anchor_key",
-      key: "anchor_key",
-    },
-    {
-      title: "snippet value",
-      dataIndex: "snippet_value",
-      key: "snippet_value",
-      render: (text, record) => {
-        if (editingRow === record.key) {
-          return (
-            <Form.Item>
-              <Input
-                id="snippetValue"
-                defaultValue={record.snippet_value}
-                type="text"
-                name="snippetValue"
-                onChange={handleChange}
-              />
-            </Form.Item>
-
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      title: "Value Image",
-      dataIndex: "snippet_image",
-      key: "snippet_image",
-      render: (text, record, index) => {
-        return (
-          <img src={`data:image/png;base64,${text}`} width="50%" height="15%" />
-        )
-      }
-    },
-    {
-      title: "Recorded Date",
-      dataIndex: "recorded_date",
-      key: "recorded_date",
-      render: (text, record) => {
-        if (editingRow === record.key) {
-          return (
-            <Form.Item>
-              <Input
-                id="recordedDate"
-                defaultValue={record.recorded_date}
-                type="text"
-                name="recordedDate"
-                onChange={handleChange}
-              />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      title: "Recorded Time",
-      dataIndex: "recorded_time",
-      key: "recorded_time",
-      render: (text, record) => {
-        if (editingRow === record.key) {
-          return (
-
-            <Form.Item>
-              <Input
-                id="recordedTime"
-                defaultValue={record.recorded_time}
-                type="text"
-                name="recordedTime"
-                onChange={handleChange}
-              />
-            </Form.Item>
-          );
-        }
-        else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      title: "UOM",
-      dataIndex: "uom",
-      key: "uom",
-      render: (text, record) => {
-        if (editingRow === record.key) {
-          return (
-            <Form.Item>
-              <Input
-                id="uomnum"
-                defaultValue={record.uom}
-                type="text"
-                name="uomnum"
-                onChange={handleChange}
-
-              />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-
-
-    },
-    {
-      title: "Updated By",
-      dataIndex: "changed_by",
-      key: "changed_by",
-
-    },
-    {
-      title: "Actions",
-      fixed: 'right',
-      width: "9%",
-      render: (_, record) => {
-        if (editingRow === record.key) {
-          return (
-            <Button
-              type="link"
-              onClick={handleCancel}
-            >
-              Cancel
-            </Button>
-          );
-        } else {
-          return (
-            <Button
-              type="link"
-              onClick={handleEdit}
-            >
-              Edit
-            </Button>
-          );
-        }
-      },
-    },
-  ]
-
   return (
     <div className='pbr-container'>
       <BreadCrumbWrapper
@@ -314,17 +146,21 @@ const PbrUpdate = () => {
         <div className='content_section' >
           <div style={{ marginTop: 20 }}>
 
-            <Row gutter={16}>
+            <Row gutter={15}>
               <Col span={12}>
                 <h3 style={{ marginBottom: "20px" }}>You may edit the selected unstructured data here.</h3>
-                <Table
+                {templateData && 
+                <EditableRow templateData={templateData} setTemplateData={setTemplateData} setTextInput={setTextInput} textInput={textInput}/>}
+                {/* <Table
                   className='edit-table'
+                  size='middle'
                   columns={columns}
+                  showHeader={false}
                   dataSource={templateData}
                   pagination={false}
-                  scroll={{ x: 1200 }}
-                  style={{ border: '1px solid #ececec', borderRadius: '2px' }}
-                />
+                  // scroll={{ x: 1200 }}
+                  style={{ border: '1px solid #ececec', borderRadius: '2px',marginTop:26 }}
+                /> */}
               </Col>
               <Col span={12}>
                 <div className='' style={{ display: "flex", marginBottom: "20px", flexDirection: "row", justifyContent: "right", alignItems: "center" }}>
@@ -358,9 +194,10 @@ const PbrUpdate = () => {
 
                     type='primary'>Save Changes</Button>
                 </div>
-                <div >
-                  <img src={imagepdf} width="100%" height="100%" />
-                  {/* <iframe class="frame" src={imagepdf} width="600px" height="500px" ></iframe> */}
+                <div style={{ height: "calc(100vh - 190px)", overflowY: "scroll" ,border:"0.5px solid blue"}}>
+                  {/* style={{height:"calc(100vh - 190px)"}} */}
+                  <img src={imagepdf} width="100%" height="700px" />
+                  {/* <iframe class="frame" src={imagepdf} width="600px" height="500px" ></iframe>   */}
                 </div>
               </Col>
             </Row>

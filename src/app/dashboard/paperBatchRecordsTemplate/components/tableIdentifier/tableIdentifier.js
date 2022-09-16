@@ -12,11 +12,11 @@ import { tableColumns } from '../../../../../utils/TableColumns'
 import { Handle } from 'react-flow-renderer';
 
 const { Panel } = Collapse;
-
+ /* istanbul ignore next */
 function TableIdentifier(props) {
     let { clickedTable, metaData, imageHeight, imageWidth, triggerPreview, templateVersion,
         params, triggerUpdate, setSideTableData, setTriggerUpdate, tableActiveKey, formTableData,
-        setModalData, setModalColumns, initialSideTableData, pageIdFormValues } = props
+        setModalData, setModalColumns, initialSideTableData, pageIdFormValues,pageNumber } = props
     const dispatch = useDispatch();
     const [columnData, setColumnData] = useState([])
     const [rowData, setrowData] = useState([])
@@ -94,8 +94,8 @@ function TableIdentifier(props) {
         try {
             dispatch(showLoader());
             let req = {
-                filename: `${metaData?.file?.split('.')[0]}_page-${0}.jpeg.json`,
-                page: 1,
+                filename: `${metaData?.file?.split('.')[0]}_page-${pageNumber}.jpeg.json`,
+                page:pageNumber+1,
                 config: {
                     pk_col_index: col,
                     pk_row_index: row
@@ -201,6 +201,7 @@ function TableIdentifier(props) {
 
             })
         }
+        console.log("formTableData",formTableData)
         let req = {
             column_config: {
                 columns: [],
@@ -211,8 +212,8 @@ function TableIdentifier(props) {
                     stop_index: colPanelValue?.stop
                 }
             },
-            filename: `${params?.file?.split('.')[0]}_page-0.jpeg.json`,
-            page: 1,
+            filename: `${params?.file?.split('.')[0]}_page-${pageNumber}.jpeg.json`,
+            page:pageNumber+1,
             row_config: {
                 method: "column_index",
                 params: {
@@ -224,7 +225,7 @@ function TableIdentifier(props) {
             },
             table_id: "",
             table_identifier: tableIdentifierValues,
-            table_name: "asdas",
+            table_name: formTableData[tableActiveKey]?.name,
             // page_identifier: pageArr
         }
         let arr = selectedColValues?.filter(item => selectedColRows?.includes(item?.key))

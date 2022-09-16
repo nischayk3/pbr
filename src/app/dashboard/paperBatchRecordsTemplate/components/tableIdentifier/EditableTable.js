@@ -5,7 +5,7 @@ import './styles.scss';
 
 const coloptions = [{ lable: "Combine with", value: "combine_with" }]
 const rowoptions = [{ lable: "All", value: "all" }]
-
+ /* istanbul ignore next */
 export const EditableUsersTable = props => {
     const { users, add, remove, selectedIdentifier, setSelectedRowRows, selectedRowRows,setSelectedRowValues,selectedRowValues } = props;
     const [editingIndex, setEditingIndex] = useState(0);

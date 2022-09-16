@@ -65,12 +65,13 @@ describe('PBR', () => {
 
     it("Edit Created Template", () => {
         cy.wait(6000)
-        cy.get('#page-Identifier > .ant-collapse-header').click({ force: true });
+        // cy.get('#page-Identifier > .ant-collapse-header').click({ force: true });
         cy.wait(10000);
-        cy.get('#page_identifier_key').clear({ force: true });
-        cy.get('#page_identifier_key').type('1. Virus filtration');
-        cy.get('#page_identifier_key_2').clear({ force: true });
-        cy.get('#page_identifier_key_2').type('Filter Lot Number:');
+        // cy.get('.firstParameter-para > p').click({ force: true });
+        // cy.get('#page_identifier_key').clear({ force: true });
+        // cy.get('#page_identifier_key').type('1. Virus filtration');
+        // cy.get('#page_identifier_key_2').clear({ force: true });
+        // cy.get('#page_identifier_key_2').type('Filter Lot Number:');
         cy.wait(3000);
         cy.get('#parameter-panel > .ant-collapse-header').click({ force: true });
         cy.wait(3000);
