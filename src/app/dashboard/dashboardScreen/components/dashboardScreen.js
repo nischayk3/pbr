@@ -46,6 +46,8 @@ const DashboardScreen = () => {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [saveType, setSaveType] = useState("");
   const [isShare, setIsShare] = useState(false)
+  const params = queryString.parse(location.search);
+
 
   const handleShareVisible = () => {
     setIsShare(true);
@@ -152,7 +154,6 @@ const DashboardScreen = () => {
   };
 
   const idFromUrl = () => {
-    const params = queryString.parse(location.search);
     if (params.id) {
       setDashboardId(params.id);
       setDashboardVersion(params.version);
@@ -247,11 +248,8 @@ const DashboardScreen = () => {
                     <ArrowLeftOutlined className='header-icon' onClick={onBackArrowClick} /> &nbsp;
                     <span className='header-title'>Dashboard</span>
                 </div> */}
-        {showChartCard && (
+        {!params['share'] && showChartCard ? (
           <div className="btns">
-            <Button onClick={() => handleSavePopUp("saveAs")}>Save As</Button>
-
-
             <Button
               className="viewCreation-saveBtn"
               onClick={() => handleShareVisible()}
@@ -259,6 +257,7 @@ const DashboardScreen = () => {
             >
               Share
             </Button>
+            <Button onClick={() => handleSavePopUp("saveAs")}>Save As</Button>
             {dashboardId && (
               <Button
                 onClick={() => {
@@ -272,7 +271,14 @@ const DashboardScreen = () => {
 
             <ShareAltOutlined style={{ color: "#093185", fontSize: "18px" }} />
           </div>
-        )}
+        ) : (<div className="btns">
+          <Button
+            className="viewCreation-saveBtn"
+            onClick={() => handleShareVisible()}
+            id="save-view"
+          >
+            Share
+          </Button></div>)}
       </div>
       <div className="custom-content-layout">
         {!showChartCard && (
@@ -356,7 +362,7 @@ const DashboardScreen = () => {
           )}
         </Modal>
       </div>
-      <Sharing isShare={isShare} handleShareCancel={handleShareCancel} shareSreen="VIEW" />
+      <Sharing isShare={isShare} handleShareCancel={handleShareCancel} shareSreen="DASHBOARD" />
     </div>
   );
 };
