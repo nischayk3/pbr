@@ -106,7 +106,7 @@ function PbrReviewer() {
     setReviewerReq(obj)
     dispatch(hideLoader());
   };
-
+/* istanbul ignore next */
   const showfilters = async (value) => {
     dispatch(showLoader());
     setShowResetConfidence(true)
@@ -560,7 +560,7 @@ function PbrReviewer() {
     }
 
   };
-
+/* istanbul ignore next */
   const resetConfidence = async () => {
     dispatch(showLoader());
     let obj = { ...reviewerReq, confidence: null }
@@ -583,7 +583,7 @@ function PbrReviewer() {
     dispatch(hideLoader());
 
   }
-
+/* istanbul ignore next */
   const handleTemplateChange = (val) => {
     if (val.length == 0) {
       let req = { ...reviewerReq, template_id: [] }
@@ -595,6 +595,7 @@ function PbrReviewer() {
     }
     setSelectedTemplateArray(val)
   }
+  /* istanbul ignore next */
   const applyTemplateFilter = () => {
     cardTableData()
     chart()

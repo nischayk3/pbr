@@ -1,24 +1,36 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Collapse, Input, Select } from 'antd'
-import { DeleteOutlined, PlusSquareTwoTone, MinusSquareTwoTone } from '@ant-design/icons';
+import { Form, Collapse, Input, Select, Button, Col, Row } from 'antd'
+import { DeleteOutlined, PlusSquareTwoTone, MinusSquareTwoTone, MonitorOutlined } from '@ant-design/icons';
+import {
+    findPageIdentifier
+} from '../../../../services/pbrService';
+import { useDispatch } from 'react-redux';
+import {
+    hideLoader,
+    showLoader,
+    showNotification,
+} from '../../../../duck/actions/commonActions';
 
 const { Panel } = Collapse;
 const { Option } = Select;
-
+ /* istanbul ignore next */
 function PageIdentifierForm(props) {
-    let { pageDragValue, setPageIdFormValues, handleOnFinishFailed, parameterFormFinish, initialPageIdentifierData } = props
+    let { pageDragValue, setPageIdFormValues, handleOnFinishFailed, parameterFormFinish, initialPageIdentifierData, matBatch } = props
+    const dispatch = useDispatch();
     const [pageIdentifierFormValues, setPageIdentifierFormValues] = useState(initialPageIdentifierData ? initialPageIdentifierData : { users: [] });
     const [activeKey, setActiveKey] = useState(0);
     const [parameterCount, setParameterCount] = useState(0);
     const [updateKeyValueClicked, setUpdateKeyValueClicked] = useState("");
     const [fieldCount, setFieldCount] = useState([1]);
+    const [filesFound, setFilesFound] = useState([]);
+    const [searchedFile, setSearchedFile] = useState("");
 
     useEffect(() => {
         if (pageIdentifierFormValues.users[activeKey]) {
             let obj = { ...pageIdentifierFormValues.users[activeKey] }
             if (pageIdentifierFormValues?.users[activeKey]?.keyCount && fieldCount.length === 1) {
                 obj["keyCount"] = pageIdentifierFormValues?.users[activeKey]?.keyCount
-            }else{
+            } else {
                 obj["keyCount"] = fieldCount?.length
             }
             // obj["keyCount"] = fieldCount?.length
@@ -88,10 +100,10 @@ function PageIdentifierForm(props) {
             id="deleteParameter"
             onClick={event => {
                 remove(name)
-                let arr = [...tableData]
-                arr.splice(name, 1)
-                setTableData(arr)
-                setFormTableData(arr)
+                // let arr = [...pageIdentifierFormValues.users]
+                // arr.splice(name, 1)
+                // setTableData(arr)
+                // setFormTableData(arr)
             }}
         />
     );
@@ -108,6 +120,47 @@ function PageIdentifierForm(props) {
 
     const DragInputValue = (e, key) => {
         setUpdateKeyValueClicked(key)
+    }
+
+    const find =async  () => {
+        if (pageIdentifierFormValues?.users) {
+            dispatch(showLoader());
+            let req = {
+                batch_num: matBatch?.batch,
+                page_identifier: [],
+                product_num: matBatch?.material_num,
+                site_code: matBatch?.site
+            }
+            let pageArr = []
+            if (pageIdentifierFormValues?.users) {
+
+                pageIdentifierFormValues?.users?.forEach(item => {
+                    let obj = { name: "", keys: [] }
+                    Object.entries(item).forEach(item1 => {
+                        if (item1[0] != "name" && item1[0] != "keyCount") {
+                            obj.keys.push(item1[1])
+                        }
+                        if (item1[0] === "name") {
+                            obj.name = item1[1]
+                        }
+                    })
+                    pageArr.push(obj)
+
+                })
+            }
+            req.page_identifier = pageArr
+            let res = await findPageIdentifier(req)
+            if (res?.Data?.length > 0) {
+                dispatch(hideLoader());
+                setFilesFound(res.Data)
+                setSearchedFile(res.Total_Files)
+            } else {
+                dispatch(hideLoader());
+                dispatch(showNotification('error', res?.Message))
+            }
+        } else {
+            dispatch(showNotification('error', 'Add Page Identifier Values'));
+        }
     }
 
     return (
@@ -129,6 +182,8 @@ function PageIdentifierForm(props) {
                                         if (val !== undefined) {
                                             setActiveKey(Number(val))
                                         }
+                                        setFilesFound([])
+                                        setSearchedFile("")
                                     }}>
                                         {fields.map(({ key, name, ...restField }) => (
 
@@ -164,6 +219,23 @@ function PageIdentifierForm(props) {
                                                             </Form.Item>
                                                         )
                                                         )}
+                                                        <Row>
+                                                            <Col span={12}>
+                                                                <Button type='primary' className='defineTableBtn' onClick={find}>
+                                                                    <MonitorOutlined /> Find
+                                                                </Button>
+                                                            </Col>
+                                                            <Col span={12}>
+
+                                                                {filesFound?.length > 0 &&
+                                                                    <p>Found in {`${filesFound?.length}/${searchedFile}`} files</p>
+                                                                }
+
+                                                            </Col>
+                                                        </Row>
+                                                        <div>{filesFound?.map(item => (
+                                                            <p>{item?.split('.')[0]}</p>
+                                                        ))}</div>
                                                     </div>
                                                 </div>
                                             </Panel>
