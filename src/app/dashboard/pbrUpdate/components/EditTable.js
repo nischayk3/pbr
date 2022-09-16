@@ -109,7 +109,6 @@ const App = (props) => {
 
 
   const handleSave = (row) => {
-    console.log("row",row,textInput)
     setTextInput({
       ...textInput, [row.column]: row.value
     });
