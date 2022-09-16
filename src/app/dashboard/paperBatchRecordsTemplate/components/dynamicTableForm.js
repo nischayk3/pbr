@@ -4,7 +4,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
 const { Option } = Select;
-
+ /* istanbul ignore next */
 function DynamicTableForm(props) {
     let { handleSideState, sideTableData, setTableActiveKey, setFormTableData, initialSideTableData, handleOnFinishFailed, parameterFormFinish,pageIdDropdownValues} = props
     const [tableCount, setTableCount] = useState(0);
@@ -83,7 +83,7 @@ function DynamicTableForm(props) {
                                             <Panel header={tableData[name]?.name ? `${tableData[name]?.name}` : `Parameter ${name + 1} created`} key={`${name}`} extra={genExtra(remove, name, key, restField)}>
                                                 <div className='addParameterBlock'>
                                                     <div className='parameterAdded-block'>
-                                                        <Form.Item
+                                                        {/* <Form.Item
                                                             {...restField}
                                                             name={[name, 'table_id']}
                                                             label="Table ID"
@@ -93,7 +93,7 @@ function DynamicTableForm(props) {
                                                                 placeholder='Table ID'
 
                                                             />
-                                                        </Form.Item>
+                                                        </Form.Item> */}
                                                         <Form.Item
                                                             {...restField}
                                                             name={[name, 'name']}
@@ -115,7 +115,7 @@ function DynamicTableForm(props) {
 
                                                                 <Select placeholder='Enter PageID' options={pageIdDropdownValues} />
                                                             </Form.Item>}
-                                                        <Form.Item
+                                                        {/* <Form.Item
                                                             {...restField}
                                                             name={[name, 'multipage']}
                                                             label="Multipage Document"
@@ -124,7 +124,7 @@ function DynamicTableForm(props) {
                                                                 <Option value='yes'>Yes</Option>
                                                                 <Option value='no'>No</Option>
                                                             </Select>
-                                                        </Form.Item>
+                                                        </Form.Item> */}
                                                     </div>
                                                 </div>
                                             </Panel>

@@ -99,15 +99,17 @@ describe('PBR', () => {
 
     // it("Edit fields", () => {
     //     cy.wait(6000);
-    //     cy.get(".ant-table-cell-fix-right > .ant-btn > span").click({ force: true })
-    //     cy.get("#snippetValue").clear({ force: true })
-    //     cy.get("#snippetValue").type("claimss")
-    //     cy.get("#recordedDate").clear({ force: true })
-    //     cy.get("#recordedDate").type("08/07/2020")
-    //     cy.get("#recordedTime").clear({ force: true })
-    //     cy.get("#recordedTime").type("10:30")
-    //     cy.get("#uomnum").clear({ force: true })
-    //     cy.get("#uomnum").type("5.6")
+    //     cy.get(':nth-child(4) > :nth-child(2) > .editable-cell-value-wrap').click({ force: true })
+    //     cy.get(':nth-child(4) > :nth-child(2) > .editable-cell-value-wrap').type("claimss")
+    //     // cy.get(".ant-table-cell-fix-right > .ant-btn > span").click({ force: true })
+    //     // cy.get("#snippetValue").clear({ force: true })
+    //     // cy.get("#snippetValue").type("claimss")
+    //     // cy.get("#recordedDate").clear({ force: true })
+    //     // cy.get("#recordedDate").type("08/07/2020")
+    //     // cy.get("#recordedTime").clear({ force: true })
+    //     // cy.get("#recordedTime").type("10:30")
+    //     // cy.get("#uomnum").clear({ force: true })
+    //     // cy.get("#uomnum").type("5.6")
 
     // })
     it("Save and Audit logs", () => {

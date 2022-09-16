@@ -122,10 +122,6 @@ function PaperBatchRecords() {
 			getViewData();
 			setTableDataSource(initialTableDataSource);
 		}
-		// updateDate();
-		// getTemplateData();
-		// getViewData();
-		// setTableDataSource(initialTableDataSource);
 	}, []);
 
 	const getTemplateData = async () => {
