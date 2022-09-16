@@ -13,7 +13,6 @@ import { useDispatch } from "react-redux";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import InputField from '../../../../components/InputField/InputField';
 import SelectSearchField from "../../../../components/SelectSearchField/SelectSearchField";
-import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { hideLoader, showLoader } from '../../../../duck/actions/commonActions';
 import { getUserProfile, passwordChange, sendUserProfile } from "../../../../services/loginService";
 import "./style.scss";
@@ -31,8 +30,12 @@ const Profile = () => {
 	const [dateFormatValue, setDateFormatValue] = useState("");
 	const [timeZoneValue, setTimeZoneValue] = useState("");
 	const [languageValue, setLanguageValue] = useState("");
-	const [image, setImage] = useState({ preview: "", raw: "" });
+	const [image, setImage] = useState("");
 	const [imgRes, setImgRes] = useState("");
+	const [imagePrev, setImagePrev] = useState(false);
+	const [isUserIcon, setIsUserIcon] = useState(<UserOutlined />);
+
+
 
 
 	useEffect(() => {
@@ -46,13 +49,14 @@ const Profile = () => {
 
 	const handlePassChange = async () => {
 		const userId = localStorage.getItem("user")
-
+		/* istanbul ignore next */
 		if (newPassword === confirmPassword) {
 			const _req = {
 				"current_password": currentPassword,
 				"new_password": confirmPassword,
 				"user_id": userId
 			}
+			/* istanbul ignore next */
 			const res = await passwordChange(_req);
 		} else {
 			setErrorMsg("Password does not match")
@@ -79,7 +83,6 @@ const Profile = () => {
 
 	const onChange = (value, field) => {
 		if (value != null) {
-
 			if (field === 'dateFormat') {
 				setDateFormatValue(value)
 			} else if (field === 'timeZone') {
@@ -90,23 +93,26 @@ const Profile = () => {
 		}
 	}
 
+	/* istanbul ignore next */
 	const savePreference = async () => {
 		try {
 			dispatch(showLoader());
 			const formData = new FormData();
 
-			formData.append("file", image.raw);
+			formData.append("file", image);
 			formData.append("date_format", dateFormatValue);
 			formData.append("email_address", loginDetails && loginDetails.email_id);
 			formData.append("first_name", loginDetails && loginDetails.firstname);
 			formData.append("last_name", loginDetails && loginDetails.lastname);
 			formData.append("language", languageValue);
 			formData.append("timezone", timeZoneValue);
-
-
 			const saveRes = await sendUserProfile(formData);
 			if (saveRes.statuscode === 200) {
+				dispatch(hideLoader());
 				dispatch(showNotification('success', "Updated Successfully"));
+			} else {
+				dispatch(hideLoader());
+				dispatch(showNotification('error', saveRes.Message));
 			}
 		} catch (error) {
 			dispatch(hideLoader());
@@ -115,16 +121,21 @@ const Profile = () => {
 		}
 	}
 
-
-	const handleChange = e => {
-		if (e.target.files.length) {
-			setImage({
-				preview: URL.createObjectURL(e.target.files[0]),
-				raw: e.target.files[0]
+	const image_input = document.querySelector("#image-input");
+	if (image_input !== null) {
+		image_input.addEventListener("change", function () {
+			const reader = new FileReader();
+			reader.addEventListener("load", () => {
+				const uploaded_image = reader.result;
+				setImage(this.files[0]);
+				setImagePrev(false);
+				setIsUserIcon("")
+				document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
 			});
+			reader.readAsDataURL(this.files[0]);
+		});
+	}
 
-		}
-	};
 
 	const getProfile = async () => {
 		try {
@@ -133,18 +144,16 @@ const Profile = () => {
 				email_address: loginDetails && loginDetails.email_id,
 				image: true
 			}
-
-
 			const getRes = await getUserProfile(_getReq)
 
-			document.getElementById('image-url').setAttribute('src', `'data:image/png;base64, ${getRes}'`)
-
-			const imageRes = btoa(getRes);
-
-			setImgRes(imageRes)
-
-
-			dispatch(hideLoader());
+			console.log("getRes", getRes);
+			if (getRes.statuscode === 200) {
+				dispatch(hideLoader());
+				setImagePrev(true)
+				setImgRes(getRes.message)
+			} else {
+				setImagePrev(false)
+			}
 		} catch (error) {
 			dispatch(hideLoader());
 		}
@@ -174,6 +183,8 @@ const Profile = () => {
 		}
 	}
 
+
+
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
@@ -183,46 +194,35 @@ const Profile = () => {
 						<div className='profile-section'>
 							<p className="heading-1">Profile</p>
 							<p className='heading-2'>Manage your personal information, and control which information other people see and apps may access.</p>
-							{/* https://mi-dev.mareana.com/services/v1/user-profile?email_address=fahad.siddiqui%40mareana.com&image=true */}
 							<div>
-								<label htmlFor="upload-button">
-									{image.preview ? (
-										<>
-											<div className="profile-avatar">
-												<img src={`${MDH_APP_PYTHON_SERVICE}/services/v1/user-profile?email_address=${loginDetails && loginDetails.email_id}&image=true`} alt="dummy" width="300" height="300" />
-												<span className="edit-icon">
-													<EditOutlined />
-												</span>
-											</div>
-										</>
-									) : (
+								{imagePrev ? (
+									<>
 										<div className="profile-avatar">
-											<span id="image-url"></span>
 											<img src={"data:image/png;base64," + `${imgRes}`} alt="dummy" width="300" height="300" />
 											<span className="edit-icon">
 												<EditOutlined />
 											</span>
-
-											<Avatar size={137}
+											<input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" />
+										</div>
+									</>
+								) : (
+									<>
+										<div className="profile-avatar">
+											<Avatar
+												id="display-image"
+												size={137}
 												style={{
 													padding: "10px 0",
 													margin: "10px 0"
 												}}
-												icon={<UserOutlined />} />
+												icon={isUserIcon} />
 											<span className="edit-icon">
 												<EditOutlined />
 											</span>
+											<input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" />
 										</div>
-									)}
-								</label>
-								<input
-									type="file"
-									id="upload-button"
-									style={{ display: "none" }}
-									onChange={handleChange}
-								/>
-								<br />
-
+									</>
+								)}
 							</div>
 						</div>
 						<div className="edit-form">
@@ -264,7 +264,7 @@ const Profile = () => {
 										label='Date format'
 										placeholder='Select'
 										onChangeSelect={value => onChange(value, 'dateFormat')}
-										onSearchSelect={type => onSearch(type, 'dateFormat')}
+										//onSearchSelect={type => onSearch(type, 'dateFormat')}
 										options={optionsDateFormat}
 										//handleClearSearch={e => clearSearch(e, 'plant')}
 										selectedValue={dateFormatValue}
@@ -274,7 +274,7 @@ const Profile = () => {
 										label='Time zone'
 										placeholder='Select'
 										onChangeSelect={value => onChange(value, 'timeZone')}
-										onSearchSelect={type => onSearch(type, 'timeZone')}
+										//onSearchSelect={type => onSearch(type, 'timeZone')}
 										options={optionsTimeZone}
 										//handleClearSearch={e => clearSearch(e, 'plant')}
 										selectedValue={timeZoneValue}
@@ -284,7 +284,7 @@ const Profile = () => {
 										label='Language'
 										placeholder='Select'
 										onChangeSelect={value => onChange(value, 'language')}
-										onSearchSelect={type => onSearch(type, 'language')}
+										//onSearchSelect={type => onSearch(type, 'language')}
 										options={optionsLanguage}
 										//handleClearSearch={e => clearSearch(e, 'plant')}
 										selectedValue={languageValue}
@@ -337,8 +337,6 @@ const Profile = () => {
 									Save Changes
 								</Button>
 							</div>)}
-
-
 						</div>
 					</div>
 				</div>
