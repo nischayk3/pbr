@@ -55,8 +55,6 @@ export const MDH_AIRFLOW = `${process.env.REACT_APP_URL}/airflow/login/?next=+ $
 
 export const GOOGLE_ANALYTICS_ID = `${process.env.REACT_APP_GOOGLE_ANALYTICS_ID}`;
 
+export const GRAFANA_API = `${process.env.REACT_APP_GRAFANA_API_URL}`;
+
 export const LOGIN_URL = "/auth";
-
-
-
-
