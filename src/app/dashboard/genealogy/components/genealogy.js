@@ -30,7 +30,8 @@ import {
 	getForwardData,
 	getProcessInfo,
 	pbrApproval,
-	pbrFileUpload
+	pbrFileUpload,
+	updateGoldenBatch
 } from '../../../../services/genealogyService';
 import GenealogyDrawer from '../components/genealogyDrawer/index.js';
 import GenealogyDataTable from './genealogyDataTable';
@@ -45,6 +46,7 @@ const { Dragger } = Upload;
 // 	{ title: ' ', content: '', key: '1', closable: false, class: '' }
 // ];
 function Genealogy() {
+	const [batchNodeId, setBatchNodeId] = useState({});
 	const [chartType, setchartType] = useState('backward');
 	const [isBackward, setisBackward] = useState(true);
 	const [isForward, setisForward] = useState(false);
@@ -57,13 +59,11 @@ function Genealogy() {
 	const [processInput, setProcessInput] = useState([]);
 	const [processOutput, setProcessOutput] = useState([]);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-	const [isDrawerRef, setIsDrawerRef] = useState(false);
 	const [panes, setPanes] = useState([]);
 	const [limsBatchInfo, setLimsBatchInfo] = useState([]);
 	const [pbrBatchData, setPbrBatchData] = useState([]);
 	const [showView, setShowView] = useState(false);
 	const [nodeType, setNodeType] = useState('');
-	const [limsBatch, setLimsBatch] = useState('');
 	const [isUploadVisible, setIsUploadVisible] = useState(false);
 	const [uploadFile, setUploadFile] = useState([]);
 	const [uploadFileName, setUploadFileName] = useState([]);
@@ -88,10 +88,12 @@ function Genealogy() {
 				batch_id: node.nodeId,
 				backward: true
 			};
+			setBatchNodeId(_reqBackward)
 			getBackwardGeneology(_reqBackward);
 			setActivateKey('2');
 			setchartType('backward');
 			setProductCode(node.product);
+
 		} else if (node.clickType === 'forward') {
 			setGenealogyData([]);
 			let _reqFor = {
@@ -99,6 +101,7 @@ function Genealogy() {
 				batch_id: node.nodeId,
 				backward: false
 			};
+			setBatchNodeId(_reqFor)
 			getForwardGeneology(_reqFor);
 			setActivateKey('2');
 			setchartType('forward');
@@ -115,7 +118,7 @@ function Genealogy() {
 
 				setBatchInfo(batchInfoDetails);
 				setIsDrawerOpen(true);
-				setIsDrawerRef(false);
+
 				setNodeType(node.nodeType);
 				setNodeTitle(node.product);
 				let nodeSplit = node.nodeId.split('|');
@@ -130,7 +133,7 @@ function Genealogy() {
 					productNum: node.nodeData.matNo,
 					batchNum: node.nodeData.batchNo
 				}
-				setLimsBatch(nodeSplit[2]);
+
 				getNodeBatchInfo(_reqBatchInfo);
 				getPBRData(_reqPbrBatch)
 			} else if (node.nodeType === 'Process Order') {
@@ -147,7 +150,7 @@ function Genealogy() {
 				};
 				setNodeTitle(node.nodeData.poNo);
 				setIsDrawerOpen(true);
-				setIsDrawerRef(false);
+
 				setNodeType(node.nodeType);
 				getNodeProcessInput(_reqProcessInput);
 				getNodeProcessOutput(_reqProcessOutput);
@@ -161,7 +164,7 @@ function Genealogy() {
 				setPurchaseInfo(_purchaseInfo);
 				setNodeTitle(node.nodeData.pur_ord_no);
 				setIsDrawerOpen(true);
-				setIsDrawerRef(false);
+
 				setNodeType(node.nodeType);
 			}
 		} else if (node.clickType === 'upload_files') {
@@ -174,11 +177,37 @@ function Genealogy() {
 							? node.nodeData.poNo
 							: '';
 			setFileData(node.nodeId);
-
 			setUploadId(uploadNodeId);
 			setIsUploadVisible(true);
 			setIsFileUploaded(false)
+		} else if (node.clickType === "markAsGoldenBatch") {
+
+			const goldenBatchSplit = node.nodeId.split("|")
+			const _reqGoldenBatch = {
+				active_flag: true,
+				batch_num: goldenBatchSplit[2],
+				ds_name: "",
+				plant: goldenBatchSplit[0],
+				product: goldenBatchSplit[1]
+			}
+
+			updateGoldenBatches(_reqGoldenBatch)
+			setGenealogyData([]);
+
+		} else if (node.clickType === "markAsNormalBatch") {
+
+			const goldenBatchSplit = node.nodeId.split("|")
+			const _reqGoldenBatch = {
+				active_flag: false,
+				batch_num: goldenBatchSplit[2],
+				ds_name: "",
+				plant: goldenBatchSplit[0],
+				product: goldenBatchSplit[1]
+			}
+			updateGoldenBatches(_reqGoldenBatch)
+			setGenealogyData([]);
 		}
+
 	};
 
 	const selectedParameter = param => {
@@ -194,7 +223,7 @@ function Genealogy() {
 				backward: true,
 				mat_type: param.productType
 			};
-			//setActivateKey('2');
+			setBatchNodeId(_reqBack)
 			setisBackward(true);
 			setisForward(false);
 			getBackwardGeneology(_reqBack);
@@ -207,7 +236,7 @@ function Genealogy() {
 				backward: false,
 				mat_type: param.productType
 			};
-			//setActivateKey('2');
+			setBatchNodeId(_reqFor)
 			setisBackward(false);
 			setisForward(true);
 			getForwardGeneology(_reqFor);
@@ -215,18 +244,6 @@ function Genealogy() {
 			setProductCode(product[0]);
 		}
 
-		// if (isDrawerRef === false) {
-		// 	initialPanes.push({
-		// 		title: '',
-		// 		content: '',
-		// 		key: '2',
-		// 		closable: true,
-		// 		class: 'tree-wrap site-drawer-render-in-current-wrapper'
-		// 	});
-		// 	setPanes(initialPanes);
-		// } else {
-		// 	console.log(isDrawerRef);
-		// }
 	};
 	/**
 	 * TODO: get backward genealogy data from selected parameters or from on node click
@@ -240,7 +257,7 @@ function Genealogy() {
 				setGenealogyData(backwardRes.data);
 				setisBackward(true);
 				setisForward(false);
-				setIsDrawerRef(true);
+
 				setActivateKey('2');
 				dispatch(hideLoader());
 			} /* istanbul ignore next */
@@ -271,7 +288,7 @@ function Genealogy() {
 				setGenealogyData(forwardRes.data);
 				setisBackward(false);
 				setisForward(true);
-				setIsDrawerRef(true);
+
 				setActivateKey('2');
 				dispatch(hideLoader());
 			} else if (forwardRes.status === 400) {
@@ -369,6 +386,8 @@ function Genealogy() {
 			dispatch(showNotification('error', 'No Data Found'));
 		}
 	};
+
+
 
 	/* istanbul ignore next */
 	const isDrawerVisible = val => {
@@ -506,20 +525,9 @@ function Genealogy() {
 				lastIndex = i - 1;
 			}
 		});
-		// initialPanes.forEach((pane, i) => {
-		// 	if (pane.key === targetKey) {
-		// 		lastIndex = i - 1;
-		// 	}
-		// });
+
 		const newPanes = panes.filter(pane => pane.key !== targetKey);
-		//const newInitPanes = initialPanes.filter(pane => pane.key !== targetKey);
-		// if (newInitPanes.length && newActiveKey === targetKey) {
-		// 	if (lastIndex >= 0) {
-		// 		newActiveKey = newInitPanes[lastIndex].key;
-		// 	} else {
-		// 		newActiveKey = newInitPanes[0].key;
-		// 	}
-		// }
+
 		if (newPanes.length && newActiveKey === targetKey) {
 			if (lastIndex >= 0) {
 				newActiveKey = newPanes[lastIndex].key;
@@ -528,8 +536,7 @@ function Genealogy() {
 			}
 		}
 
-		//initialPanes = newInitPanes;
-		setIsDrawerRef(false);
+
 		setPanes(newPanes);
 		setActivateKey(newActiveKey);
 	};
@@ -594,6 +601,29 @@ function Genealogy() {
 	const handleCancelSuccess = () => {
 		setIsFileUploaded(false);
 	};
+
+	const updateGoldenBatches = async _goldenBatchReq => {
+		dispatch(hideLoader());
+		try {
+			const goldenRes = await updateGoldenBatch(_goldenBatchReq)
+			dispatch(hideLoader());
+			if (goldenRes.Status === 200) {
+				/* istanbul ignore next */
+				if (chartType === "backward") {
+					getBackwardGeneology(batchNodeId);
+				} else {
+					getForwardGeneology(batchNodeId)
+				}
+				dispatch(showNotification('success', "Golden batch updated succesfully"));
+			} else {
+				dispatch(showNotification('error', goldenRes.Message));
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			/* istanbul ignore next */
+			dispatch(showNotification('error', error));
+		}
+	}
 
 	return (
 		<div className='custom-wrapper'>
