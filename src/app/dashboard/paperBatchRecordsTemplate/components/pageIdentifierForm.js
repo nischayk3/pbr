@@ -163,7 +163,7 @@ function PageIdentifierForm(props) {
             dispatch(showNotification('error', 'Add Page Identifier Values'));
         }
     }
-    console.log("setPageIdFormValues",pageIdentifierFormValues)
+
     return (
         <Form name="dynamic_form_nest_item"
             onValuesChange={parameterValuesChange}
