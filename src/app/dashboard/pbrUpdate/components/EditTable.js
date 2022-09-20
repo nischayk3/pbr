@@ -61,7 +61,7 @@ const EditableCell = ({
         }}
         name={dataIndex}
       >
-        <Input ref={inputRef} onPressEnter={save} onBlur={save} />
+        <Input id="editTableID" ref={inputRef} onPressEnter={save} onBlur={save} />
       </Form.Item>
     ) : 
     (
