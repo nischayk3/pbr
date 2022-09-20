@@ -124,9 +124,9 @@ export const EditableUsersTable = props => {
             setSelectedRowRows(selectedRowKeys)
 
         },
-        getCheckboxProps: (record) => ({
-            disabled: record.name === 'Disabled User',
-            // Column configuration not to be checked
+        getCheckboxProps: (record) => 
+        ({
+            disabled: !selectedRowRows.includes(record.key),
             name: record.name,
         }),
     };

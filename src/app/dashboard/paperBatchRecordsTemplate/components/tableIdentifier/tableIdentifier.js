@@ -90,18 +90,18 @@ function TableIdentifier(props) {
 
     }, [triggerUpdate])
 
-    useEffect(() => {
-        if (selectedColRows.length > 0 ) {
-            let min = Math.min(...selectedColRows)
-            let max = Math.max(...selectedColRows)
-            setColPanelValue({ start: min+1, stop: max+1, pk_index: selectedColRows?.pk_index?selectedColRows?.pk_index:"1" })
-        }
-        if (selectedRowRows.length > 0) {
-            let min = Math.min(...selectedRowRows)
-            let max = Math.max(...selectedRowRows)
-            setRowPanelValue({ start: min+1, stop: max+1, pk_index: selectedRowRows?.pk_index?selectedRowRows?.pk_index:"1" })
-        }
-    }, [selectedColRows, selectedRowRows])
+    // useEffect(() => {
+    //     if (selectedColRows.length > 0 ) {
+    //         let min = Math.min(...selectedColRows)
+    //         let max = Math.max(...selectedColRows)
+    //         setColPanelValue({ start: min+1, stop: max+1, pk_index: selectedColRows?.pk_index?selectedColRows?.pk_index:"1" })
+    //     }
+    //     if (selectedRowRows.length > 0) {
+    //         let min = Math.min(...selectedRowRows)
+    //         let max = Math.max(...selectedRowRows)
+    //         setRowPanelValue({ start: min+1, stop: max+1, pk_index: selectedRowRows?.pk_index?selectedRowRows?.pk_index:"1" })
+    //     }
+    // }, [selectedColRows, selectedRowRows])
 
     const geTableData = async (clickedTable, col = 1, row = 1, table = null, flag) => {
         try {
@@ -171,6 +171,14 @@ function TableIdentifier(props) {
                 setSelectedColRows(arr1)
             } else if (field == "pk_index") {
                 if (val != "" && Number(val) <= Number(rowPanelValue.start)) {
+                    let arr = [...selectedRowRows]
+                    if(arr[arr.length-1] === Number(rowPanelValue.stop-1)){
+                        arr.push(Number(val-1))
+                    }else{
+                        arr.pop()
+                        arr.push(Number(val-1))
+                    }
+                    setSelectedRowRows(arr)
                     geTableData(clickedTable, Number(val), Number(rowPanelValue.pk_index), tableID, true)
                 } else if (Number(val) > Number(rowPanelValue.start)) {
                     dispatch(showNotification('error', 'PK_COL_Index out of bound'));
@@ -189,6 +197,14 @@ function TableIdentifier(props) {
                 setSelectedRowRows(arr1)
             } else if (field == "pk_index") {
                 if (val != "" && Number(val) <= Number(colPanelValue.start)) {
+                    let arr = [...selectedColRows]
+                    if(arr[arr.length-1] === Number(colPanelValue.stop-1)){
+                        arr.push(Number(val-1))
+                    }else{
+                        arr.pop()
+                        arr.push(Number(val-1))
+                    }
+                    setSelectedColRows(arr)
                     geTableData(clickedTable, Number(colPanelValue.pk_index), Number(val), tableID, true)
                 } else if (Number(val) > Number(colPanelValue.start)) {
                     dispatch(showNotification('error', 'PK_ROW_Index out of bound'));
@@ -200,7 +216,6 @@ function TableIdentifier(props) {
     }
 
     const handlePrewiew = async () => {
-        // dispatch(showLoader());
         let pageArr = []
         if (pageIdFormValues) {
             pageIdFormValues.forEach(item => {
@@ -241,7 +256,6 @@ function TableIdentifier(props) {
             table_id: "",
             table_identifier: tableIdentifierValues,
             table_name: formTableData[tableActiveKey]?.name,
-            // page_identifier: pageArr
         }
         let arr = selectedColValues?.filter(item => selectedColRows?.includes(item?.key))
         let arr1 = selectedRowValues?.filter(item => selectedRowRows?.includes(item?.key))
