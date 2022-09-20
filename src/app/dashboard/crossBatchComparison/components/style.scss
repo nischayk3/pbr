@@ -1,0 +1,33 @@
+.filter-layout {
+	background: #fff;
+	padding: 8px 16px;
+	display: flex;
+	border-radius: 4px;
+
+	.filter-drop {
+		padding-right: 20px;
+		display: flex;
+
+		.select_field_search {
+			width: 200px;
+			margin-right: 20px;
+		}
+
+		p {
+			margin: 0;
+			padding: 6px 0;
+		}
+	}
+
+	.filter-btn {
+		padding: 0 0;
+
+		button {
+			margin: 34px 10px 0 10px;
+		}
+	}
+}
+
+.sidemenu {
+	display: none !important;
+}
