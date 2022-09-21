@@ -1,8 +1,5 @@
 import {
-	BMS_APP_PYTHON_SERVICE,
-	MDH_APP_PYTHON_SERVICE,
-	MDH_APP_GENEALOGY,
-
+	BMS_APP_PYTHON_SERVICE, MDH_APP_GENEALOGY, MDH_APP_PYTHON_SERVICE
 } from '../constants/apiBaseUrl';
 import Service from './AjaxService';
 
@@ -12,6 +9,13 @@ const request_headers = {
 	'content-type': 'application/json',
 	'x-access-token': login_response.token ? login_response.token : '',
 	'resource-name': 'GENEALOGY'
+};
+
+const request_head = {
+	'content-type': 'application/json',
+	'x-access-token': login_response.token ? login_response.token : '',
+	'resource-name': 'GENEALOGY',
+	'username': login_response && login_response.email_id
 };
 
 const request_header_file = {
@@ -56,7 +60,7 @@ export const getBackwardData = _queryParam => {
 	return Service.get(
 		MDH_APP_GENEALOGY + 'genealogy',
 		_queryParam,
-		request_headers
+		request_head,
 	).then(
 		response => {
 			return response.data;
@@ -71,7 +75,7 @@ export const getForwardData = _queryParam => {
 	return Service.get(
 		MDH_APP_GENEALOGY + 'genealogy',
 		_queryParam,
-		request_headers
+		request_head,
 	).then(
 		response => {
 			return response.data;
@@ -169,6 +173,24 @@ export const pbrApproval = request => {
 	return Service.get(
 		MDH_APP_PYTHON_SERVICE + '/pbr/udh/pbr_approval',
 		request,
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
+
+
+// golden batch update
+
+export const updateGoldenBatch = request => {
+	return Service.put(
+		BMS_APP_PYTHON_SERVICE + '/golden-batch',
+		request,
+		request_headers,
 	).then(
 		response => {
 			return response.data;

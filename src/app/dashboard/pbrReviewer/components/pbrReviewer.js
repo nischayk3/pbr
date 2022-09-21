@@ -94,7 +94,7 @@ function PbrReviewer() {
       dispatch(showNotification('error', error.Message));
     }
   }
-
+/* istanbul ignore next */
   const showfilterData = async (value) => {
     dispatch(showLoader());
     setShowReset(true)
@@ -106,7 +106,7 @@ function PbrReviewer() {
     setReviewerReq(obj)
     dispatch(hideLoader());
   };
-
+/* istanbul ignore next */
   const showfilters = async (value) => {
     dispatch(showLoader());
     setShowResetConfidence(true)
@@ -119,7 +119,7 @@ function PbrReviewer() {
     dispatch(hideLoader());
 
   };
-
+/* istanbul ignore next */
   const updateStatus = (e, record) => {
     let resp = [...arr];
     if (resp.includes(record.id)) {
@@ -542,7 +542,7 @@ function PbrReviewer() {
     clearFilters();
     setSearchText("");
   }
-
+/* istanbul ignore next */
   const landingSearch = value => {
     if (value == "") {
       setFilterTableLanding(null);
@@ -560,7 +560,7 @@ function PbrReviewer() {
     }
 
   };
-
+/* istanbul ignore next */
   const resetConfidence = async () => {
     dispatch(showLoader());
     let obj = { ...reviewerReq, confidence: null }
@@ -571,6 +571,7 @@ function PbrReviewer() {
     dispatch(hideLoader());
 
   }
+  /* istanbul ignore next */
   const resetStatus = async () => {
     dispatch(showLoader());
     let obj = { ...reviewerReq, status: null }
@@ -583,7 +584,7 @@ function PbrReviewer() {
     dispatch(hideLoader());
 
   }
-
+/* istanbul ignore next */
   const handleTemplateChange = (val) => {
     if (val.length == 0) {
       let req = { ...reviewerReq, template_id: [] }
@@ -595,6 +596,7 @@ function PbrReviewer() {
     }
     setSelectedTemplateArray(val)
   }
+  /* istanbul ignore next */
   const applyTemplateFilter = () => {
     cardTableData()
     chart()
