@@ -4,22 +4,21 @@
  * @Last Modified - 14 March, 2022
  */
 
-import React, { useEffect, useRef, useState } from "react";
-import * as _ from "lodash";
 import * as d3 from "d3";
+import * as _ from "lodash";
+import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 
-import { Button, Select } from "antd";
 import {
 	CloseOutlined,
 	EyeOutlined,
 	MinusOutlined,
 	PlusOutlined,
-	SearchOutlined,
-	WarningOutlined,
+	SearchOutlined, StarFilled, WarningOutlined
 } from "@ant-design/icons";
-import processOrderIcon from "../../../../../assets/images/processorder.png";
+import { Button, Select } from "antd";
 import batchIcon from "../../../../../assets/images/material.png";
+import processOrderIcon from "../../../../../assets/images/processorder.png";
 import "./style.scss";
 
 function TreePlot(props) {
@@ -32,6 +31,8 @@ function TreePlot(props) {
 	const [selectedNodeId, setselectedNodeId] = useState("");
 	const [popVisible, setPopVisible] = useState(false);
 	const [nodeData, setNodeData] = useState({});
+	const [isGoldenBatch, setIsGoldenBatch] = useState();
+
 
 	useEffect(() => {
 		setisMaterialLink("#08C6FF");
@@ -162,12 +163,7 @@ function TreePlot(props) {
 			let linkSvg = diagramLayout.selectAll(".link");
 			let linkNotMatchValue = diagramLayout.selectAll(".value-match");
 			let linkSvg1 = diagramLayout.select("g");
-			//let linkSvg2 = diagramLayout.selectAll("#node-" + selectedNodeId);
-			//let nodeCoords = d3.transform(linkSvg2.attr("transform"));
-			// let ntranslateX = nodeCoords.translate[0];
-			// let ntranslateY = nodeCoords.translate[1];
-			// let newTranslateX = ntranslateX - 960;
-			// let newTranslateY = ntranslateY - ntranslateY - 70;
+
 			linkNotMatchValue.attr("class", "link").style("stroke", isMaterialLink);
 			linkSvg1
 				.attr("transform", "translate(" + -300 + "," + 20 + ")scale(1,1)")
@@ -208,12 +204,7 @@ function TreePlot(props) {
 			let linkSvgFor = diagramForward.selectAll(".link");
 			let linkNotMatchValueFor = diagramForward.selectAll(".value-match");
 			let linkSvg1For = diagramForward.select("g");
-			//let linkSvg2For = diagramForward.selectAll("#node-" + selectedNodeId);
-			//let nodeCoordsFor = d3.transform(linkSvg2For.attr("transform"));
-			// let ntranslateXFor = nodeCoordsFor.translate[0];
-			// let ntranslateYFor = nodeCoordsFor.translate[1];
-			// let newTranslateXFor = ntranslateXFor - 600;
-			// let newtranslateYFor = ntranslateYFor - ntranslateYFor - 40;
+
 			linkNotMatchValueFor
 				.attr("class", "link")
 				.style("stroke", isMaterialLink);
@@ -273,8 +264,7 @@ function TreePlot(props) {
 		}
 	};
 
-	/**
-	 * Checks if the element is an empty object or array
+	/**	 * Checks if the element is an empty object or array
 	 */
 	function checkForEmpty(el) {
 		return (
@@ -616,120 +606,21 @@ function TreePlot(props) {
 						if (d.type === "Material") {
 							batchName = d["nodeId"].split("|");
 							nodeName = batchName[1];
-							return "node-"+nodeName;
+							return "node-" + nodeName;
 						} else if (d.type === "Process Order") {
 							poName = d.poNo;
-							return "node-"+poName;
+							return "node-" + poName;
 						} else if (d.type === "Purchase Order") {
 							purchaseOrder = d.pur_ord_no;
-							return "node-"+purchaseOrder;
+							return "node-" + purchaseOrder;
 						}
 					})
 					.attr("transform", function (d) {
 						return "translate(" + source.y0 + "," + source.x0 + ")";
 					});
-				// .style('stroke', function (d) {
-				//   if (d.matNo === firstNode) {
-				//     return 'red';
-				//   }
-				// });
-
-				// var highlightForwardLink = function (
-				// 	d,
-				// 	displayColor,
-				// 	opacity,
-				// 	strokeWidth
-				// ) {
-				// 	link
-				// 		.filter(function (e) {
-				// 			if (d && d !== null) {
-				// 				while (e.source === d) {
-				// 					highlightForwardLink(
-				// 						e.target,
-				// 						displayColor,
-				// 						opacity,
-				// 						strokeWidth
-				// 					);
-				// 					return d && d !== null ? true : false;
-				// 				}
-				// 			}
-				// 		})
-				// 		.transition(0)
-				// 		.duration(300)
-				// 		.style("stroke", function (obj) {
-				// 			if (isBackward) {
-				// 				return isMaterialLink;
-				// 				// if (obj.source && obj.source.type === 'Material') {
-				// 				//   return isProcesslink;
-				// 				// } else {
-				// 				//   return isMaterialLink;
-				// 				// }
-				// 			}
-				// 			if (isForward) {
-				// 				// if (obj.source && obj.source.type === 'Process Order') {
-				// 				//   return isProcesslink;
-				// 				// } else {
-				// 				//   return isMaterialLink;
-				// 				// }
-				// 			}
-				// 		})
-				// 		.style("opacity", opacity)
-				// 		.style("stroke-width", strokeWidth);
-				// };
-
-				// var highlightBackwardLink = function (
-				// 	d,
-				// 	displayColor,
-				// 	opacity,
-				// 	strokeWidth
-				// ) {
-				// 	link
-				// 		.filter(function (e) {
-				// 			if (d && d !== null) {
-				// 				while (e.target === d) {
-				// 					highlightBackwardLink(
-				// 						e.source,
-				// 						displayColor,
-				// 						opacity,
-				// 						strokeWidth
-				// 					);
-				// 					return d && d !== null ? true : false;
-				// 				}
-				// 			}
-				// 		})
-				// 		.transition(0)
-				// 		.duration(300)
-				// 		.style("stroke", function (obj) {
-				// 			if (isBackward) {
-				// 				return isMaterialLink;
-				// 				// if (obj.source && obj.source.type === 'Material') {
-				// 				//   return isProcesslink;
-				// 				// } else {
-				// 				//   return isMaterialLink;
-				// 				// }
-				// 			}
-				// 			if (isForward) {
-				// 				return isMaterialLink;
-				// 				// if (obj.source && obj.source.type === 'Process Order') {
-				// 				//   return isProcesslink;
-				// 				// } else {
-				// 				//   return isMaterialLink;
-				// 				// }
-				// 			}
-				// 		})
-				// 		.style("opacity", opacity)
-				// 		.style("stroke-width", strokeWidth);
-				// };
-
-				// var highlightLink = function (d, displayColor, opacity, strokeWidth) {
-				// 	highlightForwardLink(d, displayColor, opacity, strokeWidth);
-				// 	highlightBackwardLink(d, displayColor, opacity, strokeWidth);
-				// };
 
 				nodeEnter
 					.append("rect")
-					//nodeEnter.append("circle")
-					//  .attr("r", 1e-6)
 					.attr("dy", "-0.4em")
 					.attr("x", "-27")
 					.attr("y", "-20")
@@ -748,6 +639,21 @@ function TreePlot(props) {
 							return "#6C534E";
 						} else {
 							return "transparent";
+						}
+					});
+				//add golden batch
+				nodeEnter
+					.append("rect")
+					.attr("x", "-26")
+					.attr("y", "-27")
+					.attr("rx", "20")
+					.attr("width", "120")
+					.attr("height", "40")
+					.attr("class", function (d) {
+						if (d.golden_batch === true) {
+							return "golden-star";
+						} else {
+							return "normal-star";
 						}
 					});
 
@@ -783,6 +689,7 @@ function TreePlot(props) {
 						}
 					})
 					.attr("xlink:href", function (d) {
+
 						if (d.OpenNC === true) {
 							return "img/genealogy/non-material.png";
 						} else if (d.type === "Material") {
@@ -790,6 +697,8 @@ function TreePlot(props) {
 						} else if (d.type === "Process Order") {
 							return "img/genealogy/processorder.png";
 						} else if (d.type === "Purchase Order") {
+							return "img/genealogy/purchaseorder.png";
+						} else if (d.matNo === "1101738") {
 							return "img/genealogy/purchaseorder.png";
 						}
 					})
@@ -919,7 +828,7 @@ function TreePlot(props) {
 				nodeExit.select("text").style("fill-opacity", 1e-6);
 
 				// Update the links…
-				
+
 				var link = THIS.vis
 					.selectAll("path.link")
 					.data(THIS.tree.links(nodes), function (d) {
@@ -962,11 +871,6 @@ function TreePlot(props) {
 								rootCounter++;
 								if (d.source) {
 									return isMaterialLink;
-									// if (d.source.type === 'Material') {
-									//   return isMaterialLink;
-									// } else {
-									//   return isMaterialLink;
-									// }
 								} else {
 									return d.source.children[rootCounter - 1].linkColor;
 								}
@@ -974,11 +878,6 @@ function TreePlot(props) {
 								if (d.target.isFolder === false) return "#0B3B0B";
 								else if (d.source) {
 									return isMaterialLink;
-									// if (d.source.type === 'Material') {
-									//   return isMaterialLink;
-									// } else {
-									//   return isMaterialLink;
-									// }
 								} else {
 									return d.source.children[rootCounter - 1].linkColor;
 								}
@@ -989,11 +888,6 @@ function TreePlot(props) {
 								rootCounter++;
 								if (d.source) {
 									return isMaterialLink;
-									// if (d.source.type === 'Material') {
-									//   return isMaterialLink;
-									// } else {
-									//   return isProcesslink;
-									// }
 								} else {
 									return d.source.children[rootCounter - 1].linkColor;
 								}
@@ -1001,11 +895,6 @@ function TreePlot(props) {
 								if (d.target.isFolder === false) return "#0B3B0B";
 								else if (d.source) {
 									return isMaterialLink;
-									// if (d.source.type === 'Material') {
-									//   return isMaterialLink;
-									// } else {
-									//   return isProcesslink;
-									// }
 								} else {
 									return d.source.children[rootCounter - 1].linkColor;
 								}
@@ -1095,19 +984,19 @@ function TreePlot(props) {
 				// On Node Click Event
 				//toggle children click
 				/* istanbul ignore next */
-				function node_onClick(d, id) {
+				function node_onClick(d) {
 					let lastClickD = null;
 					var ids = ""
-					if(d.type == "Material"){
+					if (d.type == "Material") {
 						ids = d.matNo
 					}
-					if(d.type === "Process Order"){
+					if (d.type === "Process Order") {
 						ids = d.poNo
 					}
-				if (d.type === "Purchase Order") {
-					ids = d.pur_ord_no;
-					
-				}
+					if (d.type === "Purchase Order") {
+						ids = d.pur_ord_no;
+
+					}
 
 					let nExpand = d3.select("#node-" + ids);
 					if (d.children) {
@@ -1119,16 +1008,16 @@ function TreePlot(props) {
 							.text(function (a) {
 								let textId = "";
 								var nodeIcon = "";
-								if(a.type == "Material"){
+								if (a.type == "Material") {
 									textId = a.matNo
 								}
-								if(a.type === "Process Order"){
+								if (a.type === "Process Order") {
 									textId = a.poNo
 								}
-							if (a.type === "Purchase Order") {
-								textId = a.pur_ord_no;
-								
-							}
+								if (a.type === "Purchase Order") {
+									textId = a.pur_ord_no;
+
+								}
 								if (textId === ids) {
 									nodeIcon = "+";
 								}
@@ -1148,16 +1037,16 @@ function TreePlot(props) {
 							.text(function (b) {
 								let textId = "";
 								var nodeIconC = "";
-								if(b.type == "Material"){
+								if (b.type == "Material") {
 									textId = b.matNo
 								}
-								if(b.type === "Process Order"){
+								if (b.type === "Process Order") {
 									textId = b.poNo
 								}
-							if (b.type === "Purchase Order") {
-								textId = b.pur_ord_no;
-								
-							}
+								if (b.type === "Purchase Order") {
+									textId = b.pur_ord_no;
+
+								}
 								if (textId === ids) {
 									nodeIconC = "−";
 								}
@@ -1174,9 +1063,9 @@ function TreePlot(props) {
 					d._isSelected = true;
 					lastClickD = d;
 					THIS.update(d);
-					setTimeout(function(){
+					setTimeout(function () {
 						THIS.update(d);
-					},300)
+					}, 300)
 				}
 
 				/* istanbul ignore next */
@@ -1545,6 +1434,12 @@ function TreePlot(props) {
 		setTimeout(() => TreeViewBackward.multiParentCoupling(multiParent), 100);
 	};
 	const handleChartClick = (data) => {
+		if (data.golden_batch) {
+			setIsGoldenBatch(true)
+		} else {
+			setIsGoldenBatch(false)
+		}
+
 		if (data.type === "Process Order" || data.type === "Purchase Order") {
 			setPopVisible(false);
 		} else {
@@ -1582,7 +1477,6 @@ function TreePlot(props) {
 					</div>
 					<div className="select-allowclear">
 						<Select
-							// allowClear
 							showSearch
 							placeholder="Search by batch number, product code, etc"
 							optionFilterProp="children"
@@ -1652,6 +1546,27 @@ function TreePlot(props) {
 							>
 								Forward Genealogy
 							</Button>
+						</>
+					)}
+					{popVisible && (
+						<>
+							{isGoldenBatch ? (<Button
+								type="primary"
+								id="mark-as-golden-batch"
+								onClick={() => {
+									onClickView("markAsNormalBatch");
+								}}
+							>
+								Mark as normal batch
+							</Button>) : (<Button
+								type="primary"
+								id="mark-as-normal-batch"
+								onClick={() => {
+									onClickView("markAsGoldenBatch");
+								}}
+							>
+								Mark as golden batch  <StarFilled className="star-outlined" />
+							</Button>)}
 						</>
 					)}
 					<Button

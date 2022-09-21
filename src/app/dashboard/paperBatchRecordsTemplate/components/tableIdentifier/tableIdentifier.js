@@ -12,11 +12,11 @@ import { tableColumns } from '../../../../../utils/TableColumns'
 import { Handle } from 'react-flow-renderer';
 
 const { Panel } = Collapse;
-
+/* istanbul ignore next */
 function TableIdentifier(props) {
     let { clickedTable, metaData, imageHeight, imageWidth, triggerPreview, templateVersion,
         params, triggerUpdate, setSideTableData, setTriggerUpdate, tableActiveKey, formTableData,
-        setModalData, setModalColumns, initialSideTableData, pageIdFormValues } = props
+        setModalData, setModalColumns, initialSideTableData, pageIdFormValues, pageNumber } = props
     const dispatch = useDispatch();
     const [columnData, setColumnData] = useState([])
     const [rowData, setrowData] = useState([])
@@ -90,17 +90,30 @@ function TableIdentifier(props) {
 
     }, [triggerUpdate])
 
-    const geTableData = async (clickedTable, col = 1, row = 1, table = null) => {
+    // useEffect(() => {
+    //     if (selectedColRows.length > 0 ) {
+    //         let min = Math.min(...selectedColRows)
+    //         let max = Math.max(...selectedColRows)
+    //         setColPanelValue({ start: min+1, stop: max+1, pk_index: selectedColRows?.pk_index?selectedColRows?.pk_index:"1" })
+    //     }
+    //     if (selectedRowRows.length > 0) {
+    //         let min = Math.min(...selectedRowRows)
+    //         let max = Math.max(...selectedRowRows)
+    //         setRowPanelValue({ start: min+1, stop: max+1, pk_index: selectedRowRows?.pk_index?selectedRowRows?.pk_index:"1" })
+    //     }
+    // }, [selectedColRows, selectedRowRows])
+
+    const geTableData = async (clickedTable, col = 1, row = 1, table = null, flag) => {
         try {
             dispatch(showLoader());
             let req = {
-                filename: `${metaData?.file?.split('.')[0]}_page-${0}.jpeg.json`,
-                page: 1,
+                filename: `${metaData?.file?.split('.')[0]}_page-${pageNumber - 1}.jpeg.json`,
+                page: pageNumber,
                 config: {
-                    pk_col_index: col,
-                    pk_row_index: row
+                    pk_col_index: row,
+                    pk_row_index: col
                 },
-                table_identifier: tableIdentifierValues ? tableIdentifierValues : {
+                table_identifier: tableIdentifierValues != undefined && Object.keys(tableIdentifierValues).length > 0 ? tableIdentifierValues : {
                     "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
                     "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
                 },
@@ -116,18 +129,21 @@ function TableIdentifier(props) {
                 let arr = obj.map((item, index) => index)
                 let arr1 = obj2.map((item1, index1) => index1)
                 setTableID(res?.Table_id)
-                setSelectedColRows(arr)
-                setSelectedRowRows(arr1)
+
                 setColumnData(obj)
                 setrowData(obj2)
-                setColPanelValue({ start: "1", stop: `${obj.length}`, pk_index: col })
-                setRowPanelValue({ start: "1", stop: `${obj2.length}`, pk_index: row })
+                if (!flag) {
+                    setColPanelValue({ start: "1", stop: `${obj.length}`, pk_index: col })
+                    setRowPanelValue({ start: "1", stop: `${obj2.length}`, pk_index: row })
+                    setSelectedColRows(arr)
+                    setSelectedRowRows(arr1)
+                }
                 setSelectedColValues(obj)
                 setSelectedRowValues(obj2)
                 dispatch(hideLoader());
             } else {
                 dispatch(hideLoader());
-                // dispatch(showNotification('error', 'No Data Found'));
+                dispatch(showNotification('error', res.Message));
             }
         } catch (error) { /* istanbul ignore next */
             dispatch(hideLoader());
@@ -143,19 +159,37 @@ function TableIdentifier(props) {
         }
         return arr
     }
+
+    const checkValueInArray = (array,value) => {
+        let arr = [...array]
+        if(!arr.includes(value)){
+            arr.push(value)
+        }
+        return arr
+    }
     const handleInputChange = (val, field, identifier) => {
         if (identifier === "Column Identifier") {
             let obj = { ...colPanelValue }
             obj[field] = val
             if (field == "start" && val != undefined && val != "") {
                 let arr = updateCheckbox(val, obj.stop)
+                arr = checkValueInArray(arr,Number(rowPanelValue?.pk_index)-1)
                 setSelectedColRows(arr)
             } else if (field == "stop" && val != undefined && val != "") {
                 let arr1 = updateCheckbox(obj.start, val)
+                arr1 = checkValueInArray(arr1,Number(rowPanelValue?.pk_index)-1)
                 setSelectedColRows(arr1)
             } else if (field == "pk_index") {
                 if (val != "" && Number(val) <= Number(rowPanelValue.start)) {
-                    geTableData(clickedTable, Number(val), Number(rowPanelValue.pk_index), tableID)
+                    let arr = [...selectedRowRows]
+                    if(arr[arr.length-1] === Number(rowPanelValue.stop-1)){
+                        arr.push(Number(val-1))
+                    }else{
+                        arr.pop()
+                        arr.push(Number(val-1))
+                    }
+                    setSelectedRowRows(arr)
+                    geTableData(clickedTable, Number(val), Number(rowPanelValue.pk_index), tableID, true)
                 } else if (Number(val) > Number(rowPanelValue.start)) {
                     dispatch(showNotification('error', 'PK_COL_Index out of bound'));
                 }
@@ -167,15 +201,25 @@ function TableIdentifier(props) {
             obj1[field] = val
             if (field == "start" && val != undefined && val != "") {
                 let arr = updateCheckbox(val, obj1.stop)
+                arr = checkValueInArray(arr,Number(colPanelValue?.pk_index)-1)
                 setSelectedRowRows(arr)
             } else if (field == "stop" && val != undefined && val != "") {
                 let arr1 = updateCheckbox(obj1.start, val)
+                arr1 = checkValueInArray(arr1,Number(colPanelValue?.pk_index))-1
                 setSelectedRowRows(arr1)
             } else if (field == "pk_index") {
                 if (val != "" && Number(val) <= Number(colPanelValue.start)) {
-                    geTableData(clickedTable, Number(colPanelValue.pk_index), Number(val), tableID)
+                    let arr = [...selectedColRows]
+                    if(arr[arr.length-1] === Number(colPanelValue.stop-1)){
+                        arr.push(Number(val-1))
+                    }else{
+                        arr.pop()
+                        arr.push(Number(val-1))
+                    }
+                    setSelectedColRows(arr)
+                    geTableData(clickedTable, Number(colPanelValue.pk_index), Number(val), tableID, true)
                 } else if (Number(val) > Number(colPanelValue.start)) {
-                    dispatch(showNotification('error', 'PK_COL_Index out of bound'));
+                    dispatch(showNotification('error', 'PK_ROW_Index out of bound'));
                 }
 
             }
@@ -184,7 +228,6 @@ function TableIdentifier(props) {
     }
 
     const handlePrewiew = async () => {
-        // dispatch(showLoader());
         let pageArr = []
         if (pageIdFormValues) {
             pageIdFormValues.forEach(item => {
@@ -211,8 +254,8 @@ function TableIdentifier(props) {
                     stop_index: colPanelValue?.stop
                 }
             },
-            filename: `${params?.file?.split('.')[0]}_page-0.jpeg.json`,
-            page: 1,
+            filename: `${params?.file?.split('.')[0]}_page-${pageNumber - 1}.jpeg.json`,
+            page: pageNumber,
             row_config: {
                 method: "column_index",
                 params: {
@@ -224,8 +267,7 @@ function TableIdentifier(props) {
             },
             table_id: "",
             table_identifier: tableIdentifierValues,
-            table_name: "asdas",
-            // page_identifier: pageArr
+            table_name: formTableData[tableActiveKey]?.name,
         }
         let arr = selectedColValues?.filter(item => selectedColRows?.includes(item?.key))
         let arr1 = selectedRowValues?.filter(item => selectedRowRows?.includes(item?.key))
@@ -263,7 +305,7 @@ function TableIdentifier(props) {
             dispatch(hideLoader());
         } else {
             dispatch(hideLoader());
-            dispatch(showNotification('error', res.Message));
+            dispatch(showNotification('error', res?.Message ? res?.Message : res?.detail));
         }
     }
 

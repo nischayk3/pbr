@@ -146,7 +146,7 @@ const Profile = () => {
 			}
 			const getRes = await getUserProfile(_getReq)
 
-			console.log("getRes", getRes);
+
 			if (getRes.statuscode === 200) {
 				dispatch(hideLoader());
 				setImagePrev(true)
@@ -156,6 +156,7 @@ const Profile = () => {
 			}
 		} catch (error) {
 			dispatch(hideLoader());
+			dispatch(showNotification('error', error));
 		}
 	}
 
@@ -180,6 +181,7 @@ const Profile = () => {
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
+			dispatch(showNotification('error', error));
 		}
 	}
 

@@ -177,6 +177,13 @@ const Sidebar = () => {
 					>
 						<Link to="/dashboard/analysis">Auto ML Analytics</Link>
 					</Menu.Item>
+					<Menu.Item
+						key="cross batch comparison"
+						icon={<FundOutlined className="menu-icons" />}
+						id="analysis"
+					>
+						<Link to="/dashboard/cross_batch_comparison">Cross Batch Comparison</Link>
+					</Menu.Item>
 				</SubMenu>
 				<SubMenu
 					key="sub6"

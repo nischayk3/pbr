@@ -5,7 +5,7 @@ import './styles.scss';
 
 const coloptions = [{ lable: "Combine with", value: "combine_with" }]
 const rowoptions = [{ lable: "All", value: "all" }]
-
+ /* istanbul ignore next */
 export const EditableUsersTable = props => {
     const { users, add, remove, selectedIdentifier, setSelectedRowRows, selectedRowRows,setSelectedRowValues,selectedRowValues } = props;
     const [editingIndex, setEditingIndex] = useState(0);
@@ -124,9 +124,9 @@ export const EditableUsersTable = props => {
             setSelectedRowRows(selectedRowKeys)
 
         },
-        getCheckboxProps: (record) => ({
-            disabled: record.name === 'Disabled User',
-            // Column configuration not to be checked
+        getCheckboxProps: (record) => 
+        ({
+            disabled: !selectedRowRows.includes(record.key),
             name: record.name,
         }),
     };

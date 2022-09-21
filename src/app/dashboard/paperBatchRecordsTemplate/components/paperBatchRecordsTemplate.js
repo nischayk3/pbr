@@ -238,7 +238,7 @@ function PaperBatchRecordsTemplate() {
     });
     const [triggerUpdate, setTriggerUpdate] = useState(false);
     const [initialSideTableData, setInitialSideTableData] = useState({});
-    const [initialPageIdentifierData, setInitialPageIdentifierData] = useState({users: []});
+    const [initialPageIdentifierData, setInitialPageIdentifierData] = useState({ users: [] });
     const [mainPanelValue, setMainPanelValue] = useState("")
     const [pageDragValue, setPageDragValue] = useState({})
     const [pageIdFormValues, setPageIdFormValues] = useState([])
@@ -252,6 +252,7 @@ function PaperBatchRecordsTemplate() {
         setRightPanelCollapsed(!rightPanelCollapsed);
         setLeftPanelCollapsed(!leftPanelCollapsed);
     };
+    /* istanbul ignore next */
     useEffect(() => {
         if (pageIdFormValues) {
             let arr = []
@@ -664,7 +665,7 @@ function PaperBatchRecordsTemplate() {
             let _reqBatch = {
                 filename: `${params?.file?.split('.')[0]}_page-${pageNumber}.jpeg.json`,
                 bbox_type: mode,
-                page: 1,
+                page: pageNumber + 1,
                 // action_type: params?.temp_disp_id ? "edit" : "create",
                 action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "saved" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? mode == "TABLE" ? "create" : "edit" : "create",
                 temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : "",
@@ -714,6 +715,9 @@ function PaperBatchRecordsTemplate() {
             } else if (batchRes.status === 404) {
                 setAreasMap();
                 dispatch(hideLoader());
+            } else {
+                dispatch(hideLoader());
+                dispatch(showNotification('error', `Unable to detect ${mode}`));
             }
         } catch (error) { /* istanbul ignore next */
             dispatch(hideLoader());
@@ -804,7 +808,7 @@ function PaperBatchRecordsTemplate() {
                     let obj = {
                         name: item.name,
                         method: item.method,
-                        pageIdValue:item?.page_name,
+                        pageIdValue: item?.page_name,
                         regex: item.param_value_regex,
                         AnchorDirection: item.param_value_direction,
                         param_rule: item?.param_value_rule?.rule_name,
@@ -842,20 +846,20 @@ function PaperBatchRecordsTemplate() {
                         table_id: item?.table_id,
                         name: item?.table_name,
                         tableData: loadData[0]?.pbr_template_info?.tableData[index]?.tableData,
-                        pageIdValue:item?.page_name
+                        pageIdValue: item?.page_name
                     }
                     table.users.push(sideData)
                 })
                 loadData[0]?.pbr_template_info?.pbrPageIdentifier.forEach((item, index) => {
                     let sideData = {
-                       name:item?.name
+                        name: item?.name
                     }
-                    if(item.keys.length>0){
-                        item.keys.forEach((i,index)=>{
-                            sideData[`key${index+1}`]= i
+                    if (item.keys.length > 0) {
+                        item.keys.forEach((i, index) => {
+                            sideData[`key${index + 1}`] = i
                         })
-                       
-                        
+
+
                     }
                     sideData["keyCount"] = item.keys.length
                     pageID.users.push(sideData)
@@ -981,15 +985,19 @@ function PaperBatchRecordsTemplate() {
     /* istanbul ignore next */
     const clicked = (area) => {
         if (showRowColIdentifier) {
-            setClickedTable(area)
-            let table_identifier = {
-                "left": area?.coords[0] / imageWidth, "top": area?.coords[1] / imageHeight,
-                "width": (area?.coords[2] - area?.coords[0]) / imageWidth, "height": (area?.coords[3] - area?.coords[1]) / imageHeight
-            }
-            for (let i = 0; i < 2; i++) {
-                setTimeout(() => {
-                    getBoundingBoxDataInfo(imageWidth, imageHeight, "CELL", pageNumber - 1, table_identifier);
-                }, i * 1000)
+            if (formTableData.length > 0) {
+                setClickedTable(area)
+                let table_identifier = {
+                    "left": area?.coords[0] / imageWidth, "top": area?.coords[1] / imageHeight,
+                    "width": (area?.coords[2] - area?.coords[0]) / imageWidth, "height": (area?.coords[3] - area?.coords[1]) / imageHeight
+                }
+                for (let i = 0; i < 2; i++) {
+                    setTimeout(() => {
+                        getBoundingBoxDataInfo(imageWidth, imageHeight, "CELL", pageNumber - 1, table_identifier);
+                    }, i * 1000)
+                }
+            } else {
+                dispatch(showNotification('error', "Create at least one Table Parameter"));
             }
         }
         if (mainPanelValue == 2) {
@@ -1110,6 +1118,7 @@ function PaperBatchRecordsTemplate() {
         }
 
     };
+    /* istanbul ignore next */
     const tableDataReq = () => {
 
         if (formTableData.length > 0) {
@@ -1119,7 +1128,7 @@ function PaperBatchRecordsTemplate() {
                     table_id: item?.table_id,
                     table_name: item?.name,
                     filename: params?.file,
-                    page_name:item?.pageIdValue,
+                    page_name: item?.pageIdValue,
                     page: 1,
                     table_identifier: item?.tableData?.table_identifier,
                     column_config: {
@@ -1302,18 +1311,19 @@ function PaperBatchRecordsTemplate() {
 
                 let pageArr = []
                 if (pageIdFormValues) {
-                    pageIdFormValues.forEach(item => {
-                        let obj = { name: "", keys: [] }
-                        Object.entries(item).forEach(item1 => {
-                            if (item1[0] != "name" && item1[0] != "keyCount") {
-                                obj.keys.push(item1[1])
-                            }
-                            if (item1[0] === "name") {
-                                obj.name = item1[1]
-                            }
-                        })
-                        pageArr.push(obj)
-
+                    pageIdFormValues?.forEach(item => {
+                        if (item != undefined) {
+                            let obj = { name: "", keys: [] }
+                            Object.entries(item).forEach(item1 => {
+                                if (item1[0] != "name" && item1[0] != "keyCount") {
+                                    obj.keys.push(item1[1])
+                                }
+                                if (item1[0] === "name") {
+                                    obj.name = item1[1]
+                                }
+                            })
+                            pageArr.push(obj)
+                        }
                     })
                 }
                 _reqBatch.templateInfo.pbrTemplateInfo = arr;
@@ -1412,6 +1422,7 @@ function PaperBatchRecordsTemplate() {
         savePbrTemplateDataInfo()
     };
 
+    /* istanbul ignore next */
     const handleOnFinishFailed = ({ values, errorFields, outOfDate }) => {
         let str = "Please enter "
         let paraName = errorFields[0].name[1]
@@ -1450,15 +1461,17 @@ function PaperBatchRecordsTemplate() {
         // console.log("changedValues", changedValues, values)
         setParameterFormData(values.users)
     };
+    /* istanbul ignore next */
     const pageIdentifierValueChange = (changedValues, values) => {
         setPageIdentifierData(values)
     };
-    pageIdentifierValueChange
+    /* istanbul ignore next */
     const close = () => {
         console.log(
             'Notification was closed. Either the close button was clicked or duration time elapsed.',
         );
     };
+    /* istanbul ignore next */
     const openNotification = (val) => {
         const key = `open${Date.now()}`;
         const btn = (
@@ -1499,7 +1512,7 @@ function PaperBatchRecordsTemplate() {
                 filename: params?.file,
                 name: formValues[activeKey]?.name,
                 method: formValues[activeKey]?.method,
-                page_name:  formValues[activeKey]?.pageIdValue,
+                page_name: formValues[activeKey]?.pageIdValue,
                 param_value_direction: parameterFormData[activeKey]?.AnchorDirection,
                 param_value_regex: parameterFormData[activeKey]?.regex
             }
@@ -1583,17 +1596,18 @@ function PaperBatchRecordsTemplate() {
             let pageArr = []
             if (pageIdFormValues) {
                 pageIdFormValues.forEach(item => {
-                    let obj = { name: "", keys: [] }
-                    Object.entries(item).forEach(item1 => {
-                        if (item1[0] != "name" && item1[0] != "keyCount") {
-                            obj.keys.push(item1[1])
-                        }
-                        if (item1[0] === "name") {
-                            obj.name = item1[1]
-                        }
-                    })
-                    pageArr.push(obj)
-
+                    if (item != undefined) {
+                        let obj = { name: "", keys: [] }
+                        Object.entries(item).forEach(item1 => {
+                            if (item1[0] != "name" && item1[0] != "keyCount") {
+                                obj.keys.push(item1[1])
+                            }
+                            if (item1[0] === "name") {
+                                obj.name = item1[1]
+                            }
+                        })
+                        pageArr.push(obj)
+                    }
                 })
             }
             req.templateInfo.pbrTemplateInfo.push(obj)
@@ -1612,7 +1626,7 @@ function PaperBatchRecordsTemplate() {
         } else {
             setFileList(res.Found_file_list)
             setSearchedFileList(res.Searched_file_list)
-            dispatch(showNotification('error', 'No Data Found'))
+            dispatch(showNotification('error', res.Message))
             dispatch(hideLoader());
 
         }
@@ -1627,7 +1641,7 @@ function PaperBatchRecordsTemplate() {
             var req1 = {
                 extraction_type: "custom",
                 templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: [] },
-                extraction_filename: `${params?.file?.split('.')[0]}_page-0.jpeg.json`,
+                extraction_filename: `${params?.file?.split('.')[0]}_page-${pageNumber - 1}.jpeg.json`,
                 product_num: matBatch?.material_num,
                 batch_num: matBatch?.batch,
                 site_code: matBatch?.site
@@ -1731,17 +1745,18 @@ function PaperBatchRecordsTemplate() {
             let pageArr = []
             if (pageIdFormValues) {
                 pageIdFormValues.forEach(item => {
-                    let obj = { name: "", keys: [] }
-                    Object.entries(item).forEach(item1 => {
-                        if (item1[0] != "name" && item1[0] != "keyCount") {
-                            obj.keys.push(item1[1])
-                        }
-                        if (item1[0] === "name") {
-                            obj.name = item1[1]
-                        }
-                    })
-                    pageArr.push(obj)
-
+                    if (item != undefined) {
+                        let obj = { name: "", keys: [] }
+                        Object.entries(item).forEach(item1 => {
+                            if (item1[0] != "name" && item1[0] != "keyCount") {
+                                obj.keys.push(item1[1])
+                            }
+                            if (item1[0] === "name") {
+                                obj.name = item1[1]
+                            }
+                        })
+                        pageArr.push(obj)
+                    }
                 })
             }
             req1.templateInfo.pbrTemplateInfo = arr;
@@ -1752,7 +1767,7 @@ function PaperBatchRecordsTemplate() {
                 dispatch(showNotification('success', res?.Message))
             } else {
                 setModalData(res.Extraction)
-                dispatch(showNotification('error', 'No Data Found'))
+                dispatch(showNotification('error', res?.Message))
             }
             setTableLoading(false)
         } else {
@@ -1760,7 +1775,7 @@ function PaperBatchRecordsTemplate() {
             setTableLoading(false)
         }
     };
-
+    /* istanbul ignore next */
     const handleOk = () => {
         setIsModalVisible(false);
     };
@@ -1806,18 +1821,7 @@ function PaperBatchRecordsTemplate() {
             </Menu.Item>
         </Menu>
     );
-    const areas = [
-        { label: 'Beijing', value: 'Beijing' },
-        { label: 'Shanghai', value: 'Shanghai' },
-    ];
 
-    const sights = {
-        Beijing: ['Tiananmen', 'Great Wall'],
-        Shanghai: ['Oriental Pearl', 'The Bund'],
-    };
-    const handleChange = () => {
-        form.setFieldsValue({ sights: [] });
-    };
     /* istanbul ignore next */
     const handlePageChange = (val) => {
         // setDisplayImage("")
@@ -1878,7 +1882,7 @@ function PaperBatchRecordsTemplate() {
             }}
         />
     );
-
+    /* istanbul ignore next */
     function initDraw(canvas) {
         function setMousePosition(e) {
             var ev = e || window.event; //Moz || IE
@@ -1926,29 +1930,11 @@ function PaperBatchRecordsTemplate() {
             }
         }
     }
-
+    /* istanbul ignore next */
     const handleDrawSnippet = () => {
         initDraw(document.getElementById('drawRectangle'));
     }
-
-    const handleTableFind = async () => {
-        let req = {
-            batch_num: matBatch?.batch,
-            product_num: matBatch?.material_num,
-            site_code: matBatch?.site,
-            table_identifier: {
-                "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
-                "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
-            },
-        }
-        let res = await findTable(req)
-        if (res["status-code"] == 200) {
-            setTableFindCount(res.Data)
-        } else {
-            dispatch(showNotification('error', res.Message))
-        }
-    }
-
+    /* istanbul ignore next */
     const handleSideState = () => {
         setTriggerUpdate(true)
         for (let i = 0; i < 2; i++) {
@@ -2036,6 +2022,7 @@ function PaperBatchRecordsTemplate() {
                                 expandIconPosition='right'
                                 defaultActiveKey={['1']}
                                 onChange={(val) => {
+                                    /* istanbul ignore next */
                                     setMainPanelValue(val)
                                     if (val == 4) {
                                         setShowRowColIdentifier(true)
@@ -2044,15 +2031,17 @@ function PaperBatchRecordsTemplate() {
                                                 getBoundingBoxDataInfo(imageWidth, imageHeight, "TABLE", pageNumber - 1)
                                             }, i * 1000)
                                         }
+                                        setSelectedMode("TABLE")
                                     } else {
                                         if (showRowColIdentifier) {
                                             for (let i = 0; i < 2; i++) {
                                                 setTimeout(() => {
-                                                    getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1)
+                                                    getBoundingBoxDataInfo(imageWidth, imageHeight, "word", pageNumber - 1)
                                                 }, i * 1000)
 
                                             }
                                         }
+                                        setSelectedMode("word")
                                         setShowRowColIdentifier(false)
                                     }
 
@@ -2116,7 +2105,8 @@ function PaperBatchRecordsTemplate() {
                                 </Panel>
                                 <Panel id="page-Identifier" header='Page Identifier' key='2'>
                                     <PageIdentifierForm pageDragValue={pageDragValue} setPageIdFormValues={setPageIdFormValues}
-                                        handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish} initialPageIdentifierData={initialPageIdentifierData}/>
+                                        handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish}
+                                        initialPageIdentifierData={initialPageIdentifierData} matBatch={matBatch} />
                                 </Panel>
                                 <Panel id="parameter-panel" header='Parameter' key='3'>
                                     <Form onValuesChange={parameterValuesChange} name="dynamic_form_nest_item" onFinish={parameterFormFinish}
@@ -2133,6 +2123,7 @@ function PaperBatchRecordsTemplate() {
                                                         {(fields, { add, remove }) => (
                                                             <>
                                                                 <Collapse activeKey={activeKey} accordion expandIconPosition='right' onChange={(val) => {
+                                                                    /* istanbul ignore next */
                                                                     if (val !== undefined) {
                                                                         setActiveKey(Number(val))
                                                                     } else {
@@ -2917,7 +2908,7 @@ function PaperBatchRecordsTemplate() {
                                                                                             <p>Found in {`${fileList?.length}/${searchedFileList?.length}`} files</p>
                                                                                         }
                                                                                     </div>
-                                                                                    <div>{fileList.map(item => (
+                                                                                    <div>{fileList?.map(item => (
                                                                                         <p>{item?.split('.')[0]}</p>
                                                                                     ))}</div>
 
@@ -3043,7 +3034,7 @@ function PaperBatchRecordsTemplate() {
                                 <TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth}
                                     triggerPreview={triggerPreview} params={params} triggerUpdate={triggerUpdate} setSideTableData={setSideTableData}
                                     setTriggerUpdate={setTriggerUpdate} tableActiveKey={tableActiveKey} formTableData={formTableData} setModalData={setModalData} setModalColumns={setModalColumns}
-                                    templateVersion={templateVersion} initialSideTableData={initialSideTableData} pageIdFormValues={pageIdFormValues}/>}
+                                    templateVersion={templateVersion} initialSideTableData={initialSideTableData} pageIdFormValues={pageIdFormValues} pageNumber={pageNumber} />}
 
                             {/* <DrawAnnotations /> */}
                             {/* <h3>hello</h3> */}

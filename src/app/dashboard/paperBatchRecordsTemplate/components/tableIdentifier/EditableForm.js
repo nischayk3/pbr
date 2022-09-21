@@ -15,7 +15,7 @@ const mockData = {
         }
     ]
 };
-
+ /* istanbul ignore next */
 export const EditableTableForm = (props) => {
     let { columnData, selectedIdentifier,setSelectedRowRows,selectedRowRows,setSelectedRowValues,selectedRowValues,triggerUpdate} = props
     const [initialColumnData, setInitialColumnData] = useState({ users: columnData })
