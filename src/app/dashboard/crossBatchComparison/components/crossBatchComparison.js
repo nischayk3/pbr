@@ -12,13 +12,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import SelectSearchField from "../../../../components/SelectSearchField/SelectSearchField";
+import { GRAFANA_DASHBOARD } from "../../../../constants/apiBaseUrl";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import { getCrossBatch } from '../../../../services/analyticsService';
 import { getGeanealogyFilter } from '../../../../services/genealogyService';
 import "./style.scss";
 
 const CrossBatchComparison = () => {
-	const [disabled, setDisabled] = useState(true);
+	const [random, setRandom] = useState(0);
 	const [showIframe, setShowIframe] = useState(false);
 	const [endPoint, setEndPoint] = useState("");
 	const [isEmptyPlant, setIsEmptyPlant] = useState(false);
@@ -38,6 +39,8 @@ const CrossBatchComparison = () => {
 	});
 
 	const dispatch = useDispatch();
+
+	const DASHBOARD_URL = 'https://cpvdev.mareana.com'
 	useEffect(() => {
 		getGenealogyFilterData();
 	}, []);
@@ -89,7 +92,7 @@ const CrossBatchComparison = () => {
 				});
 
 			}
-			setDisabled(false);
+
 		}
 	};
 
@@ -181,7 +184,7 @@ const CrossBatchComparison = () => {
 				productType: ''
 			};
 		});
-		setDisabled(true);
+
 		setIsEmptyPlant(false);
 		setIsEmptyProduct(false);
 		setIsEmptyBatch(false);
@@ -195,18 +198,22 @@ const CrossBatchComparison = () => {
 			const prod = selectParam['productCode']
 			const prodSplit = prod.split("-")
 			const batch = selectParam['batchNum']
-			// const _req = {
-			// 	Product: prodSplit[0],
-			// 	Batch: [batch]
-			// }
+
 			const _req = {
-				Product: "NP001",
-				Batch: ["B004","B005","B006","B003","B002","B001"]
+				Product: prodSplit[0],
+				Batch: [batch]
 			}
+
 
 			const getRes = await getCrossBatch(_req)
 			dispatch(hideLoader());
-			console.log("getressssssssss", getRes);
+
+			if (getRes !== "") {
+				setEndPoint(getRes);
+			}
+			setShowIframe(true);
+			setRandom(random + 1)
+			console.log("getressssssssss", GRAFANA_DASHBOARD + endPoint);
 		} catch {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', error));
@@ -298,11 +305,11 @@ const CrossBatchComparison = () => {
 				<div className="custom-table-card" style={{ margin: "10px 0" }}>
 					{showIframe && endPoint !== "" ? (
 						<iframe
-							src={GRAFANA_DASHBOARD + endPoint}
+							src={DASHBOARD_URL + endPoint}
 							width="100%"
 							height="900"
-							key={this.state.random}
-							frameborder="0"
+							key={random}
+							frameBorder="0"
 						></iframe>
 					) : (
 						""
