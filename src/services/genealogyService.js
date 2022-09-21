@@ -200,3 +200,21 @@ export const updateGoldenBatch = request => {
 		}
 	);
 };
+
+
+//batch equipment
+
+export const getBatchEquipment = request => {
+	return Service.get(
+		MDH_APP_GENEALOGY + 'batch_equipment',
+		request,
+		request_headers,
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
