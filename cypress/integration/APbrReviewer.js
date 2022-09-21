@@ -52,27 +52,49 @@ describe('PBR', () => {
        
     });
     it("Search Table", () => {
-        // cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').clear();
+        
         cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-affix-wrapper').type('1');
-        // cy.get('.ant-input').clear();
-        // cy.get('.ant-input').type('1');
         cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-group-addon > .ant-btn').click({ force: true });
-        // cy.get('.ant-input-group-addon > .ant-btn > span').click({ force: true });
+        
     })
-    // it("Select checkbox", () => {
-    //     cy.get('.ant-checkbox-input').eq(1).click({ force: true })
-    // })
-    // it("Status chart", () => {
-    //     cy.get(".slicetext").eq(1).click({ force: true })
-    //     cy.wait(6000);
-    //     cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
-    //     cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
-    //     cy.get(".status-approved").click({ force: true })
+    it("Select checkbox", () => {
+        cy.get('.ant-checkbox-input').eq(1).click({ force: true })
+    })
+    it("Status chart", () => {
+        cy.get(".slicetext").eq(1).click({ force: true })
+        cy.wait(6000);
+        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
+        cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
+        cy.get(".status-approved").click({ force: true })
+        cy.wait(6000);
+        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
+        cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
+    })
+    
+
+    it("Navigate to reviewer", () => {
+        const url = Cypress.config().baseUrl
+        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbrUpdate' })
+        cy.visit(url + '/#/dashboard/pbr_update?id=185')
+        cy.wait(10000);
+        
+    })
+
+    it("Edit fields", () => {
+        cy.wait(6000);
+        cy.get(':nth-child(4) > :nth-child(2) > .editable-cell-value-wrap').click({ force: true })
+        cy.get('#value').type("claimss")
        
-    //     cy.wait(6000);
-    //     cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
-    //     cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
-    // })
+
+    })
+    it("Save and Audit logs", () => {
+        cy.wait(1000);
+        cy.get("#save_button").click({ force: true })
+        cy.wait(6000);
+        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbrUpdate' })
+        cy.get("#editLogs > a").click({ force: true })
+    })
+   
     // it("Confidence chart", () => {
     //     cy.get(".slice").eq(2).click({ force: true })
     //     cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
@@ -87,62 +109,5 @@ describe('PBR', () => {
     //     cy.wait(1000);
     //     cy.get('.ant-modal-close-x > .anticon > svg').click({ force: true })
     // })
-
-    it("Navigate to reviewer", () => {
-        // cy.get(".ant-table-cell-fix-right > a").eq(0).click({ force: true })
-        const url = Cypress.config().baseUrl
-        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbrUpdate' })
-        cy.visit(url + '/#/dashboard/pbr_update?id=185')
-        cy.wait(10000);
-        
-    })
-
-    // it("Edit fields", () => {
-    //     cy.wait(6000);
-    //     cy.get(':nth-child(4) > :nth-child(2) > .editable-cell-value-wrap').click({ force: true })
-    //     cy.get(':nth-child(4) > :nth-child(2) > .editable-cell-value-wrap').type("claimss")
-    //     // cy.get(".ant-table-cell-fix-right > .ant-btn > span").click({ force: true })
-    //     // cy.get("#snippetValue").clear({ force: true })
-    //     // cy.get("#snippetValue").type("claimss")
-    //     // cy.get("#recordedDate").clear({ force: true })
-    //     // cy.get("#recordedDate").type("08/07/2020")
-    //     // cy.get("#recordedTime").clear({ force: true })
-    //     // cy.get("#recordedTime").type("10:30")
-    //     // cy.get("#uomnum").clear({ force: true })
-    //     // cy.get("#uomnum").type("5.6")
-
-    // })
-    it("Save and Audit logs", () => {
-        cy.wait(1000);
-        cy.get("#save_button").click({ force: true })
-        cy.wait(6000);
-        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbrUpdate' })
-        cy.get("#editLogs > a").click({ force: true })
-    })
-    // it("PBR", () => {
-
-    //     cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
-
-    //     cy.log('Load Landing Page')
-
-       
-
-    //     const url = Cypress.config().baseUrl
-
-    //     cy.visit(url + '/#/dashboard/pbr_reviewer')
-
-    //     cy.url().should('eq', url + '/#/dashboard/pbr_reviewer')
-
-    //     cy.wait(6000);
-
-    //     cy.get('.ant-col-4 > .ant-select > .ant-select-selector').click({ force: true })
-
-    //     cy.get('.ant-select-item-option').eq(1).click({ force: true })
-
-    //     cy.wait(6000);
-
-    //     cy.get('.ant-select-clear').click({ force: true })
-
-    // });
 
 });

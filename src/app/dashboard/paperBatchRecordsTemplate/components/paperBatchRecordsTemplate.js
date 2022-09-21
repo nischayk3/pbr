@@ -252,9 +252,8 @@ function PaperBatchRecordsTemplate() {
         setRightPanelCollapsed(!rightPanelCollapsed);
         setLeftPanelCollapsed(!leftPanelCollapsed);
     };
-     /* istanbul ignore next */
+    /* istanbul ignore next */
     useEffect(() => {
-        console.log("pageIdFormValues",pageIdFormValues)
         if (pageIdFormValues) {
             let arr = []
             pageIdFormValues.forEach(item => {
@@ -985,19 +984,21 @@ function PaperBatchRecordsTemplate() {
 
     /* istanbul ignore next */
     const clicked = (area) => {
-        if (showRowColIdentifier && formTableData.length > 0) {
-            setClickedTable(area)
-            let table_identifier = {
-                "left": area?.coords[0] / imageWidth, "top": area?.coords[1] / imageHeight,
-                "width": (area?.coords[2] - area?.coords[0]) / imageWidth, "height": (area?.coords[3] - area?.coords[1]) / imageHeight
+        if (showRowColIdentifier) {
+            if (formTableData.length > 0) {
+                setClickedTable(area)
+                let table_identifier = {
+                    "left": area?.coords[0] / imageWidth, "top": area?.coords[1] / imageHeight,
+                    "width": (area?.coords[2] - area?.coords[0]) / imageWidth, "height": (area?.coords[3] - area?.coords[1]) / imageHeight
+                }
+                for (let i = 0; i < 2; i++) {
+                    setTimeout(() => {
+                        getBoundingBoxDataInfo(imageWidth, imageHeight, "CELL", pageNumber - 1, table_identifier);
+                    }, i * 1000)
+                }
+            } else {
+                dispatch(showNotification('error', "Create at least one Table Parameter"));
             }
-            for (let i = 0; i < 2; i++) {
-                setTimeout(() => {
-                    getBoundingBoxDataInfo(imageWidth, imageHeight, "CELL", pageNumber - 1, table_identifier);
-                }, i * 1000)
-            }
-        }else{
-            dispatch(showNotification('error', "Create at least one Table Parameter"));
         }
         if (mainPanelValue == 2) {
             setPageDragValue(area)
@@ -1117,7 +1118,7 @@ function PaperBatchRecordsTemplate() {
         }
 
     };
-     /* istanbul ignore next */
+    /* istanbul ignore next */
     const tableDataReq = () => {
 
         if (formTableData.length > 0) {
@@ -1310,18 +1311,19 @@ function PaperBatchRecordsTemplate() {
 
                 let pageArr = []
                 if (pageIdFormValues) {
-                    pageIdFormValues.forEach(item => {
-                        let obj = { name: "", keys: [] }
-                        Object.entries(item).forEach(item1 => {
-                            if (item1[0] != "name" && item1[0] != "keyCount") {
-                                obj.keys.push(item1[1])
-                            }
-                            if (item1[0] === "name") {
-                                obj.name = item1[1]
-                            }
-                        })
-                        pageArr.push(obj)
-
+                    pageIdFormValues?.forEach(item => {
+                        if (item != undefined) {
+                            let obj = { name: "", keys: [] }
+                            Object.entries(item).forEach(item1 => {
+                                if (item1[0] != "name" && item1[0] != "keyCount") {
+                                    obj.keys.push(item1[1])
+                                }
+                                if (item1[0] === "name") {
+                                    obj.name = item1[1]
+                                }
+                            })
+                            pageArr.push(obj)
+                        }
                     })
                 }
                 _reqBatch.templateInfo.pbrTemplateInfo = arr;
@@ -1459,7 +1461,7 @@ function PaperBatchRecordsTemplate() {
         // console.log("changedValues", changedValues, values)
         setParameterFormData(values.users)
     };
-     /* istanbul ignore next */
+    /* istanbul ignore next */
     const pageIdentifierValueChange = (changedValues, values) => {
         setPageIdentifierData(values)
     };
@@ -1469,7 +1471,7 @@ function PaperBatchRecordsTemplate() {
             'Notification was closed. Either the close button was clicked or duration time elapsed.',
         );
     };
-     /* istanbul ignore next */
+    /* istanbul ignore next */
     const openNotification = (val) => {
         const key = `open${Date.now()}`;
         const btn = (
@@ -1594,17 +1596,18 @@ function PaperBatchRecordsTemplate() {
             let pageArr = []
             if (pageIdFormValues) {
                 pageIdFormValues.forEach(item => {
-                    let obj = { name: "", keys: [] }
-                    Object.entries(item).forEach(item1 => {
-                        if (item1[0] != "name" && item1[0] != "keyCount") {
-                            obj.keys.push(item1[1])
-                        }
-                        if (item1[0] === "name") {
-                            obj.name = item1[1]
-                        }
-                    })
-                    pageArr.push(obj)
-
+                    if (item != undefined) {
+                        let obj = { name: "", keys: [] }
+                        Object.entries(item).forEach(item1 => {
+                            if (item1[0] != "name" && item1[0] != "keyCount") {
+                                obj.keys.push(item1[1])
+                            }
+                            if (item1[0] === "name") {
+                                obj.name = item1[1]
+                            }
+                        })
+                        pageArr.push(obj)
+                    }
                 })
             }
             req.templateInfo.pbrTemplateInfo.push(obj)
@@ -1623,7 +1626,7 @@ function PaperBatchRecordsTemplate() {
         } else {
             setFileList(res.Found_file_list)
             setSearchedFileList(res.Searched_file_list)
-            dispatch(showNotification('error', 'No Data Found'))
+            dispatch(showNotification('error', res.Message))
             dispatch(hideLoader());
 
         }
@@ -1742,17 +1745,18 @@ function PaperBatchRecordsTemplate() {
             let pageArr = []
             if (pageIdFormValues) {
                 pageIdFormValues.forEach(item => {
-                    let obj = { name: "", keys: [] }
-                    Object.entries(item).forEach(item1 => {
-                        if (item1[0] != "name" && item1[0] != "keyCount") {
-                            obj.keys.push(item1[1])
-                        }
-                        if (item1[0] === "name") {
-                            obj.name = item1[1]
-                        }
-                    })
-                    pageArr.push(obj)
-
+                    if (item != undefined) {
+                        let obj = { name: "", keys: [] }
+                        Object.entries(item).forEach(item1 => {
+                            if (item1[0] != "name" && item1[0] != "keyCount") {
+                                obj.keys.push(item1[1])
+                            }
+                            if (item1[0] === "name") {
+                                obj.name = item1[1]
+                            }
+                        })
+                        pageArr.push(obj)
+                    }
                 })
             }
             req1.templateInfo.pbrTemplateInfo = arr;
@@ -1763,7 +1767,7 @@ function PaperBatchRecordsTemplate() {
                 dispatch(showNotification('success', res?.Message))
             } else {
                 setModalData(res.Extraction)
-                dispatch(showNotification('error', 'No Data Found'))
+                dispatch(showNotification('error', res?.Message))
             }
             setTableLoading(false)
         } else {
@@ -1771,7 +1775,7 @@ function PaperBatchRecordsTemplate() {
             setTableLoading(false)
         }
     };
- /* istanbul ignore next */
+    /* istanbul ignore next */
     const handleOk = () => {
         setIsModalVisible(false);
     };
@@ -1817,7 +1821,7 @@ function PaperBatchRecordsTemplate() {
             </Menu.Item>
         </Menu>
     );
-  
+
     /* istanbul ignore next */
     const handlePageChange = (val) => {
         // setDisplayImage("")
@@ -1878,7 +1882,7 @@ function PaperBatchRecordsTemplate() {
             }}
         />
     );
-     /* istanbul ignore next */
+    /* istanbul ignore next */
     function initDraw(canvas) {
         function setMousePosition(e) {
             var ev = e || window.event; //Moz || IE
@@ -2018,7 +2022,7 @@ function PaperBatchRecordsTemplate() {
                                 expandIconPosition='right'
                                 defaultActiveKey={['1']}
                                 onChange={(val) => {
-                                     /* istanbul ignore next */
+                                    /* istanbul ignore next */
                                     setMainPanelValue(val)
                                     if (val == 4) {
                                         setShowRowColIdentifier(true)
@@ -2119,7 +2123,7 @@ function PaperBatchRecordsTemplate() {
                                                         {(fields, { add, remove }) => (
                                                             <>
                                                                 <Collapse activeKey={activeKey} accordion expandIconPosition='right' onChange={(val) => {
-                                                                     /* istanbul ignore next */
+                                                                    /* istanbul ignore next */
                                                                     if (val !== undefined) {
                                                                         setActiveKey(Number(val))
                                                                     } else {
@@ -2904,7 +2908,7 @@ function PaperBatchRecordsTemplate() {
                                                                                             <p>Found in {`${fileList?.length}/${searchedFileList?.length}`} files</p>
                                                                                         }
                                                                                     </div>
-                                                                                    <div>{fileList.map(item => (
+                                                                                    <div>{fileList?.map(item => (
                                                                                         <p>{item?.split('.')[0]}</p>
                                                                                     ))}</div>
 

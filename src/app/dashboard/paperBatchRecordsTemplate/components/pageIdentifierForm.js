@@ -13,7 +13,7 @@ import {
 
 const { Panel } = Collapse;
 const { Option } = Select;
- /* istanbul ignore next */
+/* istanbul ignore next */
 function PageIdentifierForm(props) {
     let { pageDragValue, setPageIdFormValues, handleOnFinishFailed, parameterFormFinish, initialPageIdentifierData, matBatch } = props
     const dispatch = useDispatch();
@@ -123,7 +123,7 @@ function PageIdentifierForm(props) {
         setUpdateKeyValueClicked(key)
     }
 
-    const find =async  () => {
+    const find = async () => {
         if (pageIdentifierFormValues?.users) {
             dispatch(showLoader());
             let req = {
@@ -133,21 +133,21 @@ function PageIdentifierForm(props) {
                 site_code: matBatch?.site
             }
             let pageArr = []
-            if (pageIdentifierFormValues?.users) {
+            if (pageIdentifierFormValues?.users[activeKey]) {
 
-                pageIdentifierFormValues?.users?.forEach(item => {
-                    let obj = { name: "", keys: [] }
-                    Object.entries(item).forEach(item1 => {
-                        if (item1[0] != "name" && item1[0] != "keyCount") {
-                            obj.keys.push(item1[1])
-                        }
-                        if (item1[0] === "name") {
-                            obj.name = item1[1]
-                        }
-                    })
-                    pageArr.push(obj)
-
+                // pageIdentifierFormValues?.users?.forEach(item => {
+                let obj = { name: "", keys: [] }
+                Object.entries(pageIdentifierFormValues?.users[activeKey]).forEach(item1 => {
+                    if (item1[0] != "name" && item1[0] != "keyCount") {
+                        obj.keys.push(item1[1])
+                    }
+                    if (item1[0] === "name") {
+                        obj.name = item1[1]
+                    }
                 })
+                pageArr.push(obj)
+
+                // })
             }
             req.page_identifier = pageArr
             let res = await findPageIdentifier(req)
@@ -163,7 +163,7 @@ function PageIdentifierForm(props) {
             dispatch(showNotification('error', 'Add Page Identifier Values'));
         }
     }
-    console.log("setPageIdFormValues",pageIdentifierFormValues)
+
     return (
         <Form name="dynamic_form_nest_item"
             onValuesChange={parameterValuesChange}
