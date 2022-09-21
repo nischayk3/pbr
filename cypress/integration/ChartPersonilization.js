@@ -122,14 +122,14 @@ describe("Renders chart personalization", () => {
     cy.wait(500);
     cy.log("Inputing View Id");
     cy.get('input[type="text"]').eq(1).click();
-    cy.get('input[type="text"]').eq(1).type("V3");
+    cy.get('input[type="text"]').eq(1).type("V238");
 
     cy.wait(3000);
     cy.log("Searching for a View Id");
     cy.get(".ant-input-search-button").eq(1).click();
 
     cy.wait(500);
-    cy.intercept("GET", "/services/v1/site_ids?view_id=V3").as("viewId");
+    cy.intercept("GET", "/services/v1/site_ids?view_id=V238").as("viewId");
     cy.log("Selecting the first row");
     cy.get(".ant-table-row").first().click();
     cy.wait("@viewId").then(() => {
