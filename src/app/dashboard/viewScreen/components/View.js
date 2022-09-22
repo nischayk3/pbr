@@ -143,6 +143,7 @@ const ViewCreation = () => {
 	//Moleculelist api call
 	const filterLoadMolecule = async (_reqMolecule, filterSplitValue) => {
 		try {
+			setMoleculeList([])
 			dispatch(showLoader());
 			const moleculeRes = await getMoleculeList(_reqMolecule);
 			if (moleculeRes.Status === 200) {
@@ -229,9 +230,8 @@ const ViewCreation = () => {
 	};
 
 	const filterMolequles = async (filterValue) => {
-		const filterSplit = filterValue && filterValue.split('_')
+		const filterSplit = filterValue && filterValue.split('|')
 		setHighlightFilterValue(filterSplit[2])
-		// setFilterParam(filterSplit)
 		const _filterReq1 = {
 			data: {
 				hierarchy: moleculeList.hierarchy,

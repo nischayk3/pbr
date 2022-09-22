@@ -16,6 +16,8 @@ function GenealogyDataTable(props) {
 	const [proInput, setProInput] = useState([]);
 	const [proOutput, setProOutput] = useState([]);
 	const [purchaseData, setPurchaseData] = useState([]);
+	const [batchEqupData, setBatchEqupData] = useState([]);
+
 
 	const { Panel } = Collapse;
 
@@ -60,18 +62,24 @@ function GenealogyDataTable(props) {
 		{ title: "Qty", dataIndex: "qty", key: "9", width: 70 }
 	];
 
+	const toTimestamp = (strDate) => {
+		var datum = Date.parse(strDate);
+		return datum;
+	}
 
 	const batchEquColumn = [
-		{ title: "Process Order", dataIndex: "po_no", key: "1", width: 80 },
+		{ title: "Batch", dataIndex: "batch_no", key: "1", width: 80 },
+		{ title: "Process Order", dataIndex: "process_order", key: "2", width: 80 },
 		{
-			title: "Referenced Element",
-			dataIndex: "referenced",
-			key: "2",
+			title: "Equipment Id",
+			dataIndex: "equipment_id",
+			key: "3",
 			width: 80,
-			render: (text) => {
+			render: (text, record) => {
+				console.log("recordddddddd", toTimestamp(record.start_date), toTimestamp(record.end_date));
 				return (
 					<a
-						href="https://mdh-dashboard.mareana.com/d/trqNakk7z/live-sensor-monitor?orgId=1&from=1515646800000&to=1516770000000"
+						href={record.url1 + toTimestamp(record.start_date) + record.url2 + toTimestamp(record.end_date) + record.url3 + record.equipment_id + record.url4}
 						target="_blank"
 						rel="noreferrer"
 					>
@@ -80,31 +88,32 @@ function GenealogyDataTable(props) {
 				);
 			}
 		},
-		{ title: "Start Time", dataIndex: "start_time", key: "3", width: 80 },
-		{ title: "End Time", dataIndex: "end_time", key: "4", width: 80 }
+		{ title: "Start Time", dataIndex: "start_date", key: "4", width: 80 },
+		{ title: "End Time", dataIndex: "end_date", key: "5", width: 80 }
 	];
+
 
 
 
 	//	https://mdh-dashboard.mareana.com/d/trqNakk7z/live-sensor-monitor?orgId=1&from=1515646800000&to=1516770000000
 
-	const batchEquData = [
-		{
-			po_no: "102250832",
-			referenced: "CELL_CULTURECC_PRODSTR271",
-			start_time: "3/3/20 23:35",
-			end_time: "3/19/20 12:11"
-		},
-		{
-			po_no: "102250832",
-			referenced: "CENTRIFUGECENTRIFUGE_PCCE40110",
-			start_time: "3/19/20 12:05",
-			end_time: "3/19/20 12:06"
-		}
-	];
+	// const batchEquData = [
+	// 	{
+	// 		po_no: "102250832",
+	// 		referenced: "CELL_CULTURECC_PRODSTR271",
+	// 		start_time: "3/3/20 23:35",
+	// 		end_time: "3/19/20 12:11"
+	// 	},
+	// 	{
+	// 		po_no: "102250832",
+	// 		referenced: "CENTRIFUGECENTRIFUGE_PCCE40110",
+	// 		start_time: "3/19/20 12:05",
+	// 		end_time: "3/19/20 12:06"
+	// 	}
+	// ];
 
 	useEffect(() => {
-
+		console.log("batchEquData", props.batchEquData);
 		if (props && props.batchInfo) {
 			setbatchData(props.batchInfo);
 		}
@@ -121,8 +130,10 @@ function GenealogyDataTable(props) {
 			setPurchaseData(props.purchaseInfo);
 		}
 		if (props && props.pbrBatchData) {
-
 			setPbrDetails(props.pbrBatchData)
+		}
+		if (props && props.batchEquData) {
+			setBatchEqupData(props.batchEquData)
 		}
 	}, [
 		props.processInput,
@@ -130,7 +141,8 @@ function GenealogyDataTable(props) {
 		props.batchInfo,
 		props.limsBatchInfo,
 		props.purchaseInfo,
-		props.pbrBatchData
+		props.pbrBatchData,
+		props.batchEquData
 	]);
 
 	/* istanbul ignore next */
@@ -304,7 +316,7 @@ function GenealogyDataTable(props) {
 						}
 						size="small"
 						columns={batchEquColumn}
-						dataSource={batchEquData}
+						dataSource={batchEqupData}
 						scroll={{ x: 1200, y: 350 }}
 						pagination={false}
 					/>
@@ -382,6 +394,37 @@ function GenealogyDataTable(props) {
 						columns={pbrColumns}
 						dataSource={pbrDetails}
 						scroll={{ x: 1600, y: 350 }}
+						pagination={false}
+					/>
+				</Panel>
+			) : (
+				<></>
+			)}
+
+			{props.type === "Material" ? (
+				<Panel
+					header={
+						<div className="panel-header">
+							<p>Batch Equipment</p>
+							<Button
+								type="primary"
+								className="custom-primary-btn"
+								size="small"
+							>
+								Download
+							</Button>
+						</div>
+					}
+					key="7"
+				>
+					<Table
+						rowClassName={(record, index) =>
+							index % 2 === 0 ? "table-row-light" : "table-row-dark"
+						}
+						size="small"
+						columns={batchEquColumn}
+						dataSource={batchEqupData}
+						scroll={{ x: 1200, y: 350 }}
 						pagination={false}
 					/>
 				</Panel>
