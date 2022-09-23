@@ -148,6 +148,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
     } catch (error) {
+      /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification("error", "Unable to calculate threshold"));
     }
