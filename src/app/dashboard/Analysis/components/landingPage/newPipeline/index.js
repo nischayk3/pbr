@@ -120,6 +120,10 @@ const NewPipeline = (props) => {
           view_name: viewData.viewName,
           view_version: viewData.viewVersion,
           chart_type: "scatter",
+          chart_mapping: {
+            x: {},
+            y: {},
+          },
           data_filter: batchFilters
             ? batchFilters
             : {
