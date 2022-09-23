@@ -15,6 +15,7 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
     xaxis: null,
     yaxis: null,
     chartType: null,
+    zaxis: null,
   });
   const [chartDataApprover, setChartDataApprover] = useState([]);
   const [layoutDataApprover, setLayoutDataApprover] = useState({});
@@ -22,6 +23,7 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
   const [tableKey, setTableKey] = useState("3");
   const exclusionIdCounter = useRef(0);
   const [exclusionTable, setExclusionTable] = useState([]);
+  const [zAxis, setZAxis] = useState(false);
 
   const tabChange = (key) => {
     setTableKey(key);
@@ -49,12 +51,15 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
             table1.push(obj1);
           });
         setExclusionTable(table1);
-        if (ele.data[0].x && ele.data[0].x.length >= 1) {
-          const chartApproverType =
-            ele.chart_type === "scatter" ? "Scatter Plot" : "Process Control";
+        if (
+          (ele.data[0].x && ele.data[0].x.length >= 1) ||
+          ele?.data[0]?.type === "pie"
+        ) {
+          const chartApproverType = ele.chart_type;
           let xValueApprover = "";
           let yValueApprover = "";
-          if (ele.chart_type === "scatter") {
+          let zValueApprover = "";
+          if (ele.chart_type !== "process control") {
             xValueApprover = ele.chart_mapping.x.function_name;
           } else {
             xValueApprover =
@@ -65,11 +70,20 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
           yValueApprover = ele.chart_mapping.y.function_name
             ? ele.chart_mapping.y.function_name
             : "";
+          zValueApprover = ele.chart_mapping?.z?.function_name
+            ? ele.chart_mapping?.z?.function_name
+            : "";
+          if (zValueApprover) {
+            setZAxis(true);
+          } else {
+            setZAxis(false);
+          }
           setAxisValuesApprover({
             ...axisValuesApprover,
             chartType: chartApproverType,
             xaxis: xValueApprover,
             yaxis: yValueApprover,
+            zaxis: zValueApprover,
           });
           setShowChartApprover(true);
           setChartDataApprover(ele.data);
@@ -97,7 +111,7 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
       <Row>
         <Col span={6}>
           <Row gutter={16}>
-            <Col span={8}>
+            <Col span={9}>
               <p>Chart Type</p>
             </Col>
             <Col span={10}>
@@ -135,6 +149,23 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
           </Row>
         </Col>
       </Row>
+      {zAxis && (
+        <Row>
+          <Col span={7}>
+            <Row gutter={16}>
+              <Col span={7}>
+                <p>Z-axis</p>
+              </Col>
+              <Col span={17}>
+                <p>
+                  &nbsp;&nbsp;&nbsp;:{" "}
+                  {axisValuesApprover.zaxis ? axisValuesApprover.zaxis : ""}
+                </p>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      )}
       <div className="chart-table">
         <Row className="scatter-chart">
           {showChartApprover && (
