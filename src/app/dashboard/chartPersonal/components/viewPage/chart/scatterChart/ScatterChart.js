@@ -32,10 +32,15 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
     "Line",
     "Distribution",
     "Box",
+    "Pie",
+    "Error",
+    "Bubble",
+    "2D-histogram",
   ];
   const [axisValues, setAxisValues] = useState({
     xaxis: null,
     yaxis: null,
+    zaxis: null,
     chartType: null,
   });
   const [chartData, setChartData] = useState([]);
@@ -44,6 +49,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
   const [xaxisList, setXAxisList] = useState([]);
   const [yaxisList, setYAxisList] = useState([]);
   const [tableKey, setTableKey] = useState("3");
+  const [showZAxis, setShowZAxis] = useState(false);
   const exclusionIdCounter = useRef(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [exclusionValues, setExclusionValues] = useState({
@@ -103,8 +109,18 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       dispatch(showNotification("error", "X and Y axis cannot be same"));
       return;
     }
+    if (axisValues.zaxis) {
+      if (axisValues.xaxis === axisValues.zaxis) {
+        dispatch(showNotification("error", "X and Z axis cannot be same"));
+        return;
+      } else if (axisValues.yaxis === axisValues.zaxis) {
+        dispatch(showNotification("error", "Y and Z axis cannot be same"));
+        return;
+      }
+    }
     let xAxis = {};
     let yAxis = {};
+    let zAxis = {};
     const newCovArr = JSON.parse(JSON.stringify(postChartData));
     newCovArr.data[0].extras.coverage.forEach((ele) => {
       if (ele.function_name === axisValues.xaxis) {
@@ -114,6 +130,10 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       if (ele.function_name === axisValues.yaxis) {
         yAxis.function_name = ele.function_name;
         yAxis.function_id = ele.function_id;
+      }
+      if (ele.function_name === axisValues.zaxis) {
+        zAxis.function_name = ele.function_name;
+        zAxis.function_id = ele.function_id;
       }
     });
     const newArr = [...postChartData.data];
@@ -127,8 +147,14 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
         axisValues.chartType === "Scatter Plot"
           ? "scatter"
           : axisValues.chartType?.toLowerCase();
+      if (axisValues.chartType === "2D-histogram") {
+        ele.chart_type = "2D-histogram";
+      }
       ele.chart_mapping.x = Object.keys(xAxis).length !== 0 ? xAxis : obj;
       ele.chart_mapping.y = yAxis;
+      if (showZAxis && axisValues.zaxis) {
+        ele.chart_mapping.z = zAxis;
+      }
       ele.layout.xaxis.title.text =
         Object.keys(xAxis).length !== 0
           ? xAxis.function_name
@@ -169,7 +195,18 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
   };
 
   const handleChartType = (e) => {
-    setAxisValues({ ...axisValues, chartType: e, xaxis: null, yaxis: null });
+    if (e === "Bubble" || e === "Error") {
+      setShowZAxis(true);
+    } else {
+      setShowZAxis(false);
+    }
+    setAxisValues({
+      ...axisValues,
+      chartType: e,
+      xaxis: null,
+      yaxis: null,
+      zaxis: null,
+    });
   };
   useEffect(() => {
     const newCovArr = JSON.parse(JSON.stringify(postChartData));
@@ -193,7 +230,10 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             table.push(obj);
           });
         setExclusionTable(table);
-        if (ele?.data[0]?.x && ele?.data[0]?.x?.length >= 1) {
+        if (
+          (ele?.data[0]?.x && ele?.data[0]?.x?.length >= 1) ||
+          ele?.data[0]?.type === "pie"
+        ) {
           const chart =
             ele.chart_type === "scatter"
               ? "Scatter Plot"
@@ -206,6 +246,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
                 );
           let xValue = "";
           let yValue = "";
+          let zValue = "";
           if (ele.chart_type !== "process control") {
             xValue = ele.chart_mapping.x.function_name;
           } else {
@@ -217,11 +258,20 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
           yValue = ele.chart_mapping.y.function_name
             ? ele.chart_mapping.y.function_name
             : "";
+          zValue = ele.chart_mapping?.z?.function_name
+            ? ele.chart_mapping?.z?.function_name
+            : "";
+          if (zValue) {
+            setShowZAxis(true);
+          } else {
+            setShowZAxis(false);
+          }
           setAxisValues({
             ...axisValues,
             chartType: chart,
             xaxis: xValue,
             yaxis: yValue,
+            zaxis: zValue,
           });
           setShowChart(true);
           setChartData(ele.data);
@@ -235,6 +285,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             chartType: null,
             xaxis: null,
             yaxis: null,
+            zaxis: null,
           });
         }
       });
@@ -259,10 +310,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
         }
       });
   }, [axisValues.chartType]);
+
   return (
     <div className="chartLayout-container">
       <Row gutter={24}>
-        <Col span={6}>
+        <Col span={showZAxis ? 5 : 6}>
           <p>Chart Type</p>
           <SelectField
             placeholder="Select Chart type"
@@ -271,7 +323,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             onChangeSelect={handleChartType}
           />
         </Col>
-        <Col span={6}>
+        <Col span={showZAxis ? 5 : 6}>
           <p>X-axis</p>
           <SelectField
             placeholder="Select X-axis"
@@ -280,7 +332,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             onChangeSelect={(e) => setAxisValues({ ...axisValues, xaxis: e })}
           />
         </Col>
-        <Col span={6}>
+        <Col span={showZAxis ? 5 : 6}>
           <p>Y-axis</p>
           <SelectField
             placeholder="Select Y-axis"
@@ -289,7 +341,18 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             onChangeSelect={(e) => setAxisValues({ ...axisValues, yaxis: e })}
           />
         </Col>
-        <Col span={6} className="button-visible">
+        {showZAxis && (
+          <Col span={5}>
+            <p>Z-axis</p>
+            <SelectField
+              placeholder="Select Z-axis"
+              selectList={yaxisList}
+              selectedValue={axisValues.zaxis}
+              onChangeSelect={(e) => setAxisValues({ ...axisValues, zaxis: e })}
+            />
+          </Col>
+        )}
+        <Col span={showZAxis ? 4 : 6} className="button-visible">
           <p>button</p>
           <Button
             className="custom-primary-btn"
