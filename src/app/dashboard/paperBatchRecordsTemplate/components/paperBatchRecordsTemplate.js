@@ -3023,7 +3023,7 @@ function PaperBatchRecordsTemplate() {
                                     span={12}
                                     className='pbrCenterPanelCol pbrCenterBlockRight'
                                 >
-                                    <div className='drawSnippet' onClick={handleDrawSnippet}>
+                                    <div className='drawSnippet'>
                                         <EditOutlined />
                                         Draw Snippet
                                     </div>
