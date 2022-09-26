@@ -159,15 +159,25 @@ function TableIdentifier(props) {
         }
         return arr
     }
+
+    const checkValueInArray = (array,value) => {
+        let arr = [...array]
+        if(!arr.includes(value)){
+            arr.push(value)
+        }
+        return arr
+    }
     const handleInputChange = (val, field, identifier) => {
         if (identifier === "Column Identifier") {
             let obj = { ...colPanelValue }
             obj[field] = val
             if (field == "start" && val != undefined && val != "") {
                 let arr = updateCheckbox(val, obj.stop)
+                arr = checkValueInArray(arr,Number(rowPanelValue?.pk_index)-1)
                 setSelectedColRows(arr)
             } else if (field == "stop" && val != undefined && val != "") {
                 let arr1 = updateCheckbox(obj.start, val)
+                arr1 = checkValueInArray(arr1,Number(rowPanelValue?.pk_index)-1)
                 setSelectedColRows(arr1)
             } else if (field == "pk_index") {
                 if (val != "" && Number(val) <= Number(rowPanelValue.start)) {
@@ -191,9 +201,11 @@ function TableIdentifier(props) {
             obj1[field] = val
             if (field == "start" && val != undefined && val != "") {
                 let arr = updateCheckbox(val, obj1.stop)
+                arr = checkValueInArray(arr,Number(colPanelValue?.pk_index)-1)
                 setSelectedRowRows(arr)
             } else if (field == "stop" && val != undefined && val != "") {
                 let arr1 = updateCheckbox(obj1.start, val)
+                arr1 = checkValueInArray(arr1,Number(colPanelValue?.pk_index))-1
                 setSelectedRowRows(arr1)
             } else if (field == "pk_index") {
                 if (val != "" && Number(val) <= Number(colPanelValue.start)) {

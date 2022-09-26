@@ -15,7 +15,7 @@ import Plot from 'react-plotly.js';
 import './styles.scss'
 import { ArrowLeftOutlined, SearchOutlined } from '@ant-design/icons';
 const { Search } = Input;
-
+/* istanbul ignore next */
 function PbrReviewer() {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([])
@@ -94,7 +94,7 @@ function PbrReviewer() {
       dispatch(showNotification('error', error.Message));
     }
   }
-/* istanbul ignore next */
+  /* istanbul ignore next */
   const showfilterData = async (value) => {
     dispatch(showLoader());
     setShowReset(true)
@@ -106,7 +106,7 @@ function PbrReviewer() {
     setReviewerReq(obj)
     dispatch(hideLoader());
   };
-/* istanbul ignore next */
+  /* istanbul ignore next */
   const showfilters = async (value) => {
     dispatch(showLoader());
     setShowResetConfidence(true)
@@ -119,7 +119,7 @@ function PbrReviewer() {
     dispatch(hideLoader());
 
   };
-/* istanbul ignore next */
+  /* istanbul ignore next */
   const updateStatus = (e, record) => {
     let resp = [...arr];
     if (resp.includes(record.id)) {
@@ -143,7 +143,8 @@ function PbrReviewer() {
       recorded_time: null,
       snippet_value: null,
       status: "approved",
-      uom: null
+      uom: null,
+      table_value: null
     }
     if (esign) {
       let res = await updateApprove(req)
@@ -151,11 +152,17 @@ function PbrReviewer() {
       if (res.Status == "202") {
         dispatch(hideLoader());
         dispatch(showNotification("success", "Approved Successfully")),
+        cardTableData()
+        getTemplateID()
+        chart();
+        chart1();
 
-
-          setTimeout(() => window.location.reload(),
-            1000
-          );
+        // setTimeout(() => window.location.reload(),
+        //   1000
+        // );
+      } else {
+        dispatch(hideLoader());
+        dispatch(showNotification("error", res?.Message))
       }
     }
 
@@ -542,7 +549,7 @@ function PbrReviewer() {
     clearFilters();
     setSearchText("");
   }
-/* istanbul ignore next */
+  /* istanbul ignore next */
   const landingSearch = value => {
     if (value == "") {
       setFilterTableLanding(null);
@@ -560,7 +567,7 @@ function PbrReviewer() {
     }
 
   };
-/* istanbul ignore next */
+  /* istanbul ignore next */
   const resetConfidence = async () => {
     dispatch(showLoader());
     let obj = { ...reviewerReq, confidence: null }
@@ -584,7 +591,7 @@ function PbrReviewer() {
     dispatch(hideLoader());
 
   }
-/* istanbul ignore next */
+  /* istanbul ignore next */
   const handleTemplateChange = (val) => {
     if (val.length == 0) {
       let req = { ...reviewerReq, template_id: [] }

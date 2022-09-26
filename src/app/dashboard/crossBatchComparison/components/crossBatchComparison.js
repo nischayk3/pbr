@@ -6,19 +6,19 @@
  * @Last Changed By - Dinesh
  */
 
-import { Button, Select } from 'antd';
+import { Select } from 'antd';
 import debounce from "lodash/debounce";
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
-import SelectSearchField from "../../../../components/SelectSearchField/SelectSearchField";
+import { GRAFANA_DASHBOARD } from "../../../../constants/apiBaseUrl";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import { getCrossBatch } from '../../../../services/analyticsService';
 import { getGeanealogyFilter } from '../../../../services/genealogyService';
 import "./style.scss";
 
 const CrossBatchComparison = () => {
-	const [disabled, setDisabled] = useState(true);
+	const [random, setRandom] = useState(0);
 	const [showIframe, setShowIframe] = useState(false);
 	const [endPoint, setEndPoint] = useState("");
 	const [isEmptyPlant, setIsEmptyPlant] = useState(false);
@@ -38,6 +38,9 @@ const CrossBatchComparison = () => {
 	});
 
 	const dispatch = useDispatch();
+
+	const DASHBOARD_URL = 'https://cpvdev.mareana.com';
+	const GRAFANA_URL = 'https://mdh-dashboard.mareana.com/d/_ALohtn4k/cpv_grafana?orgId=1&amp;refresh=5s'
 	useEffect(() => {
 		getGenealogyFilterData();
 	}, []);
@@ -89,7 +92,7 @@ const CrossBatchComparison = () => {
 				});
 
 			}
-			setDisabled(false);
+
 		}
 	};
 
@@ -181,7 +184,7 @@ const CrossBatchComparison = () => {
 				productType: ''
 			};
 		});
-		setDisabled(true);
+
 		setIsEmptyPlant(false);
 		setIsEmptyProduct(false);
 		setIsEmptyBatch(false);
@@ -195,18 +198,22 @@ const CrossBatchComparison = () => {
 			const prod = selectParam['productCode']
 			const prodSplit = prod.split("-")
 			const batch = selectParam['batchNum']
-			// const _req = {
-			// 	Product: prodSplit[0],
-			// 	Batch: [batch]
-			// }
+
 			const _req = {
-				Product: "NP001",
-				Batch: ["B004","B005","B006","B003","B002","B001"]
+				Product: prodSplit[0],
+				Batch: [batch]
 			}
+
 
 			const getRes = await getCrossBatch(_req)
 			dispatch(hideLoader());
-			console.log("getressssssssss", getRes);
+
+			if (getRes !== "") {
+				setEndPoint(getRes);
+			}
+			setShowIframe(true);
+			setRandom(random + 1)
+			console.log("getressssssssss", GRAFANA_DASHBOARD + endPoint);
 		} catch {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', error));
@@ -237,76 +244,77 @@ const CrossBatchComparison = () => {
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
 			<div className='custom-content-layout'>
-				<div className='filter-layout'>
+				{/* <div className='filter-layout'>
 
-					<div className='filter-drop'>
-						<SelectSearchField
-							showSearch
-							label='Plant *'
-							placeholder='Select'
-							onChangeSelect={value => onChangeParam(value, 'plant')}
-							onSearchSelect={type => onSearchParam(type, 'plant')}
-							options={optionsPlant}
-							handleClearSearch={e => clearSearch(e, 'plant')}
-							error={isEmptyPlant ? 'Please select plant' : null}
-							selectedValue={selectParam['plant']}
-						/>
-						<SelectSearchField
-							showSearch
-							label='Product *'
-							placeholder='Select'
-							onChangeSelect={value => onChangeParam(value, 'product_code')}
-							onSearchSelect={type => onSearchParam(type, 'product_code')}
-							options={optionsProduct}
-							handleClearSearch={e => clearSearch(e, 'product')}
-							error={isEmptyProduct ? 'Please select product' : null}
-							selectedValue={selectParam['productCode']}
-						/>
-						<SelectSearchField
-							showSearch
-							label='Batch *'
-							placeholder='Select'
-							onChangeSelect={value => onChangeParam(value, 'batch_num')}
-							onSearchSelect={type => onSearchParam(type, 'batch_num')}
-							handleClearSearch={e => clearSearch(e, 'batch')}
-							error={isEmptyBatch ? 'Please select batch' : null}
-							options={optionsBatch}
-							selectedValue={selectParam['batchNum']}
-						/>
-					</div>
-					<div className="filter-btn">
-						<Button
-							className="custom-primary-btn "
-							type="primary"
-							onClick={() => {
-								handleFilter();
-							}}
-						>
-							Apply
-						</Button>
-						<Button
-							className="custom-secondary-btn"
-							type="primary"
-							onClick={() => {
-								handleClear();
-							}}
-						>
-							Clear
-						</Button>
-					</div>
-				</div>
+					 <div className='filter-drop'>
+						 <SelectSearchField
+							 showSearch
+							 label='Plant *'
+							 placeholder='Select'
+							 onChangeSelect={value => onChangeParam(value, 'plant')}
+							 onSearchSelect={type => onSearchParam(type, 'plant')}
+							 options={optionsPlant}
+							 handleClearSearch={e => clearSearch(e, 'plant')}
+							 error={isEmptyPlant ? 'Please select plant' : null}
+							 selectedValue={selectParam['plant']}
+						 />
+						 <SelectSearchField
+							 showSearch
+							 label='Product *'
+							 placeholder='Select'
+							 onChangeSelect={value => onChangeParam(value, 'product_code')}
+							 onSearchSelect={type => onSearchParam(type, 'product_code')}
+							 options={optionsProduct}
+							 handleClearSearch={e => clearSearch(e, 'product')}
+							 error={isEmptyProduct ? 'Please select product' : null}
+							 selectedValue={selectParam['productCode']}
+						 />
+						 <SelectSearchField
+							 showSearch
+							 label='Batch *'
+							 placeholder='Select'
+							 onChangeSelect={value => onChangeParam(value, 'batch_num')}
+							 onSearchSelect={type => onSearchParam(type, 'batch_num')}
+							 handleClearSearch={e => clearSearch(e, 'batch')}
+							 error={isEmptyBatch ? 'Please select batch' : null}
+							 options={optionsBatch}
+							 selectedValue={selectParam['batchNum']}
+						 />
+					 </div>
+					 <div className="filter-btn">
+						 <Button
+							 className="custom-primary-btn "
+							 type="primary"
+							 onClick={() => {
+								 handleFilter();
+							 }}
+						 >
+							 Apply
+						 </Button>
+						 <Button
+							 className="custom-secondary-btn"
+							 type="primary"
+							 onClick={() => {
+								 handleClear();
+							 }}
+						 >
+							 Clear
+						 </Button>
+					 </div>
+				 </div> */}
 				<div className="custom-table-card" style={{ margin: "10px 0" }}>
-					{showIframe && endPoint !== "" ? (
-						<iframe
-							src={GRAFANA_DASHBOARD + endPoint}
-							width="100%"
-							height="900"
-							key={this.state.random}
-							frameborder="0"
-						></iframe>
-					) : (
-						""
-					)}
+					{/* {showIframe && endPoint !== "" ? ( */}
+					<iframe
+						//src={DASHBOARD_URL + endPoint}
+						src={GRAFANA_URL}
+						width="100%"
+						height="900"
+						key={random}
+						frameBorder="0"
+					></iframe>
+					{/* ) : (
+						 ""
+					  )} */}
 				</div>
 			</div>
 		</div >

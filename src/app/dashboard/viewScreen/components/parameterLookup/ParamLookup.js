@@ -29,7 +29,6 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 	const [filterMol, setFilterMol] = useState([]);
 	const [filterValue, setFilterValue] = useState('');
 
-
 	//moleculelist api call
 	useEffect(() => {
 		if (isEditView) {
@@ -51,6 +50,7 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 
 	const clearSearch = (e) => {
 		setFilterValue('')
+
 	}
 
 	//Moleculelist api call
@@ -110,6 +110,7 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 
 
 	const onChangeParam = (value) => {
+
 		setFilterValue(value)
 		callbackFilter(value)
 	}
@@ -128,7 +129,7 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 	}, 1000)
 
 	const optionsMolecule = filterMol.map((item, index) => (
-		<Select.Option key={index} value={item.process_step_intid + '_' + item.product_num + '_' + item.parameter_name + '_' + item.ds_name}>
+		<Select.Option key={index} value={item.process_step_intid + '|' + item.product_num + '|' + item.parameter_name + '|' + item.ds_name}>
 			{item.process_step_intid + '_' + item.product_num + '_' + item.parameter_name}
 		</Select.Option >
 	));
