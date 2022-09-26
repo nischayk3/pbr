@@ -82,8 +82,7 @@ export default function Sharing(props) {
         }
     }
 
-    console.log(copy)
-    return (
+    \    return (
         <Modal className="sharing" title={<><UserAddOutlined style={{ marginLeft: '7px' }} /><span className="sharing-modal-title">Share with people</span></>} visible={isShare} onCancel={handleShareCancel} footer={false}>
             <div className="recepients">
                 <p className="recepients-text">Recepients</p>
