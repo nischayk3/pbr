@@ -135,8 +135,30 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 
     try {
       dispatch(showLoader());
-      const viewRes = await getViewTable(reqView);
-      viewRes.Data.forEach((item, key) => {
+      // const viewRes = await getViewTable(reqView);
+      const Data = [
+        {
+          created_by: "dinesh.jinjala@mareana.com",
+          created_on: "2022-05-10T04:44:58.095433+00:00",
+          product_num: "BELATACEPT",
+          view: "V3-1",
+          view_disp_id: "V3",
+          view_name: "CARB_NORMAL_HEAVY_2_FUNCTION",
+          view_status: "APRD",
+          view_version: 1,
+        },
+        {
+          created_by: "dinesh.jinjala@mareana.com",
+          created_on: "2022-09-05T01:09:28.875518+00:00",
+          product_num: "BELATACEPT",
+          view: "V460-1",
+          view_disp_id: "V460",
+          view_name: "Dinesh Different Graph ",
+          view_status: "APRD",
+          view_version: 1,
+        },
+      ];
+      Data.forEach((item, key) => {
         let antdObj = {};
         antdObj["key"] = key;
         antdObj["created_by"] = item.created_by;
@@ -182,6 +204,11 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       reqBody.data[0].view_id = selectedId;
       reqBody.data[0].view_name = selectedViewName;
       const viewRes = await postChartPlotData(reqBody);
+      if (viewRes.status !== 200) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
       getSites(viewRes.data[0].view_id);
       let newArr = [...postChartData.data];
       newArr[0] = viewRes.data[0];
@@ -190,7 +217,6 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     } catch (error) {
       /* istanbul ignore next */
       dispatch(hideLoader());
-      dispatch(showNotification("error", "Unable to fetch coverages"));
     }
   };
 
@@ -199,6 +225,11 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
+      if (viewRes.status !== 200) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
       if (viewRes.data && viewRes.data.length > 0) {
         let newArr = [...postChartData.data];
         newArr[0] = viewRes.data[0];
@@ -372,7 +403,10 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
           searchValue: ele.view_id,
           chartVersion: ele.view_version,
         });
-        setBatchFilters({...batchFilters, unApproved: ele.data_filter.unapproved_data})
+        setBatchFilters({
+          ...batchFilters,
+          unApproved: ele.data_filter.unapproved_data,
+        });
         setCoverageTableData(ele.extras.coverage);
       });
   }, [postChartData]);

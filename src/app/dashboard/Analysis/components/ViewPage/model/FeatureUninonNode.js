@@ -25,7 +25,10 @@ export default ({ data, selected }) => {
           alignItems: "center",
         }}
       >
-        <button style={{ padding: "0", fontSize: "8px" }} onClick={handleClick}>
+        <button
+          style={{ border: "none", fontSize: "8px", background: "#fff" }}
+          onClick={handleClick}
+        >
           one-hot-encoding
         </button>
       </div>

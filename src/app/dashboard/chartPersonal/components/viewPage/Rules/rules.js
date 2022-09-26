@@ -89,6 +89,11 @@ const rules = ({ postChartData, setPostChartData }) => {
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(newArr);
+      if (viewRes.status !== 200) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
       let newdataArr = [...postChartData.data];
       newdataArr[0].violations = viewRes.data[0].violations;
       newdataArr[0].data = viewRes.data[0].data;
@@ -98,7 +103,6 @@ const rules = ({ postChartData, setPostChartData }) => {
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
-      dispatch(showNotification("error", "Unable to save rules"));
     }
   };
 
@@ -110,6 +114,11 @@ const rules = ({ postChartData, setPostChartData }) => {
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(newArr);
+      if (viewRes.status !== 200) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
       let newdataArr = [...postChartData.data];
       newdataArr[0].rules = viewRes.data[0].rules;
       newdataArr[0].violations = viewRes.data[0].violations;
@@ -119,7 +128,6 @@ const rules = ({ postChartData, setPostChartData }) => {
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
-      dispatch(showNotification("error", "Unable to fetch rules"));
     }
   };
 
