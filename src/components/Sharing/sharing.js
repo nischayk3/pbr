@@ -18,6 +18,13 @@ export default function Sharing(props) {
     const dispatch = useDispatch()
 
     useEffect(() => {
+
+
+        getUsers()
+    }, [])
+
+    useEffect(() => {
+        setCopy(window.location.href)
         if (window.location.href.includes('share')) {
             setCopy(window.location.href)
         }
@@ -25,9 +32,7 @@ export default function Sharing(props) {
             let url_postfix = props.shareSreen == 'VIEW' ? '?share=true' : '&share=true'
             setCopy(window.location.href + url_postfix)
         }
-
-        getUsers()
-    }, [])
+    }, [window.location.href])
 
 
 
@@ -76,6 +81,8 @@ export default function Sharing(props) {
             dispatch(showNotification("error", 'Error while sharing, please try again!'));
         }
     }
+
+    console.log(copy)
     return (
         <Modal className="sharing" title={<><UserAddOutlined style={{ marginLeft: '7px' }} /><span className="sharing-modal-title">Share with people</span></>} visible={isShare} onCancel={handleShareCancel} footer={false}>
             <div className="recepients">
