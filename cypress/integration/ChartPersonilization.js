@@ -11,6 +11,7 @@ describe("Renders chart personalization", () => {
     localStorage.setItem("test_enabled", true);
     localStorage.setItem("user", "vinay.reddy@mareana.com");
     localStorage.setItem("username", "Vinay");
+    localStorage.setItem("loginwith", "WITH_AD");
     localStorage.setItem(
       "login_details",
       JSON.stringify({
@@ -455,10 +456,17 @@ describe("Renders chart personalization", () => {
       ":nth-child(4) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
     ).click();
     cy.get(".ant-select-item-option-active").contains("circle").click();
-    cy.get(":nth-child(4) > :nth-child(2) > .input_field > .ant-input").type(
-      "14"
-    );
-    cy.get('.container > [type="text"]').clear().type("#d21010");
+    cy.get(
+      ".ant-collapse-content-box > :nth-child(4) > :nth-child(2) > .input_field > .ant-input"
+    )
+      .clear()
+      .type("14");
+    cy.get(
+      '.ant-collapse-content-box > :nth-child(5) > .ant-col > .container > [type="text"]'
+    )
+      .clear()
+      .type("#d21010");
+    // cy.get('.container > [type="text"]').clear().type("#d21010");
     cy.get(".extra-coll > .ant-btn").click();
     cy.get(".extra-coll").click();
     cy.get(".ant-btn-primary").click();
@@ -484,10 +492,16 @@ describe("Renders chart personalization", () => {
       ":nth-child(4) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
     ).click();
     cy.get(".ant-select-item-option-active").contains("circle").click();
-    cy.get(":nth-child(4) > :nth-child(2) > .input_field > .ant-input").type(
-      "14"
-    );
-    cy.get('.container > [type="text"]').clear().type("#d21010");
+    cy.get(
+      ".ant-collapse-content-box > :nth-child(4) > :nth-child(2) > .input_field > .ant-input"
+    )
+      .clear()
+      .type("14");
+    cy.get(
+      '.ant-collapse-content-box > :nth-child(5) > .ant-col > .container > [type="text"]'
+    )
+      .clear()
+      .type("#d21010");
     cy.get(".extra-coll > .ant-btn").click();
   });
   it("Applying rules is working correctly", () => {
@@ -699,7 +713,7 @@ describe("Renders chart personalization", () => {
                       )
                         .first()
                         .get(".anticon.anticon-delete")
-                        .eq(1)
+                        .eq(2)
                         .click();
                       cy.get(".ant-popover-buttons > .ant-btn-primary").click();
                       cy.wait("@scheduleDelete");

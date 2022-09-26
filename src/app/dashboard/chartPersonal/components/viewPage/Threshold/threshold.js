@@ -148,6 +148,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
     } catch (error) {
+      /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification("error", "Unable to calculate threshold"));
     }
@@ -258,13 +259,17 @@ const Threshold = ({ postChartData, setPostChartData }) => {
   return (
     <div className="tresh-container">
       <>
-        <Row className="mt">
-          <Col span={24}>
-            <Button className="button-add" onClick={onAddThresh}>
-              <PlusOutlined /> Add a threshold
-            </Button>
-          </Col>
-        </Row>
+        {Object.keys(params).length > 0 && params.fromScreen !== "Workspace" ? (
+          <div />
+        ) : (
+          <Row className="mt">
+            <Col span={24}>
+              <Button className="button-add" onClick={onAddThresh}>
+                <PlusOutlined /> Add a threshold
+              </Button>
+            </Col>
+          </Row>
+        )}
         <div className="mt">
           <Collapse
             accordion
@@ -294,96 +299,136 @@ const Threshold = ({ postChartData, setPostChartData }) => {
                           ele.name
                         )}{" "}
                         &ensp;&ensp;
-                        <FormOutlined onClick={(e) => editKey(e, ele.key)} />
+                        {Object.keys(params).length > 0 &&
+                        params.fromScreen !== "Workspace" ? (
+                          ""
+                        ) : (
+                          <FormOutlined onClick={(e) => editKey(e, ele.key)} />
+                        )}
                       </div>
                     }
                     key={ele.key}
-                    extra={genExtra(ele.key, index)}
+                    extra={
+                      Object.keys(params).length > 0 &&
+                      params.fromScreen !== "Workspace"
+                        ? ""
+                        : genExtra(ele.key, index)
+                    }
                     className="panel-rule-thresh"
                   >
                     <>
                       <Row className="mt">
                         <Col span={24}>
                           <p>Parameter</p>
-                          <SelectField
-                            placeholder="Select"
-                            disabled={
-                              Object.keys(params).length > 0 &&
-                              params.fromScreen !== "Workspace"
-                            }
-                            selectedValue={ele.parameter}
-                            onChangeSelect={(e) =>
-                              handleChange(index, e, "parameter")
-                            }
-                            name="parameter"
-                            selectList={parameterList}
-                          />
+                          {Object.keys(params).length > 0 &&
+                          params.fromScreen !== "Workspace" ? (
+                            <label>{ele.parameter}</label>
+                          ) : (
+                            <SelectField
+                              placeholder="Select"
+                              disabled={
+                                Object.keys(params).length > 0 &&
+                                params.fromScreen !== "Workspace"
+                              }
+                              selectedValue={ele.parameter}
+                              onChangeSelect={(e) =>
+                                handleChange(index, e, "parameter")
+                              }
+                              name="parameter"
+                              selectList={parameterList}
+                            />
+                          )}
                         </Col>
                       </Row>
                       <Row gutter={16} className="mt">
                         <Col span={12}>
                           <p>Math Symbols</p>
-                          <SelectField
-                            placeholder="Select"
-                            disabled={
-                              Object.keys(params).length > 0 &&
-                              params.fromScreen !== "Workspace"
-                            }
-                            name="math"
-                            selectedValue={ele.math}
-                            onChangeSelect={(e) =>
-                              handleChange(index, e, "math")
-                            }
-                            selectList={mathList}
-                          />
+                          {Object.keys(params).length > 0 &&
+                          params.fromScreen !== "Workspace" ? (
+                            <label>{ele.math}</label>
+                          ) : (
+                            <SelectField
+                              placeholder="Select"
+                              disabled={
+                                Object.keys(params).length > 0 &&
+                                params.fromScreen !== "Workspace"
+                              }
+                              name="math"
+                              selectedValue={ele.math}
+                              onChangeSelect={(e) =>
+                                handleChange(index, e, "math")
+                              }
+                              selectList={mathList}
+                            />
+                          )}
                         </Col>
                         <Col span={12}>
                           <p>Value</p>
-                          <InputField
-                            placeholder="Enter Number"
-                            value={ele.valueNum}
-                            id="threshold_value"
-                            name="valueNum"
-                            onChangeInput={(e) =>
-                              handleChange(index, e.target.value, "valueNum")
-                            }
-                          />
+                          {Object.keys(params).length > 0 &&
+                          params.fromScreen !== "Workspace" ? (
+                            <label>{ele.valueNum}</label>
+                          ) : (
+                            <InputField
+                              placeholder="Enter Number"
+                              value={ele.valueNum}
+                              id="threshold_value"
+                              name="valueNum"
+                              onChangeInput={(e) =>
+                                handleChange(index, e.target.value, "valueNum")
+                              }
+                            />
+                          )}
                         </Col>
                       </Row>
                       <h4 className="mt">Customize Marker</h4>
                       <Row gutter={16} className="mt">
                         <Col span={12}>
                           <p>Shape</p>
-                          <SelectField
-                            selectList={symbolList}
-                            onChangeSelect={(e) =>
-                              handleChange(index, e, "shape")
-                            }
-                            selectedValue={ele.shape}
-                            name="shape"
-                          />
+                          {Object.keys(params).length > 0 &&
+                          params.fromScreen !== "Workspace" ? (
+                            <label>{ele.shape}</label>
+                          ) : (
+                            <SelectField
+                              selectList={symbolList}
+                              onChangeSelect={(e) =>
+                                handleChange(index, e, "shape")
+                              }
+                              selectedValue={ele.shape}
+                              name="shape"
+                            />
+                          )}
                         </Col>
                         <Col span={12}>
                           <p>Size</p>
-                          <InputField
-                            value={ele.size}
-                            name="size"
-                            onChangeInput={(e) =>
-                              handleChange(index, e.target.value, "size")
-                            }
-                          />
+                          {Object.keys(params).length > 0 &&
+                          params.fromScreen !== "Workspace" ? (
+                            <label>{ele.size}</label>
+                          ) : (
+                            <InputField
+                              value={ele.size}
+                              name="size"
+                              onChangeInput={(e) =>
+                                handleChange(index, e.target.value, "size")
+                              }
+                            />
+                          )}
                         </Col>
                       </Row>
                       <Row className="mt">
                         <Col span={24}>
                           <p>Color</p>
-                          <ColorPicker
-                            value={ele.color}
-                            onChange={(e) =>
-                              handleChange(index, e.target.value, "color")
-                            }
-                            name="color"
-                          />
+                          {Object.keys(params).length > 0 &&
+                          params.fromScreen !== "Workspace" ? (
+                            <label>{ele.color}</label>
+                          ) : (
+                            <ColorPicker
+                              value={ele.color}
+                              onChange={(e) =>
+                                handleChange(index, e.target.value, "color")
+                              }
+                              name="color"
+                            />
+                          )}
                         </Col>
                       </Row>
                     </>
