@@ -1,234 +1,279 @@
 .model-container {
-    .react-flow__node-input {
-        padding: 0px;
-        width: 50px;
-        font-size: 8px;
-    }
-    .react-flow__node-output {
-        @extend .react-flow__node-input
-    }
-    .react-flow__node-default {
-        @extend .react-flow__node-input
-    } 
-    .operation-row {
+	.react-flow__node-input {
+		padding: 0px;
+		width: 50px;
+		font-size: 8px;
+	}
 
-         padding: 10px 0px;
-        .title-legends {
-            display: flex;
-            justify-content: flex-end;
-            dl{
-                margin-bottom: 0px !important;
-            }
-            dl dt {
-                display: inline-block;
-                width: 14px;
-                height: 14px;
-                border-radius: 50%;
-                vertical-align: middle;
-            }
-            dl dd {
-                display: inline-block;
-                margin: 0px 12px;
-                padding-bottom: 0;
-                vertical-align: middle;
-                font-family: var(--primary-font-family);
-                font-style: normal;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 10px;
-            }
-            dl dt.cream {
-                background: #F7AF9D;
-            }
-            dl dt.violet {
-                background: #846B8A;
-            }
-            dl dt.green {
-                background:#4CA022;
-            }
-            dl dt.pink {
-                background: #FF4D4F;
-            }
-            dl dt.lightGreen {
-                background: #B3F2DD;
-            }
-        }
-        .ml {
-            margin-left: -13px;
-        }
-        .select-flex {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            column-gap: 10px;
-            align-items: center;
-             font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 22px;
-            color: #777777;
-            .ant-select {
-                width: 100%;
-            }
-        }
-    }
+	.react-flow__node-output {
+		@extend .react-flow__node-input
+	}
+
+	.react-flow__node-default {
+		@extend .react-flow__node-input
+	}
+
+	.operation-row {
+
+		padding: 10px 0px;
+
+		.title-legends {
+			display: flex;
+			justify-content: flex-end;
+
+			dl {
+				margin-bottom: 0px !important;
+			}
+
+			dl dt {
+				display: inline-block;
+				width: 14px;
+				height: 14px;
+				border-radius: 50%;
+				vertical-align: middle;
+			}
+
+			dl dd {
+				display: inline-block;
+				margin: 0px 12px;
+				padding-bottom: 0;
+				vertical-align: middle;
+				font-family: var(--primary-font-family);
+				font-style: normal;
+				font-weight: 400;
+				font-size: 12px;
+				line-height: 10px;
+			}
+
+			dl dt.cream {
+				background: #F7AF9D;
+			}
+
+			dl dt.violet {
+				background: #846B8A;
+			}
+
+			dl dt.green {
+				background: #4CA022;
+			}
+
+			dl dt.pink {
+				background: #FF4D4F;
+			}
+
+			dl dt.lightGreen {
+				background: #B3F2DD;
+			}
+		}
+
+		.ml {
+			margin-left: -13px;
+		}
+
+		.select-flex {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			column-gap: 10px;
+			align-items: center;
+			font-family: 'Roboto';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 22px;
+			color: #777777;
+
+			.ant-select {
+				width: 100%;
+			}
+		}
+	}
 }
-.ant-drawer-right .ant-drawer-content-wrapper {
-    height: 440px !important;
-    margin-top: calc(100% - 88%);
-}
+
+// .ant-drawer-right .ant-drawer-content-wrapper {
+//     height: 440px !important;
+//     margin-top: calc(100% - 88%);
+// }
 .ant-drawer-header {
-    background: #F1F7FF !important;
-    padding: 9px 25px !important;
+	background: #F1F7FF !important;
+	padding: 9px 25px !important;
 }
+
 .ant-drawer-content {
-    border: 5px solid #ADC6FF;
+	border: 5px solid #ADC6FF;
 }
+
 .drawer-d {
-    .drawer-head {
-        padding: 0px 25px;
-        background:  #F1F7FF;
-        height: 41px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .drawer-details {
-        font-family: 'Roboto';
-        padding: 5px 25px;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 22px;
-        margin-top: 10px;
-        .ant-select {
-            padding: 10px 0px !important;
-        }
-        button {
-            margin-top: 12px;
-        }
-    }
-    .estimator-details {
-        padding: 5px 25px;
-        .ant-select {
-            padding: 6px 0px !important;
-        } 
-        .ant-row {
-            align-items: center; 
-        }
-        .metrics {
-            .ant-checkbox-wrapper {
-                margin-top: 20px !important;
-            }
-        } 
-        .button-save {
-            margin-top: 12px;
-            display: flex;
-            justify-content: space-between;
-            button:nth-child(2) {
-              border: 1px dashed #486BC9;
-              color: #093185;
-            }
-        }
-    }
-    .container-bar {
-        // width:100%;
-        padding: 5px 25px;
-        margin-top: 10px;
-        ul {
-            display: flex;
-            margin-block-start: 0px !important;
-            padding-inline-start: 0px !important;
-        }
-        }
-        .progressbar {
-        counter-reset: step;
-        }
-        .progressbar li{
-        list-style-type: none;
-        // float: left;
-        width: 12.33%;
-        position:relative;
-        text-align: center;
-        font-weight: 600;
-        }
-        .progressbar li:before {
-        /* CSS for creating steper block before the li item*/
-        content:'';
-        counter-increment: step;
-        height:15px;
-        width:15px;
-        line-height: 30px;
-        border: 2px solid #ddd;
-        display:block;
-        text-align: center;
-        margin: 0 auto 10px auto;
-        border-radius: 50%;
-        background-color: white;
-        }
-        .progressbar li:after {
-        /* CSS for creating horizontal line*/
-        content:'';
-        position: absolute;
-        width:100%;
-        height:3px;
-        background-color: #ddd;
-        top: 7px;
-        left: -50%;
-        z-index: -1;
-        }
-        .progressbar li:first-child:after {
-        content:none;
-        }
-        .progressbar li.progress:before {
-            border-color:#1890FF;
-            }
-            .progressbar li.active:before {
-            border-color:#FF0000
-            }
+	.drawer-head {
+		padding: 0px 25px;
+		background: #F1F7FF;
+		height: 41px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.drawer-details {
+		font-family: 'Roboto';
+		padding: 5px 25px;
+		font-style: normal;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 22px;
+		margin-top: 10px;
+
+		.ant-select {
+			padding: 10px 0px !important;
+		}
+
+		button {
+			margin-top: 12px;
+		}
+	}
+
+	.estimator-details {
+		padding: 5px 25px;
+
+		.ant-select {
+			padding: 6px 0px !important;
+		}
+
+		.ant-row {
+			align-items: center;
+		}
+
+		.metrics {
+			.ant-checkbox-wrapper {
+				margin-top: 20px !important;
+			}
+		}
+
+		.button-save {
+			margin-top: 12px;
+			display: flex;
+			justify-content: space-between;
+
+			button:nth-child(2) {
+				border: 1px dashed #486BC9;
+				color: #093185;
+			}
+		}
+	}
+
+	.container-bar {
+		// width:100%;
+		padding: 5px 25px;
+		margin-top: 10px;
+
+		ul {
+			display: flex;
+			margin-block-start: 0px !important;
+			padding-inline-start: 0px !important;
+		}
+	}
+
+	.progressbar {
+		counter-reset: step;
+	}
+
+	.progressbar li {
+		list-style-type: none;
+		// float: left;
+		width: 12.33%;
+		position: relative;
+		text-align: center;
+		font-weight: 600;
+	}
+
+	.progressbar li:before {
+		/* CSS for creating steper block before the li item*/
+		content: '';
+		counter-increment: step;
+		height: 15px;
+		width: 15px;
+		line-height: 30px;
+		border: 2px solid #ddd;
+		display: block;
+		text-align: center;
+		margin: 0 auto 10px auto;
+		border-radius: 50%;
+		background-color: white;
+	}
+
+	.progressbar li:after {
+		/* CSS for creating horizontal line*/
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 3px;
+		background-color: #ddd;
+		top: 7px;
+		left: -50%;
+		z-index: -1;
+	}
+
+	.progressbar li:first-child:after {
+		content: none;
+	}
+
+	.progressbar li.progress:before {
+		border-color: #1890FF;
+	}
+
+	.progressbar li.active:before {
+		border-color: #FF0000
+	}
 }
+
 .ant-drawer-body {
-    padding: 20px !important;
+	padding: 20px !important;
 }
+
 .node-container {
-    .node-details-container {
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: flex-end;
-        button{
-            margin-right: 12px;
-        }
-        .button-list {
-            align-items: center;
-            justify-content: flex-end;
-        }
-    }
-    .details-box {
-        padding: 8px 0px;
-    }
-    .delete-b {
-        color: #FF0000;
-    }
-    .ant-radio-checked .ant-radio-inner {
-        border-color: #188FA7 !important;
-    }
-    .ant-radio-inner:after {
-        background-color: #188FA7 !important;
-    }
+	.node-details-container {
+		margin-bottom: 10px;
+		display: flex;
+		justify-content: flex-end;
+
+		button {
+			margin-right: 12px;
+		}
+
+		.button-list {
+			align-items: center;
+			justify-content: flex-end;
+		}
+	}
+
+	.details-box {
+		padding: 8px 0px;
+	}
+
+	.delete-b {
+		color: #FF0000;
+	}
+
+	.ant-radio-checked .ant-radio-inner {
+		border-color: #188FA7 !important;
+	}
+
+	.ant-radio-inner:after {
+		background-color: #188FA7 !important;
+	}
 }
+
 .react-flow__node-selectorNode {
-    font-size: 12px;
-    background: #eee;
-    border: 1px solid #555;
-    border-radius: 5px;
-    text-align: center;
-  }
+	font-size: 12px;
+	background: #eee;
+	border: 1px solid #555;
+	border-radius: 5px;
+	text-align: center;
+}
 
 .title-modal-estimator {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 
@@ -236,15 +281,15 @@
 	display: flex;
 	justify-content: space-between;
 	margin-top: 10px;
-    height: 100vh;
-    // overflow-y: scroll;
-    
+	height: 100vh;
+	// overflow-y: scroll;
 
-    .pbrTemplateCenter {
-        width: 100%;
-        margin: 0 40px;
-        // overflow-y: scroll;
-    }
+
+	.pbrTemplateCenter {
+		width: 100%;
+		margin: 0 40px;
+		// overflow-y: scroll;
+	}
 
 	.pbrTemplateLeft {
 		span.trigger {
@@ -272,18 +317,20 @@
 			flex: 0 0 390px !important;
 			max-width: 390px !important;
 			min-width: 390px !important;
-            height: 437px;
+			height: 437px;
 		}
-        .ant-layout-sider-children {
-            border: 5px solid #ADC6FF;
-        }
+
+		.ant-layout-sider-children {
+			border: 5px solid #ADC6FF;
+		}
+
 		.ant-layout-sider-collapsed {
 			width: 10px !important;
 			flex: 0 0 10px !important;
 			max-width: 10px !important;
 			min-width: 10px !important;
-            height: 437px;
-            background: #ADC6FF !important;
+			height: 437px;
+			background: #ADC6FF !important;
 		}
 
 		.ant-collapse {

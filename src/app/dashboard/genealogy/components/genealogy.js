@@ -26,6 +26,7 @@ import {
 import {
 	genealogyDataUpload,
 	getBackwardData,
+	getBatchEquipment,
 	getBatchInfo,
 	getForwardData,
 	getProcessInfo,
@@ -39,12 +40,10 @@ import Filter from './genealogyFilter';
 import TreePlot from './TreePlot/TreePlot';
 
 const { TabPane } = Tabs;
-const { Paragraph, Text } = Typography;
+const { Paragraph } = Typography;
 const { Dragger } = Upload;
 
-// let initialPanes = [
-// 	{ title: ' ', content: '', key: '1', closable: false, class: '' }
-// ];
+
 function Genealogy() {
 	const [batchNodeId, setBatchNodeId] = useState({});
 	const [chartType, setchartType] = useState('backward');
@@ -77,6 +76,8 @@ function Genealogy() {
 	const [uploadedFileInfo, setUploadedFileInfo] = useState([]);
 	const [fileMessage, setFileMessage] = useState('');
 	const [fileUploadResponse, setFileUploadResponse] = useState('');
+	const [batchEquData, setBatchEquData] = useState([]);
+
 
 	const dispatch = useDispatch();
 
@@ -134,8 +135,13 @@ function Genealogy() {
 					batchNum: node.nodeData.batchNo
 				}
 
+				let _reqBatchEqu = {
+					batch_no: node.nodeData.batchNo
+				}
+
 				getNodeBatchInfo(_reqBatchInfo);
-				getPBRData(_reqPbrBatch)
+				getPBRData(_reqPbrBatch);
+				batchEquipment(_reqBatchEqu)
 			} else if (node.nodeType === 'Process Order') {
 				setNodeType(node.nodeType);
 				let _reqProcessInput = {
@@ -148,10 +154,15 @@ function Genealogy() {
 					process_order_id: `${node.nodeData.plant}|${node.nodeData.poNo}`,
 					relation_id: 'output_batch_to_process_order'
 				};
+				let _reqBatchEqu = {
+					process_order: node.nodeData.poNo
+				}
+
 				setNodeTitle(node.nodeData.poNo);
 				setIsDrawerOpen(true);
 
 				setNodeType(node.nodeType);
+				batchEquipment(_reqBatchEqu)
 				getNodeProcessInput(_reqProcessInput);
 				getNodeProcessOutput(_reqProcessOutput);
 			} else if (node.nodeType === 'Purchase Order') {
@@ -535,8 +546,6 @@ function Genealogy() {
 				newActiveKey = newPanes[0].key;
 			}
 		}
-
-
 		setPanes(newPanes);
 		setActivateKey(newActiveKey);
 	};
@@ -603,7 +612,7 @@ function Genealogy() {
 	};
 
 	const updateGoldenBatches = async _goldenBatchReq => {
-		dispatch(hideLoader());
+		dispatch(showLoader());
 		try {
 			const goldenRes = await updateGoldenBatch(_goldenBatchReq)
 			dispatch(hideLoader());
@@ -625,6 +634,27 @@ function Genealogy() {
 		}
 	}
 
+	const batchEquipment = async _batchEquReq => {
+		dispatch(showLoader());
+		try {
+			const batchEquRes = await getBatchEquipment(_batchEquReq);
+			dispatch(hideLoader())
+			if (batchEquRes.Status === 200) {
+				setBatchEquData(batchEquRes.data)
+			} else {
+				setBatchEquData([])
+				dispatch(hideLoader());
+				/* istanbul ignore next */
+				dispatch(showNotification('error', error));
+			}
+			console.log("batchEquRes", batchEquRes);
+
+		} catch (error) {
+			dispatch(hideLoader());
+			/* istanbul ignore next */
+			dispatch(showNotification('error', error));
+		}
+	}
 	return (
 		<div className='custom-wrapper'>
 			<BreadCrumbWrapper />
@@ -690,6 +720,7 @@ function Genealogy() {
 								batchInfo={batchInfo}
 								processInput={processInput}
 								processOutput={processOutput}
+								batchEquData={batchEquData}
 								//fileDownload={downloadFile}
 								productCode={productCode}
 								nodeTitle={nodeTitle}
@@ -806,6 +837,7 @@ function Genealogy() {
 								batchInfo={batchInfo}
 								processInput={processInput}
 								processOutput={processOutput}
+								batchEquData={batchEquData}
 								collapseKey={collapseKey}
 								setCollapseKey={setCollapseKey}
 							/>

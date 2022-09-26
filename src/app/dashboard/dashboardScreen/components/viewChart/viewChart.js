@@ -625,20 +625,27 @@ const ViewChart = (props, ref) => {
 		dispatch(showLoader());
 		try {
 			let res = await getChartData(id, payload);
-			let chartLayout = {
-				xaxis: res.data[0]?.layout.xaxis,
-				yaxis: res.data[0]?.layout.yaxis,
-				autosize: false,
-				width: 580,
-				height: 250,
-				margin: {
-					l: 60,
-					r: 50,
-					//b: 75,
-					t: 40,
-					pad: 4,
-				},
-			};
+			let chartLayout = res.data[0]?.layout
+
+			let temp_layout_margin = { 'l': 60, 'r': 50, 't': 40, 'pad': 4 }
+			chartLayout['margin'] = temp_layout_margin
+			chartLayout['height'] = 250
+			chartLayout['width'] = 580
+			chartLayout['autosize'] = false
+			// {
+			// 	xaxis: res.data[0]?.layout.xaxis,
+			// 	yaxis: res.data[0]?.layout.yaxis,
+			// 	autosize: false,
+			// 	width: 580,
+			// 	height: 250,
+			// 	margin: {
+			// 		l: 60,
+			// 		r: 50,
+			// 		//b: 75,
+			// 		t: 40,
+			// 		pad: 4,
+			// 	},
+			// };
 			obj = Object.assign({}, obj, res, { chartLayout: chartLayout });
 			setTempCard(obj);
 			dispatch(hideLoader());
@@ -671,7 +678,7 @@ const ViewChart = (props, ref) => {
 		setTempCard(obj);
 	};
 
-	
+
 	const addNewCard = () => {
 		let newDummy = { ...dummy };
 		setTempCard(newDummy.panels[0]);
@@ -1025,6 +1032,16 @@ const ViewChart = (props, ref) => {
 
 				<Row gutter={[16, 24]} className='chart-row'>
 					{tempPanels.map((el, index) => {
+						let layout_margin = { 'l': 60, 'r': 50, 't': 40, 'pad': 4 }
+						let layout_height = el?.chartLayout && el.chartLayout.height
+						let layout_width = el?.chartLayout && el.chartLayout.width
+
+
+						let layout_data = el?.data[0].layout && el?.data[0]?.layout
+						layout_data['margin'] = layout_margin
+						layout_data['height'] = layout_height
+						layout_data['width'] = layout_width
+
 
 						return (
 							<Col
@@ -1145,7 +1162,7 @@ const ViewChart = (props, ref) => {
 									<div>
 										{isEditable == index && (
 											<ChartFilter
-												checked={tempPanels[index].data_filter.unapproved_data || tempPanels[index].data[0].has_unapproved}
+												checked={tempPanels[index].data[0].has_unapproved}
 												typeChartValue={tempPanels[index].source_type}
 												checkboxChange={value =>
 													onChangeInnerCheckbox(value, index)
@@ -1185,7 +1202,8 @@ const ViewChart = (props, ref) => {
 											}}>
 											<Plot
 												data={el.data && el?.data[0]?.data}
-												layout={el.chartLayout && el?.chartLayout}
+												// layout={el.chartLayout && el?.chartLayout}
+												layout={layout_data}
 												onSelected={data => onPointSelected(data)}
 											/>
 											{/* <Plot
@@ -1257,6 +1275,7 @@ const ViewChart = (props, ref) => {
 												<Plot
 													data={tempCard?.data && tempCard?.data[0]?.data}
 													layout={tempCard && tempCard?.chartLayout}
+												// layout={temp_layout_data}
 												/>
 											</div>
 										)}

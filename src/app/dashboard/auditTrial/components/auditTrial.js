@@ -79,7 +79,7 @@ class AuditTrials extends React.Component {
 			selectedQuestionPkg: "",
 			selectedAns: "",
 			selectedAnsPkg: "",
-			// loading: true,
+
 			searchText: "",
 			colSort: "entry_date",
 			searchedColumn: "",
@@ -93,35 +93,19 @@ class AuditTrials extends React.Component {
 			user: "",
 			daterange: [],
 			downloadData: [],
-
-			// config: [],
 			columns: [
 				{
 					title: "User",
 					dataIndex: "user_id",
-					key: "2",
+					key: "1",
 					defaultSortOrder: "descend",
-					// onHeaderCell: (column) => {
-					// 	return {
-					// 		onClick: (e) => {
-					// 			this.loadData(column.dataIndex);
-					// 		}
-					// 	};
-					// },
 					sorter: (a, b) => a.user_id.localeCompare(b.user_id)
 				},
 				{
 					title: "Event",
 					dataIndex: "activity",
-					key: "3",
+					key: "2",
 					defaultSortOrder: "descend",
-					// onHeaderCell: (column) => {
-					// 	return {
-					// 		onClick: (e) => {
-					// 			this.loadData(column.dataIndex);
-					// 		}
-					// 	};
-					// },
 					sorter: (a, b) => a.activity.localeCompare(b.activity)
 				},
 				{
@@ -129,98 +113,65 @@ class AuditTrials extends React.Component {
 					dataIndex: "old_value",
 					key: "3",
 					defaultSortOrder: "descend",
-					// onHeaderCell: (column) => {
-					// 	return {
-					// 		onClick: (e) => {
-					// 			this.loadData(column.dataIndex);
-					// 		}
-					// 	};
-					// },
 					className: "old_value_class",
-
 					sorter: (a, b) => a.old_value.localeCompare(b.old_value)
 				},
 				{
 					title: "New Value",
 					dataIndex: "new_value",
-					key: "3",
+					key: "4",
 					defaultSortOrder: "descend",
 					className: "old_value_class",
-					// onHeaderCell: (column) => {
-					// 	return {
-					// 		onClick: (e) => {
-					// 			this.loadData(column.dataIndex);
-					// 		}
-					// 	};
-					// },
 					sorter: (a, b) => {
-
 						return a.new_value === null ||
-
 							a.new_value === undefined ||
-
 							a.new_value === ""
-
 							? -1
-
 							: b.new_value == null ||
-
 								b.new_value == undefined ||
-
 								b.new_value == ""
-
 								? 1
-
 								: a.new_value.toString().localeCompare(b.new_value);
-
 					},
+				},
+				{
+					title: "Changed Fields",
+					dataIndex: "changed_fields",
+					key: "9",
+					defaultSortOrder: "descend",
+					sorter: (a, b) => a.changed_fields.localeCompare(b.changed_fields)
 				},
 				{
 					title: "Reason For Change",
 					dataIndex: "reason",
-					key: "2",
+					key: "5",
 					defaultSortOrder: "descend",
-					// onHeaderCell: (column) => {
-					// 	return {
-					// 		onClick: (e) => {
-					// 			this.loadData(column.dataIndex);
-					// 		}
-					// 	};
-					// },
 					sorter: (a, b) => a.reason.localeCompare(b.reason)
 				},
 				{
 					title: "Changed On",
 					dataIndex: "entry_date",
-					key: "1",
+					key: "6",
 					width: 200,
 					defaultSortOrder: "descend",
-					// onHeaderCell: (column) => {
-					// 	return {
-					// 		onClick: (e) => {
-					// 			this.loadData(column.dataIndex);
-					// 		}
-					// 	};
-					// },
 					sorter: (a, b) => new Date(a.entry_date) - new Date(b.entry_date),
 					render: (text) => moment(text).format("YYYY-MM-DD")
 				},
 				{
 					title: "Table Name",
 					dataIndex: "table_name",
-					key: "4",
+					key: "7",
 					defaultSortOrder: "descend",
-					// onHeaderCell: (column) => {
-					// 	return {
-					// 		onClick: (e) => {
-					// 			this.loadData(column.dataIndex);
-					// 		}
-					// 	};
-					// },
 					sorter: (a, b) => a.table_name.localeCompare(b.table_name)
-				}
-			],
+				}, {
+					title: "Table Id",
+					dataIndex: "table_int_id",
+					key: "8",
+					defaultSortOrder: "descend",
+					sorter: (a, b) => a.table_int_id.localeCompare(b.table_int_id)
+				},
 
+			],
 			initialColumns: []
 		};
 	}
@@ -229,20 +180,6 @@ class AuditTrials extends React.Component {
 		this.setState({ initialColumns: this.state.columns });
 		this.auditHighlight();
 		this.onAuditUserAndEventFilter();
-		//this.loadEventFilter('audit_event_filter')
-
-		// let userReq = {
-		//   //appId: "CPV",
-		//   appId: "BMS",
-		//   filterId: "bms_user_filter",
-		//   q: ""
-		// };
-		// loadFilter(userReq).then(res => {
-		//   let userList = res.data;
-		//   this.setState({
-		//     userList: userList
-		//   });
-		// });
 	}
 
 	onAuditUserAndEventFilter = async () => {
@@ -283,7 +220,6 @@ class AuditTrials extends React.Component {
 			this.state.setValue.length > 0
 				? moment(this.state.setValue[1]).format("YYYY-MM-DD")
 				: today.toISOString().slice(0, 10);
-		// let tableName = ["Parameter Data"];
 		let activity = this.state.eventType.value;
 		let userid = this.state.user.value;
 
@@ -301,32 +237,26 @@ class AuditTrials extends React.Component {
 		if (userid) {
 			myUrlWithParams.searchParams.append("userid", userid);
 		}
-		// myUrlWithParams.searchParams.append("table_name", tableName);
-
 		if (value == "excel") {
 			myUrlWithParams.searchParams.append("export_csv", false);
 		}
 		if (value == "csv") {
 			myUrlWithParams.searchParams.append("export_csv", true);
 		}
-
 		let url = myUrlWithParams.href;
 		window.open(url);
 	};
 
 	disabledDate = (current) => {
-
 		if (!this.state.dates) {
 			return false;
 		}
-
 		const tooLate = this.state.dates[0] && current.diff(this.state.dates[0], 'days') > 90;
 		const tooEarly = this.state.dates[1] && this.state.dates[1].diff(current, 'days') > 90;
 		return !!tooEarly || !!tooLate;
 	};
 
 	onOpenChange = (open) => {
-
 		if (open) {
 			this.setState({
 				dates: [null, null],
@@ -344,8 +274,6 @@ class AuditTrials extends React.Component {
 			identification: "10.10.16.30",
 			source_system: "cpv",
 			transactionid: "20200813161038.066",
-
-			// username: this.state.user ? this.state.user.value : "",
 			startdate:
 				this.state.setValue.length > 0 && this.state.setValue[0]
 					? moment(this.state.setValue[0]).format("YYYY-MM-DD")
@@ -356,7 +284,6 @@ class AuditTrials extends React.Component {
 					: today.toISOString().slice(0, 10),
 			order_by_col: this.state.colSort,
 			order_by_type: this.state.sortState
-			// activity:this.state.eventType ? this.state.eventType.value : '',
 		};
 
 		if (limit != 'all') {
@@ -381,6 +308,8 @@ class AuditTrials extends React.Component {
 				antdObj["entry_date"] = item.entry_date;
 				antdObj["table_name"] = item.table_name;
 				antdObj["reason"] = item.reason;
+				antdObj["table_int_id"] = item.table_int_id;
+				antdObj["changed_fields"] = item.changed_fields;
 				if (val11 === item.new_value) {
 					antdObj["new_value"] = (
 						<p style={{ background: "yellow" }}>{item.new_value}</p>
@@ -446,39 +375,7 @@ class AuditTrials extends React.Component {
 		this.setState({ filterTable });
 	};
 
-	// searchTable = (value) => {
-	// 	const { tableData1 } = this.state;
-	// 	const filterTable1 = tableData1.filter((o) =>
-	// 		Object.keys(o).some((k) =>
-	// 			String(o[k]).toLowerCase().includes(value.toLowerCase())
-	// 		)
-	// 	);
 
-	// 	this.setState({ filterTable1 });
-	// };
-
-	// handleVisibleChange = (flag) => {
-	// 	this.setState({ visibleMenuSettings: flag });
-	// };
-
-	// onChangeCheckbox = (e) => {
-	// 	var checkedColumns = this.state.checkedColumns;
-	// 	if (e.target.checked) {
-	// 		checkedColumns = checkedColumns.filter((id) => {
-	// 			return id !== e.target.id;
-	// 		});
-	// 	} else if (!e.target.checked) {
-	// 		checkedColumns.push(e.target.id);
-	// 	}
-
-	// 	var filtered = this.state.initialColumns;
-	// 	for (var i = 0; i < checkedColumns.length; i++)
-	// 		filtered = filtered.filter((el) => {
-	// 			return el.dataIndex !== checkedColumns[i];
-	// 		});
-
-	// 	this.setState({ columns: filtered, checkedColumns: checkedColumns });
-	// };
 
 	/* istanbul ignore next */
 	onlimitChange = (e, value) => {
@@ -552,19 +449,6 @@ class AuditTrials extends React.Component {
 			() => this.auditHighlight()
 		);
 
-		// this.auditDateTable();
-		// let userReq = {
-		//   //appId: "CPV",
-		//   appId: 'BMS',
-		//   filterId: 'bms_user_filter',
-		//   q: '',
-		// };
-		// loadFilter(userReq).then((res) => {
-		//   let userList = res.data;
-		//   this.setState({
-		//     userList: userList,
-		//   });
-		// });
 	};
 
 	handleClearPkg = () => {
@@ -774,36 +658,7 @@ class AuditTrials extends React.Component {
 											Export
 										</Button>
 									</Dropdown>
-									{/* <Select
-										style={{
-											marginLeft: "20px",
-											width:"300px"
-										}}
-										allowClear
-										// defaultValue={this.state.selectedLimit}value = { this.state.company || undefined }
-										// value = {this.state.selectedLimit || undefined}
-										placeholder="Limit"
-										onChange={(e, value) => { this.onlimitChange(e, value) }}
 
-									>
-
-									<Option value="100" key="100">
-										100
-									</Option>
-									<Option value="500" key="500">
-										500
-									</Option>
-									<Option value="1000" key="1000">
-										1000
-									</Option>
-									<Option value="10000" key="10000">
-										10000
-									</Option>
-									<Option value="all" key="all">
-										ALL
-									</Option>
-
-									</Select> */}
 								</div>
 							</div>
 							<Table
