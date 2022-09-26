@@ -117,13 +117,17 @@ const Display = ({ postChartData, setPostChartData }) => {
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(chartData);
+      if (viewRes.status !== 200) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
       let newdataArr = [...postChartData.data];
       newdataArr[0].data = viewRes.data[0].data;
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
-      dispatch(showNotification("error", "unable to plot sigma lines"));
     }
     setSigmaLines(e);
   };

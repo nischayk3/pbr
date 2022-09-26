@@ -184,9 +184,13 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       setPostChartData({ ...postChartData, data: newdataArr });
       setShowChart(true);
       dispatch(hideLoader());
+      if (viewRes.status !== 200) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
     } catch (error) {
       dispatch(hideLoader());
-      dispatch(showNotification("error", "unable to plot chart"));
     }
   };
 
