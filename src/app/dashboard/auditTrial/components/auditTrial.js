@@ -135,6 +135,13 @@ class AuditTrials extends React.Component {
 					},
 				},
 				{
+					title: "Changed Fields",
+					dataIndex: "changed_fields",
+					key: "9",
+					defaultSortOrder: "descend",
+					sorter: (a, b) => a.changed_fields.localeCompare(b.changed_fields)
+				},
+				{
 					title: "Reason For Change",
 					dataIndex: "reason",
 					key: "5",
@@ -163,13 +170,7 @@ class AuditTrials extends React.Component {
 					defaultSortOrder: "descend",
 					sorter: (a, b) => a.table_int_id.localeCompare(b.table_int_id)
 				},
-				{
-					title: "Table Display key",
-					dataIndex: "table_disp_key",
-					key: "9",
-					defaultSortOrder: "descend",
-					sorter: (a, b) => a.table_disp_key.localeCompare(b.table_disp_key)
-				}
+
 			],
 			initialColumns: []
 		};
@@ -308,7 +309,7 @@ class AuditTrials extends React.Component {
 				antdObj["table_name"] = item.table_name;
 				antdObj["reason"] = item.reason;
 				antdObj["table_int_id"] = item.table_int_id;
-				antdObj["table_disp_key"] = item.table_disp_key;
+				antdObj["changed_fields"] = item.changed_fields;
 				if (val11 === item.new_value) {
 					antdObj["new_value"] = (
 						<p style={{ background: "yellow" }}>{item.new_value}</p>
