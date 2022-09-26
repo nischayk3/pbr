@@ -670,7 +670,7 @@ function PaperBatchRecordsTemplate() {
                 action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "saved" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? mode == "TABLE" ? "create" : "edit" : "create",
                 temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : "",
                 temp_version: params?.temp_disp_id ? 1 : 0,
-                table_identifier: table_identifier
+                table_identifier: Object.keys(table_identifier).length > 0 ? table_identifier : null
             };
             const batchRes = await getBoundingBoxData(_reqBatch);
             setOriginalResponse(batchRes)
@@ -1819,6 +1819,12 @@ function PaperBatchRecordsTemplate() {
             <Menu.Item key='key_value'>
                 Key Value
             </Menu.Item>
+            <Menu.Item key='cell'>
+                Cell
+            </Menu.Item>
+            <Menu.Item key='selection_element'>
+                Selection Element
+            </Menu.Item>
         </Menu>
     );
 
@@ -1848,8 +1854,10 @@ function PaperBatchRecordsTemplate() {
     }
     /* istanbul ignore next */
     const handlePageTextChange = (val) => {
-        if (val === "") {
-            dispatch(showNotification('error', `Minium page number 1`))
+        if(isNaN(Number(val))){
+            dispatch(showNotification('error', "Please enter Valid Page Number"))
+        }else if (val === "") {
+            // dispatch(showNotification('error', `Minium page number 1`))
             setPageNumber(val)
         } else if (Number(val) > pageLimit) {
             dispatch(showNotification('error', `Maximum page ${pageLimit}`))
@@ -1857,6 +1865,7 @@ function PaperBatchRecordsTemplate() {
             dispatch(showNotification('error', 'Minium page 1'))
         } else {
             let num = Number(val)
+            console.log("nummm",num)
             getImage(num)
             setPageNumber(num)
             for (let i = 0; i < 2; i++) {
@@ -2213,7 +2222,7 @@ function PaperBatchRecordsTemplate() {
 
                                                                                             <Input placeholder='Enter Regex' />
                                                                                         </Form.Item>}
-                                                                                    {pageIdDropdownValues.length > 0 &&
+                                                                                    {(pageIdDropdownValues.length > 0 || initialPageIdentifierData?.users.length>0 )&&
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'pageIdValue']}
                                                                                             label="Page Id"
@@ -2979,7 +2988,8 @@ function PaperBatchRecordsTemplate() {
                                     <div className='tabletype'>
                                         <DynamicTableForm handleSideState={handleSideState} sideTableData={sideTableData}
                                             setTableActiveKey={setTableActiveKey} setFormTableData={setFormTableData} initialSideTableData={initialSideTableData}
-                                            handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish} pageIdDropdownValues={pageIdDropdownValues}
+                                            handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish} 
+                                            pageIdDropdownValues={pageIdDropdownValues} initialPageIdentifierData={initialPageIdentifierData}
                                         />
                                     </div>
                                 </Panel>
@@ -3013,7 +3023,7 @@ function PaperBatchRecordsTemplate() {
                                     span={12}
                                     className='pbrCenterPanelCol pbrCenterBlockRight'
                                 >
-                                    <div className='drawSnippet' onClick={handleDrawSnippet}>
+                                    <div className='drawSnippet'>
                                         <EditOutlined />
                                         Draw Snippet
                                     </div>
