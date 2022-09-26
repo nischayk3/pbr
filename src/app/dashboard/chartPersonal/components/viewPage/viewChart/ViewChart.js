@@ -135,30 +135,8 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
 
     try {
       dispatch(showLoader());
-      // const viewRes = await getViewTable(reqView);
-      const Data = [
-        {
-          created_by: "dinesh.jinjala@mareana.com",
-          created_on: "2022-05-10T04:44:58.095433+00:00",
-          product_num: "BELATACEPT",
-          view: "V3-1",
-          view_disp_id: "V3",
-          view_name: "CARB_NORMAL_HEAVY_2_FUNCTION",
-          view_status: "APRD",
-          view_version: 1,
-        },
-        {
-          created_by: "dinesh.jinjala@mareana.com",
-          created_on: "2022-09-05T01:09:28.875518+00:00",
-          product_num: "BELATACEPT",
-          view: "V460-1",
-          view_disp_id: "V460",
-          view_name: "Dinesh Different Graph ",
-          view_status: "APRD",
-          view_version: 1,
-        },
-      ];
-      Data.forEach((item, key) => {
+      const viewRes = await getViewTable(reqView);
+      viewRes.Data.forEach((item, key) => {
         let antdObj = {};
         antdObj["key"] = key;
         antdObj["created_by"] = item.created_by;
