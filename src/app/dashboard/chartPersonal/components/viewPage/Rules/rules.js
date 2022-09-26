@@ -114,11 +114,6 @@ const rules = ({ postChartData, setPostChartData }) => {
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(newArr);
-      if (viewRes.status !== 200) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
       let newdataArr = [...postChartData.data];
       newdataArr[0].rules = viewRes.data[0].rules;
       newdataArr[0].violations = viewRes.data[0].violations;
@@ -126,6 +121,11 @@ const rules = ({ postChartData, setPostChartData }) => {
       setPostChartData({ ...postChartData, data: newdataArr });
       getRules();
       dispatch(hideLoader());
+      if (viewRes.status !== 200) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
     } catch (error) {
       dispatch(hideLoader());
     }

@@ -580,17 +580,17 @@ const Limits = ({ postChartData, setPostChartData }) => {
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
-      if (viewRes.status !== 200) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
       let newdataArr = [...postChartData.data];
       newdataArr[0].limits = viewRes.data[0].limits;
       newdataArr[0].violations = viewRes.data[0].violations;
       newdataArr[0].data = viewRes.data[0].data;
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
+      if (viewRes.status !== 200) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
     } catch (error) {
       dispatch(hideLoader());
     }

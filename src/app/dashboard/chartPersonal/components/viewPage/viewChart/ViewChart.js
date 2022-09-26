@@ -182,16 +182,16 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       reqBody.data[0].view_id = selectedId;
       reqBody.data[0].view_name = selectedViewName;
       const viewRes = await postChartPlotData(reqBody);
-      if (viewRes.status !== 200) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
       getSites(viewRes.data[0].view_id);
       let newArr = [...postChartData.data];
       newArr[0] = viewRes.data[0];
       setPostChartData({ ...postChartData, data: newArr });
       dispatch(hideLoader());
+      if (viewRes.status !== 200) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
     } catch (error) {
       /* istanbul ignore next */
       dispatch(hideLoader());

@@ -216,8 +216,8 @@ describe("Renders chart personalization", () => {
 
   it("Creating new chart working correctly", () => {
     cy.wait(500);
-    cy.get(".ant-input").eq(1).type("NEW_CHART");
-    cy.get(".ant-input").eq(2).type("NEW_CHART_DESCRIPTION");
+    cy.get(".ant-input").eq(2).type("NEW_CHART");
+    cy.get(".ant-input").eq(3).type("NEW_CHART_DESCRIPTION");
 
     cy.wait(500);
     cy.log("Selecting Chart Type");

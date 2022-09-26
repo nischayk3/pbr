@@ -177,11 +177,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
-      if (viewRes.status !== 200) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
       let newdataArr = [...postChartData.data];
       newdataArr[0].data = viewRes.data[0].data;
       newdataArr[0].extras = viewRes.data[0].extras;
@@ -189,6 +184,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       setPostChartData({ ...postChartData, data: newdataArr });
       setShowChart(true);
       dispatch(hideLoader());
+      if (viewRes.status !== 200) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
     } catch (error) {
       dispatch(hideLoader());
     }
