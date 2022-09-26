@@ -257,7 +257,7 @@ function PageIdentifierForm(props) {
                                             htmltype="submit"
                                         >
                                             <p>
-                                                Add Paramater
+                                                Add Page Identifier
                                                 {/* {paramaterAdded
                                                     ? 'Add another paramater'
                                                     : 'Add your first Parameter'} */}
