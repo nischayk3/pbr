@@ -1162,7 +1162,7 @@ const ViewChart = (props, ref) => {
 									<div>
 										{isEditable == index && (
 											<ChartFilter
-												checked={tempPanels[index].data[0].has_unapproved}
+												checked={tempPanels[index].data[0].unapprove_data}
 												typeChartValue={tempPanels[index].source_type}
 												checkboxChange={value =>
 													onChangeInnerCheckbox(value, index)
