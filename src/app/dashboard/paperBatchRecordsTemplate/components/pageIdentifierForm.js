@@ -91,7 +91,11 @@ function PageIdentifierForm(props) {
     const removeKeyFiled = () => {
         if (fieldCount.length > 1) {
             let arr = [...fieldCount]
+            let obj = {...pageIdentifierFormValues}
+            delete obj.users[activeKey][`key${arr?.length}`]
             arr.pop()
+            obj.users[activeKey]["keyCount"] = arr?.length
+            setPageIdentifierFormValues(obj)
             setFieldCount(arr)
         }
     }

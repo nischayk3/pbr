@@ -453,7 +453,12 @@ function PbrReviewer() {
           <a
             style={{ color: "#1890ff" }}
             onClick={() => {
-              window.open(`/#/dashboard/pbr_update?id=${record.id}`)
+              if(record?.table_value === null){
+                window.open(`/#/dashboard/pbr_update?id=${record.id}`)
+              }else{
+                window.open(`/#/dashboard/pbr_table_reviewer?id=${record.id}`)
+              }
+              
             }}
 
           >

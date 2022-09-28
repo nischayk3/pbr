@@ -141,7 +141,6 @@ const App = (props) => {
       }),
     };
   });
-  console.log("template", templateData)
   return (
     <div>
       <Table
@@ -154,7 +153,7 @@ const App = (props) => {
         bordered
         dataSource={templateData}
         columns={columns}
-        style={{ border: '1px solid #ececec', borderRadius: '2px', marginTop: 26 }}
+        style={{ border: '1px solid #ececec', borderRadius: '2px'}}
       />
     </div>
   );
