@@ -184,7 +184,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       setPostChartData({ ...postChartData, data: newdataArr });
       setShowChart(true);
       dispatch(hideLoader());
-      if (viewRes.status !== 200) {
+      if (!viewRes) {
         dispatch(showNotification("error", viewRes?.message));
         dispatch(hideLoader());
         return false;
