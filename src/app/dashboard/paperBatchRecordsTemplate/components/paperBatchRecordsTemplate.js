@@ -1819,12 +1819,15 @@ function PaperBatchRecordsTemplate() {
             <Menu.Item key='key_value'>
                 Key Value
             </Menu.Item>
+            <Menu.Divider />
             <Menu.Item key='cell'>
                 Cell
             </Menu.Item>
+            <Menu.Divider />
             <Menu.Item key='selection_element'>
                 Selection Element
             </Menu.Item>
+            <Menu.Divider />
         </Menu>
     );
 
@@ -1865,7 +1868,6 @@ function PaperBatchRecordsTemplate() {
             dispatch(showNotification('error', 'Minium page 1'))
         } else {
             let num = Number(val)
-            console.log("nummm",num)
             getImage(num)
             setPageNumber(num)
             for (let i = 0; i < 2; i++) {

@@ -14,9 +14,7 @@ import './styles.scss';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { useHistory } from 'react-router';
 import EditableRow from './EditTable'
-
-
-
+/* istanbul ignore next */
 const PbrUpdate = () => {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([]);
@@ -54,14 +52,14 @@ const PbrUpdate = () => {
       template_id: []
     }
     let res = await getPbrReviewerData(req);
-    let arr = []
-    Object.entries(res.Data[0]).forEach(item => {
-      arr.push({ column: item[0], value: item[1] })
-    })
-    arr = arr.filter(i => rowArray.includes(i.column))
-    setTemplateData(arr);
-    let filename = res.Data[0].file_path;
-    getImage(filename);
+    // let arr = []
+    // Object.entries(res.Data[0]).forEach(item => {
+    //   arr.push({ column: item[0], value: item[1] })
+    // })
+    // arr = arr.filter(i => rowArray.includes(i.column))
+    setTemplateData(res.Data);
+    let filename = res.Data.filter(item=>item.column == "file_path")
+    getImage(filename[0].value);
     let obj = {
       changed_by: res.Data[0].changed_by == null ? "" : res.Data[0].changed_by,
       id: res.Data[0].id == null ? "" : res.Data[0].id,
@@ -101,7 +99,7 @@ const PbrUpdate = () => {
     dispatch(hideLoader());
   }
 
-  
+
 
   const handleClick = async (event, record) => {
     dispatch(showLoader());
@@ -113,13 +111,14 @@ const PbrUpdate = () => {
     let formvalues = {
       id: numberArray,
       changed_by: localStorage.getItem('user'),
-      recorded_date: textInput.recorded_date,
-      recorded_time: textInput.recorded_time,
-      snippet_value: textInput.snippet_value,
-      status: textInput.status,
-      uom: textInput.uom,
+      recorded_date: textInput?.recorded_date ? textInput?.recorded_date :null,
+      recorded_time: textInput?.recorded_time ? textInput?.recorded_time :null,
+      snippet_value: textInput?.snippet_value ? textInput?.snippet_value :null,
+      status: textInput?.status ? textInput?.status:null,
+      uom: textInput?.uom ?  textInput?.uom : null,
+      table_value:null
     };
-  
+
     let res = await updateApprove(formvalues);
     if (res.Status == "202") {
       dispatch(hideLoader());
@@ -149,8 +148,11 @@ const PbrUpdate = () => {
             <Row gutter={15}>
               <Col span={12}>
                 <h3 style={{ marginBottom: "20px" }}>You may edit the selected unstructured data here.</h3>
-                {templateData && 
-                <EditableRow templateData={templateData} setTemplateData={setTemplateData} setTextInput={setTextInput} textInput={textInput}/>}
+                {templateData &&
+                  <div style={{ height: "calc(100vh - 190px)", overflowY: "scroll"}}>
+                    <EditableRow templateData={templateData} setTemplateData={setTemplateData} setTextInput={setTextInput} textInput={textInput} />
+                  </div>
+                }
                 {/* <Table
                   className='edit-table'
                   size='middle'
@@ -194,7 +196,7 @@ const PbrUpdate = () => {
 
                     type='primary'>Save Changes</Button>
                 </div>
-                <div style={{ height: "calc(100vh - 190px)", overflowY: "scroll" ,border:"0.5px solid blue"}}>
+                <div style={{ height: "calc(100vh - 190px)", overflowY: "scroll", border: "0.5px solid blue" }}>
                   {/* style={{height:"calc(100vh - 190px)"}} */}
                   <img src={imagepdf} width="100%" height="700px" />
                   {/* <iframe class="frame" src={imagepdf} width="600px" height="500px" ></iframe>   */}
