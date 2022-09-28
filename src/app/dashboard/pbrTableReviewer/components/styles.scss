@@ -1,0 +1,108 @@
+.edit-table{
+    th:first-of-type {
+        padding-left: 25px !important;
+       
+    }
+    th:last-of-type {
+        padding-right: 25px !important;
+       
+    }
+    td:first-of-type {
+        padding-left: 25px !important;
+       
+    }
+    td:last-of-type {
+        padding-right: 25px !important;
+       
+    }
+    .ant-table .ant-table-thead > tr > th {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 22px;
+        color: #262626;
+        background: rgba(242, 251, 255, 1);
+        border-radius: 0px 2px 0px 0px;
+        padding: 10px;
+      }
+    
+      .ant-table-tbody > tr > td {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px;
+        color: #000000;
+        // border: none;
+        // border-bottom: 1px solid #d9d9d9;
+        padding: 10px;
+        div.ant-form-item{
+            margin:0;
+          }
+      }
+      
+
+}
+
+.pbr-container {
+	overflow-y: scroll;
+	height: 90vh
+}
+.wrap {
+    width: 400px;
+    height: 600px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.frame {
+    width: 1200px;
+    height: 1800px;
+    border: 0;
+    -ms-transform: scale(0.25);
+    -moz-transform: scale(0.25);
+    -o-transform: scale(0.25);
+    -webkit-transform: scale(0.25);
+    transform: scale(0.25);
+
+    -ms-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+
+.edit-table
+.ant-table-content {
+    background: #E6E6E0;
+}
+
+.edit-table
+.editable-cell {
+    position: relative;
+  }
+  
+  .editable-cell-value-wrap {
+    padding: 5px 12px;
+    cursor: pointer;
+  }
+  
+  .editable-row:hover .editable-cell-value-wrap {
+    padding: 4px 11px;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+  }
+  
+  [data-theme='dark'] .editable-row:hover .editable-cell-value-wrap {
+    border: 1px solid #434343;
+  }
+
+.tableEdit{
+    display:flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    margin-top: 15px;
+
+}
+

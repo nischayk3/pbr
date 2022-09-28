@@ -26,6 +26,7 @@ import "./dashboard.scss";
 import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
 import PbrReviewer from "./pbrReviewer";
 import PrivateRoute from "./ProtectedRoute";
+import pbrTableUpdate from './pbrTableReviewer'
 //import PythonNotebook from "./pythonNotebook/pythonNotebook";
 import UnAuthorisedScreen from "./unAuthorised";
 // DASHBOARD ROUTE COMPONENTS
@@ -255,6 +256,12 @@ const Dashboard = () => {
 									component={PbrReviewer}
 									authorised={authorised}
 									path={`${match.url}/pbr_reviewer`}
+								/>
+								<PrivateRoute
+									key="pbr_table_reviewer"
+									component={pbrTableUpdate}
+									authorised={authorised}
+									path={`${match.url}/pbr_table_reviewer`}
 								/>
 
 								<Route
