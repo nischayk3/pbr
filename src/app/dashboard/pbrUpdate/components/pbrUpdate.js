@@ -14,9 +14,7 @@ import './styles.scss';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { useHistory } from 'react-router';
 import EditableRow from './EditTable'
-
-
-
+/* istanbul ignore next */
 const PbrUpdate = () => {
   const dispatch = useDispatch();
   const [templateData, setTemplateData] = useState([]);
