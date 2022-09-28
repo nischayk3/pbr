@@ -41,7 +41,7 @@ const ExclusionPopup = ({
         setIsModalVisible(false);
         dispatch(showLoader());
         const viewRes = await postChartPlotData(newPost);
-        if (viewRes.status !== 200) {
+        if (!viewRes) {
           dispatch(showNotification("error", viewRes?.message));
           dispatch(hideLoader());
           return false;
