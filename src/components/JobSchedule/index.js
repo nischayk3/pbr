@@ -57,7 +57,6 @@ const JobSchedule = (props) => {
 	// 	setAlertModal(false)
 
 	// }
-	console.log(props)
 
 	return (
 		<Modal title={props.app_type !== "REPORT" ? <span className="modal-title">Schedule alert</span> : <span className="modal-title">Notify Report</span>} className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300}  >
