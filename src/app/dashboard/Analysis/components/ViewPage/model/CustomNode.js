@@ -26,7 +26,12 @@ export default ({ data, selected }) => {
         }}
       >
         <button
-          style={{ border: "none", fontSize: "8px", background: "#fff" }}
+          style={{
+            fontSize: "8px",
+            background: "#fff",
+            border: "0.5px solid grey",
+            borderRadius: "4px",
+          }}
           onClick={handleClick}
         >
           Simple Imputer
