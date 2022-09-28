@@ -58,7 +58,6 @@ const JobSchedule = (props) => {
 
 	// }
 
-
 	return (
 		<Modal title={props.app_type !== "REPORT" ? <span className="modal-title">Schedule alert</span> : <span className="modal-title">Notify Report</span>} className='schedule-modal' visible={props.visible} onCancel={props.handleCancel} footer={false} width={1300}  >
 			<Tabs tabPosition='left' className='schedule-menu' activeKey={activeTab} onChange={changeActiveTab} >
@@ -86,7 +85,7 @@ const JobSchedule = (props) => {
 							<a className="view-link" href={MDH_AIRFLOW} target="_blank">View more details</a> <span className='alert-arrow'><ArrowRightOutlined /></span>
 						</div>
 						<div>
-							<AlertTable appType={props.app_type} id={props.id} changeActiveTab={changeActiveTab} activeTab={activeTab} />
+							<AlertTable appType={props.app_type} id={props.app_type == 'CHART' ? props.id + '-' + props.version : props.id} changeActiveTab={changeActiveTab} activeTab={activeTab} />
 						</div>
 					</div>
 				</TabPane>
