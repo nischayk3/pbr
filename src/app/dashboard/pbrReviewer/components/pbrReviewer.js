@@ -370,6 +370,24 @@ function PbrReviewer() {
       sortDirections: ['descend', 'ascend'],
     },
     {
+      title: 'Page Name',
+      key: 'page_name',
+      dataIndex: 'page_name',
+      // width:"17%",
+      ...getColumnSearchProps('page_name'),
+      sorter: (a, b) => a?.file_path?.length - b?.file_path?.length,
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      title: 'Page Number',
+      key: 'page_num',
+      dataIndex: 'page_num',
+      // width:"17%",
+      ...getColumnSearchProps('page_num'),
+      sorter: (a, b) => a?.page_num?.length - b?.page_num?.length,
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
       title: 'Status',
       key: 'status',
       dataIndex: 'status',
@@ -435,7 +453,12 @@ function PbrReviewer() {
           <a
             style={{ color: "#1890ff" }}
             onClick={() => {
-              window.open(`/#/dashboard/pbr_update?id=${record.id}`)
+              if(record?.table_value === null){
+                window.open(`/#/dashboard/pbr_update?id=${record.id}`)
+              }else{
+                window.open(`/#/dashboard/pbr_table_reviewer?id=${record.id}`)
+              }
+              
             }}
 
           >

@@ -57,19 +57,19 @@ describe('PBR', () => {
         cy.get('.ant-col-16 > .ant-input-group-wrapper > .ant-input-wrapper > .ant-input-group-addon > .ant-btn').click({ force: true });
         
     })
-    it("Select checkbox", () => {
-        cy.get('.ant-checkbox-input').eq(1).click({ force: true })
-    })
-    it("Status chart", () => {
-        cy.get(".slicetext").eq(1).click({ force: true })
-        cy.wait(6000);
-        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
-        cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
-        cy.get(".status-approved").click({ force: true })
-        cy.wait(6000);
-        cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
-        cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
-    })
+    // it("Select checkbox", () => {
+    //     cy.get('.ant-checkbox-input').eq(1).click({ force: true })
+    // })
+    // it("Status chart", () => {
+    //     cy.get(".slicetext").eq(1).click({ force: true })
+    //     cy.wait(6000);
+    //     cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
+    //     cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
+    //     cy.get(".status-approved").click({ force: true })
+    //     cy.wait(6000);
+    //     cy.intercept('POST', '/pbr/udh/get_cpv_pbr', { fixture: 'pbr_review.json' })
+    //     cy.intercept('POST', '**/get_cpv_pbr', { fixture: 'pbr_review.json' })
+    // })
     
 
     it("Navigate to reviewer", () => {
@@ -80,13 +80,13 @@ describe('PBR', () => {
         
     })
 
-    it("Edit fields", () => {
-        cy.wait(6000);
-        cy.get(':nth-child(4) > :nth-child(2) > .editable-cell-value-wrap').click({ force: true })
-        cy.get('#value').type("claimss")
+    // it("Edit fields", () => {
+    //     cy.wait(6000);
+    //     cy.get(':nth-child(4) > :nth-child(2) > .editable-cell-value-wrap').click({ force: true })
+    //     cy.get('#value').type("claimss")
        
 
-    })
+    // })
     it("Save and Audit logs", () => {
         cy.wait(1000);
         cy.get("#save_button").click({ force: true })

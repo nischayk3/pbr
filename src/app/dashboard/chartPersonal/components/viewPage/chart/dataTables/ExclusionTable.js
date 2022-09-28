@@ -33,7 +33,7 @@ const ExclusionTable = ({
       title: item.toUpperCase().replace("_", " "),
       dataIndex: item,
       key: `${item}-${i}`,
-      render : (text) => String(text)
+      render: (text) => String(text),
     });
   });
 
@@ -51,11 +51,15 @@ const ExclusionTable = ({
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
+      if (!viewRes) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
       setPostChartData({ ...postChartData, data: viewRes.data });
       dispatch(hideLoader());
     } catch (err) {
       dispatch(hideLoader());
-      dispatch(showNotification("error", "unable to exclude data"));
     }
   };
 

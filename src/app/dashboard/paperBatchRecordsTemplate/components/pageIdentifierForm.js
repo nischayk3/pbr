@@ -91,7 +91,11 @@ function PageIdentifierForm(props) {
     const removeKeyFiled = () => {
         if (fieldCount.length > 1) {
             let arr = [...fieldCount]
+            let obj = {...pageIdentifierFormValues}
+            delete obj.users[activeKey][`key${arr?.length}`]
             arr.pop()
+            obj.users[activeKey]["keyCount"] = arr?.length
+            setPageIdentifierFormValues(obj)
             setFieldCount(arr)
         }
     }
@@ -257,7 +261,7 @@ function PageIdentifierForm(props) {
                                             htmltype="submit"
                                         >
                                             <p>
-                                                Add Paramater
+                                                Add Page Identifier
                                                 {/* {paramaterAdded
                                                     ? 'Add another paramater'
                                                     : 'Add your first Parameter'} */}

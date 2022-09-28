@@ -586,6 +586,11 @@ const Limits = ({ postChartData, setPostChartData }) => {
       newdataArr[0].data = viewRes.data[0].data;
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
+      if (!viewRes) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
     } catch (error) {
       dispatch(hideLoader());
     }

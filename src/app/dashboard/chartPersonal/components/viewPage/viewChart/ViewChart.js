@@ -187,10 +187,14 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       newArr[0] = viewRes.data[0];
       setPostChartData({ ...postChartData, data: newArr });
       dispatch(hideLoader());
+      if (!viewRes) {
+        dispatch(showNotification("error", viewRes?.message));
+        dispatch(hideLoader());
+        return false;
+      }
     } catch (error) {
       /* istanbul ignore next */
       dispatch(hideLoader());
-      dispatch(showNotification("error", "Unable to fetch coverages"));
     }
   };
 
@@ -217,7 +221,6 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     } catch {
       /* istanbul ignore next */
       dispatch(hideLoader());
-      dispatch(showNotification("error", "Unable to fetch coverages"));
     }
   };
 
@@ -372,7 +375,10 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
           searchValue: ele.view_id,
           chartVersion: ele.view_version,
         });
-        setBatchFilters({...batchFilters, unApproved: ele.data_filter.unapproved_data})
+        setBatchFilters({
+          ...batchFilters,
+          unApproved: ele.data_filter.unapproved_data,
+        });
         setCoverageTableData(ele.extras.coverage);
       });
   }, [postChartData]);

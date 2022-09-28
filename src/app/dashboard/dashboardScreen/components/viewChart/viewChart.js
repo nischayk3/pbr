@@ -818,7 +818,6 @@ const ViewChart = (props, ref) => {
 	};
 
 
-
 	//const { RangePicker } = DatePicker;
 	return (
 		<div>
@@ -1163,7 +1162,7 @@ const ViewChart = (props, ref) => {
 									<div>
 										{isEditable == index && (
 											<ChartFilter
-												checked={tempPanels[index].data_filter.unapproved_data}
+												checked={tempPanels[index].data[0].unapprove_data}
 												typeChartValue={tempPanels[index].source_type}
 												checkboxChange={value =>
 													onChangeInnerCheckbox(value, index)
