@@ -29,6 +29,8 @@ describe('Audit Trail', () => {
     cy.wait(3000)
   });
   it("selecting daterange", () => {
+    const url = Cypress.config().baseUrl
+    cy.visit(url + '/#/dashboard/audit_trail_report')
     cy.log("selecting daterange")
     cy.get('.ant-picker-input').first().click()
     cy.get('.ant-picker-header-prev-btn').first().click()
@@ -46,12 +48,12 @@ describe('Audit Trail', () => {
     cy.get('.ant-select-selection-item').eq(1).click({ force: true })
     cy.wait(5000)
     cy.get('.ant-select-item-option').contains('U').click({ force: true })
-    cy.get('.divFilter-second > :nth-child(1) > span').click({ force: true });
+    cy.get('.divFilter > :nth-child(3) > .ant-select > .ant-select-selector').click({ force: true })
     cy.wait(1000)
   });
   it("clear filter", () => {
     cy.log("clearing filter")
-    cy.get('.simulate-btn > span').click({ force: true });
+    cy.get('.custom-secondary-btn').click({ force: true });
   });
   it("searching table", () => {
     cy.wait(1000)
