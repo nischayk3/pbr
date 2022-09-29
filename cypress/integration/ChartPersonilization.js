@@ -76,16 +76,16 @@ describe("Renders chart personalization", () => {
       cy.get(".chart-tiles").eq(1).click();
       cy.wait("@chartId").then(() => {
         cy.get(".chart-table").scrollTo("top");
-        cy.get(
-          ".cartesianlayer > .subplot > .plot > .scatterlayer > .trace > .points > path.point"
-        )
-          .eq(1)
-          .click({ force: true, multiple: true });
-        cy.get(
-          ".cartesianlayer > .subplot > .plot > .scatterlayer > .trace > .points > path.point"
-        )
-          .eq(2)
-          .click({ force: true, multiple: true });
+        // cy.get(
+        //   ".cartesianlayer > .subplot > .plot > .scatterlayer > .trace > .points > path.point"
+        // )
+        //   .eq(1)
+        //   .click({ force: true, multiple: true });
+        // cy.get(
+        //   ".cartesianlayer > .subplot > .plot > .scatterlayer > .trace > .points > path.point"
+        // )
+        //   .eq(2)
+        //   .click({ force: true, multiple: true });
         cy.log("Opening rules tab");
         cy.intercept("GET", "/services/v1/rules", {
           fixture: "chartPersonalizationRules.json",
@@ -330,7 +330,9 @@ describe("Renders chart personalization", () => {
     cy.get(':nth-child(3) > .ant-col-16 > .container > [type="text"]').type(
       "#EEEEEE"
     );
-
+    cy.log("clicking sigma lines");
+    cy.get(".ant-col-16 > .ant-switch").click();
+    cy.wait(1000);
     cy.log("Changing marker shape");
     cy.get(".figure-container .select_field").eq(0).click();
     cy.get('[title="triangle-up"] > .ant-select-item-option-content').click();

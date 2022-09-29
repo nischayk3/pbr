@@ -132,16 +132,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
         yAxis.function_id = ele.function_id;
       }
       if (ele.function_name === axisValues.zaxis) {
-        if (
-          axisValues.chartType === "Bubble" ||
-          axisValues.chartType === "Error"
-        ) {
-          zAxis.function_name = ele.function_name;
-          zAxis.function_id = ele.function_id;
-        } else {
-          zAxis.function_name = undefined;
-          zAxis.function_id = undefined;
-        }
+        zAxis.function_name = ele.function_name;
+        zAxis.function_id = ele.function_id;
       }
     });
     const newArr = [...postChartData.data];
@@ -162,6 +154,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       ele.chart_mapping.y = yAxis;
       if (showZAxis && axisValues.zaxis) {
         ele.chart_mapping.z = zAxis;
+      } else {
+        ele.chart_mapping.z = undefined;
       }
       ele.layout.xaxis.title.text =
         Object.keys(xAxis).length !== 0
@@ -220,6 +214,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       zaxis: null,
     });
   };
+
   useEffect(() => {
     const newCovArr = JSON.parse(JSON.stringify(postChartData));
     newCovArr &&
