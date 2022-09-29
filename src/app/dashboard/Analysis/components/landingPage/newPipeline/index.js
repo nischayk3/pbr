@@ -100,8 +100,17 @@ const NewPipeline = (props) => {
   const onSearchChange = (e) => {
     if (e.target.value === "") {
       setSearchTableData(searchViewData.current);
+      setViewData({
+        ...viewData,
+        viewName: null,
+        viewDispId: null,
+        status: null,
+        searchValue: e.target.value,
+        viewVersion: null,
+      });
+    } else {
+      setViewData({ ...viewData, searchValue: e.target.value });
     }
-    setViewData({ ...viewData, searchValue: e.target.value });
   };
 
   //function for closing view table result on click of outside.
