@@ -139,7 +139,7 @@ class AuditTrials extends React.Component {
 					dataIndex: "changed_fields",
 					key: "9",
 					defaultSortOrder: "descend",
-					sorter: (a, b) => a.changed_fields.localeCompare(b.changed_fields)
+					sorter: (a, b) => a?.changed_fields?.localeCompare(b.changed_fields)
 				},
 				{
 					title: "Reason For Change",
