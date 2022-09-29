@@ -132,8 +132,16 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
         yAxis.function_id = ele.function_id;
       }
       if (ele.function_name === axisValues.zaxis) {
-        zAxis.function_name = ele.function_name;
-        zAxis.function_id = ele.function_id;
+        if (
+          axisValues.chartType === "Bubble" ||
+          axisValues.chartType === "Error"
+        ) {
+          zAxis.function_name = ele.function_name;
+          zAxis.function_id = ele.function_id;
+        } else {
+          zAxis.function_name = undefined;
+          zAxis.function_id = undefined;
+        }
       }
     });
     const newArr = [...postChartData.data];
