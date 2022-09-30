@@ -126,6 +126,15 @@ describe("Analysis", () => {
 
   it("Modal", () => {
     cy.get(".ant-tabs-nav-list > :nth-child(3)").click();
+    cy.get(
+      '.react-flow__node-selectorNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button'
+    ).click();
+    cy.get(
+      '.react-flow__node-FeatureUninonNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button'
+    ).click();
+    cy.get(
+      '.react-flow__node-EstimatorNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button'
+    ).click();
     cy.get('[data-id="horizontal-2"]').click();
     cy.get(
       ".node-details-container > .ant-row > .ant-col > :nth-child(2)"
@@ -147,6 +156,7 @@ describe("Analysis", () => {
 
   it("Excutes", () => {
     cy.get(".btns > div > :nth-child(4)").click();
+    cy.wait(35000);
   });
 
   it("Search in Analysis Landing Page", () => {
