@@ -109,7 +109,7 @@ const Login = () => {
 				localStorage.setItem("login_details", JSON.stringify(data));
 				localStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
 				localStorage.setItem("username", data.firstname.replaceAll("^\"|\"$", ""));
-				localStorage.setItem("loginwith", 'LDAP')
+				localStorage.setItem("loginwith", 'WITH_LDAP')
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
 				history.push("/dashboard/workspace");
 				dispatch(hideLoader());
