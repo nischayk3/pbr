@@ -187,7 +187,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       newArr[0] = viewRes.data[0];
       setPostChartData({ ...postChartData, data: newArr });
       dispatch(hideLoader());
-      if (viewRes.status !== 200) {
+      if (!viewRes) {
         dispatch(showNotification("error", viewRes?.message));
         dispatch(hideLoader());
         return false;
@@ -203,11 +203,6 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
-      if (viewRes.status !== 200) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
       if (viewRes.data && viewRes.data.length > 0) {
         let newArr = [...postChartData.data];
         newArr[0] = viewRes.data[0];
@@ -226,7 +221,6 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
     } catch {
       /* istanbul ignore next */
       dispatch(hideLoader());
-      dispatch(showNotification("error", "Unable to fetch coverages"));
     }
   };
 

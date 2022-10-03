@@ -51,7 +51,7 @@ const ExclusionTable = ({
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
-      if (viewRes.status !== 200) {
+      if (!viewRes) {
         dispatch(showNotification("error", viewRes?.message));
         dispatch(hideLoader());
         return false;

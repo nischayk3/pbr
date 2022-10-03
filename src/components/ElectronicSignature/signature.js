@@ -252,7 +252,7 @@ function Signature(props) {
 								>
 									Authenticate without AD
 								</Button>
-							) : loginStatus == "LDAP" ? (
+							) : loginStatus == "WITH_LDAP" ? (
 								<Button
 									className="custom-secondary-btn"
 									key="3"

@@ -209,7 +209,7 @@ function Filter(props) {
 
 		try {
 			const filterRes = await getGeanealogyFilter(reqFilter);
-			if (filterRes.statuscode === 200) {
+			if (filterRes?.statuscode === 200) {
 				setParamList(prevState => {
 					return {
 						...prevState,
@@ -220,8 +220,10 @@ function Filter(props) {
 				});
 			}
 			/* istanbul ignore next */
-			else if (filterRes.data.statuscode === 400) {
-				dispatch(showNotification('error', filterRes.data.message));
+			else if (filterRes?.data?.statuscode != 200) {
+				dispatch(showNotification('error', filterRes?.data?.message));
+			} else {
+				dispatch(showNotification('error', "Unable to fetch data"));
 			}
 		} catch (err) {/* istanbul ignore next */
 			dispatch(showNotification('error', err));

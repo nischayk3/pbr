@@ -178,3 +178,13 @@
 	padding: 6px 8px;
 	cursor: pointer;
 }
+
+.avatar-details {
+	>img {
+		width: 64px;
+		height: 64px;
+		margin: 10px 0px;
+		border-radius: 100%;
+		border: 2px solid #486BC9;
+	}
+}

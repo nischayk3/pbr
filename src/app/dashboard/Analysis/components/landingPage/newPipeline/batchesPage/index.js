@@ -102,6 +102,7 @@ const BatchesComponent = (props) => {
         state: req,
       });
     } else {
+      /* istanbul ignore next */
       dispatch(hideLoader());
       dispatch(showNotification("error", "unable to save pipeline"));
     }

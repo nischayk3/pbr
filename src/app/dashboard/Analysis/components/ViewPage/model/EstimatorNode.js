@@ -25,7 +25,15 @@ export default ({ data, selected }) => {
           alignItems: "center",
         }}
       >
-        <button style={{ padding: "0", fontSize: "8px" }} onClick={handleClick}>
+        <button
+          style={{
+            fontSize: "8px",
+            background: "#fff",
+            border: "0.5px solid grey",
+            borderRadius: "4px",
+          }}
+          onClick={handleClick}
+        >
           Select Estimator
         </button>
       </div>
