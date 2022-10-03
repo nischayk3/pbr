@@ -142,7 +142,7 @@ export const EditableUsersTable = props => {
         setSelectedTableData(newData)
         setSelectedRowValues(newData)
     }
-    // console.log("selectedRowIdentifier",selectedRowIdentifier,selectedRowRows)
+
     return (
         <div style={{ height: 200, overflowY: "scroll", border: "" }}>
             <Table

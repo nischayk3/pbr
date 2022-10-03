@@ -879,6 +879,7 @@ function PaperBatchRecordsTemplate() {
             let arr = templateInfo.map((item, index) => ({
                 name: item.name,
                 method: item.method,
+                pageIdValue:item.page_name,
                 values: {
                     anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_key_snippet_id,
                     anchorCoords: [
