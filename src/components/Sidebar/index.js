@@ -4,7 +4,6 @@ import {
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { JUPYTER_NOTEBOOK } from '../../constants/apiBaseUrl';
 import "./style.scss";
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -167,8 +166,8 @@ const Sidebar = () => {
 						icon={<CodeOutlined className="menu-icons" />}
 						id="data_science_studio"
 					>
-						<a href={JUPYTER_NOTEBOOK} target="_blank" >Data Science Studio</a>
-						{/* <Link to={JUPYTER_NOTEBOOK} target="_blank"  >Data Science Studio</Link> */}
+						{/* <a href={JUPYTER_NOTEBOOK} target="_blank" >Data Science Studio</a> */}
+						<Link to="/dashboard/data_science_studio">Data Science Studio</Link>
 					</Menu.Item>
 					<Menu.Item
 						key="analysis"
