@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { Collapse, Switch, Input } from 'antd'
 import { EditableTableForm } from './EditableForm'
-import { getRowColumnData, previewTable } from '../../../../../services/pbrService'
+import { getRowColumnData, previewTable, getPbrTemplateData } from '../../../../../services/pbrService'
 import {
     hideLoader,
     showLoader,
     showNotification,
 } from '../../../../../duck/actions/commonActions';
+import { useLocation, useParams } from 'react-router-dom';
+import QueryString from 'query-string';
 import { tableColumns } from '../../../../../utils/TableColumns'
 import { Handle } from 'react-flow-renderer';
 
@@ -15,9 +17,11 @@ const { Panel } = Collapse;
 /* istanbul ignore next */
 function TableIdentifier(props) {
     let { clickedTable, metaData, imageHeight, imageWidth, triggerPreview, templateVersion,
-        params, triggerUpdate, setSideTableData, setTriggerUpdate, tableActiveKey, formTableData,
-        setModalData, setModalColumns, initialSideTableData, pageIdFormValues, pageNumber } = props
+        triggerUpdate, setSideTableData, setTriggerUpdate, tableActiveKey, formTableData,
+        setModalData, setModalColumns, initialSideTableData, pageIdFormValues, pageNumber,filepath,pageNum } = props
     const dispatch = useDispatch();
+    const location = useLocation()
+    const params = QueryString.parse(location.search)
     const [columnData, setColumnData] = useState([])
     const [rowData, setrowData] = useState([])
     const [selectedIdentifier, setSelectedIdentifier] = useState("");
@@ -32,24 +36,25 @@ function TableIdentifier(props) {
     const [tableID, setTableID] = useState(null);
 
 
-    useEffect(() => {
-        setColPanelValue(formTableData[tableActiveKey]?.tableData?.colPanelValue)
-        setRowPanelValue(formTableData[tableActiveKey]?.tableData?.rowPanelValue)
-        setSelectedRowValues(formTableData[tableActiveKey]?.tableData?.selectedRowValues)
-        setSelectedColValues(formTableData[tableActiveKey]?.tableData?.selectedColValues)
-        setSelectedColRows(formTableData[tableActiveKey]?.tableData?.selectedColRows ? formTableData[tableActiveKey]?.tableData?.selectedColRows : [])
-        setSelectedRowRows(formTableData[tableActiveKey]?.tableData?.selectedRowRows ? formTableData[tableActiveKey]?.tableData?.selectedRowRows : [])
-        setTableIdentifierValues(formTableData[tableActiveKey]?.tableData?.table_identifier)
-    }, [tableActiveKey])
+    // useEffect(() => {
+    //     setColPanelValue(formTableData[tableActiveKey]?.tableData?.colPanelValue)
+    //     setRowPanelValue(formTableData[tableActiveKey]?.tableData?.rowPanelValue)
+    //     setSelectedRowValues(formTableData[tableActiveKey]?.tableData?.selectedRowValues)
+    //     setSelectedColValues(formTableData[tableActiveKey]?.tableData?.selectedColValues)
+    //     setSelectedColRows(formTableData[tableActiveKey]?.tableData?.selectedColRows ? formTableData[tableActiveKey]?.tableData?.selectedColRows : [])
+    //     setSelectedRowRows(formTableData[tableActiveKey]?.tableData?.selectedRowRows ? formTableData[tableActiveKey]?.tableData?.selectedRowRows : [])
+    //     setTableIdentifierValues(formTableData[tableActiveKey]?.tableData?.table_identifier)
+    // }, [tableActiveKey])
 
     useEffect(() => {
-        if (Object.keys(clickedTable).length) {
-            setTableIdentifierValues({
-                "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
-                "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
-            })
-            geTableData(clickedTable)
-        }
+        // if (Object.keys(clickedTable).length) {
+        //     setTableIdentifierValues({
+        //         "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
+        //         "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
+        //     })
+        //     geTableData(clickedTable)
+        // }
+        geTableData()
     }, [clickedTable])
 
     useEffect(() => {
@@ -59,36 +64,36 @@ function TableIdentifier(props) {
 
     }, [triggerPreview])
 
-    useEffect(() => {
-        setSideTableData({
-            colPanelValue: colPanelValue,
-            rowPanelValue: rowPanelValue,
-            selectedColValues: selectedColValues,
-            selectedRowValues: selectedRowValues,
-            selectedRowRows: selectedRowRows,
-            selectedColRows: selectedColRows,
-            table_identifier: tableIdentifierValues
-            // table_identifier: Object.keys(clickedTable).length ? {
-            //     "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
-            //     "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
-            // } : {},
-        })
-    }, [colPanelValue, rowPanelValue, selectedColValues, selectedRowValues, selectedRowRows, selectedColRows, clickedTable])
+    // useEffect(() => {
+    //     setSideTableData({
+    //         colPanelValue: colPanelValue,
+    //         rowPanelValue: rowPanelValue,
+    //         selectedColValues: selectedColValues,
+    //         selectedRowValues: selectedRowValues,
+    //         selectedRowRows: selectedRowRows,
+    //         selectedColRows: selectedColRows,
+    //         table_identifier: tableIdentifierValues
+    //         // table_identifier: Object.keys(clickedTable).length ? {
+    //         //     "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
+    //         //     "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
+    //         // } : {},
+    //     })
+    // }, [colPanelValue, rowPanelValue, selectedColValues, selectedRowValues, selectedRowRows, selectedColRows, clickedTable])
 
-    useEffect(() => {
-        if (triggerUpdate) {
-            setColPanelValue([])
-            setRowPanelValue([])
-            setSelectedColRows([])
-            setSelectedRowValues([])
-            setSelectedColValues([])
-            setSelectedRowRows([])
-            setColumnData([])
-            setTriggerUpdate(false)
-            setNewEditTemplate(true)
-        }
+    // useEffect(() => {
+    //     if (triggerUpdate) {
+    //         setColPanelValue([])
+    //         setRowPanelValue([])
+    //         setSelectedColRows([])
+    //         setSelectedRowValues([])
+    //         setSelectedColValues([])
+    //         setSelectedRowRows([])
+    //         setColumnData([])
+    //         setTriggerUpdate(false)
+    //         setNewEditTemplate(true)
+    //     }
 
-    }, [triggerUpdate])
+    // }, [triggerUpdate])
 
     // useEffect(() => {
     //     if (selectedColRows.length > 0 ) {
@@ -107,20 +112,47 @@ function TableIdentifier(props) {
         try {
             dispatch(showLoader());
             let req = {
-                filename: `${metaData?.file?.split('.')[0]}_page-${pageNumber - 1}.jpeg.json`,
-                page: pageNumber,
+                template_displ_id: params?.temp_disp_id,
+                version: params?.version
+            }
+            let res = await getPbrTemplateData(req)
+            let tableData = res?.Data[0]?.pbr_template_info?.tableData[0].tableData
+            if (res["status-code"] == 200) {
+                setColPanelValue(tableData.colPanelValue)
+                setRowPanelValue(tableData.rowPanelValue)
+                setSelectedRowValues(tableData.selectedRowValues)
+                setSelectedColValues(tableData.selectedColValues)
+                setSelectedColRows(tableData.selectedColRows)
+                setSelectedRowRows(tableData.selectedRowRows)
+                setTableIdentifierValues(tableData.table_identifier)
+                dispatch(hideLoader());
+            } else {
+                dispatch(hideLoader());
+                dispatch(showNotification('error', res.Message));
+            }
+        } catch (error) { /* istanbul ignore next */
+            dispatch(hideLoader());
+            dispatch(showNotification('error', 'No Data Found'));
+        }
+
+
+    }
+
+    const getRowColumnTableData = async (clickedTable, col = 1, row = 1, table = null, flag) => {
+        try {
+            dispatch(showLoader());
+            let req = {
+                filename: `${filepath}.json`,
+                page: pageNum,
                 config: {
                     pk_col_index: row,
                     pk_row_index: col
                 },
-                table_identifier: tableIdentifierValues != undefined && Object.keys(tableIdentifierValues).length > 0 ? tableIdentifierValues : {
-                    "left": clickedTable?.coords[0] / imageWidth, "top": clickedTable?.coords[1] / imageHeight,
-                    "width": (clickedTable?.coords[2] - clickedTable?.coords[0]) / imageWidth, "height": (clickedTable?.coords[3] - clickedTable?.coords[1]) / imageHeight
-                },
-                action_type: params?.temp_disp_id ? newEditTemplate ? "create" : "edit" : "create",
-                table_id: table,
+                table_identifier: tableIdentifierValues,
+                action_type: "create",
+                table_id: null,
                 template_id: params?.temp_disp_id ? params?.temp_disp_id : null,
-                version: templateVersion ? templateVersion : null
+                version: null
             }
             let res = await getRowColumnData(req)
             if (res["status-code"] == 200) {
@@ -152,6 +184,7 @@ function TableIdentifier(props) {
 
 
     }
+
     const updateCheckbox = (val, obj) => {
         let arr = []
         for (let i = Number(val - 1); i <= obj - 1; i++) {
@@ -160,9 +193,9 @@ function TableIdentifier(props) {
         return arr
     }
 
-    const checkValueInArray = (array,value) => {
+    const checkValueInArray = (array, value) => {
         let arr = [...array]
-        if(!arr.includes(value)){
+        if (!arr.includes(value)) {
             arr.push(value)
         }
         return arr
@@ -173,23 +206,23 @@ function TableIdentifier(props) {
             obj[field] = val
             if (field == "start" && val != undefined && val != "") {
                 let arr = updateCheckbox(val, obj.stop)
-                arr = checkValueInArray(arr,Number(rowPanelValue?.pk_index)-1)
+                arr = checkValueInArray(arr, Number(rowPanelValue?.pk_index) - 1)
                 setSelectedColRows(arr)
             } else if (field == "stop" && val != undefined && val != "") {
                 let arr1 = updateCheckbox(obj.start, val)
-                arr1 = checkValueInArray(arr1,Number(rowPanelValue?.pk_index)-1)
+                arr1 = checkValueInArray(arr1, Number(rowPanelValue?.pk_index) - 1)
                 setSelectedColRows(arr1)
             } else if (field == "pk_index") {
                 if (val != "" && Number(val) <= Number(rowPanelValue.start)) {
                     let arr = [...selectedRowRows]
-                    if(arr[arr.length-1] === Number(rowPanelValue.stop-1)){
-                        arr.push(Number(val-1))
-                    }else{
+                    if (arr[arr.length - 1] === Number(rowPanelValue.stop - 1)) {
+                        arr.push(Number(val - 1))
+                    } else {
                         arr.pop()
-                        arr.push(Number(val-1))
+                        arr.push(Number(val - 1))
                     }
                     setSelectedRowRows(arr)
-                    geTableData(clickedTable, Number(val), Number(rowPanelValue.pk_index), tableID, true)
+                    getRowColumnTableData(clickedTable, Number(val), Number(rowPanelValue.pk_index), tableID, true)
                 } else if (Number(val) > Number(rowPanelValue.start)) {
                     dispatch(showNotification('error', 'PK_COL_Index out of bound'));
                 }
@@ -201,23 +234,23 @@ function TableIdentifier(props) {
             obj1[field] = val
             if (field == "start" && val != undefined && val != "") {
                 let arr = updateCheckbox(val, obj1.stop)
-                arr = checkValueInArray(arr,Number(colPanelValue?.pk_index)-1)
+                arr = checkValueInArray(arr, Number(colPanelValue?.pk_index) - 1)
                 setSelectedRowRows(arr)
             } else if (field == "stop" && val != undefined && val != "") {
                 let arr1 = updateCheckbox(obj1.start, val)
-                arr1 = checkValueInArray(arr1,Number(colPanelValue?.pk_index)-1)
+                arr1 = checkValueInArray(arr1, Number(colPanelValue?.pk_index)- 1) 
                 setSelectedRowRows(arr1)
             } else if (field == "pk_index") {
                 if (val != "" && Number(val) <= Number(colPanelValue.start)) {
                     let arr = [...selectedColRows]
-                    if(arr[arr.length-1] === Number(colPanelValue.stop-1)){
-                        arr.push(Number(val-1))
-                    }else{
+                    if (arr[arr.length - 1] === Number(colPanelValue.stop - 1)) {
+                        arr.push(Number(val - 1))
+                    } else {
                         arr.pop()
-                        arr.push(Number(val-1))
+                        arr.push(Number(val - 1))
                     }
                     setSelectedColRows(arr)
-                    geTableData(clickedTable, Number(colPanelValue.pk_index), Number(val), tableID, true)
+                    getRowColumnTableData(clickedTable, Number(colPanelValue.pk_index), Number(val), tableID, true)
                 } else if (Number(val) > Number(colPanelValue.start)) {
                     dispatch(showNotification('error', 'PK_ROW_Index out of bound'));
                 }
@@ -228,22 +261,6 @@ function TableIdentifier(props) {
     }
 
     const handlePrewiew = async () => {
-        let pageArr = []
-        if (pageIdFormValues) {
-            pageIdFormValues.forEach(item => {
-                let obj = { name: "", keys: [] }
-                Object.entries(item).forEach(item1 => {
-                    if (item1[0] != "name" && item1[0] != "keyCount") {
-                        obj.keys.push(item1[1])
-                    }
-                    if (item1[0] === "name") {
-                        obj.name = item1[1]
-                    }
-                })
-                pageArr.push(obj)
-
-            })
-        }
         let req = {
             column_config: {
                 columns: [],
@@ -254,8 +271,8 @@ function TableIdentifier(props) {
                     stop_index: colPanelValue?.stop
                 }
             },
-            filename: `${params?.file?.split('.')[0]}_page-${pageNumber - 1}.jpeg.json`,
-            page: pageNumber,
+            filename: `${filepath}.json`,
+            page: pageNum,
             row_config: {
                 method: "column_index",
                 params: {
@@ -267,7 +284,7 @@ function TableIdentifier(props) {
             },
             table_id: "",
             table_identifier: tableIdentifierValues,
-            table_name: formTableData[tableActiveKey]?.name,
+            table_name: "",
         }
         let arr = selectedColValues?.filter(item => selectedColRows?.includes(item?.key))
         let arr1 = selectedRowValues?.filter(item => selectedRowRows?.includes(item?.key))
@@ -314,13 +331,13 @@ function TableIdentifier(props) {
             <p style={{ marginBottom: 0 }}>{val}</p>
             <Switch size='medium' style={{ marginLeft: val == "Row Identifier" ? 35 : 10 }} />
             <div style={{ marginTop: -5 }}>
-                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.start} placeholder='Start Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
+                <Input value={values?.start} placeholder='Start Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
             </div>
             <div style={{ marginTop: -5 }}>
-                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.stop} placeholder='Stop Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "stop", val)} />
+                <Input value={values?.stop} placeholder='Stop Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "stop", val)} />
             </div>
             <div style={{ marginTop: -5 }}>
-                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.pk_index} placeholder={val == "Row Identifier" ? "PK Col Index" : ' PK Row Index'} style={{ width: 128, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
+                <Input value={values?.pk_index} placeholder={val == "Row Identifier" ? "PK Col Index" : ' PK Row Index'} style={{ width: 128, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
             </div>
             {/*  */}
         </div>
@@ -355,7 +372,6 @@ function TableIdentifier(props) {
             accordion
             expandIconPosition='right'
             style={{ marginTop: 20 }}
-            collapsible={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"}
             onChange={handleIdentifierChange}
         >
             <Panel id="columns" header={genTableExtra("Column Identifier", colPanelValue)} key='1' >

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
-import { Table, Row, Col, Button, Input, Form } from 'antd';
+import { Table, Row, Col, Button, Input, Form, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import {
     hideLoader,
@@ -15,12 +15,21 @@ import './styles.scss';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { useHistory } from 'react-router';
 import EditableRow from './EditTable'
+import TableIdentifier from './tableIdentifier/tableIdentifier';
 /* istanbul ignore next */
 const pbrTableUpdate = () => {
     const dispatch = useDispatch();
     const [templateData, setTemplateData] = useState([]);
     const [editingRow, setEditingRow] = useState(null);
     const [imagepdf, setImagePdf] = useState("");
+    const [triggerPreview, setTriggerPreview] = useState(false)
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [tableLoading, setTableLoading] = useState(false);
+    const [modalColumns, setModalColumns] = useState([]);
+    const [modalData, setModalData] = useState([]);
+    const [filepath, setFilepath] = useState("");
+    const [pageNum, setPageNum] = useState(1);
+    const [initialTableData, setInitialTableData] = useState([]);
     const history = useHistory();
     const [textInput, setTextInput] = useState({
         changed_by: "",
@@ -55,7 +64,10 @@ const pbrTableUpdate = () => {
         let res = await getPbrReviewerData(req);
         let arr = res?.Data[0]?.table_value.map((item, index) => ({ ...item, key: index }))
         setTemplateData(arr);
+        setInitialTableData(arr)
         let filename = res.Data[0].file_path;
+        setFilepath(filename)
+        setPageNum(res.Data[0].page_num)
         getImage(filename);
         let obj = {
             changed_by: res.Data[0].changed_by == null ? "" : res.Data[0].changed_by,
@@ -96,38 +108,49 @@ const pbrTableUpdate = () => {
         dispatch(hideLoader());
     }
 
+    const handleCancel = () => {
+        setIsModalVisible(false);
+        setTriggerPreview(false)
+        // setModalColumns(initialColumns)
+    };
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
 
 
     const handleClick = async (event, record) => {
         dispatch(showLoader());
         event.preventDefault();
-        let resp = [...idarr];
-        resp.push(params.id);
-        setIdArr(resp);
-        let numberArray = resp.map(Number)
-        let formvalues = {
-            id: numberArray,
+        let req = {
+            id: [Number(params.id)],
             changed_by: localStorage.getItem('user'),
-            recorded_date: textInput.recorded_date,
-            recorded_time: textInput.recorded_time,
-            snippet_value: textInput.snippet_value,
-            status: textInput.status,
-            uom: textInput.uom,
+            recorded_date: null,
+            recorded_time: null,
+            snippet_value: null,
+            status: "approved",
+            uom: null,
+            table_value: templateData
         };
 
-        let res = await updateApprove(formvalues);
+        let res = await updateApprove(req);
         if (res.Status == "202") {
             dispatch(hideLoader());
             dispatch(showNotification("success", "Updated Successfully"))
-            setEditingRow(null)
             loadTableData()
-
         } else {
             dispatch(hideLoader());
-            dispatch(showNotification("erroe", "Error while updtating"))
+            dispatch(showNotification("error", "Error while updtating"))
         }
-
     };
+
+    const applyChanges = () => {
+        setTemplateData(modalData)
+        setIsModalVisible(false);
+    }
+
+    const handleRevert = () => {
+        setTemplateData(initialTableData)
+    }
 
 
     return (
@@ -145,7 +168,7 @@ const pbrTableUpdate = () => {
                             <Col span={12}>
                                 <h3 style={{ marginBottom: "20px" }}>You may edit the selected unstructured data here.</h3>
                                 {templateData &&
-                                    <div style={{ height: "calc(100vh - 190px)", overflowY: "scroll",border: "0.5px solid blue",marginTop:26 }}>
+                                    <div style={{ height: "calc(100vh - 190px)", overflowY: "scroll", border: "0.5px solid blue", marginTop: 26 }}>
                                         <EditableRow templateData={templateData} setTemplateData={setTemplateData} setTextInput={setTextInput} textInput={textInput} />
                                     </div>
                                 }
@@ -162,6 +185,33 @@ const pbrTableUpdate = () => {
                             </Col>
                             <Col span={12}>
                                 <div className='' style={{ display: "flex", marginBottom: "20px", flexDirection: "row", justifyContent: "right", alignItems: "center" }}>
+                                    <Button id="save_button"
+                                        className='custom-primary-btn' style={{
+                                            backgroundColor: '#303f9f',
+                                            color: '#ffffff',
+                                            borderColor: "#303f9f",
+                                            borderRadius: "5px",
+                                            marginRight: 10
+
+                                        }}
+                                        onClick={() => {
+                                            setTriggerPreview(true)
+                                            setIsModalVisible(true)
+                                        }}
+
+                                        type='primary'>Preview</Button>
+                                    <Button id="save_button"
+                                        className='custom-primary-btn' style={{
+                                            backgroundColor: '#303f9f',
+                                            color: '#ffffff',
+                                            borderColor: "#303f9f",
+                                            borderRadius: "5px",
+                                            marginRight: 10
+
+                                        }}
+                                        onClick={handleRevert}
+
+                                        type='primary'>Revert</Button>
                                     <Button id="save_button" style={{
                                         backgroundColor: '#303f9f',
                                         color: '#ffffff',
@@ -173,6 +223,7 @@ const pbrTableUpdate = () => {
 
                                         type='primary'>Save Changes</Button>
                                 </div>
+                                <TableIdentifier triggerPreview={triggerPreview} filepath={filepath} pageNum={pageNum} setModalData={setModalData} setModalColumns={setModalColumns} />
                                 <div style={{ height: "calc(100vh - 190px)", overflowY: "scroll", border: "0.5px solid blue" }}>
                                     {/* style={{height:"calc(100vh - 190px)"}} */}
                                     <img src={imagepdf} width="100%" height="700px" />
@@ -183,6 +234,27 @@ const pbrTableUpdate = () => {
                     </div>
                 </div>
             </div>
+            <Modal
+                title='Preview'
+                visible={isModalVisible}
+                // style={{height:300,overflowY:"scroll"}}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={[
+                    <Button key="back" onClick={() => applyChanges()}>
+                        Apply Changes
+                    </Button>,
+                ]}
+            >
+                <Table
+                    loading={tableLoading}
+                    className='pbrTemplates-table'
+                    columns={modalColumns}
+                    dataSource={modalData}
+                    pagination={false}
+                    scroll={{ x: 1000, y: 300 }}
+                />
+            </Modal>
         </div>
     )
 }

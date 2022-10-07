@@ -1,5 +1,6 @@
 import { Button, Form, Input, Popconfirm, Table } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { tableColumns } from '../../../../utils/TableColumns'
 import './styles.scss';
 const EditableContext = React.createContext(null);
 
@@ -85,33 +86,14 @@ const EditableCell = ({
 
 const App = (props) => {
   let { templateData, setTemplateData } = props
-  const [dataSource, setDataSource] = useState(templateData);
+  const [defaultColumns, setDefaultColumns] = useState([]);
   const [count, setCount] = useState(templateData.length);
 
   useEffect(() => {
-    setDataSource(templateData)
-  }, [templateData])
-
-  const handleDelete = (key) => {
-    const newData = dataSource.filter((item) => item.key !== key);
-    setDataSource(newData);
-  };
-
-  const defaultColumns = [
-    {
-      title: "Column 1",
-      dataIndex: "Column 1",
-      key: "columns",
-      // width: "30%",
-      editable: true,
-    },
-    {
-      title: "Column 2",
-      dataIndex: "Column 2",
-      key: "values",
-      editable: true,
-    },
-    {
+    let col = tableColumns(templateData)
+    col = col.filter(item => item.title != "KEY")
+    col = col.map(item => ({ ...item, editable: true }))
+    col.push({
       title: 'operation',
       dataIndex: 'operation',
       width: "20%",
@@ -121,26 +103,38 @@ const App = (props) => {
             <a>Delete</a>
           </Popconfirm>
         ) : null,
-    },
-  ];
+    })
+    setDefaultColumns(col)
+    setCount(templateData.length)
+  }, [templateData])
+
+  const handleDelete = (key, val) => {
+    const newData = templateData.filter((item) => item.key !== key);
+    setTemplateData(newData);
+  };
+
+
 
   const handleAdd = () => {
-    const newData = {
-      key: count,
-      name: `Edward King ${count}`,
-      age: '32',
-      address: `London, Park Lane no. ${count}`,
-    };
-    setDataSource([...dataSource, newData]);
+    const newData = {};
+    if (defaultColumns.length > 0) {
+      defaultColumns.forEach(item => {
+        if (item.dataIndex != "operation") {
+          newData[item.dataIndex] = ""
+        }
+      })
+    }
+    newData["key"] = count
+    setTemplateData([...templateData, newData]);
     setCount(count + 1);
   };
 
   const handleSave = (row) => {
-    const newData = [...dataSource];
+    const newData = [...templateData];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
-    setDataSource(newData);
+    setTemplateData(newData);
   };
 
   const components = {
@@ -165,13 +159,13 @@ const App = (props) => {
       }),
     };
   });
-
+  
   return (
     <div>
       <div className='tableEdit'>
-        <h3 style={{marginLeft:20}}>Selected Table Preview</h3>
+        <h3 style={{ marginLeft: 20 }}>Selected Table Preview</h3>
         <div>
-          <Button id="editLogs" style={{
+          {/* <Button id="editLogs" style={{
             borderRadius: "5px",
             textTransform: "none",
             background: "#ffffff",
@@ -182,12 +176,13 @@ const App = (props) => {
           }}
             type='primary'>
             Edit
-          </Button>
+          </Button> */}
           <Button id="save_button" style={{
             backgroundColor: '#303f9f',
             color: '#ffffff',
             borderColor: "#303f9f",
             borderRadius: "5px",
+            marginRight: 10
 
           }}
             type='primary'>Validate</Button>
@@ -211,7 +206,7 @@ const App = (props) => {
           components={components}
           rowClassName={() => 'editable-row'}
           bordered
-          dataSource={dataSource}
+          dataSource={templateData}
           columns={columns}
         />
       </div>

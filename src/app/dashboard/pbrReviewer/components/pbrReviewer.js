@@ -456,7 +456,8 @@ function PbrReviewer() {
               if(record?.table_value === null){
                 window.open(`/#/dashboard/pbr_update?id=${record.id}`)
               }else{
-                window.open(`/#/dashboard/pbr_table_reviewer?id=${record.id}`)
+                window.open(`/#/dashboard/pbr_table_reviewer?id=${record.id}&temp_disp_id=${record.template_id}&version=${record.template_version
+                }`)
               }
               
             }}
