@@ -25,9 +25,8 @@ import ViewPageAnalysis from "./Analysis/components/ViewPage";
 import "./dashboard.scss";
 import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
 import PbrReviewer from "./pbrReviewer";
+import pbrTableUpdate from './pbrTableReviewer';
 import PrivateRoute from "./ProtectedRoute";
-import pbrTableUpdate from './pbrTableReviewer'
-//import PythonNotebook from "./pythonNotebook/pythonNotebook";
 import UnAuthorisedScreen from "./unAuthorised";
 // DASHBOARD ROUTE COMPONENTS
 
@@ -54,7 +53,8 @@ const DesignCharts = lazy(() =>
 const UserTrail = lazy(() => import("./userTrail"));
 const Faq = lazy(() => import("./faq"));
 const Profile = lazy(() => import("./profile"));
-const CrossBatchComparison = lazy(() => import("./crossBatchComparison"))
+const CrossBatchComparison = lazy(() => import("./crossBatchComparison"));
+const DataScienceStudio = lazy(() => import("./DataScienceStudio"));
 
 const { Content } = Layout;
 
@@ -124,7 +124,10 @@ const Dashboard = () => {
 			view = "REPORT_GENERATOR";
 		} else if (location.pathname.includes("cross_batch_comparison")) {
 			view = "ANALYTICS";
+		} else if (location.pathname.includes("data_science_studio")) {
+			view = "ANALYTICS";
 		}
+
 
 		if (view && view.length > 1) {
 			requiredAuth(view);
@@ -380,11 +383,11 @@ const Dashboard = () => {
 									)}
 								/>
 
-								{/* <Route
+								<Route
 									key="data_science_studio"
-									path={`${match.url}/pythonNoteBook`}
-									component={PythonNotebook}
-								/> */}
+									path={`${match.url}/data_science_studio`}
+									component={DataScienceStudio}
+								/>
 							</Switch>
 						</SuspenseWrapper>
 					</Content>

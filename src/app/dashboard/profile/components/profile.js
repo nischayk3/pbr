@@ -146,7 +146,6 @@ const Profile = () => {
 		});
 	}
 
-
 	const getProfile = async () => {
 		try {
 			dispatch(showLoader());
@@ -167,7 +166,6 @@ const Profile = () => {
 			dispatch(showNotification('error', error));
 		}
 	}
-
 	const getPreference = async () => {
 		try {
 			dispatch(showLoader());
@@ -175,9 +173,7 @@ const Profile = () => {
 				email_address: loginDetails && loginDetails.email_id,
 				image: false
 			}
-
 			const getRes = await getUserProfile(_getReq)
-
 			if (getRes.statuscode == 200) {
 				setTimeZoneValue(getRes.message[0].time_zone);
 				setDateFormatValue(getRes.message[0].date_format);
@@ -321,15 +317,15 @@ const Profile = () => {
 								<div>
 									<div className="input-pass">
 										<p>Current password</p>
-										<Input.Password placeholder="input password" value={currentPassword} onChange={(e) => { setCurrentPassword(e.target.value) }} />
+										<Input.Password autoComplete='off' placeholder="input password" value={currentPassword} onChange={(e) => { setCurrentPassword(e.target.value) }} />
 									</div>
 									<div className="input-pass">
 										<p>New password</p>
-										<Input.Password placeholder="input password" value={newPassword} onChange={(e) => { setNewPassword(e.target.value) }} />
+										<Input.Password autoComplete='off' placeholder="input password" value={newPassword} onChange={(e) => { setNewPassword(e.target.value) }} />
 									</div>
 									<div className="input-pass">
 										<p>Confirm new password</p>
-										<Input.Password placeholder="input password" value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value) }} />
+										<Input.Password autoComplete='off' placeholder="input password" value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value) }} />
 										{errorMsg !== "" && (
 											<p className="pass-error">{errorMsg}</p>
 										)}
