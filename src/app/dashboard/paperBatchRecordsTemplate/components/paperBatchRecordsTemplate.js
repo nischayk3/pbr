@@ -986,7 +986,9 @@ function PaperBatchRecordsTemplate() {
     /* istanbul ignore next */
     const clicked = (area) => {
         if (showRowColIdentifier) {
-            if (formTableData.length > 0) {
+            if(Object.keys(initialSideTableData).length >0 && formTableData.length === initialSideTableData?.users.length){
+                dispatch(showNotification('error', "Valid with new parameters created"));
+            }else if (formTableData.length > 0) {
                 setClickedTable(area)
                 let table_identifier = {
                     "left": area?.coords[0] / imageWidth, "top": area?.coords[1] / imageHeight,
@@ -1036,7 +1038,7 @@ function PaperBatchRecordsTemplate() {
                 anchorValue: area.areaValue,
             };
             let arr = [...formValues]
-            arr[activeKey] = { ...arr[activeKey], values: { ...arr[activeKey]?.values, anchorValue: area.areaValue, snippetID: area.snippetID, anchorCoords: area.coords } }
+            arr[activeKey] = { ...arr[activeKey],page_num:pageNumber, values: { ...arr[activeKey]?.values, anchorValue: area.areaValue, snippetID: area.snippetID, anchorCoords: area.coords } }
             setParameterValue(obj1);
             setFormValues(arr)
             let fields = parameterForm.getFieldsValue()
@@ -1230,7 +1232,7 @@ function PaperBatchRecordsTemplate() {
                         obj['param_key_text'] = ele?.values?.anchorValue
                         obj['param_key_top'] = ele?.values?.anchorCoords[1] / imageHeight
                         obj['param_key_width'] = (ele?.values?.anchorCoords[2] - ele?.values?.anchorCoords[0]) / imageWidth
-                        obj['param_page'] = 1
+                        obj['param_page'] = ele?.page_num
                         obj['param_key_snippet_id'] = ele?.values?.snippetID
                         obj['param_value_height'] = (ele?.values?.valueCoords[3] - ele?.values?.valueCoords[1]) / imageHeight
                         obj['param_value_left'] = ele?.values?.valueCoords[0] / imageWidth
@@ -1250,7 +1252,7 @@ function PaperBatchRecordsTemplate() {
                         obj['uom_key_text'] = ele?.unitValues?.unitAnchor
                         obj['uom_key_top'] = ele?.unitValues?.coords[1] / imageHeight
                         obj['uom_key_width'] = (ele?.unitValues?.coords[2] - ele?.unitValues?.coords[0]) / imageWidth
-                        obj['uom_page'] = 1
+                        obj['uom_page'] = ele?.page_num
                         obj['uom_key_snippet_id'] = ele?.unitValues?.snippetID
                         obj['uom_value_height'] = (ele?.unitValues?.valueCoords[3] - ele?.unitValues?.valueCoords[1]) / imageHeight
                         obj['uom_value_left'] = ele?.unitValues?.valueCoords[0] / imageWidth
@@ -1271,7 +1273,7 @@ function PaperBatchRecordsTemplate() {
                         obj['time_key_text'] = ele?.timeValues?.timeAnchor
                         obj['time_key_top'] = ele?.timeValues?.coords[1] / imageHeight
                         obj['time_key_width'] = (ele?.timeValues?.coords[2] - ele?.timeValues?.coords[0]) / imageWidth
-                        obj['time_page'] = 1
+                        obj['time_page'] = ele?.page_num
                         obj['time_key_snippet_id'] = ele?.timeValues?.snippetID
                         obj['time_value_height'] = (ele?.timeValues?.valueCoords[3] - ele?.timeValues?.valueCoords[1]) / imageHeight
                         obj['time_value_left'] = ele?.timeValues?.valueCoords[0] / imageWidth
@@ -1292,7 +1294,7 @@ function PaperBatchRecordsTemplate() {
                         obj['date_key_text'] = ele?.dateValues?.dateAnchor
                         obj['date_key_top'] = ele?.dateValues?.coords[1] / imageHeight
                         obj['date_key_width'] = (ele?.dateValues?.coords[2] - ele?.dateValues?.coords[0]) / imageWidth
-                        obj['date_page'] = 1
+                        obj['date_page'] = ele?.page_num
                         obj['date_key_snippet_id'] = ele?.dateValues?.snippetID
                         obj['date_value_height'] = (ele?.dateValues?.valueCoords[3] - ele?.dateValues?.valueCoords[1]) / imageHeight
                         obj['date_value_left'] = ele?.dateValues?.valueCoords[0] / imageWidth
@@ -1829,6 +1831,10 @@ function PaperBatchRecordsTemplate() {
                 Selection Element
             </Menu.Item>
             <Menu.Divider />
+            <Menu.Item key='parameters'>
+                Parameters
+            </Menu.Item>
+            <Menu.Divider />
         </Menu>
     );
 
@@ -1870,6 +1876,9 @@ function PaperBatchRecordsTemplate() {
         } else {
             let num = Number(val)
             getImage(num)
+            // let arr = [...formValues]
+            // arr[activeKey] = {...arr[activeKey],page_num:num}
+            // setFormValues(arr)
             setPageNumber(num)
             for (let i = 0; i < 2; i++) {
                 setTimeout(() => {
