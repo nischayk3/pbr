@@ -1,6 +1,9 @@
+import { LeftOutlined } from '@ant-design/icons';
 import { Card, Radio, Table } from "antd";
 import React from "react";
 import Plot from 'react-plotly.js';
+import { useDispatch } from "react-redux";
+import { onClickTarget } from '../../../../../duck/actions/viewAction';
 import "./style.scss";
 const columns = [
 	{
@@ -24,29 +27,32 @@ const columns = [
 const data = [
 	{
 		key: 1,
-		parameters: 32,
+		parameters: 'L0_S0_01',
 		description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
 
 	},
 	{
 		key: 2,
-		parameters: 42,
+		parameters: 'L0_S0_02',
 		description: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.',
 	},
 	{
 		key: 3,
-		parameters: 29,
+		parameters: 'L0_S0_02',
 		description: 'This not expandable',
 	},
 	{
 		key: 4,
-		parameters: 32,
+		parameters: 'L0_S0_03',
 		description: 'My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park.',
 	},
 ];
 
 
-const TargetVariable = ({ }) => {
+const TargetVariable = () => {
+
+	const dispatch = useDispatch();
+
 	const expandedRowRender = () => {
 		const childColumn = [
 			{
@@ -55,7 +61,7 @@ const TargetVariable = ({ }) => {
 				key: "statistic"
 			},
 			{
-				title: "value",
+				title: "Value",
 				dataIndex: "value",
 				key: "value"
 			}
@@ -114,7 +120,14 @@ const TargetVariable = ({ }) => {
 
 	return (
 		<div className="target-wrapper">
-			<Card title="< Target Variable" className="target-card">
+			<Card title={(
+				<div className='card-title'>
+					<LeftOutlined onClick={() => {
+						dispatch(onClickTarget(false));
+					}} />
+					<p>Target Variable</p>
+				</div>
+			)} className="target-card">
 				<p>Please select a target variable based on the univariate dataset statistics provided, before proceeding to JupyterLab.</p>
 				<div className="target-custom-table">
 					{/* <table>

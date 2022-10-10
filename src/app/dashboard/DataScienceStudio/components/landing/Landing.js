@@ -1,7 +1,9 @@
 import { PlusOutlined } from "@ant-design/icons";
 import React, { lazy, useState } from "react";
+import { useDispatch } from "react-redux";
 import illustrations from "../../../../../assets/images/dss-landing.png";
 import jupyter_logo from "../../../../../assets/images/jupyter.png";
+import { onClickTarget } from "../../../../../duck/actions/viewAction";
 import LoadDataSet from "../loadDataSet/LoadDataSet";
 import Viewset from "../viewSet/Viewset";
 import "./styles.scss";
@@ -14,7 +16,7 @@ export default function Landing() {
 	const [isViewsetVisible, setIsViewsetVisible] = useState(false);
 	const [isDatasetVisible, setIsDatasetVisible] = useState(false);
 
-	console.log("isDatasetVisible", isDatasetVisible);
+	const dispatch = useDispatch();
 
 	const onCancel = () => {
 		setIsViewsetVisible(false)
@@ -55,7 +57,7 @@ export default function Landing() {
 					<div
 						className="jupyter-card"
 						onClick={() => {
-							history.push(`${match.url}/0`);
+							dispatch(onClickTarget(true));
 						}}
 					>
 						<img src={jupyter_logo} />
