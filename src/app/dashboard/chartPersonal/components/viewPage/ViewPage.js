@@ -237,7 +237,7 @@ const ViewPage = () => {
               </>
             ) : (
               <div>
-                <Button disabled={postChartData && postChartData['data'] && !postChartData['data'][0]?.chart_status == 'APRD' ? false : true} onClick={() => handleShareVisible()}
+                <Button disabled={postChartData && postChartData['data'] && postChartData['data'][0]?.chart_status == 'APRD' ? false : true} onClick={() => handleShareVisible()}
                 >Share</Button>
                 <Button onClick={() => setAlertModal(true)}>
                   Schedule Alert
