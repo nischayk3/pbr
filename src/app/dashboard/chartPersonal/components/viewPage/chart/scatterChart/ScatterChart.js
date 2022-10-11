@@ -132,16 +132,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
         yAxis.function_id = ele.function_id;
       }
       if (ele.function_name === axisValues.zaxis) {
-        if (
-          axisValues.chartType === "Bubble" ||
-          axisValues.chartType === "Error"
-        ) {
-          zAxis.function_name = ele.function_name;
-          zAxis.function_id = ele.function_id;
-        } else {
-          zAxis.function_name = undefined;
-          zAxis.function_id = undefined;
-        }
+        zAxis.function_name = ele.function_name;
+        zAxis.function_id = ele.function_id;
       }
     });
     const newArr = [...postChartData.data];
@@ -162,6 +154,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       ele.chart_mapping.y = yAxis;
       if (showZAxis && axisValues.zaxis) {
         ele.chart_mapping.z = zAxis;
+      } else {
+        ele.chart_mapping.z = undefined;
       }
       ele.layout.xaxis.title.text =
         Object.keys(xAxis).length !== 0
@@ -220,6 +214,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       zaxis: null,
     });
   };
+
   useEffect(() => {
     const newCovArr = JSON.parse(JSON.stringify(postChartData));
     newCovArr &&
@@ -312,9 +307,9 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       postChartData.data[0].extras.coverage &&
       postChartData.data[0].extras.coverage.forEach((ele) => {
         list.push(ele.function_name);
+        setYAxisList(list);
         if (axisValues.chartType !== "Process Control") {
-          setXAxisList(list);
-          setYAxisList(list);
+          setXAxisList(["Batch", "Date"].concat(list));
         } else {
           const tempList = ["Batch", "Date"];
           setXAxisList(tempList);
@@ -322,6 +317,30 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
         }
       });
   }, [axisValues.chartType]);
+
+  const getDisabledButton = () => {
+    if (
+      axisValues.chartType &&
+      axisValues.yaxis &&
+      axisValues.chartType === "Histogram" &&
+      !axisValues.xaxis
+    ) {
+      return false;
+    } else if (
+      !axisValues.chartType ||
+      !axisValues.xaxis ||
+      !axisValues.yaxis
+    ) {
+      return true;
+    } else if (
+      (axisValues.chartType === "Error" || axisValues.chartType === "Bubble") &&
+      !axisValues.zaxis
+    ) {
+      return true;
+    }
+
+    return false;
+  };
 
   return (
     <div className="chartLayout-container">
@@ -342,6 +361,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
             selectList={xaxisList}
             selectedValue={axisValues.xaxis}
             onChangeSelect={(e) => setAxisValues({ ...axisValues, xaxis: e })}
+            disabled={axisValues.chartType === "Histogram"}
           />
         </Col>
         <Col span={showZAxis ? 5 : 6}>
@@ -369,9 +389,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
           <Button
             className="custom-primary-btn"
             onClick={onApply}
-            disabled={
-              !axisValues.chartType || !axisValues.xaxis || !axisValues.yaxis
-            }
+            disabled={getDisabledButton()}
           >
             Apply
           </Button>

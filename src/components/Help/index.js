@@ -5,10 +5,10 @@
  * @Last Modified - 05 April, 2022
  * @Last Changed By - Fahad
  */
+import { QuestionCircleFilled } from '@ant-design/icons';
+import { Collapse, Drawer, Input, Popover, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Collapse, Drawer, Input, Popover, Space } from 'antd';
-import { QuestionCircleFilled } from '@ant-design/icons';
 import { faqData } from '../../services/helpService';
 import './style.scss';
 
@@ -76,14 +76,16 @@ const Help = () => {
 					</Space>
 				}
 			>
-				<Search
-					placeholder="Search"
-					allowClear
-					enterButton="Search"
-					size="large"
-					className="search-button"
-					onSearch={onSearch}
-				/>
+				<div>
+					<Search
+						placeholder="Search"
+						allowClear
+						enterButton="Search"
+						size="large"
+						className="search-button"
+						onSearch={onSearch}
+					/>
+				</div>
 
 				{data && Object.keys(data).map((value, index) => {
 					return (

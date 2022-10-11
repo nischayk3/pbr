@@ -644,10 +644,7 @@ function Genealogy() {
 			} else {
 				setBatchEquData([])
 				dispatch(hideLoader());
-				/* istanbul ignore next */
-				dispatch(showNotification('error', error));
 			}
-			console.log("batchEquRes", batchEquRes);
 
 		} catch (error) {
 			dispatch(hideLoader());

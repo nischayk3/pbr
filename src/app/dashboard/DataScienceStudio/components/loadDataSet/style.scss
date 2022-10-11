@@ -1,0 +1,31 @@
+.upload-file-wrapper {
+	text-align: center;
+
+	.ant-upload-picture-card-wrapper {
+		padding-top: 58px;
+	}
+
+	.upload-heading {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 24px;
+		/* identical to box height, or 150% */
+		color: #262626;
+		margin: 0px;
+		padding-top: 20px;
+	}
+
+	.upload-sub-heading {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 22px;
+		/* identical to box height, or 157% */
+		color: #8C8C8C;
+		margin: 0px;
+		padding-bottom: 100px;
+	}
+}

@@ -7,7 +7,7 @@ import mareanaLogo from '../../assets/mareana_logo.png';
 import { adenabled } from '../../config/config';
 import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 import { showNotification } from '../../duck/actions/commonActions';
-import { logoutUrl } from '../../services/loginService';
+import { getUserProfile, logoutUrl } from "../../services/loginService";
 import Auth from '../../utils/auth';
 import './style.scss';
 
@@ -17,17 +17,14 @@ const { Search } = Input;
 const HeaderBar = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	//const [loginDetails, setLoginDetails] = useState({});
+
+	const [imgRes, setImgRes] = useState("");
+	const [imagePrev, setImagePrev] = useState(false);
 	const [dropdownVisible, setDropdownVisible] = useState(false);
 	const loginDetails = JSON.parse(localStorage.getItem("login_details"))
 
-	// useEffect(() => {
-	// 	console.log("loginResponse", loginResponse);
-	// 	setLoginDetails(loginResponse)
-	// }, [])
-
-
 	useEffect(() => {
+		getProfile();
 		document.addEventListener('tokenExpired', () => {
 			if (localStorage.getItem('login_details')) {
 				adLogout('tokenExpired')
@@ -41,12 +38,11 @@ const HeaderBar = () => {
 
 	const Logout = () => {
 		// LOGOUT API NOT WORKING
-		// const jwt = localStorage.getItem('user_token');
-		// await userLogout(jwt);
 		Auth.logout(() => {
 			history.push('/');
 		});
 	};
+
 	const useOutsideAlerter = (ref) => {
 		useEffect(() => {
 			function handleClickOutside(event) {
@@ -60,6 +56,7 @@ const HeaderBar = () => {
 			};
 		}, [ref]);
 	}
+
 	const adLogout = (tokenExpired) => {
 		if (tokenExpired) {
 			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
@@ -70,7 +67,26 @@ const HeaderBar = () => {
 	}
 	const wrapperRef = useRef(null);
 	useOutsideAlerter(wrapperRef);
-	console.log("localStorage.get", loginDetails)
+
+	const getProfile = async () => {
+
+		try {
+			const _getReq = {
+				email_address: loginDetails && loginDetails.email_id,
+				image: true
+			}
+			const getRes = await getUserProfile(_getReq)
+			if (getRes.statuscode === 200) {
+				setImagePrev(true)
+				setImgRes(getRes.message)
+			} else {
+				setImagePrev(false)
+			}
+		} catch (error) {
+			dispatch(showNotification('error', error));
+		}
+	}
+
 	return (
 		<Header id='header' ref={wrapperRef}>
 			<div id='hamburger' className='inline'>
@@ -88,6 +104,7 @@ const HeaderBar = () => {
 				<BellOutlined style={{ margin: "6px 25px", fontSize: "20px" }} />
 				<div className="custom-menu">
 					<div className="user-name" onClick={dropDownOpen}>
+
 						<Avatar size={22} style={{ backgroundColor: "orange", fontSize: "16px", padding: "1px 0" }}>
 							{localStorage.getItem("username") &&
 								localStorage.getItem("username").split("")[0].toUpperCase()}{" "}
@@ -101,12 +118,12 @@ const HeaderBar = () => {
 							</div>
 							<div className="menu-detail">
 								<div className="avatar-details">
-									<Avatar size={64}
+									{imagePrev ? (<img src={"data:image/png;base64," + `${imgRes}`} alt="dummy" width="300" height="300" />) : (<Avatar size={64}
 										style={{
 											padding: "10px 0",
 											margin: "10px 0"
 										}}
-										icon={<UserOutlined />} />
+										icon={<UserOutlined />} />)}
 									<p className="username">{loginDetails && loginDetails.firstname} {loginDetails && loginDetails.lastname}</p>
 									<p className="email">{loginDetails && loginDetails.email_id}</p>
 								</div>

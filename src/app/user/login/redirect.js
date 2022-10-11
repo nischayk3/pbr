@@ -8,7 +8,7 @@ import {
 import { sendLoginDetails } from '../../../duck/actions/loginAction';
 import { getSession } from '../../../services/loginService';
 
-export default function Redirect(props) {
+export default function Redirect() {
 	const dispatch = useDispatch();
 	const history = useHistory();
 

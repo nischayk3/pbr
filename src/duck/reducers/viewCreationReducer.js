@@ -1,12 +1,10 @@
-import { FUNCTION_TEXT, MOLECULE_ID } from "../types/types";
 import {
 	BATCH_COVERAGE_DATA,
 	BATCH_DATA,
 	FUNCTION_MAP,
 	FUNCTION_NAME,
 	IS_LOAD_VIEW,
-	IS_NEW_VIEW,
-	LOAD_VIEW_RESPONSE,
+	IS_NEW_VIEW, IS_TARGET_VAR, LOAD_VIEW_RESPONSE,
 	MATH_EDITOR,
 	MATH_VALUE,
 	NEW_COLUMN,
@@ -17,14 +15,12 @@ import {
 	SELECTED_PARAM_DATA,
 	SELECTED_PARAM_TYPE,
 	SELECTED_VARIABLE,
-	SUMMARY_TABLE_DATA,
-	VIEW_FUNCTION_MAP,
+	SUMMARY_TABLE_DATA, TOTAL_FILE_BATCHES, TOTAL_MOL_BATCHES, VIEW_FUNCTION_MAP,
 	VIEW_FUNCTION_NAME,
 	VIEW_PARAM_DATA,
-	VIEW_PARAM_MAP,
-	TOTAL_MOL_BATCHES,
-	TOTAL_FILE_BATCHES,
+	VIEW_PARAM_MAP
 } from '../../constants/actionTypes';
+import { FUNCTION_TEXT, MOLECULE_ID } from "../types/types";
 
 const initState = {
 	textName: '',
@@ -52,6 +48,7 @@ const initState = {
 	batchData: [],
 	totalMolBatches: [],
 	totalFileBatches: [],
+	isTargetVar: false,
 };
 
 export default (state = initState, action) => {
@@ -106,6 +103,8 @@ export default (state = initState, action) => {
 			return { ...state, totalMolBatches: action.payload };
 		case TOTAL_FILE_BATCHES:
 			return { ...state, totalFileBatches: action.payload };
+		case IS_TARGET_VAR:
+			return { ...state, isTargetVar: action.payload };
 		case RESET_VIEW:
 			return initState;
 		default:
