@@ -365,6 +365,7 @@ const ViewChart = (props, ref) => {
 		let arr = [...tempPanels];
 		arr[index].data_filter.unapproved_data = isChecked;
 		arr[index].data[0].has_unapproved = isChecked == 1 ? true : false
+		arr[index].data[0].unapprove_data = isChecked == 1 ? true : false
 		setTempPanels(arr);
 	};
 	const onChangeTempCheckbox = checked => {
