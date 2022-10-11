@@ -232,6 +232,7 @@ const DashboardScreen = () => {
   const onChangeInputSaveAs = (e) => {
     setdashboardName(e.target.value);
   };
+
   return (
     <div className="custom-wrapper">
       {/* <BreadCrumbWrapper /> */}
@@ -254,6 +255,7 @@ const DashboardScreen = () => {
               className="viewCreation-saveBtn"
               onClick={() => handleShareVisible()}
               id="save-view"
+              disabled={params['id'] && params['version'] ? false : true}
             >
               Share
             </Button>
@@ -271,14 +273,14 @@ const DashboardScreen = () => {
 
             <ShareAltOutlined style={{ color: "#093185", fontSize: "18px" }} />
           </div>
-        ) : (<div className="btns">
+        ) : (params['share'] ? (<div className="btns">
           <Button
             className="viewCreation-saveBtn"
             onClick={() => handleShareVisible()}
             id="save-view"
           >
             Share
-          </Button></div>)}
+          </Button></div>) : (<></>))}
       </div>
       <div className="custom-content-layout">
         {!showChartCard && (
