@@ -45,6 +45,7 @@ const DashboardScreen = () => {
   const [landingChartLayoutY, setLandingChartLayoutY] = useState([]);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [saveType, setSaveType] = useState("");
+  const [isSave, setIsSave] = useState(false);
   const [isShare, setIsShare] = useState(false)
   const params = queryString.parse(location.search);
 
@@ -149,12 +150,13 @@ const DashboardScreen = () => {
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
-      dispatch(showNotification("error", error.Message));
+      // dispatch(showNotification("error", error.Message));
     }
   };
 
   const idFromUrl = () => {
     if (params.id) {
+      setIsSave(true)
       setDashboardId(params.id);
       setDashboardVersion(params.version);
       setShowChartCard(true);
@@ -204,6 +206,7 @@ const DashboardScreen = () => {
 
       if (res.statuscode == 200) {
         dispatch(hideLoader());
+        setIsSave(true)
         dispatch(
           showNotification(
             "success",
@@ -224,6 +227,7 @@ const DashboardScreen = () => {
   const handleSavePopUp = (value) => {
     setShowSaveModal(true);
     setSaveType(value);
+
   };
 
   const handleCancel = () => {
@@ -232,7 +236,6 @@ const DashboardScreen = () => {
   const onChangeInputSaveAs = (e) => {
     setdashboardName(e.target.value);
   };
-
   return (
     <div className="custom-wrapper">
       {/* <BreadCrumbWrapper /> */}
@@ -255,7 +258,7 @@ const DashboardScreen = () => {
               className="viewCreation-saveBtn"
               onClick={() => handleShareVisible()}
               id="save-view"
-              disabled={params['id'] && params['version'] ? false : true}
+              disabled={isSave ? false : true}
             >
               Share
             </Button>
