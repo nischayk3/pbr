@@ -34,7 +34,7 @@ export default function Redirect() {
 
 	useEffect(() => {
 		GetSession();
-	});
+	}, []);
 	return (
 		<div>
 			<Result
