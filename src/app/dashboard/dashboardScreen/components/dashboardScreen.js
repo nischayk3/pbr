@@ -45,6 +45,7 @@ const DashboardScreen = () => {
   const [landingChartLayoutY, setLandingChartLayoutY] = useState([]);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [saveType, setSaveType] = useState("");
+  const [isSave, setIsSave] = useState(false);
   const [isShare, setIsShare] = useState(false)
   const params = queryString.parse(location.search);
 
@@ -149,12 +150,13 @@ const DashboardScreen = () => {
       dispatch(hideLoader());
     } catch (error) {
       dispatch(hideLoader());
-      dispatch(showNotification("error", error.Message));
+      // dispatch(showNotification("error", error.Message));
     }
   };
 
   const idFromUrl = () => {
     if (params.id) {
+      setIsSave(true)
       setDashboardId(params.id);
       setDashboardVersion(params.version);
       setShowChartCard(true);
@@ -204,6 +206,7 @@ const DashboardScreen = () => {
 
       if (res.statuscode == 200) {
         dispatch(hideLoader());
+        setIsSave(true)
         dispatch(
           showNotification(
             "success",
@@ -224,6 +227,7 @@ const DashboardScreen = () => {
   const handleSavePopUp = (value) => {
     setShowSaveModal(true);
     setSaveType(value);
+
   };
 
   const handleCancel = () => {
@@ -254,6 +258,7 @@ const DashboardScreen = () => {
               className="viewCreation-saveBtn"
               onClick={() => handleShareVisible()}
               id="save-view"
+              disabled={isSave ? false : true}
             >
               Share
             </Button>
@@ -271,14 +276,14 @@ const DashboardScreen = () => {
 
             <ShareAltOutlined style={{ color: "#093185", fontSize: "18px" }} />
           </div>
-        ) : (<div className="btns">
+        ) : (params['share'] ? (<div className="btns">
           <Button
             className="viewCreation-saveBtn"
             onClick={() => handleShareVisible()}
             id="save-view"
           >
             Share
-          </Button></div>)}
+          </Button></div>) : (<></>))}
       </div>
       <div className="custom-content-layout">
         {!showChartCard && (

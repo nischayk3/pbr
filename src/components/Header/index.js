@@ -69,7 +69,7 @@ const HeaderBar = () => {
 	useOutsideAlerter(wrapperRef);
 
 	const getProfile = async () => {
-		console.log("api callllllllllllllll");
+
 		try {
 			const _getReq = {
 				email_address: loginDetails && loginDetails.email_id,
