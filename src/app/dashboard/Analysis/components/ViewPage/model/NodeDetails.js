@@ -4,14 +4,22 @@ import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { Row, Col, Button, Radio } from "antd";
 
 const NodeDetails = (props) => {
-  const { addEstimator } = props;
+  const {
+    addEstimator,
+    selectedTargetValue,
+    setSelectedTargetVariable,
+    nodeInformation,
+  } = props;
   return (
     <div className="node-container">
       <div className="node-details-container">
         <Row gutter={16}>
           <Col span={24}>
             <Button className="custom-primary-btn">
-              <Radio />
+              <Radio
+                checked={nodeInformation.Node === selectedTargetValue}
+                onChange={() => setSelectedTargetVariable(nodeInformation.Node)}
+              />
               Make target Variable
             </Button>
             <Button

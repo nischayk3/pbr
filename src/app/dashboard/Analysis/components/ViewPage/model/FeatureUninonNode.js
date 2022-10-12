@@ -1,14 +1,26 @@
 import React, { useEffect } from "react";
 import { Handle } from "react-flow-renderer";
 
-export default ({ data, selected }) => {
+export default ({
+  data,
+  selected,
+  addEstimator,
+  scalerAlgoValue,
+  saveScalerAlgoValue,
+  setScalerAlgoValue,
+}) => {
   useEffect(() => {
     if (selected) console.log("I've been selected!");
   }, [selected]);
 
   const handleClick = (event) => {
-    console.log("Button clicked.");
     event.stopPropagation();
+    setScalerAlgoValue(
+      saveScalerAlgoValue
+        ? saveScalerAlgoValue
+        : data?.Destination_Parameter?.submodule
+    );
+    addEstimator("featureUnion");
   };
 
   return (
@@ -32,10 +44,11 @@ export default ({ data, selected }) => {
             border: "0.5px solid grey",
             borderRadius: "4px",
             padding: "2px 10px",
+            cursor: "pointer",
           }}
           onClick={handleClick}
         >
-          one-hot-encoding
+          {saveScalerAlgoValue || data?.Destination_Parameter?.submodule}
         </button>
       </div>
       <Handle type="source" position="right" />
