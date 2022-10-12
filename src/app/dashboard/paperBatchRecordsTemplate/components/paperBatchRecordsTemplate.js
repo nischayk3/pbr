@@ -76,7 +76,7 @@ import { method } from 'lodash';
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Dragger } = Upload;
-
+/* istanbul ignore next */
 function PaperBatchRecordsTemplate() {
     var AREAS_MAP = {
         name: 'my-map',
@@ -664,10 +664,10 @@ function PaperBatchRecordsTemplate() {
             dispatch(showLoader());
             let _reqBatch = {
                 filename: `${params?.file?.split('.')[0]}_page-${pageNumber}.jpeg.json`,
-                bbox_type: mode,
+                bbox_type: params?.fromScreen == "Workflow" ? "parameters" : mode,
                 page: pageNumber + 1,
                 // action_type: params?.temp_disp_id ? "edit" : "create",
-                action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "saved" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? mode == "TABLE" ? "create" : "edit" : "create",
+                action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "edit" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? mode == "TABLE" ? "create" : "edit" : "create",
                 temp_disp_id: params?.temp_disp_id ? params?.temp_disp_id : "",
                 temp_version: params?.temp_disp_id ? 1 : 0,
                 table_identifier: Object.keys(table_identifier).length > 0 ? table_identifier : null

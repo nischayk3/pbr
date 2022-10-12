@@ -59,12 +59,6 @@ const EditableCell = ({
           margin: 0,
         }}
         name={dataIndex}
-        rules={[
-          {
-            required: true,
-            message: `${title} is required.`,
-          },
-        ]}
       >
         <Input ref={inputRef} onPressEnter={save} onBlur={save} />
       </Form.Item>
@@ -87,7 +81,7 @@ const EditableCell = ({
 const App = (props) => {
   let { templateData, setTemplateData } = props
   const [defaultColumns, setDefaultColumns] = useState([]);
-  const [count, setCount] = useState(templateData.length);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     let col = tableColumns(templateData)
@@ -105,7 +99,10 @@ const App = (props) => {
         ) : null,
     })
     setDefaultColumns(col)
-    setCount(templateData.length)
+    if (count == 0) {
+      setCount(templateData.length)
+    }
+
   }, [templateData])
 
   const handleDelete = (key, val) => {
@@ -159,7 +156,7 @@ const App = (props) => {
       }),
     };
   });
-  
+
   return (
     <div>
       <div className='tableEdit'>
@@ -177,7 +174,7 @@ const App = (props) => {
             type='primary'>
             Edit
           </Button> */}
-          <Button id="save_button" style={{
+          {/* <Button id="save_button" style={{
             backgroundColor: '#303f9f',
             color: '#ffffff',
             borderColor: "#303f9f",
@@ -185,7 +182,7 @@ const App = (props) => {
             marginRight: 10
 
           }}
-            type='primary'>Validate</Button>
+            type='primary'>Validate</Button> */}
         </div>
 
       </div>
