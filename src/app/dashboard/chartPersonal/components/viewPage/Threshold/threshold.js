@@ -138,14 +138,11 @@ const Threshold = ({ postChartData, setPostChartData }) => {
   };
 
   const postThreshHold = async (newArr) => {
+    let errorMsg = "";
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(newArr);
-      if (!viewRes) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
+      errorMsg = viewRes?.message;
       let newdataArr = [...postChartData.data];
       newdataArr[0].thresholds = viewRes.data[0].thresholds;
       newdataArr[0].violations = viewRes.data[0].violations;
@@ -155,6 +152,9 @@ const Threshold = ({ postChartData, setPostChartData }) => {
     } catch (error) {
       /* istanbul ignore next */
       dispatch(hideLoader());
+      if (errorMsg) {
+        dispatch(showNotification("error", errorMsg));
+      }
     }
   };
 
