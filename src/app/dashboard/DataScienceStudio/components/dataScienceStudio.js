@@ -14,7 +14,6 @@ import TargetVariable from './targetVariable/TargetVariable';
 const DataScienceStudio = () => {
 	const isTargetVar = useSelector((state) => state.viewCreationReducer.isTargetVar)
 
-	console.log("isTargetVar", isTargetVar);
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
