@@ -132,7 +132,6 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
   const getViewTableData = async () => {
     let reqView = { vew_status: "APRD" };
     let antdDataTable = [];
-
     try {
       dispatch(showLoader());
       const viewRes = await getViewTable(reqView);
@@ -173,6 +172,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
   };
 
   const setData = async () => {
+    let errorMsg = "";
     try {
       dispatch(showLoader());
       const req = JSON.parse(JSON.stringify(postChartData));
@@ -182,19 +182,18 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
       reqBody.data[0].view_id = selectedId;
       reqBody.data[0].view_name = selectedViewName;
       const viewRes = await postChartPlotData(reqBody);
+      errorMsg = viewRes?.message;
       getSites(viewRes.data[0].view_id);
       let newArr = [...postChartData.data];
       newArr[0] = viewRes.data[0];
       setPostChartData({ ...postChartData, data: newArr });
       dispatch(hideLoader());
-      if (!viewRes) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
     } catch (error) {
       /* istanbul ignore next */
       dispatch(hideLoader());
+      if (errorMsg) {
+        dispatch(showNotification("error", errorMsg));
+      }
     }
   };
 
@@ -208,7 +207,7 @@ const ViewChart = ({ postChartData, setPostChartData }) => {
         newArr[0] = viewRes.data[0];
         setPostChartData({ ...postChartData, data: newArr });
       } else {
-        dispatch(showNotification("error", viewRes.Message));
+        dispatch(showNotification("error", viewRes.message));
         let newArr = [...postChartData.data];
         newArr[0].data_filter = {
           date_range: "",
