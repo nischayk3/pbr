@@ -24,6 +24,8 @@ export default function Redirect() {
 			localStorage.setItem("loginwith", 'WITH_AD')
 			dispatch(showNotification('success', `Logged in as ${data.email_id}`));
 			history.push('/dashboard/workspace');
+			//temporary fix
+			window.location.reload()
 			dispatch(hideLoader());
 		} else {
 			dispatch(showNotification('error', 'Error in Login'));
@@ -34,7 +36,7 @@ export default function Redirect() {
 
 	useEffect(() => {
 		GetSession();
-	}, []);
+	},[]);
 	return (
 		<div>
 			<Result
