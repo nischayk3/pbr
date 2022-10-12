@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import InputField from '../../../../components/InputField/InputField';
 import SelectSearchField from "../../../../components/SelectSearchField/SelectSearchField";
-import { hideLoader, showLoader } from '../../../../duck/actions/commonActions';
+import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import { getUserProfile, passwordChange, sendUserProfile } from "../../../../services/loginService";
 import "./style.scss";
 
@@ -34,9 +34,6 @@ const Profile = () => {
 	const [imgRes, setImgRes] = useState("");
 	const [imagePrev, setImagePrev] = useState(false);
 	const [isUserIcon, setIsUserIcon] = useState(<UserOutlined />);
-
-
-
 
 	useEffect(() => {
 		getProfile();
@@ -93,12 +90,21 @@ const Profile = () => {
 		}
 	}
 
+	const clearSearch = (e, field) => {
+		if (field === 'dateFormat') {
+			setDateFormatValue("")
+		} else if (field === 'timeZone') {
+			setTimeZoneValue("")
+		} else if (field === 'language') {
+			setLanguageValue("")
+		}
+	}
+
 	/* istanbul ignore next */
 	const savePreference = async () => {
 		try {
 			dispatch(showLoader());
 			const formData = new FormData();
-
 			formData.append("file", image);
 			formData.append("date_format", dateFormatValue);
 			formData.append("email_address", loginDetails && loginDetails.email_id);
@@ -107,12 +113,16 @@ const Profile = () => {
 			formData.append("language", languageValue);
 			formData.append("timezone", timeZoneValue);
 			const saveRes = await sendUserProfile(formData);
+
 			if (saveRes.statuscode === 200) {
 				dispatch(hideLoader());
 				dispatch(showNotification('success', "Updated Successfully"));
+			} else if (saveRes.statuscode === 400) {
+				dispatch(hideLoader());
+				dispatch(showNotification('error', saveRes.message));
 			} else {
 				dispatch(hideLoader());
-				dispatch(showNotification('error', saveRes.Message));
+				dispatch(showNotification('error', "image upload error"));
 			}
 		} catch (error) {
 			dispatch(hideLoader());
@@ -136,7 +146,6 @@ const Profile = () => {
 		});
 	}
 
-
 	const getProfile = async () => {
 		try {
 			dispatch(showLoader());
@@ -145,8 +154,6 @@ const Profile = () => {
 				image: true
 			}
 			const getRes = await getUserProfile(_getReq)
-
-
 			if (getRes.statuscode === 200) {
 				dispatch(hideLoader());
 				setImagePrev(true)
@@ -159,7 +166,6 @@ const Profile = () => {
 			dispatch(showNotification('error', error));
 		}
 	}
-
 	const getPreference = async () => {
 		try {
 			dispatch(showLoader());
@@ -167,9 +173,7 @@ const Profile = () => {
 				email_address: loginDetails && loginDetails.email_id,
 				image: false
 			}
-
 			const getRes = await getUserProfile(_getReq)
-
 			if (getRes.statuscode == 200) {
 				setTimeZoneValue(getRes.message[0].time_zone);
 				setDateFormatValue(getRes.message[0].date_format);
@@ -184,8 +188,6 @@ const Profile = () => {
 			dispatch(showNotification('error', error));
 		}
 	}
-
-
 
 	return (
 		<div className="custom-wrapper">
@@ -268,7 +270,7 @@ const Profile = () => {
 										onChangeSelect={value => onChange(value, 'dateFormat')}
 										//onSearchSelect={type => onSearch(type, 'dateFormat')}
 										options={optionsDateFormat}
-										//handleClearSearch={e => clearSearch(e, 'plant')}
+										handleClearSearch={e => clearSearch(e, 'dateFormat')}
 										selectedValue={dateFormatValue}
 									/>
 									<SelectSearchField
@@ -278,7 +280,7 @@ const Profile = () => {
 										onChangeSelect={value => onChange(value, 'timeZone')}
 										//onSearchSelect={type => onSearch(type, 'timeZone')}
 										options={optionsTimeZone}
-										//handleClearSearch={e => clearSearch(e, 'plant')}
+										handleClearSearch={e => clearSearch(e, 'timeZone')}
 										selectedValue={timeZoneValue}
 									/>
 									<SelectSearchField
@@ -288,7 +290,7 @@ const Profile = () => {
 										onChangeSelect={value => onChange(value, 'language')}
 										//onSearchSelect={type => onSearch(type, 'language')}
 										options={optionsLanguage}
-										//handleClearSearch={e => clearSearch(e, 'plant')}
+										handleClearSearch={e => clearSearch(e, 'language')}
 										selectedValue={languageValue}
 									/>
 								</div>
@@ -315,15 +317,15 @@ const Profile = () => {
 								<div>
 									<div className="input-pass">
 										<p>Current password</p>
-										<Input.Password placeholder="input password" value={currentPassword} onChange={(e) => { setCurrentPassword(e.target.value) }} />
+										<Input.Password autocomplete="new-password" placeholder="input password" value={currentPassword} onChange={(e) => { setCurrentPassword(e.target.value) }} />
 									</div>
 									<div className="input-pass">
 										<p>New password</p>
-										<Input.Password placeholder="input password" value={newPassword} onChange={(e) => { setNewPassword(e.target.value) }} />
+										<Input.Password autocomplete="new-password" placeholder="input password" value={newPassword} onChange={(e) => { setNewPassword(e.target.value) }} />
 									</div>
 									<div className="input-pass">
 										<p>Confirm new password</p>
-										<Input.Password placeholder="input password" value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value) }} />
+										<Input.Password autocomplete="new-password" placeholder="input password" value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value) }} />
 										{errorMsg !== "" && (
 											<p className="pass-error">{errorMsg}</p>
 										)}

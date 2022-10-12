@@ -139,6 +139,7 @@ function DynamicTableForm(props) {
                                                     handleSideState()
                                                 } else {
                                                     setTableCount(tableCount + 1)
+                                                    handleSideState()
                                                 }
 
                                             }}

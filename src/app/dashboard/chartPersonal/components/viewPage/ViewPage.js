@@ -76,6 +76,7 @@ const ViewPage = () => {
   const handleShareCancel = () => {
     setIsShare(false)
   }
+
   //function for saving chart data
   const saveAs = async (type) => {
     const postData = JSON.parse(JSON.stringify(postChartData));
@@ -236,7 +237,7 @@ const ViewPage = () => {
               </>
             ) : (
               <div>
-                <Button onClick={() => handleShareVisible()}
+                <Button disabled={postChartData && postChartData['data'] && postChartData['data'][0]?.chart_status == 'APRD' ? false : true} onClick={() => handleShareVisible()}
                 >Share</Button>
                 <Button onClick={() => setAlertModal(true)}>
                   Schedule Alert

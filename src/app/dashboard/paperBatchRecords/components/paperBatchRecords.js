@@ -237,7 +237,7 @@ function PaperBatchRecords() {
 	};
 
 	const handleTemplateSubmit = () => {
-		if (templateName == "" || templateName == undefined) {
+		if (templateName == "" || templateName == undefined || materialDropown.length == 0) {
 			openNotification()
 		} else {
 			history.push(`${match.url}/Untitled?file=${fileName}&tempalteName=${templateName}&fromScreen=Workspace`);
@@ -260,15 +260,22 @@ function PaperBatchRecords() {
 	};
 	const openNotification = () => {
 		const key = `open${Date.now()}`;
+		let val = ""
+		if (templateName == "" || templateName == undefined ) {
+			val = "Template Name"
+		}else if(materialDropown.length ==0){
+			val = "Material Number"
+		}
 		const btn = (
 			<Button type="primary" size="small" onClick={() => notification.close(key)}>
 				Confirm
 			</Button>
 		);
+		
 		notification.open({
 			message: 'Error',
 			description:
-				'Please Enter Template Name.',
+				`Please Enter ${val} `,
 			btn,
 			key,
 			type: "error",
