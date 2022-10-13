@@ -2,9 +2,10 @@ import { LeftOutlined } from '@ant-design/icons';
 import { Card, Radio, Table } from "antd";
 import React from "react";
 import Plot from 'react-plotly.js';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { onClickTarget } from '../../../../../duck/actions/viewAction';
 import "./style.scss";
+
 const columns = [
 	{
 		title: 'Target variable',
@@ -20,7 +21,7 @@ const columns = [
 	Table.EXPAND_COLUMN,
 	{
 		title: 'Parameters',
-		dataIndex: 'parameters',
+		dataIndex: 'parameter_name',
 		key: 'parameters',
 	},
 ];
@@ -50,7 +51,8 @@ const data = [
 
 
 const TargetVariable = () => {
-
+	const loadViewDataTable = useSelector((state) => state.dataScienceReducer.loadViewData)
+	console.log("loadViewDataTable", loadViewDataTable)
 	const dispatch = useDispatch();
 
 	const expandedRowRender = () => {
@@ -85,13 +87,16 @@ const TargetVariable = () => {
 			}
 		]
 
+		loadViewDataTable.map((item, i) => {
+			console.log("loadViewDataTable.data_table", item.data_table)
+		});
 		return (
 			<div className="expandable-component">
 				<Table
 					className="custom-tree-table1"
 					pagination={false}
 					columns={childColumn}
-					dataSource={childData}
+					dataSource={loadViewDataTable.map((item, i) => item.children)}
 				/>
 				<Plot
 					data={[
@@ -114,7 +119,6 @@ const TargetVariable = () => {
 					}}
 				/>
 			</div>
-
 		)
 	}
 
@@ -130,29 +134,10 @@ const TargetVariable = () => {
 			)} className="target-card">
 				<p>Please select a target variable based on the univariate dataset statistics provided, before proceeding to JupyterLab.</p>
 				<div className="target-custom-table">
-					{/* <table>
-						<thead className="table-head">
-							<tr>
-								<th style={{ width: '125px', borderRight: "1px solid #C7C7C7" }}>Target Variable</th>
-								<th>Parameters</th>
-							</tr>
-						</thead>
-
-						<tbody className="table-body">
-							<tr>
-								<td style={{ textAlign: 'center' }}><Radio /></td>
-								<td><PlusSquareOutlined /><span>L0_S0_0</span></td>
-							</tr>
-							<tr>
-							<td style={{ textAlign: 'center' }}><Radio /></td>
-								<td><PlusSquareOutlined /><span>L0_S0_0</span></td>
-							</tr>
-						</tbody>
-					</table> */}
 					<Table
 						columns={columns}
 						expandable={{ expandedRowRender }}
-						dataSource={data}
+						dataSource={loadViewDataTable}
 					/>
 				</div>
 			</Card>
