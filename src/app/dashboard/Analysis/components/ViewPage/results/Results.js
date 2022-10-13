@@ -20,7 +20,7 @@ const Results = () => {
 
   const getResultFunc = async () => {
     const reqBody = {
-      pipelineid: selectedViewData.pipeline_id || "P90",
+      pipelineid: selectedViewData?.pipeline_id,
     };
     dispatch(showLoader());
     const apiResponse = await getResults(reqBody);
