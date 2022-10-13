@@ -10,19 +10,25 @@ const Estimator = (props) => {
     estimatorPopupDataValues,
     onCreateClick,
     savedEstimatorPopupDataValues,
-    setSavedEstimatorPopupDataValues
+    setSavedEstimatorPopupDataValues,
+    finalModelJson,
+    setFinalModelJson,
   } = props;
 
-
   const onClickSave = () => {
+    const tempObj = JSON.parse(JSON.stringify(finalModelJson));
+    Object.entries(tempObj.estimator).forEach(([key, value]) => {
+      value.model_name = `e_${estimatorPopupDataValues.algoValue.toLowerCase()}`;
+    });
+    setFinalModelJson({ ...finalModelJson, estimator: tempObj.estimator });
     setSavedEstimatorPopupDataValues({
       ...savedEstimatorPopupDataValues,
       typeListValue: estimatorPopupDataValues.typeListValue,
       regressionListvalue: estimatorPopupDataValues.regressionListvalue,
-      algoValue: estimatorPopupDataValues.algoValue
-    })
+      algoValue: estimatorPopupDataValues.algoValue,
+    });
     onCreateClick();
-  }
+  };
 
   return (
     <>

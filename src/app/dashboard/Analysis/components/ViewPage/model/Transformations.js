@@ -13,12 +13,24 @@ const Transformation = ({
   selectedImputeValue,
   saveTransformationValues,
   setSaveTransformationValues,
+  finalModelJson,
+  setFinalModelJson,
 }) => {
   const onClick = () => {
     setSaveTransformationValues({
       ...saveTransformationValues,
       imputerType: imputerType,
       transformationFinal: transformationFinal,
+    });
+    const tempObj = JSON.parse(JSON.stringify(finalModelJson));
+    Object.entries(tempObj.feature_union_mapping).forEach(([key, value]) => {
+      if (value.type === "Imputer") {
+        value.transformation = `t_${transformationFinal.toLowerCase()}`;
+      }
+    });
+    setFinalModelJson({
+      ...finalModelJson,
+      feature_union_mapping: tempObj.feature_union_mapping,
     });
     onCreateClick();
   };

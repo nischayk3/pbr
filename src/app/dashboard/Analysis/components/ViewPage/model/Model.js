@@ -19,10 +19,24 @@ import ColorSelectorNode from "./CustomNode";
 import EstimatorNode from "./EstimatorNode";
 import FeatureUninonNode from "./FeatureUninonNode";
 import Estimator from "./Estimator";
-import { getAnalyticsNodes } from "../../../../../../services/analyticsService";
+import {
+  getAnalyticsNodes,
+  getAnalyticsModel,
+} from "../../../../../../services/analyticsService";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  hideLoader,
+  showLoader,
+  showNotification,
+} from "../../../../../../duck/actions/commonActions";
+
 const { Step } = Steps;
 
-const Model = () => {
+const Model = ({ finalModelJson, setFinalModelJson }) => {
+  const selectedViewData = useSelector(
+    (state) => state.analyticsReducer.viewData
+  );
+  const dispatch = useDispatch();
   const [nodesAnalytics, setNodesAnalytics] = useState([
     {
       id: "horizontal-1",
@@ -34,8 +48,8 @@ const Model = () => {
         border: "none",
         borderRadius: "4px",
       },
-      data: { label: "V467" },
-      position: { x: 0, y: 80 },
+      data: { label: selectedViewData?.view_id },
+      position: { x: 0, y: 200 },
     },
   ]);
   const [transformationFinal, setTransformationsFinal] = useState("");
@@ -136,273 +150,14 @@ const Model = () => {
 
   const getNodes = async () => {
     const reqBody = {
-      batch_filter: [],
-      data_filter: {
-        date_range: "",
-        site: "",
-        unapproved_data: 1,
-      },
-      target_variable: "sum",
-      view_disp_id: "V472",
-      view_version: 1,
+      batch_filter: selectedViewData?.batch_filter,
+      data_filter: selectedViewData?.data_filter,
+      view_disp_id: selectedViewData?.view_id,
+      view_version: selectedViewData?.view_version,
     };
-    const Edges = [
-      {
-        Destination: "Scaler",
-        Destination_Parameter: {
-          Module: "preprocessing",
-          submodule: "StandardScaler",
-          type: "Scaler",
-        },
-        Level: 0,
-        Node: "DIM_1",
-        Source: "View",
-        Type: "Parameter",
-      },
-      {
-        Destination: "Imputer",
-        Destination_Parameter: {
-          Module: "impute",
-          submodule: "SimpleImputer",
-          type: "Imputer",
-        },
-        Level: 0,
-        Node: "DIM_3",
-        Source: "View",
-        Type: "Parameter",
-      },
-      {
-        Destination: "Estimator",
-        Destination_Parameter: {
-          Module: "ensemble",
-          submodule: "RandomForestRegressor",
-          type: "Regression",
-        },
-        Level: 0,
-        Node: "DIM_2",
-        Source: "View",
-        Type: "Parameter",
-      },
-      {
-        Destination: "Scaler",
-        Destination_Parameter: {
-          Module: "preprocessing",
-          submodule: "StandardScaler",
-          type: "Scaler",
-        },
-        Level: 3,
-        Node: "Imputer",
-        Source: "DIM_3",
-        Type: "Imputer",
-      },
-      {
-        Destination: "Estimator",
-        Destination_Parameter: {
-          Module: "ensemble",
-          submodule: "RandomForestRegressor",
-          type: "Regression",
-        },
-        Level: 4,
-        Node: "Scaler",
-        Source: "DIM_1",
-        Type: "Scaler",
-      },
-      {
-        Destination: "Estimator",
-        Destination_Parameter: {
-          Module: "ensemble",
-          submodule: "RandomForestRegressor",
-          type: "Regression",
-        },
-        Level: 4,
-        Node: "Scaler",
-        Source: "Imputer",
-        Type: "Scaler",
-      },
-    ];
-    const Imputers = [
-      {
-        module: "impute",
-        submodule: "SimpleImputer",
-        type: "Imputer",
-      },
-      {
-        module: "impute",
-        submodule: "KNNImputer",
-        type: "Imputer",
-      },
-    ];
-    const Scaler = [
-      {
-        module: "preprocessing",
-        submodule: "StandardScaler",
-        type: "Scaler",
-      },
-      {
-        module: "discriminant_analysis",
-        submodule: "StandardScaler",
-        type: "Scaler",
-      },
-      {
-        module: "preprocessing",
-        submodule: "MinMaxScaler",
-        type: "Scaler",
-      },
-      {
-        module: "preprocessing",
-        submodule: "MaxAbsScaler",
-        type: "Scaler",
-      },
-      {
-        module: "preprocessing",
-        submodule: "RobustScaler",
-        type: "Scaler",
-      },
-    ];
-    const Regression = [
-      {
-        module: "dummy",
-        submodule: "DummyRegressor",
-        type: "Regression",
-      },
-      {
-        module: "ensemble",
-        submodule: "AdaBoostRegressor",
-        type: "Regression",
-      },
-      {
-        module: "ensemble",
-        submodule: "BaggingRegressor",
-        type: "Regression",
-      },
-      {
-        module: "ensemble",
-        submodule: "ExtraTreesRegressor",
-        type: "Regression",
-      },
-      {
-        module: "ensemble",
-        submodule: "GradientBoostingRegressor",
-        type: "Regression",
-      },
-      {
-        module: "ensemble",
-        submodule: "RandomForestRegressor",
-        type: "Regression",
-      },
-      {
-        module: "ensemble",
-        submodule: "StackingRegressor",
-        type: "Regression",
-      },
-      {
-        module: "gaussian_process",
-        submodule: "GaussianProcessRegressor",
-        type: "Regression",
-      },
-      {
-        module: "linear_model",
-        submodule: "PassiveAggressiveRegressor",
-        type: "Regression",
-      },
-      {
-        module: "neighbors",
-        submodule: "KNeighborsRegressor",
-        type: "Regression",
-      },
-      {
-        module: "neighbors",
-        submodule: "RadiusNeighborsRegressor",
-        type: "Regression",
-      },
-      {
-        module: "neural_network",
-        submodule: "MLPRegressor",
-        type: "Regression",
-      },
-      {
-        module: "svm",
-        submodule: "LinearSVR",
-        type: "Regression",
-      },
-      {
-        module: "svm",
-        submodule: "SVR",
-        type: "Regression",
-      },
-      {
-        module: "tree",
-        submodule: "DecisionTreeRegressor",
-        type: "Regression",
-      },
-      {
-        module: "ensemble",
-        submodule: "HistGradientBoostingRegressor",
-        type: "Regression",
-      },
-      {
-        module: "ensemble",
-        submodule: "VotingRegressor",
-        type: "Regression",
-      },
-      {
-        module: "linear_model",
-        submodule: "GammaRegressor",
-        type: "Regression",
-      },
-      {
-        module: "linear_model",
-        submodule: "HuberRegressor",
-        type: "Regression",
-      },
-      {
-        module: "linear_model",
-        submodule: "PoissonRegressor",
-        type: "Regression",
-      },
-      {
-        module: "linear_model",
-        submodule: "QuantileRegressor",
-        type: "Regression",
-      },
-      {
-        module: "linear_model",
-        submodule: "RANSACRegressor",
-        type: "Regression",
-      },
-      {
-        module: "linear_model",
-        submodule: "SGDRegressor",
-        type: "Regression",
-      },
-      {
-        module: "linear_model",
-        submodule: "TheilSenRegressor",
-        type: "Regression",
-      },
-      {
-        module: "linear_model",
-        submodule: "TweedieRegressor",
-        type: "Regression",
-      },
-      {
-        module: "multioutput",
-        submodule: "MultiOutputRegressor",
-        type: "Regression",
-      },
-      {
-        module: "multioutput",
-        submodule: "RegressorChain",
-        type: "Regression",
-      },
-      {
-        module: "tree",
-        submodule: "ExtraTreeRegressor",
-        type: "Regression",
-      },
-    ];
-    // const apiResponse = await getAnalyticsNodes(reqBody);
-    if (Edges) {
+    dispatch(showLoader());
+    const apiResponse = await getAnalyticsNodes(reqBody);
+    if (apiResponse.Status === 200) {
       let parameters = [];
       let edgesConnection = [];
       let imputerConnections = [];
@@ -413,21 +168,20 @@ const Model = () => {
       let tempEstAlgoList = [];
       let tempEstTypeList = [];
       let tempRegressionList = [];
-      // let targetVariable = apiResponse.data?.target_variable;
-      let targetVariable = "DIM_2";
-      // setSelectedTargetVariable(targetVariable);
-      Imputers.forEach((ele) => {
+      let targetVariable = apiResponse.data?.target_variable;
+      setSelectedTargetVariable(targetVariable);
+      apiResponse?.data?.Imputer.forEach((ele) => {
         imputerList.push(ele.submodule);
         const tempTypeList = [...imputerTypeList];
         tempTypeList.push(ele.module);
         setImputerTypeList(tempTypeList);
       });
       setImputerList(imputerList);
-      Scaler.forEach((sca) => {
+      apiResponse?.data?.Scaler.forEach((sca) => {
         tempScalerList.push(sca.submodule);
       });
       setScalerList(tempScalerList);
-      Regression.forEach((regression) => {
+      apiResponse?.data?.Regression.forEach((regression) => {
         tempEstAlgoList.push(regression?.submodule);
         tempEstTypeList.push(regression?.type);
         tempRegressionList.push(regression?.module);
@@ -438,7 +192,7 @@ const Model = () => {
         regressionList: [...new Set(tempRegressionList)],
         typeList: [...new Set(tempEstTypeList)],
       });
-      Edges.forEach((ele, index) => {
+      apiResponse?.data?.Edge?.forEach((ele, index) => {
         if (ele.Type === "Parameter") {
           parameters.push(ele);
         } else if (ele.Type === "Imputer") {
@@ -460,7 +214,6 @@ const Model = () => {
           element.data = {
             label: (
               <div className="node-inside">
-                {console.log(targetVariable, element.Node, "nouii")}
                 {String(targetVariable) === String(element.Node) && (
                   <img src={StarImg} />
                 )}
@@ -470,7 +223,11 @@ const Model = () => {
           };
           element.position = { x: 100, y: 30 };
           element.style = {
-            border: "1px solid #FF4D4F",
+            border:
+              element?.Variable_Category === "numerical"
+                ? "1px solid #4CA022"
+                : "1px solid #FF4D4F",
+            width: "80px",
           };
         } else {
           id = id + 1;
@@ -492,7 +249,11 @@ const Model = () => {
           };
           element.position = { x: 100, y: yaxis };
           element.style = {
-            border: "1px solid #FF4D4F",
+            border:
+              element?.Variable_Category === "numerical"
+                ? "1px solid #4CA022"
+                : "1px solid #FF4D4F",
+            width: "80px",
           };
         }
         if (element.Source === "View") {
@@ -526,7 +287,7 @@ const Model = () => {
           animated: false,
           target: `imp-${index + 1}`,
         };
-        imputer.position = { x: 200, y: 50 };
+        imputer.position = { x: 260, y: 50 };
         existingNodes.push(imputer);
         edgesConnection.push(imputer.edge);
       });
@@ -544,13 +305,16 @@ const Model = () => {
             border: "none",
             borderRadius: "4px",
           },
-          position: { x: 400, y: 20 },
+          position: { x: 470, y: 20 },
         };
         let tempScalerSelectedValues = [];
         scalerConnections.forEach((scaler) => {
-          console.log(scaler, "scaler");
           tempScalerSelectedValues.push(scaler.Source);
           if (scaler.Source === "Imputer") {
+            const findObj = existingNodes.find(
+              (ext) => ext.Destination === "Scaler"
+            );
+            tempScalerNode.data = JSON.parse(JSON.stringify(findObj));
             const edge = {
               source: "imp-1",
               type: "smoothstep",
@@ -585,10 +349,10 @@ const Model = () => {
           padding: "8px",
           borderRadius: "4px",
         },
-        position: { x: 600, y: 81 },
+        position: { x: 700, y: 200 },
         type: "EstimatorNode",
       };
-      Edges.forEach((existing) => {
+      apiResponse?.data?.Edge?.forEach((existing) => {
         if (existing.Destination === "Estimator") {
           tempEstNode.data = JSON.parse(JSON.stringify(existing));
           const findTempEst = existingNodes.find(
@@ -619,11 +383,31 @@ const Model = () => {
       setEdges(edgesConnection);
       setNodesAnalytics(existingNodes);
       setNodes(existingNodes);
+      dispatch(hideLoader());
+    } else {
+      dispatch(hideLoader());
+      dispatch(showNotification("error", "Unable to get model data"));
+    }
+  };
+
+  const getModelJson = async () => {
+    const reqBody = {
+      batch_filter: selectedViewData?.batch_filter,
+      data_filter: selectedViewData?.data_filter,
+      view_disp_id: selectedViewData?.view_id,
+      view_version: selectedViewData?.view_version,
+    };
+    dispatch(showLoader());
+    const apiResponse = await getAnalyticsModel(reqBody);
+    if (apiResponse.Status === 200) {
+      setFinalModelJson(apiResponse.data);
+      dispatch(hideLoader());
+    } else {
+      dispatch(hideLoader());
     }
   };
 
   const onNodeClick = (e, node) => {
-    console.log(node, "nodeee");
     if (node.Type === "Parameter") {
       setNodeInformation(node);
       setDetailsVisible(true);
@@ -632,11 +416,31 @@ const Model = () => {
 
   useEffect(() => {
     getNodes();
+    getModelJson();
   }, []);
 
   useEffect(() => {
     setNodeTypes(nodesNew);
   }, [drawervisible]);
+
+  const setTargetVariable = () => {
+    const existingModelJson = JSON.parse(JSON.stringify(finalModelJson));
+    const findObj = existingModelJson?.variable_mapping?.find(
+      (ele) => ele.variable_name === selectedTargetValue
+    );
+    let X = [];
+    let Y = [];
+    if (findObj) {
+      existingModelJson?.variable_mapping?.forEach((model) => {
+        if (model.variable_name === findObj.variable_name) {
+          Y.push(model.variable_id);
+        } else {
+          X.push(model.variable_id);
+        }
+      });
+      setFinalModelJson({ ...finalModelJson, X: X, Y: Y });
+    }
+  };
 
   useEffect(() => {
     if (selectedTargetValue && selectedTargetValue.length >= 1) {
@@ -646,22 +450,34 @@ const Model = () => {
           ele.data = {
             label: <div className="node-inside">{ele.Node}</div>,
           };
+          ele.style = {
+            border: "1px solid #4CA022",
+            width: "80px",
+          };
         }
       });
-      const findIndex = existingNodes.findIndex(
-        (ele) => ele.Node === selectedTargetValue
+      const findIndex = existingNodes?.findIndex(
+        (ele) => ele?.Node === selectedTargetValue
       );
-      existingNodes[findIndex].data = {
-        label: (
-          <div className="node-inside">
-            <img src={StarImg} />
-            {existingNodes[findIndex].Node}
-          </div>
-        ),
-      };
-      existingNodes[findIndex].existingVariable = true;
+
+      if (findIndex !== -1) {
+        existingNodes[findIndex].data = {
+          label: (
+            <div className="node-inside">
+              <img src={StarImg} />
+              {existingNodes[findIndex]?.Node}
+            </div>
+          ),
+        };
+        existingNodes[findIndex].existingVariable = true;
+        existingNodes[findIndex].style = {
+          border: "1px solid #FF4D4F",
+          width: "80px",
+        };
+      }
       setNodesAnalytics(existingNodes);
       setNodes(existingNodes);
+      setTargetVariable();
     }
   }, [selectedTargetValue]);
 
@@ -708,33 +524,38 @@ const Model = () => {
         </Col>
       </Row>
       <div className="analysisRowContainer">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          fitView
-          onNodeClick={onNodeClick}
-          nodeTypes={nodeTypes}
-          // attributionPosition="top-left"
-        >
-          <Background variant="dots" gap={25} size={0.3} color="#313131" />
-          <ModalComponent
-            isModalVisible={detailsVisible}
-            width="800px"
-            title="Details"
-            centered={true}
-            handleCancel={() => setDetailsVisible(false)}
+        {nodes && nodes.length > 1 && (
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            fitView
+            onNodeClick={onNodeClick}
+            nodeTypes={nodeTypes}
+            // attributionPosition="top-left"
           >
-            <NodeDetails
-              addEstimator={addEstimator}
-              nodeInformation={nodeInformation}
-              setSelectedTargetVariable={setSelectedTargetVariable}
-              selectedTargetValue={selectedTargetValue}
-            />
-          </ModalComponent>
-        </ReactFlow>
+            <Background variant="dots" gap={25} size={0.3} color="#313131" />
+            <ModalComponent
+              isModalVisible={detailsVisible}
+              width="800px"
+              title="Details"
+              centered={true}
+              handleCancel={() => {
+                setDetailsVisible(false);
+                setNodeInformation("");
+              }}
+            >
+              <NodeDetails
+                addEstimator={addEstimator}
+                nodeInformation={nodeInformation}
+                setSelectedTargetVariable={setSelectedTargetVariable}
+                selectedTargetValue={selectedTargetValue}
+              />
+            </ModalComponent>
+          </ReactFlow>
+        )}
         <div className="anaylsisRight">
           <div className="pbrPanel pbrRightPanel">
             <Sider
@@ -757,6 +578,8 @@ const Model = () => {
                   scalerAlgoValue={scalerAlgoValue}
                   setScalerAlgoValue={setScalerAlgoValue}
                   setSaveScalerAlgoValue={setSaveScalerAlgoValue}
+                  finalModelJson={finalModelJson}
+                  setFinalModelJson={setFinalModelJson}
                 />
               )}
               {type === "transform" && drawervisible && (
@@ -771,6 +594,8 @@ const Model = () => {
                   selectedImputeValue={selectedImputeValue}
                   saveTransformationValues={saveTransformationValues}
                   setSaveTransformationValues={setSaveTransformationValues}
+                  finalModelJson={finalModelJson}
+                  setFinalModelJson={setFinalModelJson}
                 />
               )}
               {type === "estimator" && drawervisible && (
@@ -783,6 +608,8 @@ const Model = () => {
                   setSavedEstimatorPopupDataValues={
                     setSavedEstimatorPopupDataValues
                   }
+                  finalModelJson={finalModelJson}
+                  setFinalModelJson={setFinalModelJson}
                 />
               )}
             </Sider>

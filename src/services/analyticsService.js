@@ -23,6 +23,49 @@ export const getPipelineList = (_queryParam) => {
   );
 };
 
+export const getResults = (_queryParam) => {
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
+  const headers = {
+    "content-type": "application/json",
+    "x-access-token": login_response.token ? login_response.token : "",
+    "resource-name": "ANALYTICS",
+    username: localStorage.getItem("user"),
+  };
+  return Service.get(
+    BMS_APP_PYTHON_SERVICE + "/analysis-result",
+    _queryParam,
+    headers
+  ).then(
+    (response) => {
+      return response.data;
+    },
+    (error) => {
+      return error.response.data;
+    }
+  );
+};
+
+export const getViewNodeDetails = (query_param) => {
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
+  const headers = {
+    "content-type": "application/json",
+    "x-access-token": login_response.token ? login_response.token : "",
+    "resource-name": "VIEW",
+  };
+  return Service.get(
+    BMS_APP_PYTHON_SERVICE + "/analyse-view",
+    query_param,
+    headers
+  ).then(
+    (response) => {
+      return response.data;
+    },
+    (error) => {
+      return error.response.data;
+    }
+  );
+};
+
 //save pipeline data
 export const putPipelineObj = (request) => {
   let login_response = JSON.parse(localStorage.getItem("login_details"));
@@ -137,6 +180,27 @@ export const getAnalyticsNodes = (request) => {
   };
   return Service.post(
     BMS_APP_PYTHON_SERVICE + "/analysis-model-populate",
+    request,
+    headers
+  ).then(
+    (response) => {
+      return response.data;
+    },
+    (error) => {
+      return error.response.data;
+    }
+  );
+};
+
+export const getAnalyticsModel = (request) => {
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
+  const headers = {
+    "content-type": "application/json",
+    "x-access-token": login_response.token ? login_response.token : "",
+    "resource-name": "ANALYTICS",
+  };
+  return Service.post(
+    BMS_APP_PYTHON_SERVICE + "/analysis-model-json",
     request,
     headers
   ).then(

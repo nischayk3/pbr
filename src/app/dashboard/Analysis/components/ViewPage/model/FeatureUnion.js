@@ -9,8 +9,20 @@ const FeatureUnion = ({
   setScalerAlgoValue,
   scalerAlgoValue,
   setSaveScalerAlgoValue,
+  finalModelJson,
+  setFinalModelJson,
 }) => {
   const onClickSave = () => {
+    const tempObj = JSON.parse(JSON.stringify(finalModelJson));
+    Object.entries(tempObj.feature_union_mapping).forEach(([key, value]) => {
+      if (value.type === "Scaler") {
+        value.transformation = `t_${scalerAlgoValue.toLowerCase()}`;
+      }
+    });
+    setFinalModelJson({
+      ...finalModelJson,
+      feature_union_mapping: tempObj.feature_union_mapping,
+    });
     setSaveScalerAlgoValue(scalerAlgoValue);
     onCreateClick();
   };
