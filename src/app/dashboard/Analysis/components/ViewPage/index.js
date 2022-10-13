@@ -61,11 +61,11 @@ const ViewPageAnalysis = () => {
       ]}
     />
   );
-  const onSaveClick = async () => {
+  const onSaveClick = async (save) => {
     const req = {
       ...selectedViewData.viewData,
       data: [{ ...finalModelJson }],
-      savetype: "save",
+      savetype: save,
       pipeline_disp_id: selectedViewData.viewData.pipeline_id,
     };
     dispatch(showLoader());
@@ -134,8 +134,8 @@ const ViewPageAnalysis = () => {
         <div className="btns">
           <div>
             <Button>Share</Button>
-            <Button onClick={onSaveClick}>Save</Button>
-            <Button>Save As</Button>
+            <Button onClick={() => onSaveClick("save")}>Save</Button>
+            <Button onClick={() => onSaveClick('saveAs')}>Save As</Button>
             {/* <Button onClick={() => setExectStart(true)}>Execute</Button> */}
             <Dropdown overlay={menu} trigger={["click"]} disabled={!exectStart}>
               <Button>Execute</Button>

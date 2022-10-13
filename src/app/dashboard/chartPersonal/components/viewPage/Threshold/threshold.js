@@ -71,11 +71,11 @@ const Threshold = ({ postChartData, setPostChartData }) => {
   const deleteThresh = async (key) => {
     const tempArr = thresholdList.filter((ele) => ele.key !== key);
     let newArr = JSON.parse(JSON.stringify(postChartData));
-    newArr.data[0].thresholds = newArr.data[0]?.thresholds.filter(
-      (ele) => ele.key !== key
-    );
     setThresholdList(tempArr);
     if (newArr.data[0].thresholds.length) {
+      newArr.data[0].thresholds = newArr.data[0]?.thresholds.filter(
+        (ele) => ele.key !== key
+      );
       await postThreshHold(newArr);
     }
   };
@@ -237,7 +237,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
               shape: thres?.marker?.symbol,
               size: thres?.marker?.size,
               color: thres?.marker?.color,
-              name: thres?.name.replace("Threshold-", ""),
+              name: thres?.name?.replace("Threshold-", ""),
             };
             tempthresholdList.push(tempObj);
           });
