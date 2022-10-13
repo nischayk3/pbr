@@ -176,9 +176,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       ];
     });
     setPostChartData({ ...postChartData, data: newArr });
+    let errorMsg = "";
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
+      errorMsg = viewRes?.message;
       let newdataArr = [...postChartData.data];
       newdataArr[0].data = viewRes.data[0].data;
       newdataArr[0].extras = viewRes.data[0].extras;
@@ -186,13 +188,12 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
       setPostChartData({ ...postChartData, data: newdataArr });
       setShowChart(true);
       dispatch(hideLoader());
-      if (!viewRes) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
     } catch (error) {
+      /* istanbul ignore next */
       dispatch(hideLoader());
+      if (errorMsg) {
+        dispatch(showNotification("error", errorMsg));
+      }
     }
   };
 

@@ -86,14 +86,11 @@ const rules = ({ postChartData, setPostChartData }) => {
     });
     const newArr = JSON.parse(JSON.stringify(postChartData));
     newArr.data[0].rules = select;
+    let errorMsg = "";
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(newArr);
-      if (!viewRes) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
+      errorMsg = viewRes?.message;
       let newdataArr = [...postChartData.data];
       newdataArr[0].violations = viewRes.data[0].violations;
       newdataArr[0].data = viewRes.data[0].data;
@@ -102,6 +99,10 @@ const rules = ({ postChartData, setPostChartData }) => {
       getRules();
       dispatch(hideLoader());
     } catch (error) {
+      /* istanbul ignore next */
+      if (errorMsg) {
+        dispatch(showNotification("error", errorMsg));
+      }
       dispatch(hideLoader());
     }
   };
@@ -111,9 +112,11 @@ const rules = ({ postChartData, setPostChartData }) => {
     setChecked([]);
     const newArr = JSON.parse(JSON.stringify(postChartData));
     newArr.data[0].rules = postChartClone.current.data[0].rules;
+    let errorMsg = "";
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(newArr);
+      errorMsg = viewRes?.message;
       let newdataArr = [...postChartData.data];
       newdataArr[0].rules = viewRes.data[0].rules;
       newdataArr[0].violations = viewRes.data[0].violations;
@@ -121,12 +124,11 @@ const rules = ({ postChartData, setPostChartData }) => {
       setPostChartData({ ...postChartData, data: newdataArr });
       getRules();
       dispatch(hideLoader());
-      if (!iewRes) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
     } catch (error) {
+      /* istanbul ignore next */
+      if (errorMsg) {
+        dispatch(showNotification("error", errorMsg));
+      }
       dispatch(hideLoader());
     }
   };

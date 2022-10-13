@@ -518,11 +518,11 @@ class AuditTrials extends React.Component {
 				{/* <Menu.Item key="1" onClick={() => this.getExcelFile("excel")}>
 					Excel
 				</Menu.Item> */}
-				<Menu.Item key="1" onClick={this.reportDownloadExcel}>
+				<Menu.Item key="1" onClick={() => this.getExcelFile("excel")}>
 					Excel
 				</Menu.Item>
 				<Menu.Divider />
-				<Menu.Item key="2" onClick={() => this.getExcelFile("csv")}>
+				<Menu.Item key="2" onClick={this.reportDownloadExcel}>
 					CSV
 				</Menu.Item>
 			</Menu>

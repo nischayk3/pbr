@@ -48,18 +48,19 @@ const ExclusionTable = ({
     setExclusionTable(exclusionData);
     exclusionIdCounter.current = exclusionIdCounter.current - 1;
     setPostChartData({ ...postChartData, data: newArr });
+    let errorMsg = "";
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
-      if (!viewRes) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
+      errorMsg = viewRes?.message;
       setPostChartData({ ...postChartData, data: viewRes.data });
       dispatch(hideLoader());
     } catch (err) {
+      /* istanbul ignore next */
       dispatch(hideLoader());
+      if (errorMsg) {
+        dispatch(showNotification("error", errorMsg));
+      }
     }
   };
 
