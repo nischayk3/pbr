@@ -113,21 +113,22 @@ const Display = ({ postChartData, setPostChartData }) => {
 
   const onSigmaLineChange = async (e) => {
     const chartData = JSON.parse(JSON.stringify(postChartData));
+    let errorMsg = "";
     chartData.data[0].plot_std = e;
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(chartData);
-      if (!viewRes) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
+      errorMsg = viewRes?.message;
       let newdataArr = [...postChartData.data];
       newdataArr[0].data = viewRes.data[0].data;
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
     } catch (error) {
+      /* istanbul ignore next */
       dispatch(hideLoader());
+      if (errorMsg) {
+        dispatch(showNotification("error", errorMsg));
+      }
     }
     setSigmaLines(e);
   };

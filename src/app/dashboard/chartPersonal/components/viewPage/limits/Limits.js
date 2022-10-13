@@ -574,24 +574,25 @@ const Limits = ({ postChartData, setPostChartData }) => {
     if (access) {
       return false;
     }
+    let errorMsg = "";
     const newArr = [...postChartData.data];
     newArr[0].limits = JSON.parse(JSON.stringify(data));
     setPostChartData({ ...postChartData, data: newArr });
     try {
       dispatch(showLoader());
       const viewRes = await postChartPlotData(postChartData);
+      errorMsg = viewRes?.message;
       let newdataArr = [...postChartData.data];
       newdataArr[0].limits = viewRes.data[0].limits;
       newdataArr[0].violations = viewRes.data[0].violations;
       newdataArr[0].data = viewRes.data[0].data;
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
-      if (!viewRes) {
-        dispatch(showNotification("error", viewRes?.message));
-        dispatch(hideLoader());
-        return false;
-      }
     } catch (error) {
+      /* istanbul ignore next */
+      if (errorMsg) {
+        dispatch(showNotification("error", errorMsg));
+      }
       dispatch(hideLoader());
     }
   };
