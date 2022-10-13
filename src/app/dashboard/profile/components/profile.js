@@ -14,7 +14,7 @@ import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import InputField from '../../../../components/InputField/InputField';
 import SelectSearchField from "../../../../components/SelectSearchField/SelectSearchField";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import { getUserProfile, passwordChange, sendUserProfile } from "../../../../services/loginService";
+import { getUserProfile, passwordChange, sendUserProfile, userProfileUpload } from "../../../../services/loginService";
 import "./style.scss";
 
 const Profile = () => {
@@ -131,20 +131,64 @@ const Profile = () => {
 		}
 	}
 
-	const image_input = document.querySelector("#image-input");
-	if (image_input !== null) {
-		image_input.addEventListener("change", function () {
-			const reader = new FileReader();
-			reader.addEventListener("load", () => {
-				const uploaded_image = reader.result;
-				setImage(this.files[0]);
-				setImagePrev(false);
-				setIsUserIcon("")
-				document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
-			});
-			reader.readAsDataURL(this.files[0]);
-		});
+	/* istanbul ignore next */
+	const userProfile = async () => {
+		try {
+			dispatch(showLoader());
+			const formData = new FormData();
+			formData.append("file", image);
+			formData.append("email_address", loginDetails && loginDetails.email_id);
+			const saveRes = await userProfileUpload(formData);
+
+			if (saveRes.statuscode === 200) {
+				dispatch(hideLoader());
+				dispatch(showNotification('success', "Updated Successfully"));
+			} else if (saveRes.statuscode === 400) {
+				dispatch(hideLoader());
+				dispatch(showNotification('error', saveRes.message));
+			} else {
+				dispatch(hideLoader());
+				dispatch(showNotification('error', "image upload error"));
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			/* istanbul ignore next */
+			dispatch(showNotification('error', error));
+		}
 	}
+
+
+	// const image_input = document.querySelector("#image-input");
+	// console.log("image_inputtttttttttt", image_input);
+	// if (image_input !== null) {
+	// 	image_input.addEventListener("change", function () {
+	// 		const reader = new FileReader();
+	// 		reader.addEventListener("load", () => {
+	// 			const uploaded_image = reader.result;
+	// 			setImage(this.files[0]);
+	// 			setImagePrev(false);
+	// 			setIsUserIcon("")
+	// 			userProfile()
+	// 			document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
+	// 		});
+	// 		reader.readAsDataURL(this.files[0]);
+	// 	});
+	// }
+
+	const imageChange = () => {
+		console.log("image changeeeee");
+		const reader = new FileReader();
+		reader.addEventListener("load", () => {
+			const uploaded_image = reader.result;
+			setImage(this.files[0]);
+			setImagePrev(false);
+			setIsUserIcon("")
+			userProfile()
+			document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
+		});
+		reader.readAsDataURL(this.files[0]);
+	}
+
 
 	const getProfile = async () => {
 		try {
@@ -206,7 +250,7 @@ const Profile = () => {
 											<span className="edit-icon">
 												<EditOutlined />
 											</span>
-											<input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" />
+											<input type="file" id="image-input" onChange={imageChange} accept="image/jpeg, image/png, image/jpg" />
 										</div>
 									</>
 								) : (
