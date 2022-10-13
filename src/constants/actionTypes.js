@@ -90,3 +90,4 @@ export const DRUG_SUBSTANCE = 'DRUG_SUBSTANCE';
 export const DRUG_LOAD = 'DRUG_LOAD';
 
 export const IS_TARGET_VAR = 'IS_TARGET_VAR';
+export const LOAD_VIEW_TABLE_DATA = 'LOAD_VIEW_TABLE_DATA';
