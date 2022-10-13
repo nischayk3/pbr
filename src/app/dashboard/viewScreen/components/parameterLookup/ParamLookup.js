@@ -110,7 +110,6 @@ const ParamLookup = ({ callbackMoleculeId, callbackFilter, moleculeId, setMolecu
 
 
 	const onChangeParam = (value) => {
-
 		setFilterValue(value)
 		callbackFilter(value)
 	}
