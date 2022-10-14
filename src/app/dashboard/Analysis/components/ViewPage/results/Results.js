@@ -16,7 +16,7 @@ const Results = () => {
     (state) => state.analyticsReducer.viewData
   );
   const dispatch = useDispatch();
-  const [resultsData, setResultsData] = useState({});
+  const [resultsData, setResultsData] = useState();
 
   const getResultFunc = async () => {
     const reqBody = {
@@ -34,8 +34,10 @@ const Results = () => {
   };
 
   useEffect(() => {
-    getResultFunc();
-  }, []);
+    if (!resultsData) {
+      getResultFunc();
+    }
+  }, [resultsData]);
 
   return (
     <div className="result_container">
@@ -77,7 +79,7 @@ const Results = () => {
             }
             key="1"
           >
-            <div style={{ display: "flex", maxWidth: "100vw" }}>
+            <div style={{ maxHeight:'65vh', overflow:'auto'}}>
               {resultsData?.chart?.map((ele) => {
                 return <Plot data={ele.data} layout={ele.layout} />;
               })}
