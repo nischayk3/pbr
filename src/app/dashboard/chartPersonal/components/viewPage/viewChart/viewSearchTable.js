@@ -71,11 +71,13 @@ const ViewSearchTable = ({
 							chartVersion: record.view_version,
 							viewVersion: record.view_version,
 						});
-						let _reqPayload = {
-							view_disp_id: record.view_disp_id,
-							view_version: record.view_version
+						if (callbackReq) {
+							let _reqPayload = {
+								view_disp_id: record.view_disp_id,
+								view_version: record.view_version
+							}
+							callbackReq(_reqPayload)
 						}
-						callbackReq(_reqPayload)
 						if (postChartData) {
 							let newArr = [...postChartData.data];
 							newArr.forEach((ele) => {

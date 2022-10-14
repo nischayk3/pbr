@@ -12,6 +12,8 @@ import {
   showLoader,
   showNotification,
 } from "../../../../../../duck/actions/commonActions";
+import { useSelector } from "react-redux";
+import { getAnalyticsViewData } from "../../../../../../duck/actions/analyticsView";
 
 const Preprocess = ({ setModelData, setTableKey }) => {
   const location = useLocation();
@@ -20,7 +22,9 @@ const Preprocess = ({ setModelData, setTableKey }) => {
   const [selectedValues, setSelectedValues] = useState();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [filterData, setFilterData] = useState([]);
-
+  const selectedViewData = useSelector(
+    (state) => state.analyticsReducer.viewData
+  );
   let columns = [];
 
   const first = "batch_num";
@@ -119,10 +123,13 @@ const Preprocess = ({ setModelData, setTableKey }) => {
         view_version: location?.state?.view_version,
       },
     };
+    const newViewData = JSON.parse(JSON.stringify(selectedViewData));
+    newViewData.batch_filter = selectedRowKeys ? selectedRowKeys : [];
     const apiResponse = await savePreprocessing(req);
     const data = await apiResponse;
     if (apiResponse.Status === 200) {
       dispatch(hideLoader());
+      dispatch(getAnalyticsViewData(newViewData));
       setModelData(data.html_string);
       setTableKey("2");
     } else {

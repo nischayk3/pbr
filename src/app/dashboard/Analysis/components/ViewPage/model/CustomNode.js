@@ -1,14 +1,35 @@
 import React, { useEffect } from "react";
 import { Handle } from "react-flow-renderer";
 
-export default ({ data, selected }) => {
+export default (props) => {
+  const {
+    data,
+    selected,
+    transformationFinal,
+    setTransformationsFinal,
+    addEstimator,
+    setImputerType,
+    setSelectedImputeValue,
+    saveTransformationValues,
+  } = props;
   useEffect(() => {
     if (selected) console.log("I've been selected!");
   }, [selected]);
 
   const handleClick = (event) => {
-    console.log("Button clicked.");
     event.stopPropagation();
+    setImputerType(
+      saveTransformationValues.imputerType
+        ? saveTransformationValues.imputerType
+        : data?.Destination_Parameter?.Module
+    );
+    setTransformationsFinal(
+      saveTransformationValues.transformationFinal
+        ? saveTransformationValues.transformationFinal
+        : data?.Destination_Parameter.submodule
+    );
+    setSelectedImputeValue(data?.Node);
+    addEstimator("transform");
   };
 
   return (
@@ -31,10 +52,12 @@ export default ({ data, selected }) => {
             background: "#fff",
             border: "0.5px solid grey",
             borderRadius: "4px",
+            cursor: "pointer",
           }}
           onClick={handleClick}
         >
-          Simple Imputer
+          {saveTransformationValues.transformationFinal ||
+            data?.Destination_Parameter?.submodule}
         </button>
       </div>
       <Handle type="source" position="right" />
