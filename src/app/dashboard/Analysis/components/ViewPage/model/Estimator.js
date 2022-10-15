@@ -61,17 +61,6 @@ const Estimator = (props) => {
           }
         />
         <SelectField
-          label="Regression"
-          selectList={estimatorPopupData.regressionList}
-          selectedValue={estimatorPopupDataValues.regressionListvalue}
-          onChangeSelect={(e) =>
-            setEstimatorPopupDataValues({
-              ...estimatorPopupDataValues,
-              regressionListvalue: e,
-            })
-          }
-        />
-        <SelectField
           label="Algorithms"
           selectList={estimatorPopupData.algoList}
           selectedValue={estimatorPopupDataValues.algoValue}
