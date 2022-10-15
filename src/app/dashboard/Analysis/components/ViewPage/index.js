@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import "./viewPage.scss";
 //antd-imports
 import { Button, Tabs, Dropdown, Menu, Space, DatePicker } from "antd";
@@ -18,10 +19,11 @@ import {
   hideLoader,
   showNotification,
 } from "../../../../../duck/actions/commonActions";
-import { putPipelineObj } from "../../../../../services/analyticsService";
+import { putPipelineObj, getPipeline } from "../../../../../services/analyticsService";
 import { putJob } from "../../../../../services/jobScheduleService";
 import moment from "moment";
 import Results from "./results/Results";
+import { getAnalyticsViewData } from "../../../../../duck/actions/analyticsView";
 
 const ViewPageAnalysis = () => {
   const [modelData, setModelData] = useState();
@@ -31,9 +33,11 @@ const ViewPageAnalysis = () => {
   const [executed, setEXecuted] = useState(false);
   const [exectLaterDate, setExectLaterDate] = useState("");
   const [finalModelJson, setFinalModelJson] = useState({});
+  const [editFinalJson, setEditFinalModelJson] = useState();
   const tabChange = (key) => {
     setTableKey(key);
   };
+  const { id } = useParams();
   const dispatch = useDispatch();
   const selectedViewData = useSelector((state) => state.analyticsReducer);
   const menu = (
@@ -123,6 +127,36 @@ const ViewPageAnalysis = () => {
     setExectLater(false);
   };
 
+  const getPipelineList = async () => {
+    let req = {
+      pipelineId : id
+    };
+    dispatch(showLoader());
+    const data = await getPipeline(req)
+    if (data.Status === 200) {
+      const viewDetails = {
+        pipeline_name: data?.data?.pipeline_name,
+        savetype: "saveas",
+        view_id: data?.data?.view_disp_id,
+        view_version: data?.data?.view_version,
+        data_filter: data?.data?.input_data?.data_filter,
+        batch_filter: data?.data?.input_data?.batch_filter,
+        pipeline_id: data?.data?.pipeline_disp_id
+      };
+      dispatch(getAnalyticsViewData(viewDetails));
+      setEditFinalModelJson(data.data)
+      dispatch(hideLoader());
+    } else {
+      dispatch(hideLoader());
+    }
+  }
+
+  useEffect(() => {
+    if (id) {
+      getPipelineList();
+     }
+  }, []);
+
   return (
     <div className="custom-wrapper bread-wrapper view-analysis-container">
       <div className="sub-header">
@@ -137,7 +171,7 @@ const ViewPageAnalysis = () => {
             <Button onClick={() => onSaveClick("save")}>Save</Button>
             <Button onClick={() => onSaveClick('saveAs')}>Save As</Button>
             {/* <Button onClick={() => setExectStart(true)}>Execute</Button> */}
-            <Dropdown overlay={menu} trigger={["click"]} disabled={!exectStart}>
+            <Dropdown overlay={menu} trigger={["click"]} disabled={!exectStart && !editFinalJson}>
               <Button>Execute</Button>
             </Dropdown>
             <Button>
@@ -159,21 +193,22 @@ const ViewPageAnalysis = () => {
           }
         >
           <TabPane tab="Preprocess" key="1">
-            <Preprocess setModelData={setModelData} setTableKey={setTableKey} />
+            <Preprocess setModelData={setModelData} setTableKey={setTableKey} editFinalJson={editFinalJson} />
           </TabPane>
           <TabPane tab="Model data" key="2">
-            <ModelData modelData={modelData} />
+            <ModelData modelData={modelData} setModelData={ setModelData} editFinalJson={editFinalJson} />
           </TabPane>
           <TabPane tab="Model" key="3">
             <Model
               finalModelJson={finalModelJson}
               setFinalModelJson={setFinalModelJson}
+              editFinalJson={editFinalJson}
             />
           </TabPane>
           {/* <TabPane tab="Transformation" key="4">
             <Transformation />
           </TabPane> */}
-          {executed && !exectLater && (
+          {(executed && !exectLater) || (editFinalJson) && (
             <TabPane tab="Results" key="5">
               <Results />
             </TabPane>

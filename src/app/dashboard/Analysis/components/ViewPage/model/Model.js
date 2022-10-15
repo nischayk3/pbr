@@ -32,7 +32,7 @@ import {
 
 const { Step } = Steps;
 
-const Model = ({ finalModelJson, setFinalModelJson }) => {
+const Model = ({ finalModelJson, setFinalModelJson, editFinalJson }) => {
   const selectedViewData = useSelector(
     (state) => state.analyticsReducer.viewData
   );
@@ -48,7 +48,7 @@ const Model = ({ finalModelJson, setFinalModelJson }) => {
         border: "none",
         borderRadius: "4px",
       },
-      data: { label: selectedViewData?.view_id },
+      data: { label: editFinalJson?.view_disp_id ? editFinalJson?.view_disp_id : selectedViewData?.view_id },
       position: { x: 0, y: 200 },
     },
   ]);
@@ -141,7 +141,7 @@ const Model = ({ finalModelJson, setFinalModelJson }) => {
     setDrawerVisible(false);
     setDetailsVisible(false);
   };
-
+  console.log(savedEstimatorPopupDataValues, 'savedEstimatorPopupDataValues')
   const addEstimator = (vartype) => {
     setDrawerVisible(true);
     setDetailsVisible(false);
@@ -151,13 +151,18 @@ const Model = ({ finalModelJson, setFinalModelJson }) => {
   const getNodes = async () => {
     const reqBody = {
       batch_filter: selectedViewData?.batch_filter,
-      data_filter: selectedViewData?.data_filter,
+      data_filter:  selectedViewData?.data_filter,
       view_disp_id: selectedViewData?.view_id,
       view_version: selectedViewData?.view_version,
+      target_variable : editFinalJson?.input_data?.target_variable ? editFinalJson?.input_data?.target_variable : undefined
     };
     dispatch(showLoader());
     const apiResponse = await getAnalyticsNodes(reqBody);
     if (apiResponse.Status === 200) {
+      let finalJson
+      if (editFinalJson?.pipeline_data[0]) {
+        finalJson = JSON.parse(JSON.stringify(editFinalJson?.pipeline_data[0]))
+      }
       let parameters = [];
       let edgesConnection = [];
       let imputerConnections = [];
@@ -170,21 +175,41 @@ const Model = ({ finalModelJson, setFinalModelJson }) => {
       let tempRegressionList = [];
       let targetVariable = apiResponse.data?.target_variable;
       setSelectedTargetVariable(targetVariable);
-      apiResponse?.data?.Imputer.forEach((ele) => {
+      apiResponse?.data?.Imputer?.forEach((ele) => {
         imputerList.push(ele.submodule);
+        if (finalJson?.feature_union_mapping) {
+          Object.entries(finalJson.feature_union_mapping).forEach(([key, value]) => {
+            if (value.type === "Imputer" && value.transformation === ele.submodule_key) {
+              setTransformationsFinal(ele.submodule)
+              setSaveTransformationValues({...saveTransformationValues, transformationFinal: ele.submodule})
+            } 
+          });
+        }
         const tempTypeList = [...imputerTypeList];
         tempTypeList.push(ele.module);
         setImputerTypeList(tempTypeList);
       });
       setImputerList(imputerList);
-      apiResponse?.data?.Scaler.forEach((sca) => {
+      apiResponse?.data?.Scaler?.forEach((sca) => {
         tempScalerList.push(sca.submodule);
+        if (finalJson?.feature_union_mapping) {
+          Object.entries(finalJson?.feature_union_mapping).forEach(([key, value]) => {
+           if(value.type === "Scaler" && value.transformation === sca.submodule_key) {
+             setScalerAlgoValue(sca.submodule)
+             setSaveScalerAlgoValue(sca.submodule)
+            }
+          });
+        }
       });
       setScalerList(tempScalerList);
-      apiResponse?.data?.Regression.forEach((regression) => {
+      apiResponse?.data?.Regression?.forEach((regression) => {
         tempEstAlgoList.push(regression?.submodule);
         tempEstTypeList.push(regression?.type);
         tempRegressionList.push(regression?.module);
+        if (finalJson?.estimator && finalJson?.estimator.e_randomforestregressor_0.model_name === regression.submodule_key) {
+          setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.submodule })
+          setSavedEstimatorPopupDataValues({...savedEstimatorPopupDataValues, algoValue:regression.submodule})
+        }
       });
       setEstimatorPopupData({
         ...estimatorPopupData,
@@ -416,15 +441,31 @@ const Model = ({ finalModelJson, setFinalModelJson }) => {
 
   useEffect(() => {
     getNodes();
-    getModelJson();
   }, []);
 
   useEffect(() => {
-    setNodeTypes(nodesNew);
-  }, [drawervisible]);
+    if (editFinalJson?.pipeline_data) {
+      const finalJson = JSON.parse(JSON.stringify(editFinalJson?.pipeline_data[0]))
+      setFinalModelJson(finalJson);
+    } else {
+      getModelJson();
+    }
+  }, [editFinalJson])
+
+  useEffect(() => {
+    setNodeTypes(nodesNew)
+  }, [savedEstimatorPopupDataValues.algoValue])
+
+  useEffect(() => {
+    setNodeTypes(nodesNew)
+  }, [saveScalerAlgoValue])
+
+  useEffect(() => {
+    setNodeTypes(nodesNew)
+  }, [saveTransformationValues.transformationFinal])
 
   const setTargetVariable = () => {
-    const existingModelJson = JSON.parse(JSON.stringify(finalModelJson));
+    const existingModelJson = editFinalJson?.pipeline_data ? JSON.parse(JSON.stringify(editFinalJson?.pipeline_data[0])) : JSON.parse(JSON.stringify(finalModelJson));
     const findObj = existingModelJson?.variable_mapping?.find(
       (ele) => ele.variable_name === selectedTargetValue
     );
@@ -552,6 +593,7 @@ const Model = ({ finalModelJson, setFinalModelJson }) => {
                 nodeInformation={nodeInformation}
                 setSelectedTargetVariable={setSelectedTargetVariable}
                 selectedTargetValue={selectedTargetValue}
+                editFinalJson={editFinalJson}
               />
             </ModalComponent>
           </ReactFlow>

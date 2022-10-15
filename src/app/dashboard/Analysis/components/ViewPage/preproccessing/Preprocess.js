@@ -15,7 +15,7 @@ import {
 import { useSelector } from "react-redux";
 import { getAnalyticsViewData } from "../../../../../../duck/actions/analyticsView";
 
-const Preprocess = ({ setModelData, setTableKey }) => {
+const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [preprocessData, setPreprocessData] = useState([]);
@@ -49,15 +49,16 @@ const Preprocess = ({ setModelData, setTableKey }) => {
     });
   });
   columns = columns.filter((ele) => ele.title !== "KEY");
+
   const getPreprocessingData = async (filter) => {
     const request = {
       batch_filter: filter ? filter : [],
-      data_filter: location?.state?.data[0]?.data_filter,
-      view_disp_id: location?.state?.view_id,
-      view_version: location?.state?.view_version,
+      data_filter:  editFinalJson?.input_data?.data_filter ? editFinalJson?.input_data?.data_filter : location?.state?.data[0]?.data_filter,
+      view_disp_id: editFinalJson?.view_disp_id ? editFinalJson?.view_disp_id : location?.state?.view_id,
+      view_version: editFinalJson?.view_version ? editFinalJson?.view_version : location?.state?.view_version,
     };
-    request.data_filter.site = request.data_filter.site
-      ? request.data_filter.site
+    request.data_filter.site = request?.data_filter?.site
+      ? request?.data_filter?.site
       : "";
     dispatch(showLoader());
     const apiResponse = await getPreprocessing(request);
@@ -75,6 +76,8 @@ const Preprocess = ({ setModelData, setTableKey }) => {
       dispatch(showNotification("error", "Unable to fetch preprocessing data"));
     }
   };
+
+
   const handleChange = (value) => {
     setSelectedValues(value);
   };
@@ -82,6 +85,7 @@ const Preprocess = ({ setModelData, setTableKey }) => {
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
+
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
@@ -113,14 +117,14 @@ const Preprocess = ({ setModelData, setTableKey }) => {
     ],
   };
 
-  const onSaveClick = async () => {
+  const onSaveClick = async (edit) => {
     dispatch(showLoader());
     const req = {
       analysis_preprocessing: {
         batch_filter: selectedRowKeys,
-        data_filter: location?.state?.data[0]?.data_filter,
-        view_disp_id: location?.state?.view_id,
-        view_version: location?.state?.view_version,
+        data_filter:  selectedViewData?.data_filter,
+        view_disp_id: selectedViewData?.view_id,
+        view_version: selectedViewData?.view_version,
       },
     };
     const newViewData = JSON.parse(JSON.stringify(selectedViewData));
@@ -131,16 +135,25 @@ const Preprocess = ({ setModelData, setTableKey }) => {
       dispatch(hideLoader());
       dispatch(getAnalyticsViewData(newViewData));
       setModelData(data.html_string);
-      setTableKey("2");
+      if (edit) {
+        setTableKey("2");
+      }
     } else {
       dispatch(hideLoader());
-      dispatch(showNotification("error", "Unable to fetch preprocessing data"));
+      dispatch(showNotification("error", "Unable to save preprocessing data"));
     }
   };
 
+  console.log(editFinalJson, 'editFinalJson');
+
   useEffect(() => {
+    if (editFinalJson?.input_data?.batch_filter) {
+      let tempFilter = [...selectedRowKeys]
+      tempFilter = tempFilter.concat(editFinalJson?.input_data?.batch_filter)
+      setSelectedRowKeys(tempFilter)
+    }
     getPreprocessingData();
-  }, []);
+  }, [editFinalJson]);
 
   return (
     <div className="preprocess-container">
@@ -149,7 +162,7 @@ const Preprocess = ({ setModelData, setTableKey }) => {
           <Button
             className="custom-primary-btn"
             disabled={selectedRowKeys.length === 0}
-            onClick={onSaveClick}
+            onClick={() => onSaveClick(true)}
           >
             Save
           </Button>

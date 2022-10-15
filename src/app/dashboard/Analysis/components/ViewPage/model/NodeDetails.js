@@ -16,6 +16,7 @@ const NodeDetails = (props) => {
     selectedTargetValue,
     setSelectedTargetVariable,
     nodeInformation,
+    editFinalJson
   } = props;
   const dispatch = useDispatch();
   const [nodeData, setNodeData] = useState({});
@@ -29,8 +30,7 @@ const NodeDetails = (props) => {
       view_disp_id: selectedViewData?.view_id,
       version: selectedViewData?.viewVersion,
       parameter_name: nodeInformation.Node,
-      unapproved:
-        selectedViewData?.data_filter?.unapproved_data === 1 ? true : false,
+      unapproved: selectedViewData?.data_filter?.unapproved_data === 1 ? true : false,
     };
     dispatch(showLoader());
     let tempNodeData = { ...nodeData };

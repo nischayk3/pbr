@@ -41,7 +41,7 @@ const Results = () => {
 
   return (
     <div className="result_container">
-      <Row gutter={16}>
+      {resultsData && <><Row gutter={16}>
         <Col span={2}>
           <p>Val Score</p>
         </Col>
@@ -58,13 +58,13 @@ const Results = () => {
           <p>: {resultsData?.train_score || "-"}</p>
         </Col>
         <Col span={6} />
-      </Row>
+      </Row></>}
       {resultsData?.chart && resultsData?.chart.length && (
         <Collapse expandIconPosition="right" accordion>
           <Panel
             header={
               <div>
-                Metrics{" "}
+                Chart
                 <label
                   style={{
                     marginLeft: "5px",
