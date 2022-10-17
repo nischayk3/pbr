@@ -3,7 +3,6 @@ import React, { lazy, useState } from "react";
 import { useDispatch } from "react-redux";
 import illustrations from "../../../../../assets/images/dss-landing.png";
 import jupyter_logo from "../../../../../assets/images/jupyter.png";
-import { onClickTarget } from "../../../../../duck/actions/viewAction";
 import LoadDataSet from "../loadDataSet/LoadDataSet";
 import Viewset from "../viewSet/Viewset";
 import "./styles.scss";
@@ -56,9 +55,9 @@ export default function Landing() {
 					</div>
 					<div
 						className="jupyter-card"
-						onClick={() => {
-							dispatch(onClickTarget(true));
-						}}
+					// onClick={() => {
+					// 	dispatch(onClickTarget(true));
+					// }}
 					>
 						<img src={jupyter_logo} />
 						<p>Explore on your own</p>

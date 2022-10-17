@@ -3,7 +3,9 @@ import { Card, Radio, Table } from "antd";
 import React from "react";
 import Plot from 'react-plotly.js';
 import { useDispatch, useSelector } from "react-redux";
+import { hideLoader, showLoader, showNotification } from '../../../../../duck/actions/commonActions';
 import { onClickTarget } from '../../../../../duck/actions/viewAction';
+import { analysisView } from '../../../../../services/dataScienceStudioService';
 import "./style.scss";
 
 const columns = [
@@ -21,37 +23,16 @@ const columns = [
 	Table.EXPAND_COLUMN,
 	{
 		title: 'Parameters',
-		dataIndex: 'parameter_name',
+		dataIndex: 'Parameter_name',
 		key: 'parameters',
 	},
 ];
-const data = [
-	{
-		key: 1,
-		parameters: 'L0_S0_01',
-		description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
 
-	},
-	{
-		key: 2,
-		parameters: 'L0_S0_02',
-		description: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.',
-	},
-	{
-		key: 3,
-		parameters: 'L0_S0_02',
-		description: 'This not expandable',
-	},
-	{
-		key: 4,
-		parameters: 'L0_S0_03',
-		description: 'My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park.',
-	},
-];
 
 
 const TargetVariable = () => {
 	const loadViewDataTable = useSelector((state) => state.dataScienceReducer.loadViewData)
+	const viewIdVer = useSelector((state) => state.dataScienceReducer.viewIdVer)
 	console.log("loadViewDataTable", loadViewDataTable)
 	const dispatch = useDispatch();
 
@@ -96,7 +77,7 @@ const TargetVariable = () => {
 					className="custom-tree-table1"
 					pagination={false}
 					columns={childColumn}
-					dataSource={loadViewDataTable.map((item, i) => item.children)}
+					dataSource={childData}
 				/>
 				<Plot
 					data={[
@@ -122,6 +103,35 @@ const TargetVariable = () => {
 		)
 	}
 
+	const onTableRowExpand = (expanded, record) => {
+		console.log("expanded, record", expanded, record);
+		const _reqRow = {
+			view_disp_id: viewIdVer.view_disp_id,
+			version: viewIdVer.view_version,
+			parameter_name: record.Parameter_name
+		}
+
+		if (expanded) {
+			loadAnalysisView(_reqRow); // I have set my record.id as row key. Check the documentation for more details.
+		}
+
+		// this.setState({ expandedRowKeys: keys });
+	}
+
+	//analysis view
+	const loadAnalysisView = async (_reqLoad) => {
+		try {
+			dispatch(showLoader());
+			const analysisRes = await analysisView(_reqLoad);
+			console.log("loadAnalysisView", analysisRes)
+			//setLoadViewData(dssres)
+			dispatch(hideLoader());
+		} catch (err) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", err));
+		}
+	}
+
 	return (
 		<div className="target-wrapper">
 			<Card title={(
@@ -137,7 +147,9 @@ const TargetVariable = () => {
 					<Table
 						columns={columns}
 						expandable={{ expandedRowRender }}
+						onExpand={onTableRowExpand}
 						dataSource={loadViewDataTable}
+						rowKey="Parameter_name"
 					/>
 				</div>
 			</Card>

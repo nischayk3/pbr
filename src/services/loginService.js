@@ -120,3 +120,24 @@ export const sendUserProfile = (request) => {
 		}
 	);
 };
+
+//profile upload image
+export const userProfileUpload = (request) => {
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
+
+	const headers = {
+		"content-type": "application/json",
+		"x-access-token": login_response.token ? login_response.token : "",
+		"resource-name": 'USER_REPORT',
+		'Content-Type': 'multipart/form-data',
+	};
+
+	return Service.post(BMS_APP_PYTHON_SERVICE + '/user-profile-image', request, headers).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
