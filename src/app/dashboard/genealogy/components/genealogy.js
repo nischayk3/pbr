@@ -737,9 +737,7 @@ function Genealogy() {
 									{...files}
 									listType='text'
 									customRequest={dummyRequest}
-
 								>
-
 									<p className='ant-upload-drag-icon'>
 										<InboxOutlined />
 									</p>

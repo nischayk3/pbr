@@ -25,3 +25,39 @@ export const loadDssView = _queryParam => {
 		}
 	);
 };
+
+export const analysisView = _queryParam => {
+	return Service.get(
+		BMS_APP_PYTHON_SERVICE + '/analyse-view',
+		_queryParam,
+		request_headers
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
+
+//dss file upload
+export const dssFileUpload = (request) => {
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
+
+	const headers = {
+		"content-type": "application/json",
+		"x-access-token": login_response.token ? login_response.token : "",
+		"resource-name": 'ANALYTICS',
+		'Content-Type': 'multipart/form-data',
+	};
+
+	return Service.post(BMS_APP_PYTHON_SERVICE + '/dss_dataUpload', request, headers).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};

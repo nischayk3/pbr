@@ -7,7 +7,7 @@
  */
 
 import { EditOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, Avatar, Button, Input, Select } from 'antd';
+import { Alert, Avatar, Button, Input, Select, Upload } from 'antd';
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
@@ -23,6 +23,8 @@ const Profile = () => {
 
 	const dispatch = useDispatch();
 
+	const [fileList, setFileList] = useState([]);
+	const [uploadFile, setUploadFile] = useState([]);
 	const [currentPassword, setCurrentPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("")
@@ -43,6 +45,12 @@ const Profile = () => {
 	const dateFormat = ["MM:DD:YYYY"]
 	const timeZone = ["Asia/Kolkata"]
 	const language = ["English (UK)"]
+
+	const uploadButton = (
+		<span className="edit-icon">
+			<EditOutlined />
+		</span>
+	);
 
 	const handlePassChange = async () => {
 		const userId = localStorage.getItem("user")
@@ -132,17 +140,18 @@ const Profile = () => {
 	}
 
 	/* istanbul ignore next */
-	const userProfile = async () => {
+	const userProfile = async (formData) => {
 		try {
 			dispatch(showLoader());
-			const formData = new FormData();
-			formData.append("file", image);
-			formData.append("email_address", loginDetails && loginDetails.email_id);
+			// const formData = new FormData();
+			// formData.append("file", image);
+			// formData.append("email_address", loginDetails && loginDetails.email_id);
 			const saveRes = await userProfileUpload(formData);
 
 			if (saveRes.statuscode === 200) {
 				dispatch(hideLoader());
 				dispatch(showNotification('success', "Updated Successfully"));
+				getProfile();
 			} else if (saveRes.statuscode === 400) {
 				dispatch(hideLoader());
 				dispatch(showNotification('error', saveRes.message));
@@ -158,36 +167,19 @@ const Profile = () => {
 	}
 
 
-	// const image_input = document.querySelector("#image-input");
-	// console.log("image_inputtttttttttt", image_input);
-	// if (image_input !== null) {
-	// 	image_input.addEventListener("change", function () {
-	// 		const reader = new FileReader();
-	// 		reader.addEventListener("load", () => {
-	// 			const uploaded_image = reader.result;
-	// 			setImage(this.files[0]);
-	// 			setImagePrev(false);
-	// 			setIsUserIcon("")
-	// 			userProfile()
-	// 			document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
-	// 		});
-	// 		reader.readAsDataURL(this.files[0]);
-	// 	});
-	// }
+	const handleChange = ({ fileList: newFileList }) => {
+		//setFileList(newFileList)
+		console.log("image_inputtttttttttt", newFileList[0], newFileList[0].name, newFileList[0].thumbUrl);
 
-	const imageChange = () => {
-		console.log("image changeeeee");
-		const reader = new FileReader();
-		reader.addEventListener("load", () => {
-			const uploaded_image = reader.result;
-			setImage(this.files[0]);
-			setImagePrev(false);
-			setIsUserIcon("")
-			userProfile()
-			document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
-		});
-		reader.readAsDataURL(this.files[0]);
-	}
+		var formData = new FormData();
+		formData.append('file', newFileList[0].originFileObj);
+		formData.append("email_address", loginDetails && loginDetails.email_id);
+		setImage(formData);
+		setImagePrev(true);
+		setIsUserIcon("");
+		// setImgRes(newFileList[0].thumbUrl)
+		userProfile(formData)
+	};
 
 
 	const getProfile = async () => {
@@ -201,7 +193,7 @@ const Profile = () => {
 			if (getRes.statuscode === 200) {
 				dispatch(hideLoader());
 				setImagePrev(true)
-				setImgRes(getRes.message)
+				setImgRes(`${'data:image/png;base64,' + getRes.message}`)
 			} else {
 				setImagePrev(false)
 			}
@@ -246,11 +238,17 @@ const Profile = () => {
 								{imagePrev ? (
 									<>
 										<div className="profile-avatar">
-											<img src={"data:image/png;base64," + `${imgRes}`} alt="dummy" width="300" height="300" />
-											<span className="edit-icon">
-												<EditOutlined />
-											</span>
-											<input type="file" id="image-input" onChange={imageChange} accept="image/jpeg, image/png, image/jpg" />
+											<img src={imgRes} alt="dummy" width="300" height="300" />
+
+											<Upload
+												listType="picture"
+												fileList={fileList}
+												onChange={handleChange}
+												maxCount={1}
+											>
+												{uploadButton}
+											</Upload>
+											{/* <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" /> */}
 										</div>
 									</>
 								) : (
@@ -264,10 +262,16 @@ const Profile = () => {
 													margin: "10px 0"
 												}}
 												icon={isUserIcon} />
-											<span className="edit-icon">
-												<EditOutlined />
-											</span>
-											<input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" />
+
+											<Upload
+												listType="picture"
+												fileList={fileList}
+												onChange={handleChange}
+												maxCount={1}
+											>
+												{uploadButton}
+											</Upload>
+											{/* <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" /> */}
 										</div>
 									</>
 								)}
