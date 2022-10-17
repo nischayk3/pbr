@@ -7,11 +7,12 @@ import {
 	Menu,
 	Select, Table
 } from "antd";
+import axios from "axios";
 import moment from "moment";
 import React from "react";
 import { connect } from "react-redux";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
-import { MDH_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
+import { BMS_APP_PYTHON_SERVICE, MDH_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import {
 	auditDataChange,
 	auditFilter,
@@ -204,28 +205,58 @@ class AuditTrials extends React.Component {
 		this.setState({ colSort: column }, () => this.auditHighlight());
 	};
 
-	reportDownloadExcel = () => {
-		console.log("reportDownloadExcel")
-		let _reportReq = this.state.resData
-		reportDownload(_reportReq).then((res) => {
-			const url = window.URL.createObjectURL(new Blob([res]));
+	reportDownloadExcel = (reportType) => {
+		console.log("reportType", reportType);
+		let _reportReq = {
+			type: reportType,
+			data: this.state.resData
+		}
 
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = "download.csv"
-			document.body.appendChild(a);
-			a.click();
-			window.URL.revokeObjectURL(url);
-			console.log("ressssssssss", url, res);
-		})
-		// reportDownload(_reportReq).then((res) => {
-		// 	res.blob()
-		// }).then((data) => {
-		// 	var a = document.createElement("a");
-		// 	a.href = window.URL.createObjectURL(data);
-		// 	a.download = "FILENAME";
-		// 	a.click();
-		// });
+		if (reportType === "CSV") {
+			reportDownload(_reportReq).then((res) => {
+				const url = window.URL.createObjectURL(new Blob([res]));
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = "download.csv"
+				document.body.appendChild(a);
+				a.click();
+				window.URL.revokeObjectURL(url);
+			})
+		} else if (reportType === "Excel") {
+			axios
+				.post(BMS_APP_PYTHON_SERVICE + '/report_download', _reportReq, {
+					responseType: 'arraybuffer',
+				})
+				.then(response => {
+					const blob = new Blob([response.data], { type: 'application/octet-stream' });
+					const url = window.URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = url;
+					a.download = "report.xlsx"
+					document.body.appendChild(a);
+					a.click();
+					window.URL.revokeObjectURL(url);
+				});
+		} else if (reportType === "PDF") {
+			axios
+				.post(BMS_APP_PYTHON_SERVICE + '/report_download', _reportReq, {
+					responseType: 'arraybuffer',
+				})
+				.then(response => {
+					const blob = new Blob([response.data], { type: 'application/pdf' });
+					const url = window.URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = url;
+					a.download = "report.pdf"
+					document.body.appendChild(a);
+					a.click();
+					window.URL.revokeObjectURL(url);
+				});
+		} else {
+			console.log(reportType);
+		}
+
+
 	}
 
 	getExcelFile = (value) => {
@@ -320,7 +351,7 @@ class AuditTrials extends React.Component {
 		auditDataChange(req).then((res) => {
 			let antdDataTable = [];
 			this.setState({
-				resData: res
+				resData: res.data
 			})
 			res.data.forEach((item, key) => {
 				let antdObj = {};
@@ -369,6 +400,7 @@ class AuditTrials extends React.Component {
 			});
 		});
 	};
+
 	loadEventFilter = (_filterId, _filter) => {
 		let _req = {
 			appId: "BMS",
@@ -515,15 +547,16 @@ class AuditTrials extends React.Component {
 
 		const userMenu = (
 			<Menu>
-				{/* <Menu.Item key="1" onClick={() => this.getExcelFile("excel")}>
-					Excel
-				</Menu.Item> */}
-				<Menu.Item key="1" onClick={() => this.getExcelFile("excel")}>
+
+				<Menu.Item key="1" onClick={() => this.reportDownloadExcel("Excel")}>
 					Excel
 				</Menu.Item>
 				<Menu.Divider />
-				<Menu.Item key="2" onClick={this.reportDownloadExcel}>
+				<Menu.Item key="2" onClick={() => this.reportDownloadExcel("CSV")}>
 					CSV
+				</Menu.Item>
+				<Menu.Item key="3" onClick={() => this.reportDownloadExcel("PDF")}>
+					PDF
 				</Menu.Item>
 			</Menu>
 		);

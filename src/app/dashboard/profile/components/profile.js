@@ -113,7 +113,6 @@ const Profile = () => {
 		try {
 			dispatch(showLoader());
 			const formData = new FormData();
-			formData.append("file", image);
 			formData.append("date_format", dateFormatValue);
 			formData.append("email_address", loginDetails && loginDetails.email_id);
 			formData.append("first_name", loginDetails && loginDetails.firstname);
@@ -130,7 +129,7 @@ const Profile = () => {
 				dispatch(showNotification('error', saveRes.message));
 			} else {
 				dispatch(hideLoader());
-				dispatch(showNotification('error', "image upload error"));
+				dispatch(showNotification('error', "error"));
 			}
 		} catch (error) {
 			dispatch(hideLoader());
@@ -143,11 +142,7 @@ const Profile = () => {
 	const userProfile = async (formData) => {
 		try {
 			dispatch(showLoader());
-			// const formData = new FormData();
-			// formData.append("file", image);
-			// formData.append("email_address", loginDetails && loginDetails.email_id);
 			const saveRes = await userProfileUpload(formData);
-
 			if (saveRes.statuscode === 200) {
 				dispatch(hideLoader());
 				dispatch(showNotification('success', "Updated Successfully"));
@@ -168,16 +163,12 @@ const Profile = () => {
 
 
 	const handleChange = ({ fileList: newFileList }) => {
-		//setFileList(newFileList)
-		console.log("image_inputtttttttttt", newFileList[0], newFileList[0].name, newFileList[0].thumbUrl);
-
 		var formData = new FormData();
 		formData.append('file', newFileList[0].originFileObj);
 		formData.append("email_address", loginDetails && loginDetails.email_id);
 		setImage(formData);
 		setImagePrev(true);
 		setIsUserIcon("");
-		// setImgRes(newFileList[0].thumbUrl)
 		userProfile(formData)
 	};
 
@@ -211,14 +202,16 @@ const Profile = () => {
 			}
 			const getRes = await getUserProfile(_getReq)
 			if (getRes.statuscode == 200) {
+				dispatch(hideLoader());
 				setTimeZoneValue(getRes.message[0].time_zone);
 				setDateFormatValue(getRes.message[0].date_format);
 				setLanguageValue(getRes.message[0].language)
+
 			} else {
 				console.log("getRes", getRes);
 			}
-
 			dispatch(hideLoader());
+
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', error));
