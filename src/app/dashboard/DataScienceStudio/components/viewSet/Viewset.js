@@ -19,7 +19,7 @@ import {
 	showNotification
 } from "../../../../../duck/actions/commonActions";
 // import ViewSearchTable from "./viewTable/ViewTable";
-import { loadViewTableData, onClickTarget } from "../../../../../duck/actions/dataScienceAction";
+import { loadViewTableData, onClickTarget, sendViewIdVer } from "../../../../../duck/actions/dataScienceAction";
 import ViewSearchTable from "../../../chartPersonal/components/viewPage/viewChart/viewSearchTable";
 import ViewTable from "../../../chartPersonal/components/viewPage/viewChart/ViewTable";
 
@@ -121,6 +121,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 	//load view
 	const loadView = async (_reqLoad) => {
 		try {
+			dispatch(sendViewIdVer(_reqLoad))
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
 			setViewConfigRes(loadViewRes)
@@ -136,9 +137,9 @@ const Viewset = ({ isVisible, onCancel }) => {
 		try {
 			dispatch(showLoader());
 			const loadDssRes = await loadDssView(_reqLoad);
-			console.log("loadDssRes", JSON.parse(loadDssRes.message))
+			console.log("loadDssRes", loadDssRes.message)
 			//setLoadViewData(dssres)
-			dispatch(loadViewTableData(dssres))
+			dispatch(loadViewTableData(loadDssRes.message))
 			dispatch(hideLoader());
 		} catch (err) {
 			dispatch(hideLoader());
@@ -247,7 +248,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 	};
 
 	const onSelectedView = (record) => {
-		console.log("onSelectedView", onSelectedView)
+
 		let tempVersionList = [0];
 		searchViewData.current.forEach((ele) => {
 			if (ele.view_disp_id === record.view_disp_id) {
@@ -269,6 +270,8 @@ const Viewset = ({ isVisible, onCancel }) => {
 			view_version: record.view_version,
 		};
 		loadView(_reqLoad);
+		console.log("onSelectedView", record)
+
 		setDeepSearch(false);
 		deepSearch1.current = false;
 	};

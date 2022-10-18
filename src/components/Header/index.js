@@ -1,4 +1,4 @@
-import { BellOutlined, CaretUpOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { BellOutlined, CaretUpOutlined, DownOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Input, Layout } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -132,7 +132,7 @@ const HeaderBar = () => {
 										history.push('/dashboard/profile');
 										setDropdownVisible(false)
 									}}><UserOutlined /> Profile</p>
-									<p><SettingOutlined /> Preferences</p>
+									{/* <p><SettingOutlined /> Preferences</p> */}
 								</div>
 								<div className="logout" onClick={adenabled ? () => adLogout() : () => Logout()}>
 									<p><LogoutOutlined /> Logout</p>
