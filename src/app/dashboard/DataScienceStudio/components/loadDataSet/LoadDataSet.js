@@ -16,7 +16,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 		console.log("loggggggggg", info);
 		var formData = new FormData();
 		formData.append('file', info.file.originFileObj);
-		formData.append('type', info.file.type);
+		formData.append('type', 'parameter');
 		// setFileList(info.file.originFileObj)
 		setUploadFile(formData);
 	};
@@ -76,7 +76,8 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 			<Row className="button-mt">
 
 				<Button
-					className="custom-primary-btn"
+					type='primary'
+					className='custom-secondary-btn'
 					onClick={fileUpload}
 				>
 					Next

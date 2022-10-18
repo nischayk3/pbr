@@ -1,8 +1,9 @@
 import { LeftOutlined } from '@ant-design/icons';
-import { Card, Radio, Table } from "antd";
-import React from "react";
+import { Button, Card, Radio, Table } from "antd";
+import React, { useState } from "react";
 import Plot from 'react-plotly.js';
 import { useDispatch, useSelector } from "react-redux";
+import BreadCrumbWrapper from '../../../../../components/BreadCrumbWrapper';
 import { hideLoader, showLoader, showNotification } from '../../../../../duck/actions/commonActions';
 import { onClickTarget } from '../../../../../duck/actions/viewAction';
 import { analysisView } from '../../../../../services/dataScienceStudioService';
@@ -33,7 +34,9 @@ const columns = [
 const TargetVariable = () => {
 	const loadViewDataTable = useSelector((state) => state.dataScienceReducer.loadViewData)
 	const viewIdVer = useSelector((state) => state.dataScienceReducer.viewIdVer)
-	console.log("loadViewDataTable", loadViewDataTable)
+
+	const [expandData, setExpandData] = useState({});
+
 	const dispatch = useDispatch();
 
 	const expandedRowRender = () => {
@@ -123,9 +126,13 @@ const TargetVariable = () => {
 		try {
 			dispatch(showLoader());
 			const analysisRes = await analysisView(_reqLoad);
-			console.log("loadAnalysisView", analysisRes)
-			//setLoadViewData(dssres)
 			dispatch(hideLoader());
+			if (analysisRes.Status === 200) {
+				setExpandData(analysisRes.data.Stat)
+			} else {
+				dispatch(showNotification("error", 'No Data found'));
+			}
+
 		} catch (err) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", err));
@@ -133,28 +140,41 @@ const TargetVariable = () => {
 	}
 
 	return (
-		<div className="target-wrapper">
-			<Card title={(
-				<div className='card-title'>
-					<LeftOutlined onClick={() => {
-						dispatch(onClickTarget(false));
-					}} />
-					<p>Target Variable</p>
+		<div className="custom-wrapper">
+			<BreadCrumbWrapper />
+			<div className="custom-content-layout">
+				<div className="target-wrapper">
+					<Card title={(
+						<div className='card-title'>
+							<LeftOutlined onClick={() => {
+								dispatch(onClickTarget(false));
+							}} />
+							<p>Target Variable</p>
+						</div>
+					)} className="target-card">
+						<div className='target-head'>
+							<p>Please select a target variable based on the univariate dataset statistics provided, before proceeding to JupyterLab.</p>
+							<Button
+								type='primary'
+								className='custom-secondary-btn'
+							>
+								Save and procced
+							</Button>
+						</div>
+						<div className="target-custom-table">
+							<Table
+								columns={columns}
+								expandable={{ expandedRowRender }}
+								onExpand={onTableRowExpand}
+								dataSource={loadViewDataTable}
+								rowKey="Parameter_name"
+							/>
+						</div>
+					</Card>
 				</div>
-			)} className="target-card">
-				<p>Please select a target variable based on the univariate dataset statistics provided, before proceeding to JupyterLab.</p>
-				<div className="target-custom-table">
-					<Table
-						columns={columns}
-						expandable={{ expandedRowRender }}
-						onExpand={onTableRowExpand}
-						dataSource={loadViewDataTable}
-						rowKey="Parameter_name"
-					/>
-				</div>
-			</Card>
-
+			</div>
 		</div>
+
 	)
 }
 

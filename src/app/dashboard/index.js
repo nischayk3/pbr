@@ -23,6 +23,7 @@ import { getAuthorisedPermission } from "../../services/authProvider";
 import Analysis from "./Analysis/components";
 import ViewPageAnalysis from "./Analysis/components/ViewPage";
 import "./dashboard.scss";
+
 import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
 import PbrReviewer from "./pbrReviewer";
 import pbrTableUpdate from './pbrTableReviewer';
@@ -55,7 +56,7 @@ const Faq = lazy(() => import("./faq"));
 const Profile = lazy(() => import("./profile"));
 const CrossBatchComparison = lazy(() => import("./crossBatchComparison"));
 const DataScienceStudio = lazy(() => import("./DataScienceStudio"));
-
+const TargetVariable = lazy(() => import("./DataScienceStudio/components/targetVariable/TargetVariable"));
 const { Content } = Layout;
 
 const Dashboard = () => {
@@ -383,10 +384,29 @@ const Dashboard = () => {
 									)}
 								/>
 
-								<Route
+								{/* <Route
 									key="data_science_studio"
 									path={`${match.url}/data_science_studio`}
 									component={DataScienceStudio}
+								/> */}
+								<Route
+									path={`${match.url}/data_science_studio`}
+									render={({ match: { url } }) => (
+										<>
+											<PrivateRoute
+												path={`${url}/`}
+												exact
+												authorised={authorised}
+												component={DataScienceStudio}
+											/>
+
+											<PrivateRoute
+												path={`${url}/target_variable`}
+												authorised={authorised}
+												component={TargetVariable}
+											/>
+										</>
+									)}
 								/>
 							</Switch>
 						</SuspenseWrapper>
