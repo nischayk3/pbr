@@ -13,8 +13,10 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 	const dispatch = useDispatch();
 
 	const handleChange = (info) => {
+		console.log("loggggggggg", info);
 		var formData = new FormData();
 		formData.append('file', info.file.originFileObj);
+		formData.append('type', info.file.type);
 		// setFileList(info.file.originFileObj)
 		setUploadFile(formData);
 	};
