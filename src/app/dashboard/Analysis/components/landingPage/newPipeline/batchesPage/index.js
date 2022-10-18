@@ -96,6 +96,9 @@ const BatchesComponent = (props) => {
         },
       ],
       ...viewDetails,
+      data_filter: filterRef.current,
+      target_variable: '',
+      batch_filter : []
     };
     viewDetails.data_filter = filterRef.current;
     dispatch(showLoader());
