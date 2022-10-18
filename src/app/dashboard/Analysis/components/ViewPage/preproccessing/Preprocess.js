@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./preprocess.scss";
-import { Row, Col, Button, Table, Select } from "antd";
+import { Row, Col, Button, Table, Select, Skeleton } from "antd";
 import {
   getPreprocessing,
   savePreprocessing,
@@ -63,7 +63,6 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
     dispatch(showLoader());
     const apiResponse = await getPreprocessing(request);
     if (apiResponse.Status === 200) {
-      dispatch(hideLoader());
       apiResponse?.compressed_output.forEach((ele) => {
         ele.key = ele.batch_num;
       });
@@ -71,6 +70,7 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
       if (filterData && filterData.length === 0) {
         setFilterData(apiResponse?.all_batches);
       }
+      dispatch(hideLoader());
     } else {
       dispatch(hideLoader());
       dispatch(showNotification("error", "Unable to fetch preprocessing data"));
@@ -144,8 +144,6 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
     }
   };
 
-  console.log(editFinalJson, 'editFinalJson');
-
   useEffect(() => {
     if (editFinalJson?.input_data?.batch_filter) {
       let tempFilter = [...selectedRowKeys]
@@ -157,7 +155,7 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
 
   return (
     <div className="preprocess-container">
-      <Row className="col-bottom save-button">
+     {preprocessData && preprocessData.length ? <><Row className="col-bottom save-button">
         <Col>
           <Button
             className="custom-primary-btn"
@@ -202,7 +200,9 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
             rowSelection={rowSelection}
           />
         </Col>
-      </Row>
+      </Row></> : <Skeleton style={{ marginTop: '50px'}} active paragraph={{
+      rows: 15,
+    }} />}
     </div>
   );
 };

@@ -11,7 +11,7 @@ import {
 import Plot from "react-plotly.js";
 const { Panel } = Collapse;
 
-const Results = () => {
+const Results = ({tablekey, modelType}) => {
   const selectedViewData = useSelector(
     (state) => state.analyticsReducer.viewData
   );
@@ -20,7 +20,7 @@ const Results = () => {
 
   const getResultFunc = async () => {
     const reqBody = {
-      pipelineid: selectedViewData?.pipeline_id,
+      pipelineid: modelType.current === 'Regression' ? "P97" : "P96",
     };
     dispatch(showLoader());
     const apiResponse = await getResults(reqBody);
@@ -34,19 +34,17 @@ const Results = () => {
   };
 
   useEffect(() => {
-    if (!resultsData) {
-      getResultFunc();
-    }
-  }, [resultsData]);
+    getResultFunc();
+  }, [tablekey]);
 
   return (
     <div className="result_container">
-      {resultsData && <><Row gutter={16}>
+      <Row gutter={16}>
         <Col span={2}>
           <p>Val Score</p>
         </Col>
         <Col span={10}>
-          <p>: {resultsData?.test_score || "-"}</p>
+          <p>: {resultsData?.test_score?.toFixed(2) || "-"}</p>
         </Col>
         <Col span={6} />
       </Row>
@@ -55,16 +53,16 @@ const Results = () => {
           <p>Train Score</p>
         </Col>
         <Col span={10}>
-          <p>: {resultsData?.train_score || "-"}</p>
+          <p>: {resultsData?.train_score?.toFixed(2) || "-"}</p>
         </Col>
         <Col span={6} />
-      </Row></>}
+      </Row>
       {resultsData?.chart && resultsData?.chart.length && (
         <Collapse expandIconPosition="right" accordion>
           <Panel
             header={
               <div>
-                Chart
+                Charts
                 <label
                   style={{
                     marginLeft: "5px",
