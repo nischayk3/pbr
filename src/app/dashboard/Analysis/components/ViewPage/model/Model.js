@@ -1,6 +1,6 @@
 import { Button, Row, Select, Col, Drawer, Steps } from "antd";
 import Sider from "antd/lib/layout/Sider";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { PlusOutlined, CloseOutlined, StarOutlined } from "@ant-design/icons";
 import StarImg from "../../../../../../assets/icons/star.svg";
 import ReactFlow, {
@@ -32,26 +32,12 @@ import {
 
 const { Step } = Steps;
 
-const Model = ({ finalModelJson, setFinalModelJson, editFinalJson }) => {
+const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, modelType }) => {
   const selectedViewData = useSelector(
     (state) => state.analyticsReducer.viewData
   );
   const dispatch = useDispatch();
-  const [nodesAnalytics, setNodesAnalytics] = useState([
-    {
-      id: "horizontal-1",
-      sourcePosition: "right",
-      type: "input",
-      style: {
-        background: "#E0EFDE",
-        padding: "8px",
-        border: "none",
-        borderRadius: "4px",
-      },
-      data: { label: editFinalJson?.view_disp_id ? editFinalJson?.view_disp_id : selectedViewData?.view_id },
-      position: { x: 0, y: 200 },
-    },
-  ]);
+  const [nodesAnalytics, setNodesAnalytics] = useState([]);
   const [transformationFinal, setTransformationsFinal] = useState("");
   const [saveTransformationValues, setSaveTransformationValues] = useState({
     imputerType: "",
@@ -65,6 +51,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson }) => {
   const [scalerListSelected, setScalerListSelected] = useState([]);
   const [scalerAlgoValue, setScalerAlgoValue] = useState("");
   const [saveScalerAlgoValue, setSaveScalerAlgoValue] = useState("");
+  
   const [estimatorPopupData, setEstimatorPopupData] = useState({
     algoList: [],
     regressionList: [],
@@ -141,7 +128,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson }) => {
     setDrawerVisible(false);
     setDetailsVisible(false);
   };
-  console.log(savedEstimatorPopupDataValues, 'savedEstimatorPopupDataValues')
+
   const addEstimator = (vartype) => {
     setDrawerVisible(true);
     setDetailsVisible(false);
@@ -159,8 +146,8 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson }) => {
     dispatch(showLoader());
     const apiResponse = await getAnalyticsNodes(reqBody);
     if (apiResponse.Status === 200) {
-      let finalJson
-      if (editFinalJson?.pipeline_data[0]) {
+      let finalJson;
+      if (editFinalJson?.pipeline_data[0].variable_mapping?.length) {
         finalJson = JSON.parse(JSON.stringify(editFinalJson?.pipeline_data[0]))
       }
       let parameters = [];
@@ -174,11 +161,16 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson }) => {
       let tempEstTypeList = [];
       let tempRegressionList = [];
       let targetVariable = apiResponse.data?.target_variable;
+      if (finalJson?.variable_mapping?.length >=1) {
+        setFinalModelJson(finalJson)
+      } else {
+        getModelJson(targetVariable);
+      }
       setSelectedTargetVariable(targetVariable);
       apiResponse?.data?.Imputer?.forEach((ele) => {
         imputerList.push(ele.submodule);
         if (finalJson?.feature_union_mapping) {
-          Object.entries(finalJson.feature_union_mapping).forEach(([key, value]) => {
+          Object.entries(finalJson?.feature_union_mapping).forEach(([key, value]) => {
             if (value.type === "Imputer" && value.transformation === ele.submodule_key) {
               setTransformationsFinal(ele.submodule)
               setSaveTransformationValues({...saveTransformationValues, transformationFinal: ele.submodule})
@@ -201,22 +193,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson }) => {
           });
         }
       });
-      setScalerList(tempScalerList);
-      apiResponse?.data?.Regression?.forEach((regression) => {
-        tempEstAlgoList.push(regression?.submodule);
-        tempEstTypeList.push(regression?.type);
-        tempRegressionList.push(regression?.module);
-        if (finalJson?.estimator && finalJson?.estimator.e_randomforestregressor_0.model_name === regression.submodule_key) {
-          setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.submodule })
-          setSavedEstimatorPopupDataValues({...savedEstimatorPopupDataValues, algoValue:regression.submodule})
-        }
-      });
-      setEstimatorPopupData({
-        ...estimatorPopupData,
-        algoList: tempEstAlgoList,
-        regressionList: [...new Set(tempRegressionList)],
-        typeList: [...new Set(tempEstTypeList)],
-      });
+      setScalerList([...new Set(tempScalerList)]);
       apiResponse?.data?.Edge?.forEach((ele, index) => {
         if (ele.Type === "Parameter") {
           parameters.push(ele);
@@ -230,7 +207,19 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson }) => {
       });
       let id = 2;
       let yaxis = 30;
-      const existingNodes = [...nodesAnalytics];
+      let existingNodes = [{
+        id: "horizontal-1",
+        sourcePosition: "right",
+        type: "input",
+        style: {
+          background: "#E0EFDE",
+          padding: "8px",
+          border: "none",
+          borderRadius: "4px",
+        },
+        data: { label: editFinalJson?.view_disp_id ? editFinalJson?.view_disp_id : selectedViewData?.view_id },
+        position: { x: 0, y: 200 },
+      },];
       parameters.forEach((element, index) => {
         if (index === 0) {
           element.id = `horizontal-2`;
@@ -292,30 +281,34 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson }) => {
         item.type = "smoothstep";
         item.animated = false;
       });
-      imputerConnections.forEach((imputer, index) => {
-        const findObj = edgesConnection.find(
-          (par) => par.Node === imputer.Source
-        );
-        imputer.id = `imp-${index + 1}`;
-        imputer.sourcePosition = "right";
-        imputer.targetPosition = "left";
-        imputer.type = "selectorNode";
-        imputer.style = {
-          background: "#846B8A",
-          padding: "8px 0px",
-          width: 150,
-        };
-        imputer.data = JSON.parse(JSON.stringify(findObj));
-        imputer.edge = {
-          source: findObj.id,
-          type: "smoothstep",
-          animated: false,
-          target: `imp-${index + 1}`,
-        };
-        imputer.position = { x: 260, y: 50 };
-        existingNodes.push(imputer);
-        edgesConnection.push(imputer.edge);
-      });
+
+      if (imputerConnections.length) {
+        imputerConnections.forEach((imputer, index) => {
+          const findObj = edgesConnection.find(
+            (par) => par.Node === imputer.Source
+          );
+          imputer.id = `imp-${index + 1}`;
+          imputer.sourcePosition = "right";
+          imputer.targetPosition = "left";
+          imputer.type = "selectorNode";
+          imputer.style = {
+            background: "#846B8A",
+            padding: "8px 0px",
+            width: 150,
+          };
+          imputer.data = JSON.parse(JSON.stringify(findObj));
+          imputer.edge = {
+            source: findObj.id,
+            type: "smoothstep",
+            animated: false,
+            target: `imp-${index + 1}`,
+          };
+          imputer.position = { x: 260, y: 50 };
+          existingNodes.push(imputer);
+          edgesConnection.push(imputer.edge);
+        });
+      }
+
       if (scalerConnections.length) {
         const tempScalerNode = {
           id: "scaler-1",
@@ -404,6 +397,24 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson }) => {
           }
         }
       });
+      const tempVariable = tempEstNode.data.Destination_Parameter.type === 'Regression' ? 'Regression' : 'Classification';
+      modelType.current = tempVariable;
+      const esttype = tempEstNode.data.Destination_Parameter.type === 'Regression' ? 'e_randomforestregressor_0' : 'e_randomforestclassifier_0';
+      apiResponse?.data[`${tempVariable}`]?.forEach((regression) => {
+        tempEstAlgoList.push(regression?.submodule);
+        tempEstTypeList.push(regression?.type);
+        tempRegressionList.push(regression?.module);
+        if (finalJson?.estimator[`${esttype}`]?.model_name === regression?.submodule_key) {
+          setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.submodule })
+          setSavedEstimatorPopupDataValues({...savedEstimatorPopupDataValues, algoValue:regression.submodule})
+        }
+      });
+      setEstimatorPopupData({
+        ...estimatorPopupData,
+        algoList: [...new Set(tempEstAlgoList)],
+        regressionList: [...new Set(tempRegressionList)],
+        typeList: [...new Set(tempEstTypeList)],
+      });
       existingNodes.push(tempEstNode);
       setEdges(edgesConnection);
       setNodesAnalytics(existingNodes);
@@ -415,12 +426,13 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson }) => {
     }
   };
 
-  const getModelJson = async () => {
+  const getModelJson = async (targetVariable) => {
     const reqBody = {
       batch_filter: selectedViewData?.batch_filter,
       data_filter: selectedViewData?.data_filter,
       view_disp_id: selectedViewData?.view_id,
       view_version: selectedViewData?.view_version,
+      target_variable: targetVariable
     };
     dispatch(showLoader());
     const apiResponse = await getAnalyticsModel(reqBody);
@@ -441,17 +453,9 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson }) => {
 
   useEffect(() => {
     getNodes();
-  }, []);
+  }, [tableKey]);
 
-  useEffect(() => {
-    if (editFinalJson?.pipeline_data) {
-      const finalJson = JSON.parse(JSON.stringify(editFinalJson?.pipeline_data[0]))
-      setFinalModelJson(finalJson);
-    } else {
-      getModelJson();
-    }
-  }, [editFinalJson])
-
+   
   useEffect(() => {
     setNodeTypes(nodesNew)
   }, [savedEstimatorPopupDataValues.algoValue])

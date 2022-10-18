@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./viewPage.scss";
 //antd-imports
@@ -34,6 +34,7 @@ const ViewPageAnalysis = () => {
   const [exectLaterDate, setExectLaterDate] = useState("");
   const [finalModelJson, setFinalModelJson] = useState({});
   const [editFinalJson, setEditFinalModelJson] = useState();
+  const modelType = useRef('');
   const tabChange = (key) => {
     setTableKey(key);
   };
@@ -161,7 +162,7 @@ const ViewPageAnalysis = () => {
     <div className="custom-wrapper bread-wrapper view-analysis-container">
       <div className="sub-header">
         <BreadCrumbWrapper
-          urlName={`/dashboard/analysis/${1}`}
+          urlName={`/dashboard/analysis/${selectedViewData.viewData.pipeline_id}`}
           value={selectedViewData.viewData.pipeline_id}
           data={selectedViewData.viewData.pipeline_id}
         />
@@ -171,7 +172,7 @@ const ViewPageAnalysis = () => {
             <Button onClick={() => onSaveClick("save")}>Save</Button>
             <Button onClick={() => onSaveClick('saveAs')}>Save As</Button>
             {/* <Button onClick={() => setExectStart(true)}>Execute</Button> */}
-            <Dropdown overlay={menu} trigger={["click"]} disabled={!exectStart && !editFinalJson}>
+            <Dropdown overlay={menu} trigger={["click"]} disabled={!exectStart && !editFinalJson?.pipeline_data[0]?.variable_mapping?.length}>
               <Button>Execute</Button>
             </Dropdown>
             <Button>
@@ -203,14 +204,16 @@ const ViewPageAnalysis = () => {
               finalModelJson={finalModelJson}
               setFinalModelJson={setFinalModelJson}
               editFinalJson={editFinalJson}
+              tableKey={tableKey}
+              modelType={modelType}
             />
           </TabPane>
           {/* <TabPane tab="Transformation" key="4">
             <Transformation />
           </TabPane> */}
-          {(executed && !exectLater) || (editFinalJson) && (
+          {((executed && !exectLater) || (editFinalJson?.pipeline_data[0]?.variable_mapping?.length)) && (
             <TabPane tab="Results" key="5">
-              <Results />
+              <Results tablekey={tableKey} modelType={modelType} />
             </TabPane>
           )}
         </Tabs>
