@@ -372,15 +372,15 @@ const Profile = () => {
 								<div>
 									<div className="input-pass">
 										<p>Current password</p>
-										<Input.Password autocomplete="new-password" placeholder="input password" value={currentPassword} onChange={(e) => { setCurrentPassword(e.target.value) }} />
+										<Input.Password autocomplete="new-password" placeholder="input password" value={currentPassword} onChange={(e) => { setCurrentPassword(e.target.value), setErrorMsg("") }} />
 									</div>
 									<div className="input-pass">
 										<p>New password</p>
-										<Input.Password autocomplete="new-password" placeholder="input password" value={newPassword} onChange={(e) => { setNewPassword(e.target.value) }} />
+										<Input.Password autocomplete="new-password" placeholder="input password" value={newPassword} onChange={(e) => { setNewPassword(e.target.value), setErrorMsg("") }} />
 									</div>
 									<div className="input-pass">
 										<p>Confirm new password</p>
-										<Input.Password autocomplete="new-password" placeholder="input password" value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value) }} />
+										<Input.Password autocomplete="new-password" placeholder="input password" value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value), setErrorMsg("") }} />
 										{errorMsg !== "" && (
 											<Alert
 												className="pass-error"

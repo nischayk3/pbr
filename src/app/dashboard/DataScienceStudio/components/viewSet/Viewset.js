@@ -19,7 +19,8 @@ import {
 	showNotification
 } from "../../../../../duck/actions/commonActions";
 // import ViewSearchTable from "./viewTable/ViewTable";
-import { loadViewTableData, onClickTarget, sendViewIdVer } from "../../../../../duck/actions/dataScienceAction";
+import { useHistory, useRouteMatch } from "react-router-dom";
+import { loadViewTableData, sendViewIdVer } from "../../../../../duck/actions/dataScienceAction";
 import ViewSearchTable from "../../../chartPersonal/components/viewPage/viewChart/viewSearchTable";
 import ViewTable from "../../../chartPersonal/components/viewPage/viewChart/ViewTable";
 
@@ -31,6 +32,8 @@ const Viewset = ({ isVisible, onCancel }) => {
 	const deepSearch1 = useRef(false);
 	const searchViewData = useRef([]);
 	const [showBatchData, setShowBatchData] = useState(false);
+	const [isDisable, setIsDisable] = useState(true);
+
 	const [viewData, setViewData] = useState({
 		viewName: "",
 		viewDispId: " ",
@@ -42,50 +45,12 @@ const Viewset = ({ isVisible, onCancel }) => {
 	const [viewConfigRes, setViewConfigRes] = useState({})
 	const [loadViewData, setLoadViewData] = useState([])
 	const dispatch = useDispatch();
+	const match = useRouteMatch();
+	const history = useHistory();
+
 	const ref = useRef(null);
 
-	const dssres = [
-		{
-			parameter_name: "AMMONIUM-N",
-			children: [
-				{
-					statistic: "count", value: 40
-				},
-				{
-					statistic: "max", value: 17.8
-				},
-				{
-					statistic: "mean", value: 7.48
-				},
-				{
-					statistic: "min", value: 0
-				},
-				{
-					statistic: "std", value: 4.79
-				}
-			]
-		},
-		{
-			parameter_name: "AMMTEST-00",
-			children: [
-				{
-					statistic: "count", value: 41
-				},
-				{
-					statistic: "max", value: 17.2
-				},
-				{
-					statistic: "mean", value: 6.4
-				},
-				{
-					statistic: "min", value: 5
-				},
-				{
-					statistic: "std", value: 6.79
-				}
-			]
-		}
-	]
+
 	//function for getting viewdata list
 	const getViewTableData = async () => {
 		let reqView = { vew_status: "APRD" };
@@ -124,8 +89,11 @@ const Viewset = ({ isVisible, onCancel }) => {
 			dispatch(sendViewIdVer(_reqLoad))
 			dispatch(showLoader());
 			const loadViewRes = await getViewConfig(_reqLoad);
-			setViewConfigRes(loadViewRes)
 			dispatch(hideLoader());
+			if (loadViewRes !== {}) {
+				setIsDisable(false)
+				setViewConfigRes(loadViewRes)
+			}
 		} catch (err) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", err));
@@ -137,10 +105,15 @@ const Viewset = ({ isVisible, onCancel }) => {
 		try {
 			dispatch(showLoader());
 			const loadDssRes = await loadDssView(_reqLoad);
-			console.log("loadDssRes", loadDssRes.message)
-			//setLoadViewData(dssres)
-			dispatch(loadViewTableData(loadDssRes.message))
 			dispatch(hideLoader());
+			if (loadDssRes.statuscode === 200) {
+				dispatch(loadViewTableData(loadDssRes.message))
+				history.push({
+					pathname: `${match.url}/target_variable`,
+				});
+			}
+
+
 		} catch (err) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", err));
@@ -191,52 +164,6 @@ const Viewset = ({ isVisible, onCancel }) => {
 			setSearchTableData(searchViewData.current);
 		}
 	};
-	//onclick of next button
-	// const onNextClick = async (batchFilters) => {
-	// 	const reqBody = {
-	// 		data: [
-	// 			{
-	// 				view_id: viewData.viewDispId,
-	// 				view_name: viewData.viewName,
-	// 				view_version: viewData.viewVersion,
-	// 				chart_type: "scatter",
-	// 				chart_mapping: {
-	// 					x: {},
-	// 					y: {},
-	// 				},
-	// 				data_filter: batchFilters
-	// 					? batchFilters
-	// 					: {
-	// 						date_range: "",
-	// 						unapproved_data: 0,
-	// 						site: "",
-	// 					},
-	// 				data: [
-	// 					{
-	// 						type: "scatter",
-	// 						mode: "markers",
-	// 						marker: {
-	// 							color: "#376dd4",
-	// 							size: 15,
-	// 						},
-	// 					},
-	// 				],
-	// 			},
-	// 		],
-	// 	};
-	// 	const apiResponse = await postChartPlotData(reqBody);
-	// 	if (apiResponse && apiResponse.data && apiResponse.data[0]?.extras) {
-	// 		setParameterData(apiResponse?.data[0]?.extras?.coverage);
-	// 		if (showBatchData === false) {
-	// 			setShowBatchData(true);
-	// 		}
-	// 	} else if (apiResponse && apiResponse?.Message) {
-	// 		setParameterData([]);
-	// 		dispatch(showNotification("error", apiResponse?.Message));
-	// 	} else {
-	// 		dispatch(showNotification("error", "Unable to get parameter data"));
-	// 	}
-	// };
 
 	const onNextClick = () => {
 		let _reqDss = {
@@ -244,7 +171,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 		}
 		dssViewLoad(_reqDss);
 		onCancel()
-		dispatch(onClickTarget(true));
+
 	};
 
 	const onSelectedView = (record) => {
@@ -359,17 +286,19 @@ const Viewset = ({ isVisible, onCancel }) => {
 						)}
 						<Row className="button-mt">
 							<Button
+								type='primary'
+								className='custom-secondary-btn'
+								onClick={onNextClick}
+								disabled={isDisable}
+							>
+								Next
+							</Button>
+							<Button
 								className="custom-primary-btn"
 								onClick={onCancel}
 
 							>
 								Back
-							</Button>
-							<Button
-								className="custom-primary-btn"
-								onClick={onNextClick}
-							>
-								Next
 							</Button>
 						</Row>
 					</Col>
