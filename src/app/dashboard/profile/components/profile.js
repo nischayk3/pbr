@@ -53,6 +53,7 @@ const Profile = () => {
 	);
 
 	const handlePassChange = async () => {
+		dispatch(showLoader());
 		const userId = localStorage.getItem("user")
 		/* istanbul ignore next */
 		if (newPassword === confirmPassword) {
@@ -63,8 +64,17 @@ const Profile = () => {
 			}
 			/* istanbul ignore next */
 			const res = await passwordChange(_req);
-		} else {
+			dispatch(hideLoader());
+			if (res.statuscode === 200) {
+				dispatch(showNotification('success', "Password updated successfully"));
+			} else if (res.statuscode === 400) {
+				setErrorMsg(res.message)
+			}
+		} else if (newPassword !== confirmPassword) {
+			dispatch(hideLoader());
 			setErrorMsg("Password does not match")
+		} else {
+			console.log("error")
 		}
 	}
 
@@ -193,6 +203,7 @@ const Profile = () => {
 			dispatch(showNotification('error', error));
 		}
 	}
+
 	const getPreference = async () => {
 		try {
 			dispatch(showLoader());
@@ -218,6 +229,9 @@ const Profile = () => {
 		}
 	}
 
+	const onClose = (e) => {
+		console.log(e, 'I was closed.');
+	};
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
@@ -368,7 +382,15 @@ const Profile = () => {
 										<p>Confirm new password</p>
 										<Input.Password autocomplete="new-password" placeholder="input password" value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value) }} />
 										{errorMsg !== "" && (
-											<p className="pass-error">{errorMsg}</p>
+											<Alert
+												className="pass-error"
+												message="Error"
+												description={errorMsg}
+												type="error"
+												closable
+												onClose={onClose}
+											/>
+											// <p className="pass-error">{errorMsg}</p>
 										)}
 									</div>
 
