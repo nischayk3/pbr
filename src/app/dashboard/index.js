@@ -27,6 +27,7 @@ import "./dashboard.scss";
 import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
 import PbrReviewer from "./pbrReviewer";
 import pbrTableUpdate from './pbrTableReviewer';
+import FileUpload from "./pbrFileUpload";
 import PrivateRoute from "./ProtectedRoute";
 import UnAuthorisedScreen from "./unAuthorised";
 // DASHBOARD ROUTE COMPONENTS
@@ -266,6 +267,12 @@ const Dashboard = () => {
 									component={pbrTableUpdate}
 									authorised={authorised}
 									path={`${match.url}/pbr_table_reviewer`}
+								/>
+								<PrivateRoute
+									key="pbr_file_upload"
+									component={FileUpload}
+									authorised={authorised}
+									path={`${match.url}/pbr_file_upload`}
 								/>
 
 								<Route

@@ -109,6 +109,8 @@ function PaperBatchRecords() {
 	const [searchedLanding, setSearchedLanding] = useState(false);
 	const [filterTableLanding, setFilterTableLanding] = useState(null);
 	const [materialDropown, setMaterialDropown] = useState([]);
+	const [fileSelection, setFileSelection] = useState([{ label: "Genology", value: "genology" }, { label: "Other Files", value: "others" }]);
+	const [fileSelectionValue, setFileSelectionValue] = useState("genology");
 	const [matBatch, setMatBatch] = useState({
 		material_num: "",
 		batch: ""
@@ -214,7 +216,7 @@ function PaperBatchRecords() {
 		let res = await getDataView(req)
 		setMaterialDropown(res.Data)
 		getImageData(res.Data[0]?.label)
-		
+
 
 	}
 
@@ -249,7 +251,7 @@ function PaperBatchRecords() {
 	const handleValuesChange = (changedValues, values) => {
 		seTemplateName(values?.templateName)
 	};
-	 /* istanbul ignore next */
+	/* istanbul ignore next */
 	const onFinish = (values) => {
 		console.log('Success:', values);
 	};
@@ -261,9 +263,9 @@ function PaperBatchRecords() {
 	const openNotification = () => {
 		const key = `open${Date.now()}`;
 		let val = ""
-		if (templateName == "" || templateName == undefined ) {
+		if (templateName == "" || templateName == undefined) {
 			val = "Template Name"
-		}else if(materialDropown.length ==0){
+		} else if (materialDropown.length == 0) {
 			val = "Material Number"
 		}
 		const btn = (
@@ -271,7 +273,7 @@ function PaperBatchRecords() {
 				Confirm
 			</Button>
 		);
-		
+
 		notification.open({
 			message: 'Error',
 			description:
@@ -283,7 +285,7 @@ function PaperBatchRecords() {
 			onClose: close,
 		});
 	};
-	 /* istanbul ignore next */
+	/* istanbul ignore next */
 	const onRadioChange = (val) => {
 		let arr = dataView.filter(item => item.actual_filename === val)
 		setMatBatch({
@@ -317,9 +319,9 @@ function PaperBatchRecords() {
 	}
 	const landingSearch = value => {
 
-		if(value == ""){
+		if (value == "") {
 			setSearchedLanding(false);
-		}else{
+		} else {
 			setSearchedLanding(true);
 			const tableData = templateData;
 			const filterTable = tableData.filter(o =>
@@ -329,10 +331,10 @@ function PaperBatchRecords() {
 			);
 			setFilterTableLanding(filterTable);
 		}
-		
+
 	};
 
-	const handleMaterialChange = (val) =>{
+	const handleMaterialChange = (val) => {
 		getImageData(val)
 	}
 
@@ -412,7 +414,7 @@ function PaperBatchRecords() {
 							<Col span={16} className='p36'>
 								<Row gutter={16} className="title">
 									<Col span={8}>
-										<h3 style={{fontSize:14}}>Recently created templates</h3>
+										<h3 style={{ fontSize: 14 }}>Recently created templates</h3>
 									</Col>
 									<Col span={14} className="title-legends">
 										<dl>
@@ -484,7 +486,7 @@ function PaperBatchRecords() {
 									name="basic"
 									onValuesChange={handleValuesChange}
 									onFinish={onFinish}
-									initialValues={{ materialNumber: materialDropown[0]?.label }}
+									initialValues={{ materialNumber: materialDropown[0]?.label, fileSelectionValue: "genology" }}
 								>
 									<div className='formNewTemplateDiv'>
 										<Form.Item
@@ -500,31 +502,69 @@ function PaperBatchRecords() {
 										>
 											<Input />
 										</Form.Item>
-										<Form.Item label='Status' name='status'>
-											<Input placeholder='Draft' disabled />
-										</Form.Item>
-										<Form.Item
-											label='Material number'
-											name='materialNumber'
-											rules={[
-												{
-													required: true,
-													message: 'Please select material',
-												},
-											]}
-										>
-											{/* <Input value={matBatch?.material_num} disabled /> */}
-											<Select options={materialDropown} onChange={(val)=>handleMaterialChange(val)}>
-
+										<Form.Item label='Select File Source' name='fileSelectionValue'>
+											<Select value={fileSelectionValue} options={fileSelection} onChange={(val) => setFileSelectionValue(val)}>
 											</Select>
 										</Form.Item>
-										<Form.Item
-											label='Batch number'
-											// name='batchNumber'
-										>
-											<Input value={matBatch?.batch} disabled />
-										</Form.Item>
 									</div>
+
+									{fileSelectionValue == "genology" ?
+										<div className='formNewTemplateDiv'>
+											<Form.Item
+												label='Material number'
+												name='materialNumber'
+												rules={[
+													{
+														required: true,
+														message: 'Please select material',
+													},
+												]}
+											>
+												{/* <Input value={matBatch?.material_num} disabled /> */}
+												<Select options={materialDropown} onChange={(val) => handleMaterialChange(val)}>
+
+												</Select>
+											</Form.Item>
+											<Form.Item
+												label='Batch number'
+											// name='batchNumber'
+											>
+												<Input value={matBatch?.batch} disabled />
+											</Form.Item>
+										</div> :
+										<div>
+											<Form.Item
+												label='Project'
+												name='project'
+												rules={[
+													{
+														required: true,
+														message: 'Please enter project',
+													},
+												]}
+											>
+												{/* <Input value={matBatch?.material_num} disabled /> */}
+												<Select placeholder="Project" options={materialDropown} onChange={(val) => handleMaterialChange(val)}>
+
+												</Select>
+											</Form.Item>
+											<div className='formNewTemplateDiv'>
+												<Form.Item
+													label='Group'
+												// name='batchNumber'
+												>
+													<Input placeholder="Group"/>
+												</Form.Item>
+												<Form.Item
+													label='Sub-group'
+												// name='batchNumber'
+												>
+													<Input placeholder="Sub-group"/>
+												</Form.Item>
+											</div>
+
+										</div>}
+
 								</Form>
 							</Row>
 							<Row>
