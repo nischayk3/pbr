@@ -416,7 +416,7 @@ function FileUpload() {
                                                                 <div style={{ width: 290 }}>
                                                                     <div>
                                                                         <span>{item?.fileName}</span>
-                                                                        <span><Progress className='Progress' percent={100} /></span>
+                                                                        <span><Progress className='Progress' percent={100} showInfo={false}/></span>
                                                                     </div>
                                                                 </div>
 
@@ -425,7 +425,7 @@ function FileUpload() {
                                                         </Col>
                                                         <Col span={8}>
                                                             <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
-                                                                <Button style={{ marginLeft: 40 }} onClick={() => handleCancel(item)}>Cancel</Button>
+                                                                <Button style={{ marginLeft: 20 }} onClick={() => handleCancel(item)}>Cancel</Button>
                                                                 <Button onClick={() => fileUpload(item)}>Upload</Button>
                                                             </div>
 
