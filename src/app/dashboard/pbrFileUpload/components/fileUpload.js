@@ -13,6 +13,7 @@ import {
     Button
 } from 'antd';
 import { useDispatch } from 'react-redux';
+import debounce from "lodash/debounce";
 import { showNotification, showLoader, hideLoader } from '../../../../duck/actions/commonActions.js';
 import pdfIcon from '../../../../assets/images/pdfIcon.svg';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
@@ -129,6 +130,39 @@ function FileUpload() {
             }
         }
     };
+
+    const onSearchParam = debounce((type, field) => {
+		if (type != null) {
+			if (field === 'project') {
+				getProjectFilterData(
+					selectParam['project'],
+					selectParam['group'],
+					selectParam['subGroup'],
+					type,
+					'',
+					''
+				);
+			} else if (field === 'group') {
+				getProjectFilterData(
+					selectParam['project'],
+					selectParam['group'],
+					selectParam['subGroup'],
+					'',
+					type,
+					''
+				);
+			} else if (field === 'subGroup') {
+				getProjectFilterData(
+					selectParam['project'],
+					selectParam['group'],
+					selectParam['subGroup'],
+					'',
+					'',
+					type
+				);
+			}
+		}
+	}, 500);
 
     const clearSearch = (e, field) => {
         /* istanbul ignore next */
@@ -305,7 +339,7 @@ function FileUpload() {
                                                 label='Project *'
                                                 placeholder='Select Project'
                                                 onChangeSelect={value => onChangeParam(value, 'project')}
-                                                // onSearchSelect={type => onSearchParam(type, 'plant')}
+                                                onSearchSelect={type => onSearchParam(type, 'project')}
                                                 options={optionProject}
                                                 handleClearSearch={e => clearSearch(e, 'project')}
                                                 // error={isEmptyPlant ? 'Please select project' : null}
@@ -316,11 +350,12 @@ function FileUpload() {
                                             {/* <p>Group</p>
                                             <Select placeholder="Group" style={{ width: 235 }} /> */}
                                             <SelectSearchField
+                                                disabled={selectParam['project'] ? false : true}
                                                 showSearch
                                                 label='Group'
                                                 placeholder='Select Group'
                                                 onChangeSelect={value => onChangeParam(value, 'group')}
-                                                // onSearchSelect={type => onSearchParam(type, 'plant')}
+                                                onSearchSelect={type => onSearchParam(type, 'group')}
                                                 options={optionsGroup}
                                                 handleClearSearch={e => clearSearch(e, 'group')}
                                                 // error={isEmptyPlant ? 'Please select plant' : null}
@@ -332,10 +367,11 @@ function FileUpload() {
                                             <Select placeholder="Sub-Group" style={{ width: 235 }} /> */}
                                             <SelectSearchField
                                                 showSearch
+                                                disabled={selectParam['group'] ? false : true}
                                                 label='Sub-Group'
                                                 placeholder='Select Sub-Group'
                                                 onChangeSelect={value => onChangeParam(value, 'subGroup')}
-                                                // onSearchSelect={type => onSearchParam(type, 'plant')}
+                                                onSearchSelect={type => onSearchParam(type, 'subGroup')}
                                                 options={optionsSubGroup}
                                                 handleClearSearch={e => clearSearch(e, 'subGroup')}
                                                 // error={isEmptyPlant ? 'Please select plant' : null}

@@ -199,7 +199,7 @@ const Sidebar = () => {
 						icon={<CloudUploadOutlined className="menu-icons" />}
 						id="pbr file upload"
 					>
-						<Link to="/dashboard/pbr_file_upload">Pbr File Upload</Link>
+						<Link to="/dashboard/pbr_file_upload">File Upload</Link>
 					</Menu.Item>
 					<Menu.Item
 						key="paper-batch-records"
