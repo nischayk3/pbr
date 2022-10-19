@@ -14,6 +14,7 @@ import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import InputField from '../../../../components/InputField/InputField';
 import SelectSearchField from "../../../../components/SelectSearchField/SelectSearchField";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
+import { getUploadProfile } from "../../../../duck/actions/loginAction";
 import { getUserProfile, passwordChange, sendUserProfile, userProfileUpload } from "../../../../services/loginService";
 import "./style.scss";
 
@@ -41,6 +42,7 @@ const Profile = () => {
 		getProfile();
 		getPreference();
 	}, [])
+
 
 	const dateFormat = ["MM:DD:YYYY"]
 	const timeZone = ["Asia/Kolkata"]
@@ -156,6 +158,7 @@ const Profile = () => {
 			if (saveRes.statuscode === 200) {
 				dispatch(hideLoader());
 				dispatch(showNotification('success', "Updated Successfully"));
+				dispatch(getUploadProfile(true));
 				getProfile();
 			} else if (saveRes.statuscode === 400) {
 				dispatch(hideLoader());

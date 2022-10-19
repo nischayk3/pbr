@@ -1,8 +1,10 @@
-import { LOGIN_DETAILS, REDIRECT_URL } from '../../constants/actionTypes';
+import { GET_PROFILE, LOGIN_DETAILS, REDIRECT_URL } from '../../constants/actionTypes';
 
 const initialState = {
 	loginDetails: {},
-	redirectUrl: ''
+	redirectUrl: '',
+	profile: false
+
 };
 
 export default (state = initialState, action) => {
@@ -11,6 +13,8 @@ export default (state = initialState, action) => {
 			return { ...state, loginDetails: action.payload };
 		case REDIRECT_URL:
 			return { ...state, redirectUrl: action.payload };
+		case GET_PROFILE:
+			return { ...state, profile: action.payload }
 		default:
 			return state;
 	}
