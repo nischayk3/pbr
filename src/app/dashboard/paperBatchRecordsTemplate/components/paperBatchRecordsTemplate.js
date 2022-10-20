@@ -864,6 +864,7 @@ function PaperBatchRecordsTemplate() {
                     sideData["keyCount"] = item.keys.length
                     pageID.users.push(sideData)
                 })
+                setPageIdFormValues(pageID.users)
                 setInitialSideTableData(table)
                 setInitialPageIdentifierData(pageID)
                 setFormLoadParameter(demoValues)
@@ -1195,7 +1196,6 @@ function PaperBatchRecordsTemplate() {
     }
     /* istanbul ignore next */
     const savePbrTemplateDataInfo = async () => {
-        console.log("formValues",formValues)
         // let validate = validation()
         try {/* istanbul ignore next */
             dispatch(showLoader());
@@ -1966,7 +1966,7 @@ function PaperBatchRecordsTemplate() {
             }, i * 1000)
         }
     }
-    console.log("formValues111",formValues)
+
     return (
         <div className='pbr-content-layout' >
             <div className='custom-wrapper pbr-wrapper'>
