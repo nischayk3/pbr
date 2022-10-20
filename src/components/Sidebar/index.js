@@ -1,5 +1,9 @@
 import {
-	AppstoreAddOutlined, AppstoreOutlined, AreaChartOutlined, BarChartOutlined, BlockOutlined, CheckCircleOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined, FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined, NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined
+	AppstoreAddOutlined, AppstoreOutlined, AreaChartOutlined, BarChartOutlined, BlockOutlined,
+	CheckCircleOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined,
+	FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined,
+	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined,
+	CloudUploadOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
@@ -190,6 +194,13 @@ const Sidebar = () => {
 					icon={<FileProtectOutlined className="menu-icons" />}
 					title="Paper Batch Records"
 				>
+					<Menu.Item
+						key="pbr_file_upload"
+						icon={<CloudUploadOutlined className="menu-icons" />}
+						id="pbr file upload"
+					>
+						<Link to="/dashboard/pbr_file_upload">File Upload</Link>
+					</Menu.Item>
 					<Menu.Item
 						key="paper-batch-records"
 						icon={<DiffOutlined className="menu-icons" />}

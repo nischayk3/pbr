@@ -424,7 +424,7 @@ function Hierarchy() {
 				setOnceSaved(true)
 			}
 			else {
-				dispatch(showNotification('error', response.message))
+				dispatch(showNotification('error', response))
 			}
 		}
 		if (activeTab == "Process steps") {
@@ -442,7 +442,7 @@ function Hierarchy() {
 				setStepSaved(true)
 			}
 			else {
-				dispatch(showNotification('error', response.message))
+				dispatch(showNotification('error', response))
 			}
 		}
 		if (activeTab == "Process step mapping") {
@@ -462,7 +462,7 @@ function Hierarchy() {
 
 			}
 			else {
-				dispatch(showNotification('error', response.message))
+				dispatch(showNotification('error', response))
 			}
 		}
 	};
