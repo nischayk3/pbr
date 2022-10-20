@@ -879,7 +879,8 @@ function PaperBatchRecordsTemplate() {
             let arr = templateInfo.map((item, index) => ({
                 name: item.name,
                 method: item.method,
-                pageIdValue:item.page_name,
+                pageIdValue:item?.page_name,
+                page_num:item?.param_page,
                 values: {
                     anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_key_snippet_id,
                     anchorCoords: [
@@ -1194,6 +1195,7 @@ function PaperBatchRecordsTemplate() {
     }
     /* istanbul ignore next */
     const savePbrTemplateDataInfo = async () => {
+        console.log("formValues",formValues)
         // let validate = validation()
         try {/* istanbul ignore next */
             dispatch(showLoader());
@@ -1964,7 +1966,7 @@ function PaperBatchRecordsTemplate() {
             }, i * 1000)
         }
     }
-
+    console.log("formValues111",formValues)
     return (
         <div className='pbr-content-layout' >
             <div className='custom-wrapper pbr-wrapper'>
