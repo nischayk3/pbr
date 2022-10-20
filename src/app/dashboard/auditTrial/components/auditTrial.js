@@ -168,7 +168,7 @@ class AuditTrials extends React.Component {
 					dataIndex: "table_disp_key",
 					key: "8",
 					defaultSortOrder: "descend",
-					sorter: (a, b) => a.table_int_id.localeCompare(b.table_int_id)
+					sorter: (a, b) => a.table_disp_key.localeCompare(b.table_disp_key)
 				},
 			],
 			initialColumns: []
@@ -363,7 +363,7 @@ class AuditTrials extends React.Component {
 				antdObj["entry_date"] = item.entry_date;
 				antdObj["table_name"] = item.table_name;
 				antdObj["reason"] = item.reason;
-				antdObj["table_int_id"] = item.table_int_id;
+				antdObj["table_disp_key"] = item.table_disp_key;
 				antdObj["changed_fields"] = item.changed_fields;
 				if (val11 === item.new_value) {
 					antdObj["new_value"] = (
