@@ -165,7 +165,7 @@ class AuditTrials extends React.Component {
 					sorter: (a, b) => a.table_name.localeCompare(b.table_name)
 				}, {
 					title: "Table Id",
-					dataIndex: "table_int_id",
+					dataIndex: "table_disp_key",
 					key: "8",
 					defaultSortOrder: "descend",
 					sorter: (a, b) => a.table_int_id.localeCompare(b.table_int_id)
