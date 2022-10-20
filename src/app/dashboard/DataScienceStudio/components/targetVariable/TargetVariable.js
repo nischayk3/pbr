@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbWrapper from '../../../../../components/BreadCrumbWrapper';
 import { hideLoader, showLoader, showNotification } from '../../../../../duck/actions/commonActions';
 import { onClickTarget } from '../../../../../duck/actions/viewAction';
-import { analysisView } from '../../../../../services/dataScienceStudioService';
+import { loadDssView } from '../../../../../services/dataScienceStudioService';
 import "./style.scss";
 
 const columns = [
@@ -24,7 +24,7 @@ const columns = [
 	Table.EXPAND_COLUMN,
 	{
 		title: 'Parameters',
-		dataIndex: 'Parameter_name',
+		dataIndex: 'parameter_name',
 		key: 'parameters',
 	},
 ];
@@ -34,8 +34,15 @@ const columns = [
 const TargetVariable = () => {
 	const loadViewDataTable = useSelector((state) => state.dataScienceReducer.loadViewData)
 	const viewIdVer = useSelector((state) => state.dataScienceReducer.viewIdVer)
+	const fileRes = useSelector((state) => state.dataScienceReducer.fileRes)
+	const viewRes = useSelector((state) => state.dataScienceReducer.viewRes)
 
-	const [expandData, setExpandData] = useState({});
+	console.log("loadViewDataTable", loadViewDataTable);
+	console.log("viewIdVer", viewIdVer);
+	console.log("fileRes", fileRes);
+	console.log("viewRes", viewRes);
+
+	const [expandData, setExpandData] = useState([]);
 
 	const dispatch = useDispatch();
 
@@ -53,44 +60,22 @@ const TargetVariable = () => {
 			}
 		]
 
-		const childData = [
-			{
-				statistic: "count",
-				value: "1234"
 
-			},
-			{
-				statistic: "std",
-				value: "11.131"
 
-			},
-			{
-				statistic: "mean",
-				value: "12.12"
 
-			}
-		]
-
-		loadViewDataTable.map((item, i) => {
-			console.log("loadViewDataTable.data_table", item.data_table)
-		});
 		return (
 			<div className="expandable-component">
 				<Table
 					className="custom-tree-table1"
 					pagination={false}
 					columns={childColumn}
-					dataSource={childData}
+					dataSource={expandData}
+					rowKey="statistic"
 				/>
 				<Plot
 					data={[
-						{
-							x: [1, 2, 3],
-							y: [2, 6, 3],
-							type: 'scatter',
-							mode: 'markers',
-						},
-						{ type: 'bar', x: [1, 2, 3], y: [2, 5, 3] },
+
+						{ type: 'bar', x: expandData.map((item) => item.statistic), y: expandData.map((item) => item.value) },
 					]}
 					layout={{
 						width: 500, height: 200, autosize: false, margin: {
@@ -107,32 +92,49 @@ const TargetVariable = () => {
 	}
 
 	const onTableRowExpand = (expanded, record) => {
-		console.log("expanded, record", expanded, record);
 		const _reqRow = {
-			view_disp_id: viewIdVer.view_disp_id,
-			version: viewIdVer.view_version,
-			parameter_name: record.Parameter_name
+			data: viewRes,
+			df: fileRes,
+			parameter_name: record.parameter_name,
+			type: 'stats',
+			unapproved: true,
+			view_disp_id: viewIdVer.view_disp_id ? viewIdVer.view_disp_id : '',
+			view_version: viewIdVer.view_version ? viewIdVer.view_version : '',
 		}
-
+		console.log(_reqRow);
 		if (expanded) {
-			loadAnalysisView(_reqRow); // I have set my record.id as row key. Check the documentation for more details.
+			dssViewLoad(_reqRow); // I have set my record.id as row key. Check the documentation for more details.
 		}
 
 		// this.setState({ expandedRowKeys: keys });
 	}
 
 	//analysis view
-	const loadAnalysisView = async (_reqLoad) => {
+	// const loadAnalysisView = async (_reqLoad) => {
+	// 	try {
+	// 		dispatch(showLoader());
+	// 		const analysisRes = await analysisView(_reqLoad);
+	// 		dispatch(hideLoader());
+	// 		if (analysisRes.Status === 200) {
+	// 			setExpandData(analysisRes.data.Stat)
+	// 		} else {
+	// 			dispatch(showNotification("error", 'No Data found'));
+	// 		}
+
+	// 	} catch (err) {
+	// 		dispatch(hideLoader());
+	// 		dispatch(showNotification("error", err));
+	// 	}
+	// }
+	//load dss view
+	const dssViewLoad = async (_reqLoad) => {
 		try {
 			dispatch(showLoader());
-			const analysisRes = await analysisView(_reqLoad);
+			const loadDssRes = await loadDssView(_reqLoad);
 			dispatch(hideLoader());
-			if (analysisRes.Status === 200) {
-				setExpandData(analysisRes.data.Stat)
-			} else {
-				dispatch(showNotification("error", 'No Data found'));
+			if (loadDssRes.statuscode === 200) {
+				setExpandData(loadDssRes.message)
 			}
-
 		} catch (err) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", err));
@@ -167,7 +169,7 @@ const TargetVariable = () => {
 								expandable={{ expandedRowRender }}
 								onExpand={onTableRowExpand}
 								dataSource={loadViewDataTable}
-								rowKey="Parameter_name"
+								rowKey="parameter_name"
 							/>
 						</div>
 					</Card>
