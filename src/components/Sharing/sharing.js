@@ -118,7 +118,7 @@ export default function Sharing(props) {
                         }}
                         size="small"
                     >
-                        {currentUser.substring(0, 1).toUpperCase()}
+                        {currentUser && currentUser.substring(0, 1).toUpperCase()}
                     </Avatar>
                 </span>
                 <p className="email-text">{currentUser}</p>
