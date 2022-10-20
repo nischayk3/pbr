@@ -1,10 +1,14 @@
 import { LeftOutlined } from '@ant-design/icons';
-import { Card, Radio, Table } from "antd";
-import React from "react";
+import { Button, Card, Radio, Table } from "antd";
+import React, { useState } from "react";
 import Plot from 'react-plotly.js';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import BreadCrumbWrapper from '../../../../../components/BreadCrumbWrapper';
+import { hideLoader, showLoader, showNotification } from '../../../../../duck/actions/commonActions';
 import { onClickTarget } from '../../../../../duck/actions/viewAction';
+import { analysisView } from '../../../../../services/dataScienceStudioService';
 import "./style.scss";
+
 const columns = [
 	{
 		title: 'Target variable',
@@ -20,36 +24,18 @@ const columns = [
 	Table.EXPAND_COLUMN,
 	{
 		title: 'Parameters',
-		dataIndex: 'parameters',
+		dataIndex: 'Parameter_name',
 		key: 'parameters',
 	},
 ];
-const data = [
-	{
-		key: 1,
-		parameters: 'L0_S0_01',
-		description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
 
-	},
-	{
-		key: 2,
-		parameters: 'L0_S0_02',
-		description: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.',
-	},
-	{
-		key: 3,
-		parameters: 'L0_S0_02',
-		description: 'This not expandable',
-	},
-	{
-		key: 4,
-		parameters: 'L0_S0_03',
-		description: 'My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park.',
-	},
-];
 
 
 const TargetVariable = () => {
+	const loadViewDataTable = useSelector((state) => state.dataScienceReducer.loadViewData)
+	const viewIdVer = useSelector((state) => state.dataScienceReducer.viewIdVer)
+
+	const [expandData, setExpandData] = useState({});
 
 	const dispatch = useDispatch();
 
@@ -85,6 +71,9 @@ const TargetVariable = () => {
 			}
 		]
 
+		loadViewDataTable.map((item, i) => {
+			console.log("loadViewDataTable.data_table", item.data_table)
+		});
 		return (
 			<div className="expandable-component">
 				<Table
@@ -114,50 +103,78 @@ const TargetVariable = () => {
 					}}
 				/>
 			</div>
-
 		)
 	}
 
+	const onTableRowExpand = (expanded, record) => {
+		console.log("expanded, record", expanded, record);
+		const _reqRow = {
+			view_disp_id: viewIdVer.view_disp_id,
+			version: viewIdVer.view_version,
+			parameter_name: record.Parameter_name
+		}
+
+		if (expanded) {
+			loadAnalysisView(_reqRow); // I have set my record.id as row key. Check the documentation for more details.
+		}
+
+		// this.setState({ expandedRowKeys: keys });
+	}
+
+	//analysis view
+	const loadAnalysisView = async (_reqLoad) => {
+		try {
+			dispatch(showLoader());
+			const analysisRes = await analysisView(_reqLoad);
+			dispatch(hideLoader());
+			if (analysisRes.Status === 200) {
+				setExpandData(analysisRes.data.Stat)
+			} else {
+				dispatch(showNotification("error", 'No Data found'));
+			}
+
+		} catch (err) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", err));
+		}
+	}
+
 	return (
-		<div className="target-wrapper">
-			<Card title={(
-				<div className='card-title'>
-					<LeftOutlined onClick={() => {
-						dispatch(onClickTarget(false));
-					}} />
-					<p>Target Variable</p>
+		<div className="custom-wrapper">
+			<BreadCrumbWrapper />
+			<div className="custom-content-layout">
+				<div className="target-wrapper">
+					<Card title={(
+						<div className='card-title'>
+							<LeftOutlined onClick={() => {
+								dispatch(onClickTarget(false));
+							}} />
+							<p>Target Variable</p>
+						</div>
+					)} className="target-card">
+						<div className='target-head'>
+							<p>Please select a target variable based on the univariate dataset statistics provided, before proceeding to JupyterLab.</p>
+							<Button
+								type='primary'
+								className='custom-secondary-btn'
+							>
+								Save and procced
+							</Button>
+						</div>
+						<div className="target-custom-table">
+							<Table
+								columns={columns}
+								expandable={{ expandedRowRender }}
+								onExpand={onTableRowExpand}
+								dataSource={loadViewDataTable}
+								rowKey="Parameter_name"
+							/>
+						</div>
+					</Card>
 				</div>
-			)} className="target-card">
-				<p>Please select a target variable based on the univariate dataset statistics provided, before proceeding to JupyterLab.</p>
-				<div className="target-custom-table">
-					{/* <table>
-						<thead className="table-head">
-							<tr>
-								<th style={{ width: '125px', borderRight: "1px solid #C7C7C7" }}>Target Variable</th>
-								<th>Parameters</th>
-							</tr>
-						</thead>
-
-						<tbody className="table-body">
-							<tr>
-								<td style={{ textAlign: 'center' }}><Radio /></td>
-								<td><PlusSquareOutlined /><span>L0_S0_0</span></td>
-							</tr>
-							<tr>
-							<td style={{ textAlign: 'center' }}><Radio /></td>
-								<td><PlusSquareOutlined /><span>L0_S0_0</span></td>
-							</tr>
-						</tbody>
-					</table> */}
-					<Table
-						columns={columns}
-						expandable={{ expandedRowRender }}
-						dataSource={data}
-					/>
-				</div>
-			</Card>
-
+			</div>
 		</div>
+
 	)
 }
 

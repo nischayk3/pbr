@@ -5,29 +5,30 @@ import {
 	Dropdown,
 	Input,
 	Menu,
-	Select, Table,
-	Typography
+	Select, Table
 } from "antd";
+import axios from "axios";
 import moment from "moment";
 import React from "react";
 import { connect } from "react-redux";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
-import { MDH_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
+import { BMS_APP_PYTHON_SERVICE, MDH_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import {
 	auditDataChange,
 	auditFilter,
-	loadFilter
+	loadFilter,
+	reportDownload
 } from "../../../../duck/actions/auditTrialAction";
 import { showNotification } from "../../../../duck/actions/commonActions";
 import "./styles.scss";
 
 const { Option } = Select;
-const { Text } = Typography;
 
 class AuditTrials extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			resData: {},
 			dates: [],
 			hackValue: [],
 			setValue: [],
@@ -79,7 +80,6 @@ class AuditTrials extends React.Component {
 			selectedQuestionPkg: "",
 			selectedAns: "",
 			selectedAnsPkg: "",
-
 			searchText: "",
 			colSort: "entry_date",
 			searchedColumn: "",
@@ -170,7 +170,6 @@ class AuditTrials extends React.Component {
 					defaultSortOrder: "descend",
 					sorter: (a, b) => a.table_int_id.localeCompare(b.table_int_id)
 				},
-
 			],
 			initialColumns: []
 		};
@@ -206,6 +205,60 @@ class AuditTrials extends React.Component {
 		this.setState({ colSort: column }, () => this.auditHighlight());
 	};
 
+	reportDownloadExcel = (reportType) => {
+		console.log("reportType", reportType);
+		let _reportReq = {
+			type: reportType,
+			data: this.state.resData
+		}
+
+		if (reportType === "CSV") {
+			reportDownload(_reportReq).then((res) => {
+				const url = window.URL.createObjectURL(new Blob([res]));
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = "download.csv"
+				document.body.appendChild(a);
+				a.click();
+				window.URL.revokeObjectURL(url);
+			})
+		} else if (reportType === "Excel") {
+			axios
+				.post(BMS_APP_PYTHON_SERVICE + '/report_download', _reportReq, {
+					responseType: 'arraybuffer',
+				})
+				.then(response => {
+					const blob = new Blob([response.data], { type: 'application/octet-stream' });
+					const url = window.URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = url;
+					a.download = "report.xlsx"
+					document.body.appendChild(a);
+					a.click();
+					window.URL.revokeObjectURL(url);
+				});
+		} else if (reportType === "PDF") {
+			axios
+				.post(BMS_APP_PYTHON_SERVICE + '/report_download', _reportReq, {
+					responseType: 'arraybuffer',
+				})
+				.then(response => {
+					const blob = new Blob([response.data], { type: 'application/pdf' });
+					const url = window.URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = url;
+					a.download = "report.pdf"
+					document.body.appendChild(a);
+					a.click();
+					window.URL.revokeObjectURL(url);
+				});
+		} else {
+			console.log(reportType);
+		}
+
+
+	}
+
 	getExcelFile = (value) => {
 		var today = new Date();
 		today.setDate(today.getDate() + 1);
@@ -230,7 +283,6 @@ class AuditTrials extends React.Component {
 			myUrlWithParams.searchParams.append("startdate", startDate);
 			myUrlWithParams.searchParams.append("enddate", endDate);
 		}
-
 		if (activity) {
 			myUrlWithParams.searchParams.append("activity", activity);
 		}
@@ -298,6 +350,9 @@ class AuditTrials extends React.Component {
 
 		auditDataChange(req).then((res) => {
 			let antdDataTable = [];
+			this.setState({
+				resData: res.data
+			})
 			res.data.forEach((item, key) => {
 				let antdObj = {};
 				let val11 = item.delta.toString();
@@ -345,6 +400,7 @@ class AuditTrials extends React.Component {
 			});
 		});
 	};
+
 	loadEventFilter = (_filterId, _filter) => {
 		let _req = {
 			appId: "BMS",
@@ -371,11 +427,8 @@ class AuditTrials extends React.Component {
 				String(o[k]).toLowerCase().includes(value.toLowerCase())
 			)
 		);
-
 		this.setState({ filterTable });
 	};
-
-
 
 	/* istanbul ignore next */
 	onlimitChange = (e, value) => {
@@ -389,7 +442,6 @@ class AuditTrials extends React.Component {
 				selectedLimit: value
 			})
 		}
-
 	}
 
 	onChangeIng = (e, value) => {
@@ -439,7 +491,6 @@ class AuditTrials extends React.Component {
 				selectedAns: "",
 				user: "",
 				daterange: [],
-
 				eventType: "",
 				filterTable: null,
 				dates: [],
@@ -448,7 +499,6 @@ class AuditTrials extends React.Component {
 			},
 			() => this.auditHighlight()
 		);
-
 	};
 
 	handleClearPkg = () => {
@@ -473,21 +523,40 @@ class AuditTrials extends React.Component {
 		}
 	};
 
-
+	/**
+ * Resolved and downloads blob response as a file.
+ * FOR BROWSERS ONLY
+ * @param response
+ */
+	resolveAndDownloadBlob = (response) => {
+		let filename = 'tags.xlsx';
+		filename = decodeURI(filename);
+		const url = window.URL.createObjectURL(new Blob([response]));
+		const link = document.createElement('a');
+		link.href = url;
+		link.setAttribute('download', filename);
+		document.body.appendChild(link);
+		link.click();
+		window.URL.revokeObjectURL(url);
+		link.remove();
+	}
 
 	render() {
-
 		const { RangePicker } = DatePicker;
 		const { filterTable, tableData, columns } = this.state;
 
 		const userMenu = (
 			<Menu>
-				<Menu.Item key="1" onClick={() => this.getExcelFile("excel")}>
+
+				<Menu.Item key="1" onClick={() => this.reportDownloadExcel("Excel")}>
 					Excel
 				</Menu.Item>
 				<Menu.Divider />
-				<Menu.Item key="2" onClick={() => this.getExcelFile("csv")}>
+				<Menu.Item key="2" onClick={() => this.reportDownloadExcel("CSV")}>
 					CSV
+				</Menu.Item>
+				<Menu.Item key="3" onClick={() => this.reportDownloadExcel("PDF")}>
+					PDF
 				</Menu.Item>
 			</Menu>
 		);

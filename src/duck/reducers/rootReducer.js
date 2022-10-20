@@ -1,14 +1,17 @@
-import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
+import { combineReducers } from 'redux';
 import chartDataReducer from './chartDataReducer';
 import chartPersReducer from './chartPersReducer';
 import chartViewReducer from './chartViewReducer';
 import commonReducer from './commonReducer';
-import reportDesignerReducer from './reportDesignerReducer';
-import viewCreationReducer from './viewCreationReducer';
+import dataScienceReducer from './dataScienceReducer';
 import loginReducer from './loginReducer';
 import pbrReducer from './pbrReducer';
+import reportDesignerReducer from './reportDesignerReducer';
+import viewCreationReducer from './viewCreationReducer';
 import viewHierarchy from './viewHierarchy';
+import analyticsReducer from "./analyticsReducer"
+
 const createRootReducer = (history) =>
 	combineReducers({
 		router: connectRouter(history),
@@ -20,6 +23,8 @@ const createRootReducer = (history) =>
 		viewCreationReducer,
 		loginReducer,
 		pbrReducer,
-		viewHierarchy
+		viewHierarchy,
+    dataScienceReducer,
+    analyticsReducer
 	});
 export default createRootReducer;

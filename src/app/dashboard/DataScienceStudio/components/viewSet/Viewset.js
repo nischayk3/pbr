@@ -9,7 +9,8 @@ import AnalysisNewPipeline from "../../../../../assets/images/AnalysisNewPipelin
 import SelectField from "../../../../../components/SelectField/SelectField";
 //services
 import { getViewList } from "../../../../../services/analyticsService";
-import { postChartPlotData } from "../../../../../services/chartPersonalizationService";
+import { loadDssView } from "../../../../../services/dataScienceStudioService";
+import { getViewConfig } from "../../../../../services/viewCreationPublishing";
 //redux
 import { useDispatch } from "react-redux";
 import {
@@ -18,6 +19,8 @@ import {
 	showNotification
 } from "../../../../../duck/actions/commonActions";
 // import ViewSearchTable from "./viewTable/ViewTable";
+import { useHistory, useRouteMatch } from "react-router-dom";
+import { loadViewTableData, sendViewIdVer } from "../../../../../duck/actions/dataScienceAction";
 import ViewSearchTable from "../../../chartPersonal/components/viewPage/viewChart/viewSearchTable";
 import ViewTable from "../../../chartPersonal/components/viewPage/viewChart/ViewTable";
 
@@ -29,6 +32,8 @@ const Viewset = ({ isVisible, onCancel }) => {
 	const deepSearch1 = useRef(false);
 	const searchViewData = useRef([]);
 	const [showBatchData, setShowBatchData] = useState(false);
+	const [isDisable, setIsDisable] = useState(true);
+
 	const [viewData, setViewData] = useState({
 		viewName: "",
 		viewDispId: " ",
@@ -37,14 +42,19 @@ const Viewset = ({ isVisible, onCancel }) => {
 		pipeLineName: "",
 	});
 	const [deepSearch, setDeepSearch] = useState(false);
+	const [viewConfigRes, setViewConfigRes] = useState({})
+	const [loadViewData, setLoadViewData] = useState([])
 	const dispatch = useDispatch();
+	const match = useRouteMatch();
+	const history = useHistory();
+
 	const ref = useRef(null);
+
 
 	//function for getting viewdata list
 	const getViewTableData = async () => {
 		let reqView = { vew_status: "APRD" };
 		let antdDataTable = [];
-
 		try {
 			dispatch(showLoader());
 			const viewRes = await getViewList(reqView);
@@ -73,6 +83,43 @@ const Viewset = ({ isVisible, onCancel }) => {
 		}
 	};
 
+	//load view
+	const loadView = async (_reqLoad) => {
+		try {
+			dispatch(sendViewIdVer(_reqLoad))
+			dispatch(showLoader());
+			const loadViewRes = await getViewConfig(_reqLoad);
+			dispatch(hideLoader());
+			if (loadViewRes !== {}) {
+				setIsDisable(false)
+				setViewConfigRes(loadViewRes)
+			}
+		} catch (err) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", err));
+		}
+	};
+
+	//load dss view
+	const dssViewLoad = async (_reqLoad) => {
+		try {
+			dispatch(showLoader());
+			const loadDssRes = await loadDssView(_reqLoad);
+			dispatch(hideLoader());
+			if (loadDssRes.statuscode === 200) {
+				dispatch(loadViewTableData(loadDssRes.message))
+				history.push({
+					pathname: `${match.url}/target_variable`,
+				});
+			}
+
+
+		} catch (err) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", err));
+		}
+	}
+
 	//function to handle search
 	const searchTable = () => {
 		const filterData = searchViewData.current.filter((o) =>
@@ -94,6 +141,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 
 	//on search value changes
 	const onSearchChange = (e) => {
+		console.log("onSearchChange", e.target.value)
 		if (e.target.value === "") {
 			setSearchTableData(searchViewData.current);
 			setViewData({
@@ -116,54 +164,18 @@ const Viewset = ({ isVisible, onCancel }) => {
 			setSearchTableData(searchViewData.current);
 		}
 	};
-	//onclick of next button
-	const onNextClick = async (batchFilters) => {
-		const reqBody = {
-			data: [
-				{
-					view_id: viewData.viewDispId,
-					view_name: viewData.viewName,
-					view_version: viewData.viewVersion,
-					chart_type: "scatter",
-					chart_mapping: {
-						x: {},
-						y: {},
-					},
-					data_filter: batchFilters
-						? batchFilters
-						: {
-							date_range: "",
-							unapproved_data: 0,
-							site: "",
-						},
-					data: [
-						{
-							type: "scatter",
-							mode: "markers",
-							marker: {
-								color: "#376dd4",
-								size: 15,
-							},
-						},
-					],
-				},
-			],
-		};
-		const apiResponse = await postChartPlotData(reqBody);
-		if (apiResponse && apiResponse.data && apiResponse.data[0]?.extras) {
-			setParameterData(apiResponse?.data[0]?.extras?.coverage);
-			if (showBatchData === false) {
-				setShowBatchData(true);
-			}
-		} else if (apiResponse && apiResponse?.Message) {
-			setParameterData([]);
-			dispatch(showNotification("error", apiResponse?.Message));
-		} else {
-			dispatch(showNotification("error", "Unable to get parameter data"));
+
+	const onNextClick = () => {
+		let _reqDss = {
+			data: viewConfigRes
 		}
+		dssViewLoad(_reqDss);
+		onCancel()
+
 	};
 
 	const onSelectedView = (record) => {
+
 		let tempVersionList = [0];
 		searchViewData.current.forEach((ele) => {
 			if (ele.view_disp_id === record.view_disp_id) {
@@ -180,6 +192,13 @@ const Viewset = ({ isVisible, onCancel }) => {
 			searchValue: record.view_disp_id,
 			viewVersion: record.view_version,
 		});
+		let _reqLoad = {
+			view_disp_id: record.view_disp_id,
+			view_version: record.view_version,
+		};
+		loadView(_reqLoad);
+		console.log("onSelectedView", record)
+
 		setDeepSearch(false);
 		deepSearch1.current = false;
 	};
@@ -188,6 +207,11 @@ const Viewset = ({ isVisible, onCancel }) => {
 		getViewTableData();
 		document.addEventListener("mousedown", closeTableView);
 	}, []);
+
+	const callbackReqPayload = (_req) => {
+		console.log("_req", _req)
+		loadView(_req);
+	}
 
 	return (
 		<Modal
@@ -204,7 +228,6 @@ const Viewset = ({ isVisible, onCancel }) => {
 						<img src={AnalysisNewPipeline} alt="Analysis new pipeline image" />
 					</Col>
 					<Col span={12}>
-
 						<Row className="input-mb">
 							<Col span={24} ref={ref} className="search-table">
 								<p>View ID</p>
@@ -226,6 +249,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 										setViewData={setViewData}
 										searchViewData={searchViewData}
 										setVersionList={setVersionList}
+										callbackReq={callbackReqPayload}
 									/>
 								)}
 							</Col>
@@ -234,17 +258,17 @@ const Viewset = ({ isVisible, onCancel }) => {
 							<Row gutter={24} className="view-details">
 								<Col span={12}>
 									<Row>
-										<Col span={10}>
+										<Col span={7}>
 											<label>View ID</label>
 										</Col>
-										<Col span={10} className="wordBreak">
+										<Col span={12} className="wordBreak">
 											<label>: {viewData.viewName || "-"}</label>
 										</Col>
 									</Row>
 								</Col>
 								<Col span={12} className="col-pr">
 									<Row>
-										<Col span={10}>
+										<Col span={8}>
 											<label>Version</label>
 										</Col>
 										<Col span={12}>
@@ -262,23 +286,25 @@ const Viewset = ({ isVisible, onCancel }) => {
 						)}
 						<Row className="button-mt">
 							<Button
-								className="custom-primary-btn"
-								onClick={() => onNextClick("")}
-								disabled={!viewData.pipeLineName || !viewData.viewVersion}
+								type='primary'
+								className='custom-secondary-btn'
+								onClick={onNextClick}
+								disabled={isDisable}
 							>
 								Next
+							</Button>
+							<Button
+								className="custom-primary-btn"
+								onClick={onCancel}
+
+							>
+								Back
 							</Button>
 						</Row>
 					</Col>
 				</Row>
 			) : (
-				// <BatchesComponent
-				// 	setShowBatchData={setShowBatchData}
-				// 	viewData={viewData}
-				// 	parameterData={parameterData}
-				// 	setParameterData={setParameterData}
-				// 	onNextClick={onNextClick}
-				// />
+
 				<></>
 			)}
 			<Modal

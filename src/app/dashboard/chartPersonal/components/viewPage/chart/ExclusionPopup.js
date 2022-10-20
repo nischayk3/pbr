@@ -35,17 +35,14 @@ const ExclusionPopup = ({
         user: localStorage.getItem("username"),
         timestamp: new Date().toISOString(),
       };
+      let errorMsg = "";
       const newPost = JSON.parse(JSON.stringify(postChartData));
       newPost.data[0].exclusions.push(obj);
       try {
         setIsModalVisible(false);
         dispatch(showLoader());
         const viewRes = await postChartPlotData(newPost);
-        if (!viewRes) {
-          dispatch(showNotification("error", viewRes?.message));
-          dispatch(hideLoader());
-          return false;
-        }
+        errorMsg = viewRes?.message;
         let newdataArr = [...postChartData.data];
         newdataArr[0].data = viewRes.data[0].data;
         newdataArr[0].exclusions = viewRes.data[0].exclusions;
@@ -55,7 +52,11 @@ const ExclusionPopup = ({
         dispatch(hideLoader());
         setTableKey("1");
       } catch (error) {
+        /* istanbul ignore next */
         dispatch(hideLoader());
+        if (errorMsg) {
+          dispatch(showNotification("error", errorMsg));
+        }
       }
     } else {
       setIsModalVisible(false);

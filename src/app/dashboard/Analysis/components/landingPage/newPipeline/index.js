@@ -137,7 +137,7 @@ const NewPipeline = (props) => {
             ? batchFilters
             : {
                 date_range: "",
-                unapproved_data: 0,
+                unapproved_data: 1,
                 site: "",
               },
           data: [

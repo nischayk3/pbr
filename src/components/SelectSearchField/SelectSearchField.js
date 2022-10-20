@@ -11,6 +11,7 @@ const SelectSearchField = props => {
 			<div className='search-block'>
 				<Select
 					id={props.id}
+					disabled = {props.disabled}
 					mode={props.mode}
 					showSearch={props.showSearch}
 					placeholder={props.placeholder}

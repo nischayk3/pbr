@@ -7,14 +7,15 @@
  */
 
 import { EditOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, Avatar, Button, Input, Select } from 'antd';
+import { Alert, Avatar, Button, Input, Select, Upload } from 'antd';
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import InputField from '../../../../components/InputField/InputField';
 import SelectSearchField from "../../../../components/SelectSearchField/SelectSearchField";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import { getUserProfile, passwordChange, sendUserProfile } from "../../../../services/loginService";
+import { getUploadProfile } from "../../../../duck/actions/loginAction";
+import { getUserProfile, passwordChange, sendUserProfile, userProfileUpload } from "../../../../services/loginService";
 import "./style.scss";
 
 const Profile = () => {
@@ -23,6 +24,8 @@ const Profile = () => {
 
 	const dispatch = useDispatch();
 
+	const [fileList, setFileList] = useState([]);
+	const [uploadFile, setUploadFile] = useState([]);
 	const [currentPassword, setCurrentPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("")
@@ -40,11 +43,19 @@ const Profile = () => {
 		getPreference();
 	}, [])
 
+
 	const dateFormat = ["MM:DD:YYYY"]
 	const timeZone = ["Asia/Kolkata"]
 	const language = ["English (UK)"]
 
+	const uploadButton = (
+		<span className="edit-icon">
+			<EditOutlined />
+		</span>
+	);
+
 	const handlePassChange = async () => {
+		dispatch(showLoader());
 		const userId = localStorage.getItem("user")
 		/* istanbul ignore next */
 		if (newPassword === confirmPassword) {
@@ -55,8 +66,17 @@ const Profile = () => {
 			}
 			/* istanbul ignore next */
 			const res = await passwordChange(_req);
-		} else {
+			dispatch(hideLoader());
+			if (res.statuscode === 200) {
+				dispatch(showNotification('success', "Password updated successfully"));
+			} else if (res.statuscode === 400) {
+				setErrorMsg(res.message)
+			}
+		} else if (newPassword !== confirmPassword) {
+			dispatch(hideLoader());
 			setErrorMsg("Password does not match")
+		} else {
+			console.log("error")
 		}
 	}
 
@@ -105,7 +125,6 @@ const Profile = () => {
 		try {
 			dispatch(showLoader());
 			const formData = new FormData();
-			formData.append("file", image);
 			formData.append("date_format", dateFormatValue);
 			formData.append("email_address", loginDetails && loginDetails.email_id);
 			formData.append("first_name", loginDetails && loginDetails.firstname);
@@ -122,6 +141,30 @@ const Profile = () => {
 				dispatch(showNotification('error', saveRes.message));
 			} else {
 				dispatch(hideLoader());
+				dispatch(showNotification('error', "error"));
+			}
+		} catch (error) {
+			dispatch(hideLoader());
+			/* istanbul ignore next */
+			dispatch(showNotification('error', error));
+		}
+	}
+
+	/* istanbul ignore next */
+	const userProfile = async (formData) => {
+		try {
+			dispatch(showLoader());
+			const saveRes = await userProfileUpload(formData);
+			if (saveRes.statuscode === 200) {
+				dispatch(hideLoader());
+				dispatch(showNotification('success', "Updated Successfully"));
+				dispatch(getUploadProfile(true));
+				getProfile();
+			} else if (saveRes.statuscode === 400) {
+				dispatch(hideLoader());
+				dispatch(showNotification('error', saveRes.message));
+			} else {
+				dispatch(hideLoader());
 				dispatch(showNotification('error', "image upload error"));
 			}
 		} catch (error) {
@@ -131,20 +174,17 @@ const Profile = () => {
 		}
 	}
 
-	const image_input = document.querySelector("#image-input");
-	if (image_input !== null) {
-		image_input.addEventListener("change", function () {
-			const reader = new FileReader();
-			reader.addEventListener("load", () => {
-				const uploaded_image = reader.result;
-				setImage(this.files[0]);
-				setImagePrev(false);
-				setIsUserIcon("")
-				document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
-			});
-			reader.readAsDataURL(this.files[0]);
-		});
-	}
+
+	const handleChange = ({ fileList: newFileList }) => {
+		var formData = new FormData();
+		formData.append('file', newFileList[0].originFileObj);
+		formData.append("email_address", loginDetails && loginDetails.email_id);
+		setImage(formData);
+		setImagePrev(true);
+		setIsUserIcon("");
+		userProfile(formData)
+	};
+
 
 	const getProfile = async () => {
 		try {
@@ -157,7 +197,7 @@ const Profile = () => {
 			if (getRes.statuscode === 200) {
 				dispatch(hideLoader());
 				setImagePrev(true)
-				setImgRes(getRes.message)
+				setImgRes(`${'data:image/png;base64,' + getRes.message}`)
 			} else {
 				setImagePrev(false)
 			}
@@ -166,6 +206,7 @@ const Profile = () => {
 			dispatch(showNotification('error', error));
 		}
 	}
+
 	const getPreference = async () => {
 		try {
 			dispatch(showLoader());
@@ -175,20 +216,25 @@ const Profile = () => {
 			}
 			const getRes = await getUserProfile(_getReq)
 			if (getRes.statuscode == 200) {
+				dispatch(hideLoader());
 				setTimeZoneValue(getRes.message[0].time_zone);
 				setDateFormatValue(getRes.message[0].date_format);
 				setLanguageValue(getRes.message[0].language)
+
 			} else {
 				console.log("getRes", getRes);
 			}
-
 			dispatch(hideLoader());
+
 		} catch (error) {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', error));
 		}
 	}
 
+	const onClose = (e) => {
+		console.log(e, 'I was closed.');
+	};
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
@@ -202,11 +248,17 @@ const Profile = () => {
 								{imagePrev ? (
 									<>
 										<div className="profile-avatar">
-											<img src={"data:image/png;base64," + `${imgRes}`} alt="dummy" width="300" height="300" />
-											<span className="edit-icon">
-												<EditOutlined />
-											</span>
-											<input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" />
+											<img src={imgRes} alt="dummy" width="300" height="300" />
+
+											<Upload
+												listType="picture"
+												fileList={fileList}
+												onChange={handleChange}
+												maxCount={1}
+											>
+												{uploadButton}
+											</Upload>
+											{/* <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" /> */}
 										</div>
 									</>
 								) : (
@@ -220,10 +272,16 @@ const Profile = () => {
 													margin: "10px 0"
 												}}
 												icon={isUserIcon} />
-											<span className="edit-icon">
-												<EditOutlined />
-											</span>
-											<input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" />
+
+											<Upload
+												listType="picture"
+												fileList={fileList}
+												onChange={handleChange}
+												maxCount={1}
+											>
+												{uploadButton}
+											</Upload>
+											{/* <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" /> */}
 										</div>
 									</>
 								)}
@@ -317,17 +375,25 @@ const Profile = () => {
 								<div>
 									<div className="input-pass">
 										<p>Current password</p>
-										<Input.Password autocomplete="new-password" placeholder="input password" value={currentPassword} onChange={(e) => { setCurrentPassword(e.target.value) }} />
+										<Input.Password autocomplete="new-password" placeholder="input password" value={currentPassword} onChange={(e) => { setCurrentPassword(e.target.value), setErrorMsg("") }} />
 									</div>
 									<div className="input-pass">
 										<p>New password</p>
-										<Input.Password autocomplete="new-password" placeholder="input password" value={newPassword} onChange={(e) => { setNewPassword(e.target.value) }} />
+										<Input.Password autocomplete="new-password" placeholder="input password" value={newPassword} onChange={(e) => { setNewPassword(e.target.value), setErrorMsg("") }} />
 									</div>
 									<div className="input-pass">
 										<p>Confirm new password</p>
-										<Input.Password autocomplete="new-password" placeholder="input password" value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value) }} />
+										<Input.Password autocomplete="new-password" placeholder="input password" value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value), setErrorMsg("") }} />
 										{errorMsg !== "" && (
-											<p className="pass-error">{errorMsg}</p>
+											<Alert
+												className="pass-error"
+												message="Error"
+												description={errorMsg}
+												type="error"
+												closable
+												onClose={onClose}
+											/>
+											// <p className="pass-error">{errorMsg}</p>
 										)}
 									</div>
 

@@ -34,5 +34,6 @@
 	"/dashboard/pbr_update": "PBR Update",
 	"/dashboard/paper_batch_records": "PBR Template",
 	"/dashboard/cross_batch_comparison": "Cross Batch Comparison",
-	"/dashboard/data_science_studio": "Data Science Studio"
+	"/dashboard/data_science_studio": "Data Science Studio",
+	"/dashboard/data_science_studio/target_variable": "Target Variable"
 }

@@ -13,6 +13,7 @@ import {
   hideLoader,
   showNotification,
 } from "../../../../../../../duck/actions/commonActions";
+import { getAnalyticsViewData } from "../../../../../../../duck/actions/analyticsView";
 const { RangePicker } = DatePicker;
 import moment from "moment";
 
@@ -63,12 +64,12 @@ const BatchesComponent = (props) => {
   const [siteList, setSiteList] = useState([]);
   const [batchFilters, setBatchFilters] = useState({
     date_range: "",
-    unapproved_data: 0,
+    unapproved_data: 1,
     site: null,
   });
   const filterRef = useRef({
     date_range: "",
-    unapproved_data: 0,
+    unapproved_data: 1,
     site: null,
   });
   const dateFormat = "YYYY-MM-DD";
@@ -76,6 +77,12 @@ const BatchesComponent = (props) => {
   const match = useRouteMatch();
   const history = useHistory();
   const savePipeline = async () => {
+    const viewDetails = {
+      pipeline_name: viewData.pipeLineName,
+      savetype: "saveas",
+      view_id: viewData.viewDispId,
+      view_version: viewData.viewVersion,
+    };
     const req = {
       data: [
         {
@@ -88,11 +95,12 @@ const BatchesComponent = (props) => {
           save_model: [],
         },
       ],
-      pipeline_name: viewData.pipeLineName,
-      savetype: "saveas",
-      view_id: viewData.viewDispId,
-      view_version: viewData.viewVersion,
+      ...viewDetails,
+      data_filter: filterRef.current,
+      target_variable: '',
+      batch_filter : []
     };
+    viewDetails.data_filter = filterRef.current;
     dispatch(showLoader());
     const apiResponse = await putPipelineObj(req);
     if (apiResponse?.pipeline_disp_id) {
@@ -101,6 +109,8 @@ const BatchesComponent = (props) => {
         pathname: `${match.url}/${apiResponse?.pipeline_disp_id}`,
         state: req,
       });
+      viewDetails.pipeline_id = apiResponse?.pipeline_disp_id;
+      dispatch(getAnalyticsViewData(viewDetails));
     } else {
       /* istanbul ignore next */
       dispatch(hideLoader());
@@ -181,6 +191,7 @@ const BatchesComponent = (props) => {
             show approved data &nbsp;{" "}
             <Switch
               size="small"
+              checked={batchFilters.unapproved_data === 1}
               onChange={(e) =>
                 setBatchFilters({
                   ...batchFilters,
@@ -213,7 +224,9 @@ const BatchesComponent = (props) => {
           </Button>
         </Col>
       </Row>
-      <Row>
+      <Row
+        style={{ maxHeight: "300px", overflow: "auto", marginBottom: "40px" }}
+      >
         <Col span={24} className="table-data">
           <Table
             pagination={false}

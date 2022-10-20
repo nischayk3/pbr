@@ -1,12 +1,13 @@
-import { BellOutlined, CaretUpOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { BellOutlined, CaretUpOutlined, DownOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Input, Layout } from 'antd';
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import mareanaLogo from '../../assets/mareana_logo.png';
 import { adenabled } from '../../config/config';
 import { MDH_APP_PYTHON_SERVICE } from '../../constants/apiBaseUrl';
 import { showNotification } from '../../duck/actions/commonActions';
+import { getUploadProfile } from '../../duck/actions/loginAction';
 import { getUserProfile, logoutUrl } from "../../services/loginService";
 import Auth from '../../utils/auth';
 import './style.scss';
@@ -23,6 +24,8 @@ const HeaderBar = () => {
 	const [dropdownVisible, setDropdownVisible] = useState(false);
 	const loginDetails = JSON.parse(localStorage.getItem("login_details"))
 
+	const profile = useSelector((state) => state.loginReducer.profile)
+
 	useEffect(() => {
 		getProfile();
 		document.addEventListener('tokenExpired', () => {
@@ -31,6 +34,13 @@ const HeaderBar = () => {
 			}
 		})
 	}, [])
+
+	useEffect(() => {
+		if (profile) {
+			getProfile();
+			dispatch(getUploadProfile(false));
+		}
+	}, [profile])
 
 	const dropDownOpen = () => {
 		setDropdownVisible(true)
@@ -69,7 +79,6 @@ const HeaderBar = () => {
 	useOutsideAlerter(wrapperRef);
 
 	const getProfile = async () => {
-
 		try {
 			const _getReq = {
 				email_address: loginDetails && loginDetails.email_id,
@@ -104,7 +113,6 @@ const HeaderBar = () => {
 				<BellOutlined style={{ margin: "6px 25px", fontSize: "20px" }} />
 				<div className="custom-menu">
 					<div className="user-name" onClick={dropDownOpen}>
-
 						<Avatar size={22} style={{ backgroundColor: "orange", fontSize: "16px", padding: "1px 0" }}>
 							{localStorage.getItem("username") &&
 								localStorage.getItem("username").split("")[0].toUpperCase()}{" "}
@@ -132,7 +140,6 @@ const HeaderBar = () => {
 										history.push('/dashboard/profile');
 										setDropdownVisible(false)
 									}}><UserOutlined /> Profile</p>
-									<p><SettingOutlined /> Preferences</p>
 								</div>
 								<div className="logout" onClick={adenabled ? () => adLogout() : () => Logout()}>
 									<p><LogoutOutlined /> Logout</p>

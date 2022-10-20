@@ -1,4 +1,4 @@
-import { LOGIN_DETAILS, REDIRECT_URL } from '../../constants/actionTypes'
+import { GET_PROFILE, LOGIN_DETAILS, REDIRECT_URL } from '../../constants/actionTypes';
 
 export const sendLoginDetails = (payload) => ({
 	type: LOGIN_DETAILS,
@@ -9,4 +9,7 @@ export const sendUrl = (payload) => ({
 	payload
 });
 
-
+export const getUploadProfile = (payload) => ({
+	type: GET_PROFILE,
+	payload
+})

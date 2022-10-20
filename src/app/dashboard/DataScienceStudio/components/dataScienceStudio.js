@@ -6,22 +6,23 @@
  * @Last Changed By - Dinesh
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from "react-redux";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import Landing from "../components/landing/Landing";
-import TargetVariable from './targetVariable/TargetVariable';
 const DataScienceStudio = () => {
 	const isTargetVar = useSelector((state) => state.viewCreationReducer.isTargetVar)
-
 	console.log("isTargetVar", isTargetVar);
+
+	useEffect(() => {
+
+	}, [])
+
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
 			<div className="custom-content-layout">
-				{isTargetVar ? (
-					<TargetVariable />
-				) : (<Landing />)}
+				<Landing />
 			</div>
 		</div>
 	)
