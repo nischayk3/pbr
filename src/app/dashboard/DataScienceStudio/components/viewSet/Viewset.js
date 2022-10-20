@@ -20,7 +20,7 @@ import {
 } from "../../../../../duck/actions/commonActions";
 // import ViewSearchTable from "./viewTable/ViewTable";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { loadViewTableData, sendViewIdVer } from "../../../../../duck/actions/dataScienceAction";
+import { loadViewTableData, sendFileUploadRes, sendViewIdVer, sendViewsetRes } from "../../../../../duck/actions/dataScienceAction";
 import ViewSearchTable from "../../../chartPersonal/components/viewPage/viewChart/viewSearchTable";
 import ViewTable from "../../../chartPersonal/components/viewPage/viewChart/ViewTable";
 
@@ -92,6 +92,8 @@ const Viewset = ({ isVisible, onCancel }) => {
 			dispatch(hideLoader());
 			if (loadViewRes !== {}) {
 				setIsDisable(false)
+				dispatch(sendViewsetRes(loadViewRes))
+				dispatch(sendFileUploadRes({}))
 				setViewConfigRes(loadViewRes)
 			}
 		} catch (err) {
@@ -112,8 +114,6 @@ const Viewset = ({ isVisible, onCancel }) => {
 					pathname: `${match.url}/target_variable`,
 				});
 			}
-
-
 		} catch (err) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", err));
@@ -171,11 +171,9 @@ const Viewset = ({ isVisible, onCancel }) => {
 		}
 		dssViewLoad(_reqDss);
 		onCancel()
-
 	};
 
 	const onSelectedView = (record) => {
-
 		let tempVersionList = [0];
 		searchViewData.current.forEach((ele) => {
 			if (ele.view_disp_id === record.view_disp_id) {
