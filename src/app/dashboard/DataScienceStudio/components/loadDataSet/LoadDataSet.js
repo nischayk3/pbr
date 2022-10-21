@@ -49,6 +49,8 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 				dispatch(sendViewsetRes({}))
 				setIsDisable(false);
 				dispatch(showNotification('success', "File Upload Successfully"));
+			} else if (dssFileRes.data.statuscode === 400) {
+				dispatch(showNotification("error", dssFileRes.data.message));
 			} else {
 				dispatch(showNotification("error", "File Upload error"));
 			}
