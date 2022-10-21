@@ -10,8 +10,15 @@ import {
     Upload,
     Select,
     Progress,
-    Button
+    Button,
+    Modal,
+    Result,
+    Typography
 } from 'antd';
+import {
+    DownloadOutlined,
+    InboxOutlined
+} from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import debounce from "lodash/debounce";
 import { showNotification, showLoader, hideLoader } from '../../../../duck/actions/commonActions.js';
@@ -22,6 +29,9 @@ import SelectSearchField from '../../../../components/SelectSearchField/SelectSe
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader'
 import illustrations from '../../../../assets/images/banner-pbr.svg';
 import "./styles.scss"
+
+const { Paragraph } = Typography;
+const { Dragger } = Upload;
 /* istanbul ignore next */
 function FileUpload() {
     const dispatch = useDispatch();
@@ -30,6 +40,12 @@ function FileUpload() {
     const [uploadFile, setUploadFile] = useState([]);
     const [uploadFileName, setUploadFileName] = useState([]);
     const [uploadFileDetail, setUploadFileDetail] = useState([]);
+    const [isFileUploaded, setIsFileUploaded] = useState(false);
+    const [fileUploadResponse, setFileUploadResponse] = useState('');
+    const [fileMessage, setFileMessage] = useState('');
+    const [uploadedFileInfo, setUploadedFileInfo] = useState([]);
+    const [isUploadVisible, setIsUploadVisible] = useState(false);
+    const [uploading, setUploading] = useState(false);
     const [paramList, setParamList] = useState({
         projectList: [],
         groupList: [],
@@ -45,9 +61,6 @@ function FileUpload() {
         getProjectFilterData()
     }, [])
 
-    const beforeUpload = (file) => {
-        return false
-      };
 
     const getProjectFilterData = async (
         projectValue,
@@ -132,37 +145,37 @@ function FileUpload() {
     };
 
     const onSearchParam = debounce((type, field) => {
-		if (type != null) {
-			if (field === 'project') {
-				getProjectFilterData(
-					selectParam['project'],
-					selectParam['group'],
-					selectParam['subGroup'],
-					type,
-					'',
-					''
-				);
-			} else if (field === 'group') {
-				getProjectFilterData(
-					selectParam['project'],
-					selectParam['group'],
-					selectParam['subGroup'],
-					'',
-					type,
-					''
-				);
-			} else if (field === 'subGroup') {
-				getProjectFilterData(
-					selectParam['project'],
-					selectParam['group'],
-					selectParam['subGroup'],
-					'',
-					'',
-					type
-				);
-			}
-		}
-	}, 500);
+        if (type != null) {
+            if (field === 'project') {
+                getProjectFilterData(
+                    selectParam['project'],
+                    selectParam['group'],
+                    selectParam['subGroup'],
+                    type,
+                    '',
+                    ''
+                );
+            } else if (field === 'group') {
+                getProjectFilterData(
+                    selectParam['project'],
+                    selectParam['group'],
+                    selectParam['subGroup'],
+                    '',
+                    type,
+                    ''
+                );
+            } else if (field === 'subGroup') {
+                getProjectFilterData(
+                    selectParam['project'],
+                    selectParam['group'],
+                    selectParam['subGroup'],
+                    '',
+                    '',
+                    type
+                );
+            }
+        }
+    }, 500);
 
     const clearSearch = (e, field) => {
         /* istanbul ignore next */
@@ -223,71 +236,142 @@ function FileUpload() {
             {item}
         </Select.Option>
     ));
-   
 
-    const handleChange = async (info) => {
-       
-        const fileName = [];
-        const fileSize = [];
-        const fileDetail = [];
-        // var formData = new FormData();
-        info && info.fileList.map((item) => {
-            fileDetail.push({
-                fileName: item.name,
-                fileSize: item.size,
-                actualFile: item.originFileObj
-            })
-            fileName.push(item.name)
-            fileSize.push(item.size)
-        })
-        setUploadFileDetail(fileDetail);
-        setUploadFileName(fileName);
-        // info.fileList = []
-    };
-    
     const handleCancel = (val) => {
         // setUploadFile(uploadFileDetail);
         let arr = [...uploadFileDetail]
         arr = arr.filter(item => item.fileName != val?.fileName)
         setUploadFileDetail(arr);
     }
+    const handleCancelSuccess = () => {
+        setIsFileUploaded(false);
+    };
+
+    const files = {
+        name: 'file',
+        multiple: true,
+
+        progress: {
+            strokeColor: {
+                '0%': '#108ee9',
+                '100%': '#87d068'
+            },
+            strokeWidth: 2,
+            showInfo: true,
+            format: percent => percent && `${parseFloat(percent.toFixed(2))}%`
+        },
+        onChange(info) {
+            const fileName = [];
+            const fileSize = [];
+            const fileDetail = [];
+            // const nodeFileData = fileData && fileData.split('|');
+            var formData = new FormData();
+            info && info.fileList.map((item) => {
+                formData.append('file', item.originFileObj);
+                fileDetail.push({
+                    fileName: item.name,
+                    fileSize: item.size
+                })
+                fileName.push(item.name)
+                fileSize.push(item.size)
+            })
+            formData.append('fileSize', fileSize)
+            formData.append('project', selectParam['project'])
+            setUploadFileDetail(fileDetail);
+            setUploadFileName(fileName);
+            setUploadFile(formData);
+
+        },
+        onDrop(e) {
+            console.log('Dropped files', e.dataTransfer.files);
+        }
+    };
+
+    const handleClickUpload = () => {
+        const file = uploadFile;
+        fileUpload(file);
+    };
+
+    const dummyRequest = ({ onSuccess }) => {
+        setTimeout(() => {
+            onSuccess('ok');
+        }, 0);
+    };
+
 
     const fileUpload = async (val) => {
-        dispatch(showLoader());
-        var formData = new FormData();
-        formData.append('file', val?.actualFile);
-        formData.append('fileSize', val?.fileSize)
-        formData.append('project', selectParam['project'])
-        const fileResponse = await projectFileUpload(formData);
-        if (fileResponse.Status == 202) {
-            let login_response = JSON.parse(localStorage.getItem('login_details'));
-            let req = {
-                changedBy: null,
-                createdBy: login_response.firstname + login_response.lastname,
-                custKey: "",
-                fileSize: [val?.fileSize],
-                filename: [val?.fileName],
-                group: selectParam['group'],
-                project: selectParam['project'],
-                status: 'N',
-                subgroup: selectParam['subGroup'],
-                uploadReason: 'PBR Document'
-            }
-            let res = await uploadProjectData(req)
-            if (res.Status == 202) {
-                let arr = [...uploadFileDetail]
-                arr = arr.filter(item => item.fileName != val?.fileName)
-                setUploadFileDetail(arr);
-                dispatch(showNotification('success', res?.Message));
-                dispatch(hideLoader());
+        try {
+            setUploading(true);
+            const fileResponse = await projectFileUpload(val);
+            if (fileResponse.Status === 202) {
+                const fileName = [];
+                const fileSize = [];
+                setUploading(false);
+                setFileUploadResponse(fileResponse.Status)
+                setFileMessage(fileResponse.Message)
+                const duplicateFile = fileResponse.data
+                setUploadedFileInfo(duplicateFile);
+                const filterDuplicateFile = uploadFileDetail.filter(item => !duplicateFile.includes(item.fileName))
+                filterDuplicateFile.map((item) => {
+                    fileName.push(item.fileName)
+                    fileSize.push(item.fileSize)
+                })
+                let login_response = JSON.parse(localStorage.getItem('login_details'));
+                // const data = fileData && fileData.split('|');
+                setIsUploadVisible(false)
+                setIsFileUploaded(true);
+                if (fileName !== null) {
+                    let req = {
+                        changedBy: null,
+                        createdBy: login_response.firstname + login_response.lastname,
+                        custKey: "",
+                        fileSize: fileSize,
+                        filename: fileName,
+                        group: selectParam['group'],
+                        project: selectParam['project'],
+                        status: 'N',
+                        subgroup: selectParam['subGroup'],
+                        uploadReason: 'PBR Document'
+                    }
+                    let res = await uploadProjectData(req);
+                    if (res.Status === 202) {
+                        dispatch(showNotification('success', res.Message));
+                    } else {
+                        setIsFileUploaded(false);
+                        dispatch(showNotification('error', res.Message));
+                    }
+                }
+
+            } else if (fileResponse.Status === 200) {
+                setFileUploadResponse(fileResponse.Status)
+                setUploading(false);
+                setUploadedFileInfo(fileResponse.Data);
+                setIsUploadVisible(false);
+                setIsFileUploaded(true);
+                setFileMessage(fileResponse.Message);
+            } else if (fileResponse === 'Internal Server Error') {
+                setUploading(false);
+                setFileMessage('')
+                dispatch(showNotification('error', 'Internal Server Error'));
             } else {
-                dispatch(showNotification('error', res?.Message));
-                dispatch(hideLoader());
+                setFileMessage('')
+                setUploading(false);
+                dispatch(showNotification('error', fileResponse.Message));
             }
-        } else {
-            dispatch(showNotification('error', fileResponse?.Message));
+        } catch (error) {/* istanbul ignore next */
             dispatch(hideLoader());
+            /* istanbul ignore next */
+            dispatch(showNotification('error', error));
         }
+    }
+
+    const checkUpload = () => {
+        if(selectParam['project']){
+            setIsUploadVisible(true)
+        }else{
+            dispatch(showNotification('error', 'Please Select Project'));
+        }
+        
     }
     const uploadButton = (
         <div>
@@ -332,8 +416,6 @@ function FileUpload() {
                                     <h3>Where do you want to place your new files?</h3>
                                     <div style={{ display: "flex", justifyContent: "space-between", marginTop: 40 }}>
                                         <div style={{ width: 235 }}>
-                                            {/* <p>Project</p>
-                                            <Select placeholder="Project" style={{ width: 235 }} /> */}
                                             <SelectSearchField
                                                 showSearch
                                                 label='Project *'
@@ -347,8 +429,6 @@ function FileUpload() {
                                             />
                                         </div>
                                         <div style={{ width: 235 }}>
-                                            {/* <p>Group</p>
-                                            <Select placeholder="Group" style={{ width: 235 }} /> */}
                                             <SelectSearchField
                                                 disabled={selectParam['project'] ? false : true}
                                                 showSearch
@@ -363,8 +443,6 @@ function FileUpload() {
                                             />
                                         </div>
                                         <div style={{ width: 235 }}>
-                                            {/* <p>Sub-Group</p>
-                                            <Select placeholder="Sub-Group" style={{ width: 235 }} /> */}
                                             <SelectSearchField
                                                 showSearch
                                                 disabled={selectParam['group'] ? false : true}
@@ -380,65 +458,92 @@ function FileUpload() {
                                         </div>
                                     </div>
                                     <h3 style={{ marginTop: 30 }}>Upload Files</h3>
-                                    <div className='Pbrfileupload' style={{ display: "flex" }}>
-                                        <Upload
-                                            name="avatar"
-                                            multiple={true}
-                                            fileList = {uploadFileDetail}
-                                            listType="picture-card"
-                                            className="avatar-uploader"
-                                            showUploadList={false}
-                                            disabled={selectParam?.project ? false : true}
-                                            beforeUpload={() => false}
-                                            onChange={handleChange}
-                                        >
-                                            {imageUrl ? (
-                                                <img
-                                                    src={imageUrl}
-                                                    alt="avatar"
-                                                // style={{
-                                                //     width: '100%',
-                                                // }}
-                                                />
-                                            ) : (
-                                                uploadButton
-                                            )}
-                                        </Upload>
-                                        {uploadFileDetail.length > 0 ?
-                                            <div style={{ marginLeft: 53, width: "100%" }}>
-                                                <h3> Uploading Files...</h3>
-                                                {uploadFileDetail.map((item,index )=> (
-                                                    <Row key={index}>
-                                                        <Col span={16}>
-
-                                                            <div className='pdfListBlock' style={{ display: "flex", marginTop: 10 }} key={index}>
-                                                                <img src={pdfIcon} alt='pdfIcon' style={{ width: 40 }} />
-                                                                <div style={{ width: 290 }}>
-                                                                    <div>
-                                                                        <span>{item?.fileName}</span>
-                                                                        <span><Progress className='Progress' percent={100} showInfo={false}/></span>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-
-                                                        </Col>
-                                                        <Col span={8}>
-                                                            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
-                                                                <Button style={{ marginLeft: 20 }} onClick={() => handleCancel(item)}>Cancel</Button>
-                                                                <Button onClick={() => fileUpload(item)}>Upload</Button>
-                                                            </div>
-
-                                                        </Col>
-                                                    </Row>
-                                                ))}
-
-                                            </div> : ""}
+                                    <div
+                                        className='create-new'
+                                        onClick={() => checkUpload()}
+                                        disabled={true}
+                                    >
+                                        <PlusOutlined />
+                                        <p>Upload new file</p>
                                     </div>
 
                                 </div>
-                            </Col>
+                                <Modal
+                                    destroyOnClose
+                                    width={520}
+                                    visible={isUploadVisible}
+                                    title={'Upload file'}
+                                    className='file-upload-modal'
+                                    onCancel={() => setIsUploadVisible(false)}
+                                    footer={null}>
+                                    <Dragger
+                                        {...files}
+                                        listType='text'
+                                        customRequest={dummyRequest}
+                                    >
+                                        <p className='ant-upload-drag-icon'>
+                                            <InboxOutlined />
+                                        </p>
+                                        <p className='ant-upload-text'>
+                                            Click or drag file to this area to upload
+                                        </p>
+                                        <p className='ant-upload-hint'>
+                                            Upload files of PDF or PNG format. You may carry out single
+                                            or bulk upload. Strictly refrain from uploading company data
+                                            or other band files
+                                        </p>
+                                    </Dragger>
+                                    {uploadFileName.length > 0 && (
+                                        <div className='file-upload-section'>
+                                            <div className='upload-btn'>
+                                                <Button
+                                                    disabled={uploadFileName.length <= 0}
+                                                    loading={uploading}
+                                                    onClick={() => handleClickUpload()}>
+                                                    {uploading ? 'Uploading' : 'Upload'}
+                                                </Button>
+                                                <Button onClick={handleCancel}>Cancel</Button>
+                                            </div>
+                                        </div>
+                                    )}
 
+                                </Modal>
+                                <Modal
+                                    width={500}
+                                    visible={isFileUploaded}
+                                    onCancel={handleCancelSuccess}
+                                    footer={null}>
+                                    {fileUploadResponse === 200 && (
+                                        <Result
+                                            status="error"
+                                            title={fileMessage}
+                                        >
+                                            {fileMessage && (
+                                                <div className="desc">
+                                                    {uploadedFileInfo && uploadedFileInfo.map((item) => (
+                                                        <Paragraph>
+                                                            <p>{item}</p>
+                                                        </Paragraph>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </Result>
+                                    )}
+                                    {fileUploadResponse === 202 && (<Result
+                                        status="success"
+                                        title="Successfully File Uploaded!"
+                                        subTitle={uploadedFileInfo.length > 0 ? fileMessage : ''}
+                                    >
+                                        {uploadedFileInfo && (<div className="desc">
+                                            {uploadedFileInfo.map((item) => (
+                                                <Paragraph>
+                                                    <p>{item}</p>
+                                                </Paragraph>
+                                            ))}
+                                        </div>)}
+                                    </Result>)}
+                                </Modal>
+                            </Col>
                             <Col span={4} />
                         </Row>
                     </Card>
