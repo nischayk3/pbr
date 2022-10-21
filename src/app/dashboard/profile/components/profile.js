@@ -58,7 +58,10 @@ const Profile = () => {
 		dispatch(showLoader());
 		const userId = localStorage.getItem("user")
 		/* istanbul ignore next */
-		if (newPassword === confirmPassword) {
+		if (currentPassword === "" || newPassword === "" || confirmPassword === "") {
+			dispatch(hideLoader());
+			setErrorMsg("Please enter all fields")
+		} else if (newPassword === confirmPassword) {
 			const _req = {
 				"current_password": currentPassword,
 				"new_password": confirmPassword,
@@ -74,7 +77,7 @@ const Profile = () => {
 			}
 		} else if (newPassword !== confirmPassword) {
 			dispatch(hideLoader());
-			setErrorMsg("Password does not match")
+			setErrorMsg("Password doesn’t match")
 		} else {
 			console.log("error")
 		}

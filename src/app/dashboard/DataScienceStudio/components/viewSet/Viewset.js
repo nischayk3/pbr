@@ -28,7 +28,6 @@ const Viewset = ({ isVisible, onCancel }) => {
 	const [searchTableData, setSearchTableData] = useState([]);
 	const [showViewTable, setShowViewTable] = useState(false);
 	const [versionList, setVersionList] = useState([0]);
-	const [parameterData, setParameterData] = useState([]);
 	const deepSearch1 = useRef(false);
 	const searchViewData = useRef([]);
 	const [showBatchData, setShowBatchData] = useState(false);
@@ -43,7 +42,6 @@ const Viewset = ({ isVisible, onCancel }) => {
 	});
 	const [deepSearch, setDeepSearch] = useState(false);
 	const [viewConfigRes, setViewConfigRes] = useState({})
-	const [loadViewData, setLoadViewData] = useState([])
 	const dispatch = useDispatch();
 	const match = useRouteMatch();
 	const history = useHistory();
@@ -167,7 +165,14 @@ const Viewset = ({ isVisible, onCancel }) => {
 
 	const onNextClick = () => {
 		let _reqDss = {
-			data: viewConfigRes
+			//data: viewConfigRes
+			data: viewConfigRes,
+			df: {},
+			parameter_name: '',
+			type: 'parameter',
+			unapproved: true,
+			view_disp_id: viewData.viewDispId ? viewData.viewDispId : '',
+			view_version: viewData.viewVersion ? `${viewData.viewVersion}` : '',
 		}
 		dssViewLoad(_reqDss);
 		onCancel()
@@ -195,7 +200,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 			view_version: record.view_version,
 		};
 		loadView(_reqLoad);
-		console.log("onSelectedView", record)
+
 
 		setDeepSearch(false);
 		deepSearch1.current = false;
