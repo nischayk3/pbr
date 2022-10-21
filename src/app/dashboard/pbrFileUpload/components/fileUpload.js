@@ -410,7 +410,7 @@ function FileUpload() {
                         <Row>
                             <Col span={4} />
                             <Col span={16} >
-                                <div style={{ padding: 24 }}>
+                                <div className='fileUpload' style={{ padding: 24 }}>
                                     <h3>Files</h3>
                                     <Divider style={{ marginTop: 5 }} />
                                     <h3>Where do you want to place your new files?</h3>
