@@ -147,6 +147,7 @@ const Threshold = ({ postChartData, setPostChartData }) => {
       newdataArr[0].thresholds = viewRes.data[0].thresholds;
       newdataArr[0].violations = viewRes.data[0].violations;
       newdataArr[0].data = viewRes.data[0].data;
+      newdataArr[0].extras.data_table = viewRes.data[0].extras.data_table;
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
     } catch (error) {

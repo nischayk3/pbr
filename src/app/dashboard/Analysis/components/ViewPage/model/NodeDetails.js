@@ -16,7 +16,8 @@ const NodeDetails = (props) => {
     selectedTargetValue,
     setSelectedTargetVariable,
     nodeInformation,
-    editFinalJson
+    editFinalJson,
+    getNodes
   } = props;
   const dispatch = useDispatch();
   const [nodeData, setNodeData] = useState({});
@@ -33,8 +34,6 @@ const NodeDetails = (props) => {
       unapproved: selectedViewData?.data_filter?.unapproved_data === 1 ? true : false,
     };
     dispatch(showLoader());
-    let tempNodeData = { ...nodeData };
-    tempNodeData = {};
     const apiResponse = await getViewNodeDetails(req);
     if (apiResponse?.Status === 200) {
       setDataStatus(false);
@@ -70,8 +69,10 @@ const NodeDetails = (props) => {
                 <Button className="custom-primary-btn">
                   <Radio
                     checked={nodeInformation.Node === selectedTargetValue}
-                    onChange={() =>
+                    onChange={() => {
+                      getNodes(nodeInformation.Node)
                       setSelectedTargetVariable(nodeInformation.Node)
+                    }
                     }
                   />
                   Make target Variable
