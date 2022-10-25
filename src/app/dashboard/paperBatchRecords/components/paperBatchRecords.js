@@ -39,8 +39,9 @@ import { useDispatch } from 'react-redux';
 import Highlighter from 'react-highlight-words';
 import illustrations from '../../../../assets/images/banner-pbr.svg';
 import newTemplateModal from '../../../../assets/images/newTemplateModal.svg';
+import SelectSearchField from '../../../../components/SelectSearchField/SelectSearchField';
 import pdfIcon from '../../../../assets/images/pdfIcon.svg';
-import { getPbrTemplateData, getDataView } from '../../../../services/pbrService';
+import { getPbrTemplateData, getDataView,projectDataView} from '../../../../services/pbrService';
 import { tableColumns } from '../../../../utils/TableColumns'
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { loadTemplateInfo, loadMatBatchInfo, loadPageIdentifier, loadTempAdditionalData } from '../../../../duck/actions/pbrAction';
@@ -109,6 +110,13 @@ function PaperBatchRecords() {
 	const [searchedLanding, setSearchedLanding] = useState(false);
 	const [filterTableLanding, setFilterTableLanding] = useState(null);
 	const [materialDropown, setMaterialDropown] = useState([]);
+	const [fileSelection, setFileSelection] = useState([{ label: "Genology", value: "genology" }, { label: "Other Files", value: "others" }]);
+	const [fileSelectionValue, setFileSelectionValue] = useState("genology");
+	const [paramList, setParamList] = useState({
+        projectList: [],
+        groupList: [],
+        subGroupList: [],
+    });
 	const [matBatch, setMatBatch] = useState({
 		material_num: "",
 		batch: ""
@@ -121,9 +129,66 @@ function PaperBatchRecords() {
 			getTemplateData();
 			getViewData();
 			setTableDataSource(initialTableDataSource);
+			getProjectFilterData()
 		}
 	}, []);
 
+	const getProjectFilterData = async (
+        projectValue,
+        groupValue,
+        subGroupValue,
+        projectText,
+        groupText,
+        subGroupText
+    ) => {
+        let req = {
+            group: groupValue ? groupValue : "",
+            group_text: groupText ? groupText : "",
+            project: projectValue ? projectValue : "",
+            project_text: projectText ? projectText : "",
+            subgroup: subGroupValue ? subGroupValue : "",
+            subgroup_text: subGroupText ? subGroupText : ""
+        }
+        try {
+            const res = await projectDataView(req)
+            if (res["status-code"] == 200) {
+                setParamList(prevState => {
+                    return {
+                        ...prevState,
+                        projectList: res && res.project,
+                        groupList: res && res.group,
+                        subGroupList: res && res.subgroup
+                    };
+                });
+            }
+            /* istanbul ignore next */
+            else if (res["status-code"] != 200) {
+                dispatch(showNotification('error', res?.Message));
+            } else {
+                dispatch(showNotification('error', "Unable to fetch data"));
+            }
+        } catch (err) {
+            dispatch(showNotification('error', err));
+        }
+
+    }
+
+	const optionProject = paramList['projectList'].map((item, index) => (
+        <Select.Option key={index} value={item}>
+            {item}
+        </Select.Option>
+    ));
+    const optionsGroup = paramList['groupList'].map((item, index) => (
+        <Select.Option key={index} value={item}>
+            {item}
+        </Select.Option>
+    ));
+    const optionsSubGroup = paramList['subGroupList'].map((item, index) => (
+        <Select.Option key={index} value={item}>
+            {item}
+        </Select.Option>
+    ));
+	
 	const getTemplateData = async () => {
 		let req = { limit: 8 }
 		try {
@@ -214,7 +279,7 @@ function PaperBatchRecords() {
 		let res = await getDataView(req)
 		setMaterialDropown(res.Data)
 		getImageData(res.Data[0]?.label)
-		
+
 
 	}
 
@@ -249,7 +314,7 @@ function PaperBatchRecords() {
 	const handleValuesChange = (changedValues, values) => {
 		seTemplateName(values?.templateName)
 	};
-	 /* istanbul ignore next */
+	/* istanbul ignore next */
 	const onFinish = (values) => {
 		console.log('Success:', values);
 	};
@@ -261,9 +326,9 @@ function PaperBatchRecords() {
 	const openNotification = () => {
 		const key = `open${Date.now()}`;
 		let val = ""
-		if (templateName == "" || templateName == undefined ) {
+		if (templateName == "" || templateName == undefined) {
 			val = "Template Name"
-		}else if(materialDropown.length ==0){
+		} else if (materialDropown.length == 0) {
 			val = "Material Number"
 		}
 		const btn = (
@@ -271,7 +336,7 @@ function PaperBatchRecords() {
 				Confirm
 			</Button>
 		);
-		
+
 		notification.open({
 			message: 'Error',
 			description:
@@ -283,7 +348,7 @@ function PaperBatchRecords() {
 			onClose: close,
 		});
 	};
-	 /* istanbul ignore next */
+	/* istanbul ignore next */
 	const onRadioChange = (val) => {
 		let arr = dataView.filter(item => item.actual_filename === val)
 		setMatBatch({
@@ -317,9 +382,9 @@ function PaperBatchRecords() {
 	}
 	const landingSearch = value => {
 
-		if(value == ""){
+		if (value == "") {
 			setSearchedLanding(false);
-		}else{
+		} else {
 			setSearchedLanding(true);
 			const tableData = templateData;
 			const filterTable = tableData.filter(o =>
@@ -329,10 +394,10 @@ function PaperBatchRecords() {
 			);
 			setFilterTableLanding(filterTable);
 		}
-		
+
 	};
 
-	const handleMaterialChange = (val) =>{
+	const handleMaterialChange = (val) => {
 		getImageData(val)
 	}
 
@@ -412,7 +477,7 @@ function PaperBatchRecords() {
 							<Col span={16} className='p36'>
 								<Row gutter={16} className="title">
 									<Col span={8}>
-										<h3 style={{fontSize:14}}>Recently created templates</h3>
+										<h3 style={{ fontSize: 14 }}>Recently created templates</h3>
 									</Col>
 									<Col span={14} className="title-legends">
 										<dl>
@@ -484,7 +549,7 @@ function PaperBatchRecords() {
 									name="basic"
 									onValuesChange={handleValuesChange}
 									onFinish={onFinish}
-									initialValues={{ materialNumber: materialDropown[0]?.label }}
+									initialValues={{ materialNumber: materialDropown[0]?.label, fileSelectionValue: "genology" }}
 								>
 									<div className='formNewTemplateDiv'>
 										<Form.Item
@@ -500,31 +565,97 @@ function PaperBatchRecords() {
 										>
 											<Input />
 										</Form.Item>
-										<Form.Item label='Status' name='status'>
-											<Input placeholder='Draft' disabled />
-										</Form.Item>
-										<Form.Item
-											label='Material number'
-											name='materialNumber'
-											rules={[
-												{
-													required: true,
-													message: 'Please select material',
-												},
-											]}
-										>
-											{/* <Input value={matBatch?.material_num} disabled /> */}
-											<Select options={materialDropown} onChange={(val)=>handleMaterialChange(val)}>
-
+										<Form.Item label='Select File Source' name='fileSelectionValue'>
+											<Select value={fileSelectionValue} options={fileSelection} onChange={(val) => setFileSelectionValue(val)}>
 											</Select>
 										</Form.Item>
-										<Form.Item
-											label='Batch number'
-											// name='batchNumber'
-										>
-											<Input value={matBatch?.batch} disabled />
-										</Form.Item>
 									</div>
+
+									{fileSelectionValue == "genology" ?
+										<div className='formNewTemplateDiv'>
+											<Form.Item
+												label='Material number'
+												name='materialNumber'
+												rules={[
+													{
+														required: true,
+														message: 'Please select material',
+													},
+												]}
+											>
+												{/* <Input value={matBatch?.material_num} disabled /> */}
+												<Select options={materialDropown} onChange={(val) => handleMaterialChange(val)}>
+
+												</Select>
+											</Form.Item>
+											<Form.Item
+												label='Batch number'
+											// name='batchNumber'
+											>
+												<Input value={matBatch?.batch} disabled />
+											</Form.Item>
+										</div> :
+										<div>
+											<Form.Item
+												// label='Project'
+												// name='project'
+												// rules={[
+												// 	{
+												// 		required: true,
+												// 		message: 'Please enter project',
+												// 	},
+												// ]}
+											>
+												{/* <Input value={matBatch?.material_num} disabled /> */}
+												<SelectSearchField
+													showSearch
+													label='Project *'
+													placeholder='Select Project'
+												// onChangeSelect={value => onChangeParam(value, 'project')}
+												// onSearchSelect={type => onSearchParam(type, 'project')}
+												options={optionProject}
+												// handleClearSearch={e => clearSearch(e, 'project')}
+												// error={isEmptyPlant ? 'Please select project' : null}
+												// selectedValue={selectParam['project'] ? selectParam['project'] : null}
+												/>
+											</Form.Item>
+											<div className='formNewTemplateDiv' style={{marginTop:-10}}>
+												<Form.Item
+													// label='Group'
+												// name='batchNumber'
+												>
+													<SelectSearchField
+														showSearch
+														label='Group'
+														placeholder='Select Project'
+													// onChangeSelect={value => onChangeParam(value, 'project')}
+													// onSearchSelect={type => onSearchParam(type, 'project')}
+													options={optionsGroup}
+													// handleClearSearch={e => clearSearch(e, 'project')}
+													// error={isEmptyPlant ? 'Please select project' : null}
+													// selectedValue={selectParam['project'] ? selectParam['project'] : null}
+													/>
+												</Form.Item>
+												<Form.Item
+													// label='Sub-group'
+												// name='batchNumber'
+												>
+													<SelectSearchField
+														showSearch
+														label='Sub-Group'
+														placeholder='Select Project'
+													// onChangeSelect={value => onChangeParam(value, 'project')}
+													// onSearchSelect={type => onSearchParam(type, 'project')}
+													options={optionsSubGroup}
+													// handleClearSearch={e => clearSearch(e, 'project')}
+													// error={isEmptyPlant ? 'Please select project' : null}
+													// selectedValue={selectParam['project'] ? selectParam['project'] : null}
+													/>
+												</Form.Item>
+											</div>
+
+										</div>}
+
 								</Form>
 							</Row>
 							<Row>

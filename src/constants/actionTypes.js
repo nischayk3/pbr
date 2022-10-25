@@ -47,7 +47,6 @@ export const TOTAL_MOL_BATCHES = "TOTAL_MOL_BATCHES";
 export const TOTAL_FILE_BATCHES = "TOTAL_FILE_BATCHES";
 
 // Report Designer Actions
-
 export const SELECTED_REPORT_ID = "SELECTED_REPORT_ID";
 export const SCREEN_CHANGE = "SCREEN_CHANGE";
 export const LOADED_LAYOUT = "LOADED_LAYOUT";
@@ -87,7 +86,12 @@ export const LOAD_VIEW_RESPONSE = 'LOAD_VIEW_RESPONSE';
 export const DRUG_SUBSTANCE = 'DRUG_SUBSTANCE';
 export const DRUG_LOAD = 'DRUG_LOAD';
 
+//data science studio
 export const IS_TARGET_VAR = 'IS_TARGET_VAR';
 export const LOAD_VIEW_TABLE_DATA = 'LOAD_VIEW_TABLE_DATA';
 export const GET_VIEW_DATA_ANAYLSIS = "GET_VIEW_DATA_ANAYLSIS";
 export const VIEW_ID_VERSION = 'VIEW_ID_VERSION';
+export const FILE_UPLOAD_RES = 'FILE_UPLOAD_RES';
+export const VIEWSET_RES = 'VIEWSET_RES';
+
+export const GET_PROFILE = 'GET_PROFILE';

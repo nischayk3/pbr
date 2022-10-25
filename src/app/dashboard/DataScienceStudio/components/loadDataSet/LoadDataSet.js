@@ -2,21 +2,26 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Modal, Row, Upload } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { hideLoader, showLoader, showNotification } from "../../../../../duck/actions/commonActions";
-import { dssFileUpload } from "../../../../../services/dataScienceStudioService";
+import { loadViewTableData, sendFileUploadRes, sendViewsetRes } from "../../../../../duck/actions/dataScienceAction";
+import { dssFileUpload, loadDssView } from "../../../../../services/dataScienceStudioService";
 import "./style.scss";
 
 const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 	const [fileList, setFileList] = useState([]);
-	const [uploadFile, setUploadFile] = useState([]);
+	const [uploadFileRes, setUploadFileRes] = useState([]);
+	const [isDisable, setIsDisable] = useState(true);
 
 	const dispatch = useDispatch();
+	const match = useRouteMatch();
+	const history = useHistory();
 
 	const handleChange = (info) => {
 		var formData = new FormData();
 		formData.append('file', info.file.originFileObj);
-		// setFileList(info.file.originFileObj)
-		setUploadFile(formData);
+		formData.append('type', 'parameter');
+		fileUpload(formData)
 	};
 
 	const uploadButton = (
@@ -32,18 +37,61 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 		</div>
 	);
 
-	const fileUpload = async () => {
-		const _reqFile = uploadFile
+	const fileUpload = async (_files) => {
+		const _reqFile = _files
 		try {
 			dispatch(showLoader());
 			const dssFileRes = await dssFileUpload(_reqFile);
 			dispatch(hideLoader());
 			if (dssFileRes.data.statuscode === 200) {
+				const data = {
+					filename: dssFileRes.data.filename,
+					message: dssFileRes.data.message
+				}
+				setUploadFileRes(data);
+				dispatch(sendFileUploadRes(data))
+				dispatch(sendViewsetRes({}))
+				setIsDisable(false);
 				dispatch(showNotification('success', "File Upload Successfully"));
+			} else if (dssFileRes.data.statuscode === 400) {
+				dispatch(showNotification("error", dssFileRes.data.message));
 			} else {
 				dispatch(showNotification("error", "File Upload error"));
 			}
+		} catch (err) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", err));
+		}
+	}
 
+	//load dss view
+	const dssViewLoad = async () => {
+		const _reqLoad = {
+			data: {},
+			df: uploadFileRes,
+			parameter_name: '',
+			type: 'parameter',
+			unapproved: true,
+			view_disp_id: "",
+			view_version: ""
+		}
+		try {
+			dispatch(showLoader());
+			const loadDssRes = await loadDssView(_reqLoad);
+			let param = []
+			dispatch(hideLoader());
+			if (loadDssRes.statuscode === 200) {
+				loadDssRes.message.forEach((item, key) => {
+					let obj = {}
+					obj['parameter_name'] = item.parameter_name;
+					obj['id'] = key
+					param.push(obj)
+				})
+				dispatch(loadViewTableData(param))
+				history.push({
+					pathname: `${match.url}/target_variable`,
+				});
+			}
 		} catch (err) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", err));
@@ -74,8 +122,10 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 			<Row className="button-mt">
 
 				<Button
-					className="custom-primary-btn"
-					onClick={fileUpload}
+					type='primary'
+					className='custom-secondary-btn'
+					onClick={dssViewLoad}
+					disabled={isDisable}
 				>
 					Next
 				</Button>

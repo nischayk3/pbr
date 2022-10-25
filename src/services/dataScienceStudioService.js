@@ -26,9 +26,9 @@ export const loadDssView = _queryParam => {
 	);
 };
 
-export const analysisView = _queryParam => {
-	return Service.get(
-		BMS_APP_PYTHON_SERVICE + '/analyse-view',
+export const dssSave = _queryParam => {
+	return Service.post(
+		BMS_APP_PYTHON_SERVICE + '/dss_save_json',
 		_queryParam,
 		request_headers
 	).then(

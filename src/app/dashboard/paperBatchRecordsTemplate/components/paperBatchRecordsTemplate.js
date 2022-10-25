@@ -864,6 +864,7 @@ function PaperBatchRecordsTemplate() {
                     sideData["keyCount"] = item.keys.length
                     pageID.users.push(sideData)
                 })
+                setPageIdFormValues(pageID.users)
                 setInitialSideTableData(table)
                 setInitialPageIdentifierData(pageID)
                 setFormLoadParameter(demoValues)
@@ -879,7 +880,8 @@ function PaperBatchRecordsTemplate() {
             let arr = templateInfo.map((item, index) => ({
                 name: item.name,
                 method: item.method,
-                pageIdValue:item.page_name,
+                pageIdValue:item?.page_name,
+                page_num:item?.param_page,
                 values: {
                     anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_key_snippet_id,
                     anchorCoords: [

@@ -297,3 +297,83 @@ export const previewTable = (_queryParam) => {
 		}
 	);
 };
+
+export const projectFilterSearch = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.post(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/project_filter_search",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+export const projectFileUpload = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.post(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/project_file_uploads",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+export const uploadProjectData = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.put(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/upload-project-data",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};
+
+export const projectDataView = (_queryParam) => {
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	const request_headers = {
+		'x-access-token': login_response?.token ? login_response?.token : '',
+		'resource-name': 'PBR'
+	};
+	return Service.post(
+		MDH_APP_PYTHON_SERVICE + "/pbr/udh/project_data_view",
+		_queryParam,
+		request_headers
+	).then(
+		(response) => {
+			return response.data;
+		},
+		(error) => {
+			return error.response.data;
+		}
+	);
+};

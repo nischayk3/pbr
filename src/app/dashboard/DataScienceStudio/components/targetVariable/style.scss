@@ -15,6 +15,17 @@
 			color: #000000;
 		}
 	}
+
+	.target-head {
+		display: flex;
+		justify-content: space-between;
+		padding: 25px 0;
+
+		>p {
+			margin: 0px;
+			line-height: 32px;
+		}
+	}
 }
 
 .target-custom-table {
@@ -50,7 +61,7 @@
 	display: flex;
 
 	.custom-tree-table1 {
-		width: 600px;
+		width: 450px;
 		margin-left: 115px;
 	}
 }

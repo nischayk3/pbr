@@ -14,6 +14,7 @@ import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import InputField from '../../../../components/InputField/InputField';
 import SelectSearchField from "../../../../components/SelectSearchField/SelectSearchField";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
+import { getUploadProfile } from "../../../../duck/actions/loginAction";
 import { getUserProfile, passwordChange, sendUserProfile, userProfileUpload } from "../../../../services/loginService";
 import "./style.scss";
 
@@ -42,6 +43,7 @@ const Profile = () => {
 		getPreference();
 	}, [])
 
+
 	const dateFormat = ["MM:DD:YYYY"]
 	const timeZone = ["Asia/Kolkata"]
 	const language = ["English (UK)"]
@@ -53,9 +55,13 @@ const Profile = () => {
 	);
 
 	const handlePassChange = async () => {
+		dispatch(showLoader());
 		const userId = localStorage.getItem("user")
 		/* istanbul ignore next */
-		if (newPassword === confirmPassword) {
+		if (currentPassword === "" || newPassword === "" || confirmPassword === "") {
+			dispatch(hideLoader());
+			setErrorMsg("Please enter all fields")
+		} else if (newPassword === confirmPassword) {
 			const _req = {
 				"current_password": currentPassword,
 				"new_password": confirmPassword,
@@ -63,8 +69,17 @@ const Profile = () => {
 			}
 			/* istanbul ignore next */
 			const res = await passwordChange(_req);
+			dispatch(hideLoader());
+			if (res.statuscode === 200) {
+				dispatch(showNotification('success', "Password updated successfully"));
+			} else if (res.statuscode === 400) {
+				setErrorMsg(res.message)
+			}
+		} else if (newPassword !== confirmPassword) {
+			dispatch(hideLoader());
+			setErrorMsg("Password doesn’t match")
 		} else {
-			setErrorMsg("Password does not match")
+			console.log("error")
 		}
 	}
 
@@ -146,6 +161,7 @@ const Profile = () => {
 			if (saveRes.statuscode === 200) {
 				dispatch(hideLoader());
 				dispatch(showNotification('success', "Updated Successfully"));
+				dispatch(getUploadProfile(true));
 				getProfile();
 			} else if (saveRes.statuscode === 400) {
 				dispatch(hideLoader());
@@ -193,6 +209,7 @@ const Profile = () => {
 			dispatch(showNotification('error', error));
 		}
 	}
+
 	const getPreference = async () => {
 		try {
 			dispatch(showLoader());
@@ -218,6 +235,9 @@ const Profile = () => {
 		}
 	}
 
+	const onClose = (e) => {
+		console.log(e, 'I was closed.');
+	};
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
@@ -358,17 +378,25 @@ const Profile = () => {
 								<div>
 									<div className="input-pass">
 										<p>Current password</p>
-										<Input.Password autocomplete="new-password" placeholder="input password" value={currentPassword} onChange={(e) => { setCurrentPassword(e.target.value) }} />
+										<Input.Password autocomplete="new-password" placeholder="input password" value={currentPassword} onChange={(e) => { setCurrentPassword(e.target.value), setErrorMsg("") }} />
 									</div>
 									<div className="input-pass">
 										<p>New password</p>
-										<Input.Password autocomplete="new-password" placeholder="input password" value={newPassword} onChange={(e) => { setNewPassword(e.target.value) }} />
+										<Input.Password autocomplete="new-password" placeholder="input password" value={newPassword} onChange={(e) => { setNewPassword(e.target.value), setErrorMsg("") }} />
 									</div>
 									<div className="input-pass">
 										<p>Confirm new password</p>
-										<Input.Password autocomplete="new-password" placeholder="input password" value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value) }} />
+										<Input.Password autocomplete="new-password" placeholder="input password" value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value), setErrorMsg("") }} />
 										{errorMsg !== "" && (
-											<p className="pass-error">{errorMsg}</p>
+											<Alert
+												className="pass-error"
+												message="Error"
+												description={errorMsg}
+												type="error"
+												closable
+												onClose={onClose}
+											/>
+											// <p className="pass-error">{errorMsg}</p>
 										)}
 									</div>
 

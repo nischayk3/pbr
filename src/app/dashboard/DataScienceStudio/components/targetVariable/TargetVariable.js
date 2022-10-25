@@ -1,40 +1,58 @@
 import { LeftOutlined } from '@ant-design/icons';
-import { Card, Radio, Table } from "antd";
-import React from "react";
+import { Button, Card, Radio, Table } from "antd";
+import React, { useState } from "react";
 import Plot from 'react-plotly.js';
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useRouteMatch } from 'react-router-dom';
+import BreadCrumbWrapper from '../../../../../components/BreadCrumbWrapper';
 import { hideLoader, showLoader, showNotification } from '../../../../../duck/actions/commonActions';
-import { onClickTarget } from '../../../../../duck/actions/viewAction';
-import { analysisView } from '../../../../../services/dataScienceStudioService';
+import { dssSave, loadDssView } from '../../../../../services/dataScienceStudioService';
 import "./style.scss";
 
-const columns = [
-	{
-		title: 'Target variable',
-		dataIndex: 'targetVar',
-		key: 'targetVar',
-		width: 125,
-		render: () => {
-			return (
-				<Radio />
-			)
-		}
-	},
-	Table.EXPAND_COLUMN,
-	{
-		title: 'Parameters',
-		dataIndex: 'Parameter_name',
-		key: 'parameters',
-	},
-];
-
-
+let paramType = "";
 
 const TargetVariable = () => {
 	const loadViewDataTable = useSelector((state) => state.dataScienceReducer.loadViewData)
 	const viewIdVer = useSelector((state) => state.dataScienceReducer.viewIdVer)
-	console.log("loadViewDataTable", loadViewDataTable)
+	const fileRes = useSelector((state) => state.dataScienceReducer.fileRes)
+	const viewRes = useSelector((state) => state.dataScienceReducer.viewRes)
+
+	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+	const [expandData, setExpandData] = useState([]);
+	const [parameterName, setParameterName] = useState('');
+
 	const dispatch = useDispatch();
+	const match = useRouteMatch();
+	const history = useHistory();
+
+	const columns = [
+		{
+			title: 'Target variable',
+			dataIndex: 'targetVar',
+			key: 'targetVar',
+			width: 125,
+			render: (text, record, index) => {
+				return (
+					<Radio
+						checked={paramType === record.parameter_name}
+						onChange={(e) =>
+							onRadioChange({
+								checked: e.target.checked ? e.target.checked : false,
+								type: record.parameter_name,
+								record: record,
+								index: index
+							})
+						} />
+				)
+			}
+		},
+		Table.EXPAND_COLUMN,
+		{
+			title: 'Parameters',
+			dataIndex: 'parameter_name',
+			key: 'parameters',
+		},
+	];
 
 	const expandedRowRender = () => {
 		const childColumn = [
@@ -50,51 +68,36 @@ const TargetVariable = () => {
 			}
 		]
 
-		const childData = [
-			{
-				statistic: "count",
-				value: "1234"
-
-			},
-			{
-				statistic: "std",
-				value: "11.131"
-
-			},
-			{
-				statistic: "mean",
-				value: "12.12"
-
-			}
-		]
-
-		loadViewDataTable.map((item, i) => {
-			console.log("loadViewDataTable.data_table", item.data_table)
-		});
 		return (
 			<div className="expandable-component">
 				<Table
 					className="custom-tree-table1"
 					pagination={false}
 					columns={childColumn}
-					dataSource={childData}
+					dataSource={expandData}
+					rowKey="statistic"
 				/>
 				<Plot
 					data={[
 						{
-							x: [1, 2, 3],
-							y: [2, 6, 3],
-							type: 'scatter',
-							mode: 'markers',
+							type: 'bar',
+							x: expandData.map((item) => item.statistic),
+							y: expandData.map((item) => item.value),
+							marker: {
+								color: 'rgb(255, 127, 14)',
+							},
 						},
-						{ type: 'bar', x: [1, 2, 3], y: [2, 5, 3] },
 					]}
 					layout={{
-						width: 500, height: 200, autosize: false, margin: {
-							l: 150,
-							r: 50,
-							b: 0,
-							t: 0,
+
+						width: 520,
+						height: 300,
+						autosize: false,
+						margin: {
+							l: 50,
+							r: 20,
+							b: 50,
+							t: 60,
 							pad: 10
 						},
 					}}
@@ -104,28 +107,64 @@ const TargetVariable = () => {
 	}
 
 	const onTableRowExpand = (expanded, record) => {
-		console.log("expanded, record", expanded, record);
+		var keys = [];
 		const _reqRow = {
-			view_disp_id: viewIdVer.view_disp_id,
-			version: viewIdVer.view_version,
-			parameter_name: record.Parameter_name
+			data: viewRes,
+			df: fileRes,
+			parameter_name: record.parameter_name,
+			type: 'stats',
+			unapproved: true,
+			view_disp_id: viewIdVer.view_disp_id ? viewIdVer.view_disp_id : '',
+			view_version: viewIdVer.view_version ? `${viewIdVer.view_version}` : '',
 		}
+
 
 		if (expanded) {
-			loadAnalysisView(_reqRow); // I have set my record.id as row key. Check the documentation for more details.
+			keys.push(record.id)
+			dssViewLoad(_reqRow); // I have set my record.id as row key. Check the documentation for more details.
 		}
-
-		// this.setState({ expandedRowKeys: keys });
+		console.log("keys", keys);
+		setExpandedRowKeys(keys)
 	}
 
-	//analysis view
-	const loadAnalysisView = async (_reqLoad) => {
+	const onRadioChange = ({ checked, type, record, index }) => {
+		console.log("record, index", checked, record, index);
+		setParameterName(record.parameter_name)
+		// setIsChecked(checked)
+		paramType = type;
+	}
+
+	//load dss view
+	const dssViewLoad = async (_reqLoad) => {
 		try {
 			dispatch(showLoader());
-			const analysisRes = await analysisView(_reqLoad);
-			console.log("loadAnalysisView", analysisRes)
-			//setLoadViewData(dssres)
+			const loadDssRes = await loadDssView(_reqLoad);
 			dispatch(hideLoader());
+			if (loadDssRes.statuscode === 200) {
+				setExpandData(loadDssRes.data)
+			}
+		} catch (err) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", err));
+		}
+	}
+
+	//save json
+	const dssSaveJson = async () => {
+		const _reqSave = {
+			df: fileRes,
+			view_disp_id: viewIdVer.view_disp_id ? viewIdVer.view_disp_id : '',
+			view_version: viewIdVer.view_version ? `${viewIdVer.view_version}` : '',
+			unapproved: true,
+			target_variable: parameterName
+		}
+		try {
+			dispatch(showLoader());
+			const loadDssRes = await dssSave(_reqSave);
+			dispatch(hideLoader());
+			if (loadDssRes.statuscode === 200) {
+				setExpandData(loadDssRes.message)
+			}
 		} catch (err) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", err));
@@ -133,28 +172,44 @@ const TargetVariable = () => {
 	}
 
 	return (
-		<div className="target-wrapper">
-			<Card title={(
-				<div className='card-title'>
-					<LeftOutlined onClick={() => {
-						dispatch(onClickTarget(false));
-					}} />
-					<p>Target Variable</p>
+		<div className="custom-wrapper">
+			<BreadCrumbWrapper />
+			<div className="custom-content-layout">
+				<div className="target-wrapper">
+					<Card title={(
+						<div className='card-title'>
+							<LeftOutlined onClick={history.goBack} />
+							<p>Target Variable</p>
+						</div>
+					)} className="target-card">
+						<div className='target-head'>
+							<p>Please select a target variable based on the univariate dataset statistics provided, before proceeding to JupyterLab.</p>
+							<Button
+								type='primary'
+								className='custom-secondary-btn'
+								onClick={() => {
+									dssSaveJson,
+										window.open("https://mi-demo.mareana.com/jupyter/tree", "_blank");
+								}}
+							>
+								Save and procced
+							</Button>
+						</div>
+						<div className="target-custom-table">
+							<Table
+								columns={columns}
+								expandable={{ expandedRowRender }}
+								onExpand={onTableRowExpand}
+								// expandedRowKeys={expandedRowKeys}
+								dataSource={loadViewDataTable}
+								rowKey="id"
+							/>
+						</div>
+					</Card>
 				</div>
-			)} className="target-card">
-				<p>Please select a target variable based on the univariate dataset statistics provided, before proceeding to JupyterLab.</p>
-				<div className="target-custom-table">
-					<Table
-						columns={columns}
-						expandable={{ expandedRowRender }}
-						onExpand={onTableRowExpand}
-						dataSource={loadViewDataTable}
-						rowKey="Parameter_name"
-					/>
-				</div>
-			</Card>
-
+			</div>
 		</div>
+
 	)
 }
 

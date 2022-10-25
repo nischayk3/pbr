@@ -284,7 +284,6 @@ function TreePlot(props) {
 				for (var i = 0; i < el.length; i++) {
 					var value = el[i];
 					value && processData(value, seenIds);
-
 					// If the child is now empty, remove it from the array
 					if (!value.id) {
 						el.splice(i, 1);
@@ -295,21 +294,22 @@ function TreePlot(props) {
 			// If the element is an object...
 			else if (_.isPlainObject(el)) {
 				for (var key in el) {
-					// Make sure the key is not part of the prototype chain
+					if (key !== "relationshipMap") {
+						// Make sure the key is not part of the prototype chain
 
-					if (Object.hasOwn(el, key)) {
-						var value1 = el[key];
-
-						if (key === "id") {
-							// If the key has been seen, remove it
-							if (seenIds[value1]) {
-								delete el[key];
-								continue; // Skip further processing
-							} else seenIds[value1] = true;
+						if (Object.hasOwn(el, key)) {
+							var value1 = el[key];
+							if (key === "id") {
+								// If the key has been seen, remove it
+								if (seenIds[value1]) {
+									delete el[key];
+									continue; // Skip further processing
+								} else seenIds[value1] = true;
+							}
+							value1 && processData(value1, seenIds);
+							// If the child is now empty, remove it from the object
+							if (checkForEmpty(value1)) delete el[key];
 						}
-						value1 && processData(value1, seenIds);
-						// If the child is now empty, remove it from the object
-						if (checkForEmpty(value1)) delete el[key];
 					}
 				}
 			}
