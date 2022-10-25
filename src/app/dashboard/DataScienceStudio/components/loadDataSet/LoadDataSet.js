@@ -44,8 +44,12 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 			const dssFileRes = await dssFileUpload(_reqFile);
 			dispatch(hideLoader());
 			if (dssFileRes.data.statuscode === 200) {
-				setUploadFileRes(dssFileRes.data.message);
-				dispatch(sendFileUploadRes(dssFileRes.data.message))
+				const data = {
+					filename: dssFileRes.data.filename,
+					message: dssFileRes.data.message
+				}
+				setUploadFileRes(data);
+				dispatch(sendFileUploadRes(data))
 				dispatch(sendViewsetRes({}))
 				setIsDisable(false);
 				dispatch(showNotification('success', "File Upload Successfully"));
@@ -74,9 +78,16 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 		try {
 			dispatch(showLoader());
 			const loadDssRes = await loadDssView(_reqLoad);
+			let param = []
 			dispatch(hideLoader());
 			if (loadDssRes.statuscode === 200) {
-				dispatch(loadViewTableData(loadDssRes.message))
+				loadDssRes.message.forEach((item, key) => {
+					let obj = {}
+					obj['parameter_name'] = item.parameter_name;
+					obj['id'] = key
+					param.push(obj)
+				})
+				dispatch(loadViewTableData(param))
 				history.push({
 					pathname: `${match.url}/target_variable`,
 				});

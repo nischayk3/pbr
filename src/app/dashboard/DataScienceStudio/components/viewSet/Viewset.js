@@ -105,9 +105,16 @@ const Viewset = ({ isVisible, onCancel }) => {
 		try {
 			dispatch(showLoader());
 			const loadDssRes = await loadDssView(_reqLoad);
+			let param = []
 			dispatch(hideLoader());
 			if (loadDssRes.statuscode === 200) {
-				dispatch(loadViewTableData(loadDssRes.message))
+				loadDssRes.message.forEach((item, key) => {
+					let obj = {}
+					obj['parameter_name'] = item.parameter_name;
+					obj['id'] = key
+					param.push(obj)
+				})
+				dispatch(loadViewTableData(param))
 				history.push({
 					pathname: `${match.url}/target_variable`,
 				});
