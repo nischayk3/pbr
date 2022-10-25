@@ -189,7 +189,7 @@ const TargetVariable = () => {
 								className='custom-secondary-btn'
 								onClick={() => {
 									dssSaveJson,
-										window.open("https://mi-demo.mareana.com/jupyter/tree", "_blank");
+										window.open("jupyterhub-dev.mareana.com", "_blank");
 								}}
 							>
 								Save and procced
