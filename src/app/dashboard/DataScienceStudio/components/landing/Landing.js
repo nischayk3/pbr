@@ -56,7 +56,7 @@ export default function Landing() {
 					<div
 						className="jupyter-card"
 						onClick={() => {
-							window.open("https://mi-demo.mareana.com/jupyter/tree", "_blank");
+							window.open("jupyterhub-dev.mareana.com", "_blank");
 						}}
 					>
 						<img src={jupyter_logo} />
