@@ -20,7 +20,7 @@ const Results = ({tablekey, modelType}) => {
 
   const getResultFunc = async () => {
     const reqBody = {
-      pipelineid: modelType.current === 'Regression' ? "P97" : "P96",
+      pipelineid: selectedViewData.viewData.pipeline_id,
     };
     dispatch(showLoader());
     const apiResponse = await getResults(reqBody);
