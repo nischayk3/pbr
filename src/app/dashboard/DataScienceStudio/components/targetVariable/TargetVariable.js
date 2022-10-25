@@ -17,6 +17,7 @@ const TargetVariable = () => {
 	const fileRes = useSelector((state) => state.dataScienceReducer.fileRes)
 	const viewRes = useSelector((state) => state.dataScienceReducer.viewRes)
 
+	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 	const [expandData, setExpandData] = useState([]);
 	const [parameterName, setParameterName] = useState('');
 
@@ -88,15 +89,14 @@ const TargetVariable = () => {
 						},
 					]}
 					layout={{
-						showlegend: true,
-						legend: { orientation: "h" },
+
 						width: 520,
 						height: 300,
 						autosize: false,
 						margin: {
 							l: 50,
 							r: 20,
-							b: 0,
+							b: 50,
 							t: 60,
 							pad: 10
 						},
@@ -107,6 +107,7 @@ const TargetVariable = () => {
 	}
 
 	const onTableRowExpand = (expanded, record) => {
+		var keys = [];
 		const _reqRow = {
 			data: viewRes,
 			df: fileRes,
@@ -117,9 +118,13 @@ const TargetVariable = () => {
 			view_version: viewIdVer.view_version ? `${viewIdVer.view_version}` : '',
 		}
 
+
 		if (expanded) {
+			keys.push(record.id)
 			dssViewLoad(_reqRow); // I have set my record.id as row key. Check the documentation for more details.
 		}
+		console.log("keys", keys);
+		setExpandedRowKeys(keys)
 	}
 
 	const onRadioChange = ({ checked, type, record, index }) => {
@@ -136,7 +141,7 @@ const TargetVariable = () => {
 			const loadDssRes = await loadDssView(_reqLoad);
 			dispatch(hideLoader());
 			if (loadDssRes.statuscode === 200) {
-				setExpandData(loadDssRes.message)
+				setExpandData(loadDssRes.data)
 			}
 		} catch (err) {
 			dispatch(hideLoader());
@@ -173,11 +178,7 @@ const TargetVariable = () => {
 				<div className="target-wrapper">
 					<Card title={(
 						<div className='card-title'>
-							<LeftOutlined onClick={() => {
-								history.push({
-									pathname: `${match.url}/data_science_studio`,
-								});
-							}} />
+							<LeftOutlined onClick={history.goBack} />
 							<p>Target Variable</p>
 						</div>
 					)} className="target-card">
@@ -186,7 +187,10 @@ const TargetVariable = () => {
 							<Button
 								type='primary'
 								className='custom-secondary-btn'
-								onClick={dssSaveJson}
+								onClick={() => {
+									dssSaveJson,
+										window.open("https://mi-demo.mareana.com/jupyter/tree", "_blank");
+								}}
 							>
 								Save and procced
 							</Button>
@@ -196,8 +200,9 @@ const TargetVariable = () => {
 								columns={columns}
 								expandable={{ expandedRowRender }}
 								onExpand={onTableRowExpand}
+								// expandedRowKeys={expandedRowKeys}
 								dataSource={loadViewDataTable}
-								rowKey="parameter_name"
+								rowKey="id"
 							/>
 						</div>
 					</Card>
