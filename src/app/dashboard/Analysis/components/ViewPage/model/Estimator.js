@@ -1,8 +1,10 @@
-import React from "react";
-import { Row, Col, Checkbox, Button } from "antd";
+import React, { useEffect, useState } from "react";
+import { Row, Col, Checkbox, Button, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import SelectField from "../../../../../../components/SelectField/SelectField";
 
+
+const { Option } = Select;
 const Estimator = (props) => {
   const {
     estimatorPopupData,
@@ -14,13 +16,19 @@ const Estimator = (props) => {
     finalModelJson,
     setFinalModelJson,
   } = props;
+  
+  const [algosListData, setAlgosListData] = useState([]);
+  const [metricListData, setMetricListData] = useState([]);
 
   const onClickSave = () => {
     const tempObj = JSON.parse(JSON.stringify(finalModelJson));
     Object.entries(tempObj.estimator).forEach(([key, value]) => {
       value.model_name = `e_${estimatorPopupDataValues.algoValue.toLowerCase()}`;
     });
-    setFinalModelJson({ ...finalModelJson, estimator: tempObj.estimator });
+    const metricsTemp = {
+      metric_name : estimatorPopupDataValues.regressionListvalue
+    }
+    setFinalModelJson({ ...finalModelJson, estimator: tempObj.estimator, metrics: metricsTemp });
     setSavedEstimatorPopupDataValues({
       ...savedEstimatorPopupDataValues,
       typeListValue: estimatorPopupDataValues.typeListValue,
@@ -29,6 +37,41 @@ const Estimator = (props) => {
     });
     onCreateClick();
   };
+
+  const onTypeChange = (e) => {
+    setEstimatorPopupDataValues({
+      ...estimatorPopupDataValues,
+      typeListValue: e,
+    })
+  }
+  const getAlgoList = (e) => {
+    const tempList = JSON.parse(JSON.stringify(estimatorPopupData?.algoList));
+    tempList.forEach((ele) => {
+      if (ele.estimator_type === e) {
+        ele.disabled = false;
+      } else {
+        ele.disabled = true;
+      }
+    })
+    setAlgosListData(tempList)
+  }
+
+  useEffect(() => {
+    getAlgoList(estimatorPopupDataValues.typeListValue)
+  }, [estimatorPopupDataValues.typeListValue])
+
+
+  useEffect(() => {
+    let resArr = [];
+    estimatorPopupData?.regressionList.filter(function(item){
+      let i = resArr.findIndex((x) => x.display_name === item.display_name);
+      if(i === -1){
+        resArr.push(item);
+      }
+      return null;
+    });
+    setMetricListData(resArr)
+  }, [])
 
   return (
     <>
@@ -54,26 +97,33 @@ const Estimator = (props) => {
           selectList={estimatorPopupData.typeList}
           selectedValue={estimatorPopupDataValues.typeListValue}
           onChangeSelect={(e) =>
-            setEstimatorPopupDataValues({
-              ...estimatorPopupDataValues,
-              typeListValue: e,
-            })
+            onTypeChange(e)
           }
         />
-        <SelectField
-          label="Algorithms"
-          selectList={estimatorPopupData.algoList}
-          selectedValue={estimatorPopupDataValues.algoValue}
-          onChangeSelect={(e) =>
-            setEstimatorPopupDataValues({
-              ...estimatorPopupDataValues,
-              algoValue: e,
-            })
-          }
-        />
+        <p style={{ marginBottom:'0px'}}>Algorithms</p>
+        <Select defaultValue={estimatorPopupDataValues.algoValue} disabled={!estimatorPopupDataValues.typeListValue} onChange={(e) => {
+          setEstimatorPopupDataValues({
+            ...estimatorPopupDataValues,
+            algoValue: e,
+          })
+        }} style={{ width: "100%" }}>
+          {algosListData?.length && algosListData?.map((ele) => {
+            return <Option value={ele.submodule} disabled={ele.disabled}>{ele.display_name}</Option>
+          })}
+        </Select>
         <Row gutter={24} className="metrics">
           <Col span={11}>
-            <SelectField label="Metrics" />
+          <p style={{ marginBottom:'0px'}}>Metrics</p>
+          <Select defaultValue={estimatorPopupDataValues.regressionListvalue} disabled={!estimatorPopupDataValues.algoValue} onChange={(e) => {
+          setEstimatorPopupDataValues({
+            ...estimatorPopupDataValues,
+            regressionListvalue: e,
+          })
+        }} style={{ width: "100%" }}>
+          {metricListData.length && metricListData.map((ele) => {
+            return <Option value={ele.metric_name}>{ele.display_name}</Option>
+          })}
+        </Select>
           </Col>
           <Col span={13}>
             <Checkbox

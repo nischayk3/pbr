@@ -135,13 +135,13 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
     setType(vartype);
   };
 
-  const getNodes = async () => {
+  const getNodes = async (tv) => {
     const reqBody = {
       batch_filter: selectedViewData?.batch_filter,
       data_filter:  selectedViewData?.data_filter,
       view_disp_id: selectedViewData?.view_id,
       view_version: selectedViewData?.view_version,
-      target_variable : editFinalJson?.input_data?.target_variable ? editFinalJson?.input_data?.target_variable : undefined
+      target_variable: tv ? tv : undefined
     };
     dispatch(showLoader());
     const apiResponse = await getAnalyticsNodes(reqBody);
@@ -164,7 +164,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
       if (finalJson?.variable_mapping?.length >=1) {
         setFinalModelJson(finalJson)
       } else {
-        getModelJson(targetVariable);
+        getModelJson(apiResponse.data);
       }
       setSelectedTargetVariable(targetVariable);
       apiResponse?.data?.Imputer?.forEach((ele) => {
@@ -400,15 +400,31 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
       const tempVariable = tempEstNode.data.Destination_Parameter.type === 'Regression' ? 'Regression' : 'Classification';
       modelType.current = tempVariable;
       const esttype = tempEstNode.data.Destination_Parameter.type === 'Regression' ? 'e_randomforestregressor_0' : 'e_randomforestclassifier_0';
-      apiResponse?.data[`${tempVariable}`]?.forEach((regression) => {
-        tempEstAlgoList.push(regression?.submodule);
-        tempEstTypeList.push(regression?.type);
-        tempRegressionList.push(regression?.module);
-        if (finalJson?.estimator[`${esttype}`]?.model_name === regression?.submodule_key) {
-          setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.submodule })
-          setSavedEstimatorPopupDataValues({...savedEstimatorPopupDataValues, algoValue:regression.submodule})
+      apiResponse?.data?.all_estimator?.forEach((regression) => {
+        tempEstAlgoList.push(regression);
+        tempEstTypeList.push(regression?.estimator_type);
+        if (finalJson?.estimator?.e__0?.model_name === regression?.model_name) {
+          setEstimatorPopupDataValues({...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue:regression.estimator_type, enableGrid:true })
+          setSavedEstimatorPopupDataValues({...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue:regression.estimator_type, enableGrid:true })
         }
       });
+      apiResponse?.data?.all_metric?.forEach((metric) => {
+        tempRegressionList.push(metric);
+        if (finalJson?.metrics?.metric_name === metric?.metric_name) {
+          setEstimatorPopupDataValues((prev) => {
+            return {
+              ...prev,
+              regressionListvalue: metric.metric_name
+            }
+          })
+          setSavedEstimatorPopupDataValues((prev) => {
+            return {
+              ...prev,
+              regressionListvalue: metric.metric_name
+            }
+          })
+        }
+      })
       setEstimatorPopupData({
         ...estimatorPopupData,
         algoList: [...new Set(tempEstAlgoList)],
@@ -425,18 +441,41 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
       dispatch(showNotification("error", "Unable to get model data"));
     }
   };
+  
 
-  const getModelJson = async (targetVariable) => {
+  const getModelJson = async (data) => {
     const reqBody = {
       batch_filter: selectedViewData?.batch_filter,
       data_filter: selectedViewData?.data_filter,
       view_disp_id: selectedViewData?.view_id,
       view_version: selectedViewData?.view_version,
-      target_variable: targetVariable
+      target_variable: data?.targetVariable
     };
     dispatch(showLoader());
     const apiResponse = await getAnalyticsModel(reqBody);
     if (apiResponse.Status === 200) {
+      data?.all_estimator?.forEach((regression) => {
+        if (apiResponse?.data?.estimator?.model_name === regression?.model_name) {
+          setEstimatorPopupDataValues({...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue:regression.estimator_type, enableGrid:true })
+          setSavedEstimatorPopupDataValues({...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue:regression.estimator_type, enableGrid:true })
+        }
+      });
+      data?.all_metric?.forEach((metric) => {
+        if (apiResponse?.data?.metrics?.metric_name === metric?.metric_name) {
+          setEstimatorPopupDataValues((prev) => {
+            return {
+              ...prev,
+              regressionListvalue: metric.metric_name
+            }
+          })
+          setSavedEstimatorPopupDataValues((prev) => {
+            return {
+              ...prev,
+              regressionListvalue: metric.metric_name
+            }
+          })
+        }
+      })
       setFinalModelJson(apiResponse.data);
       dispatch(hideLoader());
     } else {
@@ -452,13 +491,13 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
   };
 
   useEffect(() => {
-    getNodes();
+    getNodes(editFinalJson?.input_data?.target_variable);
   }, [tableKey]);
 
-   
+
   useEffect(() => {
     setNodeTypes(nodesNew)
-  }, [savedEstimatorPopupDataValues.algoValue])
+  }, [savedEstimatorPopupDataValues])
 
   useEffect(() => {
     setNodeTypes(nodesNew)
@@ -489,39 +528,6 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 
   useEffect(() => {
     if (selectedTargetValue && selectedTargetValue.length >= 1) {
-      const existingNodes = [...nodes];
-      existingNodes.forEach((ele) => {
-        if (ele.existingVariable) {
-          ele.data = {
-            label: <div className="node-inside">{ele.Node}</div>,
-          };
-          ele.style = {
-            border: "1px solid #4CA022",
-            width: "80px",
-          };
-        }
-      });
-      const findIndex = existingNodes?.findIndex(
-        (ele) => ele?.Node === selectedTargetValue
-      );
-
-      if (findIndex !== -1) {
-        existingNodes[findIndex].data = {
-          label: (
-            <div className="node-inside">
-              <img src={StarImg} />
-              {existingNodes[findIndex]?.Node}
-            </div>
-          ),
-        };
-        existingNodes[findIndex].existingVariable = true;
-        existingNodes[findIndex].style = {
-          border: "1px solid #FF4D4F",
-          width: "80px",
-        };
-      }
-      setNodesAnalytics(existingNodes);
-      setNodes(existingNodes);
       setTargetVariable();
     }
   }, [selectedTargetValue]);
@@ -598,6 +604,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
                 setSelectedTargetVariable={setSelectedTargetVariable}
                 selectedTargetValue={selectedTargetValue}
                 editFinalJson={editFinalJson}
+                getNodes={getNodes}
               />
             </ModalComponent>
           </ReactFlow>
