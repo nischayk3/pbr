@@ -23,6 +23,7 @@ const Estimator = (props) => {
   const onClickSave = () => {
     const tempObj = JSON.parse(JSON.stringify(finalModelJson));
     Object.entries(tempObj.estimator).forEach(([key, value]) => {
+      value.estimator_type = estimatorPopupDataValues.typeListValue
       value.model_name = `e_${estimatorPopupDataValues.algoValue.toLowerCase()}`;
     });
     const metricsTemp = {
@@ -56,12 +57,7 @@ const Estimator = (props) => {
     setAlgosListData(tempList)
   }
 
-  useEffect(() => {
-    getAlgoList(estimatorPopupDataValues.typeListValue)
-  }, [estimatorPopupDataValues.typeListValue])
-
-
-  useEffect(() => {
+  const getMetricList = (e) => {
     let resArr = [];
     estimatorPopupData?.regressionList.filter(function(item){
       let i = resArr.findIndex((x) => x.display_name === item.display_name);
@@ -70,8 +66,21 @@ const Estimator = (props) => {
       }
       return null;
     });
+    resArr.forEach((ele) => {
+      if (ele.type === e) {
+        ele.disabled = false;
+      } else {
+        ele.disabled = true;
+      }
+    })
     setMetricListData(resArr)
-  }, [])
+  }
+
+  useEffect(() => {
+    getAlgoList(estimatorPopupDataValues.typeListValue)
+    getMetricList(estimatorPopupDataValues.typeListValue)
+  }, [estimatorPopupDataValues.typeListValue])
+
 
   return (
     <>
@@ -121,7 +130,7 @@ const Estimator = (props) => {
           })
         }} style={{ width: "100%" }}>
           {metricListData.length && metricListData.map((ele) => {
-            return <Option value={ele.metric_name}>{ele.display_name}</Option>
+            return <Option value={ele.metric_name} disabled={ele.disabled}>{ele.display_name}</Option>
           })}
         </Select>
           </Col>
