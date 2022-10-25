@@ -5,8 +5,11 @@ import {
 	Switch,
 	useHistory,
 	useLocation,
-	useRouteMatch
+	useRouteMatch,
+	Redirect
 } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { showNotification } from "../../duck/actions/commonActions";
 import HeaderBar from "../../components/Header";
 import Help from "../../components/Help";
 import Sidebar from "../../components/Sidebar";
@@ -62,16 +65,32 @@ const { Content } = Layout;
 
 const Dashboard = () => {
 	const match = useRouteMatch();
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const location = useLocation();
 	const screen = location.pathname.split("/");
 	const [authorised, setAuthorised] = useState(true);
+
 
 	useEffect(() => {
 		// if (!Auth.isAuthenticated()) {
 		//   history.push('/user/login');
 		// }
 	}, [history]);
+
+	useEffect(() => {
+
+		if (JSON.parse(localStorage.getItem('login_details')) == null && !window.location.href.includes('user/login') && !window.location.href.includes('/redirect')) {
+			dispatch(showNotification('error', 'Please login first to proceed'))
+			setTimeout(() => {
+				history.push('/user/login');
+				window.location.reload()
+			}, 1000)
+
+		}
+
+	}, []);
+
 
 	const requiredAuth = async (resource) => {
 		let authResponse = {};
