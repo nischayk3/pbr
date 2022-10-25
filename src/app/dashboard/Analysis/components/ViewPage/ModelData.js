@@ -32,7 +32,7 @@ const ModelData = ({ modelData, setModelData, editFinalJson }) => {
 
   
   useEffect(() => {
-    if (editFinalJson?.pipeline_data) {
+    if (editFinalJson?.pipeline_data[0]?.variable_mapping?.length) {
       getModalData();
     }
   }, [editFinalJson])
