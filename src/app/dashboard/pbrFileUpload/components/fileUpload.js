@@ -488,7 +488,7 @@ function FileUpload() {
                                             Click or drag file to this area to upload
                                         </p>
                                         <p className='ant-upload-hint'>
-                                            Upload files of PDF or PNG format. You may carry out single
+                                            Upload files of PDF format. You may carry out single
                                             or bulk upload. Strictly refrain from uploading company data
                                             or other band files
                                         </p>
