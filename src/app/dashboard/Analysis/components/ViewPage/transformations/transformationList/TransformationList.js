@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import { Tag } from "antd";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
@@ -6,49 +6,58 @@ import { MenuOutlined, ArrowRightOutlined } from "@ant-design/icons";
 
 import { arrayMoveImmutable } from "array-move";
 
-const TransformationList = ({ type }) => {
-  const iniatalState = {
-    items: ["L0_S0_0", "L0_S0_1", "L0_S0_2", "L0_S0_3", "L0_S0_4", "L0_S0_5"],
-  };
-  const [listAArray, setListArray] = useState(iniatalState);
-  const SortableItem = SortableElement(({ value }) => (
+const TransformationList = ({ type, getTransformationList, transformationData }) => {
+  
+  const [listAArray, setListArray] = useState();
+  const SortableItem = SortableElement(({value}) => (
     <div className="list-container" tabIndex={0}>
-      <div>
-        {value}
-        &emsp;&emsp;
-        <Tag color={type === "transformation" ? "geekblue" : "purple"}>
-          Dummy
-        </Tag>
-        &emsp;
-        <ArrowRightOutlined />
-        &emsp;
-        <Tag color={type === "transformation" ? "geekblue" : "purple"}>
-          Simple Imputer
-        </Tag>
+      <div style={{ display:'flex', alignItems:'center'}}>
+        <p style={{ width:'150px'}}>
+          {value.key}
+        </p>
+        {value?.value?.map((ele, index) => {
+          return (<>
+            {index > 0 && <ArrowRightOutlined style={{ marginRight:'5px'}} />}
+            <Tag color={type === "transformation" ? "geekblue" : "purple"}>{ele}</Tag>
+          </>)
+        })}
       </div>
       <div className="icon-menu">
         <MenuOutlined />
       </div>
     </div>
   ));
-  const SortableList = SortableContainer(({ items }) => {
+  const SortableList = SortableContainer(({items}) => {
     return (
       <ul>
-        {items.map((value, index) => (
+        {items && items.map((value, index) => (
           <SortableItem key={`item-${value}`} index={index} value={value} />
         ))}
       </ul>
     );
   });
   const onSortEnd = ({ oldIndex, newIndex }) => {
-    setListArray(({ items }) => ({
-      items: arrayMoveImmutable(items, oldIndex, newIndex),
-    }));
+    // setListArray(({ items }) => ({
+    //   items: arrayMoveImmutable(items, oldIndex, newIndex),
+    // }));
   };
+
+  useEffect(() => {
+    if (type === 'transformation') {
+      getTransformationList('transformation');
+    } else {
+      getTransformationList('feature union');
+    }
+  }, [])
+
+  useEffect(() => {
+     setListArray(transformationData)
+  }, [transformationData])
+
 
   return (
     <div>
-      <SortableList items={listAArray.items} onSortEnd={onSortEnd} />
+      <SortableList items={listAArray} onSortEnd={onSortEnd} />
     </div>
   );
 };
