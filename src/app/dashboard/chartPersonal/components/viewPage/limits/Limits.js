@@ -586,6 +586,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
       newdataArr[0].limits = viewRes.data[0].limits;
       newdataArr[0].violations = viewRes.data[0].violations;
       newdataArr[0].data = viewRes.data[0].data;
+      newdataArr[0].extras.data_table = viewRes.data[0].extras.data_table;
       setPostChartData({ ...postChartData, data: newdataArr });
       dispatch(hideLoader());
     } catch (error) {

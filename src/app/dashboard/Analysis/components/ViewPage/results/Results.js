@@ -1,5 +1,6 @@
 import { Collapse, Row, Col } from "antd";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import "./results.scss";
 import { getResults } from "../../../../../../services/analyticsService";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,12 +16,13 @@ const Results = ({tablekey, modelType}) => {
   const selectedViewData = useSelector(
     (state) => state.analyticsReducer.viewData
   );
+  const { id } = useParams();
   const dispatch = useDispatch();
   const [resultsData, setResultsData] = useState();
 
   const getResultFunc = async () => {
     const reqBody = {
-      pipelineid: modelType.current === 'Regression' ? "P97" : "P96",
+      pipelineid: id,
     };
     dispatch(showLoader());
     const apiResponse = await getResults(reqBody);

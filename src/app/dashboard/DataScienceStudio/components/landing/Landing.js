@@ -55,9 +55,9 @@ export default function Landing() {
 					</div>
 					<div
 						className="jupyter-card"
-					// onClick={() => {
-					// 	dispatch(onClickTarget(true));
-					// }}
+						onClick={() => {
+							window.open("jupyterhub-dev.mareana.com", "_blank");
+						}}
 					>
 						<img src={jupyter_logo} />
 						<p>Explore on your own</p>

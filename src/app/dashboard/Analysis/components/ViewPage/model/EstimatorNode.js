@@ -15,7 +15,6 @@ export default ({
 
   const handleClick = (event) => {
     event.stopPropagation();
-    console.log(data, "dataest");
     setEstimatorPopupDataValues({
       ...estimatorPopupDataValues,
       typeListValue: savedEstimatorPopupDataValues.typeListValue
@@ -30,7 +29,8 @@ export default ({
     });
     addEstimator("estimator");
   };
-
+  
+  
   return (
     <div
       style={{
@@ -56,7 +56,7 @@ export default ({
           onClick={handleClick}
         >
           {savedEstimatorPopupDataValues.algoValue ||
-            data?.Destination_Parameter?.submodule}
+            "Choose Estimator"}
         </button>
       </div>
       <Handle type="source" position="right" />

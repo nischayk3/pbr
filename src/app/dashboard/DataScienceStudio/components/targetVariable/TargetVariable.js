@@ -3,33 +3,13 @@ import { Button, Card, Radio, Table } from "antd";
 import React, { useState } from "react";
 import Plot from 'react-plotly.js';
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import BreadCrumbWrapper from '../../../../../components/BreadCrumbWrapper';
 import { hideLoader, showLoader, showNotification } from '../../../../../duck/actions/commonActions';
-import { onClickTarget } from '../../../../../duck/actions/viewAction';
-import { loadDssView } from '../../../../../services/dataScienceStudioService';
+import { dssSave, loadDssView } from '../../../../../services/dataScienceStudioService';
 import "./style.scss";
 
-const columns = [
-	{
-		title: 'Target variable',
-		dataIndex: 'targetVar',
-		key: 'targetVar',
-		width: 125,
-		render: () => {
-			return (
-				<Radio />
-			)
-		}
-	},
-	Table.EXPAND_COLUMN,
-	{
-		title: 'Parameters',
-		dataIndex: 'parameter_name',
-		key: 'parameters',
-	},
-];
-
-
+let paramType = "";
 
 const TargetVariable = () => {
 	const loadViewDataTable = useSelector((state) => state.dataScienceReducer.loadViewData)
@@ -37,14 +17,42 @@ const TargetVariable = () => {
 	const fileRes = useSelector((state) => state.dataScienceReducer.fileRes)
 	const viewRes = useSelector((state) => state.dataScienceReducer.viewRes)
 
-	console.log("loadViewDataTable", loadViewDataTable);
-	console.log("viewIdVer", viewIdVer);
-	console.log("fileRes", fileRes);
-	console.log("viewRes", viewRes);
-
+	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 	const [expandData, setExpandData] = useState([]);
+	const [parameterName, setParameterName] = useState('');
 
 	const dispatch = useDispatch();
+	const match = useRouteMatch();
+	const history = useHistory();
+
+	const columns = [
+		{
+			title: 'Target variable',
+			dataIndex: 'targetVar',
+			key: 'targetVar',
+			width: 125,
+			render: (text, record, index) => {
+				return (
+					<Radio
+						checked={paramType === record.parameter_name}
+						onChange={(e) =>
+							onRadioChange({
+								checked: e.target.checked ? e.target.checked : false,
+								type: record.parameter_name,
+								record: record,
+								index: index
+							})
+						} />
+				)
+			}
+		},
+		Table.EXPAND_COLUMN,
+		{
+			title: 'Parameters',
+			dataIndex: 'parameter_name',
+			key: 'parameters',
+		},
+	];
 
 	const expandedRowRender = () => {
 		const childColumn = [
@@ -60,9 +68,6 @@ const TargetVariable = () => {
 			}
 		]
 
-
-
-
 		return (
 			<div className="expandable-component">
 				<Table
@@ -74,15 +79,25 @@ const TargetVariable = () => {
 				/>
 				<Plot
 					data={[
-
-						{ type: 'bar', x: expandData.map((item) => item.statistic), y: expandData.map((item) => item.value) },
+						{
+							type: 'bar',
+							x: expandData.map((item) => item.statistic),
+							y: expandData.map((item) => item.value),
+							marker: {
+								color: 'rgb(255, 127, 14)',
+							},
+						},
 					]}
 					layout={{
-						width: 500, height: 200, autosize: false, margin: {
-							l: 150,
-							r: 50,
-							b: 0,
-							t: 0,
+
+						width: 520,
+						height: 300,
+						autosize: false,
+						margin: {
+							l: 50,
+							r: 20,
+							b: 50,
+							t: 60,
 							pad: 10
 						},
 					}}
@@ -92,6 +107,7 @@ const TargetVariable = () => {
 	}
 
 	const onTableRowExpand = (expanded, record) => {
+		var keys = [];
 		const _reqRow = {
 			data: viewRes,
 			df: fileRes,
@@ -99,38 +115,52 @@ const TargetVariable = () => {
 			type: 'stats',
 			unapproved: true,
 			view_disp_id: viewIdVer.view_disp_id ? viewIdVer.view_disp_id : '',
-			view_version: viewIdVer.view_version ? viewIdVer.view_version : '',
+			view_version: viewIdVer.view_version ? `${viewIdVer.view_version}` : '',
 		}
-		console.log(_reqRow);
+
+
 		if (expanded) {
+			keys.push(record.id)
 			dssViewLoad(_reqRow); // I have set my record.id as row key. Check the documentation for more details.
 		}
-
-		// this.setState({ expandedRowKeys: keys });
+		console.log("keys", keys);
+		setExpandedRowKeys(keys)
 	}
 
-	//analysis view
-	// const loadAnalysisView = async (_reqLoad) => {
-	// 	try {
-	// 		dispatch(showLoader());
-	// 		const analysisRes = await analysisView(_reqLoad);
-	// 		dispatch(hideLoader());
-	// 		if (analysisRes.Status === 200) {
-	// 			setExpandData(analysisRes.data.Stat)
-	// 		} else {
-	// 			dispatch(showNotification("error", 'No Data found'));
-	// 		}
+	const onRadioChange = ({ checked, type, record, index }) => {
+		console.log("record, index", checked, record, index);
+		setParameterName(record.parameter_name)
+		// setIsChecked(checked)
+		paramType = type;
+	}
 
-	// 	} catch (err) {
-	// 		dispatch(hideLoader());
-	// 		dispatch(showNotification("error", err));
-	// 	}
-	// }
 	//load dss view
 	const dssViewLoad = async (_reqLoad) => {
 		try {
 			dispatch(showLoader());
 			const loadDssRes = await loadDssView(_reqLoad);
+			dispatch(hideLoader());
+			if (loadDssRes.statuscode === 200) {
+				setExpandData(loadDssRes.data)
+			}
+		} catch (err) {
+			dispatch(hideLoader());
+			dispatch(showNotification("error", err));
+		}
+	}
+
+	//save json
+	const dssSaveJson = async () => {
+		const _reqSave = {
+			df: fileRes,
+			view_disp_id: viewIdVer.view_disp_id ? viewIdVer.view_disp_id : '',
+			view_version: viewIdVer.view_version ? `${viewIdVer.view_version}` : '',
+			unapproved: true,
+			target_variable: parameterName
+		}
+		try {
+			dispatch(showLoader());
+			const loadDssRes = await dssSave(_reqSave);
 			dispatch(hideLoader());
 			if (loadDssRes.statuscode === 200) {
 				setExpandData(loadDssRes.message)
@@ -148,9 +178,7 @@ const TargetVariable = () => {
 				<div className="target-wrapper">
 					<Card title={(
 						<div className='card-title'>
-							<LeftOutlined onClick={() => {
-								dispatch(onClickTarget(false));
-							}} />
+							<LeftOutlined onClick={history.goBack} />
 							<p>Target Variable</p>
 						</div>
 					)} className="target-card">
@@ -159,6 +187,10 @@ const TargetVariable = () => {
 							<Button
 								type='primary'
 								className='custom-secondary-btn'
+								onClick={() => {
+									dssSaveJson,
+										window.open("jupyterhub-dev.mareana.com", "_blank");
+								}}
 							>
 								Save and procced
 							</Button>
@@ -168,8 +200,9 @@ const TargetVariable = () => {
 								columns={columns}
 								expandable={{ expandedRowRender }}
 								onExpand={onTableRowExpand}
+								// expandedRowKeys={expandedRowKeys}
 								dataSource={loadViewDataTable}
-								rowKey="parameter_name"
+								rowKey="id"
 							/>
 						</div>
 					</Card>

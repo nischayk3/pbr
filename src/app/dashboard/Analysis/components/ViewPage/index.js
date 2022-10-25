@@ -145,6 +145,9 @@ const ViewPageAnalysis = () => {
         pipeline_id: data?.data?.pipeline_disp_id
       };
       dispatch(getAnalyticsViewData(viewDetails));
+      if (data?.data?.pipeline_data[0]?.variable_mapping?.length) {
+        setExectStart(true);
+      }
       setEditFinalModelJson(data.data)
       dispatch(hideLoader());
     } else {
@@ -187,11 +190,6 @@ const ViewPageAnalysis = () => {
           defaultActiveKey="1"
           activeKey={tableKey}
           onChange={tabChange}
-          tabBarExtraContent={
-            tableKey === "4" && (
-              <Button className="save-button-extra">Save</Button>
-            )
-          }
         >
           <TabPane tab="Preprocess" key="1">
             <Preprocess setModelData={setModelData} setTableKey={setTableKey} editFinalJson={editFinalJson} />
@@ -208,9 +206,9 @@ const ViewPageAnalysis = () => {
               modelType={modelType}
             />
           </TabPane>
-          {/* <TabPane tab="Transformation" key="4">
-            <Transformation />
-          </TabPane> */}
+          {exectStart && <TabPane tab="Transformation" key="4">
+            <Transformation finalModelJson={finalModelJson} editFinalJson={editFinalJson} tableKey={tableKey} />
+          </TabPane>}
           {((executed && !exectLater) || (editFinalJson?.pipeline_data[0]?.variable_mapping?.length)) && (
             <TabPane tab="Results" key="5">
               <Results tablekey={tableKey} modelType={modelType} />
