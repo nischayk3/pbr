@@ -126,6 +126,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 					className='custom-secondary-btn'
 					onClick={dssViewLoad}
 					disabled={isDisable}
+					id="next-btn"
 				>
 					Next
 				</Button>

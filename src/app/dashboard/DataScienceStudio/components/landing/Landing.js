@@ -1,6 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons";
 import React, { lazy, useState } from "react";
-import { useDispatch } from "react-redux";
 import illustrations from "../../../../../assets/images/dss-landing.png";
 import jupyter_logo from "../../../../../assets/images/jupyter.png";
 import LoadDataSet from "../loadDataSet/LoadDataSet";
@@ -15,7 +14,7 @@ export default function Landing() {
 	const [isViewsetVisible, setIsViewsetVisible] = useState(false);
 	const [isDatasetVisible, setIsDatasetVisible] = useState(false);
 
-	const dispatch = useDispatch();
+
 
 	const onCancel = () => {
 		setIsViewsetVisible(false)
@@ -55,9 +54,9 @@ export default function Landing() {
 					</div>
 					<div
 						className="jupyter-card"
-						onClick={() => {
-							window.open("jupyterhub-dev.mareana.com", "_blank");
-						}}
+						onClick={
+							() => window.open("http://jupyterhub-dev.mareana.com", "_blank")
+						}
 					>
 						<img src={jupyter_logo} />
 						<p>Explore on your own</p>
@@ -67,6 +66,6 @@ export default function Landing() {
 			</div>
 			<Viewset isVisible={isViewsetVisible} onCancel={onCancel} />
 			<LoadDataSet isVisibleDataset={isDatasetVisible} onCancel={onCancel} />
-		</div>
+		</div >
 	);
 }

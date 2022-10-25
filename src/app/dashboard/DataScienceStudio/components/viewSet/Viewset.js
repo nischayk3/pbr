@@ -54,7 +54,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 		let reqView = { vew_status: "APRD" };
 		let antdDataTable = [];
 		try {
-			dispatch(showLoader());
+
 			const viewRes = await getViewList(reqView);
 			viewRes.Data.forEach((item, key) => {
 				let antdObj = {};
@@ -73,7 +73,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 			searchViewData.current = JSON.parse(JSON.stringify(antdDataTable));
 			setSearchTableData(antdDataTable);
 
-			dispatch(hideLoader());
+
 		} catch (error) {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
@@ -300,6 +300,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 								className='custom-secondary-btn'
 								onClick={onNextClick}
 								disabled={isDisable}
+								id="next-btn"
 							>
 								Next
 							</Button>
