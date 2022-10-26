@@ -5,7 +5,7 @@ Cypress.Commands.add("multiselect", (options) => {
 	});
 });
 
-describe("Render View Creation Load Error Log", () => {
+describe("Render User Profile", () => {
 	beforeEach(() => {
 		cy.viewport(1360, 780)
 		localStorage.setItem("test_enabled", true);
@@ -48,16 +48,6 @@ describe("Render View Creation Load Error Log", () => {
 		cy.wait(2000)
 
 		cy.log('verify basic information')
-
-		// cy.log('verify firstname')
-		// cy.get('#firstname').should("have.text", "Fahad")
-
-		// cy.log('verify lastname')
-		// cy.get('#lastname').should("have.text", "siddiqui")
-
-		// cy.log('verify email')
-		// cy.get('#email').should("have.text", "fahad.siddiqui@mareana.com")
-
 	})
 
 	it('should verify Password', () => {
@@ -82,7 +72,6 @@ describe("Render View Creation Load Error Log", () => {
 
 	it('should verify Preference', () => {
 		cy.log('Upload Profile Image')
-		//cy.get('#image-input')
 		cy.get('input[type=file]').selectFile({ contents: 'cypress/filefortest/avatar.png' }, { force: true })
 
 		cy.log('Select Date Format')

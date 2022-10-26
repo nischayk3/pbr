@@ -162,8 +162,9 @@ const TargetVariable = () => {
 			dispatch(showLoader());
 			const loadDssRes = await dssSave(_reqSave);
 			dispatch(hideLoader());
-			if (loadDssRes.statuscode === 200) {
-				setExpandData(loadDssRes.message)
+			if (loadDssRes.Status === 200) {
+				dispatch(showNotification("success", loadDssRes.Message));
+				window.open("http://jupyterhub-dev.mareana.com", "_blank")
 			}
 		} catch (err) {
 			dispatch(hideLoader());
@@ -187,10 +188,7 @@ const TargetVariable = () => {
 							<Button
 								type='primary'
 								className='custom-secondary-btn'
-								onClick={() => {
-									dssSaveJson,
-										window.open("jupyterhub-dev.mareana.com", "_blank");
-								}}
+								onClick={dssSaveJson}
 							>
 								Save and procced
 							</Button>
