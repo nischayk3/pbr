@@ -50,7 +50,7 @@ import StatusBlock from '../../../../components/StatusBlock/statusBlock'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper'
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader'
 const { Search } = Input;
-
+/* istanbul ignore next */
 function PaperBatchRecords() {
 	let history = useHistory();
 	const match = useRouteMatch();
