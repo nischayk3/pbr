@@ -37,7 +37,17 @@ describe("Render Data Science Studio", () => {
 	})
 
 	it('Upload Load Data Set', () => {
-		cy.wait(4000)
+		cy.wait(2000)
+		cy.get('.card-center > :nth-child(1)').click()
+	})
+
+	it('Click back btn', () => {
+		cy.wait(2000)
+		cy.get('#back-btn > span').click()
+	})
+
+	it('Upload Load Data Set', () => {
+		cy.wait(2000)
 		cy.get('.card-center > :nth-child(1)').click()
 	})
 
@@ -73,6 +83,17 @@ describe("Render Data Science Studio", () => {
 		cy.wait(4000)
 		cy.get('.card-center > :nth-child(2) > .anticon > svg').click({ force: true })
 	})
+
+	it('Click back btn', () => {
+		cy.wait(2000)
+		cy.get('#back-btn > span').click()
+	})
+
+	it('View Data Set', () => {
+		cy.wait(4000)
+		cy.get('.card-center > :nth-child(2) > .anticon > svg').click({ force: true })
+	})
+
 	it('Select View', () => {
 		cy.wait(2000)
 		cy.log("Select View");

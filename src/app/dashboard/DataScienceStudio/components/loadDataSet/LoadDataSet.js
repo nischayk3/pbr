@@ -9,7 +9,6 @@ import { dssFileUpload, loadDssView } from "../../../../../services/dataScienceS
 import "./style.scss";
 
 const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
-	const [fileList, setFileList] = useState([]);
 	const [uploadFileRes, setUploadFileRes] = useState([]);
 	const [isDisable, setIsDisable] = useState(true);
 
@@ -18,7 +17,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 	const history = useHistory();
 
 	const handleChange = (info) => {
-		var formData = new FormData();
+		const formData = new FormData();
 		formData.append('file', info.file.originFileObj);
 		formData.append('type', 'parameter');
 		fileUpload(formData)
@@ -54,12 +53,16 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 				setIsDisable(false);
 				dispatch(showNotification('success', "File Upload Successfully"));
 			} else if (dssFileRes.data.statuscode === 400) {
+				/* istanbul ignore next */
 				dispatch(showNotification("error", dssFileRes.data.message));
 			} else {
+				/* istanbul ignore next */
 				dispatch(showNotification("error", "File Upload error"));
 			}
 		} catch (err) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", err));
 		}
 	}
@@ -93,7 +96,9 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 				});
 			}
 		} catch (err) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", err));
 		}
 	}
@@ -109,11 +114,10 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 			<div className="upload-file-wrapper">
 				<Upload
 					listType="picture"
-					fileList={fileList}
 					onChange={handleChange}
 					maxCount={1}
 				>
-					{fileList.length >= 8 ? null : uploadButton}
+					{uploadButton}
 				</Upload>
 
 				<p className="upload-heading">Click or drag file to this area to upload</p>
@@ -133,7 +137,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 				<Button
 					className="custom-primary-btn"
 					onClick={onCancel}
-
+					id='back-btn'
 				>
 					Back
 				</Button>

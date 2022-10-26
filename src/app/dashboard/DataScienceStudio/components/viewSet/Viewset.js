@@ -77,6 +77,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 		} catch (error) {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", error.message));
 		}
 	};
@@ -95,7 +96,9 @@ const Viewset = ({ isVisible, onCancel }) => {
 				setViewConfigRes(loadViewRes)
 			}
 		} catch (err) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", err));
 		}
 	};
@@ -120,12 +123,15 @@ const Viewset = ({ isVisible, onCancel }) => {
 				});
 			}
 		} catch (err) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", err));
 		}
 	}
 
 	//function to handle search
+	/* istanbul ignore next */
 	const searchTable = () => {
 		const filterData = searchViewData.current.filter((o) =>
 			Object.keys(o).some((k) =>
@@ -145,6 +151,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 	};
 
 	//on search value changes
+	/* istanbul ignore next */
 	const onSearchChange = (e) => {
 		console.log("onSearchChange", e.target.value)
 		if (e.target.value === "") {
@@ -185,6 +192,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 		onCancel()
 	};
 
+	/* istanbul ignore next */
 	const onSelectedView = (record) => {
 		let tempVersionList = [0];
 		searchViewData.current.forEach((ele) => {
@@ -307,7 +315,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 							<Button
 								className="custom-primary-btn"
 								onClick={onCancel}
-
+								id='back-btn'
 							>
 								Back
 							</Button>
