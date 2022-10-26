@@ -14,8 +14,6 @@ export default function Landing() {
 	const [isViewsetVisible, setIsViewsetVisible] = useState(false);
 	const [isDatasetVisible, setIsDatasetVisible] = useState(false);
 
-
-
 	const onCancel = () => {
 		setIsViewsetVisible(false)
 		setIsDatasetVisible(false)
