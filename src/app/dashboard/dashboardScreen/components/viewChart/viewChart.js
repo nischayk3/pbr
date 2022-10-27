@@ -578,7 +578,7 @@ const ViewChart = (props, ref) => {
 		let payload = {
 			site: tempPanels[index].data_filter.site,
 			date_range: tempPanels[index].data_filter.date_range == '/' ? '' : tempPanels[index].data_filter.date_range,
-			unapproved_data: tempPanels[index].data_filter.unapproved_data,
+			unapproved_data: tempPanels[index].data[0].unapprove_data,
 		};
 		dispatch(showLoader());
 		try {
