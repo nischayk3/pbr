@@ -940,7 +940,7 @@ function PaperBatchRecordsTemplate() {
             })
         };
         let response = await fetch(
-            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${params?.file.split(".")[0]}.pdf&pageId=${val ? val : pageNumber}`,
+            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${params?.file}&pageId=${val ? val : pageNumber}`,
             requestOptions
         )
             .then((response) => response)
