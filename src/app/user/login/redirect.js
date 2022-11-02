@@ -20,7 +20,7 @@ export default function Redirect() {
 			dispatch(sendLoginDetails(data));
 			localStorage.setItem('login_details', JSON.stringify(data));
 			localStorage.setItem('user', data.email_id.replaceAll('^"|"$', ''));
-			localStorage.setItem('username', data.firstname.replaceAll('^"|"$', ''));
+			localStorage.setItem('username', data?.firstname ? data.firstname.replaceAll('^"|"$', ''): data.email_id.replaceAll('^"|"$', ''));
 			localStorage.setItem("loginwith", 'WITH_AD')
 			dispatch(showNotification('success', `Logged in as ${data.email_id}`));
 			history.push('/dashboard/workspace');

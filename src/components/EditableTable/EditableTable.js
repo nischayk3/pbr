@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import { v1 as uuid } from "uuid";
-import { Table, Button, Select, Switch, Checkbox, Modal } from "antd";
+import { Table, Button, Select, Switch, Checkbox, Modal, Input } from "antd";
 import { PlusOutlined, DeleteTwoTone } from "@ant-design/icons";
 import {
   EditableRow,
@@ -24,6 +24,7 @@ import {
 import classes from "./EditableTable.module.css";
 
 const { Option } = Select;
+const { Search } = Input;
 
 class EditableTable extends Component {
   state = {
@@ -33,6 +34,8 @@ class EditableTable extends Component {
     visible: false,
     confirmLoading: false,
     currentPage: 1,
+    dataSourcePer: [],
+    searchValue:''
   };
 
   componentDidMount() {
@@ -75,6 +78,7 @@ class EditableTable extends Component {
       data.key = uuid();
       data.deleteRowChecked = false;
     });
+    this.setState({ dataSourcePer: JSON.parse(JSON.stringify(dataSource)) });
     const columns =
       deleteActionColumn && !deleteActionColumnAdded
         ? this.addDeleteActionColumn(columnsCopy)
@@ -83,6 +87,23 @@ class EditableTable extends Component {
     adjustColumnWidths(columns);
     this.renderTableColumns(columns);
     this.setState({ columns });
+  }
+
+ //function to handle search
+  searchTable = (value) => {
+      const filterData = this.state.dataSourcePer.filter((o) =>
+        Object.keys(o).some((k) =>
+          String(o[k]).toLowerCase().includes(this.state.searchValue.toLowerCase())
+        )
+      );
+      this.setState({dataSource: filterData})
+    };
+
+  onChangeSearchValue = (e) => {
+    if (!e.target.value) {
+      this.setState({ dataSource: JSON.parse(JSON.stringify(this.state.dataSourcePer)) })
+    }
+    this.setState({ searchValue: e.target.value })
   }
 
   renderTableColumns = (columns) => {
@@ -315,6 +336,14 @@ class EditableTable extends Component {
         >
           {this.props.screens === "Roles" ? "Add new role" : "Add new user"}
         </Button>
+        {this.props.screens !== "Roles" &&
+          <Search
+            placeholder="Search User"
+            onSearch={this.searchTable}
+            value={this.state.searchValue}
+            onChange={(e) => this.onChangeSearchValue(e)}
+            allowClear
+            style={{ width: 200, float: 'right', marginLeft: '15px' }} />}
         <Button
           type="primary"
           onClick={this.onSaveTable}
