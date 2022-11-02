@@ -10,45 +10,30 @@ import React, { useEffect, useState } from 'react';
 import './styles.scss';
 
 import {
-	ArrowLeftOutlined,
-	PlusOutlined,
-	SearchOutlined,
+	PlusOutlined
 } from '@ant-design/icons';
 import {
-	hideLoader,
-	showLoader,
-	showNotification,
-} from '../../../../duck/actions/commonActions';
-import {
-	Card,
-	Col,
-	Row,
-	Input,
-	Divider,
-	Table,
-	Modal,
-	Button,
-	Form,
-	Space,
-	Radio,
-	notification,
-	Avatar,
-	Select
+	Avatar, Button, Card,
+	Col, Divider, Form, Input, Modal, notification, Radio, Row, Select, Table
 } from 'antd';
 import debounce from "lodash/debounce";
 import { useDispatch } from 'react-redux';
-import Highlighter from 'react-highlight-words';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import illustrations from '../../../../assets/images/banner-pbr.svg';
 import newTemplateModal from '../../../../assets/images/newTemplateModal.svg';
-import SelectSearchField from '../../../../components/SelectSearchField/SelectSearchField';
 import pdfIcon from '../../../../assets/images/pdfIcon.svg';
-import { getPbrTemplateData, getDataView, projectDataView } from '../../../../services/pbrService';
-import { tableColumns } from '../../../../utils/TableColumns'
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import { loadTemplateInfo, loadMatBatchInfo, loadPageIdentifier, loadTempAdditionalData } from '../../../../duck/actions/pbrAction';
-import StatusBlock from '../../../../components/StatusBlock/statusBlock'
-import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper'
-import ScreenHeader from '../../../../components/ScreenHeader/screenHeader'
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import ScreenHeader from '../../../../components/ScreenHeader/screenHeader';
+import SelectSearchField from '../../../../components/SelectSearchField/SelectSearchField';
+import StatusBlock from '../../../../components/StatusBlock/statusBlock';
+import {
+	hideLoader,
+	showLoader,
+	showNotification
+} from '../../../../duck/actions/commonActions';
+import { loadMatBatchInfo, loadPageIdentifier, loadTempAdditionalData, loadTemplateInfo } from '../../../../duck/actions/pbrAction';
+import { getDataView, getPbrTemplateData, projectDataView } from '../../../../services/pbrService';
+import { tableColumns } from '../../../../utils/TableColumns';
 const { Search } = Input;
 /* istanbul ignore next */
 function PaperBatchRecords() {

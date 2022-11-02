@@ -7,7 +7,7 @@
  */
 
 import { EditOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, Avatar, Button, Input, Select, Upload } from 'antd';
+import { Alert, Avatar, Button, Input, Select, Switch, Tabs, Upload } from 'antd';
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
@@ -18,6 +18,8 @@ import { getUploadProfile } from "../../../../duck/actions/loginAction";
 import { getUserProfile, passwordChange, sendUserProfile, userProfileUpload } from "../../../../services/loginService";
 import "./style.scss";
 
+
+const { TabPane } = Tabs;
 const Profile = () => {
 	const loginDetails = JSON.parse(localStorage.getItem("login_details"))
 	const loginWith = localStorage.getItem("loginwith")
@@ -25,7 +27,6 @@ const Profile = () => {
 	const dispatch = useDispatch();
 
 	const [fileList, setFileList] = useState([]);
-	const [uploadFile, setUploadFile] = useState([]);
 	const [currentPassword, setCurrentPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("")
@@ -37,6 +38,7 @@ const Profile = () => {
 	const [imgRes, setImgRes] = useState("");
 	const [imagePrev, setImagePrev] = useState(false);
 	const [isUserIcon, setIsUserIcon] = useState(<UserOutlined />);
+	const [activeTab, setActiveTab] = useState("1");
 
 	useEffect(() => {
 		getProfile();
@@ -82,6 +84,10 @@ const Profile = () => {
 			console.log("error")
 		}
 	}
+
+	const changeTab = (activeKey) => {
+		setActiveTab(activeKey);
+	};
 
 	const optionsDateFormat = dateFormat.map((item, index) => (
 		<Select.Option key={index} value={item}>
@@ -238,6 +244,9 @@ const Profile = () => {
 	const onClose = (e) => {
 		console.log(e, 'I was closed.');
 	};
+	const onSwitch = (checked) => {
+		console.log(`switch to ${checked}`);
+	};
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
@@ -252,7 +261,6 @@ const Profile = () => {
 									<>
 										<div className="profile-avatar">
 											<img src={imgRes} alt="dummy" width="300" height="300" />
-
 											<Upload
 												listType="picture"
 												fileList={fileList}
@@ -261,7 +269,6 @@ const Profile = () => {
 											>
 												{uploadButton}
 											</Upload>
-											{/* <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg" /> */}
 										</div>
 									</>
 								) : (
@@ -314,6 +321,7 @@ const Profile = () => {
 										value={loginDetails && loginDetails.lastname}
 										disabled
 									/>
+
 								</div>
 							</div>
 						</div>
@@ -321,49 +329,80 @@ const Profile = () => {
 					<div className='layout-section-wrapper'>
 						<div className='layout-section'>
 							<p className="heading">Preferences</p>
-							<p className="sub-heading">Changes to your language and time format will be reflected across all applications in BMS.</p>
-							<div className="split-form">
-								<div className="select-field">
-									<SelectSearchField
-										showSearch
-										label='Date format'
-										placeholder='Select'
-										onChangeSelect={value => onChange(value, 'dateFormat')}
-										//onSearchSelect={type => onSearch(type, 'dateFormat')}
-										options={optionsDateFormat}
-										handleClearSearch={e => clearSearch(e, 'dateFormat')}
-										selectedValue={dateFormatValue}
-									/>
-									<SelectSearchField
-										showSearch
-										label='Time zone'
-										placeholder='Select'
-										onChangeSelect={value => onChange(value, 'timeZone')}
-										//onSearchSelect={type => onSearch(type, 'timeZone')}
-										options={optionsTimeZone}
-										handleClearSearch={e => clearSearch(e, 'timeZone')}
-										selectedValue={timeZoneValue}
-									/>
-									<SelectSearchField
-										showSearch
-										label='Language'
-										placeholder='Select'
-										onChangeSelect={value => onChange(value, 'language')}
-										//onSearchSelect={type => onSearch(type, 'language')}
-										options={optionsLanguage}
-										handleClearSearch={e => clearSearch(e, 'language')}
-										selectedValue={languageValue}
-									/>
-								</div>
-								<Button
-									className="custom-secondary-btn "
-									type="primary"
-									style={{ marginTop: "40px" }}
-									onClick={savePreference}
-								>
-									Save Changes
-								</Button>
-							</div>
+							<Tabs
+								className="workflow-tabs"
+								activeKey={activeTab}
+								onChange={changeTab}
+							>
+								<TabPane tab="General" key="1">
+									<p className="sub-heading">Changes to your language and time format will be reflected across all applications in BMS.</p>
+									<div className="split-form">
+										<div className="select-field">
+											<SelectSearchField
+												showSearch
+												label='Date format'
+												placeholder='Select'
+												onChangeSelect={value => onChange(value, 'dateFormat')}
+												//onSearchSelect={type => onSearch(type, 'dateFormat')}
+												options={optionsDateFormat}
+												handleClearSearch={e => clearSearch(e, 'dateFormat')}
+												selectedValue={dateFormatValue}
+											/>
+											<SelectSearchField
+												showSearch
+												label='Time zone'
+												placeholder='Select'
+												onChangeSelect={value => onChange(value, 'timeZone')}
+												//onSearchSelect={type => onSearch(type, 'timeZone')}
+												options={optionsTimeZone}
+												handleClearSearch={e => clearSearch(e, 'timeZone')}
+												selectedValue={timeZoneValue}
+											/>
+											<SelectSearchField
+												showSearch
+												label='Language'
+												placeholder='Select'
+												onChangeSelect={value => onChange(value, 'language')}
+												//onSearchSelect={type => onSearch(type, 'language')}
+												options={optionsLanguage}
+												handleClearSearch={e => clearSearch(e, 'language')}
+												selectedValue={languageValue}
+											/>
+											{/* <Checkbox className='app-check' onChange={handleChangeApprover}>Approver notification</Checkbox> */}
+										</div>
+										<Button
+											className="custom-secondary-btn "
+											type="primary"
+											style={{ marginTop: "25px" }}
+											onClick={savePreference}
+										>
+											Save Changes
+										</Button>
+									</div>
+								</TabPane>
+								<TabPane tab="Notifications" key="2">
+									<div className='notify'>
+										<span>
+											<p className='notify-text'>Notify me of my jobs to review, awaiting my approval</p>
+											<Switch defaultChecked onChange={onSwitch} />
+										</span>
+
+										<span>
+											<p className='notify-text'>Notify me when the status of my work changes</p>
+											<Switch defaultChecked onChange={onSwitch} />
+										</span>
+									</div>
+									<Button
+										className="custom-secondary-btn "
+										type="primary"
+										style={{ marginTop: "25px" }}
+										onClick={savePreference}
+									>
+										Save Changes
+									</Button>
+								</TabPane>
+							</Tabs>
+
 						</div>
 						<div className='layout-section'>
 							<p className="heading">Password</p>
