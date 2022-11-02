@@ -35,13 +35,14 @@ import {
 	Avatar,
 	Select
 } from 'antd';
+import debounce from "lodash/debounce";
 import { useDispatch } from 'react-redux';
 import Highlighter from 'react-highlight-words';
 import illustrations from '../../../../assets/images/banner-pbr.svg';
 import newTemplateModal from '../../../../assets/images/newTemplateModal.svg';
 import SelectSearchField from '../../../../components/SelectSearchField/SelectSearchField';
 import pdfIcon from '../../../../assets/images/pdfIcon.svg';
-import { getPbrTemplateData, getDataView,projectDataView} from '../../../../services/pbrService';
+import { getPbrTemplateData, getDataView, projectDataView } from '../../../../services/pbrService';
 import { tableColumns } from '../../../../utils/TableColumns'
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { loadTemplateInfo, loadMatBatchInfo, loadPageIdentifier, loadTempAdditionalData } from '../../../../duck/actions/pbrAction';
@@ -49,7 +50,7 @@ import StatusBlock from '../../../../components/StatusBlock/statusBlock'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper'
 import ScreenHeader from '../../../../components/ScreenHeader/screenHeader'
 const { Search } = Input;
-
+/* istanbul ignore next */
 function PaperBatchRecords() {
 	let history = useHistory();
 	const match = useRouteMatch();
@@ -106,17 +107,24 @@ function PaperBatchRecords() {
 	const [templateColumns, setTemplateColumns] = useState([])
 	const [dataView, setDataView] = useState([])
 	const [fileName, setFileName] = useState("")
+	const [projectFileName, setProjectFileName] = useState("")
 	const [templateName, seTemplateName] = useState("")
 	const [searchedLanding, setSearchedLanding] = useState(false);
 	const [filterTableLanding, setFilterTableLanding] = useState(null);
 	const [materialDropown, setMaterialDropown] = useState([]);
-	const [fileSelection, setFileSelection] = useState([{ label: "Genology", value: "genology" }, { label: "Other Files", value: "others" }]);
+	const [fileSelection, setFileSelection] = useState([{ label: "Genealogy", value: "genology" }, { label: "Other Files", value: "others" }]);
 	const [fileSelectionValue, setFileSelectionValue] = useState("genology");
+	const [projectFileList, setProjectFileList] = useState([])
+	const [selectParam, setselectParam] = useState({
+		project: '',
+		group: '',
+		subGroup: '',
+	});
 	const [paramList, setParamList] = useState({
-        projectList: [],
-        groupList: [],
-        subGroupList: [],
-    });
+		projectList: [],
+		groupList: [],
+		subGroupList: [],
+	});
 	const [matBatch, setMatBatch] = useState({
 		material_num: "",
 		batch: ""
@@ -134,61 +142,63 @@ function PaperBatchRecords() {
 	}, []);
 
 	const getProjectFilterData = async (
-        projectValue,
-        groupValue,
-        subGroupValue,
-        projectText,
-        groupText,
-        subGroupText
-    ) => {
-        let req = {
-            group: groupValue ? groupValue : "",
-            group_text: groupText ? groupText : "",
-            project: projectValue ? projectValue : "",
-            project_text: projectText ? projectText : "",
-            subgroup: subGroupValue ? subGroupValue : "",
-            subgroup_text: subGroupText ? subGroupText : ""
-        }
-        try {
-            const res = await projectDataView(req)
-            if (res["status-code"] == 200) {
-                setParamList(prevState => {
-                    return {
-                        ...prevState,
-                        projectList: res && res.project,
-                        groupList: res && res.group,
-                        subGroupList: res && res.subgroup
-                    };
-                });
-            }
-            /* istanbul ignore next */
-            else if (res["status-code"] != 200) {
-                dispatch(showNotification('error', res?.Message));
-            } else {
-                dispatch(showNotification('error', "Unable to fetch data"));
-            }
-        } catch (err) {
-            dispatch(showNotification('error', err));
-        }
+		projectValue,
+		groupValue,
+		subGroupValue,
+		projectText,
+		groupText,
+		subGroupText
+	) => {
+		let req = {
+			group: groupValue ? groupValue : "",
+			group_text: groupText ? groupText : "",
+			project: projectValue ? projectValue : "",
+			project_text: projectText ? projectText : "",
+			subgroup: subGroupValue ? subGroupValue : "",
+			subgroup_text: subGroupText ? subGroupText : ""
+		}
+		try {
+			const res = await projectDataView(req)
+			if (res["status-code"] == 200) {
+				setParamList(prevState => {
+					return {
+						...prevState,
+						projectList: res && res.project,
+						groupList: res && res.group,
+						subGroupList: res && res.subgroup
+					};
+				});
+				setProjectFileList(res.file)
+				setProjectFileName(res.file[0])
+			}
+			/* istanbul ignore next */
+			else if (res["status-code"] != 200) {
+				dispatch(showNotification('error', res?.Message));
+			} else {
+				dispatch(showNotification('error', "Unable to fetch data"));
+			}
+		} catch (err) {
+			dispatch(showNotification('error', err));
+		}
 
-    }
+	}
 
 	const optionProject = paramList['projectList'].map((item, index) => (
-        <Select.Option key={index} value={item}>
-            {item}
-        </Select.Option>
-    ));
-    const optionsGroup = paramList['groupList'].map((item, index) => (
-        <Select.Option key={index} value={item}>
-            {item}
-        </Select.Option>
-    ));
-    const optionsSubGroup = paramList['subGroupList'].map((item, index) => (
-        <Select.Option key={index} value={item}>
-            {item}
-        </Select.Option>
-    ));
-	
+		<Select.Option key={index} value={item}>
+			{item}
+		</Select.Option>
+	));
+	const optionsGroup = paramList['groupList'].map((item, index) => (
+		<Select.Option key={index} value={item}>
+			{item}
+		</Select.Option>
+	));
+	const optionsSubGroup = paramList['subGroupList'].map((item, index) => (
+		<Select.Option key={index} value={item}>
+			{item}
+		</Select.Option>
+	));
+
 	const getTemplateData = async () => {
 		let req = { limit: 8 }
 		try {
@@ -401,6 +411,125 @@ function PaperBatchRecords() {
 		getImageData(val)
 	}
 
+	const onChangeParam = (value, field) => {
+		if (value != null) {
+			if (field === 'project') {
+				getProjectFilterData(
+					value,
+					selectParam['group'],
+					selectParam['subGroup'],
+					'',
+					'',
+					''
+				);
+				setselectParam(prevState => {
+					return { ...prevState, project: value };
+				});
+			} else if (field === 'group') {
+				getProjectFilterData(
+					selectParam['project'],
+					value,
+					selectParam['subGroup'],
+					'',
+					'',
+					''
+				);
+				setselectParam(prevState => {
+					return { ...prevState, group: value };
+				});
+			} else if (field === 'subGroup') {
+				getProjectFilterData(
+					selectParam['project'],
+					selectParam['group'],
+					value,
+					'',
+					'',
+					''
+				);
+				setselectParam(prevState => {
+					return { ...prevState, subGroup: value };
+				});
+			}
+		}
+	};
+
+	const clearSearch = (e, field) => {
+		/* istanbul ignore next */
+		if (field === 'project') {
+			setselectParam(prevState => {
+				return { ...prevState, project: '' };
+			});
+			getProjectFilterData(
+				"",
+				selectParam['group'],
+				selectParam['subGroup'],
+				'',
+				'',
+				''
+			);
+		}/* istanbul ignore next */
+		else if (field === 'group') {
+			setselectParam(prevState => {
+				return { ...prevState, group: '' };
+			});
+			getProjectFilterData(
+				selectParam['project'],
+				"",
+				selectParam['subGroup'],
+				'',
+				'',
+				''
+			);
+		}
+		/* istanbul ignore next */
+		else if (field === 'subGroup') {
+			setselectParam(prevState => {
+				return { ...prevState, subGroup: '' };
+			});
+			getGenealogyFilterData(
+				selectParam['project'],
+				selectParam['group'],
+				"",
+				'',
+				'',
+				''
+			);
+		}
+	};
+
+	const onSearchParam = debounce((type, field) => {
+		if (type != null) {
+			if (field === 'project') {
+				getProjectFilterData(
+					selectParam['project'],
+					selectParam['group'],
+					selectParam['subGroup'],
+					type,
+					'',
+					''
+				);
+			} else if (field === 'group') {
+				getProjectFilterData(
+					selectParam['project'],
+					selectParam['group'],
+					selectParam['subGroup'],
+					'',
+					type,
+					''
+				);
+			} else if (field === 'subGroup') {
+				getProjectFilterData(
+					selectParam['project'],
+					selectParam['group'],
+					selectParam['subGroup'],
+					'',
+					'',
+					type
+				);
+			}
+		}
+	}, 500);
+
 	return (
 		<div className='pbr-container'>
 			<div className='custom-wrapper pbr-wrapper'>
@@ -597,59 +726,62 @@ function PaperBatchRecords() {
 										</div> :
 										<div>
 											<Form.Item
-												// label='Project'
-												// name='project'
-												// rules={[
-												// 	{
-												// 		required: true,
-												// 		message: 'Please enter project',
-												// 	},
-												// ]}
+											// label='Project'
+											// name='project'
+											// rules={[
+											// 	{
+											// 		required: true,
+											// 		message: 'Please enter project',
+											// 	},
+											// ]}
 											>
 												{/* <Input value={matBatch?.material_num} disabled /> */}
 												<SelectSearchField
 													showSearch
 													label='Project *'
 													placeholder='Select Project'
-												// onChangeSelect={value => onChangeParam(value, 'project')}
-												// onSearchSelect={type => onSearchParam(type, 'project')}
-												options={optionProject}
-												// handleClearSearch={e => clearSearch(e, 'project')}
-												// error={isEmptyPlant ? 'Please select project' : null}
-												// selectedValue={selectParam['project'] ? selectParam['project'] : null}
+													onChangeSelect={value => onChangeParam(value, 'project')}
+													onSearchSelect={type => onSearchParam(type, 'project')}
+													options={optionProject}
+													handleClearSearch={e => clearSearch(e, 'project')}
+													// error={isEmptyPlant ? 'Please select project' : null}
+													selectedValue={selectParam['project'] ? selectParam['project'] : null}
 												/>
 											</Form.Item>
-											<div className='formNewTemplateDiv' style={{marginTop:-10}}>
+											<div className='formNewTemplateDiv' style={{ marginTop: -10 }}>
 												<Form.Item
-													// label='Group'
+												// label='Group'
 												// name='batchNumber'
 												>
 													<SelectSearchField
+														disabled={selectParam['project'] ? false : true}
+
 														showSearch
 														label='Group'
-														placeholder='Select Project'
-													// onChangeSelect={value => onChangeParam(value, 'project')}
-													// onSearchSelect={type => onSearchParam(type, 'project')}
-													options={optionsGroup}
-													// handleClearSearch={e => clearSearch(e, 'project')}
-													// error={isEmptyPlant ? 'Please select project' : null}
-													// selectedValue={selectParam['project'] ? selectParam['project'] : null}
+														placeholder='Select Group'
+														onChangeSelect={value => onChangeParam(value, 'group')}
+														onSearchSelect={type => onSearchParam(type, 'group')}
+														options={optionsGroup}
+														handleClearSearch={e => clearSearch(e, 'group')}
+														// error={isEmptyPlant ? 'Please select project' : null}
+														selectedValue={selectParam['group'] ? selectParam['group'] : null}
 													/>
 												</Form.Item>
 												<Form.Item
-													// label='Sub-group'
+												// label='Sub-group'
 												// name='batchNumber'
 												>
 													<SelectSearchField
+														disabled={selectParam['group'] ? false : true}
 														showSearch
 														label='Sub-Group'
-														placeholder='Select Project'
-													// onChangeSelect={value => onChangeParam(value, 'project')}
-													// onSearchSelect={type => onSearchParam(type, 'project')}
-													options={optionsSubGroup}
-													// handleClearSearch={e => clearSearch(e, 'project')}
-													// error={isEmptyPlant ? 'Please select project' : null}
-													// selectedValue={selectParam['project'] ? selectParam['project'] : null}
+														placeholder='Select Sub-Group'
+														onChangeSelect={value => onChangeParam(value, 'subGroup')}
+														onSearchSelect={type => onSearchParam(type, 'subGroup')}
+														options={optionsSubGroup}
+														handleClearSearch={e => clearSearch(e, 'subGroup')}
+														// error={isEmptyPlant ? 'Please select project' : null}
+														selectedValue={selectParam['subGroup'] ? selectParam['subGroup'] : null}
 													/>
 												</Form.Item>
 											</div>
@@ -659,7 +791,7 @@ function PaperBatchRecords() {
 								</Form>
 							</Row>
 							<Row>
-								<Radio.Group
+								{fileSelectionValue == "genology" ? <Radio.Group
 									value={fileName}
 									className='radioPdfBlock'
 									onChange={(e) => {
@@ -675,7 +807,25 @@ function PaperBatchRecords() {
 											</div>
 										</Radio.Button>
 									))}
-								</Radio.Group>
+								</Radio.Group> :
+									<Radio.Group
+										value={projectFileName}
+										className='radioPdfBlock'
+										onChange={(e) => {
+											setProjectFileName(e.target.value)
+											// onRadioChange(e.target.value)
+										}}
+									>
+										{projectFileList.map((item, index) => (
+											<Radio.Button value={`${item}`} >
+												<div className='pdfListBlock'>
+													<img src={pdfIcon} alt='pdfIcon' />
+													<span>{item}</span>
+												</div>
+											</Radio.Button>
+										))}
+									</Radio.Group>
+								}
 							</Row>
 						</Col>
 					</Row>

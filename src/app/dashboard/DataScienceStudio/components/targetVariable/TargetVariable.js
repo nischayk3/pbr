@@ -3,13 +3,13 @@ import { Button, Card, Radio, Table } from "antd";
 import React, { useState } from "react";
 import Plot from 'react-plotly.js';
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import BreadCrumbWrapper from '../../../../../components/BreadCrumbWrapper';
 import { hideLoader, showLoader, showNotification } from '../../../../../duck/actions/commonActions';
 import { dssSave, loadDssView } from '../../../../../services/dataScienceStudioService';
 import "./style.scss";
 
-let paramType = "";
+//let paramType = '';
 
 const TargetVariable = () => {
 	const loadViewDataTable = useSelector((state) => state.dataScienceReducer.loadViewData)
@@ -17,12 +17,11 @@ const TargetVariable = () => {
 	const fileRes = useSelector((state) => state.dataScienceReducer.fileRes)
 	const viewRes = useSelector((state) => state.dataScienceReducer.viewRes)
 
-	const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 	const [expandData, setExpandData] = useState([]);
 	const [parameterName, setParameterName] = useState('');
+	const [paramType, setParamType] = useState("");
 
 	const dispatch = useDispatch();
-	const match = useRouteMatch();
 	const history = useHistory();
 
 	const columns = [
@@ -107,7 +106,7 @@ const TargetVariable = () => {
 	}
 
 	const onTableRowExpand = (expanded, record) => {
-		var keys = [];
+
 		const _reqRow = {
 			data: viewRes,
 			df: fileRes,
@@ -120,18 +119,15 @@ const TargetVariable = () => {
 
 
 		if (expanded) {
-			keys.push(record.id)
 			dssViewLoad(_reqRow); // I have set my record.id as row key. Check the documentation for more details.
 		}
-		console.log("keys", keys);
-		setExpandedRowKeys(keys)
+
 	}
 
 	const onRadioChange = ({ checked, type, record, index }) => {
-		console.log("record, index", checked, record, index);
 		setParameterName(record.parameter_name)
-		// setIsChecked(checked)
-		paramType = type;
+		//paramType = type;
+		setParamType(type)
 	}
 
 	//load dss view

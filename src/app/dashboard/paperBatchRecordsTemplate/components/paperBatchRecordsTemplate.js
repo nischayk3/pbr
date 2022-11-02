@@ -663,7 +663,7 @@ function PaperBatchRecordsTemplate() {
         try {
             dispatch(showLoader());
             let _reqBatch = {
-                filename: `${params?.file?.split('.')[0]}_page-${pageNumber}.jpeg.json`,
+                filename: `${params?.file?.split('.pdf')[0]}_page-${pageNumber}.jpeg.json`,
                 bbox_type: params?.fromScreen == "Workflow" ? "parameters" : mode,
                 page: pageNumber + 1,
                 // action_type: params?.temp_disp_id ? "edit" : "create",
@@ -940,7 +940,7 @@ function PaperBatchRecordsTemplate() {
             })
         };
         let response = await fetch(
-            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${params?.file.split(".")[0]}.pdf&pageId=${val ? val : pageNumber}`,
+            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${params?.file}&pageId=${val ? val : pageNumber}`,
             requestOptions
         )
             .then((response) => response)
@@ -1503,7 +1503,7 @@ function PaperBatchRecordsTemplate() {
         if (localStorage.getItem("test_enabled") == null) {
             var req = {
                 extraction_type: "all",
-                extraction_filename: `${params?.file?.split('.')[0]}_page-0.jpeg.json`,
+                extraction_filename: `${params?.file?.split('.pdf')[0]}_page-0.jpeg.json`,
                 templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: [] },
                 product_num: matBatch?.material_num,
                 batch_num: matBatch?.batch,
@@ -1646,7 +1646,7 @@ function PaperBatchRecordsTemplate() {
             var req1 = {
                 extraction_type: "custom",
                 templateInfo: { pbrTemplateInfo: [], pbrPageIdentifier: [] },
-                extraction_filename: `${params?.file?.split('.')[0]}_page-${pageNumber - 1}.jpeg.json`,
+                extraction_filename: `${params?.file?.split('.pdf')[0]}_page-${pageNumber - 1}.jpeg.json`,
                 product_num: matBatch?.material_num,
                 batch_num: matBatch?.batch,
                 site_code: matBatch?.site
