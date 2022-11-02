@@ -7,13 +7,19 @@ import {
   showNotification,
 } from '../../../../duck/actions/commonActions';
 import { useLocation } from "react-router";
-import { getPbrReviewerData, updateApprove } from '../../../../services/pbrService'
+import { getPbrReviewerData, updateApprove, bboxData } from '../../../../services/pbrService'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import queryString from "query-string";
+import ImageMapper from 'react-image-mapper';
 import './styles.scss';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import { useHistory } from 'react-router';
 import EditableRow from './EditTable'
+
+var AREAS_MAP = {
+  name: 'my-map',
+  areas: [],
+};
 /* istanbul ignore next */
 const PbrUpdate = () => {
   const dispatch = useDispatch();
@@ -32,6 +38,10 @@ const PbrUpdate = () => {
   });
   const [form] = Form.useForm();
   const [idarr, setIdArr] = useState([]);
+  const [areasMap, setAreasMap] = useState(AREAS_MAP);
+  const [imageWidth, setImageWidth] = useState(0);
+  const [imageHeight, setimageHeight] = useState(0);
+  const [callBounding, setCallBounding] = useState(false);
   const location = useLocation();
   const params = queryString.parse(location.search);
   let rowArray = ["id", "param_name", "anchor_key", "snippet_value", "snippet_image", "recorded_date", "recorded_time", "uom", "changed_by"]
@@ -39,6 +49,93 @@ const PbrUpdate = () => {
   useEffect(() => {
     loadTableData();
   }, []);
+
+  useEffect(() => {
+    // dispatch(showLoader());
+    setTimeout(() => {
+      const list = document.getElementsByTagName("canvas")[0]
+      setImageWidth(list?.width)
+      setimageHeight(list?.height)
+      // dispatch(hideLoader());
+    }, 3000)
+  }, [document.getElementsByTagName("canvas")[0], imagepdf]);
+
+  useEffect(() => {
+    // dispatch(showLoader());
+    if (imageWidth !== 0 && imageHeight !== 0 && callBounding) {
+      for (let i = 0; i < 2; i++) {
+        setTimeout(() => {
+          getBoundingBoxDataInfo(imageWidth, imageHeight,templateData);
+        }, i * 1000)
+      }
+    }
+  }, [imageWidth, imageHeight]);
+
+  const getBoundingBoxDataInfo = async (width, height,templateData) => {
+    console.log("params", templateData)
+    try {
+      // dispatch(showLoader());
+      let meta1 = templateData?.filter(item=>item.column == "key_bbox")[0]
+      let meta2 = templateData?.filter(item=>item.column == "value_bbox")[0]
+      console.log("params11111", meta1,meta2)
+      let _reqBatch = {
+        feature: "EXTRACTED_PARAMETER",
+        granularity: "Specific",
+        template_id: params.temp_disp_id,
+        version: Number(params.version),
+        name: params.param_name,
+        page: null,
+        metadata : {key:meta1?.value,value:meta2?.value}
+      };
+      const batchRes = await bboxData(_reqBatch);
+      let areasArr = [];
+      let width1 = width ? width : 848
+      let height1 = height ? height : 1097
+      if (batchRes.Data.length > 0) {
+        batchRes.Data.forEach((e) => {
+          let x1 = e.key_left * width1;
+          let x2 = (e.key_left + e.key_width) * width1;
+          let y1 = e.key_top * height1;
+          let y2 = (e.key_top + e.key_height) * height1;
+          let obj = {
+            snippetID: e.key_snippet_id,
+            areaValue: e.key_text,
+            shape: 'rect',
+            coords: [x1, y1, x2, y2],
+            preFillColor: 'transparent',
+            fillColor: 'transparent',
+            strokeColor: 'blue',
+          };
+          let valuex1 = e.value_left * width1;
+          let valuex2 = (e.value_left + e.value_width) * width1;
+          let valuey1 = e.value_top * height1;
+          let valuey2 = (e.value_top + e.value_height) * height1;
+          let obj1 = {
+            snippetID: e.value_snippet_id,
+            areaValue: e.value_text,
+            shape: 'rect',
+            coords: [valuex1, valuey1, valuex2, valuey2],
+            preFillColor: 'transparent',
+            fillColor: 'transparent',
+            strokeColor: 'blue',
+          };
+          areasArr.push(obj);
+          areasArr.push(obj1);
+        });
+        setAreasMap({ ...areasMap, areas: areasArr });
+        dispatch(hideLoader());
+      } else if (batchRes.status === 404) {
+        setAreasMap();
+        dispatch(hideLoader());
+      } else {
+        dispatch(hideLoader());
+        dispatch(showNotification('error', `Unable to detect ${mode}`));
+      }
+    } catch (error) { /* istanbul ignore next */
+      dispatch(hideLoader());
+      dispatch(showNotification('error', 'No Data Found'));
+    }
+  };
 
 
   const loadTableData = async () => {
@@ -58,7 +155,7 @@ const PbrUpdate = () => {
     // })
     // arr = arr.filter(i => rowArray.includes(i.column))
     setTemplateData(res.Data);
-    let filename = res.Data.filter(item=>item.column == "file_path")
+    let filename = res.Data.filter(item => item.column == "file_path")
     getImage(filename[0].value);
     let obj = {
       changed_by: res.Data[0].changed_by == null ? "" : res.Data[0].changed_by,
@@ -70,12 +167,13 @@ const PbrUpdate = () => {
       uom: res.Data[0].uom == null ? "" : res.Data[0].uom
     }
     setTextInput(obj)
-    dispatch(hideLoader());
+    setCallBounding(true)
+    // dispatch(hideLoader());
   };
 
 
   const getImage = async (val) => {
-    dispatch(showLoader());
+    // dispatch(showLoader());
     let login_response = JSON.parse(localStorage.getItem('login_details'));
     var requestOptions = {
       method: "GET",
@@ -96,7 +194,7 @@ const PbrUpdate = () => {
       .catch((error) => console.log("error", error));
     let res = await response.blob();
     setImagePdf(window.webkitURL.createObjectURL(res));
-    dispatch(hideLoader());
+    // dispatch(hideLoader());
   }
 
 
@@ -111,12 +209,12 @@ const PbrUpdate = () => {
     let formvalues = {
       id: numberArray,
       changed_by: localStorage.getItem('user'),
-      recorded_date: textInput?.recorded_date ? textInput?.recorded_date :null,
-      recorded_time: textInput?.recorded_time ? textInput?.recorded_time :null,
-      snippet_value: textInput?.snippet_value ? textInput?.snippet_value :null,
-      status: textInput?.status ? textInput?.status:null,
-      uom: textInput?.uom ?  textInput?.uom : null,
-      table_value:null
+      recorded_date: textInput?.recorded_date ? textInput?.recorded_date : null,
+      recorded_time: textInput?.recorded_time ? textInput?.recorded_time : null,
+      snippet_value: textInput?.snippet_value ? textInput?.snippet_value : null,
+      status: textInput?.status ? textInput?.status : null,
+      uom: textInput?.uom ? textInput?.uom : null,
+      table_value: null
     };
 
     let res = await updateApprove(formvalues);
@@ -149,7 +247,7 @@ const PbrUpdate = () => {
               <Col span={12}>
                 <h3 style={{ marginBottom: "20px" }}>You may edit the selected unstructured data here.</h3>
                 {templateData &&
-                  <div style={{ height: "calc(100vh - 190px)", overflowY: "scroll"}}>
+                  <div style={{ height: "calc(100vh - 190px)", overflowY: "scroll" }}>
                     <EditableRow templateData={templateData} setTemplateData={setTemplateData} setTextInput={setTextInput} textInput={textInput} />
                   </div>
                 }
@@ -198,8 +296,22 @@ const PbrUpdate = () => {
                 </div>
                 <div style={{ height: "calc(100vh - 190px)", overflowY: "scroll", border: "0.5px solid blue" }}>
                   {/* style={{height:"calc(100vh - 190px)"}} */}
-                  <img src={imagepdf} width="100%" height="700px" />
+                  {/* <img src={imagepdf} width="100%" height="700px" /> */}
                   {/* <iframe class="frame" src={imagepdf} width="600px" height="500px" ></iframe>   */}
+                  <div id='drawRectangle'>
+                    <div className='pdfToImgBlock'>
+
+                      <ImageMapper
+                        id='imageMApper'
+                        className='pdfToImageWrapper'
+                        src={imagepdf}
+                        map={areasMap}
+                      // onLoad={() => load()}
+                      // onClick={area => clicked(area)}
+                      />
+
+                    </div>
+                  </div>
                 </div>
               </Col>
             </Row>
