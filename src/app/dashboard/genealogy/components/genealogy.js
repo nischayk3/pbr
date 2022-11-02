@@ -323,13 +323,14 @@ function Genealogy() {
 		try {
 			dispatch(showLoader());
 			const batchRes = await getBatchInfo(_reqBatch);
+			dispatch(hideLoader());
 			if (batchRes.length > 0) {
 				setLimsBatchInfo(batchRes);
 			} else if (batchRes.status === 404) {
 				setLimsBatchInfo();
 				//	dispatch(showNotification('error', batchRes.detail));
 			}
-			dispatch(hideLoader());
+
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
 			/* istanbul ignore next */
@@ -344,11 +345,12 @@ function Genealogy() {
 		try {
 			dispatch(showLoader());
 			const processResInput = await getProcessInfo(_reqProcessInfo);
+			dispatch(hideLoader());
 			/* istanbul ignore next */
 			if (processResInput.length > 0) {
 				setProcessInput(processResInput);
 			}
-			dispatch(hideLoader());
+
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
 			/* istanbul ignore next */
@@ -363,34 +365,32 @@ function Genealogy() {
 		try {
 			dispatch(showLoader());
 			const processResOutput = await getProcessInfo(_reqProcessInfo);
+			dispatch(hideLoader());
 			if (processResOutput.length > 0) {
 				setProcessOutput(processResOutput);
 			}
-			dispatch(hideLoader());
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
 			/* istanbul ignore next */
 			dispatch(showNotification('error', 'No Data Found'));
 		}
 	};
+
 	/**
 	 *TODO: get PBR Data output of node
 	 */
-
 	/* istanbul ignore next */
 	const getPBRData = async _reqPbrBatch => {
-
 		try {
 			dispatch(showLoader());
 			const pbrRes = await pbrApproval(_reqPbrBatch);
-
+			dispatch(hideLoader());
 			if (pbrRes.Status === 200) {
 				setPbrBatchData(pbrRes.Data);
 			} else if (pbrRes.Status === 400 && pbrRes.Status === 401) {
 				setPbrBatchData();
 				//	dispatch(showNotification('error', batchRes.detail));
 			}
-			dispatch(hideLoader());
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
 			/* istanbul ignore next */
