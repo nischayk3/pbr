@@ -18,6 +18,8 @@ import queryString from "query-string";
 import { ShareAltOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import Sharing from '../../../../components/Sharing/sharing'
+
+
 const DashboardScreen = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -262,17 +264,17 @@ const DashboardScreen = () => {
             >
               Share
             </Button>
-            <Button onClick={() => handleSavePopUp("saveAs")}>Save As</Button>
-            {dashboardId && (
-              <Button
-                onClick={() => {
-                  setSaveType("save");
-                  handleSave("save");
-                }}
-              >
-                Save
-              </Button>
-            )}
+            {isSave || dashboardId ? (
+              <Button onClick={() => handleSavePopUp("saveAs")}>Save As</Button>) : <></>
+            }
+            <Button
+              onClick={() => {
+                setSaveType("save");
+                handleSave("save");
+              }}
+            >
+              Save
+            </Button>
 
             <ShareAltOutlined style={{ color: "#093185", fontSize: "18px" }} />
           </div>
