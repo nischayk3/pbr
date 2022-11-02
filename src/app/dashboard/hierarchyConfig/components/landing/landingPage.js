@@ -108,7 +108,7 @@ export default function Landing(props) {
               className="avatar-icon"
               style={{ backgroundColor: getRandomColor(index + 1) }}
             >
-              {text.split("")[0].toUpperCase()}{" "}
+              {text && text.split("")[0] && text.split("")[0].toUpperCase()}{" "}
             </Avatar>
             <span className="avatar-text">{text}</span>
           </div>
