@@ -41,6 +41,8 @@ import {
 } from '@ant-design/icons';
 import moment from 'moment';
 import './styles.scss';
+import { useLocation } from "react-router";
+import queryString from "query-string";
 
 const dash_info = {
 	dashboard_id: 'dashboard1', // text, generated
@@ -146,6 +148,8 @@ const dash_info = {
 
 const ViewChart = (props, ref) => {
 	const dispatch = useDispatch();
+	const location = useLocation();
+	const params = queryString.parse(location.search);
 	const [dashboardInfo, setDashboardInfo] = useState({});
 	const [visible, setVisible] = useState(false);
 	const [addNewChartFilter, setAddNewChartFilter] = useState(false);
@@ -841,6 +845,7 @@ const ViewChart = (props, ref) => {
 								onChange={value => handleGlobalDropdownChange(value, 'Site')}
 								placeholder='Site'
 								className='global-filters-params select-site'
+								disabled={params['share']}
 								allowClear>
 								{siteList &&
 									siteList.map((ele, index) => {
@@ -860,6 +865,7 @@ const ViewChart = (props, ref) => {
 								onChange={value =>
 									handleGlobalDropdownChange(value, 'Unapproved Data')
 								}
+								disabled={params['share']}
 							/>
 						</div>
 					</div>
@@ -962,6 +968,7 @@ const ViewChart = (props, ref) => {
 							style={{ height: '34px' }}
 							className='global-filters-params'
 							onChange={onChangeStart}
+							disabled={params['share']}
 							value={
 								dashboardInfo?.data_filter?.date_range?.split('/')[0]
 									? moment(
@@ -976,6 +983,7 @@ const ViewChart = (props, ref) => {
 						<DatePicker
 							className='global-filters-params'
 							onChange={onChangeEnd}
+							disabled={params['share']}
 							value={
 								dashboardInfo?.data_filter?.date_range?.split('/')[1]
 									? moment(
@@ -1004,6 +1012,7 @@ const ViewChart = (props, ref) => {
 							placeholder='Exploration controls'
 							className='global-filters-params'
 							style={{ height: '34px' }}
+							disabled={params['share']}
 							onChange={value =>
 								handleGlobalDropdownChange(value, 'Exploration Controls')
 							}>
@@ -1025,6 +1034,7 @@ const ViewChart = (props, ref) => {
 							type='primary'
 							className='custom-secondary-btn'
 							onClick={() => appliedGlobalFilters()}
+							disabled={params['share']}
 							style={{ height: '34px' }}>
 							Apply
 						</Button>
@@ -1111,12 +1121,15 @@ const ViewChart = (props, ref) => {
 												) : (
 													<>
 														<span
+															disabled={params['share']}
 															style={{
 																marginLeft: '20px',
 																marginRight: '20px',
+
 															}}>
 															Edit{' '}
 															<EditOutlined
+																disabled={params['share']}
 																style={{ color: '#486BC9' }}
 																onClick={() => {
 																	let panels = [...tempPanels];
