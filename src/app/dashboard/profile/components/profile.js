@@ -39,12 +39,13 @@ const Profile = () => {
 	const [imagePrev, setImagePrev] = useState(false);
 	const [isUserIcon, setIsUserIcon] = useState(<UserOutlined />);
 	const [activeTab, setActiveTab] = useState("1");
+	const [approverCheck, setApproverCheck] = useState(false);
+	const [statusCheck, setStatusCheck] = useState(false);
 
 	useEffect(() => {
 		getProfile();
 		getPreference();
 	}, [])
-
 
 	const dateFormat = ["MM:DD:YYYY"]
 	const timeZone = ["Asia/Kolkata"]
@@ -134,6 +135,8 @@ const Profile = () => {
 		try {
 			dispatch(showLoader());
 			const formData = new FormData();
+			formData.append("approver_notification", approverCheck);
+			formData.append("status_notification", statusCheck);
 			formData.append("date_format", dateFormatValue);
 			formData.append("email_address", loginDetails && loginDetails.email_id);
 			formData.append("first_name", loginDetails && loginDetails.firstname);
@@ -224,12 +227,13 @@ const Profile = () => {
 				image: false
 			}
 			const getRes = await getUserProfile(_getReq)
-			if (getRes.statuscode == 200) {
+			if (getRes.statuscode === 200) {
 				dispatch(hideLoader());
 				setTimeZoneValue(getRes.message[0].time_zone);
 				setDateFormatValue(getRes.message[0].date_format);
 				setLanguageValue(getRes.message[0].language)
-
+				setApproverCheck(getRes.message[0].approver_notification)
+				setStatusCheck(getRes.message[0].status_notification)
 			} else {
 				console.log("getRes", getRes);
 			}
@@ -244,8 +248,12 @@ const Profile = () => {
 	const onClose = (e) => {
 		console.log(e, 'I was closed.');
 	};
-	const onSwitch = (checked) => {
-		console.log(`switch to ${checked}`);
+	const onSwitch = (checked, type) => {
+		if (type === 'approver') {
+			setApproverCheck(checked)
+		} else {
+			setStatusCheck(checked)
+		}
 	};
 	return (
 		<div className="custom-wrapper">
@@ -384,12 +392,12 @@ const Profile = () => {
 									<div className='notify'>
 										<span>
 											<p className='notify-text'>Notify me of my jobs to review, awaiting my approval</p>
-											<Switch defaultChecked onChange={onSwitch} />
+											<Switch onChange={(e) => onSwitch(e, 'approver')} checked={approverCheck} />
 										</span>
 
 										<span>
 											<p className='notify-text'>Notify me when the status of my work changes</p>
-											<Switch defaultChecked onChange={onSwitch} />
+											<Switch onChange={(e) => onSwitch(e, 'status')} checked={statusCheck} />
 										</span>
 									</div>
 									<Button
