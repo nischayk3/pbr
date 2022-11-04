@@ -69,6 +69,7 @@ import {
     findTable
 } from '../../../../services/pbrService';
 import ChangeCoordiantes from '../components/rightSidePanel/changeCoordiantes'
+import ParameterList from '../components/rightSidePanel/parameterList'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
 import DynamicTableForm from './dynamicTableForm';
@@ -2165,7 +2166,22 @@ function PaperBatchRecordsTemplate() {
                                                                                         {...restField}
                                                                                         name={[name, 'name']}
                                                                                         label="Name"
-                                                                                        rules={[{ required: true, message: 'Please enter parameter name' }]}
+                                                                                        rules={[{ required: true, message: 'Please enter parameter name' },
+                                                                                        () => ({
+                                                                                            validator(_, value) {
+                                                                                                let flag = false
+                                                                                                parameterFormData.forEach((item, index) => {
+                                                                                                    if (index != name && item.name === value) {
+                                                                                                        flag = true
+                                                                                                    }
+                                                                                                })
+                                                                                                if (flag) {
+                                                                                                    return Promise.reject('Parameter Name cannot be same');
+                                                                                                }
+
+                                                                                                return Promise.resolve();
+                                                                                            },
+                                                                                        })]}
                                                                                     >
                                                                                         <Input
                                                                                             placeholder='Enter name'
@@ -3104,7 +3120,7 @@ function PaperBatchRecordsTemplate() {
                             <span className='trigger' onClick={toggleRightCollapsed}>
                                 <img src={panelRightImg} className='panelImg' />
                             </span>
-                            {params?.fromScreen == "Workflow" ? "" :
+                            {params?.fromScreen == "Workflow" ? <ParameterList /> :
                                 <ChangeCoordiantes areasMapObject={areasMapObject} params={params} clickedSnippetId={clickedSnippetId} onChangeChart={onChangeChart} />
                             }
                         </Sider>
