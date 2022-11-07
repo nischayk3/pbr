@@ -108,7 +108,7 @@ function DynamicTableForm(props) {
                                                                         }
                                                                     })
                                                                     if (flag) {
-                                                                        return Promise.reject('Parameter Name cannot be same');
+                                                                        return Promise.reject('Table Parameter Name cannot be same');
                                                                     }
                                                                     return Promise.resolve();
                                                                    

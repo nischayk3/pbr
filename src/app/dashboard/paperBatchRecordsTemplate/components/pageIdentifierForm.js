@@ -211,7 +211,7 @@ function PageIdentifierForm(props) {
                                                                             }
                                                                         })
                                                                         if(flag){
-                                                                            return Promise.reject('Parameter Name cannot be same');
+                                                                            return Promise.reject('Page identifier cannot be same');
                                                                         }
                                                                         return Promise.resolve();
                                                                     },
