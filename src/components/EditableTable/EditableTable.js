@@ -336,14 +336,13 @@ class EditableTable extends Component {
         >
           {this.props.screens === "Roles" ? "Add new role" : "Add new user"}
         </Button>
-        {this.props.screens !== "Roles" &&
-          <Search
-            placeholder="Search User"
+        <Search
+            placeholder="Search"
             onSearch={this.searchTable}
             value={this.state.searchValue}
             onChange={(e) => this.onChangeSearchValue(e)}
             allowClear
-            style={{ width: 200, float: 'right', marginLeft: '15px' }} />}
+            style={{ width: 200, float: 'right', marginLeft: '15px' }} />
         <Button
           type="primary"
           onClick={this.onSaveTable}

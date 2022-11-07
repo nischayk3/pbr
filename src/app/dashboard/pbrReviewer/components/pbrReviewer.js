@@ -152,7 +152,7 @@ function PbrReviewer() {
       if (res.Status == "202") {
         dispatch(hideLoader());
         dispatch(showNotification("success", "Approved Successfully")),
-        cardTableData()
+          cardTableData()
         getTemplateID()
         chart();
         chart1();
@@ -453,13 +453,14 @@ function PbrReviewer() {
           <a
             style={{ color: "#1890ff" }}
             onClick={() => {
-              if(record?.table_value === null){
-                window.open(`/#/dashboard/pbr_update?id=${record.id}`)
-              }else{
+              if (record?.table_value === null) {
+                window.open(`/#/dashboard/pbr_update?id=${record.id}&temp_disp_id=${record.template_id}&version=${record.template_version
+                  }&param_name=${record.param_name}`)
+              } else {
                 window.open(`/#/dashboard/pbr_table_reviewer?id=${record.id}&temp_disp_id=${record.template_id}&version=${record.template_version
-                }`)
+                  }&param_name=${record.param_name}`)
               }
-              
+
             }}
 
           >
