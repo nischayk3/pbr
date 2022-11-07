@@ -107,7 +107,7 @@ function TableIdentifier(props) {
         try {
             dispatch(showLoader());
             let req = {
-                filename: `${metaData?.file?.split('.')[0]}_page-${pageNumber - 1}.jpeg.json`,
+                filename: `${metaData?.file?.split('.pdf')[0]}_page-${pageNumber - 1}.jpeg.json`,
                 page: pageNumber,
                 config: {
                     pk_col_index: row,
@@ -254,7 +254,7 @@ function TableIdentifier(props) {
                     stop_index: colPanelValue?.stop
                 }
             },
-            filename: `${params?.file?.split('.')[0]}_page-${pageNumber - 1}.jpeg.json`,
+            filename: `${params?.file?.split('.pdf')[0]}_page-${pageNumber - 1}.jpeg.json`,
             page: pageNumber,
             row_config: {
                 method: "column_index",
