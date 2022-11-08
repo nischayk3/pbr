@@ -1,19 +1,18 @@
 import { Layout } from "antd";
 import React, { lazy, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
 	Route,
 	Switch,
 	useHistory,
 	useLocation,
-	useRouteMatch,
-	Redirect
+	useRouteMatch
 } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { showNotification } from "../../duck/actions/commonActions";
 import HeaderBar from "../../components/Header";
 import Help from "../../components/Help";
 import Sidebar from "../../components/Sidebar";
 import SuspenseWrapper from "../../components/SuspenseWrapper";
+import { showNotification } from "../../duck/actions/commonActions";
 import LoginRedirect from "../user/login/redirect";
 import RedirectSign from "../user/login/redirectSign";
 import ViewPage from "./chartPersonal/components/viewPage/ViewPage";
@@ -28,9 +27,9 @@ import ViewPageAnalysis from "./Analysis/components/ViewPage";
 import "./dashboard.scss";
 
 import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
+import FileUpload from "./pbrFileUpload";
 import PbrReviewer from "./pbrReviewer";
 import pbrTableUpdate from './pbrTableReviewer';
-import FileUpload from "./pbrFileUpload";
 import PrivateRoute from "./ProtectedRoute";
 import UnAuthorisedScreen from "./unAuthorised";
 // DASHBOARD ROUTE COMPONENTS
@@ -61,6 +60,8 @@ const Profile = lazy(() => import("./profile"));
 const CrossBatchComparison = lazy(() => import("./crossBatchComparison"));
 const DataScienceStudio = lazy(() => import("./DataScienceStudio"));
 const TargetVariable = lazy(() => import("./DataScienceStudio/components/targetVariable/TargetVariable"));
+const ElogBook = lazy(() => import("./ElogBook"))
+
 const { Content } = Layout;
 
 const Dashboard = () => {
@@ -70,7 +71,6 @@ const Dashboard = () => {
 	const location = useLocation();
 	const screen = location.pathname.split("/");
 	const [authorised, setAuthorised] = useState(true);
-
 
 	useEffect(() => {
 		// if (!Auth.isAuthenticated()) {
@@ -146,6 +146,8 @@ const Dashboard = () => {
 		} else if (location.pathname.includes("cross_batch_comparison")) {
 			view = "ANALYTICS";
 		} else if (location.pathname.includes("data_science_studio")) {
+			view = "ANALYTICS";
+		} else if (location.pathname.includes("elog_book")) {
 			view = "ANALYTICS";
 		}
 
@@ -431,8 +433,15 @@ const Dashboard = () => {
 												authorised={authorised}
 												component={TargetVariable}
 											/>
+
+
 										</>
 									)}
+								/>
+								<Route
+									key="elog_book"
+									path={`${match.url}/elog_book`}
+									component={ElogBook}
 								/>
 							</Switch>
 						</SuspenseWrapper>
