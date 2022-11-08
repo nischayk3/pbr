@@ -49,6 +49,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const [yaxisList, setYAxisList] = useState([]);
 	const [tableKey, setTableKey] = useState("3");
 	const [showZAxis, setShowZAxis] = useState(false);
+	const [transformationList, setTransformationList] = useState(['boxcox', 'johnson']);
 	const exclusionIdCounter = useRef(0);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [exclusionValues, setExclusionValues] = useState({
@@ -120,8 +121,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		let xAxis = {};
 		let yAxis = {};
 		let zAxis = {};
+		let transform = {};
 		const newCovArr = JSON.parse(JSON.stringify(postChartData));
 		newCovArr.data[0].extras.coverage.forEach((ele) => {
+			console.log("ele", ele);
+			console.log("axisValues", axisValues);
 			if (ele.function_name === axisValues.xaxis) {
 				xAxis.function_name = ele.function_name;
 				xAxis.function_id = ele.function_id;
@@ -133,6 +137,9 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			if (ele.function_name === axisValues.zaxis) {
 				zAxis.function_name = ele.function_name;
 				zAxis.function_id = ele.function_id;
+			}
+			if (axisValues.chartType === 'Process capability') {
+				transform.function_name = axisValues.transform;
 			}
 		});
 		const newArr = [...postChartData.data];
@@ -156,6 +163,16 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			} else {
 				ele.chart_mapping.z = undefined;
 			}
+			if (axisValues.chartType === "Process capability") {
+				ele.chart_type = 'process capability'
+				ele.chart_mapping.x = {};
+				ele.chart_mapping.transform = transform;
+				console.log("transformation", transform);
+				console.log("ele", ele);
+			} else {
+				ele.chart_mapping.transform = undefined;
+			}
+
 			ele.layout.xaxis.title.text =
 				Object.keys(xAxis).length !== 0
 					? xAxis.function_name
@@ -212,6 +229,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			xaxis: null,
 			yaxis: null,
 			zaxis: null,
+			transform: null,
 		});
 	};
 
@@ -322,15 +340,17 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		if (
 			axisValues.chartType &&
 			axisValues.yaxis &&
-			axisValues.chartType === "Histogram" &&
+			(axisValues.chartType === "Histogram" || axisValues.chartType === "Process capability") &&
 			!axisValues.xaxis
 		) {
+
 			return false;
 		} else if (
 			!axisValues.chartType ||
 			!axisValues.xaxis ||
 			!axisValues.yaxis
 		) {
+
 			return true;
 		} else if (
 			(axisValues.chartType === "Error" || axisValues.chartType === "Bubble") &&
@@ -338,7 +358,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		) {
 			return true;
 		}
-
 		return false;
 	};
 
@@ -354,16 +373,22 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						onChangeSelect={handleChartType}
 					/>
 				</Col>
-				<Col span={showZAxis ? 5 : 6}>
-					<p>X-axis</p>
-					<SelectField
-						placeholder="Select X-axis"
-						selectList={xaxisList}
-						selectedValue={axisValues.xaxis}
-						onChangeSelect={(e) => setAxisValues({ ...axisValues, xaxis: e })}
-						disabled={axisValues.chartType === "Histogram"}
-					/>
-				</Col>
+				{axisValues.chartType === 'Process capability' ? (
+					<></>
+				) : (
+					<Col span={showZAxis ? 5 : 6}>
+						<p>X-axis</p>
+						<SelectField
+							placeholder="Select X-axis"
+							selectList={xaxisList}
+							selectedValue={axisValues.xaxis}
+							onChangeSelect={(e) => setAxisValues({ ...axisValues, xaxis: e })}
+							disabled={axisValues.chartType === "Histogram"}
+						/>
+					</Col>
+				)}
+
+
 				<Col span={showZAxis ? 5 : 6}>
 					<p>Y-axis</p>
 					<SelectField
@@ -384,6 +409,19 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						/>
 					</Col>
 				)}
+
+				{axisValues.chartType === 'Process capability' && (
+					<Col span={5}>
+						<p>Transformation</p>
+						<SelectField
+							placeholder="Select Transformation"
+							selectList={transformationList}
+							selectedValue={axisValues.transform}
+							onChangeSelect={(e) => setAxisValues({ ...axisValues, transform: e })}
+						/>
+					</Col>
+				)}
+
 				<Col span={showZAxis ? 4 : 6} className="button-visible">
 					<p>button</p>
 					<Button
@@ -461,7 +499,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					exclusionIdCounter={exclusionIdCounter}
 				/>
 			</Modal>
-		</div>
+		</div >
 	);
 };
 
