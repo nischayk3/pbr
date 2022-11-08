@@ -4,9 +4,9 @@ import { DeleteOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
 const { Option } = Select;
- /* istanbul ignore next */
+/* istanbul ignore next */
 function DynamicTableForm(props) {
-    let { handleSideState, sideTableData, setTableActiveKey, setFormTableData, initialSideTableData, handleOnFinishFailed, parameterFormFinish,pageIdDropdownValues,initialPageIdentifierData} = props
+    let { handleSideState, sideTableData, setTableActiveKey, setFormTableData, initialSideTableData, handleOnFinishFailed, parameterFormFinish, pageIdDropdownValues, initialPageIdentifierData } = props
     const [tableCount, setTableCount] = useState(0);
     const [tableData, setTableData] = useState([]);
     const [activeKey, setActiveKey] = useState(0);
@@ -98,14 +98,29 @@ function DynamicTableForm(props) {
                                                             {...restField}
                                                             name={[name, 'name']}
                                                             label="Name"
-                                                            rules={[{ required: true, message: 'Please enter Name' }]}
+                                                            rules={[{ required: true, message: 'Please enter Name' },
+                                                            () => ({
+                                                                validator(_, value) {
+                                                                    let flag = false
+                                                                    tableData.forEach((item, index) => {
+                                                                        if (index != name && item.name === value) {
+                                                                            flag = true
+                                                                        }
+                                                                    })
+                                                                    if (flag) {
+                                                                        return Promise.reject('Table Parameter Name cannot be same');
+                                                                    }
+                                                                    return Promise.resolve();
+                                                                   
+                                                                },
+                                                            })]}
                                                         >
                                                             <Input
                                                                 placeholder='Name'
 
                                                             />
                                                         </Form.Item>
-                                                        {(pageIdDropdownValues.length > 0 || initialPageIdentifierData?.users?.length>0)&&
+                                                        {(pageIdDropdownValues.length > 0 || initialPageIdentifierData?.users?.length > 0) &&
                                                             <Form.Item {...restField}
                                                                 name={[name, 'pageIdValue']}
                                                                 label="Page Id"

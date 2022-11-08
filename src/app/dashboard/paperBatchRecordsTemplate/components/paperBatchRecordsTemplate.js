@@ -68,6 +68,8 @@ import {
     getPbrTemplateData,
     findTable
 } from '../../../../services/pbrService';
+import ChangeCoordiantes from '../components/rightSidePanel/changeCoordiantes'
+import ParameterList from '../components/rightSidePanel/parameterList'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
 import DynamicTableForm from './dynamicTableForm';
@@ -664,7 +666,7 @@ function PaperBatchRecordsTemplate() {
             dispatch(showLoader());
             let _reqBatch = {
                 filename: `${params?.file?.split('.pdf')[0]}_page-${pageNumber}.jpeg.json`,
-                bbox_type: params?.fromScreen == "Workflow" ? "parameters" : mode,
+                bbox_type: params?.fromScreen == "Workflow" ? "PARAMETER_TABLE" : mode,
                 page: pageNumber + 1,
                 // action_type: params?.temp_disp_id ? "edit" : "create",
                 action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "edit" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? mode == "TABLE" ? "create" : "edit" : "create",
@@ -880,8 +882,8 @@ function PaperBatchRecordsTemplate() {
             let arr = templateInfo.map((item, index) => ({
                 name: item.name,
                 method: item.method,
-                pageIdValue:item?.page_name,
-                page_num:item?.param_page,
+                pageIdValue: item?.page_name,
+                page_num: item?.param_page,
                 values: {
                     anchorValue: item?.param_key_text, anchorId: item?.param_value_text, snippetID: item?.param_key_snippet_id,
                     anchorCoords: [
@@ -988,9 +990,9 @@ function PaperBatchRecordsTemplate() {
     /* istanbul ignore next */
     const clicked = (area) => {
         if (showRowColIdentifier) {
-            if(Object.keys(initialSideTableData).length >0 && formTableData.length === initialSideTableData?.users.length){
+            if (Object.keys(initialSideTableData).length > 0 && formTableData.length === initialSideTableData?.users.length) {
                 dispatch(showNotification('error', "Valid with new parameters created"));
-            }else if (formTableData.length > 0) {
+            } else if (formTableData.length > 0) {
                 setClickedTable(area)
                 let table_identifier = {
                     "left": area?.coords[0] / imageWidth, "top": area?.coords[1] / imageHeight,
@@ -1040,7 +1042,7 @@ function PaperBatchRecordsTemplate() {
                 anchorValue: area.areaValue,
             };
             let arr = [...formValues]
-            arr[activeKey] = { ...arr[activeKey],page_num:pageNumber, values: { ...arr[activeKey]?.values, anchorValue: area.areaValue, snippetID: area.snippetID, anchorCoords: area.coords } }
+            arr[activeKey] = { ...arr[activeKey], page_num: pageNumber, values: { ...arr[activeKey]?.values, anchorValue: area.areaValue, snippetID: area.snippetID, anchorCoords: area.coords } }
             setParameterValue(obj1);
             setFormValues(arr)
             let fields = parameterForm.getFieldsValue()
@@ -1866,9 +1868,9 @@ function PaperBatchRecordsTemplate() {
     }
     /* istanbul ignore next */
     const handlePageTextChange = (val) => {
-        if(isNaN(Number(val))){
+        if (isNaN(Number(val))) {
             dispatch(showNotification('error', "Please enter Valid Page Number"))
-        }else if (val === "") {
+        } else if (val === "") {
             // dispatch(showNotification('error', `Minium page number 1`))
             setPageNumber(val)
         } else if (Number(val) > pageLimit) {
@@ -2164,7 +2166,22 @@ function PaperBatchRecordsTemplate() {
                                                                                         {...restField}
                                                                                         name={[name, 'name']}
                                                                                         label="Name"
-                                                                                        rules={[{ required: true, message: 'Please enter parameter name' }]}
+                                                                                        rules={[{ required: true, message: 'Please enter parameter name' },
+                                                                                        () => ({
+                                                                                            validator(_, value) {
+                                                                                                let flag = false
+                                                                                                parameterFormData.forEach((item, index) => {
+                                                                                                    if (index != name && item.name === value) {
+                                                                                                        flag = true
+                                                                                                    }
+                                                                                                })
+                                                                                                if (flag) {
+                                                                                                    return Promise.reject('Parameter Name cannot be same');
+                                                                                                }
+
+                                                                                                return Promise.resolve();
+                                                                                            },
+                                                                                        })]}
                                                                                     >
                                                                                         <Input
                                                                                             placeholder='Enter name'
@@ -2236,7 +2253,7 @@ function PaperBatchRecordsTemplate() {
 
                                                                                             <Input placeholder='Enter Regex' />
                                                                                         </Form.Item>}
-                                                                                    {(pageIdDropdownValues.length > 0 || initialPageIdentifierData?.users.length>0 )&&
+                                                                                    {(pageIdDropdownValues.length > 0 || initialPageIdentifierData?.users.length > 0) &&
                                                                                         <Form.Item {...restField}
                                                                                             name={[name, 'pageIdValue']}
                                                                                             label="Page Id"
@@ -3002,7 +3019,7 @@ function PaperBatchRecordsTemplate() {
                                     <div className='tabletype'>
                                         <DynamicTableForm handleSideState={handleSideState} sideTableData={sideTableData}
                                             setTableActiveKey={setTableActiveKey} setFormTableData={setFormTableData} initialSideTableData={initialSideTableData}
-                                            handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish} 
+                                            handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish}
                                             pageIdDropdownValues={pageIdDropdownValues} initialPageIdentifierData={initialPageIdentifierData}
                                         />
                                     </div>
@@ -3037,18 +3054,20 @@ function PaperBatchRecordsTemplate() {
                                     span={12}
                                     className='pbrCenterPanelCol pbrCenterBlockRight'
                                 >
-                                    <div className='drawSnippet'>
+                                    {/* <div className='drawSnippet'>
                                         <EditOutlined />
                                         Draw Snippet
-                                    </div>
-                                    <div className='cropSnippet'>
-                                        <Dropdown
-                                            style={{ color: '#ffffff' }}
-                                            trigger={['click']}
-                                            overlay={modes}>
-                                            <ImCrop />
-                                        </Dropdown>
-                                    </div>
+                                    </div> */}
+                                    {params?.fromScreen == "Workflow" ? "" :
+                                        <div className='cropSnippet'>
+                                            <Dropdown
+                                                style={{ color: '#ffffff' }}
+                                                trigger={['click']}
+                                                overlay={modes}>
+                                                <ImCrop />
+                                            </Dropdown>
+                                        </div>
+                                    }
                                 </Col>
                             </Row>
                         </div>
@@ -3103,98 +3122,9 @@ function PaperBatchRecordsTemplate() {
                             <span className='trigger' onClick={toggleRightCollapsed}>
                                 <img src={panelRightImg} className='panelImg' />
                             </span>
-                            <Collapse
-                                accordion
-                                expandIconPosition='right'
-                                defaultActiveKey={['1']}>
-                                <Panel header='Snippet Attributes' key='1'>
-                                    <div className='snippetsBlock'>
-                                        <Form
-                                            layout='vertical'
-                                            // form={form}
-                                            className='formNewTemplate'>
-                                            <InputField
-                                                disabled
-                                                value={areasMapObject.snippetID}
-                                                label='Snippet ID'
-                                                placeholder='Snippet ID'
-                                            />
-                                            <InputField
-                                                value={areasMapObject.areaValue}
-                                                label='Key 1'
-                                                placeholder='Key 1'
-                                                disabled
-                                            />
-                                            <div className='secondary-flexBox'>
-                                                <InputField
-                                                    id="cord1"
-                                                    value={areasMapObject.coords[0]}
-                                                    label='X1'
-                                                    placeholder='Enter Value'
-                                                    onChangeInput={e => {
-                                                        onChangeChart(e, 'x1');
-                                                    }}
-                                                />
-                                                <InputField
-                                                    id="cord2"
-                                                    value={areasMapObject.coords[1]}
-                                                    label='Y1'
-                                                    placeholder='Enter Value'
-                                                    onChangeInput={e => {
-                                                        onChangeChart(e, 'y1');
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className='secondary-flexBox'>
-                                                <InputField
-                                                    id="cord3"
-                                                    value={areasMapObject.coords[2]}
-                                                    label='X2'
-                                                    placeholder='Enter Value'
-                                                    onChangeInput={e => {
-                                                        onChangeChart(e, 'x2');
-                                                    }}
-                                                />
-                                                <InputField
-                                                    id="cord4"
-                                                    value={areasMapObject.coords[3]}
-                                                    label='Y2'
-                                                    placeholder='Enter Value'
-                                                    onChangeInput={e => {
-                                                        onChangeChart(e, 'y2');
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className='secondary-flexBox'>
-                                                <InputField
-                                                    value={areasMapObject.areaValue}
-                                                    label='Area'
-                                                    placeholder='Enter Value'
-                                                    disabled
-                                                />
-                                            </div>
-                                            <div className='hierarchyBlock'>
-                                                <p>Hierarchy</p>
-                                                <div className='hierarchyDiv hierarchyDiv1'>
-                                                    <CaretDownOutlined />
-                                                    {params?.tempalteName}
-                                                </div>
-                                                <div className='hierarchyDiv hierarchyDiv2'>
-                                                    <CaretDownOutlined />
-                                                    0001-6.0
-                                                </div>
-                                                <div className='hierarchyDiv hierarchyDiv3'>
-                                                    <CaretDownOutlined />1
-                                                </div>
-                                                <div className='hierarchyDiv hierarchyDiv4'>
-                                                    <CaretDownOutlined />
-                                                    {clickedSnippetId ? clickedSnippetId : "Document"}
-                                                </div>
-                                            </div>
-                                        </Form>
-                                    </div>
-                                </Panel>
-                            </Collapse>
+                            {params?.fromScreen == "Workflow" ? <ParameterList originalResponse={originalResponse} setAreasMap={setAreasMap} areasMap={areasMap} /> :
+                                <ChangeCoordiantes areasMapObject={areasMapObject} params={params} clickedSnippetId={clickedSnippetId} onChangeChart={onChangeChart} />
+                            }
                         </Sider>
                     </div>
                 </div>

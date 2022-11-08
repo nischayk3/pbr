@@ -1,6 +1,10 @@
-import { Button, Form, Input, Popconfirm, Table } from 'antd';
+import { Button, Form, Input, Popconfirm, Table, Radio } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { tableColumns } from '../../../../utils/TableColumns'
+import ReactDragListView from "react-drag-listview";
+import {
+  CloseOutlined
+} from '@ant-design/icons';
 import './styles.scss';
 const EditableContext = React.createContext(null);
 
@@ -81,7 +85,13 @@ const EditableCell = ({
 const App = (props) => {
   let { templateData, setTemplateData } = props
   const [defaultColumns, setDefaultColumns] = useState([]);
+  const [showMove, setShowMove] = useState(true);
   const [count, setCount] = useState(0);
+  const [showDrag, setShowDrag] = useState(false);
+  const [dragProps, setDragProps] = useState({});
+
+
+
 
   useEffect(() => {
     let col = tableColumns(templateData)
@@ -92,7 +102,7 @@ const App = (props) => {
       dataIndex: 'operation',
       width: "20%",
       render: (_, record) =>
-        templateData.length >= 1 ? (
+        templateData.length >= 1 ? showDrag ? <a>Drag</a> : (
           <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
             <a>Delete</a>
           </Popconfirm>
@@ -103,7 +113,7 @@ const App = (props) => {
       setCount(templateData.length)
     }
 
-  }, [templateData])
+  }, [templateData,showDrag])
 
   const handleDelete = (key, val) => {
     const newData = templateData.filter((item) => item.key !== key);
@@ -126,6 +136,17 @@ const App = (props) => {
     setCount(count + 1);
   };
 
+  const handleAddColumn = () => {
+    let arr = templateData
+    arr = arr.map(item => {
+      let count = Object.keys(item).length
+      let obj = { ...item }
+      obj[`Column${count}`] = ""
+      return obj
+    })
+    setTemplateData(arr);
+  }
+
   const handleSave = (row) => {
     const newData = [...templateData];
     const index = newData.findIndex((item) => row.key === item.key);
@@ -133,6 +154,19 @@ const App = (props) => {
     newData.splice(index, 1, { ...item, ...row });
     setTemplateData(newData);
   };
+
+  const handleDeleteColumn = (record) => {
+    let arr = templateData
+    arr = arr.map(item => {
+      delete item[record.dataIndex]
+      return item
+    })
+    setTemplateData(arr);
+  }
+
+  const handleMovementChange = () => {
+    setShowMove(false)
+  }
 
   const components = {
     body: {
@@ -154,9 +188,52 @@ const App = (props) => {
         title: col.title,
         handleSave,
       }),
+      onHeaderCell:(record) => ({
+        onDoubleClick: () => {
+          handleDeleteColumn(col)
+        },
+      })
     };
   });
 
+  const handleRadioChange = (vall) => {
+    if (vall.target.value === "move_row") {
+      setShowDrag(true)
+      setDragProps({
+        // ...dragProps,
+        onDragEnd(fromIndex, toIndex) {
+          const data = templateData.slice();
+          const item = data.splice(fromIndex, 1)[0];
+          data.splice(toIndex, 0, item);
+          setTemplateData(data)
+        },
+        handleSelector: 'a'
+      })
+    } else {
+      setDragProps({
+        onDragEnd(fromIndex, toIndex) {
+          let data = templateData.slice();
+          let arr = []
+          data.map(item =>{
+            let keysArr = Object.keys(item)
+            keysArr = keysArr.filter(i=>i != "key")
+            keysArr.push("key")
+            const item1 = keysArr.splice(fromIndex, 1)[0];
+            keysArr.splice(toIndex, 0, item1);        
+            let obj = {}
+            keysArr.forEach(el=>{
+              obj[el] = item[el]
+              if(!arr.includes(obj)){
+                arr.push(obj)
+              }
+            })
+          })
+          setTemplateData(arr)
+        },
+        nodeSelector: 'th',
+      })
+    }
+  }
   return (
     <div>
       <div className='tableEdit'>
@@ -196,18 +273,50 @@ const App = (props) => {
         >
           Add a row
         </Button>
-        <Table
-          pagination={false}
-          size="small"
-          showHeader={false}
-          components={components}
-          rowClassName={() => 'editable-row'}
-          bordered
-          dataSource={templateData}
-          columns={columns}
-        />
-      </div>
+        <Button
+          onClick={handleAddColumn}
+          type="primary"
+          style={{
+            marginBottom: 16,
+            marginLeft: 10
+          }}
+        >
+          Add Column
+        </Button>
+        {showMove && <Button
+          onClick={handleMovementChange}
+          type="primary"
+          style={{
+            marginBottom: 16,
+            marginLeft: 10
+          }}
+        >
+          Move Row/Column
+        </Button>}
+        {!showMove && <Radio.Group style={{ marginLeft: 10 }} buttonStyle="solid" onChange={handleRadioChange}>
+          <Radio.Button value="move_row">Move Row</Radio.Button>
+          <Radio.Button value="move_column">Move Column</Radio.Button>
+        </Radio.Group>}
+        {!showMove && <CloseOutlined style={{cursor:"pointer",marginLeft:5}} onClick={()=>{
+          setShowDrag(false)
+          setShowMove(true)
+        }}/>}
 
+        <ReactDragListView
+          {...dragProps}
+        >
+          <Table
+            pagination={false}
+            size="small"
+            showHeader={true}
+            components={components}
+            rowClassName={() => 'editable-row'}
+            bordered
+            dataSource={templateData}
+            columns={columns}
+          />
+        </ReactDragListView>
+      </div>
     </div>
   );
 };

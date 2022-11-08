@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Table, Row, Col, Button, Input, Form, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import {
@@ -8,14 +8,20 @@ import {
     showNotification,
 } from '../../../../duck/actions/commonActions';
 import { useLocation } from "react-router";
-import { getPbrReviewerData, updateApprove } from '../../../../services/pbrService'
+import { getPbrReviewerData, updateApprove, bboxData } from '../../../../services/pbrService'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import queryString from "query-string";
 import './styles.scss';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
+import ImageMapper from 'react-image-mapper';
 import { useHistory } from 'react-router';
 import EditableRow from './EditTable'
 import TableIdentifier from './tableIdentifier/tableIdentifier';
+
+var AREAS_MAP = {
+    name: 'my-map',
+    areas: [],
+};
 /* istanbul ignore next */
 const pbrTableUpdate = () => {
     const dispatch = useDispatch();
@@ -30,6 +36,9 @@ const pbrTableUpdate = () => {
     const [filepath, setFilepath] = useState("");
     const [pageNum, setPageNum] = useState(1);
     const [initialTableData, setInitialTableData] = useState([]);
+    const [areasMap, setAreasMap] = useState(AREAS_MAP);
+    const [imageWidth, setImageWidth] = useState(0);
+    const [imageHeight, setimageHeight] = useState(0);
     const history = useHistory();
     const [textInput, setTextInput] = useState({
         changed_by: "",
@@ -42,13 +51,108 @@ const pbrTableUpdate = () => {
     });
     const [form] = Form.useForm();
     const [idarr, setIdArr] = useState([]);
+    let isRendered = useRef(false);
     const location = useLocation();
     const params = queryString.parse(location.search);
     let rowArray = ["id", "param_name", "anchor_key", "snippet_value", "snippet_image", "recorded_date", "recorded_time", "uom", "changed_by"]
 
     useEffect(() => {
+        isRendered.current = true;
         loadTableData();
     }, []);
+
+    useEffect(() => {
+        // dispatch(showLoader());
+        setTimeout(() => {
+            const list = document.getElementsByTagName("canvas")[0]
+            setImageWidth(list?.width)
+            setimageHeight(list?.height)
+            // dispatch(hideLoader());
+        }, 3000)
+    }, [document.getElementsByTagName("canvas")[0], imagepdf]);
+
+    useEffect(() => {
+        // dispatch(showLoader());
+        if (imageWidth !== 0 && imageHeight !== 0) {
+            for (let i = 0; i < 2; i++) {
+                setTimeout(() => {
+                    getBoundingBoxDataInfo(imageWidth, imageHeight);
+                }, i * 1000)
+            }
+        }
+    }, [imageWidth, imageHeight]);
+
+    const getBoundingBoxDataInfo = async (width, height) => {
+        try {
+            // dispatch(showLoader());
+            let _reqBatch = {
+                feature: "configured_Table",
+                granularity: "Specific",
+                template_id: params.temp_disp_id,
+                version: Number(params.version),
+                name: params.param_name,
+                page: null,
+                metadata:null
+                // feature: "configured_Parameter",
+                // granularity: "Specific",
+                // template_id: "P627",
+                // version: 1,
+                // name: "param2",
+                // page: null
+            };
+            const batchRes = await bboxData(_reqBatch);
+            let areasArr = [];
+            let width1 = width ? width : 615
+            let height1 = height ? height : 795
+            if (batchRes.Data.length > 0) {
+
+                batchRes.Data.forEach((e) => {
+                    let x1 = e.key_left * width1;
+                    let x2 = (e.key_left + e.key_width) * width1;
+                    let y1 = e.key_top * height1;
+                    let y2 = (e.key_top + e.key_height) * height1;
+                    let obj = {
+                        snippetID: e.key_snippet_id,
+                        areaValue: e.key_text,
+                        shape: 'rect',
+                        coords: [x1, y1, x2, y2],
+                        preFillColor: 'transparent',
+                        fillColor: 'transparent',
+                        strokeColor: 'blue',
+                    };
+                    let valuex1 = e.value_left * width1;
+                    let valuex2 = (e.value_left + e.value_width) * width1;
+                    let valuey1 = e.value_top * height1;
+                    let valuey2 = (e.value_top + e.value_height) * height1;
+                    let obj1 = {
+                        snippetID: e.value_snippet_id,
+                        areaValue: e.value_text,
+                        shape: 'rect',
+                        coords: [valuex1, valuey1, valuex2, valuey2],
+                        preFillColor: 'transparent',
+                        fillColor: 'transparent',
+                        strokeColor: 'blue',
+                    };
+                    areasArr.push(obj);
+                    areasArr.push(obj1);
+                });
+                // if(areasMap.areas.length == 0){
+                setAreasMap({ ...areasMap, areas: areasArr });
+                // }
+
+                dispatch(hideLoader());
+            } else if (batchRes.status === 404) {
+                setAreasMap();
+                dispatch(hideLoader());
+            } else {
+                dispatch(hideLoader());
+                dispatch(showNotification('error', `Unable to detect ${mode}`));
+            }
+        } catch (error) { /* istanbul ignore next */
+            dispatch(hideLoader());
+            dispatch(showNotification('error', 'No Data Found'));
+        }
+    };
 
 
     const loadTableData = async () => {
@@ -68,7 +172,7 @@ const pbrTableUpdate = () => {
         let filename = res.Data[0].file_path;
         setFilepath(filename)
         setPageNum(res.Data[0].page_num)
-        getImage(filename);
+        getImage(filename,res.Data[0].page_num);
         let obj = {
             changed_by: res.Data[0].changed_by == null ? "" : res.Data[0].changed_by,
             id: res.Data[0].id == null ? "" : res.Data[0].id,
@@ -79,11 +183,11 @@ const pbrTableUpdate = () => {
             uom: res.Data[0].uom == null ? "" : res.Data[0].uom
         }
         setTextInput(obj)
-        dispatch(hideLoader());
+        // dispatch(hideLoader());
     };
 
 
-    const getImage = async (val) => {
+    const getImage = async (val,page) => {
         dispatch(showLoader());
         let login_response = JSON.parse(localStorage.getItem('login_details'));
         var requestOptions = {
@@ -97,7 +201,7 @@ const pbrTableUpdate = () => {
             })
         };
         let response = await fetch(
-            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${val.split('_page-')[0]}.pdf&pageId=1`,
+            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${val.split('_page-')[0]}.pdf&pageId=${page}`,
             requestOptions
         )
             .then((resp) => resp)
@@ -105,7 +209,7 @@ const pbrTableUpdate = () => {
             .catch((error) => console.log("error", error));
         let res = await response.blob();
         setImagePdf(window.webkitURL.createObjectURL(res));
-        dispatch(hideLoader());
+        // dispatch(hideLoader());
     }
 
     const handleCancel = () => {
@@ -226,7 +330,31 @@ const pbrTableUpdate = () => {
                                 <TableIdentifier triggerPreview={triggerPreview} filepath={filepath} pageNum={pageNum} setModalData={setModalData} setModalColumns={setModalColumns} />
                                 <div style={{ height: "calc(100vh - 190px)", overflowY: "scroll", border: "0.5px solid blue" }}>
                                     {/* style={{height:"calc(100vh - 190px)"}} */}
-                                    <img src={imagepdf} width="100%" height="700px" />
+                                    {/* <img src={imagepdf} width="100%" height="700px" /> */}
+                                    {/* <ImageMapper
+                                        id='imageMApper'
+                                        className='pdfToImageWrapper'
+                                        src={imagepdf}
+                                        width={600}
+                                        height={700}
+                                        // map={areasMap}
+                                        // onLoad={() => load()}
+                                        // onClick={area => clicked(area)}
+                                    /> */}
+                                    <div id='drawRectangle'>
+                                        <div className='pdfToImgBlock'>
+
+                                            <ImageMapper
+                                                id='imageMApper'
+                                                className='pdfToImageWrapper'
+                                                src={imagepdf}
+                                                map={areasMap}
+                                            // onLoad={() => load()}
+                                            // onClick={area => clicked(area)}
+                                            />
+
+                                        </div>
+                                    </div>
                                     {/* <iframe class="frame" src={imagepdf} width="600px" height="500px" ></iframe>   */}
                                 </div>
                             </Col>

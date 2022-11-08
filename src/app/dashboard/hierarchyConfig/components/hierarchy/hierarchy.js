@@ -435,7 +435,7 @@ function Hierarchy() {
 				delete_row: !stepSaved && !load_drug ? [] : deleted.length > 0 ? deleted : []
 			};
 			let response = await putProcessStep(req);
-			if (response["status-code"] == 200) {
+			if (response["statuscode"] == 200) {
 				dispatch(showNotification('success', "Saved"))
 				setDeleted([])
 				setDel([])
