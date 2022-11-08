@@ -172,7 +172,7 @@ const pbrTableUpdate = () => {
         let filename = res.Data[0].file_path;
         setFilepath(filename)
         setPageNum(res.Data[0].page_num)
-        getImage(filename);
+        getImage(filename,res.Data[0].page_num);
         let obj = {
             changed_by: res.Data[0].changed_by == null ? "" : res.Data[0].changed_by,
             id: res.Data[0].id == null ? "" : res.Data[0].id,
@@ -187,7 +187,7 @@ const pbrTableUpdate = () => {
     };
 
 
-    const getImage = async (val) => {
+    const getImage = async (val,page) => {
         dispatch(showLoader());
         let login_response = JSON.parse(localStorage.getItem('login_details'));
         var requestOptions = {
@@ -201,7 +201,7 @@ const pbrTableUpdate = () => {
             })
         };
         let response = await fetch(
-            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${val.split('_page-')[0]}.pdf&pageId=1`,
+            MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${val.split('_page-')[0]}.pdf&pageId=${page}`,
             requestOptions
         )
             .then((resp) => resp)

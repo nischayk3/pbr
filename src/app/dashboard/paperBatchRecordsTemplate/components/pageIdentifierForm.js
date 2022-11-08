@@ -91,7 +91,7 @@ function PageIdentifierForm(props) {
     const removeKeyFiled = () => {
         if (fieldCount.length > 1) {
             let arr = [...fieldCount]
-            let obj = {...pageIdentifierFormValues}
+            let obj = { ...pageIdentifierFormValues }
             delete obj.users[activeKey][`key${arr?.length}`]
             arr.pop()
             obj.users[activeKey]["keyCount"] = arr?.length
@@ -200,7 +200,24 @@ function PageIdentifierForm(props) {
                                                             {...restField}
                                                             name={[name, 'name']}
                                                             label="Page Name"
-                                                        // rules={[{ required: true, message: 'Please enter Page Name' }]}
+                                                            // rules={[{ required: true, message: 'Please enter Page Name' }]}
+                                                            rules={[
+                                                                () => ({
+                                                                    validator(_, value) {
+                                                                        let flag = false
+                                                                        pageIdentifierFormValues.users.forEach((item,index)=>{
+                                                                            if(index!=name && item.name === value){
+                                                                                flag = true
+                                                                            }
+                                                                        })
+                                                                        if(flag){
+                                                                            return Promise.reject('Page identifier cannot be same');
+                                                                        }
+                                                                        return Promise.resolve();
+                                                                    },
+                                                                })
+
+                                                            ]}
                                                         >
                                                             <Input
                                                                 placeholder='Page Name'

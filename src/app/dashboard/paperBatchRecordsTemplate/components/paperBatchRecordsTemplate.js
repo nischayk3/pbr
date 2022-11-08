@@ -69,6 +69,7 @@ import {
     findTable
 } from '../../../../services/pbrService';
 import ChangeCoordiantes from '../components/rightSidePanel/changeCoordiantes'
+import ParameterList from '../components/rightSidePanel/parameterList'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
 import DynamicTableForm from './dynamicTableForm';
@@ -665,7 +666,7 @@ function PaperBatchRecordsTemplate() {
             dispatch(showLoader());
             let _reqBatch = {
                 filename: `${params?.file?.split('.pdf')[0]}_page-${pageNumber}.jpeg.json`,
-                bbox_type: params?.fromScreen == "Workflow" ? "parameters" : mode,
+                bbox_type: params?.fromScreen == "Workflow" ? "PARAMETER_TABLE" : mode,
                 page: pageNumber + 1,
                 // action_type: params?.temp_disp_id ? "edit" : "create",
                 action_type: params?.temp_disp_id && params?.fromScreen == "Workflow" ? "edit" : params?.temp_disp_id && params?.fromScreen == "Workspace" ? mode == "TABLE" ? "create" : "edit" : "create",
@@ -2165,7 +2166,22 @@ function PaperBatchRecordsTemplate() {
                                                                                         {...restField}
                                                                                         name={[name, 'name']}
                                                                                         label="Name"
-                                                                                        rules={[{ required: true, message: 'Please enter parameter name' }]}
+                                                                                        rules={[{ required: true, message: 'Please enter parameter name' },
+                                                                                        () => ({
+                                                                                            validator(_, value) {
+                                                                                                let flag = false
+                                                                                                parameterFormData.forEach((item, index) => {
+                                                                                                    if (index != name && item.name === value) {
+                                                                                                        flag = true
+                                                                                                    }
+                                                                                                })
+                                                                                                if (flag) {
+                                                                                                    return Promise.reject('Parameter Name cannot be same');
+                                                                                                }
+
+                                                                                                return Promise.resolve();
+                                                                                            },
+                                                                                        })]}
                                                                                     >
                                                                                         <Input
                                                                                             placeholder='Enter name'
@@ -3038,18 +3054,20 @@ function PaperBatchRecordsTemplate() {
                                     span={12}
                                     className='pbrCenterPanelCol pbrCenterBlockRight'
                                 >
-                                    <div className='drawSnippet'>
+                                    {/* <div className='drawSnippet'>
                                         <EditOutlined />
                                         Draw Snippet
-                                    </div>
-                                    <div className='cropSnippet'>
-                                        <Dropdown
-                                            style={{ color: '#ffffff' }}
-                                            trigger={['click']}
-                                            overlay={modes}>
-                                            <ImCrop />
-                                        </Dropdown>
-                                    </div>
+                                    </div> */}
+                                    {params?.fromScreen == "Workflow" ? "" :
+                                        <div className='cropSnippet'>
+                                            <Dropdown
+                                                style={{ color: '#ffffff' }}
+                                                trigger={['click']}
+                                                overlay={modes}>
+                                                <ImCrop />
+                                            </Dropdown>
+                                        </div>
+                                    }
                                 </Col>
                             </Row>
                         </div>
@@ -3104,7 +3122,7 @@ function PaperBatchRecordsTemplate() {
                             <span className='trigger' onClick={toggleRightCollapsed}>
                                 <img src={panelRightImg} className='panelImg' />
                             </span>
-                            {params?.fromScreen == "Workflow" ? "" :
+                            {params?.fromScreen == "Workflow" ? <ParameterList originalResponse={originalResponse} setAreasMap={setAreasMap} areasMap={areasMap} /> :
                                 <ChangeCoordiantes areasMapObject={areasMapObject} params={params} clickedSnippetId={clickedSnippetId} onChangeChart={onChangeChart} />
                             }
                         </Sider>

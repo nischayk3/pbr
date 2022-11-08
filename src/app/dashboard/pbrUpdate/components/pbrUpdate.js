@@ -72,12 +72,10 @@ const PbrUpdate = () => {
   }, [imageWidth, imageHeight]);
 
   const getBoundingBoxDataInfo = async (width, height,templateData) => {
-    console.log("params", templateData)
     try {
       // dispatch(showLoader());
       let meta1 = templateData?.filter(item=>item.column == "key_bbox")[0]
       let meta2 = templateData?.filter(item=>item.column == "value_bbox")[0]
-      console.log("params11111", meta1,meta2)
       let _reqBatch = {
         feature: "EXTRACTED_PARAMETER",
         granularity: "Specific",
@@ -156,7 +154,8 @@ const PbrUpdate = () => {
     // arr = arr.filter(i => rowArray.includes(i.column))
     setTemplateData(res.Data);
     let filename = res.Data.filter(item => item.column == "file_path")
-    getImage(filename[0].value);
+    let pageNum = res.Data.filter(item => item.column == "page_num")
+    getImage(filename[0].value,pageNum[0].value);
     let obj = {
       changed_by: res.Data[0].changed_by == null ? "" : res.Data[0].changed_by,
       id: res.Data[0].id == null ? "" : res.Data[0].id,
@@ -172,7 +171,7 @@ const PbrUpdate = () => {
   };
 
 
-  const getImage = async (val) => {
+  const getImage = async (val,page) => {
     // dispatch(showLoader());
     let login_response = JSON.parse(localStorage.getItem('login_details'));
     var requestOptions = {
@@ -186,7 +185,7 @@ const PbrUpdate = () => {
       })
     };
     let response = await fetch(
-      MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${val.split('_page-')[0]}.pdf&pageId=1`,
+      MDH_APP_PYTHON_SERVICE + `/pbr/udh/get_file_page_image?filename=${val.split('_page-')[0]}.pdf&pageId=${page}`,
       requestOptions
     )
       .then((resp) => resp)
