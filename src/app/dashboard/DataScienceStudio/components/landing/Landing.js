@@ -9,7 +9,6 @@ const ScreenHeader = lazy(() =>
 	import("../../../../../components/ScreenHeader/screenHeader")
 );
 
-
 export default function Landing() {
 	const [isViewsetVisible, setIsViewsetVisible] = useState(false);
 	const [isDatasetVisible, setIsDatasetVisible] = useState(false);
@@ -18,6 +17,9 @@ export default function Landing() {
 		setIsViewsetVisible(false)
 		setIsDatasetVisible(false)
 	}
+
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
+	console.log("login_response", login_response?.firstname?.toLowerCase(), login_response?.lastname?.toLowerCase());
 	return (
 		<div>
 			<ScreenHeader
@@ -53,7 +55,7 @@ export default function Landing() {
 					<div
 						className="jupyter-card"
 						onClick={
-							() => window.open("http://jupyterhub-dev.mareana.com", "_blank")
+							() => window.open("https://jupyterhub-dev.mareana.com", "_blank")
 						}
 					>
 						<img src={jupyter_logo} />

@@ -154,19 +154,26 @@ const TargetVariable = () => {
 			unapproved: true,
 			target_variable: parameterName
 		}
+
+		const login_response = JSON.parse(localStorage.getItem("login_details"));
+		console.log("login_response", login_response?.firstname?.toLowerCase(), login_response?.lastname?.toLowerCase());
+
 		try {
 			dispatch(showLoader());
 			const loadDssRes = await dssSave(_reqSave);
 			dispatch(hideLoader());
 			if (loadDssRes.Status === 200) {
 				dispatch(showNotification("success", loadDssRes.Message));
-				window.open("http://jupyterhub-dev.mareana.com", "_blank")
+				window.open(`https://jupyterhub-dev.mareana.com/user/${login_response?.firstname?.toLowerCase()} ${login_response?.lastname?.toLowerCase()}/lab/workspaces/auto-q/tree/Datascience_Studio`, "_blank")
 			}
 		} catch (err) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", err));
 		}
 	}
+
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
+	console.log("login_response", login_response?.firstname?.toLowerCase(), login_response?.lastname?.toLowerCase());
 
 	return (
 		<div className="custom-wrapper">

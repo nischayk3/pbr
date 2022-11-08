@@ -60,6 +60,10 @@ export const GOOGLE_ANALYTICS_ID = `${process.env.REACT_APP_GOOGLE_ANALYTICS_ID}
 
 export const GRAFANA_API = `${process.env.REACT_APP_GRAFANA_APP_URL}`;
 
-console.log("process.env.REACT_APP_GRAFANA_API_URL", process.env.REACT_APP_GRAFANA_APP_URL);
+export const JUPYTER_URL = `${process.env.REACT_APP_JUPYTER_APP}`;
+
+console.log("JUPYTER_URL", JUPYTER_URL);
+
+console.log("process.env.", process.env);
 
 export const LOGIN_URL = "/auth";
