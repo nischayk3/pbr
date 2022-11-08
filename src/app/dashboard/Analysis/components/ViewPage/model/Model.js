@@ -444,12 +444,13 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
   
 
   const getModelJson = async (data) => {
+
     const reqBody = {
       batch_filter: selectedViewData?.batch_filter,
       data_filter: selectedViewData?.data_filter,
       view_disp_id: selectedViewData?.view_id,
       view_version: selectedViewData?.view_version,
-      target_variable: data?.targetVariable
+      target_variable: data?.target_variable
     };
     dispatch(showLoader());
     const apiResponse = await getAnalyticsModel(reqBody);
