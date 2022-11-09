@@ -1,100 +1,109 @@
 {
-    "data": [
-        {
-            "chart_id": "",
-            "chart_name": "",
-            "chart_description": "",
-            "chart_version": "",
-            "chart_status": 0,
-            "view_id": "",
-            "view_name": "",
-            "view_version": "0",
-            "plot_std": false,
-            "data_filter": {
-                "date_range": "",
-                "unapproved_data": 0,
-                "site": ""
-            },
-            "extras":{},
-            "chart_type": "",
-            "chart_mapping": {
-                "x": {},
-                "y": {}
-            },
-            "data": [
-                {
-                    "type": "scatter",
-                    "mode": "markers",
-                    "marker": {
-                        "color": "#376dd4",
-                        "size": 15
-                    }
-                }
-            ],
-            "layout": {
-                "width": 930,
-                "height": 400,
-                "showlegend": true,
-                "plot_bgcolor": "#FFFFFF",
-                "annotations":[],
-                "legend": {
-                    "title": {
-                        "text": "",
-                        "font": {
-                            "color": "#000000",
-                            "size": 10
-                        }
-                    },
-                    "borderwidth": 2,
-                    "bgcolor": "#FFFFFF",
-                    "orientation": "v",
-                    "bordercolor": "#FFFFFF"
-                },
-                "title": {
-                    "text": "",
-                    "font": {
-                      "size": 15,
-                      "color": "#000000"
-                    }
-                  },
-                "xaxis": {
-                    "title": {
-                        "text": "",
-                        "font": {
-                            "size": 15,
-                            "color": "#000000"
-                        }
-                    },
-                    "visible": true,
-                    "showticklabels": true,
-                    "showline": true,
-                    "gridcolor": "#d9d9d9",
-                    "showgrid": true
-                },
-                "yaxis": {
-                    "title": {
-                        "text": "",
-                        "font": {
-                            "size": 15,
-                            "color": "#000000"
-                        }
-                    },
-                    "visible": true,
-                    "showticklabels": true,
-                    "showline": true,
-                    "gridcolor": "#d9d9d9",
-                    "showgrid": true
-                }
-            },
-            "exclusions": [],
-            "violations": [],
-            "thresholds" : [],
-            "limits": {
-                "control": [],
-                "warning": [],
-                "specification": []
-            },
-            "alerts": []
-        }
-    ]
+	"data": [
+		{
+			"chart_id": "",
+			"chart_name": "",
+			"chart_description": "",
+			"chart_version": "",
+			"chart_status": 0,
+			"view_id": "",
+			"view_name": "",
+			"view_version": "0",
+			"ppk_cpk_data": {
+				"best_transformer": "",
+				"cp": "",
+				"cpk": "",
+				"pp": "",
+				"ppk": "",
+				"return_code": "",
+				"selected_lambda": ""
+			},
+			"plot_std": false,
+			"data_filter": {
+				"date_range": "",
+				"unapproved_data": 0,
+				"site": ""
+			},
+			"extras": {},
+			"chart_type": "",
+			"chart_mapping": {
+				"x": {},
+				"y": {}
+			},
+			"data": [
+				{
+					"type": "scatter",
+					"mode": "markers",
+					"marker": {
+						"color": "#376dd4",
+						"size": 15
+					}
+				}
+			],
+			"layout": {
+				"width": 930,
+				"height": 400,
+				"showlegend": true,
+				"plot_bgcolor": "#FFFFFF",
+				"annotations": [],
+				"legend": {
+					"title": {
+						"text": "",
+						"font": {
+							"color": "#000000",
+							"size": 10
+						}
+					},
+					"borderwidth": 2,
+					"bgcolor": "#FFFFFF",
+					"orientation": "v",
+					"bordercolor": "#FFFFFF"
+				},
+				"title": {
+					"text": "",
+					"font": {
+						"size": 15,
+						"color": "#000000"
+					}
+				},
+				"xaxis": {
+					"title": {
+						"text": "",
+						"font": {
+							"size": 15,
+							"color": "#000000"
+						}
+					},
+					"visible": true,
+					"showticklabels": true,
+					"showline": true,
+					"gridcolor": "#d9d9d9",
+					"showgrid": true
+				},
+				"yaxis": {
+					"title": {
+						"text": "",
+						"font": {
+							"size": 15,
+							"color": "#000000"
+						}
+					},
+					"visible": true,
+					"showticklabels": true,
+					"showline": true,
+					"gridcolor": "#d9d9d9",
+					"showgrid": true
+				}
+			},
+			"exclusions": [],
+			"violations": [],
+			"thresholds": [],
+			"limits": {
+				"control": [],
+				"warning": [],
+				"specification": []
+			},
+			"alerts": []
+		}
+	]
 }
