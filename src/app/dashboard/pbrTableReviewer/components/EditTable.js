@@ -113,7 +113,7 @@ const App = (props) => {
       setCount(templateData.length)
     }
 
-  }, [templateData,showDrag])
+  }, [templateData, showDrag])
 
   const handleDelete = (key, val) => {
     const newData = templateData.filter((item) => item.key !== key);
@@ -188,7 +188,7 @@ const App = (props) => {
         title: col.title,
         handleSave,
       }),
-      onHeaderCell:(record) => ({
+      onHeaderCell: (record) => ({
         onDoubleClick: () => {
           handleDeleteColumn(col)
         },
@@ -196,40 +196,72 @@ const App = (props) => {
     };
   });
 
+  const onDragEnd = (fromIndex, toIndex) => {
+    if (showDrag) {
+      const data = [...templateData.slice()];
+      const item = data.splice(fromIndex, 1)[0];
+      data.splice(toIndex, 0, item);
+      setTemplateData(data)
+    } else {
+      let data = [...templateData.slice()];
+      let arr = []
+      data.map(item => {
+        let keysArr = Object.keys(item)
+        const item1 = keysArr.splice(fromIndex, 1)[0];
+        keysArr.splice(toIndex, 0, item1);
+        let obj = {}
+        keysArr.forEach(el => {
+          obj[el] = item[el]
+          if (!arr.includes(obj)) {
+            arr.push(obj)
+          }
+        })
+      })
+      setTemplateData(arr)
+    }
+
+  }
+
   const handleRadioChange = (vall) => {
     if (vall.target.value === "move_row") {
       setShowDrag(true)
       setDragProps({
         // ...dragProps,
-        onDragEnd(fromIndex, toIndex) {
-          const data = templateData.slice();
-          const item = data.splice(fromIndex, 1)[0];
-          data.splice(toIndex, 0, item);
-          setTemplateData(data)
-        },
+        // onDragEnd(fromIndex, toIndex) {
+        //   const data = [...templateData.slice()];
+        //   const item = data.splice(fromIndex, 1)[0];
+        //   data.splice(toIndex, 0, item);
+        //   setTemplateData(data)
+        // },
         handleSelector: 'a'
       })
     } else {
+      setShowDrag(false)
       setDragProps({
-        onDragEnd(fromIndex, toIndex) {
-          let data = templateData.slice();
-          let arr = []
-          data.map(item =>{
-            let keysArr = Object.keys(item)
-            keysArr = keysArr.filter(i=>i != "key")
-            keysArr.push("key")
-            const item1 = keysArr.splice(fromIndex, 1)[0];
-            keysArr.splice(toIndex, 0, item1);        
-            let obj = {}
-            keysArr.forEach(el=>{
-              obj[el] = item[el]
-              if(!arr.includes(obj)){
-                arr.push(obj)
-              }
-            })
-          })
-          setTemplateData(arr)
-        },
+        // onDragEnd(fromIndex, toIndex) {
+        //   let data = templateData.slice();
+        //   let arr = []
+        //   data.map(item => {
+        //     let keysArr = Object.keys(item)
+        //     // keysArr = keysArr.filter(i=>i != "key")
+        //     console.log("keysArr", keysArr, fromIndex, toIndex)
+
+        //     // keysArr.push("key")
+        //     const item1 = keysArr.splice(fromIndex, 1)[0];
+        //     console.log("item1", item1, keysArr)
+        //     keysArr.splice(toIndex, 0, item1);
+        //     console.log("keysArr", keysArr)
+        //     let obj = {}
+        //     keysArr.forEach(el => {
+        //       obj[el] = item[el]
+        //       if (!arr.includes(obj)) {
+        //         arr.push(obj)
+        //       }
+        //     })
+        //   })
+        //   console.log("arrrr", arr)
+        //   setTemplateData(arr)
+        // },
         nodeSelector: 'th',
       })
     }
@@ -297,13 +329,15 @@ const App = (props) => {
           <Radio.Button value="move_row">Move Row</Radio.Button>
           <Radio.Button value="move_column">Move Column</Radio.Button>
         </Radio.Group>}
-        {!showMove && <CloseOutlined style={{cursor:"pointer",marginLeft:5}} onClick={()=>{
+        {!showMove && <CloseOutlined style={{ cursor: "pointer", marginLeft: 5 }} onClick={() => {
           setShowDrag(false)
           setShowMove(true)
-        }}/>}
+        }} />}
 
         <ReactDragListView
           {...dragProps}
+          onDragEnd={onDragEnd}
+        // nodeSelector={showDrag ? "a" : "th"}
         >
           <Table
             pagination={false}
