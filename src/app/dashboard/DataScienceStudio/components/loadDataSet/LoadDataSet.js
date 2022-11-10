@@ -11,7 +11,7 @@ import "./style.scss";
 const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 	const [uploadFileRes, setUploadFileRes] = useState([]);
 	const [isDisable, setIsDisable] = useState(true);
-	const [fileList, setFileList] = useState([]);
+
 	const dispatch = useDispatch();
 	const match = useRouteMatch();
 	const history = useHistory();
@@ -116,9 +116,8 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 					listType="picture"
 					onChange={handleChange}
 					maxCount={1}
-					fileList={fileList}
 				>
-					{fileList.length >= 8 ? null : uploadButton}
+					{uploadButton}
 				</Upload>
 
 				<p className="upload-heading">Click or drag file to this area to upload</p>
