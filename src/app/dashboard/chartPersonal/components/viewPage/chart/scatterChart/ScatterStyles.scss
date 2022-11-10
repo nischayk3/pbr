@@ -28,44 +28,49 @@
 		max-height: 52vh;
 		overflow: auto;
 
-		.scatter-chart {
-			margin-top: 25px;
+		.chart-layout {
+			display: flex;
 
-			.show-ppk {
-				border: 1px solid #268397;
-				border-radius: 5px;
-				padding: 26px 28px;
-				width: 300px;
+			.scatter-chart {
+				margin-top: 25px;
 
-				height: 140px;
-				margin: 40px 80px;
+				.show-ppk {
+					border: 1px solid #268397;
+					border-radius: 5px;
+					padding: 26px 28px;
+					width: 300px;
 
-				span {
-					font-family: 'Roboto';
-					font-style: normal;
-					font-weight: 500;
-					font-size: 14px;
-					line-height: 14px;
-					padding-bottom: 18px;
-					display: block;
-					/* identical to box height, or 100% */
-					color: #6D6D6D;
-				}
+					height: 140px;
+					margin: 40px 80px;
 
-				p {
-					font-family: 'Roboto';
-					font-style: normal;
-					font-weight: 400;
-					font-size: 16px;
-					line-height: 14px;
-					/* identical to box height, or 88% */
-					padding-bottom: 16px;
-					display: block;
-					margin: 0px;
-					color: #000000;
+					span {
+						font-family: 'Roboto';
+						font-style: normal;
+						font-weight: 500;
+						font-size: 14px;
+						line-height: 14px;
+						padding-bottom: 18px;
+						display: block;
+						/* identical to box height, or 100% */
+						color: #6D6D6D;
+					}
+
+					p {
+						font-family: 'Roboto';
+						font-style: normal;
+						font-weight: 400;
+						font-size: 16px;
+						line-height: 14px;
+						/* identical to box height, or 88% */
+						padding-bottom: 16px;
+						display: block;
+						margin: 0px;
+						color: #000000;
+					}
 				}
 			}
 		}
+
 
 		.tabledata {
 			.ant-table-thead>tr>th {

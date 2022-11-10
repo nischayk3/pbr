@@ -25,8 +25,6 @@ const Profile = () => {
 	const loginWith = localStorage.getItem("loginwith")
 
 	const dispatch = useDispatch();
-
-	const [fileList, setFileList] = useState([]);
 	const [currentPassword, setCurrentPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("")
@@ -34,7 +32,6 @@ const Profile = () => {
 	const [dateFormatValue, setDateFormatValue] = useState("");
 	const [timeZoneValue, setTimeZoneValue] = useState("");
 	const [languageValue, setLanguageValue] = useState("");
-	const [image, setImage] = useState("");
 	const [imgRes, setImgRes] = useState("");
 	const [imagePrev, setImagePrev] = useState(false);
 	const [isUserIcon, setIsUserIcon] = useState(<UserOutlined />);
@@ -191,7 +188,6 @@ const Profile = () => {
 		var formData = new FormData();
 		formData.append('file', newFileList[0].originFileObj);
 		formData.append("email_address", loginDetails && loginDetails.email_id);
-		setImage(formData);
 		setImagePrev(true);
 		setIsUserIcon("");
 		userProfile(formData)
@@ -271,7 +267,7 @@ const Profile = () => {
 											<img src={imgRes} alt="dummy" width="300" height="300" />
 											<Upload
 												listType="picture"
-												fileList={fileList}
+
 												onChange={handleChange}
 												maxCount={1}
 											>
@@ -293,7 +289,7 @@ const Profile = () => {
 
 											<Upload
 												listType="picture"
-												fileList={fileList}
+
 												onChange={handleChange}
 												maxCount={1}
 											>
@@ -425,15 +421,36 @@ const Profile = () => {
 								<div>
 									<div className="input-pass">
 										<p>Current password</p>
-										<Input.Password autocomplete="new-password" placeholder="input password" value={currentPassword} onChange={(e) => { setCurrentPassword(e.target.value), setErrorMsg("") }} />
+										<Input.Password
+											autoComplete="new-password"
+											placeholder="input password"
+											value={currentPassword}
+											onChange={(e) => {
+												setCurrentPassword(e.target.value);
+												setErrorMsg("");
+											}} />
 									</div>
 									<div className="input-pass">
 										<p>New password</p>
-										<Input.Password autocomplete="new-password" placeholder="input password" value={newPassword} onChange={(e) => { setNewPassword(e.target.value), setErrorMsg("") }} />
+										<Input.Password
+											autoComplete="new-password"
+											placeholder="input password"
+											value={newPassword}
+											onChange={(e) => {
+												setNewPassword(e.target.value);
+												setErrorMsg("");
+											}} />
 									</div>
 									<div className="input-pass">
 										<p>Confirm new password</p>
-										<Input.Password autocomplete="new-password" placeholder="input password" value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value), setErrorMsg("") }} />
+										<Input.Password
+											autoComplete="new-password"
+											placeholder="input password"
+											value={confirmPassword}
+											onChange={(e) => {
+												setConfirmPassword(e.target.value);
+												setErrorMsg("");
+											}} />
 										{errorMsg !== "" && (
 											<Alert
 												className="pass-error"
@@ -443,7 +460,7 @@ const Profile = () => {
 												closable
 												onClose={onClose}
 											/>
-											// <p className="pass-error">{errorMsg}</p>
+
 										)}
 									</div>
 

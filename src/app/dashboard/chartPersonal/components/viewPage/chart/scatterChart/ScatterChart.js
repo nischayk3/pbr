@@ -200,7 +200,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		try {
 			dispatch(showLoader());
 			const viewRes = await postChartPlotData(postChartData);
-			console.log("viewRessssssssss", viewRes);
+
 			errorMsg = viewRes?.message;
 			let newdataArr = [...postChartData.data];
 			newdataArr[0].data = viewRes.data[0].data;
@@ -245,7 +245,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 
 	useEffect(() => {
 		const newCovArr = JSON.parse(JSON.stringify(postChartData));
-		console.log("postChartData 1", newCovArr);
+
 		newCovArr &&
 			newCovArr.data &&
 			newCovArr.data.forEach((ele) => {
@@ -372,8 +372,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		return false;
 	};
 
-	console.log("	postChartData.data[0].ppk_cpk_data", postChartData);
-	console.log("ppkData", ppkData);
+
 	return (
 		<div className="chartLayout-container">
 			<Row gutter={24}>
@@ -447,22 +446,29 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				</Col>
 			</Row>
 			<div className="chart-table">
-				<Row className="scatter-chart">
-					{showChart && (
-						<ScatterPlot
-							data={chartData}
-							layout={layoutData}
-							nodeClicked={chartNodeClicked}
-						/>
-					)}
+				<div className="chart-layout">
+					<Row className="scatter-chart">
+						{showChart && (
+							<ScatterPlot
+								data={chartData}
+								layout={layoutData}
+								nodeClicked={chartNodeClicked}
+							/>
+						)}
+
+					</Row>
+
 					{showPpk && (
-						<div className="show-ppk">
-							<span>Results</span>
-							<p>PP : {ppkData?.pp}</p>
-							<p>PPK : {ppkData?.ppk}</p>
-						</div>
+						<Row className="scatter-chart">
+							<div className="show-ppk">
+								<span>Results</span>
+								<p>PP : {ppkData?.pp}</p>
+								<p>PPK : {ppkData?.ppk}</p>
+							</div>
+						</Row>
 					)}
-				</Row>
+				</div>
+
 				{showChart && (
 					<Row className="tabledata">
 						<Col span={24}>
