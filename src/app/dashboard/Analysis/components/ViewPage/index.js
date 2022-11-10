@@ -155,6 +155,25 @@ const ViewPageAnalysis = () => {
     }
   }
 
+  const getResultsTabName = () => {
+    let result = "Results";
+    if (Object.keys(finalModelJson)?.length >= 1) {
+      if (finalModelJson?.estimator?.e__0.estimator_type === "cross_decomposition") {
+        result = "Cross Decomposition"
+      } else if (finalModelJson?.estimator?.e__0.estimator_type === "decomposition") {
+        result = "Decomposition"
+      }
+    } else {
+      if (editFinalJson?.pipeline_data[0]?.estimator?.e__0.estimator_type === "cross_decomposition") {
+        result = "Cross Decomposition"
+      } else if (editFinalJson?.pipeline_data[0]?.estimator?.e__0.estimator_type === "decomposition") {
+        result = "Decomposition"
+      }
+    }
+
+    return result;
+  }
+
   useEffect(() => {
     if (id) {
       getPipelineList();
@@ -210,7 +229,7 @@ const ViewPageAnalysis = () => {
             <Transformation finalModelJson={finalModelJson} editFinalJson={editFinalJson} tableKey={tableKey} />
           </TabPane>}
           {((executed && !exectLater) || (editFinalJson?.pipeline_data[0]?.variable_mapping?.length)) && (
-            <TabPane tab="Results" key="5">
+            <TabPane tab={getResultsTabName()} key="5">
               <Results tablekey={tableKey} modelType={modelType} />
             </TabPane>
           )}

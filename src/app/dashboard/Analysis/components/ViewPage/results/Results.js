@@ -36,7 +36,9 @@ const Results = ({tablekey, modelType}) => {
   };
 
   useEffect(() => {
-    getResultFunc();
+    if (tablekey === '5') {
+      getResultFunc();
+    }
   }, [tablekey]);
 
   return (

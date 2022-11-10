@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./preprocess.scss";
 import { Row, Col, Button, Table, Select, Skeleton } from "antd";
 import {
@@ -21,6 +21,7 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
   const [preprocessData, setPreprocessData] = useState([]);
   const [selectedValues, setSelectedValues] = useState();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const tempFilterKeys = useRef();
   const [filterData, setFilterData] = useState([]);
   const selectedViewData = useSelector(
     (state) => state.analyticsReducer.viewData
@@ -118,6 +119,13 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
   };
 
   const onSaveClick = async (edit) => {
+    const is_same = (tempFilterKeys?.current?.length === selectedRowKeys?.length) && tempFilterKeys?.current?.every(function(element, index) {
+      return element === selectedRowKeys[index]; 
+    });
+
+    if (is_same) {
+      setTableKey("2");
+    } else {
     dispatch(showLoader());
     const req = {
       analysis_preprocessing: {
@@ -129,6 +137,7 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
     };
     const newViewData = JSON.parse(JSON.stringify(selectedViewData));
     newViewData.batch_filter = selectedRowKeys ? selectedRowKeys : [];
+    tempFilterKeys.current = JSON.parse(JSON.stringify(selectedRowKeys))
     const apiResponse = await savePreprocessing(req);
     const data = await apiResponse;
     if (apiResponse.Status === 200) {
@@ -141,6 +150,7 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
     } else {
       dispatch(hideLoader());
       dispatch(showNotification("error", "Unable to save preprocessing data"));
+      }
     }
   };
 
@@ -148,6 +158,7 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
     if (editFinalJson?.input_data?.batch_filter) {
       let tempFilter = [...selectedRowKeys]
       tempFilter = tempFilter.concat(editFinalJson?.input_data?.batch_filter)
+      tempFilterKeys.current = JSON.parse(JSON.stringify(tempFilter))
       setSelectedRowKeys(tempFilter)
     }
     getPreprocessingData();

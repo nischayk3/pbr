@@ -43,6 +43,8 @@ const Estimator = (props) => {
     setEstimatorPopupDataValues({
       ...estimatorPopupDataValues,
       typeListValue: e,
+      algoValue: '',
+      regressionListvalue: ''
     })
   }
   const getAlgoList = (e) => {
@@ -110,7 +112,7 @@ const Estimator = (props) => {
           }
         />
         <p style={{ marginBottom:'0px'}}>Algorithms</p>
-        <Select defaultValue={estimatorPopupDataValues.algoValue} disabled={!estimatorPopupDataValues.typeListValue} onChange={(e) => {
+        <Select value={estimatorPopupDataValues.algoValue} disabled={!estimatorPopupDataValues.typeListValue} onChange={(e) => {
           setEstimatorPopupDataValues({
             ...estimatorPopupDataValues,
             algoValue: e,
@@ -123,7 +125,7 @@ const Estimator = (props) => {
         <Row gutter={24} className="metrics">
           <Col span={11}>
           <p style={{ marginBottom:'0px'}}>Metrics</p>
-          <Select defaultValue={estimatorPopupDataValues.regressionListvalue} disabled={!estimatorPopupDataValues.algoValue} onChange={(e) => {
+          <Select value={estimatorPopupDataValues.regressionListvalue} disabled={!estimatorPopupDataValues.algoValue} onChange={(e) => {
           setEstimatorPopupDataValues({
             ...estimatorPopupDataValues,
             regressionListvalue: e,
