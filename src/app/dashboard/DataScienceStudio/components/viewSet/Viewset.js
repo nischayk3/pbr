@@ -30,7 +30,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 	const [versionList, setVersionList] = useState([0]);
 	const deepSearch1 = useRef(false);
 	const searchViewData = useRef([]);
-	const [showBatchData, setShowBatchData] = useState(false);
+
 	const [isDisable, setIsDisable] = useState(true);
 
 	const [viewData, setViewData] = useState({
@@ -240,92 +240,89 @@ const Viewset = ({ isVisible, onCancel }) => {
 			footer={false}
 			width={787}
 		>
-			{!showBatchData ? (
-				<Row gutter={24} className="newPipelineContainer">
-					<Col span={12} className="img-container">
-						<img src={AnalysisNewPipeline} alt="Analysis new pipeline image" />
-					</Col>
-					<Col span={12}>
-						<Row className="input-mb">
-							<Col span={24} ref={ref} className="search-table">
-								<p>View ID</p>
-								<Search
-									className="viewSearch"
-									placeholder="Select a view ID"
-									onFocus={onFocus}
-									value={viewData.searchValue}
-									onChange={onSearchChange}
-									onSearch={searchTable}
+
+			<Row gutter={24} className="newPipelineContainer">
+				<Col span={12} className="img-container">
+					<img src={AnalysisNewPipeline} alt="Analysis new pipeline image" />
+				</Col>
+				<Col span={12}>
+					<Row className="input-mb">
+						<Col span={24} ref={ref} className="search-table">
+							<p>View ID</p>
+							<Search
+								className="viewSearch"
+								placeholder="Select a view ID"
+								onFocus={onFocus}
+								value={viewData.searchValue}
+								onChange={onSearchChange}
+								onSearch={searchTable}
+							/>
+							{showViewTable && (
+								<ViewSearchTable
+									searchTableData={searchTableData}
+									setViewSearch={setShowViewTable}
+									setDeepSearch={setDeepSearch}
+									deepSearch={deepSearch1}
+									viewData={viewData}
+									setViewData={setViewData}
+									searchViewData={searchViewData}
+									setVersionList={setVersionList}
+									callbackReq={callbackReqPayload}
 								/>
-								{showViewTable && (
-									<ViewSearchTable
-										searchTableData={searchTableData}
-										setViewSearch={setShowViewTable}
-										setDeepSearch={setDeepSearch}
-										deepSearch={deepSearch1}
-										viewData={viewData}
-										setViewData={setViewData}
-										searchViewData={searchViewData}
-										setVersionList={setVersionList}
-										callbackReq={callbackReqPayload}
-									/>
-								)}
+							)}
+						</Col>
+					</Row>
+					{!showViewTable && (
+						<Row gutter={24} className="view-details">
+							<Col span={12}>
+								<Row>
+									<Col span={7}>
+										<label>View ID</label>
+									</Col>
+									<Col span={12} className="wordBreak">
+										<label>: {viewData.viewName || "-"}</label>
+									</Col>
+								</Row>
+							</Col>
+							<Col span={12} className="col-pr">
+								<Row>
+									<Col span={8}>
+										<label>Version</label>
+									</Col>
+									<Col span={12}>
+										<SelectField
+											selectList={versionList}
+											selectedValue={viewData.viewVersion}
+											onChangeSelect={(e) =>
+												setViewData({ ...viewData, viewVersion: e })
+											}
+										/>
+									</Col>
+								</Row>
 							</Col>
 						</Row>
-						{!showViewTable && (
-							<Row gutter={24} className="view-details">
-								<Col span={12}>
-									<Row>
-										<Col span={7}>
-											<label>View ID</label>
-										</Col>
-										<Col span={12} className="wordBreak">
-											<label>: {viewData.viewName || "-"}</label>
-										</Col>
-									</Row>
-								</Col>
-								<Col span={12} className="col-pr">
-									<Row>
-										<Col span={8}>
-											<label>Version</label>
-										</Col>
-										<Col span={12}>
-											<SelectField
-												selectList={versionList}
-												selectedValue={viewData.viewVersion}
-												onChangeSelect={(e) =>
-													setViewData({ ...viewData, viewVersion: e })
-												}
-											/>
-										</Col>
-									</Row>
-								</Col>
-							</Row>
-						)}
-						<Row className="button-mt">
-							<Button
-								type='primary'
-								className='custom-secondary-btn'
-								onClick={onNextClick}
-								disabled={isDisable}
-								id="next-btn"
-							>
-								Next
-							</Button>
-							<Button
-								className="custom-primary-btn"
-								onClick={onCancel}
-								id='back-btn'
-							>
-								Back
-							</Button>
-						</Row>
-					</Col>
-				</Row>
-			) : (
+					)}
+					<Row className="button-mt">
+						<Button
+							type='primary'
+							className='custom-secondary-btn'
+							onClick={onNextClick}
+							disabled={isDisable}
+							id="next-btn"
+						>
+							Next
+						</Button>
+						<Button
+							className="custom-primary-btn"
+							onClick={onCancel}
+							id='back-btn'
+						>
+							Back
+						</Button>
+					</Row>
+				</Col>
+			</Row>
 
-				<></>
-			)}
 			<Modal
 				visible={deepSearch}
 				onCancel={() => setDeepSearch(false)}
