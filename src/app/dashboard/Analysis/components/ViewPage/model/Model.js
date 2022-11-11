@@ -492,7 +492,9 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
   };
 
   useEffect(() => {
-    getNodes(editFinalJson?.input_data?.target_variable);
+    if (tableKey === "3") {
+      getNodes(editFinalJson?.input_data?.target_variable);
+    }
   }, [tableKey]);
 
 
@@ -586,6 +588,9 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
             fitView
             onNodeClick={onNodeClick}
             nodeTypes={nodeTypes}
+            zoomOnPinch={false}
+            zoomOnScroll={false}
+            preventScrolling={false}
             // attributionPosition="top-left"
           >
             <Background variant="dots" gap={25} size={0.3} color="#313131" />
@@ -610,7 +615,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
             </ModalComponent>
           </ReactFlow>
         )}
-        <div className="anaylsisRight">
+        {nodes && nodes.length > 1 && <div className="anaylsisRight">
           <div className="pbrPanel pbrRightPanel">
             <Sider
               trigger={null}
@@ -668,7 +673,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
               )}
             </Sider>
           </div>
-        </div>
+        </div>}
       </div>
     </div>
   );
