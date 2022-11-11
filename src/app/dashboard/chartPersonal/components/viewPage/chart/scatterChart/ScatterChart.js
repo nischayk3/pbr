@@ -171,8 +171,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				ele.chart_type = 'process capability'
 				ele.chart_mapping.x = processObj;
 				ele.chart_mapping.transform = transform;
-
-
 			} else {
 				ele.chart_mapping.transform = undefined;
 			}
@@ -239,7 +237,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			xaxis: null,
 			yaxis: null,
 			zaxis: null,
-			transform: null,
+			transform: "",
 		});
 	};
 
@@ -447,7 +445,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			</Row>
 			<div className="chart-table">
 				<div className="chart-layout">
-					<Row className="scatter-chart">
+					<div className="scatter-chart">
 						{showChart && (
 							<ScatterPlot
 								data={chartData}
@@ -456,16 +454,14 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 							/>
 						)}
 
-					</Row>
+					</div>
 
-					{showPpk && (
-						<Row className="scatter-chart">
-							<div className="show-ppk">
-								<span>Results</span>
-								<p>PP : {ppkData?.pp}</p>
-								<p>PPK : {ppkData?.ppk}</p>
-							</div>
-						</Row>
+					{axisValues.transform && (
+						<div className="show-ppk">
+							<span>Results</span>
+							<p>PP : {ppkData?.pp}</p>
+							<p>PPK : {ppkData?.ppk}</p>
+						</div>
 					)}
 				</div>
 
