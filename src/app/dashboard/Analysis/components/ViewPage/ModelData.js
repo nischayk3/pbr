@@ -32,12 +32,11 @@ const ModelData = ({ modelData, setModelData, editFinalJson }) => {
 
   
   useEffect(() => {
-    if (editFinalJson?.pipeline_data[0]?.variable_mapping?.length) {
+    if (editFinalJson?.pipeline_data[0]?.variable_mapping?.length && !modelData?.length) {
       getModalData();
     }
   }, [editFinalJson])
   
-
   return <iframe srcdoc={modelData}></iframe>;
 };
 
