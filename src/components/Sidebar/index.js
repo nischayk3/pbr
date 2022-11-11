@@ -206,14 +206,14 @@ const Sidebar = () => {
 						icon={<DiffOutlined className="menu-icons" />}
 						id="paper batch records"
 					>
-						<Link to="/dashboard/paper_batch_records">Create Template</Link>
+						<Link to="/dashboard/paper_batch_records">Template</Link>
 					</Menu.Item>
 					<Menu.Item
 						key="pbr_reviewer"
 						icon={<CheckCircleOutlined className="menu-icons" />}
 						id="pbr_reviewer"
 					>
-						<Link to="/dashboard/pbr_reviewer">Approve</Link>
+						<Link to="/dashboard/pbr_reviewer">Dashboard</Link>
 					</Menu.Item>
 				</SubMenu>
 				<Menu.Item
