@@ -207,6 +207,8 @@ const App = (props) => {
       let arr = []
       data.map(item => {
         let keysArr = Object.keys(item)
+        keysArr = keysArr.filter(i=>i != "key")
+        keysArr.push("key")
         const item1 = keysArr.splice(fromIndex, 1)[0];
         keysArr.splice(toIndex, 0, item1);
         let obj = {}
