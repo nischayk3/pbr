@@ -153,6 +153,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			function_id: null,
 		};
 		newArr.forEach((ele) => {
+			console.log("eleeeeeeeeeeeee", ele);
 			ele.chart_type =
 				axisValues.chartType === "Scatter Plot"
 					? "scatter"
@@ -182,6 +183,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						? "Batch"
 						: "Recorded Date";
 			ele.layout.yaxis.title.text = yAxis.function_name;
+			console.log("ele.layout.yaxis.title.text", ele.layout.yaxis.title.text);
 			ele.data = [
 				{
 					type: "scatter",
@@ -193,6 +195,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				},
 			];
 		});
+		console.log("newArrrrrrr", newArr);
 		setPostChartData({ ...postChartData, data: newArr });
 		let errorMsg = "";
 		try {
@@ -205,7 +208,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			newdataArr[0].extras = viewRes.data[0].extras;
 			newdataArr[0].layout = viewRes.data[0].layout;
 			newdataArr[0].ppk_cpk_data = viewRes.data[0].ppk_cpk_data;
-			if (viewRes?.data[0]?.ppk_cpk_data) {
+			if (JSON.stringify(viewRes?.data[0]?.ppk_cpk_data) !== '{}') {
 				setShowPpk(true)
 				setPpkData(viewRes.data[0].ppk_cpk_data)
 			}
@@ -456,7 +459,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 
 					</div>
 
-					{axisValues.transform && (
+					{showPpk && (
 						<div className="show-ppk">
 							<span>Results</span>
 							<p>PP : {ppkData?.pp}</p>
