@@ -34,7 +34,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		"Error",
 		"Bubble",
 		"2D-histogram",
-		"Process capability"
+		"Process Capability"
 	];
 	const [axisValues, setAxisValues] = useState({
 		xaxis: null,
@@ -50,6 +50,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const [tableKey, setTableKey] = useState("3");
 	const [showZAxis, setShowZAxis] = useState(false);
 	const [transformationList, setTransformationList] = useState(['boxcox', 'johnson']);
+	const [ppkData, setPpkData] = useState({});
+	const [showPpk, setShowPpk] = useState(false);
 	const exclusionIdCounter = useRef(0);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [exclusionValues, setExclusionValues] = useState({
@@ -124,8 +126,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		let transform = {};
 		const newCovArr = JSON.parse(JSON.stringify(postChartData));
 		newCovArr.data[0].extras.coverage.forEach((ele) => {
-			console.log("ele", ele);
-			console.log("axisValues", axisValues);
 			if (ele.function_name === axisValues.xaxis) {
 				xAxis.function_name = ele.function_name;
 				xAxis.function_id = ele.function_id;
@@ -138,7 +138,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				zAxis.function_name = ele.function_name;
 				zAxis.function_id = ele.function_id;
 			}
-			if (axisValues.chartType === 'Process capability') {
+			if (axisValues.chartType === 'Process Capability') {
 				transform.function_name = axisValues.transform;
 			}
 		});
@@ -146,6 +146,10 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		const obj = {
 			function_name:
 				axisValues.xaxis === "Batch" ? "batch_num" : "recorded_date",
+			function_id: null,
+		};
+		const processObj = {
+			function_name: "recorded_date",
 			function_id: null,
 		};
 		newArr.forEach((ele) => {
@@ -163,12 +167,10 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			} else {
 				ele.chart_mapping.z = undefined;
 			}
-			if (axisValues.chartType === "Process capability") {
+			if (axisValues.chartType === "Process Capability") {
 				ele.chart_type = 'process capability'
-				ele.chart_mapping.x = {};
+				ele.chart_mapping.x = processObj;
 				ele.chart_mapping.transform = transform;
-				console.log("transformation", transform);
-				console.log("ele", ele);
 			} else {
 				ele.chart_mapping.transform = undefined;
 			}
@@ -196,11 +198,17 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		try {
 			dispatch(showLoader());
 			const viewRes = await postChartPlotData(postChartData);
+
 			errorMsg = viewRes?.message;
 			let newdataArr = [...postChartData.data];
 			newdataArr[0].data = viewRes.data[0].data;
 			newdataArr[0].extras = viewRes.data[0].extras;
 			newdataArr[0].layout = viewRes.data[0].layout;
+			newdataArr[0].ppk_cpk_data = viewRes.data[0].ppk_cpk_data;
+			if (viewRes?.data[0]?.ppk_cpk_data) {
+				setShowPpk(true)
+				setPpkData(viewRes.data[0].ppk_cpk_data)
+			}
 			setPostChartData({ ...postChartData, data: newdataArr });
 			setShowChart(true);
 			dispatch(hideLoader());
@@ -229,12 +237,13 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			xaxis: null,
 			yaxis: null,
 			zaxis: null,
-			transform: null,
+			transform: "",
 		});
 	};
 
 	useEffect(() => {
 		const newCovArr = JSON.parse(JSON.stringify(postChartData));
+
 		newCovArr &&
 			newCovArr.data &&
 			newCovArr.data.forEach((ele) => {
@@ -340,7 +349,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		if (
 			axisValues.chartType &&
 			axisValues.yaxis &&
-			(axisValues.chartType === "Histogram" || axisValues.chartType === "Process capability") &&
+			(axisValues.chartType === "Histogram" || axisValues.chartType === "Process Capability") &&
 			!axisValues.xaxis
 		) {
 
@@ -361,6 +370,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		return false;
 	};
 
+
 	return (
 		<div className="chartLayout-container">
 			<Row gutter={24}>
@@ -373,7 +383,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						onChangeSelect={handleChartType}
 					/>
 				</Col>
-				{axisValues.chartType === 'Process capability' ? (
+				{axisValues.chartType === 'Process Capability' ? (
 					<></>
 				) : (
 					<Col span={showZAxis ? 5 : 6}>
@@ -410,7 +420,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					</Col>
 				)}
 
-				{axisValues.chartType === 'Process capability' && (
+				{axisValues.chartType === 'Process Capability' && (
 					<Col span={5}>
 						<p>Transformation</p>
 						<SelectField
@@ -434,20 +444,27 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				</Col>
 			</Row>
 			<div className="chart-table">
-				<Row className="scatter-chart">
-					{showChart && (
-						<ScatterPlot
-							data={chartData}
-							layout={layoutData}
-							nodeClicked={chartNodeClicked}
-						/>
+				<div className="chart-layout">
+					<div className="scatter-chart">
+						{showChart && (
+							<ScatterPlot
+								data={chartData}
+								layout={layoutData}
+								nodeClicked={chartNodeClicked}
+							/>
+						)}
+
+					</div>
+
+					{axisValues.transform && (
+						<div className="show-ppk">
+							<span>Results</span>
+							<p>PP : {ppkData?.pp}</p>
+							<p>PPK : {ppkData?.ppk}</p>
+						</div>
 					)}
-					{/* <div className="show-ppk">
-						<span>Results</span>
-						<p>PP : ABC</p>
-						<p>PPK : XYZ</p>
-					</div> */}
-				</Row>
+				</div>
+
 				{showChart && (
 					<Row className="tabledata">
 						<Col span={24}>
