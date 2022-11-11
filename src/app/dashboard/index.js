@@ -10,10 +10,11 @@ import {
 } from "react-router-dom";
 import { showNotification } from "../../duck/actions/commonActions";
 import { getAuthorisedPermission } from "../../services/authProvider";
+import LoginRedirect from "../user/login/redirect";
+import RedirectSign from "../user/login/redirectSign";
 import "./dashboard.scss";
 // DASHBOARD ROUTE COMPONENTS
-const LoginRedirect = lazy(() => import("../user/login/redirect"))
-const RedirectSign = lazy(() => import("../user/login/redirectSign"))
+
 const HeaderBar = lazy(() => import("../../components/Header"))
 const Help = lazy(() => import("../../components/Help"))
 const Sidebar = lazy(() => import("../../components/Sidebar"))
