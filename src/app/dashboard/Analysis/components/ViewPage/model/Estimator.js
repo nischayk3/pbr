@@ -15,6 +15,7 @@ const Estimator = (props) => {
     setSavedEstimatorPopupDataValues,
     finalModelJson,
     setFinalModelJson,
+    target_category
   } = props;
   
   const [algosListData, setAlgosListData] = useState([]);
@@ -68,8 +69,14 @@ const Estimator = (props) => {
       }
       return null;
     });
+    let target = '';
+    if (target_category === "numerical") {
+      target = 'regression';
+    } else {
+      target = 'classification';
+    }
     resArr.forEach((ele) => {
-      if (ele.type === e) {
+      if (ele.type === e || (ele.type === 'regression' && e === 'cross_decomposition') || (e === 'decomposition' && ele.type === target)) {
         ele.disabled = false;
       } else {
         ele.disabled = true;
