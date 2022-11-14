@@ -176,14 +176,22 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				ele.chart_mapping.transform = undefined;
 			}
 
-			ele.layout.xaxis.title.text =
-				Object.keys(xAxis).length !== 0
-					? xAxis.function_name
-					: obj.function_name === "batch_num"
-						? "Batch"
-						: "Recorded Date";
-			ele.layout.yaxis.title.text = yAxis.function_name;
-			console.log("ele.layout.yaxis.title.text", ele.layout.yaxis.title.text);
+			if (axisValues.chartType === "Process Capability") {
+				ele.layout.width = 500;
+				ele.layout.height = 350;
+				ele.layout.autoSize = false;
+				ele.layout.xaxis.title.text = "";
+				ele.layout.yaxis.title.text = "";
+			} else {
+				ele.layout.xaxis.title.text =
+					Object.keys(xAxis).length !== 0
+						? xAxis.function_name
+						: obj.function_name === "batch_num"
+							? "Batch"
+							: "Recorded Date";
+				ele.layout.yaxis.title.text = yAxis.function_name;
+			}
+
 			ele.data = [
 				{
 					type: "scatter",
@@ -211,6 +219,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			if (JSON.stringify(viewRes?.data[0]?.ppk_cpk_data) !== '{}') {
 				setShowPpk(true)
 				setPpkData(viewRes.data[0].ppk_cpk_data)
+				newdataArr[0].layout.width = 500;
+				newdataArr[0].layout.height = 350;
 			}
 			setPostChartData({ ...postChartData, data: newdataArr });
 			setShowChart(true);
@@ -401,9 +411,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					</Col>
 				)}
 
-
 				<Col span={showZAxis ? 5 : 6}>
-					<p>Y-axis</p>
+					<p>{axisValues.chartType === 'Process Capability' ? 'Parameter' : 'Y-axis'}</p>
 					<SelectField
 						placeholder="Select Y-axis"
 						selectList={yaxisList}
@@ -411,6 +420,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						onChangeSelect={(e) => setAxisValues({ ...axisValues, yaxis: e })}
 					/>
 				</Col>
+
 				{showZAxis && (
 					<Col span={5}>
 						<p>Z-axis</p>
@@ -456,14 +466,17 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 								nodeClicked={chartNodeClicked}
 							/>
 						)}
-
 					</div>
 
 					{showPpk && (
 						<div className="show-ppk">
 							<span>Results</span>
+							<p>Best Transformation : {ppkData?.best_transformer}</p>
+							<p>CP : {ppkData?.cp}</p>
+							<p>CPK : {ppkData?.cpk}</p>
 							<p>PP : {ppkData?.pp}</p>
 							<p>PPK : {ppkData?.ppk}</p>
+							<p>Lambda : {ppkData?.selected_lambda}</p>
 						</div>
 					)}
 				</div>
