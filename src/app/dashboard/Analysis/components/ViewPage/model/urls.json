@@ -143,5 +143,18 @@
     "AdditiveChi2Sampler": "https://scikit-learn.org/stable/modules/generated/sklearn.kernel_approximation.AdditiveChi2Sampler.html#sklearn.kernel_approximation.AdditiveChi2Sampler",
     "Nystroem": "https://scikit-learn.org/stable/modules/generated/sklearn.kernel_approximation.Nystroem.html#sklearn.kernel_approximation.Nystroem",
     "PolynomialCountSketch": "https://scikit-learn.org/stable/modules/generated/sklearn.kernel_approximation.PolynomialCountSketch.html#sklearn.kernel_approximation.PolynomialCountSketch",
-    "RBFSampler": "https://scikit-learn.org/stable/modules/generated/sklearn.kernel_approximation.RBFSampler.html#sklearn.kernel_approximation.RBFSampler"
+    "RBFSampler": "https://scikit-learn.org/stable/modules/generated/sklearn.kernel_approximation.RBFSampler.html#sklearn.kernel_approximation.RBFSampler",
+    "SplineTransformer": "https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.SplineTransformer.html?highlight=splinetransformer#sklearn.preprocessing.SplineTransformer",
+    "Normaliser": "https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.Normalizer.html?highlight=normalizer#sklearn.preprocessing.Normalizer",
+    "KNeighborsTransformer": "https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsTransformer.html?highlight=kneighborstransformer#sklearn.neighbors.KNeighborsTransformer",
+    "Nearestneighbors": "https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.NearestNeighbors.html?highlight=nearestneighbors#sklearn.neighbors.NearestNeighbors",
+    "PowerTransformer": "https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PowerTransformer.html?highlight=powertransformer#sklearn.preprocessing.PowerTransformer",
+    "FunctionTransformer": "https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html?highlight=functiontransformer#sklearn.preprocessing.FunctionTransformer",
+    "RadiusNeighborTransformer": "https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.RadiusNeighborsTransformer.html?highlight=radiusneighbor#sklearn.neighbors.RadiusNeighborsTransformer",
+    "MinMaxScaler": "https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html?highlight=minmaxscaler#sklearn.preprocessing.MinMaxScaler",
+    "RobustScaler": "https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html?highlight=robustscaler#sklearn.preprocessing.RobustScaler",
+    "MaxAbsScaler": "https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MaxAbsScaler.html?highlight=maxabsscaler#sklearn.preprocessing.MaxAbsScaler",
+    "RadiusNeighborsRegressor": "https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.RadiusNeighborsRegressor.html#sklearn.neighbors.RadiusNeighborsRegressor",
+    "Poisson regression": "https://scikit-learn.org/stable/auto_examples/linear_model/plot_poisson_regression_non_normal_loss.html?highlight=poisson+regression",
+    "ExtraTreesRegression": "https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html#sklearn.ensemble.ExtraTreesRegressor"
 }
