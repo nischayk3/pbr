@@ -1,5 +1,5 @@
-import Plot from "react-plotly.js";
 import React from "react";
+import Plot from "react-plotly.js";
 
 const ScatterPlot = (props) => {
 	const onDotClicked = (data) => {

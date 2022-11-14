@@ -8,16 +8,18 @@ import {
 	useLocation,
 	useRouteMatch
 } from "react-router-dom";
+import SuspenseWrapper from "../../components/SuspenseWrapper";
 import { showNotification } from "../../duck/actions/commonActions";
 import { getAuthorisedPermission } from "../../services/authProvider";
+import LoginRedirect from "../user/login/redirect";
+import RedirectSign from "../user/login/redirectSign";
 import "./dashboard.scss";
+import PrivateRoute from "./ProtectedRoute";
 // DASHBOARD ROUTE COMPONENTS
-const LoginRedirect = lazy(() => import("../user/login/redirect"))
-const RedirectSign = lazy(() => import("../user/login/redirectSign"))
+
 const HeaderBar = lazy(() => import("../../components/Header"))
 const Help = lazy(() => import("../../components/Help"))
 const Sidebar = lazy(() => import("../../components/Sidebar"))
-const SuspenseWrapper = lazy(() => import("../../components/SuspenseWrapper"));
 const ViewPage = lazy(() => import("./chartPersonal/components/viewPage/ViewPage"));
 const RolesAndAccess = lazy(() => import("./UserRolesAndAccess/RolesAndAccess/RolesAndAccess"));
 const ScreenControls = lazy(() => import("./UserRolesAndAccess/ScreenControls/ScreenControls"));
@@ -29,7 +31,6 @@ const PaperBatchRecordsTemplate = lazy(() => import("./paperBatchRecordsTemplate
 const FileUpload = lazy(() => import("./pbrFileUpload"));
 const PbrReviewer = lazy(() => import("./pbrReviewer"));
 const pbrTableUpdate = lazy(() => import("./pbrTableReviewer"));
-const PrivateRoute = lazy(() => import("./ProtectedRoute"));
 const UnAuthorisedScreen = lazy(() => import("./unAuthorised"));
 const ManualDataUpload = lazy(() => import("./manualDataUpload"));
 const ChartPersonal = lazy(() => import("./chartPersonal"));
