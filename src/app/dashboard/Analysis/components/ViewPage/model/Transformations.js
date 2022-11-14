@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Button } from "antd";
 import SelectField from "../../../../../../components/SelectField/SelectField";
+import urlJson from './urls.json'
+import './context.scss'
 
 const Transformation = ({
   onCreateClick,
@@ -16,6 +18,14 @@ const Transformation = ({
   finalModelJson,
   setFinalModelJson,
 }) => {
+
+  const [contextMenuVisible, setContextMenuVisible] = useState(false)
+  const [x, setX] = useState(0)
+  const [y, setY] = useState(0)
+  const [url, setUrl] = useState('')
+  const [algorithm, setAlgorithm] = useState('')
+
+
   const onClick = () => {
     setSaveTransformationValues({
       ...saveTransformationValues,
@@ -35,8 +45,36 @@ const Transformation = ({
     onCreateClick();
   };
 
+  const handleClose = useCallback(() => (contextMenuVisible ? setContextMenuVisible(false) : null), [contextMenuVisible]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClose);
+    return () => {
+      document.removeEventListener("click", handleClose);
+    };
+  });
+
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    setX(event.pageX)
+    setY(event.pageY)
+    setAlgorithm(event.target.innerHTML)
+    setUrl(urlJson[event.target.innerHTML])
+    setContextMenuVisible(true)
+  };
+
+  const style = {
+    top: y + 10,
+    left: x + 10,
+  }
   return (
-    <>
+    <div>
+      {
+        contextMenuVisible ? <div className="context-menu" style={style} >
+          <span onClick={() => window.open(url)}><center>About {algorithm}</center></span>
+        </div> : <></>
+      }
       <div className="drawer-head">
         <h3>Transformation - New</h3>
       </div>
@@ -53,12 +91,14 @@ const Transformation = ({
           selectList={imputerList}
           selectedValue={transformationFinal}
           onChangeSelect={(e) => setTransformationsFinal(e)}
+          menu={true}
+          handleClick={(e) => handleClick(e)}
         />
         <Button className="custom-primary-btn" onClick={onClick}>
           Save
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

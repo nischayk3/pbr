@@ -3,6 +3,8 @@ import React from "react";
 import { Select } from "antd";
 
 const SelectField = (props) => {
+
+
 	return (
 		<div className="select_field">
 			{props.label ||
@@ -24,7 +26,7 @@ const SelectField = (props) => {
 			>
 				{props.selectList &&
 					props.selectList.map((item) => (
-						<Select.Option key={item} value={item}>
+						<Select.Option key={item} value={item}  {...(props.menu && { onContextMenu: props.handleClick })}>
 							{item}
 						</Select.Option>
 					))}
