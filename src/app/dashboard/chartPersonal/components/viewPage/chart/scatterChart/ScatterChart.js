@@ -219,6 +219,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			if (JSON.stringify(viewRes?.data[0]?.ppk_cpk_data) !== '{}') {
 				setShowPpk(true)
 				setPpkData(viewRes.data[0].ppk_cpk_data)
+				newdataArr[0].layout.width = 500;
+				newdataArr[0].layout.height = 350;
 			}
 			setPostChartData({ ...postChartData, data: newdataArr });
 			setShowChart(true);
