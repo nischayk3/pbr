@@ -155,7 +155,7 @@ const Estimator = (props) => {
           })
         }} style={{ width: "100%" }}>
           {algosListData?.length && algosListData?.map((ele) => {
-            return <Option value={ele.submodule}>{ele.display_name}</Option>
+            return <Option value={ele.submodule} onContextMenu={handleClick}>{ele.display_name}</Option>
           })}
         </Select>
         <Row gutter={24} className="metrics">
