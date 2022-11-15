@@ -155,7 +155,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			function_id: null,
 		};
 		newArr.forEach((ele) => {
-			console.log("eleeeeeeeeeeeee", ele);
 			ele.chart_type =
 				axisValues.chartType === "Scatter Plot"
 					? "scatter"
@@ -205,7 +204,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				},
 			];
 		});
-		console.log("newArrrrrrr", newArr);
 		setPostChartData({ ...postChartData, data: newArr });
 		let errorMsg = "";
 		try {
