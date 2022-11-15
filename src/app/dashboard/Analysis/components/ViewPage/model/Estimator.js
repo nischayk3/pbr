@@ -168,7 +168,7 @@ const Estimator = (props) => {
           })
         }} style={{ width: "100%" }}>
           {metricListData.length && metricListData.map((ele) => {
-            return <Option value={ele.metric_name} disabled={ele.disabled}>{ele.display_name}</Option>
+            return <Option value={ele.metric_name} onContextMenu={handleClick} disabled={ele.disabled}>{ele.display_name}</Option>
           })}
         </Select>
           </Col>
