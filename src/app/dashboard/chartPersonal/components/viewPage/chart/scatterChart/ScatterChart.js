@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ScatterStyles.scss";
 //antd imports
-import { Button, Col, Empty, Row, Tabs } from "antd";
+import { Button, Col, Empty, Row, Select, Tabs } from "antd";
 //components
 import Modal from "../../../../../../../components/Modal/Modal";
 import ScatterPlot from "../../../../../../../components/ScatterPlot/ScatterPlot";
@@ -14,6 +14,7 @@ import ExclusionPopup from "../ExclusionPopup";
 import { postChartPlotData } from "../../../../../../../services/chartPersonalizationService";
 //redux
 import { useDispatch } from "react-redux";
+import SelectSearchField from "../../../../../../../components/SelectSearchField/SelectSearchField";
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../../../duck/actions/commonActions";
@@ -49,7 +50,12 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const [yaxisList, setYAxisList] = useState([]);
 	const [tableKey, setTableKey] = useState("3");
 	const [showZAxis, setShowZAxis] = useState(false);
-	const [transformationList, setTransformationList] = useState(['boxcox', 'johnson']);
+	const [transformationList, setTransformationList] = useState([
+		{ label: "Yeohjohnson", value: "johnson" },
+		{ label: "Boxcox", value: "boxcox" }
+	]);
+
+	// /'boxcox', 'johnson'
 	const [ppkData, setPpkData] = useState({});
 	const [showPpk, setShowPpk] = useState(false);
 	const exclusionIdCounter = useRef(0);
@@ -122,11 +128,13 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				return;
 			}
 		}
+
 		let xAxis = {};
 		let yAxis = {};
 		let zAxis = {};
 		let transform = {};
 		const newCovArr = JSON.parse(JSON.stringify(postChartData));
+
 		newCovArr.data[0].extras.coverage.forEach((ele) => {
 			if (ele.function_name === axisValues.xaxis) {
 				xAxis.function_name = ele.function_name;
@@ -144,16 +152,19 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				transform.function_name = axisValues.transform;
 			}
 		});
+
 		const newArr = [...postChartData.data];
 		const obj = {
 			function_name:
 				axisValues.xaxis === "Batch" ? "batch_num" : "recorded_date",
 			function_id: null,
 		};
+
 		const processObj = {
 			function_name: "recorded_date",
 			function_id: null,
 		};
+
 		newArr.forEach((ele) => {
 			ele.chart_type =
 				axisValues.chartType === "Scatter Plot"
@@ -178,8 +189,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			}
 
 			if (axisValues.chartType === "Process Capability") {
-				ele.layout.width = 500;
-				ele.layout.height = 350;
 				ele.layout.autoSize = false;
 				ele.layout.xaxis.title.text = "";
 				ele.layout.yaxis.title.text = "";
@@ -191,6 +200,13 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 							? "Batch"
 							: "Recorded Date";
 				ele.layout.yaxis.title.text = yAxis.function_name;
+			}
+
+			if (axisValues.transform !== "") {
+				if (ele.limits.specification.length === 0) {
+					dispatch(showNotification("error", "Please enter a specification limit"));
+					return;
+				}
 			}
 
 			ele.data = [
@@ -209,22 +225,26 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		try {
 			dispatch(showLoader());
 			const viewRes = await postChartPlotData(postChartData);
-
+			dispatch(hideLoader());
 			errorMsg = viewRes?.message;
 			let newdataArr = [...postChartData.data];
 			newdataArr[0].data = viewRes.data[0].data;
 			newdataArr[0].extras = viewRes.data[0].extras;
 			newdataArr[0].layout = viewRes.data[0].layout;
 			newdataArr[0].ppk_cpk_data = viewRes.data[0].ppk_cpk_data;
-			if (JSON.stringify(viewRes?.data[0]?.ppk_cpk_data) !== '{}') {
-				setShowPpk(true)
-				setPpkData(viewRes.data[0].ppk_cpk_data)
-				newdataArr[0].layout.width = 500;
-				newdataArr[0].layout.height = 350;
+			if (axisValues.transform !== "") {
+				if (viewRes?.data[0]?.ppk_cpk_data?.return_code === 200) {
+					setShowPpk(true)
+					setPpkData(viewRes.data[0].ppk_cpk_data)
+					newdataArr[0].layout.width = 500;
+					newdataArr[0].layout.height = 350;
+				} else {
+					setShowPpk(false)
+				}
 			}
 			setPostChartData({ ...postChartData, data: newdataArr });
 			setShowChart(true);
-			dispatch(hideLoader());
+
 		} catch (error) {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
@@ -276,6 +296,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						};
 						table.push(obj);
 					});
+
 				setExclusionTable(table);
 				if (
 					(ele?.data[0]?.x && ele?.data[0]?.x?.length >= 1) ||
@@ -383,7 +404,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		return false;
 	};
 
-
+	const optionsTransformer = transformationList.map((item, index) => (
+		<Select.Option key={index} value={item.value}>
+			{item.label}
+		</Select.Option>
+	));
 	return (
 		<div className="chartLayout-container">
 			<Row gutter={24}>
@@ -435,13 +460,17 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 
 				{axisValues.chartType === 'Process Capability' && (
 					<Col span={5}>
-						<p>Transformation</p>
-						<SelectField
-							placeholder="Select Transformation"
-							selectList={transformationList}
-							selectedValue={axisValues.transform}
+						{/* <p>Transformation</p> */}
+						<SelectSearchField
+							showSearch
+							label='Transformation'
+							placeholder='Select Transformation'
 							onChangeSelect={(e) => setAxisValues({ ...axisValues, transform: e })}
+							options={optionsTransformer}
+							handleClearSearch={e => clearSearch(e, 'plant')}
+							selectedValue={axisValues.transform}
 						/>
+
 					</Col>
 				)}
 
