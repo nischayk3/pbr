@@ -45,6 +45,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
   });
   const [imputerList, setImputerList] = useState([]);
   const [imputerType, setImputerType] = useState("");
+  const [target_category, setTarget_category] = useState("");
   const [selectedImputeValue, setSelectedImputeValue] = useState("");
   const [imputerTypeList, setImputerTypeList] = useState([]);
   const [scalerList, setScalerList] = useState([]);
@@ -166,6 +167,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
       } else {
         getModelJson(apiResponse.data);
       }
+      setTarget_category(apiResponse.data?.target_variable_category)
       setSelectedTargetVariable(targetVariable);
       apiResponse?.data?.Imputer?.forEach((ele) => {
         imputerList.push(ele.submodule);
@@ -669,6 +671,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
                   }
                   finalModelJson={finalModelJson}
                   setFinalModelJson={setFinalModelJson}
+                  target_category={target_category}
                 />
               )}
             </Sider>

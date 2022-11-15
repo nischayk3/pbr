@@ -67,40 +67,42 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const [exclusionTable, setExclusionTable] = useState([]);
 
 	const chartNodeClicked = (data) => {
-		if (data && data.data && data.data.name !== "mean") {
-			postChartData.data.forEach((ele) => {
-				ele.extras.data_table.forEach((el) => {
-					if (el.batch_num === data.text) {
-						setExclusionValues({
-							...exclusionValues,
-							batchId: data.text,
-							productCode: ele.view_name,
-							parameterValue:
-								ele.chart_type === "process control"
-									? data.y
-									: `(${data.x},${data.y})`,
-							notes: "",
-							unit: el.uom_code,
-							excludeRecord: false,
-							parameterName:
-								ele.chart_type === "process control"
-									? ele.chart_mapping.y.function_name
-									: `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
-							testDate:
-								ele.chart_type === "process control"
-									? new Date(
-										el["recorded_date_" + ele.chart_mapping.y.function_name]
-									).toLocaleDateString()
-									: `(${new Date(
-										el["recorded_date_" + ele.chart_mapping.x.function_name]
-									).toLocaleDateString()},${new Date(
-										el["recorded_date_" + ele.chart_mapping.y.function_name]
-									).toLocaleDateString()})`,
-						});
-					}
+		if (postChartData && postChartData.data && postChartData.data[0] && (postChartData.data[0].chart_type == "scatter" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "line")) {
+			if (data && data.data && data.data.name !== "mean") {
+				postChartData.data.forEach((ele) => {
+					ele.extras.data_table.forEach((el) => {
+						if (el.batch_num === data.text) {
+							setExclusionValues({
+								...exclusionValues,
+								batchId: data.text,
+								productCode: ele.view_name,
+								parameterValue:
+									ele.chart_type === "process control"
+										? data.y
+										: `(${data.x},${data.y})`,
+								notes: "",
+								unit: el.uom_code,
+								excludeRecord: false,
+								parameterName:
+									ele.chart_type === "process control"
+										? ele.chart_mapping.y.function_name
+										: `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
+								testDate:
+									ele.chart_type === "process control"
+										? new Date(
+											el["recorded_date_" + ele.chart_mapping.y.function_name]
+										).toLocaleDateString()
+										: `(${new Date(
+											el["recorded_date_" + ele.chart_mapping.x.function_name]
+										).toLocaleDateString()},${new Date(
+											el["recorded_date_" + ele.chart_mapping.y.function_name]
+										).toLocaleDateString()})`,
+							});
+						}
+					});
 				});
-			});
-			setIsModalVisible(true);
+				setIsModalVisible(true);
+			}
 		}
 	};
 	const handleCloseModal = () => {
@@ -153,6 +155,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			function_id: null,
 		};
 		newArr.forEach((ele) => {
+			console.log("eleeeeeeeeeeeee", ele);
 			ele.chart_type =
 				axisValues.chartType === "Scatter Plot"
 					? "scatter"
@@ -175,13 +178,22 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				ele.chart_mapping.transform = undefined;
 			}
 
-			ele.layout.xaxis.title.text =
-				Object.keys(xAxis).length !== 0
-					? xAxis.function_name
-					: obj.function_name === "batch_num"
-						? "Batch"
-						: "Recorded Date";
-			ele.layout.yaxis.title.text = yAxis.function_name;
+			if (axisValues.chartType === "Process Capability") {
+				ele.layout.width = 500;
+				ele.layout.height = 350;
+				ele.layout.autoSize = false;
+				ele.layout.xaxis.title.text = "";
+				ele.layout.yaxis.title.text = "";
+			} else {
+				ele.layout.xaxis.title.text =
+					Object.keys(xAxis).length !== 0
+						? xAxis.function_name
+						: obj.function_name === "batch_num"
+							? "Batch"
+							: "Recorded Date";
+				ele.layout.yaxis.title.text = yAxis.function_name;
+			}
+
 			ele.data = [
 				{
 					type: "scatter",
@@ -193,6 +205,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				},
 			];
 		});
+		console.log("newArrrrrrr", newArr);
 		setPostChartData({ ...postChartData, data: newArr });
 		let errorMsg = "";
 		try {
@@ -205,9 +218,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			newdataArr[0].extras = viewRes.data[0].extras;
 			newdataArr[0].layout = viewRes.data[0].layout;
 			newdataArr[0].ppk_cpk_data = viewRes.data[0].ppk_cpk_data;
-			if (viewRes?.data[0]?.ppk_cpk_data) {
+			if (JSON.stringify(viewRes?.data[0]?.ppk_cpk_data) !== '{}') {
 				setShowPpk(true)
 				setPpkData(viewRes.data[0].ppk_cpk_data)
+				newdataArr[0].layout.width = 500;
+				newdataArr[0].layout.height = 350;
 			}
 			setPostChartData({ ...postChartData, data: newdataArr });
 			setShowChart(true);
@@ -398,9 +413,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					</Col>
 				)}
 
-
 				<Col span={showZAxis ? 5 : 6}>
-					<p>Y-axis</p>
+					<p>{axisValues.chartType === 'Process Capability' ? 'Parameter' : 'Y-axis'}</p>
 					<SelectField
 						placeholder="Select Y-axis"
 						selectList={yaxisList}
@@ -408,6 +422,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						onChangeSelect={(e) => setAxisValues({ ...axisValues, yaxis: e })}
 					/>
 				</Col>
+
 				{showZAxis && (
 					<Col span={5}>
 						<p>Z-axis</p>
@@ -453,14 +468,17 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 								nodeClicked={chartNodeClicked}
 							/>
 						)}
-
 					</div>
 
-					{axisValues.transform && (
+					{showPpk && (
 						<div className="show-ppk">
 							<span>Results</span>
+							<p>Best Transformation : {ppkData?.best_transformer}</p>
+							<p>CP : {ppkData?.cp}</p>
+							<p>CPK : {ppkData?.cpk}</p>
 							<p>PP : {ppkData?.pp}</p>
 							<p>PPK : {ppkData?.ppk}</p>
+							<p>Lambda : {ppkData?.selected_lambda}</p>
 						</div>
 					)}
 				</div>
