@@ -67,40 +67,42 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const [exclusionTable, setExclusionTable] = useState([]);
 
 	const chartNodeClicked = (data) => {
-		if (data && data.data && data.data.name !== "mean") {
-			postChartData.data.forEach((ele) => {
-				ele.extras.data_table.forEach((el) => {
-					if (el.batch_num === data.text) {
-						setExclusionValues({
-							...exclusionValues,
-							batchId: data.text,
-							productCode: ele.view_name,
-							parameterValue:
-								ele.chart_type === "process control"
-									? data.y
-									: `(${data.x},${data.y})`,
-							notes: "",
-							unit: el.uom_code,
-							excludeRecord: false,
-							parameterName:
-								ele.chart_type === "process control"
-									? ele.chart_mapping.y.function_name
-									: `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
-							testDate:
-								ele.chart_type === "process control"
-									? new Date(
-										el["recorded_date_" + ele.chart_mapping.y.function_name]
-									).toLocaleDateString()
-									: `(${new Date(
-										el["recorded_date_" + ele.chart_mapping.x.function_name]
-									).toLocaleDateString()},${new Date(
-										el["recorded_date_" + ele.chart_mapping.y.function_name]
-									).toLocaleDateString()})`,
-						});
-					}
+		if (postChartData && postChartData.data && postChartData.data[0] && (postChartData.data[0].chart_type == "scatter" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "line")) {
+			if (data && data.data && data.data.name !== "mean") {
+				postChartData.data.forEach((ele) => {
+					ele.extras.data_table.forEach((el) => {
+						if (el.batch_num === data.text) {
+							setExclusionValues({
+								...exclusionValues,
+								batchId: data.text,
+								productCode: ele.view_name,
+								parameterValue:
+									ele.chart_type === "process control"
+										? data.y
+										: `(${data.x},${data.y})`,
+								notes: "",
+								unit: el.uom_code,
+								excludeRecord: false,
+								parameterName:
+									ele.chart_type === "process control"
+										? ele.chart_mapping.y.function_name
+										: `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
+								testDate:
+									ele.chart_type === "process control"
+										? new Date(
+											el["recorded_date_" + ele.chart_mapping.y.function_name]
+										).toLocaleDateString()
+										: `(${new Date(
+											el["recorded_date_" + ele.chart_mapping.x.function_name]
+										).toLocaleDateString()},${new Date(
+											el["recorded_date_" + ele.chart_mapping.y.function_name]
+										).toLocaleDateString()})`,
+							});
+						}
+					});
 				});
-			});
-			setIsModalVisible(true);
+				setIsModalVisible(true);
+			}
 		}
 	};
 	const handleCloseModal = () => {
@@ -153,7 +155,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			function_id: null,
 		};
 		newArr.forEach((ele) => {
-			console.log("eleeeeeeeeeeeee", ele);
 			ele.chart_type =
 				axisValues.chartType === "Scatter Plot"
 					? "scatter"
@@ -203,7 +204,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				},
 			];
 		});
-		console.log("newArrrrrrr", newArr);
 		setPostChartData({ ...postChartData, data: newArr });
 		let errorMsg = "";
 		try {

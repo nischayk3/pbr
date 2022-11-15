@@ -55,12 +55,13 @@ const Transformation = ({
   });
 
 
+
   const handleClick = (event) => {
     event.preventDefault();
     setX(event.pageX)
     setY(event.pageY)
-    setAlgorithm(event.target.innerHTML)
-    setUrl(urlJson[event.target.innerHTML])
+    setAlgorithm(event.target.innerText)
+    setUrl(urlJson[event.target.innerText])
     setContextMenuVisible(true)
   };
 

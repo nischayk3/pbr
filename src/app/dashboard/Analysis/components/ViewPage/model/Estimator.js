@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Row, Col, Checkbox, Button, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import SelectField from "../../../../../../components/SelectField/SelectField";
+import urlJson from './urls.json'
 
 
 const { Option } = Select;
@@ -17,7 +18,13 @@ const Estimator = (props) => {
     setFinalModelJson,
     target_category
   } = props;
-  
+
+
+  const [contextMenuVisible, setContextMenuVisible] = useState(false)
+  const [x, setX] = useState(0)
+  const [y, setY] = useState(0)
+  const [url, setUrl] = useState('')
+  const [algorithm, setAlgorithm] = useState('')
   const [algosListData, setAlgosListData] = useState([]);
   const [metricListData, setMetricListData] = useState([]);
 
@@ -28,7 +35,7 @@ const Estimator = (props) => {
       value.model_name = `e_${estimatorPopupDataValues.algoValue.toLowerCase()}`;
     });
     const metricsTemp = {
-      metric_name : estimatorPopupDataValues.regressionListvalue
+      metric_name: estimatorPopupDataValues.regressionListvalue
     }
     setFinalModelJson({ ...finalModelJson, estimator: tempObj.estimator, metrics: metricsTemp });
     setSavedEstimatorPopupDataValues({
@@ -56,9 +63,9 @@ const Estimator = (props) => {
 
   const getMetricList = (e) => {
     let resArr = [];
-    estimatorPopupData?.regressionList.filter(function(item){
+    estimatorPopupData?.regressionList.filter(function (item) {
       let i = resArr.findIndex((x) => x.display_name === item.display_name);
-      if(i === -1){
+      if (i === -1) {
         resArr.push(item);
       }
       return null;
@@ -84,9 +91,37 @@ const Estimator = (props) => {
     getMetricList(estimatorPopupDataValues.typeListValue)
   }, [estimatorPopupDataValues.typeListValue])
 
+  const handleClose = useCallback(() => (contextMenuVisible ? setContextMenuVisible(false) : null), [contextMenuVisible]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClose);
+    return () => {
+      document.removeEventListener("click", handleClose);
+    };
+  });
+
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    setX(event.pageX)
+    setY(event.pageY)
+    setAlgorithm(event.target.innerText)
+    setUrl(urlJson[event.target.innerText])
+    setContextMenuVisible(true)
+  };
+
+  const style = {
+    top: y + 10,
+    left: x + 10,
+  }
 
   return (
     <>
+      {
+        contextMenuVisible ? <div className="context-menu" style={style} >
+          <span onClick={() => window.open(url)}><center>About {algorithm}</center></span>
+        </div> : <></>
+      }
       <div className="drawer-head">
         <h3>Estimator</h3>
       </div>
@@ -112,7 +147,7 @@ const Estimator = (props) => {
             onTypeChange(e)
           }
         />
-        <p style={{ marginBottom:'0px'}}>Algorithms</p>
+        <p style={{ marginBottom: '0px' }}>Algorithms</p>
         <Select value={estimatorPopupDataValues.algoValue} disabled={!estimatorPopupDataValues.typeListValue} onChange={(e) => {
           setEstimatorPopupDataValues({
             ...estimatorPopupDataValues,

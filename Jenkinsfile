@@ -10,7 +10,6 @@ pipeline {
     }
     stages {
       stage("Code Coverage") {
-
            steps {
                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 
@@ -48,7 +47,6 @@ pipeline {
 
 
       stage("Quality Gate Status Check") {
-
             steps {
                  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                   sh '''#!/bin/bash -x
@@ -72,7 +70,7 @@ pipeline {
                        sed -i -e "s@IMAGE@\'"$SHARED_IMAGE:$BUILD_NUMBER"\'@g"  Dockerfile-prod
                        cat Dockerfile-prod
                        sudo docker build --build-arg app_dns=mi-dev.mareana.com --build-arg jupyter_dns=jupyterhub-dev.mareana.com -t  $DOCKER_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-prod .
-               ''' 
+               '''
                }
               }
 
@@ -84,7 +82,7 @@ pipeline {
                      docker push $DOCKER_IMAGE:$BUILD_NUMBER
                      docker rmi $DOCKER_IMAGE:$BUILD_NUMBER
                      docker rmi $SHARED_IMAGE:$BUILD_NUMBER
-              '''  
+              '''
               }
             }
           }

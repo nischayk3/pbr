@@ -312,8 +312,8 @@ function TableIdentifier(props) {
     const genTableExtra = (val, values) => (
         <div style={{ display: "flex", justifyContent: "space-between" }} onClick={e => e.stopPropagation()}>
             <p style={{ marginBottom: 0 }}>{val}</p>
-            <Switch size='medium' style={{ marginLeft: val == "Row Identifier" ? 35 : 10 }} />
-            <div style={{ marginTop: -5 }}>
+            {/* <Switch size='medium' style={{ marginLeft: val == "Row Identifier" ? 35 : 10 }} /> */}
+            <div style={{ marginTop: -5,marginLeft: val == "Row Identifier" ? 33 : 10 }}>
                 <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.start} placeholder='Start Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
             </div>
             <div style={{ marginTop: -5 }}>
