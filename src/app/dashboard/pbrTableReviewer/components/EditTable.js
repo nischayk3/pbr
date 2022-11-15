@@ -81,7 +81,7 @@ const EditableCell = ({
 
   return <td {...restProps}>{childNode}</td>;
 };
-
+ /* istanbul ignore next */
 const App = (props) => {
   let { templateData, setTemplateData } = props
   const [defaultColumns, setDefaultColumns] = useState([]);
@@ -89,7 +89,7 @@ const App = (props) => {
   const [count, setCount] = useState(0);
   const [showDrag, setShowDrag] = useState(false);
   const [dragProps, setDragProps] = useState({});
-
+  const [enableDelete, setEnableDelete] = useState(false);
 
 
 
@@ -190,7 +190,11 @@ const App = (props) => {
       }),
       onHeaderCell: (record) => ({
         onDoubleClick: () => {
-          handleDeleteColumn(col)
+          if(enableDelete){
+            handleDeleteColumn(col)
+            setEnableDelete(false)
+          }
+          
         },
       })
     };
@@ -316,6 +320,17 @@ const App = (props) => {
           }}
         >
           Add Column
+        </Button>
+        <Button
+          onClick={()=>setEnableDelete(true)}
+          type="primary"
+          disabled ={enableDelete}
+          style={{
+            marginBottom: 16,
+            marginLeft: 10
+          }}
+        >
+          {enableDelete ? "Double Click Header" :"Delete Column"}
         </Button>
         {showMove && <Button
           onClick={handleMovementChange}
