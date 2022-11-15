@@ -717,7 +717,11 @@ function PaperBatchRecordsTemplate() {
             } else if (batchRes.status === 404) {
                 setAreasMap();
                 dispatch(hideLoader());
-            } else {
+            } else if (batchRes.Data.length == 0) {
+                setAreasMap({ ...areasMap, areas: [] });
+                dispatch(hideLoader());
+            }
+            else {
                 dispatch(hideLoader());
                 dispatch(showNotification('error', `Unable to detect ${mode}`));
             }

@@ -72,6 +72,40 @@ p {
 	}
 	.p36 {
 		padding: 12px 18px;
+		.title-legends {
+			display: flex;
+			justify-content: flex-end;
+			dl dt {
+				display: inline-block;
+				width: 14px;
+				height: 14px;
+				border-radius: 50%;
+				vertical-align: middle;
+			}
+			dl dd {
+				display: inline-block;
+				margin: 0px 12px;
+				padding-bottom: 0;
+				vertical-align: middle;
+				font-family: var(--primary-font-family);
+				font-style: normal;
+				font-weight: 400;
+				font-size: 12px;
+				line-height: 10px;
+			}
+			dl dt.grey {
+				background: #363636;
+			}
+			dl dt.yellow {
+				background: #f6ba60;
+			}
+			dl dt.green {
+				background: #a4f588;
+			}
+			dl dt.red {
+				background: #D64045;
+			}
+		}
 	}
 	.create-new {
 		height: 137px;

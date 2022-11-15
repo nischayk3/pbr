@@ -290,6 +290,24 @@ function PbrReviewer() {
       sortDirections: ['descend', 'ascend'],
     },
     {
+      title: 'Template Version',
+      key: 'template_version',
+      dataIndex: 'template_version',
+      ...getColumnSearchProps('template_version'),
+      sorter: (a, b) => {
+        return a.template_version === null ||
+          a.template_version === undefined ||
+          a.template_version === ""
+          ? -1
+          : b.template_version == null ||
+            b.template_version == undefined ||
+            b.template_version == ""
+            ? 1
+            : a.template_version.toString().localeCompare(b.template_version);
+      },
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
       title: 'Template Name',
       key: 'template_name',
       dataIndex: 'template_name',

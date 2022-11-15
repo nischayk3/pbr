@@ -9,6 +9,7 @@ import {
 } from '@ant-design/icons';
 import InputField from '../../../../../components/InputField/InputField';
 const { Panel } = Collapse;
+ /* istanbul ignore next */
 function ParameterList(props) {
     let { originalResponse,setAreasMap,areasMap } = props
     const [parameterList, setParameterList] = useState([])
