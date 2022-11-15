@@ -4,6 +4,8 @@ import SelectField from "../../../../../../components/SelectField/SelectField";
 import urlJson from './urls.json'
 import './context.scss'
 
+const { Option } = Select;
+
 const FeatureUnion = ({
   onCreateClick,
   scalerList,
@@ -11,6 +13,8 @@ const FeatureUnion = ({
   setScalerAlgoValue,
   scalerAlgoValue,
   setSaveScalerAlgoValue,
+  setScalerListSelected,
+  scalerNodeList,
   finalModelJson,
   setFinalModelJson,
 }) => {
@@ -23,9 +27,18 @@ const FeatureUnion = ({
 
   const onClickSave = () => {
     const tempObj = JSON.parse(JSON.stringify(finalModelJson));
+    let variableList = [];
+    tempObj?.variable_mapping.forEach((sca) => {
+      scalerListSelected.forEach((ele) => {
+        if (sca.variable_name === ele) {
+          variableList.push(sca.variable_id)
+        }
+      })
+    })
     Object.entries(tempObj.feature_union_mapping).forEach(([key, value]) => {
       if (value.type === "Scaler") {
         value.transformation = `t_${scalerAlgoValue.toLowerCase()}`;
+        value.variable_list = variableList
       }
     });
     setFinalModelJson({
@@ -34,6 +47,11 @@ const FeatureUnion = ({
     });
     setSaveScalerAlgoValue(scalerAlgoValue);
     onCreateClick();
+  };
+
+
+  const handleChange = (value) => {
+    setScalerListSelected(value);
   };
 
   const handleClose = useCallback(() => (contextMenuVisible ? setContextMenuVisible(false) : null), [contextMenuVisible]);
@@ -76,10 +94,13 @@ const FeatureUnion = ({
           allowClear
           style={{ width: "100%" }}
           placeholder="Please select"
-          defaultValue={scalerListSelected}
-        // onChange={handleChange}
+          value={scalerListSelected}
+          onChange={handleChange}
         >
-          {/* {children} */}
+          {scalerNodeList &&
+              scalerNodeList.map((ele) => {
+                return <Option key={ele}>{ele}</Option>;
+              })}
         </Select>
         <SelectField
           label="Algorithm"

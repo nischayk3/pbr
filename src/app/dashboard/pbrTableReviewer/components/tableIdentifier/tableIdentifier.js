@@ -329,8 +329,8 @@ function TableIdentifier(props) {
     const genTableExtra = (val, values) => (
         <div style={{ display: "flex", justifyContent: "space-between" }} onClick={e => e.stopPropagation()}>
             <p style={{ marginBottom: 0 }}>{val}</p>
-            <Switch size='medium' style={{ marginLeft: val == "Row Identifier" ? 35 : 10 }} />
-            <div style={{ marginTop: -5 }}>
+            {/* <Switch size='medium' style={{ marginLeft: val == "Row Identifier" ? 35 : 10 }} /> */}
+            <div style={{ marginTop: -5,marginLeft: val == "Row Identifier" ? 30 : 10 }}>
                 <Input value={values?.start} placeholder='Start Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
             </div>
             <div style={{ marginTop: -5 }}>
@@ -374,10 +374,10 @@ function TableIdentifier(props) {
             style={{ marginTop: 20 }}
             onChange={handleIdentifierChange}
         >
-            <Panel id="columns" header={genTableExtra("Column Identifier", colPanelValue)} key='1' >
+            <Panel id="columns" header={genTableExtra("Column Identifier", colPanelValue)} key='1' collapsible="disabled">
                 <ColumnTable />
             </Panel>
-            <Panel id="row" header={genTableExtra("Row Identifier", rowPanelValue)} key='2'>
+            <Panel id="row" header={genTableExtra("Row Identifier", rowPanelValue)} key='2' collapsible="disabled">
                 <RowTable />
             </Panel>
         </Collapse>

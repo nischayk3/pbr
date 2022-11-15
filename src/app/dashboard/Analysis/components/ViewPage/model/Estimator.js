@@ -52,18 +52,12 @@ const Estimator = (props) => {
       ...estimatorPopupDataValues,
       typeListValue: e,
       algoValue: '',
-      regressionListvalue: ''
+      regressionListvalue: []
     })
   }
   const getAlgoList = (e) => {
-    const tempList = JSON.parse(JSON.stringify(estimatorPopupData?.algoList));
-    tempList.forEach((ele) => {
-      if (ele.estimator_type === e) {
-        ele.disabled = false;
-      } else {
-        ele.disabled = true;
-      }
-    })
+    let tempList = JSON.parse(JSON.stringify(estimatorPopupData?.algoList));
+    tempList = tempList.filter((ele) => ele?.estimator_type === e)
     setAlgosListData(tempList)
   }
 
@@ -82,13 +76,13 @@ const Estimator = (props) => {
     } else {
       target = 'classification';
     }
-    resArr.forEach((ele) => {
-      if (ele.type === e || (ele.type === 'regression' && e === 'cross_decomposition') || (e === 'decomposition' && ele.type === target)) {
-        ele.disabled = false;
-      } else {
-        ele.disabled = true;
-      }
-    })
+    if (e === 'cross_decomposition') {
+      resArr = resArr.filter((ele) => ele.type === 'regression')
+    } else if(e === 'decomposition') {
+      resArr = resArr.filter((ele) => ele.type === target)
+    } else {
+      resArr = resArr.filter((ele) => ele.type === e)
+    }
     setMetricListData(resArr)
   }
 
@@ -161,24 +155,26 @@ const Estimator = (props) => {
           })
         }} style={{ width: "100%" }}>
           {algosListData?.length && algosListData?.map((ele) => {
-            return <Option value={ele.submodule} disabled={ele.disabled} onContextMenu={handleClick}>{ele.display_name}</Option>
+            return <Option value={ele.submodule} onContextMenu={handleClick}>{ele.display_name}</Option>
           })}
         </Select>
         <Row gutter={24} className="metrics">
-          <Col span={11}>
-            <p style={{ marginBottom: '0px' }}>Metrics</p>
-            <Select value={estimatorPopupDataValues.regressionListvalue} onContextMenu={handleClick} disabled={!estimatorPopupDataValues.algoValue} onChange={(e) => {
-              setEstimatorPopupDataValues({
-                ...estimatorPopupDataValues,
-                regressionListvalue: e,
-              })
-            }} style={{ width: "100%" }}>
-              {metricListData.length && metricListData.map((ele) => {
-                return <Option value={ele.metric_name} disabled={ele.disabled}>{ele.display_name}</Option>
-              })}
-            </Select>
+          <Col span={24}>
+          <p style={{ marginBottom:'0px'}}>Metrics</p>
+          <Select  mode="multiple" value={estimatorPopupDataValues.regressionListvalue} disabled={!estimatorPopupDataValues.algoValue} onChange={(e) => {
+          setEstimatorPopupDataValues({
+            ...estimatorPopupDataValues,
+            regressionListvalue: e,
+          })
+        }} style={{ width: "100%" }}>
+          {metricListData.length && metricListData.map((ele) => {
+            return <Option value={ele.metric_name} disabled={ele.disabled}>{ele.display_name}</Option>
+          })}
+        </Select>
           </Col>
-          <Col span={13}>
+        </Row>
+        <Row>
+        <Col span={13}>
             <Checkbox
               checked={estimatorPopupDataValues.enableGrid}
               onChange={(e) =>

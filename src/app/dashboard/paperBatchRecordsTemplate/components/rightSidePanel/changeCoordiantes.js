@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import InputField from '../../../../../components/InputField/InputField';
 const { Panel } = Collapse;
+ /* istanbul ignore next */
 function ChangeCoordiantes(props) {
     let {areasMapObject,params,clickedSnippetId,onChangeChart} = props
     return (

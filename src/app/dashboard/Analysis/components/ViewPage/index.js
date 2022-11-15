@@ -278,7 +278,7 @@ const ViewPageAnalysis = () => {
 						<Transformation finalModelJson={finalModelJson} editFinalJson={editFinalJson} tableKey={tableKey} />
 					</TabPane>}
 					{((executed && !exectLater) || (editFinalJson?.pipeline_data[0]?.variable_mapping?.length)) && (
-						<TabPane tab={getResultsTabName()} key="5">
+						<TabPane tab="Results" key="5">
 							<Results tablekey={tableKey} modelType={modelType} />
 						</TabPane>
 					)}
