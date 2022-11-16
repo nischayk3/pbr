@@ -11,12 +11,13 @@
 import React from 'react';
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
 import Elogbook from './eLogbookForm/eLogbookForm';
+import ElogStep from '../../ElogBook/components/ebookSteps/eBookStep';
 const ElogBook = () => {
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
 			<div className="custom-content-layout">
-				<Elogbook />
+				<ElogStep />
 			</div>
 		</div>
 	)
