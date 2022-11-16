@@ -10,13 +10,13 @@
 
 import React from 'react';
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
-import Elogbook from './eLogbookForm/eLogbookForm';
+import Landing from './landingPage/Landing';
 const ElogBook = () => {
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
 			<div className="custom-content-layout">
-				<Elogbook />
+				<Landing />
 			</div>
 		</div>
 	)
