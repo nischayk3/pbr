@@ -8,32 +8,30 @@ import {
 	useLocation,
 	useRouteMatch
 } from "react-router-dom";
-import HeaderBar from "../../components/Header";
-import Help from "../../components/Help";
-import Sidebar from "../../components/Sidebar";
 import SuspenseWrapper from "../../components/SuspenseWrapper";
 import { showNotification } from "../../duck/actions/commonActions";
+import { getAuthorisedPermission } from "../../services/authProvider";
 import LoginRedirect from "../user/login/redirect";
 import RedirectSign from "../user/login/redirectSign";
-import ViewPage from "./chartPersonal/components/viewPage/ViewPage";
-import RolesAndAccess from "./UserRolesAndAccess/RolesAndAccess/RolesAndAccess";
-import ScreenControls from "./UserRolesAndAccess/ScreenControls/ScreenControls";
-import UserConfiguration from "./UserRolesAndAccess/UserConfiguration/UserConfiguration";
-import UserRolesAndAccess from "./UserRolesAndAccess/UserRolesAndAccess";
-// import PaperBatchRecords from './paperBatchRecords';
-import { getAuthorisedPermission } from "../../services/authProvider";
-import Analysis from "./Analysis/components";
-import ViewPageAnalysis from "./Analysis/components/ViewPage";
 import "./dashboard.scss";
-
-import PaperBatchRecordsTemplate from "./paperBatchRecordsTemplate";
-import FileUpload from "./pbrFileUpload";
-import PbrReviewer from "./pbrReviewer";
-import pbrTableUpdate from './pbrTableReviewer';
 import PrivateRoute from "./ProtectedRoute";
-import UnAuthorisedScreen from "./unAuthorised";
 // DASHBOARD ROUTE COMPONENTS
 
+const HeaderBar = lazy(() => import("../../components/Header"))
+const Help = lazy(() => import("../../components/Help"))
+const Sidebar = lazy(() => import("../../components/Sidebar"))
+const ViewPage = lazy(() => import("./chartPersonal/components/viewPage/ViewPage"));
+const RolesAndAccess = lazy(() => import("./UserRolesAndAccess/RolesAndAccess/RolesAndAccess"));
+const ScreenControls = lazy(() => import("./UserRolesAndAccess/ScreenControls/ScreenControls"));
+const UserConfiguration = lazy(() => import("./UserRolesAndAccess/UserConfiguration/UserConfiguration"));
+const UserRolesAndAccess = lazy(() => import("./UserRolesAndAccess/UserRolesAndAccess"));
+const Analysis = lazy(() => import("./Analysis/components"));
+const ViewPageAnalysis = lazy(() => import("./Analysis/components/ViewPage"));
+const PaperBatchRecordsTemplate = lazy(() => import("./paperBatchRecordsTemplate"));
+const FileUpload = lazy(() => import("./pbrFileUpload"));
+const PbrReviewer = lazy(() => import("./pbrReviewer"));
+const pbrTableUpdate = lazy(() => import("./pbrTableReviewer"));
+const UnAuthorisedScreen = lazy(() => import("./unAuthorised"));
 const ManualDataUpload = lazy(() => import("./manualDataUpload"));
 const ChartPersonal = lazy(() => import("./chartPersonal"));
 const View = lazy(() => import("./viewScreen/components/View"));
@@ -72,25 +70,21 @@ const Dashboard = () => {
 	const screen = location.pathname.split("/");
 	const [authorised, setAuthorised] = useState(true);
 
-	useEffect(() => {
-		// if (!Auth.isAuthenticated()) {
-		//   history.push('/user/login');
-		// }
-	}, [history]);
+	// useEffect(() => {
+	// 	// if (!Auth.isAuthenticated()) {
+	// 	//   history.push('/user/login');
+	// 	// }
+	// }, [history]);
 
 	useEffect(() => {
-
 		if (JSON.parse(localStorage.getItem('login_details')) == null && !window.location.href.includes('user/login') && !window.location.href.includes('/redirect')) {
 			dispatch(showNotification('error', 'Please login first to proceed'))
 			setTimeout(() => {
 				history.push('/user/login');
 				window.location.reload()
 			}, 1000)
-
 		}
-
 	}, []);
-
 
 	const requiredAuth = async (resource) => {
 		let authResponse = {};
@@ -150,8 +144,6 @@ const Dashboard = () => {
 		} else if (location.pathname.includes("elog_book")) {
 			view = "ANALYTICS";
 		}
-
-
 		if (view && view.length > 1) {
 			requiredAuth(view);
 		}

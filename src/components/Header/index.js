@@ -1,5 +1,5 @@
-import { BellOutlined, CaretUpOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Input, Layout } from 'antd';
+import { BellOutlined, CaretUpOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Avatar, Input, Layout, Modal, Button } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -22,6 +22,8 @@ const HeaderBar = () => {
 	const [imgRes, setImgRes] = useState("");
 	const [imagePrev, setImagePrev] = useState(false);
 	const [dropdownVisible, setDropdownVisible] = useState(false);
+	const [modal, setModal] = useState(false)
+
 	const loginDetails = JSON.parse(localStorage.getItem("login_details"))
 
 	const profile = useSelector((state) => state.loginReducer.profile)
@@ -113,10 +115,12 @@ const HeaderBar = () => {
 				<BellOutlined style={{ margin: "6px 25px", fontSize: "20px" }} />
 				<div className="custom-menu">
 					<div className="user-name" onClick={dropDownOpen}>
+
 						<Avatar size={22} style={{ backgroundColor: "orange", fontSize: "16px", padding: "1px 0" }}>
 							{localStorage.getItem("username") &&
 								localStorage.getItem("username").split("")[0].toUpperCase()}{" "}
 						</Avatar>
+
 						<DownOutlined className='down-icon' />
 					</div>
 					{dropdownVisible && (
@@ -149,14 +153,26 @@ const HeaderBar = () => {
 										setDropdownVisible(false)
 									}}><BellOutlined /> Notification</p>
 								</div>
-								<div className="logout" onClick={adenabled ? () => adLogout() : () => Logout()}>
+								<div className="logout" onClick={() => setModal(true)}>
 									<p><LogoutOutlined /> Logout</p>
+
 								</div>
+
 							</div>
 						</>
 					)}
 				</div>
 			</div>
+
+			<Modal
+				visible={modal}
+				title="Log Out"
+				onCancel={() => setModal(false)}
+				footer={<div><Button onClick={() => setModal(false)}
+				>Cancel</Button><Button onClick={adenabled ? () => adLogout() : () => Logout()} style={{ color: 'white', backgroundColor: '#093185' }}>Confirm</Button></div>}
+			>
+				You are about to log out and terminate your session do you want to confirm?
+			</Modal>
 
 		</Header >
 	);

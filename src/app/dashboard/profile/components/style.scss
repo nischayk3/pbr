@@ -148,6 +148,10 @@
 	width: 137px;
 	margin: 0px auto;
 
+	.ant-upload-list {
+		display: none
+	}
+
 	>#display-image {
 		background-size: contain;
 	}

@@ -13,6 +13,8 @@ import {
   sendDrugSub,
   loadDrug,
 } from "../../../../../duck/actions/viewHierarchyAction";
+import { getAuthorisedPermission } from "../../../../../services/authProvider";
+import { showNotification } from "../../../../../duck/actions/commonActions";
 
 export default function Landing(props) {
   const [searched, setSearched] = useState(false);
@@ -42,6 +44,26 @@ export default function Landing(props) {
       pathname: `/dashboard/molecule_hierarchy_configuration/${ds_name}`,
     });
   };
+
+  const checkUnique = async () => {
+    let req = {
+      ds_name: hierarchyName
+    }
+    let check_unique = await getAuthorisedPermission(req, 'VIEW')
+    console.log(check_unique.response)
+    if (check_unique.data && check_unique.data.statuscode == 200) {
+      history.push({
+        pathname:
+          "/dashboard/molecule_hierarchy_configuration/untitled_view",
+      });
+    }
+    else if (check_unique.response && check_unique.response.data && check_unique.response.data.statuscode == 400) {
+      dispatch(showNotification('error', 'Drug substance name already present, please enter unique name'))
+    }
+    else {
+      dispatch(showNotification('error', 'Error while creating drug substance'))
+    }
+  }
 
   const getViews = async () => {
     let req = { limit: 8 };
@@ -237,12 +259,16 @@ export default function Landing(props) {
             <Button
               disabled={!hierarchyName.length > 0}
               className="custom-primary-button"
-              onClick={() => {
-                history.push({
-                  pathname:
-                    "/dashboard/molecule_hierarchy_configuration/untitled_view",
-                });
-              }}
+              onClick={() => checkUnique(hierarchyName)}
+            // onClick={() => {              
+
+
+            //   history.push({
+            //     pathname:
+            //       "/dashboard/molecule_hierarchy_configuration/untitled_view",
+            //   });
+
+            // }}
             >
               Let's Go!
             </Button>,
