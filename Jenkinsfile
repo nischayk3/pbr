@@ -9,31 +9,30 @@ pipeline {
         ansiColor('xterm')
     }
     stages {
-      stage("Code Coverage") {
+      // stage("Code Coverage") {
+      //      steps {
+      //          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 
-           steps {
-               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+      //            sh '''#!/bin/bash -x
+      //                  docker-compose down -v
+      //                  docker-compose build  --no-cache ui-cypress-run
+      //                  docker-compose up ui-cypress-run
+      //                  docker-compose down
+      //                  ls coverage
+      //           '''
+      //              publish html
+      //              publishHTML target: [
+      //              allowMissing: false,
+      //              alwaysLinkToLastBuild: false,
+      //              keepAll: true,
+      //              reportDir: './coverage/lcov-report/',
+      //              reportFiles: 'index.html',
+      //              reportName: 'Coverage Report'
+      //              ]
 
-                 sh '''#!/bin/bash -x
-                       docker-compose down -v
-                       docker-compose build  --no-cache ui-cypress-run
-                       docker-compose up ui-cypress-run
-                       docker-compose down
-                       ls coverage
-                '''
-                   publish html
-                   publishHTML target: [
-                   allowMissing: false,
-                   alwaysLinkToLastBuild: false,
-                   keepAll: true,
-                   reportDir: './coverage/lcov-report/',
-                   reportFiles: 'index.html',
-                   reportName: 'Coverage Report'
-                   ]
-
-               }
-             }
-          }
+      //          }
+      //        }
+      //     }
       stage('Sonarqube Analysis') {
         environment {
            scannerHome = tool 'SonarQubeScanner'
@@ -48,7 +47,6 @@ pipeline {
 
 
       stage("Quality Gate Status Check") {
-
             steps {
                  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                   sh '''#!/bin/bash -x
@@ -72,7 +70,7 @@ pipeline {
                        sed -i -e "s@IMAGE@\'"$SHARED_IMAGE:$BUILD_NUMBER"\'@g"  Dockerfile-prod
                        cat Dockerfile-prod
                        sudo docker build --build-arg app_dns=mi-dev.mareana.com --build-arg jupyter_dns=jupyterhub-dev.mareana.com -t  $DOCKER_IMAGE:$BUILD_NUMBER --no-cache -f Dockerfile-prod .
-               ''' 
+               '''
                }
               }
 
@@ -84,7 +82,7 @@ pipeline {
                      docker push $DOCKER_IMAGE:$BUILD_NUMBER
                      docker rmi $DOCKER_IMAGE:$BUILD_NUMBER
                      docker rmi $SHARED_IMAGE:$BUILD_NUMBER
-              '''  
+              '''
               }
             }
           }

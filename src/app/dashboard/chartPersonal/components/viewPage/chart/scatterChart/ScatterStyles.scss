@@ -28,17 +28,53 @@
 		max-height: 52vh;
 		overflow: auto;
 
-		.scatter-chart {
-			margin-top: 25px;
+		.chart-layout {
+			display: flex;
 
+			// display: grid;
+			// grid-template-columns: auto auto;
 			.show-ppk {
 				border: 1px solid #268397;
 				border-radius: 5px;
 				padding: 26px 28px;
 				width: 300px;
-				height: 130px;
+				margin: 80px 20px;
+				height: 250px;
+
+
+				span {
+					font-family: 'Roboto';
+					font-style: normal;
+					font-weight: 500;
+					font-size: 14px;
+					line-height: 14px;
+					padding-bottom: 18px;
+					display: block;
+					/* identical to box height, or 100% */
+					color: #6D6D6D;
+				}
+
+				p {
+					font-family: 'Roboto';
+					font-style: normal;
+					font-weight: 400;
+					font-size: 16px;
+					line-height: 14px;
+					/* identical to box height, or 88% */
+					padding-bottom: 16px;
+					display: block;
+					margin-bottom: 0px !important;
+					color: #000000;
+				}
+			}
+
+			.scatter-chart {
+				margin-top: 25px;
+
+
 			}
 		}
+
 
 		.tabledata {
 			.ant-table-thead>tr>th {

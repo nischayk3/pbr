@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ScatterStyles.scss";
 //antd imports
-import { Button, Col, Empty, Row, Tabs } from "antd";
+import { Button, Col, Empty, Row, Select, Tabs } from "antd";
 //components
 import Modal from "../../../../../../../components/Modal/Modal";
 import ScatterPlot from "../../../../../../../components/ScatterPlot/ScatterPlot";
@@ -14,6 +14,7 @@ import ExclusionPopup from "../ExclusionPopup";
 import { postChartPlotData } from "../../../../../../../services/chartPersonalizationService";
 //redux
 import { useDispatch } from "react-redux";
+import SelectSearchField from "../../../../../../../components/SelectSearchField/SelectSearchField";
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../../../duck/actions/commonActions";
@@ -34,7 +35,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		"Error",
 		"Bubble",
 		"2D-histogram",
-		"Process capability"
+		"Process Capability"
 	];
 	const [axisValues, setAxisValues] = useState({
 		xaxis: null,
@@ -49,7 +50,14 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const [yaxisList, setYAxisList] = useState([]);
 	const [tableKey, setTableKey] = useState("3");
 	const [showZAxis, setShowZAxis] = useState(false);
-	const [transformationList, setTransformationList] = useState(['boxcox', 'johnson']);
+	const [transformationList, setTransformationList] = useState([
+		{ label: "Yeohjohnson", value: "johnson" },
+		{ label: "Boxcox", value: "boxcox" }
+	]);
+
+	// /'boxcox', 'johnson'
+	const [ppkData, setPpkData] = useState({});
+	const [showPpk, setShowPpk] = useState(false);
 	const exclusionIdCounter = useRef(0);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [exclusionValues, setExclusionValues] = useState({
@@ -65,40 +73,42 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const [exclusionTable, setExclusionTable] = useState([]);
 
 	const chartNodeClicked = (data) => {
-		if (data && data.data && data.data.name !== "mean") {
-			postChartData.data.forEach((ele) => {
-				ele.extras.data_table.forEach((el) => {
-					if (el.batch_num === data.text) {
-						setExclusionValues({
-							...exclusionValues,
-							batchId: data.text,
-							productCode: ele.view_name,
-							parameterValue:
-								ele.chart_type === "process control"
-									? data.y
-									: `(${data.x},${data.y})`,
-							notes: "",
-							unit: el.uom_code,
-							excludeRecord: false,
-							parameterName:
-								ele.chart_type === "process control"
-									? ele.chart_mapping.y.function_name
-									: `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
-							testDate:
-								ele.chart_type === "process control"
-									? new Date(
-										el["recorded_date_" + ele.chart_mapping.y.function_name]
-									).toLocaleDateString()
-									: `(${new Date(
-										el["recorded_date_" + ele.chart_mapping.x.function_name]
-									).toLocaleDateString()},${new Date(
-										el["recorded_date_" + ele.chart_mapping.y.function_name]
-									).toLocaleDateString()})`,
-						});
-					}
+		if (postChartData && postChartData.data && postChartData.data[0] && (postChartData.data[0].chart_type == "scatter" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "line")) {
+			if (data && data.data && data.data.name !== "mean") {
+				postChartData.data.forEach((ele) => {
+					ele.extras.data_table.forEach((el) => {
+						if (el.batch_num === data.text) {
+							setExclusionValues({
+								...exclusionValues,
+								batchId: data.text,
+								productCode: ele.view_name,
+								parameterValue:
+									ele.chart_type === "process control"
+										? data.y
+										: `(${data.x},${data.y})`,
+								notes: "",
+								unit: el.uom_code,
+								excludeRecord: false,
+								parameterName:
+									ele.chart_type === "process control"
+										? ele.chart_mapping.y.function_name
+										: `(${ele.chart_mapping.x.function_name},${ele.chart_mapping.y.function_name})`,
+								testDate:
+									ele.chart_type === "process control"
+										? new Date(
+											el["recorded_date_" + ele.chart_mapping.y.function_name]
+										).toLocaleDateString()
+										: `(${new Date(
+											el["recorded_date_" + ele.chart_mapping.x.function_name]
+										).toLocaleDateString()},${new Date(
+											el["recorded_date_" + ele.chart_mapping.y.function_name]
+										).toLocaleDateString()})`,
+							});
+						}
+					});
 				});
-			});
-			setIsModalVisible(true);
+				setIsModalVisible(true);
+			}
 		}
 	};
 	const handleCloseModal = () => {
@@ -118,14 +128,14 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				return;
 			}
 		}
+
 		let xAxis = {};
 		let yAxis = {};
 		let zAxis = {};
 		let transform = {};
 		const newCovArr = JSON.parse(JSON.stringify(postChartData));
+
 		newCovArr.data[0].extras.coverage.forEach((ele) => {
-			console.log("ele", ele);
-			console.log("axisValues", axisValues);
 			if (ele.function_name === axisValues.xaxis) {
 				xAxis.function_name = ele.function_name;
 				xAxis.function_id = ele.function_id;
@@ -138,16 +148,23 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				zAxis.function_name = ele.function_name;
 				zAxis.function_id = ele.function_id;
 			}
-			if (axisValues.chartType === 'Process capability') {
+			if (axisValues.chartType === 'Process Capability') {
 				transform.function_name = axisValues.transform;
 			}
 		});
+
 		const newArr = [...postChartData.data];
 		const obj = {
 			function_name:
 				axisValues.xaxis === "Batch" ? "batch_num" : "recorded_date",
 			function_id: null,
 		};
+
+		const processObj = {
+			function_name: "recorded_date",
+			function_id: null,
+		};
+
 		newArr.forEach((ele) => {
 			ele.chart_type =
 				axisValues.chartType === "Scatter Plot"
@@ -163,23 +180,35 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			} else {
 				ele.chart_mapping.z = undefined;
 			}
-			if (axisValues.chartType === "Process capability") {
+			if (axisValues.chartType === "Process Capability") {
 				ele.chart_type = 'process capability'
-				ele.chart_mapping.x = {};
+				ele.chart_mapping.x = processObj;
 				ele.chart_mapping.transform = transform;
-				console.log("transformation", transform);
-				console.log("ele", ele);
 			} else {
 				ele.chart_mapping.transform = undefined;
 			}
 
-			ele.layout.xaxis.title.text =
-				Object.keys(xAxis).length !== 0
-					? xAxis.function_name
-					: obj.function_name === "batch_num"
-						? "Batch"
-						: "Recorded Date";
-			ele.layout.yaxis.title.text = yAxis.function_name;
+			if (axisValues.chartType === "Process Capability") {
+				ele.layout.autoSize = false;
+				ele.layout.xaxis.title.text = "";
+				ele.layout.yaxis.title.text = "";
+			} else {
+				ele.layout.xaxis.title.text =
+					Object.keys(xAxis).length !== 0
+						? xAxis.function_name
+						: obj.function_name === "batch_num"
+							? "Batch"
+							: "Recorded Date";
+				ele.layout.yaxis.title.text = yAxis.function_name;
+			}
+
+			if (axisValues.transform !== "") {
+				if (ele.limits.specification.length === 0) {
+					dispatch(showNotification("error", "Please enter a specification limit"));
+					return;
+				}
+			}
+
 			ele.data = [
 				{
 					type: "scatter",
@@ -196,14 +225,26 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		try {
 			dispatch(showLoader());
 			const viewRes = await postChartPlotData(postChartData);
+			dispatch(hideLoader());
 			errorMsg = viewRes?.message;
 			let newdataArr = [...postChartData.data];
 			newdataArr[0].data = viewRes.data[0].data;
 			newdataArr[0].extras = viewRes.data[0].extras;
 			newdataArr[0].layout = viewRes.data[0].layout;
+			newdataArr[0].ppk_cpk_data = viewRes.data[0].ppk_cpk_data;
+			if (axisValues.transform !== "") {
+				if (viewRes?.data[0]?.ppk_cpk_data?.return_code === 200) {
+					setShowPpk(true)
+					setPpkData(viewRes.data[0].ppk_cpk_data)
+					newdataArr[0].layout.width = 500;
+					newdataArr[0].layout.height = 350;
+				} else {
+					setShowPpk(false)
+				}
+			}
 			setPostChartData({ ...postChartData, data: newdataArr });
 			setShowChart(true);
-			dispatch(hideLoader());
+
 		} catch (error) {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
@@ -229,12 +270,13 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			xaxis: null,
 			yaxis: null,
 			zaxis: null,
-			transform: null,
+			transform: "",
 		});
 	};
 
 	useEffect(() => {
 		const newCovArr = JSON.parse(JSON.stringify(postChartData));
+
 		newCovArr &&
 			newCovArr.data &&
 			newCovArr.data.forEach((ele) => {
@@ -254,6 +296,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						};
 						table.push(obj);
 					});
+
 				setExclusionTable(table);
 				if (
 					(ele?.data[0]?.x && ele?.data[0]?.x?.length >= 1) ||
@@ -340,7 +383,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		if (
 			axisValues.chartType &&
 			axisValues.yaxis &&
-			(axisValues.chartType === "Histogram" || axisValues.chartType === "Process capability") &&
+			(axisValues.chartType === "Histogram" || axisValues.chartType === "Process Capability") &&
 			!axisValues.xaxis
 		) {
 
@@ -361,6 +404,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		return false;
 	};
 
+	const optionsTransformer = transformationList.map((item, index) => (
+		<Select.Option key={index} value={item.value}>
+			{item.label}
+		</Select.Option>
+	));
 	return (
 		<div className="chartLayout-container">
 			<Row gutter={24}>
@@ -373,7 +421,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						onChangeSelect={handleChartType}
 					/>
 				</Col>
-				{axisValues.chartType === 'Process capability' ? (
+				{axisValues.chartType === 'Process Capability' ? (
 					<></>
 				) : (
 					<Col span={showZAxis ? 5 : 6}>
@@ -388,9 +436,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					</Col>
 				)}
 
-
 				<Col span={showZAxis ? 5 : 6}>
-					<p>Y-axis</p>
+					<p>{axisValues.chartType === 'Process Capability' ? 'Parameter' : 'Y-axis'}</p>
 					<SelectField
 						placeholder="Select Y-axis"
 						selectList={yaxisList}
@@ -398,6 +445,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						onChangeSelect={(e) => setAxisValues({ ...axisValues, yaxis: e })}
 					/>
 				</Col>
+
 				{showZAxis && (
 					<Col span={5}>
 						<p>Z-axis</p>
@@ -410,15 +458,19 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					</Col>
 				)}
 
-				{axisValues.chartType === 'Process capability' && (
+				{axisValues.chartType === 'Process Capability' && (
 					<Col span={5}>
-						<p>Transformation</p>
-						<SelectField
-							placeholder="Select Transformation"
-							selectList={transformationList}
-							selectedValue={axisValues.transform}
+						{/* <p>Transformation</p> */}
+						<SelectSearchField
+							showSearch
+							label='Transformation'
+							placeholder='Select Transformation'
 							onChangeSelect={(e) => setAxisValues({ ...axisValues, transform: e })}
+							options={optionsTransformer}
+							handleClearSearch={e => clearSearch(e, 'plant')}
+							selectedValue={axisValues.transform}
 						/>
+
 					</Col>
 				)}
 
@@ -434,20 +486,30 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				</Col>
 			</Row>
 			<div className="chart-table">
-				<Row className="scatter-chart">
-					{showChart && (
-						<ScatterPlot
-							data={chartData}
-							layout={layoutData}
-							nodeClicked={chartNodeClicked}
-						/>
+				<div className="chart-layout">
+					<div className="scatter-chart">
+						{showChart && (
+							<ScatterPlot
+								data={chartData}
+								layout={layoutData}
+								nodeClicked={chartNodeClicked}
+							/>
+						)}
+					</div>
+
+					{showPpk && (
+						<div className="show-ppk">
+							<span>Results</span>
+							<p>Best Transformation : {ppkData?.best_transformer}</p>
+							<p>CP : {ppkData?.cp}</p>
+							<p>CPK : {ppkData?.cpk}</p>
+							<p>PP : {ppkData?.pp}</p>
+							<p>PPK : {ppkData?.ppk}</p>
+							<p>Lambda : {ppkData?.selected_lambda}</p>
+						</div>
 					)}
-					{/* <div className="show-ppk">
-						<span>Results</span>
-						<p>PP : ABC</p>
-						<p>PPK : XYZ</p>
-					</div> */}
-				</Row>
+				</div>
+
 				{showChart && (
 					<Row className="tabledata">
 						<Col span={24}>

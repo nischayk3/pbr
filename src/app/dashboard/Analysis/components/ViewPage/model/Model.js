@@ -45,9 +45,11 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
   });
   const [imputerList, setImputerList] = useState([]);
   const [imputerType, setImputerType] = useState("");
+  const [target_category, setTarget_category] = useState("");
   const [selectedImputeValue, setSelectedImputeValue] = useState("");
   const [imputerTypeList, setImputerTypeList] = useState([]);
   const [scalerList, setScalerList] = useState([]);
+  const [scalerNodeList, setScalerNOdeList] = useState([]);
   const [scalerListSelected, setScalerListSelected] = useState([]);
   const [scalerAlgoValue, setScalerAlgoValue] = useState("");
   const [saveScalerAlgoValue, setSaveScalerAlgoValue] = useState("");
@@ -59,14 +61,14 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
   });
   const [estimatorPopupDataValues, setEstimatorPopupDataValues] = useState({
     algoValue: "",
-    regressionListvalue: "",
+    regressionListvalue: [],
     typeListValue: "",
     enableGrid: true,
   });
   const [savedEstimatorPopupDataValues, setSavedEstimatorPopupDataValues] =
     useState({
       algoValue: "",
-      regressionListvalue: "",
+      regressionListvalue: [],
       typeListValue: "",
       enableGrid: true,
     });
@@ -166,6 +168,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
       } else {
         getModelJson(apiResponse.data);
       }
+      setTarget_category(apiResponse.data?.target_variable_category)
       setSelectedTargetVariable(targetVariable);
       apiResponse?.data?.Imputer?.forEach((ele) => {
         imputerList.push(ele.submodule);
@@ -410,19 +413,17 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
       });
       apiResponse?.data?.all_metric?.forEach((metric) => {
         tempRegressionList.push(metric);
-        if (finalJson?.metrics?.metric_name === metric?.metric_name) {
-          setEstimatorPopupDataValues((prev) => {
-            return {
-              ...prev,
-              regressionListvalue: metric.metric_name
-            }
-          })
-          setSavedEstimatorPopupDataValues((prev) => {
-            return {
-              ...prev,
-              regressionListvalue: metric.metric_name
-            }
-          })
+      })
+      setEstimatorPopupDataValues((prev) => {
+        return {
+          ...prev,
+          regressionListvalue: finalJson?.metrics?.metric_name
+        }
+      })
+      setSavedEstimatorPopupDataValues((prev) => {
+        return {
+          ...prev,
+          regressionListvalue: finalJson?.metrics?.metric_name
         }
       })
       setEstimatorPopupData({
@@ -444,12 +445,13 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
   
 
   const getModelJson = async (data) => {
+
     const reqBody = {
       batch_filter: selectedViewData?.batch_filter,
       data_filter: selectedViewData?.data_filter,
       view_disp_id: selectedViewData?.view_id,
       view_version: selectedViewData?.view_version,
-      target_variable: data?.targetVariable
+      target_variable: data?.target_variable
     };
     dispatch(showLoader());
     const apiResponse = await getAnalyticsModel(reqBody);
@@ -460,20 +462,16 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
           setSavedEstimatorPopupDataValues({...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue:regression.estimator_type, enableGrid:true })
         }
       });
-      data?.all_metric?.forEach((metric) => {
-        if (apiResponse?.data?.metrics?.metric_name === metric?.metric_name) {
-          setEstimatorPopupDataValues((prev) => {
-            return {
-              ...prev,
-              regressionListvalue: metric.metric_name
-            }
-          })
-          setSavedEstimatorPopupDataValues((prev) => {
-            return {
-              ...prev,
-              regressionListvalue: metric.metric_name
-            }
-          })
+      setEstimatorPopupDataValues((prev) => {
+        return {
+          ...prev,
+          regressionListvalue: apiResponse?.data?.metrics?.metric_name
+        }
+      })
+      setSavedEstimatorPopupDataValues((prev) => {
+        return {
+          ...prev,
+          regressionListvalue: apiResponse?.data?.metrics?.metric_name
         }
       })
       setFinalModelJson(apiResponse.data);
@@ -491,9 +489,21 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
   };
 
   useEffect(() => {
-    getNodes(editFinalJson?.input_data?.target_variable);
+    if (tableKey === "3") {
+      getNodes(editFinalJson?.input_data?.target_variable);
+    }
   }, [tableKey]);
 
+  useEffect(() => {
+    let tempNodeList = [];
+    nodes?.forEach((ele) => {
+      if (ele.Type === "Parameter") {
+        console.log(ele, 'elelee')
+        tempNodeList.push(ele.Node)
+      }
+    })
+    setScalerNOdeList(tempNodeList)
+  }, [nodes])
 
   useEffect(() => {
     setNodeTypes(nodesNew)
@@ -540,7 +550,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
             className="custom-primary-btn"
             onClick={() => addEstimator("estimator")}
           >
-            <PlusOutlined /> Add estimators
+            <PlusOutlined /> Add Estimators
           </Button>
         </Col>
         <Col span="4">
@@ -548,7 +558,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
             className="custom-primary-btn"
             onClick={() => addEstimator("featureUnion")}
           >
-            <PlusOutlined /> Create feature union
+            <PlusOutlined /> Create Feature Union
           </Button>
         </Col>
         <Col span="3" className="select-flex ml">
@@ -585,6 +595,9 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
             fitView
             onNodeClick={onNodeClick}
             nodeTypes={nodeTypes}
+            zoomOnPinch={false}
+            zoomOnScroll={false}
+            preventScrolling={false}
             // attributionPosition="top-left"
           >
             <Background variant="dots" gap={25} size={0.3} color="#313131" />
@@ -609,7 +622,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
             </ModalComponent>
           </ReactFlow>
         )}
-        <div className="anaylsisRight">
+        {nodes && nodes.length > 1 && <div className="anaylsisRight">
           <div className="pbrPanel pbrRightPanel">
             <Sider
               trigger={null}
@@ -633,6 +646,8 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
                   setSaveScalerAlgoValue={setSaveScalerAlgoValue}
                   finalModelJson={finalModelJson}
                   setFinalModelJson={setFinalModelJson}
+                  setScalerListSelected={setScalerListSelected}
+                  scalerNodeList={scalerNodeList}
                 />
               )}
               {type === "transform" && drawervisible && (
@@ -663,11 +678,12 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
                   }
                   finalModelJson={finalModelJson}
                   setFinalModelJson={setFinalModelJson}
+                  target_category={target_category}
                 />
               )}
             </Sider>
           </div>
-        </div>
+        </div>}
       </div>
     </div>
   );

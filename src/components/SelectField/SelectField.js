@@ -3,6 +3,13 @@ import React from "react";
 import { Select } from "antd";
 
 const SelectField = (props) => {
+
+	function capitalizeFirstLetter(string) {
+		if (typeof(string) !== 'number') {
+			return string.charAt(0).toUpperCase() + string.slice(1).replace("_" , '');	
+		}
+		return string;
+	  }
 	return (
 		<div className="select_field">
 			{props.label ||
@@ -24,8 +31,8 @@ const SelectField = (props) => {
 			>
 				{props.selectList &&
 					props.selectList.map((item) => (
-						<Select.Option key={item} value={item}>
-							{item}
+						<Select.Option key={item} value={item}  {...(props.menu && { onContextMenu: props.handleClick })}>
+							{capitalizeFirstLetter(item)}
 						</Select.Option>
 					))}
 			</Select>
