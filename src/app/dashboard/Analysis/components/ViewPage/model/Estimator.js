@@ -78,7 +78,7 @@ const Estimator = (props) => {
     }
     if (e === 'cross_decomposition') {
       resArr = resArr.filter((ele) => ele.type === 'regression')
-    } else if(e === 'decomposition') {
+    } else if (e === 'decomposition') {
       resArr = resArr.filter((ele) => ele.type === target)
     } else {
       resArr = resArr.filter((ele) => ele.type === e)
@@ -160,21 +160,21 @@ const Estimator = (props) => {
         </Select>
         <Row gutter={24} className="metrics">
           <Col span={24}>
-          <p style={{ marginBottom:'0px'}}>Metrics</p>
-          <Select  mode="multiple" value={estimatorPopupDataValues.regressionListvalue} disabled={!estimatorPopupDataValues.algoValue} onChange={(e) => {
-          setEstimatorPopupDataValues({
-            ...estimatorPopupDataValues,
-            regressionListvalue: e,
-          })
-        }} style={{ width: "100%" }}>
-          {metricListData.length && metricListData.map((ele) => {
-            return <Option value={ele.metric_name} onContextMenu={handleClick} disabled={ele.disabled}>{ele.display_name}</Option>
-          })}
-        </Select>
+            <p style={{ marginBottom: '0px' }}>Metrics</p>
+            <Select mode="multiple" value={estimatorPopupDataValues.regressionListvalue} disabled={!estimatorPopupDataValues.algoValue} onChange={(e) => {
+              setEstimatorPopupDataValues({
+                ...estimatorPopupDataValues,
+                regressionListvalue: e,
+              })
+            }} style={{ width: "100%" }}>
+              {metricListData.length && metricListData.map((ele) => {
+                return <Option value={ele.metric_name} onContextMenu={handleClick} disabled={ele.disabled}>{ele.display_name}</Option>
+              })}
+            </Select>
           </Col>
         </Row>
         <Row>
-        <Col span={13}>
+          <Col span={13}>
             <Checkbox
               checked={estimatorPopupDataValues.enableGrid}
               onChange={(e) =>
