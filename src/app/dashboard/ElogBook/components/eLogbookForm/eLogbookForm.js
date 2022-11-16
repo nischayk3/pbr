@@ -8,25 +8,43 @@ import {
 	Row
 } from 'antd';
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import Banner from '../../../../../assets/images/Popup-Side.svg';
 import InputField from '../../../../../components/InputField/InputField';
 import SelectField from '../../../../../components/SelectField/SelectField';
 import "./eLogbookForm.scss";
 
-function ElogForm(props) {
-
+function ElogForm() {
+	const history = useHistory();
 	const [isModalVisible, setIsModalVisible] = useState(false);
-	const [hierarchyName, setHierarchyName] = useState('')
+	const [formData, setFormData] = useState({
+		Tname: '',
+		Pname: ''
+	});
 	const handleCancel = () => {
 		setIsModalVisible(false);
 	};
 
+	const handleNext = () => {
+		// history.push({
+		//   pathname: `${match.url}/${apiResponse?.pipeline_disp_id}`,
+		//   state: req,
+		// });
+	}
+
+	const handleBack = () => {
+		console.log("Back")
+	}
+
+	const data = ["Hour", "Minutes", "Seconds"];
+
+	console.log(formData);
 	return (
 
 		<Modal
 			className="landing-modal"
 			title="Basic details - New template [Draft]"
-			visible={false}
+			visible={true}
 			onCancel={handleCancel}
 			centered
 			footer={[
@@ -35,7 +53,7 @@ function ElogForm(props) {
 						<Button
 							className="custom-primary-btn "
 							type="primary"
-						// onClick={() =>  handleBack()}
+							onClick={() => handleBack()}
 						>
 							Back
 						</Button>
@@ -44,7 +62,7 @@ function ElogForm(props) {
 						<Button
 							className="custom-secondary-btn"
 							type="primary"
-						// onClick={() =>  handleNext()}
+							onClick={() => handleNext()}
 						>
 							Lets Go!
 						</Button>
@@ -57,27 +75,32 @@ function ElogForm(props) {
 					<img src={Banner} style={{ paddingTop: "22px" }} alt="Ebookpng" />
 				</Col>
 				<Col span={12}>
-					<div>
-						<InputField
-							label="Template name"
-							type="text"
-							name="Tname"
-							placeholder="Enter name of new template"
-						//  value={props.value}
-						// onChange={handleChange}
-						/>
-					</div>
-					<br />
-					<div>
-						<SelectField
-							label="What product is this template for?"
-							placeholder="Select product"
-							name="Pname"
-							// value={props.selectedValue}
-							// onChange={handleChange}
-							style={{ width: "100%", margin: "0px" }}
-						/>
-					</div>
+					<form>
+						<div>
+							<InputField
+								label="Template name"
+								type="text"
+								name="Tname"
+								placeholder="Enter name of new template"
+								value={formData.Tname}
+								onChangeInput={(e) => setFormData({ ...formData, Tname: e.target.value })}
+							/>
+						</div>
+						<br />
+						<div>
+							<SelectField
+								label="What product is this template for?"
+								placeholder="Select product"
+								name="Pname"
+								selectList={data}
+								selectedValue={formData.Pname}
+								onChangeSelect={(e) =>
+									setFormData({ ...formData, Pname: e })
+								}
+								style={{ width: "100%", margin: "0px" }}
+							/>
+						</div>
+					</form>
 				</Col>
 
 			</Row>
