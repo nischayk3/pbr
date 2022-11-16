@@ -2,6 +2,7 @@ import { Button, Collapse, Pagination, Table, Tag } from "antd";
 import React, { lazy, useState } from "react";
 import illustrations from "../../../../../assets/images/elogbook-landing.png";
 import SelectField from "../../../../../components/SelectField/SelectField";
+import ElogForm from "../eLogbookForm/eLogbookForm";
 import "./styles.scss";
 const ScreenHeader = lazy(() =>
 	import("../../../../../components/ScreenHeader/screenHeader")
@@ -9,7 +10,7 @@ const ScreenHeader = lazy(() =>
 
 export default function Landing() {
 	const [isViewsetVisible, setIsViewsetVisible] = useState(false);
-	const [isDatasetVisible, setIsDatasetVisible] = useState(false);
+	const [isTemplateModal, setIsTemplateModal] = useState(false);
 	const [filterData, setFilterData] = useState("");
 
 	const { Panel } = Collapse;
@@ -86,6 +87,9 @@ export default function Landing() {
 					<Button
 						className="custom-secondary-btn"
 						type="primary"
+						onClick={(e) => {
+							setIsTemplateModal(true)
+						}}
 					>
 						Create new template
 					</Button>
@@ -127,8 +131,10 @@ export default function Landing() {
 						<Table bordered={false} columns={columns} dataSource={data} className="elog-table" />
 					</Panel>
 				</Collapse>
+				<ElogForm isTemplateModal={isTemplateModal} />
 			</div>
 
 		</div >
+
 	);
 }

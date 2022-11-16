@@ -59,6 +59,7 @@ const CrossBatchComparison = lazy(() => import("./crossBatchComparison"));
 const DataScienceStudio = lazy(() => import("./DataScienceStudio"));
 const TargetVariable = lazy(() => import("./DataScienceStudio/components/targetVariable/TargetVariable"));
 const ElogBook = lazy(() => import("./ElogBook"))
+const EBookStep = lazy(() => import("./ElogBook/components/ebookSteps/eBookStep"))
 
 const { Content } = Layout;
 
@@ -430,10 +431,26 @@ const Dashboard = () => {
 										</>
 									)}
 								/>
+
+
 								<Route
-									key="elog_book"
 									path={`${match.url}/elog_book`}
-									component={ElogBook}
+									render={({ match: { url } }) => (
+										<>
+											<PrivateRoute
+												key={"elog_book"}
+												path={`${url}/`}
+												component={ElogBook}
+												exact
+												authorised={authorised}
+											/>
+											<PrivateRoute
+												path={`${url}/new-template`}
+												component={EBookStep}
+												authorised={authorised}
+											/>
+										</>
+									)}
 								/>
 							</Switch>
 						</SuspenseWrapper>

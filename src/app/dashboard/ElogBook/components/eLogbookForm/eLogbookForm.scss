@@ -1,11 +1,5 @@
 .landing-modal {
 
-	.ant-modal-content {
-		width: 787px;
-		height: auto;
-		background: #ffffff;
-		border-radius: 4px;
-	}
 
 	.ant-modal-footer {
 		border-top: 0px;
@@ -34,5 +28,30 @@
 
 	.ant-spin-container {
 		bottom: 20px;
+	}
+}
+
+.modal-wrapper {
+	display: flex;
+	gap: 30px;
+
+	.modal-left {}
+
+	.modal-right {
+		width: 100%;
+
+		.input_field {
+			margin-bottom: 25px;
+		}
+	}
+}
+
+.footer-btn {
+	padding: 20px 12px;
+
+	button {
+		width: 108px;
+		margin-left: 20px !important;
+
 	}
 }
