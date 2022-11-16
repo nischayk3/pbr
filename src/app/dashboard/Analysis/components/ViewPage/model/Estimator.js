@@ -159,16 +159,16 @@ const Estimator = (props) => {
           })}
         </Select>
         <Row gutter={24} className="metrics">
-          <Col span={11}>
+          <Col span={24}>
             <p style={{ marginBottom: '0px' }}>Metrics</p>
-            <Select value={estimatorPopupDataValues.regressionListvalue} disabled={!estimatorPopupDataValues.algoValue} onChange={(e) => {
+            <Select mode="multiple" value={estimatorPopupDataValues.regressionListvalue} disabled={!estimatorPopupDataValues.algoValue} onChange={(e) => {
               setEstimatorPopupDataValues({
                 ...estimatorPopupDataValues,
                 regressionListvalue: e,
               })
             }} style={{ width: "100%" }}>
               {metricListData.length && metricListData.map((ele) => {
-                return <Option value={ele.metric_name} disabled={ele.disabled} onContextMenu={handleClick}>{ele.display_name}</Option>
+                return <Option value={ele.metric_name} onContextMenu={handleClick} disabled={ele.disabled}>{ele.display_name}</Option>
               })}
             </Select>
           </Col>
