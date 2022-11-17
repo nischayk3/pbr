@@ -241,6 +241,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				} else {
 					setShowPpk(false)
 				}
+			} else {
+				setShowPpk(false)
 			}
 			setPostChartData({ ...postChartData, data: newdataArr });
 			setShowChart(true);
@@ -467,7 +469,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 							placeholder='Select Transformation'
 							onChangeSelect={(e) => setAxisValues({ ...axisValues, transform: e })}
 							options={optionsTransformer}
-							handleClearSearch={e => clearSearch(e, 'plant')}
+							handleClearSearch={(e) => setAxisValues({ ...axisValues, transform: "" })}
 							selectedValue={axisValues.transform}
 						/>
 
