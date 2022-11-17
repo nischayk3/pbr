@@ -119,6 +119,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			dispatch(showNotification("error", "X and Y axis cannot be same"));
 			return;
 		}
+
 		if (axisValues.zaxis) {
 			if (axisValues.xaxis === axisValues.zaxis) {
 				dispatch(showNotification("error", "X and Z axis cannot be same"));
@@ -128,6 +129,24 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				return;
 			}
 		}
+
+		const chartArr = [...postChartData.data];
+		if (axisValues.transform) {
+			let errorValue = false;
+			console.log("axisValues.transform ", axisValues.transform);
+			chartArr.forEach((ele) => {
+				if (ele.limits.specification.length === 0) {
+					errorValue = true;
+					dispatch(showNotification("error", "Please enter Lower and Upper Specification limits"));
+				} else {
+					errorValue = false;
+				}
+			})
+			if (errorValue) {
+				return;
+			}
+		}
+
 
 		let xAxis = {};
 		let yAxis = {};
@@ -202,13 +221,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				ele.layout.yaxis.title.text = yAxis.function_name;
 			}
 
-			if (axisValues.transform !== "") {
-				if (ele.limits.specification.length === 0) {
-					dispatch(showNotification("error", "Please enter a specification limit"));
-					return;
-				}
-			}
-
 			ele.data = [
 				{
 					type: "scatter",
@@ -238,6 +250,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					setPpkData(viewRes.data[0].ppk_cpk_data)
 					newdataArr[0].layout.width = 500;
 					newdataArr[0].layout.height = 350;
+					dispatch(showNotification("success", `Best Transformation : ${viewRes.data[0].ppk_cpk_data?.best_transformer}`));
 				} else {
 					setShowPpk(false)
 				}
@@ -317,6 +330,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					let xValue = "";
 					let yValue = "";
 					let zValue = "";
+					let transformValue = "";
 					if (ele.chart_type !== "process control") {
 						xValue = ele.chart_mapping.x.function_name;
 					} else {
@@ -331,10 +345,26 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					zValue = ele.chart_mapping?.z?.function_name
 						? ele.chart_mapping?.z?.function_name
 						: "";
+					transformValue = ele.chart_mapping?.transform?.function_name
+						? ele.chart_mapping?.transform?.function_name
+						: "";
 					if (zValue) {
 						setShowZAxis(true);
 					} else {
 						setShowZAxis(false);
+					}
+					if (ele.chart_mapping?.transform?.function_name !== "") {
+						if (ele.ppk_cpk_data?.return_code === 200) {
+							setShowPpk(true)
+							setPpkData(ele.ppk_cpk_data)
+							ele.layout.width = 500;
+							ele.layout.height = 350;
+							dispatch(showNotification("success", `Best Transformation : ${ele.ppk_cpk_data?.best_transformer}`));
+						} else {
+							setShowPpk(false)
+						}
+					} else {
+						setShowPpk(false)
 					}
 					setAxisValues({
 						...axisValues,
@@ -342,6 +372,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						xaxis: xValue,
 						yaxis: yValue,
 						zaxis: zValue,
+						transform: transformValue,
 					});
 					setShowChart(true);
 					setChartData(ele.data);
@@ -356,6 +387,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						xaxis: null,
 						yaxis: null,
 						zaxis: null,
+						transform: ""
 					});
 				}
 			});
@@ -501,8 +533,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 
 					{showPpk && (
 						<div className="show-ppk">
-							<span>Results</span>
-							<p>Best Transformation : {ppkData?.best_transformer}</p>
+							<span>Results :</span>
 							<p>CP : {ppkData?.cp}</p>
 							<p>CPK : {ppkData?.cpk}</p>
 							<p>PP : {ppkData?.pp}</p>
