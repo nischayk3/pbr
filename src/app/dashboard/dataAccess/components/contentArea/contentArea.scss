@@ -1,0 +1,45 @@
+.content-card {
+    .ant-card-head {
+        background-color: white !important;
+        min-height: 10px !important;
+        height: auto !important;
+        padding: 0px;
+        margin-left: 30px;
+        margin-top: 20px;
+    }
+
+    .ant-card-body {
+        margin-left: 30px;
+        margin-bottom: 30px;
+    }
+
+    .ant-tabs-ink-bar {
+        color: #162154;
+
+    }
+
+
+    .ant-tabs-tab-btn {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 22px;
+        color: #000000;
+    }
+
+
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: var(--primary-color);
+    }
+
+    .ant-tabs-ink-bar {
+        background: var(--primary-color);
+        border: none;
+    }
+
+    .ant-tabs-tab:hover {
+        color: #486b69 !important;
+    }
+
+}
