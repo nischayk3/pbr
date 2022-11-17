@@ -18,8 +18,6 @@ export default function Landing() {
 		setIsDatasetVisible(false)
 	}
 
-	const login_response = JSON.parse(localStorage.getItem("login_details"));
-	console.log("login_response", login_response?.firstname?.toLowerCase(), login_response?.lastname?.toLowerCase());
 	return (
 		<div>
 			<ScreenHeader

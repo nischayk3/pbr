@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Input, Modal, Popconfirm, Row, Select, Table, Tabs, Popover, Typography } from "antd";
-import {  PlusOutlined,  } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Col, Input, Popconfirm, Row, Select, Table, Typography } from "antd";
+import React, { useState } from "react";
 import "./metaData.scss";
-import SelectField from "../../../../../../components/SelectField/SelectField";
-const { Text } = Typography;
+
 
 function metaData() {
 	const [moleculeData, setMoleculeData] = useState([]);
@@ -78,7 +77,7 @@ function metaData() {
 				width: "25%",
 				render: (_, record) => (
 					<Select
-					placeholder="Select"
+						placeholder="Select"
 						// defaultValue="Custom mete data"
 						style={{
 							width: 120,
@@ -169,35 +168,30 @@ function metaData() {
 		];
 	return (
 		<>
-			<Row className="main-row" style={{paddingTop: "25px", paddingBottom: "50px", marginLeft: "-45px", marginRight: "-40px"}}>
-				<Col span={3} >
-					 <Text level={2} strong className="main-text">Meta Data</Text></Col>
-				<Col span={3} offset={18}><Button
+			<div className="metadata-subheader">
+				<p>Meta Data</p>
+				<Button
 					className="custom-secondary-btn"
 					type="primary"
 				// onClick={() =>  handleNext()}
 				>
 					Save and Next
-				</Button></Col>
-			</Row>
-			<Row style={{marginLeft: "-55px", marginRight: "-40px"}}>
-				<Col >
-					<Table className="hierarchy-table" columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
-				</Col>
-			</Row>
-			<Row style={{marginLeft: "-55px", marginRight: "-40px"}}>
-				<Col>
-					<div className="add-button">
-						<Button
-							onClick={() => handleAdd()}
-							className="add-row-button"
-						>
-							<PlusOutlined />
-							Add new row
-						</Button>
-					</div>
-				</Col>
-			</Row>
+				</Button>
+			</div>
+
+			<Table className="hierarchy-table" columns={plantMoleculeColumns} dataSource={moleculeData} pagination={false} />
+
+
+			<div className="add-button">
+				<Button
+					onClick={() => handleAdd()}
+					className="add-row-button"
+				>
+					<PlusOutlined />
+					Add new row
+				</Button>
+			</div>
+
 		</>
 	)
 }
