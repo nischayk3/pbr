@@ -1,0 +1,100 @@
+.active {
+    font-weight: bold;
+}
+
+.ant-table-thead {
+    .ant-table-cell {
+        background: #E7E5FF;
+        color: #282828;
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 300;
+        font-size: 16px;
+        line-height: 22px;
+    }
+}
+
+.ant-table-cell {
+    color: #282828;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 22px;
+}
+
+.parent_div {
+    margin-top: 30px;
+}
+
+.overview {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 22px;
+    color: #000000;
+}
+
+.content {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color: #000000;
+}
+
+.black-div {
+    height: 88px;
+    margin-top: 30px;
+    width: 787px;
+    border-radius: 0px;
+    background-color: #000000;
+    color: white;
+}
+
+.black-div2 {
+    height: 68px;
+    margin-top: 30px;
+    width: 787px;
+    border-radius: 0px;
+    background-color: #000000;
+    color: white;
+}
+
+.black_text {
+    margin-left: 40px;
+    margin-top: 40px;
+    font-family: 'Courier,monospace';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 20px;
+    color: #ffffff;
+}
+
+.slash {
+    color: orange;
+}
+
+.button {
+    width: 150px;
+    border-radius: 4px;
+    background: #093185;
+    color: white;
+}
+
+.error-code-button {
+    width: 60px;
+    border-radius: 4px;
+    background: black;
+    color: red;
+}
+
+.success-code-button {
+    width: 60px;
+    border-radius: 4px;
+    background: black;
+    color: greenyellow;
+}
