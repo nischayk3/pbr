@@ -1,5 +1,6 @@
 import { Button, Form, Input, Popconfirm, Table, Radio } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import {useSelector } from 'react-redux';
 import { tableColumns } from '../../../../utils/TableColumns'
 import ReactDragListView from "react-drag-listview";
 import {
@@ -81,14 +82,16 @@ const EditableCell = ({
 
   return <td {...restProps}>{childNode}</td>;
 };
- /* istanbul ignore next */
+/* istanbul ignore next */
 const App = (props) => {
+  const tabledata = useSelector((state) => state?.pbrReducer?.initialTableData)
   let { templateData, setTemplateData } = props
   const [defaultColumns, setDefaultColumns] = useState([]);
   const [showMove, setShowMove] = useState(true);
   const [count, setCount] = useState(0);
   const [showDrag, setShowDrag] = useState(false);
   const [dragProps, setDragProps] = useState({});
+  const [originalTableData, setOriginalTableData] = useState([]);
   const [enableDelete, setEnableDelete] = useState(false);
 
 
@@ -111,6 +114,9 @@ const App = (props) => {
     setDefaultColumns(col)
     if (count == 0) {
       setCount(templateData.length)
+    }
+    if(originalTableData.length ==0){
+      setOriginalTableData(templateData)
     }
 
   }, [templateData, showDrag])
@@ -190,11 +196,11 @@ const App = (props) => {
       }),
       onHeaderCell: (record) => ({
         onDoubleClick: () => {
-          if(enableDelete){
+          if (enableDelete) {
             handleDeleteColumn(col)
             setEnableDelete(false)
           }
-          
+
         },
       })
     };
@@ -211,7 +217,7 @@ const App = (props) => {
       let arr = []
       data.map(item => {
         let keysArr = Object.keys(item)
-        keysArr = keysArr.filter(i=>i != "key")
+        keysArr = keysArr.filter(i => i != "key")
         keysArr.push("key")
         const item1 = keysArr.splice(fromIndex, 1)[0];
         keysArr.splice(toIndex, 0, item1);
@@ -272,23 +278,31 @@ const App = (props) => {
       })
     }
   }
+
+  // const handleRevert = () => {
+  //   console.log("first",originalTableData)
+    
+  //   console.log("tabledata",tabledata)
+  //   setTemplateData(originalTableData)
+  // }
+
   return (
     <div>
       <div className='tableEdit'>
         <h3 style={{ marginLeft: 20 }}>Selected Table Preview</h3>
         <div>
-          {/* <Button id="editLogs" style={{
-            borderRadius: "5px",
-            textTransform: "none",
-            background: "#ffffff",
-            borderColor: "#303f9f",
-            color: "#303f9f",
-            marginRight: '15px',
+          {/* <Button id="save_button"
+            className='custom-primary-btn' style={{
+              backgroundColor: '#303f9f',
+              color: '#ffffff',
+              borderColor: "#303f9f",
+              borderRadius: "5px",
+              marginRight: 10
 
-          }}
-            type='primary'>
-            Edit
-          </Button> */}
+            }}
+            onClick={() =>handleRevert()}
+
+            type='primary'>Revert</Button> */}
           {/* <Button id="save_button" style={{
             backgroundColor: '#303f9f',
             color: '#ffffff',
@@ -322,15 +336,15 @@ const App = (props) => {
           Add Column
         </Button>
         <Button
-          onClick={()=>setEnableDelete(true)}
+          onClick={() => setEnableDelete(!enableDelete)}
           type="primary"
-          disabled ={enableDelete}
+          // disabled ={enableDelete}
           style={{
             marginBottom: 16,
             marginLeft: 10
           }}
         >
-          {enableDelete ? "Double Click Header" :"Delete Column"}
+          {enableDelete ? "Cancel" : "Delete Column"}
         </Button>
         {showMove && <Button
           onClick={handleMovementChange}

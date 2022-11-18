@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { Table, Row, Col, Button, Input, Form, Modal } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import {
     hideLoader,
     showLoader,
     showNotification,
 } from '../../../../duck/actions/commonActions';
+import { initialTableData } from '../../../../duck/actions/pbrAction';
 import { useLocation } from "react-router";
 import { getPbrReviewerData, updateApprove, bboxData } from '../../../../services/pbrService'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
@@ -25,6 +26,7 @@ var AREAS_MAP = {
 /* istanbul ignore next */
 const pbrTableUpdate = () => {
     const dispatch = useDispatch();
+    const tabledata = useSelector((state) => state?.pbrReducer?.initialTableData)
     const [templateData, setTemplateData] = useState([]);
     const [editingRow, setEditingRow] = useState(null);
     const [imagepdf, setImagePdf] = useState("");
@@ -35,7 +37,7 @@ const pbrTableUpdate = () => {
     const [modalData, setModalData] = useState([]);
     const [filepath, setFilepath] = useState("");
     const [pageNum, setPageNum] = useState(1);
-    const [initialTableData, setInitialTableData] = useState([]);
+    // const [initialTableData, setInitialTableData] = useState([]);
     const [areasMap, setAreasMap] = useState(AREAS_MAP);
     const [imageWidth, setImageWidth] = useState(0);
     const [imageHeight, setimageHeight] = useState(0);
@@ -92,7 +94,7 @@ const pbrTableUpdate = () => {
                 version: Number(params.version),
                 name: params.param_name,
                 page: null,
-                metadata:null
+                metadata: null
                 // feature: "configured_Parameter",
                 // granularity: "Specific",
                 // template_id: "P627",
@@ -154,6 +156,21 @@ const pbrTableUpdate = () => {
         }
     };
 
+    const getTableData = async () => {
+        dispatch(showLoader());
+        let req = {
+            confidence: null,
+            createdBy: null,
+            id: Number(params.id),
+            limit: null,
+            status: null,
+            template_id: []
+        }
+        let res = await getPbrReviewerData(req);
+        let arr = res?.Data[0]?.table_value.map((item, index) => ({ ...item, key: index }))
+        setTemplateData(arr);
+        dispatch(hideLoader());
+    }
 
     const loadTableData = async () => {
         dispatch(showLoader());
@@ -168,11 +185,12 @@ const pbrTableUpdate = () => {
         let res = await getPbrReviewerData(req);
         let arr = res?.Data[0]?.table_value.map((item, index) => ({ ...item, key: index }))
         setTemplateData(arr);
-        setInitialTableData(arr)
+        // setInitialTableData(arr)
+        dispatch(initialTableData(arr))
         let filename = res.Data[0].file_path;
         setFilepath(filename)
         setPageNum(res.Data[0].page_num)
-        getImage(filename,res.Data[0].page_num);
+        getImage(filename, res.Data[0].page_num);
         let obj = {
             changed_by: res.Data[0].changed_by == null ? "" : res.Data[0].changed_by,
             id: res.Data[0].id == null ? "" : res.Data[0].id,
@@ -187,7 +205,7 @@ const pbrTableUpdate = () => {
     };
 
 
-    const getImage = async (val,page) => {
+    const getImage = async (val, page) => {
         dispatch(showLoader());
         let login_response = JSON.parse(localStorage.getItem('login_details'));
         var requestOptions = {
@@ -240,7 +258,7 @@ const pbrTableUpdate = () => {
         if (res.Status == "202") {
             dispatch(hideLoader());
             dispatch(showNotification("success", "Updated Successfully"))
-            loadTableData()
+            getTableData()
         } else {
             dispatch(hideLoader());
             dispatch(showNotification("error", "Error while updtating"))
@@ -252,10 +270,21 @@ const pbrTableUpdate = () => {
         setIsModalVisible(false);
     }
 
-    const handleRevert = () => {
-        setTemplateData(initialTableData)
+    const handleRevert = async () => {
+        dispatch(showLoader());
+        let req = {
+            confidence: null,
+            createdBy: null,
+            id: Number(params.id),
+            limit: null,
+            status: null,
+            template_id: []
+        }
+        let res = await getPbrReviewerData(req);
+        let arr = res?.Data[0]?.table_value.map((item, index) => ({ ...item, key: index }))
+        setTemplateData(arr)
+        dispatch(hideLoader());
     }
-
 
     return (
         <div className='pbr-container'>
@@ -266,7 +295,7 @@ const pbrTableUpdate = () => {
             />
             <div className='custom-wrapper'>
                 <div className='content_section' >
-                    <div style={{ marginTop: 20 }}>
+                    <div style={{ marginTop: 20,padding:10 }}>
 
                         <Row gutter={15}>
                             <Col span={12}>
@@ -313,7 +342,7 @@ const pbrTableUpdate = () => {
                                             marginRight: 10
 
                                         }}
-                                        onClick={handleRevert}
+                                        onClick={() => handleRevert()}
 
                                         type='primary'>Revert</Button>
                                     <Button id="save_button" style={{

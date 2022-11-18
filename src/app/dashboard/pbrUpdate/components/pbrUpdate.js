@@ -135,6 +135,21 @@ const PbrUpdate = () => {
     }
   };
 
+  const getTableData = async () => {
+    dispatch(showLoader());
+    let req = {
+      confidence: null,
+      createdBy: null,
+      id: Number(params.id),
+      limit: null,
+      status: null,
+      template_id: []
+    }
+    let res = await getPbrReviewerData(req);
+    setTemplateData(res.Data);
+    dispatch(hideLoader());
+}
+
 
   const loadTableData = async () => {
     dispatch(showLoader());
@@ -196,6 +211,8 @@ const PbrUpdate = () => {
     // dispatch(hideLoader());
   }
 
+ 
+
 
 
   const handleClick = async (event, record) => {
@@ -221,7 +238,7 @@ const PbrUpdate = () => {
       dispatch(hideLoader());
       dispatch(showNotification("success", "Updated Successfully"))
       setEditingRow(null)
-      loadTableData()
+      getTableData()
 
     } else {
       dispatch(hideLoader());
@@ -240,7 +257,7 @@ const PbrUpdate = () => {
       />
       <div className='custom-wrapper'>
         <div className='content_section' >
-          <div style={{ marginTop: 20 }}>
+          <div style={{ marginTop: 20,padding:10 }}>
 
             <Row gutter={15}>
               <Col span={12}>
