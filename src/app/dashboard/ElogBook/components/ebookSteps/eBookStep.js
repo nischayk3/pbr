@@ -3,6 +3,7 @@ import { useState } from "react";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import "./eBookStep.scss";
 import MetaData from "./metaData/metaData";
+import DesignForm from "./designForm/designForm";
 
 const { Step } = Steps;
 const { Item } = Form;
