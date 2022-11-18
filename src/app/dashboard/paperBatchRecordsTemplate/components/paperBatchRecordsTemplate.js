@@ -1987,7 +1987,7 @@ function PaperBatchRecordsTemplate() {
                 status: "APRD",
                 template_id: params?.temp_disp_id,
                 template_version: templateVersion,
-                user_id: login_response?.email_id
+                user_id: `${login_response?.firstname} ${login_response?.lastname}`
             }
             let res = await workflowTemplateReject(req)
             if (res.Status == 202) {

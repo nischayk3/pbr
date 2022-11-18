@@ -40,7 +40,7 @@ const App = (props) => {
             if (res["status-code"] == 200) {
                 setTableData(res.Data)
                 setTableLoader(false)
-            }else{
+            } else {
                 setTableLoader(false)
                 dispatch(showNotification('error', res?.Message));
             }
@@ -67,7 +67,7 @@ const App = (props) => {
             title: 'Page No.',
             dataIndex: 'Page No.',
             key: 'Page No.',
-            width:'13%'
+            width: '13%'
         },
         {
             title: 'Username',
@@ -92,8 +92,8 @@ const App = (props) => {
             render: (text, row, index) => (
                 <div className="treenode-block-batch">
                     <div className="tree-block-param-batch">
-                        <Tag color={text == 'RJCT'?'red':'lime'}>
-                            {text == 'RJCT'?'Rejected':'Approved'}
+                        <Tag color={text == 'RJCT' ? 'red' : 'lime'}>
+                            {text == 'RJCT' ? 'Rejected' : 'Approved'}
                         </Tag>
 
                     </div>
@@ -111,7 +111,11 @@ const App = (props) => {
         <>
             <Modal centered={true} className='rejectModal' width={730} title={null} visible={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
                 <Row style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
-                    <ExclamationCircleOutlined style={{ fontSize: 24, color: "orange" }} />
+                    <div style={{display:"flex"}}>
+                        <ExclamationCircleOutlined style={{ fontSize: 24, color: "orange" }} />
+                        <p style={{marginLeft:10,fontSize:14}}>Preview</p>
+                    </div>
+
                     <div>
                         <Button className='custom-primary-btn'
                             style={{ marginRight: 10 }}
@@ -128,9 +132,9 @@ const App = (props) => {
                 </Row>
                 <Row style={{ marginTop: 30 }}>
                     <Table loading={tableLoader} columns={columns}
-                     dataSource={tableData} pagination={false} 
-                     scroll={{y:800}}
-                     />
+                        dataSource={tableData} pagination={false}
+                        scroll={{ y: 800 }}
+                    />
                 </Row >
             </Modal>
         </>
