@@ -109,7 +109,7 @@ const App = (props) => {
     ];
     return (
         <>
-            <Modal centered={true} className='rejectModal' width={730} title={null} visible={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
+            <Modal centered={true} className='rejectModal' width={750} title={null} visible={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
                 <Row style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
                     <div style={{display:"flex"}}>
                         <ExclamationCircleOutlined style={{ fontSize: 24, color: "orange" }} />
