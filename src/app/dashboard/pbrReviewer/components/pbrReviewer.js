@@ -774,7 +774,7 @@ function PbrReviewer() {
                     pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '50', '100', '200'] }}
                     scroll={{
                       x: 2300,
-                      y: 'calc(100vh - 443px)',
+                      y: 'calc(100vh - 460px)',
                     }}
                     style={{ border: '1px solid #ececec', borderRadius: '2px' }}
                   />
