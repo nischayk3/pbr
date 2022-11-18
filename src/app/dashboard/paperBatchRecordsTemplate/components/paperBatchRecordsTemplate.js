@@ -1136,7 +1136,6 @@ function PaperBatchRecordsTemplate() {
     };
     /* istanbul ignore next */
     const tableDataReq = () => {
-
         if (formTableData.length > 0) {
             let data = []
             formTableData.forEach(item => {
@@ -1145,7 +1144,7 @@ function PaperBatchRecordsTemplate() {
                     table_name: item?.name,
                     filename: params?.file,
                     page_name: item?.pageIdValue,
-                    page: 1,
+                    page: item?.page_no,
                     table_identifier: item?.tableData?.table_identifier,
                     column_config: {
                         columns: [],
@@ -3058,7 +3057,7 @@ function PaperBatchRecordsTemplate() {
                                         <DynamicTableForm handleSideState={handleSideState} sideTableData={sideTableData}
                                             setTableActiveKey={setTableActiveKey} setFormTableData={setFormTableData} initialSideTableData={initialSideTableData}
                                             handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish}
-                                            pageIdDropdownValues={pageIdDropdownValues} initialPageIdentifierData={initialPageIdentifierData}
+                                            pageIdDropdownValues={pageIdDropdownValues} initialPageIdentifierData={initialPageIdentifierData} pageNumber={pageNumber}
                                         />
                                     </div>
                                 </Panel>
