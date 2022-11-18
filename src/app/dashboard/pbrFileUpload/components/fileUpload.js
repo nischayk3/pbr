@@ -181,7 +181,7 @@ function FileUpload() {
         /* istanbul ignore next */
         if (field === 'project') {
             setselectParam(prevState => {
-                return { ...prevState, project: '' };
+                return { ...prevState, project: '',group: '' };
             });
             getProjectFilterData(
                 "",
@@ -194,7 +194,7 @@ function FileUpload() {
         }/* istanbul ignore next */
         else if (field === 'group') {
             setselectParam(prevState => {
-                return { ...prevState, group: '' };
+                return { ...prevState, group: '',subGroup: '' };
             });
             getProjectFilterData(
                 selectParam['project'],
@@ -242,9 +242,11 @@ function FileUpload() {
         let arr = [...uploadFileDetail]
         arr = arr.filter(item => item.fileName != val?.fileName)
         setUploadFileDetail(arr);
+        setIsUploadVisible(false)
     }
     const handleCancelSuccess = () => {
         setIsFileUploaded(false);
+        
     };
 
     const files = {

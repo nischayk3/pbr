@@ -66,13 +66,16 @@ import {
     processBatchRecord,
     findParameter,
     getPbrTemplateData,
-    findTable
+    findTable,
+    workflowTemplateReject
 } from '../../../../services/pbrService';
 import ChangeCoordiantes from '../components/rightSidePanel/changeCoordiantes'
 import ParameterList from '../components/rightSidePanel/parameterList'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
 import DynamicTableForm from './dynamicTableForm';
+import RejectModal from './rejectModal'
+import WorkflowPreviewModal from './workflowPreviewModal'
 import './styles.scss';
 import { method } from 'lodash';
 const { Panel } = Collapse;
@@ -244,6 +247,8 @@ function PaperBatchRecordsTemplate() {
     const [mainPanelValue, setMainPanelValue] = useState("")
     const [pageDragValue, setPageDragValue] = useState({})
     const [pageIdFormValues, setPageIdFormValues] = useState([])
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [workflowPreviewModal, setWorkflowPreviewModal] = useState(false);
     const [pageIdDropdownValues, setPageIdDropdownValues] = useState([])
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
@@ -1973,6 +1978,30 @@ function PaperBatchRecordsTemplate() {
         }
     }
 
+    const handleWorkFlowApprove = async () => {
+        try {
+            dispatch(showLoader());
+            let login_response = JSON.parse(localStorage.getItem('login_details'))
+            let req = {
+                message: '',
+                page: pageNumber,
+                status: "APRD",
+                template_id: params?.temp_disp_id,
+                template_version: templateVersion,
+                user_id: login_response?.email_id
+            }
+            let res = await workflowTemplateReject(req)
+            if (res.Status == 202) {
+                setIsModalOpen(false)
+                dispatch(hideLoader());
+                dispatch(showNotification('success', res?.Message));
+            }
+
+        } catch (err) {
+            console.log("err", err)
+        }
+    }
+
     return (
         <div className='pbr-content-layout' >
             <div className='custom-wrapper pbr-wrapper'>
@@ -2013,18 +2042,23 @@ function PaperBatchRecordsTemplate() {
                                 <div className='btns'>
                                     <Button
                                         className='custom-primary-btn'
+                                        style={{ marginRight: 10 }}
                                         onClick={() => {
                                             setIsPublish(true);
                                             setApproveReject("R");
                                         }}>
                                         Reject
                                     </Button>
-                                    <Button style={{ margin: "0px 16px" }} className='custom-primary-btn'
+                                    <Button className='custom-primary-btn'
+                                        style={{ marginRight: 10 }}
                                         onClick={() => {
                                             setIsPublish(true);
                                             setApproveReject("A");
                                         }}
                                     >Approve</Button>
+                                    <Button style={{ marginRight: 10 }} className='custom-secondary-btn'
+                                        onClick={() => { setWorkflowPreviewModal(true) }}
+                                    >Preview</Button>
                                 </div>
                             )
                         }
@@ -3057,11 +3091,27 @@ function PaperBatchRecordsTemplate() {
                                 <Col
                                     span={12}
                                     className='pbrCenterPanelCol pbrCenterBlockRight'
+                                    style={{ justifyContent: params?.fromScreen == "Workflow" ? "" : "right" }}
                                 >
                                     {/* <div className='drawSnippet'>
                                         <EditOutlined />
                                         Draw Snippet
                                     </div> */}
+                                    {params?.fromScreen == "Workflow" ?
+                                        <div className='btns' style={{marginLeft:40}}>
+                                            <Button
+                                                className='custom-primary-btn'
+                                                onClick={() => {
+                                                    setIsModalOpen(true)
+                                                }}>
+                                                Reject
+                                            </Button>
+                                            <Button style={{ margin: "0px 16px" }} className='custom-secondary-btn'
+                                                onClick={() => {
+                                                    handleWorkFlowApprove()
+                                                }}
+                                            >Approve</Button>
+                                        </div> : ""}
                                     {params?.fromScreen == "Workflow" ? "" :
                                         <div className='cropSnippet'>
                                             <Dropdown
@@ -3119,6 +3169,8 @@ function PaperBatchRecordsTemplate() {
                             scroll={{ x: 1000, y: 300 }}
                         />
                     </Modal>
+                    <RejectModal templateVersion={templateVersion} pageNumber={pageNumber} params={params} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+
                 </div>
                 <div className='pbrTemplateRight'>
                     <div className='pbrPanel pbrRightPanel'>
@@ -3133,6 +3185,7 @@ function PaperBatchRecordsTemplate() {
                     </div>
                 </div>
             </div>
+            <WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
             <Signature
                 isPublish={isPublish}
                 handleClose={handleClose}
