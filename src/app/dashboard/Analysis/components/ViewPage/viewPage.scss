@@ -6,6 +6,14 @@ iframe {
 }
 .view-analysis-container {
     background: #ffffff;
+    .btns {
+		button {
+			margin-right: 16px;
+			background: #ffffff;
+			border: none !important;
+			border-radius: 4px;
+		}
+	}
 }
 .save-button-extra {
     color: white !important;

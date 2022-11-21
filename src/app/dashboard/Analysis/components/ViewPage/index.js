@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router";
 import "./viewPage.scss";
 //antd-imports
-import { CloudUploadOutlined } from "@ant-design/icons";
-import { Button, DatePicker, Dropdown, Menu, Tabs } from "antd";
+import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { Button, Col, DatePicker, Dropdown, Menu, Row, Tabs, Tooltip } from "antd";
 const { TabPane } = Tabs;
 //componenets
 import moment from "moment";
@@ -167,7 +167,9 @@ const ViewPageAnalysis = () => {
 				view_version: data?.data?.view_version,
 				data_filter: data?.data?.input_data?.data_filter,
 				batch_filter: data?.data?.input_data?.batch_filter,
-				pipeline_id: data?.data?.pipeline_disp_id
+				pipeline_id: data?.data?.pipeline_disp_id,
+				view_status: data?.data?.view_status,
+				view_name: data?.data?.view_status
 			};
 			dispatch(getAnalyticsViewData(viewDetails));
 			if (data?.data?.pipeline_data[0]?.variable_mapping?.length) {
@@ -194,7 +196,16 @@ const ViewPageAnalysis = () => {
 		setPublishResponse(res);
 	};
 
-
+	const ViewDetails = () => {
+		return (
+			<div>
+				<p>View ID: {selectedViewData?.viewData?.view_id || '-'}</p>
+				<p>View Name: {selectedViewData?.viewData?.view_name || '-'}</p>
+				<p>View Version: {selectedViewData?.viewData?.view_version || '-'}</p>
+				<p>View Status: {selectedViewData?.viewData?.view_status || '-'}</p>
+			</div>
+		)
+	}
 
 
 	return (
@@ -230,7 +241,10 @@ const ViewPageAnalysis = () => {
 						</>
 
 					) : (
-						<div>
+							<div>
+						    <Tooltip placement="bottom" title={ViewDetails}>
+                               <Button>View details <InfoCircleOutlined /></Button>
+                            </Tooltip>
 							<Button>Share</Button>
 							<Button onClick={() => onSaveClick("save")}>Save</Button>
 							<Button onClick={() => onSaveClick('saveAs')}>Save As</Button>

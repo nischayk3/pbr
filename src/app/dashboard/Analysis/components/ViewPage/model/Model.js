@@ -65,14 +65,14 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
     algoValue: "",
     regressionListvalue: [],
     typeListValue: "",
-    enableGrid: true,
+    enableGrid: false,
   });
   const [savedEstimatorPopupDataValues, setSavedEstimatorPopupDataValues] =
     useState({
       algoValue: "",
       regressionListvalue: [],
       typeListValue: "",
-      enableGrid: true,
+      enableGrid: false,
     });
   const [nodes, setNodes] = useState(nodesAnalytics);
   const [nodeTypes, setNodeTypes] = useState(nodesAnalytics);
