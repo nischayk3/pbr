@@ -1,10 +1,11 @@
-import { Button, Form, Input, Popconfirm, Table, Radio } from 'antd';
+import { Button, Form, Input, Popconfirm, Table, Radio, Tag } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import {useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { tableColumns } from '../../../../utils/TableColumns'
 import ReactDragListView from "react-drag-listview";
 import {
-  CloseOutlined
+  CloseOutlined,
+  ExclamationCircleOutlined
 } from '@ant-design/icons';
 import './styles.scss';
 const EditableContext = React.createContext(null);
@@ -115,7 +116,7 @@ const App = (props) => {
     if (count == 0) {
       setCount(templateData.length)
     }
-    if(originalTableData.length ==0){
+    if (originalTableData.length == 0) {
       setOriginalTableData(templateData)
     }
 
@@ -238,80 +239,29 @@ const App = (props) => {
     if (vall.target.value === "move_row") {
       setShowDrag(true)
       setDragProps({
-        // ...dragProps,
-        // onDragEnd(fromIndex, toIndex) {
-        //   const data = [...templateData.slice()];
-        //   const item = data.splice(fromIndex, 1)[0];
-        //   data.splice(toIndex, 0, item);
-        //   setTemplateData(data)
-        // },
         handleSelector: 'a'
       })
     } else {
       setShowDrag(false)
       setDragProps({
-        // onDragEnd(fromIndex, toIndex) {
-        //   let data = templateData.slice();
-        //   let arr = []
-        //   data.map(item => {
-        //     let keysArr = Object.keys(item)
-        //     // keysArr = keysArr.filter(i=>i != "key")
-        //     console.log("keysArr", keysArr, fromIndex, toIndex)
-
-        //     // keysArr.push("key")
-        //     const item1 = keysArr.splice(fromIndex, 1)[0];
-        //     console.log("item1", item1, keysArr)
-        //     keysArr.splice(toIndex, 0, item1);
-        //     console.log("keysArr", keysArr)
-        //     let obj = {}
-        //     keysArr.forEach(el => {
-        //       obj[el] = item[el]
-        //       if (!arr.includes(obj)) {
-        //         arr.push(obj)
-        //       }
-        //     })
-        //   })
-        //   console.log("arrrr", arr)
-        //   setTemplateData(arr)
-        // },
         nodeSelector: 'th',
       })
     }
   }
-
-  // const handleRevert = () => {
-  //   console.log("first",originalTableData)
-    
-  //   console.log("tabledata",tabledata)
-  //   setTemplateData(originalTableData)
-  // }
 
   return (
     <div>
       <div className='tableEdit'>
         <h3 style={{ marginLeft: 20 }}>Selected Table Preview</h3>
         <div>
-          {/* <Button id="save_button"
-            className='custom-primary-btn' style={{
-              backgroundColor: '#303f9f',
-              color: '#ffffff',
-              borderColor: "#303f9f",
-              borderRadius: "5px",
-              marginRight: 10
-
-            }}
-            onClick={() =>handleRevert()}
-
-            type='primary'>Revert</Button> */}
-          {/* <Button id="save_button" style={{
-            backgroundColor: '#303f9f',
-            color: '#ffffff',
-            borderColor: "#303f9f",
-            borderRadius: "5px",
-            marginRight: 10
-
-          }}
-            type='primary'>Validate</Button> */}
+          {enableDelete &&
+            <div>
+              <ExclamationCircleOutlined style={{ fontSize: 16, color: "orange", marginRight: 5 }} />
+              <Tag color={'warning'}>
+                Double click column header to delete
+              </Tag>
+            </div>
+          }
         </div>
 
       </div>
