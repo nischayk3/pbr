@@ -44,6 +44,7 @@ const App = (props) => {
             if (res.Status == 202) {
                 setIsModalOpen(false)
                 dispatch(hideLoader());
+                setValue("")
                 dispatch(showNotification('success', res?.Message));
             }
 
