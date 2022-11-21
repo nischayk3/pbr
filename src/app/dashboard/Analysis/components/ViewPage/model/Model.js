@@ -18,7 +18,9 @@ import Transformation from "./Transformations";
 import ColorSelectorNode from "./CustomNode";
 import EstimatorNode from "./EstimatorNode";
 import FeatureUninonNode from "./FeatureUninonNode";
+import EncoderNode from "./EncoderNode";
 import Estimator from "./Estimator";
+import Encoder from "./Encoder";
 import {
   getAnalyticsNodes,
   getAnalyticsModel,
@@ -32,7 +34,7 @@ import {
 
 const { Step } = Steps;
 
-const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, modelType }) => {
+const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, modelType, encoderData, setEncoderData }) => {
   const selectedViewData = useSelector(
     (state) => state.analyticsReducer.viewData
   );
@@ -112,6 +114,15 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
         setScalerAlgoValue={setScalerAlgoValue}
       />
     ),
+    EncoderNode: (props) => (
+      <EncoderNode
+        myProp="myProps"
+        {...props}
+        encoderData={encoderData}
+        setEncoderData={setEncoderData}
+        addEstimator={addEstimator}
+      />
+    ),
   };
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -157,16 +168,18 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
       let imputerConnections = [];
       let scalerConnections = [];
       let estimatorConnections = [];
+      let encoderConnections = [];
       let tempScalerList = [];
       let imputerList = [];
       let tempEstAlgoList = [];
       let tempEstTypeList = [];
       let tempRegressionList = [];
       let targetVariable = apiResponse.data?.target_variable;
+      let getJson;
       if (finalJson?.variable_mapping?.length >=1) {
         setFinalModelJson(finalJson)
       } else {
-        getModelJson(apiResponse.data);
+        getJson = await getModelJson(apiResponse.data);
       }
       setTarget_category(apiResponse.data?.target_variable_category)
       setSelectedTargetVariable(targetVariable);
@@ -206,6 +219,8 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
           scalerConnections.push(ele);
         } else if (ele.Type === "Estimator") {
           estimatorConnections.push(ele);
+        } else if (ele.Type === "Encoder") {
+          encoderConnections.push(ele);
         }
       });
       let id = 2;
@@ -306,13 +321,105 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
             animated: false,
             target: `imp-${index + 1}`,
           };
-          imputer.position = { x: 260, y: 50 };
+          imputer.position = { x: encoderConnections.length ? 230 : 260, y: 50 };
           existingNodes.push(imputer);
           edgesConnection.push(imputer.edge);
         });
       }
-
+      if (encoderConnections.length) {
+        let yEncoderAxis = 50;
+        let resArr = [];
+        let tempImpArr = [];
+        encoderConnections.forEach((encoderele) => {
+          if (encoderele.Source === 'Imputer') {
+            tempImpArr.push(encoderele.Variable_name)
+          }
+        })
+        encoderConnections.forEach((ele) => {
+          ele.variableParamNum = [];
+          if (ele.Source === 'Imputer') {
+             ele.parameterListNum = tempImpArr
+          } else {
+            ele.parameterListNum = [ele.Variable_name]
+          }
+        })
+        encoderConnections.filter(function(item) {
+          let i = resArr.findIndex(x => (x.Source == item.Source));
+           if(i <= -1){
+             resArr.push(item);
+           }
+           return null;
+        });
+        getJson?.data?.variable_mapping?.forEach((variableList) => {
+          resArr?.forEach((item) => {
+            item?.parameterListNum?.forEach((param) => {
+              if (param === variableList?.variable_name) {
+                item.variableParamNum.push(variableList?.variable_id)
+              }
+            })
+          })
+        })
+        let tempSelectedArr = [];
+        resArr.forEach((encoder, index) => {
+          const findEncObj = edgesConnection.find(
+            (par) => par?.Node === encoder?.Source
+          );
+          const imputerObj = imputerConnections.find((imp) => imp?.Destination === encoder?.Type)
+          yEncoderAxis = yEncoderAxis + 50;
+          encoder.id = `enco-${index + 1}`;
+          encoder.sourcePosition = "right";
+          encoder.targetPosition = "left";
+          encoder.type = "EncoderNode";
+          encoder.style = {
+            background: "#377771",
+            padding: "8px 0px",
+            width: 150,
+            borderRadius: "4px",
+          };
+          if (findEncObj) {
+            encoder.data = JSON.parse(JSON.stringify(findEncObj));
+            encoder.edge = {
+              source: findEncObj.id,
+              type: "smoothstep",
+              animated: false,
+              target: `enco-${index + 1}`,
+            };
+          } else if (imputerObj) {
+            encoder.data = JSON.parse(JSON.stringify(imputerObj));
+            encoder.edge = {
+              source: imputerObj.id,
+              type: "smoothstep",
+              animated: false,
+              target: `enco-${index + 1}`,
+            };
+          }
+          encoder.data.id = encoder.id
+          encoder.position = { x: 420, y: yEncoderAxis };
+          if (finalJson?.feature_union_mapping) {
+            Object.entries(finalJson?.feature_union_mapping).forEach(([key, value]) => {
+              if (encoder?.id === value?.id) {
+                encoder.data.Destination_Parameter.submodule = value?.transformation?.replace('t_', '').toUpperCase();
+              }
+            })
+          }
+          const obj = {
+            id: encoder?.id,
+            parameters: {},
+            transformation: encoder?.data?.Destination_Parameter?.submodule_key,
+            type: "Encoder",
+            variable_list: encoder?.variableParamNum,
+          }
+          tempSelectedArr.push(obj)
+          existingNodes.push(encoder);
+          edgesConnection.push(encoder.edge);
+        });
+        setEncoderData({ ...encoderData, selectedObjs: tempSelectedArr, encoderValueData: resArr, encoderDropDownData: apiResponse?.data?.Encoder });
+      }
       if (scalerConnections.length) {
+        let encoderID;
+        let findObjScaler = {
+          id: ''
+        };
         const tempScalerNode = {
           id: "scaler-1",
           sourcePosition: "right",
@@ -326,7 +433,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
             border: "none",
             borderRadius: "4px",
           },
-          position: { x: 470, y: 20 },
+          position: { x: encoderConnections.length ? 620 : 470, y: 20 },
         };
         let tempScalerSelectedValues = [];
         scalerConnections.forEach((scaler) => {
@@ -344,12 +451,15 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
             };
             edgesConnection.push(edge);
           } else {
-            const findObj = existingNodes.find(
-              (ext) => ext.Node === scaler.Source
+            findObjScaler = existingNodes.find(
+              (ext) => (ext.id !== encoderID && ext?.Node === scaler?.Source)
             );
-            tempScalerNode.data = JSON.parse(JSON.stringify(findObj));
+            encoderID = findObjScaler?.id
+            if (findObjScaler) {
+              tempScalerNode.data = JSON.parse(JSON.stringify(findObjScaler));
+            }
             const edge = {
-              source: findObj.id,
+              source: findObjScaler?.id,
               type: "smoothstep",
               animated: false,
               target: "scaler-1",
@@ -370,7 +480,7 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
           padding: "8px",
           borderRadius: "4px",
         },
-        position: { x: 700, y: 200 },
+        position: { x: encoderConnections.length ? 800 : 700, y: 200 },
         type: "EstimatorNode",
       };
       apiResponse?.data?.Edge?.forEach((existing) => {
@@ -442,10 +552,8 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
       dispatch(showNotification("error", "Unable to get model data"));
     }
   };
-  
 
   const getModelJson = async (data) => {
-
     const reqBody = {
       batch_filter: selectedViewData?.batch_filter,
       data_filter: selectedViewData?.data_filter,
@@ -479,6 +587,8 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
     } else {
       dispatch(hideLoader());
     }
+
+    return apiResponse;
   };
 
   const onNodeClick = (e, node) => {
@@ -498,12 +608,20 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
     let tempNodeList = [];
     nodes?.forEach((ele) => {
       if (ele.Type === "Parameter") {
-        console.log(ele, 'elelee')
         tempNodeList.push(ele.Node)
       }
     })
     setScalerNOdeList(tempNodeList)
   }, [nodes])
+
+  useEffect(() => {
+    nodes?.forEach((ele) => {
+      if (ele.data?.id === encoderData.encoderId) {
+         ele.data.Destination_Parameter.submodule = encoderData?.savedValue
+      };
+      setNodeTypes(nodesNew)
+    })
+  }, [encoderData.savedValue]);
 
   useEffect(() => {
     setNodeTypes(nodesNew)
@@ -681,6 +799,15 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
                   target_category={target_category}
                 />
               )}
+              {type === 'encoder' && drawervisible && 
+                <Encoder
+                onCreateClick={onCreateClick}
+                encoderData={encoderData}
+                setEncoderData={setEncoderData}
+                finalModelJson={finalModelJson}
+                setFinalModelJson={setFinalModelJson}
+                />
+              }
             </Sider>
           </div>
         </div>}
