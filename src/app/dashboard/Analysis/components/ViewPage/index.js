@@ -28,6 +28,7 @@ const ViewPageAnalysis = () => {
 	const [isPublish, setIsPublish] = useState(false);
 	const [publishResponse, setPublishResponse] = useState({});
 	const [approveReject, setApproveReject] = useState("");
+	const [encoderData, setEncoderData] = useState({ encoderDropDownData: [], encoderValueData: [], encoderId: '', encoderValue: '', savedValue: '', selectedObjs: [] })
 	const [modelData, setModelData] = useState();
 	const [tableKey, setTableKey] = useState("1");
 	const [exectStart, setExectStart] = useState(false);
@@ -72,10 +73,28 @@ const ViewPageAnalysis = () => {
 			]}
 		/>
 	);
+
 	const onSaveClick = async (save) => {
+		const tempObj = JSON.parse(JSON.stringify(finalModelJson));
+		Object.entries(tempObj.feature_union_mapping).forEach(([key, value]) => {
+			if (value.type === "Encoder") {
+			  delete tempObj.feature_union_mapping[key]
+			}
+		});
+		let tempEncoder = Object.assign({}, encoderData.selectedObjs)
+        let tempIds = {
+			0: '5',
+			1: '6',
+			2: '7',
+		};
+		Object.keys(tempIds).forEach(function(ele) {
+			tempEncoder[tempIds[ele]] = tempEncoder[ele];
+			delete tempEncoder[ele];
+		})
+		tempObj.feature_union_mapping = Object.assign(tempObj.feature_union_mapping, tempEncoder)
 		const req = {
 			...selectedViewData.viewData,
-			data: [{ ...finalModelJson }],
+			data: [{ ...tempObj }],
 			savetype: save,
 			pipeline_disp_id: selectedViewData.viewData.pipeline_id,
 		};
@@ -159,25 +178,6 @@ const ViewPageAnalysis = () => {
 		} else {
 			dispatch(hideLoader());
 		}
-	}
-
-	const getResultsTabName = () => {
-		let result = "Results";
-		if (Object.keys(finalModelJson)?.length >= 1) {
-			if (finalModelJson?.estimator?.e__0.estimator_type === "cross_decomposition") {
-				result = "Cross Decomposition"
-			} else if (finalModelJson?.estimator?.e__0.estimator_type === "decomposition") {
-				result = "Decomposition"
-			}
-		} else {
-			if (editFinalJson?.pipeline_data[0]?.estimator?.e__0.estimator_type === "cross_decomposition") {
-				result = "Cross Decomposition"
-			} else if (editFinalJson?.pipeline_data[0]?.estimator?.e__0.estimator_type === "decomposition") {
-				result = "Decomposition"
-			}
-		}
-
-		return result;
 	}
 
 	useEffect(() => {
@@ -272,6 +272,8 @@ const ViewPageAnalysis = () => {
 							editFinalJson={editFinalJson}
 							tableKey={tableKey}
 							modelType={modelType}
+							encoderData={encoderData}
+                            setEncoderData={setEncoderData}
 						/>
 					</TabPane>
 					{exectStart && <TabPane tab="Transformation" key="4">
