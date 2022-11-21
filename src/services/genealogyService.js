@@ -71,6 +71,21 @@ export const getBackwardData = _queryParam => {
 	);
 };
 
+export const getGeanealogy = _queryParam => {
+	return Service.post(
+		MDH_APP_GENEALOGY + 'get-genealogy',
+		_queryParam,
+		request_head,
+	).then(
+		response => {
+			return response.data;
+		},
+		error => {
+			return error.response.data;
+		}
+	);
+};
+
 export const getForwardData = _queryParam => {
 	return Service.get(
 		MDH_APP_GENEALOGY + 'genealogy',

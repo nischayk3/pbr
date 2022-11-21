@@ -11,16 +11,31 @@ import "./style.scss";
 const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 	const [uploadFileRes, setUploadFileRes] = useState([]);
 	const [isDisable, setIsDisable] = useState(true);
+	const [fileList, setFileList] = useState([]);
+
 
 	const dispatch = useDispatch();
 	const match = useRouteMatch();
 	const history = useHistory();
 
 	const handleChange = (info) => {
-		const formData = new FormData();
-		formData.append('file', info.file.originFileObj);
-		formData.append('type', 'parameter');
-		fileUpload(formData)
+		const nextState = {};
+		console.log("infooooooooooo", info);
+		if (info.file.status === "uploading") {
+			setFileList(info.fileList)
+			nextState.fileList = [info.file];
+		} else if (info.file.status === "done") {
+			const formData = new FormData();
+			formData.append('file', info.file.originFileObj);
+			formData.append('type', 'parameter');
+			fileUpload(formData)
+			setFileList(info.fileList)
+			nextState.fileList = [info.file];
+		} else if (info.file.status === "removed") {
+			setFileList([])
+		}
+
+
 	};
 
 	const uploadButton = (
@@ -84,7 +99,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 			let param = []
 			dispatch(hideLoader());
 			if (loadDssRes.statuscode === 200) {
-				loadDssRes.message.forEach((item, key) => {
+				loadDssRes.data.forEach((item, key) => {
 					let obj = {}
 					obj['parameter_name'] = item.parameter_name;
 					obj['id'] = key
@@ -103,6 +118,13 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 		}
 	}
 
+	const dummyRequest = ({ file, onSuccess }) => {
+		setTimeout(() => {
+			onSuccess("ok");
+		}, 0);
+	};
+
+
 	return (
 		<Modal title="Load dataset - Upload"
 			centered
@@ -114,10 +136,12 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 			<div className="upload-file-wrapper">
 				<Upload
 					listType="picture"
+					fileList={fileList}
 					onChange={handleChange}
 					maxCount={1}
+					customRequest={dummyRequest}
 				>
-					{uploadButton}
+					{fileList.length >= 8 ? null : uploadButton}
 				</Upload>
 
 				<p className="upload-heading">Click or drag file to this area to upload</p>

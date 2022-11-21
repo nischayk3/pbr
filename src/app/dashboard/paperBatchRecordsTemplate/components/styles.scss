@@ -181,7 +181,7 @@ button.defineTableBtn {
 		.pbrCenterBlockRight {
 			display: inline-flex;
 			align-items: center;
-			justify-content: right;
+			// justify-content: space-around;
 			gap: 30px;
 		}
 	}
@@ -352,3 +352,33 @@ label {
     position: absolute;
 	z-index: 1000000000 ;
 }
+
+.rejectModal{
+	// width: 400 !important;
+	// height: 220 !important;
+	// .ant-modal{
+	// 	width: 400 !important;
+	// 	height: 220 !important;
+	// }
+	.ant-modal-content{
+		width: 400 !important;
+		height: 220 !important;
+		// height: 220;
+	}
+}
+
+.treenode-block-batch {
+	display: flex;
+	justify-content: space-between;
+
+	.tree-block-param-batch {
+		display: flex;
+	}
+}
+
+.ant-modal{
+	
+		width: 800 !important;
+		height: 300 !important;
+
+} 

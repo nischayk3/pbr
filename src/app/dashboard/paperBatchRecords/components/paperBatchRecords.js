@@ -155,6 +155,7 @@ function PaperBatchRecords() {
 				});
 				setProjectFileList(res.file)
 				setProjectFileName(res.file[0])
+				
 			}
 			/* istanbul ignore next */
 			else if (res["status-code"] != 200) {
@@ -442,7 +443,7 @@ function PaperBatchRecords() {
 		/* istanbul ignore next */
 		if (field === 'project') {
 			setselectParam(prevState => {
-				return { ...prevState, project: '' };
+				return { ...prevState, project: '',group: '' };
 			});
 			getProjectFilterData(
 				"",
@@ -455,7 +456,7 @@ function PaperBatchRecords() {
 		}/* istanbul ignore next */
 		else if (field === 'group') {
 			setselectParam(prevState => {
-				return { ...prevState, group: '' };
+				return { ...prevState, group: '',subGroup: '' };
 			});
 			getProjectFilterData(
 				selectParam['project'],

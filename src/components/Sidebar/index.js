@@ -223,6 +223,13 @@ const Sidebar = () => {
 				>
 					<Link to="/dashboard/user-roles-and-access">Roles and Access</Link>
 				</Menu.Item>
+				<Menu.Item
+					key="data-access-service"
+					icon={<TeamOutlined className="menu-icons" />}
+					id="data-access-service"
+				>
+					<Link to="/dashboard/data-access-service">Data Access Services</Link>
+				</Menu.Item>
 			</Menu>
 		</Sider>
 	);

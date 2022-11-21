@@ -50,15 +50,18 @@ export default function Landing(props) {
       ds_name: hierarchyName
     }
     let check_unique = await getAuthorisedPermission(req, 'VIEW')
-    console.log(check_unique)
-    if (check_unique.data.statuscode == 200) {
+    console.log(check_unique.response)
+    if (check_unique.data && check_unique.data.statuscode == 200) {
       history.push({
         pathname:
           "/dashboard/molecule_hierarchy_configuration/untitled_view",
       });
     }
-    else {
+    else if (check_unique.response && check_unique.response.data && check_unique.response.data.statuscode == 400) {
       dispatch(showNotification('error', 'Drug substance name already present, please enter unique name'))
+    }
+    else {
+      dispatch(showNotification('error', 'Error while creating drug substance'))
     }
   }
 

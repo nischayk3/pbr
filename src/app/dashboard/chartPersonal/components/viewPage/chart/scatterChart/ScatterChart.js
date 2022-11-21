@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ScatterStyles.scss";
 //antd imports
-import { Button, Col, Empty, Row, Tabs } from "antd";
+import { Button, Col, Empty, Row, Select, Tabs } from "antd";
 //components
 import Modal from "../../../../../../../components/Modal/Modal";
 import ScatterPlot from "../../../../../../../components/ScatterPlot/ScatterPlot";
@@ -14,6 +14,7 @@ import ExclusionPopup from "../ExclusionPopup";
 import { postChartPlotData } from "../../../../../../../services/chartPersonalizationService";
 //redux
 import { useDispatch } from "react-redux";
+import SelectSearchField from "../../../../../../../components/SelectSearchField/SelectSearchField";
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../../../duck/actions/commonActions";
@@ -49,7 +50,12 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 	const [yaxisList, setYAxisList] = useState([]);
 	const [tableKey, setTableKey] = useState("3");
 	const [showZAxis, setShowZAxis] = useState(false);
-	const [transformationList, setTransformationList] = useState(['boxcox', 'johnson']);
+	const [transformationList, setTransformationList] = useState([
+		{ label: "Yeohjohnson", value: "johnson" },
+		{ label: "Boxcox", value: "boxcox" }
+	]);
+
+	// /'boxcox', 'johnson'
 	const [ppkData, setPpkData] = useState({});
 	const [showPpk, setShowPpk] = useState(false);
 	const exclusionIdCounter = useRef(0);
@@ -113,6 +119,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			dispatch(showNotification("error", "X and Y axis cannot be same"));
 			return;
 		}
+
 		if (axisValues.zaxis) {
 			if (axisValues.xaxis === axisValues.zaxis) {
 				dispatch(showNotification("error", "X and Z axis cannot be same"));
@@ -122,11 +129,31 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				return;
 			}
 		}
+
+		const chartArr = [...postChartData.data];
+		if (axisValues.transform) {
+			let errorValue = false;
+			console.log("axisValues.transform ", axisValues.transform);
+			chartArr.forEach((ele) => {
+				if (ele.limits.specification.length === 0) {
+					errorValue = true;
+					dispatch(showNotification("error", "Please enter Lower and Upper Specification limits"));
+				} else {
+					errorValue = false;
+				}
+			})
+			if (errorValue) {
+				return;
+			}
+		}
+
+
 		let xAxis = {};
 		let yAxis = {};
 		let zAxis = {};
 		let transform = {};
 		const newCovArr = JSON.parse(JSON.stringify(postChartData));
+
 		newCovArr.data[0].extras.coverage.forEach((ele) => {
 			if (ele.function_name === axisValues.xaxis) {
 				xAxis.function_name = ele.function_name;
@@ -144,16 +171,19 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				transform.function_name = axisValues.transform;
 			}
 		});
+
 		const newArr = [...postChartData.data];
 		const obj = {
 			function_name:
 				axisValues.xaxis === "Batch" ? "batch_num" : "recorded_date",
 			function_id: null,
 		};
+
 		const processObj = {
 			function_name: "recorded_date",
 			function_id: null,
 		};
+
 		newArr.forEach((ele) => {
 			ele.chart_type =
 				axisValues.chartType === "Scatter Plot"
@@ -178,8 +208,6 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			}
 
 			if (axisValues.chartType === "Process Capability") {
-				ele.layout.width = 500;
-				ele.layout.height = 350;
 				ele.layout.autoSize = false;
 				ele.layout.xaxis.title.text = "";
 				ele.layout.yaxis.title.text = "";
@@ -209,22 +237,29 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		try {
 			dispatch(showLoader());
 			const viewRes = await postChartPlotData(postChartData);
-
+			dispatch(hideLoader());
 			errorMsg = viewRes?.message;
 			let newdataArr = [...postChartData.data];
 			newdataArr[0].data = viewRes.data[0].data;
 			newdataArr[0].extras = viewRes.data[0].extras;
 			newdataArr[0].layout = viewRes.data[0].layout;
 			newdataArr[0].ppk_cpk_data = viewRes.data[0].ppk_cpk_data;
-			if (JSON.stringify(viewRes?.data[0]?.ppk_cpk_data) !== '{}') {
-				setShowPpk(true)
-				setPpkData(viewRes.data[0].ppk_cpk_data)
-				newdataArr[0].layout.width = 500;
-				newdataArr[0].layout.height = 350;
+			if (axisValues.transform !== "") {
+				if (viewRes?.data[0]?.ppk_cpk_data?.return_code === 200) {
+					setShowPpk(true)
+					setPpkData(viewRes.data[0].ppk_cpk_data)
+					newdataArr[0].layout.width = 500;
+					newdataArr[0].layout.height = 350;
+					dispatch(showNotification("success", `Best Transformation : ${viewRes.data[0].ppk_cpk_data?.best_transformer}`));
+				} else {
+					setShowPpk(false)
+				}
+			} else {
+				setShowPpk(false)
 			}
 			setPostChartData({ ...postChartData, data: newdataArr });
 			setShowChart(true);
-			dispatch(hideLoader());
+
 		} catch (error) {
 			/* istanbul ignore next */
 			dispatch(hideLoader());
@@ -276,6 +311,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						};
 						table.push(obj);
 					});
+
 				setExclusionTable(table);
 				if (
 					(ele?.data[0]?.x && ele?.data[0]?.x?.length >= 1) ||
@@ -294,6 +330,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					let xValue = "";
 					let yValue = "";
 					let zValue = "";
+					let transformValue = "";
 					if (ele.chart_type !== "process control") {
 						xValue = ele.chart_mapping.x.function_name;
 					} else {
@@ -308,10 +345,26 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 					zValue = ele.chart_mapping?.z?.function_name
 						? ele.chart_mapping?.z?.function_name
 						: "";
+					transformValue = ele.chart_mapping?.transform?.function_name
+						? ele.chart_mapping?.transform?.function_name
+						: "";
 					if (zValue) {
 						setShowZAxis(true);
 					} else {
 						setShowZAxis(false);
+					}
+					if (ele.chart_mapping?.transform?.function_name !== "") {
+						if (ele.ppk_cpk_data?.return_code === 200) {
+							setShowPpk(true)
+							setPpkData(ele.ppk_cpk_data)
+							ele.layout.width = 500;
+							ele.layout.height = 350;
+							dispatch(showNotification("success", `Best Transformation : ${ele.ppk_cpk_data?.best_transformer}`));
+						} else {
+							setShowPpk(false)
+						}
+					} else {
+						setShowPpk(false)
 					}
 					setAxisValues({
 						...axisValues,
@@ -319,6 +372,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						xaxis: xValue,
 						yaxis: yValue,
 						zaxis: zValue,
+						transform: transformValue,
 					});
 					setShowChart(true);
 					setChartData(ele.data);
@@ -333,6 +387,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						xaxis: null,
 						yaxis: null,
 						zaxis: null,
+						transform: ""
 					});
 				}
 			});
@@ -383,7 +438,11 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		return false;
 	};
 
-
+	const optionsTransformer = transformationList.map((item, index) => (
+		<Select.Option key={index} value={item.value}>
+			{item.label}
+		</Select.Option>
+	));
 	return (
 		<div className="chartLayout-container">
 			<Row gutter={24}>
@@ -435,13 +494,17 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 
 				{axisValues.chartType === 'Process Capability' && (
 					<Col span={5}>
-						<p>Transformation</p>
-						<SelectField
-							placeholder="Select Transformation"
-							selectList={transformationList}
-							selectedValue={axisValues.transform}
+						{/* <p>Transformation</p> */}
+						<SelectSearchField
+							showSearch
+							label='Transformation'
+							placeholder='Select Transformation'
 							onChangeSelect={(e) => setAxisValues({ ...axisValues, transform: e })}
+							options={optionsTransformer}
+							handleClearSearch={(e) => setAxisValues({ ...axisValues, transform: "" })}
+							selectedValue={axisValues.transform}
 						/>
+
 					</Col>
 				)}
 
@@ -470,8 +533,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 
 					{showPpk && (
 						<div className="show-ppk">
-							<span>Results</span>
-							<p>Best Transformation : {ppkData?.best_transformer}</p>
+							<span>Results :</span>
 							<p>CP : {ppkData?.cp}</p>
 							<p>CPK : {ppkData?.cpk}</p>
 							<p>PP : {ppkData?.pp}</p>
