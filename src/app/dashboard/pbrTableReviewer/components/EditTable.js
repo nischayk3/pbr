@@ -1,9 +1,11 @@
-import { Button, Form, Input, Popconfirm, Table, Radio } from 'antd';
+import { Button, Form, Input, Popconfirm, Table, Radio, Tag } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { tableColumns } from '../../../../utils/TableColumns'
 import ReactDragListView from "react-drag-listview";
 import {
-  CloseOutlined
+  CloseOutlined,
+  ExclamationCircleOutlined
 } from '@ant-design/icons';
 import './styles.scss';
 const EditableContext = React.createContext(null);
@@ -81,14 +83,16 @@ const EditableCell = ({
 
   return <td {...restProps}>{childNode}</td>;
 };
- /* istanbul ignore next */
+/* istanbul ignore next */
 const App = (props) => {
+  const tabledata = useSelector((state) => state?.pbrReducer?.initialTableData)
   let { templateData, setTemplateData } = props
   const [defaultColumns, setDefaultColumns] = useState([]);
   const [showMove, setShowMove] = useState(true);
   const [count, setCount] = useState(0);
   const [showDrag, setShowDrag] = useState(false);
   const [dragProps, setDragProps] = useState({});
+  const [originalTableData, setOriginalTableData] = useState([]);
   const [enableDelete, setEnableDelete] = useState(false);
 
 
@@ -111,6 +115,9 @@ const App = (props) => {
     setDefaultColumns(col)
     if (count == 0) {
       setCount(templateData.length)
+    }
+    if (originalTableData.length == 0) {
+      setOriginalTableData(templateData)
     }
 
   }, [templateData, showDrag])
@@ -190,11 +197,11 @@ const App = (props) => {
       }),
       onHeaderCell: (record) => ({
         onDoubleClick: () => {
-          if(enableDelete){
+          if (enableDelete) {
             handleDeleteColumn(col)
             setEnableDelete(false)
           }
-          
+
         },
       })
     };
@@ -211,7 +218,7 @@ const App = (props) => {
       let arr = []
       data.map(item => {
         let keysArr = Object.keys(item)
-        keysArr = keysArr.filter(i=>i != "key")
+        keysArr = keysArr.filter(i => i != "key")
         keysArr.push("key")
         const item1 = keysArr.splice(fromIndex, 1)[0];
         keysArr.splice(toIndex, 0, item1);
@@ -232,72 +239,29 @@ const App = (props) => {
     if (vall.target.value === "move_row") {
       setShowDrag(true)
       setDragProps({
-        // ...dragProps,
-        // onDragEnd(fromIndex, toIndex) {
-        //   const data = [...templateData.slice()];
-        //   const item = data.splice(fromIndex, 1)[0];
-        //   data.splice(toIndex, 0, item);
-        //   setTemplateData(data)
-        // },
         handleSelector: 'a'
       })
     } else {
       setShowDrag(false)
       setDragProps({
-        // onDragEnd(fromIndex, toIndex) {
-        //   let data = templateData.slice();
-        //   let arr = []
-        //   data.map(item => {
-        //     let keysArr = Object.keys(item)
-        //     // keysArr = keysArr.filter(i=>i != "key")
-        //     console.log("keysArr", keysArr, fromIndex, toIndex)
-
-        //     // keysArr.push("key")
-        //     const item1 = keysArr.splice(fromIndex, 1)[0];
-        //     console.log("item1", item1, keysArr)
-        //     keysArr.splice(toIndex, 0, item1);
-        //     console.log("keysArr", keysArr)
-        //     let obj = {}
-        //     keysArr.forEach(el => {
-        //       obj[el] = item[el]
-        //       if (!arr.includes(obj)) {
-        //         arr.push(obj)
-        //       }
-        //     })
-        //   })
-        //   console.log("arrrr", arr)
-        //   setTemplateData(arr)
-        // },
         nodeSelector: 'th',
       })
     }
   }
+
   return (
     <div>
       <div className='tableEdit'>
         <h3 style={{ marginLeft: 20 }}>Selected Table Preview</h3>
         <div>
-          {/* <Button id="editLogs" style={{
-            borderRadius: "5px",
-            textTransform: "none",
-            background: "#ffffff",
-            borderColor: "#303f9f",
-            color: "#303f9f",
-            marginRight: '15px',
-
-          }}
-            type='primary'>
-            Edit
-          </Button> */}
-          {/* <Button id="save_button" style={{
-            backgroundColor: '#303f9f',
-            color: '#ffffff',
-            borderColor: "#303f9f",
-            borderRadius: "5px",
-            marginRight: 10
-
-          }}
-            type='primary'>Validate</Button> */}
+          {enableDelete &&
+            <div>
+              <ExclamationCircleOutlined style={{ fontSize: 16, color: "orange", marginRight: 5 }} />
+              <Tag color={'warning'}>
+                Double click column header to delete
+              </Tag>
+            </div>
+          }
         </div>
 
       </div>
@@ -322,15 +286,15 @@ const App = (props) => {
           Add Column
         </Button>
         <Button
-          onClick={()=>setEnableDelete(true)}
+          onClick={() => setEnableDelete(!enableDelete)}
           type="primary"
-          disabled ={enableDelete}
+          // disabled ={enableDelete}
           style={{
             marginBottom: 16,
             marginLeft: 10
           }}
         >
-          {enableDelete ? "Double Click Header" :"Delete Column"}
+          {enableDelete ? "Cancel" : "Delete Column"}
         </Button>
         {showMove && <Button
           onClick={handleMovementChange}

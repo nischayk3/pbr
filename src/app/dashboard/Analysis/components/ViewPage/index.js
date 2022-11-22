@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router";
 import "./viewPage.scss";
 //antd-imports
-import { CloudUploadOutlined } from "@ant-design/icons";
-import { Button, DatePicker, Dropdown, Menu, Tabs } from "antd";
+import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { Button, Col, DatePicker, Dropdown, Menu, Row, Tabs, Tooltip } from "antd";
 const { TabPane } = Tabs;
 //componenets
 import moment from "moment";
@@ -28,6 +28,7 @@ const ViewPageAnalysis = () => {
 	const [isPublish, setIsPublish] = useState(false);
 	const [publishResponse, setPublishResponse] = useState({});
 	const [approveReject, setApproveReject] = useState("");
+	const [encoderData, setEncoderData] = useState({ encoderDropDownData: [], encoderValueData: [], encoderId: '', encoderValue: '', savedValue: '', selectedObjs: [] })
 	const [modelData, setModelData] = useState();
 	const [tableKey, setTableKey] = useState("1");
 	const [exectStart, setExectStart] = useState(false);
@@ -72,10 +73,28 @@ const ViewPageAnalysis = () => {
 			]}
 		/>
 	);
+
 	const onSaveClick = async (save) => {
+		const tempObj = JSON.parse(JSON.stringify(finalModelJson));
+		Object.entries(tempObj.feature_union_mapping).forEach(([key, value]) => {
+			if (value.type === "Encoder") {
+			  delete tempObj.feature_union_mapping[key]
+			}
+		});
+		let tempEncoder = Object.assign({}, encoderData.selectedObjs)
+        let tempIds = {
+			0: '5',
+			1: '6',
+			2: '7',
+		};
+		Object.keys(tempIds).forEach(function(ele) {
+			tempEncoder[tempIds[ele]] = tempEncoder[ele];
+			delete tempEncoder[ele];
+		})
+		tempObj.feature_union_mapping = Object.assign(tempObj.feature_union_mapping, tempEncoder)
 		const req = {
 			...selectedViewData.viewData,
-			data: [{ ...finalModelJson }],
+			data: [{ ...tempObj }],
 			savetype: save,
 			pipeline_disp_id: selectedViewData.viewData.pipeline_id,
 		};
@@ -148,7 +167,9 @@ const ViewPageAnalysis = () => {
 				view_version: data?.data?.view_version,
 				data_filter: data?.data?.input_data?.data_filter,
 				batch_filter: data?.data?.input_data?.batch_filter,
-				pipeline_id: data?.data?.pipeline_disp_id
+				pipeline_id: data?.data?.pipeline_disp_id,
+				view_status: data?.data?.view_status,
+				view_name: data?.data?.view_status
 			};
 			dispatch(getAnalyticsViewData(viewDetails));
 			if (data?.data?.pipeline_data[0]?.variable_mapping?.length) {
@@ -159,25 +180,6 @@ const ViewPageAnalysis = () => {
 		} else {
 			dispatch(hideLoader());
 		}
-	}
-
-	const getResultsTabName = () => {
-		let result = "Results";
-		if (Object.keys(finalModelJson)?.length >= 1) {
-			if (finalModelJson?.estimator?.e__0.estimator_type === "cross_decomposition") {
-				result = "Cross Decomposition"
-			} else if (finalModelJson?.estimator?.e__0.estimator_type === "decomposition") {
-				result = "Decomposition"
-			}
-		} else {
-			if (editFinalJson?.pipeline_data[0]?.estimator?.e__0.estimator_type === "cross_decomposition") {
-				result = "Cross Decomposition"
-			} else if (editFinalJson?.pipeline_data[0]?.estimator?.e__0.estimator_type === "decomposition") {
-				result = "Decomposition"
-			}
-		}
-
-		return result;
 	}
 
 	useEffect(() => {
@@ -194,7 +196,16 @@ const ViewPageAnalysis = () => {
 		setPublishResponse(res);
 	};
 
-
+	const ViewDetails = () => {
+		return (
+			<div>
+				<p>View ID: {selectedViewData?.viewData?.view_id || '-'}</p>
+				<p>View Name: {selectedViewData?.viewData?.view_name || '-'}</p>
+				<p>View Version: {selectedViewData?.viewData?.view_version || '-'}</p>
+				<p>View Status: {selectedViewData?.viewData?.view_status || '-'}</p>
+			</div>
+		)
+	}
 
 
 	return (
@@ -230,7 +241,10 @@ const ViewPageAnalysis = () => {
 						</>
 
 					) : (
-						<div>
+							<div>
+						    <Tooltip placement="bottom" title={ViewDetails}>
+                               <Button>View details <InfoCircleOutlined /></Button>
+                            </Tooltip>
 							<Button>Share</Button>
 							<Button onClick={() => onSaveClick("save")}>Save</Button>
 							<Button onClick={() => onSaveClick('saveAs')}>Save As</Button>
@@ -272,6 +286,8 @@ const ViewPageAnalysis = () => {
 							editFinalJson={editFinalJson}
 							tableKey={tableKey}
 							modelType={modelType}
+							encoderData={encoderData}
+                            setEncoderData={setEncoderData}
 						/>
 					</TabPane>
 					{exectStart && <TabPane tab="Transformation" key="4">

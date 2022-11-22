@@ -111,7 +111,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 			let param = []
 			dispatch(hideLoader());
 			if (loadDssRes.statuscode === 200) {
-				loadDssRes.message.forEach((item, key) => {
+				loadDssRes.data.forEach((item, key) => {
 					let obj = {}
 					obj['parameter_name'] = item.parameter_name;
 					obj['id'] = key
