@@ -48,16 +48,16 @@
 .black-div {
     height: 88px;
     margin-top: 30px;
-    width: 787px;
+    width: 700px;
     border-radius: 0px;
     background-color: #000000;
     color: white;
 }
 
 .black-div2 {
-    height: 68px;
+    height: 38px;
     margin-top: 30px;
-    width: 787px;
+    width: 700px;
     border-radius: 0px;
     background-color: #000000;
     color: white;
@@ -97,4 +97,30 @@
     border-radius: 4px;
     background: black;
     color: greenyellow;
+}
+
+.vl {
+    border-left: 1px solid #CACACA;
+    height: 250px;
+    margin-left: 60px;
+}
+
+.side_list {
+    margin-top: 7px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    color: #9F9F9F;
+}
+
+.side_list_selected {
+    margin-top: 7px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    color: #162154;
 }
