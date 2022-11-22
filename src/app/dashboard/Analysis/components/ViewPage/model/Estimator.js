@@ -286,7 +286,7 @@ const Estimator = (props) => {
             <Checkbox
               checked={estimatorPopupDataValues.enableGrid}
               onChange={(e) => handleCheckboxChange(e)}
-              disabled={estimatorPopupDataValues.algoValue}
+              disabled={!estimatorPopupDataValues.algoValue}
             >
               Enable grid search
             </Checkbox>
