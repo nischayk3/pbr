@@ -63,7 +63,6 @@ const Estimator = (props) => {
     let tempNEst = [];
     if (estimatorPopupDataValues.enableGrid) {
       hyperParameters?.forEach((ele) => {
-        console.log(ele.customValue, 'eleee');
         if (ele.customValue) {
           if (ele.valid_value === 'Integer') {
             ele.customValue = Number(ele.customValue)
@@ -82,9 +81,13 @@ const Estimator = (props) => {
     Object.entries(tempObj.estimator).forEach(([key, value]) => {
       value.estimator_type = estimatorPopupDataValues.typeListValue
       value.model_name = `e_${estimatorPopupDataValues.algoValue.toLowerCase()}`;
-      value.hyperparamters = {
-        n_estimators : tempNEst,
-        max_depth : tempParams
+      if (tempNEst.length) {
+        value.hyperparamters = {
+          n_estimators : tempNEst,
+          max_depth : tempParams
+        }
+      } else {
+        value.hyperparamters = {};
       }
     });
     const metricsTemp = {
