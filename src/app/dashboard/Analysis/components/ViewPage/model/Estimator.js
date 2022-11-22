@@ -63,7 +63,17 @@ const Estimator = (props) => {
     let tempNEst = [];
     if (estimatorPopupDataValues.enableGrid) {
       hyperParameters?.forEach((ele) => {
+        console.log(ele.customValue, 'eleee');
         if (ele.customValue) {
+          if (ele.valid_value === 'Integer') {
+            ele.customValue = Number(ele.customValue)
+          } else if (ele.valid_value.includes('True')) {
+            ele.customValue = true
+          } else if (ele.valid_value.includes('False')) {
+            ele.customValue = false
+          } else if (ele.valid_value.includes('Float')) {
+            ele.customValue = Number(ele.customValue)
+          }
           tempNEst.push(ele.customValue)
           tempParams.push(ele.parameter)
         }
@@ -273,6 +283,7 @@ const Estimator = (props) => {
             <Checkbox
               checked={estimatorPopupDataValues.enableGrid}
               onChange={(e) => handleCheckboxChange(e)}
+              disabled={estimatorPopupDataValues.algoValue}
             >
               Enable grid search
             </Checkbox>
