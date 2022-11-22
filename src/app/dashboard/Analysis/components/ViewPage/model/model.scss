@@ -356,6 +356,8 @@
 }
 
 .hyper_table {
+	max-height: 350px;
+	overflow-y: auto;
 	.ant-table-tbody > tr > td {
 		padding: 10px !important;
 	}

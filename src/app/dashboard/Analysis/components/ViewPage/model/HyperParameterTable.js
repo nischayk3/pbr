@@ -5,7 +5,7 @@ import './model.scss'
 
 const HyperParameterTable = (props) => {
   
-    const { columns, dataSource, setDataSource } = props
+    const { dataSource, setDataSource } = props
     
 
     const handleChange = (index, event) => {
@@ -15,33 +15,47 @@ const HyperParameterTable = (props) => {
 		setDataSource(rowsInput);
 	};
 
- 
-    
-    const obj = {
-        title: "CUSTOM VALUE",
-        dataIndex: "customValue",
-        key: "customValue",
-        render: (text, record) =>
-           dataSource.map((data, index) => {
-                if (record.key === data.key) {
-                    return (
-                        <Input
-                            name="customValue"
-                            // status={
-                            //     data.customValue &&
-                            //     (typeof(data.customValue) !== data.valid_value) &&
-                            //     "error"
-                            // }
-                            value={data.customValue}
-                            onChange={(e) => handleChange(index, e)}
-                        />
-                    );
-                }
-            }),
-    }
    
-    columns.push(obj);
-    
+    const columns = [
+        {
+            title: "Parameter",
+            dataIndex: "parameter",
+            key: "parameter",
+        },
+        {
+            title: "Valid Value",
+            dataIndex: "valid_value",
+            key: "valid_value",
+        },
+        {
+            title: "Default Value",
+            dataIndex: "value",
+            key: "value",
+        },
+        {
+            title: "Custom Value",
+            dataIndex: "customValue",
+            key: "customValue",
+            render: (text, record) =>
+               dataSource.map((data, index) => {
+                    if (record.key === data.key) {
+                        return (
+                            <Input
+                                name="customValue"
+                                // status={
+                                //     data.customValue &&
+                                //     (typeof(data.customValue) !== data.valid_value) &&
+                                //     "error"
+                                // }
+                                value={data.customValue}
+                                onChange={(e) => handleChange(index, e)}
+                            />
+                        );
+                    }
+                }),
+        }
+    ]
+        
     
     return (
       <div className='hyper_table'>
