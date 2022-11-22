@@ -49,6 +49,9 @@ const Hierarchy = lazy(() => import("./hierarchyConfig"));
 const HierarchyMain = lazy(() =>
 	import("./hierarchyConfig/components/hierarchy/hierarchy")
 );
+const DataAccess = lazy(() =>
+	import("./dataAccess/index")
+);
 const DesignCharts = lazy(() =>
 	import("./reportDesigner/components/reportDesignerNew")
 );
@@ -423,6 +426,13 @@ const Dashboard = () => {
 											/>
 										</>
 									)}
+								/>
+								<PrivateRoute
+									key="data-access-service"
+									path={`${match.url}/data-access-service`}
+									exact
+									component={DataAccess}
+									authorised={authorised}
 								/>
 							</Switch>
 						</SuspenseWrapper>
