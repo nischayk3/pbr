@@ -61,7 +61,8 @@ const HyperParameterTable = (props) => {
       <div className='hyper_table'>
           <Table
               columns={columns}
-              dataSource={dataSource}
+                dataSource={dataSource}
+                pagination={false}
           />
       </div>
   )
