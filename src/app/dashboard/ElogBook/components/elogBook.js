@@ -8,15 +8,23 @@
  * @Last Changed By - Siddesh
  */
 
+import { Card } from "antd";
 import React from 'react';
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
-import Landing from './landingPage/Landing';
+import ElogTemplate from './elogTemplate/elogTemplate';
 const ElogBook = () => {
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
 			<div className="custom-content-layout">
-				<Landing />
+				{/* <Landing /> */}
+				<Card
+					title="BU-Batch 1108-RC Blend"
+					bordered={false}
+				>
+					<ElogTemplate />
+				</Card>
+
 			</div>
 		</div>
 	)
