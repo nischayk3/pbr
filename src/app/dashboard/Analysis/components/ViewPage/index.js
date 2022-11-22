@@ -169,7 +169,7 @@ const ViewPageAnalysis = () => {
 				batch_filter: data?.data?.input_data?.batch_filter,
 				pipeline_id: data?.data?.pipeline_disp_id,
 				view_status: data?.data?.view_status,
-				view_name: data?.data?.view_status
+				view_name: data?.data?.view_name
 			};
 			dispatch(getAnalyticsViewData(viewDetails));
 			if (data?.data?.pipeline_data[0]?.variable_mapping?.length) {
