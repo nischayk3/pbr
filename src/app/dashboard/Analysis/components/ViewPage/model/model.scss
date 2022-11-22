@@ -138,7 +138,8 @@
 
 	.estimator-details {
 		padding: 5px 25px;
-
+        max-height: 360px;
+		overflow-y: auto;
 		.ant-select {
 			padding: 6px 0px !important;
 		}
@@ -351,5 +352,14 @@
 		.ant-collapse {
 			overflow: hidden;
 		}
+	}
+}
+
+.hyper_table {
+	.ant-table-tbody > tr > td {
+		padding: 10px !important;
+	}
+	.ant-table-thead > tr > th {
+		padding: 7px !important;
 	}
 }

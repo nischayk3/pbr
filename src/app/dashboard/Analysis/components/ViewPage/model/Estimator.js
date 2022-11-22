@@ -1,8 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Row, Col, Checkbox, Button, Select } from "antd";
+import { Row, Col, Checkbox, Button, Select, Table } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import SelectField from "../../../../../../components/SelectField/SelectField";
+import { getHyperParameters } from "../../../../../../services/analyticsService";
 import urlJson from './urls.json'
+import { useDispatch } from "react-redux";
+import { hideLoader, showLoader, showNotification } from "../../../../../../duck/actions/commonActions";
+import ModalComponent from "../../../../../../components/Modal/Modal";
+import HyperParameterTable from "./HyperParameterTable";
 
 
 const { Option } = Select;
@@ -19,7 +24,9 @@ const Estimator = (props) => {
     target_category
   } = props;
 
-
+  const dispatch = useDispatch();
+  const [hyperParameters, setHyperParameters] = useState([]);
+  const [showParameter, setShowParameter] = useState(false);
   const [contextMenuVisible, setContextMenuVisible] = useState(false)
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
@@ -28,16 +35,52 @@ const Estimator = (props) => {
   const [algosListData, setAlgosListData] = useState([]);
   const [metricListData, setMetricListData] = useState([]);
 
+  let columns = [];
+  const objkeys = (hyperParameters !== undefined && hyperParameters?.length > 0)
+      ? Object.keys(hyperParameters[0])
+      : [];
+  const uniqueArr = (value, index, self) => {
+    return self.indexOf(value) === index;
+  };
+  const filterColumn = objkeys.filter(uniqueArr);
+  filterColumn.forEach((item, i) => {
+    if (item !== 'customValue') {
+      if (item !== 'key') {
+        columns.push({
+          title: item.toUpperCase().replace("_", " "),
+          dataIndex: item,
+          key: `${item}-${i}`,
+          render: (text) => String(text),
+        });
+      }
+    }
+  });
+
+
   const onClickSave = () => {
     const tempObj = JSON.parse(JSON.stringify(finalModelJson));
+    let tempParams = [];
+    let tempNEst = [];
+    if (estimatorPopupDataValues.enableGrid) {
+      hyperParameters?.forEach((ele) => {
+        if (ele.customValue) {
+          tempNEst.push(ele.customValue)
+          tempParams.push(ele.parameter)
+        }
+      })
+    }
     Object.entries(tempObj.estimator).forEach(([key, value]) => {
       value.estimator_type = estimatorPopupDataValues.typeListValue
       value.model_name = `e_${estimatorPopupDataValues.algoValue.toLowerCase()}`;
+      value.hyperparamters = {
+        n_estimators : tempNEst,
+        max_depth : tempParams
+      }
     });
     const metricsTemp = {
       metric_name: estimatorPopupDataValues.regressionListvalue
     }
-    setFinalModelJson({ ...finalModelJson, estimator: tempObj.estimator, metrics: metricsTemp });
+    setFinalModelJson({ ...finalModelJson, estimator: tempObj.estimator, metrics: metricsTemp, hyperParams: estimatorPopupDataValues.enableGrid ? hyperParameters : undefined});
     setSavedEstimatorPopupDataValues({
       ...savedEstimatorPopupDataValues,
       typeListValue: estimatorPopupDataValues.typeListValue,
@@ -52,8 +95,11 @@ const Estimator = (props) => {
       ...estimatorPopupDataValues,
       typeListValue: e,
       algoValue: '',
+      enableGrid: false,
       regressionListvalue: []
     })
+    setHyperParameters([]);
+    setFinalModelJson({ ...finalModelJson, hyperParams: undefined});
   }
   const getAlgoList = (e) => {
     let tempList = JSON.parse(JSON.stringify(estimatorPopupData?.algoList));
@@ -100,6 +146,9 @@ const Estimator = (props) => {
     };
   });
 
+  const handleOk = () => {
+    setShowParameter(false)
+  }
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -114,6 +163,52 @@ const Estimator = (props) => {
     top: y + 10,
     left: x + 10,
   }
+
+  const getHyperParameter = async () => {
+    let moduleName = '';
+    algosListData.map((ele) => {
+      if (ele.submodule === estimatorPopupDataValues.algoValue) {
+        moduleName = ele.module
+      }
+    })
+    const reqBody = {
+      module: moduleName,
+      submodule: estimatorPopupDataValues.algoValue
+    }
+    dispatch(showLoader());
+    const apiResponse = await getHyperParameters(reqBody)
+    if (apiResponse.Status === 200) {
+      setShowParameter(true)
+      apiResponse.data.forEach((ele, index) => {
+        ele.key = index + 1;
+        ele.customValue = '';
+      })
+      setHyperParameters(apiResponse.data)
+      dispatch(hideLoader());
+    } else {
+      dispatch(hideLoader());
+      dispatch(showNotification('error', 'Unable to get hyperparameter data'));
+    }
+  }
+
+  const handleCheckboxChange = (e) => {
+    if (e.target.checked === true) {
+      if (!finalModelJson?.hyperParams) {
+        getHyperParameter();
+      }
+    }
+    setEstimatorPopupDataValues({
+      ...estimatorPopupDataValues,
+      enableGrid: e.target.checked,
+    })
+  }
+
+  useEffect(() => {
+    if (finalModelJson?.hyperParams) {
+      setHyperParameters(finalModelJson?.hyperParams)
+    }
+  }, [])
+
 
   return (
     <>
@@ -173,21 +268,20 @@ const Estimator = (props) => {
             </Select>
           </Col>
         </Row>
-        <Row>
-          <Col span={13}>
+        <Row style={{ marginTop:'10px', marginBottom: '10px'}}>
+          <Col span={12}>
             <Checkbox
               checked={estimatorPopupDataValues.enableGrid}
-              onChange={(e) =>
-                setEstimatorPopupDataValues({
-                  ...estimatorPopupDataValues,
-                  enableGrid: e.target.checked,
-                })
-              }
+              onChange={(e) => handleCheckboxChange(e)}
             >
               Enable grid search
             </Checkbox>
           </Col>
+          {estimatorPopupDataValues.enableGrid && hyperParameters.length &&  <Col span={12}>
+             <Button onClick={() =>  setShowParameter(true)}>Edit Hyperparameters</Button>
+          </Col>}
         </Row>
+        
         <div className="button-save">
           <Button onClick={onClickSave}>Save Changes</Button>
           <Button>
@@ -195,6 +289,27 @@ const Estimator = (props) => {
           </Button>
         </div>
       </div>
+      <ModalComponent
+          title="Edit Hyperparameters"
+          isModalVisible={showParameter}
+          closable={true}
+          handleCancel={() => setShowParameter(false)}
+          width={900}
+          footer={[
+            <Button
+              style={{
+                 backgroundColor: "#093185",
+                 color: "white",
+                 borderRadius: "4px",
+               }}
+              onClick={() => handleOk()}
+            >
+            Submit
+          </Button>,
+        ]}
+        >
+        <HyperParameterTable columns={columns} dataSource={ hyperParameters } setDataSource={setHyperParameters} />
+        </ModalComponent>
     </>
   );
 };
