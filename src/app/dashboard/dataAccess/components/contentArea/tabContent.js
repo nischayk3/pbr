@@ -4,6 +4,7 @@ import './tabContent.scss'
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import { getGeanealogy } from "../../../../../services/genealogyService";
 
+
 export default function TabContent() {
 
     const [withLevel, setWithLevel] = useState(JSON.stringify({
@@ -30,6 +31,7 @@ export default function TabContent() {
     const [level, setLevel] = useState('')
     const [statusCode, setStatusCode] = useState(0)
     const [result, setResult] = useState('')
+    const [selectedDiv, setSelectedDiv] = useState('Overview')
 
     const dataSource = [
         {
@@ -119,133 +121,153 @@ export default function TabContent() {
         }
 
     }
-
-
+    const scrollToSection = (e) => {
+        const id_ = e.target.innerText
+        setSelectedDiv(id_)
+        var element = document.getElementById(id_);
+        element.scrollIntoView();
+        element.scrollIntoView(false);
+        element.scrollIntoView({ block: "center" });
+        element.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+    };
     return (
+
         <div>
-            <div className="parent_div" id="section">
-                <p className="overview">Overview</p>
-                <p className="content">To facilitate management, Apache Airflow supports a range of REST API endpoints across its objects. This section provides an overview of the API design, methods, and supported use cases.</p>
-                <p className="content">Most of the endpoints accept JSON as input and return JSON responses. This means that you must usually add the following headers to your request:</p>
-            </div>
-            <div className="black-div" id="projects">
-                <span className="black_text">
-                    Content-type: &nbsp;&nbsp;&nbsp;&nbsp; application<span className="slash">/</span>json
-                </span>
-                <br />
-                <span className="black_text">
-                    Accept-type: &nbsp;&nbsp;&nbsp;&nbsp; application<span className="slash">/</span>json
-                </span>
-            </div>
-            <div className="parent_div" id="section">
-                <p className="overview">Resources</p>
-                <p className="content">The term  resource refers to a single type of object. An API is broken up by its endpoint's corresponding resource. The name of a resource is typically plural and expressed in small letters and ‘-‘.</p>
-                <p className="content">Resource names are used as part of endpoint URLs, as well as in API parameters and responses.</p>
-            </div>
-            <div className="parent_div" id="section">
-                <p className="overview">Parameters</p>
-                <p className="content">  Read : </p>
-                <p className="content">The HTTP <span className="slash">GET</span> request can be used to read a resource or to list a number of resources. A resource's id can be submitted in the request parameters to read a specific resource. The response usually returns a 200 OK response code upon success, with the resource's metadata in the response body.</p>
-                <p className="content">Most of the endpoints accept JSON as input and return JSON responses. This means that you must usually add the following headers to your request:</p>
+            <Row>
+                <Col span={18}>
+                    <div>
+                        <div className="parent_div" id="Overview">
+                            <p className="overview">Overview</p>
+                            <p className="content">To facilitate management, Apache Airflow supports a range of REST API endpoints across its objects. This section provides an overview of the API design, methods, and supported use cases.</p>
+                            <p className="content">Most of the endpoints accept JSON as input and return JSON responses. This means that you must usually add the following headers to your request:</p>
+                        </div>
+                        <div className="black-div" id="projects">
+                            <p className="black_text">
+                                Content-type: &nbsp;&nbsp;&nbsp;&nbsp; application<span className="slash">/</span>json
+                            </p>
+                            <p className="black_text">
+                                Accept-type: &nbsp;&nbsp;&nbsp;&nbsp; application<span className="slash">/</span>json
+                            </p>
+                        </div>
+                        <div className="parent_div" id="Resources">
+                            <p className="overview">Resources</p>
+                            <p className="content">The term  resource refers to a single type of object. An API is broken up by its endpoint's corresponding resource. The name of a resource is typically plural and expressed in small letters and ‘-‘.</p>
+                            <p className="content">Resource names are used as part of endpoint URLs, as well as in API parameters and responses.</p>
+                        </div>
+                        <div className="parent_div" id="Parameters">
+                            <p className="overview">Parameters</p>
+                            <p className="content">  Read : </p>
+                            <p className="content">The HTTP <span className="slash">GET</span> request can be used to read a resource or to list a number of resources. A resource's id can be submitted in the request parameters to read a specific resource. The response usually returns a 200 OK response code upon success, with the resource's metadata in the response body.</p>
+                            <p className="content">Most of the endpoints accept JSON as input and return JSON responses. This means that you must usually add the following headers to your request:</p>
 
-                <div className="black-div2" id="projects">
-                    <p className="black_text">
-                        /mdhgenealogy/v1/get-genealogy
-                    </p>
-                </div>
-            </div>
-            <Table className="parent_div" dataSource={dataSource} columns={columns} pagination={false} />
-            <div className="parent_div" id="section">
-                <p className="overview">Versioning and Endpoint Lifecycle</p>
-                <ul>
-                    <li className="content">API versioning is not synchronized to specific releases of the MI</li>
-                    <li className="content">APIs are designed to be backward compatible.</li>
-                    <li className="content">Any changes to the API will first go through a deprecation phase</li>
-                </ul>
-            </div>
-            <div className="parent_div" id="section">
-                <p className="content">Request With level</p>
-                <CodeEditor
-                    value={withLevel}
-                    onChange={(e) => handleLevel(e)}
-                    language="json"
-                    padding={15}
-                    style={{
-                        fontSize: 12,
-                        backgroundColor: "#00000",
-                        fontFamily:
-                            "Courier,monospace",
-                        color: "white",
-                        border: ".5px solid black"
-                    }}
-                />
-            </div>
-            <div className="parent_div" id="section">
-                <p className="content">Request without level</p>
-                <CodeEditor
-                    value={withoutLevel}
-                    language="json"
-                    onChange={(e) => handleWithoutleLevel(e)}
-                    padding={15}
-                    style={{
-                        fontSize: 12,
-                        backgroundColor: "#00000",
-                        fontFamily:
-                            "Courier,monospace",
-                        color: "white",
-                        border: ".5px solid black",
-                    }}
-                />
-            </div>
-            <div className="parent_div" id="section">
-                <Row>
-                    <Col span={6}>
-
-                        <p className="overview">Error Codes</p>
-                        <ol>
-                            <li className="content">Success : 200 ok </li>
-                            <li className="content">Unauthorised: 401</li>
-                            <li className="content">Permission denied</li>
-                            <li className="content">Bad request</li>
-                            <li className="content">Not found</li>
-                        </ol>
-                    </Col>
-                    <Col span={6}>
-                        {result ?
-                            <p>
-                                {statusCode ? <p className="overview"> Statuscode : <Button className={statusCode == 200 ? "success-code-button" : "error-code-button"} >{statusCode}</Button> </p> : <></>}
-
-                                <p className="overview">
-                                    Result :
-                                    <CodeEditor
-                                        value={result}
-                                        language="json"
-                                        padding={15}
-                                        style={{
-                                            fontSize: 12,
-                                            backgroundColor: "#00000",
-                                            fontFamily:
-                                                "Courier,monospace",
-                                            color: "white",
-                                            border: ".5px solid black",
-                                            minHeight: '100px',
-                                            width: '600px',
-                                            height: '200px',
-                                            marginTop: '20px',
-                                            overflow: 'scroll'
-                                        }}
-                                    />
+                            <div className="black-div2" id="projects">
+                                <p className="black_text" style={{ marginTop: '30px' }}>
+                                    /mdhgenealogy/v1/get-genealogy
                                 </p>
-                            </p> :
-                            <></>
-                        }
-                    </Col>
-                </Row>
-            </div>
-            <div className="parent_div" id="section">
-                <Button className="button" onClick={() => getData()}>Try code</Button>
+                            </div>
+                        </div>
+                        <Table className="parent_div" dataSource={dataSource} columns={columns} pagination={false} />
+                        <div className="parent_div" id="Versioning and Endpoint Lifecycle">
+                            <p className="overview">Versioning and Endpoint Lifecycle</p>
+                            <ul>
+                                <li className="content">API versioning is not synchronized to specific releases of the MI</li>
+                                <li className="content">APIs are designed to be backward compatible.</li>
+                                <li className="content">Any changes to the API will first go through a deprecation phase</li>
+                            </ul>
+                        </div>
+                        <div className="parent_div" id="section">
+                            <p className="content">Request With level</p>
+                            <CodeEditor
+                                value={withLevel}
+                                onChange={(e) => handleLevel(e)}
+                                language="json"
+                                padding={15}
+                                style={{
+                                    fontSize: 12,
+                                    backgroundColor: "#00000",
+                                    fontFamily:
+                                        "Courier,monospace",
+                                    color: "white",
+                                    border: ".5px solid black"
+                                }}
+                            />
+                        </div>
+                        <div className="parent_div" id="section">
+                            <p className="content">Request without level</p>
+                            <CodeEditor
+                                value={withoutLevel}
+                                language="json"
+                                onChange={(e) => handleWithoutleLevel(e)}
+                                padding={15}
+                                style={{
+                                    fontSize: 12,
+                                    backgroundColor: "#00000",
+                                    fontFamily:
+                                        "Courier,monospace",
+                                    color: "white",
+                                    border: ".5px solid black",
+                                }}
+                            />
+                        </div>
+                        <div className="parent_div" id="Error Codes">
 
-            </div>
+                            <p className="overview">Error Codes</p>
+                            <ol>
+                                <li className="content">Success : 200 ok </li>
+                                <li className="content">Unauthorised: 401</li>
+                                <li className="content">Permission denied</li>
+                                <li className="content">Bad request</li>
+                                <li className="content">Not found</li>
+                            </ol>
+                            {result ?
+                                <p>
+                                    {statusCode ? <p className="overview"> Statuscode : <Button className={statusCode == 200 ? "success-code-button" : "error-code-button"} >{statusCode}</Button> </p> : <></>}
+
+                                    <p className="overview">
+                                        Result :
+                                        <CodeEditor
+                                            value={result}
+                                            language="json"
+                                            padding={15}
+                                            style={{
+                                                fontSize: 12,
+                                                backgroundColor: "#00000",
+                                                fontFamily:
+                                                    "Courier,monospace",
+                                                color: "white",
+                                                border: ".5px solid black",
+                                                minHeight: '100px',
+                                                width: '600px',
+                                                height: '200px',
+                                                marginTop: '20px',
+                                                overflow: 'scroll'
+                                            }}
+                                        />
+                                    </p>
+                                </p> :
+                                <></>
+                            }
+                        </div>
+                        <div className="parent_div" id="Try Code">
+                            <Button className="button" onClick={() => getData()}>Try code</Button>
+
+                        </div>
+                    </div>
+                </Col>
+                <Col span={1}>
+                    <div class="vl" />
+                </Col>
+                <Col span={5}>
+                    <ul style={{ listStyle: 'none', justifyContent: 'space-around' }}>
+                        <li className={selectedDiv == 'Overview' ? "side_list_selected" : "side_list"} onClick={(e) => scrollToSection(e)}>Overview</li>
+                        <li className={selectedDiv == 'Resources' ? "side_list_selected" : "side_list"} onClick={(e) => scrollToSection(e)}>Resources</li>
+                        <li className={selectedDiv == 'Parameters' ? "side_list_selected" : "side_list"} onClick={(e) => scrollToSection(e)}>Parameters</li>
+                        <li className={selectedDiv == 'Versioning and Endpoint Lifecycle' ? "side_list_selected" : "side_list"} onClick={(e) => scrollToSection(e)}>Versioning and Endpoint Lifecycle</li>
+                        <li className={selectedDiv == 'Error Codes' ? "side_list_selected" : "side_list"} onClick={(e) => scrollToSection(e)}>Error Codes</li>
+                        <li className={selectedDiv == 'Try Code' ? "side_list_selected" : "side_list"} onClick={(e) => scrollToSection(e)}>Try Code</li>
+                    </ul >
+                </Col>
+            </Row>
         </div>
     )
 }
