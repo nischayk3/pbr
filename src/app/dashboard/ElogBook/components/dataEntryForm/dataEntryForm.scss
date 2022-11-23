@@ -1,0 +1,95 @@
+.editable__modal-content {
+	display: flex;
+}
+
+.editable__modal-text {
+	font-family: 'Maven Pro';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 24px;
+	color: #262626;
+}
+
+.editable__modal-small-text {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	color: #262626;
+}
+
+.editable__table-cancel {
+	margin-right: 8px;
+	border: 1px solid var(--primary-color) !important;
+	background-color: #fff !important;
+	color: var(--primary-color) !important;
+	border-radius: 4px !important;
+}
+
+.keypair__table {
+	width: 600px;
+	margin: 10px 0;
+}
+
+.table-wrapper {
+	position: relative;
+
+	.table-head {
+		display: flex;
+
+		justify-content:space-around .table-heading {
+			font-family: 'Roboto';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 12px;
+			line-height: 22px;
+			/* identical to box height, or 183% */
+			letter-spacing: 0.01em;
+			color: #6D6D6D;
+			margin: 0px;
+
+		}
+
+		#editable-table-button-add-new-user {
+			margin-bottom: 2px;
+
+		}
+	}
+
+}
+
+
+.dynamic-form-wrapper {
+	display: flex;
+	gap: 12px;
+	margin: 40px 0px 30px 0;
+
+	.dynamic-form-input {}
+
+}
+
+.custom-table-wrapper {
+	.form-details {
+		.form-heading {
+			font-family: 'Roboto';
+			font-style: normal;
+			font-weight: 500;
+			font-size: 18px;
+			line-height: 22px;
+			/* identical to box height, or 122% */
+
+
+			color: #6D6D6D;
+		}
+
+		.form-btn {
+			float: right;
+
+			button {
+				margin-left: 24px;
+			}
+		}
+	}
+}
