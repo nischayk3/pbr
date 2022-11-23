@@ -39,7 +39,9 @@
 	.table-head {
 		display: flex;
 
-		justify-content:space-around .table-heading {
+		justify-content: space-between;
+
+		.table-heading {
 			font-family: 'Roboto';
 			font-style: normal;
 			font-weight: 400;
