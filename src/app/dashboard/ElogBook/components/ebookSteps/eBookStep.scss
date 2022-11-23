@@ -1,24 +1,60 @@
 .form-wrapper {
-	display: flex;
-	background: #fff;
-	padding: 19px 26px;
+	padding: 35px;
+	background: #EDECFF;
+	border-radius: 12px;
+}
 
-	.form-left-panel {
-		padding-right: 35px;
-	}
+.title-layout {
+	flex-grow: 1;
+	font-family: 'Maven Pro';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+}
 
-	.form-right-panel {
-		background: #EDECFF;
-		border-radius: 12px;
-		height: auto;
-		width: 100%;
-		padding: 32px;
-	}
+.stepper-layout {
+	flex-grow: 1;
+}
+
+.button-layout {
+	flex-grow: 8;
+	text-align: end;
+}
+
+.ant-steps {
+	width: 500px;
+}
+
+.ant-steps-item-title {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+}
+
+.ant-steps-item-wait>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title {
+	color: #000;
+}
+
+.ant-steps-item-wait>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title:after {
+	background-color: #1890FF;
+}
+
+.ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title:after {
+	background-color: #1890FF;
+}
+
+.ant-steps-item-title {
+	color: #000000;
+}
+
+.content-layout {
+	background: #ffffff;
+	padding: 35px;
 }
 
 .ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-icon {
-	background: #162154;
-	border: #162154;
+	background: #1890FF;
+	border: #1890FF;
 }
 
 .template-header {

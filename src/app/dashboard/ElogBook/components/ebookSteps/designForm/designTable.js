@@ -156,6 +156,7 @@ const DesignTable = () => {
     const [edu, setEdu] = useState(true);
     const [eduu, setEduu] = useState(false);
     const [rows, setrow] = useState([])
+    const [count, setCount] = useState(2);
 
     const [roo, setRoo] = useState([
         {
@@ -229,7 +230,27 @@ const DesignTable = () => {
         e.preventDefault();
         setrow([...rrr, ...roo])
     }
-    console.log(rows);
+
+    const handleAdd = () => {
+        columns.map((i,index) => {
+            for (let j = 0; j < columns.length+1; j++) {
+                columns.unshift(Object.assign({ "key": j + 1 }, rows.map(i => i.title)));
+                setCol([...columns])
+    
+         
+    
+        const newData = {
+          key: columns.length + 1,
+          [j]: '',
+        };
+    }
+        setCol([...columns, newData]);
+        setCount(count + 1);
+    })
+        
+      };
+
+    console.log(columns);
     return (
         <div className="custom-wrapper">
             <div className="custom-content-layout">
@@ -241,6 +262,15 @@ const DesignTable = () => {
 
 
                                 <Form form={form} component={false}>
+                                <Button
+        onClick={handleAdd}
+        type="primary"
+        style={{
+          marginBottom: 16,
+        }}
+      >
+        Add a row
+      </Button>
                                     <Table
                                         components={{
                                             body: {
