@@ -132,6 +132,10 @@ class DataFormFirst extends Component {
 		this.setState({ columns });
 	}
 
+	setFormData = (data) => {
+		this.setState({ formDetails: data })
+	}
+
 	//function to handle search
 	// searchTable = (value) => {
 	// 	const filterData = this.state.dataSourcePer.filter((o) =>
@@ -298,7 +302,7 @@ class DataFormFirst extends Component {
 	};
 
 	onChangeTable = (row) => {
-		console.log("rowwwwwwwwwww", row);
+		console.log("rowwwwwwwwwww", row.target);
 		const dataSource = changeInput(row, this.state);
 		console.log("dataSource", dataSource);
 		this.setState({ dataSource, tableDataChanged: true });
@@ -362,6 +366,8 @@ class DataFormFirst extends Component {
 		}
 	};
 
+
+
 	render() {
 		if (!this.state.dataSource || !this.state.columns) {
 			return null;
@@ -388,7 +394,8 @@ class DataFormFirst extends Component {
 				}),
 			};
 		});
-		console.log("columnsssssssss", formDetails);
+		console.log("columnsssssssss", formDetails, dataSource, columns);
+
 
 		return (
 			<div className="custom-table-wrapper">
@@ -442,7 +449,7 @@ class DataFormFirst extends Component {
 					<div className="dynamic-form-wrapper">
 						{formDetails.map((item, i) => (
 							<div key={i} className="dynamic-form-input">
-								<DynamicFormComponent {...item} />
+								<DynamicFormComponent {...item} formDetails={formDetails} setFormData={this.setFormData} />
 							</div>
 						))}
 
