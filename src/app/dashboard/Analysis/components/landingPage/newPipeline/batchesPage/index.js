@@ -82,6 +82,8 @@ const BatchesComponent = (props) => {
       savetype: "saveas",
       view_id: viewData.viewDispId,
       view_version: viewData.viewVersion,
+      view_name: viewData.viewName,
+      view_status: viewData.status
     };
     const req = {
       data: [

@@ -251,7 +251,7 @@ const ViewChart = (props, ref) => {
 			dispatch(hideLoader());
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
-			dispatch(showNotification('error', 'There is no data'));
+			dispatch(showNotification('error', 'There is no data for selected filters'));
 		}
 	};
 
@@ -615,7 +615,7 @@ const ViewChart = (props, ref) => {
 			dispatch(hideLoader());
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
-			dispatch(showNotification('error', 'There is no data'));
+			dispatch(showNotification('error', 'There is no data for selected filters'));
 		}
 	};
 
@@ -656,7 +656,7 @@ const ViewChart = (props, ref) => {
 			dispatch(hideLoader());
 		} catch (error) {/* istanbul ignore next */
 			dispatch(hideLoader());
-			dispatch(showNotification('error', 'There is no data'));
+			dispatch(showNotification('error', 'There is no data for selected filters'));
 		}
 	};
 

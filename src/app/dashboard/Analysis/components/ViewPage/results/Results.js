@@ -1,4 +1,4 @@
-import { Collapse, Row, Col } from "antd";
+import { Collapse, Row, Col, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./results.scss";
@@ -20,6 +20,24 @@ const Results = ({tablekey, modelType}) => {
   const dispatch = useDispatch();
   const [resultsData, setResultsData] = useState();
 
+
+  let columns = [];
+  const objkeys = (resultsData?.metric_vals !== undefined && resultsData?.metric_vals?.length > 0)
+      ? Object.keys(resultsData?.metric_vals[0])
+      : [];
+  const uniqueArr = (value, index, self) => {
+    return self.indexOf(value) === index;
+  };
+  const filterColumn = objkeys.filter(uniqueArr);
+  filterColumn.forEach((item, i) => {
+    columns.push({
+      title: item.toUpperCase().replace("_", " "),
+      dataIndex: item,
+      key: `${item}-${i}`,
+      render: (text) => String(text),
+    });
+  });
+
   const getResultFunc = async () => {
     const reqBody = {
       pipelineid: id,
@@ -35,6 +53,7 @@ const Results = ({tablekey, modelType}) => {
     }
   };
 
+
   useEffect(() => {
     if (tablekey === '5') {
       getResultFunc();
@@ -43,26 +62,23 @@ const Results = ({tablekey, modelType}) => {
 
   return (
     <div className="result_container">
-      <Row gutter={16}>
-        <Col span={2}>
-          <p>Val Score</p>
-        </Col>
-        <Col span={10}>
-          <p>: {resultsData?.test_score?.toFixed(2) || "-"}</p>
-        </Col>
-        <Col span={6} />
-      </Row>
-      <Row gutter={16}>
-        <Col span={2}>
-          <p>Train Score</p>
-        </Col>
-        <Col span={10}>
-          <p>: {resultsData?.train_score?.toFixed(2) || "-"}</p>
-        </Col>
-        <Col span={6} />
-      </Row>
       {resultsData?.chart && resultsData?.chart.length && (
         <Collapse expandIconPosition="right" accordion>
+          <Panel
+            header={
+              <div>
+                Scores
+              </div>
+            }
+            key="1"
+          >
+            <div style={{ maxHeight: '65vh', overflow: 'auto' }}>
+              <Table
+                columns={columns}
+                dataSource={resultsData?.metric_vals}
+              />
+            </div>
+          </Panel>
           <Panel
             header={
               <div>
@@ -79,7 +95,7 @@ const Results = ({tablekey, modelType}) => {
                 </label>
               </div>
             }
-            key="1"
+            key="2"
           >
             <div style={{ maxHeight:'65vh', overflow:'auto'}}>
               {resultsData?.chart?.map((ele) => {

@@ -6,7 +6,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 /* istanbul ignore next */
 function DynamicTableForm(props) {
-    let { handleSideState, sideTableData, setTableActiveKey, setFormTableData, initialSideTableData, handleOnFinishFailed, parameterFormFinish, pageIdDropdownValues, initialPageIdentifierData } = props
+    let { handleSideState, sideTableData, setTableActiveKey, setFormTableData, initialSideTableData, handleOnFinishFailed, parameterFormFinish, pageIdDropdownValues, initialPageIdentifierData,pageNumber } = props
     const [tableCount, setTableCount] = useState(0);
     const [tableData, setTableData] = useState([]);
     const [activeKey, setActiveKey] = useState(0);
@@ -31,7 +31,7 @@ function DynamicTableForm(props) {
     useEffect(() => {
         if (activeKey != undefined && checkNested(sideTableData["colPanelValue"], "start")) {
             let arr = tableData
-            arr[activeKey] = { ...arr[activeKey], tableData: sideTableData }
+            arr[activeKey] = { ...arr[activeKey], tableData: sideTableData,page_no:pageNumber }
             setTableData(arr)
             setFormTableData(arr)
         }

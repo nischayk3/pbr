@@ -256,3 +256,26 @@ export const getAnalyticsTransformation = (request) => {
     }
   );
 };
+
+
+export const getHyperParameters = (_queryParam) => {
+  let login_response = JSON.parse(localStorage.getItem("login_details"));
+  const headers = {
+    "content-type": "application/json",
+    "x-access-token": login_response.token ? login_response.token : "",
+    "resource-name": "VIEW",
+    username: localStorage.getItem("user"),
+  };
+  return Service.get(
+    BMS_APP_PYTHON_SERVICE + "/analysis-hyperparameters",
+    _queryParam,
+    headers
+  ).then(
+    (response) => {
+      return response.data;
+    },
+    (error) => {
+      return error.response.data;
+    }
+  );
+};
