@@ -205,9 +205,13 @@ function TableIdentifier(props) {
             let obj = { ...colPanelValue }
             obj[field] = val
             if (field == "start" && val != undefined && val != "") {
-                let arr = updateCheckbox(val, obj.stop)
-                arr = checkValueInArray(arr, Number(rowPanelValue?.pk_index) - 1)
-                setSelectedColRows(arr)
+                if (val > colPanelValue.stop) {
+                    dispatch(showNotification('error', 'Start must be less then stop'));
+                } else {
+                    let arr = updateCheckbox(val, obj.stop)
+                    arr = checkValueInArray(arr, Number(rowPanelValue?.pk_index) - 1)
+                    setSelectedColRows(arr)
+                }
             } else if (field == "stop" && val != undefined && val != "") {
                 let arr1 = updateCheckbox(obj.start, val)
                 arr1 = checkValueInArray(arr1, Number(rowPanelValue?.pk_index) - 1)
@@ -233,9 +237,13 @@ function TableIdentifier(props) {
             let obj1 = { ...rowPanelValue }
             obj1[field] = val
             if (field == "start" && val != undefined && val != "") {
-                let arr = updateCheckbox(val, obj1.stop)
-                arr = checkValueInArray(arr, Number(colPanelValue?.pk_index) - 1)
-                setSelectedRowRows(arr)
+                if (val > rowPanelValue.stop) {
+                    dispatch(showNotification('error', 'Start must be less then stop'));
+                } else {
+                    let arr = updateCheckbox(val, obj1.stop)
+                    arr = checkValueInArray(arr, Number(colPanelValue?.pk_index) - 1)
+                    setSelectedRowRows(arr)
+                }
             } else if (field == "stop" && val != undefined && val != "") {
                 let arr1 = updateCheckbox(obj1.start, val)
                 arr1 = checkValueInArray(arr1, Number(colPanelValue?.pk_index)- 1) 

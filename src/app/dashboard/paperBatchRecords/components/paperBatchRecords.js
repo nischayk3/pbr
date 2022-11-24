@@ -462,12 +462,12 @@ function PaperBatchRecords() {
 		/* istanbul ignore next */
 		if (field === 'project') {
 			setselectParam(prevState => {
-				return { ...prevState, project: '', group: '' };
+				return { ...prevState, project: '', group: '',subGroup: '' };
 			});
 			getProjectFilterData(
 				"",
-				selectParam['group'],
-				selectParam['subGroup'],
+				'',
+				'',
 				'',
 				'',
 				''
@@ -480,7 +480,7 @@ function PaperBatchRecords() {
 			getProjectFilterData(
 				selectParam['project'],
 				"",
-				selectParam['subGroup'],
+				'',
 				'',
 				'',
 				''
@@ -491,7 +491,7 @@ function PaperBatchRecords() {
 			setselectParam(prevState => {
 				return { ...prevState, subGroup: '' };
 			});
-			getGenealogyFilterData(
+			getProjectFilterData(
 				selectParam['project'],
 				selectParam['group'],
 				"",

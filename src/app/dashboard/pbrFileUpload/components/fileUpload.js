@@ -179,12 +179,12 @@ function FileUpload() {
     const clearSearch = (e, field) => {
         if (field === 'project') {
             setselectParam(prevState => {
-                return { ...prevState, project: '',group: '' };
+                return { ...prevState, project: '', group: '', subGroup: '' };
             });
             getProjectFilterData(
                 "",
-                selectParam['group'],
-                selectParam['subGroup'],
+                '',
+                '',
                 '',
                 '',
                 ''
@@ -192,12 +192,12 @@ function FileUpload() {
         }
         else if (field === 'group') {
             setselectParam(prevState => {
-                return { ...prevState, group: '',subGroup: '' };
+                return { ...prevState, group: '', subGroup: '' };
             });
             getProjectFilterData(
                 selectParam['project'],
                 "",
-                selectParam['subGroup'],
+                '',
                 '',
                 '',
                 ''
@@ -207,10 +207,10 @@ function FileUpload() {
             setselectParam(prevState => {
                 return { ...prevState, subGroup: '' };
             });
-            getGenealogyFilterData(
+            getProjectFilterData(
                 selectParam['project'],
                 selectParam['group'],
-                "",
+                '',
                 '',
                 '',
                 ''
@@ -240,10 +240,12 @@ function FileUpload() {
         arr = arr.filter(item => item.fileName != val?.fileName)
         setUploadFileDetail(arr);
         setIsUploadVisible(false)
+        setUploadFileName([])
     }
     const handleCancelSuccess = () => {
         setIsFileUploaded(false);
-        
+        setUploadFileName([])
+
     };
 
     const files = {
@@ -364,12 +366,12 @@ function FileUpload() {
     }
 
     const checkUpload = () => {
-        if(selectParam['project']){
+        if (selectParam['project']) {
             setIsUploadVisible(true)
-        }else{
+        } else {
             dispatch(showNotification('error', 'Please Select Project'));
         }
-        
+
     }
     const uploadButton = (
         <div>
@@ -472,7 +474,11 @@ function FileUpload() {
                                     visible={isUploadVisible}
                                     title={'Upload file'}
                                     className='file-upload-modal'
-                                    onCancel={() => setIsUploadVisible(false)}
+                                    onCancel={() => {
+                                        setIsUploadVisible(false)
+                                        setUploadFileName([])
+                                    }
+                                    }
                                     footer={null}>
                                     <Dragger
                                         {...files}
