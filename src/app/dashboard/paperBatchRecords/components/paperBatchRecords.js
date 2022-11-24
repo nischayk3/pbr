@@ -93,7 +93,7 @@ function PaperBatchRecords() {
 	const [dataView, setDataView] = useState([])
 	const [fileName, setFileName] = useState("")
 	const [projectFileName, setProjectFileName] = useState("")
-	const [templateName, seTemplateName] = useState("")
+	const [templateName, setTemplateName] = useState("")
 	const [searchedLanding, setSearchedLanding] = useState(false);
 	const [filterTableLanding, setFilterTableLanding] = useState(null);
 	const [materialDropown, setMaterialDropown] = useState([]);
@@ -134,6 +134,7 @@ function PaperBatchRecords() {
 		groupText,
 		subGroupText
 	) => {
+		dispatch(showLoader());
 		let req = {
 			group: groupValue ? groupValue : "",
 			group_text: groupText ? groupText : "",
@@ -155,16 +156,19 @@ function PaperBatchRecords() {
 				});
 				setProjectFileList(res.file)
 				setProjectFileName(res.file[0])
-				
+				dispatch(hideLoader());
 			}
 			/* istanbul ignore next */
 			else if (res["status-code"] != 200) {
 				dispatch(showNotification('error', res?.Message));
+				dispatch(hideLoader());
 			} else {
 				dispatch(showNotification('error', "Unable to fetch data"));
+				dispatch(hideLoader());
 			}
 		} catch (err) {
 			dispatch(showNotification('error', err));
+			dispatch(hideLoader());
 		}
 
 	}
@@ -295,20 +299,33 @@ function PaperBatchRecords() {
 
 	const handleCancel = () => {
 		setNewTemplateModalVisible(false);
+		setTemplateName("")
+		setFileSelectionValue("genology")
 	};
 
 	const handleTemplateSubmit = () => {
-		if (templateName == "" || templateName == undefined || materialDropown.length == 0) {
-			openNotification()
-		} else {
-			history.push(`${match.url}/Untitled?file=${fileName}&tempalteName=${templateName}&fromScreen=Workspace`);
-			dispatch(loadMatBatchInfo(matBatch))
+		if (fileSelectionValue == "genology") {
+			if (templateName == "" || templateName == undefined || materialDropown.length == 0) {
+				openNotification()
+			} else {
+				history.push(`${match.url}/Untitled?file=${fileName}&tempalteName=${templateName}&fromScreen=Workspace`);
+				dispatch(loadMatBatchInfo(matBatch))
+			}
+		}else{
+			if (templateName == "" || templateName == undefined || selectParam['project']== "") {
+				openNotification()
+			} 
+			else {
+				history.push(`${match.url}/Untitled?file=${fileName}&tempalteName=${templateName}&fromScreen=Workspace`);
+				dispatch(loadMatBatchInfo(matBatch))
+			}
 		}
+
 
 	};
 
 	const handleValuesChange = (changedValues, values) => {
-		seTemplateName(values?.templateName)
+		setTemplateName(values?.templateName)
 	};
 	/* istanbul ignore next */
 	const onFinish = (values) => {
@@ -326,6 +343,8 @@ function PaperBatchRecords() {
 			val = "Template Name"
 		} else if (materialDropown.length == 0) {
 			val = "Material Number"
+		} else if(selectParam['project']== ""){
+			val = "Project"
 		}
 		const btn = (
 			<Button type="primary" size="small" onClick={() => notification.close(key)}>
@@ -443,7 +462,7 @@ function PaperBatchRecords() {
 		/* istanbul ignore next */
 		if (field === 'project') {
 			setselectParam(prevState => {
-				return { ...prevState, project: '',group: '' };
+				return { ...prevState, project: '', group: '' };
 			});
 			getProjectFilterData(
 				"",
@@ -456,7 +475,7 @@ function PaperBatchRecords() {
 		}/* istanbul ignore next */
 		else if (field === 'group') {
 			setselectParam(prevState => {
-				return { ...prevState, group: '',subGroup: '' };
+				return { ...prevState, group: '', subGroup: '' };
 			});
 			getProjectFilterData(
 				selectParam['project'],
@@ -515,6 +534,24 @@ function PaperBatchRecords() {
 			}
 		}
 	}, 500);
+
+	const handleFileSource = (val) => {
+		setFileSelectionValue(val)
+		if (paramList['projectList'].length > 0) {
+			setselectParam(prevState => {
+				return { ...prevState, project: paramList['projectList'][0] };
+			});
+			getProjectFilterData(
+				paramList['projectList'][0],
+				"",
+				"",
+				'',
+				'',
+				""
+			);
+		}
+
+	}
 
 	return (
 		<div className='pbr-container'>
@@ -669,7 +706,7 @@ function PaperBatchRecords() {
 									<div className='formNewTemplateDiv'>
 										<Form.Item
 											label='Template name'
-											name='templateName'
+											// name='templateName'
 											rules={[
 												{
 													required: true,
@@ -678,10 +715,10 @@ function PaperBatchRecords() {
 											]}
 
 										>
-											<Input />
+											<Input value={templateName} onChange={(val)=>setTemplateName(val.target.value)}/>
 										</Form.Item>
 										<Form.Item label='Select File Source' name='fileSelectionValue'>
-											<Select value={fileSelectionValue} options={fileSelection} onChange={(val) => setFileSelectionValue(val)}>
+											<Select value={fileSelectionValue} options={fileSelection} onChange={(val) => handleFileSource(val)}>
 											</Select>
 										</Form.Item>
 									</div>
