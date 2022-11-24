@@ -160,9 +160,9 @@ function TableIdentifier(props) {
         return arr
     }
 
-    const checkValueInArray = (array,value) => {
+    const checkValueInArray = (array, value) => {
         let arr = [...array]
-        if(!arr.includes(value)){
+        if (!arr.includes(value)) {
             arr.push(value)
         }
         return arr
@@ -172,21 +172,25 @@ function TableIdentifier(props) {
             let obj = { ...colPanelValue }
             obj[field] = val
             if (field == "start" && val != undefined && val != "") {
-                let arr = updateCheckbox(val, obj.stop)
-                arr = checkValueInArray(arr,Number(rowPanelValue?.pk_index)-1)
-                setSelectedColRows(arr)
+                if (val > colPanelValue.stop) {
+                    dispatch(showNotification('error', 'Start must be less then stop'));
+                } else {
+                    let arr = updateCheckbox(val, obj.stop)
+                    arr = checkValueInArray(arr, Number(rowPanelValue?.pk_index) - 1)
+                    setSelectedColRows(arr)
+                }
             } else if (field == "stop" && val != undefined && val != "") {
                 let arr1 = updateCheckbox(obj.start, val)
-                arr1 = checkValueInArray(arr1,Number(rowPanelValue?.pk_index)-1)
+                arr1 = checkValueInArray(arr1, Number(rowPanelValue?.pk_index) - 1)
                 setSelectedColRows(arr1)
             } else if (field == "pk_index") {
                 if (val != "" && Number(val) <= Number(rowPanelValue.start)) {
                     let arr = [...selectedRowRows]
-                    if(arr[arr.length-1] === Number(rowPanelValue.stop-1)){
-                        arr.push(Number(val-1))
-                    }else{
+                    if (arr[arr.length - 1] === Number(rowPanelValue.stop - 1)) {
+                        arr.push(Number(val - 1))
+                    } else {
                         arr.pop()
-                        arr.push(Number(val-1))
+                        arr.push(Number(val - 1))
                     }
                     setSelectedRowRows(arr)
                     geTableData(clickedTable, Number(val), Number(rowPanelValue.pk_index), tableID, true)
@@ -200,21 +204,26 @@ function TableIdentifier(props) {
             let obj1 = { ...rowPanelValue }
             obj1[field] = val
             if (field == "start" && val != undefined && val != "") {
-                let arr = updateCheckbox(val, obj1.stop)
-                arr = checkValueInArray(arr,Number(colPanelValue?.pk_index)-1)
-                setSelectedRowRows(arr)
+                if (val > rowPanelValue.stop) {
+                    dispatch(showNotification('error', 'Start must be less then stop'));
+                } else {
+                    let arr = updateCheckbox(val, obj1.stop)
+                    arr = checkValueInArray(arr, Number(colPanelValue?.pk_index) - 1)
+                    setSelectedRowRows(arr)
+                }
+
             } else if (field == "stop" && val != undefined && val != "") {
                 let arr1 = updateCheckbox(obj1.start, val)
-                arr1 = checkValueInArray(arr1,Number(colPanelValue?.pk_index)-1)
+                arr1 = checkValueInArray(arr1, Number(colPanelValue?.pk_index) - 1)
                 setSelectedRowRows(arr1)
             } else if (field == "pk_index") {
                 if (val != "" && Number(val) <= Number(colPanelValue.start)) {
                     let arr = [...selectedColRows]
-                    if(arr[arr.length-1] === Number(colPanelValue.stop-1)){
-                        arr.push(Number(val-1))
-                    }else{
+                    if (arr[arr.length - 1] === Number(colPanelValue.stop - 1)) {
+                        arr.push(Number(val - 1))
+                    } else {
                         arr.pop()
-                        arr.push(Number(val-1))
+                        arr.push(Number(val - 1))
                     }
                     setSelectedColRows(arr)
                     geTableData(clickedTable, Number(colPanelValue.pk_index), Number(val), tableID, true)
@@ -313,7 +322,7 @@ function TableIdentifier(props) {
         <div style={{ display: "flex", justifyContent: "space-between" }} onClick={e => e.stopPropagation()}>
             <p style={{ marginBottom: 0 }}>{val}</p>
             {/* <Switch size='medium' style={{ marginLeft: val == "Row Identifier" ? 35 : 10 }} /> */}
-            <div style={{ marginTop: -5,marginLeft: val == "Row Identifier" ? 33 : 10 }}>
+            <div style={{ marginTop: -5, marginLeft: val == "Row Identifier" ? 33 : 10 }}>
                 <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.start} placeholder='Start Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
             </div>
             <div style={{ marginTop: -5 }}>

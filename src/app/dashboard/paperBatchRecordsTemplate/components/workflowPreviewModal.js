@@ -15,7 +15,7 @@ import {
 } from '../../../../duck/actions/commonActions';
 import './styles.scss'
 const { TextArea } = Input;
-
+/* istanbul ignore next */
 const App = (props) => {
     const dispatch = useDispatch();
     let { isModalOpen, setIsModalOpen, params, pageNumber, templateVersion } = props

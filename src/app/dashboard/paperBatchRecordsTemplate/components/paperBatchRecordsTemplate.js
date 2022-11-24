@@ -2168,11 +2168,12 @@ function PaperBatchRecordsTemplate() {
                                 <Panel id="page-Identifier" header='Page Identifier' key='2'>
                                     <PageIdentifierForm pageDragValue={pageDragValue} setPageIdFormValues={setPageIdFormValues}
                                         handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish}
-                                        initialPageIdentifierData={initialPageIdentifierData} matBatch={matBatch} />
+                                        initialPageIdentifierData={initialPageIdentifierData} matBatch={matBatch} params={params} />
                                 </Panel>
                                 <Panel id="parameter-panel" header='Parameter' key='3'>
                                     <Form onValuesChange={parameterValuesChange} name="dynamic_form_nest_item" onFinish={parameterFormFinish}
                                         initialValues={formLoadParameter}
+                                        disabled={ params.fromScreen == "Workflow"}
                                         layout='vertical'
                                         id="myForm"
                                         onFinishFailed={handleOnFinishFailed}
@@ -3056,7 +3057,7 @@ function PaperBatchRecordsTemplate() {
                                     <div className='tabletype'>
                                         <DynamicTableForm handleSideState={handleSideState} sideTableData={sideTableData}
                                             setTableActiveKey={setTableActiveKey} setFormTableData={setFormTableData} initialSideTableData={initialSideTableData}
-                                            handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish}
+                                            handleOnFinishFailed={handleOnFinishFailed} parameterFormFinish={parameterFormFinish} params={params}
                                             pageIdDropdownValues={pageIdDropdownValues} initialPageIdentifierData={initialPageIdentifierData} pageNumber={pageNumber}
                                         />
                                     </div>

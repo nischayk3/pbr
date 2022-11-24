@@ -15,7 +15,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 /* istanbul ignore next */
 function PageIdentifierForm(props) {
-    let { pageDragValue, setPageIdFormValues, handleOnFinishFailed, parameterFormFinish, initialPageIdentifierData, matBatch } = props
+    let { pageDragValue, setPageIdFormValues, handleOnFinishFailed, parameterFormFinish, initialPageIdentifierData, matBatch,params } = props
     const dispatch = useDispatch();
     const [pageIdentifierFormValues, setPageIdentifierFormValues] = useState(initialPageIdentifierData ? initialPageIdentifierData : { users: [] });
     const [activeKey, setActiveKey] = useState(0);
@@ -171,6 +171,7 @@ function PageIdentifierForm(props) {
     return (
         <Form name="dynamic_form_nest_item"
             onValuesChange={parameterValuesChange}
+            disabled={ params.fromScreen == "Workflow"}
             // onFinishFailed={handleOnFinishFailed}
             // onFinish={parameterFormFinish}
             initialValues={pageIdentifierFormValues}
