@@ -65,14 +65,14 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
     algoValue: "",
     regressionListvalue: [],
     typeListValue: "",
-    enableGrid: true,
+    enableGrid: false,
   });
   const [savedEstimatorPopupDataValues, setSavedEstimatorPopupDataValues] =
     useState({
       algoValue: "",
       regressionListvalue: [],
       typeListValue: "",
-      enableGrid: true,
+      enableGrid: false,
     });
   const [nodes, setNodes] = useState(nodesAnalytics);
   const [nodeTypes, setNodeTypes] = useState(nodesAnalytics);
@@ -442,7 +442,9 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
             const findObj = existingNodes.find(
               (ext) => ext.Destination === "Scaler"
             );
-            tempScalerNode.data = JSON.parse(JSON.stringify(findObj));
+            if (findObj) {
+              tempScalerNode.data = JSON.parse(JSON.stringify(findObj));
+            }
             const edge = {
               source: "imp-1",
               type: "smoothstep",

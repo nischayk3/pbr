@@ -22,8 +22,7 @@ const Results = ({tablekey, modelType}) => {
 
 
   let columns = [];
-  const objkeys =
-    resultsData?.metric_vals !== undefined && resultsData?.metric_vals.length > 0
+  const objkeys = (resultsData?.metric_vals !== undefined && resultsData?.metric_vals?.length > 0)
       ? Object.keys(resultsData?.metric_vals[0])
       : [];
   const uniqueArr = (value, index, self) => {
