@@ -127,6 +127,16 @@
 				"name": "c",
 				"title": "C",
 				"type": "parent"
+			},
+			{
+				"align": "center",
+				"children": [],
+				"dataIndex": "actions",
+				"editable": true,
+				"label": "Actions",
+				"name": "actions",
+				"title": "Actions",
+				"type": "button"
 			}
 		],
 		"dataSource": [

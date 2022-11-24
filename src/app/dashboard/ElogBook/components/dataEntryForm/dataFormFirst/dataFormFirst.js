@@ -27,54 +27,6 @@ class DataFormFirst extends Component {
 		currentPage: 1,
 		dataSourcePer: [],
 		searchValue: '',
-		tableColumns: [
-			{
-				"align": "center",
-				"dataIndex": "key",
-				"editable": false,
-				"label": "Key",
-				"name": "key",
-				"title": "key",
-				"type": "parent"
-			},
-			{
-				"align": "center",
-				"dataIndex": "value",
-				"editable": false,
-				"label": "Value",
-				"name": "value",
-				"title": "Value",
-				"type": "input",
-				render: (_, record) => {
-					return (
-						<Input placeholder="Enter " key={record.key} value={record.name} onChange={this.onChangeTable} />
-					);
-
-				}
-			},
-			{
-				"align": "center",
-				"dataIndex": "sub_value",
-				"editable": false,
-				"label": "Sub value",
-				"name": "sub_value",
-				"title": "Sub value",
-				"type": "parent"
-			}
-		],
-		tableDataSource: [
-			{
-				"key": "Batch",
-				"value": "",
-				"sub_value": "Sub_value",
-			},
-			{
-				"key": "Process Step",
-				"value": "",
-				"sub_value": "Sub_value",
-
-			}
-		]
 	};
 
 	componentDidMount() {
@@ -136,25 +88,6 @@ class DataFormFirst extends Component {
 		this.setState({ formDetails: data })
 	}
 
-	//function to handle search
-	// searchTable = (value) => {
-	// 	const filterData = this.state.dataSourcePer.filter((o) =>
-	// 		Object.keys(o).some((k) =>
-	// 			String(o[k]).toLowerCase().includes(this.state.searchValue.toLowerCase())
-	// 		)
-	// 	);
-	// 	this.setState({ dataSource: filterData })
-	// };
-
-	// onChangeSearchValue = (e) => {
-	// 	if (!e.target.value) {
-	// 		this.setState({ dataSource: JSON.parse(JSON.stringify(this.state.dataSourcePer)) })
-	// 	}
-	// 	this.setState({ searchValue: e.target.value })
-	// }
-
-
-
 	renderTableColumns = (columns) => {
 		columns.forEach((column) => {
 			switch (column.type) {
@@ -197,7 +130,28 @@ class DataFormFirst extends Component {
 				case "input":
 					return (column.render = (_, record) => {
 						return (
-							<Input placeholder="Enter value" key={record.key} value={record[column.name]} onChange={this.onChangeTable} />
+							<Input placeholder="Enter value" key={record.key} value={record[column.name]} onChange={(selectedValue) => this.onChangeInput(selectedValue, record, column)} />
+						);
+					});
+				case "button":
+					return (column.render = (_, record) => {
+
+						return (
+							<div className="table-btn">
+								<Button
+									type="link"
+									className="custom-primary-edit-btn"
+								>
+									Edit
+								</Button>
+								<Button
+									type="link"
+									onClick={() => this.handleOk(record.key)}
+									className="custom-primary-delete-btn"
+								>
+									Delete
+								</Button>
+							</div>
 						);
 					});
 
@@ -262,31 +216,28 @@ class DataFormFirst extends Component {
 		});
 	};
 
-	handleOk = async () => {
-		this.setState({ visible: false });
-		const rowsToDelete = [];
-		this.state.dataSource.forEach((row) => {
-			if (row.deleteRowChecked) rowsToDelete.push(row);
-		});
-		this.props.showLoader();
-		try {
-			await this.props.deleteTableRow(rowsToDelete);
-			const { dataSource, count } = deleteRow(rowsToDelete, this.state);
-			this.setState({ dataSource, count, rowsMarkedForDeletion: false });
-		} catch (err) {
-			this.props.showNotification("error", err.message);
-		} finally {
-			this.props.hideLoader();
-		}
-	};
+	handleOk = async (key) => {
+		const rowsToDelete = this.state.dataSource.filter((row) => row.key !== key)
+		this.setState({
+			dataSource: rowsToDelete
+		})
 
-	handleCancel = () => this.setState({ visible: false });
+		// this.props.showLoader();
+		// try {
+		// 	await this.props.deleteTableRow(rowsToDelete);
+		// 	const { dataSource, count } = deleteRow(rowsToDelete, this.state);
+		// 	this.setState({ dataSource, count, rowsMarkedForDeletion: false });
+		// } catch (err) {
+		// 	this.props.showNotification("error", err.message);
+		// } finally {
+		// 	this.props.hideLoader();
+		// }
+	};
 
 	onDeleteRows = () => this.setState({ visible: true });
 
 	onAddRow = () => {
 		const { dataSource, count } = addRow(this.state);
-		console.log("dataSource", dataSource, this.state.tableDataChanged);
 		this.setState({ currentPage: 1 });
 		this.setState({ dataSource, count }, () => {
 			this.initializeTableRender();
@@ -294,19 +245,16 @@ class DataFormFirst extends Component {
 		});
 	};
 
-	onChangeInput = (row) => {
-		console.log("rowwwwwwwwwww", row);
-		const dataSource = changeInput(row, this.state);
-		console.log("dataSource", dataSource);
+	onChangeInput = (selectedValue, record, column) => {
+		const dataSource = changeInput(record, this.state);
 		this.setState({ dataSource, tableDataChanged: true });
 	};
 
-	onChangeTable = (row) => {
-		console.log("rowwwwwwwwwww", row.target);
-		const dataSource = changeInput(row, this.state);
-		console.log("dataSource", dataSource);
-		this.setState({ dataSource, tableDataChanged: true });
-	};
+	// onChangeTable = (selectedValue, record, column) => {
+	// 	console.log("selectedValue, record, column", selectedValue, record, column);
+	// 	const dataSource = changeInput(record, this.state);
+	// 	this.setState({ dataSource, tableDataChanged: true });
+	// };
 
 	onChangeSelect = (selectedValue, record, column) => {
 		const dataSource = changeSelectInput(
@@ -333,7 +281,6 @@ class DataFormFirst extends Component {
 	}
 
 	onSaveTable = async () => {
-
 		const tableData = JSON.parse(JSON.stringify(this.state.dataSource));
 		tableData.forEach((obj) => {
 			if ('updated' in obj)
@@ -372,7 +319,7 @@ class DataFormFirst extends Component {
 		if (!this.state.dataSource || !this.state.columns) {
 			return null;
 		}
-		const { dataSource, tableDataSource, tableColumns, formDetails } = this.state;
+		const { dataSource, formDetails } = this.state;
 		const components = {
 			body: {
 				row: EditableRow,
@@ -383,31 +330,24 @@ class DataFormFirst extends Component {
 			if (column.editable) {
 				return column;
 			}
-			return {
-				...column,
-				onCell: (record) => ({
-					record,
-					editable: column.editable,
-					dataIndex: column.dataIndex,
-					title: column.title,
-					onChangeInput: this.onChangeInput,
-				}),
-			};
+			// return {
+			// 	...column,
+			// 	onCell: (record) => ({
+			// 		record,
+			// 		editable: column.editable,
+			// 		dataIndex: column.dataIndex,
+			// 		title: column.title,
+			// 		onChangeInput: this.onChangeInput,
+			// 	}),
+			// };
 		});
-		console.log("columnsssssssss", formDetails, dataSource, columns);
-
+		console.log("columns", columns);
 
 		return (
 			<div className="custom-table-wrapper">
 				<div className="form-details">
 					<p className="form-heading">BU Form</p>
-					{/* <Search
-					placeholder="Search"
-					onSearch={this.searchTable}
-					value={this.state.searchValue}
-					onChange={(e) => this.onChangeSearchValue(e)}
-					allowClear
-					style={{ width: 200, float: 'right', marginLeft: '15px' }} /> */}
+
 					<div className="form-btn">
 						<Button
 							type="primary"
@@ -437,15 +377,7 @@ class DataFormFirst extends Component {
 							Delete
 						</Button>
 					)}
-					{/* <div className={classes["keypair__table"]}>
-					<Table
-						className="borderedTable"
-						bordered
-						dataSource={tableDataSource}
-						columns={tableColumns}
-						pagination={false}
-					/>
-				</div> */}
+
 					<div className="dynamic-form-wrapper">
 						{formDetails.map((item, i) => (
 							<div key={i} className="dynamic-form-input">
@@ -481,49 +413,7 @@ class DataFormFirst extends Component {
 
 					</div>
 
-					<Modal
-						visible={this.state.visible}
-						onOk={this.handleOk}
-						onCancel={this.handleCancel}
-						closable={false}
-						centered={true}
-						wrapClassName="editable--modal"
-						style={{ minWidth: "30%" }}
-						footer={[
-							<Button
-								key="cancel"
-								className="editable__table-cancel"
-								id="editable-modal-button-cancel"
-								onClick={this.handleCancel}
-							>
-								Cancel
-							</Button>,
-							<Button
-								key="delete"
-								className="button-solid__primary"
-								id="editable-modal-button-delete"
-								onClick={this.handleOk}
-							>
-								Delete
-							</Button>,
-						]}
-					>
-						<div className="editable__modal-content">
-							<DeleteTwoTone
-								twoToneColor="#FF2828"
-								style={{ fontSize: "22px", marginRight: "8px" }}
-							/>
-							<div>
-								<p className="editable__modal-text">
-									{" "}
-									Are you sure you want to delete the selected items?
-								</p>
-								<small className="editable__modal-small-text">
-									This action is irreversible.
-								</small>
-							</div>
-						</div>
-					</Modal>
+
 				</div>
 
 			</div>
