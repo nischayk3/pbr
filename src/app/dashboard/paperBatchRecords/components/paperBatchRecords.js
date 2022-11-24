@@ -717,7 +717,7 @@ function PaperBatchRecords() {
 										>
 											<Input value={templateName} onChange={(val)=>setTemplateName(val.target.value)}/>
 										</Form.Item>
-										<Form.Item label='Select File Source' name='fileSelectionValue'>
+										<Form.Item label='Select File Source' >
 											<Select value={fileSelectionValue} options={fileSelection} onChange={(val) => handleFileSource(val)}>
 											</Select>
 										</Form.Item>
