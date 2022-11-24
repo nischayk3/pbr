@@ -90,7 +90,6 @@ function FileUpload() {
                     };
                 });
             }
-            /* istanbul ignore next */
             else if (res["status-code"] != 200) {
                 dispatch(showNotification('error', res?.Message));
             } else {
@@ -178,7 +177,6 @@ function FileUpload() {
     }, 500);
 
     const clearSearch = (e, field) => {
-        /* istanbul ignore next */
         if (field === 'project') {
             setselectParam(prevState => {
                 return { ...prevState, project: '',group: '' };
@@ -191,7 +189,7 @@ function FileUpload() {
                 '',
                 ''
             );
-        }/* istanbul ignore next */
+        }
         else if (field === 'group') {
             setselectParam(prevState => {
                 return { ...prevState, group: '',subGroup: '' };
@@ -205,7 +203,6 @@ function FileUpload() {
                 ''
             );
         }
-        /* istanbul ignore next */
         else if (field === 'subGroup') {
             setselectParam(prevState => {
                 return { ...prevState, subGroup: '' };
@@ -360,9 +357,8 @@ function FileUpload() {
                 setUploading(false);
                 dispatch(showNotification('error', fileResponse.Message));
             }
-        } catch (error) {/* istanbul ignore next */
+        } catch (error) {
             dispatch(hideLoader());
-            /* istanbul ignore next */
             dispatch(showNotification('error', error));
         }
     }
