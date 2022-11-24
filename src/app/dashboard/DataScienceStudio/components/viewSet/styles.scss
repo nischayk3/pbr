@@ -1,7 +1,7 @@
 .newPipelineContainer {
 	padding: 15px 4px;
 
-	p {
+	>p {
 		margin-bottom: 8px !important;
 	}
 
@@ -9,9 +9,7 @@
 		margin-top: 54px;
 	}
 
-	.col-pr {
-		padding-right: 0px !important;
-	}
+
 
 	.input-mb {
 		margin-bottom: 29px;
@@ -23,6 +21,22 @@
 
 	.view-details {
 		margin-bottom: 130px;
+		display: flex;
+		justify-content: space-between;
+
+		.view-row {
+			display: flex;
+
+			p {
+				margin: 0px;
+				padding: 5px 0;
+			}
+
+			.select_field {
+				width: 60px;
+				margin-left: 10px;
+			}
+		}
 	}
 
 	.button-mt button {
