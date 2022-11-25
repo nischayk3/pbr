@@ -138,20 +138,20 @@ export const getProcessInfo = _queryParam => {
 };
 
 //download data table
-export const downloadDataTable = request => {
-	return Service.get(
-		BMS_APP_PYTHON_SERVICE + '/download-data',
-		request,
-		request_headers
-	).then(
-		response => {
-			return response.data;
-		},
-		error => {
-			return error.response.data;
-		}
-	);
-};
+// export const downloadDataTable = request => {
+// 	return Service.get(
+// 		BMS_APP_PYTHON_SERVICE + '/download-data',
+// 		request,
+// 		request_headers
+// 	).then(
+// 		response => {
+// 			return response.data;
+// 		},
+// 		error => {
+// 			return error.response.data;
+// 		}
+// 	);
+// };
 
 export const pbrFileUpload = request => {
 	return Service.post(

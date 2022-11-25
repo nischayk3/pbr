@@ -138,6 +138,9 @@ const TargetVariable = () => {
 			dispatch(hideLoader());
 			if (loadDssRes.statuscode === 200) {
 				setExpandData(loadDssRes.data)
+			} else if (loadDssRes.statuscode === 400) {
+				setExpandData([])
+				dispatch(showNotification("error", loadDssRes.data));
 			}
 		} catch (err) {
 			dispatch(hideLoader());

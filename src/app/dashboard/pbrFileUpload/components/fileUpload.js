@@ -90,7 +90,6 @@ function FileUpload() {
                     };
                 });
             }
-            /* istanbul ignore next */
             else if (res["status-code"] != 200) {
                 dispatch(showNotification('error', res?.Message));
             } else {
@@ -178,42 +177,40 @@ function FileUpload() {
     }, 500);
 
     const clearSearch = (e, field) => {
-        /* istanbul ignore next */
         if (field === 'project') {
             setselectParam(prevState => {
-                return { ...prevState, project: '',group: '' };
+                return { ...prevState, project: '', group: '', subGroup: '' };
             });
             getProjectFilterData(
                 "",
-                selectParam['group'],
-                selectParam['subGroup'],
                 '',
                 '',
-                ''
-            );
-        }/* istanbul ignore next */
-        else if (field === 'group') {
-            setselectParam(prevState => {
-                return { ...prevState, group: '',subGroup: '' };
-            });
-            getProjectFilterData(
-                selectParam['project'],
-                "",
-                selectParam['subGroup'],
                 '',
                 '',
                 ''
             );
         }
-        /* istanbul ignore next */
+        else if (field === 'group') {
+            setselectParam(prevState => {
+                return { ...prevState, group: '', subGroup: '' };
+            });
+            getProjectFilterData(
+                selectParam['project'],
+                "",
+                '',
+                '',
+                '',
+                ''
+            );
+        }
         else if (field === 'subGroup') {
             setselectParam(prevState => {
                 return { ...prevState, subGroup: '' };
             });
-            getGenealogyFilterData(
+            getProjectFilterData(
                 selectParam['project'],
                 selectParam['group'],
-                "",
+                '',
                 '',
                 '',
                 ''
@@ -243,10 +240,12 @@ function FileUpload() {
         arr = arr.filter(item => item.fileName != val?.fileName)
         setUploadFileDetail(arr);
         setIsUploadVisible(false)
+        setUploadFileName([])
     }
     const handleCancelSuccess = () => {
         setIsFileUploaded(false);
-        
+        setUploadFileName([])
+
     };
 
     const files = {
@@ -360,20 +359,19 @@ function FileUpload() {
                 setUploading(false);
                 dispatch(showNotification('error', fileResponse.Message));
             }
-        } catch (error) {/* istanbul ignore next */
+        } catch (error) {
             dispatch(hideLoader());
-            /* istanbul ignore next */
             dispatch(showNotification('error', error));
         }
     }
 
     const checkUpload = () => {
-        if(selectParam['project']){
+        if (selectParam['project']) {
             setIsUploadVisible(true)
-        }else{
+        } else {
             dispatch(showNotification('error', 'Please Select Project'));
         }
-        
+
     }
     const uploadButton = (
         <div>
@@ -476,7 +474,11 @@ function FileUpload() {
                                     visible={isUploadVisible}
                                     title={'Upload file'}
                                     className='file-upload-modal'
-                                    onCancel={() => setIsUploadVisible(false)}
+                                    onCancel={() => {
+                                        setIsUploadVisible(false)
+                                        setUploadFileName([])
+                                    }
+                                    }
                                     footer={null}>
                                     <Dragger
                                         {...files}

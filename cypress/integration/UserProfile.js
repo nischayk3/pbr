@@ -38,10 +38,9 @@ describe("Render User Profile", () => {
 
 	it('should verify username', () => {
 		cy.log('verify login username')
-		cy.get('.user-name > p').should("have.text", "Fahad siddiqui")
-
+		cy.wait(2000)
 		cy.get('.user-name > .anticon').click()
-		cy.get('.user-name > p').should("have.text", "Fahad siddiqui")
+		cy.get('.username').should("have.text", "Fahad siddiqui")
 		cy.get('.email').should("have.text", "fahad.siddiqui@mareana.com")
 
 		cy.get('.submenu > :nth-child(1)').click()
@@ -78,7 +77,6 @@ describe("Render User Profile", () => {
 		cy.get('#rc_select_0').click()
 		cy.wait(500)
 		cy.get('.ant-select-item-option').first().click({ force: true })
-
 
 		cy.log('Select Time Zone')
 		cy.get('#rc_select_1').click()

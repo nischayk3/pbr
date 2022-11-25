@@ -41,7 +41,7 @@ const dummyRequest = ({ onSuccess }) => {
 const currentDate = moment().toDate();
 const currentDateFormat = moment(currentDate).format('YYYY-MM-DD');
 const currentTimestamp = moment(currentDate).format('h:mm:ss');
-
+/* istanbul ignore next */
 class Uploader extends Component {
 	state = {
 		openPopup: false,
