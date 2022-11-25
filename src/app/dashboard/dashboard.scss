@@ -283,3 +283,18 @@
 	color: rgba(0, 0, 0, 0.25) !important;
 	text-shadow: none;
 }
+
+.disable-event {
+	cursor: not-allowed;
+	pointer-events: none;
+
+	span {
+		cursor: not-allowed;
+		pointer-events: none;
+
+		svg {
+			pointer-events: none;
+			cursor: not-allowed;
+		}
+	}
+}
