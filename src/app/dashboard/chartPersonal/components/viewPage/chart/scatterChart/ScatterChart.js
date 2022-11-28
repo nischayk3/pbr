@@ -133,7 +133,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		const chartArr = [...postChartData.data];
 		if (axisValues.transform) {
 			let errorValue = false;
-			console.log("axisValues.transform ", axisValues.transform);
+
 			chartArr.forEach((ele) => {
 				if (ele.limits.specification.length === 0) {
 					errorValue = true;

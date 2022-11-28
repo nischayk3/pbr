@@ -15,7 +15,7 @@ export const getSiteId = (_queryParam) => {
 
 //get chart type
 export const getChartList = (request) => {
-	let login_response = JSON.parse(localStorage.getItem("login_details"));
+	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 
 	const headers = {
 		"content-type": "application/json",
@@ -50,7 +50,7 @@ export const getRuleList = (request) => {
 
 //get chart plot data
 export const postChartPlotData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem("login_details"));
+	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
@@ -72,7 +72,7 @@ export const postChartPlotData = (_queryParam) => {
 
 //save chart data
 export const saveChartPlotData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem("login_details"));
+	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
@@ -94,7 +94,7 @@ export const saveChartPlotData = (_queryParam) => {
 
 //get chart data
 export const getChartPlotData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem("login_details"));
+	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",

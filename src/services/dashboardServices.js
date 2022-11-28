@@ -2,7 +2,7 @@ import { BMS_APP_PYTHON_SERVICE } from '../constants/apiBaseUrl';
 import Service from './AjaxService';
 
 //get dashboard
-let login_response = JSON.parse(localStorage.getItem('login_details'));
+let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 export const getDashboard = (_queryParam) => {
 	return Service.get(BMS_APP_PYTHON_SERVICE + '/dashboards', _queryParam, {
 		'content-type': 'application/json',

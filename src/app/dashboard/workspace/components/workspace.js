@@ -88,7 +88,7 @@ const Workspace = () => {
 
 	//job scheduling chart alert counts
 	const getScheduleChartAlertsData = async () => {
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 		let req = {
 			app_type: "CHART",
 		};
@@ -110,7 +110,7 @@ const Workspace = () => {
 
 	//job scheduling chart alert counts
 	const getScheduleReportAlertsData = async () => {
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 		let req = {
 			app_type: "REPORT",
 		};
@@ -189,7 +189,7 @@ const Workspace = () => {
 				<Card className="workspace_head">
 					<div>
 						<p className="workspace-username">
-							Howdy {localStorage.getItem("username")}! Good Morning
+							Howdy {sessionStorage.getItem("username")}! Good Morning
 						</p>
 						<p className="workspace-text">
 							Let's see what you have on your plate today!

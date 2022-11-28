@@ -116,7 +116,7 @@ function PaperBatchRecords() {
 	})
 
 	useEffect(() => {
-		let login_response = JSON.parse(localStorage.getItem('login_details'));
+		let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 		if (login_response) {
 			updateDate();
 			getTemplateData();
@@ -311,10 +311,10 @@ function PaperBatchRecords() {
 				history.push(`${match.url}/Untitled?file=${fileName}&tempalteName=${templateName}&fromScreen=Workspace`);
 				dispatch(loadMatBatchInfo(matBatch))
 			}
-		}else{
-			if (templateName == "" || templateName == undefined || selectParam['project']== "") {
+		} else {
+			if (templateName == "" || templateName == undefined || selectParam['project'] == "") {
 				openNotification()
-			} 
+			}
 			else {
 				history.push(`${match.url}/Untitled?file=${fileName}&tempalteName=${templateName}&fromScreen=Workspace`);
 				dispatch(loadMatBatchInfo(matBatch))
@@ -343,7 +343,7 @@ function PaperBatchRecords() {
 			val = "Template Name"
 		} else if (materialDropown.length == 0) {
 			val = "Material Number"
-		} else if(selectParam['project']== ""){
+		} else if (selectParam['project'] == "") {
 			val = "Project"
 		}
 		const btn = (
@@ -462,7 +462,7 @@ function PaperBatchRecords() {
 		/* istanbul ignore next */
 		if (field === 'project') {
 			setselectParam(prevState => {
-				return { ...prevState, project: '', group: '',subGroup: '' };
+				return { ...prevState, project: '', group: '', subGroup: '' };
 			});
 			getProjectFilterData(
 				"",
@@ -566,7 +566,7 @@ function PaperBatchRecords() {
 							background:
 								'linear-gradient(180deg, rgba(199, 144, 129, 0.15) 0%, rgba(223, 165, 121, 0.56) 100%)',
 						}}
-						title={`Howdy ${localStorage.getItem('username')},`}
+						title={`Howdy ${sessionStorage.getItem('username')},`}
 						description='In the mood to draw up some template today?'
 						source={illustrations}
 						sourceClass='pbr-image'
@@ -715,7 +715,7 @@ function PaperBatchRecords() {
 											]}
 
 										>
-											<Input value={templateName} onChange={(val)=>setTemplateName(val.target.value)}/>
+											<Input value={templateName} onChange={(val) => setTemplateName(val.target.value)} />
 										</Form.Item>
 										<Form.Item label='Select File Source' >
 											<Select value={fileSelectionValue} options={fileSelection} onChange={(val) => handleFileSource(val)}>

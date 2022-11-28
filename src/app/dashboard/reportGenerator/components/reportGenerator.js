@@ -6,29 +6,28 @@
  * @Last Changed By - @Mihir
  */
 
-import './styles.scss';
-import React, { useEffect, useState } from 'react';
+import { CloudUploadOutlined, FileTextOutlined } from '@ant-design/icons';
 import { Button, Card, Collapse, Input, Tag } from 'antd';
-import { FileTextOutlined, CloudUploadOutlined } from '@ant-design/icons';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import './styles.scss';
 // import { getReports } from '../../../../services/reportDesignerServices';
-import ReportGeneratorForm from '../components/reportGeneratorForm';
-import {
-	saveReportGenerator,
-	latexBuilder,
-} from '../../../../services/reportGeneratorServices';
+import axios from 'axios';
+import FileSaver from 'file-saver';
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import Signature from '../../../../components/ElectronicSignature/signature';
+import JobSchedule from '../../../../components/JobSchedule';
 import SaveModal from '../../../../components/SaveModal/saveModal';
 import {
 	hideLoader,
 	showLoader,
-	showNotification,
+	showNotification
 } from '../../../../duck/actions/commonActions';
+import {
+	latexBuilder, saveReportGenerator
+} from '../../../../services/reportGeneratorServices';
 import Chart from '../../reportDesigner/components/reportChart/chartComponent/chartComponent';
-import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-import JobSchedule from '../../../../components/JobSchedule';
-import FileSaver from 'file-saver';
-import axios from 'axios';
-import Signature from '../../../../components/ElectronicSignature/signature';
+import ReportGeneratorForm from '../components/reportGeneratorForm';
 
 const { Panel } = Collapse;
 
@@ -323,7 +322,7 @@ function ReportGenerator(props) {
 
 	const prepareJson = () => {
 		let obj = {};
-		let user_details = localStorage.getItem('username');
+		let user_details = sessionStorage.getItem('username');
 		let user = user_details ? user_details : '';
 
 		obj['rep_disp_id'] = reportId;
