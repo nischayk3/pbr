@@ -5,6 +5,7 @@ import Plot from 'react-plotly.js';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import BreadCrumbWrapper from '../../../../../components/BreadCrumbWrapper';
+import { JUPYTER_APP } from '../../../../../constants/apiBaseUrl';
 import { hideLoader, showLoader, showNotification } from '../../../../../duck/actions/commonActions';
 import { dssSave, loadDssView } from '../../../../../services/dataScienceStudioService';
 import "./style.scss";
@@ -158,8 +159,7 @@ const TargetVariable = () => {
 			target_variable: parameterName
 		}
 
-		const login_response = JSON.parse(localStorage.getItem("login_details"));
-		console.log("login_response", login_response?.firstname?.toLowerCase(), login_response?.lastname?.toLowerCase());
+		const login_response = JSON.parse(sessionStorage.getItem("login_details"));
 
 		try {
 			dispatch(showLoader());
@@ -167,7 +167,7 @@ const TargetVariable = () => {
 			dispatch(hideLoader());
 			if (loadDssRes.Status === 200) {
 				dispatch(showNotification("success", loadDssRes.Message));
-				window.open(`https://jupyterhub-dev.mareana.com/user/${login_response?.firstname?.toLowerCase()} ${login_response?.lastname?.toLowerCase()}/lab/workspaces/auto-q/tree/Datascience_Studio`, "_blank")
+				window.open(`${JUPYTER_APP}/user/${login_response?.firstname?.toLowerCase()} ${login_response?.lastname?.toLowerCase()}/lab/workspaces/auto-q/tree/Datascience_Studio`, "_blank")
 			}
 		} catch (err) {
 			dispatch(hideLoader());
@@ -175,8 +175,8 @@ const TargetVariable = () => {
 		}
 	}
 
-	const login_response = JSON.parse(localStorage.getItem("login_details"));
-	console.log("login_response", login_response?.firstname?.toLowerCase(), login_response?.lastname?.toLowerCase());
+	const login_response = JSON.parse(sessionStorage.getItem("login_details"));
+
 
 	return (
 		<div className="custom-wrapper">

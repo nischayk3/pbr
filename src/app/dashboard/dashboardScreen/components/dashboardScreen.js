@@ -80,7 +80,7 @@ const DashboardScreen = () => {
 	//get table data
 	const getTableData = async () => {
 		let req = { chart_status: "ALL" };
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 		let headers = {
 			"content-type": "application/json",
 			"x-access-token": login_response.token ? login_response.token : "",
@@ -132,7 +132,7 @@ const DashboardScreen = () => {
 
 	//get chart data to plot
 	const getChartData = async () => {
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 		let req = { chartId: viewData.chartDispId };
 		let headers = {
 			"content-type": "application/json",
@@ -189,7 +189,7 @@ const DashboardScreen = () => {
 
 	const handleSave = async (value) => {
 		let json = ref.current.getChildState();
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 		let headers = {
 			"content-type": "application/json",
 			"x-access-token": login_response.token ? login_response.token : "",

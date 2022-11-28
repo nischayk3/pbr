@@ -2,6 +2,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import React, { lazy, useState } from "react";
 import illustrations from "../../../../../assets/images/dss-landing.png";
 import jupyter_logo from "../../../../../assets/images/jupyter.png";
+import { JUPYTER_APP } from "../../../../../constants/apiBaseUrl";
 import LoadDataSet from "../loadDataSet/LoadDataSet";
 import Viewset from "../viewSet/Viewset";
 import "./styles.scss";
@@ -18,8 +19,6 @@ export default function Landing() {
 		setIsDatasetVisible(false)
 	}
 
-	const login_response = JSON.parse(localStorage.getItem("login_details"));
-	console.log("login_response", login_response?.firstname?.toLowerCase(), login_response?.lastname?.toLowerCase());
 	return (
 		<div>
 			<ScreenHeader
@@ -27,7 +26,7 @@ export default function Landing() {
 					background:
 						"linear-gradient(180deg, #FFC3C3 0%, #FFF4F4 100%)",
 				}}
-				title={`Howdy ${localStorage.getItem("username")},`}
+				title={`Howdy ${sessionStorage.getItem("username")},`}
 				description="Welcome to Data Science Studio!"
 				source={illustrations}
 				sourceClass="geanealogy-image"
@@ -55,7 +54,7 @@ export default function Landing() {
 					<div
 						className="jupyter-card"
 						onClick={
-							() => window.open("https://jupyterhub-dev.mareana.com", "_blank")
+							() => window.open(`${JUPYTER_APP}`, "_blank")
 						}
 					>
 						<img src={jupyter_logo} />

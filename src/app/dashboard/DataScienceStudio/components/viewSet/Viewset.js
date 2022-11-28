@@ -153,7 +153,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 	//on search value changes
 	/* istanbul ignore next */
 	const onSearchChange = (e) => {
-		console.log("onSearchChange", e.target.value)
+
 		if (e.target.value === "") {
 			setSearchTableData(searchViewData.current);
 			setViewData({
@@ -227,7 +227,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 	}, []);
 
 	const callbackReqPayload = (_req) => {
-		console.log("_req", _req)
+
 		loadView(_req);
 	}
 

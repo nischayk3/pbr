@@ -23,19 +23,26 @@ const Login = () => {
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
 	const [username, setUsername] = useState("");
+	const [isChecked, setIsChecked] = useState(false);
 	const [visible, setVisible] = useState(false);
 	const [forgotPasswordFlag, setForgotPasswordFlag] = useState(false);
 	const [successfulAccountCreationFlag, setSuccessfulAccountCreationFlag] = useState(false);
 	const dispatch = useDispatch();
 	const history = useHistory();
 	useEffect(() => {
-		if (localStorage.getItem("test_enabled") == null) {
-			localStorage.clear()
+		if (sessionStorage.getItem("test_enabled") == null) {
+			sessionStorage.clear()
+		}
+		if (JSON.parse(localStorage.getItem("isRemember"))) {
+			setEmail(localStorage.getItem("username"))
+			setIsChecked(true)
+		} else {
+			setEmail("")
+			setIsChecked(false)
 		}
 	}, []);
 
 	const onFinish = async values => {
-		console.log("onFinish click");
 		try {
 			dispatch(showLoader());
 			const response = await userLogin(values);
@@ -49,13 +56,11 @@ const Login = () => {
 	};
 
 	const onLogin = async () => {
-		console.log("onLogin click");
-		if (localStorage.getItem("login_details")) {
-
+		if (sessionStorage.getItem("login_details")) {
 			history.push("/dashboard/workspace");
 			dispatch(showNotification("success", "Logged In Success"));
 		} else {
-			if (localStorage.getItem("test_enabled")) {
+			if (sessionStorage.getItem("test_enabled")) {
 				window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
 			} else {
 				window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
@@ -65,25 +70,38 @@ const Login = () => {
 
 	const handleLogin = async () => {
 		let req = {};
+
 		let header = {
 			password: password,
 			username: email
 		};
+
 		try {
 			dispatch(showLoader());
 			const res = await getAuthenticateWithoutAD(req, header);
 			let data = res["token"];
 			if (data) {
 				dispatch(sendLoginDetails(data));
-				localStorage.setItem("login_details", JSON.stringify(data));
-				localStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
-				localStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", ""): data.email_id.replaceAll("^\"|\"$", ""));
-				localStorage.setItem("loginwith", 'WITHOUT_AD')
+				sessionStorage.setItem("login_details", JSON.stringify(data));
+				sessionStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
+				sessionStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", "") : data.email_id.replaceAll("^\"|\"$", ""));
+				sessionStorage.setItem("loginwith", 'WITHOUT_AD')
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
+				if (isChecked) {
+					localStorage.setItem("isRemember", isChecked);
+					localStorage.setItem("username", data.email_id.replaceAll("^\"|\"$", ""));
+					setEmail(localStorage.getItem("username"))
+					setIsChecked(true)
+				} else {
+					localStorage.setItem("isRemember", false);
+					setEmail("")
+					setIsChecked(false)
+				}
+
 				history.push("/dashboard/workspace");
 				dispatch(hideLoader());
 			} else {
-				dispatch(showNotification("error", "Error in Login"));
+				dispatch(showNotification("error", res.Message));
 				dispatch(hideLoader());
 				history.push("/user/login");
 			}
@@ -106,11 +124,21 @@ const Login = () => {
 			let data = res["token"];
 			if (data) {
 				dispatch(sendLoginDetails(data));
-				localStorage.setItem("login_details", JSON.stringify(data));
-				localStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
-				localStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", "") : data.email_id.replaceAll("^\"|\"$", ""));
-				localStorage.setItem("loginwith", 'WITH_LDAP')
+				sessionStorage.setItem("login_details", JSON.stringify(data));
+				sessionStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
+				sessionStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", "") : data.email_id.replaceAll("^\"|\"$", ""));
+				sessionStorage.setItem("loginwith", 'WITH_LDAP')
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
+				if (isChecked) {
+					localStorage.setItem("isRemember", isChecked);
+					localStorage.setItem("username", data.email_id.replaceAll("^\"|\"$", ""));
+					setEmail(localStorage.getItem("username"))
+					setIsChecked(true)
+				} else {
+					localStorage.setItem("isRemember", false);
+					setEmail("")
+					setIsChecked(false)
+				}
 				history.push("/dashboard/workspace");
 				dispatch(hideLoader());
 			} else {
@@ -205,7 +233,9 @@ const Login = () => {
 						</div>
 
 						<div className="forgot-pwd">
-							<Checkbox color="primary" checked>
+							<Checkbox color="primary" checked={isChecked} onChange={(e) => {
+								setIsChecked(e.target.checked)
+							}} >
 								Remember me
 							</Checkbox>
 							<p onClick={forgotPassword} style={{ cursor: 'pointer' }}>Forgot your password?</p>

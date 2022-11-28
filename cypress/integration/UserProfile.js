@@ -8,10 +8,10 @@ Cypress.Commands.add("multiselect", (options) => {
 describe("Render User Profile", () => {
 	beforeEach(() => {
 		cy.viewport(1360, 780)
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		localStorage.setItem("username", "Fahad");
-		localStorage.setItem(
+		sessionStorage.setItem("test_enabled", true);
+		sessionStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		sessionStorage.setItem("username", "Fahad");
+		sessionStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,
