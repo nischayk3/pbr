@@ -4,11 +4,11 @@ import { useParams } from "react-router-dom";
 import "./results.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { ArrowRightOutlined } from '@ant-design/icons';
-import { MDH_AIRFLOW } from "../../../../../../constants/apiBaseUrl";
+import { MDH_AIRFLOW_DAGS } from "../../../../../../constants/apiBaseUrl";
 import Plot from "react-plotly.js";
 const { Panel } = Collapse;
 
-const Results = ({tablekey, resultsData}) => {
+const Results = ({tablekey, resultsData, jobId}) => {
   const selectedViewData = useSelector(
     (state) => state.analyticsReducer.viewData
   );
@@ -84,7 +84,7 @@ const Results = ({tablekey, resultsData}) => {
         <div>
           <h3>Model Execution Failed</h3>
           <p>Failure Reason : {resultsData?.res_message || '-'}</p>
-          <a className="view-link" href={MDH_AIRFLOW} target="_blank">View logs</a> <span className='alert-arrow'><ArrowRightOutlined /></span>
+          <a className="view-link" href={`${MDH_AIRFLOW_DAGS}/${id}_ANALYTICS_${jobId?.current}/grid?`} target="_blank">View logs</a> <span className='alert-arrow'><ArrowRightOutlined /></span>
           </div>
       )}
     </div>
