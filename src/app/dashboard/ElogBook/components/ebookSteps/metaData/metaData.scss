@@ -18,6 +18,7 @@
 				.ant-table-thead {
 					.ant-table-cell {
 						background: #E8E8E8 !important;
+						padding-left: 16px;
 					}
 				}
 			}
@@ -125,4 +126,19 @@
 
 .deleteButton {
 	color: #9B0000;
+}
+// .Selectdata {
+// 	width: 180px;
+// }
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    width: 180px;
+}
+.save-button{
+	padding-right: 10px;
+}
+.ant-table-thead>tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan]):before {
+    background-color: #a59494;
+}
+.delete-button{
+	text-align: end;
 }

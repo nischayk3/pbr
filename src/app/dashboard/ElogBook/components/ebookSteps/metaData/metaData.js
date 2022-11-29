@@ -13,7 +13,28 @@ const EditableCell = ({
 	children,
 	...restProps
 }) => {
-	const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+	const [values, setValue] = useState(false)
+	const onhandleChange = e => {
+		setValue(e.target.checked)
+	}
+	const inputNode = inputType === 'select' ? <Select options={[
+		{
+			value: 'custom mete data',
+			label: 'Add custom mete data',
+		},
+		{
+			value: 'Site',
+			label: 'Site',
+		},
+		{
+			value: 'Batch',
+			label: 'Batch',
+		},
+		{
+			value: 'Material',
+			label: 'Material',
+		},
+	]} /> : inputType === 'checkbox' ? <Checkbox onChange={(e) => onhandleChange(e)} /> : <Input />;
 	return (
 		<td {...restProps}>
 			{editing ? (
@@ -37,36 +58,12 @@ const EditableCell = ({
 		</td>
 	);
 };
-const Data = [
-	{
-		key: 1,
-		MetaData: "custom mete data",
-		KeyData: "Data1",
-		ValueData: "Value1",
-		selectDrop: true,
-		editable: true,
-	},
-	{
-		key: 2,
-		MetaData: "custom mete data",
-		KeyData: "Data2",
-		ValueData: "Value2",
-		selectDrop: true,
-		editable: false,
-	},
-	{
-		key: 3,
-		MetaData: "Site",
-		KeyData: "Site",
-		ValueData: "Value3",
-		selectDrop: true,
-		editable: true,
-	},
-]
 
-function metaData() {
+
+function metaData({ sendDataToParent, Alldata }) {
 	const [form] = Form.useForm();
-	const [moleculeData, setMoleculeData] = useState(Data);
+	const [check, setCheck] = useState(false)
+	const [moleculeData, setMoleculeData] = useState(Alldata);
 	const [selectData, setSelectData] = useState({ Add: false })
 	const [formData, setFormData] = useState({
 		key: '',
@@ -74,9 +71,11 @@ function metaData() {
 		KeyData: "",
 		ValueData: "",
 		selectDrop: false,
-		editable:''
+		Allowedit: ''
 	})
+	const [val, setVal] = useState('');
 	const [count, setCount] = useState(1);
+
 	const [data, setData] = useState({ label: '' })
 	const [editingKey, setEditingKey] = useState('');
 	const isEditing = (record) => record.key === editingKey;
@@ -85,7 +84,8 @@ function metaData() {
 			MetaData: '',
 			KeyData: '',
 			ValueData: '',
-			
+			Allowedit: '',
+
 			...record,
 		});
 		setEditingKey(record.key);
@@ -94,14 +94,10 @@ function metaData() {
 		setEditingKey('');
 	};
 	const save = async (key) => {
-		console.log(key);
-		try {
+				try {
 			const row = await form.validateFields();
-			console.log(row);
 			const newData = [...moleculeData];
-			console.log(newData);
 			const index = newData.findIndex((item) => key.key === item.key);
-			console.log(index);
 			if (index > -1) {
 				const item = newData[index];
 				newData.splice(index, 1, {
@@ -109,10 +105,12 @@ function metaData() {
 					...row,
 				});
 				setMoleculeData(newData);
+				sendDataToParent(moleculeData)
 				setEditingKey('');
 			} else {
 				newData.push(row);
 				setMoleculeData(newData);
+				sendDataToParent(moleculeData)
 				setEditingKey('');
 			}
 		} catch (errInfo) {
@@ -120,41 +118,74 @@ function metaData() {
 		}
 	};
 
+	const handleChang = (e, cdata) => {
+		setCheck(!check)
+		setVal(e.target.value)
+		setMoleculeData(moleculeData.map(user => (user.key === cdata.key ?
+			{
+				key: cdata.key,
+				MetaData: formData.MetaData,
+				KeyData: formData.KeyData,
+				ValueData: e.target.value,
+				selectDrop: true,
+				Allowedit: false,
+			} : user)));
+
+		sendDataToParent(moleculeData)
+	}
 
 	const onChange = (e, cdata) => {
-		console.log(`checked = ${e.target.checked}`, cdata);
+		setCheck(e.target.checked)
+		setMoleculeData(moleculeData.map(user => (user.key === cdata.key ?
+			{
+				key: cdata.key,
+				MetaData: formData.MetaData,
+				KeyData: formData.KeyData,
+				ValueData: val,
+				selectDrop: true,
+				Allowedit: check,
+			} : user)));
+
+		sendDataToParent(moleculeData)
 
 	};
 
 
 	const handleChange = (event, edata) => {
-		console.log(event, edata);
+		setCheck(!check)
 		setSelectData({ Add: true });
 		setData({ label: event })
-		if (event !== '') {
-			setFormData({
-				key: '',
-				MetaData: event,
-				KeyData: "",
-				ValueData: "",
-				selectDrop: true,
-				editable: ''
-			})
-		}
-		const ndata = moleculeData.map(user => (user.key === edata.key ? {
-			key: moleculeData.length,
+
+		setFormData({
+			key: edata.key,
 			MetaData: event,
-			KeyData: event == "Site" ? "Site" : "",
+			KeyData: event === "Site" ? "Site" : "",
 			ValueData: "",
 			selectDrop: true,
-			editable:'',
-		} : user));
-		setMoleculeData(ndata)
-		console.log(ndata);
+			Allowedit: false
+		})
+		setMoleculeData(moleculeData.map(user => (user.key === edata.key ?
+			{
+				key: edata.key,
+				MetaData: event,
+				KeyData: event === "Site" ? "Site" : '',
+				ValueData: '',
+				selectDrop: true,
+				Allowedit: false,
+			}
+			: user)));
+		sendDataToParent(moleculeData);
 	};
+
+
 	useEffect(() => {
 		setSelectData(selectData)
-	}, [])
+		setMoleculeData(moleculeData)
+		sendDataToParent(moleculeData)
+
+		setFormData(formData)
+
+	}, [moleculeData, formData])
 
 	const handleAdd = () => {
 		const newData = {
@@ -163,29 +194,39 @@ function metaData() {
 			KeyData: "",
 			ValueData: "",
 			selectDrop: false,
-			editable: ""
+			Allowedit: false
 
 		};
 		setSelectData({ Add: false });
-		setFormData({
-			key: count,
-			MetaData: "",
-			KeyData: "",
-			ValueData: "",
-			selectDrop: false,
-			editable:""
-		})
 		setMoleculeData([...moleculeData, newData]);
+		// sendDataToParent()
 		setCount(count + 1);
 	};
 
 
-	console.log(selectData, moleculeData, data);
 
 	const handleDelete = (i) => {
-		console.log(i);
 		setMoleculeData(moleculeData.filter(user => user.key !== i.key));
 	};
+
+	const Opt = [
+		{
+			value: 'custom mete data',
+			label: 'Add custom mete data',
+		},
+		{
+			value: 'Site',
+			label: 'Site',
+		},
+		{
+			value: 'Batch',
+			label: 'Batch',
+		},
+		{
+			value: 'Material',
+			label: 'Material',
+		},
+	]
 
 	const plantMoleculeColumns =
 		[
@@ -193,15 +234,15 @@ function metaData() {
 				title: "Meta data",
 				dataIndex: "MetaData",
 				width: "20%",
+				editable: true,
 				render: (_, record) => (
 					<Select
 						placeholder="Select"
 						defaultValue="Add Custom mete data"
-						style={{
-							width: 120,
-						}}
-						value={record.MetaData || ''}
+						className="Selectdata"
+						value={record.MetaData || formData.MetaData}
 						onChange={(event) => handleChange(event, record)}
+						// onChange={(e) => setFormData({...formData, MetaData : e})}
 						options={[
 							{
 								value: 'custom mete data',
@@ -237,8 +278,9 @@ function metaData() {
 							type="text"
 							placeholder="Enter mete data field name"
 							name="KeyData"
-							value={record.KeyData}
-							onChange={(e) => handleChange(e,record)}
+							value={record.KeyData || formData.KeyData}
+							// onChange={(e) => handleChang(e,record)}
+							onChange={(e) => setFormData({ ...formData, KeyData: e.target.value })}
 						/>
 
 
@@ -247,7 +289,7 @@ function metaData() {
 				title: "Value",
 				dataIndex: "ValueData",
 				key: "ValueData",
-				width: "20%",
+				width: "25%",
 				editable: true,
 				render: (text, record) =>
 					record.selectDrop === false ? '' :
@@ -256,9 +298,10 @@ function metaData() {
 							type="text"
 							placeholder="To be filled by rendered"
 							name="ValueData"
-							value={record.ValueData || ''}
-							onChange={(e) => handleChange( e, record )}
-							disabled={record.ValueData ? true : true}
+							value={record.ValueData || formData.ValueData}
+							onChange={(e) => handleChang(e, record)}
+						// onChange={(e) => setFormData({...formData, ValueData : e.target.value})}
+						// disabled={record.ValueData ? true : true}
 						/>
 
 			},
@@ -267,34 +310,39 @@ function metaData() {
 				dataIndex: "Allowedit",
 				key: "Allowedit",
 				width: "15%",
+				editable: true,
 				render: (text, record) =>
 					record.selectDrop === false ? '' :
-						<Checkbox checked={record.editable || '' } onChange={(e) => handleChange(e,record)}></Checkbox>
+						<Checkbox name="Allowedit" checked={record.Allowedit || formData.Allowedit}
+							onChange={(e) => onChange(e, record)}
+						// onChange={(e) => setFormData({...formData, Allowedit : e.target.checked})}
+
+						></Checkbox>
 
 			},
 			{
 				title: "Action",
 				dataIndex: "action",
-				width: "30%",
+				width: "20%",
 				render: (index, record) => {
 					const editable = isEditing(record);
 					return record.selectDrop === false ? '' :
-						// formData.selectDrop === true || selectData.Add === true ?
 						<Row>
 							<Col span={12} >
 								{editable ? (
 									<span>
-										<Typography.Link
-											onClick={() => save(record)}
+										<Popconfirm title="Sure to Save?"
+											onConfirm={() => save(record)}
 											style={{
 												marginRight: 8,
 											}}
 										>
-											Save
-										</Typography.Link>
-										<Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-											<a>Cancel</a>
+											<a className="save-button">Save</a>
+											{/* </Typography.Link> */}
 										</Popconfirm>
+										{/* <Typography.Link  onClick={cancel}>
+											<a>Cancel</a>
+										</Typography.Link> */}
 									</span>
 								) : (
 									<Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
@@ -304,8 +352,8 @@ function metaData() {
 							</Col>
 							<Col span={12} >
 
-								<div>
-									<Popconfirm title="Sure to delete?"  className="deleteButton" onConfirm={() => handleDelete(record)}>
+								<div className="delete-button">
+									<Popconfirm title="Sure to delete?" className="deleteButton" onConfirm={() => handleDelete(record)}>
 										<a>Delete</a>
 									</Popconfirm>
 								</div>
@@ -319,33 +367,33 @@ function metaData() {
 		];
 	return (
 		<>
-<Form form={form} component={false}>
-			<Table className="hierarchy-table" 
-			columns={plantMoleculeColumns.map((col) => {
-				if (!col.editable) {
-					return col;
-				}
-				return {
-					...col,
-					onCell: (record) => ({
-						record,
-						inputType: col.dataIndex,
-						dataIndex: col.dataIndex,
-						title: col.title,
-						editing: isEditing(record)
+			<Form form={form} component={false}>
+				<Table className="hierarchy-table"
+					columns={plantMoleculeColumns.map((col) => {
+						if (!col.editable) {
+							return col;
+						}
+						return {
+							...col,
+							onCell: (record) => ({
+								record,
+								inputType: col.dataIndex === 'MetaData' ? 'select' : col.dataIndex === 'Allowedit' ? "checkbox" : "text",
+								dataIndex: col.dataIndex,
+								title: col.title,
+								editing: isEditing(record)
 
-					})
-				};
-			})}
+							})
+						};
+					})}
 
-				components={{
-					body: {
-						cell: EditableCell,
-					},
-				}}
+					components={{
+						body: {
+							cell: EditableCell,
+						},
+					}}
 
-				rowClassName="editable-row" dataSource={moleculeData} pagination={false} />
- </Form>
+					rowClassName="editable-row" dataSource={moleculeData} pagination={false} />
+			</Form>
 
 			<div className="add-button">
 				<Button

@@ -1,0 +1,94 @@
+.template-header {
+	background: #F1F7FF;
+	padding: 12px 32px;
+
+	p {
+		margin: 0;
+		font-family: 'Maven Pro';
+		font-style: normal;
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 22px;
+		/* identical to box height, or 138% */
+		color: #4D4D4D;
+	}
+}
+.content-layouts {
+	background: #ffffff;
+	padding: 35px;
+}
+.ant-layout-content .custom-wrapper .custom-content-layouts {
+    padding: 8px 12px;
+    min-height: calc(100vh - 120px);
+    overflow-y: scroll;
+    height: calc(100vh - 120px);
+
+}
+.flex-container {
+    display: flex;
+    // flex-wrap: wrap;
+    flex-direction: row;
+    // position: absolute;
+// width: 1334px;
+height: 43px;
+left: 78px;
+top: 144px;
+padding: 10px;
+background: #E1E1E1;
+padding-left: 52px
+  }
+
+  .flex-container > div {
+    padding-right: 29px;  
+    font-family: 'Maven Pro';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+color: #000000;
+}
+
+.right-layout{
+    padding-left: 276px;
+}
+.editor-part {
+    background-color: #ffffff;
+    height: 501px;
+// left: 78px;
+// top: 187px;
+position: relative;
+}
+.ant-dropdown-button>.anticon.anticon-down, .ant-dropdown-link>.anticon.anticon-down, .ant-dropdown-trigger>.anticon.anticon-down {
+    padding-left: 7px;
+    font-size: 11px;
+}
+.ant-dropdown-menu{
+    top: 9px;
+    width: 95px;
+height: 100px
+} 
+.ant-dropdown-menu-title-content {
+  font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+}
+.rigth-control-panel{
+    position: absolute;
+    width: 278px;
+    height: 502px;
+    left: 914px;
+    top: 0px;
+    
+    background: #FFFFFF;
+    border: 1px solid #C2C2C2;
+}
+// .ant-btn>span {
+//     display: inline-block;
+//     font-family: 'Maven Pro';
+//     font-style: normal;
+//     font-weight: 500;
+//     font-size: 16px;
+//     line-height: 22px;
+//     color: #000000;
+// }
