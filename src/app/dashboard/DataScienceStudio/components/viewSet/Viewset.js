@@ -289,32 +289,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 								/>
 							</div>
 						</div>
-						// <Row gutter={24} className="view-details">
-						// 	<Col span={12}>
-						// 		<Col span={7}>
-						// 			<label>View ID</label>
-						// 		</Col>
-						// 		<Col span={12} className="wordBreak">
-						// 			<label>: {viewData.viewName || "-"}</label>
-						// 		</Col>
-						// 	</Col>
-						// 	<Col span={12} className="col-pr">
-						// 		<Row>
-						// 			<Col span={8}>
-						// 				<label>Version</label>
-						// 			</Col>
-						// 			<Col span={12}>
-						// 				<SelectField
-						// 					selectList={versionList}
-						// 					selectedValue={viewData.viewVersion}
-						// 					onChangeSelect={(e) =>
-						// 						setViewData({ ...viewData, viewVersion: e })
-						// 					}
-						// 				/>
-						// 			</Col>
-						// 		</Row>
-						// 	</Col>
-						// </Row>
+
 					)}
 					<Row className="button-mt">
 						<Button

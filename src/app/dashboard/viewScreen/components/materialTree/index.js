@@ -19,11 +19,11 @@ import { getParameterBatches } from "../../../../../services/viewCreationPublish
 import "./style.scss";
 
 const { TreeNode } = Tree;
-//let setKey = [];
-let selectedData = [];
+const selectedData = [];
 
 const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue, fromWorkflowScreen }) => {
 	const { hierarchy } = moleculeList;
+
 	const dispatch = useDispatch();
 	const [selectedKeys, setSelectedKeys] = useState([]);
 	const [treeMap, setTreeMap] = useState([]);
@@ -43,7 +43,7 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 
 	const handleClickParam = async (keys, param, record) => {
 		const finalData = [];
-		const existing = selectedData.find((item) => item.key === keys);
+		const existing = selectedData.find((item) => item.parameter_name === param);
 		try {
 			const paramObj = {
 				"resource-name": "VIEW",
@@ -54,18 +54,14 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 			};
 			dispatch(showLoader());
 			const getMolbatchData = await getParameterBatches(paramObj);
-
+			dispatch(hideLoader());
 			if (existing === undefined) {
 				const batchData = { ...getMolbatchData.Data }
 				dispatch(getBatchData(batchData))
 				let rowData = {};
-
-				//setKey.push(keys);
 				let molBatch = { ...getMolbatchData.Data.batches };
-				dispatch(hideLoader());
 				selectedData.push(record);
 				setCount(count + 1);
-
 				const indexDuplicate = selectedData.findIndex(
 					(x) => x.parameter_name == param
 				);
@@ -118,7 +114,6 @@ const MaterialTree = ({ moleculeList, callbackProcessClick, highlightFilterValue
 								title={item.process_step}
 								key={"frstEle-" + ele1}
 								dataRef={item}
-
 							>
 								{item &&
 									item.children &&
