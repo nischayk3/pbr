@@ -338,7 +338,7 @@ const ViewPageAnalysis = () => {
 						<Transformation finalModelJson={finalModelJson} editFinalJson={editFinalJson} tableKey={tableKey} />
 					</TabPane>} */}
 					{resultsData?.run_status !== 'Pending' && resultsData?.run_status !== 'Not Executed' && <TabPane tab="Results" key="5">
-							<Results tablekey={tableKey} modelType={modelType} resultsData={resultsData} />
+							<Results jobId={jobId} tablekey={tableKey} modelType={modelType} resultsData={resultsData} />
 						</TabPane>}
 				</Tabs>
 			</div>
