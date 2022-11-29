@@ -197,7 +197,7 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
   return (
     <div className="preprocess-container">
       {showProgressBar && <ModalComponent isModalVisible={showProgressBar} closable={false} centered={true} >
-        <p>Processing Data. Please wait ..</p>
+        <p>Processing Data. Please wait ...</p>
         <Progress percent={progressBarPercentage} />
       </ModalComponent>}
      {preprocessData && preprocessData.length ? <><Row className="col-bottom save-button">

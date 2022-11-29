@@ -42,6 +42,7 @@ const ViewPageAnalysis = () => {
 	const [executedModel, setExecutedModal] = useState(false);
 	const [results, setResults] = useState(false);
 	const modelType = useRef('');
+	const jobId = useRef('')
 
 	const tabChange = (key) => {
 		setTableKey(key);
@@ -61,7 +62,6 @@ const ViewPageAnalysis = () => {
 					onClick: () => {
 						const date = moment().format("YYYY-MM-DD");
 						onExecuteClick(date);
-						setExecutedModal(true)
 						setExectLaterDate("");
 					},
 				},
@@ -144,11 +144,14 @@ const ViewPageAnalysis = () => {
 			scheduled_start: date,
 			scheduled_end: date,
 		};
+		dispatch(showLoader());
 		const apiResponse = await putJob(reqBody, request_headers);
 		if (apiResponse.Status === 200) {
 			dispatch(hideLoader());
 			setEXecuted(true);
-			dispatch(showNotification("success", "Model executed successfully"));
+			jobId.current = apiResponse?.job_id
+			setExecutedModal(true)
+			dispatch(showNotification("success", "Model execution started successfully"));
 		} else {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", "Model execution failed"));
@@ -349,8 +352,8 @@ const ViewPageAnalysis = () => {
 				// version={postChartData.data && postChartData.data[0].chart_version}
 				status={approveReject}
 			/>
-			{executedModel && <ModalComponent   isModalVisible={executedModel} closable={false} centered>
-                <ModelExcecute getResultFunc={getResultFunc} resultsData={resultsData} results={results} />
+			{executedModel && <ModalComponent isModalVisible={executedModel} closable={false} centered>
+                <ModelExcecute jobId={jobId}  getResultFunc={getResultFunc} resultsData={resultsData} results={results} />
             </ModalComponent>}
 			<ModalComponent
 				title="Schedule Execution"
