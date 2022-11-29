@@ -23,7 +23,8 @@ import {
     Dropdown,
     Menu,
     InputNumber,
-    Switch
+    Switch,
+    Tooltip
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
@@ -41,6 +42,7 @@ import {
     LeftOutlined,
     RightOutlined,
     PlusSquareTwoTone,
+    MinusSquareTwoTone,
     DeleteOutlined
 } from '@ant-design/icons';
 
@@ -249,6 +251,9 @@ function PaperBatchRecordsTemplate() {
     const [pageIdFormValues, setPageIdFormValues] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [workflowPreviewModal, setWorkflowPreviewModal] = useState(false);
+    const [showUOM, setShowUOM] = useState(false);
+    const [showTime, setShowTime] = useState(false);
+    const [showDate, setShowDate] = useState(false);
     const [pageIdDropdownValues, setPageIdDropdownValues] = useState([])
     const toggleLeftCollapsed = () => {
         setLeftPanelCollapsed(!leftPanelCollapsed);
@@ -1473,7 +1478,6 @@ function PaperBatchRecordsTemplate() {
         // console.log("changedValues", changedValues, values)
     };
     const parameterValuesChange = (changedValues, values) => {
-        // console.log("changedValues", changedValues, values)
         setParameterFormData(values.users)
     };
     /* istanbul ignore next */
@@ -2173,7 +2177,7 @@ function PaperBatchRecordsTemplate() {
                                 <Panel id="parameter-panel" header='Parameter' key='3'>
                                     <Form onValuesChange={parameterValuesChange} name="dynamic_form_nest_item" onFinish={parameterFormFinish}
                                         initialValues={formLoadParameter}
-                                        disabled={ params.fromScreen == "Workflow"}
+                                        disabled={params.fromScreen == "Workflow"}
                                         layout='vertical'
                                         id="myForm"
                                         onFinishFailed={handleOnFinishFailed}
@@ -2193,11 +2197,14 @@ function PaperBatchRecordsTemplate() {
                                                                         setActiveKey(val)
                                                                     }
                                                                     setFileList([])
+                                                                    setShowUOM(false)
+                                                                    setShowTime(false)
+                                                                    setShowDate(false)
                                                                 }}>
                                                                     {fields.map(({ key, name, ...restField }) => (
 
                                                                         // <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                                                                        <Panel header={parameterFormData[name]?.name ? `${parameterFormData[name]?.name}` : `Parameter ${name + 1} created`} key={`${name}`} extra={genExtra(remove, name, key, restField)}>
+                                                                        <Panel header={parameterFormData[name]?.name ? `${parameterFormData[name]?.name}` : `Parameter ${name + 1} created`} key={`${name}`} extra={params.fromScreen != "Workflow" ? genExtra(remove, name, key, restField) : ""}>
                                                                             <div className='addParameterBlock'>
                                                                                 <div className='parameterAdded-block'>
                                                                                     <Form.Item
@@ -2301,103 +2308,66 @@ function PaperBatchRecordsTemplate() {
 
                                                                                             <Select placeholder='Enter PageID' options={pageIdDropdownValues} onChange={(e, value) => onChangeChart(e, 'pageIdValue', name, value)} />
                                                                                         </Form.Item>}
+
+                                                                                    <p>
+                                                                                        Value
+                                                                                    </p>
+
+                                                                                    <Form.Item
+                                                                                        {...restField}
+                                                                                        name={[name, 'param_key']}
+                                                                                        style={{ marginBottom: 10 }}
+                                                                                        rules={[{ required: true, message: 'Enter Anchor Value' }]}
+                                                                                    >
+                                                                                        <Input
+                                                                                            id="form_input1"
+                                                                                            value={
+                                                                                                parameterValue[`param${name + 1}`]?.anchorValue
+                                                                                            }
+                                                                                            className='uploadSnippetInput'
+                                                                                            placeholder='Click and select anchor'
+                                                                                            onClick={(e) => DraggerInputHandlerAnchor(e, "value")}
+                                                                                            onChange={(
+                                                                                                e
+                                                                                            ) =>
+                                                                                                onChangeChart(
+                                                                                                    e,
+                                                                                                    'anchorValue', name
+                                                                                                )
+                                                                                            }
+                                                                                        />
+                                                                                    </Form.Item>
+
+                                                                                    <span>
+                                                                                    </span>
+                                                                                    <Form.Item
+                                                                                        {...restField}
+                                                                                        name={[name, 'param_snippet_value']}
+                                                                                        style={{ marginBottom: 10 }}
+                                                                                        rules={[{ required: true, message: 'Enter Anchor Snippet Value' }]}
+                                                                                    >
+                                                                                        <Input
+                                                                                            id="form_input2"
+                                                                                            value={
+                                                                                                parameterValue[`param${name + 1}`]?.anchorId
+
+                                                                                            }
+                                                                                            className='uploadSnippetInput'
+                                                                                            placeholder='Click and select snippet'
+                                                                                            onClick={
+                                                                                                (e) => DraggerInputHandlerSnippet(e, "value")
+                                                                                            }
+                                                                                            onChange={(
+                                                                                                e
+                                                                                            ) =>
+                                                                                                onChangeChart(
+                                                                                                    e,
+                                                                                                    'snippetValue', name
+                                                                                                )
+                                                                                            }
+                                                                                        />
+                                                                                    </Form.Item>
                                                                                     <div className='parameterAddingBlock parameterValueBlock'>
-                                                                                        <p>
-                                                                                            Value
-                                                                                        </p>
-                                                                                        <p></p>
-                                                                                        <Dragger
-                                                                                            className={`draggerSnippet ${DraggerActive
-                                                                                                ? 'activeBorder'
-                                                                                                : 'inActiveBorder'
-                                                                                                }`}
-                                                                                            style={{ pointerEvents: "none" }}
-                                                                                        >
-                                                                                            <p className='ant-upload-drag-icon'>
-                                                                                                <PlusOutlined />
-                                                                                            </p>
-                                                                                            <p className='ant-upload-text'>
-                                                                                                Click below and select anchor
-                                                                                            </p>
-                                                                                            {/* {showInputAnchor && ( */}
-                                                                                            <p
-                                                                                                className='ant-upload-text-input'
-                                                                                                onClick={(e) => DraggerInputHandlerAnchor(e, "value")}
-                                                                                                style={{ pointerEvents: "auto" }}
-                                                                                            >
-                                                                                                <Form.Item
-                                                                                                    {...restField}
-                                                                                                    name={[name, 'param_key']}
-                                                                                                    rules={[{ required: true, message: 'Enter Anchor Value' }]}
-                                                                                                >
-                                                                                                    <Input
-                                                                                                        id="form_input1"
-                                                                                                        value={
-                                                                                                            parameterValue[`param${name + 1}`]?.anchorValue
-                                                                                                        }
-                                                                                                        className='uploadSnippetInput'
-                                                                                                        placeholder='Enter Anchor Value'
-                                                                                                        onChange={(
-                                                                                                            e
-                                                                                                        ) =>
-                                                                                                            onChangeChart(
-                                                                                                                e,
-                                                                                                                'anchorValue', name
-                                                                                                            )
-                                                                                                        }
-                                                                                                    />
-                                                                                                </Form.Item>
-                                                                                            </p>
-                                                                                            {/* )} */}
-                                                                                        </Dragger>
-                                                                                        <Dragger
-                                                                                            className={`draggerSnippet ${DraggerActive
-                                                                                                ? 'inActiveBorder'
-                                                                                                : 'activeBorder'
-                                                                                                }`}
-                                                                                            style={{ pointerEvents: "none" }}
-                                                                                        >
-                                                                                            <p className='ant-upload-drag-icon'>
-                                                                                                <PlusOutlined />
-                                                                                            </p>
-                                                                                            <p className='ant-upload-text'>
-                                                                                                Click below and select snippet
-                                                                                            </p>
-                                                                                            <p
-                                                                                                className='ant-upload-text-input'
-                                                                                                onClick={
-                                                                                                    (e) => DraggerInputHandlerSnippet(e, "value")
-                                                                                                }
-                                                                                                style={{ pointerEvents: "auto" }}
-                                                                                            >
-                                                                                                <span>
-                                                                                                </span>
-                                                                                                <Form.Item
-                                                                                                    {...restField}
-                                                                                                    name={[name, 'param_snippet_value']}
-                                                                                                    rules={[{ required: true, message: 'Enter Anchor Snippet Value' }]}
-                                                                                                >
-                                                                                                    <Input
-                                                                                                        id="form_input2"
-                                                                                                        value={
-                                                                                                            parameterValue[`param${name + 1}`]?.anchorId
-
-                                                                                                        }
-                                                                                                        className='uploadSnippetInput'
-                                                                                                        placeholder='Enter Snippet Value'
-                                                                                                        onChange={(
-                                                                                                            e
-                                                                                                        ) =>
-                                                                                                            onChangeChart(
-                                                                                                                e,
-                                                                                                                'snippetValue', name
-                                                                                                            )
-                                                                                                        }
-                                                                                                    />
-                                                                                                </Form.Item>
-
-                                                                                            </p>
-                                                                                        </Dragger>
                                                                                         <Form.Item  {...restField}
                                                                                             name={[name, 'param_rule']}
                                                                                         >
@@ -2480,512 +2450,391 @@ function PaperBatchRecordsTemplate() {
 
                                                                                     </div>
                                                                                     <p>
+                                                                                        {showUOM ? <MinusSquareTwoTone onClick={() => setShowUOM(false)} /> : <PlusSquareTwoTone onClick={() => setShowUOM(true)} />}
                                                                                         UOM
                                                                                     </p>
-                                                                                    {/* <p></p> */}
-                                                                                    <div className='parameterAddingBlock parameterValueBlock'>
-                                                                                        <Dragger
-                                                                                            className={`draggerSnippet ${DraggerActive
-                                                                                                ? 'activeBorder'
-                                                                                                : 'inActiveBorder'
-                                                                                                }`}
-                                                                                            style={{ pointerEvents: "none" }}
-                                                                                        >
-                                                                                            <p className='ant-upload-drag-icon'>
-                                                                                                <PlusOutlined />
-                                                                                            </p>
-                                                                                            <p className='ant-upload-text'>
-                                                                                                Click below and select anchor
-                                                                                            </p>
-                                                                                            {/* {showInputAnchor && ( */}
-                                                                                            <p
-                                                                                                className='ant-upload-text-input'
-                                                                                                onClick={
-                                                                                                    (e) => DraggerInputHandlerAnchor(e, "unit")
-                                                                                                }
-                                                                                                style={{ pointerEvents: "auto" }}
-                                                                                            >
-                                                                                                <Input
-                                                                                                    id="form_input3"
-                                                                                                    value={
-                                                                                                        parameterValue[`param${name + 1}`]?.unitAnchor
-                                                                                                    }
-                                                                                                    className='uploadSnippetInput'
-                                                                                                    placeholder='Enter Anchor Value'
-                                                                                                    onChange={(
-                                                                                                        e
-                                                                                                    ) =>
-                                                                                                        onChangeChart(
-                                                                                                            e,
-                                                                                                            'uomanchorValue', name
-                                                                                                        )
-                                                                                                    }
-                                                                                                />
-                                                                                            </p>
-                                                                                            {/* )} */}
-                                                                                        </Dragger>
-                                                                                        <Dragger
-                                                                                            className={`draggerSnippet ${DraggerActive
-                                                                                                ? 'inActiveBorder'
-                                                                                                : 'activeBorder'
-                                                                                                }`}
-                                                                                            style={{ pointerEvents: "none" }}
-                                                                                        >
-                                                                                            <p className='ant-upload-drag-icon'>
-                                                                                                <PlusOutlined />
-                                                                                            </p>
-                                                                                            <p className='ant-upload-text'>
-                                                                                                Click below and select snippet
-                                                                                            </p>
-                                                                                            <p
-                                                                                                className='ant-upload-text-input'
-                                                                                                onClick={
-                                                                                                    (e) => DraggerInputHandlerSnippet(e, "unit")
-                                                                                                }
-                                                                                                style={{ pointerEvents: "auto" }}
-                                                                                            >
-                                                                                                <span>
-                                                                                                    {/* Or
-                                                                                                    enter
-                                                                                                    snippet
-                                                                                                    number */}
-                                                                                                </span>
-                                                                                                <Input
-                                                                                                    id="form_input4"
-                                                                                                    value={
-                                                                                                        parameterValue[`param${name + 1}`]?.unitId
+                                                                                    <div style={{ display: showUOM ? "" : "none" }}>
+                                                                                        <Input
+                                                                                            id="form_input3"
+                                                                                            value={
+                                                                                                parameterValue[`param${name + 1}`]?.unitAnchor
+                                                                                            }
+                                                                                            style={{ marginBottom: 10 }}
+                                                                                            className='uploadSnippetInput'
+                                                                                            placeholder='Click and select anchor'
+                                                                                            onClick={
+                                                                                                (e) => DraggerInputHandlerAnchor(e, "unit")
+                                                                                            }
+                                                                                            onChange={(
+                                                                                                e
+                                                                                            ) =>
+                                                                                                onChangeChart(
+                                                                                                    e,
+                                                                                                    'uomanchorValue', name
+                                                                                                )
+                                                                                            }
+                                                                                        />
 
-                                                                                                    }
-                                                                                                    className='uploadSnippetInput'
-                                                                                                    placeholder='Enter Snippet Value'
-                                                                                                    onChange={(
-                                                                                                        e
-                                                                                                    ) => {
-                                                                                                        onChangeChart(
-                                                                                                            e,
-                                                                                                            'uomsnippetValue', name
-                                                                                                        );
-                                                                                                    }}
-                                                                                                />
-                                                                                            </p>
-                                                                                        </Dragger>
-                                                                                        <Form.Item  {...restField}
-                                                                                            name={[name, 'uom_rule']}>
-                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'uom_rule', name, value)}>
-                                                                                                <Option value='date'>
-                                                                                                    Date
-                                                                                                </Option>
-                                                                                                <Option value='range'>
-                                                                                                    Range
-                                                                                                </Option>
-                                                                                                <Option value='regex'>
-                                                                                                    RegEx
-                                                                                                </Option>
-                                                                                            </Select>
-                                                                                        </Form.Item>
+                                                                                        <Input
+                                                                                            id="form_input4"
+                                                                                            value={
+                                                                                                parameterValue[`param${name + 1}`]?.unitId
 
-                                                                                        {parameterFormData[name]?.uom_rule === "range" ?
-                                                                                            <Row gutter={8}>
-                                                                                                <Col span={11}>
-                                                                                                    <Form.Item {...restField}
-                                                                                                        name={[name, 'uom_min']}
-                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
-                                                                                                        { required: true, message: 'Enter min value' }]}
-                                                                                                    >
-                                                                                                        <Input placeholder='Min' />
-                                                                                                    </Form.Item>
-                                                                                                </Col>
-                                                                                                {/* <Col span={1}>-</Col> */}
-                                                                                                <Col span={12}>
-                                                                                                    <Form.Item {...restField}
-                                                                                                        name={[name, 'uom_max']}
-                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
-                                                                                                        { required: true, message: 'Enter max value' },
-                                                                                                        () => ({
-                                                                                                            validator(_, value) {
-                                                                                                                if (!value) {
-                                                                                                                    return Promise.reject();
-                                                                                                                }
-                                                                                                                if (Number(value) < Number(parameterFormData[name]?.uom_min)) {
-                                                                                                                    return Promise.reject("Enter value greater then Min");
-                                                                                                                }
-                                                                                                                return Promise.resolve();
-                                                                                                            },
-                                                                                                        })
-                                                                                                        ]}
-                                                                                                    >
-                                                                                                        <Input placeholder='Max' />
-                                                                                                    </Form.Item>
-                                                                                                </Col>
-                                                                                            </Row> :
+                                                                                            }
+                                                                                            style={{ marginBottom: 10 }}
+                                                                                            className='uploadSnippetInput'
+                                                                                            placeholder='Click and select snippet'
+                                                                                            onClick={
+                                                                                                (e) => DraggerInputHandlerSnippet(e, "unit")
+                                                                                            }
+                                                                                            onChange={(
+                                                                                                e
+                                                                                            ) => {
+                                                                                                onChangeChart(
+                                                                                                    e,
+                                                                                                    'uomsnippetValue', name
+                                                                                                );
+                                                                                            }}
+                                                                                        />
+                                                                                        {/* </p>
+                                                                                    </Dragger> */}
+                                                                                        <div className='parameterAddingBlock parameterValueBlock'>
+                                                                                            <Form.Item  {...restField}
+                                                                                                name={[name, 'uom_rule']}>
+                                                                                                <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'uom_rule', name, value)}>
+                                                                                                    <Option value='date'>
+                                                                                                        Date
+                                                                                                    </Option>
+                                                                                                    <Option value='range'>
+                                                                                                        Range
+                                                                                                    </Option>
+                                                                                                    <Option value='regex'>
+                                                                                                        RegEx
+                                                                                                    </Option>
+                                                                                                </Select>
+                                                                                            </Form.Item>
+
+                                                                                            {parameterFormData[name]?.uom_rule === "range" ?
+                                                                                                <Row gutter={8}>
+                                                                                                    <Col span={11}>
+                                                                                                        <Form.Item {...restField}
+                                                                                                            name={[name, 'uom_min']}
+                                                                                                            rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
+                                                                                                            { required: true, message: 'Enter min value' }]}
+                                                                                                        >
+                                                                                                            <Input placeholder='Min' />
+                                                                                                        </Form.Item>
+                                                                                                    </Col>
+                                                                                                    {/* <Col span={1}>-</Col> */}
+                                                                                                    <Col span={12}>
+                                                                                                        <Form.Item {...restField}
+                                                                                                            name={[name, 'uom_max']}
+                                                                                                            rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
+                                                                                                            { required: true, message: 'Enter max value' },
+                                                                                                            () => ({
+                                                                                                                validator(_, value) {
+                                                                                                                    if (!value) {
+                                                                                                                        return Promise.reject();
+                                                                                                                    }
+                                                                                                                    if (Number(value) < Number(parameterFormData[name]?.uom_min)) {
+                                                                                                                        return Promise.reject("Enter value greater then Min");
+                                                                                                                    }
+                                                                                                                    return Promise.resolve();
+                                                                                                                },
+                                                                                                            })
+                                                                                                            ]}
+                                                                                                        >
+                                                                                                            <Input placeholder='Max' />
+                                                                                                        </Form.Item>
+                                                                                                    </Col>
+                                                                                                </Row> :
+                                                                                                <Form.Item {...restField}
+                                                                                                    name={[name, 'uom_valueArea']}
+                                                                                                    rules={[{ required: parameterFormData[name]?.uom_rule ? true : false, message: 'Enter value' }]}>
+                                                                                                    <Input placeholder='Enter expression' />
+                                                                                                </Form.Item>}
+                                                                                            <Form.Item  {...restField}
+                                                                                                name={[name, 'uom_transformation']}>
+                                                                                                <Select placeholder="Trans." allowClear value={null}>
+                                                                                                    <Option value='add'>
+                                                                                                        ADD
+                                                                                                    </Option>
+                                                                                                    <Option value='substract'>
+                                                                                                        Substract
+                                                                                                    </Option>
+                                                                                                    <Option value='multiply'>
+                                                                                                        Multiply
+                                                                                                    </Option>
+                                                                                                    <Option value='divide'>
+                                                                                                        Divide
+                                                                                                    </Option>
+                                                                                                </Select>
+                                                                                            </Form.Item>
                                                                                             <Form.Item {...restField}
-                                                                                                name={[name, 'uom_valueArea']}
-                                                                                                rules={[{ required: parameterFormData[name]?.uom_rule ? true : false, message: 'Enter value' }]}>
-                                                                                                <Input placeholder='Enter expression' />
-                                                                                            </Form.Item>}
-                                                                                        <Form.Item  {...restField}
-                                                                                            name={[name, 'uom_transformation']}>
-                                                                                            <Select placeholder="Trans." allowClear value={null}>
-                                                                                                <Option value='add'>
-                                                                                                    ADD
-                                                                                                </Option>
-                                                                                                <Option value='substract'>
-                                                                                                    Substract
-                                                                                                </Option>
-                                                                                                <Option value='multiply'>
-                                                                                                    Multiply
-                                                                                                </Option>
-                                                                                                <Option value='divide'>
-                                                                                                    Divide
-                                                                                                </Option>
-                                                                                            </Select>
-                                                                                        </Form.Item>
-                                                                                        <Form.Item {...restField}
-                                                                                            name={[name, 'uom_valueTransformation']}
-                                                                                            rules={[{ required: parameterFormData[name]?.uom_transformation ? true : false, message: 'Enter transformation' }]}>
-                                                                                            <Input placeholder='Enter transformation' />
-                                                                                        </Form.Item>
+                                                                                                name={[name, 'uom_valueTransformation']}
+                                                                                                rules={[{ required: parameterFormData[name]?.uom_transformation ? true : false, message: 'Enter transformation' }]}>
+                                                                                                <Input placeholder='Enter transformation' />
+                                                                                            </Form.Item>
 
+                                                                                        </div>
                                                                                     </div>
-                                                                                    <div className='parameterAddingBlock parameterValueBlock'>
-                                                                                        <p>
-                                                                                            Time
-                                                                                        </p>
-                                                                                        <p></p>
-                                                                                        <Dragger
-                                                                                            className={`draggerSnippet ${DraggerActive
-                                                                                                ? 'activeBorder'
-                                                                                                : 'inActiveBorder'
-                                                                                                }`}
-                                                                                            style={{ pointerEvents: "none" }}
-                                                                                        >
-                                                                                            <p className='ant-upload-drag-icon'>
-                                                                                                <PlusOutlined />
-                                                                                            </p>
-                                                                                            <p className='ant-upload-text'>
-                                                                                                Click below and select anchor
-                                                                                            </p>
-                                                                                            {/* {showInputAnchor && ( */}
-                                                                                            <p
-                                                                                                className='ant-upload-text-input'
-                                                                                                onClick={
-                                                                                                    (e) => DraggerInputHandlerAnchor(e, "time")
-                                                                                                }
-                                                                                                style={{ pointerEvents: "auto" }}
-                                                                                            >
-                                                                                                <Input
-                                                                                                    id="form_input5"
-                                                                                                    value={
-                                                                                                        parameterValue[`param${name + 1}`]?.timeAnchor
-                                                                                                    }
-                                                                                                    className='uploadSnippetInput'
-                                                                                                    placeholder='Enter Anchor Value'
-                                                                                                    onChange={(
-                                                                                                        e
-                                                                                                    ) =>
-                                                                                                        onChangeChart(
-                                                                                                            e,
-                                                                                                            'timeanchorValue', name
-                                                                                                        )
-                                                                                                    }
-                                                                                                />
-                                                                                            </p>
-                                                                                            {/* )} */}
-                                                                                        </Dragger>
-                                                                                        <Dragger
-                                                                                            className={`draggerSnippet ${DraggerActive
-                                                                                                ? 'inActiveBorder'
-                                                                                                : 'activeBorder'
-                                                                                                }`}
-                                                                                            style={{ pointerEvents: "none" }}
-                                                                                        >
-                                                                                            <p className='ant-upload-drag-icon'>
-                                                                                                <PlusOutlined />
-                                                                                            </p>
-                                                                                            <p className='ant-upload-text'>
-                                                                                                Click below and select snippet
-                                                                                            </p>
-                                                                                            <p
-                                                                                                className='ant-upload-text-input'
-                                                                                                onClick={
-                                                                                                    (e) => DraggerInputHandlerSnippet(e, "time")
-                                                                                                }
-                                                                                                style={{ pointerEvents: "auto" }}
-                                                                                            >
-                                                                                                <span>
-                                                                                                    {/* Or
-                                                                                                    enter
-                                                                                                    snippet
-                                                                                                    number */}
-                                                                                                </span>
-                                                                                                <InputField
-                                                                                                    id="form_input6"
-                                                                                                    value={
-                                                                                                        parameterValue[`param${name + 1}`]?.timeId
-                                                                                                    }
-                                                                                                    className='uploadSnippetInput'
-                                                                                                    placeholder='Enter Snippet Value'
-                                                                                                    onChangeInput={(
-                                                                                                        e
-                                                                                                    ) => {
-                                                                                                        onChangeChart(
-                                                                                                            e,
-                                                                                                            'timesnippetValue', name
-                                                                                                        );
-                                                                                                    }}
-                                                                                                />
-                                                                                            </p>
-                                                                                        </Dragger>
-                                                                                        <Form.Item  {...restField}
-                                                                                            name={[name, 'time_rule']}>
-                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'time_rule', name, value)}>
 
-                                                                                                <Option value='range'>
-                                                                                                    Range
-                                                                                                </Option>
-                                                                                                <Option value='regex'>
-                                                                                                    RegEx
-                                                                                                </Option>
-                                                                                            </Select>
-                                                                                        </Form.Item>
+                                                                                    <p>
+                                                                                        {showTime ? <MinusSquareTwoTone onClick={() => setShowTime(false)} /> : <PlusSquareTwoTone onClick={() => setShowTime(true)} />}
+                                                                                        Time
+                                                                                    </p>
+                                                                                    <div style={{ display: showTime ? "" : "none" }}>
+                                                                                        <Input
+                                                                                            id="form_input5"
+                                                                                            value={
+                                                                                                parameterValue[`param${name + 1}`]?.timeAnchor
+                                                                                            }
+                                                                                            style={{ marginBottom: 10 }}
+                                                                                            className='uploadSnippetInput'
+                                                                                            placeholder='Click and select anchor'
+                                                                                            onClick={
+                                                                                                (e) => DraggerInputHandlerAnchor(e, "time")
+                                                                                            }
+                                                                                            onChange={(
+                                                                                                e
+                                                                                            ) =>
+                                                                                                onChangeChart(
+                                                                                                    e,
+                                                                                                    'timeanchorValue', name
+                                                                                                )
+                                                                                            }
+                                                                                        />
+                                                                                        <Input
+                                                                                            id="form_input6"
+                                                                                            value={
+                                                                                                parameterValue[`param${name + 1}`]?.timeId
+                                                                                            }
+                                                                                            style={{ marginBottom: 10 }}
+                                                                                            className='uploadSnippetInput'
+                                                                                            placeholder='Enter Snippet Value'
+                                                                                            onClick={
+                                                                                                (e) => DraggerInputHandlerSnippet(e, "time")
+                                                                                            }
+                                                                                            onChange={(
+                                                                                                e
+                                                                                            ) => {
+                                                                                                onChangeChart(
+                                                                                                    e,
+                                                                                                    'timesnippetValue', name
+                                                                                                );
+                                                                                            }}
+                                                                                        />
+                                                                                        <div className='parameterAddingBlock parameterValueBlock'>
+                                                                                            <Form.Item  {...restField}
+                                                                                                name={[name, 'time_rule']}>
+                                                                                                <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'time_rule', name, value)}>
 
-                                                                                        {parameterFormData[name]?.time_rule === "range" ?
-                                                                                            <Row gutter={8}>
-                                                                                                <Col span={11}>
-                                                                                                    <Form.Item {...restField}
-                                                                                                        name={[name, 'time_min']}
-                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
-                                                                                                        { required: true, message: 'Enter min value' }]}
-                                                                                                    >
-                                                                                                        <Input placeholder='Min' />
-                                                                                                    </Form.Item>
-                                                                                                </Col>
-                                                                                                {/* <Col span={1}>-</Col> */}
-                                                                                                <Col span={12}>
-                                                                                                    <Form.Item {...restField}
-                                                                                                        name={[name, 'time_max']}
-                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
-                                                                                                        { required: true, message: 'Enter max value' },
-                                                                                                        () => ({
-                                                                                                            validator(_, value) {
-                                                                                                                if (!value) {
-                                                                                                                    return Promise.reject();
-                                                                                                                }
-                                                                                                                if (Number(value) < Number(parameterFormData[name]?.time_min)) {
-                                                                                                                    return Promise.reject("Enter value greater then Min");
-                                                                                                                }
-                                                                                                                return Promise.resolve();
-                                                                                                            },
-                                                                                                        })
-                                                                                                        ]}
-                                                                                                    >
-                                                                                                        <Input placeholder='Max' />
-                                                                                                    </Form.Item>
-                                                                                                </Col>
-                                                                                            </Row> :
+                                                                                                    <Option value='range'>
+                                                                                                        Range
+                                                                                                    </Option>
+                                                                                                    <Option value='regex'>
+                                                                                                        RegEx
+                                                                                                    </Option>
+                                                                                                </Select>
+                                                                                            </Form.Item>
+
+                                                                                            {parameterFormData[name]?.time_rule === "range" ?
+                                                                                                <Row gutter={8}>
+                                                                                                    <Col span={11}>
+                                                                                                        <Form.Item {...restField}
+                                                                                                            name={[name, 'time_min']}
+                                                                                                            rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
+                                                                                                            { required: true, message: 'Enter min value' }]}
+                                                                                                        >
+                                                                                                            <Input placeholder='Min' />
+                                                                                                        </Form.Item>
+                                                                                                    </Col>
+                                                                                                    {/* <Col span={1}>-</Col> */}
+                                                                                                    <Col span={12}>
+                                                                                                        <Form.Item {...restField}
+                                                                                                            name={[name, 'time_max']}
+                                                                                                            rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
+                                                                                                            { required: true, message: 'Enter max value' },
+                                                                                                            () => ({
+                                                                                                                validator(_, value) {
+                                                                                                                    if (!value) {
+                                                                                                                        return Promise.reject();
+                                                                                                                    }
+                                                                                                                    if (Number(value) < Number(parameterFormData[name]?.time_min)) {
+                                                                                                                        return Promise.reject("Enter value greater then Min");
+                                                                                                                    }
+                                                                                                                    return Promise.resolve();
+                                                                                                                },
+                                                                                                            })
+                                                                                                            ]}
+                                                                                                        >
+                                                                                                            <Input placeholder='Max' />
+                                                                                                        </Form.Item>
+                                                                                                    </Col>
+                                                                                                </Row> :
+                                                                                                <Form.Item {...restField}
+                                                                                                    name={[name, 'time_valueArea']}
+                                                                                                    rules={[{ required: parameterFormData[name]?.time_rule ? true : false, message: 'Enter value' }]}>
+                                                                                                    <Input placeholder='Enter expression' />
+                                                                                                </Form.Item>}
+                                                                                            <Form.Item  {...restField}
+                                                                                                name={[name, 'time_transformation']}>
+                                                                                                <Select placeholder="Trans." allowClear value={null}>
+                                                                                                    <Option value='add'>
+                                                                                                        ADD
+                                                                                                    </Option>
+                                                                                                    <Option value='substract'>
+                                                                                                        Substract
+                                                                                                    </Option>
+                                                                                                    <Option value='multiply'>
+                                                                                                        Multiply
+                                                                                                    </Option>
+                                                                                                    <Option value='divide'>
+                                                                                                        Divide
+                                                                                                    </Option>
+                                                                                                </Select>
+                                                                                            </Form.Item>
                                                                                             <Form.Item {...restField}
-                                                                                                name={[name, 'time_valueArea']}
-                                                                                                rules={[{ required: parameterFormData[name]?.time_rule ? true : false, message: 'Enter value' }]}>
-                                                                                                <Input placeholder='Enter expression' />
-                                                                                            </Form.Item>}
-                                                                                        <Form.Item  {...restField}
-                                                                                            name={[name, 'time_transformation']}>
-                                                                                            <Select placeholder="Trans." allowClear value={null}>
-                                                                                                <Option value='add'>
-                                                                                                    ADD
-                                                                                                </Option>
-                                                                                                <Option value='substract'>
-                                                                                                    Substract
-                                                                                                </Option>
-                                                                                                <Option value='multiply'>
-                                                                                                    Multiply
-                                                                                                </Option>
-                                                                                                <Option value='divide'>
-                                                                                                    Divide
-                                                                                                </Option>
-                                                                                            </Select>
-                                                                                        </Form.Item>
-                                                                                        <Form.Item {...restField}
-                                                                                            name={[name, 'time_valueTransformation']}
-                                                                                            rules={[{ required: parameterFormData[name]?.time_transformation ? true : false, message: 'Enter transformation' }]}>
-                                                                                            <Input placeholder='Enter transformation' />
-                                                                                        </Form.Item>
+                                                                                                name={[name, 'time_valueTransformation']}
+                                                                                                rules={[{ required: parameterFormData[name]?.time_transformation ? true : false, message: 'Enter transformation' }]}>
+                                                                                                <Input placeholder='Enter transformation' />
+                                                                                            </Form.Item>
 
+                                                                                        </div>
                                                                                     </div>
-                                                                                    <div className='parameterAddingBlock parameterValueBlock'>
-                                                                                        <p>
-                                                                                            Date
-                                                                                        </p>
-                                                                                        <p></p>
-                                                                                        <Dragger
-                                                                                            className={`draggerSnippet ${DraggerActive
-                                                                                                ? 'activeBorder'
-                                                                                                : 'inActiveBorder'
-                                                                                                }`}
-                                                                                            style={{ pointerEvents: "none" }}
-                                                                                        >
-                                                                                            <p className='ant-upload-drag-icon'>
-                                                                                                <PlusOutlined />
-                                                                                            </p>
-                                                                                            <p className='ant-upload-text'>
-                                                                                                Click below and select anchor
-                                                                                            </p>
-                                                                                            {/* {showInputAnchor && ( */}
-                                                                                            <p
-                                                                                                className='ant-upload-text-input'
-                                                                                                onClick={
-                                                                                                    (e) => DraggerInputHandlerAnchor(e, "date")
-                                                                                                }
-                                                                                                style={{ pointerEvents: "auto" }}
-                                                                                            >
-                                                                                                <InputField
-                                                                                                    id="form_input7"
-                                                                                                    value={
-                                                                                                        parameterValue[`param${name + 1}`]?.dateAnchor
+                                                                                    <p>
+                                                                                        {showDate ? <MinusSquareTwoTone onClick={() => setShowDate(false)} /> : <PlusSquareTwoTone onClick={() => setShowDate(true)} />}
+                                                                                        Date
+                                                                                    </p>
+                                                                                    <div style={{ display: showDate ? "" : "none" }}>
+                                                                                        <Input
+                                                                                            id="form_input7"
+                                                                                            value={
+                                                                                                parameterValue[`param${name + 1}`]?.dateAnchor
 
-                                                                                                    }
-                                                                                                    className='uploadSnippetInput'
-                                                                                                    placeholder='Enter Anchor Value'
-                                                                                                    onChangeInput={(
-                                                                                                        e
-                                                                                                    ) =>
-                                                                                                        onChangeChart(
-                                                                                                            e,
-                                                                                                            'dateanchorValue', name
-                                                                                                        )
-                                                                                                    }
-                                                                                                />
-                                                                                            </p>
-                                                                                            {/* )} */}
-                                                                                        </Dragger>
-                                                                                        <Dragger
-                                                                                            className={`draggerSnippet ${DraggerActive
-                                                                                                ? 'inActiveBorder'
-                                                                                                : 'activeBorder'
-                                                                                                }`}
-                                                                                            style={{ pointerEvents: "none" }}
-                                                                                        >
-                                                                                            <p className='ant-upload-drag-icon'>
-                                                                                                <PlusOutlined />
-                                                                                            </p>
-                                                                                            <p className='ant-upload-text'>
-                                                                                                Click below and select snippet
-                                                                                            </p>
-                                                                                            <p
-                                                                                                className='ant-upload-text-input'
-                                                                                                onClick={
-                                                                                                    (e) => DraggerInputHandlerSnippet(e, "date")
-                                                                                                }
-                                                                                                style={{ pointerEvents: "auto" }}
-                                                                                            >
-                                                                                                <span>
-                                                                                                    {/* Or
-                                                                                                    enter
-                                                                                                    snippet
-                                                                                                    number */}
-                                                                                                </span>
-                                                                                                <InputField
-                                                                                                    id="form_input8"
-                                                                                                    value={
-                                                                                                        parameterValue[`param${name + 1}`]?.dateId
+                                                                                            }
+                                                                                            onClick={
+                                                                                                (e) => DraggerInputHandlerAnchor(e, "date")
+                                                                                            }
+                                                                                            style={{ marginBottom: 10 }}
+                                                                                            className='uploadSnippetInput'
+                                                                                            placeholder='Click and select anchor'
+                                                                                            onChange={(
+                                                                                                e
+                                                                                            ) =>
+                                                                                                onChangeChart(
+                                                                                                    e,
+                                                                                                    'dateanchorValue', name
+                                                                                                )
+                                                                                            }
+                                                                                        />
+                                                                                        <Input
+                                                                                            id="form_input8"
+                                                                                            value={
+                                                                                                parameterValue[`param${name + 1}`]?.dateId
 
-                                                                                                    }
-                                                                                                    className='uploadSnippetInput'
-                                                                                                    placeholder='Enter Snippet Value'
-                                                                                                    onChangeInput={(
-                                                                                                        e
-                                                                                                    ) => {
-                                                                                                        onChangeChart(
-                                                                                                            e,
-                                                                                                            'datesnippetValue', name
-                                                                                                        );
-                                                                                                    }}
-                                                                                                />
-                                                                                            </p>
-                                                                                        </Dragger>
-                                                                                        <Form.Item  {...restField}
-                                                                                            name={[name, 'date_rule']}>
-                                                                                            <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'date_rule', name, value)}>
-                                                                                                <Option value='date'>
-                                                                                                    Date
-                                                                                                </Option>
-                                                                                                <Option value='range'>
-                                                                                                    Range
-                                                                                                </Option>
-                                                                                                <Option value='regex'>
-                                                                                                    RegEx
-                                                                                                </Option>
-                                                                                            </Select>
-                                                                                        </Form.Item>
+                                                                                            }
+                                                                                            style={{ marginBottom: 10 }}
+                                                                                            className='uploadSnippetInput'
+                                                                                            placeholder='Click and select snippet'
+                                                                                            onClick={
+                                                                                                (e) => DraggerInputHandlerSnippet(e, "date")
+                                                                                            }
+                                                                                            onChange={(
+                                                                                                e
+                                                                                            ) => {
+                                                                                                onChangeChart(
+                                                                                                    e,
+                                                                                                    'datesnippetValue', name
+                                                                                                );
+                                                                                            }}
+                                                                                        />
 
-                                                                                        {parameterFormData[name]?.date_rule === "range" ?
-                                                                                            <Row gutter={8}>
-                                                                                                <Col span={11}>
-                                                                                                    <Form.Item {...restField}
-                                                                                                        name={[name, 'date_min']}
-                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
-                                                                                                        { required: true, message: 'Enter min value' }]}
-                                                                                                    >
-                                                                                                        <Input placeholder='Min' />
-                                                                                                    </Form.Item>
-                                                                                                </Col>
-                                                                                                {/* <Col span={1}>-</Col> */}
-                                                                                                <Col span={12}>
-                                                                                                    <Form.Item {...restField}
-                                                                                                        name={[name, 'date_max']}
-                                                                                                        rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
-                                                                                                        { required: true, message: 'Enter nax value' },
-                                                                                                        () => ({
-                                                                                                            validator(_, value) {
-                                                                                                                if (!value) {
-                                                                                                                    return Promise.reject();
-                                                                                                                }
-                                                                                                                if (Number(value) < Number(parameterFormData[name]?.date_min)) {
-                                                                                                                    return Promise.reject("Enter value greater then Min");
-                                                                                                                } return Promise.resolve();
-                                                                                                            },
-                                                                                                        })
-                                                                                                        ]}
-                                                                                                    >
-                                                                                                        <Input placeholder='Max' />
-                                                                                                    </Form.Item>
-                                                                                                </Col>
-                                                                                            </Row> :
+                                                                                        <div className='parameterAddingBlock parameterValueBlock'>
+                                                                                            <Form.Item  {...restField}
+                                                                                                name={[name, 'date_rule']}>
+                                                                                                <Select placeholder="Rule" allowClear value={null} onChange={(e, value) => onChangeChart(e, 'date_rule', name, value)}>
+                                                                                                    <Option value='date'>
+                                                                                                        Date
+                                                                                                    </Option>
+                                                                                                    <Option value='range'>
+                                                                                                        Range
+                                                                                                    </Option>
+                                                                                                    <Option value='regex'>
+                                                                                                        RegEx
+                                                                                                    </Option>
+                                                                                                </Select>
+                                                                                            </Form.Item>
+
+                                                                                            {parameterFormData[name]?.date_rule === "range" ?
+                                                                                                <Row gutter={8}>
+                                                                                                    <Col span={11}>
+                                                                                                        <Form.Item {...restField}
+                                                                                                            name={[name, 'date_min']}
+                                                                                                            rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
+                                                                                                            { required: true, message: 'Enter min value' }]}
+                                                                                                        >
+                                                                                                            <Input placeholder='Min' />
+                                                                                                        </Form.Item>
+                                                                                                    </Col>
+                                                                                                    {/* <Col span={1}>-</Col> */}
+                                                                                                    <Col span={12}>
+                                                                                                        <Form.Item {...restField}
+                                                                                                            name={[name, 'date_max']}
+                                                                                                            rules={[{ pattern: new RegExp('^[+]?([0-9]{0,})*[.]?([0-9]{0,2})?$', 'g'), message: 'Input is not a number' },
+                                                                                                            { required: true, message: 'Enter nax value' },
+                                                                                                            () => ({
+                                                                                                                validator(_, value) {
+                                                                                                                    if (!value) {
+                                                                                                                        return Promise.reject();
+                                                                                                                    }
+                                                                                                                    if (Number(value) < Number(parameterFormData[name]?.date_min)) {
+                                                                                                                        return Promise.reject("Enter value greater then Min");
+                                                                                                                    } return Promise.resolve();
+                                                                                                                },
+                                                                                                            })
+                                                                                                            ]}
+                                                                                                        >
+                                                                                                            <Input placeholder='Max' />
+                                                                                                        </Form.Item>
+                                                                                                    </Col>
+                                                                                                </Row> :
+                                                                                                <Form.Item {...restField}
+                                                                                                    name={[name, 'date_valueArea']}
+                                                                                                    rules={[{ required: parameterFormData[name]?.date_rule ? true : false, message: 'Enter value' }]}>
+                                                                                                    <Input placeholder='Enter expression' />
+                                                                                                </Form.Item>}
+                                                                                            <Form.Item  {...restField}
+                                                                                                name={[name, 'date_transformation']}>
+                                                                                                <Select placeholder="Trans." allowClear value={null}>
+                                                                                                    <Option value='add'>
+                                                                                                        ADD
+                                                                                                    </Option>
+                                                                                                    <Option value='substract'>
+                                                                                                        Substract
+                                                                                                    </Option>
+                                                                                                    <Option value='multiply'>
+                                                                                                        Multiply
+                                                                                                    </Option>
+                                                                                                    <Option value='divide'>
+                                                                                                        Divide
+                                                                                                    </Option>
+                                                                                                </Select>
+                                                                                            </Form.Item>
                                                                                             <Form.Item {...restField}
-                                                                                                name={[name, 'date_valueArea']}
-                                                                                                rules={[{ required: parameterFormData[name]?.date_rule ? true : false, message: 'Enter value' }]}>
-                                                                                                <Input placeholder='Enter expression' />
-                                                                                            </Form.Item>}
-                                                                                        <Form.Item  {...restField}
-                                                                                            name={[name, 'date_transformation']}>
-                                                                                            <Select placeholder="Trans." allowClear value={null}>
-                                                                                                <Option value='add'>
-                                                                                                    ADD
-                                                                                                </Option>
-                                                                                                <Option value='substract'>
-                                                                                                    Substract
-                                                                                                </Option>
-                                                                                                <Option value='multiply'>
-                                                                                                    Multiply
-                                                                                                </Option>
-                                                                                                <Option value='divide'>
-                                                                                                    Divide
-                                                                                                </Option>
-                                                                                            </Select>
-                                                                                        </Form.Item>
-                                                                                        <Form.Item {...restField}
-                                                                                            name={[name, 'date_valueTransformation']}
-                                                                                            rules={[{ required: parameterFormData[name]?.date_transformation ? true : false, message: 'Enter transformation' }]}>
-                                                                                            <Input placeholder='Enter transformation' />
-                                                                                        </Form.Item>
-
-                                                                                        <Button type='primary' className='defineTableBtn' onClick={findTemplate}>
-                                                                                            <MonitorOutlined /> Find
-                                                                                        </Button>
-                                                                                        {fileList?.length > 0 &&
-                                                                                            <p>Found in {`${fileList?.length}/${searchedFileList?.length}`} files</p>
-                                                                                        }
+                                                                                                name={[name, 'date_valueTransformation']}
+                                                                                                rules={[{ required: parameterFormData[name]?.date_transformation ? true : false, message: 'Enter transformation' }]}>
+                                                                                                <Input placeholder='Enter transformation' />
+                                                                                            </Form.Item>
+                                                                                        </div>
                                                                                     </div>
+                                                                                    <Button type='primary' className='defineTableBtn' onClick={findTemplate}>
+                                                                                        <MonitorOutlined /> Find
+                                                                                    </Button>
+                                                                                    {fileList?.length > 0 &&
+                                                                                        <p>Found in {`${fileList?.length}/${searchedFileList?.length}`} files</p>
+                                                                                    }
+
                                                                                     <div>{fileList?.map(item => (
                                                                                         <p>{item?.split('.')[0]}</p>
                                                                                     ))}</div>
@@ -3000,37 +2849,39 @@ function PaperBatchRecordsTemplate() {
 
                                                                     ))}
                                                                 </Collapse>
-                                                                <Form.Item>
-                                                                    <div
-                                                                        className='firstParameter-para'
-                                                                        style={{ pointerEvents: params.fromScreen === "Workflow" ? "none" : "all" }}
-                                                                        onClick={() => {
-                                                                            // if (activeNumber === 0) {
-                                                                            parameterAddingHandler()
-                                                                            add()
-                                                                            // } else {
-                                                                            //     if ((formValues[activeNumber - 1]?.name === "" || formValues[activeNumber - 1]?.name === undefined) ||
-                                                                            //         (formValues[activeNumber - 1]?.method === "" || formValues[activeNumber - 1]?.method === undefined)
-                                                                            //     ) {
-                                                                            //         openNotification("Please enter name and method")
-                                                                            //     } else {
-                                                                            //         parameterAddingHandler()
-                                                                            //         add()
-                                                                            //     }
-                                                                            // }
+                                                                {params.fromScreen != "Workflow" &&
+                                                                    <Form.Item>
+                                                                        <div
+                                                                            className='firstParameter-para'
+                                                                            style={{ pointerEvents: params.fromScreen === "Workflow" ? "none" : "all" }}
+                                                                            onClick={() => {
+                                                                                // if (activeNumber === 0) {
+                                                                                parameterAddingHandler()
+                                                                                add()
+                                                                                // } else {
+                                                                                //     if ((formValues[activeNumber - 1]?.name === "" || formValues[activeNumber - 1]?.name === undefined) ||
+                                                                                //         (formValues[activeNumber - 1]?.method === "" || formValues[activeNumber - 1]?.method === undefined)
+                                                                                //     ) {
+                                                                                //         openNotification("Please enter name and method")
+                                                                                //     } else {
+                                                                                //         parameterAddingHandler()
+                                                                                //         add()
+                                                                                //     }
+                                                                                // }
 
-                                                                        }}
-                                                                        type="primary"
-                                                                        htmltype="submit"
-                                                                    >
-                                                                        <p>
-                                                                            {paramaterAdded
-                                                                                ? 'Add another paramater'
-                                                                                : 'Add your first Parameter'}
-                                                                        </p>
+                                                                            }}
+                                                                            type="primary"
+                                                                            htmltype="submit"
+                                                                        >
+                                                                            <p>
+                                                                                {paramaterAdded
+                                                                                    ? 'Add another paramater'
+                                                                                    : 'Add your first Parameter'}
+                                                                            </p>
 
-                                                                    </div>
-                                                                </Form.Item>
+                                                                        </div>
+                                                                    </Form.Item>
+                                                                }
                                                             </>
                                                         )}
                                                     </Form.List>
@@ -3078,7 +2929,9 @@ function PaperBatchRecordsTemplate() {
                                         <p className='pbrCenterPanelHeader-para' onClick={showModal}>
                                             Preview
                                         </p>
-                                        <span style={{ marginTop: 4, marginRight: 30 }}>{params?.file.slice(0, 28)}</span>
+                                        <Tooltip title={params?.file}>
+                                            <span style={{ marginTop: 4, marginRight: 30 }}>{params?.file.slice(0, 28)}</span>
+                                        </Tooltip>
                                         <div>
                                             <LeftOutlined disabled={true} className='icon_size' onClick={() => handlePageChange(pageNumber - 1)} />
                                             <Input style={{ width: 35 }} value={pageNumber} onChange={(e) => handlePageTextChange(e.target.value)} />
@@ -3098,7 +2951,7 @@ function PaperBatchRecordsTemplate() {
                                         Draw Snippet
                                     </div> */}
                                     {params?.fromScreen == "Workflow" ?
-                                        <div className='btns' style={{marginLeft:40}}>
+                                        <div className='btns' style={{ marginLeft: 40 }}>
                                             <Button
                                                 className='custom-primary-btn'
                                                 onClick={() => {
