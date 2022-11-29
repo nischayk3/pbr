@@ -3,7 +3,7 @@ import { useLocation, useParams } from "react-router";
 import "./viewPage.scss";
 //antd-imports
 import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { Button, Col, DatePicker, Dropdown, Menu, Row, Tabs, Tooltip } from "antd";
+import { Button, DatePicker, Dropdown, Menu, Tabs, Tooltip } from "antd";
 const { TabPane } = Tabs;
 //componenets
 import moment from "moment";
@@ -22,7 +22,6 @@ import Model from "./model/Model";
 import ModelData from "./ModelData";
 import Preprocess from "./preproccessing/Preprocess";
 import Results from "./results/Results";
-import Transformation from "./transformations";
 
 const ViewPageAnalysis = () => {
 	const [isPublish, setIsPublish] = useState(false);
@@ -74,24 +73,28 @@ const ViewPageAnalysis = () => {
 		/>
 	);
 
+
 	const onSaveClick = async (save) => {
 		const tempObj = JSON.parse(JSON.stringify(finalModelJson));
-		Object.entries(tempObj.feature_union_mapping).forEach(([key, value]) => {
-			if (value.type === "Encoder") {
-			  delete tempObj.feature_union_mapping[key]
-			}
-		});
-		let tempEncoder = Object.assign({}, encoderData.selectedObjs)
-        let tempIds = {
-			0: '5',
-			1: '6',
-			2: '7',
-		};
-		Object.keys(tempIds).forEach(function(ele) {
-			tempEncoder[tempIds[ele]] = tempEncoder[ele];
-			delete tempEncoder[ele];
-		})
-		tempObj.feature_union_mapping = Object.assign(tempObj.feature_union_mapping, tempEncoder)
+		if (tempObj.feature_union_mapping) {
+			Object.entries(tempObj.feature_union_mapping).forEach(([key, value]) => {
+				if (value.type === "Encoder") {
+					delete tempObj.feature_union_mapping[key]
+				}
+			});
+			let tempEncoder = Object.assign({}, encoderData.selectedObjs)
+			let tempIds = {
+				0: '5',
+				1: '6',
+				2: '7',
+			};
+			Object.keys(tempIds).forEach(function (ele) {
+				tempEncoder[tempIds[ele]] = tempEncoder[ele];
+				delete tempEncoder[ele];
+			})
+			tempObj.feature_union_mapping = Object.assign(tempObj.feature_union_mapping, tempEncoder)
+
+		}
 		const req = {
 			...selectedViewData.viewData,
 			data: [{ ...tempObj }],
@@ -112,7 +115,7 @@ const ViewPageAnalysis = () => {
 	};
 
 	const onExecuteClick = async (date) => {
-		const login_response = JSON.parse(localStorage.getItem("login_details"));
+		const login_response = JSON.parse(sessionStorage.getItem("login_details"));
 		const request_headers = {
 			"content-type": "application/json",
 			"x-access-token": login_response.token ? login_response.token : "",
@@ -121,8 +124,8 @@ const ViewPageAnalysis = () => {
 		const reqBody = {
 			app_data: "ANALYTICS",
 			dag_id: " ",
-			created_by: localStorage.getItem("username")
-				? localStorage.getItem("username")
+			created_by: sessionStorage.getItem("username")
+				? sessionStorage.getItem("username")
 				: "",
 			app_type: "ANALYTICS",
 			app_id: selectedViewData.viewData.pipeline_id,
@@ -176,6 +179,7 @@ const ViewPageAnalysis = () => {
 				setExectStart(true);
 			}
 			setEditFinalModelJson(data.data)
+			setFinalModelJson(data?.data?.pipeline_data[0])
 			dispatch(hideLoader());
 		} else {
 			dispatch(hideLoader());
@@ -241,13 +245,13 @@ const ViewPageAnalysis = () => {
 						</>
 
 					) : (
-							<div>
-						    <Tooltip placement="bottom" title={ViewDetails}>
-                               <Button>View details <InfoCircleOutlined /></Button>
-                            </Tooltip>
-							<Button>Share</Button>
+						<div>
+							<Tooltip placement="bottom" title={ViewDetails}>
+								<Button>View details <InfoCircleOutlined /></Button>
+							</Tooltip>
+							<Button disabled>Share</Button>
 							<Button onClick={() => onSaveClick("save")}>Save</Button>
-							<Button onClick={() => onSaveClick('saveAs')}>Save As</Button>
+							<Button disabled onClick={() => onSaveClick('saveAs')}>Save As</Button>
 							{/* <Button onClick={() => setExectStart(true)}>Execute</Button> */}
 							<Dropdown overlay={menu} trigger={["click"]} disabled={!exectStart && !editFinalJson?.pipeline_data[0]?.variable_mapping?.length}>
 								<Button>Execute</Button>
@@ -257,7 +261,8 @@ const ViewPageAnalysis = () => {
 									setIsPublish(true);
 									setApproveReject("P");
 								}}
-								disabled={selectedViewData.viewData.pipeline_status === 'AWAP' || selectedViewData.viewData.pipeline_status === 'APRD'}
+								disabled
+							// disabled={selectedViewData.viewData.pipeline_status === 'AWAP' || selectedViewData.viewData.pipeline_status === 'APRD'}
 							>
 								<CloudUploadOutlined />
 								Publish
@@ -287,12 +292,12 @@ const ViewPageAnalysis = () => {
 							tableKey={tableKey}
 							modelType={modelType}
 							encoderData={encoderData}
-                            setEncoderData={setEncoderData}
+							setEncoderData={setEncoderData}
 						/>
 					</TabPane>
-					{exectStart && <TabPane tab="Transformation" key="4">
+					{/* {exectStart && <TabPane tab="Transformation" key="4">
 						<Transformation finalModelJson={finalModelJson} editFinalJson={editFinalJson} tableKey={tableKey} />
-					</TabPane>}
+					</TabPane>} */}
 					{((executed && !exectLater) || (editFinalJson?.pipeline_data[0]?.variable_mapping?.length)) && (
 						<TabPane tab="Results" key="5">
 							<Results tablekey={tableKey} modelType={modelType} />

@@ -1,5 +1,5 @@
-import { BellOutlined, CaretUpOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Avatar, Input, Layout, Modal, Button } from 'antd';
+import { BellOutlined, CaretUpOutlined, DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Button, Input, Layout, Modal } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -24,14 +24,14 @@ const HeaderBar = () => {
 	const [dropdownVisible, setDropdownVisible] = useState(false);
 	const [modal, setModal] = useState(false)
 
-	const loginDetails = JSON.parse(localStorage.getItem("login_details"))
+	const loginDetails = JSON.parse(sessionStorage.getItem("login_details"))
 
 	const profile = useSelector((state) => state.loginReducer.profile)
 
 	useEffect(() => {
 		getProfile();
 		document.addEventListener('tokenExpired', () => {
-			if (localStorage.getItem('login_details')) {
+			if (sessionStorage.getItem('login_details')) {
 				adLogout('tokenExpired')
 			}
 		})
@@ -73,7 +73,7 @@ const HeaderBar = () => {
 		if (tokenExpired) {
 			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
 		}
-		localStorage.clear()
+		sessionStorage.clear()
 		window.open(`${logoutUrl}`, '_self')
 		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`, '_self')
 	}
@@ -117,8 +117,8 @@ const HeaderBar = () => {
 					<div className="user-name" onClick={dropDownOpen}>
 
 						<Avatar size={22} style={{ backgroundColor: "orange", fontSize: "16px", padding: "1px 0" }}>
-							{localStorage.getItem("username") &&
-								localStorage.getItem("username").split("")[0].toUpperCase()}{" "}
+							{sessionStorage.getItem("username") &&
+								sessionStorage.getItem("username").split("")[0].toUpperCase()}{" "}
 						</Avatar>
 
 						<DownOutlined className='down-icon' />
