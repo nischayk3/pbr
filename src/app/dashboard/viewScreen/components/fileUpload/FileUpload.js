@@ -154,7 +154,6 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		const selectedParam = finalData.current.find(
 			(item) => String(item.parameter_name) === String(record.param)
 		);
-
 		if (selectedParam === undefined) {
 			let rowData = {};
 			let batchData = {};
@@ -174,15 +173,12 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 					)
 				}
 			});
-
 			batchData["id"] = count;
 			setCount(count + 1);
-
 			//check for duplicate records
 			const indexDuplicate = viewSummaryTable.findIndex(
 				(x) => x.param == record.param
 			);
-
 			if (indexDuplicate === -1) {
 
 				rowData = Object.assign(batchData);
