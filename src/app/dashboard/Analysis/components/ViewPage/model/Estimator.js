@@ -59,33 +59,35 @@ const Estimator = (props) => {
 
   const onClickSave = () => {
     const tempObj = JSON.parse(JSON.stringify(finalModelJson));
-    let tempParams = [];
-    let tempNEst = [];
+    let newObj = {};
+    const tempHyper = JSON.parse(JSON.stringify(hyperParameters))
     if (estimatorPopupDataValues.enableGrid) {
-      hyperParameters?.forEach((ele) => {
+      tempHyper?.forEach((ele) => {
+        ele.parameter = ele?.parameter?.replace(" ", '')
         if (ele.customValue) {
           if (ele.valid_value === 'Integer') {
-            ele.customValue = Number(ele.customValue)
+            ele.customValue = ele?.customValue?.split(',')
+            ele.customValue = ele.customValue.map(Number)
           } else if (ele.valid_value.includes('True')) {
-            ele.customValue = true
+            ele.customValue = [true]
           } else if (ele.valid_value.includes('False')) {
-            ele.customValue = false
+            ele.customValue = [false]
           } else if (ele.valid_value.includes('Float')) {
-            ele.customValue = Number(ele.customValue)
+            ele.customValue = ele?.customValue?.split(',')
+            ele.customValue = ele.customValue.map(Number)
+          } else {
+            ele.customValue = ele?.customValue?.split(',')
           }
-          tempNEst.push(ele.customValue)
-          tempParams.push(ele.parameter)
+          newObj[ele.parameter] = ele?.customValue
         }
       })
     }
+
     Object.entries(tempObj.estimator).forEach(([key, value]) => {
       value.estimator_type = estimatorPopupDataValues.typeListValue
       value.model_name = `e_${estimatorPopupDataValues.algoValue.toLowerCase()}`;
-      if (tempNEst.length) {
-        value.hyperparamters = {
-          n_estimators : tempNEst,
-          max_depth : tempParams
-        }
+      if (Object.keys(newObj)?.length) {
+        value.hyperparamters = newObj
       } else {
         value.hyperparamters = {};
       }
@@ -114,6 +116,18 @@ const Estimator = (props) => {
     setHyperParameters([]);
     setFinalModelJson({ ...finalModelJson, hyperParams: undefined});
   }
+
+  const onAlgoChange = (e) => {
+    setEstimatorPopupDataValues({
+      ...estimatorPopupDataValues,
+      algoValue: e,
+      enableGrid: false,
+      regressionListvalue: []
+    })
+    setHyperParameters([]);
+    setFinalModelJson({ ...finalModelJson, hyperParams: undefined});
+  }
+
   const getAlgoList = (e) => {
     let tempList = JSON.parse(JSON.stringify(estimatorPopupData?.algoList));
     tempList = tempList.filter((ele) => ele?.estimator_type === e)
@@ -219,8 +233,12 @@ const Estimator = (props) => {
   useEffect(() => {
     if (finalModelJson?.hyperParams) {
       setHyperParameters(finalModelJson?.hyperParams)
+      setEstimatorPopupDataValues({
+        ...estimatorPopupDataValues,
+        enableGrid: true,
+      })
     }
-  }, [])
+  }, [finalModelJson])
 
 
   return (
@@ -256,12 +274,8 @@ const Estimator = (props) => {
           }
         />
         <p style={{ marginBottom: '0px' }}>Algorithms</p>
-        <Select value={estimatorPopupDataValues.algoValue} disabled={!estimatorPopupDataValues.typeListValue} onChange={(e) => {
-          setEstimatorPopupDataValues({
-            ...estimatorPopupDataValues,
-            algoValue: e,
-          })
-        }} style={{ width: "100%" }}>
+        <Select value={estimatorPopupDataValues.algoValue} disabled={!estimatorPopupDataValues.typeListValue}
+          onChange={(e) => onAlgoChange(e)} style={{ width: "100%" }}>
           {algosListData?.length && algosListData?.map((ele) => {
             return <Option value={ele.submodule} onContextMenu={handleClick}>{ele.display_name}</Option>
           })}
@@ -286,7 +300,7 @@ const Estimator = (props) => {
             <Checkbox
               checked={estimatorPopupDataValues.enableGrid}
               onChange={(e) => handleCheckboxChange(e)}
-              disabled={estimatorPopupDataValues.algoValue}
+              disabled={!estimatorPopupDataValues.algoValue}
             >
               Enable grid search
             </Checkbox>
@@ -298,7 +312,7 @@ const Estimator = (props) => {
         
         <div className="button-save">
           <Button onClick={onClickSave}>Save Changes</Button>
-          <Button>
+          <Button disabled>
             <PlusOutlined /> Add another estimator
           </Button>
         </div>

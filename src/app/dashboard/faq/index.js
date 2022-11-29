@@ -6,11 +6,11 @@
  * @Last Changed By - Fahad
  */
 
+import { Card, Col, Collapse, Input, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Collapse, Input, Card, Row, Col } from 'antd';
-import ScreenHeader from '../../../components/ScreenHeader/screenHeader';
 import faqImage from '../../../assets/images/faq_header.png';
 import BreadCrumbWrapper from '../../../components/BreadCrumbWrapper';
+import ScreenHeader from '../../../components/ScreenHeader/screenHeader';
 //services
 import { faqData } from '../../../services/helpService';
 import './style.scss';
@@ -65,9 +65,8 @@ const FaqMain = () => {
 					bannerbg={{
 						background: 'linear-gradient(180deg, #E7E6FF 0%, #FFF4F4 100%)',
 					}}
-					title={`Hi ${
-						localStorage.getItem('username') || localStorage.getItem('user')
-					},`}
+					title={`Hi ${sessionStorage.getItem('username') || sessionStorage.getItem('user')
+						},`}
 					description='Let’s see what you need help with. Here are a bunch of FAQs you can take a look at!'
 					source={faqImage}
 					sourceClass='geanealogy-image'

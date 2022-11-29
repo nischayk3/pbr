@@ -3,7 +3,7 @@ import {
 } from '../constants/apiBaseUrl';
 import Service from './AjaxService';
 
-let login_response = JSON.parse(localStorage.getItem('login_details'));
+let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 
 const request_headers = {
 	'content-type': 'application/json',
@@ -138,20 +138,20 @@ export const getProcessInfo = _queryParam => {
 };
 
 //download data table
-export const downloadDataTable = request => {
-	return Service.get(
-		BMS_APP_PYTHON_SERVICE + '/download-data',
-		request,
-		request_headers
-	).then(
-		response => {
-			return response.data;
-		},
-		error => {
-			return error.response.data;
-		}
-	);
-};
+// export const downloadDataTable = request => {
+// 	return Service.get(
+// 		BMS_APP_PYTHON_SERVICE + '/download-data',
+// 		request,
+// 		request_headers
+// 	).then(
+// 		response => {
+// 			return response.data;
+// 		},
+// 		error => {
+// 			return error.response.data;
+// 		}
+// 	);
+// };
 
 export const pbrFileUpload = request => {
 	return Service.post(

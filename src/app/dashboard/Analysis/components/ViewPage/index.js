@@ -3,7 +3,7 @@ import { useLocation, useParams } from "react-router";
 import "./viewPage.scss";
 //antd-imports
 import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { Button, Col, DatePicker, Dropdown, Menu, Row, Tabs, Tooltip } from "antd";
+import { Button, DatePicker, Dropdown, Menu, Tabs, Tooltip } from "antd";
 const { TabPane } = Tabs;
 //componenets
 import moment from "moment";
@@ -13,6 +13,7 @@ import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import Signature from "../../../../../components/ElectronicSignature/signature";
 import ModalComponent from "../../../../../components/Modal/Modal";
 import { getAnalyticsViewData } from "../../../../../duck/actions/analyticsView";
+import { getResults } from "../../../../../services/analyticsService";
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../duck/actions/commonActions";
@@ -22,7 +23,7 @@ import Model from "./model/Model";
 import ModelData from "./ModelData";
 import Preprocess from "./preproccessing/Preprocess";
 import Results from "./results/Results";
-import Transformation from "./transformations";
+import ModelExcecute from './ModelExcecute';
 
 const ViewPageAnalysis = () => {
 	const [isPublish, setIsPublish] = useState(false);
@@ -37,7 +38,11 @@ const ViewPageAnalysis = () => {
 	const [exectLaterDate, setExectLaterDate] = useState("");
 	const [finalModelJson, setFinalModelJson] = useState({});
 	const [editFinalJson, setEditFinalModelJson] = useState();
+	const [resultsData, setResultsData] = useState([]);
+	const [executedModel, setExecutedModal] = useState(false);
+	const [results, setResults] = useState(false);
 	const modelType = useRef('');
+	const jobId = useRef('')
 
 	const tabChange = (key) => {
 		setTableKey(key);
@@ -74,24 +79,28 @@ const ViewPageAnalysis = () => {
 		/>
 	);
 
+
 	const onSaveClick = async (save) => {
 		const tempObj = JSON.parse(JSON.stringify(finalModelJson));
-		Object.entries(tempObj.feature_union_mapping).forEach(([key, value]) => {
-			if (value.type === "Encoder") {
-			  delete tempObj.feature_union_mapping[key]
-			}
-		});
-		let tempEncoder = Object.assign({}, encoderData.selectedObjs)
-        let tempIds = {
-			0: '5',
-			1: '6',
-			2: '7',
-		};
-		Object.keys(tempIds).forEach(function(ele) {
-			tempEncoder[tempIds[ele]] = tempEncoder[ele];
-			delete tempEncoder[ele];
-		})
-		tempObj.feature_union_mapping = Object.assign(tempObj.feature_union_mapping, tempEncoder)
+		if (tempObj.feature_union_mapping) {
+			Object.entries(tempObj.feature_union_mapping).forEach(([key, value]) => {
+				if (value.type === "Encoder") {
+					delete tempObj.feature_union_mapping[key]
+				}
+			});
+			let tempEncoder = Object.assign({}, encoderData.selectedObjs)
+			let tempIds = {
+				0: '5',
+				1: '6',
+				2: '7',
+			};
+			Object.keys(tempIds).forEach(function (ele) {
+				tempEncoder[tempIds[ele]] = tempEncoder[ele];
+				delete tempEncoder[ele];
+			})
+			tempObj.feature_union_mapping = Object.assign(tempObj.feature_union_mapping, tempEncoder)
+
+		}
 		const req = {
 			...selectedViewData.viewData,
 			data: [{ ...tempObj }],
@@ -112,7 +121,7 @@ const ViewPageAnalysis = () => {
 	};
 
 	const onExecuteClick = async (date) => {
-		const login_response = JSON.parse(localStorage.getItem("login_details"));
+		const login_response = JSON.parse(sessionStorage.getItem("login_details"));
 		const request_headers = {
 			"content-type": "application/json",
 			"x-access-token": login_response.token ? login_response.token : "",
@@ -121,8 +130,8 @@ const ViewPageAnalysis = () => {
 		const reqBody = {
 			app_data: "ANALYTICS",
 			dag_id: " ",
-			created_by: localStorage.getItem("username")
-				? localStorage.getItem("username")
+			created_by: sessionStorage.getItem("username")
+				? sessionStorage.getItem("username")
 				: "",
 			app_type: "ANALYTICS",
 			app_id: selectedViewData.viewData.pipeline_id,
@@ -140,7 +149,9 @@ const ViewPageAnalysis = () => {
 		if (apiResponse.Status === 200) {
 			dispatch(hideLoader());
 			setEXecuted(true);
-			dispatch(showNotification("success", "Model executed successfully"));
+			jobId.current = apiResponse?.job_id
+			setExecutedModal(true)
+			dispatch(showNotification("success", "Model execution started successfully"));
 		} else {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", "Model execution failed"));
@@ -169,22 +180,54 @@ const ViewPageAnalysis = () => {
 				batch_filter: data?.data?.input_data?.batch_filter,
 				pipeline_id: data?.data?.pipeline_disp_id,
 				view_status: data?.data?.view_status,
-				view_name: data?.data?.view_status
+				view_name: data?.data?.view_name
 			};
 			dispatch(getAnalyticsViewData(viewDetails));
 			if (data?.data?.pipeline_data[0]?.variable_mapping?.length) {
 				setExectStart(true);
 			}
 			setEditFinalModelJson(data.data)
+			setFinalModelJson(data?.data?.pipeline_data[0])
 			dispatch(hideLoader());
 		} else {
 			dispatch(hideLoader());
 		}
 	}
 
+	const checkStatus = (bool) => {
+		let flag = false;
+		if (bool === 'Pending') {
+			flag = false
+		} else if (bool === 'Not Executed') {
+			flag = true
+		} else {
+			flag = true
+		}
+
+		return flag
+	}
+
+	const getResultFunc = async () => {
+		const reqBody = {
+		  pipelineid: id,
+		};
+		const apiResponse = await getResults(reqBody);
+		if (apiResponse.statuscode === 200) {
+			dispatch(hideLoader());
+			if(checkStatus(apiResponse.data.run_status)) {
+				setExecutedModal(false);
+			}
+		  setResultsData(apiResponse.data);
+		} else {
+		  dispatch(hideLoader());
+		  showNotification("error", "Unable to get results");
+		}
+	  };
+
 	useEffect(() => {
 		if (id) {
 			getPipelineList();
+			getResultFunc()
 		}
 	}, []);
 
@@ -241,13 +284,13 @@ const ViewPageAnalysis = () => {
 						</>
 
 					) : (
-							<div>
-						    <Tooltip placement="bottom" title={ViewDetails}>
-                               <Button>View details <InfoCircleOutlined /></Button>
-                            </Tooltip>
-							<Button>Share</Button>
+						<div>
+							<Tooltip placement="bottom" title={ViewDetails}>
+								<Button>View details <InfoCircleOutlined /></Button>
+							</Tooltip>
+							<Button disabled>Share</Button>
 							<Button onClick={() => onSaveClick("save")}>Save</Button>
-							<Button onClick={() => onSaveClick('saveAs')}>Save As</Button>
+							<Button disabled onClick={() => onSaveClick('saveAs')}>Save As</Button>
 							{/* <Button onClick={() => setExectStart(true)}>Execute</Button> */}
 							<Dropdown overlay={menu} trigger={["click"]} disabled={!exectStart && !editFinalJson?.pipeline_data[0]?.variable_mapping?.length}>
 								<Button>Execute</Button>
@@ -257,7 +300,8 @@ const ViewPageAnalysis = () => {
 									setIsPublish(true);
 									setApproveReject("P");
 								}}
-								disabled={selectedViewData.viewData.pipeline_status === 'AWAP' || selectedViewData.viewData.pipeline_status === 'APRD'}
+								disabled
+							// disabled={selectedViewData.viewData.pipeline_status === 'AWAP' || selectedViewData.viewData.pipeline_status === 'APRD'}
 							>
 								<CloudUploadOutlined />
 								Publish
@@ -287,17 +331,15 @@ const ViewPageAnalysis = () => {
 							tableKey={tableKey}
 							modelType={modelType}
 							encoderData={encoderData}
-                            setEncoderData={setEncoderData}
+							setEncoderData={setEncoderData}
 						/>
 					</TabPane>
-					{exectStart && <TabPane tab="Transformation" key="4">
+					{/* {exectStart && <TabPane tab="Transformation" key="4">
 						<Transformation finalModelJson={finalModelJson} editFinalJson={editFinalJson} tableKey={tableKey} />
-					</TabPane>}
-					{((executed && !exectLater) || (editFinalJson?.pipeline_data[0]?.variable_mapping?.length)) && (
-						<TabPane tab="Results" key="5">
-							<Results tablekey={tableKey} modelType={modelType} />
-						</TabPane>
-					)}
+					</TabPane>} */}
+					{resultsData?.run_status !== 'Pending' && resultsData?.run_status !== 'Not Executed' && <TabPane tab="Results" key="5">
+							<Results jobId={jobId} tablekey={tableKey} modelType={modelType} resultsData={resultsData} />
+						</TabPane>}
 				</Tabs>
 			</div>
 			<Signature
@@ -310,9 +352,9 @@ const ViewPageAnalysis = () => {
 				// version={postChartData.data && postChartData.data[0].chart_version}
 				status={approveReject}
 			/>
-			{/* <ModalComponent isModalVisible={exectStart} closable={false} centered>
-        <ModelExcecute />
-      </ModalComponent> */}
+			{executedModel && <ModalComponent isModalVisible={executedModel} closable={false} centered>
+                <ModelExcecute jobId={jobId}  getResultFunc={getResultFunc} resultsData={resultsData} results={results} />
+            </ModalComponent>}
 			<ModalComponent
 				title="Schedule Execution"
 				isModalVisible={exectLater}

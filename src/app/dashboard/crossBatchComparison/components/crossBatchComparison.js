@@ -11,7 +11,6 @@ import debounce from "lodash/debounce";
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
-import { GRAFANA_DASHBOARD } from "../../../../constants/apiBaseUrl";
 import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import { getCrossBatch } from '../../../../services/analyticsService';
 import { getGeanealogyFilter } from '../../../../services/genealogyService';
@@ -213,7 +212,7 @@ const CrossBatchComparison = () => {
 			}
 			setShowIframe(true);
 			setRandom(random + 1)
-			console.log("getressssssssss", GRAFANA_DASHBOARD + endPoint);
+
 		} catch {
 			dispatch(hideLoader());
 			dispatch(showNotification('error', error));

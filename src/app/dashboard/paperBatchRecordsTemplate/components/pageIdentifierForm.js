@@ -15,7 +15,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 /* istanbul ignore next */
 function PageIdentifierForm(props) {
-    let { pageDragValue, setPageIdFormValues, handleOnFinishFailed, parameterFormFinish, initialPageIdentifierData, matBatch } = props
+    let { pageDragValue, setPageIdFormValues, handleOnFinishFailed, parameterFormFinish, initialPageIdentifierData, matBatch, params } = props
     const dispatch = useDispatch();
     const [pageIdentifierFormValues, setPageIdentifierFormValues] = useState(initialPageIdentifierData ? initialPageIdentifierData : { users: [] });
     const [activeKey, setActiveKey] = useState(0);
@@ -171,6 +171,7 @@ function PageIdentifierForm(props) {
     return (
         <Form name="dynamic_form_nest_item"
             onValuesChange={parameterValuesChange}
+            disabled={params.fromScreen == "Workflow"}
             // onFinishFailed={handleOnFinishFailed}
             // onFinish={parameterFormFinish}
             initialValues={pageIdentifierFormValues}
@@ -193,7 +194,7 @@ function PageIdentifierForm(props) {
                                         {fields.map(({ key, name, ...restField }) => (
 
                                             // <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                                            <Panel header={pageIdentifierFormValues?.users[name]?.name ? `${pageIdentifierFormValues?.users[name]?.name}` : `Parameter ${name + 1} created`} key={`${name}`} extra={genExtra(remove, name, key, restField)}>
+                                            <Panel header={pageIdentifierFormValues?.users[name]?.name ? `${pageIdentifierFormValues?.users[name]?.name}` : `Parameter ${name + 1} created`} key={`${name}`} extra={params.fromScreen != "Workflow" ? genExtra(remove, name, key, restField) : ""}>
                                                 <div className='addParameterBlock'>
                                                     <div className='parameterAdded-block'>
                                                         <Form.Item
@@ -205,12 +206,12 @@ function PageIdentifierForm(props) {
                                                                 () => ({
                                                                     validator(_, value) {
                                                                         let flag = false
-                                                                        pageIdentifierFormValues.users.forEach((item,index)=>{
-                                                                            if(index!=name && item.name === value){
+                                                                        pageIdentifierFormValues.users.forEach((item, index) => {
+                                                                            if (index != name && item.name === value) {
                                                                                 flag = true
                                                                             }
                                                                         })
-                                                                        if(flag){
+                                                                        if (flag) {
                                                                             return Promise.reject('Page identifier cannot be same');
                                                                         }
                                                                         return Promise.resolve();
@@ -263,28 +264,30 @@ function PageIdentifierForm(props) {
                                             </Panel>
                                         ))}
                                     </Collapse>
-                                    <Form.Item>
-                                        <div
-                                            className='firstParameter-para'
-                                            onClick={() => {
-                                                if (parameterCount !== 0) {
-                                                    add()
+                                    {params.fromScreen != "Workflow" &&
+                                        <Form.Item>
+                                            <div
+                                                className='firstParameter-para'
+                                                onClick={() => {
+                                                    if (parameterCount !== 0) {
+                                                        add()
 
-                                                } else {
-                                                    add()
-                                                }
-                                            }}
-                                            type="primary"
-                                            htmltype="submit"
-                                        >
-                                            <p>
-                                                Add Page Identifier
-                                                {/* {paramaterAdded
+                                                    } else {
+                                                        add()
+                                                    }
+                                                }}
+                                                type="primary"
+                                                htmltype="submit"
+                                            >
+                                                <p>
+                                                    Add Page Identifier
+                                                    {/* {paramaterAdded
                                                     ? 'Add another paramater'
                                                     : 'Add your first Parameter'} */}
-                                            </p>
-                                        </div>
-                                    </Form.Item>
+                                                </p>
+                                            </div>
+                                        </Form.Item>
+                                    }
                                 </>
                             )}
                         </Form.List>

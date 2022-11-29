@@ -143,10 +143,10 @@ export default function TabContent() {
                         </div>
                         <div className="black-div" id="projects">
                             <p className="black_text">
-                                Content-type: &nbsp;&nbsp;&nbsp;&nbsp; application<span className="slash">/</span>json
-                            </p>
-                            <p className="black_text">
-                                Accept-type: &nbsp;&nbsp;&nbsp;&nbsp; application<span className="slash">/</span>json
+                                <br />
+                                Content-type: &nbsp;&nbsp;&nbsp; application<span className="slash">/</span>json
+                                <br />
+                                Accept-type: &nbsp;&nbsp;&nbsp; application<span className="slash">/</span>json
                             </p>
                         </div>
                         <div className="parent_div" id="Resources">
@@ -161,8 +161,9 @@ export default function TabContent() {
                             <p className="content">Most of the endpoints accept JSON as input and return JSON responses. This means that you must usually add the following headers to your request:</p>
 
                             <div className="black-div2" id="projects">
-                                <p className="black_text" style={{ marginTop: '30px' }}>
-                                    /mdhgenealogy/v1/get-genealogy
+                                <p className="black_text" >
+                                    <br />
+                                    <span className="slash">/</span>mdhgenealogy<span className="slash">/</span>v1<span className="slash">/</span>get-genealogy
                                 </p>
                             </div>
                         </div>

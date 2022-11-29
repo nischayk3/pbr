@@ -56,7 +56,7 @@ const DesignCharts = lazy(() =>
 	import("./reportDesigner/components/reportDesignerNew")
 );
 const UserTrail = lazy(() => import("./userTrail"));
-const Faq = lazy(() => import("./faq"));
+const FaqMain = lazy(() => import("./faq"));
 const Profile = lazy(() => import("./profile"));
 const CrossBatchComparison = lazy(() => import("./crossBatchComparison"));
 const DataScienceStudio = lazy(() => import("./DataScienceStudio"));
@@ -82,7 +82,7 @@ const Dashboard = () => {
 	// }, [history]);
 
 	useEffect(() => {
-		if (JSON.parse(localStorage.getItem('login_details')) == null && !window.location.href.includes('user/login') && !window.location.href.includes('/redirect')) {
+		if (JSON.parse(sessionStorage.getItem('login_details')) == null && !window.location.href.includes('user/login') && !window.location.href.includes('/redirect')) {
 			dispatch(showNotification('error', 'Please login first to proceed'))
 			setTimeout(() => {
 				history.push('/user/login');
@@ -318,7 +318,7 @@ const Dashboard = () => {
 									<RedirectSign />
 								</Route>
 								<Route key="faq" path={`${match.url}/faq`}>
-									<Faq />
+									<FaqMain />
 								</Route>
 
 								<Route

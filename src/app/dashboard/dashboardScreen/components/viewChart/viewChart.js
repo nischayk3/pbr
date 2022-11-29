@@ -1,170 +1,38 @@
-import React, {
-	useState,
-	useEffect,
-	useRef,
-	forwardRef,
-	useImperativeHandle,
-} from 'react';
-import { useDispatch } from 'react-redux';
 import {
-	Row,
-	Col,
+	CheckCircleOutlined, CloseOutlined, EditOutlined, PlusOutlined, UndoOutlined
+} from '@ant-design/icons';
+import {
 	Button,
-	Card,
-	Select,
-	Switch,
-	Slider,
-	DatePicker,
-	Typography,
-	message,
+	Card, Col, DatePicker, Row, Select, Slider, Switch
 } from 'antd';
-import SelectField from '../../../../../components/SelectField/SelectField';
-import InputField from '../../../../../components/InputField/InputField';
-import { getChartPlotData } from '../../../../../services/workSpaceServices';
-import ChartFilter from '../chartFilter/chartFilter';
+import moment from 'moment';
+import queryString from "query-string";
+import React, {
+	forwardRef, useEffect, useImperativeHandle, useState
+} from 'react';
+import Plot from 'react-plotly.js';
+import { useDispatch } from 'react-redux';
+import { useLocation } from "react-router";
+import {
+	hideLoader, showLoader, showNotification
+} from '../../../../../duck/actions/commonActions';
 import { getSiteId } from '../../../../../services/chartPersonalizationService';
 import { getDashboard } from '../../../../../services/dashboardServices';
-import {
-	showLoader,
-	hideLoader,
-	showNotification,
-} from '../../../../../duck/actions/commonActions';
-import Plot from 'react-plotly.js';
+import { getChartPlotData } from '../../../../../services/workSpaceServices';
+import ChartFilter from '../chartFilter/chartFilter';
 import dummy from './dummy.json';
-import {
-	SyncOutlined,
-	PlusOutlined,
-	EditOutlined,
-	CloseOutlined,
-	CheckCircleOutlined,
-	UndoOutlined,
-} from '@ant-design/icons';
-import moment from 'moment';
 import './styles.scss';
-import { useLocation } from "react-router";
-import queryString from "query-string";
-
-const dash_info = {
-	dashboard_id: 'dashboard1', // text, generated
-	dashboard_name: 'Dashboard Test',
-	dashboard_descr: 'Test Dashboard Object', // text, chart display name
-	dashboard_description: 'Test Dashboard Object', // text, chart detailed description
-	dashboard_version: 1, // integer
-	dashboard_status: 0, // integer, {0: unapproved, 1: pending, 2: approved}
-	data_filter: {
-		date_range: '2007-03-01T13:00:00Z/2008-05-11T15:30:00Z', // ISO 8601 format <start>/<end> time interval
-		unapproved_data: 1, // integer, {0: False, 1: True}
-		site: '', // text
-	},
-	dynamic_ranges: [
-		{
-			function: 'temperature',
-			min: 20,
-			max: 40,
-			lower: 25,
-			upper: 35,
-		},
-		{
-			batches: [],
-			selected: [],
-		},
-	],
-	panels: [
-		// {
-		//     "id": 1, // system incremental generated id
-		//     "position": {
-		//         "h": 1, // panel height default 1 unit
-		//         "w": 2, // panel width default 2 units
-		//         "x": 0, // panel horizontal position 0-indexed left to right
-		//         "y": 0  // panel vertical position 0-indexed top to bottom
-		//     },
-		//     "source_type": "chart", // panel source type current: {chart}; future: {6.0 analysis charts, grafana}
-		//     "source_id": "chart1",
-		//     "chart_id": "C192",
-		//     "chart_name": "Chart1",
-		//     // corresponding id for source
-		//     "data_filter": {
-		//         "date_range": "2007-03-01T13:00:00Z/2008-05-11T15:30:00Z", // ISO 8601 format <start>/<end> time interval
-		//         "unapproved_data": 1, // integer, {0: False, 1: True}
-		//         "site": "1255" // text
-		//     }
-		// },
-		{
-			id: 2, // system incremental generated id
-			position: {
-				h: 1, // panel height default 1 unit
-				w: 2, // panel width default 2 units
-				x: 1, // panel horizontal position 0-indexed left to right
-				y: 0, // panel vertical position 0-indexed top to bottom
-			},
-			source_type: 'chart', // panel source type current: {chart}; future: {6.0 analysis charts, grafana}
-			source_id: 'chart2',
-			chart_id: 'C193',
-			chart_name: 'Chart2', // corresponding id for source
-			data_filter: {
-				date_range: '2007-03-01T13:00:00Z/2008-05-11T15:30:00Z', // ISO 8601 format <start>/<end> time interval
-				unapproved_data: 0, // integer, {0: False, 1: True}
-				site: '1234', // text
-			},
-		},
-		{
-			id: 3, // system incremental generated id
-			position: {
-				h: 1, // panel height default 1 unit
-				w: 2, // panel width default 2 units
-				x: 0, // panel horizontal position 0-indexed left to right
-				y: 1, // panel vertical position 0-indexed top to bottom
-			},
-			source_type: 'chart', // panel source type current: {chart}; future: {6.0 analysis charts, grafana}
-			source_id: 'chart3',
-			chart_id: 'C189',
-			chart_name: 'Chart3', // corresponding id for source
-			data_filter: {
-				date_range: '2007-03-01T13:00:00Z/2008-05-11T15:30:00Z', // ISO 8601 format <start>/<end> time interval
-				unapproved_data: 1, // integer, {0: False, 1: True}
-				site: '1255', // text
-			},
-		},
-		{
-			id: 4, // system incremental generated id
-			position: {
-				h: 1, // panel height default 1 unit
-				w: 2, // panel width default 2 units
-				x: 1, // panel horizontal position 0-indexed left to right
-				y: 1, // panel vertical position 0-indexed top to bottom
-			},
-			source_type: 'chart', // panel source type current: {chart}; future: {6.0 analysis charts, grafana}
-			source_id: 'chart4',
-			chart_id: 'C193',
-			chart_name: 'Chart4', // corresponding id for source
-			data_filter: {
-				date_range: '2007-03-01T13:00:00Z/2008-05-11T15:30:00Z', // ISO 8601 format <start>/<end> time interval
-				unapproved_data: 0, // integer, {0: False, 1: True}
-				site: '1234', // text
-			},
-		},
-	],
-};
 
 const ViewChart = (props, ref) => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const params = queryString.parse(location.search);
 	const [dashboardInfo, setDashboardInfo] = useState({});
-	const [visible, setVisible] = useState(false);
-	const [addNewChartFilter, setAddNewChartFilter] = useState(false);
 	const [siteList, setSiteList] = useState([]);
 	const [tempPanels, setTempPanels] = useState([]);
-	const [pointColors, setPointColors] = useState([]);
-	const [selectedBatches, setSelectedBatches] = useState([]);
-	const [scatterData, setScatterData] = useState([]);
 	const [tempCard, setTempCard] = useState({});
 	const [isEditable, setIsEditable] = useState(null);
-	const [startTimeIso, setstartTimeIso] = useState('');
-	const [endTimeIso, setendTimeIso] = useState('');
-	const [startTime, setStartTime] = useState('');
-	const [endTime, setEndTime] = useState('');
-	const [selectedDateRange, setSelectedDateRange] = useState('');
+
 	useImperativeHandle(
 		ref,
 		() => ({
@@ -174,28 +42,16 @@ const ViewChart = (props, ref) => {
 		}),
 		[dashboardInfo, tempPanels]
 	);
-	const range = [
-		{ key: 'Last 5 minutes', value: 5 },
-		{ key: 'Last 10 minutes', value: 10 },
-		{ key: 'Last 15 minutes', value: 15 },
-		{ key: 'Last 20 minutes', value: 20 },
-		{ key: 'Last 25 minutes', value: 25 },
-		{ key: 'Last 30 minutes', value: 30 },
-	];
+	// const range = [
+	// 	{ key: 'Last 5 minutes', value: 5 },
+	// 	{ key: 'Last 10 minutes', value: 10 },
+	// 	{ key: 'Last 15 minutes', value: 15 },
+	// 	{ key: 'Last 20 minutes', value: 20 },
+	// 	{ key: 'Last 25 minutes', value: 25 },
+	// 	{ key: 'Last 30 minutes', value: 30 },
+	// ];
 
 	const typeOfCharts = ['Analysis', 'Charts', 'Grafana'];
-	const [filterObject, setFilterObject] = useState({
-		site: '',
-		unapprovedData: '',
-		explorationControl: '',
-		startTime: '',
-		endTime: '',
-	});
-	const options = range.map((item, i) => (
-		<Option key={i} value={item.value}>
-			{item.key}
-		</Option>
-	));
 
 	useEffect(() => {
 		fetchDataFromUrl();
@@ -208,7 +64,7 @@ const ViewChart = (props, ref) => {
 	}, [props.dashboardName]);
 
 	const getChartData = (chartId, payload = {}) => {
-		let login_response = JSON.parse(localStorage.getItem('login_details'));
+		let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 		let req = { chartId: chartId, ...payload };
 		let headers = {
 			'content-type': 'application/json',
@@ -265,17 +121,8 @@ const ViewChart = (props, ref) => {
 			try {
 				dispatch(showLoader());
 				const dashboardRes = await getDashboard(req);
-
 				dashboardRes.data[0].version = props.dashboardVersion;
-				//setDashboardInfo(dashboardRes.data);
-				//setTempPanels(dash_info.panels);
 				dashboardRes.data[0].panels.map(async (el, i) => {
-					// let data= props.rawTableData.find(x=>x.chart_disp_id==el.chart_id);
-					// console.log(data);
-					// if(data?.chart_info[0].view_id){
-					//     let resp= await getSiteIdHandler(data?.chart_info[0].view_id);
-					//     dash_info.panels[i].data_filter.site_list=resp;
-					// }
 					let res = await getChartData(el.chart_id);
 					let chartLayout = {
 						xaxis: res.data[0]?.layout.xaxis,
@@ -291,10 +138,9 @@ const ViewChart = (props, ref) => {
 							pad: 4,
 						},
 					};
-					//dash_info.panels[i] = Object.assign({}, res, { chartLayout: chartLayout }, dash_info.panels[i]);
+
 					el.chartLayout = chartLayout;
 					el.data = res.data;
-					//el.data[0].data[0].marker.color=[...el.data[0].data[0].text].fill("green")
 					el.data[0].data = el.data[0].data.map((item, index) => {
 						if (item.mode === 'markers') {
 							item.marker.defaultColor = item.marker.color;
@@ -302,10 +148,7 @@ const ViewChart = (props, ref) => {
 						}
 						return item;
 					});
-					//setTempPanels(dash_info.panels);
 				});
-				//setTempPanels(dash_info.panels);
-				//setDashboardInfo(dash_info);
 				setTempPanels(dashboardRes.data[0].panels);
 				setDashboardInfo(dashboardRes.data[0]);
 				dispatch(hideLoader());
@@ -318,13 +161,12 @@ const ViewChart = (props, ref) => {
 			newDummy.dashboard_name = props.dashboardName;
 			newDummy.panels[0].chart_id = props.viewData.chartDispId;
 			newDummy.panels[0].chart_name = props.viewData.chartName;
-			//setDashboardInfo(newDummy);
-			//setTempPanels(newDummy.panels);
+
 			try {
 				dispatch(showLoader());
 				let resp = await getSiteIdHandler();
 				newDummy.panels[0].data_filter.site_list = resp;
-				//newDummy.panels.map(async (el, i) => {
+
 				let res = await getChartData(newDummy.panels[0].chart_id);
 				let chartLayout = {
 					xaxis: res.data[0]?.layout.xaxis,
@@ -335,7 +177,6 @@ const ViewChart = (props, ref) => {
 					margin: {
 						l: 60,
 						r: 50,
-						//b: 75,
 						t: 40,
 						pad: 4,
 					},
@@ -347,24 +188,19 @@ const ViewChart = (props, ref) => {
 					{ chartLayout: chartLayout },
 					newDummy.panels[0]
 				);
-
-				//})
 				setTempPanels(newDummy.panels);
 				setDashboardInfo(newDummy);
 				dispatch(hideLoader());
-			} catch (error) {/* istanbul ignore next */
+			} catch (error) {
+				/* istanbul ignore next */
 				dispatch(hideLoader());
 				dispatch(showNotification('error', 'Unable to fetch data'));
 			}
 		}
 	};
 
-	// const onChangeCheckbox = checked => {
-	// 	const isChecked = checked;
-	// };
 
 	const onChangeInnerCheckbox = (checked, index) => {
-
 		const isChecked = checked ? 1 : 0;
 		let arr = [...tempPanels];
 		arr[index].data_filter.unapproved_data = isChecked;
@@ -372,19 +208,14 @@ const ViewChart = (props, ref) => {
 		arr[index].data[0].unapprove_data = isChecked == 1 ? true : false
 		setTempPanels(arr);
 	};
-	const onChangeTempCheckbox = checked => {
 
+	const onChangeTempCheckbox = checked => {
 		const isChecked = checked ? 1 : 0;
 		let obj = { ...tempCard };
 		obj.data_filter.unapproved_data = isChecked;
 		setTempCard(obj);
 	};
-	// const showModal = () => {
-	// 	setVisible(true);
-	// };
-	// const handleDateClick = () => {
-	// 	showModal();
-	// };
+
 	const onChangeStart = (date, dateString) => {
 		if (date) {
 			let the_date = moment(date).toISOString()
@@ -461,7 +292,6 @@ const ViewChart = (props, ref) => {
 		setTempPanels(arr);
 	};
 	const onInnerTempStart = (date, dateString) => {
-
 		let obj = { ...tempCard };
 		if (obj.data_filter.date_range == '') {
 			obj.data_filter.date_range = `${date ? moment(date).toISOString() : ''}/`;
@@ -469,11 +299,9 @@ const ViewChart = (props, ref) => {
 			obj.data_filter.date_range = `${date ? moment(date).toISOString() : ''}/${obj.data_filter.date_range.split('/')[1]
 				}`;
 		}
-
 		setTempCard(obj);
 	};
 	const onInnerTempEnd = (date, dateString) => {
-
 		let obj = { ...tempCard };
 		if (obj.data_filter.date_range == '') {
 			obj.data_filter.date_range = `/${date ? moment(date).toISOString() : ''}`;
@@ -481,29 +309,10 @@ const ViewChart = (props, ref) => {
 			obj.data_filter.date_range = `${obj.data_filter.date_range.split('/')[0]
 				}/${date ? moment(date).toISOString() : ''}`;
 		}
-
 		setTempCard(obj);
 	};
-	// const onClickTimeRange = () => {
-	// 	setSelectedDateRange(`${startTimeIso}/${endTimeIso}`);
-	// 	setVisible(false);
-	// };
-	// const generateISO = val => {
-	// 	let endDate = new Date();
-	// 	let startdate = new Date();
-	// 	let durationInMinutes = val;
-	// 	startdate.setMinutes(endDate.getMinutes() - durationInMinutes);
-	// 	let isoVar = startdate.toISOString().replace(/[^\d]/g, '').slice(0, -9);
-	// 	let format = moment.duration(isoVar).toISOString();
-
-	// 	let dateFormate = moment(isoVar).format('YYYY-MM-DD');
-	// 	// setselectedPeriodDate(dateFormate);
-	// 	setSelectedDateRange(dateFormate);
-	// 	setVisible(false);
-	// };
 
 	const handleGlobalDropdownChange = (value, text) => {
-
 		let obj = JSON.parse(JSON.stringify(dashboardInfo));
 		switch (text) {
 			case 'Site':
@@ -514,37 +323,16 @@ const ViewChart = (props, ref) => {
 				obj.data_filter.unapproved_data = value ? 1 : 0;
 				setDashboardInfo(obj);
 				break;
-			// case 'Exploration Controls': obj.explorationControl = value;
-			// setDashboardInfo(obj);
-			//     break;
 		}
 
-		setFilterObject(obj);
-	};
-	const layout = {
-		xaxis: {},
-		yaxis: {},
-		autosize: false,
-		width: 550,
-		height: 250,
-		margin: {
-			l: 50,
-			r: 50,
-			b: 75,
-			t: 30,
-			pad: 4,
-		},
-		title: {
-			text: '',
-		},
 	};
 
 	const onTypeChartsChange = (e, index) => {
-
 		let arr = [...tempPanels];
 		tempPanels[index].source_type = e;
 		setTempPanels(arr);
 	};
+
 	const onTempChartsChange = e => {
 		let obj = { ...tempCard };
 		obj.source_type = e;
@@ -637,20 +425,6 @@ const ViewChart = (props, ref) => {
 			chartLayout['height'] = 250
 			chartLayout['width'] = 580
 			chartLayout['autosize'] = false
-			// {
-			// 	xaxis: res.data[0]?.layout.xaxis,
-			// 	yaxis: res.data[0]?.layout.yaxis,
-			// 	autosize: false,
-			// 	width: 580,
-			// 	height: 250,
-			// 	margin: {
-			// 		l: 60,
-			// 		r: 50,
-			// 		//b: 75,
-			// 		t: 40,
-			// 		pad: 4,
-			// 	},
-			// };
 			obj = Object.assign({}, obj, res, { chartLayout: chartLayout });
 			setTempCard(obj);
 			dispatch(hideLoader());
@@ -667,7 +441,6 @@ const ViewChart = (props, ref) => {
 		arr[index].chart_name = data.chartName;
 		arr[index].view_id = data.viewId;
 		let res = await getSiteIdHandler(data.viewId);
-
 		arr[index].data_filter.site_list = res;
 		setTempPanels(arr);
 	};
@@ -678,7 +451,6 @@ const ViewChart = (props, ref) => {
 		obj.chart_name = data.chartName;
 		obj.view_id = data.viewId;
 		let res = await getSiteIdHandler(data.viewId);
-
 		obj.data_filter.site_list = res;
 		setTempCard(obj);
 	};
@@ -742,10 +514,9 @@ const ViewChart = (props, ref) => {
 							pad: 4,
 						},
 					};
-					//dash_info.panels[i] = Object.assign({}, res, { chartLayout: chartLayout }, dash_info.panels[i]);
 					el.chartLayout = chartLayout;
 					el.data = res.data;
-					//setTempPanels(dash_info.panels);
+
 					el.data[0].data = el.data[0].data.map((item, index) => {
 						if (item.mode === 'markers') {
 							item.marker.defaultColor = item.marker.color;
@@ -763,28 +534,6 @@ const ViewChart = (props, ref) => {
 			dispatch(showNotification('error', 'Unable to fetch data'));
 		}
 	};
-
-	// const handleDateChangeGlobal = (e, date) => {
-	// 	let obj = { ...dashboardInfo };
-	// 	obj.data_filter.date_range = `${date.length > 0 ? moment(date[0]).toISOString() : ''
-	// 		}/${date.length > 0 ? moment(date[1]).toISOString() : ''}`;
-
-	// 	setDashboardInfo(obj);
-	// };
-
-	// const handleDateChangeInner = (e, date, index) => {
-	// 	let arr = [...tempPanels];
-	// 	arr[index].data_filter.date_range = `${date ? moment(date[0]).toISOString() : ''
-	// 		}/${date ? moment(date[1]).toISOString() : ''}`;
-	// 	setTempPanels(arr);
-	// };
-
-	// const handleDateChangeTemp = (e, date) => {
-	// 	let obj = { ...tempCard };
-	// 	obj.data_filter.date_range = `${date ? moment(date[0]).toISOString() : ''
-	// 		}/${date ? moment(date[1]).toISOString() : ''}`;
-	// 	setTempCard(obj);
-	// };
 
 	/* istanbul ignore next */
 	const onPointSelected = data => {
@@ -813,17 +562,13 @@ const ViewChart = (props, ref) => {
 	};
 
 	const onResetFilters = index => {
-
 		let arr = [...tempPanels];
 		arr[index].data_filter.date_range = '';
 		arr[index].data_filter.site = '';
 		arr[index].data_filter.unapproved_data = false;
-
 		setTempPanels(arr);
 	};
 
-
-	//const { RangePicker } = DatePicker;
 	return (
 		<div>
 			<Card
@@ -835,9 +580,6 @@ const ViewChart = (props, ref) => {
 				}>
 				<div className='global-filters'>
 					<div className='dashboard-filters'>
-						{/* <div style={{ fontSize: '20px', paddingTop: '4px' }}>
-							<SyncOutlined />
-						</div> */}
 						<div>
 							<Select
 								style={{ width: 120 }}
@@ -870,100 +612,6 @@ const ViewChart = (props, ref) => {
 						</div>
 					</div>
 					<div className='dashboard-filters'>
-						{/* <InputField
-                            placeholder='Select Time Range'
-                            onChangeClick={(e) => handleDateClick(e)}
-
-                        /> */}
-						{/* {
-                            visible && (
-                                <div className='dashboard-timerange'>
-                                    <h4>Absolute Time Range</h4>
-                                    <div className='grid-2-columns'>
-                                        <div>
-                                            <Text>From</Text>
-                                            <br />
-                                            <DatePicker
-                                                onChange={onChangeStart}
-                                                style={{ marginTop: '10px', marginBottom: '10px' }}
-                                            />
-                                            <br />
-                                            <Text style={{ marginTop: '10px' }}>To</Text>
-                                            <br />
-                                            <DatePicker onChange={onChangeEnd} style={{ marginTop: '8px' }} />
-                                            <br />
-                                            <Button
-                                                type='primary'
-                                                className='custom-secondary-btn'
-                                                style={{ marginTop: '20px' }}
-                                                onClick={onClickTimeRange}
-                                            >
-                                                Apply Time Range
-                                            </Button>
-                                            <p style={{ marginTop: '10px' }}>
-                                                <b>Recently Used time changes</b>
-                                            </p>
-                                            <p>2020-03-16T06:00:00Z - 2020-03-16T06:00:00Z </p>
-                                            <p>2020-03-16T06:00:00Z - 2020-03-16T06:00:00Z </p>
-                                            <p>2020-03-16T06:00:00Z - 2020-03-16T06:00:00Z </p>
-                                            <p>2020-03-16T06:00:00Z - 2020-03-16T06:00:00Z </p>
-                                        </div>
-                                        <div>
-                                            <Search placeholder='Search quick Ranges' style={{ width: 200 }} />
-                                            <Button
-                                                type='link'
-                                                onClick={() => generateISO(5)}
-                                                style={{ marginTop: '10px' }}
-                                            >
-                                                Last 5 minutes
-                                            </Button>
-                                            <br />
-                                            <Button
-                                                type='link'
-                                                onClick={() => generateISO(15)}
-                                                style={{ marginTop: '10px' }}
-                                            >
-                                                Last 15 minutes
-                                            </Button>
-
-                                            <br />
-                                            <Button
-                                                type='link'
-                                                onClick={() => generateISO(25)}
-                                                style={{ marginTop: '10px' }}
-                                            >
-                                                Last 25 minutes
-                                            </Button>
-                                            <br />
-                                            <Button
-                                                type='link'
-                                                onClick={() => generateISO(35)}
-                                                style={{ marginTop: '10px' }}
-                                            >
-                                                Last 35 minutes
-                                            </Button>
-                                            <br />
-                                            <Button
-                                                type='link'
-                                                onClick={() => generateISO(45)}
-                                                style={{ marginTop: '10px' }}
-                                            >
-                                                Last 45 minutes
-                                            </Button>
-                                            <br />
-                                            <Button
-                                                type='link'
-                                                onClick={() => generateISO(60)}
-                                                style={{ marginTop: '10px' }}
-                                            >
-                                                Last 60 minutes
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            )} */}
-
 						<DatePicker
 							style={{ height: '34px' }}
 							className='global-filters-params'
@@ -995,18 +643,6 @@ const ViewChart = (props, ref) => {
 							style={{ height: '34px' }}
 							allowClear
 						/>
-
-						{/* <RangePicker onChange={(e,value)=>handleDateChangeGlobal(e,value)}
-                             value={
-                                
-                                  [
-                                    dashboardInfo?.data_filter?.date_range?.split("/")[0] ?moment(dashboardInfo?.data_filter?.date_range?.split("/")[0], "YYYY-MM-DD"):'',
-                                    dashboardInfo?.data_filter?.date_range?.split("/")[1] ?moment(dashboardInfo?.data_filter?.date_range?.split("/")[1], "YYYY-MM-DD"):'',
-                                    ]
-                                 
-                              }
-                        
-                        /> */}
 
 						<Select
 							placeholder='Exploration controls'
@@ -1046,13 +682,10 @@ const ViewChart = (props, ref) => {
 						let layout_margin = { 'l': 60, 'r': 50, 't': 40, 'pad': 4 }
 						let layout_height = el?.chartLayout && el.chartLayout.height
 						let layout_width = el?.chartLayout && el.chartLayout.width
-
-
 						let layout_data = el?.data[0].layout && el?.data[0]?.layout
 						layout_data['margin'] = layout_margin
 						layout_data['height'] = layout_height
 						layout_data['width'] = layout_width
-
 
 						return (
 							<Col
@@ -1121,7 +754,7 @@ const ViewChart = (props, ref) => {
 												) : (
 													<>
 														<span
-															disabled={params['share']}
+															className={params['share'] ? "disable-event" : ""}
 															style={{
 																marginLeft: '20px',
 																marginRight: '20px',
@@ -1129,7 +762,7 @@ const ViewChart = (props, ref) => {
 															}}>
 															Edit{' '}
 															<EditOutlined
-																disabled={params['share']}
+																className={params['share'] ? "disable-event" : ""}
 																style={{ color: '#486BC9' }}
 																onClick={() => {
 																	let panels = [...tempPanels];
@@ -1154,6 +787,7 @@ const ViewChart = (props, ref) => {
 														</span>
 														<span style={{ marginLeft: '10px' }}>
 															<CloseOutlined
+																className={params['share'] ? "disable-event" : ""}
 																style={{ color: '#262626', fontSize: '14px' }}
 																onClick={() => removeCard(index)}
 															/>
@@ -1162,16 +796,6 @@ const ViewChart = (props, ref) => {
 												)}
 											</div>
 										</div>
-
-										{/* {isEditable && (
-                                            <div >
-                                                <div>< UndoOutlined style={{ color: '#486BC9' }} /></div>
-                                                <div>
-                                                <span style={{ marginLeft: '20px', marginRight: '20px' }}>Apply <CheckCircleOutlined style={{ color: '#486BC9' }} /></span>
-                                                <span><CloseOutlined style={{ color: '#262626' }} /></span>
-                                                </div>
-                                            </div>
-                                        )} */}
 									</div>
 									<div>
 										{isEditable == index && (
@@ -1216,15 +840,9 @@ const ViewChart = (props, ref) => {
 											}}>
 											<Plot
 												data={el.data && el?.data[0]?.data}
-												// layout={el.chartLayout && el?.chartLayout}
 												layout={layout_data}
 												onSelected={data => onPointSelected(data)}
 											/>
-											{/* <Plot
-                                                data={tempPanels[index]?.data && tempPanels[index]?.data[0]?.data}
-                                                layout={tempPanels[index] && tempPanels[index]?.chartLayout}
-
-                                            /> */}
 										</div>
 									</div>
 								</div>
@@ -1234,8 +852,8 @@ const ViewChart = (props, ref) => {
 					<Col className='gutter-row' span={12} style={{ padding: '1px 22px' }}>
 						<div className='newCard'>
 							{Object.keys(tempCard).length == 0 ? (
-								<div className='before-new-card' onClick={() => addNewCard()}>
-									<PlusOutlined />
+								<div className={params['share'] ? "disable-event before-new-card" : "before-new-card"} onClick={() => addNewCard()}  >
+									<PlusOutlined className={params['share'] ? "disable-event" : ""} />
 									<p>Add new chart</p>
 								</div>
 							) : (
@@ -1289,7 +907,6 @@ const ViewChart = (props, ref) => {
 												<Plot
 													data={tempCard?.data && tempCard?.data[0]?.data}
 													layout={tempCard && tempCard?.chartLayout}
-												// layout={temp_layout_data}
 												/>
 											</div>
 										)}

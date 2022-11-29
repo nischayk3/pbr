@@ -6,7 +6,8 @@ const { Panel } = Collapse;
 const { Option } = Select;
 /* istanbul ignore next */
 function DynamicTableForm(props) {
-    let { handleSideState, sideTableData, setTableActiveKey, setFormTableData, initialSideTableData, handleOnFinishFailed, parameterFormFinish, pageIdDropdownValues, initialPageIdentifierData,pageNumber } = props
+    let { handleSideState, sideTableData, setTableActiveKey, setFormTableData, initialSideTableData,
+        handleOnFinishFailed, parameterFormFinish, pageIdDropdownValues, initialPageIdentifierData, pageNumber, params } = props
     const [tableCount, setTableCount] = useState(0);
     const [tableData, setTableData] = useState([]);
     const [activeKey, setActiveKey] = useState(0);
@@ -31,7 +32,7 @@ function DynamicTableForm(props) {
     useEffect(() => {
         if (activeKey != undefined && checkNested(sideTableData["colPanelValue"], "start")) {
             let arr = tableData
-            arr[activeKey] = { ...arr[activeKey], tableData: sideTableData,page_no:pageNumber }
+            arr[activeKey] = { ...arr[activeKey], tableData: sideTableData, page_no: pageNumber }
             setTableData(arr)
             setFormTableData(arr)
         }
@@ -62,6 +63,7 @@ function DynamicTableForm(props) {
             onFinishFailed={handleOnFinishFailed}
             onFinish={parameterFormFinish}
             initialValues={initialSideTableData}
+            disabled={params.fromScreen == "Workflow"}
             layout='vertical'
             id="myForm"
             autoComplete="off">
@@ -80,7 +82,7 @@ function DynamicTableForm(props) {
                                         {fields.map(({ key, name, ...restField }) => (
 
                                             // <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                                            <Panel header={tableData[name]?.name ? `${tableData[name]?.name}` : `Parameter ${name + 1} created`} key={`${name}`} extra={genExtra(remove, name, key, restField)}>
+                                            <Panel header={tableData[name]?.name ? `${tableData[name]?.name}` : `Parameter ${name + 1} created`} key={`${name}`} extra={params.fromScreen != "Workflow" ? genExtra(remove, name, key, restField) : ""}>
                                                 <div className='addParameterBlock'>
                                                     <div className='parameterAdded-block'>
                                                         {/* <Form.Item
@@ -111,7 +113,7 @@ function DynamicTableForm(props) {
                                                                         return Promise.reject('Table Parameter Name cannot be same');
                                                                     }
                                                                     return Promise.resolve();
-                                                                   
+
                                                                 },
                                                             })]}
                                                         >
@@ -145,31 +147,33 @@ function DynamicTableForm(props) {
                                             </Panel>
                                         ))}
                                     </Collapse>
-                                    <Form.Item>
-                                        <div
-                                            className='firstParameter-para'
-                                            onClick={() => {
-                                                add()
-                                                if (tableCount !== 0) {
-                                                    handleSideState()
-                                                } else {
-                                                    setTableCount(tableCount + 1)
-                                                    handleSideState()
-                                                }
+                                    {params.fromScreen != "Workflow" &&
+                                        <Form.Item>
+                                            <div
+                                                className='firstParameter-para'
+                                                onClick={() => {
+                                                    add()
+                                                    if (tableCount !== 0) {
+                                                        handleSideState()
+                                                    } else {
+                                                        setTableCount(tableCount + 1)
+                                                        handleSideState()
+                                                    }
 
-                                            }}
-                                            type="primary"
-                                            htmltype="submit"
-                                        >
-                                            <p>
-                                                Add Table Paramater
-                                                {/* {paramaterAdded
+                                                }}
+                                                type="primary"
+                                                htmltype="submit"
+                                            >
+                                                <p>
+                                                    Add Table Paramater
+                                                    {/* {paramaterAdded
                                                     ? 'Add another paramater'
                                                     : 'Add your first Parameter'} */}
-                                            </p>
+                                                </p>
 
-                                        </div>
-                                    </Form.Item>
+                                            </div>
+                                        </Form.Item>
+                                    }
                                 </>
                             )}
                         </Form.List>

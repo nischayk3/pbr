@@ -1,17 +1,11 @@
 import {
 	BATCH_COVERAGE_DATA,
-	BATCH_DATA,
-	FUNCTION_MAP,
-	FUNCTION_NAME,
+	BATCH_DATA, FUNCTION_NAME,
 	IS_LOAD_VIEW,
-	IS_NEW_VIEW,
-	IS_TARGET_VAR,
-	LOAD_VIEW_RESPONSE,
+	IS_NEW_VIEW, LOAD_VIEW_RESPONSE,
 	MATH_EDITOR,
 	MATH_VALUE,
-	NEW_COLUMN,
-	PARAMETER_MAP,
-	RESET_VIEW,
+	NEW_COLUMN, RESET_VIEW,
 	SAVE_AS_FUNCTIONS,
 	SAVE_FUNCTIONS,
 	SELECTED_PARAM_DATA,
@@ -21,9 +15,7 @@ import {
 	TOTAL_FILE_BATCHES,
 	TOTAL_MOL_BATCHES,
 	VIEW_FUNCTION_MAP,
-	VIEW_FUNCTION_NAME,
-	VIEW_PARAM_DATA,
-	VIEW_PARAM_MAP
+	VIEW_FUNCTION_NAME, VIEW_PARAM_MAP
 } from '../../constants/actionTypes';
 
 export const saveViewFunction = payload => ({
@@ -43,21 +35,6 @@ export const sendFunDetails = payload => ({
 
 export const sendFunctionName = payload => ({
 	type: FUNCTION_NAME,
-	payload
-});
-
-export const sendFunctionJson = payload => ({
-	type: FUNCTION_MAP,
-	payload
-});
-
-export const sendParameterJson = payload => ({
-	type: PARAMETER_MAP,
-	payload
-});
-
-export const sendViewParamData = payload => ({
-	type: VIEW_PARAM_DATA,
 	payload
 });
 
@@ -142,10 +119,5 @@ export const sendTotalMolBatches = payload => ({
 
 export const sendTotalFileBatches = payload => ({
 	type: TOTAL_FILE_BATCHES,
-	payload
-})
-
-export const onClickTarget = payload => ({
-	type: IS_TARGET_VAR,
 	payload
 })

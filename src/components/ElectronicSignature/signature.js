@@ -20,11 +20,12 @@ import "./styles.scss";
 
 const { Option } = Select;
 
-function Signature(props) {
+const Signature = (props) => {
+	console.log("propssssss", props);
 	const location = useLocation();
 	const params = queryString.parse(location.search);
 	// eslint-disable-next-line react/prop-types
-	var { isPublish, handleClose } = props;
+	const { isPublish, handleClose } = props;
 	const [password, setPassword] = useState("");
 	const [username, setUsername] = useState("");
 	const [reason, setReason] = useState("");
@@ -35,8 +36,8 @@ function Signature(props) {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
-		const status = localStorage.getItem("loginwith")
+		const loginDetails = JSON.parse(sessionStorage.getItem("login_details"));
+		const status = sessionStorage.getItem("loginwith")
 		if (status) {
 			setLoginStatus(status);
 		}
@@ -141,7 +142,7 @@ function Signature(props) {
 		req["screen"] = props.screenName;
 		req["first_name"] = "first_name";
 		req["last_name"] = "last_name";
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 		let headers = {
 			"content-type": "application/json",
 			"resource-name":
@@ -154,11 +155,13 @@ function Signature(props) {
 
 			if (esign_response.statuscode == 200) {
 				dispatch(showNotification("success", esign_response.message));
+				setReason("")
+				setPassword("")
 				handleClose();
 				setIsAuth('')
 				let reqs = {};
 				let req1 = {};
-				let user_details = JSON.parse(localStorage.getItem("login_details"));
+				let user_details = JSON.parse(sessionStorage.getItem("login_details"));
 				let user = user_details["email_id"] ? user_details["email_id"] : "";
 
 				reqs["application_type"] = props.appType;
@@ -180,7 +183,7 @@ function Signature(props) {
 				if (props.eSignId) {
 					props.eSignId(esign_response.primary_id);
 				}
-
+				console.log("reqssssssss", reqs);
 				let publish_response =
 					Object.keys(params).length > 0 && params.fromScreen !== "Workspace"
 						? await approveRecord(req1)

@@ -1,15 +1,10 @@
 import {
-	FILE_UPLOAD_RES,
-	IS_TARGET_VAR,
-	LOAD_VIEW_TABLE_DATA,
+	FILE_UPLOAD_RES, LOAD_VIEW_TABLE_DATA,
 	VIEWSET_RES,
 	VIEW_ID_VERSION
 } from '../../constants/actionTypes';
 
-export const onClickTarget = payload => ({
-	type: IS_TARGET_VAR,
-	payload
-})
+
 
 export const loadViewTableData = payload => ({
 	type: LOAD_VIEW_TABLE_DATA,

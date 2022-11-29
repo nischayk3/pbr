@@ -1,7 +1,7 @@
 import { BMS_APP_PYTHON_SERVICE } from "../constants/apiBaseUrl";
 import Service from "./AjaxService";
 
-let login_response = JSON.parse(localStorage.getItem("login_details"));
+let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 
 const request_headers = {
 	"content-type": "application/json",
@@ -61,20 +61,6 @@ export const saveReportDesign = (request) => {
 	);
 };
 
-export const PublishReport = (request) => {
-	return Service.put(
-		BMS_APP_PYTHON_SERVICE + "/put-report-data",
-		request,
-		request_headers
-	).then(
-		(response) => {
-			return response.data;
-		},
-		(error) => {
-			return error.response.data;
-		}
-	);
-};
 
 export const loadReport = (request, headers) => {
 	return Service.get(

@@ -5,17 +5,17 @@ const Auth = {
 		authStatus = true;
 		// set user token with expiry of 3 days
 		// setWithExpiry("user_details", {accessToken, username, refreshToken}, 259200);
-		localStorage.setItem('user_details', JSON.stringify({ accessToken, username, refreshToken }));
-		localStorage.setItem('user', username);
+		sessionStorage.setItem('user_details', JSON.stringify({ accessToken, username, refreshToken }));
+		sessionStorage.setItem('user', username);
 	},
 	logout: (callback) => {
 		authStatus = false;
-		localStorage.clear();
+		sessionStorage.clear();
 		callback();
 	},
 	isAuthenticated: () => {
 		// const user_details = getWithExpiry("user_details");
-		const user_details = JSON.parse(localStorage.getItem('user_details'));
+		const user_details = JSON.parse(sessionStorage.getItem('user_details'));
 		if (user_details) {
 			const jwt = user_details.accessToken;
 			const jwtRefresh = user_details.refreshToken;
