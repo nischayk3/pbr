@@ -513,8 +513,8 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 				tempEstAlgoList.push(regression);
 				tempEstTypeList.push(regression?.estimator_type);
 				if (finalJson?.estimator?.e__0?.model_name === regression?.model_name) {
-					setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type, enableGrid: true })
-					setSavedEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type, enableGrid: true })
+					setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type })
+					setSavedEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type })
 				}
 			});
 			apiResponse?.data?.all_metric?.forEach((metric) => {
@@ -562,8 +562,8 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 		if (apiResponse.Status === 200) {
 			data?.all_estimator?.forEach((regression) => {
 				if (apiResponse?.data?.estimator?.model_name === regression?.model_name) {
-					setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type, enableGrid: true })
-					setSavedEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type, enableGrid: true })
+					setEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type })
+					setSavedEstimatorPopupDataValues({ ...estimatorPopupDataValues, algoValue: regression.display_name, typeListValue: regression.estimator_type })
 				}
 			});
 			setEstimatorPopupDataValues((prev) => {

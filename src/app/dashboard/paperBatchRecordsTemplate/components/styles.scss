@@ -382,3 +382,12 @@ label {
 		height: 300 !important;
 
 } 
+
+#parameter-panel{
+	.ant-collapse-content-box{
+		min-height: 200px !important;
+		max-height: 400px !important;
+		// height: 400px;
+		overflow-y: scroll !important;
+	}
+}
