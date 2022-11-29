@@ -1,0 +1,38 @@
+[
+    {
+        "form": {
+            "formDetails": [
+                {
+                    "type": "input",
+                    "title": "Batch No.",
+                    "label": "Batch No.",
+                    "value": "",
+                    "id": "batch",
+                    "editable": true
+                },
+                {
+                    "type": "input",
+                    "title": "Process Step",
+                    "label": "Process Step",
+                    "value": "",
+                    "id": "process",
+                    "editable": true
+                },
+                {
+                    "type": "input",
+                    "title": "Water Content",
+                    "label": "Water Content",
+                    "value": "",
+                    "id": "water",
+                    "editable": true
+                }
+            ]
+        },
+        "table": {
+            "columns": [],
+            "dataSource": [],
+            "deleteActionColumn": false,
+            "rowInitialData": {}
+        }
+    }
+]

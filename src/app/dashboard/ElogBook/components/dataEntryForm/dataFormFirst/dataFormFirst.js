@@ -1,5 +1,5 @@
-import { DeleteTwoTone, PlusOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Input, Modal, Select, Switch, Table } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Input, Select, Switch, Table } from "antd";
 import { Component } from "react";
 import { connect } from "react-redux";
 import { v1 as uuid } from "uuid";
@@ -11,11 +11,12 @@ import {
 	changeSelectInput,
 	changeToggleInput, checkDeleteButtonDisabledState, deleteRow, deleteRowCheck, EditableCell, EditableRow, selectAllRowsForDeletion
 } from "../../../../../../utils/editableTableHelper";
-import { DynamicFormComponent } from "../../dynamicForm/dynamicFormComponent";
+import './first.scss'
+import InputField from "../../../../../../components/InputField/InputField";
+import { putFormData } from "../../../../../../services/eLogBookService";
 
 
 const { Option } = Select;
-const { Search } = Input;
 
 class DataFormFirst extends Component {
 	state = {
@@ -27,7 +28,20 @@ class DataFormFirst extends Component {
 		currentPage: 1,
 		dataSourcePer: [],
 		searchValue: '',
+		completeData: []
 	};
+
+
+	inputChange = (a, b, c) => {
+		var item = [...c]
+		var val_ = a.target.value
+		item.forEach((element, index) => {
+			if (element.id === b) {
+				item[index].value = val_;
+			}
+		});
+		this.setState({ formDetails: item })
+	}
 
 	componentDidMount() {
 		this.loadTableData();
@@ -36,8 +50,8 @@ class DataFormFirst extends Component {
 	loadTableData = async () => {
 		this.props.showLoader();
 		try {
-			// const response = await this.props.getTableData();
 			const response = await this.props.getTableData;
+			console.log(response)
 			const { rowInitialData, dataSource, deleteActionColumn, columns } = response.table;
 			const { formDetails } = response.form;
 			this.setState(
@@ -53,8 +67,10 @@ class DataFormFirst extends Component {
 					this.initializeTableRender();
 				}
 			);
+			this.props.showNotification("success", `${this.props.title} Loaded`);
+
 		} catch (err) {
-			this.props.showNotification("error", err.message);
+			this.props.showNotification("error", 'Data format is different');
 		} finally {
 			this.props.hideLoader();
 		}
@@ -84,9 +100,23 @@ class DataFormFirst extends Component {
 		this.setState({ columns });
 	}
 
-	setFormData = (data) => {
-		this.setState({ formDetails: data })
-	}
+	onChangeEdit = (record) => {
+		console.log(record)
+		const datasource = [...this.state.dataSource]
+		const index = datasource.findIndex((item) => record.key === item.key)
+		datasource[index]['edit'] = datasource[index]['edit'] ? false : true
+		if (this.props.getTableData && this.props.getTableData.table) {
+			this.props.getTableData.table.dataSource = datasource
+		}
+
+		console.log(this.props.getTableData)
+		this.setState({ datasource: datasource })
+		const {
+			columns
+		} = this.state;
+		this.renderTableColumns(columns);
+
+	};
 
 	renderTableColumns = (columns) => {
 		columns.forEach((column) => {
@@ -129,8 +159,8 @@ class DataFormFirst extends Component {
 
 				case "input":
 					return (column.render = (_, record) => {
-						return (
-							<Input placeholder="Enter value" key={record.key} value={record[column.name]} onChange={(selectedValue) => this.onChangeInput(selectedValue, record, column)} />
+						return (record.edit ?
+							<Input placeholder="Enter value" key={record.key} value={record[column.name]} onChange={(selectedValue) => this.onChangeInput(selectedValue, record, column)} /> : record[column.name]
 						);
 					});
 				case "button":
@@ -141,8 +171,9 @@ class DataFormFirst extends Component {
 								<Button
 									type="link"
 									className="custom-primary-edit-btn"
+									onClick={() => this.onChangeEdit(record)}
 								>
-									Edit
+									{record.edit ? 'Save' : "Edit"}
 								</Button>
 								<Button
 									type="link"
@@ -151,7 +182,7 @@ class DataFormFirst extends Component {
 								>
 									Delete
 								</Button>
-							</div>
+							</div >
 						);
 					});
 
@@ -160,8 +191,6 @@ class DataFormFirst extends Component {
 			}
 		});
 	};
-
-
 
 	addDeleteActionColumn = (columns) => {
 		this.setState({ deleteActionColumnAdded: true });
@@ -218,20 +247,12 @@ class DataFormFirst extends Component {
 
 	handleOk = async (key) => {
 		const rowsToDelete = this.state.dataSource.filter((row) => row.key !== key)
+		if (this.props.getTableData && this.props.getTableData.table) {
+			this.props.getTableData.table.dataSource = rowsToDelete
+		}
 		this.setState({
 			dataSource: rowsToDelete
 		})
-
-		// this.props.showLoader();
-		// try {
-		// 	await this.props.deleteTableRow(rowsToDelete);
-		// 	const { dataSource, count } = deleteRow(rowsToDelete, this.state);
-		// 	this.setState({ dataSource, count, rowsMarkedForDeletion: false });
-		// } catch (err) {
-		// 	this.props.showNotification("error", err.message);
-		// } finally {
-		// 	this.props.hideLoader();
-		// }
 	};
 
 	onDeleteRows = () => this.setState({ visible: true });
@@ -246,15 +267,21 @@ class DataFormFirst extends Component {
 	};
 
 	onChangeInput = (selectedValue, record, column) => {
-		const dataSource = changeInput(record, this.state);
-		this.setState({ dataSource, tableDataChanged: true });
+		const datasource = [...this.state.dataSource]
+		const index = datasource.findIndex((item) => record.key === item.key)
+		datasource[index][column.name] = selectedValue.target.value
+		if (this.props.getTableData && this.props.getTableData.table) {
+			this.props.getTableData.table.dataSource = datasource
+		}
+		this.setState({ datasource: datasource })
+		const {
+			columns
+		} = this.state;
+		this.renderTableColumns(columns);
+
 	};
 
-	// onChangeTable = (selectedValue, record, column) => {
-	// 	console.log("selectedValue, record, column", selectedValue, record, column);
-	// 	const dataSource = changeInput(record, this.state);
-	// 	this.setState({ dataSource, tableDataChanged: true });
-	// };
+
 
 	onChangeSelect = (selectedValue, record, column) => {
 		const dataSource = changeSelectInput(
@@ -263,6 +290,9 @@ class DataFormFirst extends Component {
 			column,
 			this.state
 		);
+		if (this.props.getTableData && this.props.getTableData.table) {
+			this.props.getTableData.table.dataSource = datasource
+		}
 		this.setState({ dataSource, tableDataChanged: true });
 	};
 
@@ -273,6 +303,9 @@ class DataFormFirst extends Component {
 			column,
 			this.state
 		);
+		if (this.props.getTableData && this.props.getTableData.table) {
+			this.props.getTableData.table.dataSource = datasource
+		}
 		this.setState({ dataSource, tableDataChanged: true });
 	};
 
@@ -281,27 +314,38 @@ class DataFormFirst extends Component {
 	}
 
 	onSaveTable = async () => {
-		const tableData = JSON.parse(JSON.stringify(this.state.dataSource));
-		tableData.forEach((obj) => {
-			if ('updated' in obj)
-				obj.updated = true
-			delete obj.key;
-		});
+
+		let { formDetails } = this.state
+		let { getTableData } = this.props
+
+		var batch = formDetails.filter(function (el) {
+			return el.id == 'batch'
+		})
+		var process = formDetails.filter(function (el) {
+			return el.id == 'process'
+		})
+
+		let save_req = {
+			"batch": batch && batch[0] && batch[0].value ? batch[0].value : '',
+			"process_step": process && process[0] && process[0].value ? process[0].value : '',
+			"readings": getTableData,
+			"molecule": this.props.selectedMolecule,
+			"template_id": this.props.template_disp_id,
+			"version": this.props.form_version,
+			"form_id": this.props.form_id,
+		}
+
 		this.props.showLoader();
 		try {
-			const resp = await this.props.saveTableData(tableData);
-			if (resp.status === 200) {
+			const resp = await putFormData(save_req);
+			if (resp.Status === 200) {
 				this.setState({ tableDataChanged: false });
-				this.props.showNotification("success", 'Saved');
-
+				this.props.showNotification("success", 'Form Data Saved');
 			}
 			if (resp.status === 400) {
 				this.props.showNotification("error", resp?.message);
 			}
 		} catch (err) {
-			if (err.message.includes("400")) {
-				this.props.showNotification("error", "User already registered");
-			}
 			if (err.message.includes("403")) {
 				this.props.showNotification("error", "ACCESS DENIED ! User is not having valid email_address");
 			}
@@ -320,6 +364,7 @@ class DataFormFirst extends Component {
 			return null;
 		}
 		const { dataSource, formDetails } = this.state;
+		console.log(this.props, 'data_coming')
 		const components = {
 			body: {
 				row: EditableRow,
@@ -330,24 +375,14 @@ class DataFormFirst extends Component {
 			if (column.editable) {
 				return column;
 			}
-			// return {
-			// 	...column,
-			// 	onCell: (record) => ({
-			// 		record,
-			// 		editable: column.editable,
-			// 		dataIndex: column.dataIndex,
-			// 		title: column.title,
-			// 		onChangeInput: this.onChangeInput,
-			// 	}),
-			// };
 		});
-		console.log("columns", columns);
 
 		return (
 			<div className="custom-table-wrapper">
 				<div className="form-details">
-					<p className="form-heading">BU Form</p>
-
+					<p className="form-heading">{this.props.title} <span className="approved-bar template-card-subheading-data-inside"> {this.props.status} </span> </p>
+				</div >
+				<div className="form-details">
 					<div className="form-btn">
 						<Button
 							type="primary"
@@ -379,17 +414,17 @@ class DataFormFirst extends Component {
 					)}
 
 					<div className="dynamic-form-wrapper">
-						{formDetails.map((item, i) => (
+						{formDetails && formDetails.length > 0 && formDetails.map((item, i) =>
+						(
 							<div key={i} className="dynamic-form-input">
-								<DynamicFormComponent {...item} formDetails={formDetails} setFormData={this.setFormData} />
+								<InputField value={item.value} label={item.label} onChangeInput={(e) => this.inputChange(e, item.id, formDetails)} />
 							</div>
 						))}
-
 					</div>
 
-					<div className="table-wrapper">
+					{columns && columns.length > 0 && <div className="table-wrapper">
 						<div className="table-head">
-							<p className="table-heading">Batch 11081204X- BU individual values</p>
+							<p className="table-heading">{this.props.name}</p>
 							<Button
 								type="dashed"
 								className="custom-secondary-btn"
@@ -401,22 +436,21 @@ class DataFormFirst extends Component {
 							</Button>
 						</div>
 						<Table
-							className="borderedTable"
-							components={components}
+							className="first-Table"
 							rowClassName={() => "editable-row"}
 							bordered
 							dataSource={dataSource}
 							columns={columns}
-							pagination={{ current: this.state.currentPage, onChange: (page) => this.onChangeCurrentPage(page) }}
+							pagination={{
+								size: 'small'
+							}}
 							scroll={this.props.screens === "Roles" ? { y: 400 } : { y: 300 }}
 						/>
-
-					</div>
+					</div>}
 
 
 				</div>
-
-			</div>
+			</div >
 		);
 	}
 }

@@ -88,6 +88,7 @@
 
 		.form-btn {
 			float: right;
+			// margin-bottom: 50px;
 
 			button {
 				margin-left: 24px;
@@ -98,4 +99,9 @@
 
 .table-btn {
 	display: flex;
+}
+
+.add-new-form {
+	background-color: #093185;
+	color: white;
 }

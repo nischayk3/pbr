@@ -61,8 +61,9 @@ const Profile = lazy(() => import("./profile"));
 const CrossBatchComparison = lazy(() => import("./crossBatchComparison"));
 const DataScienceStudio = lazy(() => import("./DataScienceStudio"));
 const TargetVariable = lazy(() => import("./DataScienceStudio/components/targetVariable/TargetVariable"));
-const ElogBook = lazy(() => import("./ElogBook"))
-const EBookStep = lazy(() => import("./ElogBook/components/ebookSteps/eBookStep"))
+const ElogBook = lazy(() => import("./ElogBook/components/entryLanding/entryLanding"))
+const ElogBookEntry = lazy(() => import("./ElogBook/components/dataEntryForm/dataEntryForm"))
+// const EBookStep = lazy(() => import("./ElogBook/components/ebookSteps/eBookStep"))
 
 const { Content } = Layout;
 
@@ -447,9 +448,14 @@ const Dashboard = () => {
 												exact
 												authorised={authorised}
 											/>
-											<PrivateRoute
+											{/* <PrivateRoute
 												path={`${url}/new-template`}
 												component={EBookStep}
+												authorised={authorised}
+											/> */}
+											<PrivateRoute
+												path={`${url}/data_entry_forms`}
+												component={ElogBookEntry}
 												authorised={authorised}
 											/>
 										</>

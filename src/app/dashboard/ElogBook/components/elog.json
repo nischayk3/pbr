@@ -1,165 +1,167 @@
-{
-	"form": {
-		"formDetails": [
-			{
-				"type": "input",
-				"title": "Batch No.",
-				"label": "Batch No.",
-				"value": "123456789",
-				"id": "batch",
-				"editable": true
-			},
-			{
-				"type": "input",
-				"title": "Process Step",
-				"label": "Process Step",
-				"value": "",
-				"id": "process",
-				"editable": true
+[
+	{
+		"form": {
+			"formDetails": [
+				{
+					"type": "input",
+					"title": "Batch No.",
+					"label": "Batch No.",
+					"value": "",
+					"id": "batch",
+					"editable": true
+				},
+				{
+					"type": "input",
+					"title": "Process Step",
+					"label": "Process Step",
+					"value": "",
+					"id": "process",
+					"editable": true
+				},
+				{
+					"type": "input",
+					"title": "Test",
+					"label": "Test",
+					"value": "",
+					"id": "test",
+					"editable": true
+				}
+			]
+		},
+		"table": {
+			"columns": [
+				{
+					"align": "center",
+					"children": [
+						{
+							"align": "center",
+							"dataIndex": "sample",
+							"editable": true,
+							"label": "Sample",
+							"name": "sample",
+							"title": "Sample",
+							"type": "input"
+						}
+					],
+					"dataIndex": "serie",
+					"editable": true,
+					"label": "Serie",
+					"name": "serie",
+					"title": "Serie",
+					"type": "parent"
+				},
+				{
+					"align": "center",
+					"children": [
+						{
+							"align": "center",
+							"dataIndex": "series_a_mg",
+							"editable": true,
+							"label": "mg",
+							"name": "series_a_mg",
+							"title": "mg",
+							"type": "input"
+						},
+						{
+							"align": "center",
+							"dataIndex": "series_a_value",
+							"editable": true,
+							"label": "Seri 1(%)",
+							"name": "series_a_value",
+							"title": "Seri 1(%)",
+							"type": "input"
+						}
+					],
+					"dataIndex": "a",
+					"editable": true,
+					"label": "A",
+					"name": "a",
+					"title": "A",
+					"type": "parent"
+				},
+				{
+					"align": "center",
+					"dataIndex": "b",
+					"children": [
+						{
+							"align": "center",
+							"dataIndex": "series_b_mg",
+							"editable": true,
+							"label": "mg",
+							"name": "series_b_mg",
+							"title": "mg",
+							"type": "input"
+						},
+						{
+							"align": "center",
+							"dataIndex": "series_b_value",
+							"editable": true,
+							"label": "Seri 2(%)",
+							"name": "series_b_value",
+							"title": "Seri 2(%)",
+							"type": "input"
+						}
+					],
+					"editable": true,
+					"label": "B",
+					"name": "b",
+					"title": "B",
+					"type": "parent"
+				},
+				{
+					"align": "center",
+					"children": [
+						{
+							"align": "center",
+							"dataIndex": "series_c_mg",
+							"editable": true,
+							"label": "mg",
+							"name": "series_c_mg",
+							"title": "mg",
+							"type": "input"
+						},
+						{
+							"align": "center",
+							"dataIndex": "series_c_value",
+							"editable": true,
+							"label": "Seri 3(%)",
+							"name": "series_c_value",
+							"title": "Seri 3(%)",
+							"type": "input"
+						}
+					],
+					"dataIndex": "c",
+					"editable": true,
+					"label": "C",
+					"name": "c",
+					"title": "C",
+					"type": "parent"
+				},
+				{
+					"align": "center",
+					"children": [],
+					"dataIndex": "actions",
+					"editable": true,
+					"label": "Actions",
+					"name": "actions",
+					"title": "Actions",
+					"type": "button"
+				}
+			],
+			"dataSource": [
+				{}
+			],
+			"deleteActionColumn": false,
+			"rowInitialData": {
+				"sample": "",
+				"series_a_mg": "",
+				"series_a_value": "",
+				"series_b_mg": "",
+				"series_b_value": "",
+				"series_c_mg": "",
+				"series_c_value": "",
+				"edit": true
 			}
-		]
-	},
-	"table": {
-		"columns": [
-			{
-				"align": "center",
-				"children": [
-					{
-						"align": "center",
-						"dataIndex": "sample",
-						"editable": true,
-						"label": "Sample",
-						"name": "sample",
-						"title": "Sample",
-						"type": "input"
-					}
-				],
-				"dataIndex": "serie",
-				"editable": true,
-				"label": "Serie",
-				"name": "serie",
-				"title": "Serie",
-				"type": "parent"
-			},
-			{
-				"align": "center",
-				"children": [
-					{
-						"align": "center",
-						"dataIndex": "series_a_mg",
-						"editable": true,
-						"label": "mg",
-						"name": "series_a_mg",
-						"title": "mg",
-						"type": "input"
-					},
-					{
-						"align": "center",
-						"dataIndex": "series_a_value",
-						"editable": true,
-						"label": "Seri 1(%)",
-						"name": "series_a_value",
-						"title": "Seri 1(%)",
-						"type": "input"
-					}
-				],
-				"dataIndex": "a",
-				"editable": true,
-				"label": "A",
-				"name": "a",
-				"title": "A",
-				"type": "parent"
-			},
-			{
-				"align": "center",
-				"dataIndex": "b",
-				"children": [
-					{
-						"align": "center",
-						"dataIndex": "series_b_mg",
-						"editable": true,
-						"label": "mg",
-						"name": "series_b_mg",
-						"title": "mg",
-						"type": "input"
-					},
-					{
-						"align": "center",
-						"dataIndex": "series_b_value",
-						"editable": true,
-						"label": "Seri 2(%)",
-						"name": "series_b_value",
-						"title": "Seri 2(%)",
-						"type": "input"
-					}
-				],
-				"editable": true,
-				"label": "B",
-				"name": "b",
-				"title": "B",
-				"type": "parent"
-			},
-			{
-				"align": "center",
-				"children": [
-					{
-						"align": "center",
-						"dataIndex": "series_c_mg",
-						"editable": true,
-						"label": "mg",
-						"name": "series_c_mg",
-						"title": "mg",
-						"type": "input"
-					},
-					{
-						"align": "center",
-						"dataIndex": "series_c_value",
-						"editable": true,
-						"label": "Seri 3(%)",
-						"name": "series_c_value",
-						"title": "Seri 3(%)",
-						"type": "input"
-					}
-				],
-				"dataIndex": "c",
-				"editable": true,
-				"label": "C",
-				"name": "c",
-				"title": "C",
-				"type": "parent"
-			},
-			{
-				"align": "center",
-				"children": [],
-				"dataIndex": "actions",
-				"editable": true,
-				"label": "Actions",
-				"name": "actions",
-				"title": "Actions",
-				"type": "button"
-			}
-		],
-		"dataSource": [
-			{
-				"sample": "BU1",
-				"series_a_mg": "210",
-				"series_a_value": "97.8",
-				"series_b_mg": "210",
-				"series_b_value": "97.8",
-				"series_c_mg": "210",
-				"series_c_value": "97.8"
-			}
-		],
-		"deleteActionColumn": false,
-		"rowInitialData": {
-			"sample": "",
-			"series_a_mg": "",
-			"series_a_value": "",
-			"series_b_mg": "",
-			"series_b_value": "",
-			"series_c_mg": "",
-			"series_c_value": ""
 		}
-	},
-	"statuscode": 200
-}
+	}
+]
