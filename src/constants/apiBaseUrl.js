@@ -19,7 +19,7 @@ export const MDH_APP_PYTHON_SERVICE = `${process.env.REACT_APP_URL}`;
 
 export const MDH_APP_GENEALOGY = `${process.env.REACT_APP_GENEALOGY}`
 
-export const MDH_AIRFLOW = `${process.env.REACT_APP_URL}/airflow/login/?next=+ ${process.env.REACT_APP_URL} + "&airflow&home"`
+export const MDH_AIRFLOW = `${process.env.REACT_APP_URL}/airflow/login/?next=${process.env.REACT_APP_URL}/airflow/home`
 
 export const MDH_AIRFLOW_DAGS = `${process.env.REACT_APP_URL}/airflow/login/?next=+ ${process.env.REACT_APP_URL} + "&airflow&dags"`
 
