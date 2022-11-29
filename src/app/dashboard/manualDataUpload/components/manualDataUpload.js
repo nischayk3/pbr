@@ -1,35 +1,21 @@
+import {
+	Alert, Button, Input, Modal, Result, Select, Space, Steps, Upload
+} from 'antd';
+import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import {
-	Steps,
-	Button,
-	Modal,
-	Upload,
-	Alert,
-	Result,
-	Space,
-	Input,
-	Select,
-} from 'antd';
 import './styles.scss';
 
 import {
-	DoubleRightOutlined,
-	ArrowRightOutlined,
-	ArrowLeftOutlined,
+	ArrowLeftOutlined, ArrowRightOutlined, DoubleRightOutlined
 } from '@ant-design/icons';
 
+import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
+import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
 import {
-	uploadFileApi,
-	cancelFileUpload,
-	updateApprovedData,
-	approvedData,
-	finalFileUpload,
+	approvedData, cancelFileUpload, finalFileUpload, updateApprovedData, uploadFileApi
 } from '../../../../duck/actions/fileUploadAction';
 import { getAuthenticate, getAuthenticateWithoutAD } from '../../../../services/loginService';
-import { hideLoader, showLoader, showNotification } from '../../../../duck/actions/commonActions';
-import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 
 
 const dummyRequest = ({ onSuccess }) => {
@@ -95,8 +81,8 @@ class Uploader extends Component {
 	};
 
 	componentDidMount = () => {
-		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
-		const loginWith = localStorage.getItem("loginwith");
+		const loginDetails = JSON.parse(sessionStorage.getItem("login_details"));
+		const loginWith = sessionStorage.getItem("loginwith");
 		if (loginWith) {
 			this.setState({
 				loginStatus: loginWith,
@@ -208,7 +194,7 @@ class Uploader extends Component {
 				formData.append('sourcename', 'fileupload/UIupdate/pbr');
 				formData.append(
 					'username',
-					JSON.parse(localStorage.getItem('login_details')).email_id
+					JSON.parse(sessionStorage.getItem('login_details')).email_id
 				);
 				uploadFileApi(formData).then(res => {
 					if (res.data && res.data.statuscode === 400) {
@@ -292,7 +278,7 @@ class Uploader extends Component {
 	};
 	cancelFileUploadService = () => {
 		let reqCancelParam = {
-			user_id: JSON.parse(localStorage.getItem('login_details')).email_id,
+			user_id: JSON.parse(sessionStorage.getItem('login_details')).email_id,
 			file_upload_id: this.state.primaryFileId,
 			reason: this.state.cancelReason,
 			status: 'approved',
@@ -352,8 +338,8 @@ class Uploader extends Component {
 			reason: this.state.signatureReason,
 			status: 'approved',
 			screen: 'upload',
-			first_name: JSON.parse(localStorage.getItem('login_details')).firstname,
-			last_name: JSON.parse(localStorage.getItem('login_details')).lastname,
+			first_name: JSON.parse(sessionStorage.getItem('login_details')).firstname,
+			last_name: JSON.parse(sessionStorage.getItem('login_details')).lastname,
 		};
 
 		updateApprovedData(reqUpdateData).then(response => {
@@ -401,7 +387,7 @@ class Uploader extends Component {
 	approveDataFile = () => {
 		this.props.showLoader()
 		let reqUpdateData = {
-			userid: JSON.parse(localStorage.getItem('login_details')).email_id,
+			userid: JSON.parse(sessionStorage.getItem('login_details')).email_id,
 			fileid: this.state.primaryFileId,
 		};
 
@@ -451,8 +437,8 @@ class Uploader extends Component {
 			status: 'signed',
 			screen: 'upload',
 			user_id: this.state.username,
-			first_name: JSON.parse(localStorage.getItem('login_details')).firstname,
-			last_name: JSON.parse(localStorage.getItem('login_details')).lastname,
+			first_name: JSON.parse(sessionStorage.getItem('login_details')).firstname,
+			last_name: JSON.parse(sessionStorage.getItem('login_details')).lastname,
 		};
 
 		finalFileUpload(reqFile).then(response => {
@@ -586,7 +572,7 @@ class Uploader extends Component {
 			/* istanbul ignore next */
 		} else if (step === 1) {
 			if (this.state.onChangeStatus === 300) {
-				// const fileUploadId = localStorage.setItem('file_upload_id', this.state.uploadFilesResponse.data.file_pointer)
+				// const fileUploadId = sessionStorage.setItem('file_upload_id', this.state.uploadFilesResponse.data.file_pointer)
 				this.setState({
 					nextStepDisabled: false,
 					currentStep: this.state.currentStep + 1,

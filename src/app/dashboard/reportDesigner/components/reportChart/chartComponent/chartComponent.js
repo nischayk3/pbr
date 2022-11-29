@@ -1,21 +1,18 @@
+import { Table, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Tabs, Table } from 'antd'
-import { useDispatch } from 'react-redux';
 import Plot from 'react-plotly.js';
-import { getChartPlotData } from '../../../../../../services/workSpaceServices';
+import { useDispatch } from 'react-redux';
 import {
 	hideLoader,
-	showLoader,
+	showLoader
 } from '../../../../../../duck/actions/commonActions';
+import { getChartPlotData } from '../../../../../../services/workSpaceServices';
 import './styles.scss';
 
 const { TabPane } = Tabs;
 const chartComponent = (props) => {
-
 	const [workspaceChartData, setWorkSpaceChartData] = useState([]);
 	const [workspaceChartLayout, setWorkSpaceChartLayout] = useState([]);
-	//const [workspaceChartLayoutXAxis, setWorkSpaceChartLayoutXAxis] = useState([]);
-	//const [workspaceChartLayoutYAxis, setWorkSpaceChartLayoutYAxis] = useState([]);
 	const [dataTable, setDataTable] = useState([]);
 	const [dataTableColumns, setDataTableColumns] = useState([])
 	const [violation, setViolation] = useState([]);
@@ -56,12 +53,13 @@ const chartComponent = (props) => {
 	}
 
 	const getChartData = async () => {
+
 		let chart_id = props.chartName.split('-')
-		let req = { chartId: chart_id[0], save_image: true }
-		let login_response = JSON.parse(localStorage.getItem('login_details'));
+
+		let req = { chartId: chart_id[0], save_image: true, chartVersion: chart_id[2] }
+		let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 
 		const headers = {
-
 			'content-type': 'application/json',
 			'x-access-token': login_response.token ? login_response.token : '',
 			'resource-name': 'REPORT_DESIGNER',
@@ -71,9 +69,6 @@ const chartComponent = (props) => {
 			const chartResponse = await getChartPlotData(req, headers);
 			if (chartResponse.data[0]) {
 				setWorkSpaceChartData(chartResponse.data[0].data);
-				// setWorkSpaceChartLayout(chartResponse.data[0].layout)
-				//setWorkSpaceChartLayoutXAxis(chartResponse.data[0].layout.xaxis)
-				//setWorkSpaceChartLayoutYAxis(chartResponse.data[0].layout.yaxis)
 				if (chartResponse.data[0].violations) {
 					setViolation(chartResponse.data[0].violations)
 					setViolationColumns(getColumns(chartResponse.data[0].violations))
@@ -106,7 +101,6 @@ const chartComponent = (props) => {
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
-			// dispatch(showNotification('error', 'No Data In Chart'));
 		}
 	}
 	const changeTab = activeKey => {
@@ -131,8 +125,6 @@ const chartComponent = (props) => {
 				</Tabs>
 			</div>
 		</div>
-
-
 	)
 }
 

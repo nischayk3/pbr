@@ -5,44 +5,32 @@
  * @Last Modified - 14 March, 2022
  * @Last Changed By - @Mihir
  */
-import './stylesNew.scss';
-import React, { useEffect, useState } from 'react';
 import {
 	CloudUploadOutlined,
-	EllipsisOutlined,
+	EllipsisOutlined
 } from '@ant-design/icons';
-import { useLocation } from 'react-router';
 import {
-	Form,
-	Button,
-	Empty,
-	Dropdown,
-	Menu,
+	Button, Dropdown, Empty, Form, Menu
 } from 'antd';
-import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
-import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections';
-import {
-	getViews,
-	getCharts,
-	saveReportDesign,
-	// getReports,
-} from '../../../../services/reportDesignerServices';
-import SaveModal from '../../../../components/SaveModal/saveModal';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-	sendReport,
-	screenChange,
-} from '../../../../duck/actions/reportDesignerAction';
-import { useHistory } from 'react-router';
-import {
-	showLoader,
-	hideLoader,
-	showNotification,
-} from '../../../../duck/actions/commonActions';
-import Signature from '../../../../components/ElectronicSignature/signature';
 import queryString from 'query-string';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router';
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
-import { loadReport } from '../../../../services/reportDesignerServices';
+import Signature from '../../../../components/ElectronicSignature/signature';
+import SaveModal from '../../../../components/SaveModal/saveModal';
+import {
+	hideLoader, showLoader, showNotification
+} from '../../../../duck/actions/commonActions';
+import {
+	screenChange, sendReport
+} from '../../../../duck/actions/reportDesignerAction';
+import {
+	getCharts, getViews, loadReport, saveReportDesign
+} from '../../../../services/reportDesignerServices';
+import ReportDesignerDynamicSections from './reportDesignerDynamicSections/reportDesignerDynamicSections';
+import ReportDesignerForm from './reportDesignerForm/reportDesignerForm';
+import './stylesNew.scss';
 
 
 function ReportDesignerNew(props) {
@@ -280,7 +268,7 @@ function ReportDesignerNew(props) {
 				section_arr.push(obj);
 			}
 			if (item !== undefined) {
-
+				console.log("itemmmmmmmmmmmmm", item);
 				obj['heading'] = item.sectionName ? item.sectionName : '';
 				obj['numbered'] = true;
 				let content_arr = [];
@@ -377,7 +365,7 @@ function ReportDesignerNew(props) {
 		}
 	}
 
-	// unloading the json into component readable form 
+	// unloading the json into component readable form
 	// getting json from GET service distrupting json for each component (as required)
 	const convertContent = (obj) => {
 

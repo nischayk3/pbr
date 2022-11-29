@@ -4,7 +4,7 @@ import Service from "./AjaxService";
 
 
 export const getBoundingBoxData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -24,7 +24,7 @@ export const getBoundingBoxData = (_queryParam) => {
 };
 
 export const savePbrTemplate = (request) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -44,7 +44,7 @@ export const savePbrTemplate = (request) => {
 };
 
 export const getPbrReviewerData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -63,7 +63,7 @@ export const getPbrReviewerData = (_queryParam) => {
 	);
 };
 export const geTemplateDropdown = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -82,7 +82,7 @@ export const geTemplateDropdown = (_queryParam) => {
 	);
 };
 export const getPieChartData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -101,7 +101,7 @@ export const getPieChartData = (_queryParam) => {
 	);
 };
 export const getRowColumnData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -119,27 +119,9 @@ export const getRowColumnData = (_queryParam) => {
 		}
 	);
 };
-export const getImage = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
-	const request_headers = {
-		'x-access-token': login_response?.token ? login_response?.token : '',
-		'resource-name': 'PBR'
-	};
-	return Service.get(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_file_page_image',
-		_queryParam,
-		request_headers
-	).then(
-		(response) => {
-			return response.data;
-		},
-		(error) => {
-			return error.response.data;
-		}
-	);
-};
+
 export const updateApprove = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -159,7 +141,7 @@ export const updateApprove = (_queryParam) => {
 };
 
 export const processBatchRecord = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -179,7 +161,7 @@ export const processBatchRecord = (_queryParam) => {
 };
 
 export const getPbrTemplateData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -199,7 +181,7 @@ export const getPbrTemplateData = (_queryParam) => {
 };
 
 export const getDataView = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -219,7 +201,7 @@ export const getDataView = (_queryParam) => {
 };
 
 export const findParameter = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -239,7 +221,7 @@ export const findParameter = (_queryParam) => {
 };
 
 export const findTable = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -259,7 +241,7 @@ export const findTable = (_queryParam) => {
 };
 
 export const findPageIdentifier = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -279,7 +261,7 @@ export const findPageIdentifier = (_queryParam) => {
 };
 
 export const previewTable = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -299,7 +281,7 @@ export const previewTable = (_queryParam) => {
 };
 
 export const projectFilterSearch = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -319,7 +301,7 @@ export const projectFilterSearch = (_queryParam) => {
 };
 
 export const projectFileUpload = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -339,7 +321,7 @@ export const projectFileUpload = (_queryParam) => {
 };
 
 export const uploadProjectData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -359,7 +341,7 @@ export const uploadProjectData = (_queryParam) => {
 };
 
 export const projectDataView = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -379,7 +361,7 @@ export const projectDataView = (_queryParam) => {
 };
 
 export const bboxData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -399,7 +381,7 @@ export const bboxData = (_queryParam) => {
 };
 
 export const workflowTemplateReject = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'
@@ -418,7 +400,7 @@ export const workflowTemplateReject = (_queryParam) => {
 	);
 };
 export const workflowTemplateData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem('login_details'));
+	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 	const request_headers = {
 		'x-access-token': login_response?.token ? login_response?.token : '',
 		'resource-name': 'PBR'

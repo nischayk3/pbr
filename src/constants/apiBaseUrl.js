@@ -1,47 +1,12 @@
 /*global process*/
-//cpv python
-export const API_PLOT_URL = `${process.env.REACT_APP_PYTHON_API_URL + "/v1/cpvpython/"}`;
 
 //platform auth & platform resultset
 export const API_AUTHENTICATION_URL = `${process.env.REACT_APP_PLATFORM_API_URL + "/prismmicro-authentication"}`;
 
 export const API_RESULTSET_URL = `${process.env.REACT_APP_PLATFORM_API_URL + "/prismmicro-resultset"}`;
 
-//java service - report designer
-export const API_CPV_URL = `${process.env.REACT_APP_JAVA_API_URL + "/api"}`;
-
-// java service - mdh genealogy
-export const API_APPLICATION_MDH = `${process.env.REACT_APP_MDH_API_URL}`;
-
-//MVA Analysis Jupyter
-export const MVA_ANALYSIS_JUPYTER = `${process.env.REACT_APP_JUPYTER_APP_URL + " /notebooks/MVA_Demo.ipynb"}`;
-
-//MVA Analysis Jupyter
-export const RCA_ANALYSIS_JUPYTER = `${process.env.REACT_APP_JUPYTER_APP_URL + "/notebooks/RCA_Demo.ipynb"}`;
-
-//data science studio jupyter
-export const JUPYTER_NOTEBOOK = `${process.env.REACT_APP_JUPYTER_APP_URL}`;
-
-//grafana dashboard
-//export const GRAFANA_DASHBOARD = `${process.env.REACT_APP_GRAFANA_APP_URL + "/grafana/"}`;
-
 //grafana dashboard
 export const GRAFANA_DASHBOARD = `${process.env.REACT_APP_GRAFANA_APP_URL + "/grafana/"}`;
-
-//Real Time MVA
-export const REAL_TIME_MVA = `${process.env.REACT_APP_JAVA_API_URL + "/grafana/d/fW71CAI7z/?kiosk"}`;
-
-//job-screen hue
-export const HUE_JOB_DASHBOARD = `${process.env.REACT_APP_HUE_JOB_URL + "/oozie/editor/workflow/list/"}`;
-
-//UI Components
-export const UI_COMPONENTS_APP = `${process.env.REACT_APP_UI_COMPONENTS_APP_URL}`;
-
-//BMS PBR URL
-export const BMS_PBR_URL = `${process.env.REACT_APP_BMS_PBR_URL}`;
-
-//BMS APP URL
-export const BMS_APP_URL = `${process.env.REACT_APP_UI_URL}`;
 
 //bms login-pass url
 export const BMS_APP_LOGIN_PASS = "/auth";
@@ -56,14 +21,6 @@ export const MDH_APP_GENEALOGY = `${process.env.REACT_APP_GENEALOGY}`
 
 export const MDH_AIRFLOW = `${process.env.REACT_APP_URL}/airflow/login/?next=+ ${process.env.REACT_APP_URL} + "&airflow&home"`
 
-export const GOOGLE_ANALYTICS_ID = `${process.env.REACT_APP_GOOGLE_ANALYTICS_ID}`;
-
 export const GRAFANA_API = `${process.env.REACT_APP_GRAFANA_APP_URL}`;
 
-export const JUPYTER_URL = `${process.env.REACT_APP_JUPYTER_APP}`;
-
-console.log("JUPYTER_URL", JUPYTER_URL);
-
-console.log("process.env.", process.env);
-
-export const LOGIN_URL = "/auth";
+export const JUPYTER_APP = `${process.env.REACT_APP_JUPYTER_APP_URL}`

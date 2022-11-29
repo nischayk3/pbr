@@ -3,10 +3,10 @@ Cypress.on("uncaught:exception", (err, runnable) => {
 });
 describe("Workflow", () => {
 	beforeEach(() => {
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		localStorage.setItem("username", "Fahad");
-		localStorage.setItem(
+		sessionStorage.setItem("test_enabled", true);
+		sessionStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		sessionStorage.setItem("username", "Fahad");
+		sessionStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,
@@ -276,5 +276,3 @@ describe("Workflow", () => {
 
 
 });
-
-

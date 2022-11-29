@@ -182,7 +182,7 @@ class AuditTrials extends React.Component {
 	}
 
 	onAuditUserAndEventFilter = async () => {
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 		let req = {};
 		let headers = {
 			"content-type": "application/json",
@@ -206,7 +206,6 @@ class AuditTrials extends React.Component {
 	};
 
 	reportDownloadExcel = (reportType) => {
-		console.log("reportType", reportType);
 		let _reportReq = {
 			type: reportType,
 			data: this.state.resData

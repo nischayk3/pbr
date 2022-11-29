@@ -3,7 +3,7 @@ import { useLocation, useParams } from "react-router";
 import "./viewPage.scss";
 //antd-imports
 import { CloudUploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { Button, Col, DatePicker, Dropdown, Menu, Row, Tabs, Tooltip } from "antd";
+import { Button, DatePicker, Dropdown, Menu, Tabs, Tooltip } from "antd";
 const { TabPane } = Tabs;
 //componenets
 import moment from "moment";
@@ -23,7 +23,6 @@ import Model from "./model/Model";
 import ModelData from "./ModelData";
 import Preprocess from "./preproccessing/Preprocess";
 import Results from "./results/Results";
-import Transformation from "./transformations";
 import ModelExcecute from './ModelExcecute';
 
 const ViewPageAnalysis = () => {
@@ -86,7 +85,7 @@ const ViewPageAnalysis = () => {
 		if (tempObj.feature_union_mapping) {
 			Object.entries(tempObj.feature_union_mapping).forEach(([key, value]) => {
 				if (value.type === "Encoder") {
-				  delete tempObj.feature_union_mapping[key]
+					delete tempObj.feature_union_mapping[key]
 				}
 			});
 			let tempEncoder = Object.assign({}, encoderData.selectedObjs)
@@ -95,7 +94,7 @@ const ViewPageAnalysis = () => {
 				1: '6',
 				2: '7',
 			};
-			Object.keys(tempIds).forEach(function(ele) {
+			Object.keys(tempIds).forEach(function (ele) {
 				tempEncoder[tempIds[ele]] = tempEncoder[ele];
 				delete tempEncoder[ele];
 			})
@@ -122,7 +121,7 @@ const ViewPageAnalysis = () => {
 	};
 
 	const onExecuteClick = async (date) => {
-		const login_response = JSON.parse(localStorage.getItem("login_details"));
+		const login_response = JSON.parse(sessionStorage.getItem("login_details"));
 		const request_headers = {
 			"content-type": "application/json",
 			"x-access-token": login_response.token ? login_response.token : "",
@@ -131,8 +130,8 @@ const ViewPageAnalysis = () => {
 		const reqBody = {
 			app_data: "ANALYTICS",
 			dag_id: " ",
-			created_by: localStorage.getItem("username")
-				? localStorage.getItem("username")
+			created_by: sessionStorage.getItem("username")
+				? sessionStorage.getItem("username")
 				: "",
 			app_type: "ANALYTICS",
 			app_id: selectedViewData.viewData.pipeline_id,
@@ -282,10 +281,10 @@ const ViewPageAnalysis = () => {
 						</>
 
 					) : (
-							<div>
-						    <Tooltip placement="bottom" title={ViewDetails}>
-                               <Button>View details <InfoCircleOutlined /></Button>
-                            </Tooltip>
+						<div>
+							<Tooltip placement="bottom" title={ViewDetails}>
+								<Button>View details <InfoCircleOutlined /></Button>
+							</Tooltip>
 							<Button disabled>Share</Button>
 							<Button onClick={() => onSaveClick("save")}>Save</Button>
 							<Button disabled onClick={() => onSaveClick('saveAs')}>Save As</Button>
@@ -297,9 +296,9 @@ const ViewPageAnalysis = () => {
 								onClick={() => {
 									setIsPublish(true);
 									setApproveReject("P");
-									}}
-									disabled
-								// disabled={selectedViewData.viewData.pipeline_status === 'AWAP' || selectedViewData.viewData.pipeline_status === 'APRD'}
+								}}
+								disabled
+							// disabled={selectedViewData.viewData.pipeline_status === 'AWAP' || selectedViewData.viewData.pipeline_status === 'APRD'}
 							>
 								<CloudUploadOutlined />
 								Publish
@@ -329,7 +328,7 @@ const ViewPageAnalysis = () => {
 							tableKey={tableKey}
 							modelType={modelType}
 							encoderData={encoderData}
-                            setEncoderData={setEncoderData}
+							setEncoderData={setEncoderData}
 						/>
 					</TabPane>
 					{/* {exectStart && <TabPane tab="Transformation" key="4">

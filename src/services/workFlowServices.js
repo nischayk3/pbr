@@ -1,7 +1,7 @@
 import { BMS_APP_PYTHON_SERVICE } from '../constants/apiBaseUrl';
 import Service from './AjaxService';
 
-let login_response = JSON.parse(localStorage.getItem('login_details'));
+let login_response = JSON.parse(sessionStorage.getItem('login_details'));
 const request_headers = {
 	'content-type': 'application/json',
 	'x-access-token': login_response !== null ? login_response.token : '',
@@ -14,7 +14,7 @@ export const getCountData = _queryParam => {
 		'content-type': 'application/json',
 		'x-access-token': login_response.token ? login_response.token : '',
 		'resource-name': 'WORKITEMS',
-		username: localStorage.getItem('user')
+		username: sessionStorage.getItem('user')
 	}).then(
 		response => {
 			return response.data;
@@ -31,7 +31,7 @@ export const getTableData = _queryParam => {
 		'content-type': 'application/json',
 		'x-access-token': login_response.token ? login_response.token : '',
 		'resource-name': 'WORKITEMS',
-		// username: localStorage.getItem('user')
+		// username: sessionStorage.getItem('user')
 	}).then(
 		response => {
 			return response.data;
