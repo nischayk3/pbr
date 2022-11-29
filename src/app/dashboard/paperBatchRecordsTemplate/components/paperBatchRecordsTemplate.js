@@ -27,8 +27,8 @@ import {
     Tooltip
 } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
 import ImageMapper from 'react-image-mapper';
+import { useLocation, useParams } from 'react-router-dom';
 
 import {
     ArrowLeftOutlined,
@@ -46,40 +46,33 @@ import {
     DeleteOutlined
 } from '@ant-design/icons';
 
-import {
-    hideLoader,
-    showLoader,
-    showNotification,
-} from '../../../../duck/actions/commonActions';
+import Sider from 'antd/lib/layout/Sider';
+import QueryString from 'query-string';
+import { ImCrop } from 'react-icons/im';
 import { useDispatch, useSelector } from 'react-redux';
 import panelLeftImg from '../../../../assets/images/panel-leftIcon.svg';
 import panelRightImg from '../../../../assets/images/panel-rightIcon.svg';
-import InputField from '../../../../components/InputField/InputField';
-import QueryString from 'query-string';
-import Sider from 'antd/lib/layout/Sider';
-import { ImCrop } from 'react-icons/im';
-import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
-import { loadTemplateInfo, loadMatBatchInfo } from '../../../../duck/actions/pbrAction';
-import TableIdentifier from './tableIdentifier/tableIdentifier'
-import PageIdentifierForm from './pageIdentifierForm'
-import {
-    getBoundingBoxData,
-    savePbrTemplate,
-    processBatchRecord,
-    findParameter,
-    getPbrTemplateData,
-    findTable,
-    workflowTemplateReject
-} from '../../../../services/pbrService';
-import ChangeCoordiantes from '../components/rightSidePanel/changeCoordiantes'
-import ParameterList from '../components/rightSidePanel/parameterList'
 import BreadCrumbWrapper from '../../../../components/BreadCrumbWrapper';
 import Signature from "../../../../components/ElectronicSignature/signature";
+import InputField from '../../../../components/InputField/InputField';
+import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
+import {
+	hideLoader,
+	showLoader,
+	showNotification
+} from '../../../../duck/actions/commonActions';
+import { loadTemplateInfo } from '../../../../duck/actions/pbrAction';
+import {
+	findParameter, getBoundingBoxData, getPbrTemplateData, savePbrTemplate, workflowTemplateReject
+} from '../../../../services/pbrService';
+import ChangeCoordiantes from '../components/rightSidePanel/changeCoordiantes';
+import ParameterList from '../components/rightSidePanel/parameterList';
 import DynamicTableForm from './dynamicTableForm';
-import RejectModal from './rejectModal'
-import WorkflowPreviewModal from './workflowPreviewModal'
+import PageIdentifierForm from './pageIdentifierForm';
+import RejectModal from './rejectModal';
 import './styles.scss';
-import { method } from 'lodash';
+import TableIdentifier from './tableIdentifier/tableIdentifier';
+import WorkflowPreviewModal from './workflowPreviewModal';
 const { Panel } = Collapse;
 const { Option } = Select;
 const { Dragger } = Upload;
@@ -2839,13 +2832,13 @@ function PaperBatchRecordsTemplate() {
                                                                                         <p>{item?.split('.')[0]}</p>
                                                                                     ))}</div>
 
-                                                                                    {/* <MinusCircleOutlined onClick={() => remove(name)} /> */}
-                                                                                </div>
+																					{/* <MinusCircleOutlined onClick={() => remove(name)} /> */}
+																				</div>
 
-                                                                            </div>
+																			</div>
 
-                                                                        </Panel>
-                                                                        // </Space>
+																		</Panel>
+																		// </Space>
 
                                                                     ))}
                                                                 </Collapse>
@@ -2938,15 +2931,15 @@ function PaperBatchRecordsTemplate() {
                                             <RightOutlined className='icon_size' onClick={() => handlePageChange(pageNumber + 1)} />
                                         </div>
 
-                                    </div>
-                                </Col>
+									</div>
+								</Col>
 
-                                <Col
-                                    span={12}
-                                    className='pbrCenterPanelCol pbrCenterBlockRight'
-                                    style={{ justifyContent: params?.fromScreen == "Workflow" ? "" : "right" }}
-                                >
-                                    {/* <div className='drawSnippet'>
+								<Col
+									span={12}
+									className='pbrCenterPanelCol pbrCenterBlockRight'
+									style={{ justifyContent: params?.fromScreen == "Workflow" ? "" : "right" }}
+								>
+									{/* <div className='drawSnippet'>
                                         <EditOutlined />
                                         Draw Snippet
                                     </div> */}
@@ -2980,77 +2973,77 @@ function PaperBatchRecordsTemplate() {
                         </div>
                         <div className='pbrCenterPdfBlock' st>
 
-                            {showRowColIdentifier &&
-                                <TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth}
-                                    triggerPreview={triggerPreview} params={params} triggerUpdate={triggerUpdate} setSideTableData={setSideTableData}
-                                    setTriggerUpdate={setTriggerUpdate} tableActiveKey={tableActiveKey} formTableData={formTableData} setModalData={setModalData} setModalColumns={setModalColumns}
-                                    templateVersion={templateVersion} initialSideTableData={initialSideTableData} pageIdFormValues={pageIdFormValues} pageNumber={pageNumber} />}
+							{showRowColIdentifier &&
+								<TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth}
+									triggerPreview={triggerPreview} params={params} triggerUpdate={triggerUpdate} setSideTableData={setSideTableData}
+									setTriggerUpdate={setTriggerUpdate} tableActiveKey={tableActiveKey} formTableData={formTableData} setModalData={setModalData} setModalColumns={setModalColumns}
+									templateVersion={templateVersion} initialSideTableData={initialSideTableData} pageIdFormValues={pageIdFormValues} pageNumber={pageNumber} />}
 
-                            {/* <DrawAnnotations /> */}
-                            {/* <h3>hello</h3> */}
+							{/* <DrawAnnotations /> */}
+							{/* <h3>hello</h3> */}
 
-                            <div id='drawRectangle'>
-                                <div className='pdfToImgBlock'>
+							<div id='drawRectangle'>
+								<div className='pdfToImgBlock'>
 
-                                    <ImageMapper
-                                        id='imageMApper'
-                                        className='pdfToImageWrapper'
-                                        src={displayImage}
-                                        map={areasMap}
-                                        // onLoad={() => load()}
-                                        onClick={area => clicked(area)}
-                                    />
+									<ImageMapper
+										id='imageMApper'
+										className='pdfToImageWrapper'
+										src={displayImage}
+										map={areasMap}
+										// onLoad={() => load()}
+										onClick={area => clicked(area)}
+									/>
 
-                                </div>
-                            </div>
+								</div>
+							</div>
 
-                        </div>
-                    </div>
-                    <Modal
-                        title='Preview'
-                        visible={isModalVisible}
-                        // style={{height:300,overflowY:"scroll"}}
-                        onOk={handleOk}
-                        onCancel={handleCancel}
-                        footer={null}>
-                        <Table
-                            loading={tableLoading}
-                            className='pbrTemplates-table'
-                            columns={modalColumns}
-                            dataSource={modalData}
-                            pagination={false}
-                            scroll={{ x: 1000, y: 300 }}
-                        />
-                    </Modal>
-                    <RejectModal templateVersion={templateVersion} pageNumber={pageNumber} params={params} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+						</div>
+					</div>
+					<Modal
+						title='Preview'
+						visible={isModalVisible}
+						// style={{height:300,overflowY:"scroll"}}
+						onOk={handleOk}
+						onCancel={handleCancel}
+						footer={null}>
+						<Table
+							loading={tableLoading}
+							className='pbrTemplates-table'
+							columns={modalColumns}
+							dataSource={modalData}
+							pagination={false}
+							scroll={{ x: 1000, y: 300 }}
+						/>
+					</Modal>
+					<RejectModal templateVersion={templateVersion} pageNumber={pageNumber} params={params} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
 
-                </div>
-                <div className='pbrTemplateRight'>
-                    <div className='pbrPanel pbrRightPanel'>
-                        <Sider trigger={null} collapsible collapsed={rightPanelCollapsed}>
-                            <span className='trigger' onClick={toggleRightCollapsed}>
-                                <img src={panelRightImg} className='panelImg' />
-                            </span>
-                            {params?.fromScreen == "Workflow" ? <ParameterList originalResponse={originalResponse} setAreasMap={setAreasMap} areasMap={areasMap} /> :
-                                <ChangeCoordiantes areasMapObject={areasMapObject} params={params} clickedSnippetId={clickedSnippetId} onChangeChart={onChangeChart} />
-                            }
-                        </Sider>
-                    </div>
-                </div>
-            </div>
-            <WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
-            <Signature
-                isPublish={isPublish}
-                handleClose={handleClose}
-                screenName="Pbr Creation"
-                PublishResponse={PublishResponse}
-                appType="PBR"
-                dispId={templateId}
-                version={templateVersion}
-                status={approveReject}
-            />
-        </div>
-    );
+				</div>
+				<div className='pbrTemplateRight'>
+					<div className='pbrPanel pbrRightPanel'>
+						<Sider trigger={null} collapsible collapsed={rightPanelCollapsed}>
+							<span className='trigger' onClick={toggleRightCollapsed}>
+								<img src={panelRightImg} className='panelImg' />
+							</span>
+							{params?.fromScreen == "Workflow" ? <ParameterList originalResponse={originalResponse} setAreasMap={setAreasMap} areasMap={areasMap} /> :
+								<ChangeCoordiantes areasMapObject={areasMapObject} params={params} clickedSnippetId={clickedSnippetId} onChangeChart={onChangeChart} />
+							}
+						</Sider>
+					</div>
+				</div>
+			</div>
+			<WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
+			<Signature
+				isPublish={isPublish}
+				handleClose={handleClose}
+				screenName="Pbr Creation"
+				PublishResponse={PublishResponse}
+				appType="PBR"
+				dispId={templateId}
+				version={templateVersion}
+				status={approveReject}
+			/>
+		</div>
+	);
 }
 
 export default PaperBatchRecordsTemplate;

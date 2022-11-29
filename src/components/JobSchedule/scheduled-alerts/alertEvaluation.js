@@ -6,36 +6,24 @@
  * @Last Changed By - @Mihir
  */
 
-import React, { useState, useEffect } from "react";
-import {
-	Row,
-	Col,
-	Button,
-	Tabs,
-	DatePicker,
-	TimePicker,
-	Radio,
-	Select,
-	Divider,
-	Space,
-	Modal,
-} from "antd";
-import SelectField from "../../SelectField/SelectField";
-import InputField from "../../InputField/InputField";
-import "./styles.scss";
-import moment from "moment";
-import { useDispatch } from "react-redux";
-import {
-	showLoader,
-	hideLoader,
-	showNotification,
-} from "../../../duck/actions/commonActions";
-import { putJob, getJob } from "../../../services/jobScheduleService";
 import {
 	ClockCircleOutlined,
-	ExclamationCircleTwoTone,
+	ExclamationCircleTwoTone
 } from "@ant-design/icons";
+import {
+	Button, Col, DatePicker, Divider, Modal, Radio, Row, Select, Space, Tabs, TimePicker
+} from "antd";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+	hideLoader, showLoader, showNotification
+} from "../../../duck/actions/commonActions";
+import { getJob, putJob } from "../../../services/jobScheduleService";
+import InputField from "../../InputField/InputField";
+import SelectField from "../../SelectField/SelectField";
 import ChartNotify from "./chartNotify";
+import "./styles.scss";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -134,7 +122,7 @@ const alertEvaluation = (props) => {
 	}
 	const getJobs = async (job) => {
 		dispatch(showLoader());
-		let login_response = JSON.parse(localStorage.getItem("login_details"));
+		let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 		let request_headers = {
 			"content-type": "application/json",
 			"x-access-token": login_response.token ? login_response.token : "",
@@ -288,7 +276,7 @@ const alertEvaluation = (props) => {
 		let is_valid = checkValidRequest()
 		if (is_valid) {
 			let req = {};
-			let login_response = JSON.parse(localStorage.getItem("login_details"));
+			let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 
 			let request_headers = {
 				"content-type": "application/json",
@@ -298,8 +286,8 @@ const alertEvaluation = (props) => {
 
 			req["app_data"] = props.name ? props.name : props.appType;
 			req["dag_id"] = " ";
-			req["created_by"] = localStorage.getItem("username")
-				? localStorage.getItem("username")
+			req["created_by"] = sessionStorage.getItem("username")
+				? sessionStorage.getItem("username")
 				: "";
 			req["app_type"] = props.appType;
 			req["app_id"] = props.id;

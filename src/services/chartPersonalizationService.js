@@ -15,7 +15,7 @@ export const getSiteId = (_queryParam) => {
 
 //get chart type
 export const getChartList = (request) => {
-	let login_response = JSON.parse(localStorage.getItem("login_details"));
+	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 
 	const headers = {
 		"content-type": "application/json",
@@ -27,41 +27,6 @@ export const getChartList = (request) => {
 		request,
 		headers
 	).then(
-		(response) => {
-			return response.data;
-		},
-		(error) => {
-			return error.response.data;
-		}
-	);
-};
-
-//get chart obj
-export const getChartObj = (request) => {
-	return Service.get(BMS_APP_PYTHON_SERVICE + "/chart", request).then(
-		(response) => {
-			return response.data;
-		},
-		(error) => {
-			return error;
-		}
-	);
-};
-
-//put chart obj
-export const putChartObj = (request) => {
-	return Service.put(BMS_APP_PYTHON_SERVICE + "/chart", request).then(
-		(response) => {
-			return response.data;
-		},
-		(error) => {
-			return error.response.data;
-		}
-	);
-};
-
-export const viewBatchData = (request) => {
-	return Service.post(BMS_APP_PYTHON_SERVICE + "/views", request).then(
 		(response) => {
 			return response.data;
 		},
@@ -85,7 +50,7 @@ export const getRuleList = (request) => {
 
 //get chart plot data
 export const postChartPlotData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem("login_details"));
+	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
@@ -107,7 +72,7 @@ export const postChartPlotData = (_queryParam) => {
 
 //save chart data
 export const saveChartPlotData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem("login_details"));
+	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
@@ -129,7 +94,7 @@ export const saveChartPlotData = (_queryParam) => {
 
 //get chart data
 export const getChartPlotData = (_queryParam) => {
-	let login_response = JSON.parse(localStorage.getItem("login_details"));
+	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",

@@ -20,7 +20,7 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 
 	const handleChange = (info) => {
 		const nextState = {};
-		console.log("infooooooooooo", info);
+
 		if (info.file.status === "uploading") {
 			setFileList(info.fileList)
 			nextState.fileList = [info.file];

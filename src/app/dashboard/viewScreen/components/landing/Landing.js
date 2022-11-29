@@ -171,7 +171,7 @@ export default function Landing() {
 					background:
 						"linear-gradient(180deg, rgba(224, 145, 15, 0.35) 0%, rgba(255, 208, 123, 0.42) 100%)",
 				}}
-				title={`Howdy ${localStorage.getItem("username")},`}
+				title={`Howdy ${sessionStorage.getItem("username")},`}
 				description="Let’s get configuring some Views!"
 				source={illustrations}
 				sourceClass="geanealogy-image"

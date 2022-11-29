@@ -261,7 +261,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 	function confirm(File_id) {
 		let req = {
 			fileid: parseInt(File_id),
-			userid: localStorage.getItem("username")
+			userid: sessionStorage.getItem("username")
 		};
 		deleteAdHocFile(req).then((res) => {
 			/* istanbul ignore else  */
@@ -335,7 +335,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			formData.append("created_on", today.toISOString().slice(0, 10));
 			formData.append("file_name", info.file.originFileObj);
 			formData.append("upload_reason", "test_reason");
-			formData.append("username", localStorage.getItem("username"));
+			formData.append("username", sessionStorage.getItem("username"));
 			adHocFileUpload(formData).then((res) => {
 				/* istanbul ignore else  */
 				if (res.Status === 202) {
