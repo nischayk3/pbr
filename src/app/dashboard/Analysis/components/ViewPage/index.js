@@ -13,6 +13,7 @@ import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import Signature from "../../../../../components/ElectronicSignature/signature";
 import ModalComponent from "../../../../../components/Modal/Modal";
 import { getAnalyticsViewData } from "../../../../../duck/actions/analyticsView";
+import { getResults } from "../../../../../services/analyticsService";
 import {
 	hideLoader, showLoader, showNotification
 } from "../../../../../duck/actions/commonActions";
@@ -23,6 +24,7 @@ import ModelData from "./ModelData";
 import Preprocess from "./preproccessing/Preprocess";
 import Results from "./results/Results";
 import Transformation from "./transformations";
+import ModelExcecute from './ModelExcecute';
 
 const ViewPageAnalysis = () => {
 	const [isPublish, setIsPublish] = useState(false);
@@ -37,6 +39,9 @@ const ViewPageAnalysis = () => {
 	const [exectLaterDate, setExectLaterDate] = useState("");
 	const [finalModelJson, setFinalModelJson] = useState({});
 	const [editFinalJson, setEditFinalModelJson] = useState();
+	const [resultsData, setResultsData] = useState([]);
+	const [executedModel, setExecutedModal] = useState(false);
+	const [results, setResults] = useState(false);
 	const modelType = useRef('');
 
 	const tabChange = (key) => {
@@ -57,6 +62,7 @@ const ViewPageAnalysis = () => {
 					onClick: () => {
 						const date = moment().format("YYYY-MM-DD");
 						onExecuteClick(date);
+						setExecutedModal(true)
 						setExectLaterDate("");
 					},
 				},
@@ -139,7 +145,6 @@ const ViewPageAnalysis = () => {
 			scheduled_start: date,
 			scheduled_end: date,
 		};
-		dispatch(showLoader());
 		const apiResponse = await putJob(reqBody, request_headers);
 		if (apiResponse.Status === 200) {
 			dispatch(hideLoader());
@@ -187,9 +192,40 @@ const ViewPageAnalysis = () => {
 		}
 	}
 
+	const checkStatus = (bool) => {
+		let flag = false;
+		if (bool === 'Pending') {
+			flag = false
+		} else if (bool === 'Not Executed') {
+			flag = true
+		} else {
+			flag = true
+		}
+
+		return flag
+	}
+
+	const getResultFunc = async () => {
+		const reqBody = {
+		  pipelineid: id,
+		};
+		const apiResponse = await getResults(reqBody);
+		if (apiResponse.statuscode === 200) {
+			dispatch(hideLoader());
+			if(checkStatus(apiResponse.data.run_status)) {
+				setExecutedModal(false);
+			}
+		  setResultsData(apiResponse.data);
+		} else {
+		  dispatch(hideLoader());
+		  showNotification("error", "Unable to get results");
+		}
+	  };
+
 	useEffect(() => {
 		if (id) {
 			getPipelineList();
+			getResultFunc()
 		}
 	}, []);
 
@@ -299,11 +335,9 @@ const ViewPageAnalysis = () => {
 					{/* {exectStart && <TabPane tab="Transformation" key="4">
 						<Transformation finalModelJson={finalModelJson} editFinalJson={editFinalJson} tableKey={tableKey} />
 					</TabPane>} */}
-					{((executed && !exectLater) || (editFinalJson?.pipeline_data[0]?.variable_mapping?.length)) && (
-						<TabPane tab="Results" key="5">
-							<Results tablekey={tableKey} modelType={modelType} />
-						</TabPane>
-					)}
+					{resultsData?.run_status !== 'Pending' && resultsData?.run_status !== 'Not Executed' && <TabPane tab="Results" key="5">
+							<Results tablekey={tableKey} modelType={modelType} resultsData={resultsData} />
+						</TabPane>}
 				</Tabs>
 			</div>
 			<Signature
@@ -316,9 +350,9 @@ const ViewPageAnalysis = () => {
 				// version={postChartData.data && postChartData.data[0].chart_version}
 				status={approveReject}
 			/>
-			{/* <ModalComponent isModalVisible={exectStart} closable={false} centered>
-        <ModelExcecute />
-      </ModalComponent> */}
+			{executedModel && <ModalComponent   isModalVisible={executedModel} closable={false} centered>
+                <ModelExcecute getResultFunc={getResultFunc} resultsData={resultsData} results={results} />
+            </ModalComponent>}
 			<ModalComponent
 				title="Schedule Execution"
 				isModalVisible={exectLater}

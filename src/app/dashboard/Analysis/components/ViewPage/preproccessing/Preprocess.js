@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import "./preprocess.scss";
-import { Row, Col, Button, Table, Select, Skeleton } from "antd";
+import { Row, Col, Button, Table, Select, Skeleton, Progress } from "antd";
 import {
   getPreprocessing,
   savePreprocessing,
@@ -14,6 +14,7 @@ import {
 } from "../../../../../../duck/actions/commonActions";
 import { useSelector } from "react-redux";
 import { getAnalyticsViewData } from "../../../../../../duck/actions/analyticsView";
+import ModalComponent from "../../../../../../components/Modal/Modal";
 
 const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
   const location = useLocation();
@@ -21,6 +22,9 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
   const [preprocessData, setPreprocessData] = useState([]);
   const [selectedValues, setSelectedValues] = useState();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [progressBarPercentage, setProgressbarPercentage] = useState(10)
+  const progress = useRef(10);
+  const [showProgressBar, setShowProgressBar] = useState(false)
   const tempFilterKeys = useRef();
   const [filterData, setFilterData] = useState([]);
   const selectedViewData = useSelector(
@@ -118,6 +122,26 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
     ],
   };
 
+  const increaseProgressPer = () => {
+    console.log("inside")
+    if (progressBarPercentage !== 90) {
+
+      progress.current = progress.current + 10
+      setProgressbarPercentage(progress.current)
+    }
+  }
+
+  const counterValid = progressBarPercentage < 90;
+  useEffect(() => {
+    if (showProgressBar) {
+      const intervalId = counterValid && setInterval(() => 
+      setProgressbarPercentage((t) => t + 10)
+      , 2000);
+      return () => clearInterval(intervalId)
+    }
+  }, [counterValid, showProgressBar]);
+
+ 
   const onSaveClick = async (edit) => {
     const is_same = (tempFilterKeys?.current?.length === selectedRowKeys?.length) && tempFilterKeys?.current?.every(function(element, index) {
       return element === selectedRowKeys[index]; 
@@ -126,7 +150,8 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
     if (is_same) {
       setTableKey("2");
     } else {
-    dispatch(showLoader());
+      setShowProgressBar(true);
+    // dispatch(showLoader());
     const req = {
       analysis_preprocessing: {
         batch_filter: selectedRowKeys,
@@ -141,18 +166,22 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
     const apiResponse = await savePreprocessing(req);
     const data = await apiResponse;
     if (apiResponse.Status === 200) {
-      dispatch(hideLoader());
       dispatch(getAnalyticsViewData(newViewData));
       setModelData(data.html_string);
+      setShowProgressBar(false);
+      setProgressbarPercentage(10)
       if (edit) {
         setTableKey("2");
       }
     } else {
-      dispatch(hideLoader());
+      setShowProgressBar(false);
+      setProgressbarPercentage(10)
       dispatch(showNotification("error", "Unable to save preprocessing data"));
       }
     }
   };
+
+  
 
   useEffect(() => {
     if (editFinalJson?.input_data?.batch_filter) {
@@ -164,8 +193,13 @@ const Preprocess = ({ setModelData, setTableKey, editFinalJson }) => {
     getPreprocessingData();
   }, [editFinalJson]);
 
+
   return (
     <div className="preprocess-container">
+      {showProgressBar && <ModalComponent isModalVisible={showProgressBar} closable={false} centered={true} >
+        <p>Processing Data. Please wait ..</p>
+        <Progress percent={progressBarPercentage} />
+      </ModalComponent>}
      {preprocessData && preprocessData.length ? <><Row className="col-bottom save-button">
         <Col>
           <Button
