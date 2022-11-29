@@ -1,24 +1,19 @@
 import { Collapse, Row, Col, Table } from "antd";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import "./results.scss";
-import { getResults } from "../../../../../../services/analyticsService";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  hideLoader,
-  showLoader,
-  showNotification,
-} from "../../../../../../duck/actions/commonActions";
+import { ArrowRightOutlined } from '@ant-design/icons';
+import { MDH_AIRFLOW } from "../../../../../../constants/apiBaseUrl";
 import Plot from "react-plotly.js";
 const { Panel } = Collapse;
 
-const Results = ({tablekey, modelType}) => {
+const Results = ({tablekey, resultsData}) => {
   const selectedViewData = useSelector(
     (state) => state.analyticsReducer.viewData
   );
   const { id } = useParams();
   const dispatch = useDispatch();
-  const [resultsData, setResultsData] = useState();
 
 
   let columns = [];
@@ -38,31 +33,11 @@ const Results = ({tablekey, modelType}) => {
     });
   });
 
-  const getResultFunc = async () => {
-    const reqBody = {
-      pipelineid: id,
-    };
-    dispatch(showLoader());
-    const apiResponse = await getResults(reqBody);
-    if (apiResponse.statuscode === 200) {
-      dispatch(hideLoader());
-      setResultsData(apiResponse.data);
-    } else {
-      dispatch(hideLoader());
-      showNotification("error", "Unable to get results");
-    }
-  };
-
-
-  useEffect(() => {
-    if (tablekey === '5') {
-      getResultFunc();
-    }
-  }, [tablekey]);
+  
 
   return (
     <div className="result_container">
-      {resultsData?.chart && resultsData?.chart.length && (
+      {(resultsData?.run_status !== 'Failed') && resultsData?.chart && resultsData?.chart.length && (
         <Collapse expandIconPosition="right" accordion>
           <Panel
             header={
@@ -104,6 +79,13 @@ const Results = ({tablekey, modelType}) => {
             </div>
           </Panel>
         </Collapse>
+      )}
+      {(resultsData?.run_status === 'Failed') && (
+        <div>
+          <h3>Model Execution Failed</h3>
+          <p>Failure Reason : {resultsData?.res_message || '-'}</p>
+          <a className="view-link" href={MDH_AIRFLOW} target="_blank">View logs</a> <span className='alert-arrow'><ArrowRightOutlined /></span>
+          </div>
       )}
     </div>
   );
