@@ -182,7 +182,8 @@ describe("Renders chart personalization", () => {
 				cy.log("Entering filter data");
 				cy.get("#show-last-number").type(2);
 				cy.get("#show-last-duration").click();
-				cy.get(".ant-select-item-option-content").contains("days").click();
+				cy.get('[title="Days"]').click();
+				//cy.get(".ant-select-item-option-content").contains("days").click();
 
 				cy.wait(500);
 				cy.log("Clearing filters");
@@ -192,7 +193,8 @@ describe("Renders chart personalization", () => {
 				cy.log("Entering filter data");
 				cy.get("#show-last-number").type(2);
 				cy.get("#show-last-duration").click();
-				cy.get(".ant-select-item-option-content").contains("days").click();
+				cy.get('[title="Days"]').click();
+				//cy.get(".ant-select-item-option-content").contains("days").click();
 
 				cy.log("Applying filters");
 				cy.get(".apply").first().click();
@@ -222,9 +224,10 @@ describe("Renders chart personalization", () => {
 		cy.wait(500);
 		cy.log("Selecting Chart Type");
 		cy.get(".ant-select-selector").eq(2).click();
-		cy.get(".ant-select-item-option-content")
-			.contains("Process Control")
-			.click();
+		cy.get('[title="Process Control"]').click();
+		// cy.get(".ant-select-item-option-content")
+		// 	.contains("Process Control")
+		// 	.click();
 
 		cy.wait(500);
 		cy.log("Selecting X-axis");
@@ -234,9 +237,7 @@ describe("Renders chart personalization", () => {
 		cy.wait(500);
 		cy.log("Selecting Y-axis");
 		cy.get(".ant-select-selector").eq(4).click();
-		cy.get(
-			'[title="NORMAL_MUL_HEAVY"] > .ant-select-item-option-content'
-		).click();
+		cy.get('[title="NORMALMUL_HEAVY"]').click();
 
 		cy.intercept("POST", "/services/v1/chart-object", {
 			fixture: "chartObjectCreate.json",
@@ -335,7 +336,7 @@ describe("Renders chart personalization", () => {
 		cy.wait(1000);
 		cy.log("Changing marker shape");
 		cy.get(".figure-container .select_field").eq(0).click();
-		cy.get('[title="triangle-up"] > .ant-select-item-option-content').click();
+		cy.get('[title="triangle-up"]').click();
 
 		cy.log("Changing marker color");
 		cy.get('.figure-container .figure-inputs .container input[type="text"]')
@@ -444,10 +445,10 @@ describe("Renders chart personalization", () => {
 			".ant-collapse-content-box > :nth-child(1) > .ant-col > .select_field > .ant-select > .ant-select-selector > .ant-select-selection-item"
 		).click();
 		cy.get(
-			'[title="NORMAL_MUL_HEAVY"] > .ant-select-item-option-content'
+			'[title="NORMALMUL_HEAVY"] > .ant-select-item-option-content'
 		).click({ multiple: true, force: true });
 		cy.get(".ant-select-item-option-active")
-			.contains("NORMAL_MUL_HEAVY")
+			.contains("NORMALMUL_HEAVY")
 			.click({ force: true });
 		cy.get(
 			":nth-child(2) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
@@ -480,10 +481,10 @@ describe("Renders chart personalization", () => {
 			".ant-collapse-content-box > :nth-child(1) > .ant-col > .select_field > .ant-select > .ant-select-selector > .ant-select-selection-item"
 		).click();
 		cy.get(
-			'[title="NORMAL_MUL_HEAVY"] > .ant-select-item-option-content'
+			'[title="NORMALMUL_HEAVY"] > .ant-select-item-option-content'
 		).click({ multiple: true, force: true });
 		cy.get(".ant-select-item-option-active")
-			.contains("NORMAL_MUL_HEAVY")
+			.contains("NORMALMUL_HEAVY")
 			.click({ force: true });
 		cy.get(
 			":nth-child(2) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"

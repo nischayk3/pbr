@@ -170,8 +170,8 @@ const ParameterTable = ({
 						<Option key="4" value="First">
 							First
 						</Option>
-						<Option key="5" value="last">
-							last
+						<Option key="5" value="Last">
+							Last
 						</Option>
 					</Select>
 				);
