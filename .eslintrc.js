@@ -1,7 +1,7 @@
-module.exports = {
-	parser: "babel-eslint",
-	parserOptions: {
-		sourceType: "module",
-		allowImportExportEverywhere: true,
-	},
-};
+// module.exports = {
+// 	parser: "babel-eslint",
+// 	parserOptions: {
+// 		sourceType: "module",
+// 		allowImportExportEverywhere: true,
+// 	},
+// };
