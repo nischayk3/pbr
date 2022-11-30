@@ -14,7 +14,7 @@ export default function Sharing(props) {
 	const [shareList, setShareList] = useState([])
 	const [emailList, setEmailList] = useState([])
 	const [copy, setCopy] = useState(window.location.href)
-	const currentUser = sessionStorage.getItem("user")
+	const currentUser = localStorage.getItem("user")
 	const dispatch = useDispatch()
 
 	useEffect(() => {

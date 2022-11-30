@@ -5,10 +5,10 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe("Sharing", () => {
 	beforeEach(() => {
 		cy.viewport(1280, 720)
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		sessionStorage.setItem("loginwith", "WITH_AD");
-		sessionStorage.setItem(
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,

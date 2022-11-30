@@ -244,7 +244,7 @@ const pbrTableUpdate = () => {
 		event.preventDefault();
 		let req = {
 			id: [Number(params.id)],
-			changed_by: sessionStorage.getItem('user'),
+			changed_by: localStorage.getItem('user'),
 			recorded_date: null,
 			recorded_time: null,
 			snippet_value: null,

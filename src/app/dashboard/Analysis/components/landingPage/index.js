@@ -143,7 +143,7 @@ const LandingPage = () => {
 					<Card bordered={false}>
 						<div className="card-body-div">
 							<div className="text-descp">
-								<h2>Howdy {sessionStorage.getItem("username")},</h2>
+								<h2>Howdy {localStorage.getItem("username")},</h2>
 								<p>Let's get to build some pipelines today!</p>
 							</div>
 							<img src={Banner} alt="banner" />

@@ -196,7 +196,7 @@ export default function landingPage(props) {
 					background:
 						"linear-gradient(180deg, rgba(199, 144, 129, 0.15) 0%, rgba(223, 165, 121, 0.56) 100%)",
 				}}
-				title={`Howdy ${sessionStorage.getItem("username")},`}
+				title={`Howdy ${localStorage.getItem("username")},`}
 				description={`Time to draw up some charts? Let's go!`}
 				source={illustrations}
 				sourceClass="dashboard-image"

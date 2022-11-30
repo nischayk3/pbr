@@ -2,12 +2,12 @@ import { BMS_APP_PYTHON_SERVICE, GRAFANA_API } from "../constants/apiBaseUrl";
 import Service from "./AjaxService";
 
 export const getPipelineList = (_queryParam) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
 		"resource-name": "ANALYTICS",
-		username: sessionStorage.getItem("user"),
+		username: localStorage.getItem("user"),
 	};
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/pipeline-list",
@@ -24,12 +24,12 @@ export const getPipelineList = (_queryParam) => {
 };
 
 export const getResults = (_queryParam) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
 		"resource-name": "ANALYTICS",
-		username: sessionStorage.getItem("user"),
+		username: localStorage.getItem("user"),
 	};
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/analysis-result",
@@ -46,7 +46,7 @@ export const getResults = (_queryParam) => {
 };
 
 export const getViewNodeDetails = (query_param) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
@@ -68,7 +68,7 @@ export const getViewNodeDetails = (query_param) => {
 
 //save pipeline data
 export const putPipelineObj = (request) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
@@ -89,7 +89,7 @@ export const putPipelineObj = (request) => {
 };
 
 export const getPreprocessing = (request) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
@@ -111,7 +111,7 @@ export const getPreprocessing = (request) => {
 
 //save pipeline data
 export const savePreprocessing = (request) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
@@ -132,12 +132,12 @@ export const savePreprocessing = (request) => {
 };
 
 export const getViewList = (_queryParam) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
 		"resource-name": "VIEW",
-		username: sessionStorage.getItem("user"),
+		username: localStorage.getItem("user"),
 	};
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/views-list",
@@ -154,12 +154,12 @@ export const getViewList = (_queryParam) => {
 };
 
 export const getPipeline = (_queryParam) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
 		"resource-name": "VIEW",
-		username: sessionStorage.getItem("user"),
+		username: localStorage.getItem("user"),
 	};
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/get-pipeline",
@@ -176,12 +176,12 @@ export const getPipeline = (_queryParam) => {
 };
 
 export const getCrossBatch = (_queryParam) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
 		"resource-name": "ANALYTICS",
-		username: sessionStorage.getItem("user"),
+		username: localStorage.getItem("user"),
 	};
 	return Service.post(GRAFANA_API + "/cross_batch", _queryParam, headers).then(
 		(response) => {
@@ -194,7 +194,7 @@ export const getCrossBatch = (_queryParam) => {
 };
 
 export const getAnalyticsNodes = (request) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
@@ -215,7 +215,7 @@ export const getAnalyticsNodes = (request) => {
 };
 
 export const getAnalyticsModel = (request) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
@@ -237,7 +237,7 @@ export const getAnalyticsModel = (request) => {
 
 
 export const getAnalyticsTransformation = (request) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
@@ -259,12 +259,12 @@ export const getAnalyticsTransformation = (request) => {
 
 
 export const getHyperParameters = (_queryParam) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",
 		"resource-name": "VIEW",
-		username: sessionStorage.getItem("user"),
+		username: localStorage.getItem("user"),
 	};
 	return Service.get(
 		BMS_APP_PYTHON_SERVICE + "/analysis-hyperparameters",
