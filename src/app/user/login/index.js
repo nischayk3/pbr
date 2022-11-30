@@ -32,11 +32,11 @@ const Login = () => {
 	useEffect(() => {
 		if (localStorage.getItem("test_enabled") == null) {
 			localStorage.removeItem('login_details');
-			localStorage.removeItem('user');
+			localStorage.removeItem('username');
 			localStorage.removeItem('loginwith');
 		}
 		if (JSON.parse(localStorage.getItem("isRemember"))) {
-			setEmail(localStorage.getItem("username"))
+			setEmail(localStorage.getItem("user"))
 			setIsChecked(true)
 		} else {
 			setEmail("")
@@ -92,8 +92,7 @@ const Login = () => {
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
 				if (isChecked) {
 					localStorage.setItem("isRemember", isChecked);
-					localStorage.setItem("username", data.email_id.replaceAll("^\"|\"$", ""));
-					setEmail(localStorage.getItem("username"))
+					setEmail(localStorage.getItem("user"))
 					setIsChecked(true)
 				} else {
 					localStorage.setItem("isRemember", false);
@@ -134,8 +133,7 @@ const Login = () => {
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
 				if (isChecked) {
 					localStorage.setItem("isRemember", isChecked);
-					localStorage.setItem("username", data.email_id.replaceAll("^\"|\"$", ""));
-					setEmail(localStorage.getItem("username"))
+					setEmail(localStorage.getItem("user"))
 					setIsChecked(true)
 				} else {
 					localStorage.setItem("isRemember", false);

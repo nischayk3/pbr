@@ -3,6 +3,25 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 });
 
 describe('Manual data upload', () => {
+	afterEach(() => {
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem(
+			"login_details",
+			JSON.stringify({
+				ad_role: false,
+				email_id: "fahad.siddiqui@mareana.com",
+				firstname: "Fahad",
+				lastname: "siddiqui",
+				mdh_role: "USER",
+				screen_set: "1000_USER",
+				token:
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
+			})
+		);
+	});
+
 	beforeEach(() => {
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
@@ -20,19 +39,15 @@ describe('Manual data upload', () => {
 					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
 			})
 		);
-	})
+	});
+
 
 	it("visiting Manual data upload screen", () => {
-
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/manual_data_upload')
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/manual_data_upload')
-
-
 	});
-
-
 	it("download template", () => {
 		cy.get('.ant-btn > a').click();
 		cy.get('.ant-btn-primary > :nth-child(1)').click();
@@ -84,36 +99,12 @@ describe('Manual data upload', () => {
 		cy.wait(2000)
 		cy.get('.ant-space-item').eq(0).click()
 	});
-	// if (localStorage.getItem("loginwith") != 'WITH_AD') {
-	//   it("digital signature modal with ad input", () => {
-	//     // cy.get(':nth-child(1) > .ant-input').clear();
-	//     // cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
-	//     cy.get(':nth-child(2) > .ant-input').clear();
-	//     cy.get(':nth-child(2) > .ant-input').type('Iqbal@110192');
-	//     cy.get('.signature-modal > #auth_without_ad').click();
-	//     cy.wait(3000)
-	//   });
-	// }
+
 	if (localStorage.getItem("loginwith") != 'WITH_AD')
 		it("Reopen digital signature popup", () => {
 			cy.wait(2000)
 			cy.get('.ant-space-item').eq(0).click()
-			localStorage.setItem("test_enabled", true);
-			localStorage.setItem("user", "fahad.siddiqui@mareana.com");
-			localStorage.setItem("loginwith", "WITH_AD");
-			localStorage.setItem(
-				"login_details",
-				JSON.stringify({
-					ad_role: false,
-					email_id: "fahad.siddiqui@mareana.com",
-					firstname: "Fahad",
-					lastname: "siddiqui",
-					mdh_role: "USER",
-					screen_set: "1000_USER",
-					token:
-						"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
-				})
-			);
+
 			cy.wait(2000)
 		});
 	if (localStorage.getItem("loginwith") == 'WITH_AD')
