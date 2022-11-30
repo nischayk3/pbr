@@ -50,8 +50,6 @@ describe("Render View Creation Load Error Log", () => {
 			cy.log('Verify New View Creation URL ')
 			cy.url().should('eq', url + '/#/dashboard/view_creation/0')
 		})
-
-
 	})
 
 	it('Molecule Error Check', () => {
@@ -103,6 +101,7 @@ describe("Render View Creation Load", () => {
 
 
 	it('View Summary Load', () => {
+		cy.wait(2000)
 		cy.log('Verift View Id')
 		cy.get('.view-summary_lable > :nth-child(1) > :nth-child(1)').should("have.text", "View ID : ")
 		cy.get('.view-summary_lable > :nth-child(1) > :nth-child(2)').should("have.text", "V348")
@@ -197,6 +196,7 @@ describe("Render View Creation Page", () => {
 
 	it('Load View Landing Page Correctly', () => {
 		cy.log('Create a New View Creation')
+		cy.wait(2000)
 		cy.get('.create-new > .anticon > svg').click({ force: true });
 		cy.intercept('POST', '**/molecules3', { fixture: 'listMolecule.json' }).as('listMolecule')
 	})
@@ -206,7 +206,6 @@ describe("Render View Creation Page", () => {
 		cy.wait(2000)
 		cy.log('Verify New View Creation URL ')
 		cy.url().should('eq', url + '/#/dashboard/view_creation/0')
-
 	})
 
 	it('Render Parameter Lookup', () => {
