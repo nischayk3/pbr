@@ -17,7 +17,6 @@ import {
 import { getAuthenticate, getAuthenticateWithLdap, getAuthenticateWithoutAD } from "../../services/loginService";
 import "./styles.scss";
 
-
 const { Option } = Select;
 
 const Signature = (props) => {
@@ -241,7 +240,6 @@ const Signature = (props) => {
 								<Button
 									className="custom-secondary-btn"
 									key="3"
-									disabled={username == '' || password == ''}
 									onClick={() => authenticateUser()}
 								>
 									Authenticate with AD
@@ -283,6 +281,7 @@ const Signature = (props) => {
 							<Input
 								type="password"
 								value={password}
+								disabled={loginStatus === "WITH_AD"}
 								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</div>
