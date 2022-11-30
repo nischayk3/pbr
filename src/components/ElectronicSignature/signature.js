@@ -36,8 +36,8 @@ const Signature = (props) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const loginDetails = JSON.parse(sessionStorage.getItem("login_details"));
-		const status = sessionStorage.getItem("loginwith")
+		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
+		const status = localStorage.getItem("loginwith")
 		if (status) {
 			setLoginStatus(status);
 		}
@@ -142,7 +142,7 @@ const Signature = (props) => {
 		req["screen"] = props.screenName;
 		req["first_name"] = "first_name";
 		req["last_name"] = "last_name";
-		let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
 		let headers = {
 			"content-type": "application/json",
 			"resource-name":
@@ -161,7 +161,7 @@ const Signature = (props) => {
 				setIsAuth('')
 				let reqs = {};
 				let req1 = {};
-				let user_details = JSON.parse(sessionStorage.getItem("login_details"));
+				let user_details = JSON.parse(localStorage.getItem("login_details"));
 				let user = user_details["email_id"] ? user_details["email_id"] : "";
 
 				reqs["application_type"] = props.appType;

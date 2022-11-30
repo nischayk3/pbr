@@ -135,7 +135,7 @@ function PbrReviewer() {
 	/* istanbul ignore next */
 	const eSignId = async (esign) => {
 		dispatch(showLoader());
-		let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		let req = {
 			changed_by: login_response?.email_id,
 			id: arr,

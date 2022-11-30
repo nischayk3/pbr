@@ -33,7 +33,7 @@ function ReportGeneratorForm(props) {
 	);
 	const unload = (ReportData) => {
 
-		let user_details = sessionStorage.getItem('username')
+		let user_details = localStorage.getItem('username')
 		let user = user_details ? user_details : ''
 		setReportId(ReportData['rep_disp_id'] ? ReportData['rep_disp_id'] : '')
 		setReportName(ReportData['rep_name'] ? ReportData['rep_name'] : '')

@@ -9,7 +9,7 @@ export const msalConfig = {
 		redirectUri: "https://bms-cpvdev.mareana.com/#/user/login",
 	},
 	cache: {
-		cacheLocation: "sessionStorage", // This configures where your cache will be stored
+		cacheLocation: "localStorage", // This configures where your cache will be stored
 		storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
 	},
 };
@@ -25,7 +25,7 @@ export const msalConfig = {
 // };
 
 export const getAuthorisedPermission = (request, resource) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 
 	const headers = {
 		"content-type": "application/json",

@@ -379,7 +379,7 @@ export default function ReportLanding(props) {
 							background:
 								"linear-gradient(180deg, rgba(139, 254, 197, 0.53) 0%, rgba(119, 227, 233, 0.49) 100%)",
 						}}
-						title={`Howdy ${sessionStorage.getItem("username")},`}
+						title={`Howdy ${localStorage.getItem("username")},`}
 						description="Let's get designing some report templates!"
 						source={illustrations}
 						sourceClass="dashboard-landing"

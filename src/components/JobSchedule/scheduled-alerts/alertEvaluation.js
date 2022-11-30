@@ -122,7 +122,7 @@ const alertEvaluation = (props) => {
 	}
 	const getJobs = async (job) => {
 		dispatch(showLoader());
-		let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
 		let request_headers = {
 			"content-type": "application/json",
 			"x-access-token": login_response.token ? login_response.token : "",
@@ -276,7 +276,7 @@ const alertEvaluation = (props) => {
 		let is_valid = checkValidRequest()
 		if (is_valid) {
 			let req = {};
-			let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+			let login_response = JSON.parse(localStorage.getItem("login_details"));
 
 			let request_headers = {
 				"content-type": "application/json",
@@ -286,8 +286,8 @@ const alertEvaluation = (props) => {
 
 			req["app_data"] = props.name ? props.name : props.appType;
 			req["dag_id"] = " ";
-			req["created_by"] = sessionStorage.getItem("username")
-				? sessionStorage.getItem("username")
+			req["created_by"] = localStorage.getItem("username")
+				? localStorage.getItem("username")
 				: "";
 			req["app_type"] = props.appType;
 			req["app_id"] = props.id;

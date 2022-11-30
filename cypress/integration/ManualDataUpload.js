@@ -4,10 +4,10 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 describe('Manual data upload', () => {
 	beforeEach(() => {
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		sessionStorage.setItem("loginwith", "WITH_AD");
-		sessionStorage.setItem(
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,
@@ -91,7 +91,7 @@ describe('Manual data upload', () => {
 		cy.wait(2000)
 		cy.get('.ant-space-item').eq(0).click()
 	});
-	// if (sessionStorage.getItem("loginwith") != 'WITH_AD') {
+	// if (localStorage.getItem("loginwith") != 'WITH_AD') {
 	//   it("digital signature modal with ad input", () => {
 	//     // cy.get(':nth-child(1) > .ant-input').clear();
 	//     // cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
@@ -101,12 +101,12 @@ describe('Manual data upload', () => {
 	//     cy.wait(3000)
 	//   });
 	// }
-	if (sessionStorage.getItem("loginwith") != 'WITH_AD')
+	if (localStorage.getItem("loginwith") != 'WITH_AD')
 		it("Reopen digital signature popup", () => {
 			cy.wait(2000)
 			cy.get('.ant-space-item').eq(0).click()
 		});
-	if (sessionStorage.getItem("loginwith") == 'WITH_AD')
+	if (localStorage.getItem("loginwith") == 'WITH_AD')
 		it("digital signature modal without ad input", () => {
 			// cy.get(':nth-child(1) > .ant-input').clear();
 			// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');

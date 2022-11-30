@@ -64,7 +64,7 @@ const ViewChart = (props, ref) => {
 	}, [props.dashboardName]);
 
 	const getChartData = (chartId, payload = {}) => {
-		let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		let req = { chartId: chartId, ...payload };
 		let headers = {
 			'content-type': 'application/json',

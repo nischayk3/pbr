@@ -30,8 +30,10 @@ const Login = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	useEffect(() => {
-		if (sessionStorage.getItem("test_enabled") == null) {
-			sessionStorage.clear()
+		if (localStorage.getItem("test_enabled") == null) {
+			localStorage.removeItem('login_details');
+			localStorage.removeItem('user');
+			localStorage.removeItem('loginwith');
 		}
 		if (JSON.parse(localStorage.getItem("isRemember"))) {
 			setEmail(localStorage.getItem("username"))
@@ -56,11 +58,11 @@ const Login = () => {
 	};
 
 	const onLogin = async () => {
-		if (sessionStorage.getItem("login_details")) {
+		if (localStorage.getItem("login_details")) {
 			history.push("/dashboard/workspace");
 			dispatch(showNotification("success", "Logged In Success"));
 		} else {
-			if (sessionStorage.getItem("test_enabled")) {
+			if (localStorage.getItem("test_enabled")) {
 				window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
 			} else {
 				window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
@@ -82,10 +84,11 @@ const Login = () => {
 			let data = res["token"];
 			if (data) {
 				dispatch(sendLoginDetails(data));
-				sessionStorage.setItem("login_details", JSON.stringify(data));
-				sessionStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
-				sessionStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", "") : data.email_id.replaceAll("^\"|\"$", ""));
-				sessionStorage.setItem("loginwith", 'WITHOUT_AD')
+				localStorage.setItem("login_details", JSON.stringify(data));
+				localStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
+				localStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", "") : data.email_id.replaceAll("^\"|\"$", ""));
+				localStorage.setItem("loginwith", 'WITHOUT_AD')
+
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
 				if (isChecked) {
 					localStorage.setItem("isRemember", isChecked);
@@ -124,10 +127,10 @@ const Login = () => {
 			let data = res["token"];
 			if (data) {
 				dispatch(sendLoginDetails(data));
-				sessionStorage.setItem("login_details", JSON.stringify(data));
-				sessionStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
-				sessionStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", "") : data.email_id.replaceAll("^\"|\"$", ""));
-				sessionStorage.setItem("loginwith", 'WITH_LDAP')
+				localStorage.setItem("login_details", JSON.stringify(data));
+				localStorage.setItem("user", data.email_id.replaceAll("^\"|\"$", ""));
+				localStorage.setItem("username", data?.firstname ? data.firstname.replaceAll("^\"|\"$", "") : data.email_id.replaceAll("^\"|\"$", ""));
+				localStorage.setItem("loginwith", 'WITH_LDAP')
 				dispatch(showNotification("success", `Logged in as ${data.email_id}`));
 				if (isChecked) {
 					localStorage.setItem("isRemember", isChecked);

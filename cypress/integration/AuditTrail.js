@@ -5,9 +5,9 @@ describe('Audit Trail', () => {
 	beforeEach(() => {
 		cy.intercept('POST', 'services/v1/audit-data-change', { fixture: 'auditTrail-data.json' })
 		cy.intercept('GET', '/services/v1/audit-filter', { fixture: 'auditTrail-filter.json' })
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		sessionStorage.setItem(
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,

@@ -116,7 +116,7 @@ function PaperBatchRecords() {
 	})
 
 	useEffect(() => {
-		let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		if (login_response) {
 			updateDate();
 			getTemplateData();
@@ -566,7 +566,7 @@ function PaperBatchRecords() {
 							background:
 								'linear-gradient(180deg, rgba(199, 144, 129, 0.15) 0%, rgba(223, 165, 121, 0.56) 100%)',
 						}}
-						title={`Howdy ${sessionStorage.getItem('username')},`}
+						title={`Howdy ${localStorage.getItem('username')},`}
 						description='In the mood to draw up some template today?'
 						source={illustrations}
 						sourceClass='pbr-image'

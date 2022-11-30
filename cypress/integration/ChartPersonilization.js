@@ -8,11 +8,11 @@ Cypress.Commands.add("multiselect", (options) => {
 describe("Renders chart personalization", () => {
 	beforeEach(() => {
 		cy.viewport(1280, 720);
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "vinay.reddy@mareana.com");
-		sessionStorage.setItem("username", "Vinay");
-		sessionStorage.setItem("loginwith", "WITH_AD");
-		sessionStorage.setItem(
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "vinay.reddy@mareana.com");
+		localStorage.setItem("username", "Vinay");
+		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,

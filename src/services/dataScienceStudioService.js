@@ -3,7 +3,7 @@ import {
 } from '../constants/apiBaseUrl';
 import Service from './AjaxService';
 
-let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+let login_response = JSON.parse(localStorage.getItem('login_details'));
 
 const request_headers = {
 	'content-type': 'application/json',
@@ -43,7 +43,7 @@ export const dssSave = _queryParam => {
 
 //dss file upload
 export const dssFileUpload = (request) => {
-	const login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
 
 	const headers = {
 		"content-type": "application/json",

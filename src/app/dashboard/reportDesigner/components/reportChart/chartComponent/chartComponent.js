@@ -57,7 +57,7 @@ const chartComponent = (props) => {
 		let chart_id = props.chartName.split('-')
 
 		let req = { chartId: chart_id[0], save_image: true, chartVersion: chart_id[2] }
-		let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
 
 		const headers = {
 			'content-type': 'application/json',

@@ -26,7 +26,7 @@ export default function Landing() {
 					background:
 						"linear-gradient(180deg, #FFC3C3 0%, #FFF4F4 100%)",
 				}}
-				title={`Howdy ${sessionStorage.getItem("username")},`}
+				title={`Howdy ${localStorage.getItem("username")},`}
 				description="Welcome to Data Science Studio!"
 				source={illustrations}
 				sourceClass="geanealogy-image"
