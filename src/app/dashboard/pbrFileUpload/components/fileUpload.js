@@ -19,6 +19,7 @@ import "./styles.scss";
 
 const { Paragraph } = Typography;
 const { Dragger } = Upload;
+
 /* istanbul ignore next */
 function FileUpload() {
 	const dispatch = useDispatch();
@@ -235,6 +236,7 @@ function FileUpload() {
 
 	};
 
+	/* istanbul ignore next */
 	const files = {
 		name: 'file',
 		multiple: true,
@@ -360,18 +362,7 @@ function FileUpload() {
 		}
 
 	}
-	const uploadButton = (
-		<div>
-			{loading ? <LoadingOutlined /> : <PlusOutlined />}
-			<div
-				style={{
-					marginTop: 8,
-				}}
-			>
-				Upload New File
-			</div>
-		</div>
-	);
+	
 	return (
 		<div className='pbr-container'>
 			<div className='custom-wrapper pbr-wrapper'>

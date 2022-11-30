@@ -147,28 +147,7 @@ describe('PBR', () => {
 		cy.get('#dynamic_form_nest_item_users_0_param_max').clear({ force: true });
 		cy.get('#dynamic_form_nest_item_users_0_param_max').type(2)
 		cy.wait(2000);
-		cy.get('#dynamic_form_nest_item_users_0_uom_rule').click({ force: true })
-		// cy.get(':nth-child(3) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true });
-		cy.get('.ant-select-item-option').eq(4).click({ force: true })
-		cy.get('#dynamic_form_nest_item_users_0_uom_min').clear({ force: true });
-		cy.get('#dynamic_form_nest_item_users_0_uom_min').type(4)
-		cy.get('#dynamic_form_nest_item_users_0_uom_max').clear({ force: true });
-		cy.get('#dynamic_form_nest_item_users_0_uom_max').type(2)
-		cy.wait(2000);
-		cy.get('#dynamic_form_nest_item_users_0_time_rule').click({ force: true })
-		// cy.get(':nth-child(6) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true })
-		cy.get('.ant-select-item-option').eq(6).click({ force: true })
-		cy.get('#dynamic_form_nest_item_users_0_time_min').clear({ force: true });
-		cy.get('#dynamic_form_nest_item_users_0_time_min').type(4)
-		cy.get('#dynamic_form_nest_item_users_0_time_max').clear({ force: true });
-		cy.get('#dynamic_form_nest_item_users_0_time_max').type(2)
-		cy.get('#dynamic_form_nest_item_users_0_date_rule').click({ force: true })
-		// cy.get(':nth-child(7) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true,multiple:true })
-		cy.get('.ant-select-item-option').eq(9).click({ force: true })
-		cy.get('#dynamic_form_nest_item_users_0_date_min').clear({ force: true });
-		cy.get('#dynamic_form_nest_item_users_0_date_min').type(4)
-		cy.get('#dynamic_form_nest_item_users_0_date_max').clear({ force: true });
-		cy.get('#dynamic_form_nest_item_users_0_date_max').type(2)
+		
 	})
 	it("Change Coordinates", () => {
 		cy.wait(6000);
@@ -193,6 +172,7 @@ describe('PBR', () => {
 	})
 
 	it('Create New Template', () => {
+		const url = Cypress.config().baseUrl
 		cy.wait(6000);
 		cy.intercept(
 			{
@@ -203,10 +183,12 @@ describe('PBR', () => {
 				fixture: 'pbrBoundingBox',
 			},
 		).as('saveDocument')
-		cy.get('.create-new').click({ force: true });
-		cy.get('#basic_templateName').clear();
-		cy.get('#basic_templateName').type('test');
-		cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
+		// cy.get('.create-new').click({ force: true });
+		// cy.get('#basic_templateName').clear();
+		// cy.get('#basic_templateName').type('test');
+		// cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
+		cy.visit(url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=dasdas&fromScreen=Workspace')
+		
 	})
 
 	it("click of parameter pannel", () => {
@@ -248,38 +230,38 @@ describe('PBR', () => {
 		cy.get('#dynamic_form_nest_item_users_0_param_valueArea').clear({ force: true });
 		cy.get('#dynamic_form_nest_item_users_0_param_valueArea').type('12/10/12022');
 	})
-	it("Add UOM", () => {
-		cy.get('#form_input3').click({ force: true });
-		cy.get('#form_input3').type("1.0")
-		cy.get('#form_input4').click({ force: true });
-		cy.get('#form_input4').type("Effective")
-		cy.get('#dynamic_form_nest_item_users_0_uom_transformation').click({ force: true })
-		// cy.get(':nth-child(5) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
-		cy.get('.ant-select-item-option-content').eq(10).click({ force: true })
-		cy.get('#dynamic_form_nest_item_users_0_uom_valueTransformation').clear({ force: true });
-		cy.get('#dynamic_form_nest_item_users_0_uom_valueTransformation').type('10');
-	})
+	// it("Add UOM", () => {
+	// 	cy.get('#form_input3').click({ force: true });
+	// 	cy.get('#form_input3').type("1.0")
+	// 	cy.get('#form_input4').click({ force: true });
+	// 	cy.get('#form_input4').type("Effective")
+	// 	cy.get('#dynamic_form_nest_item_users_0_uom_transformation').click({ force: true })
+	// 	// cy.get(':nth-child(5) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
+	// 	cy.get('.ant-select-item-option-content').eq(10).click({ force: true })
+	// 	cy.get('#dynamic_form_nest_item_users_0_uom_valueTransformation').clear({ force: true });
+	// 	cy.get('#dynamic_form_nest_item_users_0_uom_valueTransformation').type('10');
+	// })
 
-	it("Add Time", () => {
-		cy.get('#form_input5').click({ force: true });
-		cy.get('#form_input5').type("Date:")
-		cy.get('#form_input6').click({ force: true });
-		cy.get('#form_input6').type("01AUG2021");
-		cy.get('#dynamic_form_nest_item_users_0_time_rule').click({ force: true })
-		// cy.get(':nth-child(6) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
-		cy.get('.ant-select-item-option-content').eq(6).click({ force: true })
-		cy.get('#dynamic_form_nest_item_users_0_param_min').clear({ force: true });
-		cy.get('#dynamic_form_nest_item_users_0_param_min').type(2)
-		cy.get('#dynamic_form_nest_item_users_0_param_max').clear({ force: true });
-		cy.get('#dynamic_form_nest_item_users_0_param_max').type(4)
-	})
+	// it("Add Time", () => {
+	// 	cy.get('#form_input5').click({ force: true });
+	// 	cy.get('#form_input5').type("Date:")
+	// 	cy.get('#form_input6').click({ force: true });
+	// 	cy.get('#form_input6').type("01AUG2021");
+	// 	cy.get('#dynamic_form_nest_item_users_0_time_rule').click({ force: true })
+	// 	// cy.get(':nth-child(6) > :nth-child(5) > .ant-col > .ant-form-item-control-input > .ant-form-item-control-input-content > .ant-select > .ant-select-selector').click({ force: true });
+	// 	cy.get('.ant-select-item-option-content').eq(6).click({ force: true })
+	// 	cy.get('#dynamic_form_nest_item_users_0_param_min').clear({ force: true });
+	// 	cy.get('#dynamic_form_nest_item_users_0_param_min').type(2)
+	// 	cy.get('#dynamic_form_nest_item_users_0_param_max').clear({ force: true });
+	// 	cy.get('#dynamic_form_nest_item_users_0_param_max').type(4)
+	// })
 
-	it("Add Date", () => {
-		cy.get('#form_input7').click({ force: true });
-		cy.get('#form_input7').type("Process");
-		cy.get('#form_input8').click({ force: true });
-		cy.get('#form_input8').type("Stage:")
-	})
+	// it("Add Date", () => {
+	// 	cy.get('#form_input7').click({ force: true });
+	// 	cy.get('#form_input7').type("Process");
+	// 	cy.get('#form_input8').click({ force: true });
+	// 	cy.get('#form_input8').type("Stage:")
+	// })
 
 	it("Find and preview", () => {
 		cy.intercept(
@@ -345,7 +327,7 @@ describe('PBR', () => {
 		cy.get("#publisgButton").click({ force: true })
 		cy.wait(2000)
 		// cy.get(':nth-child(10) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x > .anticon > svg > path').click({ force: true })
-		cy.get(':nth-child(9) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x > .anticon > svg > path').click({ force: true })
+		
 	})
 
 
