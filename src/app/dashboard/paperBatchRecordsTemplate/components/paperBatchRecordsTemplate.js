@@ -47,6 +47,7 @@ import {
 } from '@ant-design/icons';
 
 import Sider from 'antd/lib/layout/Sider';
+import debounce from "lodash/debounce";
 import QueryString from 'query-string';
 import { ImCrop } from 'react-icons/im';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,13 +58,13 @@ import Signature from "../../../../components/ElectronicSignature/signature";
 import InputField from '../../../../components/InputField/InputField';
 import { MDH_APP_PYTHON_SERVICE } from '../../../../constants/apiBaseUrl';
 import {
-	hideLoader,
-	showLoader,
-	showNotification
+    hideLoader,
+    showLoader,
+    showNotification
 } from '../../../../duck/actions/commonActions';
 import { loadTemplateInfo } from '../../../../duck/actions/pbrAction';
 import {
-	findParameter, getBoundingBoxData, getPbrTemplateData, savePbrTemplate, workflowTemplateReject
+    findParameter, getBoundingBoxData, getPbrTemplateData, savePbrTemplate, workflowTemplateReject
 } from '../../../../services/pbrService';
 import ChangeCoordiantes from '../components/rightSidePanel/changeCoordiantes';
 import ParameterList from '../components/rightSidePanel/parameterList';
@@ -135,6 +136,9 @@ function PaperBatchRecordsTemplate() {
             key: 'recorded_time',
         },
     ];
+    const modesValues = [{label:"Word",value:"word"},{label:"Line",value:"line"},{label:"Key-Value",value:"key_value"},{label:"Selection Element",value:"selection_element"},
+    { label:"Cell",value:"cell"},{label:"Parameters",value:"parameters"}]
+
     const mat_batch = useSelector((state) => state?.pbrReducer?.matBatchInfo)
     const location = useLocation()
     const { id } = useParams()
@@ -1801,11 +1805,11 @@ function PaperBatchRecordsTemplate() {
 
     /* istanbul ignore next */
     const handleMenuChange = (item) => {
-        setSelectedMode(item.key)
-        setMenuKey(item.key)
+        setSelectedMode(item)
+        setMenuKey(item)
         for (let i = 0; i < 2; i++) {
             setTimeout(() => {
-                getBoundingBoxDataInfo(imageWidth, imageHeight, item.key, pageNumber - 1);
+                getBoundingBoxDataInfo(imageWidth, imageHeight, item, pageNumber - 1);
             }, i * 1000)
         }
     }
@@ -1818,35 +1822,7 @@ function PaperBatchRecordsTemplate() {
         setPublishResponse(res);
         setTemplateStatus(res.rep_stauts);
     };
-    const modes = (
-        <Menu defaultSelectedKeys={["word"]} selectedKeys={[menuKey]} onClick={(item) => handleMenuChange(item)}>
-            <Menu.Item key='word'>
-                Word
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key='line'>
-                Line
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key='key_value'>
-                Key Value
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key='cell'>
-                Cell
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key='selection_element'>
-                Selection Element
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key='parameters'>
-                Parameters
-            </Menu.Item>
-            <Menu.Divider />
-        </Menu>
-    );
-
+   
     /* istanbul ignore next */
     const handlePageChange = (val) => {
         // setDisplayImage("")
@@ -1872,33 +1848,34 @@ function PaperBatchRecordsTemplate() {
 
     }
     /* istanbul ignore next */
-    const handlePageTextChange = (val) => {
+    const handlePageTextChange = debounce((val) => {
         if (isNaN(Number(val))) {
-            dispatch(showNotification('error', "Please enter Valid Page Number"))
+            dispatch(showNotification('error', "Please enter valid Page Number"))
         } else if (val === "") {
             // dispatch(showNotification('error', `Minium page number 1`))
             setPageNumber(val)
         } else if (Number(val) > pageLimit) {
             dispatch(showNotification('error', `Maximum page ${pageLimit}`))
-        } else if (Number(val) < 1) {
+        }
+        else if (Number(val) < 1) {
             dispatch(showNotification('error', 'Minium page 1'))
         } else {
             let num = Number(val)
-            getImage(num)
-            // let arr = [...formValues]
-            // arr[activeKey] = {...arr[activeKey],page_num:num}
-            // setFormValues(arr)
             setPageNumber(num)
-            for (let i = 0; i < 2; i++) {
-                setTimeout(() => {
-                    getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, num - 1);
-                }, i * 1000)
-
-            }
-            dispatch(hideLoader());
         }
 
+    }, 300)
+
+    const handlePageChangeEnter = () => {
+        getImage(pageNumber)
+        for (let i = 0; i < 2; i++) {
+            setTimeout(() => {
+                getBoundingBoxDataInfo(imageWidth, imageHeight, selectedMode, pageNumber - 1);
+            }, i * 1000)
+        }
+        dispatch(hideLoader());
     }
+
     const genExtra = (remove, name, key, restfield) => (
         <DeleteOutlined
             id="deleteParameter"
@@ -2090,7 +2067,7 @@ function PaperBatchRecordsTemplate() {
                                                 getBoundingBoxDataInfo(imageWidth, imageHeight, "TABLE", pageNumber - 1)
                                             }, i * 1000)
                                         }
-                                        setSelectedMode("TABLE")
+                                        // setSelectedMode("TABLE")
                                     } else {
                                         if (showRowColIdentifier) {
                                             for (let i = 0; i < 2; i++) {
@@ -2099,8 +2076,9 @@ function PaperBatchRecordsTemplate() {
                                                 }, i * 1000)
 
                                             }
+                                            setSelectedMode("word")
                                         }
-                                        setSelectedMode("word")
+                                        
                                         setShowRowColIdentifier(false)
                                     }
 
@@ -2832,13 +2810,13 @@ function PaperBatchRecordsTemplate() {
                                                                                         <p>{item?.split('.')[0]}</p>
                                                                                     ))}</div>
 
-																					{/* <MinusCircleOutlined onClick={() => remove(name)} /> */}
-																				</div>
+                                                                                    {/* <MinusCircleOutlined onClick={() => remove(name)} /> */}
+                                                                                </div>
 
-																			</div>
+                                                                            </div>
 
-																		</Panel>
-																		// </Space>
+                                                                        </Panel>
+                                                                        // </Space>
 
                                                                     ))}
                                                                 </Collapse>
@@ -2915,7 +2893,7 @@ function PaperBatchRecordsTemplate() {
                         <div className='pbrCenterPanel-header'>
                             <Row className='pbrCenterPanelRow'>
                                 <Col
-                                    span={12}
+                                    span={14}
                                     className='pbrCenterPanelCol pbrCenterBlockLeft'
                                 >
                                     <div className='preview_page_finder'>
@@ -2923,23 +2901,24 @@ function PaperBatchRecordsTemplate() {
                                             Preview
                                         </p>
                                         <Tooltip title={params?.file}>
-                                            <span style={{ marginTop: 4, marginRight: 30 }}>{params?.file.slice(0, 28)}</span>
+                                            <span style={{ marginTop: 4 }}>{params?.file.slice(0, 28)}</span>
                                         </Tooltip>
                                         <div>
                                             <LeftOutlined disabled={true} className='icon_size' onClick={() => handlePageChange(pageNumber - 1)} />
-                                            <Input style={{ width: 35 }} value={pageNumber} onChange={(e) => handlePageTextChange(e.target.value)} />
+                                                <Input style={{ width: 48 }} value={pageNumber} onChange={(e) => handlePageTextChange(e.target.value)} onPressEnter={handlePageChangeEnter} />
+                                                <span style={{ fontSize: 15,marginLeft:6 }}>/ {pageLimit}</span>
                                             <RightOutlined className='icon_size' onClick={() => handlePageChange(pageNumber + 1)} />
                                         </div>
 
-									</div>
-								</Col>
+                                    </div>
+                                </Col>
 
-								<Col
-									span={12}
-									className='pbrCenterPanelCol pbrCenterBlockRight'
-									style={{ justifyContent: params?.fromScreen == "Workflow" ? "" : "right" }}
-								>
-									{/* <div className='drawSnippet'>
+                                <Col
+                                    span={10}
+                                    className='pbrCenterPanelCol pbrCenterBlockRight'
+                                    style={{ justifyContent: params?.fromScreen == "Workflow" ? "" : "right" }}
+                                >
+                                    {/* <div className='drawSnippet'>
                                         <EditOutlined />
                                         Draw Snippet
                                     </div> */}
@@ -2950,22 +2929,19 @@ function PaperBatchRecordsTemplate() {
                                                 onClick={() => {
                                                     setIsModalOpen(true)
                                                 }}>
-                                                Reject
+                                                Reject Page
                                             </Button>
-                                            <Button style={{ margin: "0px 16px" }} className='custom-secondary-btn'
+                                            <Button style={{ margin: "0px 16px" }} className='custom-primary-btn'
                                                 onClick={() => {
                                                     handleWorkFlowApprove()
                                                 }}
-                                            >Approve</Button>
+                                            >Approve Page</Button>
                                         </div> : ""}
                                     {params?.fromScreen == "Workflow" ? "" :
-                                        <div className='cropSnippet'>
-                                            <Dropdown
-                                                style={{ color: '#ffffff' }}
-                                                trigger={['click']}
-                                                overlay={modes}>
-                                                <ImCrop />
-                                            </Dropdown>
+                                        <div>
+                                            <div className='cropSnippet'>
+                                                <Select disabled={showRowColIdentifier} style={{width:150}} value={selectedMode} options={modesValues} onChange={(e)=>handleMenuChange(e)} />
+                                            </div>
                                         </div>
                                     }
                                 </Col>
@@ -2973,77 +2949,77 @@ function PaperBatchRecordsTemplate() {
                         </div>
                         <div className='pbrCenterPdfBlock' st>
 
-							{showRowColIdentifier &&
-								<TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth}
-									triggerPreview={triggerPreview} params={params} triggerUpdate={triggerUpdate} setSideTableData={setSideTableData}
-									setTriggerUpdate={setTriggerUpdate} tableActiveKey={tableActiveKey} formTableData={formTableData} setModalData={setModalData} setModalColumns={setModalColumns}
-									templateVersion={templateVersion} initialSideTableData={initialSideTableData} pageIdFormValues={pageIdFormValues} pageNumber={pageNumber} />}
+                            {showRowColIdentifier &&
+                                <TableIdentifier clickedTable={clickedTable} metaData={params} imageHeight={imageHeight} imageWidth={imageWidth}
+                                    triggerPreview={triggerPreview} params={params} triggerUpdate={triggerUpdate} setSideTableData={setSideTableData}
+                                    setTriggerUpdate={setTriggerUpdate} tableActiveKey={tableActiveKey} formTableData={formTableData} setModalData={setModalData} setModalColumns={setModalColumns}
+                                    templateVersion={templateVersion} initialSideTableData={initialSideTableData} pageIdFormValues={pageIdFormValues} pageNumber={pageNumber} />}
 
-							{/* <DrawAnnotations /> */}
-							{/* <h3>hello</h3> */}
+                            {/* <DrawAnnotations /> */}
+                            {/* <h3>hello</h3> */}
 
-							<div id='drawRectangle'>
-								<div className='pdfToImgBlock'>
+                            <div id='drawRectangle'>
+                                <div className='pdfToImgBlock'>
 
-									<ImageMapper
-										id='imageMApper'
-										className='pdfToImageWrapper'
-										src={displayImage}
-										map={areasMap}
-										// onLoad={() => load()}
-										onClick={area => clicked(area)}
-									/>
+                                    <ImageMapper
+                                        id='imageMApper'
+                                        className='pdfToImageWrapper'
+                                        src={displayImage}
+                                        map={areasMap}
+                                        // onLoad={() => load()}
+                                        onClick={area => clicked(area)}
+                                    />
 
-								</div>
-							</div>
+                                </div>
+                            </div>
 
-						</div>
-					</div>
-					<Modal
-						title='Preview'
-						visible={isModalVisible}
-						// style={{height:300,overflowY:"scroll"}}
-						onOk={handleOk}
-						onCancel={handleCancel}
-						footer={null}>
-						<Table
-							loading={tableLoading}
-							className='pbrTemplates-table'
-							columns={modalColumns}
-							dataSource={modalData}
-							pagination={false}
-							scroll={{ x: 1000, y: 300 }}
-						/>
-					</Modal>
-					<RejectModal templateVersion={templateVersion} pageNumber={pageNumber} params={params} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+                        </div>
+                    </div>
+                    <Modal
+                        title='Preview'
+                        visible={isModalVisible}
+                        // style={{height:300,overflowY:"scroll"}}
+                        onOk={handleOk}
+                        onCancel={handleCancel}
+                        footer={null}>
+                        <Table
+                            loading={tableLoading}
+                            className='pbrTemplates-table'
+                            columns={modalColumns}
+                            dataSource={modalData}
+                            pagination={false}
+                            scroll={{ x: 1000, y: 300 }}
+                        />
+                    </Modal>
+                    <RejectModal templateVersion={templateVersion} pageNumber={pageNumber} params={params} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
 
-				</div>
-				<div className='pbrTemplateRight'>
-					<div className='pbrPanel pbrRightPanel'>
-						<Sider trigger={null} collapsible collapsed={rightPanelCollapsed}>
-							<span className='trigger' onClick={toggleRightCollapsed}>
-								<img src={panelRightImg} className='panelImg' />
-							</span>
-							{params?.fromScreen == "Workflow" ? <ParameterList originalResponse={originalResponse} setAreasMap={setAreasMap} areasMap={areasMap} /> :
-								<ChangeCoordiantes areasMapObject={areasMapObject} params={params} clickedSnippetId={clickedSnippetId} onChangeChart={onChangeChart} />
-							}
-						</Sider>
-					</div>
-				</div>
-			</div>
-			<WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
-			<Signature
-				isPublish={isPublish}
-				handleClose={handleClose}
-				screenName="Pbr Creation"
-				PublishResponse={PublishResponse}
-				appType="PBR"
-				dispId={templateId}
-				version={templateVersion}
-				status={approveReject}
-			/>
-		</div>
-	);
+                </div>
+                <div className='pbrTemplateRight'>
+                    <div className='pbrPanel pbrRightPanel'>
+                        <Sider trigger={null} collapsible collapsed={rightPanelCollapsed}>
+                            <span className='trigger' onClick={toggleRightCollapsed}>
+                                <img src={panelRightImg} className='panelImg' />
+                            </span>
+                            {params?.fromScreen == "Workflow" ? <ParameterList originalResponse={originalResponse} setAreasMap={setAreasMap} areasMap={areasMap} /> :
+                                <ChangeCoordiantes areasMapObject={areasMapObject} params={params} clickedSnippetId={clickedSnippetId} onChangeChart={onChangeChart} />
+                            }
+                        </Sider>
+                    </div>
+                </div>
+            </div>
+            <WorkflowPreviewModal templateVersion={templateVersion} params={params} isModalOpen={workflowPreviewModal} setIsModalOpen={setWorkflowPreviewModal} />
+            <Signature
+                isPublish={isPublish}
+                handleClose={handleClose}
+                screenName="Pbr Creation"
+                PublishResponse={PublishResponse}
+                appType="PBR"
+                dispId={templateId}
+                version={templateVersion}
+                status={approveReject}
+            />
+        </div>
+    );
 }
 
 export default PaperBatchRecordsTemplate;

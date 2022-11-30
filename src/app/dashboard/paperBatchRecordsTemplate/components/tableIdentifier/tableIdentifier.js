@@ -322,14 +322,14 @@ function TableIdentifier(props) {
         <div style={{ display: "flex", justifyContent: "space-between" }} onClick={e => e.stopPropagation()}>
             <p style={{ marginBottom: 0 }}>{val}</p>
             {/* <Switch size='medium' style={{ marginLeft: val == "Row Identifier" ? 35 : 10 }} /> */}
-            <div style={{ marginTop: -5, marginLeft: val == "Row Identifier" ? 33 : 10 }}>
-                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.start} placeholder='Start Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
+            <div style={{ marginTop: -5, marginLeft: val == "Row Identifier" ? 53 : 30 }}>
+                <span style={{ fontSize: 13 }}>Start Index</span><Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.start}  style={{ width: 60, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "start", val)} />
             </div>
-            <div style={{ marginTop: -5 }}>
-                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.stop} placeholder='Stop Index' style={{ width: 100, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "stop", val)} />
+            <div style={{ marginTop: -5,marginLeft:20 }}>
+                <span style={{ fontSize: 13 }}>Stop Index</span><Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.stop}  style={{ width: 60, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "stop", val)} />
             </div>
-            <div style={{ marginTop: -5 }}>
-                <Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.pk_index} placeholder={val == "Row Identifier" ? "PK Col Index" : ' PK Row Index'} style={{ width: 128, marginLeft: 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
+            <div style={{ marginTop: -5,marginLeft:20 }}>
+                <span style={{ fontSize: 13 }}>{val == "Row Identifier" ? "PK Col Index" : ' PK Row Index'}</span><Input disabled={columnData.length > 0 ? "" : params?.temp_disp_id ? newEditTemplate ? "disabled" : "" : "disabled"} value={values?.pk_index}  style={{ width: 60, marginLeft: val == "Row Identifier" ? 19 : 10 }} onChange={(e) => handleInputChange(e.target.value, "pk_index", val)} />
             </div>
             {/*  */}
         </div>
