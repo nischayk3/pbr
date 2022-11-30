@@ -914,7 +914,7 @@ function PaperBatchRecordsTemplate() {
 
     const getImage = async (val) => {
         // dispatch(showLoader());
-        let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+        let login_response = JSON.parse(localStorage.getItem('login_details'));
         var requestOptions = {
             method: "GET",
             response: "image/jpeg",
