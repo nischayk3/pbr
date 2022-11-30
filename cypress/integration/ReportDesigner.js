@@ -5,10 +5,10 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe("Report Designer", () => {
 	beforeEach(() => {
 		cy.viewport(1280, 720)
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "mihir.bagga@mareana.com");
-		sessionStorage.setItem("username", "Mihir");
-		sessionStorage.setItem(
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "mihir.bagga@mareana.com");
+		localStorage.setItem("username", "Mihir");
+		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,

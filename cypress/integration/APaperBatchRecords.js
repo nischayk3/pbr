@@ -13,9 +13,9 @@ describe('PBR', () => {
 		cy.intercept('POST', '/pbr/udh/ocr-json-extraction', { fixture: 'pbrBoundingBox' })
 		cy.intercept('GET', '/pbr/udh/pbr_template?template_displ_id=P258&version=1', { fixture: 'pbrLoadData' })
 		cy.viewport(1366, 768);
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		sessionStorage.setItem(
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,

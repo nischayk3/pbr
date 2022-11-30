@@ -424,7 +424,7 @@ function Genealogy() {
 	// const downloadFile = async val => {
 	// 	let uri =
 	// 		'SELECT * FROM tran_product_params WHERE batch_num=' + `'${limsBatch}'`;
-	// 	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+	// 	let login_response = JSON.parse(localStorage.getItem('login_details'));
 	// 	let req = {
 	// 		export_csv: true,
 	// 		query: uri,
@@ -461,7 +461,7 @@ function Genealogy() {
 					fileName.push(item.fileName)
 					fileSize.push(item.fileSize)
 				})
-				let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+				let login_response = JSON.parse(localStorage.getItem('login_details'));
 				const data = fileData && fileData.split('|');
 				setIsUploadVisible(false)
 				setIsFileUploaded(true);
@@ -662,7 +662,7 @@ function Genealogy() {
 							bannerbg={{
 								background: 'linear-gradient(180deg, #FFFFFF 0%, #B9D6FF 100%)'
 							}}
-							title={`Howdy ${sessionStorage.getItem("username")},`}
+							title={`Howdy ${localStorage.getItem("username")},`}
 							description='Shall we get down to tracing some batches and materials?'
 							source={genealogyLanding}
 							sourceClass='geanealogy-image'

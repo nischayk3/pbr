@@ -158,7 +158,7 @@ const TargetVariable = () => {
 			unapproved: true,
 			target_variable: parameterName
 		}
-		const login_response = JSON.parse(sessionStorage.getItem("login_details"));
+		const login_response = JSON.parse(localStorage.getItem("login_details"));
 		try {
 			dispatch(showLoader());
 			const loadDssRes = await dssSave(_reqSave);

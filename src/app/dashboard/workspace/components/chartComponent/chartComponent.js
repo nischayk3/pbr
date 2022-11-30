@@ -25,7 +25,7 @@ const chartComponent = (props) => {
 
 	const getChartData = async () => {
 		let req = { chartId: props.chartId }
-		let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		let headers = {
 			'content-type': 'application/json',
 			'x-access-token': login_response.token ? login_response.token : '',

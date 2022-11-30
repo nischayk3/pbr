@@ -170,7 +170,8 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 			let tempRegressionList = [];
 			let targetVariable = apiResponse.data?.target_variable;
 			let getJson;
-			if (finalJson?.variable_mapping?.length >= 1) {
+      if (finalJson?.variable_mapping?.length >= 1) {
+        finalJson.target_variable = targetVariable
 				setFinalModelJson(finalJson)
 			} else {
 				getJson = await getModelJson(apiResponse.data);

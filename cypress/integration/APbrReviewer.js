@@ -25,9 +25,9 @@ describe('PBR', () => {
 		// cy.intercept('GET', '/pbr/udh/get_cpv_pbr_count?key=confidence', { fixture: 'pbrConfidenceCount' })
 		cy.intercept('GET', '/pbr/udh/get_tran_pbr_template_id', { fixture: 'pbrTemplateList' })
 		cy.viewport(1366, 768);
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		sessionStorage.setItem(
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,
