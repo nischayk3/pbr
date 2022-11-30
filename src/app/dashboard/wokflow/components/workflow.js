@@ -227,7 +227,7 @@ const Workflow = () => {
 					bannerbg={{
 						background: "linear-gradient(180deg, #FFFFFF 0%, #B9D6FF 100%)",
 					}}
-					title={`Hello ${sessionStorage.getItem("username")}, welcome back!`}
+					title={`Hello ${localStorage.getItem("username")}, welcome back!`}
 					description="Today's is a great day to approve some records! Let's take look."
 					source={illustrations}
 					sourceClass="geanealogy-image"

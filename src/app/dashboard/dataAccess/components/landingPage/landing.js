@@ -11,7 +11,7 @@ export default function DataAccessLandingPage() {
 					background:
 						"linear-gradient(180deg, #E7E5FF 0%, #FFF4F4 100%)",
 				}}
-				title={`Howdy ${sessionStorage.getItem("username")},`}
+				title={`Howdy ${localStorage.getItem("username")},`}
 				description="It’s a good day to look up some APIs!"
 				source={illustrations}
 				sourceClass="dashboard-landing"

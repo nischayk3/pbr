@@ -304,7 +304,7 @@ function FileUpload() {
 					fileName.push(item.fileName)
 					fileSize.push(item.fileSize)
 				})
-				let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+				let login_response = JSON.parse(localStorage.getItem('login_details'));
 				// const data = fileData && fileData.split('|');
 				setIsUploadVisible(false)
 				setIsFileUploaded(true);
@@ -384,7 +384,7 @@ function FileUpload() {
 							background:
 								'linear-gradient(180deg, rgba(199, 144, 129, 0.15) 0%, rgba(223, 165, 121, 0.56) 100%)',
 						}}
-						title={`Howdy ${sessionStorage.getItem('username')},`}
+						title={`Howdy ${localStorage.getItem('username')},`}
 						description={`Got some files to upload today? Let's get started`}
 						source={illustrations}
 						sourceClass='pbr-image'

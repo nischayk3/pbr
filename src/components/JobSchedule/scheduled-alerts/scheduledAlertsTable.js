@@ -29,7 +29,7 @@ export default function scheduledAlertsTable(props) {
 
 	const getJobs = async () => {
 		dispatch(showLoader())
-		let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
 
 		let request_headers = {
 			'content-type': 'application/json',
@@ -60,7 +60,7 @@ export default function scheduledAlertsTable(props) {
 		let req = {
 			job_id: jobId.job_id
 		}
-		let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
 
 		let request_headers = {
 			'content-type': 'application/json',

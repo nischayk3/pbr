@@ -147,7 +147,7 @@ const ReportNotify = (props) => {
 	};
 	const getJobs = async (job) => {
 		dispatch(showLoader());
-		let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
 
 		let request_headers = {
 			"content-type": "application/json",
@@ -257,7 +257,7 @@ const ReportNotify = (props) => {
 		let is_valid = checkValidRequest()
 		if (is_valid) {
 			let req = {};
-			let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+			let login_response = JSON.parse(localStorage.getItem("login_details"));
 
 			let request_headers = {
 				"content-type": "application/json",
@@ -267,8 +267,8 @@ const ReportNotify = (props) => {
 
 			req["app_data"] = props.name ? props.name : props.appType;
 			req["dag_id"] = " ";
-			req["created_by"] = sessionStorage.getItem("username")
-				? sessionStorage.getItem("username")
+			req["created_by"] = localStorage.getItem("username")
+				? localStorage.getItem("username")
 				: "";
 			req["app_type"] = props.appType;
 			req["app_id"] = props.id ? props.id : "R262";
@@ -281,8 +281,8 @@ const ReportNotify = (props) => {
 			email_config["frequency_unit"] = selectedSchedule == "Repeat Once" ? "Once" : selectedSchedule;
 			email_config["email_list"] = emailList;
 			email_config["attachment"] = "";
-			email_config["created_by"] = sessionStorage.getItem("username")
-				? sessionStorage.getItem("username")
+			email_config["created_by"] = localStorage.getItem("username")
+				? localStorage.getItem("username")
 				: "";
 
 			if (selectedSchedule == "Weekly") {
@@ -458,7 +458,7 @@ const ReportNotify = (props) => {
 						<br />
 						<p>
 							This is to inform you of the recent update to{" "}
-							{sessionStorage.getItem("username") + "_variant"}. Check the
+							{localStorage.getItem("username") + "_variant"}. Check the
 							attachment for details.
 							<br />
 							<br />
@@ -466,8 +466,8 @@ const ReportNotify = (props) => {
 						<br />
 						Regards,
 						<br />
-						{sessionStorage.getItem("username")
-							? sessionStorage.getItem("username") + "_variant"
+						{localStorage.getItem("username")
+							? localStorage.getItem("username") + "_variant"
 							: ""}
 					</p>
 

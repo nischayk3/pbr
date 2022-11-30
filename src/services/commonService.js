@@ -3,7 +3,7 @@ import Service from "./AjaxService";
 
 //get view table
 export const getViewTable = (_queryParam) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	const headers = {
 		"content-type": "application/json",
 		"x-access-token": login_response.token ? login_response.token : "",

@@ -4,14 +4,14 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe("Report", () => {
 	beforeEach(() => {
 		cy.viewport(1280, 720)
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "mihir.bagga@mareana.com");
-		sessionStorage.setItem("username", "Mihir");
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "mihir.bagga@mareana.com");
+		localStorage.setItem("username", "Mihir");
 		cy.intercept('GET', '**/report-load?report_displ_id=R391', { fixture: 'reportGenLoad.json' })
 		cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
 		cy.intercept('GET', '**/report-load?report_displ_id=R520', { fixture: 'reportFiveTwenty.json' })
 
-		sessionStorage.setItem(
+		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,

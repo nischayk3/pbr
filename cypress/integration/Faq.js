@@ -6,9 +6,9 @@ describe('Faq', () => {
 		cy.intercept('POST', '/services/v1//genealogy-filter', { fixture: 'genealogyFilter.json' })
 		cy.intercept('GET', '/services/v1/product-type-genealogy', { fixture: 'genealogyFilterProductType.json' })
 		cy.intercept('GET', 'v1/genealogy?levels=*', { fixture: 'backward.json' })
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		sessionStorage.setItem(
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,

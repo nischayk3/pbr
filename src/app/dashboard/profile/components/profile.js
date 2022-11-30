@@ -21,8 +21,8 @@ import "./style.scss";
 
 const { TabPane } = Tabs;
 const Profile = () => {
-	const loginDetails = JSON.parse(sessionStorage.getItem("login_details"))
-	const loginWith = sessionStorage.getItem("loginwith")
+	const loginDetails = JSON.parse(localStorage.getItem("login_details"))
+	const loginWith = localStorage.getItem("loginwith")
 
 	const dispatch = useDispatch();
 	const [currentPassword, setCurrentPassword] = useState("");
@@ -56,7 +56,7 @@ const Profile = () => {
 
 	const handlePassChange = async () => {
 		dispatch(showLoader());
-		const userId = sessionStorage.getItem("user")
+		const userId = localStorage.getItem("user")
 		/* istanbul ignore next */
 		if (currentPassword === "" || newPassword === "" || confirmPassword === "") {
 			dispatch(hideLoader());

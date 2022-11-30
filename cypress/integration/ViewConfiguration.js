@@ -9,10 +9,10 @@ Cypress.Commands.add("multiselect", (options) => {
 describe('Renders the view config page', () => {
 	beforeEach(() => {
 		cy.viewport(1280, 720)
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "bhanu.thareja@mareana.com");
-		sessionStorage.setItem("username", "Bhanu");
-		sessionStorage.setItem(
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "bhanu.thareja@mareana.com");
+		localStorage.setItem("username", "Bhanu");
+		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,
