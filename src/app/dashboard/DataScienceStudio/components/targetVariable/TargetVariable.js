@@ -158,9 +158,7 @@ const TargetVariable = () => {
 			unapproved: true,
 			target_variable: parameterName
 		}
-
 		const login_response = JSON.parse(sessionStorage.getItem("login_details"));
-
 		try {
 			dispatch(showLoader());
 			const loadDssRes = await dssSave(_reqSave);
@@ -168,15 +166,14 @@ const TargetVariable = () => {
 			if (loadDssRes.Status === 200) {
 				dispatch(showNotification("success", loadDssRes.Message));
 				window.open(`${JUPYTER_APP}/user/${login_response?.firstname?.toLowerCase()} ${login_response?.lastname?.toLowerCase()}/lab/workspaces/auto-q/tree/Datascience_Studio`, "_blank")
+			} else if (loadDssRes.Status === 400) {
+				dispatch(showNotification("error", loadDssRes.Message));
 			}
 		} catch (err) {
 			dispatch(hideLoader());
 			dispatch(showNotification("error", err));
 		}
 	}
-
-	const login_response = JSON.parse(sessionStorage.getItem("login_details"));
-
 
 	return (
 		<div className="custom-wrapper">
