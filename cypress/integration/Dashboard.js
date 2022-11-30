@@ -1,8 +1,13 @@
-
+Cypress.on('uncaught:exception', (err, runnable) => {
+	return false;
+});
 describe('Dashboard', () => {
 	// it("should login successfully using Ad", () => {
 	beforeEach(() => {
+		cy.intercept('GET', '**/dashboards', { fixture: 'dashboard.json' })
 		cy.viewport(1400, 720);
+		cy.visit("/");
+		cy.url().should("include", "/user/login");
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
 		localStorage.setItem("username", "Fahad");
@@ -20,71 +25,82 @@ describe('Dashboard', () => {
 					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
 			})
 		);
-		cy.intercept('GET', '**/dashboards', { fixture: 'dashboard.json' })
 	})
 	it('Load View Landing Page Correctly', () => {
 		const url = Cypress.config().baseUrl
-		cy.wait(4000).then(() => {
-			cy.visit(url + '/#/dashboard/dashboard')
-			cy.log('Load Landing Page')
-			cy.url().should('eq', url + '/#/dashboard/dashboard')
-		})
-
+		cy.visit(url + '/#/dashboard/dashboard')
+		cy.log('Load Landing Page')
+		cy.url().should('eq', url + '/#/dashboard/dashboard')
 	})
 	it('Load Screen Header', () => {
+		cy.get("#login-btn", { timeout: 2000 }).click();
+		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
+		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
+		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
 		const date = new Date();
 		const month = date.toLocaleString('default', { month: 'long' });
 		const latestDate = date.getDate();
 		const year = date.getFullYear();
 		const currentDate = month + ' ' + latestDate + ',' + ' ' + year;
-
 		cy.log('Verify Screen Header Component')
 		cy.get('.screen_header_head')
-
-		cy.log('Verify Header Text')
+		cy.log('Verify User Name')
 		cy.get('.screen_header_username').should("have.text", "Howdy Fahad,")
-
+		// cy.log('Verify Header Text')
+		// cy.get('.screen_header_text').should("have.text", "Time to draw up some charts? Lets go!")
 		cy.log('Verify Current Date')
 		cy.get('.screen_header_resultdate').should("have.text", currentDate)
 	})
 	it('Load Landing Page Table Component', () => {
 		cy.log('Load Search Bar')
 		cy.log('Search View Id In Search Component')
-
-		cy.get("input[placeholder='Search by ID or name']").clear()
-		cy.get("input[placeholder='Search by ID or name']").type("D132")
-		//cy.get(".ant-input-search-button").click()
+		cy.get("#login-btn", { timeout: 2000 }).click();
+		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
+		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
+		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
+		cy.wait(6000);
+		cy.get(".ant-input-affix-wrapper").eq(1).type("D132").click({ force: true })
 		cy.get(".ant-input-search-button").eq(1).click()
-		// cy.get(".ant-input-affix-wrapper").eq(1).type("D132").click({ force: true })
-		// cy.get(".ant-input-search-button").eq(1).click()
 	})
 	it('Click on Table row', () => {
 		cy.log('Load Search Bar')
 		cy.log('Search View Id In Search Component')
-
+		cy.get("#login-btn", { timeout: 2000 }).click();
+		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
+		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
+		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
+		cy.wait(6000);
 		cy.intercept('GET', '**/dashboards', { fixture: 'dashboard.json' })
-		cy.get("input[placeholder='Search by ID or name']").clear()
-		cy.get("input[placeholder='Search by ID or name']").type("D132")
-		// cy.get(".ant-input-affix-wrapper").eq(1).type("D132").click({ force: true })
-
+		cy.get(".ant-input-affix-wrapper").eq(1).type("D132").click({ force: true })
 		cy.wait(6000);
 		cy.get(".ant-input-search-button").eq(1).click({ force: true })
-
 		cy.wait(6000);
 		cy.get('.ant-table-row > :nth-child(2) > div').click();
 	})
 	it('Close Modal', () => {
+		cy.get("#login-btn", { timeout: 2000 }).click();
+		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
+		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
+		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
+		cy.wait(2000);
 		cy.get('.create-new > .anticon > svg').click();
 		cy.wait(2000);
 		cy.get('.ant-modal-close-x').click();
 	})
-
 	it('Recently Created Dashboard', () => {
 		cy.log('Recent View Verify')
+		cy.get("#login-btn", { timeout: 2000 }).click();
+		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
+		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
+		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
+		cy.wait(6000);
 		cy.get(':nth-child(1) > .chart-tiles').should('have.length', 1)
 	})
-
 	it("should login successfully using Ad", () => {
+		cy.get("#login-btn", { timeout: 2000 }).click();
+		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
+		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
+		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
 		cy.intercept('GET', '**/chart-list?chart_status=ALL', { fixture: 'allChartsDashboard.json' })
 		cy.get('.create-new > .anticon > svg', { timeout: 10000 }).click({ force: true });
 		cy.get(':nth-child(1) > :nth-child(2) > :nth-child(1) > .ant-input').clear();
@@ -180,6 +196,10 @@ describe('Dashboard', () => {
 		/* ==== End Cypress Studio ==== */
 	});
 	it('Checbox and site change', () => {
+		cy.get("#login-btn", { timeout: 2000 }).click();
+		cy.get(':nth-child(2) > .ant-menu-submenu-title', { timeout: 20000 }).click({ force: true });
+		cy.get('#chart_configuration > .ant-menu-title-content > a', { timeout: 20000 }).click({ force: true });
+		cy.location('href', { timeout: 10000 }).should('include', '/dashboard');
 		cy.intercept('GET', '**/chart-list?chart_status=ALL', { fixture: 'allChartsDashboard.json' })
 		cy.get('.create-new > .anticon > svg', { timeout: 10000 }).click({ force: true });
 		cy.intercept('GET', '**/chart-object?chartId=C263', { fixture: 'chartDashboard.json' })
