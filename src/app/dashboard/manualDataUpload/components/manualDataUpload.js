@@ -1072,18 +1072,18 @@ class Uploader extends Component {
 												) : (
 													<>
 														{loginStatus == 'WITH_AD' ?
-															<Button
+															(<Button
 																type='primary'
 																id="auth_with_ad"
 																style={{
 																	backgroundColor: '#093185',
 																}}
-																disabled={username == '' || password == ''}
+
 																onClick={() => this.onAuthenticate()}>
 																Authenticate with AD
-															</Button>
+															</Button>)
 															:
-															<Button
+															(<Button
 																type='primary'
 																id="auth_without_ad"
 																style={{
@@ -1092,7 +1092,7 @@ class Uploader extends Component {
 																disabled={username == '' || password == ''}
 																onClick={() => this.onAuthenticateWithoutAD()}>
 																Authenticate without AD
-															</Button>
+															</Button>)
 														}
 													</>
 												)}
@@ -1123,6 +1123,7 @@ class Uploader extends Component {
 													<div>
 														<p>Password</p>
 														<Input
+															disabled={loginStatus === "WITH_AD"}
 															placeholder='Password'
 															autocomplete='new-password'
 															type='password'
