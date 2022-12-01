@@ -5,6 +5,24 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 describe('PBR', () => {
 	// it("should login successfully using Ad", () => {
+	afterEach(() => {
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem(
+			"login_details",
+			JSON.stringify({
+				ad_role: false,
+				email_id: "fahad.siddiqui@mareana.com",
+				firstname: "Fahad",
+				lastname: "siddiqui",
+				mdh_role: "USER",
+				screen_set: "1000_USER",
+				token:
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
+			})
+		);
+	});
 	beforeEach(() => {
 		cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_product&productNum=1091460', { fixture: 'paperBatchFileList' })
 		cy.intercept('GET', '/pbr/udh/get_data_view?actionType=get_product_num&productNum=', { fixture: 'productNum' })
@@ -147,7 +165,7 @@ describe('PBR', () => {
 		cy.get('#dynamic_form_nest_item_users_0_param_max').clear({ force: true });
 		cy.get('#dynamic_form_nest_item_users_0_param_max').type(2)
 		cy.wait(2000);
-		
+
 	})
 	it("Change Coordinates", () => {
 		cy.wait(6000);
@@ -188,7 +206,7 @@ describe('PBR', () => {
 		// cy.get('#basic_templateName').type('test');
 		// cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
 		cy.visit(url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=dasdas&fromScreen=Workspace')
-		
+
 	})
 
 	it("click of parameter pannel", () => {
@@ -327,7 +345,7 @@ describe('PBR', () => {
 		cy.get("#publisgButton").click({ force: true })
 		cy.wait(2000)
 		// cy.get(':nth-child(10) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x > .anticon > svg > path').click({ force: true })
-		
+
 	})
 
 
