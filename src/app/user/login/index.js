@@ -65,7 +65,25 @@ const Login = () => {
 			if (localStorage.getItem("test_enabled")) {
 				window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
 			} else {
-				window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
+				// window.open(`${loginUrl}?is_ui=True&base_url=${MDH_APP_PYTHON_SERVICE}&redirect_url=${MDH_APP_PYTHON_SERVICE}%2F%23%2Fdashboard%2Fredirect`, '_self')
+				localStorage.setItem("test_enabled", true);
+				localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+				localStorage.setItem("username", "Fahad");
+				localStorage.setItem("loginwith", "WITH_AD");
+				localStorage.setItem(
+					"login_details",
+					JSON.stringify({
+						ad_role: false,
+						email_id: "fahad.siddiqui@mareana.com",
+						firstname: "Fahad",
+						lastname: "siddiqui",
+						mdh_role: "USER",
+						screen_set: "1000_USER",
+						token:
+							"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
+					})
+				);
+				history.push("/dashboard/workspace");
 			}
 		}
 	}

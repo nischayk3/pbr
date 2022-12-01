@@ -1123,7 +1123,7 @@ class Uploader extends Component {
 													<div>
 														<p>Password</p>
 														<Input
-															disabled={loginStatus === "WITH_AD"}
+
 															placeholder='Password'
 															autocomplete='new-password'
 															type='password'

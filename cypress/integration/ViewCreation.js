@@ -75,6 +75,7 @@ describe("Render View Creation Load Error Log", () => {
 		const url = Cypress.config().baseUrl
 		cy.wait(10000).then(() => {
 			cy.log('Verify New View Creation URL ')
+			cy.visit(url + '/#/dashboard/view_creation/0')
 			cy.url().should('eq', url + '/#/dashboard/view_creation/0')
 		})
 	})
