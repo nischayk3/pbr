@@ -6,6 +6,7 @@ describe('Manual data upload', () => {
 	afterEach(() => {
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("username", "Fahad");
 		localStorage.setItem("loginwith", "WITH_AD");
 		localStorage.setItem(
 			"login_details",
@@ -25,6 +26,7 @@ describe('Manual data upload', () => {
 	beforeEach(() => {
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("username", "Fahad");
 		localStorage.setItem("loginwith", "WITH_AD");
 		localStorage.setItem(
 			"login_details",
