@@ -22,7 +22,7 @@ describe("Sharing", () => {
 					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
 			})
 		);
-		cy.intercept('GET', '**/last-views-and-charts?limit=8', { fixture: 'approvedChart.json' })
+
 	});
 
 	beforeEach(() => {
@@ -44,16 +44,22 @@ describe("Sharing", () => {
 					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
 			})
 		);
-		cy.intercept('GET', '**/last-views-and-charts?limit=8', { fixture: 'approvedChart.json' })
+
 	});
 	it('Load Chart Landing page Correctly', () => {
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/chart_personalization')
+
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/chart_personalization')
 	})
 
 	it('All Chart Render', () => {
+		cy.intercept('GET', '**/last-views-and-charts?limit=8', { fixture: 'approvedChart.json' })
+		cy.wait(2000)
+		const url = Cypress.config().baseUrl
+		cy.url().should('eq', url + '/#/dashboard/chart_personalization')
+		cy.wait(2000)
 		cy.log('Open Approved Chart')
 		cy.get('[href="#/dashboard/chart_personalization/C615&1"] > .ant-col > .chart-tiles').click()
 	})
@@ -88,5 +94,6 @@ describe("Sharing", () => {
 		cy.get('.ant-modal-body').click({ force: true });
 		cy.wait(2000)
 		cy.get('.ant-modal-body > :nth-child(1) > .ant-btn > span').click({ force: true });
+		cy.get('.ant-modal-close-x').click({ force: true })
 	})
 });
