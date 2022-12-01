@@ -33,6 +33,7 @@ describe('PBR', () => {
 		cy.viewport(1366, 768);
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("username", "Fahad");
 		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
