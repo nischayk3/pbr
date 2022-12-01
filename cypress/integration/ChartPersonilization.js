@@ -7,6 +7,7 @@ Cypress.Commands.add("multiselect", (options) => {
 
 describe("Renders chart personalization", () => {
 	afterEach(() => {
+		cy.viewport(1360, 720)
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
 		localStorage.setItem("username", "Fahad");
@@ -27,6 +28,7 @@ describe("Renders chart personalization", () => {
 	});
 
 	beforeEach(() => {
+		cy.viewport(1360, 720)
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
 		localStorage.setItem("username", "Fahad");
@@ -354,7 +356,7 @@ describe("Renders chart personalization", () => {
 		cy.wait(1000);
 		cy.log("Changing marker shape");
 		cy.get(".figure-container .select_field").eq(0).click();
-		cy.get('[title="triangle-up"]').click();
+		cy.get('[title="Triangle-up"]').click();
 
 		cy.log("Changing marker color");
 		cy.get('.figure-container .figure-inputs .container input[type="text"]')
@@ -370,7 +372,7 @@ describe("Renders chart personalization", () => {
 
 		cy.log("Changing violations shape");
 		cy.get(".figure-container .select_field").eq(1).click();
-		cy.get('[title="triangle-down"] > .ant-select-item-option-content')
+		cy.get('[title="Triangle-down"] > .ant-select-item-option-content')
 			.eq(1)
 			.click();
 
@@ -452,8 +454,8 @@ describe("Renders chart personalization", () => {
 		cy.wait(500);
 		cy.get(".tresh-container > .ant-row > .ant-col > .ant-btn").click();
 		cy.wait(500);
-		cy.get(".extra-coll").click();
-		cy.get(".ant-btn-primary").click();
+		cy.get('.extra-coll > .anticon > svg').click({ multiple: true });
+		cy.get('.ant-btn-primary > span').click({ multiple: true });
 		cy.wait(500);
 		cy.get(".tresh-container > .ant-row > .ant-col > .ant-btn").click();
 		cy.get(
@@ -476,7 +478,7 @@ describe("Renders chart personalization", () => {
 		cy.get(
 			":nth-child(4) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
 		).click();
-		cy.get(".ant-select-item-option-active").contains("circle").click();
+		cy.get(".ant-select-item-option-active").contains("Circle").click();
 		cy.get(
 			".ant-collapse-content-box > :nth-child(4) > :nth-child(2) > .input_field > .ant-input"
 		)
@@ -512,7 +514,7 @@ describe("Renders chart personalization", () => {
 		cy.get(
 			":nth-child(4) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
 		).click();
-		cy.get(".ant-select-item-option-active").contains("circle").click();
+		cy.get(".ant-select-item-option-active").contains("Circle").click();
 		cy.get(
 			".ant-collapse-content-box > :nth-child(4) > :nth-child(2) > .input_field > .ant-input"
 		)
@@ -670,34 +672,19 @@ describe("Renders chart personalization", () => {
 										cy.get(".ant-modal-close-icon").eq(1).click();
 
 										cy.wait(500);
-										cy.get(
-											'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
-										)
-											.eq(0)
-											.click();
+										// cy.get(
+										// 	'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
+										// )
+										// 	.eq(0)
+										// 	.click();
 
-										cy.wait(500);
-										cy.get(
-											'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
-										)
-											.eq(1)
-											.click();
-										cy.get(".schedule-notification-different").first().click();
-
-										cy.wait(500);
-										cy.get(
-											'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
-										)
-											.eq(0)
-											.click();
-
-										cy.wait(500);
-										cy.get(
-											'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
-										)
-											.eq(1)
-											.click();
-										cy.get(".schedule-notification-same").first().click();
+										// cy.wait(500);
+										// cy.get(
+										// 	'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
+										// )
+										// 	.eq(1)
+										// 	.click();
+										// cy.get(".schedule-notification-different").first().click();
 
 										cy.wait(500);
 										cy.get(
@@ -705,6 +692,21 @@ describe("Renders chart personalization", () => {
 										)
 											.eq(0)
 											.click();
+
+										cy.wait(500);
+										// cy.get(
+										// 	'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
+										// )
+										// 	.eq(1)
+										// 	.click();
+										// cy.get(".schedule-notification-same").first().click();
+
+										// cy.wait(500);
+										// cy.get(
+										// 	'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
+										// )
+										// 	.eq(0)
+										// 	.click();
 										cy.get(".chart-notify .evaluation .clear-schedule")
 											.first()
 											.click();
