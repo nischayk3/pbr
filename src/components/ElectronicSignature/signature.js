@@ -51,7 +51,6 @@ const Signature = (props) => {
 		let header = {
 			password: password,
 			username: username
-
 		};
 		try {
 			dispatch(showLoader());
@@ -241,6 +240,7 @@ const Signature = (props) => {
 									className="custom-secondary-btn"
 									key="3"
 									onClick={() => authenticateUser()}
+									disabled={username == '' || password == ''}
 								>
 									Authenticate with AD
 								</Button>
@@ -281,7 +281,6 @@ const Signature = (props) => {
 							<Input
 								type="password"
 								value={password}
-								disabled={loginStatus === "WITH_AD"}
 								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</div>
