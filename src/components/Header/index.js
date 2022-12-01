@@ -74,7 +74,7 @@ const HeaderBar = () => {
 			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
 		}
 		localStorage.removeItem('login_details');
-		localStorage.removeItem('user');
+		localStorage.removeItem('username');
 		localStorage.removeItem('loginwith');
 		window.open(`${logoutUrl}`, '_self')
 		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`, '_self')
