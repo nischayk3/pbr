@@ -34,7 +34,7 @@ describe("PbrFileUpload", () => {
 	})
 
     it("Select Project", () => {
-        cy.get(':nth-child(1) > .select_field_search > .search-block > .ant-select > .ant-select-selector').click({ force: true })
+        // cy.get(':nth-child(1) > .select_field_search > .search-block > .ant-select > .ant-select-selector').click({ force: true })
 		cy.get("#rc_select_0").clear();
 		cy.get("#rc_select_0").type("Project");
 		cy.wait(4000)
@@ -43,7 +43,7 @@ describe("PbrFileUpload", () => {
 	});
 
     it("Select Group", () => {
-        cy.get(':nth-child(2) > .select_field_search > .search-block > .ant-select > .ant-select-selector').click({ force: true })
+        // cy.get(':nth-child(2) > .select_field_search > .search-block > .ant-select > .ant-select-selector').click({ force: true })
 		cy.get("#rc_select_1").clear();
 		cy.get("#rc_select_1").type("Group");
 		cy.wait(4000)
@@ -52,7 +52,7 @@ describe("PbrFileUpload", () => {
 	});
 
     it("Select Sub-Group", () => {
-        cy.get(':nth-child(3) > .select_field_search > .search-block > .ant-select > .ant-select-selector').click({ force: true })
+        // cy.get(':nth-child(3) > .select_field_search > .search-block > .ant-select > .ant-select-selector').click({ force: true })
         cy.get(':nth-child(2) > .select_field_search > .search-block > .ant-select > .ant-select-selector')
 		cy.get("#rc_select_2").clear();
 		cy.get("#rc_select_2").type("Group");
