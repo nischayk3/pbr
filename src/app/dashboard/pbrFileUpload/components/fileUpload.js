@@ -362,7 +362,7 @@ function FileUpload() {
 		}
 
 	}
-	
+
 	return (
 		<div className='pbr-container'>
 			<div className='custom-wrapper pbr-wrapper'>
@@ -395,6 +395,7 @@ function FileUpload() {
 									<div style={{ display: "flex", justifyContent: "space-between", marginTop: 40 }}>
 										<div style={{ width: 235 }}>
 											<SelectSearchField
+												id="projectDropdown"
 												showSearch
 												label='Project *'
 												placeholder='Select Project'
@@ -408,6 +409,7 @@ function FileUpload() {
 										</div>
 										<div style={{ width: 235 }}>
 											<SelectSearchField
+												id="groupDropdown"
 												disabled={selectParam['project'] ? false : true}
 												showSearch
 												label='Group'
@@ -422,6 +424,7 @@ function FileUpload() {
 										</div>
 										<div style={{ width: 235 }}>
 											<SelectSearchField
+												id="subGroupDropdown"
 												showSearch
 												disabled={selectParam['group'] ? false : true}
 												label='Sub-Group'
@@ -437,6 +440,7 @@ function FileUpload() {
 									</div>
 									<h3 style={{ marginTop: 30 }}>Upload Files</h3>
 									<div
+										id = "uploadPDf"
 										className='create-new'
 										onClick={() => checkUpload()}
 										disabled={true}
