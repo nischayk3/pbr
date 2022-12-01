@@ -2,29 +2,54 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 	return false;
 });
 describe("Report", () => {
-	beforeEach(() => {
+
+	afterEach(() => {
 		cy.viewport(1280, 720)
 		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "mihir.bagga@mareana.com");
-		localStorage.setItem("username", "Mihir");
-		cy.intercept('GET', '**/report-load?report_displ_id=R391', { fixture: 'reportGenLoad.json' })
-		cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
-		cy.intercept('GET', '**/report-load?report_displ_id=R520', { fixture: 'reportFiveTwenty.json' })
-
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("username", "Fahad");
+		localStorage.setItem("loginwith", "WITH_AD");
 		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
 				ad_role: false,
-				firstname: "Mihir",
-				lastname: "Bagga",
-				email_id: "mihir.bagga@mareana.com",
+				email_id: "fahad.siddiqui@mareana.com",
+				firstname: "Fahad",
+				lastname: "siddiqui",
 				mdh_role: "USER",
 				screen_set: "1000_USER",
 				token:
 					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
 			})
 		);
-	})
+		cy.intercept('GET', '**/report-load?report_displ_id=R391', { fixture: 'reportGenLoad.json' })
+		cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
+		cy.intercept('GET', '**/report-load?report_displ_id=R520', { fixture: 'reportFiveTwenty.json' })
+	});
+
+	beforeEach(() => {
+		cy.viewport(1280, 720)
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("username", "Fahad");
+		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem(
+			"login_details",
+			JSON.stringify({
+				ad_role: false,
+				email_id: "fahad.siddiqui@mareana.com",
+				firstname: "Fahad",
+				lastname: "siddiqui",
+				mdh_role: "USER",
+				screen_set: "1000_USER",
+				token:
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
+			})
+		);
+		cy.intercept('GET', '**/report-load?report_displ_id=R391', { fixture: 'reportGenLoad.json' })
+		cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })
+		cy.intercept('GET', '**/report-load?report_displ_id=R520', { fixture: 'reportFiveTwenty.json' })
+	});
 	it('Renders Report Landing Page ', () => {
 		const url = Cypress.config().baseUrl
 		cy.intercept('GET', '**/reports?rep_status=all', { fixture: 'reportAll.json' })

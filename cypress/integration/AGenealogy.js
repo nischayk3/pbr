@@ -8,6 +8,7 @@ describe("Genealogy", () => {
 		cy.intercept('GET', 'v1/genealogy?levels=*', { fixture: 'backward.json' })
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("username", "Fahad");
 		localStorage.setItem(
 			"login_details",
 			JSON.stringify({

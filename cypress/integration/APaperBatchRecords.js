@@ -15,6 +15,7 @@ describe('PBR', () => {
 		cy.viewport(1366, 768);
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
+		localStorage.setItem("username", "Fahad");
 		localStorage.setItem(
 			"login_details",
 			JSON.stringify({
@@ -147,7 +148,7 @@ describe('PBR', () => {
 		cy.get('#dynamic_form_nest_item_users_0_param_max').clear({ force: true });
 		cy.get('#dynamic_form_nest_item_users_0_param_max').type(2)
 		cy.wait(2000);
-		
+
 	})
 	it("Change Coordinates", () => {
 		cy.wait(6000);
@@ -188,7 +189,7 @@ describe('PBR', () => {
 		// cy.get('#basic_templateName').type('test');
 		// cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
 		cy.visit(url + '/#/dashboard/paper_batch_records/Untitled?file=Batch%20Record%20Example%201.pdf&tempalteName=dasdas&fromScreen=Workspace')
-		
+
 	})
 
 	it("click of parameter pannel", () => {
@@ -327,7 +328,7 @@ describe('PBR', () => {
 		cy.get("#publisgButton").click({ force: true })
 		cy.wait(2000)
 		// cy.get(':nth-child(10) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x > .anticon > svg > path').click({ force: true })
-		
+
 	})
 
 

@@ -25,8 +25,6 @@ const StatusBlock = lazy(() =>
 	import("../../../../../components/StatusBlock/statusBlock")
 );
 
-
-
 export default function Landing() {
 	const [searched, setSearched] = useState(false);
 	const [viewList, setViewList] = useState([]);
@@ -186,6 +184,7 @@ export default function Landing() {
 						enterButton="Search"
 						size="large"
 						onSearch={search}
+						id="search-view"
 					/>
 					{searched && (
 						<Table
