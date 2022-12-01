@@ -1,0 +1,23 @@
+{
+    "Message": "Success",
+    "group": [
+        "GROUP-1",
+        "GROUP-3"
+    ],
+    "project": [
+        "PROJECT-5",
+        "PROJECT-9",
+        "PROJECT-6",
+        "PROJECT-2",
+        "PROJECT-3",
+        "PROJECT-4",
+        "PROJECT-7",
+        "PROJECT-8",
+        "PROJECT-1"
+    ],
+    "status-code": 200,
+    "subgroup": [
+        "SUBGROUP-2",
+        "SUBGROUP-1"
+    ]
+}
