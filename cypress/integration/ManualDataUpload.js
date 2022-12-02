@@ -4,41 +4,40 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 describe('Manual data upload', () => {
 	afterEach(() => {
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.kumar@mareana.com");
-		localStorage.setItem("username", "Dinesh");
+
 		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("username", "Dinesh");
 		localStorage.setItem(
-			"login_details",
-			JSON.stringify({
+			"login_details", JSON.stringify({
 				ad_role: false,
-				email_id: "dinesh.kumar@mareana.com",
+				email_id: "dinesh.jinjala@mareana.com",
 				firstname: "Dinesh",
-				lastname: "Kumar",
-				mdh_role: "ADMIN",
-				screen_set: "1000_NEW_ROLE",
+				lastname: "Jinjala",
+				mdh_role: "USER",
+				screen_set: "1000_USER",
 				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkRpbmVzaCBLdW1hciIsInVuaXhfdGltZXN0YW1wIjoxNjY5OTA4MjkyLjIzNjcxOCwidGltZXN0YW1wIjoiMDEvMTIvMjAyMiAxNToyNDo1MiIsImV4cCI6MTY2OTkxOTA5MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiQURNSU4iLCJlbWFpbF9pZCI6ImRpbmVzaC5rdW1hckBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.ER2bug3svppOP3QXFSop2F2OMAhPkIuuyDVK8zll3Xw"
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
 			})
 		);
 	});
 
 	beforeEach(() => {
-		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "dinesh.kumar@mareana.com");
-		localStorage.setItem("username", "Dinesh");
 		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("username", "Dinesh");
 		localStorage.setItem(
-			"login_details",
-			JSON.stringify({
+			"login_details", JSON.stringify({
 				ad_role: false,
-				email_id: "dinesh.kumar@mareana.com",
+				email_id: "dinesh.jinjala@mareana.com",
 				firstname: "Dinesh",
-				lastname: "Kumar",
-				mdh_role: "ADMIN",
-				screen_set: "1000_NEW_ROLE",
+				lastname: "Jinjala",
+				mdh_role: "USER",
+				screen_set: "1000_USER",
 				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkRpbmVzaCBLdW1hciIsInVuaXhfdGltZXN0YW1wIjoxNjY5OTA4MjkyLjIzNjcxOCwidGltZXN0YW1wIjoiMDEvMTIvMjAyMiAxNToyNDo1MiIsImV4cCI6MTY2OTkxOTA5MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiQURNSU4iLCJlbWFpbF9pZCI6ImRpbmVzaC5rdW1hckBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.ER2bug3svppOP3QXFSop2F2OMAhPkIuuyDVK8zll3Xw"
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
 			})
 		);
 	});
@@ -115,7 +114,7 @@ describe('Manual data upload', () => {
 			// cy.get(':nth-child(1) > .ant-input').clear();
 			// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 			cy.get(':nth-child(2) > .ant-input').clear();
-			cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
+			cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
 			cy.get('.signature-modal > #auth_with_ad').click();
 			cy.wait(3000)
 		});
@@ -163,7 +162,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
+		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(2000)
 
@@ -181,7 +180,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
+		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(3000)
 
@@ -231,7 +230,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
+		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(2000)
 
@@ -249,7 +248,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
+		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(2000)
 
@@ -304,7 +303,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
+		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(3000)
 
@@ -322,7 +321,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
+		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(2000)
 
@@ -480,7 +479,7 @@ describe('Manual data upload', () => {
 		// cy.get(':nth-child(1) > .ant-input').clear();
 		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 		cy.get(':nth-child(2) > .ant-input').clear();
-		cy.get(':nth-child(2) > .ant-input').type('Dkit@2011');
+		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
 		cy.get('.signature-modal > #auth_with_ad').click();
 		cy.wait(2000)
 	});

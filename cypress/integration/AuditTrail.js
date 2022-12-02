@@ -6,39 +6,37 @@ describe('Audit Trail', () => {
 		cy.intercept('POST', 'services/v1/audit-data-change', { fixture: 'auditTrail-data.json' })
 		cy.intercept('GET', '/services/v1/audit-filter', { fixture: 'auditTrail-filter.json' })
 		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		localStorage.setItem("username", "Fahad");
+		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("username", "Dinesh");
 		localStorage.setItem(
-			"login_details",
-			JSON.stringify({
+			"login_details", JSON.stringify({
 				ad_role: false,
-				email_id: "fahad.siddiqui@mareana.com",
-				firstname: "Fahad",
-				lastname: "siddiqui",
+				email_id: "dinesh.jinjala@mareana.com",
+				firstname: "Dinesh",
+				lastname: "Jinjala",
 				mdh_role: "USER",
 				screen_set: "1000_USER",
 				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
 			})
 		);
 	})
 
 	afterEach(() => {
 		localStorage.setItem("test_enabled", true);
-		localStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		localStorage.setItem("username", "Fahad");
+		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("username", "Dinesh");
 		localStorage.setItem("loginwith", "WITH_AD");
 		localStorage.setItem(
-			"login_details",
-			JSON.stringify({
+			"login_details", JSON.stringify({
 				ad_role: false,
-				email_id: "fahad.siddiqui@mareana.com",
-				firstname: "Fahad",
-				lastname: "siddiqui",
+				email_id: "dinesh.jinjala@mareana.com",
+				firstname: "Dinesh",
+				lastname: "Jinjala",
 				mdh_role: "USER",
 				screen_set: "1000_USER",
 				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
 			})
 		);
 	});
@@ -107,6 +105,9 @@ describe('Audit Trail', () => {
 		cy.get('.ant-btn-primary').eq(3).click()
 		cy.wait(1000)
 		cy.get('.ant-dropdown-menu-title-content').contains('CSV').click()
+		cy.get('.ant-btn-primary').eq(3).click()
+		cy.wait(1000)
+		cy.get('.ant-dropdown-menu-title-content').contains('PDF').click()
 		cy.log("sorting of table")
 		cy.get('.ant-input').clear();
 		cy.get('.ant-input-group-addon > .ant-btn').eq(1).click({ force: true });

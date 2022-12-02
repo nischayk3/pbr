@@ -1,4 +1,4 @@
-// eslint-disable-next-line
+
 import {
 	Button,
 	DatePicker,
@@ -12,12 +12,10 @@ import moment from "moment";
 import React from "react";
 import { connect } from "react-redux";
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
-import { BMS_APP_PYTHON_SERVICE, MDH_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
+import { BMS_APP_PYTHON_SERVICE } from "../../../../constants/apiBaseUrl";
 import {
 	auditDataChange,
-	auditFilter,
-	loadFilter,
-	reportDownload
+	auditFilter, reportDownload
 } from "../../../../duck/actions/auditTrialAction";
 import { showNotification } from "../../../../duck/actions/commonActions";
 import "./styles.scss";
@@ -258,46 +256,6 @@ class AuditTrials extends React.Component {
 
 	}
 
-	getExcelFile = (value) => {
-		var today = new Date();
-		today.setDate(today.getDate() + 1);
-
-		let endPoint = "/services/v1/audit-information?";
-		let baseUrl = MDH_APP_PYTHON_SERVICE + endPoint;
-		let startDate =
-			this.state.setValue.length > 0
-				? moment(this.state.setValue[0]).format("YYYY-MM-DD")
-				: "2022-09-01";
-		let endDate =
-			this.state.setValue.length > 0
-				? moment(this.state.setValue[1]).format("YYYY-MM-DD")
-				: today.toISOString().slice(0, 10);
-		let activity = this.state.eventType.value;
-		let userid = this.state.user.value;
-
-		const myUrlWithParams = new URL(baseUrl);
-		if (startDate == endDate) {
-			myUrlWithParams.searchParams.append("startdate", startDate);
-		} else {
-			myUrlWithParams.searchParams.append("startdate", startDate);
-			myUrlWithParams.searchParams.append("enddate", endDate);
-		}
-		if (activity) {
-			myUrlWithParams.searchParams.append("activity", activity);
-		}
-		if (userid) {
-			myUrlWithParams.searchParams.append("userid", userid);
-		}
-		if (value == "excel") {
-			myUrlWithParams.searchParams.append("export_csv", false);
-		}
-		if (value == "csv") {
-			myUrlWithParams.searchParams.append("export_csv", true);
-		}
-		let url = myUrlWithParams.href;
-		window.open(url);
-	};
-
 	disabledDate = (current) => {
 		if (!this.state.dates) {
 			return false;
@@ -400,24 +358,7 @@ class AuditTrials extends React.Component {
 		});
 	};
 
-	loadEventFilter = (_filterId, _filter) => {
-		let _req = {
-			appId: "BMS",
-			filterId: _filterId,
-			q: "",
-			filters: _filter ? _filter : []
-		};
-		loadFilter(_req)
-			.then((res) => {
-				let eventlist = res.data;
-				this.setState({
-					eventList: eventlist
-				});
-			})
-			.catch((error) => {/* istanbul ignore next */
-				if (error && error.message) console.warn("Warning", error.message);
-			});
-	};
+
 
 	search = (value) => {
 		const { tableData } = this.state;
@@ -477,9 +418,7 @@ class AuditTrials extends React.Component {
 		this.setState({ filterTable: null });
 		this.auditHighlight();
 	};
-	handleFilterPkg = () => {
-		this.esgTablePackaging(this.state.filterPkg);
-	};
+
 
 	handleClear = () => {
 		this.setState(
@@ -499,46 +438,6 @@ class AuditTrials extends React.Component {
 			() => this.auditHighlight()
 		);
 	};
-
-	handleClearPkg = () => {
-		this.setState({
-			selectedBrandPkg: "",
-			selectedProductPkg: "",
-			selectedQuestionPkg: "",
-			selectedAnsPkg: ""
-		});
-		this.esgTablePackaging();
-	};
-	/* istanbul ignore next */
-	handleAutoCompleteChange = (state, evt, value) => {
-		if (evt) {
-			if (value === null) {
-				value = { label: "", value: "" };
-			} else {
-				this.setState({
-					user: value
-				});
-			}
-		}
-	};
-
-	/**
- * Resolved and downloads blob response as a file.
- * FOR BROWSERS ONLY
- * @param response
- */
-	resolveAndDownloadBlob = (response) => {
-		let filename = 'tags.xlsx';
-		filename = decodeURI(filename);
-		const url = window.URL.createObjectURL(new Blob([response]));
-		const link = document.createElement('a');
-		link.href = url;
-		link.setAttribute('download', filename);
-		document.body.appendChild(link);
-		link.click();
-		window.URL.revokeObjectURL(url);
-		link.remove();
-	}
 
 	render() {
 		const { RangePicker } = DatePicker;

@@ -50,7 +50,7 @@ export const getPbrReviewerData = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.post(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr',
+		'https://mi-dev.mareana.com/pbr/udh/get_cpv_pbr',
 		_queryParam,
 		request_headers
 	).then(
@@ -69,7 +69,7 @@ export const geTemplateDropdown = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.get(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_tran_pbr_template_id',
+		'https://mi-dev.mareana.com/pbr/udh/get_tran_pbr_template_id',
 		_queryParam,
 		request_headers
 	).then(
@@ -88,7 +88,7 @@ export const getPieChartData = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.post(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr_count',
+		'https://mi-dev.mareana.com/pbr/udh/get_cpv_pbr_count',
 		_queryParam,
 		request_headers
 	).then(
@@ -107,7 +107,7 @@ export const getRowColumnData = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.post(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_row_col_identifiers',
+		'https://mi-dev.mareana.com/pbr/udh/get_row_col_identifiers',
 		_queryParam,
 		request_headers
 	).then(
@@ -127,7 +127,7 @@ export const updateApprove = (_queryParam) => {
 		'resource-name': 'PBR'
 	};
 	return Service.put(
-		MDH_APP_PYTHON_SERVICE + '/pbr/udh/get_cpv_pbr',
+		'https://mi-dev.mareana.com/pbr/udh/get_cpv_pbr',
 		_queryParam,
 		request_headers
 	).then(
