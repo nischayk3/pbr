@@ -17,7 +17,7 @@
 				display: flex;
 				justify-content: space-between;
 				width: 190px;
-				margin: 0 48px;
+				margin: 0 65px;
 
 				p {
 					margin: 0;
@@ -41,6 +41,8 @@
 		.ant-table-container {
 			.ant-table-content {
 				.ant-table-thead {
+					width: 100px;
+
 					.ant-table-cell {
 						background: #E7E5FF !important;
 					}
@@ -48,4 +50,8 @@
 			}
 		}
 	}
+}
+
+.ant-table-tbody > tr > td {
+	width: 200px;
 }

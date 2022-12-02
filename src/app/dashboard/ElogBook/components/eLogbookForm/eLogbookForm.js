@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import { useHistory, useRouteMatch } from "react-router-dom";
 import Banner from '../../../../../assets/images/Popup-Side.svg';
 import InputField from '../../../../../components/InputField/InputField';
-import SelectField from '../../../../../components/SelectField/SelectField';
+import SelectFields from '../../../../../components/SelectField/SelectField';
 import "./eLogbookForm.scss";
 
 function ElogForm({ isTemplateModal }) {
@@ -83,16 +83,17 @@ function ElogForm({ isTemplateModal }) {
 						onChangeInput={(e) => setFormData({ ...formData, Tname: e.target.value })}
 					/>
 
-					<SelectField
-						label="What product is this template for?"
+					<SelectFields
+						label="What product are you creating this template for?"
 						placeholder="Select product"
 						name="Pname"
 						selectList={data}
-						selectedValue={formData.Pname}
+						// selectedValue={formData.Pname}
 						onChangeSelect={(e) =>
 							setFormData({ ...formData, Pname: e })
 						}
-						style={{ width: "100%", margin: "0px" }}
+						// style={{ width: "100%", margin: "0px" }}
+						className="model-select"
 					/>
 				</div>
 			</div>

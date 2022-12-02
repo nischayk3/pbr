@@ -7,6 +7,9 @@ import "./styles.scss";
 const ScreenHeader = lazy(() =>
 	import("../../../../../components/ScreenHeader/screenHeader")
 );
+import { UserOutlined } from '@ant-design/icons';
+import { Avatar, Image } from 'antd';
+
 
 export default function Landing() {
 	const [isViewsetVisible, setIsViewsetVisible] = useState(false);
@@ -41,22 +44,26 @@ export default function Landing() {
 			title: 'Date of creation',
 			dataIndex: 'doc',
 			key: 'doc',
+			width: 40,
 
 		},
 		{
 			title: 'Name',
 			dataIndex: 'name',
 			key: 'name',
+			width: 10,
 		},
 		{
 			title: 'Contributors',
 			dataIndex: 'cont',
 			key: 'cont',
+			width: 20,
 		},
 		{
 			title: 'Version',
 			key: 'version',
 			dataIndex: 'version',
+			width: 20,
 		},
 
 	];
@@ -65,7 +72,7 @@ export default function Landing() {
 			key: '1',
 			doc: '23 June 2022',
 			name: '155885001_123456_550',
-			cont: 'A',
+			cont: <Avatar>A</Avatar>,
 			version: '2.0',
 		},
 
@@ -98,8 +105,9 @@ export default function Landing() {
 						<div className="filter">
 							<p>Show</p>
 							<SelectField
+							defaultValue="Newest first"
 								selectList={filterList}
-								selectedValue={filterData}
+								// selectedValue={filterData}
 								onChangeSelect={(e) =>
 									setFilterData(e)
 								}
@@ -114,7 +122,9 @@ export default function Landing() {
 						/>
 					</div>
 				</div>
-				<Collapse bordered={false} defaultActiveKey={['1']}>
+				<Collapse bordered={false} 
+				// defaultActiveKey={['1']}
+				>
 					<Panel header={
 						(<Tag color="yellow">In progress</Tag>)
 					} key="1">

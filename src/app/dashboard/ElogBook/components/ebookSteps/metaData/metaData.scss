@@ -140,5 +140,8 @@
     background-color: #a59494;
 }
 .delete-button{
-	text-align: end;
+	text-align: start;
+}
+.ant-tabs-bottom>.ant-tabs-nav, .ant-tabs-bottom>div>.ant-tabs-nav, .ant-tabs-top>.ant-tabs-nav, .ant-tabs-top>div>.ant-tabs-nav {
+	margin-block-end: auto;
 }
