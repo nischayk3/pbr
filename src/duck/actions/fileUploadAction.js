@@ -3,10 +3,10 @@ import {
 } from "../../constants/apiBaseUrl";
 import Service from "../../services/AjaxService";
 
-let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+let login_response = JSON.parse(localStorage.getItem("login_details"));
 
 export const uploadFileApi = (_queryParam) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	return Service.post(BMS_APP_PYTHON_SERVICE + "/upload-file", _queryParam, {
 		"Content-Type": "multipart/form-data",
 		"x-access-token": login_response.token ? login_response.token : "",
@@ -23,7 +23,7 @@ export const uploadFileApi = (_queryParam) => {
 };
 
 export const cancelFileUpload = (request) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	return Service.post(BMS_APP_PYTHON_SERVICE + "/cancel-file-upload", request, {
 		"x-access-token": login_response.token ? login_response.token : "",
 		"resource-name": "FILE_UPLOAD"
@@ -38,7 +38,7 @@ export const cancelFileUpload = (request) => {
 };
 
 export const approvedData = (request) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	return Service.post(BMS_APP_PYTHON_SERVICE + "/approve-data", request, {
 		"x-access-token": login_response.token ? login_response.token : "",
 		"resource-name": "FILE_UPLOAD"
@@ -53,7 +53,7 @@ export const approvedData = (request) => {
 };
 
 export const updateApprovedData = (request) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	return Service.post(
 		BMS_APP_PYTHON_SERVICE + "/update-approved-data",
 		request,
@@ -72,7 +72,7 @@ export const updateApprovedData = (request) => {
 };
 
 export const finalFileUpload = (request) => {
-	let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	let login_response = JSON.parse(localStorage.getItem("login_details"));
 	return Service.post(BMS_APP_PYTHON_SERVICE + "/final-upload", request, {
 		"x-access-token": login_response.token ? login_response.token : "",
 		"resource-name": "FILE_UPLOAD"

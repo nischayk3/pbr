@@ -233,8 +233,12 @@ const Estimator = (props) => {
   useEffect(() => {
     if (finalModelJson?.hyperParams) {
       setHyperParameters(finalModelJson?.hyperParams)
+      setEstimatorPopupDataValues({
+        ...estimatorPopupDataValues,
+        enableGrid: true,
+      })
     }
-  }, [])
+  }, [finalModelJson])
 
 
   return (

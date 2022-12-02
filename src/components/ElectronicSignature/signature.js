@@ -17,7 +17,6 @@ import {
 import { getAuthenticate, getAuthenticateWithLdap, getAuthenticateWithoutAD } from "../../services/loginService";
 import "./styles.scss";
 
-
 const { Option } = Select;
 
 const Signature = (props) => {
@@ -36,8 +35,8 @@ const Signature = (props) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const loginDetails = JSON.parse(sessionStorage.getItem("login_details"));
-		const status = sessionStorage.getItem("loginwith")
+		const loginDetails = JSON.parse(localStorage.getItem("login_details"));
+		const status = localStorage.getItem("loginwith")
 		if (status) {
 			setLoginStatus(status);
 		}
@@ -52,7 +51,6 @@ const Signature = (props) => {
 		let header = {
 			password: password,
 			username: username
-
 		};
 		try {
 			dispatch(showLoader());
@@ -142,7 +140,7 @@ const Signature = (props) => {
 		req["screen"] = props.screenName;
 		req["first_name"] = "first_name";
 		req["last_name"] = "last_name";
-		let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+		let login_response = JSON.parse(localStorage.getItem("login_details"));
 		let headers = {
 			"content-type": "application/json",
 			"resource-name":
@@ -161,7 +159,7 @@ const Signature = (props) => {
 				setIsAuth('')
 				let reqs = {};
 				let req1 = {};
-				let user_details = JSON.parse(sessionStorage.getItem("login_details"));
+				let user_details = JSON.parse(localStorage.getItem("login_details"));
 				let user = user_details["email_id"] ? user_details["email_id"] : "";
 
 				reqs["application_type"] = props.appType;
@@ -241,8 +239,8 @@ const Signature = (props) => {
 								<Button
 									className="custom-secondary-btn"
 									key="3"
-									disabled={username == '' || password == ''}
 									onClick={() => authenticateUser()}
+									disabled={username == '' || password == ''}
 								>
 									Authenticate with AD
 								</Button>

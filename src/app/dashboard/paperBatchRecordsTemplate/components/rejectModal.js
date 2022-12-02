@@ -31,7 +31,7 @@ const App = (props) => {
 	const handleReject = async () => {
 		try {
 			dispatch(showLoader());
-			let login_response = JSON.parse(sessionStorage.getItem('login_details'))
+			let login_response = JSON.parse(localStorage.getItem('login_details'))
 			let req = {
 				message: value,
 				page: pageNumber,

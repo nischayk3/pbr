@@ -31,7 +31,7 @@ const ExclusionPopup = ({
 				exclusion_id: exclusionIdCounter.current,
 				exclusion_value: { batch: exclusionValues.batchId },
 				exclusion_description: exclusionValues.notes,
-				user: sessionStorage.getItem("username"),
+				user: localStorage.getItem("username"),
 				timestamp: new Date().toISOString(),
 			};
 			let errorMsg = "";

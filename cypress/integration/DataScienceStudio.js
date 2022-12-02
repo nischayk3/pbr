@@ -5,27 +5,31 @@ Cypress.Commands.add("multiselect", (options) => {
 	});
 });
 
+Cypress.on('uncaught:exception', (err) => {
+	/* returning false here prevents Cypress from failing the test */
+	return false
+})
+
 describe("Render Data Science Studio", () => {
+
 	beforeEach(() => {
-		cy.viewport(1360, 780)
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		sessionStorage.setItem("username", "Fahad");
-		sessionStorage.setItem(
-			"login_details",
-			JSON.stringify({
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("username", "Dinesh");
+		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem(
+			"login_details", JSON.stringify({
 				ad_role: false,
-				email_id: "fahad.siddiqui@mareana.com",
-				firstname: "Fahad",
-				lastname: "siddiqui",
+				email_id: "dinesh.jinjala@mareana.com",
+				firstname: "Dinesh",
+				lastname: "Jinjala",
 				mdh_role: "USER",
 				screen_set: "1000_USER",
 				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
 			})
 		);
-
-	})
+	});
 
 	it('Load Data Science Studio', () => {
 		const url = Cypress.config().baseUrl
@@ -37,8 +41,11 @@ describe("Render Data Science Studio", () => {
 	})
 
 	it('Upload Load Data Set', () => {
+		const url = Cypress.config().baseUrl
 		cy.wait(2000)
-		cy.get('.card-center > :nth-child(1)').click()
+		cy.visit(url + '/#/dashboard/data_science_studio')
+		cy.wait(2000)
+		cy.get('#load-dataset > .anticon > svg').click()
 	})
 
 	it('Click back btn', () => {
@@ -47,8 +54,12 @@ describe("Render Data Science Studio", () => {
 	})
 
 	it('Upload Load Data Set', () => {
+		const url = Cypress.config().baseUrl
 		cy.wait(2000)
-		cy.get('.card-center > :nth-child(1)').click()
+		cy.visit(url + '/#/dashboard/data_science_studio')
+
+		cy.wait(2000)
+		cy.get('#load-dataset > .anticon > svg').click()
 	})
 
 	it('Upload File', () => {

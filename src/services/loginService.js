@@ -64,7 +64,7 @@ export const createAccount = (request, headers) => {
 
 //password change
 export const passwordChange = (request) => {
-	const login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
 
 	const headers = {
 		"content-type": "application/json",
@@ -83,7 +83,7 @@ export const passwordChange = (request) => {
 
 //get user profilr
 export const getUserProfile = (request) => {
-	const login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
 
 	const headers = {
 		"content-type": "application/json",
@@ -102,7 +102,7 @@ export const getUserProfile = (request) => {
 
 //send user profilr
 export const sendUserProfile = (request) => {
-	const login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
 
 	const headers = {
 		"content-type": "application/json",
@@ -123,7 +123,7 @@ export const sendUserProfile = (request) => {
 
 //profile upload image
 export const userProfileUpload = (request) => {
-	const login_response = JSON.parse(sessionStorage.getItem("login_details"));
+	const login_response = JSON.parse(localStorage.getItem("login_details"));
 
 	const headers = {
 		"content-type": "application/json",

@@ -6,24 +6,42 @@ Cypress.Commands.add("multiselect", (options) => {
 });
 
 describe("Renders chart personalization", () => {
-	beforeEach(() => {
-		cy.viewport(1280, 720);
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "vinay.reddy@mareana.com");
-		sessionStorage.setItem("username", "Vinay");
-		sessionStorage.setItem("loginwith", "WITH_AD");
-		sessionStorage.setItem(
-			"login_details",
-			JSON.stringify({
+	afterEach(() => {
+		cy.viewport(1360, 720)
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("username", "Dinesh");
+		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem(
+			"login_details", JSON.stringify({
 				ad_role: false,
-				email_id: "vinay.reddy@mareana.com",
-				firstname: "Vinay",
-				lastname: "Reddy",
-				email_id: "vinay.reddy@mareana.com",
+				email_id: "dinesh.jinjala@mareana.com",
+				firstname: "Dinesh",
+				lastname: "Jinjala",
 				mdh_role: "USER",
 				screen_set: "1000_USER",
 				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc",
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
+			})
+		);
+	});
+
+	beforeEach(() => {
+		cy.viewport(1360, 720)
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("username", "Dinesh");
+		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem(
+			"login_details", JSON.stringify({
+				ad_role: false,
+				email_id: "dinesh.jinjala@mareana.com",
+				firstname: "Dinesh",
+				lastname: "Jinjala",
+				mdh_role: "USER",
+				screen_set: "1000_USER",
+				token:
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
 			})
 		);
 	});
@@ -182,7 +200,8 @@ describe("Renders chart personalization", () => {
 				cy.log("Entering filter data");
 				cy.get("#show-last-number").type(2);
 				cy.get("#show-last-duration").click();
-				cy.get(".ant-select-item-option-content").contains("days").click();
+				cy.get('[title="Days"]').click();
+				//cy.get(".ant-select-item-option-content").contains("days").click();
 
 				cy.wait(500);
 				cy.log("Clearing filters");
@@ -192,7 +211,8 @@ describe("Renders chart personalization", () => {
 				cy.log("Entering filter data");
 				cy.get("#show-last-number").type(2);
 				cy.get("#show-last-duration").click();
-				cy.get(".ant-select-item-option-content").contains("days").click();
+				cy.get('[title="Days"]').click();
+				//cy.get(".ant-select-item-option-content").contains("days").click();
 
 				cy.log("Applying filters");
 				cy.get(".apply").first().click();
@@ -222,9 +242,10 @@ describe("Renders chart personalization", () => {
 		cy.wait(500);
 		cy.log("Selecting Chart Type");
 		cy.get(".ant-select-selector").eq(2).click();
-		cy.get(".ant-select-item-option-content")
-			.contains("Process Control")
-			.click();
+		cy.get('[title="Process Control"]').click();
+		// cy.get(".ant-select-item-option-content")
+		// 	.contains("Process Control")
+		// 	.click();
 
 		cy.wait(500);
 		cy.log("Selecting X-axis");
@@ -234,9 +255,7 @@ describe("Renders chart personalization", () => {
 		cy.wait(500);
 		cy.log("Selecting Y-axis");
 		cy.get(".ant-select-selector").eq(4).click();
-		cy.get(
-			'[title="NORMAL_MUL_HEAVY"] > .ant-select-item-option-content'
-		).click();
+		cy.get('[title="NORMALMUL_HEAVY"]').click();
 
 		cy.intercept("POST", "/services/v1/chart-object", {
 			fixture: "chartObjectCreate.json",
@@ -335,7 +354,7 @@ describe("Renders chart personalization", () => {
 		cy.wait(1000);
 		cy.log("Changing marker shape");
 		cy.get(".figure-container .select_field").eq(0).click();
-		cy.get('[title="triangle-up"] > .ant-select-item-option-content').click();
+		cy.get('[title="Triangle-up"]').click();
 
 		cy.log("Changing marker color");
 		cy.get('.figure-container .figure-inputs .container input[type="text"]')
@@ -351,7 +370,7 @@ describe("Renders chart personalization", () => {
 
 		cy.log("Changing violations shape");
 		cy.get(".figure-container .select_field").eq(1).click();
-		cy.get('[title="triangle-down"] > .ant-select-item-option-content')
+		cy.get('[title="Triangle-down"] > .ant-select-item-option-content')
 			.eq(1)
 			.click();
 
@@ -433,8 +452,8 @@ describe("Renders chart personalization", () => {
 		cy.wait(500);
 		cy.get(".tresh-container > .ant-row > .ant-col > .ant-btn").click();
 		cy.wait(500);
-		cy.get(".extra-coll").click();
-		cy.get(".ant-btn-primary").click();
+		cy.get('.extra-coll > .anticon > svg').click({ multiple: true });
+		cy.get('.ant-btn-primary > span').click({ multiple: true });
 		cy.wait(500);
 		cy.get(".tresh-container > .ant-row > .ant-col > .ant-btn").click();
 		cy.get(
@@ -444,10 +463,10 @@ describe("Renders chart personalization", () => {
 			".ant-collapse-content-box > :nth-child(1) > .ant-col > .select_field > .ant-select > .ant-select-selector > .ant-select-selection-item"
 		).click();
 		cy.get(
-			'[title="NORMAL_MUL_HEAVY"] > .ant-select-item-option-content'
+			'[title="NORMALMUL_HEAVY"] > .ant-select-item-option-content'
 		).click({ multiple: true, force: true });
 		cy.get(".ant-select-item-option-active")
-			.contains("NORMAL_MUL_HEAVY")
+			.contains("NORMALMUL_HEAVY")
 			.click({ force: true });
 		cy.get(
 			":nth-child(2) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
@@ -457,7 +476,7 @@ describe("Renders chart personalization", () => {
 		cy.get(
 			":nth-child(4) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
 		).click();
-		cy.get(".ant-select-item-option-active").contains("circle").click();
+		cy.get(".ant-select-item-option-active").contains("Circle").click();
 		cy.get(
 			".ant-collapse-content-box > :nth-child(4) > :nth-child(2) > .input_field > .ant-input"
 		)
@@ -480,10 +499,10 @@ describe("Renders chart personalization", () => {
 			".ant-collapse-content-box > :nth-child(1) > .ant-col > .select_field > .ant-select > .ant-select-selector > .ant-select-selection-item"
 		).click();
 		cy.get(
-			'[title="NORMAL_MUL_HEAVY"] > .ant-select-item-option-content'
+			'[title="NORMALMUL_HEAVY"] > .ant-select-item-option-content'
 		).click({ multiple: true, force: true });
 		cy.get(".ant-select-item-option-active")
-			.contains("NORMAL_MUL_HEAVY")
+			.contains("NORMALMUL_HEAVY")
 			.click({ force: true });
 		cy.get(
 			":nth-child(2) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
@@ -493,7 +512,7 @@ describe("Renders chart personalization", () => {
 		cy.get(
 			":nth-child(4) > :nth-child(1) > .select_field > .ant-select > .ant-select-selector"
 		).click();
-		cy.get(".ant-select-item-option-active").contains("circle").click();
+		cy.get(".ant-select-item-option-active").contains("Circle").click();
 		cy.get(
 			".ant-collapse-content-box > :nth-child(4) > :nth-child(2) > .input_field > .ant-input"
 		)
@@ -651,34 +670,19 @@ describe("Renders chart personalization", () => {
 										cy.get(".ant-modal-close-icon").eq(1).click();
 
 										cy.wait(500);
-										cy.get(
-											'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
-										)
-											.eq(0)
-											.click();
+										// cy.get(
+										// 	'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
+										// )
+										// 	.eq(0)
+										// 	.click();
 
-										cy.wait(500);
-										cy.get(
-											'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
-										)
-											.eq(1)
-											.click();
-										cy.get(".schedule-notification-different").first().click();
-
-										cy.wait(500);
-										cy.get(
-											'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
-										)
-											.eq(0)
-											.click();
-
-										cy.wait(500);
-										cy.get(
-											'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
-										)
-											.eq(1)
-											.click();
-										cy.get(".schedule-notification-same").first().click();
+										// cy.wait(500);
+										// cy.get(
+										// 	'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
+										// )
+										// 	.eq(1)
+										// 	.click();
+										// cy.get(".schedule-notification-different").first().click();
 
 										cy.wait(500);
 										cy.get(
@@ -686,6 +690,21 @@ describe("Renders chart personalization", () => {
 										)
 											.eq(0)
 											.click();
+
+										cy.wait(500);
+										// cy.get(
+										// 	'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
+										// )
+										// 	.eq(1)
+										// 	.click();
+										// cy.get(".schedule-notification-same").first().click();
+
+										// cy.wait(500);
+										// cy.get(
+										// 	'.chart-notify [role="tablist"] .ant-tabs-nav-wrap .ant-tabs-nav-list .ant-tabs-tab'
+										// )
+										// 	.eq(0)
+										// 	.click();
 										cy.get(".chart-notify .evaluation .clear-schedule")
 											.first()
 											.click();

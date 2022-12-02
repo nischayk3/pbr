@@ -187,7 +187,7 @@ const PbrUpdate = () => {
 
 	const getImage = async (val, page) => {
 		// dispatch(showLoader());
-		let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+		let login_response = JSON.parse(localStorage.getItem('login_details'));
 		var requestOptions = {
 			method: "GET",
 			response: "image/jpeg",
@@ -223,7 +223,7 @@ const PbrUpdate = () => {
 		let numberArray = resp.map(Number)
 		let formvalues = {
 			id: numberArray,
-			changed_by: sessionStorage.getItem('user'),
+			changed_by: localStorage.getItem('user'),
 			recorded_date: textInput?.recorded_date ? textInput?.recorded_date : null,
 			recorded_time: textInput?.recorded_time ? textInput?.recorded_time : null,
 			snippet_value: textInput?.snippet_value ? textInput?.snippet_value : null,

@@ -19,6 +19,7 @@ import "./styles.scss";
 
 const { Paragraph } = Typography;
 const { Dragger } = Upload;
+
 /* istanbul ignore next */
 function FileUpload() {
 	const dispatch = useDispatch();
@@ -235,6 +236,7 @@ function FileUpload() {
 
 	};
 
+	/* istanbul ignore next */
 	const files = {
 		name: 'file',
 		multiple: true,
@@ -304,7 +306,7 @@ function FileUpload() {
 					fileName.push(item.fileName)
 					fileSize.push(item.fileSize)
 				})
-				let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+				let login_response = JSON.parse(localStorage.getItem('login_details'));
 				// const data = fileData && fileData.split('|');
 				setIsUploadVisible(false)
 				setIsFileUploaded(true);
@@ -360,18 +362,7 @@ function FileUpload() {
 		}
 
 	}
-	const uploadButton = (
-		<div>
-			{loading ? <LoadingOutlined /> : <PlusOutlined />}
-			<div
-				style={{
-					marginTop: 8,
-				}}
-			>
-				Upload New File
-			</div>
-		</div>
-	);
+
 	return (
 		<div className='pbr-container'>
 			<div className='custom-wrapper pbr-wrapper'>
@@ -384,7 +375,7 @@ function FileUpload() {
 							background:
 								'linear-gradient(180deg, rgba(199, 144, 129, 0.15) 0%, rgba(223, 165, 121, 0.56) 100%)',
 						}}
-						title={`Howdy ${sessionStorage.getItem('username')},`}
+						title={`Howdy ${localStorage.getItem('username')},`}
 						description={`Got some files to upload today? Let's get started`}
 						source={illustrations}
 						sourceClass='pbr-image'
@@ -404,6 +395,7 @@ function FileUpload() {
 									<div style={{ display: "flex", justifyContent: "space-between", marginTop: 40 }}>
 										<div style={{ width: 235 }}>
 											<SelectSearchField
+												id="projectDropdown"
 												showSearch
 												label='Project *'
 												placeholder='Select Project'
@@ -417,6 +409,7 @@ function FileUpload() {
 										</div>
 										<div style={{ width: 235 }}>
 											<SelectSearchField
+												id="groupDropdown"
 												disabled={selectParam['project'] ? false : true}
 												showSearch
 												label='Group'
@@ -431,6 +424,7 @@ function FileUpload() {
 										</div>
 										<div style={{ width: 235 }}>
 											<SelectSearchField
+												id="subGroupDropdown"
 												showSearch
 												disabled={selectParam['group'] ? false : true}
 												label='Sub-Group'
@@ -446,6 +440,7 @@ function FileUpload() {
 									</div>
 									<h3 style={{ marginTop: 30 }}>Upload Files</h3>
 									<div
+										id = "uploadPDf"
 										className='create-new'
 										onClick={() => checkUpload()}
 										disabled={true}

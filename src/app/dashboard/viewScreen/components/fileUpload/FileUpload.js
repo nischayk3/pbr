@@ -154,7 +154,6 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 		const selectedParam = finalData.current.find(
 			(item) => String(item.parameter_name) === String(record.param)
 		);
-
 		if (selectedParam === undefined) {
 			let rowData = {};
 			let batchData = {};
@@ -174,15 +173,12 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 					)
 				}
 			});
-
 			batchData["id"] = count;
 			setCount(count + 1);
-
 			//check for duplicate records
 			const indexDuplicate = viewSummaryTable.findIndex(
 				(x) => x.param == record.param
 			);
-
 			if (indexDuplicate === -1) {
 
 				rowData = Object.assign(batchData);
@@ -261,7 +257,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 	function confirm(File_id) {
 		let req = {
 			fileid: parseInt(File_id),
-			userid: sessionStorage.getItem("username")
+			userid: localStorage.getItem("username")
 		};
 		deleteAdHocFile(req).then((res) => {
 			/* istanbul ignore else  */
@@ -335,7 +331,7 @@ function FileUpload({ count, setCount, selectedFiles, setSelectedFiles, viewSumm
 			formData.append("created_on", today.toISOString().slice(0, 10));
 			formData.append("file_name", info.file.originFileObj);
 			formData.append("upload_reason", "test_reason");
-			formData.append("username", sessionStorage.getItem("username"));
+			formData.append("username", localStorage.getItem("username"));
 			adHocFileUpload(formData).then((res) => {
 				/* istanbul ignore else  */
 				if (res.Status === 202) {
