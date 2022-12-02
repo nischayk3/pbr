@@ -44,15 +44,14 @@ describe("Sharing", () => {
 		);
 		cy.intercept('GET', '**/last-views-and-charts?limit=8', { fixture: 'approvedChart.json' })
 	});
+
 	it('Load Chart Landing page Correctly', () => {
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/chart_personalization')
 
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/chart_personalization')
-	})
 
-	it('All Chart Render', () => {
 		cy.wait(2000)
 		cy.log('Open Approved Chart')
 		cy.get('[href="#/dashboard/chart_personalization/C615&1"] > .ant-col > .chart-tiles').click()
