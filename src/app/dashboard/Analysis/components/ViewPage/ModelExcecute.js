@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import "./viewPage.scss";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { Progress } from "antd";
-import { MDH_AIRFLOW_DAGS } from "../../../../../constants/apiBaseUrl";
+import { MDH_AIRFLOW_DAGS,MDH_AIRFLOW_ANALYTICS } from "../../../../../constants/apiBaseUrl";
 import ModelExcecuteImg1 from "../../../../../assets/images/analysis_execute_images/ExecuteImg1.svg";
 import ModelExcecuteImg2 from "../../../../../assets/images/analysis_execute_images/ExecuteImg2.svg";
 import ModelExcecuteImg3 from "../../../../../assets/images/analysis_execute_images/ExecuteImg3.svg";
@@ -29,7 +29,7 @@ const ModelExcecute = ({ getResultFunc, resultsData, jobId }) => {
     }
   };
 
- 
+
   const counterValid = execPercent < 90;
   useEffect(() => {
     const intervalId = counterValid && setInterval(() => {
@@ -39,8 +39,8 @@ const ModelExcecute = ({ getResultFunc, resultsData, jobId }) => {
       }
     }
       , 2000);
-      getImg();
-      return () => clearInterval(intervalId)
+    getImg();
+    return () => clearInterval(intervalId)
   }, [execPercent]);
 
 
@@ -53,11 +53,11 @@ const ModelExcecute = ({ getResultFunc, resultsData, jobId }) => {
         getResultFunc();
       }
         , 5000);
-        return () => clearInterval(intervalId)
+      return () => clearInterval(intervalId)
     }
   }, [results, execPercent]);
 
- 
+
 
   return (
     <div className="exec-model-container">
@@ -67,7 +67,7 @@ const ModelExcecute = ({ getResultFunc, resultsData, jobId }) => {
       {execPercent === 100 ? (
         <a>View results</a>
       ) : (
-        <a href={`${MDH_AIRFLOW_DAGS}/${id}_ANALYTICS_${jobId?.current}/grid?`} target="_blank">
+        <a href={`${MDH_AIRFLOW_ANALYTICS}/${id}_ANALYTICS_${jobId?.current}/grid?`} target="_blank">
           View Progress <ArrowRightOutlined />
         </a>
       )}
