@@ -3,6 +3,7 @@ Cypress.on("uncaught:exception", (err, runnable) => {
 });
 describe("PbrFileUpload", () => {
 	afterEach(() => {
+		cy.intercept('POST', '/pbr/udh/project_filter_search', { fixture: 'pbrFileUpload.json' })
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
 		localStorage.setItem("username", "Dinesh");
