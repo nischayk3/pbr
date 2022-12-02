@@ -101,21 +101,14 @@ describe('Manual data upload', () => {
 		cy.get('.ant-space-item').eq(0).click()
 	});
 
-	if (localStorage.getItem("loginwith") != 'WITH_AD')
-		it("Reopen digital signature popup", () => {
-			cy.wait(2000)
-			cy.get('.ant-space-item').eq(0).click()
 
-			cy.wait(2000)
-		});
 	if (localStorage.getItem("loginwith") == 'WITH_AD')
-
 		it("digital signature modal without ad input", () => {
 			// cy.get(':nth-child(1) > .ant-input').clear();
 			// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
 			cy.get(':nth-child(2) > .ant-input').clear();
 			cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
-			cy.get('.signature-modal > #auth_with_ad').click();
+			cy.get('#auth_with_ad').click();
 			cy.wait(3000)
 		});
 

@@ -4,7 +4,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 describe("Renders the view Hierarachy page", () => {
 	afterEach(() => {
-		cy.viewport(1280, 720)
+		cy.viewport(1360, 720)
 		localStorage.setItem("loginwith", "WITH_AD");
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
@@ -24,7 +24,7 @@ describe("Renders the view Hierarachy page", () => {
 	});
 
 	beforeEach(() => {
-		cy.viewport(1280, 720)
+		cy.viewport(1366, 720)
 		localStorage.setItem("loginwith", "WITH_AD");
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
@@ -48,16 +48,15 @@ describe("Renders the view Hierarachy page", () => {
 		cy.visit(url + '/#/dashboard/molecule_hierarchy_configuration')
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/molecule_hierarchy_configuration')
+
+		cy.get('.create-new > .anticon > svg').click({ force: true });
+		cy.get('.input-ant > .ant-input').clear();
+		cy.get('.input-ant > .ant-input').type('new_drug_substance');
+		cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
 	})
 
 	it("Renders View Hierarchy", () => {
-		const url = Cypress.config().baseUrl
-		cy.visit(url + '/#/dashboard/molecule_hierarchy_configuration')
 		cy.wait(5000)
-		cy.get('.create-new > .anticon > svg').click({ force: true });
-		cy.get('.input-ant > .ant-input').clear();
-		cy.get('.input-ant > .ant-input').type('new_drug');
-		cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
 		cy.get(':nth-child(2) > .ant-input').clear();
 		cy.get(':nth-child(2) > .ant-input').type('1322454');
 		cy.get(':nth-child(3) > .ant-input').clear();
