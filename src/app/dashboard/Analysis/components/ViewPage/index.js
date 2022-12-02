@@ -45,7 +45,7 @@ const ViewPageAnalysis = () => {
 
 	const tabChange = (key) => {
 		setTableKey(key);
-		if(key == 5){
+		if (key == 5) {
 			getResultFunc()
 		}
 	};
@@ -293,7 +293,7 @@ const ViewPageAnalysis = () => {
 							</Tooltip>
 							<Button disabled>Share</Button>
 							<Button onClick={() => onSaveClick("save")}>Save</Button>
-							<Button disabled onClick={() => onSaveClick('saveAs')}>Save As</Button>
+							<Button id="save-as" disabled onClick={() => onSaveClick('saveAs')}>Save As</Button>
 							{/* <Button onClick={() => setExectStart(true)}>Execute</Button> */}
 							<Dropdown overlay={menu} trigger={["click"]} disabled={!exectStart && !editFinalJson?.pipeline_data[0]?.variable_mapping?.length}>
 								<Button>Execute</Button>

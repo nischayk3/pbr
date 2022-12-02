@@ -209,7 +209,7 @@ describe('Dashboard', () => {
 		cy.get('.ant-table-row > :nth-child(2)').click();
 		cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
 		cy.get('[style="margin-left: 20px; margin-right: 20px;"] > .anticon > svg > path').click({ force: true });
-		cy.get('.ant-col-8 > .show-data > .ant-switch > .ant-switch-handle').click();
+		cy.get('.ant-col-8 > .show-data > .ant-switch').click();
 		cy.get('.ant-col > .ant-btn > span').click();
 		cy.get('.global-filters > :nth-child(1) > .show-data > .ant-switch > .ant-switch-handle').click();
 		cy.wait(4000);

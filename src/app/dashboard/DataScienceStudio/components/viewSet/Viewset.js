@@ -192,7 +192,6 @@ const Viewset = ({ isVisible, onCancel }) => {
 		onCancel()
 	};
 
-	/* istanbul ignore next */
 	const onSelectedView = (record) => {
 		let tempVersionList = [0];
 		searchViewData.current.forEach((ele) => {

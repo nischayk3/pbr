@@ -9,6 +9,7 @@ describe("Genealogy", () => {
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
 		localStorage.setItem("username", "Dinesh");
+		localStorage.setItem("loginwith", "WITH_AD");
 		localStorage.setItem(
 			"login_details", JSON.stringify({
 				ad_role: false,
