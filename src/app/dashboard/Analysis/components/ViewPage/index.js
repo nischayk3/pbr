@@ -45,6 +45,9 @@ const ViewPageAnalysis = () => {
 
 	const tabChange = (key) => {
 		setTableKey(key);
+		if(key == 5){
+			getResultFunc()
+		}
 	};
 	const { id } = useParams();
 	const dispatch = useDispatch();
@@ -207,6 +210,7 @@ const ViewPageAnalysis = () => {
 	}
 
 	const getResultFunc = async () => {
+		dispatch(showLoader());
 		const reqBody = {
 			pipelineid: id,
 		};
