@@ -80,8 +80,11 @@ function WorkflowTable(props) {
 						type="link"
 						size="small"
 						onClick={() => {
+							/* istanbul ignore next */
 							confirm({ closeDropdown: false });
+							/* istanbul ignore next */
 							setSearchText(selectedKeys[0]);
+							/* istanbul ignore next */
 							setSearchedColumn(dataIndex);
 						}}
 					>
@@ -93,6 +96,7 @@ function WorkflowTable(props) {
 		filterIcon: (filtered) => (
 			<SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
 		),
+		/* istanbul ignore next */
 		onFilter: (value, record) =>
 			record[dataIndex]
 				? record[dataIndex]
@@ -100,8 +104,11 @@ function WorkflowTable(props) {
 					.toLowerCase()
 					.includes(value.toLowerCase())
 				: "",
+		/* istanbul ignore next */
 		onFilterDropdownVisibleChange: (visible) => {
+			/* istanbul ignore next */
 			if (visible) {
+				/* istanbul ignore next */
 				setTimeout(() => searchInput.select(), 100);
 			}
 		},
@@ -118,6 +125,7 @@ function WorkflowTable(props) {
 			),
 	});
 
+	/* istanbul ignore next */
 	const handleSearch = (
 		selectedKeys,
 		confirm,
@@ -125,56 +133,21 @@ function WorkflowTable(props) {
 		setSearchText,
 		setSearchedColumn
 	) => {
+		/* istanbul ignore next */
 		confirm();
+		/* istanbul ignore next */
 		setSearchText(selectedKeys[0]);
+		/* istanbul ignore next */
 		setSearchedColumn(dataIndex);
 	};
 
+	/* istanbul ignore next */
 	const handleReset = (clearFilters, setSearchText) => {
 		clearFilters();
 		setSearchText("");
 	};
-	// const columns = [
-	//     {
-	//         title: 'Site',
-	//         key: 'site',
-	//         dataIndex: 'site',
-	//         ...getColumnSearchProps('site',refSearchInput,searchText,setSearchText,searchedColumn,setSearchedColumn)
-	//     },
-	//     {
-	//         title: 'Product',
-	//         key: 'product',
-	//         dataIndex: 'product',
-	//     },
-	//     {
-	//         title: 'Test Name',
-	//         key: 'test_name',
-	//         dataIndex: 'test_name',
-	//     },
-	//     {
-	//         title: 'Batch',
-	//         key: 'batch',
-	//         dataIndex: 'batch',
-	//     },
-	//     {
-	//         title: 'Test Value',
-	//         key: 'test_value',
-	//         dataIndex: 'test_value',
-	//     },
-	//     {
-	//         title: 'UOM Code',
-	//         key: 'uom code',
-	//         dataIndex: 'uom code',
-	//     }
-	// ]
 
 	const getRandomColor = (index) => {
-		// var letters = '0123456789ABCDEF';
-		// var color = '#';
-		// for (var i = 0; i < 6; i++) {
-		//   color += letters[Math.floor(Math.random() * 16)];
-		// }
-		// return color;
 		let colors = ["#56483F", "#728C69", "#c04000", "#c19578"];
 		return colors[index % 4];
 	};
@@ -296,7 +269,6 @@ function WorkflowTable(props) {
 							return <>{moment(text.split("T")[0]).format("DD/MM/YYYY")}</>;
 						};
 					}
-
 					columns.push(obj);
 				}
 			});
@@ -352,12 +324,10 @@ function WorkflowTable(props) {
 							return <>{moment(text.split("T")[0]).format("DD/MM/YYYY")}</>;
 						};
 					}
-
 					columns.push(obj);
 				}
 			});
 		}
-
 		setNewColumns(columns);
 	};
 
@@ -370,7 +340,6 @@ function WorkflowTable(props) {
 				style={{ border: "1px solid #ececec", borderRadius: "2px" }}
 				pagination={false}
 				scroll={{ x: 500, y: 300 }}
-			//rowKey={(record) => record.param}
 			/>
 		</div>
 	);

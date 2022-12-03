@@ -56,10 +56,13 @@ export default function Landing(props) {
 					"/dashboard/molecule_hierarchy_configuration/untitled_view",
 			});
 		}
+		/* istanbul ignore next */
 		else if (check_unique.response && check_unique.response.data && check_unique.response.data.statuscode == 400) {
+			/* istanbul ignore next */
 			dispatch(showNotification('error', 'Drug substance name already present, please enter unique name'))
 		}
 		else {
+			/* istanbul ignore next */
 			dispatch(showNotification('error', 'Error while creating drug substance'))
 		}
 	}

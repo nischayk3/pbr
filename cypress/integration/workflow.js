@@ -107,19 +107,13 @@ describe("Workflow", () => {
 
 	});
 
-
-
-
-
 	it("Sorting a particular column", () => {
 		cy.wait(2000);
-
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/workflow')
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/workflow')
 		cy.wait(2000);
-
 		//cy.get('.card_desc').click();
 		cy.get(':nth-child(1) > .approval-cards > .card_desc').click();
 		cy.wait(2000);
@@ -137,14 +131,12 @@ describe("Workflow", () => {
 		cy.wait(2000);
 		cy.intercept('GET', 'services/v1/unapproved-param?limit=10', { fixture: 'unapproved-param.json' })
 		cy.wait(2000);
-		//cy.get('.card_desc').click();
+
 		cy.get(':nth-child(2) > .approval-cards > .card_desc').click();
 		cy.wait(2000);
 		cy.get('[data-row-key="9077"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
 		cy.get('.custom-secondary-btn > span').click();
-		//approve a record,electronic signature
-		// cy.get(':nth-child(1) > .ant-input').clear();
-		// cy.get(':nth-child(1) > .ant-input').type('fahad.siddiqui@mareana.com');
+
 		cy.get(':nth-child(2) > .ant-input').clear();
 		cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
 		cy.get('.ant-modal-footer > :nth-child(1) > span').click();

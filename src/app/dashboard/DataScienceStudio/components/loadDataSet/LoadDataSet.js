@@ -20,22 +20,23 @@ const LoadDataSet = ({ isVisibleDataset, onCancel }) => {
 
 	const handleChange = (info) => {
 		const nextState = {};
-
 		if (info.file.status === "uploading") {
 			setFileList(info.fileList)
 			nextState.fileList = [info.file];
+			/* istanbul ignore next */
 		} else if (info.file.status === "done") {
+			/* istanbul ignore next */
 			const formData = new FormData();
 			formData.append('file', info.file.originFileObj);
 			formData.append('type', 'parameter');
 			fileUpload(formData)
 			setFileList(info.fileList)
 			nextState.fileList = [info.file];
+			/* istanbul ignore next */
 		} else if (info.file.status === "removed") {
+			/* istanbul ignore next */
 			setFileList([])
 		}
-
-
 	};
 
 	const uploadButton = (
