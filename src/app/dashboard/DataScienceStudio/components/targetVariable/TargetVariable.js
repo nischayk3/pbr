@@ -139,12 +139,17 @@ const TargetVariable = () => {
 			dispatch(hideLoader());
 			if (loadDssRes.statuscode === 200) {
 				setExpandData(loadDssRes.data)
+				/* istanbul ignore next */
 			} else if (loadDssRes.statuscode === 400) {
+				/* istanbul ignore next */
 				setExpandData([])
+				/* istanbul ignore next */
 				dispatch(showNotification("error", loadDssRes.data));
 			}
 		} catch (err) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", err));
 		}
 	}
@@ -164,13 +169,17 @@ const TargetVariable = () => {
 			const loadDssRes = await dssSave(_reqSave);
 			dispatch(hideLoader());
 			if (loadDssRes.Status === 200) {
+				/* istanbul ignore next */
 				dispatch(showNotification("success", loadDssRes.Message));
 				window.open(`${JUPYTER_APP}/user/${login_response?.firstname?.toLowerCase()} ${login_response?.lastname?.toLowerCase()}/lab/workspaces/auto-q/tree/Datascience_Studio`, "_blank")
 			} else if (loadDssRes.Status === 400) {
+				/* istanbul ignore next */
 				dispatch(showNotification("error", loadDssRes.Message));
 			}
 		} catch (err) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", err));
 		}
 	}

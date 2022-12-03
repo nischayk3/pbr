@@ -96,9 +96,6 @@ describe("Analysis", () => {
 	});
 
 	it("Create New Pipeline", () => {
-		// const url = Cypress.config().baseUrl;
-		// cy.visit(url + "/#/dashboard/analysis");
-
 		cy.log("Creating New Pipeline");
 		cy.get(".create-new").click({ force: true });
 
@@ -171,24 +168,31 @@ describe("Analysis", () => {
 		cy.wait(5000);
 	});
 
-	// it("Modal", () => {
-	// 	cy.get(".ant-tabs-nav-list > :nth-child(3)").click();
-	// 	// cy.get(
-	// 	// 	'.react-flow__node-selectorNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button'
-	// 	// ).click();
-	// 	// cy.get(
-	// 	// 	'.react-flow__node-FeatureUninonNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button'
-	// 	// ).click();
-	// 	// cy.get(
-	// 	// 	'.react-flow__node-EstimatorNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button'
-	// 	// ).click();
-	// 	// cy.get('[data-id="horizontal-2"]').click();
-	// 	// cy.get(
-	// 	// 	".node-details-container > .ant-row > .ant-col > :nth-child(2)"
-	// 	// ).click();
-	// 	// cy.get(".model-container > .ant-row > :nth-child(1) > .ant-btn").click();
-	// 	cy.get(".ant-col-4 > .ant-btn").click();
-	// });
+	it("Modal Feature Union Node", () => {
+		cy.get(".ant-tabs-nav-list > :nth-child(3)").click();
+		cy.wait(5000);
+		cy.get('.react-flow__node-FeatureUninonNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click();
+		cy.get('.drawer-details > .ant-btn > span').click();
+	});
+
+	it("Modal Estimator Node  ", () => {
+		cy.wait(2000);
+		cy.get('.react-flow__node-EstimatorNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click()
+		cy.get('.panelImg').click()
+	});
+
+	it("Modal CARB_NORMAL Node  ", () => {
+		cy.wait(2000);
+		cy.get('[data-id="horizontal-2"] > .node-inside').click();
+		cy.get('.ant-modal-close-x').click();
+	});
+
+	it("Modal NORMAL_MUV_HEAVY Node  ", () => {
+		cy.wait(2000);
+		cy.get('[data-id="horizontal-3"] > .node-inside').click();
+		cy.get('.ant-modal-close-x').click();
+
+	});
 
 	// it("Transformations", () => {
 	// 	cy.get(".ant-tabs-nav-list > :nth-child(4)").click();
