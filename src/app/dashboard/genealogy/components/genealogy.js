@@ -98,6 +98,7 @@ function Genealogy() {
 		} else if (node.clickType === 'forward') {
 			/* istanbul ignore next */
 			setGenealogyData([]);
+			/* istanbul ignore next */
 			let _reqFor = {
 				levels: 5,
 				batch_id: node.nodeId,
@@ -105,9 +106,13 @@ function Genealogy() {
 			};
 			/* istanbul ignore next */
 			setBatchNodeId(_reqFor)
+			/* istanbul ignore next */
 			getForwardGeneology(_reqFor);
+			/* istanbul ignore next */
 			setActivateKey('2');
+			/* istanbul ignore next */
 			setchartType('forward');
+			/* istanbul ignore next */
 			setProductCode(node.product);
 		} else if (node.clickType === 'view') {
 			setCollapseKey('0');
@@ -193,8 +198,11 @@ function Genealogy() {
 							: '';
 			/* istanbul ignore next */
 			setFileData(node.nodeId);
+			/* istanbul ignore next */
 			setUploadId(uploadNodeId);
+			/* istanbul ignore next */
 			setIsUploadVisible(true);
+			/* istanbul ignore next */
 			setIsFileUploaded(false)
 			/* istanbul ignore next */
 		} else if (node.clickType === "markAsGoldenBatch") {
@@ -210,6 +218,7 @@ function Genealogy() {
 			}
 			/* istanbul ignore next */
 			updateGoldenBatches(_reqGoldenBatch)
+			/* istanbul ignore next */
 			setGenealogyData([]);
 			/* istanbul ignore next */
 		} else if (node.clickType === "markAsNormalBatch") {

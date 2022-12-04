@@ -58,14 +58,12 @@ describe("Workflow", () => {
 	});
 
 	it("visiting workflow screen", () => {
-
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/workflow')
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/workflow')
-		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
-
 	});
+
 	it('Load Screen Header', () => {
 		const date = new Date();
 		const month = date.toLocaleString('default', { month: 'long' });
@@ -76,10 +74,8 @@ describe("Workflow", () => {
 		cy.log('Verify Screen Header Component')
 		cy.log('Verify Current Date')
 		cy.get('.screen_header_resultdate').should("have.text", currentDate)
-
 		cy.wait(2000)
-		//cy.get('.approval-cards').click();
-		cy.get(':nth-child(1) > .approval-cards > .card_desc').click();
+		cy.get(':nth-child(1) > .approval-cards ').click();
 	})
 
 	it("Redirect to chart screen", () => {
