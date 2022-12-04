@@ -94,14 +94,16 @@ function Genealogy() {
 			setActivateKey('2');
 			setchartType('backward');
 			setProductCode(node.product);
-
+			/* istanbul ignore next */
 		} else if (node.clickType === 'forward') {
+			/* istanbul ignore next */
 			setGenealogyData([]);
 			let _reqFor = {
 				levels: 5,
 				batch_id: node.nodeId,
 				backward: false
 			};
+			/* istanbul ignore next */
 			setBatchNodeId(_reqFor)
 			getForwardGeneology(_reqFor);
 			setActivateKey('2');
@@ -178,7 +180,9 @@ function Genealogy() {
 
 				setNodeType(node.nodeType);
 			}
+			/* istanbul ignore next */
 		} else if (node.clickType === 'upload_files') {
+			/* istanbul ignore next */
 			const uploadNodeId =
 				node.nodeType === 'Purchase Order'
 					? node.nodeId
@@ -187,13 +191,16 @@ function Genealogy() {
 						: node.nodeType === 'Process Order'
 							? node.nodeData.poNo
 							: '';
+			/* istanbul ignore next */
 			setFileData(node.nodeId);
 			setUploadId(uploadNodeId);
 			setIsUploadVisible(true);
 			setIsFileUploaded(false)
+			/* istanbul ignore next */
 		} else if (node.clickType === "markAsGoldenBatch") {
-
+			/* istanbul ignore next */
 			const goldenBatchSplit = node.nodeId.split("|")
+			/* istanbul ignore next */
 			const _reqGoldenBatch = {
 				active_flag: true,
 				batch_num: goldenBatchSplit[2],
@@ -201,13 +208,14 @@ function Genealogy() {
 				plant: goldenBatchSplit[0],
 				product: goldenBatchSplit[1]
 			}
-
+			/* istanbul ignore next */
 			updateGoldenBatches(_reqGoldenBatch)
 			setGenealogyData([]);
-
+			/* istanbul ignore next */
 		} else if (node.clickType === "markAsNormalBatch") {
-
+			/* istanbul ignore next */
 			const goldenBatchSplit = node.nodeId.split("|")
+			/* istanbul ignore next */
 			const _reqGoldenBatch = {
 				active_flag: false,
 				batch_num: goldenBatchSplit[2],
@@ -215,7 +223,9 @@ function Genealogy() {
 				plant: goldenBatchSplit[0],
 				product: goldenBatchSplit[1]
 			}
+			/* istanbul ignore next */
 			updateGoldenBatches(_reqGoldenBatch)
+			/* istanbul ignore next */
 			setGenealogyData([]);
 		}
 
@@ -611,9 +621,10 @@ function Genealogy() {
 		setIsFileUploaded(false);
 	};
 
+	/* istanbul ignore next */
 	const updateGoldenBatches = async _goldenBatchReq => {
 		dispatch(showLoader());
-		try {
+		try {/* istanbul ignore next */
 			const goldenRes = await updateGoldenBatch(_goldenBatchReq)
 			dispatch(hideLoader());
 			if (goldenRes.Status === 200) {

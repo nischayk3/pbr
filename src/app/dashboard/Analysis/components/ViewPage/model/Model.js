@@ -28,6 +28,7 @@ import "./model.scss";
 import NodeDetails from "./NodeDetails";
 import Transformation from "./Transformations";
 
+/* istanbul ignore next */
 const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, modelType, encoderData, setEncoderData }) => {
 	const selectedViewData = useSelector(
 		(state) => state.analyticsReducer.viewData
@@ -170,8 +171,8 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 			let tempRegressionList = [];
 			let targetVariable = apiResponse.data?.target_variable;
 			let getJson;
-      if (finalJson?.variable_mapping?.length >= 1) {
-        finalJson.target_variable = targetVariable
+			if (finalJson?.variable_mapping?.length >= 1) {
+				finalJson.target_variable = targetVariable
 				setFinalModelJson(finalJson)
 			} else {
 				getJson = await getModelJson(apiResponse.data);

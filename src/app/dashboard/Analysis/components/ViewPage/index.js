@@ -24,6 +24,7 @@ import ModelExcecute from './ModelExcecute';
 import Preprocess from "./preproccessing/Preprocess";
 import Results from "./results/Results";
 
+/* istanbul ignore next */
 const ViewPageAnalysis = () => {
 	const [isPublish, setIsPublish] = useState(false);
 	const [publishResponse, setPublishResponse] = useState({});
