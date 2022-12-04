@@ -71,7 +71,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		excludeRecord: false,
 	});
 	const [exclusionTable, setExclusionTable] = useState([]);
-
+	/* istanbul ignore next */
 	const chartNodeClicked = (data) => {
 		if (postChartData && postChartData.data && postChartData.data[0] && (postChartData.data[0].chart_type == "scatter" || postChartData.data[0].chart_type == "process control" || postChartData.data[0].chart_type == "bubble" || postChartData.data[0].chart_type == "error" || postChartData.data[0].chart_type == "line")) {
 			if (data && data.data && data.data.name !== "mean") {
@@ -111,15 +111,17 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			}
 		}
 	};
+	/* istanbul ignore next */
 	const handleCloseModal = () => {
 		setIsModalVisible(false);
 	};
 	const onApply = async () => {
+		/* istanbul ignore next */
 		if (axisValues.xaxis === axisValues.yaxis) {
 			dispatch(showNotification("error", "X and Y axis cannot be same"));
 			return;
 		}
-
+		/* istanbul ignore next */
 		if (axisValues.zaxis) {
 			if (axisValues.xaxis === axisValues.zaxis) {
 				dispatch(showNotification("error", "X and Z axis cannot be same"));
@@ -131,6 +133,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		}
 
 		const chartArr = [...postChartData.data];
+		/* istanbul ignore next */
 		if (axisValues.transform) {
 			let errorValue = false;
 
@@ -155,18 +158,22 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 		const newCovArr = JSON.parse(JSON.stringify(postChartData));
 
 		newCovArr.data[0].extras.coverage.forEach((ele) => {
+			/* istanbul ignore next */
 			if (ele.function_name === axisValues.xaxis) {
 				xAxis.function_name = ele.function_name;
 				xAxis.function_id = ele.function_id;
 			}
+			/* istanbul ignore next */
 			if (ele.function_name === axisValues.yaxis) {
 				yAxis.function_name = ele.function_name;
 				yAxis.function_id = ele.function_id;
 			}
+			/* istanbul ignore next */
 			if (ele.function_name === axisValues.zaxis) {
 				zAxis.function_name = ele.function_name;
 				zAxis.function_id = ele.function_id;
 			}
+			/* istanbul ignore next */
 			if (axisValues.chartType === 'Process Capability') {
 				transform.function_name = axisValues.transform;
 			}
@@ -189,16 +196,19 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				axisValues.chartType === "Scatter Plot"
 					? "scatter"
 					: axisValues.chartType?.toLowerCase();
+			/* istanbul ignore next */
 			if (axisValues.chartType === "2D-histogram") {
 				ele.chart_type = "2D-histogram";
 			}
 			ele.chart_mapping.x = Object.keys(xAxis).length !== 0 ? xAxis : obj;
 			ele.chart_mapping.y = yAxis;
+			/* istanbul ignore next */
 			if (showZAxis && axisValues.zaxis) {
 				ele.chart_mapping.z = zAxis;
 			} else {
 				ele.chart_mapping.z = undefined;
 			}
+			/* istanbul ignore next */
 			if (axisValues.chartType === "Process Capability") {
 				ele.chart_type = 'process capability'
 				ele.chart_mapping.x = processObj;
@@ -206,7 +216,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			} else {
 				ele.chart_mapping.transform = undefined;
 			}
-
+			/* istanbul ignore next */
 			if (axisValues.chartType === "Process Capability") {
 				ele.layout.autoSize = false;
 				ele.layout.xaxis.title.text = "";
@@ -244,6 +254,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 			newdataArr[0].extras = viewRes.data[0].extras;
 			newdataArr[0].layout = viewRes.data[0].layout;
 			newdataArr[0].ppk_cpk_data = viewRes.data[0].ppk_cpk_data;
+			/* istanbul ignore next */
 			if (axisValues.transform !== "") {
 				if (viewRes?.data[0]?.ppk_cpk_data?.return_code === 200) {
 					setShowPpk(true)

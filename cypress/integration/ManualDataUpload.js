@@ -48,8 +48,7 @@ describe('Manual data upload', () => {
 		cy.visit(url + '/#/dashboard/manual_data_upload')
 		cy.log('Load Landing Page')
 		cy.url().should('eq', url + '/#/dashboard/manual_data_upload')
-	});
-	it("download template", () => {
+
 		cy.get('.ant-btn > a').click();
 		cy.get('.ant-btn-primary > :nth-child(1)').click();
 	});
@@ -91,17 +90,6 @@ describe('Manual data upload', () => {
 		cy.get('.ant-space-item').eq(0).click()
 	})
 
-	it("Close digital signature popup", () => {
-		cy.log("close signature modal")
-		cy.get('.ant-modal-close').click()
-	});
-
-	it("Reopen digital signature popup", () => {
-		cy.wait(2000)
-		cy.get('.ant-space-item').eq(0).click()
-	});
-
-
 	if (localStorage.getItem("loginwith") == 'WITH_AD')
 		it("digital signature modal without ad input", () => {
 			// cy.get(':nth-child(1) > .ant-input').clear();
@@ -110,19 +98,17 @@ describe('Manual data upload', () => {
 			cy.get(':nth-child(2) > .ant-input').type('Albert.Ramanujan.03');
 			cy.get('#auth_with_ad').click();
 			cy.wait(3000)
-		});
 
-	it("select reason for Ad signature", () => {
-		cy.log("selecting reason")
-		cy.get('.ant-select-selection-item').click({ force: true });
-		cy.get('.ant-select-item-option-content').eq(0).click();
-		cy.get('.ant-select-selection-item').click();
-		cy.get('.ant-select-item-option-content').eq(1).click();
-		cy.get('.ant-select-selection-item').click();
-		cy.get('.ant-select-item-option-content').eq(2).click();
-		cy.get('.signature-modal > .ant-btn-primary > span').click();
-		cy.wait(6000)
-	})
+			cy.log("selecting reason")
+			cy.get('.ant-select-selection-item').click({ force: true });
+			cy.get('.ant-select-item-option-content').eq(0).click();
+			cy.get('.ant-select-selection-item').click();
+			cy.get('.ant-select-item-option-content').eq(1).click();
+			cy.get('.ant-select-selection-item').click();
+			cy.get('.ant-select-item-option-content').eq(2).click();
+			cy.get('.signature-modal > .ant-btn-primary > span').click();
+			cy.wait(6000)
+		})
 
 	it("Final approved data API check", () => {
 		cy.log("replicating final approved data api")

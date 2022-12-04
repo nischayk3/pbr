@@ -76,9 +76,6 @@ describe("Workflow", () => {
 		cy.log('Verify Screen Header Component')
 		cy.log('Verify Current Date')
 		cy.get('.screen_header_resultdate').should("have.text", currentDate)
-	})
-
-	it("Chart Approval click", () => {
 
 		cy.wait(2000)
 		//cy.get('.approval-cards').click();
