@@ -103,16 +103,13 @@ describe("Report", () => {
 		cy.get(':nth-child(2) > :nth-child(1) > .ant-picker > .ant-picker-input > input').click({ force: true });
 		cy.get('.ant-picker-now-btn').click({ force: true });
 		cy.get('.schedule-evalutaion-button').click({ force: true });
-
 		cy.get('[style="color: grey; font-family: Roboto; font-style: normal; font-weight: 400; font-size: 16px;"] > [style="font-size: 17px; margin-bottom: 20px;"]').click({ force: true });
-
 		cy.wait(5000)
 		cy.get(':nth-child(1) > [style="text-align: center;"] > .anticon > svg > [d="M292.7 840h438.6l24.2-512h-487z"]').click({ force: true });
 		cy.get('.ant-popover-buttons > .ant-btn-primary > span').click({ force: true });
 		cy.wait(2000)
-		cy.get(':nth-child(1) > :nth-child(2) > u > a').click({ force: true });
+		//cy.get(':nth-child(1) > :nth-child(2) > u > a').click({ force: true });
 		/* ==== Generated with Cypress Studio ==== */
-
 		/* ==== End Cypress Studio ==== */
 	})
 
