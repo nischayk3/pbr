@@ -53,6 +53,7 @@ describe("Renders the view Hierarachy page", () => {
 		cy.get('.input-ant > .ant-input').clear();
 		cy.get('.input-ant > .ant-input').type('new_drug_substance');
 		cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
+		cy.wait(2000)
 	})
 
 	it("Renders View Hierarchy", () => {
