@@ -32,7 +32,7 @@ describe('Renders workflow to chart personalization', () => {
 		cy.intercept('GET', '/services/v1/workflow-count', { fixture: 'workflowCount.json' }).as('workflowCount')
 		cy.wait('@workflowCount').then(() => {
 			cy.intercept('GET', '/services/v1/approvals/CHART/awaiting_approval', { fixture: 'workflowAwaitingApproval.json' }).as('workflowAwaitingApproval')
-			cy.get('.approval-cards .approve-desc').contains('Chart Approval').click()
+			cy.get('.card_desc').contains('Chart Approval').click()
 			cy.wait('@workflowAwaitingApproval').then(() => {
 				cy.log('Got approval data')
 				cy.intercept('GET', '/services/v1/chart-object?*', { fixture: 'workflowChartData.json' }).as('chartData')
@@ -69,7 +69,7 @@ describe('Renders workflow to chart personalization', () => {
 		cy.intercept('GET', '/services/v1/workflow-count', { fixture: 'workflowCount.json' }).as('workflowCount')
 		cy.wait('@workflowCount').then(() => {
 			cy.intercept('GET', '/services/v1/approvals/CHART/awaiting_approval', { fixture: 'workflowAwaitingApproval.json' }).as('workflowAwaitingApproval')
-			cy.get('.approval-cards .approve-desc').contains('Chart Approval').click()
+			cy.get('.card_desc').contains('Chart Approval').click()
 			cy.wait('@workflowAwaitingApproval').then(() => {
 				cy.log('Got approval data')
 				cy.intercept('GET', '/services/v1/chart-object?*', { fixture: 'workflowChartData.json' }).as('chartData')
