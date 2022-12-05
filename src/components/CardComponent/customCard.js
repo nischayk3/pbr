@@ -1,4 +1,3 @@
-import React from 'react';
 import {
 	BarChartOutlined,
 	FileDoneOutlined,
@@ -7,11 +6,13 @@ import {
 	LayoutOutlined,
 	ProjectOutlined
 } from '@ant-design/icons';
+import React from 'react';
 import './styles.scss';
 
 const customCard = (props) => {
+	console.log("propsssssss", props);
 	return (
-		<div className={props.count === 0 ? 'approval-cards-disabled' : props.active === props.desc ? 'approval-cards-active' : 'approval-cards'} >
+		<div id={'approval-cards-' + props.id} key={props.id} className={props.count === 0 ? 'approval-cards-disabled' : props.active === props.desc ? 'approval-card-active' : 'approval-card'} >
 			<div className={props.count === 0 ? 'circle_icon-disabled' : 'circle_icon'} >
 				{props.desc == 'View Approval' && <LayoutOutlined />}
 				{props.desc == 'Param Data Approval' && <ProjectOutlined />}

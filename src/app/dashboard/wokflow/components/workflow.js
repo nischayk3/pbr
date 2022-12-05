@@ -254,6 +254,7 @@ const Workflow = () => {
 											style={{ cursor: "pointer" }}
 										>
 											<DashCard
+												id={index}
 												count={item.item_count}
 												desc={item.text}
 												active={activeDiv}
