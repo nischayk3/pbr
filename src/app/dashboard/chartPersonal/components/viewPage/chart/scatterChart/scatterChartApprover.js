@@ -138,86 +138,44 @@ const ScatterChartApprover = ({ postChartData, setPostChartData }) => {
 
 	return (
 		<div className="chartLayout-container">
-			<Row>
-				<Col span={6}>
-					<Row gutter={16}>
-						<Col span={9}>
-							<p>Chart Type</p>
-						</Col>
-						<Col span={10}>
-							<p>
-								:{" "}
-								{axisValuesApprover.chartType
-									? axisValuesApprover.chartType
-									: ""}
-							</p>
-						</Col>
-					</Row>
-				</Col>
+			<div className="chart_result">
+				<div className="chart_content">
+					<p className="chart_label">Chart Type </p>
+					<p className="chart_label"> : {axisValuesApprover.chartType
+						? axisValuesApprover.chartType
+						: ""}</p>
+				</div>
+
 				{axisValuesApprover.chartType === 'Process Capability' || axisValuesApprover.chartType === 'process capability' ? (
 					<></>
 				) : (
-					<Col span={8} style={{ paddingLeft: "10px" }}>
-						<Row gutter={16}>
-							<Col span={6}>
-								<p>X-axis</p>
-							</Col>
-							<Col span={18}>
-								<p>
-									: {axisValuesApprover.xaxis ? axisValuesApprover.xaxis : ""}
-								</p>
-							</Col>
-						</Row>
-					</Col>
+					<div className="chart_content">
+						<p className="chart_label">X-axis </p>
+						<p className="chart_label"> : {axisValuesApprover.xaxis ? axisValuesApprover.xaxis : ""}</p>
+					</div>
 				)}
-				< Col span={8}>
-					<Row gutter={16}>
-						<Col span={6}>
-							<p>{axisValuesApprover.chartType === 'Process Capability' || axisValuesApprover.chartType === 'process capability' ? 'Parameter' : 'Y-axis'}</p>
-						</Col>
-						<Col span={18}>
-							<p>
-								: {axisValuesApprover.yaxis ? axisValuesApprover.yaxis : ""}
-							</p>
-						</Col>
-					</Row>
-				</Col>
+
+				<div className="chart_content">
+					<p className="chart_label">{axisValuesApprover.chartType === 'Process Capability' || axisValuesApprover.chartType === 'process capability' ? 'Parameter ' : 'Y-axis '} </p>
+					<p className="chart_label"> : {axisValuesApprover.yaxis ? axisValuesApprover.yaxis : ""}</p>
+				</div>
+
 				{axisValuesApprover.chartType === 'Process Capability' && (
-					<Col span={7}>
-						<Row gutter={16}>
-							<Col span={7}>
-								<p>Transformation</p>
-							</Col>
-							<Col span={17}>
-								<p>
-									{axisValuesApprover.transform ? axisValuesApprover.transform : ""}
-								</p>
-							</Col>
-						</Row>
-					</Col>
+					<div className="chart_content">
+						<p className="chart_label">Transformation </p>
+						<p className="chart_label"> : {axisValuesApprover.transform ? axisValuesApprover.transform : ""}</p>
+					</div>)
+				}
+
+				{zAxis && (
+					<div className="chart_content">
+						<p className="chart_label">Z-axis </p>
+						<p className="chart_label">&nbsp;&nbsp;&nbsp;:{" "}
+							{axisValuesApprover.zaxis ? axisValuesApprover.zaxis : ""}</p>
+					</div>
 				)
 				}
-			</Row>
-			{
-				zAxis && (
-					<Row>
-						<Col span={7}>
-							<Row gutter={16}>
-								<Col span={7}>
-									<p>Z-axis</p>
-								</Col>
-								<Col span={17}>
-									<p>
-										&nbsp;&nbsp;&nbsp;:{" "}
-										{axisValuesApprover.zaxis ? axisValuesApprover.zaxis : ""}
-									</p>
-								</Col>
-							</Row>
-						</Col>
-					</Row>
-				)
-			}
-
+			</div>
 
 			<div className="chart-table">
 				<div className="chart-layout">

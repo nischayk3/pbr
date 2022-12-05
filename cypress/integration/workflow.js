@@ -75,7 +75,7 @@ describe("Workflow", () => {
 		cy.log('Verify Current Date')
 		cy.get('.screen_header_resultdate').should("have.text", currentDate)
 		cy.wait(2000)
-		cy.get(':nth-child(1) > .approval-cards ').click();
+		cy.get('#approval-cards-0 > .card_desc').click();
 	})
 
 	it("Redirect to chart screen", () => {
@@ -94,7 +94,7 @@ describe("Workflow", () => {
 		cy.wait(2000);
 
 		//cy.get('.card_desc').click();
-		cy.get(':nth-child(1) > .approval-cards > .card_desc').click();
+		cy.get('#approval-cards-0 > .card_desc').click();
 		cy.wait(2000);
 		cy.get('#rc-tabs-0-tab-2').click();
 
@@ -108,7 +108,7 @@ describe("Workflow", () => {
 		cy.url().should('eq', url + '/#/dashboard/workflow')
 		cy.wait(2000);
 		//cy.get('.card_desc').click();
-		cy.get(':nth-child(1) > .approval-cards > .card_desc').click();
+		cy.get('#approval-cards-0 > .card_desc').click();
 		cy.wait(2000);
 		cy.get(':nth-child(5) > .ant-table-filter-column > :nth-child(1) > .ant-table-column-sorters').click();
 
@@ -125,7 +125,7 @@ describe("Workflow", () => {
 		cy.intercept('GET', 'services/v1/unapproved-param?limit=10', { fixture: 'unapproved-param.json' })
 		cy.wait(2000);
 
-		cy.get(':nth-child(2) > .approval-cards > .card_desc').click();
+		cy.get('#approval-cards-1 > .card_desc').click();
 		cy.wait(2000);
 		cy.get('[data-row-key="9077"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
 		cy.get('.custom-secondary-btn > span').click();
@@ -150,7 +150,7 @@ describe("Workflow", () => {
 		cy.intercept('GET', 'services/v1/unapproved-param?limit=10', { fixture: 'unapproved-param.json' })
 		cy.wait(2000);
 		//cy.get('.card_desc').click();
-		cy.get(':nth-child(2) > .approval-cards > .card_desc').click();
+		cy.get('#approval-cards-1 > .card_desc').click();
 		cy.wait(2000);
 		cy.get('[data-row-key="9077"] > .ant-table-selection-column > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').check();
 		cy.get('.custom-secondary-btn > span').click();
@@ -182,7 +182,7 @@ describe("Workflow", () => {
 		cy.intercept('GET', 'services/v1/approvals/VIEW/awaiting_approval', { fixture: 'view-awaiting-approval.json' })
 		cy.wait(2000);
 		//cy.get('.card_desc').click();
-		cy.get(':nth-child(3) > .approval-cards > .card_desc').click();
+		cy.get('#approval-cards-2 > .card_desc').click();
 		cy.wait(2000);
 		cy.get(':nth-child(2) > .ant-table-cell-fix-left > .review-submission').click();
 
@@ -199,7 +199,7 @@ describe("Workflow", () => {
 		cy.intercept('GET', 'services/v1/approvals/REPORT/awaiting_approval', { fixture: 'report-awaiting-approval.json' })
 		cy.wait(2000);
 		//cy.get('.card_desc').click();
-		cy.get(':nth-child(4) > .approval-cards > .card_desc').click();
+		cy.get('#approval-cards-3 > .card_desc').click();
 		cy.wait(2000);
 		cy.get(':nth-child(2) > .ant-table-cell-fix-left > .review-submission').click();
 
@@ -215,7 +215,7 @@ describe("Workflow", () => {
 		cy.intercept('GET', 'services/v1/approvals/PBR/awaiting_approval', { fixture: 'pbr-awaiting-approval.json' })
 		cy.wait(2000);
 		//cy.get('.card_desc').click();
-		cy.get(':nth-child(5) > .approval-cards > .card_desc').click();
+		cy.get('#approval-cards-4 > .card_desc').click();
 		cy.wait(2000);
 		cy.get(':nth-child(2) > .ant-table-cell-fix-left > .review-submission').click();
 
