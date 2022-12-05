@@ -74,11 +74,12 @@ describe("Workflow", () => {
 		cy.log('Verify Screen Header Component')
 		cy.log('Verify Current Date')
 		cy.get('.screen_header_resultdate').should("have.text", currentDate)
-		cy.wait(2000)
-		cy.get('#approval-cards-0 > .card_desc').click();
+
 	})
 
 	it("Redirect to chart screen", () => {
+		cy.wait(2000)
+		cy.get('#approval-cards-0 > .card_desc').click();
 		cy.wait(2000);
 		cy.get(':nth-child(2) > .ant-table-cell-fix-left > .review-submission').click();
 		cy.wait(2000);
@@ -86,7 +87,6 @@ describe("Workflow", () => {
 
 	it("Recently approved tab", () => {
 		cy.wait(2000);
-		cy.intercept('GET', '**/workflow-count', { fixture: 'workflow-count.json' })
 		const url = Cypress.config().baseUrl
 		cy.visit(url + '/#/dashboard/workflow')
 		cy.log('Load Landing Page')
