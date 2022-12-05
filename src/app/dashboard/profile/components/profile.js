@@ -21,8 +21,8 @@ import "./style.scss";
 
 const { TabPane } = Tabs;
 const Profile = () => {
-	const loginDetails = JSON.parse(sessionStorage.getItem("login_details"))
-	const loginWith = sessionStorage.getItem("loginwith")
+	const loginDetails = JSON.parse(localStorage.getItem("login_details"))
+	const loginWith = localStorage.getItem("loginwith")
 
 	const dispatch = useDispatch();
 	const [currentPassword, setCurrentPassword] = useState("");
@@ -56,7 +56,7 @@ const Profile = () => {
 
 	const handlePassChange = async () => {
 		dispatch(showLoader());
-		const userId = sessionStorage.getItem("user")
+		const userId = localStorage.getItem("user")
 		/* istanbul ignore next */
 		if (currentPassword === "" || newPassword === "" || confirmPassword === "") {
 			dispatch(hideLoader());
@@ -82,7 +82,7 @@ const Profile = () => {
 			console.log("error")
 		}
 	}
-
+	/* istanbul ignore next */
 	const changeTab = (activeKey) => {
 		setActiveTab(activeKey);
 	};
@@ -104,9 +104,11 @@ const Profile = () => {
 			{item}
 		</Select.Option>
 	));
-
+	/* istanbul ignore next */
 	const onChange = (value, field) => {
+		/* istanbul ignore next */
 		if (value != null) {
+			/* istanbul ignore next */
 			if (field === 'dateFormat') {
 				setDateFormatValue(value)
 			} else if (field === 'timeZone') {
@@ -202,15 +204,18 @@ const Profile = () => {
 				image: true
 			}
 			const getRes = await getUserProfile(_getReq)
+			dispatch(hideLoader());
 			if (getRes.statuscode === 200) {
-				dispatch(hideLoader());
+				/* istanbul ignore next */
 				setImagePrev(true)
 				setImgRes(`${'data:image/png;base64,' + getRes.message}`)
 			} else {
 				setImagePrev(false)
 			}
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification('error', error));
 		}
 	}
@@ -223,27 +228,30 @@ const Profile = () => {
 				image: false
 			}
 			const getRes = await getUserProfile(_getReq)
+			dispatch(hideLoader())
 			if (getRes.statuscode === 200) {
-				dispatch(hideLoader());
 				setTimeZoneValue(getRes.message[0].time_zone);
 				setDateFormatValue(getRes.message[0].date_format);
 				setLanguageValue(getRes.message[0].language)
 				setApproverCheck(getRes.message[0].approver_notification)
 				setStatusCheck(getRes.message[0].status_notification)
 			} else {
+				/* istanbul ignore next */
 				console.log("getRes", getRes);
 			}
-			dispatch(hideLoader());
-
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification('error', error));
 		}
 	}
-
+	/* istanbul ignore next */
 	const onClose = (e) => {
 		console.log(e, 'I was closed.');
 	};
+
+	/* istanbul ignore next */
 	const onSwitch = (checked, type) => {
 		if (type === 'approver') {
 			setApproverCheck(checked)

@@ -26,7 +26,7 @@ export default function Landing() {
 					background:
 						"linear-gradient(180deg, #FFC3C3 0%, #FFF4F4 100%)",
 				}}
-				title={`Howdy ${sessionStorage.getItem("username")},`}
+				title={`Howdy ${localStorage.getItem("username")},`}
 				description="Welcome to Data Science Studio!"
 				source={illustrations}
 				sourceClass="geanealogy-image"
@@ -38,6 +38,7 @@ export default function Landing() {
 						onClick={() => {
 							setIsDatasetVisible(true)
 						}}
+						id="load-dataset"
 					>
 						<PlusOutlined />
 						<p>Load dataset</p>
@@ -47,6 +48,7 @@ export default function Landing() {
 						onClick={() => {
 							setIsViewsetVisible(true)
 						}}
+						id="select-view"
 					>
 						<PlusOutlined />
 						<p>Select a view</p>
@@ -56,6 +58,7 @@ export default function Landing() {
 						onClick={
 							() => window.open(`${JUPYTER_APP}`, "_blank")
 						}
+						id="explore-jupyter"
 					>
 						<img src={jupyter_logo} />
 						<p>Explore on your own</p>

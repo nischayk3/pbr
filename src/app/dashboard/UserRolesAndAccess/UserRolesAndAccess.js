@@ -31,7 +31,7 @@ const UserRolesAndAccess = () => {
 					bannerbg={{
 						background: "linear-gradient(180deg, #F5EBEB 100%, #FBC2BD 4%)",
 					}}
-					title={`${sessionStorage.getItem("username")},`}
+					title={`${localStorage.getItem("username")},`}
 					description="Thinking of adding a new user or bringing in a new role? Let's get started!"
 					source={headerImage}
 					sourceClass="dashboard-image"

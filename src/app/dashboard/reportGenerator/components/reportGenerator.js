@@ -322,7 +322,7 @@ function ReportGenerator(props) {
 
 	const prepareJson = () => {
 		let obj = {};
-		let user_details = sessionStorage.getItem('username');
+		let user_details = localStorage.getItem('username');
 		let user = user_details ? user_details : '';
 
 		obj['rep_disp_id'] = reportId;

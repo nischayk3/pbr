@@ -44,9 +44,11 @@ const Limits = ({ postChartData, setPostChartData }) => {
 	//function to change specification limit input values
 	const handleSpecChange = (index, event, dateString, type) => {
 		const rowsInput = [...specificationSource];
+		/* istanbul ignore next */
 		if (!dateString) {
 			rowsInput[index]["valid_timestamp"] = null;
 		}
+		/* istanbul ignore next */
 		if (dateString && type === "date") {
 			rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
 		} else if (type === "limits") {
@@ -59,9 +61,11 @@ const Limits = ({ postChartData, setPostChartData }) => {
 	// function for change of warn input values
 	const handleWarnChange = (index, event, dateString, type) => {
 		const rowsInput = [...warningSource];
+		/* istanbul ignore next */
 		if (!dateString) {
 			rowsInput[index]["valid_timestamp"] = null;
 		}
+		/* istanbul ignore next */
 		if (dateString && type === "date") {
 			rowsInput[index]["valid_timestamp"] = dateString._d.toLocaleDateString();
 		} else if (type === "limits") {
@@ -276,6 +280,7 @@ const Limits = ({ postChartData, setPostChartData }) => {
 			key: "validuntill",
 			render: (text, record) =>
 				specificationSource.map((data, index) => {
+					/* istanbul ignore next */
 					if (record.key === data.key) {
 						if (
 							Object.keys(params).length > 0 &&
@@ -396,7 +401,9 @@ const Limits = ({ postChartData, setPostChartData }) => {
 			key: "validuntill",
 			width: "100",
 			render: (text, record) =>
+				/* istanbul ignore next */
 				warningSource.map((data, index) => {
+					/* istanbul ignore next */
 					if (record.key === data.key) {
 						if (
 							Object.keys(params).length > 0 &&

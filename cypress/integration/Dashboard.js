@@ -8,21 +8,19 @@ describe('Dashboard', () => {
 		cy.viewport(1400, 720);
 		cy.visit("/");
 		cy.url().should("include", "/user/login");
-		sessionStorage.setItem("test_enabled", true);
-		sessionStorage.setItem("user", "fahad.siddiqui@mareana.com");
-		sessionStorage.setItem("username", "Fahad");
-		sessionStorage.setItem(
-			"login_details",
-			JSON.stringify({
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("username", "Dinesh");
+		localStorage.setItem(
+			"login_details", JSON.stringify({
 				ad_role: false,
-				email_id: "fahad.siddiqui@mareana.com",
-				firstname: "Fahad",
-				lastname: "siddiqui",
-				email_id: "fahad.siddiqui@mareana.com",
+				email_id: "dinesh.jinjala@mareana.com",
+				firstname: "Dinesh",
+				lastname: "Jinjala",
 				mdh_role: "USER",
 				screen_set: "1000_USER",
 				token:
-					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkZhaGFkIFNpZGRpcXVpIiwidW5peF90aW1lc3RhbXAiOjE2NDg0NTQ4OTUuMzc5OTQzLCJ0aW1lc3RhbXAiOiIyOC8wMy8yMDIyIDA4OjA4OjE1IiwiZXhwIjo0ODAyMDU0ODk1LCJhZF9yb2xlIjpmYWxzZSwibWRoX3JvbGUiOiJVU0VSIiwiZW1haWxfaWQiOiJmYWhhZC5zaWRkaXF1aUBtYXJlYW5hLmNvbSIsImN1c3Rfa2V5IjoiMTAwMCJ9.pP2tG-5PmpqozTuX1-q_GwEkvYkigrxLWGyUcgP-CDc"
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
 			})
 		);
 	})
@@ -45,7 +43,7 @@ describe('Dashboard', () => {
 		cy.log('Verify Screen Header Component')
 		cy.get('.screen_header_head')
 		cy.log('Verify User Name')
-		cy.get('.screen_header_username').should("have.text", "Howdy Fahad,")
+		cy.get('.screen_header_username').should("have.text", "Howdy Dinesh,")
 		// cy.log('Verify Header Text')
 		// cy.get('.screen_header_text').should("have.text", "Time to draw up some charts? Lets go!")
 		cy.log('Verify Current Date')
@@ -211,7 +209,7 @@ describe('Dashboard', () => {
 		cy.get('.ant-table-row > :nth-child(2)').click();
 		cy.get('.ant-modal-footer > .ant-btn > span').click({ force: true });
 		cy.get('[style="margin-left: 20px; margin-right: 20px;"] > .anticon > svg > path').click({ force: true });
-		cy.get('.ant-col-8 > .show-data > .ant-switch > .ant-switch-handle').click();
+		cy.get('.ant-col-8 > .show-data > .ant-switch').click();
 		cy.get('.ant-col > .ant-btn > span').click();
 		cy.get('.global-filters > :nth-child(1) > .show-data > .ant-switch > .ant-switch-handle').click();
 		cy.wait(4000);

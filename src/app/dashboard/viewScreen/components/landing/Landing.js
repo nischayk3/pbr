@@ -25,8 +25,6 @@ const StatusBlock = lazy(() =>
 	import("../../../../../components/StatusBlock/statusBlock")
 );
 
-
-
 export default function Landing() {
 	const [searched, setSearched] = useState(false);
 	const [viewList, setViewList] = useState([]);
@@ -171,7 +169,7 @@ export default function Landing() {
 					background:
 						"linear-gradient(180deg, rgba(224, 145, 15, 0.35) 0%, rgba(255, 208, 123, 0.42) 100%)",
 				}}
-				title={`Howdy ${sessionStorage.getItem("username")},`}
+				title={`Howdy ${localStorage.getItem("username")},`}
 				description="Let’s get configuring some Views!"
 				source={illustrations}
 				sourceClass="geanealogy-image"
@@ -186,6 +184,7 @@ export default function Landing() {
 						enterButton="Search"
 						size="large"
 						onSearch={search}
+						id="search-view"
 					/>
 					{searched && (
 						<Table

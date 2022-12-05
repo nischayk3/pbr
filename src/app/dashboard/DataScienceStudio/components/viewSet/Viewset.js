@@ -54,7 +54,6 @@ const Viewset = ({ isVisible, onCancel }) => {
 		let reqView = { vew_status: "APRD" };
 		let antdDataTable = [];
 		try {
-
 			const viewRes = await getViewList(reqView);
 			viewRes.Data.forEach((item, key) => {
 				let antdObj = {};
@@ -198,7 +197,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 		searchViewData.current.forEach((ele) => {
 			if (ele.view_disp_id === record.view_disp_id) {
 				tempVersionList.push(ele.view_version);
-				tempVersionList = tempVersionList.sort((a, b) => a - b);
+				// tempVersionList = tempVersionList.sort((a, b) => a - b);
 				setVersionList(tempVersionList);
 			}
 		});
@@ -289,32 +288,7 @@ const Viewset = ({ isVisible, onCancel }) => {
 								/>
 							</div>
 						</div>
-						// <Row gutter={24} className="view-details">
-						// 	<Col span={12}>
-						// 		<Col span={7}>
-						// 			<label>View ID</label>
-						// 		</Col>
-						// 		<Col span={12} className="wordBreak">
-						// 			<label>: {viewData.viewName || "-"}</label>
-						// 		</Col>
-						// 	</Col>
-						// 	<Col span={12} className="col-pr">
-						// 		<Row>
-						// 			<Col span={8}>
-						// 				<label>Version</label>
-						// 			</Col>
-						// 			<Col span={12}>
-						// 				<SelectField
-						// 					selectList={versionList}
-						// 					selectedValue={viewData.viewVersion}
-						// 					onChangeSelect={(e) =>
-						// 						setViewData({ ...viewData, viewVersion: e })
-						// 					}
-						// 				/>
-						// 			</Col>
-						// 		</Row>
-						// 	</Col>
-						// </Row>
+
 					)}
 					<Row className="button-mt">
 						<Button

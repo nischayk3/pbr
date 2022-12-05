@@ -94,18 +94,25 @@ function Genealogy() {
 			setActivateKey('2');
 			setchartType('backward');
 			setProductCode(node.product);
-
+			/* istanbul ignore next */
 		} else if (node.clickType === 'forward') {
+			/* istanbul ignore next */
 			setGenealogyData([]);
+			/* istanbul ignore next */
 			let _reqFor = {
 				levels: 5,
 				batch_id: node.nodeId,
 				backward: false
 			};
+			/* istanbul ignore next */
 			setBatchNodeId(_reqFor)
+			/* istanbul ignore next */
 			getForwardGeneology(_reqFor);
+			/* istanbul ignore next */
 			setActivateKey('2');
+			/* istanbul ignore next */
 			setchartType('forward');
+			/* istanbul ignore next */
 			setProductCode(node.product);
 		} else if (node.clickType === 'view') {
 			setCollapseKey('0');
@@ -178,7 +185,9 @@ function Genealogy() {
 
 				setNodeType(node.nodeType);
 			}
+			/* istanbul ignore next */
 		} else if (node.clickType === 'upload_files') {
+			/* istanbul ignore next */
 			const uploadNodeId =
 				node.nodeType === 'Purchase Order'
 					? node.nodeId
@@ -187,13 +196,19 @@ function Genealogy() {
 						: node.nodeType === 'Process Order'
 							? node.nodeData.poNo
 							: '';
+			/* istanbul ignore next */
 			setFileData(node.nodeId);
+			/* istanbul ignore next */
 			setUploadId(uploadNodeId);
+			/* istanbul ignore next */
 			setIsUploadVisible(true);
+			/* istanbul ignore next */
 			setIsFileUploaded(false)
+			/* istanbul ignore next */
 		} else if (node.clickType === "markAsGoldenBatch") {
-
+			/* istanbul ignore next */
 			const goldenBatchSplit = node.nodeId.split("|")
+			/* istanbul ignore next */
 			const _reqGoldenBatch = {
 				active_flag: true,
 				batch_num: goldenBatchSplit[2],
@@ -201,13 +216,15 @@ function Genealogy() {
 				plant: goldenBatchSplit[0],
 				product: goldenBatchSplit[1]
 			}
-
+			/* istanbul ignore next */
 			updateGoldenBatches(_reqGoldenBatch)
+			/* istanbul ignore next */
 			setGenealogyData([]);
-
+			/* istanbul ignore next */
 		} else if (node.clickType === "markAsNormalBatch") {
-
+			/* istanbul ignore next */
 			const goldenBatchSplit = node.nodeId.split("|")
+			/* istanbul ignore next */
 			const _reqGoldenBatch = {
 				active_flag: false,
 				batch_num: goldenBatchSplit[2],
@@ -215,7 +232,9 @@ function Genealogy() {
 				plant: goldenBatchSplit[0],
 				product: goldenBatchSplit[1]
 			}
+			/* istanbul ignore next */
 			updateGoldenBatches(_reqGoldenBatch)
+			/* istanbul ignore next */
 			setGenealogyData([]);
 		}
 
@@ -424,7 +443,7 @@ function Genealogy() {
 	// const downloadFile = async val => {
 	// 	let uri =
 	// 		'SELECT * FROM tran_product_params WHERE batch_num=' + `'${limsBatch}'`;
-	// 	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+	// 	let login_response = JSON.parse(localStorage.getItem('login_details'));
 	// 	let req = {
 	// 		export_csv: true,
 	// 		query: uri,
@@ -461,7 +480,7 @@ function Genealogy() {
 					fileName.push(item.fileName)
 					fileSize.push(item.fileSize)
 				})
-				let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+				let login_response = JSON.parse(localStorage.getItem('login_details'));
 				const data = fileData && fileData.split('|');
 				setIsUploadVisible(false)
 				setIsFileUploaded(true);
@@ -611,9 +630,10 @@ function Genealogy() {
 		setIsFileUploaded(false);
 	};
 
+	/* istanbul ignore next */
 	const updateGoldenBatches = async _goldenBatchReq => {
 		dispatch(showLoader());
-		try {
+		try {/* istanbul ignore next */
 			const goldenRes = await updateGoldenBatch(_goldenBatchReq)
 			dispatch(hideLoader());
 			if (goldenRes.Status === 200) {
@@ -662,7 +682,7 @@ function Genealogy() {
 							bannerbg={{
 								background: 'linear-gradient(180deg, #FFFFFF 0%, #B9D6FF 100%)'
 							}}
-							title={`Howdy ${sessionStorage.getItem("username")},`}
+							title={`Howdy ${localStorage.getItem("username")},`}
 							description='Shall we get down to tracing some batches and materials?'
 							source={genealogyLanding}
 							sourceClass='geanealogy-image'
@@ -745,7 +765,7 @@ function Genealogy() {
 										Click or drag file to this area to upload
 									</p>
 									<p className='ant-upload-hint'>
-										Upload files of PDF or PNG format. You may carry out single
+										Upload files of PDF format. You may carry out single
 										or bulk upload. Strictly refrain from uploading company data
 										or other band files
 									</p>

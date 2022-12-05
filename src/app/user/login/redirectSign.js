@@ -18,14 +18,14 @@ export default function RedirectSign() {
 		let data = res['Data']
 		if (data) {
 			dispatch(sendLoginDetails(data))
-			sessionStorage.setItem('login_details', JSON.stringify(data))
-			sessionStorage.setItem('user', data.email_id.replaceAll('^"|"$', ''));
-			sessionStorage.setItem('username', data.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
-			sessionStorage.setItem("loginwith", 'WITH_AD')
+			localStorage.setItem('login_details', JSON.stringify(data))
+			localStorage.setItem('user', data.email_id.replaceAll('^"|"$', ''));
+			localStorage.setItem('username', data.firstname ? data.firstname.replaceAll('^"|"$', '') : data.email_id.replaceAll('^"|"$', ''));
+			localStorage.setItem("loginwith", 'WITH_AD')
 			dispatch(showNotification('success', `Logined As ${data.email_id}`))
 			dispatch(hideLoader())
 			setIsPublish(true)
-			let url = sessionStorage.getItem('redirectUrl')
+			let url = localStorage.getItem('redirectUrl')
 			// http://localhost/#/dashboard/view_creation?id=V84&version=1&
 			window.open(url + '&publish=True', '_self')
 		}

@@ -2,6 +2,19 @@
 	padding: 0px 26px;
 	margin-top: 10px;
 
+	.chart_result {
+		display: flex;
+		gap: 20px;
+
+		.chart_content {
+			display: flex;
+
+			.chart_label {
+				font-size: 14px;
+			}
+		}
+	}
+
 	.ant-select-selector {
 		border-radius: 4px !important;
 	}

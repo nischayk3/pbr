@@ -42,7 +42,9 @@ const LandingPage = () => {
 			setChartData(chartResponse.last_created_or_changed_charts);
 			dispatch(hideLoader());
 		} catch (error) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", "Unable to fetch charts"));
 		}
 	};
@@ -56,7 +58,9 @@ const LandingPage = () => {
 			searchViewData.current = chartListRes.data;
 			dispatch(hideLoader());
 		} catch (err) {
+			/* istanbul ignore next */
 			dispatch(hideLoader());
+			/* istanbul ignore next */
 			dispatch(showNotification("error", "Unable to fetch chart list"));
 		}
 	};
@@ -110,7 +114,7 @@ const LandingPage = () => {
 					<Card bordered={false}>
 						<div className="card-body-div">
 							<div className="text-descp">
-								<h2>Howdy {sessionStorage.getItem("username")},</h2>
+								<h2>Howdy {localStorage.getItem("username")},</h2>
 								<p>Let's personalize some charts today!</p>
 							</div>
 							<img src={Banner} alt="banner" />

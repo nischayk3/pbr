@@ -56,10 +56,13 @@ export default function Landing(props) {
 					"/dashboard/molecule_hierarchy_configuration/untitled_view",
 			});
 		}
+		/* istanbul ignore next */
 		else if (check_unique.response && check_unique.response.data && check_unique.response.data.statuscode == 400) {
+			/* istanbul ignore next */
 			dispatch(showNotification('error', 'Drug substance name already present, please enter unique name'))
 		}
 		else {
+			/* istanbul ignore next */
 			dispatch(showNotification('error', 'Error while creating drug substance'))
 		}
 	}
@@ -164,7 +167,7 @@ export default function Landing(props) {
 					background:
 						"linear-gradient(180deg, rgba(252, 192, 166, 0.65) 0%, #F5CACA 100%), linear-gradient(180deg, #FFFFFF 0%, #FFC7C7 100%)",
 				}}
-				title={`Howdy ${sessionStorage.getItem("username")},`}
+				title={`Howdy ${localStorage.getItem("username")},`}
 				description="Let’s get configuring some Views!"
 				source={illustrations}
 				sourceClass="geanealogy-image"

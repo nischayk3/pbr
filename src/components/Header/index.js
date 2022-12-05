@@ -24,14 +24,14 @@ const HeaderBar = () => {
 	const [dropdownVisible, setDropdownVisible] = useState(false);
 	const [modal, setModal] = useState(false)
 
-	const loginDetails = JSON.parse(sessionStorage.getItem("login_details"))
+	const loginDetails = JSON.parse(localStorage.getItem("login_details"))
 
 	const profile = useSelector((state) => state.loginReducer.profile)
 
 	useEffect(() => {
 		getProfile();
 		document.addEventListener('tokenExpired', () => {
-			if (sessionStorage.getItem('login_details')) {
+			if (localStorage.getItem('login_details')) {
 				adLogout('tokenExpired')
 			}
 		})
@@ -73,7 +73,9 @@ const HeaderBar = () => {
 		if (tokenExpired) {
 			dispatch(showNotification("error", 'Signature Expired! Please login again.'))
 		}
-		sessionStorage.clear()
+		localStorage.removeItem('login_details');
+		localStorage.removeItem('username');
+		localStorage.removeItem('loginwith');
 		window.open(`${logoutUrl}`, '_self')
 		window.open(`${logoutUrl}?redirect_url=${MDH_APP_PYTHON_SERVICE}`, '_self')
 	}
@@ -117,8 +119,8 @@ const HeaderBar = () => {
 					<div className="user-name" onClick={dropDownOpen}>
 
 						<Avatar size={22} style={{ backgroundColor: "orange", fontSize: "16px", padding: "1px 0" }}>
-							{sessionStorage.getItem("username") &&
-								sessionStorage.getItem("username").split("")[0].toUpperCase()}{" "}
+							{localStorage.getItem("username") &&
+								localStorage.getItem("username").split("")[0].toUpperCase()}{" "}
 						</Avatar>
 
 						<DownOutlined className='down-icon' />

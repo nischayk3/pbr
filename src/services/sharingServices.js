@@ -5,7 +5,7 @@ import Service from './AjaxService';
 
 
 export const getShare = request => {
-	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
 
 	const request_headers = {
 		'content-type': 'application/json',
@@ -26,7 +26,7 @@ export const getShare = request => {
 	);
 };
 export const putShare = request => {
-	let login_response = JSON.parse(sessionStorage.getItem('login_details'));
+	let login_response = JSON.parse(localStorage.getItem('login_details'));
 
 	const request_headers = {
 		'content-type': 'application/json',
