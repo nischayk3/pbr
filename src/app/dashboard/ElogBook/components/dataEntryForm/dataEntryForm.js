@@ -8,7 +8,7 @@
  * @Last Changed By - Siddesh
  */
 import { Card, Tabs, Button, Pagination } from "antd";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./dataEntryForm.scss";
 import DataFormFirst from "./dataFormFirst/dataFormFirst";
 import { PlusOutlined } from "@ant-design/icons";
@@ -17,24 +17,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { showLoader, hideLoader, showNotification } from "../../../../../duck/actions/commonActions";
 import { getDummyTemplate } from "../../../../../services/eLogBookService";
 const DataEntryForm = () => {
+
 	const dispatch = useDispatch()
 	const selectedMolecule = useSelector(state => state.elogReducer.selectedMolecule)
 	const pageSize = 1
 	const [tab, setTab] = useState('BU')
-	const [newFormAdded, setNewFormAdded] = useState(true)
+	const [templateData, setTemplateData] = useState([])
+	let template_Data = useSelector(state => state.elogReducer.templateData)
 
-	let templateData = useSelector(state => state.elogReducer.templateData)
+	useEffect(() => {
+		dispatch(showLoader())
+		setTemplateData(template_Data)
+		dispatch(hideLoader())
+	}, [])
 
-	const handleChange = (page, _data, inx) => {
+	const handleChange = (page, inx) => {
+
 		dispatch(showLoader())
 		try {
-			templateData = [...templateData]
-			setNewFormAdded(true)
-			templateData[inx]['current'] = page
-			templateData[inx]['maxIndex'] = page * pageSize
-			templateData[inx]['minIndex'] = (page - 1) * pageSize
+			let template_Data = [...templateData]
+			template_Data[inx]['current'] = page
+			template_Data[inx]['maxIndex'] = page * pageSize
+			template_Data[inx]['minIndex'] = (page - 1) * pageSize
+			setTemplateData(template_Data)
 		}
 		catch (err) {
+			console.log(err)
 			dispatch(showNotification('error', 'Some error occured'))
 		}
 		finally {
@@ -59,9 +67,9 @@ const DataEntryForm = () => {
 		try {
 			let dummyresult = await getDummyTemplate(dummy_req)
 			if (dummyresult.statuscode == 200) {
-				templateData = [...templateData]
+				let template_Data = [...templateData]
 				if (dummyresult.Data && dummyresult.Data[0] && dummyresult.Data[0].layout) {
-					templateData[index_].form_data.push({
+					template_Data[index_].form_data.push({
 						status:
 							"DRFT",
 						template_id
@@ -72,6 +80,7 @@ const DataEntryForm = () => {
 							1,
 						readings: dummyresult.Data[0].layout
 					})
+					setTemplateData(template_Data)
 				}
 			}
 		}
@@ -95,7 +104,7 @@ const DataEntryForm = () => {
 					bordered={false}
 				>
 					<Tabs defaultActiveKey={templateData && templateData[0] && templateData[0].form_name} onChange={handleTabChange}>
-						{newFormAdded && templateData && templateData.length > 0 && templateData.map((i, _idx) => (
+						{templateData && templateData.length > 0 && templateData.map((i, _idx) => (
 							<Tabs.TabPane tab={i.form_name + " Form"} key={i.form_name}>
 								{i.form_data && i.form_data.length > 0 && i.form_data.map((idx, index) =>
 								(
@@ -110,27 +119,21 @@ const DataEntryForm = () => {
 											template_disp_id={idx.template_id ? idx.template_id : 1}
 											selectedMolecule={selectedMolecule ? selectedMolecule : '_'}
 											status={idx.status ? idx.status : 'DRFT'}
+
+											addForm={() => addBU(i, _idx)}
+											showDrawer={() => showDrawer()}
+											size={i.form_data.length}
 										/>
 									)
 								))
 								}
-								<Button
-									type="dashed"
-									className="add-new-form"
-									onClick={() => {
-										addBU(i, _idx); setNewFormAdded(true)
-									}}
-									icon={<PlusOutlined />}
-									id="editable-table-button-add-new-user"
-								> Add new form
-								</Button>
 								<Pagination
 									pageSize={pageSize}
 									current={i.current}
-									size="small"
 									total={i.form_data ? i.form_data.length : 1}
-									style={{ bottom: "0px", marginLeft: "43%" }}
-									onChange={(e) => handleChange(e, i, _idx)}
+									style={{ bottom: "0px", marginLeft: "40%" }}
+									onChange={(e) => handleChange(e, _idx)}
+									size="small"
 									showQuickJumper
 								/>
 							</Tabs.TabPane>

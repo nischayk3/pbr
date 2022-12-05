@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Row, Col, Empty, Input } from "antd";
+import { Card, Row, Col, Empty, Input, Button } from "antd";
 import './cardArea.scss'
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import { getTemplateData } from "../../../../../../services/eLogBookService";
 import { useDispatch } from "react-redux";
 import { showLoader, showNotification, hideLoader } from "../../../../../../duck/actions/commonActions";
 import { sendTemplateData, sendSelectedMolecule } from "../../../../../../duck/actions/eLogBook";
+import { DownloadOutlined, UploadOutlined } from "@ant-design/icons";
 
 
 export default function DataEntryCardArea(props) {
@@ -31,14 +32,11 @@ export default function DataEntryCardArea(props) {
                 dispatch(showNotification('success', 'Loading.. data'))
                 if (template_response.Data && template_response) {
                     let data_dispatch = [...template_response.Data]
-                    console.log(data_dispatch)
                     data_dispatch.forEach(v => { v.current = 1; v.minIndex = 0, v.maxIndex = 1 });
                     dispatch(sendTemplateData(data_dispatch))
-
                 }
-                setTimeout(() => {
-                    history.push(`/dashboard/elog_book/data_entry_forms/${record.name}`)
-                }, 1000)
+                history.push(`/dashboard/elog_book/data_entry_forms/${record.name}`)
+
             }
         }
         catch (err) {
@@ -69,25 +67,28 @@ export default function DataEntryCardArea(props) {
             <div>
                 {template_data.length > 0 && selectedMolecule && <span className="selected_mol">{selectedMolecule} - Templates</span>}
                 {template_data.length > 0 && selectedMolecule && <Input.Search className="head-input" placeholder="Search a form or template" />}
+                {template_data.length > 0 && selectedMolecule && <Button className="download-button" icon={<DownloadOutlined />} >Download all</Button>}
+                {template_data.length > 0 && selectedMolecule && <Button className="download-button" icon={<UploadOutlined />} >Upload all</Button>}
+
             </div>
             <div className="content-card">
                 <Row>
                     {template_data && template_data.length ? template_data.map((i, idx) => (
 
                         <Col span={8} key={idx} >
-                            <div className="template-card-div" onClick={() => getTemplateResponse(i)
-                            }>
+                            <div className="template-card-div" >
                                 <br />
                                 <div className="template-card-head">
-                                    <div className="template-card-status-circle">
-                                        <p className="template-card-heading" >{i.template_disp_id + '_' + i.version}</p>
-                                    </div>
+                                    <p className="template-card-heading" >{i.template_disp_id + '_' + i.version}  <Button className="download-button-small" icon={<DownloadOutlined />} /> <Button className="download-button-small" icon={<UploadOutlined />} /></p>
                                 </div>
                                 <div className="template-card-content">
-                                    <div className="template-card-subheading">Product &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span className="template-card-subheading-data">{i.molecule}</span></div>
-                                    <div className="template-card-subheading">Site     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span className="template-card-subheading-data">{i.site}</span></div>
-                                    <div className="template-card-subheading">Status   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span className="approved-bar template-card-subheading-data-inside">{i.status}</span></div>
+                                    <div className="template-card-subheading">Product &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span className="template-card-subheading-data">{i.molecule}</span></div>
+                                    <div className="template-card-subheading">Site    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span className="template-card-subheading-data">{i.site}</span></div>
+                                    <div className="template-card-subheading">ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span className="template-card-subheading-data">{i.template_id}</span></div>
                                 </div>
+                                <Button className="use-template" onClick={() => getTemplateResponse(i)
+                                }>Use Template</Button>
+
                             </div>
                         </Col>
                     )) : <Empty className="empty-temp" description={<span className="empty-text ">Please select a product to view templates available</span>} />}

@@ -87,7 +87,7 @@ const Dashboard = () => {
 			setTimeout(() => {
 				history.push('/user/login');
 				window.location.reload()
-			}, 1000)
+			}, 3000)
 		}
 	}, []);
 

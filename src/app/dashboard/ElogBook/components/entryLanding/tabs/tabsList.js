@@ -26,7 +26,6 @@ export default function DataEntryFormTabs(props) {
             dispatch(sendSelectedMolecule(mol))
             if (templates_list.Data) {
                 props.setTemplateData(templates_list.Data)
-                dispatch(hideLoader())
             }
         }
         else {

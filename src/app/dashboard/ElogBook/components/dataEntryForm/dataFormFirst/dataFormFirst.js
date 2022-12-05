@@ -1,5 +1,5 @@
-import { PlusOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Input, Select, Switch, Table } from "antd";
+import { PlusOutlined, DeleteTwoTone } from "@ant-design/icons";
+import { Button, Checkbox, Input, Select, Switch, Table, Drawer } from "antd";
 import { Component } from "react";
 import { connect } from "react-redux";
 import { v1 as uuid } from "uuid";
@@ -28,8 +28,18 @@ class DataFormFirst extends Component {
 		currentPage: 1,
 		dataSourcePer: [],
 		searchValue: '',
-		completeData: []
+		completeData: [],
+		open: false
 	};
+
+	showDrawer = () => {
+		this.setState({ open: true });
+	};
+	onClose = () => {
+		this.setState({ open: false });
+	};
+
+
 
 
 	inputChange = (a, b, c) => {
@@ -67,7 +77,7 @@ class DataFormFirst extends Component {
 					this.initializeTableRender();
 				}
 			);
-			this.props.showNotification("success", `${this.props.title} Loaded`);
+			// this.props.showNotification("success", `${this.props.title} Loaded`);
 
 		} catch (err) {
 			this.props.showNotification("error", 'Data format is different');
@@ -334,6 +344,9 @@ class DataFormFirst extends Component {
 			"version": this.props.form_version,
 			"form_id": this.props.form_id,
 		}
+		if (this.props.recording_id)
+			save_req['recording_id'] = this.props.recording_id
+
 
 		this.props.showLoader();
 		try {
@@ -364,7 +377,6 @@ class DataFormFirst extends Component {
 			return null;
 		}
 		const { dataSource, formDetails } = this.state;
-		console.log(this.props, 'data_coming')
 		const components = {
 			body: {
 				row: EditableRow,
@@ -379,28 +391,22 @@ class DataFormFirst extends Component {
 
 		return (
 			<div className="custom-table-wrapper">
+				<div>
+					<span className="form-head-ing">
+						{this.props.title} [{this.props.size}]
+					</span>
+					<span style={{ float: 'right' }}>
+						<span className="see-all" onClick={() => this.props.showDrawer()}>See all records</span>
+						<Button className="header-buttons" onClick={() => this.props.addForm()}>Create New Record</Button>
+					</span>
+				</div>
+				<br />
+				<hr className="divider" />
 				<div className="form-details">
-					<p className="form-heading">{this.props.title} <span className="approved-bar template-card-subheading-data-inside"> {this.props.status} </span> </p>
+					<p className="form-heading">{this.props.title} <span className="approved-bar template-card-subheading-data-inside">{this.props.status}</span> <span className="buttons-head"><Button className="delete-btn" icon={<DeleteTwoTone twoToneColor="#EB0000" />}>Delete Record</Button> <Button className="save-btn" onClick={this.onSaveTable}>Save</Button> <Button className="publish-btn">Publish</Button></span></p>
 				</div >
 				<div className="form-details">
-					<div className="form-btn">
-						<Button
-							type="primary"
-							onClick={this.onSaveTable}
-							className="custom-primary-btn"
-							id="editable-table-button-save"
-						>
-							Clear
-						</Button>
-						<Button
-							type="primary"
-							onClick={this.onSaveTable}
-							className="custom-secondary-btn"
-							id="editable-table-button-save"
-						>
-							Save form
-						</Button>
-					</div>
+
 					{this.state.deleteActionColumnAdded && (
 						<Button
 							type="primary"
@@ -425,15 +431,7 @@ class DataFormFirst extends Component {
 					{columns && columns.length > 0 && <div className="table-wrapper">
 						<div className="table-head">
 							<p className="table-heading">{this.props.name}</p>
-							<Button
-								type="dashed"
-								className="custom-secondary-btn"
-								onClick={this.onAddRow}
-								icon={<PlusOutlined />}
-								id="editable-table-button-add-new-user"
-							>
-								Add new row
-							</Button>
+
 						</div>
 						<Table
 							className="first-Table"
@@ -442,11 +440,13 @@ class DataFormFirst extends Component {
 							dataSource={dataSource}
 							columns={columns}
 							pagination={{
+								position: ['bottomRight'],
 								size: 'small'
 							}}
 							scroll={this.props.screens === "Roles" ? { y: 400 } : { y: 300 }}
 						/>
 					</div>}
+
 
 
 				</div>
