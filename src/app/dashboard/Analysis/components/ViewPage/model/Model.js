@@ -1,5 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Row, Select } from "antd";
+import { Button, Col, Row } from "antd";
 import Sider from "antd/lib/layout/Sider";
 import React, { useCallback, useEffect, useState } from "react";
 import ReactFlow, {
@@ -677,14 +677,14 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 						<PlusOutlined /> Create Feature Union
 					</Button>
 				</Col>
-				<Col span="3" className="select-flex ml">
+				{/* <Col span="3" className="select-flex ml">
 					View
 					<Select />
 				</Col>
 				<Col span="3" className="select-flex">
 					Show
 					<Select />
-				</Col>
+				</Col> */}
 				<Col span="11" className="title-legends">
 					<dl>
 						<dt className="pink"></dt>

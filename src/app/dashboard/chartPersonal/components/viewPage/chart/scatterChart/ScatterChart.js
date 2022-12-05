@@ -302,7 +302,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 
 	useEffect(() => {
 		const newCovArr = JSON.parse(JSON.stringify(postChartData));
-
+		console.log("newCovArr", newCovArr);
 		newCovArr &&
 			newCovArr.data &&
 			newCovArr.data.forEach((ele) => {
@@ -338,6 +338,8 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 										.slice(1)
 										.toLowerCase()}`
 							);
+
+
 					let xValue = "";
 					let yValue = "";
 					let zValue = "";
@@ -466,7 +468,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 						onChangeSelect={handleChartType}
 					/>
 				</Col>
-				{axisValues.chartType === 'Process Capability' ? (
+				{axisValues.chartType === 'Process Capability' || axisValues.chartType === 'process capability' ? (
 					<></>
 				) : (
 					<Col span={showZAxis ? 5 : 6}>
@@ -482,7 +484,7 @@ const ScatterChart = ({ postChartData, setPostChartData }) => {
 				)}
 
 				<Col span={showZAxis ? 5 : 6}>
-					<p>{axisValues.chartType === 'Process Capability' ? 'Parameter' : 'Y-axis'}</p>
+					<p>{axisValues.chartType === 'Process Capability' || axisValues.chartType === 'process capability' ? 'Parameter' : 'Y-axis'}</p>
 					<SelectField
 						placeholder="Select Y-axis"
 						selectList={yaxisList}
