@@ -228,7 +228,7 @@ const Sidebar = () => {
 					icon={<CheckCircleOutlined className="menu-icons" />}
 					id="elog-book"
 				>
-					<Link to="/dashboard/elog_book">eLog Book</Link>
+					<Link to="/dashboard/elog_book">E-Log Book</Link>
 				</Menu.Item>
 				<Menu.Item
 					key="data-access-service"

@@ -1,7 +1,7 @@
 import { BMS_APP_PYTHON_SERVICE } from '../constants/apiBaseUrl';
 import Service from './AjaxService';
 
-let login_response = JSON.parse(sessionStorage.getItem("login_details"));
+let login_response = JSON.parse(localStorage.getItem("login_details"));
 
 const request_headers = {
     "content-type": "application/json",

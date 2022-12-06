@@ -396,7 +396,7 @@ class DataFormFirst extends Component {
 						{this.props.title} [{this.props.size}]
 					</span>
 					<span style={{ float: 'right' }}>
-						<span className="see-all" onClick={() => this.props.showDrawer()}>See all records</span>
+						{/* <span className="see-all" onClick={() => this.props.showDrawer()}>See all records</span> */}
 						<Button className="header-buttons" onClick={() => this.props.addForm()}>Create New Record</Button>
 					</span>
 				</div>
@@ -440,11 +440,20 @@ class DataFormFirst extends Component {
 							dataSource={dataSource}
 							columns={columns}
 							pagination={{
-								position: ['bottomRight'],
+								position: ['topRight'],
 								size: 'small'
 							}}
 							scroll={this.props.screens === "Roles" ? { y: 400 } : { y: 300 }}
 						/>
+
+						<Button
+							className="add_new_row"
+							onClick={this.onAddRow}
+							icon={<PlusOutlined />}
+							id="editable-table-button-add-new-user"
+						>
+							Add new row
+						</Button>
 					</div>}
 
 
@@ -458,3 +467,4 @@ class DataFormFirst extends Component {
 export default connect(null, { showLoader, hideLoader, showNotification })(
 	DataFormFirst
 );
+

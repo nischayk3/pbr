@@ -131,7 +131,7 @@ const DataEntryForm = () => {
 									pageSize={pageSize}
 									current={i.current}
 									total={i.form_data ? i.form_data.length : 1}
-									style={{ bottom: "0px", marginLeft: "40%" }}
+									style={{ bottom: "0px", marginLeft: "40%", marginTop: '10px' }}
 									onChange={(e) => handleChange(e, _idx)}
 									size="small"
 									showQuickJumper
