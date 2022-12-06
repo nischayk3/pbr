@@ -11,6 +11,7 @@ import reportDesignerReducer from './reportDesignerReducer';
 import viewCreationReducer from './viewCreationReducer';
 import viewHierarchy from './viewHierarchy';
 import analyticsReducer from "./analyticsReducer"
+import elogReducer from './elogReducer';
 
 const createRootReducer = (history) =>
 	combineReducers({
@@ -24,7 +25,8 @@ const createRootReducer = (history) =>
 		loginReducer,
 		pbrReducer,
 		viewHierarchy,
-    dataScienceReducer,
-    analyticsReducer
+		dataScienceReducer,
+		elogReducer,
+		analyticsReducer
 	});
 export default createRootReducer;

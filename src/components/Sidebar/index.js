@@ -1,9 +1,8 @@
 import {
 	AppstoreAddOutlined, AppstoreOutlined, AreaChartOutlined, BarChartOutlined, BlockOutlined,
-	CheckCircleOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined,
+	CheckCircleOutlined, CloudUploadOutlined, ClusterOutlined, CodeOutlined, DeploymentUnitOutlined, DiffOutlined, FileDoneOutlined,
 	FileProtectOutlined, FileSearchOutlined, FileSyncOutlined, FundOutlined, FundProjectionScreenOutlined,
-	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined,
-	CloudUploadOutlined
+	NodeIndexOutlined, PartitionOutlined, SisternodeOutlined, TeamOutlined, UploadOutlined, UserOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useState } from "react";
@@ -222,6 +221,14 @@ const Sidebar = () => {
 					id="user-roles-and-access"
 				>
 					<Link to="/dashboard/user-roles-and-access">Roles and Access</Link>
+
+				</Menu.Item>
+				<Menu.Item
+					key="elog-boook"
+					icon={<CheckCircleOutlined className="menu-icons" />}
+					id="elog-book"
+				>
+					<Link to="/dashboard/elog_book">E-Log Book</Link>
 				</Menu.Item>
 				<Menu.Item
 					key="data-access-service"
