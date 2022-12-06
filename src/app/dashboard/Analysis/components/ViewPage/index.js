@@ -211,7 +211,6 @@ const ViewPageAnalysis = () => {
 	}
 
 	const getResultFunc = async () => {
-		dispatch(showLoader());
 		const reqBody = {
 			pipelineid: id,
 		};
