@@ -445,6 +445,16 @@ class DataFormFirst extends Component {
 							}}
 							scroll={this.props.screens === "Roles" ? { y: 400 } : { y: 300 }}
 						/>
+
+						<Button
+							type="dashed"
+							className="custom-secondary-btn"
+							onClick={this.onAddRow}
+							icon={<PlusOutlined />}
+							id="editable-table-button-add-new-user"
+						>
+							Add new row
+						</Button>
 					</div>}
 
 
@@ -458,3 +468,4 @@ class DataFormFirst extends Component {
 export default connect(null, { showLoader, hideLoader, showNotification })(
 	DataFormFirst
 );
+
