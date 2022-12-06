@@ -61,6 +61,10 @@ const Profile = lazy(() => import("./profile"));
 const CrossBatchComparison = lazy(() => import("./crossBatchComparison"));
 const DataScienceStudio = lazy(() => import("./DataScienceStudio"));
 const TargetVariable = lazy(() => import("./DataScienceStudio/components/targetVariable/TargetVariable"));
+const ElogBook = lazy(() => import("./ElogBook/components/entryLanding/entryLanding"))
+const ElogBookEntry = lazy(() => import("./ElogBook/components/dataEntryForm/dataEntryForm"))
+// const EBookStep = lazy(() => import("./ElogBook/components/ebookSteps/eBookStep"))
+
 const { Content } = Layout;
 
 const Dashboard = () => {
@@ -83,7 +87,7 @@ const Dashboard = () => {
 			setTimeout(() => {
 				history.push('/user/login');
 				window.location.reload()
-			}, 1000)
+			}, 3000)
 		}
 	}, []);
 
@@ -141,6 +145,8 @@ const Dashboard = () => {
 		} else if (location.pathname.includes("cross_batch_comparison")) {
 			view = "ANALYTICS";
 		} else if (location.pathname.includes("data_science_studio")) {
+			view = "ANALYTICS";
+		} else if (location.pathname.includes("elog_book")) {
 			view = "ANALYTICS";
 		}
 		if (view && view.length > 1) {
@@ -423,6 +429,34 @@ const Dashboard = () => {
 												path={`${url}/target_variable`}
 												authorised={authorised}
 												component={TargetVariable}
+											/>
+
+
+										</>
+									)}
+								/>
+
+
+								<Route
+									path={`${match.url}/elog_book`}
+									render={({ match: { url } }) => (
+										<>
+											<PrivateRoute
+												key={"elog_book"}
+												path={`${url}/`}
+												component={ElogBook}
+												exact
+												authorised={authorised}
+											/>
+											{/* <PrivateRoute
+												path={`${url}/new-template`}
+												component={EBookStep}
+												authorised={authorised}
+											/> */}
+											<PrivateRoute
+												path={`${url}/data_entry_forms`}
+												component={ElogBookEntry}
+												authorised={authorised}
 											/>
 										</>
 									)}

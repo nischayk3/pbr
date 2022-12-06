@@ -1,0 +1,162 @@
+.button--delete {
+    background-color: orange;
+}
+
+.header-buttons {
+    gap: 8px;
+    width: 144px;
+    height: 32px;
+    background: #093185;
+    border-radius: 4px;
+    color: white;
+}
+
+.form-head-ing {
+    font-family: 'Maven Pro';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    /* identical to box height, or 138% */
+
+
+    color: #4D4D4D;
+}
+
+.see-all {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    /* identical to box height, or 157% */
+    margin-right: 31px;
+
+    color: #093185;
+}
+
+.divider {
+    width: 100%;
+    background-color: #ACACAC;
+}
+
+.delete-btn {
+    width: 123px;
+    height: 24px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    align-items: center;
+    border-radius: 2px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 22px;
+    color: #262626;
+    align-items: center;
+    padding: 1px 8px;
+    gap: 8px;
+    margin-right: 32px;
+
+}
+
+.save-btn {
+    align-items: center;
+    padding: 1px 8px;
+    gap: 8px;
+    width: 46px;
+    height: 24px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 2px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 22px;
+    color: #262626;
+    margin-right: 32px;
+
+}
+
+.buttons-head {
+    float: right;
+}
+
+.publish-btn {
+    padding: 1px 8px;
+    gap: 8px;
+    width: 63px;
+    height: 24px;
+    background: #162154;
+    border-radius: 2px;
+    color: white;
+}
+
+
+.first-Table {
+    margin-bottom: 30px;
+    margin-top: 10px;
+    width: 800px;
+}
+
+.ant-tabs-nav-wrap {
+    padding: 4px 0px;
+    color: #001529;
+    box-shadow: inset -1px 0px 0px #f0f0f0;
+}
+
+.ant-tabs-tab {
+    font-family: var(--primary-font-family);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #001529;
+}
+
+.ant-tabs-tab-btn:hover {
+    color: grey;
+}
+
+.ant-tabs-tab-active {
+    color: #001529;
+
+    >.ant-tabs-tab-btn {
+        font-family: var(--primary-font-family);
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 22px;
+        // color: #ffffff;
+        color: #001529;
+    }
+}
+
+.ant-tabs-ink-bar {
+    background: transparent;
+}
+
+.template-card-subheading-data-inside {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 22px;
+    margin-left: 22px;
+    color: #262626;
+}
+
+.approved-bar {
+    height: 22px;
+    width: 67px;
+    left: 164px;
+    top: 237px;
+    border-radius: 2px;
+    padding: 1px 8px 1px 8px;
+    background: #FFEED2;
+    /* Polar Green / 3 */
+
+    border: 1px solid orange;
+    border-radius: 2px;
+}

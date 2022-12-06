@@ -36,5 +36,7 @@
 	"/dashboard/cross_batch_comparison": "Cross Batch Comparison",
 	"/dashboard/data_science_studio": "Data Science Studio",
 	"/dashboard/data_science_studio/target_variable": "Target Variable",
+	"/dashboard/elog_book": "E-Log Book",
+	"/dashboard/elog_book/data_entry_forms": "Data entry form",
 	"/dashboard/data-access-service": "Data Access Service"
 }
