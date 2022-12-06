@@ -440,15 +440,14 @@ class DataFormFirst extends Component {
 							dataSource={dataSource}
 							columns={columns}
 							pagination={{
-								position: ['bottomRight'],
+								position: ['topRight'],
 								size: 'small'
 							}}
 							scroll={this.props.screens === "Roles" ? { y: 400 } : { y: 300 }}
 						/>
 
 						<Button
-							type="dashed"
-							className="custom-secondary-btn"
+							className="add_new_row"
 							onClick={this.onAddRow}
 							icon={<PlusOutlined />}
 							id="editable-table-button-add-new-user"
