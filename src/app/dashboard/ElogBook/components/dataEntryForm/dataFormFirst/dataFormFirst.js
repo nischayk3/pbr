@@ -396,7 +396,7 @@ class DataFormFirst extends Component {
 						{this.props.title} [{this.props.size}]
 					</span>
 					<span style={{ float: 'right' }}>
-						<span className="see-all" onClick={() => this.props.showDrawer()}>See all records</span>
+						{/* <span className="see-all" onClick={() => this.props.showDrawer()}>See all records</span> */}
 						<Button className="header-buttons" onClick={() => this.props.addForm()}>Create New Record</Button>
 					</span>
 				</div>
