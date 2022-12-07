@@ -109,6 +109,7 @@ export default function landingPage(props) {
 				obj["dashboard_name"] = el.dashboard_name;
 				obj["dashboard_status"] = el.dashboard_status;
 				obj["created_by"] = el.created_by;
+				obj["dashboard_version"] = el.dashboard_version;
 				arr.push(obj);
 			});
 			const filterTable = arr.filter((o) =>
