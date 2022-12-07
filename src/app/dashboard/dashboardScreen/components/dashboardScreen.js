@@ -209,8 +209,7 @@ const DashboardScreen = () => {
 				dispatch(hideLoader());
 				setIsSave(true)
 				history.push(
-					`/dashboard/dashboard/${res.dashboard_id}?id=${res.dashboard_id}&version=${res.dashboard_version}`
-				);
+					`/dashboard/dashboard/${res.dashboard_id}?id=${res.dashboard_id}&version=${res.dashboard_version}`);
 				dispatch(
 					showNotification(
 						"success",
