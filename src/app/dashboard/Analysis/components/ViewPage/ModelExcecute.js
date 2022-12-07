@@ -38,7 +38,7 @@ const ModelExcecute = ({ getResultFunc, resultsData, jobId }) => {
         getResultFunc();
       }
     }
-      , 7000);
+      , 5000);
     getImg();
     return () => clearInterval(intervalId)
   }, [execPercent]);
