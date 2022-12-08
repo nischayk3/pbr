@@ -438,7 +438,7 @@ const Dashboard = () => {
 
 
 								<Route
-									path={`${match.url}/elog_book`}
+									path={`${match.url}/elog_book_data_entry`}
 									render={({ match: { url } }) => (
 										<>
 											<PrivateRoute

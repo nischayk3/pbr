@@ -41,7 +41,7 @@ export default function DataEntryCardArea(props) {
                     data_dispatch.forEach(v => { v.minIndex = 0, v.maxIndex = 1 });
                     dispatch(sendTemplateData(data_dispatch))
                 }
-                history.push(`/dashboard/elog_book/data_entry_forms/${record.name}`)
+                history.push(`/dashboard/elog_book_data_entry/data_entry_forms/${record.name}`)
             }
         }
         catch (err) {
