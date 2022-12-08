@@ -3,16 +3,18 @@ import './tabs.scss';
 import {
     FileDoneOutlined
 } from '@ant-design/icons';
+import { Input } from "antd";
 import { getMoleculeList } from "../../../../../../services/viewCreationPublishing";
 import { getTemplatesList } from "../../../../../../services/eLogBookService";
 import { useDispatch } from "react-redux";
 import { showLoader, hideLoader } from "../../../../../../duck/actions/commonActions";
 import { showNotification } from "../../../../../../duck/actions/commonActions";
-import { sendSelectedMolecule } from "../../../../../../duck/actions/eLogBook";
+import { sendSelectedMolecule, sendTemplateTiles } from "../../../../../../duck/actions/eLogBook";
 
 export default function DataEntryFormTabs(props) {
 
     const [tabsList, setTabsList] = useState([]);
+    const [filterData, setFilterData] = useState([])
     const dispatch = useDispatch();
 
     const getMoleculeTemplates = async (mol) => {
@@ -25,7 +27,7 @@ export default function DataEntryFormTabs(props) {
         if (templates_list.statuscode == 200) {
             dispatch(sendSelectedMolecule(mol))
             if (templates_list.Data) {
-                props.setTemplateData(templates_list.Data)
+                dispatch(sendTemplateTiles(templates_list.Data))
             }
         }
         else {
@@ -63,17 +65,31 @@ export default function DataEntryFormTabs(props) {
                 v.selected = false;
             });
             setTabsList(tabs_list_data)
+            setFilterData(tabs_list_data)
         }
     }
-
+    const searchMolecule = (value) => {
+        if (value) {
+            const filterData = tabsList.filter((o) =>
+                Object.keys(o).some((k) =>
+                    String(o[k]).toLowerCase().includes(value.toLowerCase())
+                )
+            );
+            setFilterData(filterData);
+        }
+        else {
+            setFilterData(tabsList)
+        }
+    };
     useEffect(() => {
         getMoleculeLists()
     }, [])
 
     return (
         <div >
+            <Input.Search className="tabs-search" placeholder="Search a product" onSearch={searchMolecule} />
             {
-                tabsList.map((i, idx) => {
+                filterData && filterData.length > 0 && filterData.map((i, idx) => {
                     return (
                         <div className={i.selected ? 'approval-cards-active' : 'approval-cards'} key={idx} onClick={() => handleClick(i.title)} >
                             <div className={'circle_icon'} >

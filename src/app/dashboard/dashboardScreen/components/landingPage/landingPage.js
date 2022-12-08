@@ -229,8 +229,7 @@ export default function landingPage(props) {
 											return {
 												onClick: (event) => {
 													history.push(
-														`/dashboard/dashboard/${record.dashboard_disp_id}?id=${record.dashboard_disp_id}&version=${record.dashboard_version}`
-													);
+														`/dashboard/dashboard/${record.dashboard_disp_id}?id=${record.dashboard_disp_id}&version=${record.dashboard_version}`);
 													window.location.reload();
 												}, // click row
 											};

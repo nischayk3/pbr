@@ -98,4 +98,6 @@ export const GET_PROFILE = 'GET_PROFILE';
 // Elog Book
 export const SELECTED_MOLECULE = 'SELECTED_MOLECULE';
 export const TEMPLATE_LOAD_DATA = 'TEMPLATE_LOAD_DATA';
+export const TEMPLATE_TILES = 'TEMPLATE_TILES';
+
 
