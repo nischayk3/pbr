@@ -109,6 +109,7 @@ export default function landingPage(props) {
 				obj["dashboard_name"] = el.dashboard_name;
 				obj["dashboard_status"] = el.dashboard_status;
 				obj["created_by"] = el.created_by;
+				obj["dashboard_version"] = el.dashboard_version;
 				arr.push(obj);
 			});
 			const filterTable = arr.filter((o) =>
@@ -228,8 +229,7 @@ export default function landingPage(props) {
 											return {
 												onClick: (event) => {
 													history.push(
-														`/dashboard/dashboard/${record.dashboard_disp_id}?id=${record.dashboard_disp_id}&version=${record.dashboard_version}`
-													);
+														`/dashboard/dashboard/${record.dashboard_disp_id}?id=${record.dashboard_disp_id}&version=${record.dashboard_version}`);
 													window.location.reload();
 												}, // click row
 											};

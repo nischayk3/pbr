@@ -1,5 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Row, Select } from "antd";
+import { Button, Col, Row } from "antd";
 import Sider from "antd/lib/layout/Sider";
 import React, { useCallback, useEffect, useState } from "react";
 import ReactFlow, {
@@ -28,6 +28,7 @@ import "./model.scss";
 import NodeDetails from "./NodeDetails";
 import Transformation from "./Transformations";
 
+/* istanbul ignore next */
 const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, modelType, encoderData, setEncoderData }) => {
 	const selectedViewData = useSelector(
 		(state) => state.analyticsReducer.viewData
@@ -170,8 +171,8 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 			let tempRegressionList = [];
 			let targetVariable = apiResponse.data?.target_variable;
 			let getJson;
-      if (finalJson?.variable_mapping?.length >= 1) {
-        finalJson.target_variable = targetVariable
+			if (finalJson?.variable_mapping?.length >= 1) {
+				finalJson.target_variable = targetVariable
 				setFinalModelJson(finalJson)
 			} else {
 				getJson = await getModelJson(apiResponse.data);
@@ -676,14 +677,14 @@ const Model = ({ finalModelJson, setFinalModelJson, editFinalJson, tableKey, mod
 						<PlusOutlined /> Create Feature Union
 					</Button>
 				</Col>
-				<Col span="3" className="select-flex ml">
+				{/* <Col span="3" className="select-flex ml">
 					View
 					<Select />
 				</Col>
 				<Col span="3" className="select-flex">
 					Show
 					<Select />
-				</Col>
+				</Col> */}
 				<Col span="11" className="title-legends">
 					<dl>
 						<dt className="pink"></dt>

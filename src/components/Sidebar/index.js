@@ -47,7 +47,7 @@ const cpvMenu = [
 const Sidebar = () => {
 	const [collapsed, setCollapsed] = useState(true);
 	const [openKeys, setOpenKeys] = useState([]);
-	const rootKeys = ["sub2", "sub3", "sub4", "sub5", "sub6","sub7"];
+	const rootKeys = ["sub2", "sub3", "sub4", "sub5", "sub6", "sub7"];
 	const mouseHover = () => {
 		setCollapsed(false);
 	};
@@ -223,28 +223,20 @@ const Sidebar = () => {
 					<Link to="/dashboard/user-roles-and-access">Roles and Access</Link>
 
 				</Menu.Item>
-				{/* <Menu.Item
-					key="elog-boook"
-					icon={<CheckCircleOutlined className="menu-icons" />}
-					id="elog-book"
-				>
-					<Link to="/dashboard/elog_book">eLog Book</Link>
-				</Menu.Item> */}
 				<SubMenu
 					key="sub7"
-					mode="elog-boook"
+					mode="inline"
 					icon={<CheckCircleOutlined className="menu-icons" />}
-					title="elog-boook"
+					title="ELog-book"
 				>
 					<Menu.Item
-						key="elog-book-template"
-						icon={<DeploymentUnitOutlined className="menu-icons" />}
-						id="elog-book-template"
+						key="elog-boook"
+						icon={<CheckCircleOutlined className="menu-icons" />}
+						id="elog-book"
 					>
-						<Link to="/dashboard/elog_book_template">
-							Elog-book-template
-						</Link>
+						<Link to="/dashboard/elog_book_data_entry">Data Entry</Link>
 					</Menu.Item>
+
 				</SubMenu>
 				<Menu.Item
 					key="data-access-service"

@@ -43,12 +43,12 @@ const LandingPage = () => {
 	}
 	const columns = [
 		{
-			title: "Pipeline ID",
+			title: "Model ID",
 			dataIndex: "pipeline_disp_id",
 			key: "pipeline_disp_id",
 		},
 		{
-			title: "Pipeline Name",
+			title: "Model Name",
 			dataIndex: "pipeline_name",
 			key: "pipeline_name",
 		},
@@ -91,7 +91,7 @@ const LandingPage = () => {
 			dispatch(hideLoader());
 		} catch (error) {
 			dispatch(hideLoader());
-			dispatch(showNotification("error", "Unable to fetch pipelines"));
+			dispatch(showNotification("error", "Unable to fetch models"));
 		}
 	};
 
@@ -144,7 +144,7 @@ const LandingPage = () => {
 						<div className="card-body-div">
 							<div className="text-descp">
 								<h2>Howdy {localStorage.getItem("username")},</h2>
-								<p>Let's get to build some pipelines today!</p>
+								<p>Let's get to build some models today!</p>
 							</div>
 							<img src={Banner} alt="banner" />
 							<h6>{date}</h6>
@@ -159,7 +159,7 @@ const LandingPage = () => {
 							<Col span={6} />
 							<Col span={12} className="p36 table-data" ref={ref}>
 								<Search
-									placeholder="Search by pipeline name or ID"
+									placeholder="Search by model name or ID"
 									allowClear
 									enterButton="Search"
 									size="large"
@@ -190,7 +190,7 @@ const LandingPage = () => {
 							<Col span={12} className="p36">
 								<div className="create-new" onClick={onClickAdd}>
 									<PlusOutlined />
-									<p>Create new pipeline</p>
+									<p>Create new model</p>
 								</div>
 							</Col>
 							<Col span={6} />
@@ -201,7 +201,7 @@ const LandingPage = () => {
 								<Col span={12} className="p36">
 									<Row gutter={16} className="title">
 										<Col span={8}>
-											<h3>Recently created pipelines</h3>
+											<h3>Recently created models</h3>
 										</Col>
 										<Col span={16} className="title-legends">
 											<dl>

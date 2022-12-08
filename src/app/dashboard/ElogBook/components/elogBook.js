@@ -10,13 +10,15 @@
 
 import React from 'react';
 import BreadCrumbWrapper from "../../../../components/BreadCrumbWrapper";
-import Landing from './landingPage/Landing';
+import DataEntryForm from "./dataEntryForm/dataEntryForm";
 const ElogBook = () => {
 	return (
 		<div className="custom-wrapper">
 			<BreadCrumbWrapper />
 			<div className="custom-content-layout">
-				<Landing />
+				{/* <Landing /> */}
+				<DataEntryForm />
+
 			</div>
 		</div>
 	)

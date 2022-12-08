@@ -1,11 +1,56 @@
 Cypress.on("uncaught:exception", (err, runnable) => {
 	return false;
 });
+
 describe("Analysis", () => {
 	beforeEach(() => {
+		cy.viewport(1366, 768);
 		localStorage.setItem("test_enabled", true);
 		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
 		localStorage.setItem("username", "Dinesh");
+		localStorage.setItem("loginwith", "WITH_AD");
+		localStorage.setItem(
+			"login_details", JSON.stringify({
+				ad_role: false,
+				email_id: "dinesh.jinjala@mareana.com",
+				firstname: "Dinesh",
+				lastname: "Jinjala",
+				mdh_role: "USER",
+				screen_set: "1000_USER",
+				token:
+					"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ik1paGlyICBCYWdnYSIsInVuaXhfdGltZXN0YW1wIjoxNjUwNDIyMDcyLjgzNTg5MSwidGltZXN0YW1wIjoiMjAvMDQvMjAyMiAwODowNDozMiIsImV4cCI6NDgwNDA0MTg3MiwiYWRfcm9sZSI6ZmFsc2UsIm1kaF9yb2xlIjoiVVNFUiIsImVtYWlsX2lkIjoibWloaXIuYmFnZ2FAbWFyZWFuYS5jb20iLCJjdXN0X2tleSI6IjEwMDAifQ.NpmhWhMBWtRcDkSBDdw-94Kqy9vuZyY1PSHbOpTyzMM"
+			})
+		);
+		cy.intercept("GET", "**/pipeline-list", {
+			fixture: "analysisLanding.json",
+		});
+		cy.intercept("GET", "**/views-list?vew_status=APRD", {
+			fixture: "analysisViewList.json",
+		});
+		cy.intercept("GET", "**/chart-object", {
+			fixture: "analysisChartObjLanding.json",
+		});
+		cy.intercept("GET", "**/site_ids?view_id=V238", {
+			fixture: "analysisSite.json",
+		});
+		cy.intercept("POST", "**/analysis-preprocessing", {
+			fixture: "analysisPre.json",
+		});
+		cy.intercept("POST", "**/chart-object", {
+			fixture: "analysisPostChart.json",
+		});
+		cy.intercept("PUT", "**/pipelines", { fixture: "putPipeline.json" });
+		cy.intercept("POST", "**/model-data", {
+			fixture: "analysisPostModal.json",
+		});
+	});
+
+	afterEach(() => {
+		cy.viewport(1366, 768);
+		localStorage.setItem("test_enabled", true);
+		localStorage.setItem("user", "dinesh.jinjala@mareana.com");
+		localStorage.setItem("username", "Dinesh");
+		localStorage.setItem("loginwith", "WITH_AD");
 		localStorage.setItem(
 			"login_details", JSON.stringify({
 				ad_role: false,
@@ -51,9 +96,6 @@ describe("Analysis", () => {
 	});
 
 	it("Create New Pipeline", () => {
-		const url = Cypress.config().baseUrl;
-		cy.visit(url + "/#/dashboard/analysis");
-
 		cy.log("Creating New Pipeline");
 		cy.get(".create-new").click({ force: true });
 
@@ -91,14 +133,15 @@ describe("Analysis", () => {
 
 		cy.log("Switch and date range");
 		cy.get(".ant-switch").click({ force: true });
-		cy.get(".ant-picker").click({ force: true });
-		cy.get(
-			":nth-child(5) > .ant-picker-cell-today > .ant-picker-cell-inner"
-		).click();
+		// cy.get(".ant-picker").click({ force: true });
+		// cy.get(
+		// 	":nth-child(5) > .ant-picker-cell-today > .ant-picker-cell-inner"
+		// ).click();
 		cy.wait(2000);
 		cy.log("Landing");
 		cy.get(".button-gap > .custom-secondary-btn").click({ force: true });
 	});
+
 	it("Preprocessing Tab", () => {
 		cy.log("Preprocessing Tab");
 		cy.get(".ant-select-selection-overflow").click({ force: true });
@@ -117,6 +160,7 @@ describe("Analysis", () => {
 		cy.log("Save and move to modal Tab");
 		cy.get(".save-button > .ant-col > .ant-btn").click({ force: true });
 	});
+
 	it("Modal Tab", () => {
 		cy.log(
 			"modal tab is the response from the api itself no function of the tab"
@@ -124,40 +168,47 @@ describe("Analysis", () => {
 		cy.wait(5000);
 	});
 
-	it("Modal", () => {
+	it("Modal Feature Union Node", () => {
 		cy.get(".ant-tabs-nav-list > :nth-child(3)").click();
-		cy.get(
-			'.react-flow__node-selectorNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button'
-		).click();
-		cy.get(
-			'.react-flow__node-FeatureUninonNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button'
-		).click();
-		cy.get(
-			'.react-flow__node-EstimatorNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button'
-		).click();
-		cy.get('[data-id="horizontal-2"]').click();
-		cy.get(
-			".node-details-container > .ant-row > .ant-col > :nth-child(2)"
-		).click();
-		cy.get(".model-container > .ant-row > :nth-child(1) > .ant-btn").click();
-		cy.get(".ant-col-4 > .ant-btn").click();
+		cy.wait(5000);
+		cy.get('.react-flow__node-FeatureUninonNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click();
+		cy.get('.drawer-details > .ant-btn > span').click();
 	});
 
-	it("Transformations", () => {
-		cy.get(".ant-tabs-nav-list > :nth-child(4)").click();
-		cy.get("#rc-tabs-1-panel-1 > :nth-child(1) > ul > :nth-child(1)").trigger(
-			"mousedown",
-			"topRight"
-		);
-		cy.get(
-			".trans-container > .ant-tabs > .ant-tabs-nav > .ant-tabs-nav-wrap > .ant-tabs-nav-list > :nth-child(2)"
-		).click();
+	it("Modal Estimator Node  ", () => {
+		cy.wait(2000);
+		cy.get('.react-flow__node-EstimatorNode > [style="text-align: center;"] > [style="display: flex; flex-direction: column; align-items: center;"] > button').click()
+		cy.get('.panelImg').click()
 	});
 
-	it("Excutes", () => {
-		cy.get(".btns > div > :nth-child(4)").click();
-		cy.wait(35000);
+	it("Modal CARB_NORMAL Node  ", () => {
+		cy.wait(2000);
+		cy.get('[data-id="horizontal-2"] > .node-inside').click();
+		cy.get('.ant-modal-close-x').click();
 	});
+
+	it("Modal NORMAL_MUV_HEAVY Node  ", () => {
+		cy.wait(2000);
+		cy.get('[data-id="horizontal-3"] > .node-inside').click();
+		cy.get('.ant-modal-close-x').click();
+
+	});
+
+	// it("Transformations", () => {
+	// 	cy.get(".ant-tabs-nav-list > :nth-child(4)").click();
+	// 	cy.get("#rc-tabs-1-panel-1 > :nth-child(1) > ul > :nth-child(1)").trigger(
+	// 		"mousedown",
+	// 		"topRight"
+	// 	);
+	// 	cy.get(
+	// 		".trans-container > .ant-tabs > .ant-tabs-nav > .ant-tabs-nav-wrap > .ant-tabs-nav-list > :nth-child(2)"
+	// 	).click();
+	// });
+
+	// it("Excutes", () => {
+	// 	cy.get(".btns > div > :nth-child(4)").click();
+	// 	cy.wait(35000);
+	// });
 
 	it("Search in Analysis Landing Page", () => {
 		const url = Cypress.config().baseUrl;

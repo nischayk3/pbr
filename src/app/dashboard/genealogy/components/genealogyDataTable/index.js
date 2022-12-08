@@ -108,7 +108,7 @@ function GenealogyDataTable(props) {
 						}}
 						searchWords={[searchText]}
 						autoEscape
-						textToHighlight={text.toString()}
+						textToHighlight={text?.toString()}
 					/>
 				) : (
 					text
