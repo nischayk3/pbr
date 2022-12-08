@@ -6,7 +6,7 @@
 import {
 	Button, Modal
 } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, useRouteMatch } from "react-router-dom";
 import Banner from '../../../../../assets/images/Popup-Side.svg';
 import InputField from '../../../../../components/InputField/InputField';
@@ -14,19 +14,26 @@ import SelectFields from '../../../../../components/SelectField/SelectField';
 import "./eLogbookForm.scss";
 
 function ElogForm({ isTemplateModal }) {
+	
 	const history = useHistory();
 	const match = useRouteMatch();
 
-	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [isModalVisible, setIsModalVisible] = useState(isTemplateModal);
 
 	const [formData, setFormData] = useState({
 		Tname: '',
 		Pname: ''
 	});
+
+	useEffect(() => {
+		setIsModalVisible(isTemplateModal)
+	},[isTemplateModal])
+
+	
 	const handleCancel = () => {
 		setIsModalVisible(false);
 	};
-
+	console.log(isTemplateModal, isModalVisible);
 	const handleNext = () => {
 		history.push({
 			pathname: `${match.url}/new-template`,
@@ -45,7 +52,7 @@ function ElogForm({ isTemplateModal }) {
 		<Modal
 			className="landing-modal"
 			title="Basic details - New template [Draft]"
-			visible={isTemplateModal}
+			visible={isModalVisible}
 			onCancel={handleCancel}
 			width={787}
 			centered

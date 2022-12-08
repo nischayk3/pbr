@@ -8,6 +8,7 @@ import EditorTemplate from "./editorTemplate/editorTemplate";
 import { Tabs } from 'antd';
 import StatusInd from "../statusIndicator/statusInd";
 import EditorNew from "./editornew/editorNew";
+import ImportForm from "./importForms/importForm";
 const { TabPane } = Tabs;
 const { Step } = Steps;
 const { Item } = Form;
@@ -63,20 +64,6 @@ const EbookStep = () => {
 			data: <div className="form-wrapper">
 
 			<div className="metadata-subheader ">
-				{/* <div className="title-layout">
-					<p>Meta Data</p>
-				</div>
-				<div className="stepper-layout">
-					<Steps
-						size="small"
-						current={0}
-					>
-						<Step key={0} title="Meta data" />
-						<Step key={1} title="Design form" />
-						<Step key={2} title="Script editor" />
-
-					</Steps>
-				</div> */}
 				<div className="button-layout">
 					<div className="layout-button">
 						<span className="data-button">
@@ -176,7 +163,7 @@ const EbookStep = () => {
 					)}
 	
 					{current === 1 && (
-					
+					// <ImportForm />
 					newform === false ? <EditorNew sendDataToParent={sendDataToParent}  /> :	<EditorTemplate />
 					)}
 	
@@ -204,20 +191,6 @@ const EbookStep = () => {
 			data: <div className="form-wrapper">
 
 			<div className="metadata-subheader ">
-				{/* <div className="title-layout">
-					<p>Meta Data</p>
-				</div>
-				<div className="stepper-layout">
-					<Steps
-						size="small"
-						current={0}
-					>
-						<Step key={0} title="Meta data" />
-						<Step key={1} title="Design form" />
-						<Step key={2} title="Script editor" />
-
-					</Steps>
-				</div> */}
 				<div className="button-layout">
 					<div className="layout-button">
 						<span className="data-button">

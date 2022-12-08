@@ -145,8 +145,8 @@ const Dashboard = () => {
 			view = "ANALYTICS";
 		} else if (location.pathname.includes("data_science_studio")) {
 			view = "ANALYTICS";
-		} else if (location.pathname.includes("elog_book")) {
-			view = "ANALYTICS";
+		} else if (location.pathname.includes("elog_book_template")) {
+			view = "Elog_Book_Template";
 		}
 		if (view && view.length > 1) {
 			requiredAuth(view);
@@ -437,12 +437,12 @@ const Dashboard = () => {
 
 
 								<Route
-									path={`${match.url}/elog_book`}
+									path={`${match.url}/elog_book_template`}
 									render={({ match: { url } }) => (
 										<>
 											<PrivateRoute
-												key={"elog_book"}
-												path={`${url}/`}
+												key={"elog_book_template"}
+												path={`${url}/elog_book_template`}
 												component={ElogBook}
 												exact
 												authorised={authorised}

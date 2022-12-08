@@ -29,13 +29,13 @@
     // flex-wrap: wrap;
     flex-direction: row;
     // position: absolute;
-// width: 1334px;
+width: 100%;
 height: 43px;
 left: 78px;
 top: 144px;
 padding: 3px;
 background: #E1E1E1;
-padding-left: 16px
+// padding-left: 16px
   }
 
   .flex-container > div {
@@ -95,11 +95,21 @@ font-size: 14px;
 // }
 .right-screen{
     display: flex;
-text-align: left;
-padding-left: 267px;
+text-align: end;
+margin-right: 18px;
+
 }
 .left-screen{
-    text-align: right;
+    padding-left: 14px;
+    width: 100%;
+    // text-align: right;
+    font-family: 'Maven Pro'; 
+     font-style: normal; 
+     font-weight: 500; 
+     font-size: 16px; 
+     line-height: 34px; 
+     color: #000000;
+     display: flex;
 
 }
 .title-text{
@@ -162,3 +172,108 @@ color: #8F8F8F;
     padding-right: 9px;
 
 }
+
+.slider-layout{
+    height: 480px;
+    background: transparent;
+}
+
+.slider-main{
+    // position: absolute;
+    // width: 200px;
+    // height: 518px;
+    // top: 0px;
+    // background: #FFFFFF;
+    // border: 5px solid #ADC6FF;
+    // box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+    // border-radius: 4px 0px 0px 4px;
+
+    position: absolute;
+    width: 188px;
+    left: 12px;
+    height: 400px;
+    top: 0px;
+    background: #FFFFFF;
+    border: 5px solid #ADC6FF;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 4px 0px 0px 4px;
+}
+
+.slider-header{
+    // position: absolute;
+    // width: 190px;
+    // height: 41px;
+    // background: #F1F7FF;
+
+    position: absolute;
+    width: 178px;
+    height: 41px;
+    background: #F1F7FF;
+
+}
+
+.slider-text{
+    position: absolute;
+    width: 95px;
+    height: 22px;
+    left: 16px;
+    top: 9.5px;
+    
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+}
+
+.slider-button{
+//     position: absolute;
+// width: 14px;
+// height: 66px;
+// left: 14px;
+// top: 66px;
+
+// background: #ADC6FF;
+border-radius: 16px;
+position: absolute;
+width: 42px;
+height: 66px;
+left: 0px;
+top: 172px;
+background: #ADC6FF;
+
+}
+.slide-total{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.imgstyle{
+    width: 8px;
+    height: 16px;
+    padding-right: 0px;
+    margin-top: 25px;
+}
+.tab-main{
+    
+    padding-top: 30px;
+
+}
+// .tab-title{
+//     position: absolute;
+// width: 124px;
+// height: 22px;
+// // left: 37px;
+// // top: 57px;
+
+// font-family: 'Roboto';
+// font-style: normal;
+// font-weight: 600;
+// font-size: 12px;
+// // line-height: 22px;
+// /* identical to box height, or 183% */
+
+
+// color: #000000;
+// }

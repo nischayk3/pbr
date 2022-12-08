@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import BreadCrumbWrapper from "../../../../../../components/BreadCrumbWrapper";
-import { Tabs, Button, Dropdown, Space, Typography, Menu, Input, Select,  Upload, message  } from 'antd';
+import { Tabs, Button, Dropdown, Space, Typography, Menu, Input, Select,  Upload, message, Layout, theme  } from 'antd';
 import "../editorTemplate/editorTemplate.scss"
 import { DownOutlined } from '@ant-design/icons';
 import EditorInput from './editorComponents/editorInput';
+import rightarrow from '../../../../../../assets/editornew/rightarrow.png'
+const { Header, Sider, Content } = Layout;
+const { TabPane } = Tabs;
 
 const items = [
     {
@@ -118,9 +121,29 @@ const Menus = [
 ]
 
 
+const TabsData1 = [
+    {
+        key: "1",
+        title:"Text",
+     
+    },
+        {
+            key: "2",
+            title: "Rule",
+          
+        },
+        {
+            key:"3",
+            title: "Validation"
+        }
+]
+
+
 function editorTemplate() {
 //     const draggableTodo = useRef(null);
 //   const groupName = useRef(null);
+const [collapsed, setCollapsed] = useState(false)
+const [dragData, setDragData] = useState([]);
   const [tasks, setTasks] = useState({
 //     menus: [{
 //         _id: 1,
@@ -439,6 +462,7 @@ function editorTemplate() {
                     // console.log(name);
                     // groupName.current = name;
                   const stadragged = tasks.inProgress.find((i) => i._id === id);
+                  setDragData(stadragged);
                   console.log(stadragged);
                 //   };
 
@@ -467,10 +491,13 @@ function editorTemplate() {
     }
 
     const dragDropped = (e) => {
+        
         console.log("You have dropped");
+        
     }
     return (
-        <div>
+        <Layout>
+            <Layout>
             <div className="flex-container">
                 <div className='left-screen flex-grow: 8' >
                     {tasks.inProgress.map((i) =>
@@ -549,10 +576,10 @@ function editorTemplate() {
           }}
           onMouseDown={() => setIsDragging(true)} */}
                <div
-        //   onDragOver={(e) => draggingOver(e)}
+          onDragOver={(e) => draggingOver(e)}
             onDrop={(e) => dragDropped(e)}
                     >
-                        Ihbsdfj
+                        {/* Ihbsdfj */}
                            {/* {isDragging ? "I am dragging." : "I am not dragging."} */}
 
                            {/* {tasks.todo?.map((todo) => {
@@ -626,8 +653,44 @@ function editorTemplate() {
                     
                 }
             </div>
-           
+            </Layout>
+            <Sider
+        trigger={null}
+        collapsible
+        collapsedWidth={12}
+        collapsed={collapsed}
+        theme={'light'}
+        className="slider-layout"
+      >
+        <div className='flex-container slide-total'>
+        <div className='slider-button flex-grow: 4'  onClick={ () => setCollapsed(!collapsed)}>
+        <img src={rightarrow} alt="upload" className='imgstyle' />
+            </div>
+        <div className='slider-main flex-grow: 8'>
+            <div className='slider-header'> <p className='slider-text'> Control panel</p></div>
+            <div className='tab-main'>
+            {/* <Tabs
+						defaultActiveKey="2"
+						// onChange={onChange}
+						// style={{ display: "flex", justifyContent: "space-between" }}
+						// tabBarExtraContent={operations}
+					>
+						{ TabsData1.map((i) =>
+					
+						<TabPane 
+						tab={<span className='tab-title'>{i.title}</span>}
+						 key={i.key} >
+						
+						</TabPane>
+						)}
+						
+					</Tabs> */}
+            </div>
         </div>
+        </div>
+       
+        </Sider>
+        </Layout>
     )
 }
 

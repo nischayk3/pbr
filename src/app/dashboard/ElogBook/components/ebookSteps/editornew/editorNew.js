@@ -1,13 +1,16 @@
 import React,{ useState } from 'react';
 import { Empty, Button  } from 'antd';
-import Add from "../../../../../../assets/editornew/add.png";
-import Arrow from "../../../../../../assets/editornew/arrow.png";
+import Createvector from "../../../../../../assets/editornew/Createvector.png";
+import Importvector from "../../../../../../assets/editornew/Importvector.png";
+import Emptyimage from "../../../../../../assets/editornew/Image.png";
 import './editoeNew.scss';
 import { set } from 'lodash';
+import ImportForm from '../importForms/importForm';
 
 
 function EditorNew({sendDataToParent}) {
     const [state, setState] = useState(false)
+    const [isTemplateModal, setIsTemplateModal] = useState(false);
 
     const handleNext =(e) => {
         e.preventDefault()
@@ -21,26 +24,33 @@ function EditorNew({sendDataToParent}) {
        
     </div> */}
     <div className='editor-part'>
-
-       <Empty description={false} />
+       <div className="empty-box">
+       {/* <Empty description={false} imageStyle={{ size:"large"}} className="empty-box" /> */}
+       <img src={Emptyimage} alt="Emptyimage" className='emty-img' />
+       </div>
        <div className="button-layouts">
 						<Button
 							className="custom-secondary-btn"
 							type="primary"
-							// onClick={(e) => handleNext(e)}
+                            size="large"
+							onClick={(e) => {
+                                setIsTemplateModal(true)
+                            }}
 						>
-                            <img src={Arrow} alt="upload" className='img' />
+                            <img src={Importvector} alt="upload" className='img' />
 							Import a form
 						</Button>
 						<Button
 							className="pbbutton custom-secondary-btn"
 							type="primary"
 							onClick={ handleNext}
+                            size="large"
 						>
-                            <img src={Add} alt="create" className='img' />
+                            <img src={Createvector} alt="create" className='img' />
 							Create new form
 						</Button>
 					</div>
+                    <ImportForm isTemplateModal={isTemplateModal} />
     </div>
    
 </div>
