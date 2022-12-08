@@ -2,6 +2,30 @@
     background-color: orange;
 }
 
+.ant-tabs-tab-btn {
+    font-family: var(--primary-font-family);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: black;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    font-family: var(--primary-font-family);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #093185;
+}
+
+
+.ant-tabs-ink-bar {
+    background: #093185;
+}
+
+
 .header-buttons {
     gap: 8px;
     width: 144px;
@@ -9,6 +33,16 @@
     background: #093185;
     border-radius: 4px;
     color: white;
+}
+
+.edit_input {
+    width: 200px;
+    font-family: 'Maven Pro';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    color: #4D4D4D;
 }
 
 .form-head-ing {
@@ -30,7 +64,7 @@
     font-size: 14px;
     line-height: 22px;
     /* identical to box height, or 157% */
-    margin-right: 31px;
+    margin-left: 31px;
 
     color: #093185;
 }
@@ -41,7 +75,7 @@
 }
 
 .delete-btn {
-    width: 123px;
+    width: 60px;
     height: 24px;
     background: #FFFFFF;
     border: 1px solid #D9D9D9;
@@ -94,50 +128,40 @@
 }
 
 .add_new_row {
-    width: 800px;
+    padding: 1px 18px;
+    gap: 8px;
+    width: 140px;
+    // left: 10%;
+    height: 28px;
+    color: white;
+    background: #093185;
+    border-radius: 4px;
 }
 
+.ant-table-cell {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.01em;
+    color: #6D6D6D;
+
+}
 
 .first-Table {
     margin-top: 10px;
-    width: 800px;
-}
 
-.ant-tabs-nav-wrap {
-    padding: 4px 0px;
-    color: #001529;
-    box-shadow: inset -1px 0px 0px #f0f0f0;
-}
-
-.ant-tabs-tab {
-    font-family: var(--primary-font-family);
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 22px;
-    color: #001529;
-}
-
-.ant-tabs-tab-btn:hover {
-    color: grey;
-}
-
-.ant-tabs-tab-active {
-    color: #001529;
-
-    >.ant-tabs-tab-btn {
-        font-family: var(--primary-font-family);
+    .ant-table-cell {
+        font-family: 'Roboto';
         font-style: normal;
-        font-weight: 400;
+        font-weight: 700;
         font-size: 16px;
         line-height: 22px;
-        // color: #ffffff;
-        color: #001529;
-    }
-}
+        letter-spacing: 0.01em;
+        color: #6D6D6D;
 
-.ant-tabs-ink-bar {
-    background: transparent;
+    }
 }
 
 .template-card-subheading-data-inside {

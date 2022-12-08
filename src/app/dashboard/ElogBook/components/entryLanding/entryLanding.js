@@ -9,7 +9,6 @@ import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 export default function FormEntryLanding() {
 
     const [id, setId] = useState('')
-    const [templateData, setTemplateData] = useState([])
 
     return (
         <div className="custom-wrapper bread-wrap">
@@ -33,10 +32,10 @@ export default function FormEntryLanding() {
                 />
                 <Row>
                     <Col span={5}>
-                        <DataEntryFormTabs setId={setId} setTemplateData={setTemplateData} />
+                        <DataEntryFormTabs setId={setId} />
                     </Col>
                     <Col span={19}>
-                        <DataEntryCardArea templateData={templateData} id={id} />
+                        <DataEntryCardArea id={id} />
                     </Col>
                 </Row>
             </div>

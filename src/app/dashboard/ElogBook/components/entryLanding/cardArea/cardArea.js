@@ -11,12 +11,18 @@ import { DownloadOutlined, UploadOutlined } from "@ant-design/icons";
 
 
 export default function DataEntryCardArea(props) {
+
     const dispatch = useDispatch()
     const selectedMolecule = useSelector(state => state.elogReducer.selectedMolecule)
     const history = useHistory()
     const [filterData, setFilterData] = useState([])
-    let template_data = props.templateData
+    const [templateData, setTemplateData] = useState([])
+    const template_data = useSelector(state => state.elogReducer.templateTiles)
 
+    useEffect(() => {
+        setTemplateData(template_data)
+        setFilterData(template_data)
+    }, [template_data])
 
     const getTemplateResponse = async (record) => {
         dispatch(showLoader())
@@ -32,11 +38,10 @@ export default function DataEntryCardArea(props) {
                 dispatch(showNotification('success', 'Loading.. data'))
                 if (template_response.Data && template_response) {
                     let data_dispatch = [...template_response.Data]
-                    data_dispatch.forEach(v => { v.current = 1; v.minIndex = 0, v.maxIndex = 1 });
+                    data_dispatch.forEach(v => { v.minIndex = 0, v.maxIndex = 1 });
                     dispatch(sendTemplateData(data_dispatch))
                 }
                 history.push(`/dashboard/elog_book/data_entry_forms/${record.name}`)
-
             }
         }
         catch (err) {
@@ -49,7 +54,7 @@ export default function DataEntryCardArea(props) {
 
     const searchTemplate = (value) => {
         if (value) {
-            const filterData = template_data.filter((o) =>
+            const filterData = templateData.filter((o) =>
                 Object.keys(o).some((k) =>
                     String(o[k]).toLowerCase().includes(value.toLowerCase())
                 )
@@ -57,7 +62,7 @@ export default function DataEntryCardArea(props) {
             setFilterData(filterData);
         }
         else {
-            setFilterData([])
+            setFilterData(templateData)
         }
     };
 
@@ -65,33 +70,30 @@ export default function DataEntryCardArea(props) {
 
         <Card className="content-cards">
             <div>
-                {template_data.length > 0 && selectedMolecule && <span className="selected_mol">{selectedMolecule} - Templates</span>}
-                {template_data.length > 0 && selectedMolecule && <Input.Search className="head-input" placeholder="Search a form or template" />}
-                {template_data.length > 0 && selectedMolecule && <Button className="download-button" icon={<DownloadOutlined />} >Download all</Button>}
-                {template_data.length > 0 && selectedMolecule && <Button className="download-button" icon={<UploadOutlined />} >Upload all</Button>}
-
+                {templateData.length > 0 && selectedMolecule && <span className="selected_mol">{selectedMolecule} - Templates</span>}
+                {templateData.length > 0 && selectedMolecule && <Input.Search className="head-input" placeholder="Search a form or template" onSearch={searchTemplate} />}
+                {templateData.length > 0 && selectedMolecule && <Button className="download-button" icon={<DownloadOutlined />} >Download all</Button>}
+                {templateData.length > 0 && selectedMolecule && <Button className="download-button" icon={<UploadOutlined />} >Upload all</Button>}
             </div>
             <div className="content-card">
                 <Row>
-                    {template_data && template_data.length ? template_data.map((i, idx) => (
-
+                    {filterData && filterData.length && templateData ? filterData.map((i, idx) => (
                         <Col span={8} key={idx} >
                             <div className="template-card-div" >
                                 <br />
                                 <div className="template-card-head">
-                                    <p className="template-card-heading" >{i.template_disp_id + '_' + i.version}  <Button className="download-button-small" icon={<DownloadOutlined />} /> <Button className="download-button-small" icon={<UploadOutlined />} /></p>
+                                    <p className="template-card-heading" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{i.template_disp_id + '_' + i.version}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <Button className="download-button-small" icon={<DownloadOutlined />} /> <Button className="download-button-small" icon={<UploadOutlined />} /></p>
                                 </div>
                                 <div className="template-card-content">
                                     <div className="template-card-subheading">Product &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span className="template-card-subheading-data">{i.molecule}</span></div>
                                     <div className="template-card-subheading">Site    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span className="template-card-subheading-data">{i.site}</span></div>
                                     <div className="template-card-subheading">ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<span className="template-card-subheading-data">{i.template_id}</span></div>
                                 </div>
-                                <Button className="use-template" onClick={() => getTemplateResponse(i)
-                                }>Use Template</Button>
-
+                                <Button className="use-template" onClick={() => getTemplateResponse(i)}>View/Edit Template</Button>
                             </div>
                         </Col>
-                    )) : <Empty className="empty-temp" description={<span className="empty-text ">Please select a product to view templates available</span>} />}
+                    )) :
+                        <Empty className="empty-temp" description={<span className="empty-text ">Please select a product to view templates available</span>} />}
                 </Row>
             </div>
 

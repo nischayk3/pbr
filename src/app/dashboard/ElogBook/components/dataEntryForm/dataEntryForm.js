@@ -7,8 +7,9 @@
  * @Last Modified - 15-11-2022
  * @Last Changed By - Siddesh
  */
-import { Card, Tabs, Button, Pagination } from "antd";
+import { Card, Tabs, Button, Pagination, Row, Col } from "antd";
 import React, { useEffect, useState } from 'react';
+import panelRightImg from "../../../../../assets/images/panel-leftIcon.svg";
 import "./dataEntryForm.scss";
 import DataFormFirst from "./dataFormFirst/dataFormFirst";
 import { PlusOutlined } from "@ant-design/icons";
@@ -16,10 +17,12 @@ import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import { useDispatch, useSelector } from "react-redux";
 import { showLoader, hideLoader, showNotification } from "../../../../../duck/actions/commonActions";
 import { getDummyTemplate } from "../../../../../services/eLogBookService";
+import Sider from "antd/lib/layout/Sider";
 const DataEntryForm = () => {
 
 	const dispatch = useDispatch()
 	const selectedMolecule = useSelector(state => state.elogReducer.selectedMolecule)
+	const [drawervisible, setDrawerVisible] = useState(false);
 	const pageSize = 1
 	const [tab, setTab] = useState('BU')
 	const [templateData, setTemplateData] = useState([])
@@ -31,18 +34,17 @@ const DataEntryForm = () => {
 		dispatch(hideLoader())
 	}, [])
 
-	const handleChange = (page, inx) => {
 
+	const handleChange = (page, inx) => {
 		dispatch(showLoader())
 		try {
 			let template_Data = [...templateData]
-			template_Data[inx]['current'] = page
 			template_Data[inx]['maxIndex'] = page * pageSize
 			template_Data[inx]['minIndex'] = (page - 1) * pageSize
+			template_Data[inx]['selected'] = page
 			setTemplateData(template_Data)
 		}
 		catch (err) {
-			console.log(err)
 			dispatch(showNotification('error', 'Some error occured'))
 		}
 		finally {
@@ -92,7 +94,6 @@ const DataEntryForm = () => {
 		}
 	}
 
-	console.log(templateData)
 	return (
 		<div className="custom-wrapper bread-wrap">
 			<div className="sub-header">
@@ -105,42 +106,58 @@ const DataEntryForm = () => {
 				>
 					<Tabs defaultActiveKey={templateData && templateData[0] && templateData[0].form_name} onChange={handleTabChange}>
 						{templateData && templateData.length > 0 && templateData.map((i, _idx) => (
-							<Tabs.TabPane tab={i.form_name + " Form"} key={i.form_name}>
-								{i.form_data && i.form_data.length > 0 && i.form_data.map((idx, index) =>
-								(
-									index >= i.minIndex &&
-									index < i.maxIndex && (
-										<DataFormFirst
-											getTableData={idx.readings}
-											title={i.form_name + " Form"}
-											name="Batch 11081204X- Assay individual values"
-											form_id={i.form_id ? i.form_id : '1'}
-											form_version={i.version ? i.version : 1}
-											template_disp_id={idx.template_id ? idx.template_id : 1}
-											selectedMolecule={selectedMolecule ? selectedMolecule : '_'}
-											status={idx.status ? idx.status : 'DRFT'}
-
-											addForm={() => addBU(i, _idx)}
-											showDrawer={() => showDrawer()}
-											size={i.form_data.length}
-										/>
-									)
-								))
-								}
-								<Pagination
-									pageSize={pageSize}
-									current={i.current}
-									total={i.form_data ? i.form_data.length : 1}
-									style={{ bottom: "0px", marginLeft: "40%", marginTop: '10px' }}
-									onChange={(e) => handleChange(e, _idx)}
-									size="small"
-									showQuickJumper
-								/>
+							<Tabs.TabPane tab={i.form_name} key={_idx}>
+								<div className="data_entry_panel">
+									{i.form_data && i.form_data.length > 0 && <Sider
+										trigger={null}
+										collapsible
+										collapsed={!drawervisible}
+									>
+										<span
+											className={drawervisible ? "trigger-panel_closed " : "trigger-panel"}
+											onClick={() => setDrawerVisible(!drawervisible)}
+										>
+											<img src={panelRightImg} />
+										</span>
+										{drawervisible && <Button className="panel_button" onClick={() => { addBU(i, _idx) }}>Create new record</Button>}
+										<div className={drawervisible && i.form_data && i.form_data.length <= 10 ? "records_view" : "records_view_scroll"} >
+											{drawervisible && i.form_data && i.form_data.length > 0 && i.form_data.map((idx, index) => (
+												<div className={i.selected - 1 == index ? "record_list_selected" : "record_list"} >
+													<p onClick={() => handleChange(index + 1, _idx)}> {"Record " + idx.recording_id} <Button className="panel_view_button">View</Button> </p>
+												</div>
+											))
+											}
+										</div>
+									</Sider>}
+								</div>
+								<div className="data_form_first"
+								>
+									{i.form_data && i.form_data.length > 0 && i.form_data.map((idx, index) => (
+										index >= i.minIndex &&
+										index < i.maxIndex && (
+											<DataFormFirst
+												getTableData={idx.readings}
+												title={i.form_name}
+												name="Batch 11081204X- Assay individual values"
+												form_id={i.form_id ? i.form_id : '1'}
+												form_version={i.version ? i.version : 1}
+												template_disp_id={idx.template_id ? idx.template_id : 1}
+												selectedMolecule={selectedMolecule ? selectedMolecule : '_'}
+												status={idx.status ? idx.status : 'DRFT'}
+												recording_id={idx.recording_id ? idx.recording_id : null}
+												size={i.form_data.length}
+												setDrawerVisible={setDrawerVisible}
+												drawervisible={drawervisible}
+											/>
+										)
+									))
+									}
+								</div>
 							</Tabs.TabPane>
 						))}
 					</Tabs>
 				</Card>
-			</div>
+			</div >
 		</div >
 	)
 }

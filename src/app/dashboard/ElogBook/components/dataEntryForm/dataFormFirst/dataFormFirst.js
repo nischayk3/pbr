@@ -1,4 +1,4 @@
-import { PlusOutlined, DeleteTwoTone } from "@ant-design/icons";
+import { PlusOutlined, DeleteTwoTone, EditOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Input, Select, Switch, Table, Drawer } from "antd";
 import { Component } from "react";
 import { connect } from "react-redux";
@@ -29,6 +29,8 @@ class DataFormFirst extends Component {
 		dataSourcePer: [],
 		searchValue: '',
 		completeData: [],
+		name: '',
+		edit: false,
 		open: false
 	};
 
@@ -53,6 +55,20 @@ class DataFormFirst extends Component {
 		this.setState({ formDetails: item })
 	}
 
+	editClick = () => {
+		this.setState({ edit: !this.state.edit })
+		if (this.props.getTableData) {
+			this.props.getTableData['edit_name'] = this.props.getTableData['edit_name'] ? false : true
+		}
+	}
+
+	editName = (_name) => {
+		if (this.props.getTableData) {
+			this.props.getTableData['name'] = _name
+		}
+		this.setState({ name: _name })
+	}
+
 	componentDidMount() {
 		this.loadTableData();
 	}
@@ -61,7 +77,8 @@ class DataFormFirst extends Component {
 		this.props.showLoader();
 		try {
 			const response = await this.props.getTableData;
-			console.log(response)
+
+			const { name } = response
 			const { rowInitialData, dataSource, deleteActionColumn, columns } = response.table;
 			const { formDetails } = response.form;
 			this.setState(
@@ -71,7 +88,8 @@ class DataFormFirst extends Component {
 					count: dataSource.length,
 					deleteActionColumn,
 					columns,
-					formDetails
+					formDetails,
+					name
 				},
 				() => {
 					this.initializeTableRender();
@@ -111,7 +129,6 @@ class DataFormFirst extends Component {
 	}
 
 	onChangeEdit = (record) => {
-		console.log(record)
 		const datasource = [...this.state.dataSource]
 		const index = datasource.findIndex((item) => record.key === item.key)
 		datasource[index]['edit'] = datasource[index]['edit'] ? false : true
@@ -119,7 +136,6 @@ class DataFormFirst extends Component {
 			this.props.getTableData.table.dataSource = datasource
 		}
 
-		console.log(this.props.getTableData)
 		this.setState({ datasource: datasource })
 		const {
 			columns
@@ -194,7 +210,8 @@ class DataFormFirst extends Component {
 								</Button>
 							</div >
 						);
-					});
+					}, column.fixed = 'right', column.width = '150px');
+
 
 				case "parent":
 					this.renderTableColumns(column.children);
@@ -323,10 +340,11 @@ class DataFormFirst extends Component {
 		this.setState({ currentPage: page });
 	}
 
-	onSaveTable = async () => {
+	onSaveTable = async (boolean_value) => {
 
 		let { formDetails } = this.state
 		let { getTableData } = this.props
+
 
 		var batch = formDetails.filter(function (el) {
 			return el.id == 'batch'
@@ -336,6 +354,7 @@ class DataFormFirst extends Component {
 		})
 
 		let save_req = {
+			"archive": boolean_value,
 			"batch": batch && batch[0] && batch[0].value ? batch[0].value : '',
 			"process_step": process && process[0] && process[0].value ? process[0].value : '',
 			"readings": getTableData,
@@ -371,39 +390,45 @@ class DataFormFirst extends Component {
 	};
 
 
-
 	render() {
+
 		if (!this.state.dataSource || !this.state.columns) {
 			return null;
 		}
-		const { dataSource, formDetails } = this.state;
+		const { dataSource, formDetails, edit, name } = this.state;
 		const components = {
 			body: {
 				row: EditableRow,
 				cell: EditableCell,
 			},
 		};
+		const { setDrawerVisible, drawervisible, getTableData } = this.props
 		const columns = this.state.columns.map((column) => {
 			if (column.editable) {
 				return column;
 			}
 		});
-
 		return (
 			<div className="custom-table-wrapper">
 				<div>
 					<span className="form-head-ing">
 						{this.props.title} [{this.props.size}]
 					</span>
-					<span style={{ float: 'right' }}>
-						{/* <span className="see-all" onClick={() => this.props.showDrawer()}>See all records</span> */}
-						<Button className="header-buttons" onClick={() => this.props.addForm()}>Create New Record</Button>
+					<span >
+						<span className="see-all" onClick={() => setDrawerVisible(!drawervisible)}>See all records  </span>
+						<span className="buttons-head">
+							<Button className="delete-btn" onClick={() => this.onSaveTable(true)} >Delete</Button>
+							<Button className="publish-btn">Publish</Button>
+							<Button className="publish-btn" onClick={() => this.onSaveTable(false)}>Save</Button>
+						</span>
 					</span>
 				</div>
 				<br />
 				<hr className="divider" />
+
 				<div className="form-details">
-					<p className="form-heading">{this.props.title} <span className="approved-bar template-card-subheading-data-inside">{this.props.status}</span> <span className="buttons-head"><Button className="delete-btn" icon={<DeleteTwoTone twoToneColor="#EB0000" />}>Delete Record</Button> <Button className="save-btn" onClick={this.onSaveTable}>Save</Button> <Button className="publish-btn">Publish</Button></span></p>
+					<span>
+						<span className="form-heading">Record {this.props.recording_id}  <span>&nbsp;&nbsp;&nbsp;&bull;</span> {this.props.status}</span>  </span>
 				</div >
 				<div className="form-details">
 
@@ -427,34 +452,36 @@ class DataFormFirst extends Component {
 							</div>
 						))}
 					</div>
-
-					{columns && columns.length > 0 && <div className="table-wrapper">
-						<div className="table-head">
-							<p className="table-heading">{this.props.name}</p>
-
-						</div>
-						<Table
-							className="first-Table"
-							rowClassName={() => "editable-row"}
-							bordered
-							dataSource={dataSource}
-							columns={columns}
-							pagination={{
-								position: ['topRight'],
-								size: 'small'
-							}}
-							scroll={this.props.screens === "Roles" ? { y: 400 } : { y: 300 }}
-						/>
-
-						<Button
-							className="add_new_row"
-							onClick={this.onAddRow}
-							icon={<PlusOutlined />}
-							id="editable-table-button-add-new-user"
-						>
-							Add new row
-						</Button>
-					</div>}
+					{columns && columns.length > 0 &&
+						<div className="table-wrapper">
+							<div className="table-head">
+								<div >
+									<p className="table-heading"><Button
+										className="add_new_row"
+										onClick={this.onAddRow}
+										icon={<PlusOutlined />}
+										// style={{ left: `${columns.length * 10 > 80 ? '66%' : columns.length * 8 + '%'}` }}
+										id="editable-table-button-add-new-user"
+									>
+										Add new row
+									</Button>
+									</p>
+								</div>
+								<Table
+									className="first-Table"
+									rowClassName={() => "editable-row"}
+									bordered
+									dataSource={dataSource}
+									columns={columns}
+									style={{ width: columns.length * 200 }}
+									pagination={{
+										position: ['bottomRight'],
+										size: 'small'
+									}}
+									scroll={dataSource.length > 0 && { x: 400 }}
+								/>
+							</div>
+						</div>}
 
 
 
