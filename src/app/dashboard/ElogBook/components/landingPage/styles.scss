@@ -1,0 +1,61 @@
+.landing-card-wrapper {
+	background-color: #fff;
+	box-shadow: 1px 1px 14px rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+	padding: 31px 86px;
+	margin-top: 23px;
+
+	.panel-header {
+		display: flex;
+		justify-content: space-between;
+		padding-bottom: 51px;
+
+		.filter-tab {
+			display: flex;
+
+			.filter {
+				display: flex;
+				justify-content: space-between;
+				width: 190px;
+				margin: 0 55px;
+
+				p {
+					margin: 0;
+					padding: 5px 0;
+					margin-right: 16px;
+				}
+
+				.select_field {
+					width: 100%;
+					margin-right: 16px;
+				}
+			}
+		}
+	}
+}
+
+.elog-table {
+	.ant-table {
+		border-left: 40px solid #e7e5ff;
+
+		.ant-table-container {
+			.ant-table-content {
+				.ant-table-thead {
+					width: 100px;
+
+					.ant-table-cell {
+						background: #E7E5FF !important;
+					}
+				}
+			}
+		}
+	}
+}
+
+.ant-table-tbody > tr > td {
+	width: 200px;
+}
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    margin-top: 0px;
+}

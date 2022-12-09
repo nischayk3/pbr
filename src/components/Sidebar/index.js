@@ -236,6 +236,13 @@ const Sidebar = () => {
 					>
 						<Link to="/dashboard/elog_book_data_entry">Data Entry</Link>
 					</Menu.Item>
+					<Menu.Item
+						key="elog-book_template"
+						icon={<CheckCircleOutlined className="menu-icons" />}
+						id="elog-book_template"
+					>
+						<Link to="/dashboard/elog_book_template">Template Creation</Link>
+					</Menu.Item>
 
 				</SubMenu>
 				<Menu.Item

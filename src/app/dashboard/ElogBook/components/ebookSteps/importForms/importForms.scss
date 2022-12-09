@@ -1,0 +1,46 @@
+.main-form{
+    margin-bottom: 35px;
+    display: flex;
+
+    .import-modal-left{
+        width: 100%;
+    }
+    .import-modal-right{
+        width: 100%;
+        text-align: end;
+    }
+
+}
+
+.temp-button{
+    margin-left: 20px;
+}
+
+.back-button{
+    padding-left: 50px;
+    padding-right: 50px;
+}
+.table-header{
+    padding-bottom: 14px;
+}
+.filter-select{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.filter-label{
+    font-family: 'Inter';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 22px;
+}
+.ant-table-pagination.ant-pagination {
+    margin-top: -37px;
+}
+.paragraph-text{
+    font-family: 'Inter';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 22px;
+}
