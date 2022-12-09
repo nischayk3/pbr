@@ -29,14 +29,14 @@ function ElogForm({ isTemplateModal }) {
 		setIsModalVisible(isTemplateModal)
 	},[isTemplateModal])
 
-	
+
 	const handleCancel = () => {
 		setIsModalVisible(false);
 	};
-	console.log(isTemplateModal, isModalVisible);
+	console.log(isTemplateModal, isModalVisible, formData);
 	const handleNext = () => {
 		history.push({
-			pathname: `${match.url}/new-template`,
+			pathname: `${match.url}/new-template`, formData: formData
 		});
 	}
 

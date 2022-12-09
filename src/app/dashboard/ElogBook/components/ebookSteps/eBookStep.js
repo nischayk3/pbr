@@ -1,4 +1,4 @@
-import { Form, Steps, Button } from "antd";
+import { Form, Steps, Button, Divider } from "antd";
 import { useState } from "react";
 import BreadCrumbWrapper from "../../../../../components/BreadCrumbWrapper";
 import "./eBookStep.scss";
@@ -9,6 +9,8 @@ import { Tabs } from 'antd';
 import StatusInd from "../statusIndicator/statusInd";
 import EditorNew from "./editornew/editorNew";
 import ImportForm from "./importForms/importForm";
+import { useLocation } from 'react-router-dom'
+import templateicon from './../../../../../assets/editornew/templateicon.png'
 const { TabPane } = Tabs;
 const { Step } = Steps;
 const { Item } = Form;
@@ -47,6 +49,7 @@ const EbookStep = () => {
 	const [form] = Form.useForm();
 	const [newform, setnewform] = useState(false)
 
+	const location = useLocation();
 	const sendDataToParent = (index) => { // callback
 		setnewform(index)
 		setnewform(true)
@@ -279,7 +282,8 @@ const EbookStep = () => {
 				
 
 				<div className="template-header">
-					<p>New template - [template_name_entered_by_user]</p>
+					{/* <p>New template - [template_name_entered_by_user]</p> */}
+					<p>{location.formData.Tname}<Divider type="vertical" /><img src={templateicon} alt="create" className='img' />{location.formData.Pname}</p>
 				</div>
 				<div className="content-layout">
 					<Tabs
