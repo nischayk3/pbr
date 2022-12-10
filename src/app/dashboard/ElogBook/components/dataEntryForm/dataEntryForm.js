@@ -71,7 +71,7 @@ const DataEntryForm = () => {
 			if (dummyresult.statuscode == 200) {
 				let template_Data = [...templateData]
 				if (dummyresult.Data && dummyresult.Data[0] && dummyresult.Data[0].layout) {
-					template_Data[index_].form_data.push({
+					template_Data[index_].form_data.unshift({
 						status:
 							"DRFT",
 						template_id
@@ -101,58 +101,71 @@ const DataEntryForm = () => {
 			</div>
 			<div className="custom-content-layout">
 				<Card
-					title={`[E-log Book ${templateData && templateData.length} forms]`}
+					title={`E-log Book ${selectedMolecule}`}
 					bordered={false}
 				>
 					<Tabs defaultActiveKey={templateData && templateData[0] && templateData[0].form_name} onChange={handleTabChange}>
 						{templateData && templateData.length > 0 && templateData.map((i, _idx) => (
 							<Tabs.TabPane tab={i.form_name} key={_idx}>
-								<div className="data_entry_panel">
-									{i.form_data && i.form_data.length > 0 && <Sider
-										trigger={null}
-										collapsible
-										collapsed={!drawervisible}
-									>
-										<span
-											className={drawervisible ? "trigger-panel_closed " : "trigger-panel"}
-											onClick={() => setDrawerVisible(!drawervisible)}
-										>
-											<img src={panelRightImg} />
-										</span>
-										{drawervisible && <Button className="panel_button" onClick={() => { addBU(i, _idx) }}>Create new record</Button>}
-										<div className={drawervisible && i.form_data && i.form_data.length <= 10 ? "records_view" : "records_view_scroll"} >
-											{drawervisible && i.form_data && i.form_data.length > 0 && i.form_data.map((idx, index) => (
-												<div className={i.selected - 1 == index ? "record_list_selected" : "record_list"} >
-													<p onClick={() => handleChange(index + 1, _idx)}> {"Record " + idx.recording_id} <Button className="panel_view_button">View</Button> </p>
+								<Row>
+									<Col span={1}>
+										<div className="data_entry_panel">
+											{i.form_data && i.form_data.length > 0 && <Sider
+												trigger={null}
+												collapsible
+												collapsed={!drawervisible}
+											>
+												<span
+													className={drawervisible ? "trigger-panel_closed " : "trigger-panel"}
+													onClick={() => setDrawerVisible(!drawervisible)}
+												>
+													<img src={panelRightImg} />
+												</span>
+												<br />
+												<br />
+												{/* {drawervisible && <Button className="panel_button" onClick={() => { addBU(i, _idx) }}>Create new record</Button>} */}
+												<div className={drawervisible && i.form_data && i.form_data.length <= 10 ? "records_view" : "records_view_scroll"} >
+													{drawervisible && i.form_data && i.form_data.length > 0 && i.form_data.map((idx, index) => (
+														<div className={i.selected - 1 == index ? "record_list_selected" : "record_list"} >
+															<p onClick={() => handleChange(index + 1, _idx)}> {"Record " + idx.batch ? idx.batch + "_" + idx.process_step : ''}  </p>
+														</div>
+													))
+													}
 												</div>
+											</Sider>
+											}
+											<span >{!drawervisible ? <PlusOutlined onClick={() => { addBU(i, _idx) }} className="plus-outlined" /> : <Button className="create_new_record" onClick={() => { addBU(i, _idx) }} icon={<PlusOutlined />}>Create New Record</Button>}</span>
+
+										</div>
+									</Col>
+									{/* </div> */}
+									<Col span={23}>
+										<div className="data_form_first"
+										>
+											{i.form_data && i.form_data.length > 0 && i.form_data.map((idx, index) => (
+												index >= i.minIndex &&
+												index < i.maxIndex && (
+													<DataFormFirst
+														getTableData={idx.readings}
+														title={i.form_name}
+														name="Batch 11081204X- Assay individual values"
+														form_id={i.form_id ? i.form_id : '1'}
+														form_version={i.version ? i.version : 1}
+														template_disp_id={idx.template_id ? idx.template_id : 1}
+														selectedMolecule={selectedMolecule ? selectedMolecule : '_'}
+														status={idx.status ? idx.status : 'DRFT'}
+														recording_id={idx.recording_id ? idx.recording_id : null}
+														size={i.form_data.length}
+														setDrawerVisible={setDrawerVisible}
+														drawervisible={drawervisible}
+														batch={idx.batch ? idx.batch + "_" + idx.process_step : ''}
+													/>
+												)
 											))
 											}
 										</div>
-									</Sider>}
-								</div>
-								<div className="data_form_first"
-								>
-									{i.form_data && i.form_data.length > 0 && i.form_data.map((idx, index) => (
-										index >= i.minIndex &&
-										index < i.maxIndex && (
-											<DataFormFirst
-												getTableData={idx.readings}
-												title={i.form_name}
-												name="Batch 11081204X- Assay individual values"
-												form_id={i.form_id ? i.form_id : '1'}
-												form_version={i.version ? i.version : 1}
-												template_disp_id={idx.template_id ? idx.template_id : 1}
-												selectedMolecule={selectedMolecule ? selectedMolecule : '_'}
-												status={idx.status ? idx.status : 'DRFT'}
-												recording_id={idx.recording_id ? idx.recording_id : null}
-												size={i.form_data.length}
-												setDrawerVisible={setDrawerVisible}
-												drawervisible={drawervisible}
-											/>
-										)
-									))
-									}
-								</div>
+									</Col>
+								</Row>
 							</Tabs.TabPane>
 						))}
 					</Tabs>
